@@ -1,13 +1,78 @@
 <template>
-
+    <el-card shadow="always">
+        <div class="el-form-title"><span>用户登录</span></div>
+        <el-form ref="loginForm" :model="loginForm" :rules="loginRules">
+            <el-form-item prop="username">
+                <el-col :span="24">
+                    <el-input placeholder="请输入账号" v-model="loginForm.username"></el-input>
+                </el-col>
+            </el-form-item>
+            <el-form-item prop="password">
+                <el-col :span="24">
+                    <el-input placeholder="请输入密码" v-model="loginForm.password" show-password></el-input>
+                </el-col>
+            </el-form-item>
+        </el-form>
+        <el-button type="primary" :loading="loading" @click="handleLogin('ruleForm')" round>登录</el-button>
+    </el-card>
 </template>
 
 <script>
     export default {
-        name: "Login"
+        name: "Login",
+        data() {
+            return {
+                loginForm: {
+                    username: '',
+                    password: ''
+                },
+                loginRules: {
+                    name: [
+                        {required: true, message: '请输入账号', trigger: 'blur'}
+                    ],
+                    region: [
+                        {required: true, message: '请输入密码', trigger: 'change'},
+                        {min: 3, max: 18, message: '长度在 3 到 18 个字符', trigger: 'change'}
+                    ]
+                }
+            }
+        },
+        methods:{
+            handleLogin(){
+                this.$refs.loginForm.validate(valid => {
+                    if (valid) {
+                        this.loading = true
+                        this.$store.dispatch('user/login', this.loginForm).then(() => {
+                            this.$router.push({ path: this.redirect || '/' })
+                            this.loading = false
+                        }).catch(() => {
+                            this.loading = false
+                        })
+                    } else {
+                        console.log('error submit!!')
+                        return false
+                    }
+                })
+            }
+        }
     }
 </script>
 
-<style scoped>
+<style lang="stylus">
+    .el-card
+        position absolute
+        top 50%
+        left 50%
+        margin-top -200px
+        margin-left -200px
+        height 300px
+        width 400px
 
+    .el-form-title
+        text-align center
+        margin-bottom 20px
+        margin-top 20px
+
+    .el-button
+        width 100%
 </style>

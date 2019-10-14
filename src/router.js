@@ -5,22 +5,32 @@ import Home from "./views/Home.vue";
 Vue.use(Router);
 
 export default new Router({
-  mode: "history",
-  base: process.env.BASE_URL,
-  routes: [
-    {
-      path: "/",
-      name: "home",
-      component: Home
-    },
-    {
-      path: "/about",
-      name: "about",
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () =>
-        import(/* webpackChunkName: "about" */ "./views/About.vue")
-    }
-  ]
+    mode: "history",
+    base: process.env.BASE_URL,
+    routes: [
+        {
+            path: '/login',
+            component: () => import('@/views/Login'),
+            hidden: true
+        },
+        {
+            path: "/",
+            name: "home",
+            component: Home,
+            redirect: '/index',
+            children: [
+                {
+                    path: 'index',
+                    name: 'Index',
+                    component: () => import('@/views/Index'),
+                    meta: {title: 'Index', icon: 'index'}
+                },
+                {
+                    path: 'about',
+                    name: 'About',
+                    component: () => import('@/views/About'),
+                    meta: {title: 'About', icon: 'about'}
+                }]
+        }
+    ]
 });
