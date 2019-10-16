@@ -1,33 +1,38 @@
-import Vue from "vue";
-import Router from "vue-router";
-import Home from "./views/Home.vue";
+import Vue from 'vue';
+import Router from 'vue-router';
+import Layout from './views/Layout';
 
 Vue.use(Router);
 
 export default new Router({
   routes: [
     {
-      path: "/login",
-      component: () => import("@/views/Login"),
+      title: '登录',
+      path: '/login',
+      name: 'login',
+      component: () => import('@/views/Login'),
       hidden: true
     },
     {
-      path: "/",
-      name: "home",
-      component: Home,
-      redirect: "/index",
+      title: '首页',
+      path: '/',
+      name: 'index',
+      component: Layout,
+      redirect: '/home',
       children: [
         {
-          path: "index",
-          name: "Index",
-          component: () => import("@/views/Index"),
-          meta: { title: "Index", icon: "index" }
+          title: '首页',
+          path: 'home',
+          name: 'home',
+          component: () => import('@/views/Home'),
+          meta: { title: 'Home', icon: 'home' }
         },
         {
-          path: "about",
-          name: "About",
-          component: () => import("@/views/About"),
-          meta: { title: "About", icon: "about" }
+          title: '关于',
+          path: 'about',
+          name: 'about',
+          component: () => import('@/views/About'),
+          meta: { title: 'About', icon: 'about' }
         }
       ]
     }

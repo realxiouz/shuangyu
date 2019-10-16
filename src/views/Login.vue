@@ -26,8 +26,8 @@
       @click="handleLogin('ruleForm')"
       round
       m
-      >登录</el-button
-    >
+      >登录
+    </el-button>
   </el-card>
 </template>
 
@@ -78,21 +78,24 @@ export default {
 };
 </script>
 
-<style lang="stylus">
-.el-card
-    position absolute
-    top 50%
-    left 50%
-    margin-top -200px
-    margin-left -200px
-    height 300px
-    width 400px
+<style lang="scss" scoped>
+.el-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -200px;
+  margin-left: -200px;
+  height: 300px;
+  width: 400px;
+}
 
-.el-form-title
-    text-align center
-    margin-bottom 20px
-    margin-top 20px
+.el-form-title {
+  text-align: center;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
 
-.el-button
-    width 100%
+.el-button {
+  width: 100%;
+}
 </style>

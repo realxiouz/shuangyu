@@ -1,0 +1,25 @@
+.el-scrollbar {
+  height: 100%;
+}
+
+.el-scrollbar__wrap {
+  overflow-x: hidden;
+}
+
+.el-menu--collapse {
+  .el-submenu {
+    & > .el-submenu__title {
+      & > span {
+        height: 0;
+        width: 0;
+        overflow: hidden;
+        visibility: hidden;
+        display: inline-block;
+      }
+    }
+  }
+}
+
+.el-menu-item, .el-submenu__title {
+  text-align: left;
+}
