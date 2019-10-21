@@ -1,11 +1,17 @@
 .el-scrollbar {
   height: 100%;
+
+  .el-scrollbar__wrap {
+    height: 100%;
+    overflow-x: hidden;
+
+    .el-scrollbar__view {
+      height: 100%;
+      text-align: left;
+    }
+  }
 }
 
-.el-scrollbar__wrap {
-  overflow-x: hidden;
-}
 
-.el-scrollbar__view {
-  text-align: left;
-}
+
+

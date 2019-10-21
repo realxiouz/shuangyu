@@ -66,7 +66,7 @@ export default {
 }
 
 .el-aside {
-  background-color: #d3dce6;
+  background-color: #304156;
   color: #304156;
   overflow: hidden;
 }
