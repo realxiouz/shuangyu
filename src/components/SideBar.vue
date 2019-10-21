@@ -8,7 +8,7 @@
         text-color="#bfcbd9"
         active-text-color="#409EFF"
         :collapse="collapse" class="el-menu-vertical">
-        <sidebar-item v-for="menu in menuList" :key="menu.path" :item="menu"/>
+        <sidebar-item v-for="menu in menuList" :key="menu.uri" :item="menu"/>
       </el-menu>
     </el-scrollbar>
   </div>
