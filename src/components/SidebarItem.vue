@@ -1,5 +1,8 @@
 <template v-if="item.children">
-  <el-submenu v-if="item.children && item.children.length>0" :index="item.uri">
+  <el-submenu
+    v-if="item.children && item.children.length > 0"
+    :index="item.uri"
+  >
     <template slot="title">
       <i class="el-icon-menu"></i>
       <span slot="title">{{ item.title }}</span>
@@ -24,13 +27,13 @@
 </template>
 
 <script>
-  export default {
-    name: "SidebarItem",
-    props: {
-      item: {
-        type: Object,
-        required: true
-      }
+export default {
+  name: "SidebarItem",
+  props: {
+    item: {
+      type: Object,
+      required: true
     }
-  };
+  }
+};
 </script>
