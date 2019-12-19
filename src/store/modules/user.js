@@ -1,4 +1,4 @@
-import { login, logout, getInfo,getUserList } from '@/api/user';
+import { login, logout, getInfo, getUserList } from '@/api/user';
 import { getToken, setToken, removeToken } from '@/utils/auth';
 
 const state = {
@@ -79,7 +79,7 @@ const actions = {
     });
   },
 
-  list({ commit }){
+  list() {
     return new Promise((resolve, reject) => {
       getUserList(state.token)
         .then(response => {
