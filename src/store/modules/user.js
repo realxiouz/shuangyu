@@ -1,4 +1,4 @@
-import { login, logout, getInfo, getUserList } from '@/api/user';
+import { login, logout, getInfo, getUserList,addUser } from '@/api/user';
 import { getToken, setToken, removeToken } from '@/utils/auth';
 
 const state = {
@@ -85,6 +85,19 @@ const actions = {
         .then(response => {
           const { data } = response;
           resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+
+  add({ commit }, params){
+    return new Promise((resolve, reject) => {
+      addUser(params)
+        .then(response => {
+          //const { data } = response;
+          resolve(response);
         })
         .catch(error => {
           reject(error);

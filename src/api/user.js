@@ -12,7 +12,15 @@ export function getInfo(token) {
   return request({
     url: '/user/info',
     method: 'get',
-    params: { token }
+    params: {token}
+  });
+}
+
+export function addUser(data) {
+  return request({
+    url: '/admin/add/user',
+    method: 'post',
+    data
   });
 }
 

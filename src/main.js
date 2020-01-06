@@ -9,10 +9,10 @@ import router from './router';
 import store from './store';
 import '@/permission';
 
-import { mockXHR } from '../mock';
+/*import { mockXHR } from '../mock';
 if (process.env.NODE_ENV === 'development') {
   mockXHR();
-}
+}*/
 
 Vue.use(ElementUI, { locale });
 

@@ -107,6 +107,14 @@
         this.dialogVisible = false;
       },
       handleSave() {
+        this.$store
+          .dispatch('user/add', this.form)
+          .then(data => {
+            console.log(data);
+          })
+          .catch(error => {
+            console.log(error);
+          });
         this.dialogVisible = false;
       }
     },
