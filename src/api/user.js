@@ -1,14 +1,14 @@
 import request from '@/utils/request';
 
-export function login(data) {
+export function signIn(data) {
   return request({
-    url: '/admin/user/login',
+    url: '/admin/user/sign/in',
     method: 'post',
     data
   });
 }
 
-export function getInfo(token) {
+export function getUser(token) {
   return request({
     url: '/user/info',
     method: 'get',
@@ -24,9 +24,9 @@ export function addUser(data) {
   });
 }
 
-export function logout() {
+export function signOut() {
   return request({
-    url: '/user/logout',
+    url: '/admin/user/sign/out',
     method: 'post'
   });
 }
