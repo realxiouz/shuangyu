@@ -26,76 +26,77 @@
       @click="handleLogin('ruleForm')"
       round
       m
-      >登录
+    >登录
     </el-button>
   </el-card>
 </template>
 
 <script>
-export default {
-  name: "Login",
-  data() {
-    return {
-      loginForm: {
-        username: "",
-        password: ""
-      },
-      loginRules: {
-        username: [{ required: true, message: "请输入账号", trigger: "blur" }],
-        password: [
-          { required: true, message: "请输入密码", trigger: "change" },
-          {
-            min: 3,
-            max: 18,
-            message: "长度在 3 到 18 个字符",
-            trigger: "change"
-          }
-        ]
-      }
-    };
-  },
-  methods: {
-    handleLogin() {
-      this.$refs.loginForm.validate(valid => {
-        if (valid) {
-          this.loading = true;
-          this.$store
-            .dispatch("user/login", this.loginForm)
-            .then(() => {
-              this.$router.push({ path: this.redirect || "/" });
-              this.loading = false;
-            })
-            .catch(() => {
-              this.loading = false;
-            });
-        } else {
-          console.log("error submit!!");
-          return false;
+  export default {
+    name: "Login",
+    data() {
+      return {
+        loading: false,
+        loginForm: {
+          username: "",
+          password: ""
+        },
+        loginRules: {
+          username: [{required: true, message: "请输入账号", trigger: "blur"}],
+          password: [
+            {required: true, message: "请输入密码", trigger: "change"},
+            {
+              min: 3,
+              max: 18,
+              message: "长度在 3 到 18 个字符",
+              trigger: "change"
+            }
+          ]
         }
-      });
+      };
+    },
+    methods: {
+      handleLogin() {
+        this.$refs.loginForm.validate(valid => {
+          if (valid) {
+            this.loading = true;
+            this.$store
+              .dispatch("user/signIn", this.loginForm)
+              .then(() => {
+                this.$router.push({path: this.redirect || "/"});
+                this.loading = false;
+              })
+              .catch(() => {
+                this.loading = false;
+              });
+          } else {
+            console.log("error submit!!");
+            return false;
+          }
+        });
+      }
     }
-  }
-};
+  };
 </script>
 
 <style lang="scss" scoped>
-.el-card {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-top: -200px;
-  margin-left: -200px;
-  height: 300px;
-  width: 400px;
-}
+  .el-card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -200px;
+    margin-left: -200px;
+    height: 300px;
+    width: 400px;
+  }
 
-.el-form-title {
-  text-align: center;
-  margin-bottom: 20px;
-  margin-top: 20px;
-}
+  .el-form-title {
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
 
-.el-button {
-  width: 100%;
-}
+  .el-button {
+    width: 100%;
+  }
 </style>

@@ -10,7 +10,7 @@ function resolve(dir) {
 // For example, Mac: sudo npm run
 // You can change the port by the following methods:
 // port = 9528 npm run dev OR npm run dev --port = 9528
-const port = process.env.port || process.env.npm_config_port || 28031; // dev port
+const port = process.env.port || process.env.npm_config_port || 28032; // dev port
 
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
@@ -38,7 +38,7 @@ module.exports = {
       // detail: https://cli.vuejs.org/config/#devserver-proxy
       [process.env.VUE_APP_BASE_API]: {
         //target: `http://127.0.0.1:${port}/mock`,
-        target: `http://127.0.0.1:${port}`,
+        target: `http://127.0.0.1:28031`,
         changeOrigin: true,
         pathRewrite: {
           ['^' + process.env.VUE_APP_BASE_API]: ''
