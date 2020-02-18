@@ -9,6 +9,13 @@ export function addApp(data) {
   });
 }
 
+export function removeApp(id) {
+  return request({
+    url: `/admin/app/remove/one/${id}`,
+    method: 'get'
+  });
+}
+
 export function updApp(data) {
   return request({
     url: '/admin/app/update/one',
@@ -16,9 +23,13 @@ export function updApp(data) {
     data
   });
 }
-export function getAppList() {
+
+export function getAppList(pageSize, lastId, data) {
   return request({
-    url: '/admin/app/page/list',
-    method: 'get'
+    url: `/admin/app/page/list/${pageSize}/${lastId}`,
+    method: 'get',
+    params: {data}
   });
 }
+
+
