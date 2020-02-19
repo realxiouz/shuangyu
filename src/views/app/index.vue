@@ -9,16 +9,36 @@
           <el-table-column
             prop="appId"
             label="应用唯一标识"
-            width="180"
+            width="200"
           ></el-table-column>
           <el-table-column
             prop="appName"
             label="应用名称"
-            width="180"
+            width="200"
           ></el-table-column>
           <el-table-column prop="enable" label="是否启用"></el-table-column>
+          <el-table-column
+            fixed="right"
+            label="操作"
+            width="100">
+            <template slot-scope="scope">
+              <el-button @click="handleUpdate(scope.row)" type="text" size="small">编辑</el-button>
+              <el-button  @click.native.prevent="removeOne(scope.row.id,scope.$index,tableData)" type="text" size="small">删除</el-button>
+            </template>
+          </el-table-column>
 
         </el-table>
+        <h-page-footer>
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[10, 20, 50, 100]"
+            :page-size="pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="tableData.length">
+          </el-pagination>
+        </h-page-footer>
       </el-main>
     </el-container>
     <el-dialog title="应用信息" :visible.sync="dialogVisible" width="30%">
@@ -40,30 +60,31 @@
 <script>
 
     // eslint-disable-next-line no-unused-vars
-    import { appList,addApp,removeApp,updApp } from '@/api/app'
+    import { getAppList,addApp,removeApp,updApp } from '@/api/app'
 
     export default {
         name: 'app',
         data() {
             return {
+                total: 0,
+                currentPage: 1,
+                pageSize: 10,
                 form: {
                     appId: '',
                     appName: '',
                     enable: true
                 },
                 dialogVisible: false,
-                tableData: [{
-                    appId: '1',
-                    appName: '123',
-                    enable: '是'
-                }]
+                tableData: [{}]
             };
         },
         methods: {
             loadData() {
-                appList().then(response => {
-                    this.tableData = response.data.items
-                })
+                getAppList(this.currentPage,this.pageSize).then(response => {
+                    this.tableData = response.data
+                }).catch(error => {
+                    console.log(error);
+                });
             },
             handleCancel() {
                 this.dialogVisible = false;
@@ -72,12 +93,35 @@
                 const params = this.form
                 addApp(params).then(() => {
                     this.loadData();
-                })
+                }).catch(error => {
+                    console.log(error);
+                });
                 this.dialogVisible = false;
             },
-            handleDelete() {
-
+            handleUpdate(row) {
+                this.temp = Object.assign({}, row) // copy obj
+                this.$nextTick(() => {
+                    this.$refs['dataForm'].clearValidate()
+                })
+            },
+            removeOne: function(id, index, rows) {
+                removeApp(id).then(() => {
+                    this.loadData();
+                    rows.splice(index,1);
+                }).catch(error => {
+                    console.log(error);
+                });
+            },
+            // 初始页currentPage、初始每页数据数pagesize和数据data
+            handleSizeChange: function (pageSize) {
+                this.pageSize = pageSize;
+                this.loadData(this.currentPage,this.pageSize);
+            },
+            handleCurrentChange: function(currentPage){
+                this.currentPage = currentPage;
+                this.loadData(this.currentPage,this.pageSize);
             }
+
         },
         mounted() {
             this.loadData();
