@@ -24,11 +24,10 @@ export function updApp(data) {
   });
 }
 
-export function getAppList(pageSize, lastId, data) {
+export function getAppList(pageNum, pageSize) {
   return request({
-    url: `/admin/app/page/list/${pageSize}/${lastId}`,
-    method: 'get',
-    params: data
+    url: `/admin/app/page/list/${pageNum}/${pageSize}`,
+    method: 'get'
   });
 }
 
