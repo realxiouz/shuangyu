@@ -57,17 +57,33 @@ export default new Router({
       ]
     },
     {
-      title: '角色管理',
-      path: '/role',
-      uri: '/role',
+      title: '应用管理',
+      path: '/app',
+      uri: '/app',
       component: Layout,
       children: [
         {
           title: '基本信息',
           path: 'index',
-          name: 'role',
-          uri: '/role/index',
-          component: () => import('@/views/role/index'),
+          name: 'App',
+          uri: '/app/index',
+          component: () => import('@/views/app/index'),
+          meta: { title: 'Home', icon: 'home' }
+        }
+      ]
+    },
+    {
+      title: 'Api管理',
+      path: '/api',
+      uri: '/api',
+      component: Layout,
+      children: [
+        {
+          title: '基本信息',
+          path: 'index',
+          name: 'Api',
+          uri: '/api/index',
+          component: () => import('@/views/api/index'),
           meta: { title: 'Home', icon: 'home' }
         }
       ]
