@@ -1,4 +1,4 @@
-# admin-pc
+# client-browser
 
 ## Project setup
 ```
