@@ -55,6 +55,38 @@ export default new Router({
           meta: { title: 'Home', icon: 'home' }
         }
       ]
+    },
+    {
+      title: '应用管理',
+      path: '/app',
+      uri: '/app',
+      component: Layout,
+      children: [
+        {
+          title: '基本信息',
+          path: 'index',
+          name: 'App',
+          uri: '/app/index',
+          component: () => import('@/views/app/index'),
+          meta: { title: 'Home', icon: 'home' }
+        }
+      ]
+    },
+    {
+      title: 'Api管理',
+      path: '/api',
+      uri: '/api',
+      component: Layout,
+      children: [
+        {
+          title: '基本信息',
+          path: 'index',
+          name: 'Api',
+          uri: '/api/index',
+          component: () => import('@/views/api/index'),
+          meta: { title: 'Home', icon: 'home' }
+        }
+      ]
     }
   ]
 });
