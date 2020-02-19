@@ -28,7 +28,7 @@ export function getAppList(pageSize, lastId, data) {
   return request({
     url: `/admin/app/page/list/${pageSize}/${lastId}`,
     method: 'get',
-    params: {data}
+    params: data
   });
 }
 
