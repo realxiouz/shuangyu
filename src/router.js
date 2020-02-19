@@ -55,6 +55,22 @@ export default new Router({
           meta: { title: 'Home', icon: 'home' }
         }
       ]
+    },
+    {
+      title: '角色管理',
+      path: '/role',
+      uri: '/role',
+      component: Layout,
+      children: [
+        {
+          title: '基本信息',
+          path: 'index',
+          name: 'role',
+          uri: '/role/index',
+          component: () => import('@/views/role/index'),
+          meta: { title: 'Home', icon: 'home' }
+        }
+      ]
     }
   ]
 });
