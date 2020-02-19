@@ -24,50 +24,16 @@
         </el-table>
       </el-main>
     </el-container>
-    <el-dialog title="用户信息" :visible.sync="dialogVisible" width="30%">
-      <el-form ref="form" :model="form" label-width="90px">
-        <el-form-item label="姓名">
-          <el-input v-model="form.fullName"></el-input>
+    <el-dialog title="机场信息" :visible.sync="dialogVisible" width="30%">
+      <el-form ref="form" :model="form" label-width="110px">
+        <el-form-item label="三字码">
+          <el-input v-model="form.code"></el-input>
         </el-form-item>
-        <el-form-item label="性别">
-          <el-select v-model="form.sex" placeholder="请选择性别">
-            <el-option label="男" value="男"></el-option>
-            <el-option label="女" value="女"></el-option>
-          </el-select>
+        <el-form-item label="机场名称">
+          <el-input v-model="form.name"></el-input>
         </el-form-item>
-        <el-form-item label="出生日期">
-          <el-date-picker
-            type="date"
-            placeholder="选择日期"
-            v-model="form.birthday"
-            style="width: 100%;"
-          ></el-date-picker>
-        </el-form-item>
-        <el-form-item label="手机号码">
-          <el-input
-            type="text"
-            placeholder="请输入手机号码"
-            v-model="form.phone"
-            maxlength="11"
-            show-word-limit
-          >
-          </el-input>
-        </el-form-item>
-        <el-form-item label="身份证号码">
-          <el-input
-            type="text"
-            placeholder="请输入身份证号码"
-            v-model="form.idCardNo"
-            maxlength="18"
-            show-word-limit
-          >
-          </el-input>
-        </el-form-item>
-        <el-form-item label="备注">
-          <el-input type="textarea" v-model="form.comment"></el-input>
-        </el-form-item>
-        <el-form-item label="是否启用">
-          <el-switch v-model="form.enable"></el-switch>
+        <el-form-item label="机场所在城市">
+          <el-input v-model="form.city"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -80,17 +46,13 @@
 
 <script>
   export default {
-    name: 'user',
+    name: 'airport',
     data() {
       return {
         form: {
-          fullName: '',
-          sex: '男',
-          birthday: '',
-          phone: '',
-          idCardNo: '',
-          comment: '',
-          enable: true
+          code: '',
+          name: '',
+          city: ''
         },
         dialogVisible: false,
         tableData: null
@@ -99,7 +61,7 @@
     methods: {
       loadData() {
         this.$store
-          .dispatch('user/list')
+          .dispatch('airport/list')
           .then(data => {
             this.tableData = data;
           })
@@ -112,7 +74,7 @@
       },
       handleSave() {
         this.$store
-          .dispatch('user/add', this.form)
+          .dispatch('airport/add', this.form)
           .then(data => {
             console.log(data);
           })

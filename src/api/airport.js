@@ -10,7 +10,22 @@ export function addAirport(data) {
 
 export function getAirportList() {
   return request({
-    url: '/admin/user/list',
+    url: '/flight/airport/list',
     method: 'get'
+  });
+}
+
+export function removeAirport(data) {
+  return request({
+    url: '/flight/airport/remove/one/'+data,
+    method: 'delete'
+  });
+}
+
+export function updateAirport(data) {
+  return request({
+    url: '/flight/airport/update/one',
+    method: 'post',
+    data
   });
 }
