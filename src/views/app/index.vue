@@ -53,7 +53,6 @@
       @size-change="handleSizeChange"
       @prev-click="prevClick"
       @next-click="nextClick"
-      :current-page="lastId"
       background
       layout="total,sizes,prev,next"
       prev-text="上一页"
@@ -101,6 +100,9 @@
             };
         },
         methods: {
+            handleSearch() {
+
+            },
             loadData() {
                 getAppList(this.pageFlag, this.pageSize, this.lastId).then(response => {
                     if (response.data) {
