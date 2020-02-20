@@ -116,10 +116,8 @@
         this.dialogVisible = false;
       },
       handleUpdate(row) {
-        this.temp = Object.assign({}, row) // copy obj
-        this.$nextTick(() => {
-          this.$refs['dataForm'].clearValidate()
-        })
+        this.dialogVisible = true;
+        this.form = row;
       },
       removeOne: function(id, index, rows) {
         this.$confirm('此操作将状态改为删除状态, 是否继续?', '提示', {
