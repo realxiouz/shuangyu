@@ -9,16 +9,52 @@
           <el-table-column
             prop="appId"
             label="应用唯一标识"
-            width="180"
+            width="200"
           ></el-table-column>
           <el-table-column
             prop="appName"
             label="应用名称"
-            width="180"
+            width="300"
           ></el-table-column>
-          <el-table-column prop="enable" label="是否启用"></el-table-column>
+          <el-table-column prop="enable" label="是否启用">
+            <template slot-scope="scope">
+              <el-switch
+                v-model="scope.row.enable"
+                on-color="#00A854"
+                on-text="启动"
+                on-value=true
+                off-color="#F04134"
+                off-text="禁止"
+                off-value=false
+                @change="changeSwitch(scope.row)">
+              </el-switch>
+            </template>
+          </el-table-column>
+          <el-table-column
+            fixed="right"
+            label="操作"
+            width="350">
+            <template slot-scope="scope">
+              <el-button @click="appUpdate(scope.row)" type="primary" size="mini">编辑</el-button>
+              <el-button @click.native.prevent="removeOne(scope.row.id,scope.$index,tableData)" type="danger"
+                         size="mini">删除
+              </el-button>
+            </template>
+          </el-table-column>
 
         </el-table>
+        <el-pagination
+          @size-change="handleSizeChange"
+          @prev-click="prevClick"
+          @next-click="nextClick"
+          :current-page="lastId"
+          background
+          layout="total,sizes,prev,next"
+          prev-text="上一页"
+          next-text="下一页"
+          :page-size="pageSize"
+          :total="1000">
+        </el-pagination>
       </el-main>
     </el-container>
     <el-dialog title="应用信息" :visible.sync="dialogVisible" width="30%">
@@ -40,43 +76,82 @@
 <script>
 
     // eslint-disable-next-line no-unused-vars
-    import { appList,addApp,removeApp,updApp } from '@/api/app'
+    import {getAppList, removeApp, saveOrUpd, updApp} from '@/api/app'
 
     export default {
         name: 'app',
         data() {
             return {
+                lastId: '0',
+                pageFlag: 'next',
+                pageSize: 10,
                 form: {
                     appId: '',
                     appName: '',
                     enable: true
                 },
                 dialogVisible: false,
-                tableData: [{
-                    appId: '1',
-                    appName: '123',
-                    enable: '是'
-                }]
+                tableData: null
             };
         },
         methods: {
             loadData() {
-                appList().then(response => {
-                    this.tableData = response.data.items
-                })
+                getAppList( this.pageFlag,this.pageSize, this.lastId).then(response => {
+                    this.tableData = response.data
+                }).catch(error => {
+                    console.log(error);
+                });
             },
             handleCancel() {
                 this.dialogVisible = false;
             },
             handleSave() {
                 const params = this.form
-                addApp(params).then(() => {
+                saveOrUpd(params).then(() => {
                     this.loadData();
-                })
+                }).catch(error => {
+                    console.log(error);
+                });
                 this.dialogVisible = false;
             },
-            handleDelete() {
-
+            appUpdate(row) {
+                this.dialogVisible = true;
+                this.form = row;
+            },
+            removeOne(id, index, rows) {
+                this.$confirm('此操作将状态改为删除状态, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    removeApp(id).then(() => {
+                        this.loadData();
+                        rows.splice(index, 1);
+                    })
+                }).catch(err => {
+                    console.error(err)
+                })
+            },
+            handleSizeChange: function (pageSize) {
+                this.pageSize = pageSize;
+                this.loadData();
+            },
+            prevClick: function () {
+                this.pageFlag = 'prev';
+                this.lastId = this.tableData[0].id;
+                this.loadData();
+            },
+            nextClick: function () {
+                this.pageFlag = 'next';
+                this.lastId = this.tableData[this.tableData.length - 1].id;
+                this.loadData();
+            },
+            changeSwitch(data) {
+                updApp(data).then(() => {
+                    this.loadData();
+                }).catch(error => {
+                    console.log(error);
+                });
             }
         },
         mounted() {

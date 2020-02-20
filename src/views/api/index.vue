@@ -7,63 +7,63 @@
       <el-main>
         <el-table :data="tableData" style="width: 100%">
           <el-table-column
-            prop="fullName"
-            label="姓名"
-            width="180"
+            prop="apiId"
+            label="ID"
+            width="200"
           ></el-table-column>
           <el-table-column
-            prop="phone"
-            label="手机号"
-            width="180"
+            prop="apiName"
+            label="api名称"
+            width="200"
           ></el-table-column>
-          <el-table-column prop="idCardNo" label="身份证号"></el-table-column>
+          <el-table-column prop="enable" label="是否启用">
+            <template slot-scope="scope">
+              <el-switch
+                v-model="scope.row.enable"
+                on-color="#00A854"
+                on-text="启动"
+                on-value=true
+                off-color="#F04134"
+                off-text="禁止"
+                off-value=false
+                @change="changeSwitch(scope.row)">
+              </el-switch>
+            </template>
+          </el-table-column>
+          <el-table-column
+            fixed="right"
+            label="操作"
+            width="350">
+            <template slot-scope="scope">
+              <el-button @click="handleUpdate(scope.row)" type="primary" size="mini">编辑</el-button>
+              <el-button  @click.native.prevent="removeOne(scope.row.id,scope.$index,tableData)" type="danger" size="mini">删除</el-button>
+            </template>
+          </el-table-column>
+
         </el-table>
+        <h-page-footer>
+          <el-pagination
+            @size-change="handleSizeChange"
+            @prev-click="prevClick"
+            @next-click="nextClick"
+            :current-page="lastId"
+            background
+            layout="total,sizes,prev,next"
+            prev-text="上一页"
+            next-text="下一页"
+            :page-size="pageSize"
+            :total="tableData.length">
+          </el-pagination>
+        </h-page-footer>
       </el-main>
     </el-container>
-    <el-dialog title="用户信息" :visible.sync="dialogVisible" width="30%">
+    <el-dialog title="Api信息" :visible.sync="dialogVisible" width="30%">
       <el-form ref="form" :model="form" label-width="90px">
-        <el-form-item label="姓名">
-          <el-input v-model="form.fullName"></el-input>
-        </el-form-item>
-        <el-form-item label="性别">
-          <el-select v-model="form.sex" placeholder="请选择性别">
-            <el-option label="男" value="男"></el-option>
-            <el-option label="女" value="女"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="出生日期">
-          <el-date-picker
-            type="date"
-            placeholder="选择日期"
-            v-model="form.birthday"
-            style="width: 100%;"
-          ></el-date-picker>
-        </el-form-item>
-        <el-form-item label="手机号码">
-          <el-input
-            type="text"
-            placeholder="请输入手机号码"
-            v-model="form.phone"
-            maxlength="11"
-            show-word-limit
-          >
-          </el-input>
-        </el-form-item>
-        <el-form-item label="身份证号码">
-          <el-input
-            type="text"
-            placeholder="请输入身份证号码"
-            v-model="form.idCardNo"
-            maxlength="18"
-            show-word-limit
-          >
-          </el-input>
-        </el-form-item>
-        <el-form-item label="备注">
-          <el-input type="textarea" v-model="form.comment"></el-input>
+        <el-form-item label="Api名称">
+          <el-input v-model="form.apiName"></el-input>
         </el-form-item>
         <el-form-item label="是否启用">
-          <el-switch v-model="form.enable"></el-switch>
+          <el-switch v-model="form.enable" :active-value=true :inactive-value=false></el-switch>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -73,49 +73,89 @@
     </el-dialog>
   </div>
 </template>
-
 <script>
+
+  // eslint-disable-next-line no-unused-vars
+  import { getApiList,addApi,removeApi,saveOrUpd,updApi } from '@/api/api'
+
   export default {
-    name: 'user',
+    name: 'api',
     data() {
       return {
+        currentPage: 1,
         form: {
-          fullName: '',
-          sex: '男',
-          birthday: '',
-          phone: '',
-          idCardNo: '',
-          comment: '',
+          apiId: '',
+          apiName: '',
           enable: true
         },
         dialogVisible: false,
-        tableData: null
+        tableData: null,
+        lastId: '0',
+        pageFlag: 'next',
+        pageSize: 10
       };
     },
     methods: {
       loadData() {
-        this.$store
-          .dispatch('user/list')
-          .then(data => {
-            this.tableData = data;
-          })
-          .catch(error => {
-            console.log(error);
-          });
+        getApiList(this.currentPage,this.pageSize).then(response => {
+          this.tableData = response.data
+        }).catch(error => {
+          console.log(error);
+        });
       },
       handleCancel() {
         this.dialogVisible = false;
       },
       handleSave() {
-        this.$store
-          .dispatch('user/add', this.form)
-          .then(data => {
-            console.log(data);
-          })
-          .catch(error => {
-            console.log(error);
-          });
+        const params = this.form
+        saveOrUpd(params).then(() => {
+          this.loadData();
+        }).catch(error => {
+          console.log(error);
+        });
         this.dialogVisible = false;
+      },
+      handleUpdate(row) {
+        this.dialogVisible = true;
+        this.form = row;
+      },
+      removeOne: function(id, index, rows) {
+        this.$confirm('此操作将状态改为删除状态, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+        removeApi(id).then(() => {
+          this.loadData();
+          rows.splice(index,1);
+          })
+        }).catch(err => {
+          console.error(err);
+        });
+      },
+      // 初始页currentPage、初始每页数据数pagesize和数据data
+      handleSizeChange: function (pageSize) {
+        this.pageSize = pageSize;
+        this.loadData('0', this.pageSize,this.pageFlag);
+      },
+      prevClick:function(){
+        this.pageFlag = 'prev';
+        this.lastId = this.tableData[0].id;
+        console.log("lastId:" + this.lastId + ",pageSize+" + this.pageSize);
+        this.loadData(this.lastId, this.pageSize);
+      },
+      nextClick:function(){
+        this.pageFlag = 'next';
+        this.lastId = this.tableData[this.tableData.length - 1].id;
+        console.log("lastId:" + this.lastId + ",pageSize+" + this.pageSize);
+        this.loadData(this.lastId, this.pageSize,this.pageFlag);
+      },
+      handleCurrentChange: function(currentPage){
+        this.currentPage = currentPage;
+        this.loadData();
+      },
+      changeSwitch(data) {
+        console.log(data)
       }
     },
     mounted() {

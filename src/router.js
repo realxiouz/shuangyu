@@ -103,6 +103,22 @@ export default new Router({
           meta: { title: 'Home', icon: 'home' }
         }
       ]
+    },
+    {
+      title: '航班信息',
+      path: '/airport',
+      uri: '/airport',
+      component: Layout,
+      children: [
+        {
+          title: '机场信息',
+          path: 'index',
+          name: 'airport',
+          uri: '/airport/index',
+          component: () => import('@/views/airport/index'),
+          meta: { title: 'Home', icon: 'home' }
+        }
+      ]
     }
   ]
 });

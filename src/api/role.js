@@ -1,32 +1,38 @@
-import request from '@/utils/request';
+import request from "@/utils/request";
 
-export function addOne(data) {
+export function save(data) {
   return request({
-    url: '/admin/role/add/one',
-    method: 'post',
+    url: "/admin/role/save",
+    method: "post",
     data
   });
 }
 
 export function removeOne(data) {
   return request({
-    url: '/admin/role/remove/one/'+data,
-    method: 'delete'
+    url: "/admin/role/remove/one/" + data,
+    method: "delete"
   });
 }
 
-
-export function updateOne(data) {
-  return request({
-    url: '/admin/role/update/one',
-    method: 'get',
-    params: {data}
-  });
-}
 
 export function getPageList(data) {
   return request({
-    url: '/admin/role/page/list/'+data.currentPage+"/"+data.pageSize,
-    method: 'get'
+    url: "/admin/role/page/list/" + data.currentPage + "/" + data.pageSize,
+    method: "get"
+  });
+}
+
+export function getApis() {
+  return request({
+    url: "/admin/api/get/all",
+    method: "get"
+  });
+}
+
+export function getNavs() {
+  return request({
+    url: "/admin/nav/get/all",
+    method: "get"
   });
 }

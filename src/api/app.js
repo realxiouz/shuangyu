@@ -1,18 +1,10 @@
 import request from '@/utils/request';
 
 
-export function addApp(data) {
-  return request({
-    url: '/admin/app/add/one',
-    method: 'post',
-    data
-  });
-}
-
 export function removeApp(id) {
   return request({
     url: `/admin/app/remove/one/${id}`,
-    method: 'get'
+    method: 'delete'
   });
 }
 
@@ -24,12 +16,18 @@ export function updApp(data) {
   });
 }
 
-export function getAppList(pageSize, lastId, data) {
+export function getAppList(pageFlag, pageSize, lastId) {
   return request({
-    url: `/admin/app/page/list/${pageSize}/${lastId}`,
-    method: 'get',
-    params: data
+    url: `/admin/app/page/list/${pageFlag}/${pageSize}/${lastId}`,
+    method: 'get'
   });
 }
 
+export function saveOrUpd(data) {
+  return request({
+    url: '/admin/app/saveOrUpd/one',
+    method: 'post',
+    data
+  });
+}
 

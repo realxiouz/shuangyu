@@ -1,7 +1,5 @@
-import { save, removeOne, getPageList,getApis,getNavs } from '@/api/role';
+import {saveAirport, getAirportPageList, removeAirport, updateAirport,getAirportTotal} from '@/api/airport';
 import { getToken } from '@/utils/auth';
-
-
 
 const state = {
   token: getToken(),
@@ -24,7 +22,19 @@ const mutations = {
 const actions = {
   save({ commit }, params){
     return new Promise((resolve, reject) => {
-      save(params)
+      saveAirport(params)
+        .then(response => {
+          //const { data } = response;
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  updateOne({ commit }, params){
+    return new Promise((resolve, reject) => {
+      updateAirport(params)
         .then(response => {
           //const { data } = response;
           resolve(response);
@@ -36,7 +46,19 @@ const actions = {
   },
   list({ commit },data) {
     return new Promise((resolve, reject) => {
-      getPageList(data)
+      getAirportPageList(data)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  total({ commit },params) {
+    return new Promise((resolve, reject) => {
+      getAirportTotal(params)
         .then(response => {
           const { data } = response;
           resolve(data);
@@ -48,31 +70,7 @@ const actions = {
   },
   removeOne({ commit },data) {
     return new Promise((resolve, reject) => {
-      removeOne(data)
-        .then(response => {
-          const { data } = response;
-          resolve(data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  getApis({ commit }){
-    return new Promise((resolve, reject) => {
-      getApis()
-        .then(response => {
-          const { data } = response;
-          resolve(data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  getNavs({ commit }){
-    return new Promise((resolve, reject) => {
-      getNavs()
+      removeAirport(data)
         .then(response => {
           const { data } = response;
           resolve(data);
