@@ -25,7 +25,7 @@
             label="操作"
             width="100">
             <template slot-scope="scope">
-              <el-button @click="edit(scope.row.id)" type="text" size="small">编辑</el-button>
+              <el-button @click="edit(scope.row)" type="text" size="small">编辑</el-button>
               <el-button @click="removeOne(scope.row.id)" type="text" size="small">删除</el-button>
             </template>
           </el-table-column>
@@ -35,7 +35,7 @@
             @size-change="handleSizeChange"
             @prev-click="prevClick"
             @next-click="nextClick"
-            :current-page="lastId"
+            :current-page="currentPage"
             background
             layout="total,sizes,prev,next"
             prev-text="上一页"
@@ -81,7 +81,8 @@
         lastId: '0',
         pageFlag: 'next',
         pageSize: 10,
-        total:0
+        total:0,
+        currentPage:0
       };
     },
     methods: {
@@ -138,15 +139,16 @@
             console.log(error);
           });
       },
-      edit: function (id) {
-        console.log(id);
+      edit: function (row) {
+        this.dialogVisible = true;
+        this.form = row;
       },
       handleCancel() {
         this.dialogVisible = false;
       },
       handleSave() {
         this.$store
-          .dispatch('airport/add', this.form)
+          .dispatch('airport/save', this.form)
           .then(data => {
             console.log(data);
           })

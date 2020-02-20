@@ -1,4 +1,4 @@
-import {addAirport, getAirportPageList, removeAirport, updateAirport,getAirportTotal} from '@/api/airport';
+import {saveAirport, getAirportPageList, removeAirport, updateAirport,getAirportTotal} from '@/api/airport';
 import { getToken } from '@/utils/auth';
 
 const state = {
@@ -20,9 +20,9 @@ const mutations = {
 };
 
 const actions = {
-  add({ commit }, params){
+  save({ commit }, params){
     return new Promise((resolve, reject) => {
-      addAirport(params)
+      saveAirport(params)
         .then(response => {
           //const { data } = response;
           resolve(response);

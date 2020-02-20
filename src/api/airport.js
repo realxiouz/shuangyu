@@ -1,8 +1,8 @@
 import request from '@/utils/request';
 
-export function addAirport(data) {
+export function saveAirport(data) {
   return request({
-    url: '/flight/airport/add/one',
+    url: '/flight/airport/save',
     method: 'post',
     data
   });
