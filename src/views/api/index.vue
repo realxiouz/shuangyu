@@ -33,10 +33,10 @@
           <el-table-column
             fixed="right"
             label="操作"
-            width="100">
+            width="350">
             <template slot-scope="scope">
-              <el-button @click="handleUpdate(scope.row)" type="text" size="small">编辑</el-button>
-              <el-button  @click.native.prevent="removeOne(scope.row.id,scope.$index,tableData)" type="text" size="small">删除</el-button>
+              <el-button @click="handleUpdate(scope.row)" type="primary" size="mini">编辑</el-button>
+              <el-button  @click.native.prevent="removeOne(scope.row.id,scope.$index,tableData)" type="danger" size="mini">删除</el-button>
             </template>
           </el-table-column>
 
@@ -52,7 +52,7 @@
             prev-text="上一页"
             next-text="下一页"
             :page-size="pageSize"
-            :total="1000">
+            :total="tableData.length">
           </el-pagination>
         </h-page-footer>
       </el-main>
@@ -76,7 +76,7 @@
 <script>
 
   // eslint-disable-next-line no-unused-vars
-  import { getApiList,addApi,removeApi,updApi } from '@/api/api'
+  import { getApiList,addApi,removeApi,saveOrUpd,updApi } from '@/api/api'
 
   export default {
     name: 'api',
@@ -108,7 +108,7 @@
       },
       handleSave() {
         const params = this.form
-        addApi(params).then(() => {
+        saveOrUpd(params).then(() => {
           this.loadData();
         }).catch(error => {
           console.log(error);
