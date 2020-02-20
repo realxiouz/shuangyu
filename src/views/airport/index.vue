@@ -94,6 +94,7 @@
         this.$store
           .dispatch('airport/list', {pageSize, lastId, pageFlag,searchForm})
           .then(data => {
+            this.loadTotal(this.searchForm);
             this.tableData = data;
           })
           .catch(error => {
@@ -157,7 +158,6 @@
           .then(data => {
             console.log(data);
             this.loadData('0', this.pageSize,this.pageFlag,this.searchForm);
-            this.loadTotal(this.searchForm);
           })
           .catch(error => {
             console.log(error);
@@ -165,13 +165,11 @@
         this.dialogVisible = false;
       },
       handleSearch() {
-        this.loadTotal(this.searchForm);
         this.loadData('0', this.pageSize,this.pageFlag,this.searchForm);
       },
     },
     mounted() {
       this.loadData(this.lastId, this.pageSize,this.pageFlag,this.searchForm);
-      this.loadTotal(this.searchForm);
     }
   };
 </script>
