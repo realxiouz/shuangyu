@@ -66,7 +66,6 @@
         name: 'app',
         data() {
             return {
-                total: 0,
                 currentPage: 1,
                 pageSize: 10,
                 form: {
@@ -75,7 +74,7 @@
                     enable: true
                 },
                 dialogVisible: false,
-                tableData: [{}]
+                tableData: null
             };
         },
         methods: {
@@ -104,22 +103,29 @@
                     this.$refs['dataForm'].clearValidate()
                 })
             },
-            removeOne: function(id, index, rows) {
-                removeApp(id).then(() => {
-                    this.loadData();
-                    rows.splice(index,1);
-                }).catch(error => {
-                    console.log(error);
-                });
+            removeOne(id, index, rows) {
+                this.$confirm('此操作将状态改为删除状态, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    //点击确定的操作(调用接口)
+                    removeApp(id).then(() => {
+                        this.loadData();
+                        rows.splice(index,1);
+                    }).catch(error => {
+                        console.log(error);
+                    })
+                }) .catch(err => { console.error(err) })
             },
             // 初始页currentPage、初始每页数据数pagesize和数据data
             handleSizeChange: function (pageSize) {
                 this.pageSize = pageSize;
-                this.loadData(this.currentPage,this.pageSize);
+                this.loadData();
             },
             handleCurrentChange: function(currentPage){
                 this.currentPage = currentPage;
-                this.loadData(this.currentPage,this.pageSize);
+                this.loadData();
             }
 
         },
