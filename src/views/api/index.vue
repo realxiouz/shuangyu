@@ -16,7 +16,20 @@
             label="api名称"
             width="200"
           ></el-table-column>
-          <el-table-column prop="enable" label="是否启用"></el-table-column>
+          <el-table-column prop="enable" label="是否启用">
+            <template slot-scope="scope">
+              <el-switch
+                v-model="scope.row.enable"
+                on-color="#00A854"
+                on-text="启动"
+                on-value=true
+                off-color="#F04134"
+                off-text="禁止"
+                off-value=false
+                @change="changeSwitch(scope.row)">
+              </el-switch>
+            </template>
+          </el-table-column>
           <el-table-column
             fixed="right"
             label="操作"
@@ -31,12 +44,15 @@
         <h-page-footer>
           <el-pagination
             @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="currentPage"
-            :page-sizes="[10, 20, 50, 100]"
+            @prev-click="prevClick"
+            @next-click="nextClick"
+            :current-page="lastId"
+            background
+            layout="total,sizes,prev,next"
+            prev-text="上一页"
+            next-text="下一页"
             :page-size="pageSize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="tableData.length">
+            :total="1000">
           </el-pagination>
         </h-page-footer>
       </el-main>
@@ -44,7 +60,7 @@
     <el-dialog title="Api信息" :visible.sync="dialogVisible" width="30%">
       <el-form ref="form" :model="form" label-width="90px">
         <el-form-item label="Api名称">
-          <el-input v-model="form.appName"></el-input>
+          <el-input v-model="form.apiName"></el-input>
         </el-form-item>
         <el-form-item label="是否启用">
           <el-switch v-model="form.enable" :active-value=true :inactive-value=false></el-switch>
@@ -60,22 +76,23 @@
 <script>
 
   // eslint-disable-next-line no-unused-vars
-  import { getApiList,addApi,removeApi,updApi } from '@/api/app'
+  import { getApiList,addApi,removeApi,updApi } from '@/api/api'
 
   export default {
     name: 'api',
     data() {
       return {
-        total: 0,
         currentPage: 1,
-        pageSize: 10,
         form: {
-          appId: '',
-          appName: '',
+          apiId: '',
+          apiName: '',
           enable: true
         },
         dialogVisible: false,
-        tableData: [{}]
+        tableData: null,
+        lastId: '0',
+        pageFlag: 'next',
+        pageSize: 10
       };
     },
     methods: {
@@ -105,23 +122,43 @@
         })
       },
       removeOne: function(id, index, rows) {
+        this.$confirm('此操作将状态改为删除状态, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
         removeApi(id).then(() => {
           this.loadData();
           rows.splice(index,1);
-        }).catch(error => {
-          console.log(error);
+          })
+        }).catch(err => {
+          console.error(err);
         });
       },
       // 初始页currentPage、初始每页数据数pagesize和数据data
       handleSizeChange: function (pageSize) {
         this.pageSize = pageSize;
-        this.loadData(this.currentPage,this.pageSize);
+        this.loadData('0', this.pageSize,this.pageFlag);
+      },
+      prevClick:function(){
+        this.pageFlag = 'prev';
+        this.lastId = this.tableData[0].id;
+        console.log("lastId:" + this.lastId + ",pageSize+" + this.pageSize);
+        this.loadData(this.lastId, this.pageSize);
+      },
+      nextClick:function(){
+        this.pageFlag = 'next';
+        this.lastId = this.tableData[this.tableData.length - 1].id;
+        console.log("lastId:" + this.lastId + ",pageSize+" + this.pageSize);
+        this.loadData(this.lastId, this.pageSize,this.pageFlag);
       },
       handleCurrentChange: function(currentPage){
         this.currentPage = currentPage;
-        this.loadData(this.currentPage,this.pageSize);
+        this.loadData();
+      },
+      changeSwitch(data) {
+        console.log(data)
       }
-
     },
     mounted() {
       this.loadData();
