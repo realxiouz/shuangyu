@@ -1,4 +1,4 @@
-import { addOrUpdateOne, removeOne, getPageList } from '@/api/role';
+import { save, removeOne, getPageList,getApis,getNavs } from '@/api/role';
 import { getToken } from '@/utils/auth';
 
 
@@ -22,9 +22,9 @@ const mutations = {
 };
 
 const actions = {
-  addOrUpdateOne({ commit }, params){
+  save({ commit }, params){
     return new Promise((resolve, reject) => {
-      addOrUpdateOne(params)
+      save(params)
         .then(response => {
           //const { data } = response;
           resolve(response);
@@ -49,6 +49,30 @@ const actions = {
   removeOne({ commit },data) {
     return new Promise((resolve, reject) => {
       removeOne(data)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getApis({ commit }){
+    return new Promise((resolve, reject) => {
+      getApis()
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getNavs({ commit }){
+    return new Promise((resolve, reject) => {
+      getNavs()
         .then(response => {
           const { data } = response;
           resolve(data);
