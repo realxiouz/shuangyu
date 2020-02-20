@@ -1,25 +1,43 @@
 <template>
   <div class="app-container">
-    <el-container>
-      <el-header>
-        <el-button type="text" @click="dialogVisible = true">添加</el-button>
-      </el-header>
-      <el-main>
-        <el-table :data="tableData" style="width: 100%">
-          <el-table-column
-            prop="fullName"
-            label="姓名"
-            width="180"
-          ></el-table-column>
-          <el-table-column
-            prop="phone"
-            label="手机号"
-            width="180"
-          ></el-table-column>
-          <el-table-column prop="idCardNo" label="身份证号"></el-table-column>
-        </el-table>
-      </el-main>
-    </el-container>
+    <el-form :inline="true" :model="searchForm">
+      <el-form-item label="姓名">
+        <el-input v-model="searchForm.user" placeholder="姓名"></el-input>
+      </el-form-item>
+      <el-form-item label="性别">
+        <el-select v-model="searchForm.region" placeholder="性别">
+          <el-option label="男" value="shanghai"></el-option>
+          <el-option label="女" value="beijing"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="handleSearch">查询</el-button>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="dialogVisible = true">添加</el-button>
+      </el-form-item>
+    </el-form>
+    <el-table :data="tableData" style="width: 100%">
+      <el-table-column
+        prop="fullName"
+        label="姓名"
+        width="180"
+      ></el-table-column>
+      <el-table-column
+        prop="phone"
+        label="手机号"
+        width="180"
+      ></el-table-column>
+      <el-table-column prop="idCardNo" label="身份证号"></el-table-column>
+    </el-table>
+    <el-pagination
+      background
+      layout="total,sizes,prev,next"
+      prev-text="上一页"
+      next-text="下一页"
+      :page-size="50"
+      :total="1000">
+    </el-pagination>
     <el-dialog title="用户信息" :visible.sync="dialogVisible" width="30%">
       <el-form ref="form" :model="form" label-width="90px">
         <el-form-item label="姓名">
@@ -76,16 +94,17 @@
 
 <script>
   export default {
-    name: 'user',
+    name: "user",
     data() {
       return {
+        searchForm: {},
         form: {
-          fullName: '',
-          sex: '男',
-          birthday: '',
-          phone: '',
-          idCardNo: '',
-          comment: '',
+          fullName: "",
+          sex: "男",
+          birthday: "",
+          phone: "",
+          idCardNo: "",
+          comment: "",
           enable: true
         },
         dialogVisible: false,
@@ -95,7 +114,7 @@
     methods: {
       loadData() {
         this.$store
-          .dispatch('user/list')
+          .dispatch("user/getList")
           .then(data => {
             this.tableData = data;
           })
@@ -103,12 +122,15 @@
             console.log(error);
           });
       },
+      handleSearch() {
+
+      },
       handleCancel() {
         this.dialogVisible = false;
       },
       handleSave() {
         this.$store
-          .dispatch('user/add', this.form)
+          .dispatch("user/add", this.form)
           .then(data => {
             console.log(data);
           })
