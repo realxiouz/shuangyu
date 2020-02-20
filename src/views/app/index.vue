@@ -87,7 +87,6 @@
             return {
                 searchForm: {},
                 lastId: '0',
-                lastUpId: '0',
                 pageFlag: 'next',
                 pageSize: 10,
                 form: {
@@ -150,14 +149,11 @@
             },
             prevClick: function () {
                 this.pageFlag = 'prev';
-                this.lastId = this.lastUpId;
+                this.lastId = this.tableData[0].id;
                 this.loadData();
             },
             nextClick: function () {
                 this.pageFlag = 'next';
-                if (this.lastUpId != '0') {
-                    this.lastId = this.tableData[0].id;
-                }
                 this.lastId = this.tableData[this.tableData.length - 1].id;
                 this.loadData();
             },
