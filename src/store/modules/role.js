@@ -1,4 +1,4 @@
-import { addOne, removeOne, updateOne, getPageList } from '@/api/role';
+import { addOrUpdateOne, removeOne, getPageList } from '@/api/role';
 import { getToken } from '@/utils/auth';
 
 
@@ -22,9 +22,9 @@ const mutations = {
 };
 
 const actions = {
-  add({ commit }, params){
+  addOrUpdateOne({ commit }, params){
     return new Promise((resolve, reject) => {
-      addOne(params)
+      addOrUpdateOne(params)
         .then(response => {
           //const { data } = response;
           resolve(response);

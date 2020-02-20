@@ -1,8 +1,8 @@
 import request from '@/utils/request';
 
-export function addOne(data) {
+export function addOrUpdateOne(data) {
   return request({
-    url: '/admin/role/add/one',
+    url: '/admin/role/add/orUpdate/one',
     method: 'post',
     data
   });
@@ -15,14 +15,6 @@ export function removeOne(data) {
   });
 }
 
-
-export function updateOne(data) {
-  return request({
-    url: '/admin/role/update/one',
-    method: 'get',
-    params: {data}
-  });
-}
 
 export function getPageList(data) {
   return request({
