@@ -101,6 +101,9 @@
         },
         methods: {
             handleSearch() {
+                if (!this.searchForm.appName) {
+                    this.searchForm = {};
+                }
                 this.loadData();
                 this.loadTotal();
             },
