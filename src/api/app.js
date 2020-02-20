@@ -1,14 +1,6 @@
 import request from '@/utils/request';
 
 
-export function addApp(data) {
-  return request({
-    url: '/admin/app/add/one',
-    method: 'post',
-    data
-  });
-}
-
 export function removeApp(id) {
   return request({
     url: `/admin/app/remove/one/${id}`,
@@ -31,4 +23,11 @@ export function getAppList(pageNum, pageSize) {
   });
 }
 
+export function saveOrUpd(data) {
+  return request({
+    url: '/admin/app/saveOrUpd/one',
+    method: 'post',
+    data
+  });
+}
 

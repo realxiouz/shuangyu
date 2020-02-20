@@ -75,7 +75,7 @@
 <script>
 
     // eslint-disable-next-line no-unused-vars
-    import {addApp, getAppList, removeApp, updApp} from '@/api/app'
+    import {getAppList, removeApp, saveOrUpd, updApp} from '@/api/app'
 
     export default {
         name: 'app',
@@ -105,7 +105,7 @@
             },
             handleSave() {
                 const params = this.form
-                addApp(params).then(() => {
+                saveOrUpd(params).then(() => {
                     this.loadData();
                 }).catch(error => {
                     console.log(error);
