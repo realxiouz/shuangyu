@@ -21,7 +21,29 @@
             label="机场所在城市"
             width="300"
           ></el-table-column>
+          <el-table-column
+            label="操作"
+            width="100">
+            <template slot-scope="scope">
+              <el-button @click="edit(scope.row.id)" type="text" size="small">编辑</el-button>
+              <el-button @click="removeOne(scope.row.id)" type="text" size="small">删除</el-button>
+            </template>
+          </el-table-column>
         </el-table>
+        <h-page-footer>
+          <el-pagination
+            @size-change="handleSizeChange"
+            @prev-click="prevClick"
+            @next-click="nextClick"
+            :current-page="lastId"
+            background
+            layout="total,sizes,prev,next"
+            prev-text="上一页"
+            next-text="下一页"
+            :page-size="pageSize"
+            :total="total">
+          </el-pagination>
+        </h-page-footer>
       </el-main>
     </el-container>
     <el-dialog title="机场信息" :visible.sync="dialogVisible" width="30%">
@@ -55,19 +77,69 @@
           city: ''
         },
         dialogVisible: false,
-        tableData: null
+        tableData: [],
+        lastId: '0',
+        pageFlag: 'next',
+        pageSize: 10,
+        total:0
       };
     },
     methods: {
-      loadData() {
+      loadData(lastId, pageSize,pageFlag) {
         this.$store
-          .dispatch('airport/list')
+          .dispatch('airport/list', {pageSize, lastId,pageFlag})
           .then(data => {
             this.tableData = data;
           })
           .catch(error => {
             console.log(error);
           });
+      },
+      loadTotal:function(){
+        this.$store
+          .dispatch('airport/total', {})
+          .then(data => {
+            this.total = data;
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      handleSizeChange: function (pageSize) {
+        this.pageSize = pageSize;
+        this.loadData('0', this.pageSize,this.pageFlag);
+      },
+      prevClick:function(){
+        this.pageFlag = 'prev';
+        this.lastId = this.tableData[0].id;
+        this.loadData(this.lastId, this.pageSize);
+      },
+      nextClick:function(){
+        this.pageFlag = 'next';
+        this.lastId = this.tableData[this.tableData.length - 1].id;
+        this.loadData(this.lastId, this.pageSize,this.pageFlag);
+      },
+      removeOne: function (id) {
+        // this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+        //   confirmButtonText: "确定",
+        //   cancelButtonText: "取消",
+        //   type: "warning"
+        // }).then(() => {
+        //   console.log("确定！"+id);
+        // }).catch(() => {
+        //   console.log("取消！"+id);
+        // });
+        this.$store
+          .dispatch('airport/removeOne', id)
+          .then(data => {
+            console.log(data);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      edit: function (id) {
+        console.log(id);
       },
       handleCancel() {
         this.dialogVisible = false;
@@ -82,10 +154,12 @@
             console.log(error);
           });
         this.dialogVisible = false;
-      }
+      },
     },
     mounted() {
-      this.loadData();
+      console.log("load:cure:" + this.lastId + ",pageSize+" + this.pageSize);
+      this.loadData(this.lastId, this.pageSize);
+      this.loadTotal();
     }
   };
 </script>

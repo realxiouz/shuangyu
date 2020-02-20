@@ -1,4 +1,4 @@
-import {addAirport, getAirportList, removeAirport, updateAirport} from '@/api/airport';
+import {addAirport, getAirportPageList, removeAirport, updateAirport,getAirportTotal} from '@/api/airport';
 import { getToken } from '@/utils/auth';
 
 const state = {
@@ -46,7 +46,19 @@ const actions = {
   },
   list({ commit },data) {
     return new Promise((resolve, reject) => {
-      getAirportList(data)
+      getAirportPageList(data)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  total({ commit },params) {
+    return new Promise((resolve, reject) => {
+      getAirportTotal(params)
         .then(response => {
           const { data } = response;
           resolve(data);

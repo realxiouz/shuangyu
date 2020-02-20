@@ -8,10 +8,18 @@ export function addAirport(data) {
   });
 }
 
-export function getAirportList() {
+export function getAirportPageList(data) {
   return request({
-    url: '/flight/airport/list',
+    url: '/flight/airport/page/list/'+data.pageFlag+'/'+data.pageSize+'/'+data.lastId,
     method: 'get'
+  });
+}
+
+export function getAirportTotal(params) {
+  return request({
+    url: '/flight/airport/total',
+    method: 'get',
+    params
   });
 }
 
