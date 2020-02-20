@@ -12,7 +12,7 @@ export function addApp(data) {
 export function removeApp(id) {
   return request({
     url: `/admin/app/remove/one/${id}`,
-    method: 'get'
+    method: 'delete'
   });
 }
 
