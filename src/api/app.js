@@ -16,10 +16,19 @@ export function updApp(data) {
   });
 }
 
-export function getAppList(pageFlag, pageSize, lastId) {
+export function getAppList(pageFlag, pageSize, lastId,data) {
   return request({
     url: `/admin/app/page/list/${pageFlag}/${pageSize}/${lastId}`,
-    method: 'get'
+    method: 'get',
+    params: data
+  });
+}
+
+export function getAppTotal(data) {
+  return request({
+    url: `/admin/app/total`,
+    method: 'get',
+    params: data
   });
 }
 
