@@ -113,8 +113,6 @@
                     removeApp(id).then(() => {
                         this.loadData();
                         rows.splice(index,1);
-                    }).catch(error => {
-                        console.log(error);
                     })
                 }) .catch(err => { console.error(err) })
             },
