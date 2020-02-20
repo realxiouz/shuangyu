@@ -83,6 +83,7 @@
         data() {
             return {
                 lastId: '0',
+                lastUpId: '0',
                 pageFlag: 'next',
                 pageSize: 10,
                 form: {
@@ -97,7 +98,9 @@
         methods: {
             loadData() {
                 getAppList( this.pageFlag,this.pageSize, this.lastId).then(response => {
-                    this.tableData = response.data
+                    if(response.data){
+                        this.tableData = response.data
+                    }
                 }).catch(error => {
                     console.log(error);
                 });
@@ -138,11 +141,14 @@
             },
             prevClick: function () {
                 this.pageFlag = 'prev';
-                this.lastId = this.tableData[0].id;
+                this.lastId = this.lastUpId;
                 this.loadData();
             },
             nextClick: function () {
                 this.pageFlag = 'next';
+                if(this.lastUpId != '0'){
+                    this.lastId = this.tableData[0].id;
+                }
                 this.lastId = this.tableData[this.tableData.length - 1].id;
                 this.loadData();
             },
