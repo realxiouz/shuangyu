@@ -11,7 +11,8 @@ export function saveAirport(data) {
 export function getAirportPageList(data) {
   return request({
     url: '/flight/airport/page/list/'+data.pageFlag+'/'+data.pageSize+'/'+data.lastId,
-    method: 'get'
+    method: 'get',
+    params: data.searchForm
   });
 }
 

@@ -1,9 +1,12 @@
 <template>
   <div class="app-container">
-    <el-header>
-
-    </el-header>
     <el-form :inline="true" :model="searchForm">
+      <el-form-item label="三字码">
+        <el-input v-model="searchForm.code" placeholder="三字码"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="handleSearch">查询</el-button>
+      </el-form-item>
       <el-button type="primary" @click="dialogVisible = true">添加</el-button>
     </el-form>
     <el-table :data="tableData" style="width: 100%">
@@ -88,9 +91,9 @@
         this.dialogVisible= true;
         this.$refs['form'].resetFields();
       },
-      loadData(lastId, pageSize, pageFlag) {
+      loadData(lastId, pageSize, pageFlag,searchForm) {
         this.$store
-          .dispatch('airport/list', {pageSize, lastId, pageFlag})
+          .dispatch('airport/list', {pageSize, lastId, pageFlag,searchForm})
           .then(data => {
             this.tableData = data;
           })
@@ -108,21 +111,21 @@
             console.log(error);
           });
       },
-      handleSizeChange: function (pageSize) {
+      handleSizeChange(pageSize) {
         this.pageSize = pageSize;
-        this.loadData('0', this.pageSize, this.pageFlag);
+        this.loadData('0', this.pageSize, this.pageFlag,this.searchForm);
       },
-      prevClick: function () {
+      prevClick () {
         this.pageFlag = 'prev';
         this.lastId = this.tableData[0].id;
-        this.loadData(this.lastId, this.pageSize);
+        this.loadData(this.lastId, this.pageSize,this.searchForm);
       },
-      nextClick: function () {
+      nextClick () {
         this.pageFlag = 'next';
         this.lastId = this.tableData[this.tableData.length - 1].id;
-        this.loadData(this.lastId, this.pageSize, this.pageFlag);
+        this.loadData(this.lastId, this.pageSize, this.pageFlag,this.searchForm);
       },
-      removeOne: function (id) {
+      removeOne (id) {
         this.$confirm('是否确定删除机场信息?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -132,7 +135,7 @@
             .dispatch('airport/removeOne', id)
             .then(data => {
               console.log(data);
-              this.loadData('0', this.pageSize,this.pageFlag);
+              this.loadData('0', this.pageSize,this.pageFlag,this.searchForm);
             })
             .catch(error => {
               console.log(error);
@@ -141,7 +144,7 @@
           console.error(err)
         })
       },
-      edit: function (row) {
+      edit (row) {
         this.dialogVisible = true;
         this.form = row;
       },
@@ -153,18 +156,22 @@
           .dispatch('airport/save', this.form)
           .then(data => {
             console.log(data);
-            this.loadData('0', this.pageSize,this.pageFlag);
+            this.loadData('0', this.pageSize,this.pageFlag,this.searchForm);
           })
           .catch(error => {
             console.log(error);
           });
         this.dialogVisible = false;
       },
+      handleSearch() {
+        this.loadTotal(this.searchForm);
+        this.loadData('0', this.pageSize,this.pageFlag,this.searchForm);
+      },
     },
     mounted() {
       console.log("load:cure:" + this.lastId + ",pageSize+" + this.pageSize);
-      this.loadData(this.lastId, this.pageSize,this.pageFlag);
-      this.loadTotal();
+      this.loadData(this.lastId, this.pageSize,this.pageFlag,this.searchForm);
+      this.loadTotal(this.searchForm);
     }
   };
 </script>
