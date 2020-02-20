@@ -135,6 +135,7 @@
             .then(data => {
               console.log(data);
               this.loadData('0', this.pageSize,this.pageFlag,this.searchForm);
+              this.loadTotal(this.searchForm);
             })
             .catch(error => {
               console.log(error);
@@ -156,6 +157,7 @@
           .then(data => {
             console.log(data);
             this.loadData('0', this.pageSize,this.pageFlag,this.searchForm);
+            this.loadTotal(this.searchForm);
           })
           .catch(error => {
             console.log(error);
