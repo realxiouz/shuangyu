@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-container>
       <el-header>
-        <el-button type="text" @click="dialogVisible = true">添加</el-button>
+        <el-button type="text" @click="getApisAndNavs">添加</el-button>
       </el-header>
       <el-main>
         <el-table :data="tableData" style="width: 100%">
@@ -49,8 +49,8 @@
         </h-page-footer>
       </el-main>
     </el-container>
-    <el-dialog title="角色" :visible.sync="dialogVisible" width="80%">
-      <el-form ref="form" :model="form" label-width="90px">
+    <el-dialog title="角色" :visible.sync="dialogVisible" width="30%">
+      <el-form ref="form" :model="form" label-width="95px">
         <el-form-item v-show="false" label="主键">
           <el-input v-model="form.id"></el-input>
         </el-form-item>
@@ -63,12 +63,38 @@
         <el-form-item label="是否启用">
           <el-switch v-model="form.enable"></el-switch>
         </el-form-item>
-        <!--<el-form-item label="apis">-->
-          <!--<el-input v-model="form.apis"></el-input>-->
-        <!--</el-form-item>-->
-        <!--<el-form-item label="导航菜单">-->
-          <!--<el-input v-model="form.navs"></el-input>-->
-        <!--</el-form-item>-->
+        <el-form-item label="选择菜单" label-width="95px">
+        <template>
+          <el-select
+            v-model="navsValue"
+            multiple
+            style="margin-left: 5px;"
+            placeholder="请选择菜单标签">
+            <el-option
+              v-for="item in navs"
+              :key="item.id"
+              :label="item.navName"
+              :value="item.id">
+            </el-option>
+          </el-select>
+        </template>
+        </el-form-item>
+        <el-form-item label="选择Api" >
+          <template>
+            <el-select
+              v-model="apisValue"
+              multiple
+              style="margin-left: 5px;"
+              placeholder="请选择">
+              <el-option
+                v-for="item in apis"
+                :key="item.id"
+                :label="item.apiName"
+                :value="item.id">
+              </el-option>
+            </el-select>
+          </template>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="handleCancel">取 消</el-button>
@@ -93,7 +119,12 @@
         dialogVisible: false,
         tableData: [],
         currentPage: 1,
-        pageSize: 10
+        pageSize: 10,
+        navs: [],
+        apis: [],
+
+        navsValue: [],
+        apisValue: []
       };
 
     },
@@ -125,8 +156,28 @@
         this.dialogVisible = false;
       },
       handleSave() {
+        var apisEntity = [];
+       this.apisValue.forEach((item)=>{
+          this.apis.forEach((api)=>{
+            if (item==api.id){
+              apisEntity.push(api);
+            }
+          });
+        });
+
+        var navsEntity = [];
+        this.navsValue.forEach((item)=>{
+          this.navs.forEach((nav)=>{
+            if (item==nav.id){
+
+              navsEntity.push(nav);
+            }
+          });
+        });
+        this.form.apis = apisEntity;
+        this.form.navs = navsEntity;
         this.$store
-          .dispatch("role/addOrUpdateOne", this.form)
+          .dispatch("role/save", this.form)
           .then(data => {
             console.log(data);
           })
@@ -161,7 +212,6 @@
         this.form.roleId = row.roleId;
         this.form.roleName = row.roleName;
         this.form.enable = row.isEnabled;
-        console.log("rowinfo==="+row.id+","+row.roleName);
       },
       formatBoolean: function(row, column, cellValue) {
         console.log("llll+" + cellValue);
@@ -172,6 +222,29 @@
           ret = "否";
         }
         return ret;
+      },
+
+      getApisAndNavs: function() {
+        this.dialogVisible = true;
+        this.$store
+          .dispatch("role/getApis")
+          .then(data => {
+            this.apis = data;
+          })
+          .catch(error => {
+            console.log(error);
+          });
+        this.$store
+          .dispatch("role/getNavs")
+          .then(data => {
+            this.navs = data;
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      changeSelect(val) {
+        alert(val);
       },
     },
 

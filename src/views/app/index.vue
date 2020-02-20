@@ -14,7 +14,7 @@
           <el-table-column
             prop="appName"
             label="应用名称"
-            width="200"
+            width="300"
           ></el-table-column>
           <el-table-column prop="enable" label="是否启用">
             <template slot-scope="scope">
@@ -33,11 +33,11 @@
           <el-table-column
             fixed="right"
             label="操作"
-            width="300">
+            width="350">
             <template slot-scope="scope">
-              <el-button @click="handleUpdate(scope.row)" type="text" size="small">编辑</el-button>
-              <el-button @click.native.prevent="removeOne(scope.row.id,scope.$index,tableData)" type="text"
-                         size="small">删除
+              <el-button @click="appUpdate(scope.row)" type="primary" size="mini">编辑</el-button>
+              <el-button @click.native.prevent="removeOne(scope.row.id,scope.$index,tableData)" type="danger"
+                         size="mini">删除
               </el-button>
             </template>
           </el-table-column>
@@ -75,7 +75,7 @@
 <script>
 
     // eslint-disable-next-line no-unused-vars
-    import {addApp, getAppList, removeApp} from '@/api/app'
+    import {getAppList, removeApp, saveOrUpd, updApp} from '@/api/app'
 
     export default {
         name: 'app',
@@ -105,18 +105,16 @@
             },
             handleSave() {
                 const params = this.form
-                addApp(params).then(() => {
+                saveOrUpd(params).then(() => {
                     this.loadData();
                 }).catch(error => {
                     console.log(error);
                 });
                 this.dialogVisible = false;
             },
-            handleUpdate(row) {
-                this.temp = Object.assign({}, row) // copy obj
-                this.$nextTick(() => {
-                    this.$refs['dataForm'].clearValidate()
-                })
+            appUpdate(row) {
+                this.dialogVisible = true;
+                this.form = row;
             },
             removeOne(id, index, rows) {
                 this.$confirm('此操作将状态改为删除状态, 是否继续?', '提示', {
@@ -124,7 +122,6 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    //点击确定的操作(调用接口)
                     removeApp(id).then(() => {
                         this.loadData();
                         rows.splice(index, 1);
@@ -144,7 +141,11 @@
             }
             ,
             changeSwitch(data) {
-                console.log(data)
+                updApp(data).then(() => {
+                    this.loadData();
+                }).catch(error => {
+                    console.log(error);
+                });
             }
         },
         mounted() {
