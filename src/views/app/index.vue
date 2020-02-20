@@ -43,17 +43,18 @@
           </el-table-column>
 
         </el-table>
-        <h-page-footer>
-          <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="currentPage"
-            :page-sizes="[10, 20, 50, 100]"
-            :page-size="pageSize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="tableData.length">
-          </el-pagination>
-        </h-page-footer>
+        <el-pagination
+          @size-change="handleSizeChange"
+          @prev-click="prevClick"
+          @next-click="nextClick"
+          :current-page="lastId"
+          background
+          layout="total,sizes,prev,next"
+          prev-text="上一页"
+          next-text="下一页"
+          :page-size="pageSize"
+          :total="1000">
+        </el-pagination>
       </el-main>
     </el-container>
     <el-dialog title="应用信息" :visible.sync="dialogVisible" width="30%">
@@ -81,7 +82,8 @@
         name: 'app',
         data() {
             return {
-                currentPage: 1,
+                lastId: '0',
+                pageFlag: 'next',
                 pageSize: 10,
                 form: {
                     appId: '',
@@ -94,7 +96,7 @@
         },
         methods: {
             loadData() {
-                getAppList(this.currentPage, this.pageSize).then(response => {
+                getAppList( this.pageFlag,this.pageSize, this.lastId).then(response => {
                     this.tableData = response.data
                 }).catch(error => {
                     console.log(error);
@@ -130,16 +132,20 @@
                     console.error(err)
                 })
             },
-            // 初始页currentPage、初始每页数据数pagesize和数据data
             handleSizeChange: function (pageSize) {
                 this.pageSize = pageSize;
                 this.loadData();
             },
-            handleCurrentChange: function (currentPage) {
-                this.currentPage = currentPage;
+            prevClick: function () {
+                this.pageFlag = 'prev';
+                this.lastId = this.tableData[0].id;
                 this.loadData();
-            }
-            ,
+            },
+            nextClick: function () {
+                this.pageFlag = 'next';
+                this.lastId = this.tableData[this.tableData.length - 1].id;
+                this.loadData();
+            },
             changeSwitch(data) {
                 updApp(data).then(() => {
                     this.loadData();

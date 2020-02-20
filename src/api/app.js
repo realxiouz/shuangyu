@@ -16,9 +16,9 @@ export function updApp(data) {
   });
 }
 
-export function getAppList(pageNum, pageSize) {
+export function getAppList(pageFlag, pageSize, lastId) {
   return request({
-    url: `/admin/app/page/list/${pageNum}/${pageSize}`,
+    url: `/admin/app/page/list/${pageFlag}/${pageSize}/${lastId}`,
     method: 'get'
   });
 }
