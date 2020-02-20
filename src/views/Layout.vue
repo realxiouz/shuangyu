@@ -6,7 +6,7 @@
     <el-main>
       <div class="app-header">
         <el-row type="flex" class="row-bg" justify="space-between">
-          <el-col :span="6">
+          <el-col :span="20">
             <div class="grid-content bg-purple">
               <span class="nav-switch" v-bind:class="switchClass" @click="handleSwitch"/>
               <el-breadcrumb class="nav-router" separator="/" >
@@ -15,11 +15,6 @@
                 <el-breadcrumb-item>活动列表</el-breadcrumb-item>
                 <el-breadcrumb-item>活动详情</el-breadcrumb-item>
               </el-breadcrumb>
-            </div>
-          </el-col>
-          <el-col :span="6">
-            <div class="grid-content bg-purple">
-
             </div>
           </el-col>
           <el-col :span="2">
