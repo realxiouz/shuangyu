@@ -58,7 +58,7 @@
       prev-text="上一页"
       next-text="下一页"
       :page-size="pageSize"
-      :total="1000">
+      :total="total">
     </el-pagination>
     <el-dialog title="应用信息" :visible.sync="dialogVisible" width="30%">
       <el-form ref="form" :model="form" label-width="90px">
@@ -79,7 +79,7 @@
 <script>
 
     // eslint-disable-next-line no-unused-vars
-    import {getAppList, removeApp, saveOrUpd, updApp} from '@/api/app'
+    import {getAppList, getAppTotal, removeApp, saveOrUpd, updApp} from '@/api/app'
 
     export default {
         name: 'app',
@@ -96,15 +96,17 @@
                     enable: true
                 },
                 dialogVisible: false,
-                tableData: null
+                tableData: null,
+                total: 0
             };
         },
         methods: {
             handleSearch() {
-
+                this.loadData();
+                this.loadTotal();
             },
             loadData() {
-                getAppList(this.pageFlag, this.pageSize, this.lastId).then(response => {
+                getAppList(this.pageFlag, this.pageSize, this.lastId, this.searchForm).then(response => {
                     if (response.data) {
                         this.tableData = response.data
                     }
@@ -165,10 +167,18 @@
                 }).catch(error => {
                     console.log(error);
                 });
-            }
+            },
+            loadTotal: function () {
+                getAppTotal(this.searchForm).then(response => {
+                    this.total = response.data;
+                }).catch(error => {
+                    console.log(error);
+                });
+            },
         },
         mounted() {
             this.loadData();
+            this.loadTotal();
         }
     };
 </script>
