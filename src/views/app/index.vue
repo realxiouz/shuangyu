@@ -14,7 +14,7 @@
           <el-table-column
             prop="appName"
             label="应用名称"
-            width="200"
+            width="300"
           ></el-table-column>
           <el-table-column prop="enable" label="是否启用">
             <template slot-scope="scope">
@@ -33,11 +33,11 @@
           <el-table-column
             fixed="right"
             label="操作"
-            width="300">
+            width="350">
             <template slot-scope="scope">
-              <el-button @click="handleUpdate(scope.row)" type="text" size="small">编辑</el-button>
-              <el-button @click.native.prevent="removeOne(scope.row.id,scope.$index,tableData)" type="text"
-                         size="small">删除
+              <el-button @click="handleUpdate(scope.row)" type="primary" size="mini">编辑</el-button>
+              <el-button @click.native.prevent="removeOne(scope.row.id,scope.$index,tableData)" type="danger"
+                         size="mini">删除
               </el-button>
             </template>
           </el-table-column>
@@ -75,7 +75,7 @@
 <script>
 
     // eslint-disable-next-line no-unused-vars
-    import {addApp, getAppList, removeApp} from '@/api/app'
+    import {addApp, getAppList, removeApp, updApp} from '@/api/app'
 
     export default {
         name: 'app',
@@ -145,6 +145,11 @@
             ,
             changeSwitch(data) {
                 console.log(data)
+                updApp(data).then(() => {
+                    this.loadData();
+                }).catch(error => {
+                    console.log(error);
+                });
             }
         },
         mounted() {
