@@ -14,16 +14,31 @@
           <el-table-column
             prop="appName"
             label="应用名称"
-            width="200"
+            width="300"
           ></el-table-column>
-          <el-table-column prop="enable" label="是否启用"></el-table-column>
+          <el-table-column prop="enable" label="是否启用">
+            <template slot-scope="scope">
+              <el-switch
+                v-model="scope.row.enable"
+                on-color="#00A854"
+                on-text="启动"
+                on-value=true
+                off-color="#F04134"
+                off-text="禁止"
+                off-value=false
+                @change="changeSwitch(scope.row)">
+              </el-switch>
+            </template>
+          </el-table-column>
           <el-table-column
             fixed="right"
             label="操作"
-            width="100">
+            width="350">
             <template slot-scope="scope">
-              <el-button @click="handleUpdate(scope.row)" type="text" size="small">编辑</el-button>
-              <el-button  @click.native.prevent="removeOne(scope.row.id,scope.$index,tableData)" type="text" size="small">删除</el-button>
+              <el-button @click="appUpdate(scope.row)" type="primary" size="mini">编辑</el-button>
+              <el-button @click.native.prevent="removeOne(scope.row.id,scope.$index,tableData)" type="danger"
+                         size="mini">删除
+              </el-button>
             </template>
           </el-table-column>
 
@@ -60,7 +75,7 @@
 <script>
 
     // eslint-disable-next-line no-unused-vars
-    import { getAppList,addApp,removeApp,updApp } from '@/api/app'
+    import {getAppList, removeApp, saveOrUpd, updApp} from '@/api/app'
 
     export default {
         name: 'app',
@@ -79,7 +94,7 @@
         },
         methods: {
             loadData() {
-                getAppList(this.currentPage,this.pageSize).then(response => {
+                getAppList(this.currentPage, this.pageSize).then(response => {
                     this.tableData = response.data
                 }).catch(error => {
                     console.log(error);
@@ -90,18 +105,16 @@
             },
             handleSave() {
                 const params = this.form
-                addApp(params).then(() => {
+                saveOrUpd(params).then(() => {
                     this.loadData();
                 }).catch(error => {
                     console.log(error);
                 });
                 this.dialogVisible = false;
             },
-            handleUpdate(row) {
-                this.temp = Object.assign({}, row) // copy obj
-                this.$nextTick(() => {
-                    this.$refs['dataForm'].clearValidate()
-                })
+            appUpdate(row) {
+                this.dialogVisible = true;
+                this.form = row;
             },
             removeOne(id, index, rows) {
                 this.$confirm('此操作将状态改为删除状态, 是否继续?', '提示', {
@@ -109,23 +122,31 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    //点击确定的操作(调用接口)
                     removeApp(id).then(() => {
                         this.loadData();
-                        rows.splice(index,1);
+                        rows.splice(index, 1);
                     })
-                }) .catch(err => { console.error(err) })
+                }).catch(err => {
+                    console.error(err)
+                })
             },
             // 初始页currentPage、初始每页数据数pagesize和数据data
             handleSizeChange: function (pageSize) {
                 this.pageSize = pageSize;
                 this.loadData();
             },
-            handleCurrentChange: function(currentPage){
+            handleCurrentChange: function (currentPage) {
                 this.currentPage = currentPage;
                 this.loadData();
             }
-
+            ,
+            changeSwitch(data) {
+                updApp(data).then(() => {
+                    this.loadData();
+                }).catch(error => {
+                    console.log(error);
+                });
+            }
         },
         mounted() {
             this.loadData();
