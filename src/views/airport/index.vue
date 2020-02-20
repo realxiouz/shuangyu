@@ -7,7 +7,7 @@
       <el-form-item>
         <el-button type="primary" @click="handleSearch">查询</el-button>
       </el-form-item>
-      <el-button type="primary" @click="dialogVisible = true">添加</el-button>
+      <el-button type="primary" @click="add">添加</el-button>
     </el-form>
     <el-table :data="tableData" style="width: 100%">
       <el-table-column
@@ -48,13 +48,13 @@
       </el-pagination>
     <el-dialog title="机场信息" :visible.sync="dialogVisible" width="30%">
       <el-form ref="form" :model="form" label-width="110px">
-        <el-form-item label="三字码">
+        <el-form-item prop="code" label="三字码">
           <el-input v-model="form.code"></el-input>
         </el-form-item>
-        <el-form-item label="机场名称">
+        <el-form-item prop="name" label="机场名称">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
-        <el-form-item label="机场所在城市">
+        <el-form-item prop="city" label="机场所在城市">
           <el-input v-model="form.city"></el-input>
         </el-form-item>
       </el-form>
@@ -89,7 +89,6 @@
     methods: {
       add:function(){
         this.dialogVisible= true;
-        this.$refs['form'].resetFields();
       },
       loadData(lastId, pageSize, pageFlag,searchForm) {
         this.$store
@@ -169,7 +168,6 @@
       },
     },
     mounted() {
-      console.log("load:cure:" + this.lastId + ",pageSize+" + this.pageSize);
       this.loadData(this.lastId, this.pageSize,this.pageFlag,this.searchForm);
       this.loadTotal(this.searchForm);
     }
