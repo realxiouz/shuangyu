@@ -9,7 +9,7 @@
       </el-form-item>
       <el-button type="primary" @click="add">添加</el-button>
     </el-form>
-    <el-table :data="tableData" style="width: 100%">
+    <el-table :data="tableData" style="width: 100%" @row-dbclick = "edit">
       <el-table-column
         prop="code"
         label="三字码"
@@ -150,7 +150,8 @@
           console.error(err);
         });
       },
-      edit(row) {
+      edit(row, event, column) {
+        console.log(event,column);
         this.dialogVisible = true;
         this.form = row;
       },
