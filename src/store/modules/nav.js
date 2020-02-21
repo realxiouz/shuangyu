@@ -1,4 +1,4 @@
-import { deleteOne ,addNav, edit, getOneNav, getNavList} from '@/api/nav';
+import { deleteOne ,addNav, update, getOneNav, getPageList, getNavList} from '@/api/nav';
 
 const actions = {
   delete({ commit }, Id){
@@ -25,9 +25,10 @@ const actions = {
         });
     });
   },
-  edit({ commit }, params){
+  update({ commit }, params){
+    debugger;
     return new Promise((resolve, reject) => {
-      edit(params)
+      update(params)
         .then(response => {
           //const { data } = response;
           resolve(response);
@@ -49,10 +50,9 @@ const actions = {
         });
     });
   },
-  getList({ commit },params){
-    debugger;
+  getPageList({ commit },params){
     return new Promise((resolve, reject) => {
-      getNavList(params)
+      getPageList(params)
         .then(response => {
           const { data } = response;
           resolve(data);
@@ -62,6 +62,18 @@ const actions = {
         });
     });
   },
+  getNavList(){
+    return new Promise((resolve, reject) => {
+      getNavList()
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
 }
 
 export default {
