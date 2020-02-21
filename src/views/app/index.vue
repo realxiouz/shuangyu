@@ -101,13 +101,13 @@
         },
         methods: {
             handleSearch() {
-                if (!this.searchForm.appName) {
-                    this.searchForm = {};
-                }
                 this.loadData();
                 this.loadTotal();
             },
             loadData() {
+                if (!this.searchForm.appName) {
+                    this.searchForm = {};
+                }
                 getAppList(this.pageFlag, this.pageSize, this.lastId, this.searchForm).then(response => {
                     if (response.data) {
                         this.tableData = response.data
@@ -123,6 +123,7 @@
                 const params = this.form
                 saveOrUpd(params).then(() => {
                     this.loadData();
+                    this.loadTotal();
                 }).catch(error => {
                     console.log(error);
                 });
@@ -168,6 +169,9 @@
                 });
             },
             loadTotal: function () {
+                if (!this.searchForm.appName) {
+                    this.searchForm = {};
+                }
                 getAppTotal(this.searchForm).then(response => {
                     this.total = response.data;
                 }).catch(error => {
