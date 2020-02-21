@@ -1,16 +1,19 @@
 <template>
   <div class="app-container">
-    <el-container>
-      <el-header>
-        <el-button type="text" @click="getApisAndNavs">添加</el-button>
-      </el-header>
-      <el-main>
+
+      <!--<el-main>-->
+        <el-form :inline="true" :model="searchForm">
+          <el-form-item label="姓名">
+            <el-input v-model="searchForm.roleName" placeholder="角色名称"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="handleSearch">查询</el-button>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="addRole">添加</el-button>
+          </el-form-item>
+        </el-form>
         <el-table :data="tableData" style="width: 100%">
-          <el-table-column v-if="false"
-                           prop="id"
-                           label="主键"
-                           width="80"
-          ></el-table-column>
           <el-table-column
             prop="roleId"
             label="角色唯一标识"
@@ -21,16 +24,29 @@
             label="角色名称"
             width="160"
           ></el-table-column>
-          <el-table-column prop="isEnable" label="是否启用" :formatter="formatBoolean"></el-table-column>
-          <el-table-column prop="apis" label="apis"></el-table-column>
-          <el-table-column prop="navs" label="导航菜单"></el-table-column>
+          <el-table-column prop="enable" label="是否启用">
+            <template slot-scope="scope">
+              <el-switch
+                v-model="scope.row.enable"
+                on-color="#00A854"
+                on-text="启动"
+                on-value=true
+                off-color="#F04134"
+                off-text="禁止"
+                off-value=false
+                @change="changeSwitch(scope.row)">
+              </el-switch>
+            </template>
+          </el-table-column>
+          <el-table-column  prop="navIds"  label="navIds"></el-table-column>
+          <el-table-column prop="navNames" label="导航菜单"></el-table-column>
           <el-table-column
             fixed="right"
             label="操作"
             width="100">
             <template slot-scope="scope">
               <el-button  @click.native.prevent="editRole(scope.row)" type="text" size="small">编辑</el-button>
-              <el-button  @click.native.prevent="removeOne(scope.row.id,scope.$index,tableData)" type="text" size="small">删除
+              <el-button  @click.native.prevent="removeOne(scope.row.roleId,scope.$index,tableData)" type="text" size="small">删除
               </el-button>
             </template>
           </el-table-column>
@@ -39,61 +55,37 @@
         <h-page-footer>
           <el-pagination
             @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="currentPage"
-            :page-sizes="[10, 20, 50, 100]"
+            @prev-click="prevClick"
+            @next-click="nextClick"
+            background
+            layout="total,sizes,prev,next"
+            prev-text="上一页"
+            next-text="下一页"
             :page-size="pageSize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="tableData.length">
+            :total="total">
           </el-pagination>
         </h-page-footer>
-      </el-main>
-    </el-container>
+      <!--</el-main>-->
     <el-dialog title="角色" :visible.sync="dialogVisible" width="30%">
       <el-form ref="form" :model="form" label-width="95px">
-        <el-form-item v-show="false" label="主键">
-          <el-input v-model="form.id"></el-input>
-        </el-form-item>
-        <el-form-item label="角色唯一标识">
-          <el-input v-model="form.roleId"></el-input>
-        </el-form-item>
+        <el-input v-show="false" v-model="navs"></el-input>
+        <el-input v-show="false" v-model="form.roleId"></el-input>
         <el-form-item label="角色名称">
           <el-input v-model="form.roleName"></el-input>
         </el-form-item>
         <el-form-item label="是否启用">
           <el-switch v-model="form.enable"></el-switch>
         </el-form-item>
-        <el-form-item label="选择菜单" label-width="95px">
-        <template>
-          <el-select
-            v-model="navsValue"
-            multiple
-            style="margin-left: 5px;"
-            placeholder="请选择菜单标签">
-            <el-option
-              v-for="item in navs"
-              :key="item.id"
-              :label="item.navName"
-              :value="item.id">
-            </el-option>
-          </el-select>
-        </template>
-        </el-form-item>
-        <el-form-item label="选择Api" >
-          <template>
-            <el-select
-              v-model="apisValue"
-              multiple
-              style="margin-left: 5px;"
-              placeholder="请选择">
-              <el-option
-                v-for="item in apis"
-                :key="item.id"
-                :label="item.apiName"
-                :value="item.id">
-              </el-option>
-            </el-select>
-          </template>
+        <el-form-item label="选择菜单">
+        <el-tree
+          :data="treeData"
+          show-checkbox
+          default-expand-all
+          node-key="id"
+          ref="tree"
+          highlight-current
+          :props="defaultProps">
+        </el-tree>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -104,6 +96,7 @@
   </div>
 </template>
 
+import {getPageList} from '@/api/role';
 <script>
   export default {
     name: "role",
@@ -112,146 +105,313 @@
         form: {
           roleId: "",
           roleName: "",
-          apis: "",
           navs: "",
           enable: true
         },
         dialogVisible: false,
         tableData: [],
-        currentPage: 1,
+        searchForm: {},
+        lastId: '0',
         pageSize: 10,
+        pageFlag: 'next',
         navs: [],
-        apis: [],
 
-        navsValue: [],
-        apisValue: []
+        treeData: [],
+        defaultProps: {
+          children: 'children',
+          label: 'label'
+        }
       };
 
     },
     methods: {
-      loadData(currentPage, pageSize) {
+      loadData() {
         this.$store
-          .dispatch("role/list", { currentPage, pageSize })
+          .dispatch("role/list", {pageFlag:this.pageFlag,pageSize: this.pageSize, lastId:this.lastId,searchForm:this.searchForm })
           .then(data => {
+            //把data里面的navs只显示navName
+            for (var i=0;i<data.length;i++) {
+              data[i].navIds = this.handleNavIds(data[i].navs);
+              data[i].navNames =  this.handleNavNames(data[i].navs);
+            }
+            //把nav的id保存起来，编辑的时候，显示tree的选中状态
             this.tableData = data;
           })
           .catch(error => {
             console.log(error);
           });
       },
-
+      addRole:function(){
+        this.dialogVisible = true;
+        this.form.treeData = this.getNavs();
+      },
+      handleNavIds: function(navs) {
+        if (navs == null) {
+          return;
+        }
+        var navIds = [];
+        navs.forEach((nav)=> {
+          navIds.push(nav.navId);
+          if (nav.children != null) {
+            nav.children.forEach((child) => {
+              navIds.push(child.navId);
+              if (child.children != null) {
+                child.children.forEach((childChild) => {
+                  navIds.push(childChild.navId);
+                });
+              }
+            });
+          }
+        });
+        console.log("navIds==========" + navIds.length);
+        return navIds;
+      },
+      //将返回的nav只显示名字
+      handleNavNames:function(navs){
+        if (navs==null){
+          return;
+        }
+        var navnames = "";
+        navs.forEach((nav)=>{
+          if(nav.label!=null) {
+            navnames = "," + nav.label;
+          }
+          if (nav.children!=null){
+            nav.children.forEach((child)=>{
+              if(child.label!=null) {
+                navnames += "," + child.label;
+              }
+              if (child.children!=null){
+                child.children.forEach((childChild)=>{
+                  if(childChild.label!=null){
+                    navnames += ","+childChild.label;
+                  }
+                });
+              }
+            });
+          }
+        });
+        if (navnames!=null){
+          navnames = navnames.substring(1,navnames.length);
+        }
+        return navnames;
+      },
       // 初始页currentPage、初始每页数据数pagesize和数据data
       handleSizeChange: function(pageSize) {
         this.pageSize = pageSize;
-        console.log("cure:" + this.currentPage + ",pageSize+" + this.pageSize);
-        this.loadData(this.currentPage, this.pageSize);
-      },
-      handleCurrentChange: function(currentPage) {
-        this.currentPage = currentPage;
-        console.log("cure:" + this.currentPage + ",pageSize+" + this.pageSize);
-        this.loadData(this.currentPage, this.pageSize);
+        this.loadData();
       },
 
       handleCancel() {
         this.dialogVisible = false;
       },
-      handleSave() {
-        var apisEntity = [];
-       this.apisValue.forEach((item)=>{
-          this.apis.forEach((api)=>{
-            if (item==api.id){
-              apisEntity.push(api);
-            }
-          });
-        });
-
-        var navsEntity = [];
-        this.navsValue.forEach((item)=>{
-          this.navs.forEach((nav)=>{
-            if (item==nav.id){
-
-              navsEntity.push(nav);
-            }
-          });
-        });
-        this.form.apis = apisEntity;
-        this.form.navs = navsEntity;
+      save:function(data){
         this.$store
-          .dispatch("role/save", this.form)
+          .dispatch("role/save", data)
           .then(data => {
             console.log(data);
+            this.loadData();
+            this.loadTotal();
           })
           .catch(error => {
             console.log(error);
           });
+      },
+      handleSave() {
+        var navsEntity = this.getSelectedNavs(this.$refs.tree.getCheckedNodes());
+        this.form.navs = navsEntity;
+        console.log("navsEntity:"+navsEntity);
+        this.save(this.form);
         this.dialogVisible = false;
       },
-      removeOne: function(id, index, rows) {
-        // this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
-        //   confirmButtonText: "确定",
-        //   cancelButtonText: "取消",
-        //   type: "warning"
-        // }).then(() => {
-        //   console.log("确定！"+id);
-        // }).catch(() => {
-        //   console.log("取消！"+id);
-        // });
-        this.$store
-          .dispatch("role/removeOne", id)
-          .then(data => {
-            console.log(data);
-            rows.splice(index,1);
-          })
-          .catch(error => {
-            console.log(error);
-          });
+      removeOne: function(roleid, index, rows) {
+        this.$confirm('此操作将状态改为删除状态, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$store
+            .dispatch("role/removeOne", roleid)
+            .then(data => {
+              console.log(data);
+              rows.splice(index,1);
+              this.total--;
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        }).catch(err => {
+          console.error(err)
+        })
+
       },
       editRole: function(row) {
+        this.form.treeData = this.getNavs();
         this.dialogVisible = true;
-        this.form.id = row.id;
         this.form.roleId = row.roleId;
         this.form.roleName = row.roleName;
-        this.form.enable = row.isEnabled;
+        this.form.enable = row.enable;
+        console.log("row.navIds:"+row.navIds);
+        var rowNavids = [];
+        row.navIds.forEach((id)=>{
+          rowNavids.push(id);
+        });
+        this.$refs.tree.setCheckedKeys(row.navIds);
       },
-      formatBoolean: function(row, column, cellValue) {
-        console.log("llll+" + cellValue);
-        var ret = "";  //你想在页面展示的值
-        if (cellValue) {
-          ret = "是";  //根据自己的需求设定
-        } else {
-          ret = "否";
-        }
-        return ret;
+      changeSwitch:function(data) {
+        this.save(data);
       },
-
-      getApisAndNavs: function() {
-        this.dialogVisible = true;
-        this.$store
-          .dispatch("role/getApis")
-          .then(data => {
-            this.apis = data;
-          })
-          .catch(error => {
-            console.log(error);
-          });
+      getNavs: function() {
         this.$store
           .dispatch("role/getNavs")
           .then(data => {
             this.navs = data;
+            console.log("initTreeData======================="+JSON.stringify(data))
+            this.initTreeData(data);
           })
           .catch(error => {
             console.log(error);
           });
       },
-      changeSelect(val) {
-        alert(val);
+      getSelectedChildrenNavs: function(nodes, navChilds) {
+        var navsEntitys = [];
+        nodes.forEach((node)=> {
+          navChilds.forEach((nav)=> {
+            //首先对比nav和node的id是否相同，不相同，跳过
+            if (nav.navId == node.id) { //相同，再对比他们的children
+              var navi = {};
+              navi.navId = nav.navId;
+              navi.label = nav.label;
+              navi.isEnable = nav.isEnable;
+              navi.uri = nav.uri;
+              if (node.children != null&&nav.children!=null) {
+                var navChildren = this.getSelectedChildrenNavs(node.children, nav.children);
+                navi.children = navChildren;
+              }
+              navsEntitys.push(navi);
+            }
+          });
+        });
+        return navsEntitys;
       },
+      findNavByTreeNode: function(node,navs) {
+        //循环第一级nav
+        var ret = null;
+        for (var i = 0; i < navs.length; i++) {
+          var nav = navs[i];
+          if (nav.navId == node.id) {
+            ret = nav;
+            break;
+          }
+        }
+        //循环第二级nav
+        if (!ret){
+          for (var j = 0; j < navs.length; j++) {
+            return this.findNavByTreeNode(node,navs[j].children);
+          }
+        }
+        //循环第三级nav
+        if (!ret){
+          for (var j = 0; j < navs.length; j++) {
+            if(!navs[j].children){
+              navs[j].children.forEach((third)=>{
+                if (!third.children){
+                  return this.findNavByTreeNode(third.children);
+                }
+              });
+            }
+          }
+        }
+        return ret;
+      },
+      getSelectedNavs: function(nodes) {
+        // var navs = this.getNavs()
+        console.log("node===" + nodes);
+        var navsEntitys = [];
+        nodes.forEach((node) => {
+          //找到与node对应的那个nav
+          var nav = this.findNavByTreeNode(node, this.navs);
+          if (!nav){
+            return [];
+          }
+          var navi = {};
+          navi.navId = nav.navId;
+          navi.label = nav.label;
+          navi.isEnable = nav.isEnable;
+          navi.uri = nav.uri;
+          if (node.children != null && nav.children != null) {
+            var navChildren = this.getSelectedChildrenNavs(node.children, nav.children);
+            navi.children = navChildren;
+          }
+          navsEntitys.push(navi);
+        });
+        return navsEntitys;
+      },
+      initChildrenNode: function(nodes) {
+        var childrens = [];
+        for(var i =0;i<nodes.length;i++){
+          var childs = [];
+          var node = nodes[i];
+          var tree = {};
+          tree.id = node.navId;
+          tree.label = node.label;
+          if (node.children!=null){
+            childs = this.initChildrenNode(node.children);
+          }
+          tree.children = childs;
+          childrens.push(tree);
+
+        }
+        return childrens;
+      },
+      initTreeData: function(data) {
+        var trees = [];
+       for(var i =0;i<data.length;i++){
+         var node = data[i];
+          var tree = {};
+          if (node.children != null) {
+            var childrenNodes = this.initChildrenNode(node.children);
+            tree.children = childrenNodes;
+          }
+          tree.id = node.navId;
+          tree.label = node.label;
+          trees.push(tree);
+        }
+       console.log("-----------trees------"+JSON.stringify(trees));
+       this.treeData = trees;
+      },
+      loadTotal: function () {
+        if (!this.searchForm.appName) {
+          this.searchForm = {};
+        }
+        this.$store
+          .dispatch("role/getTotal",this.searchForm)
+          .then(data => {
+            this.total = data;
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      prevClick: function () {
+        this.pageFlag = 'prev';
+        this.lastId = this.tableData[0].roleId;
+        this.loadData();
+      },
+      nextClick: function () {
+        this.pageFlag = 'next';
+        this.lastId = this.tableData[this.tableData.length - 1].roleId;
+        this.loadData();
+      },
+      handleSearch:function() {
+        this.loadData();
+        this.loadTotal();
+      }
     },
 
-
     mounted() {
-      console.log("load:cure:" + this.currentPage + ",pageSize+" + this.pageSize);
-      this.loadData(this.currentPage, this.pageSize);
+      this.loadTotal();
+      this.loadData();
     }
   };
 </script>

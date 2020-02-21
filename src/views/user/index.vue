@@ -54,11 +54,37 @@
         width="150"
       ></el-table-column>
       <el-table-column
-        prop="isSuper"
+        prop="super"
         label="是否超级管理员"
         width="150"
-      ></el-table-column>
-      <el-table-column prop="isEnable" label="是否启用"></el-table-column>
+      >
+        <template slot-scope="scope">
+          <el-switch
+            v-model="scope.row.super"
+            on-color="#00A854"
+            on-text="启动"
+            on-value=true
+            off-color="#F04134"
+            off-text="禁止"
+            off-value=false
+            @change="changeSwitch(scope.row)">
+          </el-switch>
+        </template>
+      </el-table-column>
+      <el-table-column prop="isEnable" label="是否启用">
+        <template slot-scope="scope">
+          <el-switch
+            v-model="scope.row.enable"
+            on-color="#00A854"
+            on-text="启动"
+            on-value=true
+            off-color="#F04134"
+            off-text="禁止"
+            off-value=false
+            @change="changeSwitch(scope.row)">
+          </el-switch>
+        </template>
+      </el-table-column>
       <el-table-column
         fixed="right"
         label="操作"
@@ -84,11 +110,14 @@
     </el-pagination>
     <el-dialog title="用户信息" :visible.sync="dialogVisible" width="30%">
       <el-form ref="form" :model="form" label-width="90px">
+        <el-form-item label="昵称">
+          <el-input v-model="form.nickName"></el-input>
+        </el-form-item>
         <el-form-item label="姓名">
           <el-input v-model="form.fullName"></el-input>
         </el-form-item>
         <el-form-item label="性别">
-          <el-select v-model="form.sex" placeholder="请选择性别">
+          <el-select v-model="form.gender" placeholder="请选择性别">
             <el-option label="男" value="男"></el-option>
             <el-option label="女" value="女"></el-option>
           </el-select>
@@ -97,7 +126,7 @@
           <el-date-picker
             type="date"
             placeholder="选择日期"
-            v-model="form.birthday"
+            v-model="form.birthDate"
             style="width: 100%;"
           ></el-date-picker>
         </el-form-item>
@@ -111,6 +140,9 @@
           >
           </el-input>
         </el-form-item>
+        <el-form-item label="邮箱">
+          <el-input v-model="form.email"></el-input>
+        </el-form-item>
         <el-form-item label="身份证号码">
           <el-input
             type="text"
@@ -121,11 +153,14 @@
           >
           </el-input>
         </el-form-item>
-        <el-form-item label="备注">
-          <el-input type="textarea" v-model="form.comment"></el-input>
+        <el-form-item label="是否超级管理员">
+          <el-switch v-model="form.super" :active-value=true :inactive-value=false></el-switch>
         </el-form-item>
         <el-form-item label="是否启用">
-          <el-switch v-model="form.enable"></el-switch>
+          <el-switch v-model="form.enable" :active-value=true :inactive-value=false></el-switch>
+        </el-form-item>
+        <el-form-item label="备注">
+          <el-input type="textarea" v-model="form.comment"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -137,7 +172,7 @@
 </template>
 
 <script>
-    import {getUserList,saveOrUpd} from '@/api/user'
+    import {getUserList, getUserTotal, save, updUser} from '@/api/user'
 
     export default {
         name: "user",
@@ -149,22 +184,30 @@
                 pageSize: 10,
                 total: 0,
                 form: {
+                    nickName: '',
                     fullName: "",
-                    sex: "男",
-                    birthday: "",
+                    gender: "男",
+                    birthDate: "",
                     phone: "",
+                    email: '',
                     idCardNo: "",
-                    comment: "",
-                    enable: true
+                    super: false,
+                    enable: true,
+                    headImgUrl: "",
+                    comment: ""
                 },
                 dialogVisible: false,
                 tableData: null
             };
         },
         methods: {
-            addUser(){
+            userUpdate(row) {
+                this.dialogVisible = true;
+                this.form = row;
+            },
+            addUser() {
                 this.form = {};
-                this.dialogVisible= true;
+                this.dialogVisible = true;
             },
             loadData() {
                 getUserList(this.pageFlag, this.pageSize, this.lastId, this.searchForm).then(response => {
@@ -184,7 +227,7 @@
             },
             handleSave() {
                 const params = this.form
-                saveOrUpd(params).then(() => {
+                save(params).then(() => {
                     this.loadData();
                     this.loadTotal();
                 }).catch(error => {
@@ -206,10 +249,23 @@
                 this.lastId = this.tableData[this.tableData.length - 1].appId;
                 this.loadData();
             },
-            appUpdate(row) {
-                this.dialogVisible = true;
-                this.form = row;
-            }
+            changeSwitch(data) {
+                updUser(data).then(() => {
+                    this.loadData();
+                }).catch(error => {
+                    console.log(error);
+                });
+            },
+            loadTotal() {
+                if (!this.searchForm.appName) {
+                    this.searchForm = {};
+                }
+                getUserTotal(this.searchForm).then(response => {
+                    this.total = response.data;
+                }).catch(error => {
+                    console.log(error);
+                });
+            },
         },
         mounted() {
             this.loadData();
