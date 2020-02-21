@@ -54,10 +54,23 @@
         width="150"
       ></el-table-column>
       <el-table-column
-        prop="isSuper"
+        prop="super"
         label="是否超级管理员"
         width="150"
-      ></el-table-column>
+      >
+        <template slot-scope="scope">
+          <el-switch
+            v-model="scope.row.super"
+            on-color="#00A854"
+            on-text="启动"
+            on-value=true
+            off-color="#F04134"
+            off-text="禁止"
+            off-value=false
+            @change="changeSwitch(scope.row)">
+          </el-switch>
+        </template>
+      </el-table-column>
       <el-table-column prop="isEnable" label="是否启用">
         <template slot-scope="scope">
           <el-switch
@@ -104,7 +117,7 @@
           <el-input v-model="form.fullName"></el-input>
         </el-form-item>
         <el-form-item label="性别">
-          <el-select v-model="form.sex" placeholder="请选择性别">
+          <el-select v-model="form.gender" placeholder="请选择性别">
             <el-option label="男" value="男"></el-option>
             <el-option label="女" value="女"></el-option>
           </el-select>
@@ -113,7 +126,7 @@
           <el-date-picker
             type="date"
             placeholder="选择日期"
-            v-model="form.birthday"
+            v-model="form.birthDate"
             style="width: 100%;"
           ></el-date-picker>
         </el-form-item>
@@ -127,6 +140,9 @@
           >
           </el-input>
         </el-form-item>
+        <el-form-item label="邮箱">
+          <el-input v-model="form.email"></el-input>
+        </el-form-item>
         <el-form-item label="身份证号码">
           <el-input
             type="text"
@@ -137,14 +153,14 @@
           >
           </el-input>
         </el-form-item>
-        <el-form-item label="备注">
-          <el-input type="textarea" v-model="form.comment"></el-input>
-        </el-form-item>
         <el-form-item label="是否超级管理员">
           <el-switch v-model="form.super" :active-value=true :inactive-value=false></el-switch>
         </el-form-item>
         <el-form-item label="是否启用">
           <el-switch v-model="form.enable" :active-value=true :inactive-value=false></el-switch>
+        </el-form-item>
+        <el-form-item label="备注">
+          <el-input type="textarea" v-model="form.comment"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -156,7 +172,7 @@
 </template>
 
 <script>
-    import {getUserList, save, updUser,getUserTotal} from '@/api/user'
+    import {getUserList, getUserTotal, save, updUser} from '@/api/user'
 
     export default {
         name: "user",
@@ -170,13 +186,15 @@
                 form: {
                     nickName: '',
                     fullName: "",
-                    sex: "男",
-                    birthday: "",
+                    gender: "男",
+                    birthDate: "",
                     phone: "",
+                    email: '',
                     idCardNo: "",
-                    comment: "",
                     super: false,
-                    enable: true
+                    enable: true,
+                    headImgUrl: "",
+                    comment: ""
                 },
                 dialogVisible: false,
                 tableData: null
