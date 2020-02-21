@@ -48,3 +48,10 @@ export function saveOrUpd(data) {
     data
   });
 }
+export function updUser(data) {
+  return request({
+    url: '/user/update/one',
+    method: 'post',
+    data
+  });
+}
