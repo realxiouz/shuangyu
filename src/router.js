@@ -119,6 +119,21 @@ export default new Router({
           meta: { title: 'Home', icon: 'home' }
         }
       ]
+    },{
+      title: '航司信息',
+      path: '/airline',
+      uri: '/airline',
+      component: Layout,
+      children: [
+        {
+          title: '航司信息',
+          path: 'index',
+          name: 'airline',
+          uri: '/airline/index',
+          component: () => import('@/views/airline/index'),
+          meta: { title: 'Home', icon: 'home' }
+        }
+      ]
     }
   ]
 });
