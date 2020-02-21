@@ -17,7 +17,7 @@
         <el-button type="primary" @click="dialogVisible = true">添加</el-button>
       </el-form-item>
     </el-form>
-    <el-table :data="tableData" style="width: 100%">
+    <el-table :data="tableData" @row-dblclick="handleRowClick" style="width: 100%">
       <el-table-column
         prop="fullName"
         label="姓名"
@@ -93,6 +93,7 @@
 </template>
 
 <script>
+  import { MessageBox, Message } from 'element-ui';
   export default {
     name: "user",
     data() {
@@ -138,6 +139,16 @@
             console.log(error);
           });
         this.dialogVisible = false;
+      },
+      handleRowClick(row, column, event){
+        Message({
+          message: 'row-dblclick',
+          type: 'error',
+          duration: 5 * 1000
+        });
+        console.log(row);
+        console.log(column);
+        console.log(event);
       }
     },
     mounted() {

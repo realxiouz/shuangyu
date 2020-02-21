@@ -1,73 +1,61 @@
 <template>
   <div class="app-container">
-    <el-container>
-      <el-header>
-        <el-button type="text" @click="dialogVisible = true">添加</el-button>
-      </el-header>
-      <el-main>
-        <el-table :data="tableData" style="width: 100%">
-          <el-table-column
-            prop="code"
-            label="三字码"
-            width="180"
-          ></el-table-column>
-          <el-table-column
-            prop="name"
-            label="机场名称"
-            width="300"
-          ></el-table-column>
-          <el-table-column
-            prop="city"
-            label="机场所在城市"
-            width="300"
-          ></el-table-column>
-        </el-table>
-      </el-main>
-    </el-container>
-    <el-dialog title="用户信息" :visible.sync="dialogVisible" width="30%">
-      <el-form ref="form" :model="form" label-width="90px">
-        <el-form-item label="姓名">
-          <el-input v-model="form.fullName"></el-input>
+    <el-form :inline="true" :model="searchForm">
+      <el-form-item label="三字码">
+        <el-input v-model="searchForm.code" placeholder="三字码"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="handleSearch">查询</el-button>
+      </el-form-item>
+      <el-button type="primary" @click="add">添加</el-button>
+    </el-form>
+    <el-table :data="tableData" @row-dblclick="handleEdit" style="width: 100%" >
+      <el-table-column
+        prop="code"
+        label="三字码"
+        width="180"
+      ></el-table-column>
+      <el-table-column
+        prop="name"
+        label="机场名称"
+        width="300"
+      ></el-table-column>
+      <el-table-column
+        prop="city"
+        label="机场所在城市"
+        width="300"
+      ></el-table-column>
+      <el-table-column
+        label="操作"
+        width="200">
+        <template slot-scope="scope">
+          <el-button @click="handleEdit(scope.row)" type="primary" size="small">编辑</el-button>
+          <el-button @click="removeOne(scope.row.id)" type="danger" size="small">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-pagination
+      @size-change="handleSizeChange"
+      @prev-click="prevClick"
+      @next-click="nextClick"
+      :current-page="currentPage"
+      background
+      layout="total,sizes,prev,next"
+      prev-text="上一页"
+      next-text="下一页"
+      :page-size="pageSize"
+      :total="total">
+    </el-pagination>
+    <el-dialog title="机场信息" :visible.sync="dialogVisible" width="30%">
+      <el-form ref="form" :model="form" label-width="110px">
+        <el-form-item prop="code" label="三字码">
+          <el-input v-model="form.code"></el-input>
         </el-form-item>
-        <el-form-item label="性别">
-          <el-select v-model="form.sex" placeholder="请选择性别">
-            <el-option label="男" value="男"></el-option>
-            <el-option label="女" value="女"></el-option>
-          </el-select>
+        <el-form-item prop="name" label="机场名称">
+          <el-input v-model="form.name"></el-input>
         </el-form-item>
-        <el-form-item label="出生日期">
-          <el-date-picker
-            type="date"
-            placeholder="选择日期"
-            v-model="form.birthday"
-            style="width: 100%;"
-          ></el-date-picker>
-        </el-form-item>
-        <el-form-item label="手机号码">
-          <el-input
-            type="text"
-            placeholder="请输入手机号码"
-            v-model="form.phone"
-            maxlength="11"
-            show-word-limit
-          >
-          </el-input>
-        </el-form-item>
-        <el-form-item label="身份证号码">
-          <el-input
-            type="text"
-            placeholder="请输入身份证号码"
-            v-model="form.idCardNo"
-            maxlength="18"
-            show-word-limit
-          >
-          </el-input>
-        </el-form-item>
-        <el-form-item label="备注">
-          <el-input type="textarea" v-model="form.comment"></el-input>
-        </el-form-item>
-        <el-form-item label="是否启用">
-          <el-switch v-model="form.enable"></el-switch>
+        <el-form-item prop="city" label="机场所在城市">
+          <el-input v-model="form.city"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -80,46 +68,112 @@
 
 <script>
   export default {
-    name: 'user',
+    name: "airport",
     data() {
       return {
+        searchForm: {},
         form: {
-          fullName: '',
-          sex: '男',
-          birthday: '',
-          phone: '',
-          idCardNo: '',
-          comment: '',
-          enable: true
+          code: "",
+          name: "",
+          city: ""
         },
         dialogVisible: false,
-        tableData: null
+        tableData: [],
+        lastId: "0",
+        pageFlag: "next",
+        pageSize: 10,
+        total: 0,
+        currentPage: 0
       };
     },
     methods: {
+      add() {
+        this.dialogVisible = true;
+      },
       loadData() {
         this.$store
-          .dispatch('user/list')
+          .dispatch("airport/list", {
+            pageSize: this.pageSize,
+            lastId: this.lastId,
+            pageFlag: this.pageFlag,
+            searchForm: this.searchForm
+          })
           .then(data => {
+            this.loadTotal(this.searchForm);
             this.tableData = data;
           })
           .catch(error => {
             console.log(error);
           });
       },
+      loadTotal() {
+        this.$store
+          .dispatch("airport/total", this.searchForm)
+          .then(data => {
+            this.total = data;
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      handleSizeChange(pageSize) {
+        this.pageSize = pageSize;
+        this.lastId = "0";
+        this.loadData();
+      },
+      prevClick() {
+        this.pageFlag = "prev";
+        this.lastId = this.tableData[0].id;
+        this.loadData();
+      },
+      nextClick() {
+        this.pageFlag = "next";
+        this.lastId = this.tableData[this.tableData.length - 1].id;
+        this.loadData();
+      },
+      removeOne(id) {
+        this.$confirm("是否确定删除机场信息?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).then(() => {
+          this.$store
+            .dispatch("airport/removeOne", id)
+            .then(data => {
+              console.log(data);
+              this.loadData();
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        }).catch(err => {
+          console.error(err);
+        });
+      },
+      handleEdit(row, event, column) {
+        console.log(row);
+        this.dialogVisible = true;
+        this.form = row;
+      },
       handleCancel() {
         this.dialogVisible = false;
       },
       handleSave() {
         this.$store
-          .dispatch('user/add', this.form)
+          .dispatch("airport/save", this.form)
           .then(data => {
             console.log(data);
+            this.lastId = "0";
+            this.loadData();
           })
           .catch(error => {
             console.log(error);
           });
         this.dialogVisible = false;
+      },
+      handleSearch() {
+        this.lastId = "0";
+        this.loadData();
       }
     },
     mounted() {
