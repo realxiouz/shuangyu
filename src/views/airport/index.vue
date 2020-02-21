@@ -90,9 +90,14 @@
       add() {
         this.dialogVisible = true;
       },
-      loadData(lastId, pageSize, pageFlag, searchForm) {
+      loadData() {
         this.$store
-          .dispatch('airport/list', {pageSize, lastId, pageFlag, searchForm})
+          .dispatch('airport/list', {
+            pageSize: this.pageSize,
+            lastId: this.lastId,
+            pageFlag: this.pageFlag,
+            searchForm: this.searchForm
+          })
           .then(data => {
             this.loadTotal(this.searchForm);
             this.tableData = data;
@@ -103,7 +108,7 @@
       },
       loadTotal() {
         this.$store
-          .dispatch('airport/total', {})
+          .dispatch('airport/total', this.searchForm)
           .then(data => {
             this.total = data;
           })
@@ -113,17 +118,18 @@
       },
       handleSizeChange(pageSize) {
         this.pageSize = pageSize;
-        this.loadData('0', this.pageSize, this.pageFlag, this.searchForm);
+        this.lastId = '0';
+        this.loadData();
       },
       prevClick() {
         this.pageFlag = 'prev';
         this.lastId = this.tableData[0].id;
-        this.loadData(this.lastId, this.pageSize, this.searchForm);
+        this.loadData();
       },
       nextClick() {
         this.pageFlag = 'next';
         this.lastId = this.tableData[this.tableData.length - 1].id;
-        this.loadData(this.lastId, this.pageSize, this.pageFlag, this.searchForm);
+        this.loadData();
       },
       removeOne(id) {
         this.$confirm('是否确定删除机场信息?', '提示', {
@@ -135,8 +141,7 @@
             .dispatch('airport/removeOne', id)
             .then(data => {
               console.log(data);
-              this.loadData('0', this.pageSize, this.pageFlag, this.searchForm);
-              this.loadTotal(this.searchForm);
+              this.loadData();
             })
             .catch(error => {
               console.log(error);
@@ -157,7 +162,8 @@
           .dispatch('airport/save', this.form)
           .then(data => {
             console.log(data);
-            this.loadData('0', this.pageSize, this.pageFlag, this.searchForm);
+            this.lastId = '0';
+            this.loadData();
           })
           .catch(error => {
             console.log(error);
@@ -165,11 +171,12 @@
         this.dialogVisible = false;
       },
       handleSearch() {
-        this.loadData('0', this.pageSize, this.pageFlag, this.searchForm);
+        this.lastId = '0';
+        this.loadData();
       },
     },
     mounted() {
-      this.loadData(this.lastId, this.pageSize, this.pageFlag, this.searchForm);
+      this.loadData();
     }
   };
 </script>

@@ -10,7 +10,7 @@ export function saveAirport(data) {
 
 export function getAirportPageList(data) {
   return request({
-    url: '/flight/airport/page/list/'+data.pageFlag+'/'+data.pageSize+'/'+data.lastId,
+    url: '/flight/airport/page/list/' + data.pageFlag + '/' + data.pageSize + '/' + data.lastId,
     method: 'get',
     params: data.searchForm
   });
@@ -26,15 +26,7 @@ export function getAirportTotal(params) {
 
 export function removeAirport(data) {
   return request({
-    url: '/flight/airport/remove/one/'+data,
+    url: '/flight/airport/remove/one/' + data,
     method: 'delete'
-  });
-}
-
-export function updateAirport(data) {
-  return request({
-    url: '/flight/airport/update/one',
-    method: 'post',
-    data
   });
 }
