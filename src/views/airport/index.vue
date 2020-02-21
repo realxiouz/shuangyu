@@ -9,7 +9,7 @@
       </el-form-item>
       <el-button type="primary" @click="add">添加</el-button>
     </el-form>
-    <el-table :data="tableData" @row-dbclick="handleEdit" style="width: 100%" >
+    <el-table :data="tableData" @row-dblclick="handleEdit" style="width: 100%" >
       <el-table-column
         prop="code"
         label="三字码"
@@ -29,7 +29,7 @@
         label="操作"
         width="200">
         <template slot-scope="scope">
-          <el-button @click="edit(scope.row)" type="primary" size="small">编辑</el-button>
+          <el-button @click="handleEdit(scope.row)" type="primary" size="small">编辑</el-button>
           <el-button @click="removeOne(scope.row.id)" type="danger" size="small">删除</el-button>
         </template>
       </el-table-column>
