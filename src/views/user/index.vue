@@ -156,7 +156,7 @@
 </template>
 
 <script>
-    import {getUserList, saveOrUpd, updUser} from '@/api/user'
+    import {getUserList, save, updUser,getUserTotal} from '@/api/user'
 
     export default {
         name: "user",
@@ -183,6 +183,10 @@
             };
         },
         methods: {
+            userUpdate(row) {
+                this.dialogVisible = true;
+                this.form = row;
+            },
             addUser() {
                 this.form = {};
                 this.dialogVisible = true;
@@ -205,7 +209,7 @@
             },
             handleSave() {
                 const params = this.form
-                saveOrUpd(params).then(() => {
+                save(params).then(() => {
                     this.loadData();
                     this.loadTotal();
                 }).catch(error => {
@@ -227,17 +231,23 @@
                 this.lastId = this.tableData[this.tableData.length - 1].appId;
                 this.loadData();
             },
-            appUpdate(row) {
-                this.dialogVisible = true;
-                this.form = row;
-            },
             changeSwitch(data) {
                 updUser(data).then(() => {
                     this.loadData();
                 }).catch(error => {
                     console.log(error);
                 });
-            }
+            },
+            loadTotal() {
+                if (!this.searchForm.appName) {
+                    this.searchForm = {};
+                }
+                getUserTotal(this.searchForm).then(response => {
+                    this.total = response.data;
+                }).catch(error => {
+                    console.log(error);
+                });
+            },
         },
         mounted() {
             this.loadData();
