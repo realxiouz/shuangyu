@@ -1,9 +1,16 @@
 import request from '@/utils/request';
 
-export function getNavList(params) {
+export function getPageList(params) {
   return request({
     // "" == params.lastId ? '/admin/nav/page/list/'+ params.pageFlag +'/'+ params.pageSize :
     url: '/admin/nav/page/list/'+ params.pageFlag + '/' + params.pageSize + '/' + params.lastId ,
+    method: 'get'
+  });
+}
+
+export function getNavList() {
+  return request({
+    url: '/admin/nav/get/all' ,
     method: 'get'
   });
 }
@@ -30,7 +37,7 @@ export function addNav(data) {
   });
 }
 
-export function edit(data) {
+export function update(data) {
   return request({
     url: '/admin/nav/update/one',
     method: 'post',

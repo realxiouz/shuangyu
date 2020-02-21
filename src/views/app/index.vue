@@ -42,7 +42,7 @@
         width="350">
         <template slot-scope="scope">
           <el-button @click="appUpdate(scope.row)" type="primary" size="mini">编辑</el-button>
-          <el-button @click.native.prevent="removeOne(scope.row.id,scope.$index,tableData)" type="danger"
+          <el-button @click.native.prevent="removeOne(scope.row.appId,scope.$index,tableData)" type="danger"
                      size="mini">删除
           </el-button>
         </template>
@@ -100,7 +100,7 @@
             };
         },
         methods: {
-            addApp:function(){
+            addApp(){
                 this.form = {};
                 this.dialogVisible= true;
             },
@@ -151,18 +151,18 @@
                     console.error(err)
                 })
             },
-            handleSizeChange: function (pageSize) {
+            handleSizeChange(pageSize) {
                 this.pageSize = pageSize;
                 this.loadData();
             },
-            prevClick: function () {
+            prevClick() {
                 this.pageFlag = 'prev';
-                this.lastId = this.tableData[0].id;
+                this.lastId = this.tableData[0].appId;
                 this.loadData();
             },
-            nextClick: function () {
+            nextClick() {
                 this.pageFlag = 'next';
-                this.lastId = this.tableData[this.tableData.length - 1].id;
+                this.lastId = this.tableData[this.tableData.length - 1].appId;
                 this.loadData();
             },
             changeSwitch(data) {
@@ -172,7 +172,7 @@
                     console.log(error);
                 });
             },
-            loadTotal: function () {
+            loadTotal() {
                 if (!this.searchForm.appName) {
                     this.searchForm = {};
                 }

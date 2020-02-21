@@ -119,6 +119,22 @@ export default new Router({
           meta: { title: 'Home', icon: 'home' }
         }
       ]
+    },
+    {
+      title: '导航管理',
+      path: '/nav',
+      uri: '/nav',
+      component: Layout,
+      children: [
+        {
+          title: '导航管理',
+          path: 'index',
+          name: 'Nav',
+          uri: '/nav/index',
+          component: () => import('@/views/nav/index'),
+          meta: { title: 'Home', icon: 'home' }
+        }
+      ]
     }
   ]
 });
