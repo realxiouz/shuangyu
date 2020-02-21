@@ -34,7 +34,7 @@ export function getAppTotal(data) {
 
 export function saveOrUpd(data) {
   return request({
-    url: '/app/saveOrUpd/one',
+    url: '/app/save/one',
     method: 'post',
     data
   });

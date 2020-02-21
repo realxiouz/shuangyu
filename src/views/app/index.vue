@@ -22,10 +22,10 @@
         label="应用名称"
         width="300"
       ></el-table-column>
-      <el-table-column prop="enable" label="是否启用">
+      <el-table-column prop="isEnable" label="是否启用">
         <template slot-scope="scope">
           <el-switch
-            v-model="scope.row.enable"
+            v-model="scope.row.isEnable"
             on-color="#00A854"
             on-text="启动"
             on-value=true
@@ -42,7 +42,7 @@
         width="350">
         <template slot-scope="scope">
           <el-button @click="appUpdate(scope.row)" type="primary" size="mini">编辑</el-button>
-          <el-button @click.native.prevent="removeOne(scope.row.id,scope.$index,tableData)" type="danger"
+          <el-button @click.native.prevent="removeOne(scope.row.appId,scope.$index,tableData)" type="danger"
                      size="mini">删除
           </el-button>
         </template>
@@ -66,7 +66,7 @@
           <el-input v-model="form.appName"></el-input>
         </el-form-item>
         <el-form-item label="是否启用">
-          <el-switch v-model="form.enable" :active-value=true :inactive-value=false></el-switch>
+          <el-switch v-model="form.isEnable" :active-value=true :inactive-value=false></el-switch>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -92,7 +92,7 @@
                 form: {
                     appId: '',
                     appName: '',
-                    enable: true
+                    isEnable: true
                 },
                 dialogVisible: false,
                 tableData: null,
@@ -157,12 +157,12 @@
             },
             prevClick: function () {
                 this.pageFlag = 'prev';
-                this.lastId = this.tableData[0].id;
+                this.lastId = this.tableData[0].appId;
                 this.loadData();
             },
             nextClick: function () {
                 this.pageFlag = 'next';
-                this.lastId = this.tableData[this.tableData.length - 1].id;
+                this.lastId = this.tableData[this.tableData.length - 1].appId;
                 this.loadData();
             },
             changeSwitch(data) {

@@ -8,6 +8,8 @@ export function signIn(data) {
   });
 }
 
+
+
 export function getUser(token) {
   return request({
     url: '/user/info',
@@ -31,9 +33,18 @@ export function signOut() {
   });
 }
 
-export function getUserList() {
+export function getUserList(pageFlag, pageSize, lastId,data) {
   return request({
-    url: '/admin/user/list',
-    method: 'get'
+    url: `/user/page/list/${pageFlag}/${pageSize}/${lastId}`,
+    method: 'get',
+    params: data
+  });
+}
+
+export function saveOrUpd(data) {
+  return request({
+    url: '/user/save/one',
+    method: 'post',
+    data
   });
 }

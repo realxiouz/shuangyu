@@ -23,10 +23,11 @@ export function getPageList(data) {
   });
 }
 
-export function getApis() {
+export function getTotal(data) {
   return request({
-    url: "/admin/api/get/all",
-    method: "get"
+    url: "/admin/role/get/total",
+    method: "get",
+    data
   });
 }
 
