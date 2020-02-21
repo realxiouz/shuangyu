@@ -8,7 +8,7 @@
         <el-button type="primary" @click="handleSearch">查询</el-button>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="dialogVisible = true">添加</el-button>
+        <el-button type="primary" @click="addApp">添加</el-button>
       </el-form-item>
     </el-form>
     <el-table :data="tableData" style="width: 100%">
@@ -100,11 +100,18 @@
             };
         },
         methods: {
+            addApp:function(){
+                this.form = {};
+                this.dialogVisible= true;
+            },
             handleSearch() {
                 this.loadData();
                 this.loadTotal();
             },
             loadData() {
+                if (!this.searchForm.appName) {
+                    this.searchForm = {};
+                }
                 getAppList(this.pageFlag, this.pageSize, this.lastId, this.searchForm).then(response => {
                     if (response.data) {
                         this.tableData = response.data
@@ -120,6 +127,7 @@
                 const params = this.form
                 saveOrUpd(params).then(() => {
                     this.loadData();
+                    this.loadTotal();
                 }).catch(error => {
                     console.log(error);
                 });
@@ -165,6 +173,9 @@
                 });
             },
             loadTotal: function () {
+                if (!this.searchForm.appName) {
+                    this.searchForm = {};
+                }
                 getAppTotal(this.searchForm).then(response => {
                     this.total = response.data;
                 }).catch(error => {
