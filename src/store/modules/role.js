@@ -1,4 +1,4 @@
-import { save, removeOne, getPageList,getApis,getNavs } from '@/api/role';
+import { save, removeOne, getPageList,getTotal,getNavs } from '@/api/role';
 import { getToken } from '@/utils/auth';
 
 
@@ -58,9 +58,9 @@ const actions = {
         });
     });
   },
-  getApis({ commit }){
+  getTotal({ commit },data){
     return new Promise((resolve, reject) => {
-      getApis()
+      getTotal(data)
         .then(response => {
           const { data } = response;
           resolve(data);
