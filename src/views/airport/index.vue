@@ -34,18 +34,18 @@
         </template>
       </el-table-column>
     </el-table>
-      <el-pagination
-        @size-change="handleSizeChange"
-        @prev-click="prevClick"
-        @next-click="nextClick"
-        :current-page="currentPage"
-        background
-        layout="total,sizes,prev,next"
-        prev-text="上一页"
-        next-text="下一页"
-        :page-size="pageSize"
-        :total="total">
-      </el-pagination>
+    <el-pagination
+      @size-change="handleSizeChange"
+      @prev-click="prevClick"
+      @next-click="nextClick"
+      :current-page="currentPage"
+      background
+      layout="total,sizes,prev,next"
+      prev-text="上一页"
+      next-text="下一页"
+      :page-size="pageSize"
+      :total="total">
+    </el-pagination>
     <el-dialog title="机场信息" :visible.sync="dialogVisible" width="30%">
       <el-form ref="form" :model="form" label-width="110px">
         <el-form-item prop="code" label="三字码">
@@ -71,7 +71,7 @@
     name: 'airport',
     data() {
       return {
-        searchForm:{},
+        searchForm: {},
         form: {
           code: '',
           name: '',
@@ -87,12 +87,12 @@
       };
     },
     methods: {
-      add:function(){
-        this.dialogVisible= true;
+      add() {
+        this.dialogVisible = true;
       },
-      loadData(lastId, pageSize, pageFlag,searchForm) {
+      loadData(lastId, pageSize, pageFlag, searchForm) {
         this.$store
-          .dispatch('airport/list', {pageSize, lastId, pageFlag,searchForm})
+          .dispatch('airport/list', {pageSize, lastId, pageFlag, searchForm})
           .then(data => {
             this.loadTotal(this.searchForm);
             this.tableData = data;
@@ -101,7 +101,7 @@
             console.log(error);
           });
       },
-      loadTotal: function () {
+      loadTotal() {
         this.$store
           .dispatch('airport/total', {})
           .then(data => {
@@ -113,19 +113,19 @@
       },
       handleSizeChange(pageSize) {
         this.pageSize = pageSize;
-        this.loadData('0', this.pageSize, this.pageFlag,this.searchForm);
+        this.loadData('0', this.pageSize, this.pageFlag, this.searchForm);
       },
-      prevClick () {
+      prevClick() {
         this.pageFlag = 'prev';
         this.lastId = this.tableData[0].id;
-        this.loadData(this.lastId, this.pageSize,this.searchForm);
+        this.loadData(this.lastId, this.pageSize, this.searchForm);
       },
-      nextClick () {
+      nextClick() {
         this.pageFlag = 'next';
         this.lastId = this.tableData[this.tableData.length - 1].id;
-        this.loadData(this.lastId, this.pageSize, this.pageFlag,this.searchForm);
+        this.loadData(this.lastId, this.pageSize, this.pageFlag, this.searchForm);
       },
-      removeOne (id) {
+      removeOne(id) {
         this.$confirm('是否确定删除机场信息?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -135,17 +135,17 @@
             .dispatch('airport/removeOne', id)
             .then(data => {
               console.log(data);
-              this.loadData('0', this.pageSize,this.pageFlag,this.searchForm);
+              this.loadData('0', this.pageSize, this.pageFlag, this.searchForm);
               this.loadTotal(this.searchForm);
             })
             .catch(error => {
               console.log(error);
             });
         }).catch(err => {
-          console.error(err)
-        })
+          console.error(err);
+        });
       },
-      edit (row) {
+      edit(row) {
         this.dialogVisible = true;
         this.form = row;
       },
@@ -157,7 +157,7 @@
           .dispatch('airport/save', this.form)
           .then(data => {
             console.log(data);
-            this.loadData('0', this.pageSize,this.pageFlag,this.searchForm);
+            this.loadData('0', this.pageSize, this.pageFlag, this.searchForm);
           })
           .catch(error => {
             console.log(error);
@@ -165,11 +165,11 @@
         this.dialogVisible = false;
       },
       handleSearch() {
-        this.loadData('0', this.pageSize,this.pageFlag,this.searchForm);
+        this.loadData('0', this.pageSize, this.pageFlag, this.searchForm);
       },
     },
     mounted() {
-      this.loadData(this.lastId, this.pageSize,this.pageFlag,this.searchForm);
+      this.loadData(this.lastId, this.pageSize, this.pageFlag, this.searchForm);
     }
   };
 </script>
