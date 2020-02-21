@@ -9,7 +9,7 @@
       </el-form-item>
       <el-button type="primary" @click="add">添加</el-button>
     </el-form>
-    <el-table :data="tableData" style="width: 100%" @row-dbclick = "edit">
+    <el-table :data="tableData" @row-dbclick="handleEdit" style="width: 100%" >
       <el-table-column
         prop="code"
         label="三字码"
@@ -68,19 +68,19 @@
 
 <script>
   export default {
-    name: 'airport',
+    name: "airport",
     data() {
       return {
         searchForm: {},
         form: {
-          code: '',
-          name: '',
-          city: ''
+          code: "",
+          name: "",
+          city: ""
         },
         dialogVisible: false,
         tableData: [],
-        lastId: '0',
-        pageFlag: 'next',
+        lastId: "0",
+        pageFlag: "next",
         pageSize: 10,
         total: 0,
         currentPage: 0
@@ -92,7 +92,7 @@
       },
       loadData() {
         this.$store
-          .dispatch('airport/list', {
+          .dispatch("airport/list", {
             pageSize: this.pageSize,
             lastId: this.lastId,
             pageFlag: this.pageFlag,
@@ -108,7 +108,7 @@
       },
       loadTotal() {
         this.$store
-          .dispatch('airport/total', this.searchForm)
+          .dispatch("airport/total", this.searchForm)
           .then(data => {
             this.total = data;
           })
@@ -118,27 +118,27 @@
       },
       handleSizeChange(pageSize) {
         this.pageSize = pageSize;
-        this.lastId = '0';
+        this.lastId = "0";
         this.loadData();
       },
       prevClick() {
-        this.pageFlag = 'prev';
+        this.pageFlag = "prev";
         this.lastId = this.tableData[0].id;
         this.loadData();
       },
       nextClick() {
-        this.pageFlag = 'next';
+        this.pageFlag = "next";
         this.lastId = this.tableData[this.tableData.length - 1].id;
         this.loadData();
       },
       removeOne(id) {
-        this.$confirm('是否确定删除机场信息?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
+        this.$confirm("是否确定删除机场信息?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
         }).then(() => {
           this.$store
-            .dispatch('airport/removeOne', id)
+            .dispatch("airport/removeOne", id)
             .then(data => {
               console.log(data);
               this.loadData();
@@ -150,8 +150,8 @@
           console.error(err);
         });
       },
-      edit(row, event, column) {
-        console.log(event,column);
+      handleEdit(row, event, column) {
+        console.log(row);
         this.dialogVisible = true;
         this.form = row;
       },
@@ -160,10 +160,10 @@
       },
       handleSave() {
         this.$store
-          .dispatch('airport/save', this.form)
+          .dispatch("airport/save", this.form)
           .then(data => {
             console.log(data);
-            this.lastId = '0';
+            this.lastId = "0";
             this.loadData();
           })
           .catch(error => {
@@ -172,9 +172,9 @@
         this.dialogVisible = false;
       },
       handleSearch() {
-        this.lastId = '0';
+        this.lastId = "0";
         this.loadData();
-      },
+      }
     },
     mounted() {
       this.loadData();
