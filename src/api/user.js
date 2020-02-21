@@ -8,19 +8,13 @@ export function signIn(data) {
   });
 }
 
+
+
 export function getUser(token) {
   return request({
     url: '/user/info',
     method: 'get',
     params: {token}
-  });
-}
-
-export function addUser(data) {
-  return request({
-    url: '/admin/add/user',
-    method: 'post',
-    data
   });
 }
 
@@ -31,9 +25,32 @@ export function signOut() {
   });
 }
 
-export function getUserList() {
+export function getUserList(pageFlag, pageSize, lastId,data) {
   return request({
-    url: '/admin/user/list',
-    method: 'get'
+    url: `/user/page/list/${pageFlag}/${pageSize}/${lastId}`,
+    method: 'get',
+    params: data
+  });
+}
+
+export function save(data) {
+  return request({
+    url: '/user/save',
+    method: 'post',
+    data
+  });
+}
+export function updUser(data) {
+  return request({
+    url: '/user/update/one',
+    method: 'post',
+    data
+  });
+}
+export function getUserTotal(data) {
+  return request({
+    url: `/user/total`,
+    method: 'get',
+    params: data
   });
 }

@@ -100,7 +100,7 @@
             };
         },
         methods: {
-            addApp:function(){
+            addApp(){
                 this.form = {};
                 this.dialogVisible= true;
             },
@@ -151,16 +151,16 @@
                     console.error(err)
                 })
             },
-            handleSizeChange: function (pageSize) {
+            handleSizeChange(pageSize) {
                 this.pageSize = pageSize;
                 this.loadData();
             },
-            prevClick: function () {
+            prevClick() {
                 this.pageFlag = 'prev';
                 this.lastId = this.tableData[0].appId;
                 this.loadData();
             },
-            nextClick: function () {
+            nextClick() {
                 this.pageFlag = 'next';
                 this.lastId = this.tableData[this.tableData.length - 1].appId;
                 this.loadData();
@@ -172,7 +172,7 @@
                     console.log(error);
                 });
             },
-            loadTotal: function () {
+            loadTotal() {
                 if (!this.searchForm.appName) {
                     this.searchForm = {};
                 }
