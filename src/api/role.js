@@ -18,7 +18,7 @@ export function removeOne(data) {
 
 export function getPageList(data) {
   return request({
-    url: "/admin/role/page/list/" + data.currentPage + "/" + data.pageSize,
+    url: "/admin/role/page/list/" +data.pageFlag+"/"+data.pageSize+"/"+data.lastId+"?"+data.map,
     method: "get"
   });
 }
@@ -37,3 +37,4 @@ export function getNavs() {
     method: "get"
   });
 }
+

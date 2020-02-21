@@ -4,6 +4,7 @@ import user from './modules/user';
 import role from './modules/role';
 import nav from './modules/nav';
 import airport from './modules/airport';
+import airline from './modules/airline';
 
 Vue.use(Vuex);
 
@@ -12,6 +13,7 @@ export default new Vuex.Store({
     user,
     role,
     airport,
+    airline,
     nav
   },
   state: {},

@@ -1,7 +1,5 @@
-import { save, removeOne, getPageList,getTotal,getNavs, } from '@/api/role';
-import { getToken } from '@/utils/auth';
-
-
+import {saveAirline, getAirlinePageList, removeAirline, getAirlineTotal} from '@/api/airline';
+import {getToken} from '@/utils/auth';
 
 const state = {
   token: getToken(),
@@ -22,9 +20,9 @@ const mutations = {
 };
 
 const actions = {
-  save({ commit }, params){
+  save({commit}, params) {
     return new Promise((resolve, reject) => {
-      save(params)
+      saveAirline(params)
         .then(response => {
           //const { data } = response;
           resolve(response);
@@ -34,11 +32,19 @@ const actions = {
         });
     });
   },
-  list({ commit },data) {
+  list({commit}, params) {
+    var data= params.searchForm;
+    var searchForm = {};
+    for (var attr in data){
+      if (data[attr]!=null && data[attr]!=undefined && data[attr]!=''){
+        searchForm[attr] = data[attr];
+      }
+    }
+    params.searchForm = searchForm;
     return new Promise((resolve, reject) => {
-      getPageList(data)
+      getAirlinePageList(params)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -46,11 +52,11 @@ const actions = {
         });
     });
   },
-  removeOne({ commit },data) {
+  total({commit}, params) {
     return new Promise((resolve, reject) => {
-      removeOne(data)
+      getAirlineTotal(params)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -58,23 +64,11 @@ const actions = {
         });
     });
   },
-  getTotal({ commit },data){
+  removeOne({commit}, data) {
     return new Promise((resolve, reject) => {
-      getTotal(data)
+      removeAirline(data)
         .then(response => {
-          const { data } = response;
-          resolve(data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  getNavs({ commit }){
-    return new Promise((resolve, reject) => {
-      getNavs()
-        .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
