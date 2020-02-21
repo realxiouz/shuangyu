@@ -8,7 +8,7 @@
         <el-button type="primary" @click="handleSearch">查询</el-button>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="dialogVisible = true">添加</el-button>
+        <el-button type="primary" @click="addApp">添加</el-button>
       </el-form-item>
     </el-form>
     <el-table :data="tableData" style="width: 100%">
@@ -100,6 +100,10 @@
             };
         },
         methods: {
+            addApp:function(){
+                this.form = {};
+                this.dialogVisible= true;
+            },
             handleSearch() {
                 this.loadData();
                 this.loadTotal();
