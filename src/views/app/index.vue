@@ -22,10 +22,10 @@
         label="应用名称"
         width="300"
       ></el-table-column>
-      <el-table-column prop="isEnable" label="是否启用">
+      <el-table-column prop="enable" label="是否启用">
         <template slot-scope="scope">
           <el-switch
-            v-model="scope.row.isEnable"
+            v-model="scope.row.enable"
             on-color="#00A854"
             on-text="启动"
             on-value=true
@@ -66,7 +66,7 @@
           <el-input v-model="form.appName"></el-input>
         </el-form-item>
         <el-form-item label="是否启用">
-          <el-switch v-model="form.isEnable" :active-value=true :inactive-value=false></el-switch>
+          <el-switch v-model="form.enable" :active-value=true :inactive-value=false></el-switch>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -92,7 +92,7 @@
                 form: {
                     appId: '',
                     appName: '',
-                    isEnable: true
+                    enable: true
                 },
                 dialogVisible: false,
                 tableData: null,
@@ -100,7 +100,7 @@
             };
         },
         methods: {
-            addApp:function(){
+            addApp(){
                 this.form = {};
                 this.dialogVisible= true;
             },
@@ -151,16 +151,16 @@
                     console.error(err)
                 })
             },
-            handleSizeChange: function (pageSize) {
+            handleSizeChange(pageSize) {
                 this.pageSize = pageSize;
                 this.loadData();
             },
-            prevClick: function () {
+            prevClick() {
                 this.pageFlag = 'prev';
                 this.lastId = this.tableData[0].appId;
                 this.loadData();
             },
-            nextClick: function () {
+            nextClick() {
                 this.pageFlag = 'next';
                 this.lastId = this.tableData[this.tableData.length - 1].appId;
                 this.loadData();
@@ -172,7 +172,7 @@
                     console.log(error);
                 });
             },
-            loadTotal: function () {
+            loadTotal() {
                 if (!this.searchForm.appName) {
                     this.searchForm = {};
                 }

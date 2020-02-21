@@ -58,7 +58,31 @@
         label="是否超级管理员"
         width="150"
       ></el-table-column>
-      <el-table-column prop="isEnable" label="是否启用"></el-table-column>
+      <el-table-column prop="isEnable" label="是否启用">
+        <template slot-scope="scope">
+          <el-switch
+            v-model="scope.row.enable"
+            on-color="#00A854"
+            on-text="启动"
+            on-value=true
+            off-color="#F04134"
+            off-text="禁止"
+            off-value=false
+            @change="changeSwitch(scope.row)">
+          </el-switch>
+        </template>
+      </el-table-column>
+      <el-table-column
+        fixed="right"
+        label="操作"
+        width="350">
+        <template slot-scope="scope">
+          <el-button @click="userUpdate(scope.row)" type="primary" size="mini">编辑</el-button>
+          <el-button @click.native.prevent="removeOne(scope.row.appId,scope.$index,tableData)" type="danger"
+                     size="mini">删除
+          </el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <el-pagination
       @size-change="handleSizeChange"
@@ -73,6 +97,9 @@
     </el-pagination>
     <el-dialog title="用户信息" :visible.sync="dialogVisible" width="30%">
       <el-form ref="form" :model="form" label-width="90px">
+        <el-form-item label="昵称">
+          <el-input v-model="form.nickName"></el-input>
+        </el-form-item>
         <el-form-item label="姓名">
           <el-input v-model="form.fullName"></el-input>
         </el-form-item>
@@ -113,8 +140,11 @@
         <el-form-item label="备注">
           <el-input type="textarea" v-model="form.comment"></el-input>
         </el-form-item>
+        <el-form-item label="是否超级管理员">
+          <el-switch v-model="form.super" :active-value=true :inactive-value=false></el-switch>
+        </el-form-item>
         <el-form-item label="是否启用">
-          <el-switch v-model="form.enable"></el-switch>
+          <el-switch v-model="form.enable" :active-value=true :inactive-value=false></el-switch>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -126,7 +156,7 @@
 </template>
 
 <script>
-    import {getUserList,saveOrUpd} from '@/api/user'
+    import {getUserList, save, updUser,getUserTotal} from '@/api/user'
 
     export default {
         name: "user",
@@ -138,12 +168,14 @@
                 pageSize: 10,
                 total: 0,
                 form: {
+                    nickName: '',
                     fullName: "",
                     sex: "男",
                     birthday: "",
                     phone: "",
                     idCardNo: "",
                     comment: "",
+                    super: false,
                     enable: true
                 },
                 dialogVisible: false,
@@ -151,9 +183,13 @@
             };
         },
         methods: {
-            addUser:function(){
+            userUpdate(row) {
+                this.dialogVisible = true;
+                this.form = row;
+            },
+            addUser() {
                 this.form = {};
-                this.dialogVisible= true;
+                this.dialogVisible = true;
             },
             loadData() {
                 getUserList(this.pageFlag, this.pageSize, this.lastId, this.searchForm).then(response => {
@@ -173,7 +209,7 @@
             },
             handleSave() {
                 const params = this.form
-                saveOrUpd(params).then(() => {
+                save(params).then(() => {
                     this.loadData();
                     this.loadTotal();
                 }).catch(error => {
@@ -181,20 +217,37 @@
                 });
                 this.dialogVisible = false;
             },
-            handleSizeChange: function (pageSize) {
+            handleSizeChange(pageSize) {
                 this.pageSize = pageSize;
                 this.loadData();
             },
-            prevClick: function () {
+            prevClick() {
                 this.pageFlag = 'prev';
                 this.lastId = this.tableData[0].appId;
                 this.loadData();
             },
-            nextClick: function () {
+            nextClick() {
                 this.pageFlag = 'next';
                 this.lastId = this.tableData[this.tableData.length - 1].appId;
                 this.loadData();
-            }
+            },
+            changeSwitch(data) {
+                updUser(data).then(() => {
+                    this.loadData();
+                }).catch(error => {
+                    console.log(error);
+                });
+            },
+            loadTotal() {
+                if (!this.searchForm.appName) {
+                    this.searchForm = {};
+                }
+                getUserTotal(this.searchForm).then(response => {
+                    this.total = response.data;
+                }).catch(error => {
+                    console.log(error);
+                });
+            },
         },
         mounted() {
             this.loadData();

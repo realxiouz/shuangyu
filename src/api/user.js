@@ -18,14 +18,6 @@ export function getUser(token) {
   });
 }
 
-export function addUser(data) {
-  return request({
-    url: '/admin/add/user',
-    method: 'post',
-    data
-  });
-}
-
 export function signOut() {
   return request({
     url: '/admin/user/sign/out',
@@ -41,10 +33,24 @@ export function getUserList(pageFlag, pageSize, lastId,data) {
   });
 }
 
-export function saveOrUpd(data) {
+export function save(data) {
   return request({
-    url: '/user/save/one',
+    url: '/user/save',
     method: 'post',
     data
+  });
+}
+export function updUser(data) {
+  return request({
+    url: '/user/update/one',
+    method: 'post',
+    data
+  });
+}
+export function getUserTotal(data) {
+  return request({
+    url: `/user/total`,
+    method: 'get',
+    params: data
   });
 }
