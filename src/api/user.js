@@ -35,7 +35,7 @@ export function getUserList(pageFlag, pageSize, lastId,data) {
 
 export function save(data) {
   return request({
-    url: '/user/save/one',
+    url: '/user/save',
     method: 'post',
     data
   });
