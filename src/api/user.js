@@ -40,3 +40,11 @@ export function getUserList(pageFlag, pageSize, lastId,data) {
     params: data
   });
 }
+
+export function saveOrUpd(data) {
+  return request({
+    url: '/user/save/one',
+    method: 'post',
+    data
+  });
+}

@@ -14,7 +14,7 @@
         <el-button type="primary" @click="handleSearch">查询</el-button>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="dialogVisible = true">添加</el-button>
+        <el-button type="primary" @click="addUser">添加</el-button>
       </el-form-item>
     </el-form>
     <el-table :data="tableData" style="width: 100%">
@@ -126,7 +126,7 @@
 </template>
 
 <script>
-    import {getUserList} from '@/api/user'
+    import {getUserList,saveOrUpd} from '@/api/user'
 
     export default {
         name: "user",
@@ -151,6 +151,10 @@
             };
         },
         methods: {
+            addUser:function(){
+                this.form = {};
+                this.dialogVisible= true;
+            },
             loadData() {
                 getUserList(this.pageFlag, this.pageSize, this.lastId, this.searchForm).then(response => {
                     console.log(response.data)
@@ -168,14 +172,13 @@
                 this.dialogVisible = false;
             },
             handleSave() {
-                this.$store
-                    .dispatch("user/add", this.form)
-                    .then(data => {
-                        console.log(data);
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
+                const params = this.form
+                saveOrUpd(params).then(() => {
+                    this.loadData();
+                    this.loadTotal();
+                }).catch(error => {
+                    console.log(error);
+                });
                 this.dialogVisible = false;
             },
             handleSizeChange: function (pageSize) {
