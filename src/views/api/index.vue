@@ -2,13 +2,13 @@
   <div class="app-container">
     <el-form :inline="true" :model="searchForm">
       <el-form-item label="api名称">
-        <el-input v-model="searchForm.apiName" placeholder="api名称">添加</el-input>
+        <el-input v-model="searchForm.apiName" placeholder="api名称"></el-input>
         </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="handleSearch">查询</el-button>
         </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="dialogVisible = true">添加</el-button>
+        <el-button type="primary" @click="addApp">添加</el-button>
       </el-form-item>
     </el-form>
         <el-table :data="tableData" style="width: 100%">
@@ -99,14 +99,18 @@
       };
     },
     methods: {
+      addApp:function(){
+        this.form = {};
+        this.dialogVisible= true;
+      },
       handleSearch() {
-        if (!this.searchForm.apiName) {
-          this.searchForm = {};
-        }
         this.loadData();
         this.loadTotal();
       },
       loadData() {
+        if (!this.searchForm.apiName) {
+          this.searchForm = {};
+        }
         getApiList(this.pageFlag,this.pageSize, this.lastId,this.searchForm).then(response => {
           if (response.data){
             this.tableData = response.data
@@ -122,6 +126,7 @@
         const params = this.form
         saveOrUpd(params).then(() => {
           this.loadData();
+          this.loadTotal();
         }).catch(error => {
           console.log(error);
         });
@@ -145,7 +150,6 @@
           console.error(err);
         });
       },
-      // 初始页currentPage、初始每页数据数pagesize和数据data
       handleSizeChange: function (pageSize) {
         this.pageSize = pageSize;
         this.loadData();
@@ -169,6 +173,9 @@
         });
       },
       loadTotal: function () {
+        if (!this.searchForm.apiName) {
+          this.searchForm = {};
+        }
         getApiTotal(this.searchForm).then(response => {
           this.total = response.data;
         }).catch(error => {
