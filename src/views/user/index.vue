@@ -59,6 +59,17 @@
         width="150"
       ></el-table-column>
       <el-table-column prop="isEnable" label="是否启用"></el-table-column>
+      <el-table-column
+        fixed="right"
+        label="操作"
+        width="350">
+        <template slot-scope="scope">
+          <el-button @click="userUpdate(scope.row)" type="primary" size="mini">编辑</el-button>
+          <el-button @click.native.prevent="removeOne(scope.row.appId,scope.$index,tableData)" type="danger"
+                     size="mini">删除
+          </el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <el-pagination
       @size-change="handleSizeChange"
@@ -151,7 +162,7 @@
             };
         },
         methods: {
-            addUser:function(){
+            addUser(){
                 this.form = {};
                 this.dialogVisible= true;
             },
@@ -181,19 +192,23 @@
                 });
                 this.dialogVisible = false;
             },
-            handleSizeChange: function (pageSize) {
+            handleSizeChange(pageSize) {
                 this.pageSize = pageSize;
                 this.loadData();
             },
-            prevClick: function () {
+            prevClick() {
                 this.pageFlag = 'prev';
                 this.lastId = this.tableData[0].appId;
                 this.loadData();
             },
-            nextClick: function () {
+            nextClick() {
                 this.pageFlag = 'next';
                 this.lastId = this.tableData[this.tableData.length - 1].appId;
                 this.loadData();
+            },
+            appUpdate(row) {
+                this.dialogVisible = true;
+                this.form = row;
             }
         },
         mounted() {
