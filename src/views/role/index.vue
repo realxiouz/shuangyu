@@ -66,7 +66,7 @@
           </el-pagination>
         </h-page-footer>
       <!--</el-main>-->
-    <el-dialog title="角色" :visible.sync="dialogVisible" width="30%">
+    <el-dialog title="角色" :visible.sync="dialogVisible"  width="30%">
       <el-form ref="form" :model="form" label-width="95px">
         <el-input v-show="false" v-model="navs"></el-input>
         <el-input v-show="false" v-model="form.roleId"></el-input>
@@ -76,6 +76,7 @@
         <el-form-item label="是否启用">
           <el-switch v-model="form.enable"></el-switch>
         </el-form-item>
+        <el-scrollbar style="height:80%">
         <el-form-item label="选择菜单">
         <el-tree
           :data="treeData"
@@ -87,6 +88,7 @@
           :props="defaultProps">
         </el-tree>
         </el-form-item>
+        </el-scrollbar>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="handleCancel">取 消</el-button>
@@ -96,8 +98,8 @@
   </div>
 </template>
 
-import {getPageList} from '@/api/role';
 <script>
+  import {getPageList,getTotal} from '@/api/role';
   export default {
     name: "role",
     data() {
@@ -126,17 +128,16 @@ import {getPageList} from '@/api/role';
     },
     methods: {
       loadData() {
-        this.$store
-          .dispatch("role/list", {pageFlag:this.pageFlag,pageSize: this.pageSize, lastId:this.lastId,searchForm:this.searchForm })
-          .then(data => {
-            //把data里面的navs只显示navName
-            for (var i=0;i<data.length;i++) {
-              data[i].navIds = this.handleNavIds(data[i].navs);
-              data[i].navNames =  this.handleNavNames(data[i].navs);
-            }
-            //把nav的id保存起来，编辑的时候，显示tree的选中状态
-            this.tableData = data;
-          })
+        getPageList(this.pageFlag, this.pageSize,this.lastId,this.searchForm).then(response => {
+          //把data里面的navs只显示navName
+          var data = response.data;
+          for (var i=0;i<data.length;i++) {
+            data[i].navIds = this.handleNavIds(data[i].navs);
+            data[i].navNames =  this.handleNavNames(data[i].navs);
+          }
+          //把nav的id保存起来，编辑的时候，显示tree的选中状态
+          this.tableData = data;
+        })
           .catch(error => {
             console.log(error);
           });
@@ -151,13 +152,13 @@ import {getPageList} from '@/api/role';
         }
         var navIds = [];
         navs.forEach((nav)=> {
-          navIds.push(nav.navId);
+          navIds.push(nav.id);
           if (nav.children != null) {
             nav.children.forEach((child) => {
-              navIds.push(child.navId);
+              navIds.push(child.id);
               if (child.children != null) {
                 child.children.forEach((childChild) => {
-                  navIds.push(childChild.navId);
+                  navIds.push(childChild.id);
                 });
               }
             });
@@ -174,7 +175,7 @@ import {getPageList} from '@/api/role';
         var navnames = "";
         navs.forEach((nav)=>{
           if(nav.label!=null) {
-            navnames = "," + nav.label;
+            navnames += "," + nav.label;
           }
           if (nav.children!=null){
             nav.children.forEach((child)=>{
@@ -218,9 +219,9 @@ import {getPageList} from '@/api/role';
           });
       },
       handleSave() {
-        var navsEntity = this.getSelectedNavs(this.$refs.tree.getCheckedNodes());
-        this.form.navs = navsEntity;
-        console.log("navsEntity:"+navsEntity);
+        console.log("this.$refs.tree.getCheckedNodes()"+JSON.stringify(this.$refs.tree.getCheckedNodes()));
+        this.form.navs = this.getSelectedNavs(this.$refs.tree.getCheckedNodes());
+        console.log("navsEntity:"+this.getSelectedNavs(this.$refs.tree.getCheckedNodes()));
         this.save(this.form);
         this.dialogVisible = false;
       },
@@ -278,9 +279,9 @@ import {getPageList} from '@/api/role';
         nodes.forEach((node)=> {
           navChilds.forEach((nav)=> {
             //首先对比nav和node的id是否相同，不相同，跳过
-            if (nav.navId == node.id) { //相同，再对比他们的children
+            if (nav.id == node.id) { //相同，再对比他们的children
               var navi = {};
-              navi.navId = nav.navId;
+              navi.id = nav.id;
               navi.label = nav.label;
               navi.isEnable = nav.isEnable;
               navi.uri = nav.uri;
@@ -299,7 +300,7 @@ import {getPageList} from '@/api/role';
         var ret = null;
         for (var i = 0; i < navs.length; i++) {
           var nav = navs[i];
-          if (nav.navId == node.id) {
+          if (nav.id == node.id) {
             ret = nav;
             break;
           }
@@ -326,7 +327,6 @@ import {getPageList} from '@/api/role';
       },
       getSelectedNavs: function(nodes) {
         // var navs = this.getNavs()
-        console.log("node===" + nodes);
         var navsEntitys = [];
         nodes.forEach((node) => {
           //找到与node对应的那个nav
@@ -335,7 +335,7 @@ import {getPageList} from '@/api/role';
             return [];
           }
           var navi = {};
-          navi.navId = nav.navId;
+          navi.id = nav.id;
           navi.label = nav.label;
           navi.isEnable = nav.isEnable;
           navi.uri = nav.uri;
@@ -353,7 +353,7 @@ import {getPageList} from '@/api/role';
           var childs = [];
           var node = nodes[i];
           var tree = {};
-          tree.id = node.navId;
+          tree.id = node.id;
           tree.label = node.label;
           if (node.children!=null){
             childs = this.initChildrenNode(node.children);
@@ -373,21 +373,16 @@ import {getPageList} from '@/api/role';
             var childrenNodes = this.initChildrenNode(node.children);
             tree.children = childrenNodes;
           }
-          tree.id = node.navId;
+          tree.id = node.id;
           tree.label = node.label;
           trees.push(tree);
         }
-       console.log("-----------trees------"+JSON.stringify(trees));
        this.treeData = trees;
       },
       loadTotal: function () {
-        if (!this.searchForm.appName) {
-          this.searchForm = {};
-        }
-        this.$store
-          .dispatch("role/getTotal",this.searchForm)
-          .then(data => {
-            this.total = data;
+        getTotal(this.searchForm)
+          .then(resp => {
+            this.total = resp.data;
           })
           .catch(error => {
             console.log(error);
@@ -415,7 +410,6 @@ import {getPageList} from '@/api/role';
     }
   };
 </script>
-
 <style scoped>
   .line {
     text-align: center;

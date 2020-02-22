@@ -1,4 +1,4 @@
-import { save, removeOne, getPageList,getTotal,getNavs, } from '@/api/role';
+import { save, removeOne,getNavs, } from '@/api/role';
 import { getToken } from '@/utils/auth';
 
 
@@ -34,18 +34,6 @@ const actions = {
         });
     });
   },
-  list({ commit },data) {
-    return new Promise((resolve, reject) => {
-      getPageList(data)
-        .then(response => {
-          const { data } = response;
-          resolve(data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
   removeOne({ commit },data) {
     return new Promise((resolve, reject) => {
       removeOne(data)
@@ -58,18 +46,7 @@ const actions = {
         });
     });
   },
-  getTotal({ commit },data){
-    return new Promise((resolve, reject) => {
-      getTotal(data)
-        .then(response => {
-          const { data } = response;
-          resolve(data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
+
   getNavs({ commit }){
     return new Promise((resolve, reject) => {
       getNavs()
