@@ -37,7 +37,7 @@
         prop="birthDate"
         label="出生日期"
         width="150"
-      ></el-table-column>
+      ><i class="el-icon-time"/></el-table-column>
       <el-table-column
         prop="phone"
         label="手机号"
@@ -90,6 +90,7 @@
         label="操作"
         width="350">
         <template slot-scope="scope">
+          <el-button @click="resetPwd(scope.row)" type="primary" size="mini">重置密码</el-button>
           <el-button @click="userUpdate(scope.row)" type="primary" size="mini">编辑</el-button>
           <el-button @click.native.prevent="removeOne(scope.row.appId,scope.$index,tableData)" type="danger"
                      size="mini">删除
@@ -121,14 +122,6 @@
             <el-option label="男" value="男"></el-option>
             <el-option label="女" value="女"></el-option>
           </el-select>
-        </el-form-item>
-        <el-form-item label="出生日期">
-          <el-date-picker
-            type="date"
-            placeholder="选择日期"
-            v-model="form.birthDate"
-            style="width: 100%;"
-          ></el-date-picker>
         </el-form-item>
         <el-form-item label="手机号码">
           <el-input
@@ -201,6 +194,9 @@
             };
         },
         methods: {
+            resetPwd(row) {
+                console.log(row)
+            },
             userUpdate(row) {
                 this.dialogVisible = true;
                 this.form = row;
@@ -228,6 +224,7 @@
             handleSave() {
                 const params = this.form
                 save(params).then(() => {
+                    console.log(params);
                     this.loadData();
                     this.loadTotal();
                 }).catch(error => {
@@ -265,7 +262,7 @@
                 }).catch(error => {
                     console.log(error);
                 });
-            },
+            }
         },
         mounted() {
             this.loadData();
