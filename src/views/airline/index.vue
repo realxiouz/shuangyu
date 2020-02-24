@@ -1,8 +1,8 @@
 <template>
   <div class="app-container">
     <el-form :inline="true" :model="searchForm">
-      <el-form-item label="三字码">
-        <el-input v-model="searchForm.code" placeholder="三字码"></el-input>
+      <el-form-item label="航司二字码">
+        <el-input v-model="searchForm.airlineCode" placeholder="航司二字码"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="handleSearch">查询</el-button>
@@ -11,18 +11,18 @@
     </el-form>
     <el-table :data="tableData" ref="tableData" @row-dblclick="handleEdit" style="width: 100%">
       <el-table-column
-        prop="code"
-        label="三字码"
-        width="180"
-      ></el-table-column>
-      <el-table-column
-        prop="name"
-        label="机场名称"
+        prop="airlineName"
+        label="航司名称"
         width="300"
       ></el-table-column>
       <el-table-column
-        prop="city"
-        label="机场所在城市"
+        prop="airlineCode"
+        label="航司二字码"
+        width="180"
+      ></el-table-column>
+      <el-table-column
+        prop="cabins"
+        label="舱位"
         width="300"
       ></el-table-column>
       <el-table-column
@@ -30,7 +30,7 @@
         width="200">
         <template slot-scope="scope">
           <el-button @click="handleEdit(scope.row)" type="primary" size="small">编辑</el-button>
-          <el-button @click="removeOne(scope.row.airportId)" type="danger" size="small">删除</el-button>
+          <el-button @click="removeOne(scope.row.airlineId)" type="danger" size="small">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -46,16 +46,16 @@
       :page-size="pageSize"
       :total="total">
     </el-pagination>
-    <el-dialog title="机场信息" :visible.sync="dialogVisible" width="30%">
+    <el-dialog title="航司舱位信息" :visible.sync="dialogVisible" width="30%">
       <el-form ref="form" :model="form" label-width="110px">
-        <el-form-item prop="code" label="三字码">
-          <el-input v-model="form.code"></el-input>
+        <el-form-item prop="airlineName" label="航司名称">
+          <el-input v-model="form.airlineName"></el-input>
         </el-form-item>
-        <el-form-item prop="name" label="机场名称">
-          <el-input v-model="form.name"></el-input>
+        <el-form-item prop="airlineCode" label="航司二字码">
+          <el-input v-model="form.airlineCode"></el-input>
         </el-form-item>
-        <el-form-item prop="city" label="机场所在城市">
-          <el-input v-model="form.city"></el-input>
+        <el-form-item prop="cabins" label="舱位">
+          <el-input v-model="form.cabins"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -68,14 +68,14 @@
 
 <script>
   export default {
-    name: 'airport',
+    name: 'airline',
     data() {
       return {
         searchForm: {},
         form: {
-          code: '',
-          name: '',
-          city: ''
+          airlineName: '',
+          airlineCode: '',
+          cabins: ''
         },
         dialogVisible: false,
         tableData: [],
@@ -92,7 +92,7 @@
       },
       loadData() {
         this.$store
-          .dispatch('airport/list', {
+          .dispatch('airline/list', {
             pageSize: this.pageSize,
             lastId: this.lastId,
             pageFlag: this.pageFlag,
@@ -108,7 +108,7 @@
       },
       loadTotal() {
         this.$store
-          .dispatch('airport/total', this.searchForm)
+          .dispatch('airline/total', this.searchForm)
           .then(data => {
             this.total = data;
           })
@@ -123,22 +123,22 @@
       },
       prevClick() {
         this.pageFlag = 'prev';
-        this.lastId = this.tableData[0].airportId;
+        this.lastId = this.tableData[0].airlineId;
         this.loadData();
       },
       nextClick() {
         this.pageFlag = 'next';
-        this.lastId = this.tableData[this.tableData.length - 1].airportId;
+        this.lastId = this.tableData[this.tableData.length - 1].airlineId;
         this.loadData();
       },
       removeOne(id) {
-        this.$confirm('是否确定删除机场信息?', '提示', {
+        this.$confirm('是否确定删除航司舱位信息?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           this.$store
-            .dispatch('airport/removeOne', id)
+            .dispatch('airline/removeOne', id)
             .then(data => {
               console.log(data);
               this.loadData();
@@ -159,7 +159,7 @@
       },
       handleSave() {
         this.$store
-          .dispatch('airport/save', this.form)
+          .dispatch('airline/save', this.form)
           .then(data => {
             console.log(data);
             this.lastId = '0';

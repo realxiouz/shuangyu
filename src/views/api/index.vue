@@ -13,8 +13,18 @@
     </el-form>
         <el-table :data="tableData" style="width: 100%">
           <el-table-column
-            prop="apiId"
-            label="ID"
+          prop="apiId"
+          label="ID"
+          width="200"
+        ></el-table-column>
+          <el-table-column
+            prop="URL"
+            label="URL"
+            width="200"
+          ></el-table-column>
+          <el-table-column
+            prop="apiClass"
+            label="类别"
             width="200"
           ></el-table-column>
           <el-table-column
@@ -42,7 +52,7 @@
             width="350">
             <template slot-scope="scope">
               <el-button @click="handleUpdate(scope.row)" type="primary" size="mini">编辑</el-button>
-              <el-button  @click.native.prevent="removeOne(scope.row.id,scope.$index,tableData)" type="danger"
+              <el-button  @click.native.prevent="removeOne(scope.row.apiId,scope.$index,tableData)" type="danger"
                           size="mini">删除</el-button>
             </template>
           </el-table-column>
@@ -62,7 +72,13 @@
     <el-dialog title="Api信息" :visible.sync="dialogVisible" width="30%">
       <el-form ref="form" :model="form" label-width="90px">
         <el-form-item label="Api名称">
-          <el-input v-model="form.apiName"></el-input>
+        <el-input v-model="form.apiName"></el-input>
+      </el-form-item>
+        <el-form-item label="URL">
+          <el-input v-model="form.uri"></el-input>
+        </el-form-item>
+        <el-form-item label="类别">
+          <el-input v-model="form.category"></el-input>
         </el-form-item>
         <el-form-item label="是否启用">
           <el-switch v-model="form.enable" :active-value=true :inactive-value=false></el-switch>
@@ -78,7 +94,7 @@
 <script>
 
   // eslint-disable-next-line no-unused-vars
-  import { getApiList,getApiTotal,removeApi,saveOrUpd,updApi } from '@/api/api'
+  import { getApiList,getApiTotal,removeApi,save,updApi } from '@/api/api'
 
   export default {
     name: 'api',
@@ -91,6 +107,8 @@
         form: {
           apiId: '',
           apiName: '',
+          uri: '',
+          category: '',
           enable: true
         },
         dialogVisible: false,
@@ -124,7 +142,7 @@
       },
       handleSave() {
         const params = this.form
-        saveOrUpd(params).then(() => {
+        save(params).then(() => {
           this.loadData();
           this.loadTotal();
         }).catch(error => {
@@ -156,12 +174,12 @@
       },
       prevClick:function(){
         this.pageFlag = 'prev';
-        this.lastId = this.tableData[0].id;
+        this.lastId = this.tableData[0].apiId;
         this.loadData();
       },
       nextClick:function(){
         this.pageFlag = 'next';
-        this.lastId = this.tableData[this.tableData.length - 1].id;
+        this.lastId = this.tableData[this.tableData.length - 1].apiId;
         this.loadData();
       },
 
@@ -182,6 +200,7 @@
           console.log(error);
         });
       },
+
     },
     mounted() {
       this.loadData();

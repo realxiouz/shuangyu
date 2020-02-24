@@ -32,7 +32,7 @@ export function getApiTotal(data) {
   });
 }
 
-export function saveOrUpd(data) {
+export function save(data) {
   return request({
     url: '/api/save/one',
     method: 'post',
