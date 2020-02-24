@@ -18,12 +18,12 @@
           width="200"
         ></el-table-column>
           <el-table-column
-            prop="URL"
+            prop="uri"
             label="URL"
             width="200"
           ></el-table-column>
           <el-table-column
-            prop="apiClass"
+            prop="category"
             label="类别"
             width="200"
           ></el-table-column>
@@ -117,7 +117,7 @@
       };
     },
     methods: {
-      addApp:function(){
+      addApp(){
         this.form = {};
         this.dialogVisible= true;
       },
@@ -168,16 +168,16 @@
           console.error(err);
         });
       },
-      handleSizeChange: function (pageSize) {
+      handleSizeChange(pageSize) {
         this.pageSize = pageSize;
         this.loadData();
       },
-      prevClick:function(){
+      prevClick(){
         this.pageFlag = 'prev';
         this.lastId = this.tableData[0].apiId;
         this.loadData();
       },
-      nextClick:function(){
+      nextClick(){
         this.pageFlag = 'next';
         this.lastId = this.tableData[this.tableData.length - 1].apiId;
         this.loadData();
