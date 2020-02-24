@@ -1,15 +1,13 @@
 <template>
-  <div class="app-container">
+  <div class="custom-tree-node">
     <el-container>
       <el-aside width="300px">
         <el-button type="text" @click="rootAdd">添加</el-button>
         <!--  导航树  -->
         <el-tree
           accordion
-          node-key="id"
-          ref="tree"
           :data="treeData"
-          :default-checked-keys="curLine"
+          node-key="id"
           :expand-on-click-node="false"
           @node-click="handleNodeClick">
           <span class="tree-node" slot-scope="{ node, data }">
@@ -18,7 +16,7 @@
               <el-button
                 type="text"
                 size="mini"
-                @click="() => nodeAdd(node, data)">
+                @click="() => nodeAdd(data)">
                 添加
               </el-button>
               <el-button
@@ -51,7 +49,7 @@
             label="角色名称"
             width="160"
           ></el-table-column>
-          <el-table-column prop="isEnable" label="是否启用" :formatter="formatBoolean"></el-table-column>
+          <el-table-column prop="isEnable" label="是否启用" ></el-table-column>
           <el-table-column prop="apis" label="apis"></el-table-column>
           <el-table-column prop="navs" label="导航菜单"></el-table-column>
           <el-table-column
@@ -67,6 +65,7 @@
           </el-table-column>
         </el-table>
       </el-main>
+
     </el-container>
     <el-dialog title="导航信息" :visible.sync="dialogVisible" width="30%">
       <el-form ref="form" :model="form" label-width="90px">
@@ -97,38 +96,33 @@
   </div>
 </template>
 
+
 <script>
   export default {
     data() {
       return {
         dialogVisible: false,
         nodeData: {},
-        currentNode: {},
         rootNav: false,
         treeData: [],
+        curLine: {},
+        curNode: {},
         tableData: [],
-        curLine: [],
+        formatBoolean: true,
         form: {
-          id: 0,
-          label: "",
+          navId: '',
+          label: '',
           enable: true,
-          url: "",
-          children: []
+          url: '',
+          children:[]
         },
         defaultProps: {
-          children: "children",
-          label: "label"
+          children: 'children',
+          label: 'label'
         }
       };
     },
     methods: {
-      getParentNode(node) {
-        if (node.parent == null) {
-          return node;
-        } else {
-          return this.getParentNode(node.parent);
-        }
-      },
       /*点击添加顶级导航*/
       rootAdd() {
         //判断添加的导航是否是顶级导航
@@ -136,8 +130,7 @@
         this.dialogVisible = true;
       },
       /*点击添加节点导航*/
-      nodeAdd(node, data) {
-        this.currentNode = node;
+      nodeAdd(data){
         //添加的导航菜单不是顶级菜单
         this.rootNav = false;
         this.nodeData = data;
@@ -147,7 +140,7 @@
         this.dialogVisible = false;
       },
       /*添加顶级导航*/
-      rootPush() {
+      rootPush(){
         let rootNav = {};
         rootNav.label = this.form.label;
         rootNav.url = this.form.url;
@@ -156,12 +149,12 @@
         this.treeData.push(rootNav);
         //将该导航分支传到后端处理
         this.$store
-          .dispatch("nav/add", this.form)
+          .dispatch( 'nav/add', this.form)
           .then(data => {
-            //console.log(data);
+            console.log(data);
           })
           .catch(error => {
-            //console.log(error);
+            console.log(error);
           });
         this.clearForm();
         this.dialogVisible = false;
@@ -174,23 +167,20 @@
           label: _label,
           url: this.form.url,
           enable: this.form.enable,
-          children: []
-        };
+          children: [] };
         if (!data.children) {
-          this.$set(data, "children", []);
+          this.$set(data, 'children', []);
         }
         data.children.push(newChild);
         //将该导航分支传到后端
-        console.log(data);
-        console.log(this.getParentNode(this.currentNode));
         this.$store
-          .dispatch("nav/update", data)
-          .then(data => {
-            //console.log(data);
-          })
-          .catch(error => {
-            //console.log(error);
-          });
+            .dispatch( 'nav/updateOne',this.curLine.data)
+            .then(data => {
+              console.log(data);
+            })
+            .catch(error => {
+              console.log(error);
+            });
         this.clearForm();
       },
       /*移除树状节点导航*/
@@ -201,16 +191,17 @@
         children.splice(index, 1);
       },
       handleNodeClick(data, node) {
-        //console.log(node);
+        this.curNode = node;
+        this.getCurLine();
       },
       handleSave() {
-        this.dialogVisible = false;
+          this.dialogVisible = false;
 
-        if (this.rootNav) {
-          this.rootPush();
-        } else {
-          this.append(this.nodeData);
-        }
+          if (this.rootNav){
+            this.rootPush();
+          }else{
+            this.append(this.nodeData);
+          }
       },
       handleEdit(index, row) {
         this.form = row;
@@ -218,49 +209,51 @@
       },
       handleDelete(index, row) {
         this.$store
-          .dispatch("nav/delete", row.id)
+          .dispatch('nav/delete', row.id)
           .then(data => {
-            //console.log(data);
+            console.log(data);
           })
           .catch(error => {
-            //console.log(error);
+            console.log(error);
           });
         this.loadData();
       },
       loadData() {
         this.$store
-          .dispatch("nav/getNavList")
+          .dispatch('nav/getNavList')
           .then(data => {
             this.treeData = data;
           })
           .catch(error => {
-            //console.log(error);
+            console.log(error);
           });
       },
-      clearForm() {
+      clearForm(){
         this.form = {
-          id: null,
-          label: "",
+          navId: '',
+          label: '',
           enable: true,
-          url: "",
-          children: []
+          url: '',
+          children:[]
         };
       },
-      initTreeData: function(data) {
-        data.forEach(function(item) {
-          this.initNodeData(item);
-        });
+      getCurLine(){
+        let tempNode = this.curNode;
+        if (tempNode.parent.id == 0){
+          this.curLine = tempNode;
+        }else{
+          while(tempNode.parent.id != 0){
+            tempNode = tempNode.parent;
+            this.curLine = tempNode;
+          }
+        }
+        console.log(this.curLine);
+        console.log(this.curLine.data);
       },
-      initNode: function() {
-        /*let tempNode = {};
-        tempNode = {
-          label:node.navName,*/
-
-      }
-    },
+  },
     mounted() {
       this.loadData();
-    }
+    },
 
   };
 </script>
@@ -269,8 +262,7 @@
   .line {
     text-align: center;
   }
-
-  .tree-node {
+  .custom-tree-node {
     flex: 1;
     display: flex;
     align-items: center;
