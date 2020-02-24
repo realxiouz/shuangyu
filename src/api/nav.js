@@ -38,6 +38,7 @@ export function addNav(data) {
 }
 
 export function update(data) {
+  debugger;
   return request({
     url: '/admin/nav/update/one',
     method: 'post',

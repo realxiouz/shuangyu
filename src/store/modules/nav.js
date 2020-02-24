@@ -25,8 +25,7 @@ const actions = {
         });
     });
   },
-  update({ commit }, params){
-    debugger;
+  updateOne({ commit }, params){
     return new Promise((resolve, reject) => {
       update(params)
         .then(response => {
