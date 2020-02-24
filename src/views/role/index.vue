@@ -247,7 +247,7 @@
 
       },
       editRole: function(row) {
-        this.form.treeData = this.getNavs();
+        this.getNavs();
         this.dialogVisible = true;
         this.form.roleId = row.roleId;
         this.form.roleName = row.roleName;
@@ -307,13 +307,13 @@
         }
         //循环第二级nav
         if (!ret){
-          for (var j = 0; j < navs.length; j++) {
+          for (let j = 0; j < navs.length; j++) {
             return this.findNavByTreeNode(node,navs[j].children);
           }
         }
         //循环第三级nav
         if (!ret){
-          for (var j = 0; j < navs.length; j++) {
+          for (let j = 0; j < navs.length; j++) {
             if(!navs[j].children){
               navs[j].children.forEach((third)=>{
                 if (!third.children){
