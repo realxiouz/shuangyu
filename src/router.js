@@ -150,6 +150,21 @@ export default new Router({
           meta: { title: 'Home', icon: 'home' }
         }
       ]
+    },{
+      title: '退改规则',
+      path: '/refundChangeRule',
+      uri: '/refundChangeRule',
+      component: Layout,
+      children: [
+        {
+          title: '退改规则',
+          path: 'index',
+          name: 'refundChangeRule',
+          uri: '/refundChangeRule/index',
+          component: () => import('@/views/refundChangeRule/index'),
+          meta: { title: 'Home', icon: 'home' }
+        }
+      ]
     }
   ]
 });

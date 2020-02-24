@@ -15,6 +15,13 @@ export function getAirlinePageList(data) {
     params: data.searchForm
   });
 }
+export function getAirlineList(data) {
+  return request({
+    url: '/flight/airline/list',
+    method: 'get',
+    params: data.searchForm
+  });
+}
 
 export function getAirlineTotal(params) {
   return request({
