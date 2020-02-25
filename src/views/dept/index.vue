@@ -62,7 +62,7 @@
         label="操作"
         width="300">
         <template slot-scope="scope">
-          <el-button @click="handleadd(scope.row.attributes)" type="success" size="mini">添加子级</el-button>
+          <el-button @click="handleadd(scope.row.attributes.deptId)" type="success" size="mini">添加子级</el-button>
           <el-button @click="handleUpdate(scope.row.attributes)" type="primary" size="mini">编辑</el-button>
           <el-button @click.native.prevent="removeOne(scope.row.attributes.deptId)" type="danger"
                      size="mini">删除
@@ -137,9 +137,9 @@
             };
         },
         methods: {
-            handleadd(row) {
-                this.form.parentId = row.deptId;
-                console.log(row);
+            handleadd(deptId) {
+                this.form.parentId = deptId;
+                console.log(deptId);
                 this.dialogVisible = true;
             },
             add() {
