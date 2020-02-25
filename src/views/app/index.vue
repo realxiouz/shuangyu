@@ -12,8 +12,7 @@
       </el-form-item>
     </el-form>
     <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;"
-              border
-              default-expand-all>
+              border>
       <el-table-column
         prop="appId"
         label="应用唯一标识"

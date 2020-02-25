@@ -13,7 +13,6 @@
     </el-form>
     <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;"
               border
-              default-expand-all
     >
       <el-table-column
         prop="apiId"

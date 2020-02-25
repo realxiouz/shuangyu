@@ -15,7 +15,6 @@
               style="width: 100%;margin-bottom: 20px;"
               row-key="id"
               border
-              default-expand-all
     >
       <el-table-column
         prop="attributes.deptName"
