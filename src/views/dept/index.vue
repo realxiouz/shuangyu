@@ -24,7 +24,7 @@
         width="150"
       ></el-table-column>
       <el-table-column
-        prop="attributes.firm"
+        prop="attributes.firmId"
         label="企业"
         width="200"
       ></el-table-column>
@@ -87,11 +87,8 @@
         <el-form-item label="部门名称">
           <el-input v-model="form.deptName"></el-input>
         </el-form-item>
-        <el-form-item label="层级">
-          <el-input v-model="form.level"></el-input>
-        </el-form-item>
         <el-form-item label="企业">
-          <el-input v-model="form.firm"></el-input>
+          <el-input v-model="form.firmId"></el-input>
         </el-form-item>
         <el-form-item label="域名">
           <el-input v-model="form.domain"></el-input>
@@ -128,8 +125,7 @@
                 pageSize: 10,
                 form: {
                     parentId: '',
-                    level: '',
-                    firm: '',
+                    firmId: '',
                     deleteFlag: false,
                     domain: '',
                     ddId: '',
