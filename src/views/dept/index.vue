@@ -62,7 +62,7 @@
         label="操作"
         width="300">
         <template slot-scope="scope">
-          <el-button @click="handleadd(scope.row.attributes.deptId)" type="success" size="mini">添加子级</el-button>
+          <el-button @click="handleAdd(scope.row.attributes.deptId)" type="success" size="mini">添加子级</el-button>
           <el-button @click="handleUpdate(scope.row.attributes)" type="primary" size="mini">编辑</el-button>
           <el-button @click.native.prevent="removeOne(scope.row.attributes.deptId)" type="danger"
                      size="mini">删除
@@ -124,7 +124,7 @@
                 pageFlag: 'next',
                 pageSize: 10,
                 form: {
-                    parentId: '',
+                    pid: '',
                     firmId: '',
                     deleteFlag: false,
                     domain: '',
@@ -137,8 +137,8 @@
             };
         },
         methods: {
-            handleadd(deptId) {
-                this.form.parentId = deptId;
+            handleAdd(deptId) {
+                this.form.pid = deptId;
                 console.log(deptId);
                 this.dialogVisible = true;
             },
@@ -178,8 +178,6 @@
             handleUpdate(row) {
                 this.dialogVisible = true;
                 this.form = row;
-
-                console.log(row);
             },
             handleSizeChange(pageSize) {
                 this.pageSize = pageSize;
