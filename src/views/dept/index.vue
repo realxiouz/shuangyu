@@ -53,7 +53,7 @@
             off-color="#F04134"
             off-text="禁止"
             off-value=false
-            @change="changeSwitch(scope.row)">
+            disabled>
           </el-switch>
         </template>
       </el-table-column>
@@ -202,15 +202,6 @@
                 this.lastId = this.tableData[this.tableData.length - 1].deptId;
                 this.loadData();
             },
-
-            changeSwitch(data) {
-                removeOne(data).then(() => {
-                    this.loadData();
-                }).catch(error => {
-                    console.log(error);
-                });
-            },
-
             removeOne(Id, index, rows) {
                 this.$confirm('此操作将状态改为删除状态, 是否继续?', '提示', {
                     confirmButtonText: '确定',
