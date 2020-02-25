@@ -46,7 +46,7 @@
       <el-table-column prop="attributes.deleteFlag" label="删除标记">
         <template slot-scope="scope">
           <el-switch
-            v-model="scope.row.deleteFlag"
+            v-model="scope.row.attributes.deleteFlag"
             on-color="#00A854"
             on-text="启动"
             on-value=true
