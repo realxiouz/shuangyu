@@ -158,7 +158,7 @@
                 this.loadTotal();
             },
             loadData() {
-                if (!this.searchForm.deptId) {
+                if (!this.searchForm.deptName) {
                     this.searchForm = {};
                 }
                 getDeptList(this.pageFlag, this.pageSize, this.lastId, this.searchForm).then(response => {
@@ -218,7 +218,7 @@
             },
 
             loadTotal: function () {
-                if (!this.searchForm.deptId) {
+                if (!this.searchForm.deptName) {
                     this.searchForm = {};
                 }
                 getDeptTotal(this.searchForm).then(response => {
