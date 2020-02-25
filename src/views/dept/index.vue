@@ -16,7 +16,7 @@
       <el-table-column
         prop="attributes.deptName"
         label="部门名称"
-        width="200"
+        width="280"
       ></el-table-column>
       <el-table-column
         prop="attributes.level"
@@ -41,9 +41,9 @@
       <el-table-column
         prop="attributes.domain"
         label="域名"
-        width="150"
+        width="250"
       ></el-table-column>
-      <el-table-column prop="attributes.deleteFlag" label="删除标记">
+      <el-table-column prop="attributes.deleteFlag" label="删除标记"   width="150">
         <template slot-scope="scope">
           <el-switch
             v-model="scope.row.attributes.deleteFlag"
