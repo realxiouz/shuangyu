@@ -11,8 +11,12 @@
         <el-button type="primary" @click="add">添加</el-button>
       </el-form-item>
     </el-form>
-    <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;" border
-              default-expand-all>
+    <el-table :data="tableData"
+              style="width: 100%;margin-bottom: 20px;"
+              row-key="id"
+              border
+              default-expand-all
+    >
       <el-table-column
         prop="attributes.deptName"
         label="部门名称"
@@ -133,7 +137,10 @@
                 },
                 dialogVisible: false,
                 total: 0,
-                tableData: null
+                tableData: null,
+                defaultProps: {
+                    children: 'children'
+                }
             };
         },
         methods: {
