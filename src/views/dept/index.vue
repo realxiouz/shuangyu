@@ -8,7 +8,7 @@
         <el-button type="primary" @click="handleSearch">查询</el-button>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="addApp">添加</el-button>
+        <el-button type="primary" @click="add">添加</el-button>
       </el-form-item>
     </el-form>
     <el-table :data="tableData" style="width: 100%">
@@ -61,8 +61,10 @@
         label="操作"
         width="300">
         <template slot-scope="scope">
-          <el-button @click="handleUpdate(scope.row)" type="success" size="mini">添加子级</el-button>
-          <el-button @click="handleUpdate(scope.row)" type="primary" size="mini">编辑</el-button>
+          <el-button @click="handleadd(scope.row.attributes)" type="success" size="mini">添加子级</el-button>
+          <el-button @click="handleUpdate(scope.row.attributes)" type="primary" size="mini">编辑</el-button>
+          <el-button  @click.native.prevent="removeOne(scope.row.attributes.deptId,scope.$index,tableData)" type="danger"
+                      size="mini">删除</el-button>
         </template>
       </el-table-column>
 
@@ -102,7 +104,7 @@
           <el-input v-model="form.ddParentIdId"></el-input>
         </el-form-item>
         <el-form-item label="是否启用">
-          <el-switch v-model="form.enable" :active-value=true :inactive-value=false></el-switch>
+          <el-switch v-model="form.deleteFlag" :active-value=true :inactive-value=false></el-switch>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -115,7 +117,7 @@
 <script>
 
     // eslint-disable-next-line no-unused-vars
-    import {deptSave, getDeptList, getDeptTotal} from '@/api/dept'
+    import {deptSave, getDeptList, getDeptTotal,removeOne} from '@/api/dept'
 
     export default {
         name: 'dept',
@@ -140,8 +142,13 @@
             };
         },
         methods: {
-            addApp() {
-                this.form = {};
+          handleadd(row){
+           this.form.parentId=row.deptId;
+            console.log(row);
+           this.dialogVisible = true;
+          },
+          add() {
+              this.form= {};
                 this.dialogVisible = true;
             },
             handleSearch() {
@@ -176,6 +183,8 @@
             handleUpdate(row) {
                 this.dialogVisible = true;
                 this.form = row;
+
+              console.log(row);
             },
             handleSizeChange(pageSize) {
                 this.pageSize = pageSize;
@@ -192,13 +201,13 @@
                 this.loadData();
             },
 
-            // changeSwitch(data) {
-            //   updApi(data).then(() => {
-            //     this.loadData();
-            //   }).catch(error => {
-            //     console.log(error);
-            //   });
-            // },
+            changeSwitch(data) {
+              removeOne(data).then(() => {
+                this.loadData();
+              }).catch(error => {
+                console.log(error);
+              });
+            },
 
             loadTotal: function () {
                 if (!this.searchForm.deptId) {
