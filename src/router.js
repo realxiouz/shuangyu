@@ -105,6 +105,22 @@ export default new Router({
       ]
     },
     {
+      title: '部门管理',
+      path: '/dept',
+      uri: '/dept',
+      component: Layout,
+      children: [
+        {
+          title: '基本信息',
+          path: 'index',
+          name: 'dept',
+          uri: '/dept/index',
+          component: () => import('@/views/dept/index'),
+          meta: { title: 'Home', icon: 'home' }
+        }
+      ]
+    },
+    {
       title: '航班信息',
       path: '/airport',
       uri: '/airport',
