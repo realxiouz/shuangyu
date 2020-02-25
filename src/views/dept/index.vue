@@ -63,26 +63,6 @@
             width="50"
           ></el-table-column>
           <el-table-column
-            prop="founder"
-            label="创建人"
-            width="50"
-          ></el-table-column>
-          <el-table-column
-            prop="creationTime"
-            label="创建时间"
-            width="50"
-          ></el-table-column>
-          <el-table-column
-            prop="theModifier"
-            label="修改人"
-            width="50"
-          ></el-table-column>
-          <el-table-column
-            prop="modifyTheTime"
-            label="修改时间"
-            width="50"
-          ></el-table-column>
-          <el-table-column
             prop="ddId"
             label="钉钉Id"
             width="50"
