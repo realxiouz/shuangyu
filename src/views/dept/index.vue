@@ -62,9 +62,9 @@
         label="操作"
         width="300">
         <template slot-scope="scope">
-          <el-button @click="handleadd(scope.row.attributes)" type="success" size="mini">添加子级</el-button>
+          <el-button @click="handleadd(scope.row.attributes.deptId)" type="success" size="mini">添加子级</el-button>
           <el-button @click="handleUpdate(scope.row.attributes)" type="primary" size="mini">编辑</el-button>
-          <el-button @click.native.prevent="removeOne(scope.row.attributes.deptId,scope.$index,tableData)" type="danger"
+          <el-button @click.native.prevent="removeOne(scope.row.attributes.deptId)" type="danger"
                      size="mini">删除
           </el-button>
         </template>
@@ -87,14 +87,8 @@
         <el-form-item label="部门名称">
           <el-input v-model="form.deptName"></el-input>
         </el-form-item>
-        <el-form-item label="层级">
-          <el-input v-model="form.level"></el-input>
-        </el-form-item>
         <el-form-item label="企业">
           <el-input v-model="form.firmId"></el-input>
-        </el-form-item>
-        <el-form-item label="删除标记">
-          <el-input v-model="form.deleteFlag"></el-input>
         </el-form-item>
         <el-form-item label="域名">
           <el-input v-model="form.domain"></el-input>
@@ -105,7 +99,7 @@
         <el-form-item label="钉钉父节点">
           <el-input v-model="form.ddParentIdId"></el-input>
         </el-form-item>
-        <el-form-item label="是否启用">
+        <el-form-item label="是否删除">
           <el-switch v-model="form.deleteFlag" :active-value=true :inactive-value=false></el-switch>
         </el-form-item>
       </el-form>
@@ -131,7 +125,6 @@
                 pageSize: 10,
                 form: {
                     parentId: '',
-                    level: '',
                     firmId: '',
                     deleteFlag: false,
                     domain: '',
@@ -144,9 +137,9 @@
             };
         },
         methods: {
-            handleadd(row) {
-                this.form.parentId = row.deptId;
-                console.log(row);
+            handleadd(deptId) {
+                this.form.parentId = deptId;
+                console.log(deptId);
                 this.dialogVisible = true;
             },
             add() {
@@ -202,7 +195,7 @@
                 this.lastId = this.tableData[this.tableData.length - 1].deptId;
                 this.loadData();
             },
-            removeOne(Id, index, rows) {
+            removeOne(Id) {
                 this.$confirm('此操作将状态改为删除状态, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -210,7 +203,6 @@
                 }).then(() => {
                     removeDept(Id).then(() => {
                         this.loadData();
-                        rows.splice(index, 1);
                     })
                 }).catch(err => {
                     console.error(err);
