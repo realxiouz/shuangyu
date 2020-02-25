@@ -17,7 +17,7 @@
         <el-button type="primary" @click="addUser">添加</el-button>
       </el-form-item>
     </el-form>
-    <el-table :data="tableData" style="width: 100%" border
+    <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;" border
               default-expand-all>
       <el-table-column
         prop="nickName"
