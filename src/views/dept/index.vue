@@ -43,19 +43,9 @@
             width="50"
           ></el-table-column>
           <el-table-column
-            prop="sort"
-            label="排序号"
-            width="50"
-          ></el-table-column>
-          <el-table-column
             prop="firm"
             label="企业"
             width="50"
-          ></el-table-column>
-          <el-table-column
-            prop="remarks"
-            label="备注"
-            width="300"
           ></el-table-column>
           <el-table-column
             prop="deleteFlag"
@@ -116,14 +106,38 @@
           </el-pagination>
     <el-dialog title="Api信息" :visible.sync="dialogVisible" width="30%">
       <el-form ref="form" :model="form" label-width="90px">
-        <el-form-item label="Api名称">
+        <el-form-item label="部门ID">
         <el-input v-model="form.deptId"></el-input>
       </el-form-item>
-        <el-form-item label="URL">
-          <el-input v-model="form.uri"></el-input>
+        <el-form-item label="部门名称">
+          <el-input v-model="form.deptName"></el-input>
         </el-form-item>
-        <el-form-item label="类别">
-          <el-input v-model="form.category"></el-input>
+        <el-form-item label="父节点">
+          <el-input v-model="form.parentId"></el-input>
+        </el-form-item>
+        <el-form-item label="路径">
+          <el-input v-model="form.path"></el-input>
+        </el-form-item>
+        <el-form-item label="层级">
+          <el-input v-model="form.level"></el-input>
+        </el-form-item>
+        <el-form-item label="企业">
+          <el-input v-model="form.firm"></el-input>
+        </el-form-item>
+        <el-form-item label="删除标记">
+          <el-input v-model="form.deleteFlag"></el-input>
+        </el-form-item>
+        <el-form-item label="域名">
+          <el-input v-model="form.domain"></el-input>
+        </el-form-item>
+        <el-form-item label="部门角色">
+          <el-input v-model="form.roles"></el-input>
+        </el-form-item>
+        <el-form-item label="钉钉Id">
+          <el-input v-model="form.ddId"></el-input>
+        </el-form-item>
+        <el-form-item label="钉钉父节点">
+          <el-input v-model="form.ddParentIdId"></el-input>
         </el-form-item>
         <el-form-item label="是否启用">
           <el-switch v-model="form.enable" :active-value=true :inactive-value=false></el-switch>
@@ -155,9 +169,7 @@
           parentId: '',
           path: '',
           level: '',
-          sort: '',
           firm: '',
-          remarks: '',
           deleteFlag: '',
           domain: '',
           roles: '',
@@ -244,6 +256,7 @@
           console.log(error);
         });
       },
+
       loadTotal: function () {
         if (!this.searchForm.deptId) {
           this.searchForm = {};
