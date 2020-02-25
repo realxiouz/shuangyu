@@ -24,7 +24,7 @@
         width="150"
       ></el-table-column>
       <el-table-column
-        prop="attributes.firm"
+        prop="attributes.firmId"
         label="企业"
         width="200"
       ></el-table-column>
@@ -91,7 +91,7 @@
           <el-input v-model="form.level"></el-input>
         </el-form-item>
         <el-form-item label="企业">
-          <el-input v-model="form.firm"></el-input>
+          <el-input v-model="form.firmId"></el-input>
         </el-form-item>
         <el-form-item label="删除标记">
           <el-input v-model="form.deleteFlag"></el-input>
@@ -132,7 +132,7 @@
                 form: {
                     parentId: '',
                     level: '',
-                    firm: '',
+                    firmId: '',
                     deleteFlag: false,
                     domain: '',
                     ddId: '',
