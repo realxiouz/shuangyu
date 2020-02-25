@@ -11,12 +11,15 @@
         <el-button type="primary" @click="add">添加</el-button>
       </el-form-item>
     </el-form>
-    <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;" border
-              default-expand-all>
+    <el-table :data="tableData"
+              style="width: 100%;margin-bottom: 20px;"
+              row-key="id"
+              border
+    >
       <el-table-column
         prop="attributes.deptName"
         label="部门名称"
-        width="200"
+        width="280"
       ></el-table-column>
       <el-table-column
         prop="attributes.level"
@@ -41,9 +44,9 @@
       <el-table-column
         prop="attributes.domain"
         label="域名"
-        width="150"
+        width="250"
       ></el-table-column>
-      <el-table-column prop="attributes.deleteFlag" label="删除标记">
+      <el-table-column prop="attributes.deleteFlag" label="删除标记"   width="150">
         <template slot-scope="scope">
           <el-switch
             v-model="scope.row.attributes.deleteFlag"
@@ -62,7 +65,7 @@
         label="操作"
         width="300">
         <template slot-scope="scope">
-          <el-button @click="handleadd(scope.row.attributes.deptId)" type="success" size="mini">添加子级</el-button>
+          <el-button @click="handleAdd(scope.row.attributes.deptId)" type="success" size="mini">添加子级</el-button>
           <el-button @click="handleUpdate(scope.row.attributes)" type="primary" size="mini">编辑</el-button>
           <el-button @click.native.prevent="removeOne(scope.row.attributes.deptId)" type="danger"
                      size="mini">删除
@@ -124,7 +127,7 @@
                 pageFlag: 'next',
                 pageSize: 10,
                 form: {
-                    parentId: '',
+                    pid: '',
                     firmId: '',
                     deleteFlag: false,
                     domain: '',
@@ -133,12 +136,15 @@
                 },
                 dialogVisible: false,
                 total: 0,
-                tableData: null
+                tableData: null,
+                defaultProps: {
+                    children: 'children'
+                }
             };
         },
         methods: {
-            handleadd(deptId) {
-                this.form.parentId = deptId;
+            handleAdd(deptId) {
+                this.form.pid = deptId;
                 console.log(deptId);
                 this.dialogVisible = true;
             },
@@ -178,8 +184,6 @@
             handleUpdate(row) {
                 this.dialogVisible = true;
                 this.form = row;
-
-                console.log(row);
             },
             handleSizeChange(pageSize) {
                 this.pageSize = pageSize;
