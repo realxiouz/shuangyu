@@ -13,41 +13,41 @@
     </el-form>
         <el-table :data="tableData" style="width: 100%">
           <el-table-column
-          prop="deptId"
+          prop="attributes.deptId"
           label="部门唯一标识"
           width="350"
         ></el-table-column>
           <el-table-column
-            prop="deptName"
+            prop="attributes.deptName"
             label="部门名称"
             width="100"
           ></el-table-column>
           <el-table-column
-            prop="level"
+            prop="attributes.level"
             label="层级"
             width="100"
           ></el-table-column>
           <el-table-column
-            prop="firm"
+            prop="attributes.firm"
             label="企业"
             width="200"
           ></el-table-column>
           <el-table-column
-            prop="ddId"
+            prop="attributes.ddId"
             label="钉钉Id"
             width="100"
           ></el-table-column>
           <el-table-column
-            prop="ddParentIdId"
+            prop="attributes.ddParentIdId"
             label="钉钉父节点"
             width="100"
           ></el-table-column>
           <el-table-column
-            prop="domain"
+            prop="attributes.domain"
             label="域名"
             width="300"
           ></el-table-column>
-          <el-table-column prop="deleteFlag" label="删除标记">
+          <el-table-column prop="attributes.deleteFlag" label="删除标记">
             <template slot-scope="scope">
               <el-switch
                 v-model="scope.row.deleteFlag"
@@ -68,8 +68,6 @@
             <template slot-scope="scope">
               <el-button @click="handleUpdate(scope.row)" type="success" size="mini">添加</el-button>
               <el-button @click="handleUpdate(scope.row)" type="primary" size="mini">编辑</el-button>
-              <el-button  @click.native.prevent="removeOne(scope.row.deptId,scope.$index,tableData)" type="danger"
-                          size="mini">删除</el-button>
             </template>
           </el-table-column>
 
@@ -183,20 +181,6 @@
       handleUpdate(row) {
         this.dialogVisible = true;
         this.form = row;
-      },
-      removeOne(id, index, rows) {
-        this.$confirm('此操作将状态改为删除状态, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          removeOne(id).then(() => {
-          this.loadData();
-          rows.splice(index,1);
-          })
-        }).catch(err => {
-          console.error(err);
-        });
       },
       handleSizeChange(pageSize) {
         this.pageSize = pageSize;
