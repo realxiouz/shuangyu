@@ -11,7 +11,8 @@
         <el-button type="primary" @click="add">添加</el-button>
       </el-form-item>
     </el-form>
-    <el-table :data="tableData" style="width: 100%">
+    <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;" border
+              default-expand-all>
       <el-table-column
         prop="attributes.deptName"
         label="部门名称"
@@ -63,8 +64,9 @@
         <template slot-scope="scope">
           <el-button @click="handleadd(scope.row.attributes)" type="success" size="mini">添加子级</el-button>
           <el-button @click="handleUpdate(scope.row.attributes)" type="primary" size="mini">编辑</el-button>
-          <el-button  @click.native.prevent="removeOne(scope.row.attributes,scope.$index,tableData)" type="danger"
-                      size="mini">删除</el-button>
+          <el-button @click.native.prevent="removeOne(scope.row.attributes,scope.$index,tableData)" type="danger"
+                     size="mini">删除
+          </el-button>
         </template>
       </el-table-column>
 
@@ -117,7 +119,7 @@
 <script>
 
     // eslint-disable-next-line no-unused-vars
-    import {deptSave, getDeptList, getDeptTotal,removeOne} from '@/api/dept'
+    import {deptSave, getDeptList, getDeptTotal, removeOne} from '@/api/dept'
 
     export default {
         name: 'dept',
@@ -142,13 +144,13 @@
             };
         },
         methods: {
-          handleadd(row){
-           this.form.parentId=row.deptId;
-            console.log(row);
-           this.dialogVisible = true;
-          },
-          add() {
-              this.form= {};
+            handleadd(row) {
+                this.form.parentId = row.deptId;
+                console.log(row);
+                this.dialogVisible = true;
+            },
+            add() {
+                this.form = {};
                 this.dialogVisible = true;
             },
             handleSearch() {
@@ -184,7 +186,7 @@
                 this.dialogVisible = true;
                 this.form = row;
 
-              console.log(row);
+                console.log(row);
             },
             handleSizeChange(pageSize) {
                 this.pageSize = pageSize;
@@ -202,27 +204,27 @@
             },
 
             changeSwitch(data) {
-              removeOne(data).then(() => {
-                this.loadData();
-              }).catch(error => {
-                console.log(error);
-              });
+                removeOne(data).then(() => {
+                    this.loadData();
+                }).catch(error => {
+                    console.log(error);
+                });
             },
 
-          removeOne(Id, index, rows) {
-            this.$confirm('此操作将状态改为删除状态, 是否继续?', '提示', {
-              confirmButtonText: '确定',
-              cancelButtonText: '取消',
-              type: 'warning'
-            }).then(() => {
-              removeOne(Id).then(() => {
-                this.loadData();
-                rows.splice(index, 1);
-              })
-            }).catch(err => {
-              console.error(err);
-            });
-          },
+            removeOne(Id, index, rows) {
+                this.$confirm('此操作将状态改为删除状态, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    removeOne(Id).then(() => {
+                        this.loadData();
+                        rows.splice(index, 1);
+                    })
+                }).catch(err => {
+                    console.error(err);
+                });
+            },
 
             loadTotal: function () {
                 if (!this.searchForm.deptId) {
