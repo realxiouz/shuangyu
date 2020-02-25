@@ -64,7 +64,7 @@
         <template slot-scope="scope">
           <el-button @click="handleadd(scope.row.attributes)" type="success" size="mini">添加子级</el-button>
           <el-button @click="handleUpdate(scope.row.attributes)" type="primary" size="mini">编辑</el-button>
-          <el-button @click.native.prevent="removeOne(scope.row.attributes,scope.$index,tableData)" type="danger"
+          <el-button @click.native.prevent="removeOne(scope.row.attributes.deptId,scope.$index,tableData)" type="danger"
                      size="mini">删除
           </el-button>
         </template>
@@ -119,7 +119,7 @@
 <script>
 
     // eslint-disable-next-line no-unused-vars
-    import {deptSave, getDeptList, getDeptTotal, removeOne} from '@/api/dept'
+    import {deptSave, getDeptList, getDeptTotal, removeDept} from '@/api/dept'
 
     export default {
         name: 'dept',
@@ -208,7 +208,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    removeOne(Id).then(() => {
+                    removeDept(Id).then(() => {
                         this.loadData();
                         rows.splice(index, 1);
                     })
