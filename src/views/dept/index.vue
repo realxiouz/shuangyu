@@ -13,19 +13,14 @@
     </el-form>
     <el-table :data="tableData" style="width: 100%">
       <el-table-column
-        prop="attributes.deptId"
-        label="部门唯一标识"
-        width="350"
-      ></el-table-column>
-      <el-table-column
         prop="attributes.deptName"
         label="部门名称"
-        width="100"
+        width="200"
       ></el-table-column>
       <el-table-column
         prop="attributes.level"
         label="层级"
-        width="100"
+        width="150"
       ></el-table-column>
       <el-table-column
         prop="attributes.firm"
@@ -35,17 +30,17 @@
       <el-table-column
         prop="attributes.ddId"
         label="钉钉Id"
-        width="100"
+        width="150"
       ></el-table-column>
       <el-table-column
         prop="attributes.ddParentIdId"
         label="钉钉父节点"
-        width="100"
+        width="150"
       ></el-table-column>
       <el-table-column
         prop="attributes.domain"
         label="域名"
-        width="300"
+        width="150"
       ></el-table-column>
       <el-table-column prop="attributes.deleteFlag" label="删除标记">
         <template slot-scope="scope">
@@ -66,7 +61,7 @@
         label="操作"
         width="300">
         <template slot-scope="scope">
-          <el-button @click="handleUpdate(scope.row)" type="success" size="mini">添加</el-button>
+          <el-button @click="handleUpdate(scope.row)" type="success" size="mini">添加子级</el-button>
           <el-button @click="handleUpdate(scope.row)" type="primary" size="mini">编辑</el-button>
         </template>
       </el-table-column>
