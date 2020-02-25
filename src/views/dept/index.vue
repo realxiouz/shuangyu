@@ -179,45 +179,7 @@
         },
         dialogVisible: false,
         total: 0,
-        tableData:  [{
-          deptId: '12987122',
-          deptName: '1',
-          parentId: '1',
-          path: '111111，111111',
-          level: 'A',
-          firm: 'A',
-          deleteFlag: '10333',
-          domain:'11',
-          roles:'boss',
-          ddId:'1',
-          ddParentIdId:'11',
-
-        }, {
-          deptId: '12987122',
-          deptName: '1',
-          parentId: '1',
-          path: '222222，2222',
-          level: 'B',
-          firm: 'B',
-          deleteFlag: '10333',
-          domain:'11',
-          roles:'boss',
-          ddId:'1',
-          ddParentIdId:'11',
-        }, {
-          deptId: '12987122',
-          deptName: '1',
-          parentId: '1',
-          path: '3333333',
-          level: 'C',
-          firm: 'C',
-          deleteFlag: '10333',
-          domain:'11',
-          roles:'boss',
-          ddId:'1',
-          ddParentIdId:'11',
-        }],
-
+        tableData: null
       };
     },
     methods: {
