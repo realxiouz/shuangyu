@@ -3,86 +3,86 @@
     <el-form :inline="true" :model="searchForm">
       <el-form-item label="部门名称">
         <el-input v-model="searchForm.deptName" placeholder="请输入部门名称"></el-input>
-        </el-form-item>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="handleSearch">查询</el-button>
-        </el-form-item>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="addApp">添加</el-button>
       </el-form-item>
     </el-form>
-        <el-table :data="tableData" style="width: 100%">
-          <el-table-column
-          prop="attributes.deptId"
-          label="部门唯一标识"
-          width="350"
-        ></el-table-column>
-          <el-table-column
-            prop="attributes.deptName"
-            label="部门名称"
-            width="100"
-          ></el-table-column>
-          <el-table-column
-            prop="attributes.level"
-            label="层级"
-            width="100"
-          ></el-table-column>
-          <el-table-column
-            prop="attributes.firm"
-            label="企业"
-            width="200"
-          ></el-table-column>
-          <el-table-column
-            prop="attributes.ddId"
-            label="钉钉Id"
-            width="100"
-          ></el-table-column>
-          <el-table-column
-            prop="attributes.ddParentIdId"
-            label="钉钉父节点"
-            width="100"
-          ></el-table-column>
-          <el-table-column
-            prop="attributes.domain"
-            label="域名"
-            width="300"
-          ></el-table-column>
-          <el-table-column prop="attributes.deleteFlag" label="删除标记">
-            <template slot-scope="scope">
-              <el-switch
-                v-model="scope.row.deleteFlag"
-                on-color="#00A854"
-                on-text="启动"
-                on-value=true
-                off-color="#F04134"
-                off-text="禁止"
-                off-value=false
-                @change="changeSwitch(scope.row)">
-              </el-switch>
-            </template>
-          </el-table-column>
-          <el-table-column
-            fixed="right"
-            label="操作"
-            width="300">
-            <template slot-scope="scope">
-              <el-button @click="handleUpdate(scope.row)" type="success" size="mini">添加</el-button>
-              <el-button @click="handleUpdate(scope.row)" type="primary" size="mini">编辑</el-button>
-            </template>
-          </el-table-column>
+    <el-table :data="tableData" style="width: 100%">
+      <el-table-column
+        prop="attributes.deptId"
+        label="部门唯一标识"
+        width="350"
+      ></el-table-column>
+      <el-table-column
+        prop="attributes.deptName"
+        label="部门名称"
+        width="100"
+      ></el-table-column>
+      <el-table-column
+        prop="attributes.level"
+        label="层级"
+        width="100"
+      ></el-table-column>
+      <el-table-column
+        prop="attributes.firm"
+        label="企业"
+        width="200"
+      ></el-table-column>
+      <el-table-column
+        prop="attributes.ddId"
+        label="钉钉Id"
+        width="100"
+      ></el-table-column>
+      <el-table-column
+        prop="attributes.ddParentIdId"
+        label="钉钉父节点"
+        width="100"
+      ></el-table-column>
+      <el-table-column
+        prop="attributes.domain"
+        label="域名"
+        width="300"
+      ></el-table-column>
+      <el-table-column prop="attributes.deleteFlag" label="删除标记">
+        <template slot-scope="scope">
+          <el-switch
+            v-model="scope.row.deleteFlag"
+            on-color="#00A854"
+            on-text="启动"
+            on-value=true
+            off-color="#F04134"
+            off-text="禁止"
+            off-value=false
+            @change="changeSwitch(scope.row)">
+          </el-switch>
+        </template>
+      </el-table-column>
+      <el-table-column
+        fixed="right"
+        label="操作"
+        width="300">
+        <template slot-scope="scope">
+          <el-button @click="handleUpdate(scope.row)" type="success" size="mini">添加</el-button>
+          <el-button @click="handleUpdate(scope.row)" type="primary" size="mini">编辑</el-button>
+        </template>
+      </el-table-column>
 
-        </el-table>
-          <el-pagination
-            @size-change="handleSizeChange"
-            @prev-click="prevClick"
-            @next-click="nextClick"
-            background
-            layout="total,sizes,prev,next"
-            prev-text="上一页"
-            next-text="下一页"
-            :page-size="pageSize"
-            :total="total">
-          </el-pagination>
+    </el-table>
+    <el-pagination
+      @size-change="handleSizeChange"
+      @prev-click="prevClick"
+      @next-click="nextClick"
+      background
+      layout="total,sizes,prev,next"
+      prev-text="上一页"
+      next-text="下一页"
+      :page-size="pageSize"
+      :total="total">
+    </el-pagination>
     <el-dialog title="部门信息" :visible.sync="dialogVisible" width="30%">
       <el-form ref="form" :model="form" label-width="90px">
         <el-form-item label="部门名称">
@@ -119,109 +119,109 @@
 </template>
 <script>
 
-  // eslint-disable-next-line no-unused-vars
-  import { removeOne,getDeptList,getDeptTotal,deptSave} from '@/api/dept'
+    // eslint-disable-next-line no-unused-vars
+    import {deptSave, getDeptList, getDeptTotal} from '@/api/dept'
 
-  export default {
-    name: 'dept',
-    data() {
-      return {
-        searchForm: {},
-        lastId: '0',
-        pageFlag: 'next',
-        pageSize: 10,
-        form: {
-          parentId: '',
-          level: '',
-          firm: '',
-          deleteFlag: false,
-          domain: '',
-          ddId: '',
-          ddParentIdId: '',
+    export default {
+        name: 'dept',
+        data() {
+            return {
+                searchForm: {},
+                lastId: '0',
+                pageFlag: 'next',
+                pageSize: 10,
+                form: {
+                    parentId: '',
+                    level: '',
+                    firm: '',
+                    deleteFlag: false,
+                    domain: '',
+                    ddId: '',
+                    ddParentIdId: '',
+                },
+                dialogVisible: false,
+                total: 0,
+                tableData: null
+            };
         },
-        dialogVisible: false,
-        total: 0,
-        tableData: null
-      };
-    },
-    methods: {
-      addApp(){
-        this.form = {};
-        this.dialogVisible= true;
-      },
-      handleSearch() {
-        this.loadData();
-        this.loadTotal();
-      },
-      loadData() {
-        if (!this.searchForm.deptId) {
-          this.searchForm = {};
+        methods: {
+            addApp() {
+                this.form = {};
+                this.dialogVisible = true;
+            },
+            handleSearch() {
+                this.loadData();
+                this.loadTotal();
+            },
+            loadData() {
+                if (!this.searchForm.deptId) {
+                    this.searchForm = {};
+                }
+                getDeptList(this.pageFlag, this.pageSize, this.lastId, this.searchForm).then(response => {
+                    if (response.data) {
+                        this.tableData = response.data
+                    }
+                }).catch(error => {
+                    console.log(error);
+                });
+            },
+            handleCancel() {
+                this.dialogVisible = false;
+            },
+            handleSave() {
+                const params = this.form
+                deptSave(params).then(() => {
+                    this.loadData();
+                    this.loadTotal();
+                }).catch(error => {
+                    console.log(error);
+                });
+                this.dialogVisible = false;
+            },
+            handleUpdate(row) {
+                this.dialogVisible = true;
+                this.form = row;
+            },
+            handleSizeChange(pageSize) {
+                this.pageSize = pageSize;
+                this.loadData();
+            },
+            prevClick() {
+                this.pageFlag = 'prev';
+                this.lastId = this.tableData[0].deptId;
+                this.loadData();
+            },
+            nextClick() {
+                this.pageFlag = 'next';
+                this.lastId = this.tableData[this.tableData.length - 1].deptId;
+                this.loadData();
+            },
+
+            // changeSwitch(data) {
+            //   updApi(data).then(() => {
+            //     this.loadData();
+            //   }).catch(error => {
+            //     console.log(error);
+            //   });
+            // },
+
+            loadTotal: function () {
+                if (!this.searchForm.deptId) {
+                    this.searchForm = {};
+                }
+                getDeptTotal(this.searchForm).then(response => {
+                    this.total = response.data;
+                }).catch(error => {
+                    console.log(error);
+                });
+            },
+
+        },
+        mounted() {
+            this.loadData();
+            this.loadTotal();
         }
-        getDeptList(this.pageFlag,this.pageSize, this.lastId,this.searchForm).then(response => {
-          if (response.data){
-            this.tableData = response.data
-          }
-        }).catch(error => {
-          console.log(error);
-        });
-      },
-      handleCancel() {
-        this.dialogVisible = false;
-      },
-      handleSave() {
-        const params = this.form
-        deptSave(params).then(() => {
-          this.loadData();
-          this.loadTotal();
-        }).catch(error => {
-          console.log(error);
-        });
-        this.dialogVisible = false;
-      },
-      handleUpdate(row) {
-        this.dialogVisible = true;
-        this.form = row;
-      },
-      handleSizeChange(pageSize) {
-        this.pageSize = pageSize;
-        this.loadData();
-      },
-      prevClick(){
-        this.pageFlag = 'prev';
-        this.lastId = this.tableData[0].deptId;
-        this.loadData();
-      },
-      nextClick(){
-        this.pageFlag = 'next';
-        this.lastId = this.tableData[this.tableData.length - 1].deptId;
-        this.loadData();
-      },
-
-      // changeSwitch(data) {
-      //   updApi(data).then(() => {
-      //     this.loadData();
-      //   }).catch(error => {
-      //     console.log(error);
-      //   });
-      // },
-
-      loadTotal: function () {
-        if (!this.searchForm.deptId) {
-          this.searchForm = {};
-        }
-        getDeptTotal(this.searchForm).then(response => {
-          this.total = response.data;
-        }).catch(error => {
-          console.log(error);
-        });
-      },
-
-    },
-    mounted() {
-      this.loadData();
-      this.loadTotal();
-    }
-  };
+    };
 </script>
 
 <style scoped>
