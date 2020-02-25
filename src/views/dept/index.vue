@@ -1,8 +1,8 @@
 <template>
-  <div class="app-container">
+  <div class="dept-container">
     <el-form :inline="true" :model="searchForm">
-      <el-form-item label="api名称">
-        <el-input v-model="searchForm.apiName" placeholder="api名称"></el-input>
+      <el-form-item label="deptId">
+        <el-input v-model="searchForm.deptId" placeholder="部门唯一标识"></el-input>
         </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="handleSearch">查询</el-button>
@@ -13,24 +13,89 @@
     </el-form>
         <el-table :data="tableData" style="width: 100%">
           <el-table-column
-          prop="apiId"
-          label="ID"
-          width="200"
+            prop="roles"
+            label="部门角色"
+            width="200"
+          ></el-table-column>
+          <el-table-column
+          prop="deptId"
+          label="部门唯一标识"
+          width="50"
         ></el-table-column>
           <el-table-column
-            prop="uri"
-            label="URL"
+            prop="deptName"
+            label="部门名称"
             width="200"
           ></el-table-column>
           <el-table-column
-            prop="category"
-            label="类别"
-            width="200"
+            prop="parentId"
+            label="父节点"
+            width="50"
           ></el-table-column>
           <el-table-column
-            prop="apiName"
-            label="api名称"
+            prop="path"
+            label="路径"
+            width="100"
+          ></el-table-column>
+          <el-table-column
+            prop="level"
+            label="层级"
+            width="50"
+          ></el-table-column>
+          <el-table-column
+            prop="sort"
+            label="排序号"
+            width="50"
+          ></el-table-column>
+          <el-table-column
+            prop="firm"
+            label="企业"
+            width="50"
+          ></el-table-column>
+          <el-table-column
+            prop="remarks"
+            label="备注"
             width="300"
+          ></el-table-column>
+          <el-table-column
+            prop="deleteFlag"
+            label="删除标记"
+            width="50"
+          ></el-table-column>
+          <el-table-column
+            prop="founder"
+            label="创建人"
+            width="50"
+          ></el-table-column>
+          <el-table-column
+            prop="creationTime"
+            label="创建时间"
+            width="50"
+          ></el-table-column>
+          <el-table-column
+            prop="theModifier"
+            label="修改人"
+            width="50"
+          ></el-table-column>
+          <el-table-column
+            prop="modifyTheTime"
+            label="修改时间"
+            width="50"
+          ></el-table-column>
+          <el-table-column
+            prop="ddId"
+            label="钉钉Id"
+            width="50"
+          ></el-table-column>
+          <el-table-column
+            prop="ddParentIdId"
+            label="钉钉父节点"
+            width="50"
+          ></el-table-column>
+          <el-table-column
+            prop="domain"
+            label="域名"
+            width="50"
           ></el-table-column>
           <el-table-column prop="enable" label="是否启用">
             <template slot-scope="scope">
@@ -72,7 +137,7 @@
     <el-dialog title="Api信息" :visible.sync="dialogVisible" width="30%">
       <el-form ref="form" :model="form" label-width="90px">
         <el-form-item label="Api名称">
-        <el-input v-model="form.apiName"></el-input>
+        <el-input v-model="form.deptId"></el-input>
       </el-form-item>
         <el-form-item label="URL">
           <el-input v-model="form.uri"></el-input>
@@ -94,7 +159,7 @@
 <script>
 
   // eslint-disable-next-line no-unused-vars
-  import { getApiList,getApiTotal,removeApi,save,updApi } from '@/api/api'
+  import { removeOne,getDeptList,getDeptTotal,deptSave} from '@/api/dept'
 
   export default {
     name: 'api',
@@ -105,10 +170,19 @@
         pageFlag: 'next',
         pageSize: 10,
         form: {
-          apiId: '',
-          apiName: '',
-          uri: '',
-          category: '',
+          deptId: '',
+          deptName: '',
+          parentId: '',
+          path: '',
+          level: '',
+          sort: '',
+          firm: '',
+          remarks: '',
+          deleteFlag: '',
+          domain: '',
+          roles: '',
+          ddId: '',
+          ddParentIdId: '',
           enable: true
         },
         dialogVisible: false,
@@ -126,10 +200,10 @@
         this.loadTotal();
       },
       loadData() {
-        if (!this.searchForm.apiName) {
+        if (!this.searchForm.deptId) {
           this.searchForm = {};
         }
-        getApiList(this.pageFlag,this.pageSize, this.lastId,this.searchForm).then(response => {
+        getDeptList(this.pageFlag,this.pageSize, this.lastId,this.searchForm).then(response => {
           if (response.data){
             this.tableData = response.data
           }
@@ -142,7 +216,7 @@
       },
       handleSave() {
         const params = this.form
-        save(params).then(() => {
+        deptSave(params).then(() => {
           this.loadData();
           this.loadTotal();
         }).catch(error => {
@@ -160,7 +234,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-        removeApi(id).then(() => {
+          removeOne(id).then(() => {
           this.loadData();
           rows.splice(index,1);
           })
@@ -174,12 +248,12 @@
       },
       prevClick(){
         this.pageFlag = 'prev';
-        this.lastId = this.tableData[0].apiId;
+        this.lastId = this.tableData[0].deptId;
         this.loadData();
       },
       nextClick(){
         this.pageFlag = 'next';
-        this.lastId = this.tableData[this.tableData.length - 1].apiId;
+        this.lastId = this.tableData[this.tableData.length - 1].deptId;
         this.loadData();
       },
 
@@ -191,10 +265,10 @@
         });
       },
       loadTotal: function () {
-        if (!this.searchForm.apiName) {
+        if (!this.searchForm.deptId) {
           this.searchForm = {};
         }
-        getApiTotal(this.searchForm).then(response => {
+        getDeptTotal(this.searchForm).then(response => {
           this.total = response.data;
         }).catch(error => {
           console.log(error);
