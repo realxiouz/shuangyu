@@ -165,6 +165,21 @@ export default new Router({
           meta: { title: 'Home', icon: 'home' }
         }
       ]
+    },{
+      title: '航段',
+      path: '/flightSegment',
+      uri: '/flightSegment',
+      component: Layout,
+      children: [
+        {
+          title: '航段',
+          path: 'index',
+          name: 'flightSegment',
+          uri: '/flightSegment/index',
+          component: () => import('@/views/flightSegment/index'),
+          meta: { title: 'Home', icon: 'home' }
+        }
+      ]
     }
   ]
 });
