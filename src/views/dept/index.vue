@@ -64,7 +64,7 @@
         <template slot-scope="scope">
           <el-button @click="handleadd(scope.row.attributes)" type="success" size="mini">添加子级</el-button>
           <el-button @click="handleUpdate(scope.row.attributes)" type="primary" size="mini">编辑</el-button>
-          <el-button @click.native.prevent="removeOne(scope.row.attributes.deptId,scope.$index,tableData)" type="danger"
+          <el-button @click.native.prevent="removeOne(scope.row.attributes.deptId)" type="danger"
                      size="mini">删除
           </el-button>
         </template>
@@ -100,7 +100,7 @@
           <el-input v-model="form.ddParentIdId"></el-input>
         </el-form-item>
         <el-form-item label="是否删除">
-          <el-switch v-model="form.deleteFlag" :active-value=true :inactive-value=false ></el-switch>
+          <el-switch v-model="form.deleteFlag" :active-value=true :inactive-value=false></el-switch>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -195,7 +195,7 @@
                 this.lastId = this.tableData[this.tableData.length - 1].deptId;
                 this.loadData();
             },
-            removeOne(Id, index, rows) {
+            removeOne(Id) {
                 this.$confirm('此操作将状态改为删除状态, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -203,7 +203,6 @@
                 }).then(() => {
                     removeDept(Id).then(() => {
                         this.loadData();
-                        rows.splice(index, 1);
                     })
                 }).catch(err => {
                     console.error(err);
