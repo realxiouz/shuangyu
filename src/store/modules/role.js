@@ -1,4 +1,4 @@
-import { save, removeOne,getNavs, } from '@/api/role';
+import { save, removeOne,getNavsTreeData} from '@/api/role';
 import { getToken } from '@/utils/auth';
 
 
@@ -47,9 +47,9 @@ const actions = {
     });
   },
 
-  getNavs({ commit }){
+  getNavsTreeData({ commit }){
     return new Promise((resolve, reject) => {
-      getNavs()
+      getNavsTreeData()
         .then(response => {
           const { data } = response;
           resolve(data);

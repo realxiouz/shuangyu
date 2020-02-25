@@ -38,7 +38,7 @@
               </el-switch>
             </template>
           </el-table-column>
-          <el-table-column  prop="navIds"  label="navIds"></el-table-column>
+          <el-table-column v-if="false" prop="navIds"  label="navIds"></el-table-column>
           <el-table-column prop="navNames" label="导航菜单"></el-table-column>
           <el-table-column
             fixed="right"
@@ -144,7 +144,7 @@
       },
       addRole:function(){
         this.dialogVisible = true;
-        this.form.treeData = this.getNavs();
+        this.form.treeData = this.initTreeData();
       },
       handleNavIds: function(navs) {
         if (navs == null) {
@@ -152,58 +152,29 @@
         }
         var navIds = [];
         navs.forEach((nav)=> {
-          navIds.push(nav.id);
-          if (nav.children != null) {
-            nav.children.forEach((child) => {
-              navIds.push(child.id);
-              if (child.children != null) {
-                child.children.forEach((childChild) => {
-                  navIds.push(childChild.id);
-                });
-              }
-            });
-          }
+          navIds.push(nav.navId);
         });
         console.log("navIds==========" + navIds.length);
         return navIds;
       },
       //将返回的nav只显示名字
-      handleNavNames:function(navs){
-        if (navs==null){
+      handleNavNames: function(navs) {
+        if (navs == null) {
           return;
         }
         var navnames = "";
-        navs.forEach((nav)=>{
-          if(nav.label!=null) {
-            navnames += "," + nav.label;
-          }
-          if (nav.children!=null){
-            nav.children.forEach((child)=>{
-              if(child.label!=null) {
-                navnames += "," + child.label;
-              }
-              if (child.children!=null){
-                child.children.forEach((childChild)=>{
-                  if(childChild.label!=null){
-                    navnames += ","+childChild.label;
-                  }
-                });
-              }
-            });
+        navs.forEach((nav) => {
+          if (nav.navName) {
+            navnames += "," + nav.navName;
           }
         });
-        if (navnames!=null){
-          navnames = navnames.substring(1,navnames.length);
+        if (navnames) {
+          navnames = navnames.substring(1, navnames.length);
         }
         return navnames;
       },
-      // 初始页currentPage、初始每页数据数pagesize和数据data
-      handleSizeChange: function(pageSize) {
-        this.pageSize = pageSize;
-        this.loadData();
-      },
 
-      handleCancel() {
+      handleCancel:function() {
         this.dialogVisible = false;
       },
       save:function(data){
@@ -219,9 +190,15 @@
           });
       },
       handleSave() {
-        console.log("this.$refs.tree.getCheckedNodes()"+JSON.stringify(this.$refs.tree.getCheckedNodes()));
-        this.form.navs = this.getSelectedNavs(this.$refs.tree.getCheckedNodes());
-        console.log("navsEntity:"+this.getSelectedNavs(this.$refs.tree.getCheckedNodes()));
+        console.log("this.$refs.tree.getCheckedNodes()"+JSON.stringify(this.$refs.tree.getCheckedKeys()));
+        var navs = [];
+        this.$refs.tree.getCheckedKeys().forEach(node=>{
+            if (node){
+              navs.push({navId:node});
+            }
+          }
+        );
+        this.form.navs = navs ;
         this.save(this.form);
         this.dialogVisible = false;
       },
@@ -247,138 +224,30 @@
 
       },
       editRole: function(row) {
-        this.getNavs();
+        this.initTreeData();
         this.dialogVisible = true;
         this.form.roleId = row.roleId;
         this.form.roleName = row.roleName;
         this.form.enable = row.enable;
-        console.log("row.navIds:"+row.navIds);
-        var rowNavids = [];
-        row.navIds.forEach((id)=>{
-          rowNavids.push(id);
-        });
         this.$refs.tree.setCheckedKeys(row.navIds);
       },
       changeSwitch:function(data) {
         this.save(data);
       },
-      getNavs: function() {
+      initTreeData: function() {
         this.$store
-          .dispatch("role/getNavs")
+          .dispatch("role/getNavsTreeData")
           .then(data => {
             this.navs = data;
             console.log("initTreeData======================="+JSON.stringify(data))
-            this.initTreeData(data);
+            this.treeData = data;
           })
           .catch(error => {
             console.log(error);
           });
       },
-      getSelectedChildrenNavs: function(nodes, navChilds) {
-        var navsEntitys = [];
-        nodes.forEach((node)=> {
-          navChilds.forEach((nav)=> {
-            //首先对比nav和node的id是否相同，不相同，跳过
-            if (nav.id == node.id) { //相同，再对比他们的children
-              var navi = {};
-              navi.id = nav.id;
-              navi.label = nav.label;
-              navi.isEnable = nav.isEnable;
-              navi.uri = nav.uri;
-              if (node.children != null&&nav.children!=null) {
-                var navChildren = this.getSelectedChildrenNavs(node.children, nav.children);
-                navi.children = navChildren;
-              }
-              navsEntitys.push(navi);
-            }
-          });
-        });
-        return navsEntitys;
-      },
-      findNavByTreeNode: function(node,navs) {
-        //循环第一级nav
-        var ret = null;
-        for (var i = 0; i < navs.length; i++) {
-          var nav = navs[i];
-          if (nav.id == node.id) {
-            ret = nav;
-            break;
-          }
-        }
-        //循环第二级nav
-        if (!ret){
-          for (let j = 0; j < navs.length; j++) {
-            return this.findNavByTreeNode(node,navs[j].children);
-          }
-        }
-        //循环第三级nav
-        if (!ret){
-          for (let j = 0; j < navs.length; j++) {
-            if(!navs[j].children){
-              navs[j].children.forEach((third)=>{
-                if (!third.children){
-                  return this.findNavByTreeNode(third.children);
-                }
-              });
-            }
-          }
-        }
-        return ret;
-      },
-      getSelectedNavs: function(nodes) {
-        // var navs = this.getNavs()
-        var navsEntitys = [];
-        nodes.forEach((node) => {
-          //找到与node对应的那个nav
-          var nav = this.findNavByTreeNode(node, this.navs);
-          if (!nav){
-            return [];
-          }
-          var navi = {};
-          navi.id = nav.id;
-          navi.label = nav.label;
-          navi.isEnable = nav.isEnable;
-          navi.uri = nav.uri;
-          if (node.children != null && nav.children != null) {
-            var navChildren = this.getSelectedChildrenNavs(node.children, nav.children);
-            navi.children = navChildren;
-          }
-          navsEntitys.push(navi);
-        });
-        return navsEntitys;
-      },
-      initChildrenNode: function(nodes) {
-        var childrens = [];
-        for(var i =0;i<nodes.length;i++){
-          var childs = [];
-          var node = nodes[i];
-          var tree = {};
-          tree.id = node.id;
-          tree.label = node.label;
-          if (node.children!=null){
-            childs = this.initChildrenNode(node.children);
-          }
-          tree.children = childs;
-          childrens.push(tree);
 
-        }
-        return childrens;
-      },
-      initTreeData: function(data) {
-        var trees = [];
-       for(var i =0;i<data.length;i++){
-         var node = data[i];
-          var tree = {};
-          if (node.children != null) {
-            var childrenNodes = this.initChildrenNode(node.children);
-            tree.children = childrenNodes;
-          }
-          tree.id = node.id;
-          tree.label = node.label;
-          trees.push(tree);
-        }
-       this.treeData = trees;
-      },
+
       loadTotal: function () {
         getTotal(this.searchForm)
           .then(resp => {

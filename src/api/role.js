@@ -32,9 +32,9 @@ export function getTotal(data) {
   });
 }
 
-export function getNavs() {
+export function getNavsTreeData() {
   return request({
-    url: "/nav/get/all",
+    url: "/nav/get/tree",
     method: "get"
   });
 }
