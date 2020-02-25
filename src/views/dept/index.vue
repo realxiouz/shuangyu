@@ -1,7 +1,7 @@
 <template>
   <div class="dept-container">
     <el-form :inline="true" :model="searchForm">
-      <el-form-item label="deptId">
+      <el-form-item label="部门ID">
         <el-input v-model="searchForm.deptId" placeholder="部门唯一标识"></el-input>
         </el-form-item>
       <el-form-item>
@@ -15,76 +15,76 @@
           <el-table-column
             prop="roles"
             label="部门角色"
-            width="200"
+            width="100"
           ></el-table-column>
           <el-table-column
           prop="deptId"
           label="部门唯一标识"
-          width="50"
+          width="200"
         ></el-table-column>
           <el-table-column
             prop="deptName"
             label="部门名称"
-            width="200"
+            width="100"
           ></el-table-column>
           <el-table-column
             prop="parentId"
             label="父节点"
-            width="50"
+            width="100"
           ></el-table-column>
           <el-table-column
             prop="path"
             label="路径"
-            width="100"
+            width="200"
           ></el-table-column>
           <el-table-column
             prop="level"
             label="层级"
-            width="50"
+            width="100"
           ></el-table-column>
           <el-table-column
             prop="firm"
             label="企业"
-            width="50"
+            width="200"
           ></el-table-column>
           <el-table-column
             prop="deleteFlag"
             label="删除标记"
-            width="50"
+            width="100"
           ></el-table-column>
           <el-table-column
             prop="ddId"
             label="钉钉Id"
-            width="50"
+            width="100"
           ></el-table-column>
           <el-table-column
             prop="ddParentIdId"
             label="钉钉父节点"
-            width="50"
+            width="100"
           ></el-table-column>
           <el-table-column
             prop="domain"
             label="域名"
-            width="50"
+            width="100"
           ></el-table-column>
-          <el-table-column prop="enable" label="是否启用">
-            <template slot-scope="scope">
-              <el-switch
-                v-model="scope.row.enable"
-                on-color="#00A854"
-                on-text="启动"
-                on-value=true
-                off-color="#F04134"
-                off-text="禁止"
-                off-value=false
-                @change="changeSwitch(scope.row)">
-              </el-switch>
-            </template>
-          </el-table-column>
+<!--          <el-table-column prop="enable" label="是否启用">-->
+<!--            <template slot-scope="scope">-->
+<!--              <el-switch-->
+<!--                v-model="scope.row.enable"-->
+<!--                on-color="#00A854"-->
+<!--                on-text="启动"-->
+<!--                on-value=true-->
+<!--                off-color="#F04134"-->
+<!--                off-text="禁止"-->
+<!--                off-value=false-->
+<!--                @change="changeSwitch(scope.row)">-->
+<!--              </el-switch>-->
+<!--            </template>-->
+<!--          </el-table-column>-->
           <el-table-column
             fixed="right"
             label="操作"
-            width="350">
+            width="200">
             <template slot-scope="scope">
               <el-button @click="handleUpdate(scope.row)" type="primary" size="mini">编辑</el-button>
               <el-button  @click.native.prevent="removeOne(scope.row.apiId,scope.$index,tableData)" type="danger"
@@ -178,8 +178,8 @@
           enable: true
         },
         dialogVisible: false,
-        tableData: null,
-        total: 0
+        total: 0,
+        tableData: null
       };
     },
     methods: {
