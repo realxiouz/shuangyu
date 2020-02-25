@@ -3,77 +3,81 @@
     <el-form :inline="true" :model="searchForm">
       <el-form-item label="api名称">
         <el-input v-model="searchForm.apiName" placeholder="api名称"></el-input>
-        </el-form-item>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="handleSearch">查询</el-button>
-        </el-form-item>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="addApp">添加</el-button>
       </el-form-item>
     </el-form>
-        <el-table :data="tableData" style="width: 100%">
-          <el-table-column
-          prop="apiId"
-          label="ID"
-          width="200"
-        ></el-table-column>
-          <el-table-column
-            prop="uri"
-            label="URL"
-            width="200"
-          ></el-table-column>
-          <el-table-column
-            prop="category"
-            label="类别"
-            width="200"
-          ></el-table-column>
-          <el-table-column
-            prop="apiName"
-            label="api名称"
-            width="300"
-          ></el-table-column>
-          <el-table-column prop="enable" label="是否启用">
-            <template slot-scope="scope">
-              <el-switch
-                v-model="scope.row.enable"
-                on-color="#00A854"
-                on-text="启动"
-                on-value=true
-                off-color="#F04134"
-                off-text="禁止"
-                off-value=false
-                @change="changeSwitch(scope.row)">
-              </el-switch>
-            </template>
-          </el-table-column>
-          <el-table-column
-            fixed="right"
-            label="操作"
-            width="350">
-            <template slot-scope="scope">
-              <el-button @click="handleUpdate(scope.row)" type="primary" size="mini">编辑</el-button>
-              <el-button  @click.native.prevent="removeOne(scope.row.apiId,scope.$index,tableData)" type="danger"
-                          size="mini">删除</el-button>
-            </template>
-          </el-table-column>
+    <el-table :data="tableData" style="width: 100%"
+              border
+              default-expand-all
+    >
+      <el-table-column
+        prop="apiId"
+        label="ID"
+        width="200"
+      ></el-table-column>
+      <el-table-column
+        prop="uri"
+        label="URL"
+        width="200"
+      ></el-table-column>
+      <el-table-column
+        prop="category"
+        label="类别"
+        width="200"
+      ></el-table-column>
+      <el-table-column
+        prop="apiName"
+        label="api名称"
+        width="300"
+      ></el-table-column>
+      <el-table-column prop="enable" label="是否启用">
+        <template slot-scope="scope">
+          <el-switch
+            v-model="scope.row.enable"
+            on-color="#00A854"
+            on-text="启动"
+            on-value=true
+            off-color="#F04134"
+            off-text="禁止"
+            off-value=false
+            @change="changeSwitch(scope.row)">
+          </el-switch>
+        </template>
+      </el-table-column>
+      <el-table-column
+        fixed="right"
+        label="操作"
+        width="350">
+        <template slot-scope="scope">
+          <el-button @click="handleUpdate(scope.row)" type="primary" size="mini">编辑</el-button>
+          <el-button @click.native.prevent="removeOne(scope.row.apiId,scope.$index,tableData)" type="danger"
+                     size="mini">删除
+          </el-button>
+        </template>
+      </el-table-column>
 
-        </el-table>
-          <el-pagination
-            @size-change="handleSizeChange"
-            @prev-click="prevClick"
-            @next-click="nextClick"
-            background
-            layout="total,sizes,prev,next"
-            prev-text="上一页"
-            next-text="下一页"
-            :page-size="pageSize"
-            :total="total">
-          </el-pagination>
+    </el-table>
+    <el-pagination
+      @size-change="handleSizeChange"
+      @prev-click="prevClick"
+      @next-click="nextClick"
+      background
+      layout="total,sizes,prev,next"
+      prev-text="上一页"
+      next-text="下一页"
+      :page-size="pageSize"
+      :total="total">
+    </el-pagination>
     <el-dialog title="Api信息" :visible.sync="dialogVisible" width="30%">
       <el-form ref="form" :model="form" label-width="90px">
         <el-form-item label="Api名称">
-        <el-input v-model="form.apiName"></el-input>
-      </el-form-item>
+          <el-input v-model="form.apiName"></el-input>
+        </el-form-item>
         <el-form-item label="URL">
           <el-input v-model="form.uri"></el-input>
         </el-form-item>
@@ -93,120 +97,120 @@
 </template>
 <script>
 
-  // eslint-disable-next-line no-unused-vars
-  import { getApiList,getApiTotal,removeApi,save,updApi } from '@/api/api'
+    // eslint-disable-next-line no-unused-vars
+    import {getApiList, getApiTotal, removeApi, save, updApi} from '@/api/api'
 
-  export default {
-    name: 'api',
-    data() {
-      return {
-        searchForm: {},
-        lastId: '0',
-        pageFlag: 'next',
-        pageSize: 10,
-        form: {
-          apiId: '',
-          apiName: '',
-          uri: '',
-          category: '',
-          enable: true
+    export default {
+        name: 'api',
+        data() {
+            return {
+                searchForm: {},
+                lastId: '0',
+                pageFlag: 'next',
+                pageSize: 10,
+                form: {
+                    apiId: '',
+                    apiName: '',
+                    uri: '',
+                    category: '',
+                    enable: true
+                },
+                dialogVisible: false,
+                tableData: null,
+                total: 0
+            };
         },
-        dialogVisible: false,
-        tableData: null,
-        total: 0
-      };
-    },
-    methods: {
-      addApp(){
-        this.form = {};
-        this.dialogVisible= true;
-      },
-      handleSearch() {
-        this.loadData();
-        this.loadTotal();
-      },
-      loadData() {
-        if (!this.searchForm.apiName) {
-          this.searchForm = {};
-        }
-        getApiList(this.pageFlag,this.pageSize, this.lastId,this.searchForm).then(response => {
-          if (response.data){
-            this.tableData = response.data
-          }
-        }).catch(error => {
-          console.log(error);
-        });
-      },
-      handleCancel() {
-        this.dialogVisible = false;
-      },
-      handleSave() {
-        const params = this.form
-        save(params).then(() => {
-          this.loadData();
-          this.loadTotal();
-        }).catch(error => {
-          console.log(error);
-        });
-        this.dialogVisible = false;
-      },
-      handleUpdate(row) {
-        this.dialogVisible = true;
-        this.form = row;
-      },
-      removeOne(id, index, rows) {
-        this.$confirm('此操作将状态改为删除状态, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-        removeApi(id).then(() => {
-          this.loadData();
-          rows.splice(index,1);
-          })
-        }).catch(err => {
-          console.error(err);
-        });
-      },
-      handleSizeChange(pageSize) {
-        this.pageSize = pageSize;
-        this.loadData();
-      },
-      prevClick(){
-        this.pageFlag = 'prev';
-        this.lastId = this.tableData[0].apiId;
-        this.loadData();
-      },
-      nextClick(){
-        this.pageFlag = 'next';
-        this.lastId = this.tableData[this.tableData.length - 1].apiId;
-        this.loadData();
-      },
+        methods: {
+            addApp() {
+                this.form = {};
+                this.dialogVisible = true;
+            },
+            handleSearch() {
+                this.loadData();
+                this.loadTotal();
+            },
+            loadData() {
+                if (!this.searchForm.apiName) {
+                    this.searchForm = {};
+                }
+                getApiList(this.pageFlag, this.pageSize, this.lastId, this.searchForm).then(response => {
+                    if (response.data) {
+                        this.tableData = response.data
+                    }
+                }).catch(error => {
+                    console.log(error);
+                });
+            },
+            handleCancel() {
+                this.dialogVisible = false;
+            },
+            handleSave() {
+                const params = this.form
+                save(params).then(() => {
+                    this.loadData();
+                    this.loadTotal();
+                }).catch(error => {
+                    console.log(error);
+                });
+                this.dialogVisible = false;
+            },
+            handleUpdate(row) {
+                this.dialogVisible = true;
+                this.form = row;
+            },
+            removeOne(id, index, rows) {
+                this.$confirm('此操作将状态改为删除状态, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    removeApi(id).then(() => {
+                        this.loadData();
+                        rows.splice(index, 1);
+                    })
+                }).catch(err => {
+                    console.error(err);
+                });
+            },
+            handleSizeChange(pageSize) {
+                this.pageSize = pageSize;
+                this.loadData();
+            },
+            prevClick() {
+                this.pageFlag = 'prev';
+                this.lastId = this.tableData[0].apiId;
+                this.loadData();
+            },
+            nextClick() {
+                this.pageFlag = 'next';
+                this.lastId = this.tableData[this.tableData.length - 1].apiId;
+                this.loadData();
+            },
 
-      changeSwitch(data) {
-        updApi(data).then(() => {
-          this.loadData();
-        }).catch(error => {
-          console.log(error);
-        });
-      },
-      loadTotal: function () {
-        if (!this.searchForm.apiName) {
-          this.searchForm = {};
-        }
-        getApiTotal(this.searchForm).then(response => {
-          this.total = response.data;
-        }).catch(error => {
-          console.log(error);
-        });
-      },
+            changeSwitch(data) {
+                updApi(data).then(() => {
+                    this.loadData();
+                }).catch(error => {
+                    console.log(error);
+                });
+            },
+            loadTotal: function () {
+                if (!this.searchForm.apiName) {
+                    this.searchForm = {};
+                }
+                getApiTotal(this.searchForm).then(response => {
+                    this.total = response.data;
+                }).catch(error => {
+                    console.log(error);
+                });
+            },
 
-    },
-    mounted() {
-      this.loadData();
-      this.loadTotal();
-    }
-  };
+        },
+        mounted() {
+            this.loadData();
+            this.loadTotal();
+        }
+    };
 </script>
 
 <style scoped>
