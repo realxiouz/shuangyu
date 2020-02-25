@@ -133,6 +133,7 @@
                     domain: '',
                     ddId: '',
                     ddParentIdId: '',
+                    roles:[]
                 },
                 dialogVisible: false,
                 total: 0,
