@@ -1,4 +1,4 @@
-import {saveAirline, getAirlinePageList, removeAirline, getAirlineTotal} from '@/api/airline';
+import {saveAirline, getAirlinePageList, getAirlineList, removeAirline, getAirlineTotal} from '@/api/airline';
 import {getToken} from '@/utils/auth';
 
 const state = {
@@ -43,6 +43,26 @@ const actions = {
     params.searchForm = searchForm;
     return new Promise((resolve, reject) => {
       getAirlinePageList(params)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  listAll({commit}, params) {
+    var data= params.searchForm;
+    var searchForm = {};
+    for (var attr in data){
+      if (data[attr]!=null && data[attr]!=undefined && data[attr]!=''){
+        searchForm[attr] = data[attr];
+      }
+    }
+    params.searchForm = searchForm;
+    return new Promise((resolve, reject) => {
+      getAirlineList(params)
         .then(response => {
           const {data} = response;
           resolve(data);

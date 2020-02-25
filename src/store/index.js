@@ -5,6 +5,8 @@ import role from './modules/role';
 import nav from './modules/nav';
 import airport from './modules/airport';
 import airline from './modules/airline';
+import refundChangeRule from './modules/refundChangeRule';
+import flightSegment from './modules/flightSegment';
 
 Vue.use(Vuex);
 
@@ -14,7 +16,9 @@ export default new Vuex.Store({
     role,
     airport,
     airline,
-    nav
+    nav,
+    refundChangeRule,
+    flightSegment
   },
   state: {},
   mutations: {},
