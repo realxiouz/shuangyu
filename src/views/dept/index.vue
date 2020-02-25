@@ -93,9 +93,6 @@
         <el-form-item label="企业">
           <el-input v-model="form.firm"></el-input>
         </el-form-item>
-        <el-form-item label="删除标记">
-          <el-input v-model="form.deleteFlag"></el-input>
-        </el-form-item>
         <el-form-item label="域名">
           <el-input v-model="form.domain"></el-input>
         </el-form-item>
@@ -105,8 +102,8 @@
         <el-form-item label="钉钉父节点">
           <el-input v-model="form.ddParentIdId"></el-input>
         </el-form-item>
-        <el-form-item label="是否启用">
-          <el-switch v-model="form.deleteFlag" :active-value=true :inactive-value=false></el-switch>
+        <el-form-item label="是否删除">
+          <el-switch v-model="form.deleteFlag" :active-value=true :inactive-value=false ></el-switch>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
