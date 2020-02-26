@@ -7,6 +7,7 @@ import airport from './modules/airport';
 import airline from './modules/airline';
 import refundChangeRule from './modules/refundChangeRule';
 import flightSegment from './modules/flightSegment';
+import firm from './modules/firm';
 
 Vue.use(Vuex);
 
@@ -17,6 +18,7 @@ export default new Vuex.Store({
     airport,
     airline,
     nav,
+    firm,
     refundChangeRule,
     flightSegment
   },

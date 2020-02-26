@@ -11,7 +11,8 @@
         <el-button type="primary" @click="addApp">添加</el-button>
       </el-form-item>
     </el-form>
-    <el-table :data="tableData" style="width: 100%">
+    <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;"
+              border>
       <el-table-column
         prop="appId"
         label="应用唯一标识"

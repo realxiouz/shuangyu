@@ -1,7 +1,7 @@
 import request from '@/utils/request';
 
 
-export function removeOne(deptId) {
+export function removeDept(deptId) {
   return request({
     url: `/dept/remove/one/${deptId}`,
     method: 'delete'

@@ -195,6 +195,21 @@ export default new Router({
           meta: { title: 'Home', icon: 'home' }
         }
       ]
+    },{
+      title: '企业信息',
+      path: '/firm',
+      uri: '/firm',
+      component: Layout,
+      children: [
+        {
+          title: '企业管理',
+          path: 'index',
+          name: 'firm',
+          uri: '/firm/index',
+          component: () => import('@/views/firm/index'),
+          meta: { title: 'Home', icon: 'home' }
+        }
+      ]
     }
   ]
 });
