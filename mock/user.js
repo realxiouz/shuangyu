@@ -79,5 +79,162 @@ export default [
                 data: 'success'
             }
         }
+    },
+
+    // user update one
+    {
+        url: '/user/update/one',
+        type: 'post',
+        response: _ => {
+            return {
+                "code": 0,
+                "data": true,
+                "message": "string"
+            }
+        }
+    },
+
+    // user page list
+    {
+        url: '/user/page/list\.*',
+        type: 'get',
+        response: _ => {
+            return {
+                "code": 0,
+                "data": [
+                  {
+                    "birthDate": "2020-02-26T07:24:52.799Z",
+                    "comment": "string",
+                    "deleteFlag": true,
+                    "email": "string",
+                    "enable": true,
+                    "fullName": "string",
+                    "gender": 0,
+                    "headImgUrl": "string",
+                    "idCardNo": "string",
+                    "logs": [
+                      {}
+                    ],
+                    "nextLoginChangePassword": true,
+                    "nickName": "string",
+                    "password": "string",
+                    "phone": "string",
+                    "remark": "string",
+                    "sort": 0,
+                    "super": true,
+                    "username": "string"
+                  }, {
+                    "birthDate": "2020-02-26T07:24:52.799Z",
+                    "comment": "string",
+                    "deleteFlag": true,
+                    "email": "string",
+                    "enable": true,
+                    "fullName": "string",
+                    "gender": 0,
+                    "headImgUrl": "string",
+                    "idCardNo": "string",
+                    "logs": [
+                      {}
+                    ],
+                    "nextLoginChangePassword": true,
+                    "nickName": "string",
+                    "password": "string",
+                    "phone": "string",
+                    "remark": "string",
+                    "sort": 0,
+                    "super": true,
+                    "username": "string"
+                  }
+                ],
+                "message": "string"
+              }
+        }
+    },
+
+    // app page list
+    {
+        url: '/app/page/list\.*',
+        type: 'get',
+        response: _ => {
+            return {
+                "code": 0,
+                "data": [
+                  {
+                    "appId": "appId",
+                    "appName": "appName",
+                    "deleteFlag": true,
+                    "enable": true,
+                    "logs": [
+                      {}
+                    ],
+                    "remark": "string",
+                    "sort": 0
+                  }
+                ],
+                "message": "string"
+              }
+        }
+    },
+
+    // app total
+    {
+        url: '/app/total',
+        type: 'get',
+        response: _ => {
+            return {
+                "code": 0,
+                "data": 1,
+                "message": "string"
+            }
+        }
+    },
+
+    // role page list
+    {
+        url: '/role/page/list\.*',
+        type: 'get',
+        response: _ => {
+            return {
+                "code": 0,
+                "data": [
+                  {
+                    "deleteFlag": true,
+                    "enable": true,
+                    "logs": [
+                      {}
+                    ],
+                    "navs": [
+                      {
+                        "apis": [
+                          {
+                            "apiName": "string",
+                            "category": "string",
+                            "deleteFlag": true,
+                            "enable": true,
+                            "logs": [
+                              {}
+                            ],
+                            "remark": "string",
+                            "sort": 0,
+                            "uri": "string"
+                          }
+                        ],
+                        "deleteFlag": true,
+                        "enable": true,
+                        "logs": [
+                          {}
+                        ],
+                        "remark": "string",
+                        "sort": 0,
+                        "uri": "string"
+                      }
+                    ],
+                    "remark": "string",
+                    "sort": 0
+                  }
+                ],
+                "message": "string"
+              }
+        }
     }
 ]

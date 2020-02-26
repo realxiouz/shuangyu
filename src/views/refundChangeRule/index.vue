@@ -16,23 +16,23 @@
       <el-table-column
         prop="airlineCode"
         label="航司二字码"
-        width="180"
       ></el-table-column>
       <el-table-column
         prop="cabin"
         label="舱位"
-        width="300"
       ></el-table-column>
       <el-table-column
         label="操作"
+        align="center"
         width="200">
         <template slot-scope="scope">
           <el-button @click="handleEdit(scope.row)" type="primary" size="small">编辑</el-button>
-          <el-button @click="removeOne(scope.row.refundChangeRuleId)" type="danger" size="small">删除</el-button>
+          <el-button @click="removeOne(scope.row.ruleId)" type="danger" size="small">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
     <el-pagination
+      style="float: right"
       @size-change="handleSizeChange"
       @prev-click="prevClick"
       @next-click="nextClick"
@@ -77,6 +77,9 @@
             <el-input v-model="form.rules[index].label" placeholder="退改规则说明"></el-input>
           </el-form-item>
           <el-form-item>
+            <el-input v-model="form.rules[index].category" placeholder="类别"></el-input>
+          </el-form-item>
+          <el-form-item>
             <el-button v-if="index!=0" type="danger" class="el-icon-remove-outline"
                        @click="deleteRuleItem(index)"></el-button>
             <el-button v-if="index==0" type="primary" class="el-icon-circle-plus-outline"
@@ -119,6 +122,16 @@
     methods: {
       add() {
         this.dialogVisible = true;
+        this.resetForm();
+      },
+      resetForm(){
+        for (let key  in this.form) {
+          if (typeof(this.form[key])=='object'){
+            this.form[key] = null;
+          }else {
+            this.form[key] = '';
+          }
+        }
       },
       addRuleItem() {
         this.form.rules.push({});
@@ -185,12 +198,12 @@
       },
       prevClick() {
         this.pageFlag = 'prev';
-        this.lastId = this.tableData[0].refundChangeRuleId;
+        this.lastId = this.tableData[0].ruleId;
         this.loadData();
       },
       nextClick() {
         this.pageFlag = 'next';
-        this.lastId = this.tableData[this.tableData.length - 1].refundChangeRuleId;
+        this.lastId = this.tableData[this.tableData.length - 1].ruleId;
         this.loadData();
       },
       removeOne(id) {
@@ -214,7 +227,8 @@
       },
       handleEdit(row) {
         this.dialogVisible = true;
-        this.form = row;
+        var obj=JSON.parse(JSON.stringify(row));
+        this.form = obj;
       },
       handleCancel() {
         this.dialogVisible = false;

@@ -13,43 +13,38 @@
     </el-form>
     <el-table :data="tableData"
               style="width: 100%;margin-bottom: 20px;"
-              row-key="id"
+              row-key="deptId"
               border
     >
       <el-table-column
-        prop="attributes.deptName"
+        prop="deptName"
         label="部门名称"
         width="280"
       ></el-table-column>
       <el-table-column
-        prop="attributes.level"
-        label="层级"
-        width="150"
-      ></el-table-column>
-      <el-table-column
-        prop="attributes.firmId"
+        prop="firmId"
         label="企业"
         width="200"
       ></el-table-column>
       <el-table-column
-        prop="attributes.ddId"
+        prop="ddId"
         label="钉钉Id"
         width="150"
       ></el-table-column>
       <el-table-column
-        prop="attributes.ddParentIdId"
+        prop="ddParentIdId"
         label="钉钉父节点"
         width="150"
       ></el-table-column>
       <el-table-column
-        prop="attributes.domain"
+        prop="domain"
         label="域名"
         width="250"
       ></el-table-column>
-      <el-table-column prop="attributes.deleteFlag" label="删除标记"   width="150">
+      <el-table-column prop="deleteFlag" label="删除标记" width="150">
         <template slot-scope="scope">
           <el-switch
-            v-model="scope.row.attributes.deleteFlag"
+            v-model="scope.row.deleteFlag"
             on-color="#00A854"
             on-text="启动"
             on-value=true
@@ -63,11 +58,12 @@
       <el-table-column
         fixed="right"
         label="操作"
+        align="center"
         width="300">
         <template slot-scope="scope">
-          <el-button @click="handleAdd(scope.row.attributes.deptId)" type="success" size="mini">添加子级</el-button>
-          <el-button @click="handleUpdate(scope.row.attributes)" type="primary" size="mini">编辑</el-button>
-          <el-button @click.native.prevent="removeOne(scope.row.attributes.deptId)" type="danger"
+          <el-button @click="handleAdd(scope.row.deptId)" type="success" size="mini">添加子级</el-button>
+          <el-button @click="handleUpdate(scope.row)" type="primary" size="mini">编辑</el-button>
+          <el-button @click.native.prevent="removeOne(scope.row.deptId)" type="danger"
                      size="mini">删除
           </el-button>
         </template>
@@ -105,11 +101,33 @@
         <el-form-item label="是否删除">
           <el-switch v-model="form.deleteFlag" :active-value=true :inactive-value=false></el-switch>
         </el-form-item>
+
+        <template>
+          <el-transfer
+            filterable
+            :format="{
+          noChecked: '${total}',
+          hasChecked: '${checked}/${total}'
+          }"
+            @change="handleChange"
+            :titles="['角色1', '角色2']"
+            :filter-method="filterMethod"
+            filter-placeholder="角色名称"
+            v-model="value"
+            :data="data">
+            <el-button  class="transfer-footer" slot="left-footer" size="small" >操作</el-button>
+            <el-button  class="transfer-footer" slot="right-footer" size="small">操作</el-button>
+          </el-transfer>
+        </template>
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="handleCancel">取 消</el-button>
         <el-button type="primary" @click="handleSave">确 定</el-button>
       </div>
+
+
+
     </el-dialog>
   </div>
 </template>
@@ -121,42 +139,72 @@
     export default {
         name: 'dept',
         data() {
+
+            const generateData = _ => {
+                const data = [];
+                 const bumen = ['部门经理', '普通员工', '总经理', '', '', ''];
+                 const pinyin = ['部门经理', '普通员工', '总经理', '', '', ''];
+              bumen.forEach((ro, index) => {
+                    data.push({
+                        label: ro,
+                        key: index,
+                        pinyin: pinyin[index]
+                    });
+                });
+                return data;
+            };
+
             return {
                 searchForm: {},
                 lastId: '0',
                 pageFlag: 'next',
                 pageSize: 10,
+
                 form: {
-                    pid: '',
+                    deptName:'',
                     firmId: '',
                     deleteFlag: false,
                     domain: '',
                     ddId: '',
                     ddParentIdId: '',
-                    roles:[]
+                    roles:[],
                 },
+
                 dialogVisible: false,
                 total: 0,
                 tableData: null,
-                defaultProps: {
-                    children: 'children'
+                data: generateData(),
+                value: [],
+                filterMethod(query, item) {
+                    return item.pinyin.indexOf(query) > -1;
                 }
+
             };
         },
         methods: {
+
+          handleChange(data) {
+            debugger
+            this.form.roles=data;
+
+          },
+
             handleAdd(deptId) {
                 this.form = {};
                 this.form.pid = deptId;
                 this.dialogVisible = true;
             },
+
             add() {
                 this.form = {};
                 this.dialogVisible = true;
             },
+
             handleSearch() {
                 this.loadData();
                 this.loadTotal();
             },
+
             loadData() {
                 if (!this.searchForm.deptName) {
                     this.searchForm = {};
@@ -169,9 +217,11 @@
                     console.log(error);
                 });
             },
+
             handleCancel() {
                 this.dialogVisible = false;
             },
+
             handleSave() {
                 const params = this.form
                 deptSave(params).then(() => {
@@ -182,9 +232,18 @@
                 });
                 this.dialogVisible = false;
             },
+
             handleUpdate(row) {
                 this.dialogVisible = true;
-                this.form = row;
+                this.form.deptId = row.deptId;
+                this.form.deptName = row.deptName;
+                this.form.firmId = row.firmId;
+                this.form.domain = row.domain;
+                this.form.ddId = row.ddId;
+                this.form.ddParentIdId = row.ddParentIdId;
+                this.form.deleteFlag = row.deleteFlag;
+                this.form.roles=row.roles;
+              console.log(row);
             },
             handleSizeChange(pageSize) {
                 this.pageSize = pageSize;
