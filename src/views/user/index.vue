@@ -203,7 +203,19 @@
                 rules: {
                   nickName: [
                     { required: true, message: '请输入昵称', trigger: 'blur' }
-                  ]
+                  ],
+                  fullName: [
+                    { required: true, message: '请输入姓名', trigger: 'blur' }
+                  ],
+                  idCardNo: [
+                    { required: true, message: '请输入身份证号码', trigger: 'blur' }
+                  ],
+                  phone: [
+                    { required: true, message: '请输入手机号码', trigger: 'blur' }
+                  ],
+                  // phone: [
+                  //   { required: true, message: '请输入手机号码', trigger: 'blur' }
+                  // ]
                 }
             };
         },
