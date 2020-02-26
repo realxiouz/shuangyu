@@ -13,17 +13,14 @@
       <el-table-column
         prop="code"
         label="三字码"
-        width="180"
       ></el-table-column>
       <el-table-column
         prop="name"
         label="机场名称"
-        width="300"
       ></el-table-column>
       <el-table-column
         prop="city"
         label="机场所在城市"
-        width="300"
       ></el-table-column>
       <el-table-column
         label="操作"
@@ -35,6 +32,7 @@
       </el-table-column>
     </el-table>
     <el-pagination
+      style="float: right"
       @size-change="handleSizeChange"
       @prev-click="prevClick"
       @next-click="nextClick"
@@ -49,7 +47,7 @@
     <el-dialog title="机场信息" :visible.sync="dialogVisible" width="30%">
       <el-form ref="form" :model="form" label-width="110px">
         <el-form-item prop="code" label="三字码">
-          <el-input v-model="form.code"></el-input>
+          <el-input v-model="form.code" maxlength = "3"></el-input>
         </el-form-item>
         <el-form-item prop="name" label="机场名称">
           <el-input v-model="form.name"></el-input>
@@ -58,7 +56,7 @@
           <el-input v-model="form.city"></el-input>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <div slot='footer' class="dialog-footer">
         <el-button @click="handleCancel">取 消</el-button>
         <el-button type="primary" @click="handleSave">确 定</el-button>
       </div>
@@ -68,19 +66,19 @@
 
 <script>
   export default {
-    name: "airport",
+    name: 'airport',
     data() {
       return {
         searchForm: {},
         form: {
-          code: "",
-          name: "",
-          city: ""
+          code: '',
+          name: '',
+          city: ''
         },
         dialogVisible: false,
         tableData: [],
-        lastId: "0",
-        pageFlag: "next",
+        lastId: '0',
+        pageFlag: 'next',
         pageSize: 10,
         total: 0,
         currentPage: 0
@@ -89,13 +87,20 @@
     methods: {
       add() {
         this.dialogVisible = true;
+        this.resetForm();
+      },
+      resetForm(){
         for (let key  in this.form) {
-          this.form[key] = "";
+          if (typeof(this.form[key])=='object'){
+            this.form[key] = null;
+          }else {
+            this.form[key] = '';
+          }
         }
       },
       loadData() {
         this.$store
-          .dispatch("airport/list", {
+          .dispatch('airport/list', {
             pageSize: this.pageSize,
             lastId: this.lastId,
             pageFlag: this.pageFlag,
@@ -111,7 +116,7 @@
       },
       loadTotal() {
         this.$store
-          .dispatch("airport/total", this.searchForm)
+          .dispatch('airport/total', this.searchForm)
           .then(data => {
             this.total = data;
           })
@@ -121,27 +126,27 @@
       },
       handleSizeChange(pageSize) {
         this.pageSize = pageSize;
-        this.lastId = "0";
+        this.lastId = '0';
         this.loadData();
       },
       prevClick() {
-        this.pageFlag = "prev";
+        this.pageFlag = 'prev';
         this.lastId = this.tableData[0].airportId;
         this.loadData();
       },
       nextClick() {
-        this.pageFlag = "next";
+        this.pageFlag = 'next';
         this.lastId = this.tableData[this.tableData.length - 1].airportId;
         this.loadData();
       },
       removeOne(id) {
-        this.$confirm("是否确定删除机场信息?", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
+        this.$confirm('是否确定删除机场信息?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
         }).then(() => {
           this.$store
-            .dispatch("airport/removeOne", id)
+            .dispatch('airport/removeOne', id)
             .then(data => {
               console.log(data);
               this.loadData();
@@ -155,17 +160,18 @@
       },
       handleEdit(row) {
         this.dialogVisible = true;
-        this.form = row;
+        var obj=JSON.parse(JSON.stringify(row));
+        this.form = obj;
       },
       handleCancel() {
         this.dialogVisible = false;
       },
       handleSave() {
         this.$store
-          .dispatch("airport/save", this.form)
+          .dispatch('airport/save', this.form)
           .then(data => {
             console.log(data);
-            this.lastId = "0";
+            this.lastId = '0';
             this.loadData();
           })
           .catch(error => {
@@ -174,7 +180,7 @@
         this.dialogVisible = false;
       },
       handleSearch() {
-        this.lastId = "0";
+        this.lastId = '0';
         this.loadData();
       }
     },

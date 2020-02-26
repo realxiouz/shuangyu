@@ -13,17 +13,14 @@
       <el-table-column
         prop="airlineName"
         label="航司名称"
-        width="300"
       ></el-table-column>
       <el-table-column
         prop="airlineCode"
         label="航司二字码"
-        width="180"
       ></el-table-column>
       <el-table-column
         prop="cabins"
         label="舱位"
-        width="300"
       ></el-table-column>
       <el-table-column
         label="操作"
@@ -35,6 +32,7 @@
       </el-table-column>
     </el-table>
     <el-pagination
+      style="float: right"
       @size-change="handleSizeChange"
       @prev-click="prevClick"
       @next-click="nextClick"
@@ -47,7 +45,7 @@
       :total="total">
     </el-pagination>
     <el-dialog title="航司舱位信息" :visible.sync="dialogVisible" width="30%">
-      <el-form ref="form" :model="form" label-width="110px">
+      <el-form ref="form" :model="form" label-width="110px" :rules="rules">
         <el-form-item prop="airlineName" label="航司名称">
           <el-input v-model="form.airlineName"></el-input>
         </el-form-item>
@@ -89,6 +87,16 @@
     methods: {
       add() {
         this.dialogVisible = true;
+        this.resetForm();
+      },
+      resetForm(){
+        for (let key  in this.form) {
+          if (typeof(this.form[key])=='object'){
+            this.form[key] = null;
+          }else {
+            this.form[key] = '';
+          }
+        }
       },
       loadData() {
         this.$store
@@ -152,7 +160,8 @@
       },
       handleEdit(row) {
         this.dialogVisible = true;
-        this.form = row;
+        var obj=JSON.parse(JSON.stringify(row));
+        this.form = obj;
       },
       handleCancel() {
         this.dialogVisible = false;

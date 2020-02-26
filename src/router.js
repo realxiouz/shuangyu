@@ -121,22 +121,6 @@ export default new Router({
       ]
     },
     {
-      title: '航班信息',
-      path: '/airport',
-      uri: '/airport',
-      component: Layout,
-      children: [
-        {
-          title: '机场信息',
-          path: 'index',
-          name: 'airport',
-          uri: '/airport/index',
-          component: () => import('@/views/airport/index'),
-          meta: { title: 'Home', icon: 'home' }
-        }
-      ]
-    },
-    {
       title: '导航管理',
       path: '/nav',
       uri: '/nav',
@@ -148,6 +132,21 @@ export default new Router({
           name: 'Nav',
           uri: '/nav/index',
           component: () => import('@/views/nav/index'),
+          meta: { title: 'Home', icon: 'home' }
+        }
+      ]
+    },{
+      title: '机场信息',
+      path: '/airport',
+      uri: '/airport',
+      component: Layout,
+      children: [
+        {
+          title: '机场信息',
+          path: 'index',
+          name: 'airport',
+          uri: '/airport/index',
+          component: () => import('@/views/airport/index'),
           meta: { title: 'Home', icon: 'home' }
         }
       ]
