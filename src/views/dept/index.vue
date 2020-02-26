@@ -102,26 +102,31 @@
           <el-switch v-model="form.deleteFlag" :active-value=true :inactive-value=false></el-switch>
         </el-form-item>
 
+        <template>
+          <el-transfer
+            filterable
+            :format="{
+          noChecked: '${total}',
+          hasChecked: '${checked}/${total}'
+          }"
+            @change="handleChange"
+            :titles="['角色1', '角色2']"
+            :filter-method="filterMethod"
+            filter-placeholder="角色名称"
+            v-model="value"
+            :pata="pata">
+            <el-button  class="transfer-footer" slot="left-footer" size="small" >操作</el-button>
+            <el-button  class="transfer-footer" slot="right-footer" size="small">操作</el-button>
+          </el-transfer>
+        </template>
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="handleCancel">取 消</el-button>
         <el-button type="primary" @click="handleSave">确 定</el-button>
       </div>
 
-      <template>
-        <el-transfer
-          filterable
-          :format="{
-          noChecked: '${total}',
-          hasChecked: '${checked}/${total}'
-          }"
-          :titles="['角色1', '角色2']"
-          :filter-method="filterMethod"
-          filter-placeholder="角色名称"
-          v-model="value"
-          :data="data">
-        </el-transfer>
-      </template>
+
 
     </el-dialog>
   </div>
@@ -136,17 +141,17 @@
         data() {
 
             const generateData = _ => {
-                const data = [];
-                const roles = ['部门经理', '普通员工', '总经理', '', '', ''];
-                const pinyin = ['部门经理', '普通员工', '总经理', '', '', ''];
-                roles.forEach((role, index) => {
-                    data.push({
-                        label: role,
+                const pata = [];
+                 const depts = ['部门经理', '普通员工', '总经理', '', '', ''];
+                 const pinyin = ['部门经理', '普通员工', '总经理', '', '', ''];
+              depts.forEach((ro, index) => {
+                    pata.push({
+                        label: ro,
                         key: index,
                         pinyin: pinyin[index]
                     });
                 });
-                return data;
+                return pata;
             };
 
             return {
@@ -162,14 +167,14 @@
                     domain: '',
                     ddId: '',
                     ddParentIdId: '',
-                    roles: []
+                    roles:[],
                 },
 
                 dialogVisible: false,
                 total: 0,
                 tableData: null,
-                data: generateData(),
-                value: [],
+                pata: generateData(),
+                value: [1],
                 filterMethod(query, item) {
                     return item.pinyin.indexOf(query) > -1;
                 }
@@ -177,6 +182,11 @@
             };
         },
         methods: {
+
+          handleChange(value, direction, movedKeys) {
+            console.log(value, direction, movedKeys);
+          },
+
             handleAdd(deptId) {
                 this.form = {};
                 this.form.pid = deptId;
