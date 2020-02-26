@@ -105,11 +105,28 @@
         <el-form-item label="是否删除">
           <el-switch v-model="form.deleteFlag" :active-value=true :inactive-value=false></el-switch>
         </el-form-item>
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="handleCancel">取 消</el-button>
         <el-button type="primary" @click="handleSave">确 定</el-button>
       </div>
+
+      <template>
+        <el-transfer
+          filterable
+          :format="{
+          noChecked: '${total}',
+          hasChecked: '${checked}/${total}'
+          }"
+          :titles="['角色1', '角色2']"
+          :filter-method="filterMethod"
+          filter-placeholder="角色名称"
+          v-model="value"
+          :data="data">
+        </el-transfer>
+      </template>
+
     </el-dialog>
   </div>
 </template>
@@ -121,11 +138,27 @@
     export default {
         name: 'dept',
         data() {
+
+          const generateData = _ => {
+            const data = [];
+            const roles = ['部门经理', '普通员工', '总经理','','',''];
+            const pinyin = ['部门经理', '普通员工', '总经理','','',''];
+            roles.forEach((role, index) => {
+              data.push({
+                label: role,
+                key: index,
+                pinyin: pinyin[index]
+              });
+            });
+            return data;
+          };
+
             return {
                 searchForm: {},
                 lastId: '0',
                 pageFlag: 'next',
                 pageSize: 10,
+
                 form: {
                     pid: '',
                     firmId: '',
@@ -135,12 +168,20 @@
                     ddParentIdId: '',
                     roles:[]
                 },
+
                 dialogVisible: false,
                 total: 0,
                 tableData: null,
                 defaultProps: {
                     children: 'children'
-                }
+                },
+
+              data: generateData(),
+              value: [],
+              filterMethod(query, item) {
+                return item.pinyin.indexOf(query) > -1;
+              }
+
             };
         },
         methods: {
@@ -149,14 +190,17 @@
                 this.form.pid = deptId;
                 this.dialogVisible = true;
             },
+
             add() {
                 this.form = {};
                 this.dialogVisible = true;
             },
+
             handleSearch() {
                 this.loadData();
                 this.loadTotal();
             },
+
             loadData() {
                 if (!this.searchForm.deptName) {
                     this.searchForm = {};
@@ -169,9 +213,11 @@
                     console.log(error);
                 });
             },
+
             handleCancel() {
                 this.dialogVisible = false;
             },
+
             handleSave() {
                 const params = this.form
                 deptSave(params).then(() => {
@@ -182,6 +228,7 @@
                 });
                 this.dialogVisible = false;
             },
+
             handleUpdate(row) {
                 this.dialogVisible = true;
                 this.form = row;
