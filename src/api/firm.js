@@ -3,7 +3,8 @@ import request from '@/utils/request';
 export function getFirmList(params) {
   return request({
     url: `/firm/page/list/${params.pageFlag}/${params.pageSize}/${params.lastId}`,
-    method: `get`
+    method: `get`,
+    params: params.filter
   });
 }
 
