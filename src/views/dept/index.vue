@@ -11,12 +11,15 @@
         <el-button type="primary" @click="add">添加</el-button>
       </el-form-item>
     </el-form>
-    <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;" border
-              default-expand-all>
+    <el-table :data="tableData"
+              style="width: 100%;margin-bottom: 20px;"
+              row-key="id"
+              border
+    >
       <el-table-column
         prop="attributes.deptName"
         label="部门名称"
-        width="200"
+        width="280"
       ></el-table-column>
       <el-table-column
         prop="attributes.level"
@@ -24,7 +27,7 @@
         width="150"
       ></el-table-column>
       <el-table-column
-        prop="attributes.firm"
+        prop="attributes.firmId"
         label="企业"
         width="200"
       ></el-table-column>
@@ -41,9 +44,9 @@
       <el-table-column
         prop="attributes.domain"
         label="域名"
-        width="150"
+        width="250"
       ></el-table-column>
-      <el-table-column prop="attributes.deleteFlag" label="删除标记">
+      <el-table-column prop="attributes.deleteFlag" label="删除标记"   width="150">
         <template slot-scope="scope">
           <el-switch
             v-model="scope.row.attributes.deleteFlag"
@@ -62,9 +65,9 @@
         label="操作"
         width="300">
         <template slot-scope="scope">
-          <el-button @click="handleadd(scope.row.attributes)" type="success" size="mini">添加子级</el-button>
+          <el-button @click="handleAdd(scope.row.attributes.deptId)" type="success" size="mini">添加子级</el-button>
           <el-button @click="handleUpdate(scope.row.attributes)" type="primary" size="mini">编辑</el-button>
-          <el-button @click.native.prevent="removeOne(scope.row.attributes.deptId,scope.$index,tableData)" type="danger"
+          <el-button @click.native.prevent="removeOne(scope.row.attributes.deptId)" type="danger"
                      size="mini">删除
           </el-button>
         </template>
@@ -87,14 +90,8 @@
         <el-form-item label="部门名称">
           <el-input v-model="form.deptName"></el-input>
         </el-form-item>
-        <el-form-item label="层级">
-          <el-input v-model="form.level"></el-input>
-        </el-form-item>
         <el-form-item label="企业">
-          <el-input v-model="form.firm"></el-input>
-        </el-form-item>
-        <el-form-item label="删除标记">
-          <el-input v-model="form.deleteFlag"></el-input>
+          <el-input v-model="form.firmId"></el-input>
         </el-form-item>
         <el-form-item label="域名">
           <el-input v-model="form.domain"></el-input>
@@ -105,7 +102,7 @@
         <el-form-item label="钉钉父节点">
           <el-input v-model="form.ddParentIdId"></el-input>
         </el-form-item>
-        <el-form-item label="是否启用">
+        <el-form-item label="是否删除">
           <el-switch v-model="form.deleteFlag" :active-value=true :inactive-value=false></el-switch>
         </el-form-item>
       </el-form>
@@ -130,23 +127,26 @@
                 pageFlag: 'next',
                 pageSize: 10,
                 form: {
-                    parentId: '',
-                    level: '',
-                    firm: '',
+                    pid: '',
+                    firmId: '',
                     deleteFlag: false,
                     domain: '',
                     ddId: '',
                     ddParentIdId: '',
+                    roles:[]
                 },
                 dialogVisible: false,
                 total: 0,
-                tableData: null
+                tableData: null,
+                defaultProps: {
+                    children: 'children'
+                }
             };
         },
         methods: {
-            handleadd(row) {
-                this.form.parentId = row.deptId;
-                console.log(row);
+            handleAdd(deptId) {
+                this.form = {};
+                this.form.pid = deptId;
                 this.dialogVisible = true;
             },
             add() {
@@ -158,7 +158,7 @@
                 this.loadTotal();
             },
             loadData() {
-                if (!this.searchForm.deptId) {
+                if (!this.searchForm.deptName) {
                     this.searchForm = {};
                 }
                 getDeptList(this.pageFlag, this.pageSize, this.lastId, this.searchForm).then(response => {
@@ -185,8 +185,6 @@
             handleUpdate(row) {
                 this.dialogVisible = true;
                 this.form = row;
-
-                console.log(row);
             },
             handleSizeChange(pageSize) {
                 this.pageSize = pageSize;
@@ -202,7 +200,7 @@
                 this.lastId = this.tableData[this.tableData.length - 1].deptId;
                 this.loadData();
             },
-            removeOne(Id, index, rows) {
+            removeOne(Id) {
                 this.$confirm('此操作将状态改为删除状态, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -210,7 +208,6 @@
                 }).then(() => {
                     removeDept(Id).then(() => {
                         this.loadData();
-                        rows.splice(index, 1);
                     })
                 }).catch(err => {
                     console.error(err);
@@ -218,7 +215,7 @@
             },
 
             loadTotal: function () {
-                if (!this.searchForm.deptId) {
+                if (!this.searchForm.deptName) {
                     this.searchForm = {};
                 }
                 getDeptTotal(this.searchForm).then(response => {
