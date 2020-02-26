@@ -8,6 +8,7 @@ import App from './App';
 import router from './router';
 import store from './store';
 import '@/permission';
+import _ from 'lodash'
 import moment from 'moment'
 
 // import { mockXHR } from '../mock';
@@ -16,6 +17,7 @@ import moment from 'moment'
 // }
 
 Vue.use(ElementUI, { locale });
+Vue.prototype._ = _
 Vue.prototype.$moment = moment
 
 Vue.config.productionTip = false;

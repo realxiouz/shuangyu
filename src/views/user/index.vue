@@ -66,14 +66,14 @@
       >
         <template slot-scope="scope">
           <el-switch
-            v-model="scope.row.super"
+            :value="scope.row.super"
             on-color="#00A854"
             on-text="启动"
             on-value=true
             off-color="#F04134"
             off-text="禁止"
             off-value=false
-            @change="changeSwitch(scope.row)">
+            @change="changeSwitch({ ...scope.row, super: !scope.row.super })">
           </el-switch>
         </template>
       </el-table-column>
@@ -87,7 +87,7 @@
             off-color="#F04134"
             off-text="禁止"
             off-value=false
-            @change="changeSwitch(scope.row)">
+            @change="changeSwitch({ ...scope.row, enable: !scope.row.enable })">
           </el-switch>
         </template>
       </el-table-column>
@@ -116,7 +116,7 @@
       :page-size="pageSize"
       :total="total">
     </el-pagination>
-    <el-dialog title="用户信息" :visible.sync="dialogVisible" width="35%">
+    <el-dialog title="用户信息" :visible.sync="dialogVisible" width="30%">
       <el-form ref="form" :model="form" label-width="110px">
         <el-form-item label="昵称">
           <el-input v-model="form.nickName"></el-input>
@@ -174,8 +174,6 @@
 <script>
     import {getUserList, getUserTotal, save, updUser} from '@/api/user'
 
-    import _ from 'lodash'
-
     const defaultProps = {
       nickName: '',
       fullName: "",
@@ -192,16 +190,16 @@
 
     export default {
         name: "user",
-        data() {
+        data(props) {
             return {
                 searchForm: {},
                 lastId: '0',
                 pageFlag: 'next',
                 pageSize: 10,
                 total: 0,
-                form: _.cloneDeep(defaultProps),
                 dialogVisible: false,
-                tableData: null
+                tableData: null,
+                form: props._.cloneDeep(defaultProps)
             };
         },
         methods: {
@@ -210,10 +208,10 @@
             },
             userUpdate(row) {
                 this.dialogVisible = true;
-                this.form = row;
+                this.form = this._.cloneDeep(row);
             },
             addUser() {
-                this.form = _.cloneDeep(defaultProps);
+                this.form = this._.cloneDeep(defaultProps);
                 this.dialogVisible = true;
             },
             loadData() {
