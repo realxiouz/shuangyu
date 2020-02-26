@@ -162,6 +162,7 @@
 
                 form: {
                     deptId:'',
+                    deptName:'',
                     pid: '',
                     firmId: '',
                     deleteFlag: false,
@@ -230,6 +231,7 @@
             handleUpdate(row) {
                 this.dialogVisible = true;
                 this.form.deptId = row.deptId;
+                this.form.deptName = row.deptName;
                 this.form.firmId = row.firmId;
                 this.form.domain = row.domain;
                 this.form.ddId = row.ddId;
