@@ -145,8 +145,8 @@
         },
         methods: {
             handleAdd(deptId) {
+                this.form = {};
                 this.form.pid = deptId;
-                console.log(deptId);
                 this.dialogVisible = true;
             },
             add() {

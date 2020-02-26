@@ -2,7 +2,12 @@
   <div class="tree-node">
     <el-container>
       <el-row>
-        <el-input v-model="keyword" style="width: 300px; margin-left: 50px;"></el-input>
+        <el-input v-model="keyword" style="width: 300px; margin-left: 50px;" placeholder="请输入企业名称..">
+          <i class="el-icon-edit el-input__icon"
+             slot="suffix"
+             @click="handleIconClick">
+          </i>
+        </el-input>
         <el-button type="primary" icon="el-icon-search" @click="search"></el-button>
       </el-row>
       <el-header>
@@ -178,6 +183,16 @@
         <el-button @click="handleCancel">取 消</el-button>
         <el-button type="primary" @click="handleSave">确 定</el-button>
       </div>
+      <template>
+        <el-transfer
+          v-model="value"
+          :props="{
+            key: 'value',
+            label: 'desc'
+          }"
+          :data="transData">
+        </el-transfer>
+      </template>
     </el-dialog>
   </div>
 </template>
@@ -194,6 +209,7 @@
         lastId: '0',
         total: 0,
         keyword: '',
+        transData: [],
         form: {
           firmId: '',
           firmName: '',
@@ -241,7 +257,17 @@
           });
       },
       search() {
-
+        this.$store
+          .dispatch('firm/getPageList', {pageFlag: this.pageFlag, pageSize: this.pageSize, lastId: this.lastId, filter: {firmName:this.keyword}})
+          .then(data => {
+            this.tableData = data.data;
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      handleIconClick(){
+        this.keyword = '';
       },
       /*点击添加顶级企业信息*/
       rootAdd() {
