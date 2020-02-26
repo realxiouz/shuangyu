@@ -117,20 +117,20 @@
       :total="total">
     </el-pagination>
     <el-dialog title="用户信息" :visible.sync="dialogVisible" width="30%">
-      <el-form ref="form" :model="form" label-width="110px">
-        <el-form-item label="昵称">
+      <el-form ref="form" :rules="rules" :model="form" label-width="110px">
+        <el-form-item label="昵称" prop="nickName">
           <el-input v-model="form.nickName"></el-input>
         </el-form-item>
-        <el-form-item label="姓名">
+        <el-form-item label="姓名" prop="fullName">
           <el-input v-model="form.fullName"></el-input>
         </el-form-item>
-        <el-form-item label="性别">
+        <el-form-item label="性别" prop="gender">
           <el-select v-model="form.gender" placeholder="请选择性别">
             <el-option label="男" value="男"></el-option>
             <el-option label="女" value="女"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="手机号码">
+        <el-form-item label="手机号码" prop="phone">
           <el-input
             type="text"
             placeholder="请输入手机号码"
@@ -141,9 +141,9 @@
           </el-input>
         </el-form-item>
         <el-form-item label="邮箱">
-          <el-input v-model="form.email"></el-input>
+          <el-input v-model="form.email" prop="email"></el-input>
         </el-form-item>
-        <el-form-item label="身份证号码">
+        <el-form-item label="身份证号码" prop="idCardNo">
           <el-input
             type="text"
             placeholder="请输入身份证号码"
@@ -153,13 +153,13 @@
           >
           </el-input>
         </el-form-item>
-        <el-form-item label="是否超级管理员">
+        <el-form-item label="是否超级管理员" prop="super">
           <el-switch v-model="form.super" :active-value=true :inactive-value=false></el-switch>
         </el-form-item>
-        <el-form-item label="是否启用">
+        <el-form-item label="是否启用" prop="enable">
           <el-switch v-model="form.enable" :active-value=true :inactive-value=false></el-switch>
         </el-form-item>
-        <el-form-item label="备注">
+        <el-form-item label="备注" prop="comment">
           <el-input type="textarea" v-model="form.comment"></el-input>
         </el-form-item>
       </el-form>
@@ -199,7 +199,12 @@
                 total: 0,
                 dialogVisible: false,
                 tableData: null,
-                form: props._.cloneDeep(defaultProps)
+                form: props._.cloneDeep(defaultProps),
+                rules: {
+                  nickName: [
+                    { required: true, message: '请输入昵称', trigger: 'blur' }
+                  ]
+                }
             };
         },
         methods: {
