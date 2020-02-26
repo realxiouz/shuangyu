@@ -27,7 +27,7 @@
         width="200">
         <template slot-scope="scope">
           <el-button @click="handleEdit(scope.row)" type="primary" size="small">编辑</el-button>
-          <el-button @click="removeOne(scope.row.refundChangeRuleId)" type="danger" size="small">删除</el-button>
+          <el-button @click="removeOne(scope.row.ruleId)" type="danger" size="small">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -75,6 +75,9 @@
           </el-form-item>
           <el-form-item>
             <el-input v-model="form.rules[index].label" placeholder="退改规则说明"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-input v-model="form.rules[index].category" placeholder="类别"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button v-if="index!=0" type="danger" class="el-icon-remove-outline"
@@ -195,12 +198,12 @@
       },
       prevClick() {
         this.pageFlag = 'prev';
-        this.lastId = this.tableData[0].refundChangeRuleId;
+        this.lastId = this.tableData[0].ruleId;
         this.loadData();
       },
       nextClick() {
         this.pageFlag = 'next';
-        this.lastId = this.tableData[this.tableData.length - 1].refundChangeRuleId;
+        this.lastId = this.tableData[this.tableData.length - 1].ruleId;
         this.loadData();
       },
       removeOne(id) {
