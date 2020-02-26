@@ -229,7 +229,9 @@
         this.form.roleId = row.roleId;
         this.form.roleName = row.roleName;
         this.form.enable = row.enable;
-        this.$refs.tree.setCheckedKeys(row.navIds);
+        this.$nextTick(() => {
+          this.$refs.tree.setCheckedKeys(row.navIds);
+        })
       },
       changeSwitch:function(data) {
         this.save(data);
