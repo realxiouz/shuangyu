@@ -114,7 +114,7 @@
             :filter-method="filterMethod"
             filter-placeholder="角色名称"
             v-model="value"
-            :pata="pata">
+            :data="data">
             <el-button  class="transfer-footer" slot="left-footer" size="small" >操作</el-button>
             <el-button  class="transfer-footer" slot="right-footer" size="small">操作</el-button>
           </el-transfer>
@@ -141,17 +141,17 @@
         data() {
 
             const generateData = _ => {
-                const pata = [];
-                 const depts = ['部门经理', '普通员工', '总经理', '', '', ''];
+                const data = [];
+                 const bumen = ['部门经理', '普通员工', '总经理', '', '', ''];
                  const pinyin = ['部门经理', '普通员工', '总经理', '', '', ''];
-              depts.forEach((ro, index) => {
-                    pata.push({
+              bumen.forEach((ro, index) => {
+                    data.push({
                         label: ro,
                         key: index,
                         pinyin: pinyin[index]
                     });
                 });
-                return pata;
+                return data;
             };
 
             return {
@@ -173,8 +173,8 @@
                 dialogVisible: false,
                 total: 0,
                 tableData: null,
-                pata: generateData(),
-                value: [1],
+                data: generateData(),
+                value: [],
                 filterMethod(query, item) {
                     return item.pinyin.indexOf(query) > -1;
                 }
@@ -183,8 +183,10 @@
         },
         methods: {
 
-          handleChange(value, direction, movedKeys) {
-            console.log(value, direction, movedKeys);
+          handleChange(data) {
+            debugger
+            this.form.roles=data;
+
           },
 
             handleAdd(deptId) {
@@ -240,6 +242,8 @@
                 this.form.ddId = row.ddId;
                 this.form.ddParentIdId = row.ddParentIdId;
                 this.form.deleteFlag = row.deleteFlag;
+                this.form.roles=row.roles;
+              console.log(row);
             },
             handleSizeChange(pageSize) {
                 this.pageSize = pageSize;
