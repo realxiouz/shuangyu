@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-form :inline="true" :model="searchForm">
       <el-form-item label="三字码">
-        <el-input v-model="searchForm.code" placeholder="三字码"></el-input>
+        <el-input v-model="searchForm.airportCode" placeholder="三字码"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="handleSearch">查询</el-button>
@@ -11,15 +11,15 @@
     </el-form>
     <el-table :data="tableData" ref="tableData" @row-dblclick="handleEdit" style="width: 100%">
       <el-table-column
-        prop="code"
+        prop="airportCode"
         label="三字码"
       ></el-table-column>
       <el-table-column
-        prop="name"
+        prop="airportName"
         label="机场名称"
       ></el-table-column>
       <el-table-column
-        prop="city"
+        prop="airportCity"
         label="机场所在城市"
       ></el-table-column>
       <el-table-column
@@ -27,7 +27,7 @@
         width="200">
         <template slot-scope="scope">
           <el-button @click="handleEdit(scope.row)" type="primary" size="small">编辑</el-button>
-          <el-button @click="removeOne(scope.row.airportId)" type="danger" size="small">删除</el-button>
+          <el-button @click="removeOne(scope.row.airportCode)" type="danger" size="small">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -46,14 +46,14 @@
     </el-pagination>
     <el-dialog title="机场信息" :visible.sync="dialogVisible" width="30%">
       <el-form ref="form" :model="form" label-width="110px">
-        <el-form-item prop="code" label="三字码">
-          <el-input v-model="form.code" maxlength = "3"></el-input>
+        <el-form-item prop="airportCode" label="三字码">
+          <el-input v-model="form.airportCode" maxlength = "3"></el-input>
         </el-form-item>
-        <el-form-item prop="name" label="机场名称">
-          <el-input v-model="form.name"></el-input>
+        <el-form-item prop="airportName" label="机场名称">
+          <el-input v-model="form.airportName"></el-input>
         </el-form-item>
-        <el-form-item prop="city" label="机场所在城市">
-          <el-input v-model="form.city"></el-input>
+        <el-form-item prop="airportCity" label="机场所在城市">
+          <el-input v-model="form.airportCity"></el-input>
         </el-form-item>
       </el-form>
       <div slot='footer' class="dialog-footer">
@@ -71,9 +71,9 @@
       return {
         searchForm: {},
         form: {
-          code: '',
-          name: '',
-          city: ''
+          airportCode: '',
+          airportName: '',
+          airportCity: ''
         },
         dialogVisible: false,
         tableData: [],
@@ -131,12 +131,12 @@
       },
       prevClick() {
         this.pageFlag = 'prev';
-        this.lastId = this.tableData[0].airportId;
+        this.lastId = this.tableData[0].airportCode;
         this.loadData();
       },
       nextClick() {
         this.pageFlag = 'next';
-        this.lastId = this.tableData[this.tableData.length - 1].airportId;
+        this.lastId = this.tableData[this.tableData.length - 1].airportCode;
         this.loadData();
       },
       removeOne(id) {

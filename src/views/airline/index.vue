@@ -27,7 +27,7 @@
         width="200">
         <template slot-scope="scope">
           <el-button @click="handleEdit(scope.row)" type="primary" size="small">编辑</el-button>
-          <el-button @click="removeOne(scope.row.airlineId)" type="danger" size="small">删除</el-button>
+          <el-button @click="removeOne(scope.row.airlineCode)" type="danger" size="small">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -131,12 +131,12 @@
       },
       prevClick() {
         this.pageFlag = 'prev';
-        this.lastId = this.tableData[0].airlineId;
+        this.lastId = this.tableData[0].airlineCode;
         this.loadData();
       },
       nextClick() {
         this.pageFlag = 'next';
-        this.lastId = this.tableData[this.tableData.length - 1].airlineId;
+        this.lastId = this.tableData[this.tableData.length - 1].airlineCode;
         this.loadData();
       },
       removeOne(id) {
