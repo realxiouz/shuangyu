@@ -13,43 +13,43 @@
     </el-form>
     <el-table :data="tableData"
               style="width: 100%;margin-bottom: 20px;"
-              row-key="id"
+              row-key="deptId"
               border
     >
       <el-table-column
-        prop="attributes.deptName"
+        prop="deptName"
         label="部门名称"
         width="280"
       ></el-table-column>
       <el-table-column
-        prop="attributes.level"
+        prop="level"
         label="层级"
         width="150"
       ></el-table-column>
       <el-table-column
-        prop="attributes.firmId"
+        prop="firmId"
         label="企业"
         width="200"
       ></el-table-column>
       <el-table-column
-        prop="attributes.ddId"
+        prop="ddId"
         label="钉钉Id"
         width="150"
       ></el-table-column>
       <el-table-column
-        prop="attributes.ddParentIdId"
+        prop="ddParentIdId"
         label="钉钉父节点"
         width="150"
       ></el-table-column>
       <el-table-column
-        prop="attributes.domain"
+        prop="domain"
         label="域名"
         width="250"
       ></el-table-column>
-      <el-table-column prop="attributes.deleteFlag" label="删除标记"   width="150">
+      <el-table-column prop="deleteFlag" label="删除标记"   width="150">
         <template slot-scope="scope">
           <el-switch
-            v-model="scope.row.attributes.deleteFlag"
+            v-model="scope.row.deleteFlag"
             on-color="#00A854"
             on-text="启动"
             on-value=true
@@ -65,9 +65,9 @@
         label="操作"
         width="300">
         <template slot-scope="scope">
-          <el-button @click="handleAdd(scope.row.attributes.deptId)" type="success" size="mini">添加子级</el-button>
-          <el-button @click="handleUpdate(scope.row.attributes)" type="primary" size="mini">编辑</el-button>
-          <el-button @click.native.prevent="removeOne(scope.row.attributes.deptId)" type="danger"
+          <el-button @click="handleAdd(scope.row.deptId)" type="success" size="mini">添加子级</el-button>
+          <el-button @click="handleUpdate(scope.row)" type="primary" size="mini">编辑</el-button>
+          <el-button @click.native.prevent="removeOne(scope.row.deptId)" type="danger"
                      size="mini">删除
           </el-button>
         </template>
@@ -137,10 +137,7 @@
                 },
                 dialogVisible: false,
                 total: 0,
-                tableData: null,
-                defaultProps: {
-                    children: 'children'
-                }
+                tableData: null
             };
         },
         methods: {
