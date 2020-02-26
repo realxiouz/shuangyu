@@ -228,7 +228,12 @@
 
             handleUpdate(row) {
                 this.dialogVisible = true;
-                this.form = row;
+                this.form.apiId = row.apiId;
+                this.form.firmId = row.firmId;
+                this.form.domain = row.domain;
+                this.form.ddId = row.ddId;
+                this.form.ddParentIdId = row.ddParentIdId;
+                this.form.deleteFlag = row.deleteFlag;
             },
             handleSizeChange(pageSize) {
                 this.pageSize = pageSize;
