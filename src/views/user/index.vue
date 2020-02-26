@@ -80,7 +80,7 @@
       <el-table-column prop="isEnable" label="是否启用">
         <template slot-scope="scope">
           <el-switch
-            v-model="scope.row.enable"
+            :value="scope.row.enable"
             on-color="#00A854"
             on-text="启动"
             on-value=true
