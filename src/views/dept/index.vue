@@ -228,7 +228,7 @@
 
             handleUpdate(row) {
                 this.dialogVisible = true;
-                this.form.apiId = row.apiId;
+                this.form.deptId = row.deptId;
                 this.form.firmId = row.firmId;
                 this.form.domain = row.domain;
                 this.form.ddId = row.ddId;
