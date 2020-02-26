@@ -22,11 +22,6 @@
         width="280"
       ></el-table-column>
       <el-table-column
-        prop="level"
-        label="层级"
-        width="150"
-      ></el-table-column>
-      <el-table-column
         prop="firmId"
         label="企业"
         width="200"
@@ -161,9 +156,7 @@
                 pageSize: 10,
 
                 form: {
-                    deptId:'',
                     deptName:'',
-                    pid: '',
                     firmId: '',
                     deleteFlag: false,
                     domain: '',
