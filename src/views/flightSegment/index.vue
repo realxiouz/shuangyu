@@ -23,7 +23,9 @@
       ></el-table-column>
       <el-table-column
         label="操作"
-        width="200">
+        align="center"
+        width="200"
+      >
         <template slot-scope="scope">
           <el-button @click="handleEdit(scope.row)" type="primary" size="small">编辑</el-button>
           <el-button @click="removeOne(scope.row.segment)" type="danger" size="small">删除</el-button>

@@ -55,6 +55,7 @@
           <el-table-column
             fixed="right"
             label="操作"
+            align="center"
             width="100">
             <template slot-scope="scope">
               <el-button @click.native.prevent="editRole(scope.row)" type="text" size="small">编辑</el-button>

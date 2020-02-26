@@ -89,6 +89,7 @@
       <el-table-column
         fixed="right"
         label="操作"
+        align="center"
         width="350">
         <template slot-scope="scope">
           <el-button @click="resetPwd(scope.row)" type="primary" size="mini">重置密码</el-button>
@@ -168,6 +169,22 @@
 <script>
     import {getUserList, getUserTotal, save, updUser} from '@/api/user'
 
+    import _ from 'lodash'
+
+    const defaultProps = {
+      nickName: '',
+      fullName: "",
+      gender: "男",
+      birthDate: "",
+      phone: "",
+      email: '',
+      idCardNo: "",
+      super: false,
+      enable: true,
+      headImgUrl: "",
+      comment: ""
+    }
+
     export default {
         name: "user",
         data() {
@@ -177,19 +194,7 @@
                 pageFlag: 'next',
                 pageSize: 10,
                 total: 0,
-                form: {
-                    nickName: '',
-                    fullName: "",
-                    gender: "男",
-                    birthDate: "",
-                    phone: "",
-                    email: '',
-                    idCardNo: "",
-                    super: false,
-                    enable: true,
-                    headImgUrl: "",
-                    comment: ""
-                },
+                form: _.cloneDeep(defaultProps),
                 dialogVisible: false,
                 tableData: null
             };
@@ -203,7 +208,7 @@
                 this.form = row;
             },
             addUser() {
-                this.form = {};
+                this.form = _.cloneDeep(defaultProps);
                 this.dialogVisible = true;
             },
             loadData() {

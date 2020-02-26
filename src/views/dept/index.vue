@@ -63,6 +63,7 @@
       <el-table-column
         fixed="right"
         label="操作"
+        align="center"
         width="300">
         <template slot-scope="scope">
           <el-button @click="handleAdd(scope.row.deptId)" type="success" size="mini">添加子级</el-button>
