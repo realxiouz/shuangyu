@@ -161,6 +161,7 @@
                 pageSize: 10,
 
                 form: {
+                    deptId:'',
                     pid: '',
                     firmId: '',
                     deleteFlag: false,
