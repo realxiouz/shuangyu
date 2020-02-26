@@ -16,12 +16,10 @@
       <el-table-column
         prop="dpt"
         label="出发地"
-        width="100"
       ></el-table-column>
       <el-table-column
         prop="arr"
         label="目的地"
-        width="100"
       ></el-table-column>
       <el-table-column
         label="操作"
@@ -33,6 +31,7 @@
       </el-table-column>
     </el-table>
     <el-pagination
+      style="float: right"
       @size-change="handleSizeChange"
       @prev-click="prevClick"
       @next-click="nextClick"
@@ -83,6 +82,16 @@
     methods: {
       add() {
         this.dialogVisible = true;
+        this.resetForm();
+      },
+      resetForm(){
+        for (let key  in this.form) {
+          if (typeof(this.form[key])=='object'){
+            this.form[key] = null;
+          }else {
+            this.form[key] = '';
+          }
+        }
       },
       loadData() {
         this.$store
@@ -146,7 +155,8 @@
       },
       handleEdit(row) {
         this.dialogVisible = true;
-        this.form = row;
+        var obj=JSON.parse(JSON.stringify(row));
+        this.form = obj;
       },
       handleCancel() {
         this.dialogVisible = false;
