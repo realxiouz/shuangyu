@@ -38,7 +38,12 @@
         prop="birthDate"
         label="出生日期"
         width="150"
-      ><i class="el-icon-time"/></el-table-column>
+      >
+        <template slot-scope="scope">
+          <i class="el-icon-time"></i>
+          <span style="margin-left: 3px">{{ $moment(scope.row.birthDate).format('YYYY-MM-DD') }}</span>
+        </template>
+      </el-table-column>
       <el-table-column
         prop="phone"
         label="手机号"
@@ -111,8 +116,8 @@
       :page-size="pageSize"
       :total="total">
     </el-pagination>
-    <el-dialog title="用户信息" :visible.sync="dialogVisible" width="30%">
-      <el-form ref="form" :model="form" label-width="90px">
+    <el-dialog title="用户信息" :visible.sync="dialogVisible" width="35%">
+      <el-form ref="form" :model="form" label-width="110px">
         <el-form-item label="昵称">
           <el-input v-model="form.nickName"></el-input>
         </el-form-item>

@@ -8,13 +8,15 @@ import App from './App';
 import router from './router';
 import store from './store';
 import '@/permission';
+import moment from 'moment'
 
-/*import { mockXHR } from '../mock';
-if (process.env.NODE_ENV === 'development') {
-  mockXHR();
-}*/
+// import { mockXHR } from '../mock';
+// if (process.env.NODE_ENV === 'development') {
+//   mockXHR();
+// }
 
 Vue.use(ElementUI, { locale });
+Vue.prototype.$moment = moment
 
 Vue.config.productionTip = false;
 
