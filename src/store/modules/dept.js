@@ -1,4 +1,4 @@
-import { save, removeOne,getNavsTreeData} from '@/api/dept';
+import { save, removeOne,getPageList,getTotal} from '@/api/dept';
 import { getToken } from '@/utils/auth';
 
 
@@ -47,9 +47,9 @@ const actions = {
     });
   },
 
-  getNavsTreeData({ commit }){
+  getPageList({ commit }, params) {
     return new Promise((resolve, reject) => {
-      getNavsTreeData()
+      getPageList(params)
         .then(response => {
           const { data } = response;
           resolve(data);
@@ -58,7 +58,21 @@ const actions = {
           reject(error);
         });
     });
-  }
+  },
+
+  getTotal({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      getTotal(params)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+
 };
 
 export default {

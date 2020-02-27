@@ -62,7 +62,7 @@
         <template slot-scope="scope">
           <el-button @click="handleAddChild(scope.row.deptId)" type="success" size="mini">添加子级</el-button>
           <el-button @click="handleUpdate(scope.row)" type="primary" size="mini">编辑</el-button>
-          <el-button @click.native.prevent="removeOne(scope.row.deptId)" type="danger"
+          <el-button @click.native.prevent="handleRemove(scope.row.deptId)" type="danger"
                      size="mini">删除
           </el-button>
         </template>
@@ -132,7 +132,7 @@
 <script>
 
   // eslint-disable-next-line no-unused-vars
-  import { deptSave, getDeptList, getDeptTotal, removeDept } from "@/api/dept";
+  import { save, getPageList, getTotal, removeOne } from "@/api/dept";
 
   const defaultData = {
     deptName: "",
@@ -167,32 +167,22 @@
       filterRoles() {
       },
 
-      handleChange(data) {
-
-      },
-
-      handleAddChild(deptId) {
-        this.formData = defaultData;
-        this.formData.pid = deptId;
-        this.dialogVisible = true;
-      },
-
-      handleAdd() {
-        this.formData = defaultData;
-        this.loadRoles();
-        this.dialogVisible = true;
-      },
-
-      handleSearch() {
+      prevClick() {
+        this.pageFlag = "prev";
+        this.lastId = this.tableData[0].deptId;
         this.loadData();
-        this.loadTotal();
+      },
+      nextClick() {
+        this.pageFlag = "next";
+        this.lastId = this.tableData[this.tableData.length - 1].deptId;
+        this.loadData();
       },
 
       loadData() {
         if (!this.searchForm.deptName) {
           this.searchForm = {};
         }
-        getDeptList(this.pageFlag, this.pageSize, this.lastId, this.searchForm).then(response => {
+        getPageList(this.pageFlag, this.pageSize, this.lastId, this.searchForm).then(response => {
           if (response.data) {
             this.tableData = response.data;
           }
@@ -212,13 +202,41 @@
           });
       },
 
+      loadTotal: function() {
+        if (!this.searchForm.deptName) {
+          this.searchForm = {};
+        }
+        getTotal(this.searchForm).then(response => {
+          this.total = response.data;
+        }).catch(error => {
+          console.log(error);
+        });
+      },
+
+      handleAddChild(deptId) {
+        this.formData = defaultData;
+        this.formData.pid = deptId;
+        this.dialogVisible = true;
+      },
+
+      handleAdd() {
+        this.formData = defaultData;
+        this.loadRoles();
+        this.dialogVisible = true;
+      },
+
+      handleSearch() {
+        this.loadData();
+        this.loadTotal();
+      },
+
       handleCancel() {
         this.dialogVisible = false;
       },
 
       handleSave() {
         const params = this.form;
-        deptSave(params).then(() => {
+        save(params).then(() => {
           this.loadData();
           this.loadTotal();
         }).catch(error => {
@@ -239,44 +257,25 @@
         this.form.roles = row.roles;
         console.log(row);
       },
+
       handleSizeChange(pageSize) {
         this.pageSize = pageSize;
         this.loadData();
       },
-      prevClick() {
-        this.pageFlag = "prev";
-        this.lastId = this.tableData[0].deptId;
-        this.loadData();
-      },
-      nextClick() {
-        this.pageFlag = "next";
-        this.lastId = this.tableData[this.tableData.length - 1].deptId;
-        this.loadData();
-      },
-      removeOne(Id) {
+
+      handleRemove(Id) {
         this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
         }).then(() => {
-          removeDept(Id).then(() => {
+          removeOne(Id).then(() => {
             this.loadData();
           });
         }).catch(err => {
           console.error(err);
         });
       },
-
-      loadTotal: function() {
-        if (!this.searchForm.deptName) {
-          this.searchForm = {};
-        }
-        getDeptTotal(this.searchForm).then(response => {
-          this.total = response.data;
-        }).catch(error => {
-          console.log(error);
-        });
-      }
 
     },
     mounted() {

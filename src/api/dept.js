@@ -1,14 +1,22 @@
 import request from '@/utils/request';
 
 
-export function removeDept(deptId) {
+export function save(data) {
+  return request({
+    url: '/dept/save',
+    method: 'post',
+    data
+  });
+}
+
+export function removeOne(deptId) {
   return request({
     url: `/dept/remove/one/${deptId}`,
     method: 'delete'
   });
 }
 
-export function getDeptList(pageFlag, pageSize, lastId, data){
+export function getPageList(pageFlag, pageSize, lastId, data){
   return request({
     url: `/dept/page/list/${pageFlag}/${pageSize}/${lastId}`,
     method: 'get',
@@ -16,7 +24,7 @@ export function getDeptList(pageFlag, pageSize, lastId, data){
   });
 }
 
-export function getDeptTotal(data) {
+export function getTotal(data) {
   return request({
     url: `/dept/get/total`,
     method: 'get',
@@ -24,11 +32,5 @@ export function getDeptTotal(data) {
   });
 }
 
-export function deptSave(data) {
-  return request({
-    url: '/dept/save',
-    method: 'post',
-    data
-  });
-}
+
 
