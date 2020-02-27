@@ -1,9 +1,9 @@
-import { deleteOne ,addNav, update, getOneNav, getPageList, getNavList} from '@/api/nav';
+import {remove, addNav, update, getOneNav, getNavList} from '@/api/nav';
 
 const actions = {
-  delete({ commit }, Id){
+  delete({commit}, Id) {
     return new Promise((resolve, reject) => {
-      deleteOne(Id)
+      remove (Id)
         .then(response => {
           //const { data } = response;
           resolve(response);
@@ -13,7 +13,7 @@ const actions = {
         });
     });
   },
-  add({ commit }, params){
+  add({commit}, params) {
     return new Promise((resolve, reject) => {
       addNav(params)
         .then(response => {
@@ -25,7 +25,7 @@ const actions = {
         });
     });
   },
-  updateOne({ commit }, params){
+  update({commit}, params) {
     return new Promise((resolve, reject) => {
       update(params)
         .then(response => {
@@ -37,7 +37,7 @@ const actions = {
         });
     });
   },
-  getOne({ commit }, Id){
+  getOne({commit}, Id) {
     return new Promise((resolve, reject) => {
       getOneNav(Id)
         .then(response => {
@@ -49,23 +49,11 @@ const actions = {
         });
     });
   },
-  getPageList({ commit },params){
+  getNavList({commit}, params) {
     return new Promise((resolve, reject) => {
-      getPageList(params)
+      getNavList(params)
         .then(response => {
-          const { data } = response;
-          resolve(data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  getNavList(){
-    return new Promise((resolve, reject) => {
-      getNavList()
-        .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {

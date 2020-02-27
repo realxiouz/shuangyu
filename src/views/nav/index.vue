@@ -1,28 +1,32 @@
 <template>
-  <div class="custom-tree-node">
+  <div class="tree-node">
     <el-container>
       <el-aside width="300px">
-        <el-button type="text" @click="rootAdd">添加</el-button>
+      <el-header>
+          <el-button type="text" @click="rootAdd">添加</el-button>
+      </el-header>
         <!--  导航树  -->
         <el-tree
           accordion
+          node-key="navId"
+          default-expand-all
           :data="treeData"
-          node-key="id"
+          :props="defaultProps"
           :expand-on-click-node="false"
           @node-click="handleNodeClick">
           <span class="tree-node" slot-scope="{ node, data }">
-            <span>{{ node.label }}</span>
+            <span>{{ node.data.navName }}</span>
             <span>
               <el-button
                 type="text"
                 size="mini"
-                @click="() => nodeAdd(data)">
+                @click="nodeAdd(node, data)">
                 添加
               </el-button>
               <el-button
                 type="text"
                 size="mini"
-                @click="() => remove(node, data)">
+                @click="removeNode(node, data)">
                 移除
               </el-button>
             </span>
@@ -32,12 +36,14 @@
           <el-button @click="rootAdd" icon="el-icon-plus" circle></el-button>
         </el-row>
       </el-aside>
+
       <el-main>
         <el-table :data="tableData" style="width: 100%">
-          <el-table-column v-if="false"
-                           prop="id"
-                           label="主键"
-                           width="80"
+          <el-table-column
+             v-if="false"
+             prop="id"
+             label="主键"
+             width="80"
           ></el-table-column>
           <el-table-column
             prop="roleId"
@@ -65,8 +71,8 @@
           </el-table-column>
         </el-table>
       </el-main>
-
     </el-container>
+    <!-- 表单对话框 -->
     <el-dialog title="导航信息" :visible.sync="dialogVisible" width="30%">
       <el-form ref="form" :model="form" label-width="90px">
         <input type="hidden" v-model="form.navId"/>
@@ -74,7 +80,7 @@
           <el-input
             type="text"
             placeholder="请输入导航名称"
-            v-model="form.label">
+            v-model="form.navName">
           </el-input>
         </el-form-item>
         <el-form-item label="导航路径">
@@ -102,122 +108,25 @@
     data() {
       return {
         dialogVisible: false,
-        nodeData: {},
         rootNav: false,
         treeData: [],
-        curLine: {},
-        curNode: {},
         tableData: [],
-        formatBoolean: true,
+        curNode: {},
         form: {
           navId: '',
-          label: '',
+          navName: '',
           enable: true,
           url: '',
-          children:[]
+          pid: null,
+          api: []
         },
         defaultProps: {
           children: 'children',
-          label: 'label'
+          label: 'navName'
         }
       };
     },
     methods: {
-      /*点击添加顶级导航*/
-      rootAdd() {
-        //判断添加的导航是否是顶级导航
-        this.rootNav = true;
-        this.dialogVisible = true;
-      },
-      /*点击添加节点导航*/
-      nodeAdd(data){
-        //添加的导航菜单不是顶级菜单
-        this.rootNav = false;
-        this.nodeData = data;
-        this.dialogVisible = true;
-      },
-      handleCancel() {
-        this.dialogVisible = false;
-      },
-      /*添加顶级导航*/
-      rootPush(){
-        let rootNav = {};
-        rootNav.label = this.form.label;
-        rootNav.url = this.form.url;
-        rootNav.enable = this.form.enable;
-        rootNav.children = [];
-        this.treeData.push(rootNav);
-        //将该导航分支传到后端处理
-        this.$store
-          .dispatch( 'nav/add', this.form)
-          .then(data => {
-            console.log(data);
-          })
-          .catch(error => {
-            console.log(error);
-          });
-        this.clearForm();
-        this.dialogVisible = false;
-      },
-      /*添加树状节点导航*/
-      append(data) {
-        let _label = this.form.label;
-        const newChild = {
-          id: ++data.id,
-          label: _label,
-          url: this.form.url,
-          enable: this.form.enable,
-          children: [] };
-        if (!data.children) {
-          this.$set(data, 'children', []);
-        }
-        data.children.push(newChild);
-        //将该导航分支传到后端
-        this.$store
-            .dispatch( 'nav/updateOne',this.curLine.data)
-            .then(data => {
-              console.log(data);
-            })
-            .catch(error => {
-              console.log(error);
-            });
-        this.clearForm();
-      },
-      /*移除树状节点导航*/
-      remove(node, data) {
-        const parent = node.parent;
-        const children = parent.data.children || parent.data;
-        const index = children.findIndex(d => d.id === data.id);
-        children.splice(index, 1);
-      },
-      handleNodeClick(data, node) {
-        this.curNode = node;
-        this.getCurLine();
-      },
-      handleSave() {
-          this.dialogVisible = false;
-
-          if (this.rootNav){
-            this.rootPush();
-          }else{
-            this.append(this.nodeData);
-          }
-      },
-      handleEdit(index, row) {
-        this.form = row;
-        this.dialogVisible = true;
-      },
-      handleDelete(index, row) {
-        this.$store
-          .dispatch('nav/delete', row.id)
-          .then(data => {
-            console.log(data);
-          })
-          .catch(error => {
-            console.log(error);
-          });
-        this.loadData();
-      },
       loadData() {
         this.$store
           .dispatch('nav/getNavList')
@@ -228,28 +137,111 @@
             console.log(error);
           });
       },
-      clearForm(){
+      /*点击添加顶级企业信息*/
+      rootAdd() {
+        //判断添加的导航是否是顶级导航
+        this.rootNav = true;
+        this.dialogVisible = true;
+      },
+      /*点击添加节点企业信息*/
+      nodeAdd(idx, row) {
+        //添加的导航菜单不是顶级菜单
+        this.form.pid = row.navId;
+        this.form.level = row.level + 1;
+
+        this.rootNav = false;
+        this.dialogVisible = true;
+      },
+      handleSave() {
+        this.dialogVisible = false;
+
+        if(this.form.navId != ''){
+          this.$store
+            .dispatch( 'nav/edit', this.form)
+            .then(data => {
+              console.log(data);
+              this.loadData();
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        }else{
+          if (this.rootNav) { //如果添加的顶级企业信息，对某些属性进行初始化
+            this.form.pid = null;
+            this.form.level = 1;
+          }
+
+          this.$store
+            .dispatch('nav/add', this.form)
+            .then(data => {
+              console.log(data);
+              this.loadData();
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        }
+        this.clearForm();
+      },
+      removeNode(data,node){
+        this.open(this.remove,node.navId);
+        this.loadData();
+      },
+      remove(params){
+        this.$store
+          .dispatch('nav/delete', params)
+          .then(data => {
+            console.log(data);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      open(func,data) {
+        this.$confirm('此操作将删除该企业信息及子企业信息, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          func(data);
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+      },
+      handleCancel() {
+        this.clearForm();
+        this.dialogVisible = false;
+      },
+      handleNodeClick(data, node){
+        console.log(node);
+      },
+      loadApis(){
+        this.$store
+          .dispatch('nav/delete')
+          .then(data => {
+            console.log(data);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      clearForm() {
         this.form = {
           navId: '',
-          label: '',
+          navName: '',
           enable: true,
           url: '',
-          children:[]
+          pid: null,
+          api: []
         };
-      },
-      getCurLine(){
-        let tempNode = this.curNode;
-        if (tempNode.parent.id == 0){
-          this.curLine = tempNode;
-        }else{
-          while(tempNode.parent.id != 0){
-            tempNode = tempNode.parent;
-            this.curLine = tempNode;
-          }
-        }
-        console.log(this.curLine);
-        console.log(this.curLine.data);
-      },
+      }
   },
     mounted() {
       this.loadData();
@@ -259,10 +251,7 @@
 </script>
 
 <style scoped>
-  .line {
-    text-align: center;
-  }
-  .custom-tree-node {
+  .tree-node {
     flex: 1;
     display: flex;
     align-items: center;

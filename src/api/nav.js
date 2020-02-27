@@ -2,22 +2,21 @@ import request from '@/utils/request';
 
 export function getPageList(params) {
   return request({
-    // "" == params.lastId ? '/admin/nav/page/list/'+ params.pageFlag +'/'+ params.pageSize :
-    url: '/admin/nav/page/list/'+ params.pageFlag + '/' + params.pageSize + '/' + params.lastId ,
+    url: '/nav/page/list/'+ params.pageFlag + '/' + params.pageSize + '/' + params.lastId ,
     method: 'get'
   });
 }
 
 export function getNavList() {
   return request({
-    url: '/admin/nav/get/all' ,
+    url: '/nav/get/all' ,
     method: 'get'
   });
 }
 
-export function deleteOne(Id) {
+export function remove(Id) {
   return request({
-    url: '/admin/nav/remove/one/'+ Id,
+    url: '/nav/remove/one/'+ Id,
     method: 'delete'
   });
 }
@@ -30,8 +29,9 @@ export function getOneNav(Id) {
 }
 
 export function addNav(data) {
+  debugger;
   return request({
-    url: '/admin/nav/add/one',
+    url: '/nav/add/one',
     method: 'post',
     data
   });
