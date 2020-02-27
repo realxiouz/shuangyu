@@ -46,7 +46,7 @@ const actions = {
     });
   },
 
-  getList({ commit }, params) {
+  getRoleList({ commit }, params) {
     return new Promise((resolve, reject) => {
       getRoleList(params)
         .then(response => {

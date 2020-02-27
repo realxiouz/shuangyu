@@ -179,7 +179,12 @@
           this.searchForm = {};
         }
         this.$store
-          .dispatch("dept/getPageList").then(response => {
+          .dispatch("dept/getPageList", {
+            pageFlag: this.pageFlag,
+            pageSize: this.pageSize,
+            lastId: this.lastId,
+            filter: this.searchForm
+          }).then(response => {
           if (response.data) {
             this.tableData = response.data;
           }
@@ -233,8 +238,7 @@
       },
 
       handleSave() {
-         this.formData.$store
-          .dispatch("dept/save").then(() => {
+        this.$store.dispatch("dept/save", this.formData).then(() => {
           this.loadData();
           this.loadTotal();
         }).catch(error => {
@@ -274,7 +278,7 @@
         }).catch(err => {
           console.error(err);
         });
-      },
+      }
 
     },
     mounted() {

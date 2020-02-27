@@ -1,10 +1,10 @@
-import request from '@/utils/request';
+import request from "@/utils/request";
 
 
 export function save(data) {
   return request({
-    url: '/dept/save',
-    method: 'post',
+    url: "/dept/save",
+    method: "post",
     data
   });
 }
@@ -12,22 +12,22 @@ export function save(data) {
 export function removeOne(deptId) {
   return request({
     url: `/dept/remove/one/${deptId}`,
-    method: 'delete'
+    method: "delete"
   });
 }
 
-export function getPageList(pageFlag, pageSize, lastId, data) {
+export function getPageList(pageFlag, pageSize, lastId, filter) {
   return request({
     url: `/dept/page/list/${pageFlag}/${pageSize}/${lastId}`,
-    method: 'get',
-    params: data
+    method: "get",
+    params: filter
   });
 }
 
 export function getTotal(data) {
   return request({
     url: `/dept/get/total`,
-    method: 'get',
+    method: "get",
     params: data
   });
 }
@@ -35,7 +35,7 @@ export function getTotal(data) {
 export function getChildrenList(deptId) {
   return request({
     url: `/dept/getChildrenList/${deptId}`,
-    method: 'get'
+    method: "get"
   });
 }
 
