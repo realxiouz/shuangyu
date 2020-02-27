@@ -108,7 +108,6 @@
           noChecked: '${total}',
           hasChecked: '${checked}/${total}'
           }"
-            @change="handleChange"
             :titles="['角色', '已选角色']"
             filter-placeholder="角色名称"
             v-model="formData.roles"
@@ -193,7 +192,7 @@
 
       loadRoles() {
         this.$store
-          .dispatch("role/getList")
+          .dispatch("role/getRoleList")
           .then(data => {
             this.roles = data;
           })
@@ -235,8 +234,8 @@
       },
 
       handleSave() {
-        const params = this.form;
-        save(params).then(() => {
+         const params = this.formData;
+         save(params).then(() => {
           this.loadData();
           this.loadTotal();
         }).catch(error => {
@@ -247,14 +246,14 @@
 
       handleUpdate(row) {
         this.dialogVisible = true;
-        this.form.deptId = row.deptId;
-        this.form.deptName = row.deptName;
-        this.form.firmId = row.firmId;
-        this.form.domain = row.domain;
-        this.form.ddId = row.ddId;
-        this.form.ddParentIdId = row.ddParentIdId;
-        this.form.deleteFlag = row.deleteFlag;
-        this.form.roles = row.roles;
+        this.formData.deptId = row.deptId;
+        this.formData.deptName = row.deptName;
+        this.formData.firmId = row.firmId;
+        this.formData.domain = row.domain;
+        this.formData.ddId = row.ddId;
+        this.formData.ddParentIdId = row.ddParentIdId;
+        this.formData.deleteFlag = row.deleteFlag;
+        this.formData.roles = row.roles;
         console.log(row);
       },
 
