@@ -178,7 +178,8 @@
         if (!this.searchForm.deptName) {
           this.searchForm = {};
         }
-        getPageList(this.pageFlag, this.pageSize, this.lastId, this.searchForm).then(response => {
+        this.$store
+          .dispatch("dept/getPageList").then(response => {
           if (response.data) {
             this.tableData = response.data;
           }
@@ -202,7 +203,8 @@
         if (!this.searchForm.deptName) {
           this.searchForm = {};
         }
-        getTotal(this.searchForm).then(response => {
+        this.$store
+          .dispatch("dept/getTotal").then(response => {
           this.total = response.data;
         }).catch(error => {
           console.log(error);
@@ -231,8 +233,8 @@
       },
 
       handleSave() {
-         const params = this.formData;
-         save(params).then(() => {
+         this.formData.$store
+          .dispatch("dept/save").then(() => {
           this.loadData();
           this.loadTotal();
         }).catch(error => {
@@ -265,7 +267,8 @@
           cancelButtonText: "取消",
           type: "warning"
         }).then(() => {
-          removeOne(Id).then(() => {
+          this.$store
+            .dispatch("dept/removeOne").then(() => {
             this.loadData();
           });
         }).catch(err => {
