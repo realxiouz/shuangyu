@@ -41,7 +41,7 @@
       >
         <template slot-scope="scope">
           <i class="el-icon-time"></i>
-          <span style="margin-left: 3px">{{ $moment(scope.row.birthDate).format('YYYY-MM-DD') }}</span>
+          <span style="margin-left: 3px">{{ $moment(scope.row.birthDate).format("YYYY-MM-DD") }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -172,128 +172,131 @@
 </template>
 
 <script>
-    import {getUserList, getUserTotal, save, updUser} from '@/api/user'
+  import { getUserList, getUserTotal, save, updUser } from "@/api/user";
 
-    const defaultProps = {
-      nickName: '',
-      fullName: "",
-      gender: "男",
-      birthDate: "",
-      phone: "",
-      email: '',
-      idCardNo: "",
-      super: false,
-      enable: true,
-      headImgUrl: "",
-      comment: ""
-    }
+  const defaultProps = {
+    nickName: "",
+    fullName: "",
+    gender: "男",
+    birthDate: "",
+    phone: "",
+    email: "",
+    idCardNo: "",
+    super: false,
+    enable: true,
+    headImgUrl: "",
+    comment: ""
+  };
 
-    export default {
-        name: "user",
-        data(props) {
-            return {
-                searchForm: {},
-                lastId: '0',
-                pageFlag: 'next',
-                pageSize: 10,
-                total: 0,
-                dialogVisible: false,
-                tableData: null,
-                form: props._.cloneDeep(defaultProps),
-                rules: {
-                  nickName: [
-                    { required: true, message: '请输入昵称', trigger: 'blur' }
-                  ],
-                  fullName: [
-                    { required: true, message: '请输入姓名', trigger: 'blur' }
-                  ],
-                  idCardNo: [
-                    { required: true, message: '请输入身份证号码', trigger: 'blur' }
-                  ],
-                  phone: [
-                    { required: true, message: '请输入手机号码', trigger: 'blur' }
-                  ],
-                  // phone: [
-                  //   { required: true, message: '请输入手机号码', trigger: 'blur' }
-                  // ]
-                }
-            };
-        },
-        methods: {
-            resetPwd(row) {
-                console.log(row)
-            },
-            userUpdate(row) {
-                this.dialogVisible = true;
-                this.form = this._.cloneDeep(row);
-            },
-            addUser() {
-                this.form = this._.cloneDeep(defaultProps);
-                this.dialogVisible = true;
-            },
-            loadData() {
-                getUserList(this.pageFlag, this.pageSize, this.lastId, this.searchForm).then(response => {
-                    console.log(response.data)
-                    if (response.data) {
-                        this.tableData = response.data
-                    }
-                }).catch(error => {
-                    console.log(error);
-                });
-            },
-            handleSearch() {
-
-            },
-            handleCancel() {
-                this.dialogVisible = false;
-            },
-            handleSave() {
-                const params = this.form
-                save(params).then(() => {
-                    console.log(params);
-                    this.loadData();
-                    this.loadTotal();
-                }).catch(error => {
-                    console.log(error);
-                });
-                this.dialogVisible = false;
-            },
-            handleSizeChange(pageSize) {
-                this.pageSize = pageSize;
-                this.loadData();
-            },
-            prevClick() {
-                this.pageFlag = 'prev';
-                this.lastId = this.tableData[0].appId;
-                this.loadData();
-            },
-            nextClick() {
-                this.pageFlag = 'next';
-                this.lastId = this.tableData[this.tableData.length - 1].appId;
-                this.loadData();
-            },
-            changeSwitch(data) {
-                updUser(data).then(() => {
-                    this.loadData();
-                }).catch(error => {
-                    console.log(error);
-                });
-            },
-            loadTotal() {
-                if (!this.searchForm.appName) {
-                    this.searchForm = {};
-                }
-                getUserTotal(this.searchForm).then(response => {
-                    this.total = response.data;
-                }).catch(error => {
-                    console.log(error);
-                });
-            }
-        },
-        mounted() {
-            this.loadData();
+  export default {
+    name: "user",
+    data(props) {
+      return {
+        searchForm: {},
+        lastId: "0",
+        pageFlag: "next",
+        pageSize: 10,
+        total: 0,
+        dialogVisible: false,
+        tableData: null,
+        form: props._.cloneDeep(defaultProps),
+        rules: {
+          nickName: [
+            { required: true, message: "请输入昵称", trigger: "blur" }
+          ],
+          fullName: [
+            { required: true, message: "请输入姓名", trigger: "blur" }
+          ],
+          idCardNo: [
+            { required: true, message: "请输入身份证号码", trigger: "blur" }
+          ],
+          phone: [
+            { required: true, message: "请输入手机号码", trigger: "blur" }
+          ]
+          // phone: [
+          //   { required: true, message: '请输入手机号码', trigger: 'blur' }
+          // ]
         }
-    };
+      };
+    },
+    methods: {
+      goBack() {
+        console.log("go back");
+      },
+      resetPwd(row) {
+        console.log(row);
+      },
+      userUpdate(row) {
+        this.dialogVisible = true;
+        this.form = this._.cloneDeep(row);
+      },
+      addUser() {
+        this.form = this._.cloneDeep(defaultProps);
+        this.dialogVisible = true;
+      },
+      loadData() {
+        getUserList(this.pageFlag, this.pageSize, this.lastId, this.searchForm).then(response => {
+          console.log(response.data);
+          if (response.data) {
+            this.tableData = response.data;
+          }
+        }).catch(error => {
+          console.log(error);
+        });
+      },
+      handleSearch() {
+
+      },
+      handleCancel() {
+        this.dialogVisible = false;
+      },
+      handleSave() {
+        const params = this.form;
+        save(params).then(() => {
+          console.log(params);
+          this.loadData();
+          this.loadTotal();
+        }).catch(error => {
+          console.log(error);
+        });
+        this.dialogVisible = false;
+      },
+      handleSizeChange(pageSize) {
+        this.pageSize = pageSize;
+        this.loadData();
+      },
+      prevClick() {
+        this.pageFlag = "prev";
+        this.lastId = this.tableData[0].appId;
+        this.loadData();
+      },
+      nextClick() {
+        this.pageFlag = "next";
+        this.lastId = this.tableData[this.tableData.length - 1].appId;
+        this.loadData();
+      },
+      changeSwitch(data) {
+        updUser(data).then(() => {
+          this.loadData();
+        }).catch(error => {
+          console.log(error);
+        });
+      },
+      loadTotal() {
+        if (!this.searchForm.appName) {
+          this.searchForm = {};
+        }
+        getUserTotal(this.searchForm).then(response => {
+          this.total = response.data;
+        }).catch(error => {
+          console.log(error);
+        });
+      }
+    },
+    mounted() {
+      this.loadData();
+    }
+  };
 </script>
 
 <style scoped>
