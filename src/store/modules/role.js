@@ -1,12 +1,11 @@
-import { save, removeOne,getNavsTreeData} from '@/api/role';
-import { getToken } from '@/utils/auth';
-
+import { save, removeOne, getNavsTreeData, getRoleList } from "@/api/role";
+import { getToken } from "@/utils/auth";
 
 
 const state = {
   token: getToken(),
-  name: '',
-  avatar: ''
+  name: "",
+  avatar: ""
 };
 
 const mutations = {
@@ -22,7 +21,7 @@ const mutations = {
 };
 
 const actions = {
-  save({ commit }, params){
+  save({ commit }, params) {
     return new Promise((resolve, reject) => {
       save(params)
         .then(response => {
@@ -34,7 +33,7 @@ const actions = {
         });
     });
   },
-  removeOne({ commit },data) {
+  removeOne({ commit }, data) {
     return new Promise((resolve, reject) => {
       removeOne(data)
         .then(response => {
@@ -47,7 +46,20 @@ const actions = {
     });
   },
 
-  getNavsTreeData({ commit }){
+  getList({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      getRoleList(params)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+
+  getNavsTreeData({ commit }) {
     return new Promise((resolve, reject) => {
       getNavsTreeData()
         .then(response => {
