@@ -109,14 +109,17 @@
           noChecked: '${total}',
           hasChecked: '${checked}/${total}'
           }"
-            @change="handleChange"
+            :props="{
+             key: 'key',
+             label: 'label'
+          }"
             :titles="['角色1', '角色2']"
             :filter-method="filterMethod"
             filter-placeholder="角色名称"
             v-model="value"
             :data="data">
             <el-button  class="transfer-footer" slot="left-footer" size="small" >操作</el-button>
-            <el-button  class="transfer-footer" slot="right-footer" size="small">操作</el-button>
+            <el-button  class="transfer-footer" slot="right-footer" size="small" @change="handleChange">测试</el-button>
           </el-transfer>
         </template>
 
@@ -142,8 +145,8 @@
 
             const generateData = _ => {
                 const data = [];
-                 const bumen = ['部门经理', '普通员工', '总经理', '', '', ''];
-                 const pinyin = ['部门经理', '普通员工', '总经理', '', '', ''];
+                 const bumen = ['部门经理', '普通员工', '总经理'];
+                 const pinyin = ['BMJL', 'PTYG', 'ZJL'];
               bumen.forEach((ro, index) => {
                     data.push({
                         label: ro,
@@ -182,11 +185,10 @@
             };
         },
         methods: {
-
-          handleChange(data) {
+          handleChange() {
             debugger
-            this.form.roles=data;
-
+            this.from.roles=this.value;
+            console.log(this.value);
           },
 
             handleAdd(deptId) {
