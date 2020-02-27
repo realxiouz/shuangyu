@@ -16,7 +16,7 @@ export function removeOne(deptId) {
   });
 }
 
-export function getPageList(pageFlag, pageSize, lastId, data){
+export function getPageList(pageFlag, pageSize, lastId, data) {
   return request({
     url: `/dept/page/list/${pageFlag}/${pageSize}/${lastId}`,
     method: 'get',
@@ -32,5 +32,11 @@ export function getTotal(data) {
   });
 }
 
+export function getChildrenList(deptId) {
+  return request({
+    url: `/dept/getChildrenList/${deptId}`,
+    method: 'get'
+  });
+}
 
 
