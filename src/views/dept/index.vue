@@ -130,9 +130,6 @@
 </template>
 <script>
 
-  // eslint-disable-next-line no-unused-vars
-  import { save, getPageList, getTotal, removeOne } from "@/api/dept";
-
   const defaultData = {
     deptName: "",
     firmId: "",
