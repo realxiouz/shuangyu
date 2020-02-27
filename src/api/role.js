@@ -15,6 +15,14 @@ export function removeOne(data) {
   });
 }
 
+export function getRoleList(filter) {
+  return request({
+    url: "/role/list",
+    method: "get",
+    params: filter
+  });
+}
+
 
 export function getPageList(pageFlag, pageSize, lastId, searchForm) {
   return request({
@@ -28,7 +36,7 @@ export function getTotal(data) {
   return request({
     url: "/role/get/total",
     method: "get",
-    params:data
+    params: data
   });
 }
 

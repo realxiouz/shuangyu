@@ -43,6 +43,7 @@
           <el-table-column
             fixed="right"
             label="操作"
+            align="center"
             width="100">
             <template slot-scope="scope">
               <el-button  @click.native.prevent="editRole(scope.row)" type="text" size="small">编辑</el-button>
@@ -229,7 +230,9 @@
         this.form.roleId = row.roleId;
         this.form.roleName = row.roleName;
         this.form.enable = row.enable;
-        this.$refs.tree.setCheckedKeys(row.navIds);
+        this.$nextTick(() => {
+          this.$refs.tree.setCheckedKeys(row.navIds);
+        })
       },
       changeSwitch:function(data) {
         this.save(data);

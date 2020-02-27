@@ -9,12 +9,6 @@
           <el-col :span="20">
             <div class="grid-content bg-purple">
               <span class="nav-switch" v-bind:class="switchClass" @click="handleSwitch"/>
-              <el-breadcrumb class="nav-router" separator="/" >
-                <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-                <el-breadcrumb-item><a href="/">活动管理</a></el-breadcrumb-item>
-                <el-breadcrumb-item>活动列表</el-breadcrumb-item>
-                <el-breadcrumb-item>活动详情</el-breadcrumb-item>
-              </el-breadcrumb>
             </div>
           </el-col>
           <el-col :span="2">
@@ -40,6 +34,14 @@
             {{tag.name}}
           </el-tag>
         </div>
+        <el-breadcrumb class="nav-router" separator="/">
+          <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+          <el-breadcrumb-item><a href="/">活动管理</a></el-breadcrumb-item>
+          <el-breadcrumb-item>活动列表</el-breadcrumb-item>
+          <el-breadcrumb-item>活动详情</el-breadcrumb-item>
+        </el-breadcrumb>
+        <el-page-header @back="goBack" content="添加用户">
+        </el-page-header>
       </div>
       <section class="app-main">
         <transition name="fade-transform" mode="out-in">
@@ -81,6 +83,8 @@
       }
     },
     methods: {
+      goBack() {
+      },
       handleSwitch() {
         this.isCollapse = !this.isCollapse;
       },
@@ -133,17 +137,22 @@
     height: 100%;
     padding: 0;
     color: #333;
+    background-color: #F0F2F5;
 
     .app-header {
-      height: 80px;
+      height: 175px;
       overflow: hidden;
       position: relative;
       background: #fff;
-      -webkit-box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
-      box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+      -webkit-box-shadow: 0px 1px 4px rgba(0, 21, 41, 0.08);
+      box-shadow: 0px 1px 4px rgba(0, 21, 41, 0.08);
+
+      .el-page-header {
+        padding-left: 20px;
+      }
 
       .grid-content {
-        height: 50px;
+        height: 40px;
         display: table-cell;
         vertical-align: middle;
       }
@@ -153,22 +162,31 @@
         font-size: 28px;
       }
 
-      .nav-router
-      {
-        display: inline-block;
-        height: 18px;
+      .nav-router {
+        padding: 20px;
       }
 
-      .tags-view-item {
-        margin: 0 5px;
-        cursor: pointer;
-        height: 26px;
-        line-height: 26px;
+      .tags-view {
+        height: 40px;
+        padding-top: 6px;
+        border-top: 1px solid #EDEFF0;
+        border-bottom: 1px solid #EDEFF0;
+
+        .tags-view-item {
+          margin: 0 5px;
+          cursor: pointer;
+          height: 26px;
+          line-height: 26px;
+        }
       }
+
+
     }
 
     .app-main {
-      padding: 20px;
+      margin: 15px;
+      padding: 15px;
+      background-color: #ffffff;
     }
   }
 
