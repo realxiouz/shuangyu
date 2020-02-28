@@ -38,5 +38,10 @@ export function getList(deptId) {
     method: "get"
   });
 }
-
+export function getOne(id) {
+  return request({
+    url: `/dept/one/${id}`,
+    method: 'get'
+  });
+}
 
