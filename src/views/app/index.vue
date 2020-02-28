@@ -116,7 +116,7 @@
                     type: 'warning'
                 }).then(() => {
                     this.$store
-                        .dispatch("app/removeApp")
+                        .dispatch("app/removeOne")
                         .then(() => {
                             this.loadData();
                             rows.splice(index, 1);
@@ -138,7 +138,7 @@
             },
             changeSwitch() {
                 this.$store
-                    .dispatch("app/updApp", this.data)
+                    .dispatch("app/updateOne", this.data)
                     .then(() => {
                         this.loadData();
                     }).catch(error => {
@@ -184,7 +184,7 @@
 
             handleSave() {
                 this.$store
-                    .dispatch("app/saveOrUpd", this.formData)
+                    .dispatch("app/save", this.formData)
                     .then(() => {
                         this.loadData();
                         this.loadTotal();

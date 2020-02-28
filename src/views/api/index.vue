@@ -133,7 +133,7 @@
                     type: 'warning'
                 }).then(() => {
                     this.$store
-                        .dispatch("api/removeApi")
+                        .dispatch("api/removeOne")
                         .then(() => {
                             this.loadData();
                             rows.splice(index, 1);
@@ -156,7 +156,7 @@
 
             changeSwitch() {
                 this.$store
-                    .dispatch("api/updApi", this.data)
+                    .dispatch("api/updateOne", this.data)
                     .then(() => {
                         this.loadData();
                     }).catch(error => {
@@ -188,7 +188,7 @@
                     this.searchForm = {};
                 }
                 this.$store
-                    .dispatch("api/getApiTotal", {
+                    .dispatch("api/getTotal", {
                         filter: this.searchForm
                     }).then(response => {
                     this.total = response.data;
