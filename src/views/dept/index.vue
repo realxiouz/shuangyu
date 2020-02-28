@@ -17,6 +17,7 @@
               lazy
               border
               :load="loadChildren"
+              :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
     >
       <el-table-column
         prop="deptName"
@@ -134,10 +135,6 @@
                 dialogVisible: false,
                 total: 0,
                 tableData: null,
-                defaultProps: {
-                    children: "children",
-                    hasChildren: "hasChildren"
-                },
                 rules: {
                     deptName: [
                         {required: true, message: "请输入部门名称", trigger: "blur"},
@@ -182,10 +179,8 @@
                 console.log(this.roles);
                 console.log(this.formData.roles);
             },
-
             filterRoles() {
             },
-
             prevClick() {
                 this.pageFlag = "prev";
                 this.lastId = this.tableData[0].deptId;
@@ -196,7 +191,6 @@
                 this.lastId = this.tableData[this.tableData.length - 1].deptId;
                 this.loadData();
             },
-
             loadData() {
                 if (!this.searchForm.deptName) {
                     this.searchForm = {};
@@ -215,7 +209,6 @@
                     console.log(error);
                 });
             },
-
             loadRoles() {
                 this.$store
                     .dispatch("role/getRoleList")
@@ -226,7 +219,6 @@
                         console.log(error);
                     });
             },
-
             loadTotal: function () {
                 if (!this.searchForm.deptName) {
                     this.searchForm = {};
@@ -310,7 +302,6 @@
                     console.error(err);
                 });
             }
-
         },
         mounted() {
             this.handleSearch();
