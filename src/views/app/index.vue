@@ -172,10 +172,10 @@
                     .dispatch("app/getOne", id)
                     .then(data => {
                         this.formData = data;
+                        this.dialogVisible = true;
                     }).catch(error => {
                     console.log(error);
                 });
-                this.dialogVisible = true;
             },
             handleRemove(id, index, rows) {
                 this.$confirm('此操作将状态改为删除状态, 是否继续?', '提示', {

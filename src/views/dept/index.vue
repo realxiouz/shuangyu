@@ -50,7 +50,7 @@
         width="300">
         <template slot-scope="scope">
           <el-button @click="handleAddChild(scope.row.deptId)" type="success" size="mini">添加子级</el-button>
-          <el-button @click="handleUpdate(scope.row)" type="primary" size="mini">编辑</el-button>
+          <el-button @click="handleUpdate(scope.row.deptId)" type="primary" size="mini">编辑</el-button>
           <el-button @click.native.prevent="handleRemove(scope.row.deptId)" type="danger"
                      size="mini">删除
           </el-button>
@@ -255,22 +255,18 @@
                 this.formData.pid = deptId;
                 this.dialogVisible = true;
             },
-
             handleAdd() {
                 this.formData = defaultData;
                 this.loadRoles();
                 this.dialogVisible = true;
             },
-
             handleSearch() {
                 this.loadData();
                 this.loadTotal();
             },
-
             handleCancel() {
                 this.dialogVisible = false;
             },
-
             handleSave() {
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
@@ -285,24 +281,20 @@
                     }
                 })
             },
-
-            handleUpdate(row) {
-                this.dialogVisible = true;
-                this.formData.deptId = row.deptId;
-                this.formData.deptName = row.deptName;
-                this.formData.firmId = row.firmId;
-                this.formData.domain = row.domain;
-                this.formData.ddId = row.ddId;
-                this.formData.ddParentIdId = row.ddParentIdId;
-                this.formData.roles = row.roles;
-                console.log(row);
+            handleUpdate(deptId) {
+                this.$store
+                    .dispatch("dept/getOne", deptId)
+                    .then(data => {
+                        this.formData = data;
+                        this.dialogVisible = true;
+                    }).catch(error => {
+                    console.log(error);
+                });
             },
-
             handleSizeChange(pageSize) {
                 this.pageSize = pageSize;
                 this.loadData();
             },
-
             handleRemove(id) {
                 this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
                     confirmButtonText: "确定",

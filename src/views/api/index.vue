@@ -238,10 +238,10 @@
                     .dispatch("api/getOne", id)
                     .then(data => {
                         this.formData = data;
+                        this.dialogVisible = true;
                     }).catch(error => {
                     console.log(error);
                 });
-                this.dialogVisible = true;
             },
             handleSearch() {
                 this.loadData();
