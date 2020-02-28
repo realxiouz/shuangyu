@@ -8,7 +8,7 @@
         <el-button type="primary" @click="handleSearch">查询</el-button>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="addApp">添加</el-button>
+        <el-button type="primary" @click="handleAdd">添加</el-button>
       </el-form-item>
     </el-form>
     <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;"
@@ -54,8 +54,8 @@
         align="center"
         width="350">
         <template slot-scope="scope">
-          <el-button @click="handleUpdate(scope.row)" type="primary" size="mini">编辑</el-button>
-          <el-button @click.native.prevent="removeOne(scope.row.apiId,scope.$index,tableData)" type="danger"
+          <el-button @click="handleUpdate(scope.row.apiId)" type="primary" size="mini">编辑</el-button>
+          <el-button @click.native.prevent="handleRemove(scope.row.apiId,scope.$index,tableData)" type="danger"
                      size="mini">删除
           </el-button>
         </template>
@@ -121,28 +121,6 @@
             };
         },
         methods: {
-            addApp() {
-                this.formData = {};
-                this.dialogVisible = true;
-            },
-
-            removeOne(id, index, rows) {
-                this.$confirm('此操作将状态改为删除状态, 是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    this.$store
-                        .dispatch("api/removeOne",id)
-                        .then(() => {
-                            this.loadData();
-                            rows.splice(index, 1);
-                        })
-                }).catch(err => {
-                    console.error(err);
-                });
-            },
-
             prevClick() {
                 this.pageFlag = 'prev';
                 this.lastId = this.tableData[0].apiId;
@@ -196,16 +174,33 @@
                     console.log(error);
                 });
             },
-
+            handleAdd() {
+                this.formData = {};
+                this.dialogVisible = true;
+            },
+            handleRemove(id, index, rows) {
+                this.$confirm('此操作将状态改为删除状态, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.$store
+                        .dispatch("api/handleRemove", id)
+                        .then(() => {
+                            this.loadData();
+                            rows.splice(index, 1);
+                        })
+                }).catch(err => {
+                    console.error(err);
+                });
+            },
             handleCancel() {
                 this.dialogVisible = false;
             },
-
             handleSizeChange(pageSize) {
                 this.pageSize = pageSize;
                 this.loadData();
             },
-
             handleSave() {
                 this.$store
                     .dispatch("api/save", this.formData)
@@ -217,10 +212,15 @@
                 });
                 this.dialogVisible = false;
             },
-
-            handleUpdate(row) {
+            handleUpdate(id) {
+                this.$store
+                    .dispatch("api/getOne", id)
+                    .then(data => {
+                        this.formData = data;
+                    }).catch(error => {
+                    console.log(error);
+                });
                 this.dialogVisible = true;
-                this.formData = row;
             },
 
             handleSearch() {
