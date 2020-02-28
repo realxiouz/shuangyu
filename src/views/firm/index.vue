@@ -18,35 +18,36 @@
           <el-table
             :data="tableData"
             style="width: 100%;margin-bottom: 20px;"
-            row-key="id"
+            row-key="firmId"
             border
-            default-expand-all>
+            lazy
+            default-expand-all
+            :load="getChildren"
+            :tree-props="defaultProps">
             <el-table-column
-              prop="attributes.firmName"
+              prop="firmName"
               label="企业名称"
               sortable
               width="180">
             </el-table-column>
             <el-table-column
-              prop="attributes.firmCode"
+              prop="firmCode"
               label="企业代码"
               sortable
               width="180">
             </el-table-column>
             <el-table-column
-              prop="attributes.location"
+              prop="location"
               label="机构所在地"
-              sortable
               width="360">
             </el-table-column>
             <el-table-column
-              prop="attributes.linkPerson"
+              prop="linkPerson"
               label="联系人"
-              sortable
               width="220">
             </el-table-column>
             <el-table-column
-              prop="attributes.remark"
+              prop="remark"
               label="备注">
             </el-table-column>
             <el-table-column
@@ -185,7 +186,7 @@
         <el-button @click="handleCancel">取 消</el-button>
         <el-button type="primary" @click="handleSave">确 定</el-button>
       </div>
-      <template>
+     <!-- <template>
         <el-transfer
           v-model="value"
           :props="{
@@ -194,7 +195,7 @@
           }"
           :data="transData">
         </el-transfer>
-      </template>
+      </template>-->
     </el-dialog>
   </div>
 </template>
@@ -231,11 +232,12 @@
           ddAppSecret: '',
           domain: '',
           type: null,
-          roles: [],
-          children: []
+          hasChildren: false,
+          roles: []
         },
         defaultProps: {
-          children: 'children'
+          children: 'children',
+          hasChildren:'hasChildren'
         }
       };
     },
@@ -260,7 +262,7 @@
       },
       search() {
         this.$store
-          .dispatch('firm/getPageList', {pageFlag: this.pageFlag, pageSize: this.pageSize, lastId: this.lastId, filter: {firmName:this.keyword}})
+          .dispatch('firm/getPageList', {pageFlag: this.pageFlag, pageSize: this.pageSize, lastId: this.lastId})
           .then(data => {
             this.tableData = data.data;
           })
@@ -280,9 +282,8 @@
       /*点击添加节点企业信息*/
       handleAppend(idx, row) {
         //添加的导航菜单不是顶级菜单
-        console.log(row);
-        this.form.pid = row.attributes.firmId;
-        this.form.level = row.attributes.level + 1;
+        this.form.pid = row.firmId;
+        this.form.level = row.level + 1;
 
         this.rootNav = false;
         this.dialogVisible = true;
@@ -302,7 +303,7 @@
             });
         }else{
           if (this.rootNav) { //如果添加的顶级企业信息，对某些属性进行初始化
-            this.form.pid = 0;
+            this.form.pid = null;
             this.form.level = 1;
           }
 
@@ -322,17 +323,12 @@
         this.clearForm();
         this.dialogVisible = false;
       },
-      handleNodeClick(data, node) {
-        this.getCurLine(node);
-      },
       handleEdit(index, row) {
-        this.form = row.attributes;
+        this.form = row;
         this.dialogVisible = true;
       },
       handleDelete(index, row) {
-        console.log(row);
-        this.open(this.remove,row.id);
-        this.loadData();
+        this.open(this.remove,row.firmId);
       },
       remove(params){
           this.$store
@@ -375,6 +371,7 @@
           type: 'warning'
         }).then(() => {
           func(data);
+          this.loadData();
           this.$message({
             type: 'success',
             message: '删除成功!'
@@ -386,19 +383,32 @@
           });
         });
       },
+      getChildren(tree, treeNode, resolve) {
+        if (null != tree){
+          this.loadChildren(tree, resolve);
+        }else{
+          resolve([])
+        }
+      },
+      loadChildren(tree, resolve){
+        this.$store
+          .dispatch('firm/loadChildren', tree.firmId)
+          .then(data => {
+            setTimeout(() => {
+              resolve(data.data)
+            }, 1000)
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
       handleSizeChange: function (size) {
         this.pageSize = size;
         this.loadData();
         console.log(this.pageSize)  //每页下拉显示数据
       },
-      handleCurrentChange: function (currentPage) {
-        this.pageNo = currentPage;
-        this.loadData();
-        console.log(this.pageNo)  //点击第几页
-      },
       handlePrevChange: function () {
         this.pageFlag = "prev";
-        // document.getElementById("table").setCurrentRow()
         this.lastId = this.tableData[0].id;
         this.loadData();
       },
@@ -414,14 +424,3 @@
 
   };
 </script>
-
-<style scoped>
-  .tree-node {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 14px;
-    padding-right: 8px;
-  }
-</style>

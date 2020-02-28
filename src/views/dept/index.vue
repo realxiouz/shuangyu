@@ -184,9 +184,9 @@
             pageSize: this.pageSize,
             lastId: this.lastId,
             filter: this.searchForm
-          }).then(response => {
-          if (response.data) {
-            this.tableData = response.data;
+          }).then(data => {
+          if (data) {
+            this.tableData = data;
           }
         }).catch(error => {
           console.log(error);
@@ -209,7 +209,9 @@
           this.searchForm = {};
         }
         this.$store
-          .dispatch("dept/getTotal").then(response => {
+          .dispatch("dept/getTotal",{
+          filter: this.searchForm
+        }).then(response => {
           this.total = response.data;
         }).catch(error => {
           console.log(error);
@@ -265,14 +267,15 @@
         this.loadData();
       },
 
-      handleRemove(Id) {
+      handleRemove(id) {
         this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
         }).then(() => {
           this.$store
-            .dispatch("dept/removeOne").then(() => {
+            .dispatch("dept/removeOne")
+            .then(() => {
             this.loadData();
           });
         }).catch(err => {
