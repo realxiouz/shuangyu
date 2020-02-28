@@ -66,8 +66,8 @@
     <el-dialog title="角色" :visible.sync="dialogVisible" width="30%">
       <el-form ref="form"  :rules="rules" :model="formData" label-width="120px">
         <el-input v-show="false" v-model="formData.roleId"></el-input>
-        <el-form-item label="角色名称">
-          <el-input v-model="formData.roleName"></el-input>
+        <el-form-item label="角色名称" required>
+          <el-input v-model="formData.roleName"  placeholder="请输入角色名称" required></el-input>
         </el-form-item>
         <el-form-item label="是否启用">
           <el-switch v-model="formData.enable"></el-switch>
@@ -122,9 +122,6 @@
     },
     methods: {
       save: function(data) {
-        if (!data.roleName){
-          alert("角色名称不能为空!");
-        }
         this.$store
           .dispatch("role/save", data)
           .then(data => {
