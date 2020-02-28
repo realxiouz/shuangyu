@@ -1,4 +1,4 @@
-import { removeApi, updApi, getApiList, getApiTotal, save } from "@/api/api";
+import { removeOne, updateOne, getPageList, getTotal,  save } from "@/api/api";
 import { getToken } from "@/utils/auth";
 
 
@@ -21,9 +21,9 @@ const mutations = {
 };
 
 const actions = {
-  updApi({ commit }, params) {
+  updateOne({ commit }, params) {
     return new Promise((resolve, reject) => {
-      updApi(params)
+      updateOne(params)
         .then(response => {
           //const { data } = response;
           resolve(response);
@@ -45,9 +45,9 @@ const actions = {
         });
     });
   },
-  removeApi({ commit }, data) {
+  removeOne({ commit }, data) {
     return new Promise((resolve, reject) => {
-      removeApi(data)
+      removeOne(data)
         .then(response => {
           const { data } = response;
           resolve(data);
@@ -57,10 +57,10 @@ const actions = {
         });
     });
   },
-  getApiList({ commit }, params) {
+  getPageList({ commit }, params) {
     const { pageFlag, pageSize, lastId, filter } = params;
     return new Promise((resolve, reject) => {
-      getApiList(pageFlag, pageSize, lastId, filter)
+      getPageList(pageFlag, pageSize, lastId, filter)
         .then(response => {
           const { data } = response;
           resolve(data);
@@ -71,9 +71,9 @@ const actions = {
     });
   },
 
-  getApiTotal({ commit }, params) {
+  getTotal({ commit }, params) {
     return new Promise((resolve, reject) => {
-      getApiTotal(params)
+      getTotal(params)
         .then(response => {
           const { data } = response;
           resolve(data);
