@@ -63,12 +63,12 @@
       :total="total">
     </el-pagination>
     <el-dialog title="应用信息" :visible.sync="dialogVisible" width="30%">
-      <el-form ref="form" :model="form" label-width="90px">
+      <el-form ref="form" :model="formData" label-width="90px">
         <el-form-item label="应用名称">
-          <el-input v-model="form.appName"></el-input>
+          <el-input v-model="formData.appName"></el-input>
         </el-form-item>
         <el-form-item label="是否启用">
-          <el-switch v-model="form.enable" :active-value=true :inactive-value=false></el-switch>
+          <el-switch v-model="formData.enable" :active-value=true :inactive-value=false></el-switch>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -80,9 +80,11 @@
 </template>
 <script>
 
-    // eslint-disable-next-line no-unused-vars
-    import {getAppList, getAppTotal, removeApp, saveOrUpd, updApp} from '@/api/app'
-
+    const defaultData = {
+        appId: '',
+        appName: "",
+        enable: true,
+    };
     export default {
         name: 'app',
         data() {
@@ -91,53 +93,21 @@
                 lastId: '0',
                 pageFlag: 'next',
                 pageSize: 10,
-                form: {
-                    appId: '',
-                    appName: '',
-                    enable: true
-                },
+                formData: defaultData,
                 dialogVisible: false,
                 tableData: null,
                 total: 0
             };
         },
         methods: {
-            addApp(){
-                this.form = {};
-                this.dialogVisible= true;
+            addApp() {
+                this.formData = {};
+                this.dialogVisible = true;
             },
-            handleSearch() {
-                this.loadData();
-                this.loadTotal();
-            },
-            loadData() {
-                if (!this.searchForm.appName) {
-                    this.searchForm = {};
-                }
-                getAppList(this.pageFlag, this.pageSize, this.lastId, this.searchForm).then(response => {
-                    if (response.data) {
-                        this.tableData = response.data
-                    }
-                }).catch(error => {
-                    console.log(error);
-                });
-            },
-            handleCancel() {
-                this.dialogVisible = false;
-            },
-            handleSave() {
-                const params = this.form
-                saveOrUpd(params).then(() => {
-                    this.loadData();
-                    this.loadTotal();
-                }).catch(error => {
-                    console.log(error);
-                });
-                this.dialogVisible = false;
-            },
+
             appUpdate(row) {
                 this.dialogVisible = true;
-                this.form = row;
+                this.formData = row;
             },
             removeOne(id, index, rows) {
                 this.$confirm('此操作将状态改为删除状态, 是否继续?', '提示', {
@@ -145,18 +115,17 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    removeApp(id).then(() => {
-                        this.loadData();
-                        rows.splice(index, 1);
-                    })
+                    this.$store
+                        .dispatch("app/removeOne")
+                        .then(() => {
+                            this.loadData();
+                            rows.splice(index, 1);
+                        })
                 }).catch(err => {
                     console.error(err)
                 })
             },
-            handleSizeChange(pageSize) {
-                this.pageSize = pageSize;
-                this.loadData();
-            },
+
             prevClick() {
                 this.pageFlag = 'prev';
                 this.lastId = this.tableData[0].appId;
@@ -167,10 +136,12 @@
                 this.lastId = this.tableData[this.tableData.length - 1].appId;
                 this.loadData();
             },
-            changeSwitch(data) {
-                updApp(data).then(() => {
-                    this.loadData();
-                }).catch(error => {
+            changeSwitch() {
+                this.$store
+                    .dispatch("app/updateOne", this.data)
+                    .then(() => {
+                        this.loadData();
+                    }).catch(error => {
                     console.log(error);
                 });
             },
@@ -178,11 +149,59 @@
                 if (!this.searchForm.appName) {
                     this.searchForm = {};
                 }
-                getAppTotal(this.searchForm).then(response => {
+                this.$store
+                    .dispatch("app/getTotal", {
+                        filter: this.searchForm
+                    }).then(response => {
                     this.total = response.data;
                 }).catch(error => {
                     console.log(error);
                 });
+            },
+
+            loadData() {
+                if (!this.searchForm.appName) {
+                    this.searchForm = {};
+                }
+                this.$store
+                    .dispatch("app/getPageList", {
+                        pageFlag: this.pageFlag,
+                        pageSize: this.pageSize,
+                        lastId: this.lastId,
+                        filter: this.searchForm
+                    }).then(data => {
+                    if (data) {
+                        this.tableData = data
+                    }
+                }).catch(error => {
+                    console.log(error);
+                });
+            },
+
+            handleCancel() {
+                this.dialogVisible = false;
+            },
+
+            handleSave() {
+                this.$store
+                    .dispatch("app/save", this.formData)
+                    .then(() => {
+                        this.loadData();
+                        this.loadTotal();
+                    }).catch(error => {
+                    console.log(error);
+                });
+                this.dialogVisible = false;
+            },
+
+            handleSizeChange(pageSize) {
+                this.pageSize = pageSize;
+                this.loadData();
+            },
+
+            handleSearch() {
+                this.loadData();
+                this.loadTotal();
             },
         },
         mounted() {

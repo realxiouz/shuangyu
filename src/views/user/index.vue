@@ -117,15 +117,15 @@
       :total="total">
     </el-pagination>
     <el-dialog title="用户信息" :visible.sync="dialogVisible" width="30%">
-      <el-form ref="form" :rules="rules" :model="form" label-width="110px">
+      <el-form ref="form" :rules="rules" :model="formData" label-width="110px">
         <el-form-item label="昵称" prop="nickName">
-          <el-input v-model="form.nickName"></el-input>
+          <el-input v-model="formData.nickName"></el-input>
         </el-form-item>
         <el-form-item label="姓名" prop="fullName">
-          <el-input v-model="form.fullName"></el-input>
+          <el-input v-model="formData.fullName"></el-input>
         </el-form-item>
         <el-form-item label="性别" prop="gender">
-          <el-select v-model="form.gender" placeholder="请选择性别">
+          <el-select v-model="formData.gender" placeholder="请选择性别">
             <el-option label="男" value="男"></el-option>
             <el-option label="女" value="女"></el-option>
           </el-select>
@@ -134,33 +134,33 @@
           <el-input
             type="text"
             placeholder="请输入手机号码"
-            v-model="form.phone"
+            v-model="formData.phone"
             maxlength="11"
             show-word-limit
           >
           </el-input>
         </el-form-item>
         <el-form-item label="邮箱">
-          <el-input v-model="form.email" prop="email"></el-input>
+          <el-input v-model="formData.email" prop="email"></el-input>
         </el-form-item>
         <el-form-item label="身份证号码" prop="idCardNo">
           <el-input
             type="text"
             placeholder="请输入身份证号码"
-            v-model="form.idCardNo"
+            v-model="formData.idCardNo"
             maxlength="18"
             show-word-limit
           >
           </el-input>
         </el-form-item>
         <el-form-item label="是否超级管理员" prop="super">
-          <el-switch v-model="form.super" :active-value=true :inactive-value=false></el-switch>
+          <el-switch v-model="formData.super" :active-value=true :inactive-value=false></el-switch>
         </el-form-item>
         <el-form-item label="是否启用" prop="enable">
-          <el-switch v-model="form.enable" :active-value=true :inactive-value=false></el-switch>
+          <el-switch v-model="formData.enable" :active-value=true :inactive-value=false></el-switch>
         </el-form-item>
         <el-form-item label="备注" prop="comment">
-          <el-input type="textarea" v-model="form.comment"></el-input>
+          <el-input type="textarea" v-model="formData.comment"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -190,7 +190,7 @@
 
   export default {
     name: "user",
-    data(props) {
+    data() {
       return {
         searchForm: {},
         lastId: "0",
@@ -199,7 +199,7 @@
         total: 0,
         dialogVisible: false,
         tableData: null,
-        form: props._.cloneDeep(defaultProps),
+        formData: defaultProps,
         rules: {
           nickName: [
             { required: true, message: "请输入昵称", trigger: "blur" }
@@ -228,10 +228,10 @@
       },
       userUpdate(row) {
         this.dialogVisible = true;
-        this.form = this._.cloneDeep(row);
+        this.formData = row;
       },
       addUser() {
-        this.form = this._.cloneDeep(defaultProps);
+        this.formData = defaultData;
         this.dialogVisible = true;
       },
       loadData() {
@@ -251,7 +251,7 @@
         this.dialogVisible = false;
       },
       handleSave() {
-        const params = this.form;
+        const params = this.formData;
         save(params).then(() => {
           console.log(params);
           this.loadData();

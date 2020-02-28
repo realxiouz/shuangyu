@@ -17,7 +17,7 @@ export function getFlightSegmentPageList(data) {
 }
 export function getFlightSegmentList(data) {
   return request({
-    url: '/flight/flightSegment/list',
+    url: '/flight/segment/list',
     method: 'get',
     params: data.searchForm
   });

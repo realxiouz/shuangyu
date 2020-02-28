@@ -1,4 +1,4 @@
-import { save, removeOne, getNavsTreeData, getRoleList } from "@/api/role";
+import { removeOne, updateOne, getPageList, getTotal,  save } from "@/api/api";
 import { getToken } from "@/utils/auth";
 
 
@@ -21,6 +21,18 @@ const mutations = {
 };
 
 const actions = {
+  updateOne({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      updateOne(params)
+        .then(response => {
+          //const { data } = response;
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
   save({ commit }, params) {
     return new Promise((resolve, reject) => {
       save(params)
@@ -45,10 +57,10 @@ const actions = {
         });
     });
   },
-
-  getRoleList({ commit }, params) {
+  getPageList({ commit }, params) {
+    const { pageFlag, pageSize, lastId, filter } = params;
     return new Promise((resolve, reject) => {
-      getRoleList(params)
+      getPageList(pageFlag, pageSize, lastId, filter)
         .then(response => {
           const { data } = response;
           resolve(data);
@@ -59,9 +71,9 @@ const actions = {
     });
   },
 
-  getNavsTreeData({ commit }) {
+  getTotal({ commit }, params) {
     return new Promise((resolve, reject) => {
-      getNavsTreeData()
+      getTotal(params)
         .then(response => {
           const { data } = response;
           resolve(data);
@@ -71,6 +83,7 @@ const actions = {
         });
     });
   }
+
 };
 
 export default {

@@ -108,7 +108,6 @@
           noChecked: '${total}',
           hasChecked: '${checked}/${total}'
           }"
-            @change="handleChange"
             :titles="['角色', '已选角色']"
             filter-placeholder="角色名称"
             v-model="formData.roles"
@@ -130,9 +129,6 @@
   </div>
 </template>
 <script>
-
-  // eslint-disable-next-line no-unused-vars
-  import { save, getPageList, getTotal, removeOne } from "@/api/dept";
 
   const defaultData = {
     deptName: "",
@@ -182,7 +178,13 @@
         if (!this.searchForm.deptName) {
           this.searchForm = {};
         }
-        getPageList(this.pageFlag, this.pageSize, this.lastId, this.searchForm).then(response => {
+        this.$store
+          .dispatch("dept/getPageList", {
+            pageFlag: this.pageFlag,
+            pageSize: this.pageSize,
+            lastId: this.lastId,
+            filter: this.searchForm
+          }).then(response => {
           if (response.data) {
             this.tableData = response.data;
           }
@@ -193,7 +195,7 @@
 
       loadRoles() {
         this.$store
-          .dispatch("role/getList")
+          .dispatch("role/getRoleList")
           .then(data => {
             this.roles = data;
           })
@@ -206,7 +208,8 @@
         if (!this.searchForm.deptName) {
           this.searchForm = {};
         }
-        getTotal(this.searchForm).then(response => {
+        this.$store
+          .dispatch("dept/getTotal").then(response => {
           this.total = response.data;
         }).catch(error => {
           console.log(error);
@@ -235,8 +238,7 @@
       },
 
       handleSave() {
-        const params = this.form;
-        save(params).then(() => {
+        this.$store.dispatch("dept/save", this.formData).then(() => {
           this.loadData();
           this.loadTotal();
         }).catch(error => {
@@ -247,14 +249,14 @@
 
       handleUpdate(row) {
         this.dialogVisible = true;
-        this.form.deptId = row.deptId;
-        this.form.deptName = row.deptName;
-        this.form.firmId = row.firmId;
-        this.form.domain = row.domain;
-        this.form.ddId = row.ddId;
-        this.form.ddParentIdId = row.ddParentIdId;
-        this.form.deleteFlag = row.deleteFlag;
-        this.form.roles = row.roles;
+        this.formData.deptId = row.deptId;
+        this.formData.deptName = row.deptName;
+        this.formData.firmId = row.firmId;
+        this.formData.domain = row.domain;
+        this.formData.ddId = row.ddId;
+        this.formData.ddParentIdId = row.ddParentIdId;
+        this.formData.deleteFlag = row.deleteFlag;
+        this.formData.roles = row.roles;
         console.log(row);
       },
 
@@ -269,13 +271,14 @@
           cancelButtonText: "取消",
           type: "warning"
         }).then(() => {
-          removeOne(Id).then(() => {
+          this.$store
+            .dispatch("dept/removeOne").then(() => {
             this.loadData();
           });
         }).catch(err => {
           console.error(err);
         });
-      },
+      }
 
     },
     mounted() {
