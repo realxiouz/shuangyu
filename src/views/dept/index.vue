@@ -153,10 +153,15 @@
         tableData: null,
         rules: {
           deptName: [
-            {required: true, message: "请输入部门名称", trigger: "blur"}
+            {required: true, message: "请输入部门名称", trigger: "blur"},
+              {
+                  min: 1,
+                  max: 20,
+                  message: '长度在 1到 20 个字符'
+              }
           ],
           firmId: [
-            {required: true, message: "请输入企业名称", trigger: "blur"}
+            {required: true, message: "请输入企业", trigger: "blur"}
           ],
           domain: [
             {required: true, message: "请输入域名", trigger: "blur"}
