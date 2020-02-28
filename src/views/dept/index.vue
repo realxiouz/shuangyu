@@ -295,7 +295,7 @@
           type: "warning"
         }).then(() => {
           this.$store
-            .dispatch("dept/removeOne")
+            .dispatch("dept/removeOne",id)
             .then(() => {
             this.loadData();
           });
