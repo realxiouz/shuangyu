@@ -100,11 +100,11 @@
     // eslint-disable-next-line no-unused-vars
 
     const defaultData = {
-      apiId: '',
-      apiName: "",
-      uri: "",
-      enable: true,
-      category: "",
+        apiId: '',
+        apiName: "",
+        uri: "",
+        enable: true,
+        category: "",
     };
     export default {
         name: 'api',
@@ -132,12 +132,12 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                  this.$store
-                    .dispatch("api/removeApi")
-                      .then(() => {
-                        this.loadData();
-                        rows.splice(index, 1);
-                    })
+                    this.$store
+                        .dispatch("api/removeApi")
+                        .then(() => {
+                            this.loadData();
+                            rows.splice(index, 1);
+                        })
                 }).catch(err => {
                     console.error(err);
                 });
@@ -155,78 +155,78 @@
             },
 
             changeSwitch() {
-              this.$store
-                .dispatch("api/updApi",this.data)
-                  .then(() => {
-                    this.loadData();
+                this.$store
+                    .dispatch("api/updApi", this.data)
+                    .then(() => {
+                        this.loadData();
+                    }).catch(error => {
+                    console.log(error);
+                });
+            },
+
+            loadData() {
+                if (!this.searchForm.apiName) {
+                    this.searchForm = {};
+                }
+                this.$store
+                    .dispatch("api/getPageList", {
+                        pageFlag: this.pageFlag,
+                        pageSize: this.pageSize,
+                        lastId: this.lastId,
+                        filter: this.searchForm
+                    }).then(data => {
+                    if (data) {
+                        this.tableData = data
+                    }
                 }).catch(error => {
                     console.log(error);
                 });
             },
 
-          loadData() {
-            if (!this.searchForm.apiName) {
-              this.searchForm = {};
-            }
-            this.$store
-              .dispatch("api/getApiList",{
-                pageFlag: this.pageFlag,
-                pageSize: this.pageSize,
-                lastId: this.lastId,
-                filter: this.searchForm
-              }).then(response => {
-              if (response.data) {
-                this.tableData = response.data
-              }
-            }).catch(error => {
-              console.log(error);
-            });
-          },
-
             loadTotal: function () {
                 if (!this.searchForm.apiName) {
                     this.searchForm = {};
                 }
-              this.$store
-                .dispatch("api/getApiTotal",{
-                  filter: this.searchForm
-                }).then(response => {
+                this.$store
+                    .dispatch("api/getApiTotal", {
+                        filter: this.searchForm
+                    }).then(response => {
                     this.total = response.data;
                 }).catch(error => {
                     console.log(error);
                 });
             },
 
-          handleCancel() {
-            this.dialogVisible = false;
-          },
+            handleCancel() {
+                this.dialogVisible = false;
+            },
 
-          handleSizeChange(pageSize) {
-            this.pageSize = pageSize;
-            this.loadData();
-          },
+            handleSizeChange(pageSize) {
+                this.pageSize = pageSize;
+                this.loadData();
+            },
 
-          handleSave() {
-            this.$store
-              .dispatch("api/save",this.formData)
-              .then(() => {
-              this.loadData();
-              this.loadTotal();
-            }).catch(error => {
-              console.log(error);
-            });
-            this.dialogVisible = false;
-          },
+            handleSave() {
+                this.$store
+                    .dispatch("api/save", this.formData)
+                    .then(() => {
+                        this.loadData();
+                        this.loadTotal();
+                    }).catch(error => {
+                    console.log(error);
+                });
+                this.dialogVisible = false;
+            },
 
-          handleUpdate(row) {
-            this.dialogVisible = true;
-            this.formData = row;
-          },
+            handleUpdate(row) {
+                this.dialogVisible = true;
+                this.formData = row;
+            },
 
-          handleSearch() {
-            this.loadData();
-            this.loadTotal();
-          },
+            handleSearch() {
+                this.loadData();
+                this.loadTotal();
+            },
 
         },
         mounted() {

@@ -80,13 +80,10 @@
 </template>
 <script>
 
-    // eslint-disable-next-line no-unused-vars
-    import {getAppList, getAppTotal, removeApp, saveOrUpd, updApp} from '@/api/app'
-
     const defaultData = {
-      appId: '',
-      appName: "",
-      enable: true,
+        appId: '',
+        appName: "",
+        enable: true,
     };
     export default {
         name: 'app',
@@ -103,9 +100,9 @@
             };
         },
         methods: {
-            addApp(){
+            addApp() {
                 this.formData = {};
-                this.dialogVisible= true;
+                this.dialogVisible = true;
             },
 
             appUpdate(row) {
@@ -118,12 +115,12 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                  this.$store
-                    .dispatch("app/removeApp")
-                      .then(() => {
-                        this.loadData();
-                        rows.splice(index, 1);
-                    })
+                    this.$store
+                        .dispatch("app/removeApp")
+                        .then(() => {
+                            this.loadData();
+                            rows.splice(index, 1);
+                        })
                 }).catch(err => {
                     console.error(err)
                 })
@@ -140,11 +137,11 @@
                 this.loadData();
             },
             changeSwitch() {
-              this.$store
-                .dispatch("app/updApp",this.data)
-                  .then(() => {
-                    this.loadData();
-                }).catch(error => {
+                this.$store
+                    .dispatch("app/updApp", this.data)
+                    .then(() => {
+                        this.loadData();
+                    }).catch(error => {
                     console.log(error);
                 });
             },
@@ -152,60 +149,60 @@
                 if (!this.searchForm.appName) {
                     this.searchForm = {};
                 }
-              this.$store
-                .dispatch("app/getAppTotal",{
-                  filter: this.searchForm
-                }).then(response => {
+                this.$store
+                    .dispatch("app/getTotal", {
+                        filter: this.searchForm
+                    }).then(response => {
                     this.total = response.data;
                 }).catch(error => {
                     console.log(error);
                 });
             },
 
-          loadData() {
-            if (!this.searchForm.appName) {
-              this.searchForm = {};
-            }
-            this.$store
-              .dispatch("app/getAppList",{
-                pageFlag: this.pageFlag,
-                pageSize: this.pageSize,
-                lastId: this.lastId,
-                filter: this.searchForm
-              }).then(response => {
-              if (response.data) {
-                this.tableData = response.data
-              }
-            }).catch(error => {
-              console.log(error);
-            });
-          },
+            loadData() {
+                if (!this.searchForm.appName) {
+                    this.searchForm = {};
+                }
+                this.$store
+                    .dispatch("app/getPageList", {
+                        pageFlag: this.pageFlag,
+                        pageSize: this.pageSize,
+                        lastId: this.lastId,
+                        filter: this.searchForm
+                    }).then(data => {
+                    if (data) {
+                        this.tableData = data
+                    }
+                }).catch(error => {
+                    console.log(error);
+                });
+            },
 
-          handleCancel() {
-            this.dialogVisible = false;
-          },
+            handleCancel() {
+                this.dialogVisible = false;
+            },
 
-          handleSave() {
-            this.$store
-              .dispatch("app/saveOrUpd",this.formData)
-              .then(() => {
-              this.loadData();
-              this.loadTotal();
-            }).catch(error => {
-              console.log(error);
-            });
-            this.dialogVisible = false;
-          },
+            handleSave() {
+                this.$store
+                    .dispatch("app/saveOrUpd", this.formData)
+                    .then(() => {
+                        this.loadData();
+                        this.loadTotal();
+                    }).catch(error => {
+                    console.log(error);
+                });
+                this.dialogVisible = false;
+            },
 
-          handleSizeChange(pageSize) {
-            this.pageSize = pageSize;
-            this.loadData();
-          },
+            handleSizeChange(pageSize) {
+                this.pageSize = pageSize;
+                this.loadData();
+            },
 
-          handleSearch() {
-            this.loadData();
-            this.loadTotal();
-          },
+            handleSearch() {
+                this.loadData();
+                this.loadTotal();
+            },
         },
         mounted() {
             this.loadData();
