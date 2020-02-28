@@ -1,5 +1,5 @@
-import { getChildrenList, getPageList, getTotal, removeOne, save } from "@/api/dept";
-import { getToken } from "@/utils/auth";
+import {getList, getOne, getPageList, getTotal, removeOne, save} from "@/api/dept";
+import {getToken} from "@/utils/auth";
 
 
 const state = {
@@ -21,7 +21,7 @@ const mutations = {
 };
 
 const actions = {
-  save({ commit }, params) {
+  save({commit}, params) {
     return new Promise((resolve, reject) => {
       save(params)
         .then(response => {
@@ -33,11 +33,11 @@ const actions = {
         });
     });
   },
-  getChildrenList({ commit }, data) {
+  getList({commit}, data) {
     return new Promise((resolve, reject) => {
-      getChildrenList(data)
+      getList(data)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -45,11 +45,11 @@ const actions = {
         });
     });
   },
-  removeOne({ commit }, data) {
+  removeOne({commit}, data) {
     return new Promise((resolve, reject) => {
       removeOne(data)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -57,12 +57,12 @@ const actions = {
         });
     });
   },
-  getPageList({ commit }, params) {
-    const { pageFlag, pageSize, lastId, filter } = params;
+  getPageList({commit}, params) {
+    const {pageFlag, pageSize, lastId, filter} = params;
     return new Promise((resolve, reject) => {
       getPageList(pageFlag, pageSize, lastId, filter)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -71,11 +71,23 @@ const actions = {
     });
   },
 
-  getTotal({ commit }, params) {
+  getTotal({commit}, params) {
     return new Promise((resolve, reject) => {
       getTotal(params)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getOne({commit}, data) {
+    return new Promise((resolve, reject) => {
+      getOne(data)
+        .then(response => {
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {

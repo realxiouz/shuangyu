@@ -99,7 +99,12 @@
                 total: 0,
                 rules: {
                     appName: [
-                        {required: true, message: "请输入应用名称", trigger: "blur"}
+                        {required: true, message: "请输入应用名称", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 10,
+                            message: '长度在 1到 10 个字符'
+                        }
                     ],
                 }
             };
@@ -167,10 +172,10 @@
                     .dispatch("app/getOne", id)
                     .then(data => {
                         this.formData = data;
+                        this.dialogVisible = true;
                     }).catch(error => {
                     console.log(error);
                 });
-                this.dialogVisible = true;
             },
             handleRemove(id, index, rows) {
                 this.$confirm('此操作将状态改为删除状态, 是否继续?', '提示', {

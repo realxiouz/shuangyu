@@ -120,13 +120,23 @@
                 total: 0,
                 rules: {
                     apiName: [
-                        {required: true, message: "请输入api名称", trigger: "blur"}
+                        {required: true, message: "请输入api名称", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 10,
+                            message: '长度在 1到 10 个字符'
+                        }
                     ],
                     uri: [
                         {required: true, message: "请输入uri", trigger: "blur"}
                     ],
                     category: [
-                        {required: true, message: "请输入类别", trigger: "blur"}
+                        {required: true, message: "请输入类别", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 10,
+                            message: '长度在 1到 10 个字符'
+                        }
                     ]
                 }
             };
@@ -228,10 +238,10 @@
                     .dispatch("api/getOne", id)
                     .then(data => {
                         this.formData = data;
+                        this.dialogVisible = true;
                     }).catch(error => {
                     console.log(error);
                 });
-                this.dialogVisible = true;
             },
             handleSearch() {
                 this.loadData();
