@@ -22,9 +22,7 @@
             row-key="firmId"
             border
             lazy
-            default-expand-all
-            :load="getChildren"
-            :tree-props="defaultProps">
+            :load="loadChildren">
             <el-table-column
               prop="firmName"
               label="企业名称"
@@ -58,14 +56,17 @@
               <template slot-scope="scope">
                 <el-button
                   size="mini"
-                  @click="handleAppend(scope.$index, scope.row)">添加</el-button>
+                  @click="handleAppend(scope.$index, scope.row)">添加
+                </el-button>
                 <el-button
                   size="mini"
-                  @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                  @click="handleEdit(scope.$index, scope.row)">编辑
+                </el-button>
                 <el-button
                   size="mini"
                   type="danger"
-                  @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                  @click="handleDelete(scope.$index, scope.row)">删除
+                </el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -187,16 +188,16 @@
         <el-button @click="handleCancel">取 消</el-button>
         <el-button type="primary" @click="handleSave">确 定</el-button>
       </div>
-     <!-- <template>
-        <el-transfer
-          v-model="value"
-          :props="{
-            key: 'value',
-            label: 'desc'
-          }"
-          :data="transData">
-        </el-transfer>
-      </template>-->
+      <!-- <template>
+         <el-transfer
+           v-model="value"
+           :props="{
+             key: 'value',
+             label: 'desc'
+           }"
+           :data="transData">
+         </el-transfer>
+       </template>-->
     </el-dialog>
   </div>
 </template>
@@ -208,44 +209,44 @@
       return {
         dialogVisible: false,
         tableData: [],
-        pageFlag: 'next',
+        pageFlag: "next",
         pageSize: 10,
-        lastId: '0',
+        lastId: "0",
         total: 0,
-        keyword: '',
+        keyword: "",
         transData: [],
         form: {
-          firmId: '',
-          firmName: '',
-          firmCode: '',
+          firmId: "",
+          firmName: "",
+          firmCode: "",
           pid: null,
-          path: '',
+          path: "",
           level: null,
           sort: null,
-          location: '',
-          districtCode: '',
+          location: "",
+          districtCode: "",
           distinct: null,
-          linkPerson: '',
-          linkPhone: '',
-          remark: '',
+          linkPerson: "",
+          linkPhone: "",
+          remark: "",
           deleteFlag: true,
-          ddAppKey: '',
-          ddAppSecret: '',
-          domain: '',
+          ddAppKey: "",
+          ddAppSecret: "",
+          domain: "",
           type: null,
           hasChildren: false,
           roles: []
         },
         defaultProps: {
-          children: 'children',
-          hasChildren:'hasChildren'
+          children: "children",
+          hasChildren: "hasChildren"
         }
       };
     },
     methods: {
       loadData() {
         this.$store
-          .dispatch('firm/getTotal')
+          .dispatch("firm/getTotal")
           .then(data => {
             this.total = data.data;
           })
@@ -253,9 +254,20 @@
             console.log(error);
           });
         this.$store
-          .dispatch('firm/getPageList', {pageFlag: this.pageFlag, pageSize: this.pageSize, lastId: this.lastId})
+          .dispatch("firm/getPageList", { pageFlag: this.pageFlag, pageSize: this.pageSize, lastId: this.lastId })
           .then(data => {
             this.tableData = data.data;
+          })
+          .catch(error => {
+            console.log(error);
+          });
+
+      },
+      loadChildren(row, node, resolve) {
+        this.$store
+          .dispatch("firm/getList", { pid: row.firmId })
+          .then(data => {
+            resolve(data);
           })
           .catch(error => {
             console.log(error);
@@ -263,7 +275,7 @@
       },
       search() {
         this.$store
-          .dispatch('firm/getPageList', {pageFlag: this.pageFlag, pageSize: this.pageSize, lastId: this.lastId})
+          .dispatch("firm/getPageList", { pageFlag: this.pageFlag, pageSize: this.pageSize, lastId: this.lastId })
           .then(data => {
             this.tableData = data.data;
           })
@@ -271,8 +283,8 @@
             console.log(error);
           });
       },
-      handleIconClick(){
-        this.keyword = '';
+      handleIconClick() {
+        this.keyword = "";
       },
       /*点击添加顶级企业信息*/
       rootAdd() {
@@ -292,9 +304,9 @@
       handleSave() {
         this.dialogVisible = false;
 
-        if(this.form.firmId != ''){
+        if (this.form.firmId != "") {
           this.$store
-            .dispatch( 'firm/edit', this.form)
+            .dispatch("firm/edit", this.form)
             .then(data => {
               console.log(data);
               this.loadData();
@@ -302,16 +314,16 @@
             .catch(error => {
               console.log(error);
             });
-        }else{
+        } else {
           if (this.rootNav) { //如果添加的顶级企业信息，对某些属性进行初始化
             this.form.pid = null;
             this.form.level = 1;
           }
 
           this.$store
-            .dispatch('firm/add', this.form)
+            .dispatch("firm/add", this.form)
             .then(data => {
-              console.log(data);
+              console.log("loadData");
               this.loadData();
             })
             .catch(error => {
@@ -329,99 +341,100 @@
         this.dialogVisible = true;
       },
       handleDelete(index, row) {
-        this.open(this.remove,row.firmId);
+        this.open(this.remove, row.firmId);
       },
-      remove(params){
-          this.$store
-            .dispatch('firm/delete', params)
-            .then(data => {
-              console.log(data);
-            })
-            .catch(error => {
-              console.log(error);
-            });
-      },
-      clearForm() {
-        this.form = {
-          firmId: '',
-          firmName: '',
-          firmCode: '',
-          pid: null,
-          path: '',
-          level: null,
-          sort: null,
-          location: '',
-          districtCode: '',
-          distinct: null,
-          linkPerson: '',
-          linkPhone: '',
-          remark: '',
-          deleteFlag: true,
-          ddAppKey: '',
-          ddAppSecret: '',
-          domain: '',
-          type: null,
-          roles: [],
-          children: []
-        };
-      },
-      open(func,data) {
-        this.$confirm('此操作将删除该企业信息及子企业信息, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          func(data);
-          this.loadData();
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          });
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });
-        });
-      },
-      getChildren(tree, treeNode, resolve) {
-        if (null != tree){
-          this.loadChildren(tree, resolve);
-        }else{
-          resolve([])
-        }
-      },
-      loadChildren(tree, resolve){
+      remove(params) {
         this.$store
-          .dispatch('firm/loadChildren', tree.firmId)
+          .dispatch("firm/delete", params)
           .then(data => {
-            setTimeout(() => {
-              resolve(data.data)
-            }, 1000)
+            console.log(data);
           })
           .catch(error => {
             console.log(error);
           });
       },
-      handleSizeChange: function (size) {
+      clearForm() {
+        this.form = {
+          firmId: "",
+          firmName: "",
+          firmCode: "",
+          pid: null,
+          path: "",
+          level: null,
+          sort: null,
+          location: "",
+          districtCode: "",
+          distinct: null,
+          linkPerson: "",
+          linkPhone: "",
+          remark: "",
+          deleteFlag: true,
+          ddAppKey: "",
+          ddAppSecret: "",
+          domain: "",
+          type: null,
+          roles: [],
+          children: []
+        };
+      },
+      open(func, data) {
+        this.$confirm("此操作将删除该企业信息及子企业信息, 是否继续?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).then(() => {
+          func(data);
+          this.loadData();
+          this.$message({
+            type: "success",
+            message: "删除成功!"
+          });
+        }).catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+      },
+      getChildren(tree, treeNode, resolve) {
+        console.log(tree);
+        if (null != tree) {
+          this.loadChildren(tree, resolve);
+        } else {
+          resolve([]);
+        }
+      },
+      /*loadChildren(tree, resolve) {
+        this.$store
+          .dispatch("firm/loadChildren", tree.firmId)
+          .then(data => {
+            setTimeout(() => {
+              resolve(data.data);
+            }, 1000);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },*/
+      handleSizeChange: function(size) {
         this.pageSize = size;
         this.loadData();
-        console.log(this.pageSize)  //每页下拉显示数据
+        console.log(this.pageSize);  //每页下拉显示数据
       },
-      handlePrevChange: function () {
+      handlePrevChange: function() {
         this.pageFlag = "prev";
         this.lastId = this.tableData[0].id;
         this.loadData();
       },
-      handleNextChange: function () {
+      handleNextChange: function() {
         this.pageFlag = "next";
         this.lastId = this.tableData[this.tableData.length - 1].id;
         this.loadData();
-      },
+      }
     },
     mounted() {
       this.loadData();
-    },
+    }
 
   };
 </script>

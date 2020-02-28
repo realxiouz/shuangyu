@@ -1,20 +1,20 @@
-import {add, deleteOne, edit, getFirmList, getTotal, loadChildren} from '@/api/firm';
+import { add, deleteOne, edit, getFirmList, getTotal, getList } from "@/api/firm";
 
 
 const actions = {
-  loadChildren({commit}, params) {
+  getList({ commit }, params) {
     return new Promise((resolve, reject) => {
-      loadChildren(params)
+      getList(params)
         .then(response => {
-          // const { data } = response;
-          resolve(response);
+          const { data } = response;
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getPageList({commit}, params) {
+  getPageList({ commit }, params) {
     return new Promise((resolve, reject) => {
       getFirmList(params)
         .then(response => {
@@ -38,7 +38,7 @@ const actions = {
         });
     });
   },
-  edit({commit}, params) {
+  edit({ commit }, params) {
     return new Promise((resolve, reject) => {
       edit(params)
         .then(response => {
@@ -50,7 +50,7 @@ const actions = {
         });
     });
   },
-  delete({commit}, params) {
+  delete({ commit }, params) {
     return new Promise((resolve, reject) => {
       deleteOne(params)
         .then(response => {
@@ -62,7 +62,7 @@ const actions = {
         });
     });
   },
-  add({commit}, params) {
+  add({ commit }, params) {
     return new Promise((resolve, reject) => {
       add(params)
         .then(response => {
@@ -73,7 +73,7 @@ const actions = {
         });
     });
   }
-}
+};
 
 export default {
   namespaced: true,
