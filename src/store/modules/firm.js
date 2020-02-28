@@ -1,8 +1,20 @@
-import {add, deleteOne, edit, getFirmList, getTotal,getRoleInfo} from '@/api/firm';
+import { add, deleteOne, edit, getFirmList, getTotal, getList } from "@/api/firm";
 
 
 const actions = {
-  getPageList({commit}, params) {
+  getList({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      getList(params)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getPageList({ commit }, params) {
     return new Promise((resolve, reject) => {
       getFirmList(params)
         .then(response => {
@@ -26,7 +38,7 @@ const actions = {
         });
     });
   },
-  edit({commit}, params) {
+  edit({ commit }, params) {
     return new Promise((resolve, reject) => {
       edit(params)
         .then(response => {
@@ -38,7 +50,7 @@ const actions = {
         });
     });
   },
-  delete({commit}, params) {
+  delete({ commit }, params) {
     return new Promise((resolve, reject) => {
       deleteOne(params)
         .then(response => {
@@ -50,18 +62,7 @@ const actions = {
         });
     });
   },
-  getRoleInfo() {
-    return new Promise((resolve, reject) => {
-      getRoleInfo()
-        .then(response => {
-          resolve(response);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  add({commit}, params) {
+  add({ commit }, params) {
     return new Promise((resolve, reject) => {
       add(params)
         .then(response => {
@@ -72,7 +73,7 @@ const actions = {
         });
     });
   }
-}
+};
 
 export default {
   namespaced: true,

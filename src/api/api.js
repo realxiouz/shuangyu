@@ -1,14 +1,14 @@
 import request from '@/utils/request';
 
 
-export function removeApi(id) {
+export function removeOne(id) {
   return request({
     url: `/api/remove/one/${id}`,
     method: 'delete'
   });
 }
 
-export function updApi(data) {
+export function updateOne(data) {
   return request({
     url: '/api/update/one',
     method: 'post',
@@ -16,7 +16,7 @@ export function updApi(data) {
   });
 }
 
-export function getApiList(pageFlag, pageSize, lastId, data){
+export function getPageList(pageFlag, pageSize, lastId, data) {
   return request({
     url: `/api/page/list/${pageFlag}/${pageSize}/${lastId}`,
     method: 'get',
@@ -24,7 +24,7 @@ export function getApiList(pageFlag, pageSize, lastId, data){
   });
 }
 
-export function getApiTotal(data) {
+export function getTotal(data) {
   return request({
     url: `/api/total`,
     method: 'get',
@@ -34,8 +34,15 @@ export function getApiTotal(data) {
 
 export function save(data) {
   return request({
-    url: '/api/save/one',
+    url: '/api/save',
     method: 'post',
     data
+  });
+}
+
+export function getOne(id) {
+  return request({
+    url: `/api/one/${id}`,
+    method: 'get'
   });
 }

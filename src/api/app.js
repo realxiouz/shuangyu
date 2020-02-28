@@ -1,14 +1,14 @@
 import request from '@/utils/request';
 
 
-export function removeApp(id) {
+export function removeOne(id) {
   return request({
     url: `/app/remove/one/${id}`,
     method: 'delete'
   });
 }
 
-export function updApp(data) {
+export function updateOne(data) {
   return request({
     url: '/app/update/one',
     method: 'post',
@@ -16,7 +16,7 @@ export function updApp(data) {
   });
 }
 
-export function getAppList(pageFlag, pageSize, lastId,data) {
+export function getPageList(pageFlag, pageSize, lastId, data) {
   return request({
     url: `/app/page/list/${pageFlag}/${pageSize}/${lastId}`,
     method: 'get',
@@ -24,7 +24,7 @@ export function getAppList(pageFlag, pageSize, lastId,data) {
   });
 }
 
-export function getAppTotal(data) {
+export function getTotal(data) {
   return request({
     url: `/app/total`,
     method: 'get',
@@ -32,11 +32,17 @@ export function getAppTotal(data) {
   });
 }
 
-export function saveOrUpd(data) {
+export function save(data) {
   return request({
-    url: '/app/save/one',
+    url: '/app/save',
     method: 'post',
     data
   });
 }
 
+export function getOne(id) {
+  return request({
+    url: `/app/one/${id}`,
+    method: 'get'
+  });
+}

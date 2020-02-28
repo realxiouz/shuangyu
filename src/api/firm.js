@@ -1,4 +1,4 @@
-import request from '@/utils/request';
+import request from "@/utils/request";
 
 export function getFirmList(params) {
   return request({
@@ -28,7 +28,7 @@ export function edit(data) {
 export function deleteOne(data) {
   return request({
     url: `/firm/remove/one/${data}`,
-    method: `delete`,
+    method: `delete`
   });
 }
 
@@ -39,17 +39,10 @@ export function getTotal() {
   });
 }
 
-export function getRoleInfo() {
+export function getList(params) {
   return request({
-    url: `/role/list`,
+    url: `/firm/list`,
     method: `get`,
-    params:{enable:true}
-  });
-}
-
-export function getOne(data) {
-  return request({
-    url: `/firm/get/one/`+data,
-    method: `get`
+    params
   });
 }
