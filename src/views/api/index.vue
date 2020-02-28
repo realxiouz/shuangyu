@@ -44,7 +44,7 @@
             off-color="#F04134"
             off-text="禁止"
             off-value=false
-            @change="changeSwitch(scope.row)">
+            @change="handleSwitch(scope.row)">
           </el-switch>
         </template>
       </el-table-column>
@@ -131,15 +131,6 @@
                 this.lastId = this.tableData[this.tableData.length - 1].apiId;
                 this.loadData();
             },
-            changeSwitch() {
-                this.$store
-                    .dispatch("api/updateOne", this.data)
-                    .then(() => {
-                        this.loadData();
-                    }).catch(error => {
-                    console.log(error);
-                });
-            },
             loadData() {
                 if (!this.searchForm.apiName) {
                     this.searchForm = {};
@@ -168,6 +159,15 @@
                     }).then(response => {
                     this.total = response.data;
                 }).catch(error => {
+                    console.log(error);
+                });
+            },
+            handleSwitch(data) {
+                this.$store
+                    .dispatch("api/updateOne", data)
+                    .then(() => {
+                        this.loadData();
+                    }).catch(error => {
                     console.log(error);
                 });
             },

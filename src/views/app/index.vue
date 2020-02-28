@@ -33,7 +33,7 @@
             off-color="#F04134"
             off-text="禁止"
             off-value=false
-            @change="changeSwitch(scope.row)">
+            @change="handleSwitch(scope.row)">
           </el-switch>
         </template>
       </el-table-column>
@@ -110,15 +110,6 @@
                 this.lastId = this.tableData[this.tableData.length - 1].appId;
                 this.loadData();
             },
-            changeSwitch() {
-                this.$store
-                    .dispatch("app/updateOne", this.data)
-                    .then(() => {
-                        this.loadData();
-                    }).catch(error => {
-                    console.log(error);
-                });
-            },
             loadTotal() {
                 if (!this.searchForm.appName) {
                     this.searchForm = {};
@@ -147,6 +138,15 @@
                         this.tableData = data
                     }
                 }).catch(error => {
+                    console.log(error);
+                });
+            },
+            handleSwitch(data) {
+                this.$store
+                    .dispatch("app/updateOne", data)
+                    .then(() => {
+                        this.loadData();
+                    }).catch(error => {
                     console.log(error);
                 });
             },
