@@ -174,7 +174,7 @@
                     type: 'warning'
                 }).then(() => {
                     this.$store
-                        .dispatch("app/handleRemove", id)
+                        .dispatch("app/removeOne", id)
                         .then(() => {
                             this.loadData();
                             rows.splice(index, 1);
