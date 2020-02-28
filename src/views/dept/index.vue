@@ -243,7 +243,6 @@
                     });
             },
             handleAddChild(deptId) {
-                this.formData = defaultData;
                 this.formData.pid = deptId;
                 this.dialogVisible = true;
             },
