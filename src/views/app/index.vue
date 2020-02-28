@@ -100,38 +100,6 @@
             };
         },
         methods: {
-            addApp() {
-                this.formData = {};
-                this.dialogVisible = true;
-            },
-
-            handleUpdate(id) {
-                this.$store
-                    .dispatch("app/getOne", id)
-                    .then(data => {
-                        this.formData = data;
-                    }).catch(error => {
-                    console.log(error);
-                });
-                this.dialogVisible = true;
-            },
-            handleRemove(id, index, rows) {
-                this.$confirm('此操作将状态改为删除状态, 是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    this.$store
-                        .dispatch("app/handleRemove", id)
-                        .then(() => {
-                            this.loadData();
-                            rows.splice(index, 1);
-                        })
-                }).catch(err => {
-                    console.error(err)
-                })
-            },
-
             prevClick() {
                 this.pageFlag = 'prev';
                 this.lastId = this.tableData[0].appId;
@@ -187,13 +155,43 @@
             handleCancel() {
                 this.dialogVisible = false;
             },
+            addApp() {
+                this.formData = {};
+                this.dialogVisible = true;
+            },
+
+            handleUpdate(id) {
+                this.$store
+                    .dispatch("app/getOne", id)
+                    .then(data => {
+                        this.formData = data;
+                    }).catch(error => {
+                    console.log(error);
+                });
+                this.dialogVisible = true;
+            },
+            handleRemove(id, index, rows) {
+                this.$confirm('此操作将状态改为删除状态, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.$store
+                        .dispatch("app/handleRemove", id)
+                        .then(() => {
+                            this.loadData();
+                            rows.splice(index, 1);
+                        })
+                }).catch(err => {
+                    console.error(err)
+                })
+            },
 
             handleSave() {
                 this.$store
                     .dispatch("app/save", this.formData)
                     .then(() => {
-                        this.loadData();
-                        this.loadTotal();
+                        this.handleSearch();
                     }).catch(error => {
                     console.log(error);
                 });
