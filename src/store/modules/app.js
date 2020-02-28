@@ -1,4 +1,4 @@
-import { removeApp, updApp, getAppList, getAppTotal, saveOrUpd } from "@/api/app";
+import { removeOne, updateOne, getPageList, getTotal, save } from "@/api/app";
 import { getToken } from "@/utils/auth";
 
 
@@ -21,9 +21,9 @@ const mutations = {
 };
 
 const actions = {
-  updApp({ commit }, params) {
+  updateOne({ commit }, params) {
     return new Promise((resolve, reject) => {
-      updApp(params)
+      updateOne(params)
         .then(response => {
           //const { data } = response;
           resolve(response);
@@ -33,9 +33,9 @@ const actions = {
         });
     });
   },
-  saveOrUpd({ commit }, params) {
+  save({ commit }, params) {
     return new Promise((resolve, reject) => {
-      saveOrUpd(params)
+      save(params)
         .then(response => {
           //const { data } = response;
           resolve(response);
@@ -45,9 +45,9 @@ const actions = {
         });
     });
   },
-  removeApp({ commit }, data) {
+  removeOne({ commit }, data) {
     return new Promise((resolve, reject) => {
-      removeApp(data)
+      removeOne(data)
         .then(response => {
           const { data } = response;
           resolve(data);
@@ -57,10 +57,10 @@ const actions = {
         });
     });
   },
-  getAppList({ commit }, params) {
+  getPageList({ commit }, params) {
     const { pageFlag, pageSize, lastId, filter } = params;
     return new Promise((resolve, reject) => {
-      getAppList(pageFlag, pageSize, lastId, filter)
+      getPageList(pageFlag, pageSize, lastId, filter)
         .then(response => {
           const { data } = response;
           resolve(data);
@@ -71,9 +71,9 @@ const actions = {
     });
   },
 
-  getAppTotal({ commit }, params) {
+  getTotal({ commit }, params) {
     return new Promise((resolve, reject) => {
-      getAppTotal(params)
+      getTotal(params)
         .then(response => {
           const { data } = response;
           resolve(data);
