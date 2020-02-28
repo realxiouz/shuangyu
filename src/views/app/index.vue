@@ -8,7 +8,7 @@
         <el-button type="primary" @click="handleSearch">查询</el-button>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="addApp">添加</el-button>
+        <el-button type="primary" @click="handleAdd">添加</el-button>
       </el-form-item>
     </el-form>
     <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;"
@@ -33,7 +33,7 @@
             off-color="#F04134"
             off-text="禁止"
             off-value=false
-            @change="changeSwitch(scope.row)">
+            @change="handleSwitch(scope.row)">
           </el-switch>
         </template>
       </el-table-column>
@@ -63,8 +63,8 @@
       :total="total">
     </el-pagination>
     <el-dialog title="应用信息" :visible.sync="dialogVisible" width="30%">
-      <el-form ref="form" :model="formData" label-width="90px">
-        <el-form-item label="应用名称">
+      <el-form ref="form" :rules="rules" :model="formData" label-width="110px">
+        <el-form-item label="应用名称" prop="appName">
           <el-input v-model="formData.appName"></el-input>
         </el-form-item>
         <el-form-item label="是否启用">
@@ -96,7 +96,12 @@
                 formData: defaultData,
                 dialogVisible: false,
                 tableData: null,
-                total: 0
+                total: 0,
+                rules: {
+                    appName: [
+                        {required: true, message: "请输入应用名称", trigger: "blur"}
+                    ],
+                }
             };
         },
         methods: {
@@ -109,15 +114,6 @@
                 this.pageFlag = 'next';
                 this.lastId = this.tableData[this.tableData.length - 1].appId;
                 this.loadData();
-            },
-            changeSwitch() {
-                this.$store
-                    .dispatch("app/updateOne", this.data)
-                    .then(() => {
-                        this.loadData();
-                    }).catch(error => {
-                    console.log(error);
-                });
             },
             loadTotal() {
                 if (!this.searchForm.appName) {
@@ -132,7 +128,6 @@
                     console.log(error);
                 });
             },
-
             loadData() {
                 if (!this.searchForm.appName) {
                     this.searchForm = {};
@@ -151,15 +146,22 @@
                     console.log(error);
                 });
             },
-
+            handleSwitch(data) {
+                this.$store
+                    .dispatch("app/updateOne", data)
+                    .then(() => {
+                        this.loadData();
+                    }).catch(error => {
+                    console.log(error);
+                });
+            },
             handleCancel() {
                 this.dialogVisible = false;
             },
-            addApp() {
+            handleAdd() {
                 this.formData = {};
                 this.dialogVisible = true;
             },
-
             handleUpdate(id) {
                 this.$store
                     .dispatch("app/getOne", id)
@@ -177,7 +179,7 @@
                     type: 'warning'
                 }).then(() => {
                     this.$store
-                        .dispatch("app/handleRemove", id)
+                        .dispatch("app/removeOne", id)
                         .then(() => {
                             this.loadData();
                             rows.splice(index, 1);
@@ -186,23 +188,24 @@
                     console.error(err)
                 })
             },
-
             handleSave() {
-                this.$store
-                    .dispatch("app/save", this.formData)
-                    .then(() => {
-                        this.handleSearch();
-                    }).catch(error => {
-                    console.log(error);
-                });
-                this.dialogVisible = false;
+                this.$refs['form'].validate((valid) => {
+                    if (valid) {
+                        this.$store
+                            .dispatch("app/save", this.formData)
+                            .then(() => {
+                                this.handleSearch();
+                            }).catch(error => {
+                            console.log(error);
+                        });
+                        this.dialogVisible = false;
+                    }
+                })
             },
-
             handleSizeChange(pageSize) {
                 this.pageSize = pageSize;
                 this.loadData();
             },
-
             handleSearch() {
                 this.loadData();
                 this.loadTotal();

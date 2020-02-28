@@ -34,7 +34,7 @@ export function getTotal(data) {
 
 export function save(data) {
   return request({
-    url: '/api/save/one',
+    url: '/api/save',
     method: 'post',
     data
   });
