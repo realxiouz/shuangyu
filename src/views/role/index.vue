@@ -51,23 +51,23 @@
       </el-table-column>
     </el-table>
     <!--分页-->
-      <el-pagination
-        @size-change="handleSizeChange"
-        @prev-click="prevClick"
-        @next-click="nextClick"
-        background
-        layout="total,sizes,prev,next"
-        prev-text="上一页"
-        next-text="下一页"
-        :page-size="pageSize"
-        :total="total">
-      </el-pagination>
+    <el-pagination
+      @size-change="handleSizeChange"
+      @prev-click="prevClick"
+      @next-click="nextClick"
+      background
+      layout="total,sizes,prev,next"
+      prev-text="上一页"
+      next-text="下一页"
+      :page-size="pageSize"
+      :total="total">
+    </el-pagination>
     <!--</el-main>-->
     <el-dialog title="角色" :visible.sync="dialogVisible" width="30%">
-      <el-form ref="form"  :rules="rules" :model="formData" label-width="120px">
+      <el-form ref="formData" :rules="rules" :model="formData" label-width="120px">
         <el-input v-show="false" v-model="formData.roleId"></el-input>
-        <el-form-item label="角色名称" required>
-          <el-input v-model="formData.roleName"  placeholder="请输入角色名称" required></el-input>
+        <el-form-item label="角色名称" prop="roleName">
+          <el-input v-model="formData.roleName"></el-input>
         </el-form-item>
         <el-form-item label="是否启用">
           <el-switch v-model="formData.enable"></el-switch>
@@ -113,25 +113,32 @@
         dialogVisible: false,
         tableData: [],
         treeData: [],
+
         rules: {
           roleName: [
-            {required: true, message: "请输入部门名称", trigger: "blur"}
-          ],
+            { required: true, message: "请输入角色名称", trigger: "blur" }
+          ]
         }
       };
     },
     methods: {
       save: function(data) {
-        this.$store
-          .dispatch("role/save", data)
-          .then(data => {
-            console.log(data);
-            this.loadData();
-            this.loadTotal();
-          })
-          .catch(error => {
-            console.log(error);
-          });
+        this.$refs["formData"].validate((valid) => {
+          console.log("valid" + valid);
+          if (valid) {
+            this.$store
+              .dispatch("role/save", data)
+              .then(data => {
+                console.log(data);
+                this.loadData();
+                this.loadTotal();
+              })
+              .catch(error => {
+                console.log(error);
+              });
+            this.dialogVisible = false;
+          }
+        });
       },
       removeOne: function(roleid, index, rows) {
         this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
@@ -252,7 +259,6 @@
         );
         this.formData.navs = navs;
         this.save(this.formData);
-        this.dialogVisible = false;
       },
       handleCancel: function() {
         this.dialogVisible = false;
