@@ -63,8 +63,8 @@
       :total="total">
     </el-pagination>
     <el-dialog title="应用信息" :visible.sync="dialogVisible" width="30%">
-      <el-form ref="form" :model="formData" label-width="90px">
-        <el-form-item label="应用名称">
+      <el-form ref="form" :rules="rules" :model="formData" label-width="110px">
+        <el-form-item label="应用名称" prop="appName">
           <el-input v-model="formData.appName"></el-input>
         </el-form-item>
         <el-form-item label="是否启用">
@@ -96,7 +96,12 @@
                 formData: defaultData,
                 dialogVisible: false,
                 tableData: null,
-                total: 0
+                total: 0,
+                rules: {
+                    appName: [
+                        {required: true, message: "请输入应用名称", trigger: "blur"}
+                    ],
+                }
             };
         },
         methods: {

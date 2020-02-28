@@ -74,14 +74,14 @@
       :total="total">
     </el-pagination>
     <el-dialog title="Api信息" :visible.sync="dialogVisible" width="30%">
-      <el-form ref="form" :model="formData" label-width="90px">
-        <el-form-item label="Api名称">
+      <el-form ref="form" :rules="rules" :model="formData" label-width="110px">
+        <el-form-item label="Api名称" prop="apiName">
           <el-input v-model="formData.apiName"></el-input>
         </el-form-item>
-        <el-form-item label="URL">
+        <el-form-item label="URL" prop="uri">
           <el-input v-model="formData.uri"></el-input>
         </el-form-item>
-        <el-form-item label="类别">
+        <el-form-item label="类别" prop="category">
           <el-input v-model="formData.category"></el-input>
         </el-form-item>
         <el-form-item label="是否启用">
@@ -117,7 +117,18 @@
                 formData: defaultData,
                 dialogVisible: false,
                 tableData: null,
-                total: 0
+                total: 0,
+                rules: {
+                    apiName: [
+                        {required: true, message: "请输入api名称", trigger: "blur"}
+                    ],
+                    uri: [
+                        {required: true, message: "请输入uri", trigger: "blur"}
+                    ],
+                    category: [
+                        {required: true, message: "请输入类别", trigger: "blur"}
+                    ]
+                }
             };
         },
         methods: {
