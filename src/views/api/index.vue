@@ -131,7 +131,6 @@
                 this.lastId = this.tableData[this.tableData.length - 1].apiId;
                 this.loadData();
             },
-
             changeSwitch() {
                 this.$store
                     .dispatch("api/updateOne", this.data)
@@ -141,7 +140,6 @@
                     console.log(error);
                 });
             },
-
             loadData() {
                 if (!this.searchForm.apiName) {
                     this.searchForm = {};
@@ -160,7 +158,6 @@
                     console.log(error);
                 });
             },
-
             loadTotal: function () {
                 if (!this.searchForm.apiName) {
                     this.searchForm = {};
@@ -205,8 +202,7 @@
                 this.$store
                     .dispatch("api/save", this.formData)
                     .then(() => {
-                        this.loadData();
-                        this.loadTotal();
+                        this.handleSearch();
                     }).catch(error => {
                     console.log(error);
                 });
@@ -222,16 +218,13 @@
                 });
                 this.dialogVisible = true;
             },
-
             handleSearch() {
                 this.loadData();
                 this.loadTotal();
             },
-
         },
         mounted() {
-            this.loadData();
-            this.loadTotal();
+            this.handleSearch();
         }
     };
 </script>
