@@ -34,7 +34,22 @@ export function deleteOne(data) {
 
 export function getTotal() {
   return request({
-    url: `/firm//get/total`,
+    url: `/firm/get/total`,
+    method: `get`
+  });
+}
+
+export function getRoleInfo() {
+  return request({
+    url: `/role/list`,
+    method: `get`,
+    params:{enable:true}
+  });
+}
+
+export function getOne(data) {
+  return request({
+    url: `/firm/get/one/`+data,
     method: `get`
   });
 }

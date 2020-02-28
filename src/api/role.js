@@ -15,6 +15,13 @@ export function removeOne(data) {
   });
 }
 
+export function getOne(data) {
+  return request({
+    url: `/role/get/one/` + data,
+    method: `get`
+  });
+}
+
 export function getRoleList(filter) {
   return request({
     url: "/role/list",
@@ -42,8 +49,7 @@ export function getTotal(data) {
 
 export function getNavsTreeData() {
   return request({
-    url: "/nav/get/tree",
+    url: "/nav/get/sync/tree",
     method: "get"
   });
 }
-

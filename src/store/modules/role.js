@@ -1,4 +1,4 @@
-import { save, removeOne, getNavsTreeData, getRoleList } from "@/api/role";
+import { save, removeOne, getNavsTreeData, getRoleList, getPageList, getTotal, getOne } from "@/api/role";
 import { getToken } from "@/utils/auth";
 
 
@@ -62,6 +62,44 @@ const actions = {
   getNavsTreeData({ commit }) {
     return new Promise((resolve, reject) => {
       getNavsTreeData()
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+
+  getPageList({ commit }, params) {
+    const { pageFlag, pageSize, lastId, filter } = params;
+    return new Promise((resolve, reject) => {
+      getPageList(pageFlag, pageSize, lastId, filter)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getTotal({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      getTotal(params)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getOne({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      getOne(params)
         .then(response => {
           const { data } = response;
           resolve(data);

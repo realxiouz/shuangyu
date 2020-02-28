@@ -1,4 +1,4 @@
-import {add, deleteOne, edit, getFirmList, getTotal} from '@/api/firm';
+import {add, deleteOne, edit, getFirmList, getTotal,getRoleInfo} from '@/api/firm';
 
 
 const actions = {
@@ -43,6 +43,17 @@ const actions = {
       deleteOne(params)
         .then(response => {
           // const { data } = response;
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getRoleInfo() {
+    return new Promise((resolve, reject) => {
+      getRoleInfo()
+        .then(response => {
           resolve(response);
         })
         .catch(error => {

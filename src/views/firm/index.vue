@@ -180,21 +180,21 @@
         <el-form-item label="是否启用">
           <el-switch v-model="form.enable"></el-switch>
         </el-form-item>
+        <el-form-item label="角色">
+        <el-select v-model="value1" multiple placeholder="请选择">
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="handleCancel">取 消</el-button>
         <el-button type="primary" @click="handleSave">确 定</el-button>
       </div>
-      <template>
-        <el-transfer
-          v-model="value"
-          :props="{
-            key: 'value',
-            label: 'desc'
-          }"
-          :data="transData">
-        </el-transfer>
-      </template>
     </el-dialog>
   </div>
 </template>
@@ -276,6 +276,7 @@
         //判断添加的导航是否是顶级导航
         this.rootNav = true;
         this.dialogVisible = true;
+        this.initRoleInfo();
       },
       /*点击添加节点企业信息*/
       handleAppend(idx, row) {
@@ -283,9 +284,22 @@
         console.log(row);
         this.form.pid = row.attributes.firmId;
         this.form.level = row.attributes.level + 1;
-
         this.rootNav = false;
         this.dialogVisible = true;
+        //初始化角色信息
+        this.initRoleInfo();
+      },
+      //初始化角色信息
+      initRoleInfo:function(){
+        this.$store
+          .dispatch( 'firm/getRoleInfo')
+          .then(data => {
+            console.log(data);
+            this.loadData();
+          })
+          .catch(error => {
+            console.log(error);
+          });
       },
       handleSave() {
         this.dialogVisible = false;
