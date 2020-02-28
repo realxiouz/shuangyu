@@ -16,6 +16,7 @@
       <el-main>
         <div>
           <el-table
+            id="treeTable"
             :data="tableData"
             style="width: 100%;margin-bottom: 20px;"
             row-key="firmId"
@@ -108,7 +109,7 @@
             v-model="form.path">
           </el-input>
         </el-form-item>
-        <el-form-item label="机构所在地">
+        <!--<el-form-item label="机构所在地">
           <el-input
             type="text"
             placeholder="请输入机构所在地"
@@ -147,7 +148,7 @@
           <el-input
             type="text"
             placeholder="请输入备注"
-            v-model="form.remarks">
+            v-model="form.remark">
           </el-input>
         </el-form-item>
         <el-form-item label="钉钉appKey">
@@ -170,7 +171,7 @@
             placeholder="请输入域名"
             v-model="form.domain">
           </el-input>
-        </el-form-item>
+        </el-form-item>-->
         <el-form-item label="类别">
           <el-input
             type="text"

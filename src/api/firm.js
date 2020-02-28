@@ -34,7 +34,14 @@ export function deleteOne(data) {
 
 export function getTotal() {
   return request({
-    url: `/firm//get/total`,
+    url: `/firm/get/total`,
+    method: `get`
+  });
+}
+
+export function loadChildren(params) {
+  return request({
+    url: `/firm/get/children/list/${params}`,
     method: `get`
   });
 }
