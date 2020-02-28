@@ -4,7 +4,7 @@
     <!--<el-main>-->
     <el-form :inline="true" :model="searchForm">
       <el-form-item label="姓名">
-        <el-input v-model="searchForm.roleName" placeholder="角色名称"></el-input>
+        <el-input v-model="searchForm.roleName" placeholder="请输入角色名称"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="handleSearch">查询</el-button>
@@ -51,7 +51,6 @@
       </el-table-column>
     </el-table>
     <!--分页-->
-    <h-page-footer>
       <el-pagination
         @size-change="handleSizeChange"
         @prev-click="prevClick"
@@ -63,10 +62,9 @@
         :page-size="pageSize"
         :total="total">
       </el-pagination>
-    </h-page-footer>
     <!--</el-main>-->
     <el-dialog title="角色" :visible.sync="dialogVisible" width="30%">
-      <el-form ref="form" :model="formData" label-width="95px">
+      <el-form ref="form"  :rules="rules" :model="formData" label-width="120px">
         <el-input v-show="false" v-model="formData.roleId"></el-input>
         <el-form-item label="角色名称">
           <el-input v-model="formData.roleName"></el-input>
@@ -75,15 +73,14 @@
           <el-switch v-model="formData.enable"></el-switch>
         </el-form-item>
         <el-scrollbar style="height:80%">
-          <el-form-item label="选择菜单">
+          <el-form-item label="选择菜单" required>
             <el-tree
               :data="treeData"
               show-checkbox
               default-expand-all
               node-key="id"
               ref="tree"
-              highlight-current
-              :props="defaultProps">
+              highlight-current>
             </el-tree>
           </el-form-item>
         </el-scrollbar>
@@ -116,16 +113,18 @@
         dialogVisible: false,
         tableData: [],
         treeData: [],
-
-        defaultProps: {
-          children: "children",
-          label: "label"
+        rules: {
+          roleName: [
+            {required: true, message: "请输入部门名称", trigger: "blur"}
+          ],
         }
       };
     },
     methods: {
       save: function(data) {
-        console.log("saveData"+JSON.stringify(data));
+        if (!data.roleName){
+          alert("角色名称不能为空!");
+        }
         this.$store
           .dispatch("role/save", data)
           .then(data => {
@@ -165,7 +164,7 @@
           .then(data => {
             this.formData = data;
             var selectedNavIds = [];
-            data.navs.forEach(e=>{
+            data.navs.forEach(e => {
               selectedNavIds.push(e.navId);
             });
             this.$nextTick(() => {
@@ -220,10 +219,10 @@
             data.forEach(e => {
               var navNames = "";
               e.navs.forEach(nav => {
-                navNames += ", "+nav.navName;
+                navNames += ", " + nav.navName;
               });
-              if (navNames){
-                navNames = navNames.substring(1,navNames.length);
+              if (navNames) {
+                navNames = navNames.substring(1, navNames.length);
               }
               e.navNames = navNames;
               console.log("namNames:" + navNames);
@@ -247,7 +246,6 @@
       },
 
       handleSave() {
-        console.log("this.$refs.tree.getCheckedNodes()" + JSON.stringify(this.$refs.tree.getCheckedKeys()));
         var navs = [];
         this.$refs.tree.getCheckedKeys().forEach(node => {
             if (node) {
