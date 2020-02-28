@@ -16,7 +16,7 @@ export function updateOne(data) {
   });
 }
 
-export function getPageList(pageFlag, pageSize, lastId,data) {
+export function getPageList(pageFlag, pageSize, lastId, data) {
   return request({
     url: `/app/page/list/${pageFlag}/${pageSize}/${lastId}`,
     method: 'get',
@@ -40,3 +40,9 @@ export function save(data) {
   });
 }
 
+export function getOne(id) {
+  return request({
+    url: `/app/one/${id}`,
+    method: 'get'
+  });
+}
