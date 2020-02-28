@@ -14,14 +14,14 @@
     <el-table :data="tableData"
               style="width: 100%;margin-bottom: 20px;"
               row-key="deptId"
-              border
               lazy
+              border
               :load="loadChildren"
     >
       <el-table-column
         prop="deptName"
         label="部门名称"
-        width="280"
+        width="300"
       ></el-table-column>
       <el-table-column
         prop="firmId"
@@ -31,32 +31,18 @@
       <el-table-column
         prop="ddId"
         label="钉钉Id"
-        width="150"
+        width="200"
       ></el-table-column>
       <el-table-column
         prop="ddParentIdId"
         label="钉钉父节点"
-        width="150"
+        width="200"
       ></el-table-column>
       <el-table-column
         prop="domain"
         label="域名"
         width="250"
       ></el-table-column>
-      <el-table-column prop="deleteFlag" label="删除标记" width="150">
-        <template slot-scope="scope">
-          <el-switch
-            v-model="scope.row.deleteFlag"
-            on-color="#00A854"
-            on-text="启动"
-            on-value=true
-            off-color="#F04134"
-            off-text="禁止"
-            off-value=false
-            disabled>
-          </el-switch>
-        </template>
-      </el-table-column>
       <el-table-column
         fixed="right"
         label="操作"
@@ -100,10 +86,6 @@
         <el-form-item label="钉钉父节点" prop="ddParentIdId">
           <el-input v-model.number="formData.ddParentIdId"></el-input>
         </el-form-item>
-        <el-form-item label="是否删除">
-          <el-switch v-model="formData.deleteFlag" :active-value=true :inactive-value=false></el-switch>
-        </el-form-item>
-
         <template>
           <el-transfer
             filterable
@@ -135,7 +117,6 @@
     const defaultData = {
         deptName: "",
         firmId: "",
-        deleteFlag: false,
         domain: "",
         ddId: "",
         ddParentIdId: "",
@@ -313,7 +294,6 @@
                 this.formData.domain = row.domain;
                 this.formData.ddId = row.ddId;
                 this.formData.ddParentIdId = row.ddParentIdId;
-                this.formData.deleteFlag = row.deleteFlag;
                 this.formData.roles = row.roles;
                 console.log(row);
             },
