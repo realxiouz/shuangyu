@@ -1,4 +1,4 @@
-import request from '@/utils/request';
+import request from "@/utils/request";
 
 export function getFirmList(params) {
   return request({
@@ -28,7 +28,7 @@ export function edit(data) {
 export function deleteOne(data) {
   return request({
     url: `/firm/remove/one/${data}`,
-    method: `delete`,
+    method: `delete`
   });
 }
 
@@ -39,9 +39,10 @@ export function getTotal() {
   });
 }
 
-export function loadChildren(params) {
+export function getList(params) {
   return request({
-    url: `/firm/get/children/list/${params}`,
-    method: `get`
+    url: `/firm/list`,
+    method: `get`,
+    params
   });
 }
