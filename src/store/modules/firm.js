@@ -1,7 +1,19 @@
-import {add, deleteOne, edit, getFirmList, getTotal} from '@/api/firm';
+import {add, deleteOne, edit, getFirmList, getTotal, loadChildren} from '@/api/firm';
 
 
 const actions = {
+  loadChildren({commit}, params) {
+    return new Promise((resolve, reject) => {
+      loadChildren(params)
+        .then(response => {
+          // const { data } = response;
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
   getPageList({commit}, params) {
     return new Promise((resolve, reject) => {
       getFirmList(params)
