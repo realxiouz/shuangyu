@@ -191,7 +191,7 @@
       },
       removeNode(data,node){
         this.curLine = [];
-        this.curLine = node.pid;
+        this.curLine.push(node.pid);
         this.open(this.remove,node.navId);
       },
       remove(params){
