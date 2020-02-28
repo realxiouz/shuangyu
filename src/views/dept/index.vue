@@ -14,7 +14,10 @@
     <el-table :data="tableData"
               style="width: 100%;margin-bottom: 20px;"
               row-key="deptId"
-              border>
+              border
+              lazy
+              :load="loadChildren"
+    >
       <el-table-column
         prop="deptName"
         label="部门名称"
@@ -150,6 +153,10 @@
                 dialogVisible: false,
                 total: 0,
                 tableData: null,
+                defaultProps: {
+                    children: "children",
+                    hasChildren: "hasChildren"
+                },
                 rules: {
                     deptName: [
                         {required: true, message: "请输入部门名称", trigger: "blur"},
@@ -161,7 +168,6 @@
                     ],
                     firmId: [
                         {required: true, message: "请输入企业", trigger: "blur"}
-
                     ],
                     domain: [
                         {required: true, message: "请输入域名", trigger: "blur"},
@@ -253,7 +259,16 @@
                     console.log(error);
                 });
             },
-
+            loadChildren(row, node, resolve) {
+                this.$store
+                    .dispatch("dept/getList", row.deptId)
+                    .then(data => {
+                        resolve(data);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
             handleAddChild(deptId) {
                 this.formData = defaultData;
                 this.formData.pid = deptId;

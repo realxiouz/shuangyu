@@ -1,4 +1,4 @@
-import { getChildrenList, getPageList, getTotal, removeOne, save } from "@/api/dept";
+import { getList, getPageList, getTotal, removeOne, save } from "@/api/dept";
 import { getToken } from "@/utils/auth";
 
 
@@ -33,9 +33,9 @@ const actions = {
         });
     });
   },
-  getChildrenList({ commit }, data) {
+  getList({ commit }, data) {
     return new Promise((resolve, reject) => {
-      getChildrenList(data)
+      getList(data)
         .then(response => {
           const { data } = response;
           resolve(data);
