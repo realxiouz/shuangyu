@@ -99,7 +99,12 @@
                 total: 0,
                 rules: {
                     appName: [
-                        {required: true, message: "请输入应用名称", trigger: "blur"}
+                        {required: true, message: "请输入应用名称", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 10,
+                            message: '长度在 1到 10 个字符'
+                        }
                     ],
                 }
             };
