@@ -133,7 +133,7 @@
                     type: 'warning'
                 }).then(() => {
                     this.$store
-                        .dispatch("api/removeOne")
+                        .dispatch("api/removeOne",id)
                         .then(() => {
                             this.loadData();
                             rows.splice(index, 1);
