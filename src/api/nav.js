@@ -1,47 +1,49 @@
 import request from '@/utils/request';
 
-export function getPageList(params) {
+export function getPageList() {
   return request({
-    url: '/nav/page/list/'+ params.pageFlag + '/' + params.pageSize + '/' + params.lastId ,
+    url: '/nav/all' ,
     method: 'get'
   });
 }
 
-export function getNavList() {
+export function removeOne(params) {
   return request({
-    url: '/nav/get/all' ,
-    method: 'get'
-  });
-}
-
-export function remove(Id) {
-  return request({
-    url: '/nav/remove/one/'+ Id,
+    url: `/nav/remove/one/${params}`,
     method: 'delete'
   });
 }
 
-export function getOneNav(Id) {
+export function getOne(params) {
   return request({
-    url: '/admin/nav/getOne/'+ Id,
+    url: `/nav/one/${params}`,
     method: 'get'
   });
 }
 
-export function addNav(data) {
+export function addOne(data) {
   debugger;
   return request({
-    url: '/nav/add/one',
+    url: `/nav/add/one`,
     method: 'post',
     data
   });
 }
 
-export function update(data) {
+export function updateOne(data) {
   debugger;
   return request({
-    url: '/admin/nav/update/one',
+    url: '/nav/update/one',
     method: 'post',
+    data
+  });
+}
+
+export function getList(data) {
+  debugger;
+  return request({
+    url: '/nav/list',
+    method: 'get',
     data
   });
 }
