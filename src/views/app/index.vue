@@ -189,14 +189,18 @@
                 })
             },
             handleSave() {
-                this.$store
-                    .dispatch("app/save", this.formData)
-                    .then(() => {
-                        this.handleSearch();
-                    }).catch(error => {
-                    console.log(error);
-                });
-                this.dialogVisible = false;
+                this.$refs['form'].validate((valid) => {
+                    if (valid) {
+                        this.$store
+                            .dispatch("app/save", this.formData)
+                            .then(() => {
+                                this.handleSearch();
+                            }).catch(error => {
+                            console.log(error);
+                        });
+                        this.dialogVisible = false;
+                    }
+                })
             },
             handleSizeChange(pageSize) {
                 this.pageSize = pageSize;

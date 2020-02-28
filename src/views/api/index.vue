@@ -210,14 +210,18 @@
                 this.loadData();
             },
             handleSave() {
-                this.$store
-                    .dispatch("api/save", this.formData)
-                    .then(() => {
-                        this.handleSearch();
-                    }).catch(error => {
-                    console.log(error);
-                });
-                this.dialogVisible = false;
+                this.$refs['form'].validate((valid) => {
+                    if (valid) {
+                        this.$store
+                            .dispatch("api/save", this.formData)
+                            .then(() => {
+                                this.handleSearch();
+                            }).catch(error => {
+                            console.log(error);
+                        });
+                        this.dialogVisible = false;
+                    }
+                })
             },
             handleUpdate(id) {
                 this.$store
