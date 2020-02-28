@@ -166,8 +166,8 @@
                     .then(data => {
                         this.formData = data;
                     }).catch(error => {
-                    console.log(error);
-                });
+                        console.log(error);
+                    });
                 this.dialogVisible = true;
             },
             handleRemove(id, index, rows) {
