@@ -83,10 +83,10 @@
     <el-dialog title="部门信息" :visible.sync="dialogVisible" width="30%">
       <el-form ref="form" :rules="rules" :model="formData" label-width="90px">
         <el-form-item label="部门名称" prop="deptName">
-          <el-input v-model="formData.deptName"></el-input>
+          <el-input v-model="formData.deptName" maxlength="10" show-word-limit></el-input>
         </el-form-item>
         <el-form-item label="企业"  prop="firmId">
-          <el-input v-model="formData.firmId"></el-input>
+          <el-input v-model="formData.firmId" maxlength="10" show-word-limit></el-input>
         </el-form-item>
         <el-form-item label="域名"  prop="domain">
           <el-input v-model="formData.domain"></el-input>
