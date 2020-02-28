@@ -81,20 +81,20 @@
       :total="total">
     </el-pagination>
     <el-dialog title="部门信息" :visible.sync="dialogVisible" width="30%">
-      <el-form ref="form" :model="formData" label-width="90px">
-        <el-form-item label="部门名称">
+      <el-form ref="form" :rules="rules" :model="formData" label-width="90px">
+        <el-form-item label="部门名称" prop="deptName">
           <el-input v-model="formData.deptName"></el-input>
         </el-form-item>
-        <el-form-item label="企业">
+        <el-form-item label="企业"  prop="firmId">
           <el-input v-model="formData.firmId"></el-input>
         </el-form-item>
-        <el-form-item label="域名">
+        <el-form-item label="域名"  prop="domain">
           <el-input v-model="formData.domain"></el-input>
         </el-form-item>
-        <el-form-item label="钉钉Id">
+        <el-form-item label="钉钉Id"  prop="ddId">
           <el-input v-model="formData.ddId"></el-input>
         </el-form-item>
-        <el-form-item label="钉钉父节点">
+        <el-form-item label="钉钉父节点"  prop="ddParentIdId">
           <el-input v-model="formData.ddParentIdId"></el-input>
         </el-form-item>
         <el-form-item label="是否删除">
@@ -148,10 +148,26 @@
         pageFlag: "next",
         pageSize: 10,
         formData: defaultData,
-        roles: [],
         dialogVisible: false,
         total: 0,
-        tableData: null
+        tableData: null,
+        rules: {
+          deptName: [
+            {required: true, message: "请输入部门名称", trigger: "blur"}
+          ],
+          firmId: [
+            {required: true, message: "请输入企业名称", trigger: "blur"}
+          ],
+          domain: [
+            {required: true, message: "请输入域名", trigger: "blur"}
+          ],
+          ddId: [
+            {required: true, message: "请输入钉钉ID", trigger: "blur"}
+          ],
+          ddParentIdId: [
+            {required: true, message: "请输入钉钉父节点", trigger: "blur"}
+          ],
+        }
       };
     },
     methods: {
@@ -240,13 +256,18 @@
       },
 
       handleSave() {
-        this.$store.dispatch("dept/save", this.formData).then(() => {
-          this.loadData();
-          this.loadTotal();
-        }).catch(error => {
-          console.log(error);
-        });
-        this.dialogVisible = false;
+        this.$refs['form'].validate((valid) => {
+          if (valid) {
+            this.$store
+                .dispatch("dept/save", this.formData)
+              .then(() => {
+                this.handleSearch();
+            }).catch(error => {
+              console.log(error);
+            });
+            this.dialogVisible = false;
+          }
+        })
       },
 
       handleUpdate(row) {
@@ -285,8 +306,7 @@
 
     },
     mounted() {
-      this.loadData();
-      this.loadTotal();
+      this.handleSearch();
     }
   };
 </script>
