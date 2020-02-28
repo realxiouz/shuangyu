@@ -43,8 +43,8 @@
         align="center"
         width="350">
         <template slot-scope="scope">
-          <el-button @click="appUpdate(scope.row)" type="primary" size="mini">编辑</el-button>
-          <el-button @click.native.prevent="removeOne(scope.row.appId,scope.$index,tableData)" type="danger"
+          <el-button @click="handleUpdate(scope.row.appId)" type="primary" size="mini">编辑</el-button>
+          <el-button @click.native.prevent="handleRemove(scope.row.appId,scope.$index,tableData)" type="danger"
                      size="mini">删除
           </el-button>
         </template>
@@ -105,18 +105,24 @@
                 this.dialogVisible = true;
             },
 
-            appUpdate(row) {
+            handleUpdate(id) {
+                this.$store
+                    .dispatch("app/getOne", id)
+                    .then(data => {
+                        this.formData = data;
+                    }).catch(error => {
+                    console.log(error);
+                });
                 this.dialogVisible = true;
-                this.formData = row;
             },
-            removeOne(id, index, rows) {
+            handleRemove(id, index, rows) {
                 this.$confirm('此操作将状态改为删除状态, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
                     this.$store
-                        .dispatch("app/removeOne",id)
+                        .dispatch("app/handleRemove", id)
                         .then(() => {
                             this.loadData();
                             rows.splice(index, 1);
@@ -205,8 +211,7 @@
             },
         },
         mounted() {
-            this.loadData();
-            this.loadTotal();
+            this.handleSearch();
         }
     };
 </script>
