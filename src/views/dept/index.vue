@@ -85,17 +85,17 @@
         <el-form-item label="部门名称" prop="deptName">
           <el-input v-model="formData.deptName"></el-input>
         </el-form-item>
-        <el-form-item label="企业"  prop="firmId">
+        <el-form-item label="企业" prop="firmId">
           <el-input v-model="formData.firmId"></el-input>
         </el-form-item>
-        <el-form-item label="域名"  prop="domain">
+        <el-form-item label="域名" prop="domain">
           <el-input v-model="formData.domain"></el-input>
         </el-form-item>
-        <el-form-item label="钉钉Id"  prop="ddId">
-          <el-input v-model="formData.ddId"></el-input>
+        <el-form-item label="钉钉Id" prop="ddId">
+          <el-input v-model.number="formData.ddId"></el-input>
         </el-form-item>
-        <el-form-item label="钉钉父节点"  prop="ddParentIdId">
-          <el-input v-model="formData.ddParentIdId"></el-input>
+        <el-form-item label="钉钉父节点" prop="ddParentIdId">
+          <el-input v-model.number="formData.ddParentIdId"></el-input>
         </el-form-item>
         <el-form-item label="是否删除">
           <el-switch v-model="formData.deleteFlag" :active-value=true :inactive-value=false></el-switch>
@@ -124,196 +124,211 @@
         <el-button type="primary" @click="handleSave">确 定</el-button>
       </div>
 
-
     </el-dialog>
   </div>
 </template>
 <script>
 
-  const defaultData = {
-    deptName: "",
-    firmId: "",
-    deleteFlag: false,
-    domain: "",
-    ddId: "",
-    ddParentIdId: "",
-    roles: []
-  };
-  export default {
-    name: "dept",
-    data() {
-      return {
-        searchForm: {},
-        lastId: "0",
-        pageFlag: "next",
-        pageSize: 10,
-        formData: defaultData,
-        dialogVisible: false,
-        total: 0,
-        tableData: null,
-        rules: {
-          deptName: [
-            {required: true, message: "请输入部门名称", trigger: "blur"},
-              {
-                  min: 1,
-                  max: 20,
-                  message: '长度在 1到 20 个字符'
-              }
-          ],
-          firmId: [
-            {required: true, message: "请输入企业", trigger: "blur"}
-          ],
-          domain: [
-            {required: true, message: "请输入域名", trigger: "blur"}
-          ],
-          ddId: [
-            {required: true, message: "请输入钉钉ID", trigger: "blur"}
-          ],
-          ddParentIdId: [
-            {required: true, message: "请输入钉钉父节点", trigger: "blur"}
-          ],
+    const defaultData = {
+        deptName: "",
+        firmId: "",
+        deleteFlag: false,
+        domain: "",
+        ddId: "",
+        ddParentIdId: "",
+        roles: []
+    };
+    export default {
+        name: "dept",
+        data() {
+            return {
+                searchForm: {},
+                lastId: "0",
+                pageFlag: "next",
+                pageSize: 10,
+                formData: defaultData,
+                dialogVisible: false,
+                total: 0,
+                tableData: null,
+                rules: {
+                    deptName: [
+                        {required: true, message: "请输入部门名称", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: '长度在 1到 20 个字符'
+                        }
+                    ],
+                    firmId: [
+                        {required: true, message: "请输入企业", trigger: "blur"}
+
+                    ],
+                    domain: [
+                        {required: true, message: "请输入域名", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: '长度在 1到 20 个字符'
+                        }
+                    ],
+                    ddId: [
+                        {required: true, message: "请输入钉钉ID", trigger: "blur"},
+                        {
+                            type: 'number',
+                            message: '钉钉ID必须为数字',
+                            trigger: 'blur'
+                        }
+                    ],
+                    ddParentIdId: [
+                        {required: true, message: "请输入钉钉父节点", trigger: "blur"},
+                        {
+                            type: 'number',
+                            message: '钉钉父节点必须为数字',
+                            trigger: 'blur'
+                        }
+                    ],
+                }
+            };
+        },
+        methods: {
+            test() {
+                console.log(this.roles);
+                console.log(this.formData.roles);
+            },
+
+            filterRoles() {
+            },
+
+            prevClick() {
+                this.pageFlag = "prev";
+                this.lastId = this.tableData[0].deptId;
+                this.loadData();
+            },
+            nextClick() {
+                this.pageFlag = "next";
+                this.lastId = this.tableData[this.tableData.length - 1].deptId;
+                this.loadData();
+            },
+
+            loadData() {
+                if (!this.searchForm.deptName) {
+                    this.searchForm = {};
+                }
+                this.$store
+                    .dispatch("dept/getPageList", {
+                        pageFlag: this.pageFlag,
+                        pageSize: this.pageSize,
+                        lastId: this.lastId,
+                        filter: this.searchForm
+                    }).then(data => {
+                    if (data) {
+                        this.tableData = data;
+                    }
+                }).catch(error => {
+                    console.log(error);
+                });
+            },
+
+            loadRoles() {
+                this.$store
+                    .dispatch("role/getRoleList")
+                    .then(data => {
+                        this.roles = data;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+
+            loadTotal: function () {
+                if (!this.searchForm.deptName) {
+                    this.searchForm = {};
+                }
+                this.$store
+                    .dispatch("dept/getTotal", {
+                        filter: this.searchForm
+                    }).then(response => {
+                    this.total = response.data;
+                }).catch(error => {
+                    console.log(error);
+                });
+            },
+
+            handleAddChild(deptId) {
+                this.formData = defaultData;
+                this.formData.pid = deptId;
+                this.dialogVisible = true;
+            },
+
+            handleAdd() {
+                this.formData = defaultData;
+                this.loadRoles();
+                this.dialogVisible = true;
+            },
+
+            handleSearch() {
+                this.loadData();
+                this.loadTotal();
+            },
+
+            handleCancel() {
+                this.dialogVisible = false;
+            },
+
+            handleSave() {
+                this.$refs['form'].validate((valid) => {
+                    if (valid) {
+                        this.$store
+                            .dispatch("dept/save", this.formData)
+                            .then(() => {
+                                this.handleSearch();
+                            }).catch(error => {
+                            console.log(error);
+                        });
+                        this.dialogVisible = false;
+                    }
+                })
+            },
+
+            handleUpdate(row) {
+                this.dialogVisible = true;
+                this.formData.deptId = row.deptId;
+                this.formData.deptName = row.deptName;
+                this.formData.firmId = row.firmId;
+                this.formData.domain = row.domain;
+                this.formData.ddId = row.ddId;
+                this.formData.ddParentIdId = row.ddParentIdId;
+                this.formData.deleteFlag = row.deleteFlag;
+                this.formData.roles = row.roles;
+                console.log(row);
+            },
+
+            handleSizeChange(pageSize) {
+                this.pageSize = pageSize;
+                this.loadData();
+            },
+
+            handleRemove(id) {
+                this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消",
+                    type: "warning"
+                }).then(() => {
+                    this.$store
+                        .dispatch("dept/removeOne", id)
+                        .then(() => {
+                            this.loadData();
+                        });
+                }).catch(err => {
+                    console.error(err);
+                });
+            }
+
+        },
+        mounted() {
+            this.handleSearch();
         }
-      };
-    },
-    methods: {
-      test() {
-        console.log(this.roles);
-        console.log(this.formData.roles);
-      },
-
-      filterRoles() {
-      },
-
-      prevClick() {
-        this.pageFlag = "prev";
-        this.lastId = this.tableData[0].deptId;
-        this.loadData();
-      },
-      nextClick() {
-        this.pageFlag = "next";
-        this.lastId = this.tableData[this.tableData.length - 1].deptId;
-        this.loadData();
-      },
-
-      loadData() {
-        if (!this.searchForm.deptName) {
-          this.searchForm = {};
-        }
-        this.$store
-          .dispatch("dept/getPageList", {
-            pageFlag: this.pageFlag,
-            pageSize: this.pageSize,
-            lastId: this.lastId,
-            filter: this.searchForm
-          }).then(data => {
-          if (data) {
-            this.tableData = data;
-          }
-        }).catch(error => {
-          console.log(error);
-        });
-      },
-
-      loadRoles() {
-        this.$store
-          .dispatch("role/getRoleList")
-          .then(data => {
-            this.roles = data;
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      },
-
-      loadTotal: function() {
-        if (!this.searchForm.deptName) {
-          this.searchForm = {};
-        }
-        this.$store
-          .dispatch("dept/getTotal",{
-          filter: this.searchForm
-        }).then(response => {
-          this.total = response.data;
-        }).catch(error => {
-          console.log(error);
-        });
-      },
-
-      handleAddChild(deptId) {
-        this.formData = defaultData;
-        this.formData.pid = deptId;
-        this.dialogVisible = true;
-      },
-
-      handleAdd() {
-        this.formData = defaultData;
-        this.loadRoles();
-        this.dialogVisible = true;
-      },
-
-      handleSearch() {
-        this.loadData();
-        this.loadTotal();
-      },
-
-      handleCancel() {
-        this.dialogVisible = false;
-      },
-
-      handleSave() {
-        this.$refs['form'].validate((valid) => {
-          if (valid) {
-            this.$store
-                .dispatch("dept/save", this.formData)
-              .then(() => {
-                this.handleSearch();
-            }).catch(error => {
-              console.log(error);
-            });
-            this.dialogVisible = false;
-          }
-        })
-      },
-
-      handleUpdate(row) {
-        this.dialogVisible = true;
-        this.formData.deptId = row.deptId;
-        this.formData.deptName = row.deptName;
-        this.formData.firmId = row.firmId;
-        this.formData.domain = row.domain;
-        this.formData.ddId = row.ddId;
-        this.formData.ddParentIdId = row.ddParentIdId;
-        this.formData.deleteFlag = row.deleteFlag;
-        this.formData.roles = row.roles;
-        console.log(row);
-      },
-
-      handleSizeChange(pageSize) {
-        this.pageSize = pageSize;
-        this.loadData();
-      },
-
-      handleRemove(id) {
-        this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(() => {
-          this.$store
-            .dispatch("dept/removeOne",id)
-            .then(() => {
-            this.loadData();
-          });
-        }).catch(err => {
-          console.error(err);
-        });
-      }
-
-    },
-    mounted() {
-      this.handleSearch();
-    }
-  };
+    };
 </script>
 
 <style scoped>
