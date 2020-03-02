@@ -305,7 +305,7 @@
             },
             handleChange(value, direction, movedKeys) {
                 this.paramsRoles = [];
-                for (let i = 0; i < value.length; i++) {
+                for (let i = 0, len = value.length; i < len; i++) {
                     this.loadOneRole(value[i])
                 }
             }
