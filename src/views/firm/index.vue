@@ -12,17 +12,16 @@
       </el-row>
       <el-header>
         <el-button type="text" @click="rootAdd">添加</el-button>
+        <el-button type="text" @click="loadRoles">测试</el-button>
       </el-header>
       <el-main>
         <div>
           <el-table
-            id="treeTable"
             :data="tableData"
             style="width: 100%;margin-bottom: 20px;"
             row-key="firmId"
             border
-            lazy
-            :load="loadChildren">
+            :tree-props="tableProps">
             <el-table-column
               prop="firmName"
               label="企业名称"
@@ -85,123 +84,107 @@
       </el-main>
     </el-container>
     <!-- 表单对话框 -->
-    <el-dialog title="导航信息" :visible.sync="dialogVisible" width="30%">
-      <el-form ref="form" :model="form" label-width="120px">
+    <el-dialog title="导航信息" :visible.sync="dialogVisible" width="33%">
+      <el-form ref="form" :model="formData" label-width="120px">
         <!--   企业ID  -->
-        <input type="hidden" v-model="form.firmId"/>
+        <input type="hidden" v-model="formData.firmId"/>
         <el-form-item label="企业名称">
           <el-input
             type="text"
             placeholder="请输入企业名称"
-            v-model="form.firmName">
+            v-model="formData.firmName">
           </el-input>
         </el-form-item>
         <el-form-item label="企业代码">
           <el-input
             type="text"
             placeholder="请输入企业代码"
-            v-model="form.firmCode">
+            v-model="formData.firmCode">
           </el-input>
         </el-form-item>
-        <el-form-item label="路径">
-          <el-input
-            type="text"
-            placeholder="请输入路径"
-            v-model="form.path">
-          </el-input>
-        </el-form-item>
-        <!--<el-form-item label="机构所在地">
+        <el-form-item label="机构所在地">
           <el-input
             type="text"
             placeholder="请输入机构所在地"
-            v-model="form.location">
+            v-model="formData.location">
           </el-input>
         </el-form-item>
-        <el-form-item label="行政区代码">
+        <!--<el-form-item label="行政区代码">
           <el-input
             type="text"
             placeholder="请输入行政区代码"
-            v-model="form.districtCode">
+            v-model="formData.districtCode">
           </el-input>
         </el-form-item>
         <el-form-item label="行政区">
           <el-input
             type="text"
             placeholder="请输入行政区"
-            v-model="form.distinct">
+            v-model="formData.distinct">
           </el-input>
         </el-form-item>
         <el-form-item label="联系人">
           <el-input
             type="text"
             placeholder="请输入联系人"
-            v-model="form.linkPerson">
+            v-model="formData.linkPerson">
           </el-input>
         </el-form-item>
         <el-form-item label="联系电话">
           <el-input
             type="text"
             placeholder="请输入联系电话"
-            v-model="form.linkPhone">
+            v-model="formData.linkPhone">
           </el-input>
         </el-form-item>
         <el-form-item label="备注">
           <el-input
             type="text"
             placeholder="请输入备注"
-            v-model="form.remark">
+            v-model="formData.remark">
           </el-input>
         </el-form-item>
         <el-form-item label="钉钉appKey">
           <el-input
             type="text"
             placeholder="请输入钉钉appKey"
-            v-model="form.ddAppKey">
+            v-model="formData.ddAppKey">
           </el-input>
         </el-form-item>
         <el-form-item label="钉钉appSecret">
           <el-input
             type="text"
             placeholder="请输入钉钉appSecret"
-            v-model="form.ddAppSecret">
+            v-model="formData.ddAppSecret">
           </el-input>
         </el-form-item>
         <el-form-item label="域名">
           <el-input
             type="text"
             placeholder="请输入域名"
-            v-model="form.domain">
+            v-model="formData.domain">
           </el-input>
         </el-form-item>-->
         <el-form-item label="类别">
           <el-input
             type="text"
             placeholder="请输入类别"
-            v-model="form.type">
+            v-model="formData.type">
           </el-input>
-        </el-form-item>
-        <el-form-item label="是否启用">
-          <el-switch v-model="form.enable"></el-switch>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="handleCancel">取 消</el-button>
         <el-button type="primary" @click="handleSave">确 定</el-button>
       </div>
-      <!-- <template>
-         <el-transfer
-           v-model="value"
-           :props="{
-             key: 'value',
-             label: 'desc'
-           }"
-           :data="transData">
+      <!--穿梭框-->
+       <template>
+         <el-transfer v-model="roles" :data="transData" :props="transferProps">
          </el-transfer>
-       </template>-->
+       </template>
     </el-dialog>
   </div>
 </template>
-
 
 <script>
   export default {
@@ -209,44 +192,120 @@
       return {
         dialogVisible: false,
         tableData: [],
-        pageFlag: "next",
+        pageFlag: 'next',
         pageSize: 10,
-        lastId: "0",
+        lastId: '0',
         total: 0,
-        keyword: "",
+        keyword: '',
         transData: [],
-        form: {
-          firmId: "",
-          firmName: "",
-          firmCode: "",
+        roles: [],
+        formData: {
+          firmId: '',
+          firmName: '',
+          firmCode: '',
           pid: null,
-          path: "",
+          path: '',
           level: null,
           sort: null,
-          location: "",
-          districtCode: "",
+          location: '',
+          districtCode: '',
           distinct: null,
-          linkPerson: "",
-          linkPhone: "",
-          remark: "",
+          linkPerson: '',
+          linkPhone: '',
+          remark: '',
           deleteFlag: true,
-          ddAppKey: "",
-          ddAppSecret: "",
-          domain: "",
+          ddAppKey: '',
+          ddAppSecret: '',
+          domain: '',
           type: null,
           hasChildren: false,
           roles: []
         },
-        defaultProps: {
-          children: "children",
-          hasChildren: "hasChildren"
-        }
+        tableProps: {
+          hasChildren: 'xxx',
+          children: 'children' },
+        transferProps: {
+          key: 'roleId',
+          label: 'roleName'}
       };
     },
     methods: {
+      /*点击添加顶级企业信息*/
+      rootAdd() {
+        //判断添加的导航是否是顶级导航
+        this.rootNav = true;
+        this.dialogVisible = true;
+
+        this.loadRoles();
+      },
+      search() {
+      /*{pageFlag: this.pageFlag, pageSize: this.pageSize, lastId: this.lastId}*/
+        this.$store
+          .dispatch('firm/getList')
+          .then(data => {
+            this.tableData = data.data;
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      /*通知*/
+      open(func,data) {
+        this.$confirm('此操作将删除该企业信息及子企业信息, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          func(data);
+          this.loadData();
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+      },
+      remove(params){
+        this.$store
+          .dispatch('firm/removeOne', params)
+          .then(data => {
+            console.log(data);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      clearForm() {
+        this.formData = {
+          firmId: '',
+          firmName: '',
+          firmCode: '',
+          pid: null,
+          path: '',
+          level: null,
+          sort: null,
+          location: '',
+          districtCode: '',
+          distinct: null,
+          linkPerson: '',
+          linkPhone: '',
+          remark: '',
+          deleteFlag: true,
+          ddAppKey: '',
+          ddAppSecret: '',
+          domain: '',
+          type: null,
+          hasChildren: false,
+          roles: []
+        };
+      },
       loadData() {
         this.$store
-          .dispatch("firm/getTotal")
+          .dispatch('firm/getTotal')
           .then(data => {
             this.total = data.data;
           })
@@ -254,30 +313,20 @@
             console.log(error);
           });
         this.$store
-          .dispatch("firm/getPageList", { pageFlag: this.pageFlag, pageSize: this.pageSize, lastId: this.lastId })
+          .dispatch('firm/getPageList',{pageFlag: this.pageFlag, pageSize: this.pageSize, lastId: this.lastId})
           .then(data => {
             this.tableData = data.data;
           })
           .catch(error => {
             console.log(error);
           });
-
       },
-      loadChildren(row, node, resolve) {
+      loadRoles(){
         this.$store
-          .dispatch("firm/getList", { pid: row.firmId })
+          .dispatch('role/getAll')
           .then(data => {
-            resolve(data);
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      },
-      search() {
-        this.$store
-          .dispatch("firm/getPageList", { pageFlag: this.pageFlag, pageSize: this.pageSize, lastId: this.lastId })
-          .then(data => {
-            this.tableData = data.data;
+            console.log(data);
+            this.transData = data;
           })
           .catch(error => {
             console.log(error);
@@ -286,27 +335,22 @@
       handleIconClick() {
         this.keyword = "";
       },
-      /*点击添加顶级企业信息*/
-      rootAdd() {
-        //判断添加的导航是否是顶级导航
-        this.rootNav = true;
-        this.dialogVisible = true;
-      },
       /*点击添加节点企业信息*/
       handleAppend(idx, row) {
         //添加的导航菜单不是顶级菜单
-        this.form.pid = row.firmId;
-        this.form.level = row.level + 1;
+        this.formData.pid = row.firmId;
+        this.formData.level = row.level + 1;
 
         this.rootNav = false;
         this.dialogVisible = true;
+        this.loadRoles();
       },
       handleSave() {
         this.dialogVisible = false;
 
-        if (this.form.firmId != "") {
+        if(this.formData.firmId != ''){
           this.$store
-            .dispatch("firm/edit", this.form)
+            .dispatch( 'firm/updateOne', this.formData)
             .then(data => {
               console.log(data);
               this.loadData();
@@ -314,16 +358,16 @@
             .catch(error => {
               console.log(error);
             });
-        } else {
+        }else{
           if (this.rootNav) { //如果添加的顶级企业信息，对某些属性进行初始化
-            this.form.pid = null;
-            this.form.level = 1;
+            this.formData.pid = null;
+            this.formData.level = 0;
           }
 
           this.$store
-            .dispatch("firm/add", this.form)
+            .dispatch('firm/addOne', this.formData)
             .then(data => {
-              console.log("loadData");
+              console.log(data);
               this.loadData();
             })
             .catch(error => {
@@ -337,96 +381,24 @@
         this.dialogVisible = false;
       },
       handleEdit(index, row) {
-        this.form = row;
+        this.formData = row;
         this.dialogVisible = true;
+        this.loadRoles();
       },
       handleDelete(index, row) {
-        this.open(this.remove, row.firmId);
+        this.open(this.remove,row.firmId);
       },
-      remove(params) {
-        this.$store
-          .dispatch("firm/delete", params)
-          .then(data => {
-            console.log(data);
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      },
-      clearForm() {
-        this.form = {
-          firmId: "",
-          firmName: "",
-          firmCode: "",
-          pid: null,
-          path: "",
-          level: null,
-          sort: null,
-          location: "",
-          districtCode: "",
-          distinct: null,
-          linkPerson: "",
-          linkPhone: "",
-          remark: "",
-          deleteFlag: true,
-          ddAppKey: "",
-          ddAppSecret: "",
-          domain: "",
-          type: null,
-          roles: [],
-          children: []
-        };
-      },
-      open(func, data) {
-        this.$confirm("此操作将删除该企业信息及子企业信息, 是否继续?", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(() => {
-          func(data);
-          this.loadData();
-          this.$message({
-            type: "success",
-            message: "删除成功!"
-          });
-        }).catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除"
-          });
-        });
-      },
-      getChildren(tree, treeNode, resolve) {
-        console.log(tree);
-        if (null != tree) {
-          this.loadChildren(tree, resolve);
-        } else {
-          resolve([]);
-        }
-      },
-      /*loadChildren(tree, resolve) {
-        this.$store
-          .dispatch("firm/loadChildren", tree.firmId)
-          .then(data => {
-            setTimeout(() => {
-              resolve(data.data);
-            }, 1000);
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      },*/
-      handleSizeChange: function(size) {
+      handleSizeChange: function (size) {
         this.pageSize = size;
         this.loadData();
-        console.log(this.pageSize);  //每页下拉显示数据
+        console.log(this.pageSize)  //每页下拉显示数据
       },
-      handlePrevChange: function() {
+      handlePrevChange: function () {
         this.pageFlag = "prev";
         this.lastId = this.tableData[0].id;
         this.loadData();
       },
-      handleNextChange: function() {
+      handleNextChange: function () {
         this.pageFlag = "next";
         this.lastId = this.tableData[this.tableData.length - 1].id;
         this.loadData();
@@ -434,7 +406,7 @@
     },
     mounted() {
       this.loadData();
-    }
+    },
 
   };
 </script>
