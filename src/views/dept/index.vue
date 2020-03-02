@@ -87,8 +87,7 @@
         </el-form-item>
         <template>
           <el-transfer
-            filterable
-            :titles="['角色', '已选角色']"
+            :titles="['全部角色', '已选角色']"
             filter-placeholder="角色名称"
             v-model="formData.roles"
             @change="handleChange"
@@ -210,7 +209,9 @@
                 this.$store
                     .dispatch("role/getOne", id)
                     .then(data => {
-                        this.paramsRoles.push(data);
+                        if (data) {
+                            this.paramsRoles.push(data);
+                        }
                     })
                     .catch(error => {
                         console.log(error);
