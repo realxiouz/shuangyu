@@ -1,4 +1,4 @@
-import {getOne, getPageList, getTotal, removeOne, save, updateOne} from "@/api/api";
+import {getOne, getPageList, getTotal, removeOne, save, updateOne, getAll} from "@/api/api";
 import {getToken} from "@/utils/auth";
 
 
@@ -86,6 +86,18 @@ const actions = {
   getOne({commit}, data) {
     return new Promise((resolve, reject) => {
       getOne(data)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getAll({commit}, params) {
+    return new Promise((resolve, reject) => {
+      getAll(params)
         .then(response => {
           const {data} = response;
           resolve(data);

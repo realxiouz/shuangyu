@@ -22,7 +22,6 @@ export function getOne(params) {
 }
 
 export function addOne(data) {
-  debugger;
   return request({
     url: `/nav/add/one`,
     method: 'post',
@@ -31,7 +30,6 @@ export function addOne(data) {
 }
 
 export function updateOne(data) {
-  debugger;
   return request({
     url: '/nav/update/one',
     method: 'post',
@@ -40,7 +38,6 @@ export function updateOne(data) {
 }
 
 export function getList(data) {
-  debugger;
   return request({
     url: '/nav/list',
     method: 'get',
