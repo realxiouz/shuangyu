@@ -96,7 +96,7 @@
             filter-placeholder="角色名称"
             v-model="formData.roles"
             :props="{ key: 'roleId',label: 'roleName'}"
-            :data="roles">
+            :data="allRoles">
             <el-button class="transfer-footer" slot="left-footer" size="small">操作</el-button>
             <el-button class="transfer-footer" slot="right-footer" size="small" @click="test">测试</el-button>
           </el-transfer>
@@ -133,6 +133,7 @@
                 dialogVisible: false,
                 total: 0,
                 tableData: null,
+                allRoles: [],
                 rules: {
                     deptName: [
                         {required: true, message: "请输入部门名称", trigger: "blur"},
@@ -209,7 +210,7 @@
                 this.$store
                     .dispatch("role/getRoleList")
                     .then(data => {
-                        this.roles = data;
+                        this.allRoles = data;
                     })
                     .catch(error => {
                         console.log(error);
@@ -230,6 +231,7 @@
             },
             handleAddChild(deptId) {
                 this.formData.pid = deptId;
+                this.loadRoles();
                 this.dialogVisible = true;
             },
             handleAdd() {
@@ -267,6 +269,7 @@
                     }).catch(error => {
                     console.log(error);
                 });
+                this.loadRoles();
             },
             handleSizeChange(pageSize) {
                 this.pageSize = pageSize;
