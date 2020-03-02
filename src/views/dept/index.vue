@@ -95,10 +95,11 @@
             :titles="['角色', '已选角色']"
             filter-placeholder="角色名称"
             v-model="formData.roles"
-            :props="{ key: 'roleId',label: 'roleName'}"
+            @change="handleChange"
+            :props="{ key: 'roleId',label: 'roleName' }"
             :data="allRoles">
             <el-button class="transfer-footer" slot="left-footer" size="small">操作</el-button>
-            <el-button class="transfer-footer" slot="right-footer" size="small" @click="test">测试</el-button>
+            <el-button class="transfer-footer" slot="right-footer" size="small">操作</el-button>
           </el-transfer>
         </template>
 
@@ -174,12 +175,6 @@
             };
         },
         methods: {
-            test() {
-                console.log(this.roles);
-                console.log(this.formData.roles);
-            },
-            filterRoles() {
-            },
             prevClick() {
                 this.pageFlag = "prev";
                 this.lastId = this.tableData[0].deptId;
@@ -230,6 +225,7 @@
                 });
             },
             handleAddChild(deptId) {
+                this.formData = defaultData;
                 this.formData.pid = deptId;
                 this.loadRoles();
                 this.dialogVisible = true;
@@ -289,6 +285,20 @@
                 }).catch(err => {
                     console.error(err);
                 });
+            },
+            handleChange(value, direction, movedKeys) {
+                //可以通过direction回调right/left 来进行操作，right：把数字移到右边，left把数据移到左边
+
+                if (direction === "right") {
+                    console.log("right");
+                    console.log(value);
+                    console.log(movedKeys);
+                }
+                if (direction === "left") {
+                    console.log("left");
+                    console.log(value);
+                    console.log(movedKeys);
+                }
             }
         },
         mounted() {
