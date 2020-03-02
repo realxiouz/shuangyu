@@ -15,7 +15,7 @@
               style="width: 100%;margin-bottom: 20px;"
               row-key="deptId"
               border
-              :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+              :tree-props="{children: 'children', hasChildren: 'test'}"
     >
       <el-table-column
         prop="deptName"
