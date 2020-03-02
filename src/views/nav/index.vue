@@ -2,9 +2,9 @@
   <div class="tree-node">
     <el-container>
       <el-aside width="300px">
-      <el-header>
+        <el-header>
           <el-button type="text" @click="rootAdd">添加</el-button>
-      </el-header>
+        </el-header>
         <!--  导航树  -->
         <el-tree
           accordion
@@ -13,7 +13,7 @@
           :expand-on-click-node="false"
           :data="treeData"
           :default-expanded-keys="curLine"
-          :props="defaultProps"
+          :props="treeProps"
           @node-click="handleNodeClick">
           <span class="tree-node" slot-scope="{ node, data }">
             <span>{{ node.data.navName }}</span>
@@ -39,39 +39,44 @@
       </el-aside>
 
       <el-main>
-        <el-table :data="tableData" style="width: 100%">
+        <el-header>
+          <el-button type="primary" @click="apisEdit" :disabled="apiVisible">编辑</el-button>
+        </el-header>
+        <el-table
+          :data="tableData"
+          tooltip-effect="dark"
+          style="width: 100%">
           <el-table-column
-             v-if="false"
-             prop="id"
-             label="主键"
-             width="80"
-          ></el-table-column>
+            prop="apiName"
+            label="API名称"
+            width="240">
+          </el-table-column>
           <el-table-column
-            prop="roleId"
-            label="角色唯一标识"
-            width="160"
-          ></el-table-column>
+            prop="category"
+            label="类别"
+            width="240">
+          </el-table-column>
           <el-table-column
-            prop="roleName"
-            label="角色名称"
-            width="160"
-          ></el-table-column>
-          <el-table-column prop="isEnable" label="是否启用" ></el-table-column>
-          <el-table-column prop="apis" label="apis"></el-table-column>
-          <el-table-column prop="navs" label="导航菜单"></el-table-column>
-          <el-table-column
-            fixed="right"
-            label="操作"
-            align="center"
-            width="100">
+            label="是否启用"
+            width="240"
+            align="center">
             <template slot-scope="scope">
-              <el-button @click.native.prevent="editRole(scope.row)" type="text" size="small">编辑</el-button>
-              <el-button @click.native.prevent="removeOne(scope.row.id,scope.$index,tableData)" type="text"
-                         size="small">删除
-              </el-button>
+              <el-switch
+                v-model="scope.row.enable"
+                disabled>
+              </el-switch>
             </template>
           </el-table-column>
         </el-table>
+        <el-pagination
+          background
+          layout="total,prev,next"
+          prev-text="上一页"
+          next-text="下一页"
+          :total="total"
+          @prev-click="handlePrevChange"
+          @next-click="handleNextChange">
+        </el-pagination>
       </el-main>
     </el-container>
     <!-- 表单对话框 -->
@@ -101,33 +106,54 @@
         <el-button type="primary" @click="handleSave">确 定</el-button>
       </div>
     </el-dialog>
+    <el-dialog title="编辑" :visible.sync="ApiDialogVisible" width="33%">
+      <!--穿梭框-->
+      <template>
+        <el-transfer v-model="transferData" :data="apiData" :props="transferProps" :titles="titles"></el-transfer>
+      </template>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleTransCancel">取 消</el-button>
+        <el-button type="primary" @click="handleTransSave">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
-
 
 <script>
   export default {
     data() {
       return {
         dialogVisible: false,
+        ApiDialogVisible: false,
+        apiVisible: true,
         rootNav: false,
         treeData: [],
         tableData: [],
+        apiData: [],
+        transferData: [],
+        apis: [],
         curLine: [],
-        curNode: {},
+        curNode: null,
+        pageFlag: 'next',
+        pageSize: 10,
+        lastId: '0',
+        total: 0,
         formData: {
           navId: '',
           navName: '',
           enable: true,
           url: '',
           pid: null,
-          api: []
+          apis: []
         },
-        defaultProps: {
+        treeProps: {
           children: 'children',
-          label: 'navName',
-          hasChildren:'xxx'
-        }
+          hasChildren: 'xxx'
+        },
+        titles:['apis','已选api'],
+        transferProps: {
+          key: 'apiId',
+          label: 'apiName'}
       };
     },
     methods: {
@@ -136,6 +162,28 @@
           .dispatch('nav/getPageList')
           .then(data => {
             this.treeData = data;
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      /*初始化api列表*/
+      loadApis(){
+        this.$store
+          .dispatch('api/getAll')
+          .then(data => {
+            this.apiData = data;
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      loadNavOne(){
+        this.$store
+          .dispatch('nav/getOne',this.curNode.navId)
+          .then(data => {
+            this.curNode = data.data;
+            this.tableLoad();
           })
           .catch(error => {
             console.log(error);
@@ -157,12 +205,13 @@
         this.rootNav = false;
         this.dialogVisible = true;
       },
+      /*对导航节点进行存储*/
       handleSave() {
         this.dialogVisible = false;
 
-        if(this.formData.navId != ''){
+        if (this.formData.navId != '') {
           this.$store
-            .dispatch( 'nav/updateOne', this.formData)
+            .dispatch('nav/updateOne', this.formData)
             .then(data => {
               console.log(data);
               this.loadData();
@@ -170,10 +219,10 @@
             .catch(error => {
               console.log(error);
             });
-        }else{
+        } else {
           if (this.rootNav) { //如果添加的顶级企业信息，对某些属性进行初始化
             this.formData.pid = null;
-            this.formData.level = 1;
+            this.formData.level = 0;
           }
 
           this.$store
@@ -189,12 +238,13 @@
         }
         this.clearForm();
       },
-      removeNode(data,node){
+      /*移除导航节点*/
+      removeNode(data, node) {
         this.curLine = [];
         this.curLine.push(node.pid);
-        this.open(this.remove,node.navId);
+        this.open(this.remove, this.loadData, node.navId);
       },
-      remove(params){
+      remove(params) {
         this.$store
           .dispatch('nav/removeOne', params)
           .then(data => {
@@ -204,14 +254,100 @@
             console.log(error);
           });
       },
-      open(func,data) {
+      apisEdit(){
+        this.loadApis();
+        this.getTransferData();
+        this.ApiDialogVisible = true;
+      },
+      /*更新表格数据*/
+      tableLoad(){
+        this.total = this.curNode.apis.length;
+        this.tableData = this.curNode.apis;
+        if (1 === this.tableData.length){
+          this.tableData = [];
+        }
+      },
+      /*在点击导航节点后需对apis列表进行初始化*/
+      getTransferData(){
+        this.curNode.apis.forEach((item) => {
+          this.transferData.push(item.apiId);
+        })
+      },
+      /*在对导航节点进行存储时需要对apis列表进行转换*/
+      transApis(){
+        this.apis = [];
+        this.apiData.forEach((item) => {
+          if (this.transferData.includes(item.apiId)){
+            this.apis.push(item);
+          }
+        });
+      },
+      handleCancel() {
+        this.clearForm();
+        this.dialogVisible = false;
+      },
+      handleTransCancel(){
+        this.ApiDialogVisible = false;
+        this.clearTransfer();
+      },
+      /*在选择完成api后进行保存*/
+      handleTransSave(){
+        this.ApiDialogVisible = false;
+        this.transApis();
+        this.curNode.apis = this.apis;
+        this.$store
+          .dispatch('nav/updateOne',this.curNode)
+          .then(data => {
+            console.log(data);
+            //对数据列表进行重新加载
+            this.loadNavOne();
+          })
+          .catch(error => {
+            console.log(error);
+          });
+        this.clearTransfer();
+      },
+      /*点击上一页*/
+      handlePrevChange(){
+        this.pageFlag = "prev";
+        this.lastId = this.tableData[0].id;
+        this.loadData();
+      },
+      /*点击下一页*/
+      handleNextChange(){
+        this.pageFlag = "next";
+        this.lastId = this.tableData[this.tableData.length - 1].id;
+        this.loadData();
+      },
+      /*选择导航节点后对该节点进行编辑*/
+      handleNodeClick(data, node) {
+        /*加载该节点所有的api数据*/
+        this.curNode = node.data;
+        this.apiVisible = false;
+        this.tableLoad();
+      },
+      clearForm() {
+        this.formData = {
+          navId: '',
+          navName: '',
+          enable: true,
+          url: '',
+          pid: null,
+          api: []
+        };
+      },
+      clearTransfer(){
+          this.apiData = [];
+          this.transferData = [];
+      },
+      open(func, loadFunc, data) {
         this.$confirm('此操作将删除该企业信息及子企业信息, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           func(data);
-          this.loadData();
+          loadFunc();
           this.$message({
             type: 'success',
             message: '删除成功!'
@@ -223,43 +359,7 @@
           });
         });
       },
-      handleCancel() {
-        this.clearForm();
-        this.dialogVisible = false;
-      },
-      handleNodeClick(data, node){
-
-      },
-      getCurLine(curNode){
-        let tmpNode = curNode;
-        if (0 != tmpNode.parent.id){
-          while (0 != tmpNode.parent.id){
-            tmpNode = tmpNode.parent;
-          }
-        }
-        this.curRootNode = tmpNode;
-      },
-      loadApis(){
-        this.$store
-          .dispatch('nav/delete')
-          .then(data => {
-            console.log(data);
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      },
-      clearForm() {
-        this.formData = {
-          navId: '',
-          navName: '',
-          enable: true,
-          url: '',
-          pid: null,
-          api: []
-        };
-      }
-  },
+    },
     mounted() {
       this.loadData();
     },

@@ -143,7 +143,7 @@
           type: 'warning'
         }).then(() => {
           this.$store
-            .dispatch('flightSegment/removeOne', id)
+            .dispatch('flightSegment/remove', id)
             .then(data => {
               console.log(data);
               this.loadData();

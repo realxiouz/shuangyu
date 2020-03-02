@@ -14,10 +14,8 @@
     <el-table :data="tableData"
               style="width: 100%;margin-bottom: 20px;"
               row-key="deptId"
-              lazy
               border
-              :load="loadChildren"
-              :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+              :tree-props="{children: 'children', hasChildren: 'test'}"
     >
       <el-table-column
         prop="deptName"
@@ -89,18 +87,12 @@
         </el-form-item>
         <template>
           <el-transfer
-            filterable
-            :format="{
-          noChecked: '${total}',
-          hasChecked: '${checked}/${total}'
-          }"
-            :titles="['角色', '已选角色']"
+            :titles="['全部角色', '已选角色']"
             filter-placeholder="角色名称"
             v-model="formData.roles"
-            :props="{ key: 'roleId',label: 'roleName'}"
-            :data="roles">
-            <el-button class="transfer-footer" slot="left-footer" size="small">操作</el-button>
-            <el-button class="transfer-footer" slot="right-footer" size="small" @click="test">测试</el-button>
+            @change="handleChange"
+            :props="{ key: 'roleId',label: 'roleName' }"
+            :data="allRoles">
           </el-transfer>
         </template>
 
@@ -135,6 +127,8 @@
                 dialogVisible: false,
                 total: 0,
                 tableData: null,
+                allRoles: [],
+                paramsRoles: [],
                 rules: {
                     deptName: [
                         {required: true, message: "请输入部门名称", trigger: "blur"},
@@ -175,12 +169,6 @@
             };
         },
         methods: {
-            test() {
-                console.log(this.roles);
-                console.log(this.formData.roles);
-            },
-            filterRoles() {
-            },
             prevClick() {
                 this.pageFlag = "prev";
                 this.lastId = this.tableData[0].deptId;
@@ -196,12 +184,10 @@
                     this.searchForm = {};
                 }
                 this.$store
-                    .dispatch("dept/getPageList", {
-                        pageFlag: this.pageFlag,
-                        pageSize: this.pageSize,
-                        lastId: this.lastId,
-                        filter: this.searchForm
-                    }).then(data => {
+                    .dispatch("dept/getList",
+                        this.searchForm
+                    ).then(data => {
+                    console.log(data)
                     if (data) {
                         this.tableData = data;
                     }
@@ -213,7 +199,19 @@
                 this.$store
                     .dispatch("role/getRoleList")
                     .then(data => {
-                        this.roles = data;
+                        this.allRoles = data;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            loadOneRole(id) {
+                this.$store
+                    .dispatch("role/getOne", id)
+                    .then(data => {
+                        if (data) {
+                            this.paramsRoles.push(data);
+                        }
                     })
                     .catch(error => {
                         console.log(error);
@@ -232,18 +230,10 @@
                     console.log(error);
                 });
             },
-            loadChildren(row, node, resolve) {
-                this.$store
-                    .dispatch("dept/getList", row.deptId)
-                    .then(data => {
-                        resolve(data);
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
             handleAddChild(deptId) {
+                this.formData = defaultData;
                 this.formData.pid = deptId;
+                this.loadRoles();
                 this.dialogVisible = true;
             },
             handleAdd() {
@@ -261,6 +251,9 @@
             handleSave() {
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
+                        if (this.paramsRoles && this.paramsRoles.length > 0) {
+                            this.formData.roles = this.paramsRoles;
+                        }
                         this.$store
                             .dispatch("dept/save", this.formData)
                             .then(() => {
@@ -277,10 +270,18 @@
                     .dispatch("dept/getOne", deptId)
                     .then(data => {
                         this.formData = data;
+                        let arr = [];
+                        if (this.formData.roles && this.formData.roles.length > 0) {
+                            this.formData.roles.forEach((item) => {
+                                arr.push(item.roleId)
+                            })
+                            this.formData.roles = arr;
+                        }
                         this.dialogVisible = true;
                     }).catch(error => {
                     console.log(error);
                 });
+                this.loadRoles();
             },
             handleSizeChange(pageSize) {
                 this.pageSize = pageSize;
@@ -300,6 +301,12 @@
                 }).catch(err => {
                     console.error(err);
                 });
+            },
+            handleChange(value, direction, movedKeys) {
+                this.paramsRoles = [];
+                value.forEach((item) => {
+                    this.loadOneRole(item)
+                })
             }
         },
         mounted() {
@@ -308,8 +315,3 @@
     };
 </script>
 
-<style scoped>
-  .line {
-    text-align: center;
-  }
-</style>
