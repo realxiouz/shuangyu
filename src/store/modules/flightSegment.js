@@ -1,4 +1,4 @@
-import {saveFlightSegment, getFlightSegmentPageList, getFlightSegmentList, removeFlightSegment, getFlightSegmentTotal} from '@/api/flightSegment';
+import {saveSegment, getSegmentPageList, getSegmentList, removeSegment, getSegmentTotal} from '@/api/flightSegment';
 import {getToken} from '@/utils/auth';
 
 const state = {
@@ -22,7 +22,7 @@ const mutations = {
 const actions = {
   save({commit}, params) {
     return new Promise((resolve, reject) => {
-      saveFlightSegment(params)
+      saveSegment(params)
         .then(response => {
           //const { data } = response;
           resolve(response);
@@ -42,7 +42,7 @@ const actions = {
     }
     params.searchForm = searchForm;
     return new Promise((resolve, reject) => {
-      getFlightSegmentPageList(params)
+      getSegmentPageList(params)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -62,7 +62,7 @@ const actions = {
     }
     params.searchForm = searchForm;
     return new Promise((resolve, reject) => {
-      getFlightSegmentList(params)
+      getSegmentList(params)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -74,7 +74,7 @@ const actions = {
   },
   total({commit}, params) {
     return new Promise((resolve, reject) => {
-      getFlightSegmentTotal(params)
+      getSegmentTotal(params)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -84,9 +84,9 @@ const actions = {
         });
     });
   },
-  removeOne({commit}, data) {
+  remove({commit}, data) {
     return new Promise((resolve, reject) => {
-      removeFlightSegment(data)
+      removeSegment(data)
         .then(response => {
           const {data} = response;
           resolve(data);
