@@ -88,18 +88,12 @@
         <template>
           <el-transfer
             filterable
-            :format="{
-          noChecked: '${total}',
-          hasChecked: '${checked}/${total}'
-          }"
             :titles="['角色', '已选角色']"
             filter-placeholder="角色名称"
             v-model="formData.roles"
             @change="handleChange"
             :props="{ key: 'roleId',label: 'roleName' }"
             :data="allRoles">
-            <el-button class="transfer-footer" slot="left-footer" size="small">操作</el-button>
-            <el-button class="transfer-footer" slot="right-footer" size="small">操作</el-button>
           </el-transfer>
         </template>
 
@@ -135,6 +129,7 @@
                 total: 0,
                 tableData: null,
                 allRoles: [],
+                paramsRoles: [],
                 rules: {
                     deptName: [
                         {required: true, message: "请输入部门名称", trigger: "blur"},
@@ -211,6 +206,16 @@
                         console.log(error);
                     });
             },
+            loadOneRole(id) {
+                this.$store
+                    .dispatch("role/getOne", id)
+                    .then(data => {
+                        this.paramsRoles.push(data);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
             loadTotal: function () {
                 if (!this.searchForm.deptName) {
                     this.searchForm = {};
@@ -245,6 +250,9 @@
             handleSave() {
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
+                        if (this.paramsRoles && this.paramsRoles.length > 0) {
+                            this.formData.roles = this.paramsRoles;
+                        }
                         this.$store
                             .dispatch("dept/save", this.formData)
                             .then(() => {
@@ -261,6 +269,14 @@
                     .dispatch("dept/getOne", deptId)
                     .then(data => {
                         this.formData = data;
+                        let arr = [];
+
+                        if (this.formData.roles) {
+                            this.formData.roles.forEach((item) => {
+                                arr.push(item.roleId)
+                            })
+                            this.formData.roles = arr;
+                        }
                         this.dialogVisible = true;
                     }).catch(error => {
                     console.log(error);
@@ -287,17 +303,9 @@
                 });
             },
             handleChange(value, direction, movedKeys) {
-                //可以通过direction回调right/left 来进行操作，right：把数字移到右边，left把数据移到左边
-
-                if (direction === "right") {
-                    console.log("right");
-                    console.log(value);
-                    console.log(movedKeys);
-                }
-                if (direction === "left") {
-                    console.log("left");
-                    console.log(value);
-                    console.log(movedKeys);
+                this.paramsRoles = [];
+                for (let i = 0; i < value.length; i++) {
+                    this.loadOneRole(value[i])
                 }
             }
         },
