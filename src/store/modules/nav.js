@@ -37,9 +37,9 @@ const actions = {
         });
     });
   },
-  getOne({commit}, Id) {
+  getOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      getOne(Id)
+      getOne(params)
         .then(response => {
           //const { data } = response;
           resolve(response);

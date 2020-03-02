@@ -46,3 +46,10 @@ export function getOne(id) {
     method: 'get'
   });
 }
+
+export function getAll() {
+  return request({
+    url: `/api/all`,
+    method: 'get'
+  });
+}
