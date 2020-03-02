@@ -87,8 +87,7 @@
         </el-form-item>
         <template>
           <el-transfer
-            filterable
-            :titles="['角色', '已选角色']"
+            :titles="['全部角色', '已选角色']"
             filter-placeholder="角色名称"
             v-model="formData.roles"
             @change="handleChange"
@@ -210,7 +209,9 @@
                 this.$store
                     .dispatch("role/getOne", id)
                     .then(data => {
-                        this.paramsRoles.push(data);
+                        if (data) {
+                            this.paramsRoles.push(data);
+                        }
                     })
                     .catch(error => {
                         console.log(error);
@@ -270,8 +271,7 @@
                     .then(data => {
                         this.formData = data;
                         let arr = [];
-
-                        if (this.formData.roles) {
+                        if (this.formData.roles && this.formData.roles.length > 0) {
                             this.formData.roles.forEach((item) => {
                                 arr.push(item.roleId)
                             })
@@ -304,9 +304,9 @@
             },
             handleChange(value, direction, movedKeys) {
                 this.paramsRoles = [];
-                for (let i = 0; i < value.length; i++) {
-                    this.loadOneRole(value[i])
-                }
+                value.forEach((item) => {
+                    this.loadOneRole(item)
+                })
             }
         },
         mounted() {
@@ -315,8 +315,3 @@
     };
 </script>
 
-<style scoped>
-  .line {
-    text-align: center;
-  }
-</style>
