@@ -271,8 +271,7 @@
                     .then(data => {
                         this.formData = data;
                         let arr = [];
-
-                        if (this.formData.roles) {
+                        if (this.formData.roles && this.formData.roles.length > 0) {
                             this.formData.roles.forEach((item) => {
                                 arr.push(item.roleId)
                             })
@@ -305,9 +304,9 @@
             },
             handleChange(value, direction, movedKeys) {
                 this.paramsRoles = [];
-                for (let i = 0, len = value.length; i < len; i++) {
-                    this.loadOneRole(value[i])
-                }
+                value.forEach((item) => {
+                    this.loadOneRole(item)
+                })
             }
         },
         mounted() {
@@ -316,8 +315,3 @@
     };
 </script>
 
-<style scoped>
-  .line {
-    text-align: center;
-  }
-</style>
