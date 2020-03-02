@@ -67,7 +67,7 @@
       <el-form ref="formData" :rules="rules" :model="formData" label-width="120px">
         <el-input v-show="false" v-model="formData.roleId"></el-input>
         <el-form-item label="角色名称" prop="roleName">
-          <el-input v-model="formData.roleName"></el-input>
+          <el-input v-model="formData.roleName"  placeholder="请输入角色名称"></el-input>
         </el-form-item>
         <el-form-item label="是否启用">
           <el-switch v-model="formData.enable"></el-switch>

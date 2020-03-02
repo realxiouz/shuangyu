@@ -32,10 +32,11 @@ export function getTotal(data) {
   });
 }
 
-export function getList(deptId) {
+export function getList(filters) {
   return request({
-    url: `/dept/children/list/${deptId}`,
-    method: "get"
+    url: `/dept/list/`,
+    method: "get",
+    params: filters
   });
 }
 export function getOne(id) {

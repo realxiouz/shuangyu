@@ -14,10 +14,8 @@
     <el-table :data="tableData"
               style="width: 100%;margin-bottom: 20px;"
               row-key="deptId"
-              lazy
               border
-              :load="loadChildren"
-              :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+              :tree-props="{children: 'children', hasChildren: 'test'}"
     >
       <el-table-column
         prop="deptName"
@@ -196,12 +194,10 @@
                     this.searchForm = {};
                 }
                 this.$store
-                    .dispatch("dept/getPageList", {
-                        pageFlag: this.pageFlag,
-                        pageSize: this.pageSize,
-                        lastId: this.lastId,
-                        filter: this.searchForm
-                    }).then(data => {
+                    .dispatch("dept/getList",
+                        this.searchForm
+                    ).then(data => {
+                    console.log(data)
                     if (data) {
                         this.tableData = data;
                     }
@@ -231,16 +227,6 @@
                 }).catch(error => {
                     console.log(error);
                 });
-            },
-            loadChildren(row, node, resolve) {
-                this.$store
-                    .dispatch("dept/getList", row.deptId)
-                    .then(data => {
-                        resolve(data);
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
             },
             handleAddChild(deptId) {
                 this.formData.pid = deptId;
