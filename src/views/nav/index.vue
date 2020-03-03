@@ -159,7 +159,7 @@
     methods: {
       loadData() {
         this.$store
-          .dispatch('nav/getPageList')
+          .dispatch('nav/getList')
           .then(data => {
             this.treeData = data;
           })

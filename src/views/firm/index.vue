@@ -12,7 +12,7 @@
       </el-row>
       <el-header>
         <el-button type="text" @click="rootAdd">添加</el-button>
-        <el-button type="text" @click="loadRoles">测试</el-button>
+        <el-button type="text" @click="transDataToRoles">测试</el-button>
       </el-header>
       <el-main>
         <div>
@@ -179,7 +179,7 @@
       </div>
       <!--穿梭框-->
        <template>
-         <el-transfer v-model="roles" :data="transData" :props="transferProps">
+         <el-transfer v-model="rolesData" :data="transData" :props="transferProps">
          </el-transfer>
        </template>
     </el-dialog>
@@ -197,8 +197,8 @@
         lastId: '0',
         total: 0,
         keyword: '',
+        rolesData: [],
         transData: [],
-        roles: [],
         formData: {
           firmId: '',
           firmName: '',
@@ -236,6 +236,7 @@
         this.rootNav = true;
         this.dialogVisible = true;
 
+        /*加载角色列表*/
         this.loadRoles();
       },
       search() {
@@ -303,6 +304,25 @@
           roles: []
         };
       },
+      clearRoles(){
+        this.transData = [];
+        this.rolesData = [];
+      },
+      /*在编辑时需要对已有的角色数据进行转换*/
+      transRolesToData(roles){
+        roles.forEach((item) => {
+          this.rolesData.push(item.roleId);
+        })
+      },
+      /*在进行存储的时候将角色ID列表转换为对象列表*/
+      transDataToRoles(){
+        this.formData.roles = [];
+        this.transData.forEach((item) => {
+          if (this.rolesData.includes(item.roleId)){
+            this.formData.roles.push(item);
+          }
+        });
+      },
       loadData() {
         this.$store
           .dispatch('firm/getTotal')
@@ -313,25 +333,26 @@
             console.log(error);
           });
         this.$store
-          .dispatch('firm/getPageList',{pageFlag: this.pageFlag, pageSize: this.pageSize, lastId: this.lastId})
+          .dispatch('firm/getList')
           .then(data => {
-            this.tableData = data.data;
+            this.tableData = data;
           })
           .catch(error => {
             console.log(error);
           });
       },
       loadRoles(){
+        this.clearRoles();
         this.$store
           .dispatch('role/getAll')
           .then(data => {
-            console.log(data);
             this.transData = data;
           })
           .catch(error => {
             console.log(error);
           });
       },
+      /*清空搜索框内的关键字*/
       handleIconClick() {
         this.keyword = "";
       },
@@ -343,10 +364,13 @@
 
         this.rootNav = false;
         this.dialogVisible = true;
+        /*加载角色列表*/
         this.loadRoles();
       },
+      /*存储主方法*/
       handleSave() {
         this.dialogVisible = false;
+        this.transDataToRoles();
 
         if(this.formData.firmId != ''){
           this.$store
@@ -384,6 +408,7 @@
         this.formData = row;
         this.dialogVisible = true;
         this.loadRoles();
+        this.transRolesToData(row.roles);
       },
       handleDelete(index, row) {
         this.open(this.remove,row.firmId);
