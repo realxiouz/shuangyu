@@ -1,6 +1,6 @@
-import request from "@/utils/request";
+import request from '@/utils/request';
 
-export function getFirmList(params) {
+export function getPageList(params) {
   return request({
     url: `/firm/page/list/${params.pageFlag}/${params.pageSize}/${params.lastId}`,
     method: `get`,
@@ -8,8 +8,7 @@ export function getFirmList(params) {
   });
 }
 
-export function add(data) {
-  debugger;
+export function addOne(data) {
   return request({
     url: `/firm/save`,
     method: `post`,
@@ -17,7 +16,7 @@ export function add(data) {
   });
 }
 
-export function edit(data) {
+export function updateOne(data) {
   return request({
     url: `/firm/save`,
     method: `post`,
@@ -25,10 +24,10 @@ export function edit(data) {
   });
 }
 
-export function deleteOne(data) {
+export function removeOne(data) {
   return request({
     url: `/firm/remove/one/${data}`,
-    method: `delete`
+    method: `delete`,
   });
 }
 

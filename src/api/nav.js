@@ -2,7 +2,7 @@ import request from '@/utils/request';
 
 export function getPageList() {
   return request({
-    url: '/nav/all' ,
+    url: '/nav/page/list' ,
     method: 'get'
   });
 }
