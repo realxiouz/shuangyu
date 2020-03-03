@@ -241,11 +241,10 @@
         this.loadRoles();
       },
       search() {
-        /*{pageFlag: this.pageFlag, pageSize: this.pageSize, lastId: this.lastId}*/
         this.$store
-          .dispatch('firm/getList')
+          .dispatch('firm/getList', {firmName: this.keyword})
           .then(data => {
-            this.tableData = data.data;
+            this.tableData = data;
           })
           .catch(error => {
             console.log(error);
