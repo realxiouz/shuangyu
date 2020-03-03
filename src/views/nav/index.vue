@@ -77,7 +77,7 @@
       </el-main>
     </el-container>
     <!-- 表单对话框 -->
-    <el-dialog title="导航信息" :visible.sync="dialogVisible" width="30%">
+    <el-dialog title="导航信息" :visible.sync="dialogVisible" width="30%" :close-on-click-modal="false">
       <el-form ref="form" :model="formData" label-width="90px">
         <input type="hidden" v-model="formData.navId"/>
         <el-form-item label="导航名称">
@@ -103,7 +103,7 @@
         <el-button type="primary" @click="handleSave">确 定</el-button>
       </div>
     </el-dialog>
-    <el-dialog title="编辑" :visible.sync="ApiDialogVisible" width="33%">
+    <el-dialog title="编辑" :visible.sync="ApiDialogVisible" width="33%" :close-on-click-modal="false">
       <!--穿梭框-->
       <template>
         <el-transfer v-model="transferData" :data="apiData" :props="transferProps" :titles="titles"></el-transfer>

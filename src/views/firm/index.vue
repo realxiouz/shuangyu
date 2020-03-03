@@ -83,7 +83,7 @@
       </el-main>
     </el-container>
     <!-- 表单对话框 -->
-    <el-dialog title="导航信息" :visible.sync="dialogVisible" width="33%">
+    <el-dialog title="导航信息" :visible.sync="dialogVisible" width="33%" :close-on-click-modal="false">
       <el-form ref="form" :model="formData" label-width="120px">
         <!--   企业ID  -->
         <input type="hidden" v-model="formData.firmId"/>
