@@ -1,8 +1,10 @@
 <template>
   <el-container>
-    <el-aside width="auto">
-      <Sidebar :menuList="menuList" :collapse="isCollapse"/>
-    </el-aside>
+    <el-scrollbar>
+      <el-aside width="auto">
+        <Sidebar :menuList="menuList" :collapse="isCollapse"/>
+      </el-aside>
+    </el-scrollbar>
     <el-main>
       <div class="app-header">
         <el-row type="flex" class="row-bg" justify="space-between">
