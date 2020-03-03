@@ -1,16 +1,117 @@
 <template>
-  <div class="dept-container">
-    <el-form :inline="true" :model="searchForm">
-      <el-form-item label="部门名称">
-        <el-input v-model="searchForm.deptName" placeholder="请输入部门名称"></el-input>
+  <div class="order-container">
+    <el-form :inline="true" :model="formData"  :label-position="labelPosition" label-width="110px" >
+      <el-row :gutter="20">
+        <el-col :span="6">
+      <el-form-item label="起始日期:">
+          <el-date-picker type="date" placeholder="选择日期" v-model="formData.startDate" style="width: 100%;" ></el-date-picker>
       </el-form-item>
+          </el-col>
+        <el-col :span="6">
+      <el-form-item label="结束日期:">
+          <el-date-picker type="date" placeholder="选择日期" v-model="formData.endDate" style="width: 100%;" ></el-date-picker>
+      </el-form-item>
+        </el-col>
+        <el-col :span="6">
+      <el-form-item label="特殊查询:">
+        <el-select v-model="formData.specialQuery" placeholder="全部" >
+          <el-option label="测试1" value="shanghai"></el-option>
+          <el-option label="测试2" value="beijing"></el-option>
+        </el-select>
+      </el-form-item>
+        </el-col>
+        <el-col :span="6">
+      <el-form-item label="联系人电话:">
+        <el-input v-model="formData.namePhone" ></el-input>
+      </el-form-item>
+          </el-col>
+      </el-row>
+
+      <el-row :gutter="20">
+        <el-col :span="6">
+      <el-form-item label="乘机人姓名:">
+        <el-input v-model="formData.nameAirplane" style="width: 230px"></el-input>
+      </el-form-item>
+          </el-col>
+        <el-col :span="6">
+      <el-form-item label="订单号:">
+        <el-input v-model="formData.orderNumber" style="width: 230px"></el-input>
+      </el-form-item>
+          </el-col>
+        <el-col :span="6">
+      <el-form-item label="票号:">
+        <el-input v-model="formData.ticketNumber" style="width: 230px"></el-input>
+      </el-form-item>
+        </el-col>
+        <el-col :span="6">
+      <el-form-item label="PNR:">
+        <el-input v-model="formData.PNR" ></el-input>
+      </el-form-item>
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="20">
+        <el-col :span="6">
+      <el-form-item label="订单状态:">
+        <el-select v-model="formData.orderStatus" placeholder="全部">
+          <el-option label="未执行" value="weizhixing"></el-option>
+          <el-option label="执行中" value="zhixingzhong"></el-option>
+          <el-option label="已结束" value="yijieshu"></el-option>
+        </el-select>
+      </el-form-item>
+          </el-col>
+        <el-col :span="6">
+      <el-form-item label="航班起始日期:">
+        <el-col>
+          <el-date-picker type="date" placeholder="选择日期" v-model="formData.flightStartDate" style="width: 100%;"></el-date-picker>
+        </el-col>
+      </el-form-item>
+        </el-col>
+        <el-col :span="6">
+      <el-form-item label="航班截止日期:">
+        <el-col>
+          <el-date-picker type="date" placeholder="选择日期" v-model="formData.flightEndDate" style="width: 100%;"></el-date-picker>
+        </el-col>
+      </el-form-item>
+        </el-col>
+        <el-col :span="6">
+      <el-form-item label="航班号:">
+        <el-input v-model="formData.flightNumber"></el-input>
+      </el-form-item>
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="20">
+        <el-col :span="6">
+      <el-form-item label="订单来源:">
+        <el-select v-model="formData.orderSource" placeholder="全部">
+          <el-option label="去哪网" value="qunawang"></el-option>
+          <el-option label="飞猪" value="feizhu"></el-option>
+        </el-select>
+      </el-form-item>
+            </el-col>
+        <el-col :span="6">
+      <el-form-item label="航程类型:" prop="flightType">
+        <el-radio-group v-model="formData.flightType">
+          <el-radio label="单程"></el-radio>
+          <el-radio label="往返"></el-radio>
+          <el-radio label="全部"></el-radio>
+        </el-radio-group>
+      </el-form-item>
+          </el-col>
+      </el-row>
+
+
+
+
       <el-form-item>
         <el-button type="primary" @click="handleSearch">查询</el-button>
       </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="handleAdd">添加</el-button>
-      </el-form-item>
-    </el-form>
+<!--      <el-form-item>-->
+<!--        <el-button type="primary" @click="handleAdd">添加</el-button>-->
+<!--      </el-form-item>-->
+
+      </el-form>
     <el-table :data="tableData"
               style="width: 100%;margin-bottom: 20px;"
               row-key="deptId"
@@ -18,29 +119,59 @@
               :tree-props="{children: 'children', hasChildren: 'test'}"
     >
       <el-table-column
-        prop="deptName"
-        label="部门名称"
-        width="300"
+        prop="orderNumber"
+        label="订单号"
+        width="100"
       ></el-table-column>
       <el-table-column
-        prop="firmId"
-        label="企业"
-        width="200"
+        prop="flightType"
+        label="类型"
+        width="100"
       ></el-table-column>
       <el-table-column
         prop="ddId"
-        label="钉钉Id"
-        width="200"
+        label="订单日期"
+        width="100"
       ></el-table-column>
       <el-table-column
         prop="ddParentIdId"
-        label="钉钉父节点"
+        label="起飞-到达"
+        width="100"
+      ></el-table-column>
+      <el-table-column
+        prop="domain"
+        label="航班日期/航班号"
         width="200"
       ></el-table-column>
       <el-table-column
         prop="domain"
-        label="域名"
-        width="250"
+        label="PNR"
+        width="100"
+      ></el-table-column>
+      <el-table-column
+        prop="domain"
+        label="总价/人数"
+        width="100"
+      ></el-table-column>
+      <el-table-column
+        prop="domain"
+        label="订单状态"
+        width="100"
+      ></el-table-column>
+      <el-table-column
+        prop="domain"
+        label="政策ID"
+        width="100"
+      ></el-table-column>
+      <el-table-column
+        prop="domain"
+        label="是否退差额"
+        width="100"
+      ></el-table-column>
+      <el-table-column
+        prop="domain"
+        label="锁定人"
+        width="100"
       ></el-table-column>
       <el-table-column
         fixed="right"
@@ -108,6 +239,21 @@
 <script>
 
     const defaultData = {
+        flightType:'',
+        orderSource:'',
+        flightNumber:'',
+        flightEndDate:'',
+        flightStartDate:'',
+        orderStatus:'',
+        PNR:'',
+        ticketNumber:'',
+        orderNumber:'',
+        nameAirplane:'',
+        namePhone:'',
+        specialQuery: '',
+        endDate:'',
+        startDate: '',
+
         deptName: "",
         firmId: "",
         domain: "",
@@ -119,6 +265,7 @@
         name: "dept",
         data() {
             return {
+                labelPosition: 'left',
                 searchForm: {},
                 lastId: "0",
                 pageFlag: "next",
@@ -130,6 +277,9 @@
                 allRoles: [],
                 paramsRoles: [],
                 rules: {
+                    flightType:[
+                        {required: true, message: "请选择航程类型", trigger: "blur"},
+                    ],
                     deptName: [
                         {required: true, message: "请输入部门名称", trigger: "blur"},
                         {
@@ -205,6 +355,18 @@
                         console.log(error);
                     });
             },
+            loadOneRole(id) {
+                this.$store
+                    .dispatch("role/getOne", id)
+                    .then(data => {
+                        if (data) {
+                            this.paramsRoles.push(data);
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
             loadTotal: function () {
                 if (!this.searchForm.deptName) {
                     this.searchForm = {};
@@ -258,6 +420,13 @@
                     .dispatch("dept/getOne", deptId)
                     .then(data => {
                         this.formData = data;
+                        let arr = [];
+                        if (this.formData.roles && this.formData.roles.length > 0) {
+                            this.formData.roles.forEach((item) => {
+                                arr.push(item.roleId)
+                            })
+                            this.formData.roles = arr;
+                        }
                         this.dialogVisible = true;
                     }).catch(error => {
                     console.log(error);
@@ -284,7 +453,10 @@
                 });
             },
             handleChange(value, direction, movedKeys) {
-                this.formData.roles = value;
+                this.paramsRoles = [];
+                value.forEach((item) => {
+                    this.loadOneRole(item)
+                })
             }
         },
         mounted() {
