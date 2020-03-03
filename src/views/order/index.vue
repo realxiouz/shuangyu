@@ -54,9 +54,9 @@
         <el-col :span="6">
       <el-form-item label="订单状态:">
         <el-select v-model="formData.orderStatus" placeholder="全部">
-          <el-option label="未执行" value="weizhixing"></el-option>
-          <el-option label="执行中" value="zhixingzhong"></el-option>
-          <el-option label="已结束" value="yijieshu"></el-option>
+          <el-option label="出票中" value="ing"></el-option>
+          <el-option label="退票完成" value="exit"></el-option>
+          <el-option label="出票完成" value="ok"></el-option>
         </el-select>
       </el-form-item>
           </el-col>
@@ -137,17 +137,17 @@
         width="100"
       ></el-table-column>
       <el-table-column
-        prop="ddId"
+        prop="orderDate"
         label="订单日期"
         width="100"
       ></el-table-column>
       <el-table-column
-        prop="ddParentIdId"
+        prop="takeOffArrive"
         label="起飞-到达"
         width="100"
       ></el-table-column>
       <el-table-column
-        prop="domain"
+        prop="flightDateNumber"
         label="航班日期/航班号"
         width="200"
       ></el-table-column>
@@ -157,27 +157,27 @@
         width="100"
       ></el-table-column>
       <el-table-column
-        prop="domain"
+        prop="totalPriceNumber"
         label="总价/人数"
         width="100"
       ></el-table-column>
       <el-table-column
-        prop="domain"
+        prop="orderStatus"
         label="订单状态"
         width="100"
       ></el-table-column>
       <el-table-column
-        prop="domain"
+        prop="policyId"
         label="政策ID"
         width="100"
       ></el-table-column>
       <el-table-column
-        prop="domain"
+        prop="balance"
         label="是否退差额"
         width="100"
       ></el-table-column>
       <el-table-column
-        prop="domain"
+        prop="lockingPeople"
         label="锁定人"
         width="100"
       ></el-table-column>
@@ -218,7 +218,7 @@
         align="center"
         width="300">
         <template slot-scope="scope">
-          <el-button @click="handleAddChild(scope.row.deptId)" type="success" size="mini">添加子级</el-button>
+          <el-button @click="handleAddChild(scope.row.deptId)" type="success" size="mini">添加</el-button>
           <el-button @click="handleUpdate(scope.row.deptId)" type="primary" size="mini">编辑</el-button>
           <el-button @click.native.prevent="handleRemove(scope.row.deptId)" type="danger"
                      size="mini">删除
@@ -278,7 +278,13 @@
 <script>
 
     const defaultData = {
-        orderReport:'',//订单报表
+        orderDate:'',//订单日期
+        takeOffArrive:'',//起飞-到达
+        totalPriceNumber:'',//总价/人数
+        Number:'',//人数
+        policyId:'',//政策ID
+        balance:'',//是否退差额
+        lockingPeople:'',//锁定人
         orderType:'',//订单类型
         flightType:'',//航程类型
         orderSource:'',//订单来源
@@ -310,7 +316,7 @@
         roles: []
     };
     export default {
-        name: "dept",
+        name: "order",
         data() {
             return {
                 radio:'all',
