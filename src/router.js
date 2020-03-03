@@ -135,7 +135,24 @@ export default new Router({
           meta: { title: 'Home', icon: 'home' }
         }
       ]
-    },{
+    },
+    {
+      title: '订单管理',
+      path: '/order',
+      uri: '/order',
+      component: Layout,
+      children: [
+        {
+          title: '订单信息',
+          path: 'index',
+          name: 'order',
+          uri: '/order/index',
+          component: () => import('@/views/order/index'),
+          meta: { title: 'Home', icon: 'home' }
+        }
+      ]
+    },
+    {
       title: '机场信息',
       path: '/airport',
       uri: '/airport',
@@ -211,21 +228,6 @@ export default new Router({
         }
       ]
     },
-    {
-      title: '订单管理',
-      path: '/order',
-      uri: '/order',
-      component: Layout,
-      children: [
-        {
-          title: '订单信息',
-          path: 'index',
-          name: 'order',
-          uri: '/order/index',
-          component: () => import('@/views/order/index'),
-          meta: { title: 'Home', icon: 'home' }
-        }
-      ]
-    },
+
   ]
 });

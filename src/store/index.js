@@ -11,6 +11,7 @@ import firm from './modules/firm';
 import dept from './modules/dept';
 import app from './modules/app';
 import api from './modules/api';
+import order from './modules/order';
 
 Vue.use(Vuex);
 
@@ -27,6 +28,7 @@ export default new Vuex.Store({
     dept,
     app,
     api,
+    order,
   },
   state: {},
   mutations: {},
