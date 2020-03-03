@@ -1,4 +1,4 @@
-import { save, removeOne, getNavsTreeData, getRoleList, getPageList, getTotal, getOne } from "@/api/role";
+import { save, removeOne, getNavsTreeData, getRoleList, getPageList, getTotal, getOne, getAll} from "@/api/role";
 import { getToken } from "@/utils/auth";
 
 
@@ -100,6 +100,18 @@ const actions = {
   getOne({ commit }, params) {
     return new Promise((resolve, reject) => {
       getOne(params)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getAll({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      getAll(params)
         .then(response => {
           const { data } = response;
           resolve(data);

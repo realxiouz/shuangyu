@@ -1,4 +1,4 @@
-import { add, deleteOne, edit, getFirmList, getTotal, getList } from "@/api/firm";
+import {addOne, removeOne, updateOne, getPageList, getTotal, getList} from '@/api/firm';
 
 
 const actions = {
@@ -16,7 +16,7 @@ const actions = {
   },
   getPageList({ commit }, params) {
     return new Promise((resolve, reject) => {
-      getFirmList(params)
+      getPageList(params)
         .then(response => {
           // const { data } = response;
           resolve(response);
@@ -38,9 +38,9 @@ const actions = {
         });
     });
   },
-  edit({ commit }, params) {
+  updateOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      edit(params)
+      updateOne(params)
         .then(response => {
           // const { data } = response;
           resolve(response);
@@ -50,9 +50,9 @@ const actions = {
         });
     });
   },
-  delete({ commit }, params) {
+  removeOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      deleteOne(params)
+      removeOne(params)
         .then(response => {
           // const { data } = response;
           resolve(response);
@@ -62,9 +62,9 @@ const actions = {
         });
     });
   },
-  add({ commit }, params) {
+  addOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      add(params)
+      addOne(params)
         .then(response => {
           resolve(response);
         })
@@ -73,7 +73,7 @@ const actions = {
         });
     });
   }
-};
+}
 
 export default {
   namespaced: true,

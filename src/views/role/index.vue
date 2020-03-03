@@ -15,7 +15,7 @@
     </el-form>
     <el-table :data="tableData" style="width: 100%">
       <el-table-column
-        prop="roleId"
+        prop="roleId" v-if="false"
         label="角色唯一标识"
       ></el-table-column>
       <el-table-column

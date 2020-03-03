@@ -53,3 +53,10 @@ export function getNavsTreeData() {
     method: "get"
   });
 }
+
+export function getAll() {
+  return request({
+    url: "/role/all",
+    method: "get"
+  });
+}
