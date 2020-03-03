@@ -258,13 +258,6 @@
                     .dispatch("dept/getOne", deptId)
                     .then(data => {
                         this.formData = data;
-                        let arr = [];
-                        if (this.formData.roles && this.formData.roles.length > 0) {
-                            this.formData.roles.forEach((item) => {
-                                arr.push(item.roleId)
-                            })
-                            this.formData.roles = arr;
-                        }
                         this.dialogVisible = true;
                     }).catch(error => {
                     console.log(error);
