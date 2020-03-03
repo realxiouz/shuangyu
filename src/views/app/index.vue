@@ -14,14 +14,9 @@
     <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;"
               border>
       <el-table-column
-        prop="appId"
-        label="应用唯一标识"
-        width="200"
-      ></el-table-column>
-      <el-table-column
         prop="appName"
         label="应用名称"
-        width="300"
+        width="500"
       ></el-table-column>
       <el-table-column prop="enable" label="是否启用">
         <template slot-scope="scope">

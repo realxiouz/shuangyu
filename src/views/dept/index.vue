@@ -205,18 +205,6 @@
                         console.log(error);
                     });
             },
-            loadOneRole(id) {
-                this.$store
-                    .dispatch("role/getOne", id)
-                    .then(data => {
-                        if (data) {
-                            this.paramsRoles.push(data);
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
             loadTotal: function () {
                 if (!this.searchForm.deptName) {
                     this.searchForm = {};
@@ -270,13 +258,6 @@
                     .dispatch("dept/getOne", deptId)
                     .then(data => {
                         this.formData = data;
-                        let arr = [];
-                        if (this.formData.roles && this.formData.roles.length > 0) {
-                            this.formData.roles.forEach((item) => {
-                                arr.push(item.roleId)
-                            })
-                            this.formData.roles = arr;
-                        }
                         this.dialogVisible = true;
                     }).catch(error => {
                     console.log(error);
@@ -303,10 +284,7 @@
                 });
             },
             handleChange(value, direction, movedKeys) {
-                this.paramsRoles = [];
-                value.forEach((item) => {
-                    this.loadOneRole(item)
-                })
+                this.formData.roles = value;
             }
         },
         mounted() {

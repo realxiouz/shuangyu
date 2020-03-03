@@ -15,11 +15,6 @@
               border
     >
       <el-table-column
-        prop="apiId"
-        label="ID"
-        width="200"
-      ></el-table-column>
-      <el-table-column
         prop="uri"
         label="URL"
         width="200"
