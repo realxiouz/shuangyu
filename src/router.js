@@ -153,22 +153,6 @@ export default new Router({
       ]
     },
     {
-      title: '订单报表',
-      path: '/orderReport',
-      uri: '/orderReport',
-      component: Layout,
-      children: [
-        {
-          title: '订单报表信息',
-          path: 'index',
-          name: 'orderReport',
-          uri: '/orderReport/index',
-          component: () => import('@/views/orderReport/index'),
-          meta: { title: 'Home', icon: 'home' }
-        }
-      ]
-    },
-    {
       title: '机场信息',
       path: '/airport',
       uri: '/airport',
