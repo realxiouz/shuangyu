@@ -83,14 +83,6 @@
 
       <el-row :gutter="20">
         <el-col :span="6">
-          <el-form-item label="订单报表:">
-            <el-select v-model="formData.orderReport" placeholder="请选择">
-              <el-option label="测试1" value="1"></el-option>
-              <el-option label="测试2" value="2"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="6">
           <el-form-item label="订单类型:">
             <el-select v-model="formData.orderType" placeholder="选择类型">
               <el-option label="测试1" value="1"></el-option>
@@ -98,7 +90,6 @@
             </el-select>
           </el-form-item>
         </el-col>
-
         <el-col :span="6">
       <el-form-item label="订单来源:">
         <el-select v-model="formData.orderSource" placeholder="全部">
@@ -188,6 +179,36 @@
       <el-table-column
         prop="domain"
         label="锁定人"
+        width="100"
+      ></el-table-column>
+      <el-table-column
+        prop="receivable"
+        label="应收"
+        width="100"
+      ></el-table-column>
+      <el-table-column
+        prop="payable"
+        label="应付"
+        width="100"
+      ></el-table-column>
+      <el-table-column
+        prop="receipt"
+        label="实收"
+        width="100"
+      ></el-table-column>
+      <el-table-column
+        prop="payment"
+        label="实付"
+        width="100"
+      ></el-table-column>
+      <el-table-column
+        prop="profit"
+        label="利润"
+        width="100"
+      ></el-table-column>
+      <el-table-column
+        prop="purchaseOrders"
+        label="采购订单"
         width="100"
       ></el-table-column>
       <!--     操作  按钮  需要 编辑 添加 删除  -->
