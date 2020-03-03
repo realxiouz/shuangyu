@@ -12,7 +12,6 @@
       </el-row>
       <el-header>
         <el-button type="text" @click="rootAdd">添加</el-button>
-        <el-button type="text" @click="transDataToRoles">测试</el-button>
       </el-header>
       <el-main>
         <div>
@@ -178,10 +177,10 @@
         <el-button type="primary" @click="handleSave">确 定</el-button>
       </div>
       <!--穿梭框-->
-       <template>
-         <el-transfer v-model="rolesData" :data="transData" :props="transferProps">
-         </el-transfer>
-       </template>
+      <template>
+        <el-transfer v-model="rolesData" :data="transData" :props="transferProps">
+        </el-transfer>
+      </template>
     </el-dialog>
   </div>
 </template>
@@ -223,10 +222,12 @@
         },
         tableProps: {
           hasChildren: 'xxx',
-          children: 'children' },
+          children: 'children'
+        },
         transferProps: {
           key: 'roleId',
-          label: 'roleName'}
+          label: 'roleName'
+        }
       };
     },
     methods: {
@@ -240,7 +241,7 @@
         this.loadRoles();
       },
       search() {
-      /*{pageFlag: this.pageFlag, pageSize: this.pageSize, lastId: this.lastId}*/
+        /*{pageFlag: this.pageFlag, pageSize: this.pageSize, lastId: this.lastId}*/
         this.$store
           .dispatch('firm/getList')
           .then(data => {
@@ -251,7 +252,7 @@
           });
       },
       /*通知*/
-      open(func,data) {
+      open(func, data) {
         this.$confirm('此操作将删除该企业信息及子企业信息, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -270,7 +271,7 @@
           });
         });
       },
-      remove(params){
+      remove(params) {
         this.$store
           .dispatch('firm/removeOne', params)
           .then(data => {
@@ -304,21 +305,21 @@
           roles: []
         };
       },
-      clearRoles(){
+      clearRoles() {
         this.transData = [];
         this.rolesData = [];
       },
       /*在编辑时需要对已有的角色数据进行转换*/
-      transRolesToData(roles){
+      transRolesToData(roles) {
         roles.forEach((item) => {
           this.rolesData.push(item.roleId);
         })
       },
       /*在进行存储的时候将角色ID列表转换为对象列表*/
-      transDataToRoles(){
+      transDataToRoles() {
         this.formData.roles = [];
         this.transData.forEach((item) => {
-          if (this.rolesData.includes(item.roleId)){
+          if (this.rolesData.includes(item.roleId)) {
             this.formData.roles.push(item);
           }
         });
@@ -341,7 +342,7 @@
             console.log(error);
           });
       },
-      loadRoles(){
+      loadRoles() {
         this.clearRoles();
         this.$store
           .dispatch('role/getAll')
@@ -372,9 +373,9 @@
         this.dialogVisible = false;
         this.transDataToRoles();
 
-        if(this.formData.firmId != ''){
+        if (this.formData.firmId != '') {
           this.$store
-            .dispatch( 'firm/updateOne', this.formData)
+            .dispatch('firm/updateOne', this.formData)
             .then(data => {
               console.log(data);
               this.loadData();
@@ -382,7 +383,7 @@
             .catch(error => {
               console.log(error);
             });
-        }else{
+        } else {
           if (this.rootNav) { //如果添加的顶级企业信息，对某些属性进行初始化
             this.formData.pid = null;
             this.formData.level = 0;
@@ -411,7 +412,7 @@
         this.transRolesToData(row.roles);
       },
       handleDelete(index, row) {
-        this.open(this.remove,row.firmId);
+        this.open(this.remove, row.firmId);
       },
       handleSizeChange: function (size) {
         this.pageSize = size;
