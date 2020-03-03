@@ -33,9 +33,6 @@
             </span>
           </span>
         </el-tree>
-        <el-row>
-          <el-button @click="rootAdd" icon="el-icon-plus" circle></el-button>
-        </el-row>
       </el-aside>
 
       <el-main>
