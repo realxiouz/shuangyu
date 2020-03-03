@@ -228,6 +228,21 @@ export default new Router({
         }
       ]
     },
-
+    {
+      title: '员工管理',
+      path: '/staff',
+      uri: '/staff',
+      component: Layout,
+      children: [
+        {
+          title: '员工管理',
+          path: 'index',
+          name: 'staff',
+          uri: '/staff/index',
+          component: () => import('@/views/staff/index'),
+          meta: { title: 'Home', icon: 'home' }
+        }
+      ]
+    }
   ]
 });
