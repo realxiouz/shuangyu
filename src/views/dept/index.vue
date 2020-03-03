@@ -205,18 +205,6 @@
                         console.log(error);
                     });
             },
-            loadOneRole(id) {
-                this.$store
-                    .dispatch("role/getOne", id)
-                    .then(data => {
-                        if (data) {
-                            this.paramsRoles.push(data);
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
             loadTotal: function () {
                 if (!this.searchForm.deptName) {
                     this.searchForm = {};
@@ -303,10 +291,7 @@
                 });
             },
             handleChange(value, direction, movedKeys) {
-                this.paramsRoles = [];
-                value.forEach((item) => {
-                    this.loadOneRole(item)
-                })
+                this.formData.roles = value;
             }
         },
         mounted() {
