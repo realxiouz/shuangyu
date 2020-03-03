@@ -1,6 +1,6 @@
 <template>
   <div class="order-container">
-    <el-form :inline="true" :model="formData"  :label-position="labelPosition" label-width="110px" >
+    <el-form :inline="true" :model="searchForm"  :label-position="labelPosition" label-width="110px" >
       <el-row :gutter="20">
         <el-col :span="6">
       <el-form-item label="起始日期:">
@@ -83,6 +83,23 @@
 
       <el-row :gutter="20">
         <el-col :span="6">
+          <el-form-item label="订单报表:">
+            <el-select v-model="formData.orderReport" placeholder="请选择">
+              <el-option label="测试1" value="1"></el-option>
+              <el-option label="测试2" value="2"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item label="订单类型:">
+            <el-select v-model="formData.orderType" placeholder="选择类型">
+              <el-option label="测试1" value="1"></el-option>
+              <el-option label="测试2" value="2"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+
+        <el-col :span="6">
       <el-form-item label="订单来源:">
         <el-select v-model="formData.orderSource" placeholder="全部">
           <el-option label="去哪网" value="qunawang"></el-option>
@@ -93,9 +110,9 @@
         <el-col :span="6">
       <el-form-item label="航程类型:" prop="flightType">
         <el-radio-group v-model="formData.flightType">
-          <el-radio label="单程"></el-radio>
-          <el-radio label="往返"></el-radio>
-          <el-radio label="全部"></el-radio>
+          <el-radio v-model="radio" label="one">单程</el-radio>
+          <el-radio v-model="radio" label="Back">往返</el-radio>
+          <el-radio v-model="radio" label="all">全部</el-radio>
         </el-radio-group>
       </el-form-item>
           </el-col>
@@ -144,7 +161,7 @@
         width="200"
       ></el-table-column>
       <el-table-column
-        prop="domain"
+        prop="PNR"
         label="PNR"
         width="100"
       ></el-table-column>
@@ -173,6 +190,7 @@
         label="锁定人"
         width="100"
       ></el-table-column>
+      <!--     操作  按钮  需要 编辑 添加 删除  -->
       <el-table-column
         fixed="right"
         label="操作"
@@ -239,21 +257,30 @@
 <script>
 
     const defaultData = {
-        flightType:'',
-        orderSource:'',
-        flightNumber:'',
-        flightEndDate:'',
-        flightStartDate:'',
-        orderStatus:'',
-        PNR:'',
-        ticketNumber:'',
-        orderNumber:'',
-        nameAirplane:'',
-        namePhone:'',
-        specialQuery: '',
-        endDate:'',
-        startDate: '',
+        orderReport:'',//订单报表
+        orderType:'',//订单类型
+        flightType:'',//航程类型
+        orderSource:'',//订单来源
+        flightNumber:'',//航班号
+        flightEndDate:'',//航班截止日期
+        flightStartDate:'',//航班起始日期
+        orderStatus:'',//订单状态
+        PNR:'',       //PNR
+        ticketNumber:'',//票号
+        orderNumber:'',//订单号
+        nameAirplane:'',//乘机人姓名
+        namePhone:'',//联系人电话
+        specialQuery: '',//特殊查询
+        endDate:'',//结束日期
+        startDate: '',//起始日期
 
+        receivable:'',//应收
+        payable:'',//应付
+        receipt:'',//实收
+        payment:'',//实付
+        profit:'',//利润
+        purchaseOrders:[],//采购订单
+        //
         deptName: "",
         firmId: "",
         domain: "",
@@ -265,6 +292,7 @@
         name: "dept",
         data() {
             return {
+                radio:'all',
                 labelPosition: 'left',
                 searchForm: {},
                 lastId: "0",
@@ -274,12 +302,10 @@
                 dialogVisible: false,
                 total: 0,
                 tableData: null,
+
                 allRoles: [],
                 paramsRoles: [],
                 rules: {
-                    flightType:[
-                        {required: true, message: "请选择航程类型", trigger: "blur"},
-                    ],
                     deptName: [
                         {required: true, message: "请输入部门名称", trigger: "blur"},
                         {
