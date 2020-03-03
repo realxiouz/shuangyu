@@ -149,6 +149,14 @@ export default new Router({
           uri: '/order/index',
           component: () => import('@/views/order/index'),
           meta: { title: 'Home', icon: 'home' }
+        },
+        {
+          title: '订单报表',
+          path: 'indexReport',
+          name: 'order',
+          uri: '/order/indexReport',
+          component: () => import('@/views/order/indexReport'),
+          meta: { title: 'Home', icon: 'home' }
         }
       ]
     },
@@ -158,6 +166,7 @@ export default new Router({
       uri: '/airport',
       component: Layout,
       children: [
+
         {
           title: '机场信息',
           path: 'index',
