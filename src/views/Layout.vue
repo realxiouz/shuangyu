@@ -78,7 +78,6 @@
         return this.$router.path;
       },
       menuList() {
-        console.log(this.$router.options.routes);
         return this.$router.options.routes;
       }
     },
