@@ -3,25 +3,22 @@
     <el-form :inline="true" :model="searchForm"  :label-position="labelPosition" label-width="110px" >
       <el-row :gutter="20">
         <el-col :span="6">
-      <el-form-item label="起始日期:">
-          <el-date-picker type="date" placeholder="选择日期" v-model="formData.startDate" style="width: 100%;" ></el-date-picker>
-      </el-form-item>
+          <el-form-item label="应收:">
+            <el-input v-model="formData.namePhone" style="width: 230px"></el-input>
+          </el-form-item>
           </el-col>
         <el-col :span="6">
-      <el-form-item label="结束日期:">
-          <el-date-picker type="date" placeholder="选择日期" v-model="formData.endDate" style="width: 100%;" ></el-date-picker>
-      </el-form-item>
+          <el-form-item label="应付:">
+            <el-input v-model="formData.namePhone"  style="width: 230px"></el-input>
+          </el-form-item>
         </el-col>
         <el-col :span="6">
-      <el-form-item label="特殊查询:">
-        <el-select v-model="formData.specialQuery" placeholder="全部" >
-          <el-option label="测试1" value="shanghai"></el-option>
-          <el-option label="测试2" value="beijing"></el-option>
-        </el-select>
-      </el-form-item>
+          <el-form-item label="实收:">
+            <el-input v-model="formData.namePhone" ></el-input>
+          </el-form-item>
         </el-col>
         <el-col :span="6">
-      <el-form-item label="联系人电话:">
+      <el-form-item label="实付:">
         <el-input v-model="formData.namePhone" ></el-input>
       </el-form-item>
           </el-col>
@@ -29,88 +26,16 @@
 
       <el-row :gutter="20">
         <el-col :span="6">
-      <el-form-item label="乘机人姓名:">
+      <el-form-item label="利润:">
         <el-input v-model="formData.nameAirplane" style="width: 230px"></el-input>
       </el-form-item>
           </el-col>
         <el-col :span="6">
-      <el-form-item label="订单号:">
+      <el-form-item label="采购订单:">
         <el-input v-model="formData.orderNumber" style="width: 230px"></el-input>
       </el-form-item>
           </el-col>
-        <el-col :span="6">
-      <el-form-item label="票号:">
-        <el-input v-model="formData.ticketNumber" style="width: 230px"></el-input>
-      </el-form-item>
-        </el-col>
-        <el-col :span="6">
-      <el-form-item label="PNR:">
-        <el-input v-model="formData.PNR" ></el-input>
-      </el-form-item>
-        </el-col>
       </el-row>
-
-      <el-row :gutter="20">
-        <el-col :span="6">
-      <el-form-item label="订单状态:">
-        <el-select v-model="formData.orderStatus" placeholder="全部">
-          <el-option label="出票中" value="ing"></el-option>
-          <el-option label="退票完成" value="exit"></el-option>
-          <el-option label="出票完成" value="ok"></el-option>
-        </el-select>
-      </el-form-item>
-          </el-col>
-        <el-col :span="6">
-      <el-form-item label="航班起始日期:">
-        <el-col>
-          <el-date-picker type="date" placeholder="选择日期" v-model="formData.flightStartDate" style="width: 100%;"></el-date-picker>
-        </el-col>
-      </el-form-item>
-        </el-col>
-        <el-col :span="6">
-      <el-form-item label="航班截止日期:">
-        <el-col>
-          <el-date-picker type="date" placeholder="选择日期" v-model="formData.flightEndDate" style="width: 100%;"></el-date-picker>
-        </el-col>
-      </el-form-item>
-        </el-col>
-        <el-col :span="6">
-      <el-form-item label="航班号:">
-        <el-input v-model="formData.flightNumber"></el-input>
-      </el-form-item>
-        </el-col>
-      </el-row>
-
-      <el-row :gutter="20">
-        <el-col :span="6">
-          <el-form-item label="订单类型:">
-            <el-select v-model="formData.orderType" placeholder="选择类型">
-              <el-option label="测试1" value="1"></el-option>
-              <el-option label="测试2" value="2"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="6">
-      <el-form-item label="订单来源:">
-        <el-select v-model="formData.orderSource" placeholder="全部">
-          <el-option label="去哪网" value="qunawang"></el-option>
-          <el-option label="飞猪" value="feizhu"></el-option>
-        </el-select>
-      </el-form-item>
-            </el-col>
-        <el-col :span="6">
-      <el-form-item label="航程类型:" prop="flightType">
-        <el-radio-group v-model="formData.flightType">
-          <el-radio v-model="radio" label="one">单程</el-radio>
-          <el-radio v-model="radio" label="Back">往返</el-radio>
-          <el-radio v-model="radio" label="all">全部</el-radio>
-        </el-radio-group>
-      </el-form-item>
-          </el-col>
-      </el-row>
-
-
-
 
       <el-form-item>
         <el-button type="primary" @click="handleSearch">查询</el-button>
@@ -127,98 +52,43 @@
               :tree-props="{children: 'children', hasChildren: 'test'}"
     >
       <el-table-column
-        prop="orderNumber"
-        label="订单号"
-        width="100"
-      ></el-table-column>
-      <el-table-column
-        prop="flightType"
-        label="类型"
-        width="100"
-      ></el-table-column>
-      <el-table-column
-        prop="orderDate"
-        label="订单日期"
-        width="100"
-      ></el-table-column>
-      <el-table-column
-        prop="takeOffArrive"
-        label="起飞-到达"
-        width="100"
-      ></el-table-column>
-      <el-table-column
-        prop="flightDateNumber"
-        label="航班日期/航班号"
-        width="200"
-      ></el-table-column>
-      <el-table-column
-        prop="PNR"
-        label="PNR"
-        width="100"
-      ></el-table-column>
-      <el-table-column
-        prop="totalPriceNumber"
-        label="总价/人数"
-        width="100"
-      ></el-table-column>
-      <el-table-column
-        prop="orderStatus"
-        label="订单状态"
-        width="100"
-      ></el-table-column>
-      <el-table-column
-        prop="policyId"
-        label="政策ID"
-        width="100"
-      ></el-table-column>
-      <el-table-column
-        prop="balance"
-        label="是否退差额"
-        width="100"
-      ></el-table-column>
-      <el-table-column
-        prop="lockingPeople"
-        label="锁定人"
-        width="100"
-      ></el-table-column>
-      <el-table-column
         prop="receivable"
         label="应收"
-        width="100"
+        width="200"
       ></el-table-column>
       <el-table-column
         prop="payable"
         label="应付"
-        width="100"
+        width="200"
       ></el-table-column>
       <el-table-column
         prop="receipt"
         label="实收"
-        width="100"
+        width="200"
       ></el-table-column>
       <el-table-column
         prop="payment"
         label="实付"
-        width="100"
+        width="200"
       ></el-table-column>
       <el-table-column
         prop="profit"
         label="利润"
-        width="100"
+        width="200"
       ></el-table-column>
       <el-table-column
         prop="purchaseOrders"
         label="采购订单"
-        width="100"
+        width="200"
       ></el-table-column>
-      <!--     操作  按钮  需要 编辑 添加 删除  -->
+
       <el-table-column
         fixed="right"
         label="操作"
         align="center"
         width="300">
         <template slot-scope="scope">
-          <el-button @click="handleAddChild(scope.row.deptId)" type="success" size="mini">添加</el-button>
+          <el-button @click="handleAddChild(scope.row.deptId)" type="success" size="mini">添加子级</el-button>
           <el-button @click="handleUpdate(scope.row.deptId)" type="primary" size="mini">编辑</el-button>
           <el-button @click.native.prevent="handleRemove(scope.row.deptId)" type="danger"
                      size="mini">删除
@@ -278,28 +148,6 @@
 <script>
 
     const defaultData = {
-        orderDate:'',//订单日期
-        takeOffArrive:'',//起飞-到达
-        totalPriceNumber:'',//总价/人数
-        Number:'',//人数
-        policyId:'',//政策ID
-        balance:'',//是否退差额
-        lockingPeople:'',//锁定人
-        orderType:'',//订单类型
-        flightType:'',//航程类型
-        orderSource:'',//订单来源
-        flightNumber:'',//航班号
-        flightEndDate:'',//航班截止日期
-        flightStartDate:'',//航班起始日期
-        orderStatus:'',//订单状态
-        PNR:'',       //PNR
-        ticketNumber:'',//票号
-        orderNumber:'',//订单号
-        nameAirplane:'',//乘机人姓名
-        namePhone:'',//联系人电话
-        specialQuery: '',//特殊查询
-        endDate:'',//结束日期
-        startDate: '',//起始日期
 
         receivable:'',//应收
         payable:'',//应付
@@ -316,11 +164,11 @@
         roles: []
     };
     export default {
-        name: "order",
+        name: "dept",
         data() {
             return {
                 radio:'all',
-                labelPosition: 'left',
+                labelPosition: 'right',
                 searchForm: {},
                 lastId: "0",
                 pageFlag: "next",
