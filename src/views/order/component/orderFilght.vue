@@ -1,27 +1,28 @@
 <template>
 
 
-  <el-dialog :inline="true" title="订单航班信息" :visible.sync="dialogVisible" width="70%">
-    <el-form ref="form" :rules="rules" :model="formData" label-width="100px" >
+  <el-dialog :inline="true" title="订单航班信息" :visible.sync=dialogCreate width="70%">
+    <el-form ref="form" :rules="rules" :model="formData" label-width="100px">
       <el-row :gutter="20">
         <el-col :span="6">
           <el-form-item label="出发日期:" prop="FlightDate">
-            <el-date-picker type="date" placeholder="选择日期" v-model="formData.FlightDate" style="width: 100%;" ></el-date-picker>
+            <el-date-picker type="date" placeholder="选择日期" v-model="formData.FlightDate"
+                            style="width: 100%;"></el-date-picker>
           </el-form-item>
         </el-col>
         <el-col :span="6">
           <el-form-item label="航司:" prop="airLine">
-            <el-input v-model="formData.airLine" ></el-input>
+            <el-input v-model="formData.airLine"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">
           <el-form-item label="主航班号:" prop="actFlightCode">
-            <el-input v-model="formData.actFlightCode" ></el-input>
+            <el-input v-model="formData.actFlightCode"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">
-          <el-form-item label="航班号:" prop="flightCode" >
-            <el-input v-model="formData.flightCode" ></el-input>
+          <el-form-item label="航班号:" prop="flightCode">
+            <el-input v-model="formData.flightCode"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -33,7 +34,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="6">
-          <el-form-item label="出发地三字码:" prop="dpt" >
+          <el-form-item label="出发地三字码:" prop="dpt">
             <el-input v-model="formData.dpt"></el-input>
           </el-form-item>
         </el-col>
@@ -97,7 +98,8 @@
             <el-input v-model="formData.constructionFee"></el-input>
           </el-form-item>
         </el-col>
-      </el-row>`
+      </el-row>
+      `
       <el-row :gutter="20">
         <el-col :span="6">
           <el-form-item label="燃油费:" prop="fuelTax">
@@ -157,43 +159,43 @@
       </el-row>
 
     </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="handleCancel">取 消</el-button>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="handleCancel">取 消</el-button>
       <el-button type="primary" @click="handleSave">确 定</el-button>
-      </div>
+    </div>
   </el-dialog>
 </template>
 <script>
   const defaultData = {
     //
     //航班字段
-    FlightDate:'',//出发日期
-    flightId:'',//主键唯一标识
-    airLine:'',//航司
-    actFlightCode:'',//主航班号
-    flightCode:'',//航班号
-    dpt:'',//出发地三字码
-    dptAirport:'',//出发机场
-    dptTerminal:'',//出发航楼站
-    dptTime:'',//起飞时间
-    arr:'',//到达地三字码
-    arrAirport:'',//到达机场
-    arrTerminal:'',//到达航站楼
-    arrTime:'',//到达时间
-    distance:'',//航程
-    flightTimes:'',//飞行时间
-    constructionFee:'',//机建费
-    fuelTax:'',//燃油费
-    childFuelTax:'',//儿童燃油费
-    planeType:'',//机型
-    flightTypeFullName:'',//机型全称
-    shareFlag:'',//共享标记
-    stopFlag:'',//经停标记
-    stopAirportCode:'',//经停机场三字码
-    meal:'',//餐食标记
-    stopCount:'',//经停次数
-    cycle:'',//飞行周期
-    RefundChangeRule:'',//退改规则
+    FlightDate: '',//出发日期
+    flightId: '',//主键唯一标识
+    airLine: '',//航司
+    actFlightCode: '',//主航班号
+    flightCode: '',//航班号
+    dpt: '',//出发地三字码
+    dptAirport: '',//出发机场
+    dptTerminal: '',//出发航楼站
+    dptTime: '',//起飞时间
+    arr: '',//到达地三字码
+    arrAirport: '',//到达机场
+    arrTerminal: '',//到达航站楼
+    arrTime: '',//到达时间
+    distance: '',//航程
+    flightTimes: '',//飞行时间
+    constructionFee: '',//机建费
+    fuelTax: '',//燃油费
+    childFuelTax: '',//儿童燃油费
+    planeType: '',//机型
+    flightTypeFullName: '',//机型全称
+    shareFlag: '',//共享标记
+    stopFlag: '',//经停标记
+    stopAirportCode: '',//经停机场三字码
+    meal: '',//餐食标记
+    stopCount: '',//经停次数
+    cycle: '',//飞行周期
+    RefundChangeRule: '',//退改规则
     //
     roles: []
   };
@@ -204,7 +206,7 @@
         formData: defaultData,
         total: 0,
         tableData: null,
-        dialogVisible:false,
+        dialogVisible: false,
         allRoles: [],
         paramsRoles: [],
         rules: {
@@ -216,10 +218,13 @@
       };
     },
     methods: {
-
+      handleCancel() {
+        this.dialogCreate = false;
+        this.$emit('success',false);
+      }
 
     },
-
+    props: ['dialogCreate']
   };
 
 
