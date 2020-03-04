@@ -1,6 +1,61 @@
-import {getList} from '@/api/nav';
+import {addOne,updateOne,removeOne,getOne,getList,getTotal,getPageList} from '@/api/staff';
 
 const actions = {
+  addOne({commit}, params) {
+    return new Promise((resolve, reject) => {
+      addOne(params)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  updateOne({commit}, params) {
+    return new Promise((resolve, reject) => {
+      updateOne(params)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  removeOne({commit}, params) {
+    return new Promise((resolve, reject) => {
+      removeOne(params)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getOne({commit}, params) {
+    return new Promise((resolve, reject) => {
+      getOne(params)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getTotal({commit}, params) {
+    return new Promise((resolve, reject) => {
+      getTotal(params)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
   getList({commit}, params) {
     return new Promise((resolve, reject) => {
       getList(params)
@@ -12,6 +67,17 @@ const actions = {
         });
     });
   },
+  getPageList({commit}, params) {
+    return new Promise((resolve, reject) => {
+      getPageList(params)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
 }
 
 export default {
