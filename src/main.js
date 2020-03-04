@@ -10,16 +10,16 @@ import store from './store';
 import '@/permission';
 import _ from 'lodash'
 import moment from 'moment'
+import numeral from 'numeral';
 
 // import { mockXHR } from '../mock';
 // if (process.env.NODE_ENV === 'development') {
 //   mockXHR();
 // }
-
-Vue.use(ElementUI, { locale });
 Vue.prototype._ = _
 Vue.prototype.$moment = moment
-
+Vue.prototype.$numeral = numeral;
+Vue.use(ElementUI, { locale });
 Vue.config.productionTip = false;
 
 new Vue({
