@@ -239,13 +239,14 @@
       removeNode(data, node) {
         this.curLine = [];
         this.curLine.push(node.pid);
-        this.open(this.remove, this.loadData, node.navId);
+        this.open(this.remove, node.navId);
       },
       remove(params) {
         this.$store
           .dispatch('nav/removeOne', params)
           .then(data => {
             console.log(data);
+            this.loadData();
           })
           .catch(error => {
             console.log(error);
@@ -337,14 +338,13 @@
           this.apiData = [];
           this.transferData = [];
       },
-      open(func, loadFunc, data) {
+      open(func, data) {
         this.$confirm('此操作将删除该企业信息及子企业信息, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           func(data);
-          loadFunc();
           this.$message({
             type: 'success',
             message: '删除成功!'
@@ -355,7 +355,7 @@
             message: '已取消删除'
           });
         });
-      },
+      }
     },
     mounted() {
       this.loadData();
