@@ -10,6 +10,7 @@ import store from './store';
 import '@/permission';
 import _ from 'lodash'
 import moment from 'moment'
+import numeral from 'numeral';
 
 // import { mockXHR } from '../mock';
 // if (process.env.NODE_ENV === 'development') {
@@ -17,6 +18,7 @@ import moment from 'moment'
 // }
 window.prototype._=_;
 window.prototype.moment = moment;
+window.prototype.numeral = numeral;
 Vue.use(ElementUI, { locale });
 Vue.config.productionTip = false;
 
