@@ -16,9 +16,9 @@ import numeral from 'numeral';
 // if (process.env.NODE_ENV === 'development') {
 //   mockXHR();
 // }
-window.prototype._=_;
-window.prototype.moment = moment;
-window.prototype.numeral = numeral;
+Vue.prototype._ = _
+Vue.prototype.$moment = moment
+Vue.prototype.$numeral = numeral;
 Vue.use(ElementUI, { locale });
 Vue.config.productionTip = false;
 
