@@ -15,11 +15,9 @@ import moment from 'moment'
 // if (process.env.NODE_ENV === 'development') {
 //   mockXHR();
 // }
-
+window.prototype._=_;
+window.prototype.moment = moment;
 Vue.use(ElementUI, { locale });
-Vue.prototype._ = _
-Vue.prototype.$moment = moment
-
 Vue.config.productionTip = false;
 
 new Vue({
