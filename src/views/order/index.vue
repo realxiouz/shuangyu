@@ -116,7 +116,7 @@
         <el-button type="primary" @click="handleSearch">查询</el-button>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="handleAdd">添加</el-button>
+        <el-button type="primary" @click="gotoLink" >添加</el-button>
       </el-form-item>
 
       </el-form>
@@ -275,7 +275,7 @@
           </el-col>
         </el-row>
 
-
+        <el-button type="primary" >添加航班信息</el-button>
         <el-table :data="tableData"
                   style="width: 100%;margin-bottom: 20px;"
                   row-key="deptId"
@@ -585,6 +585,7 @@
         name: "order",
         data() {
             return {
+
                 radio:'全部',
                 labelPosition: 'left',
                 searchForm: {},
@@ -651,10 +652,14 @@
             };
         },
         methods: {
+
             prevClick() {
                 this.pageFlag = "prev";
                 this.lastId = this.tableData[0].deptId;
                 this.loadData();
+            },
+            gotoLink() {
+              this.$router.replace('orderFlightName')
             },
             nextClick() {
                 this.pageFlag = "next";
