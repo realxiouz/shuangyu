@@ -157,7 +157,17 @@ export default new Router({
           uri: '/order/indexReport',
           component: () => import('@/views/order/indexReport'),
           meta: { title: 'Home', icon: 'home' }
+        },
+        {
+          title: '',
+          path: 'orderFlightName',
+          name: 'order',
+          uri: '/order/orderFlightName',
+          component: () => import('@/views/order/orderFlightName'),
+          meta: { title: 'Home', icon: 'home' }
         }
+
+
       ]
     },
     {
