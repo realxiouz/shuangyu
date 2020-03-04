@@ -236,8 +236,8 @@
 
         <el-row :gutter="20">
           <el-col :span="6">
-        <el-form-item label="航班日期/航班号" prop="flightNumber">
-          <el-input v-model="formData.flightNumber"></el-input>
+        <el-form-item label="航班日期/航班号" prop="flightNumber" >
+          <el-input v-model="formData.flightNumber" ></el-input>
         </el-form-item>
           </el-col>
           <el-col :span="6">
@@ -274,6 +274,220 @@
         </el-form-item>
           </el-col>
         </el-row>
+
+
+        <el-table :data="tableData"
+                  style="width: 100%;margin-bottom: 20px;"
+                  row-key="deptId"
+                  border
+                  :tree-props="{children: 'children', hasChildren: 'test'}"
+        >
+          <el-table-column
+            prop="orderNumber"
+            label="出发日期"
+            width="100"
+          ></el-table-column>
+          <el-table-column
+            prop="flightType"
+            label="主键唯一标识"
+            width="150"
+          ></el-table-column>
+          <el-table-column
+            prop="orderDate"
+            label="航司"
+            width="100"
+          ></el-table-column>
+          <el-table-column
+            prop="takeOffArrive"
+            label="主航班号"
+            width="100"
+          ></el-table-column>
+          <el-table-column
+            prop="flightDateNumber"
+            label="航班号"
+            width="100"
+          ></el-table-column>
+          <el-table-column
+            prop="PNR"
+            label="出发地三字码"
+            width="150"
+          ></el-table-column>
+          <el-table-column
+            prop="totalPriceNumber"
+            label="出发机场"
+            width="100"
+          ></el-table-column>
+          <el-table-column
+            prop="orderStatus"
+            label="出发航站楼"
+            width="100"
+          ></el-table-column>
+          <el-table-column
+            prop="policyId"
+            label="起飞时间"
+            width="100"
+          ></el-table-column>
+          <el-table-column
+            prop="balance"
+            label="到达地三字码"
+            width="150"
+          ></el-table-column>
+          <el-table-column
+            prop="lockingPeople"
+            label="到达机场"
+            width="100"
+          ></el-table-column>
+          <el-table-column
+            prop="lockingPeople"
+            label="到达航站楼"
+            width="100"
+          ></el-table-column>
+          <el-table-column
+            prop="lockingPeople"
+            label="到达时间"
+            width="100"
+          ></el-table-column>
+          <el-table-column
+            prop="lockingPeople"
+            label="航程"
+            width="100"
+          ></el-table-column>
+          <el-table-column
+            prop="lockingPeople"
+            label="飞行时间"
+            width="100"
+          ></el-table-column>
+          <el-table-column
+            prop="lockingPeople"
+            label="机建费"
+            width="100"
+          ></el-table-column>
+          <el-table-column
+            prop="lockingPeople"
+            label="燃油费"
+            width="100"
+          ></el-table-column>
+          <el-table-column
+            prop="lockingPeople"
+            label="儿童燃油费"
+            width="100"
+          ></el-table-column>
+          <el-table-column
+            prop="lockingPeople"
+            label="机型"
+            width="100"
+          ></el-table-column>
+          <el-table-column
+            prop="lockingPeople"
+            label="机型全称"
+            width="100"
+          ></el-table-column>
+          <el-table-column
+            prop="lockingPeople"
+            label="共享标记"
+            width="100"
+          ></el-table-column>
+          <el-table-column
+            prop="lockingPeople"
+            label="经停标记"
+            width="100"
+          ></el-table-column>
+          <el-table-column
+            prop="lockingPeople"
+            label="经停机场三字码"
+            width="150"
+          ></el-table-column>
+          <el-table-column
+            prop="lockingPeople"
+            label="餐食标记"
+            width="100"
+          ></el-table-column>
+          <el-table-column
+            prop="lockingPeople"
+            label="经停次数"
+            width="100"
+          ></el-table-column>
+          <el-table-column
+            prop="lockingPeople"
+            label="飞行周期"
+            width="100"
+          ></el-table-column>
+          <el-table-column
+            prop="lockingPeople"
+            label="退改规则"
+            width="100"
+          ></el-table-column>
+
+          <!--     操作  按钮  需要 编辑 添加 删除  -->
+          <el-table-column
+            fixed="right"
+            label="操作"
+            align="center"
+            width="300">
+            <template slot-scope="scope">
+              <!--          <el-button @click="handleAdd(scope.row.deptId)" type="success" size="mini">添加</el-button>-->
+              <el-button @click="handleUpdate(scope.row.deptId)" type="primary" size="mini">编辑</el-button>
+              <el-button @click.native.prevent="handleRemove(scope.row.deptId)" type="danger"
+                         size="mini">删除
+              </el-button>
+            </template>
+          </el-table-column>
+
+        </el-table>
+
+        <el-table :data="tableData"
+                  style="width: 100%;margin-bottom: 20px;"
+                  row-key="deptId"
+                  border
+                  :tree-props="{children: 'children', hasChildren: 'test'}"
+        >
+          <el-table-column
+            prop="orderNumber"
+            label="姓名"
+            width="200"
+          ></el-table-column>
+          <el-table-column
+            prop="flightType"
+            label="性别"
+            width="100"
+          ></el-table-column>
+          <el-table-column
+            prop="orderDate"
+            label="出生年月"
+            width="200"
+          ></el-table-column>
+          <el-table-column
+            prop="takeOffArrive"
+            label="乘机人类型"
+            width="150"
+          ></el-table-column>
+          <el-table-column
+            prop="flightDateNumber"
+            label="乘机人证件类型"
+            width="200"
+          ></el-table-column>
+          <el-table-column
+            prop="PNR"
+            label="乘机人证件号"
+            width="350"
+          ></el-table-column>
+
+          <!--     操作  按钮  需要 编辑 添加 删除  -->
+          <el-table-column
+            fixed="right"
+            label="操作"
+            align="center"
+            width="400">
+            <template slot-scope="scope">
+              <!--          <el-button @click="handleAdd(scope.row.deptId)" type="success" size="mini">添加</el-button>-->
+              <el-button @click="handleUpdate(scope.row.deptId)" type="primary" size="mini">编辑</el-button>
+              <el-button @click.native.prevent="handleRemove(scope.row.deptId)" type="danger"
+                         size="mini">删除
+              </el-button>
+            </template>
+          </el-table-column>
+
+        </el-table>
 <!--        <template>-->
 <!--          <el-transfer-->
 <!--            :titles="['全部角色', '已选角色']"-->
@@ -328,21 +542,13 @@
       RefundChangeRule:'',//退改规则
       //
       //乘客字段
-      cardNo:'',//乘机人证件号
-      cardType:'',//乘机人证件类型:NI=身份证PP=护照ID=其他HX=回乡证TB=台胞证GA=港澳通行证HY=国际海员证
-      ageType:'',//乘机人类型 0 为成人,1 为儿童，2为婴儿
-      birthday:'',//出生年月
-      gender:'',//性别
-      name:'',//姓名
-      linkOrderNo:'',//业务订单编号
-      ticketTime:'',//出票时间
-      ticketType:'',//出票方式
-      ticketNo:'',//票号
-      viewPrice:'',//票面价
-      amount:'',//金额
-      rootOrderNo:'',//销售出票订单编号
-      orderNo:'',//订单编号
-      passengerId:'',//乘客ID
+            cardNo:'',//乘机人证件号
+            cardType:'',//乘机人证件类型:NI=身份证PP=护照ID=其他HX=回乡证TB=台胞证GA=港澳通行证HY=国际海员证
+            ageType:'',//乘机人类型 0 为成人,1 为儿童，2为婴儿
+            birthday:'',//出生年月
+            gender:'',//性别
+            name:'',//姓名
+
       //
         orderDate:'',//订单日期
         takeOffArrive:'',//起飞-到达
