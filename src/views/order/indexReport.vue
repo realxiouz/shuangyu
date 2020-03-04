@@ -1,5 +1,5 @@
 <template>
-  <div class="order-container">
+  <div class="orderR-container">
     <el-form :inline="true" :model="searchForm"  :label-position="labelPosition" label-width="110px" >
       <el-row :gutter="20">
         <el-col :span="6">
@@ -101,9 +101,9 @@
         <el-col :span="6">
       <el-form-item label="航程类型:" prop="flightType">
         <el-radio-group v-model="formData.flightType">
-          <el-radio v-model="radio" label="单程">单程</el-radio>
-          <el-radio v-model="radio" label="往返">往返</el-radio>
-          <el-radio v-model="radio" label="全部">全部</el-radio>
+          <el-radio v-model="radio" label="one">单程</el-radio>
+          <el-radio v-model="radio" label="Back">往返</el-radio>
+          <el-radio v-model="radio" label="all">全部</el-radio>
         </el-radio-group>
       </el-form-item>
           </el-col>
@@ -181,8 +181,36 @@
         label="锁定人"
         width="100"
       ></el-table-column>
-
-      <!--     操作  按钮  需要 编辑 添加 删除  -->
+      <el-table-column
+        prop="receivable"
+        label="应收"
+        width="100"
+      ></el-table-column>
+      <el-table-column
+        prop="payable"
+        label="应付"
+        width="100"
+      ></el-table-column>
+      <el-table-column
+        prop="receipt"
+        label="实收"
+        width="100"
+      ></el-table-column>
+      <el-table-column
+        prop="payment"
+        label="实付"
+        width="100"
+      ></el-table-column>
+      <el-table-column
+        prop="profit"
+        label="利润"
+        width="100"
+      ></el-table-column>
+      <el-table-column
+        prop="purchaseOrders"
+        label="采购订单"
+        width="100"
+      ></el-table-column>
       <el-table-column
         fixed="right"
         label="操作"
@@ -209,7 +237,7 @@
       :page-size="pageSize"
       :total="total">
     </el-pagination>
-    <el-dialog title="订单信息" :visible.sync="dialogVisible" width="30%">
+    <el-dialog title="订单报表信息" :visible.sync="dialogVisible" width="30%">
       <el-form ref="form" :rules="rules" :model="formData" label-width="90px">
         <el-form-item label="订单号" prop="orderNumber">
           <el-input v-model="formData.orderNumber"></el-input>
@@ -243,6 +271,24 @@
         </el-form-item>
         <el-form-item label="锁定人" prop="lockingPeople">
           <el-input v-model="formData.lockingPeople"></el-input>
+        </el-form-item>
+        <el-form-item label="应收" prop="receivable">
+          <el-input v-model="formData.receivable"></el-input>
+        </el-form-item>
+        <el-form-item label="应付" prop="payable">
+          <el-input v-model="formData.payable"></el-input>
+        </el-form-item>
+        <el-form-item label="实收" prop="receipt">
+          <el-input v-model="formData.receipt"></el-input>
+        </el-form-item>
+        <el-form-item label="实付" prop="payment">
+          <el-input v-model="formData.payment"></el-input>
+        </el-form-item>
+        <el-form-item label="利润" prop="profit">
+          <el-input v-model="formData.profit"></el-input>
+        </el-form-item>
+        <el-form-item label="采购订单" prop="purchaseOrders">
+          <el-input v-model="formData.purchaseOrders"></el-input>
         </el-form-item>
 <!--        <template>-->
 <!--          <el-transfer-->
@@ -290,6 +336,12 @@
         endDate:'',//结束日期
         startDate: '',//起始日期
 
+        receivable:'',//应收
+        payable:'',//应付
+        receipt:'',//实收
+        payment:'',//实付
+        profit:'',//利润
+        purchaseOrders:[],//采购订单
         //
         deptName: "",
         firmId: "",
@@ -299,10 +351,10 @@
         roles: []
     };
     export default {
-        name: "order",
+        name: "orderR",
         data() {
             return {
-                radio:'全部',
+                radio:'all',
                 labelPosition: 'left',
                 searchForm: {},
                 lastId: "0",
@@ -317,28 +369,28 @@
                 paramsRoles: [],
                 rules: {
                   orderNumber: [
-                        {required: true, message: "请输入订单号", trigger: "blur"},
-                        {
-                            min: 1,
-                            max: 20,
-                            message: '长度在 1到 20 个字符'
-                        }
-                    ],
+                    {required: true, message: "请输入订单号", trigger: "blur"},
+                    {
+                      min: 1,
+                      max: 20,
+                      message: '长度在 1到 20 个字符'
+                    }
+                  ],
                   flightType: [
-                        {required: true, message: "请输入类型", trigger: "blur"}
-                    ],
+                    {required: true, message: "请输入类型", trigger: "blur"}
+                  ],
                   orderDate: [
-                        {required: true, message: "请输入订单日期", trigger: "blur"},
+                    {required: true, message: "请输入订单日期", trigger: "blur"},
 
-                    ],
+                  ],
                   takeOffArrive: [
-                        {required: true, message: "请输入起飞时间/地点，到达时间地点", trigger: "blur"},
+                    {required: true, message: "请输入起飞时间/地点，到达时间地点", trigger: "blur"},
 
-                    ],
+                  ],
                   flightNumber: [
-                        {required: true, message: "请输入航班日期/航班号", trigger: "blur"},
+                    {required: true, message: "请输入航班日期/航班号", trigger: "blur"},
 
-                    ],
+                  ],
                   PNR: [
                     {required: true, message: "请输入PNR", trigger: "blur"},
 
@@ -363,7 +415,30 @@
                     {required: true, message: "请输入锁定人", trigger: "blur"},
 
                   ],
+                  receivable: [
+                    {required: true, message: "请输入应收金额", trigger: "blur"},
 
+                  ],
+                  payable: [
+                    {required: true, message: "请输入应付金额", trigger: "blur"},
+
+                  ],
+                  receipt: [
+                    {required: true, message: "请输入实收金额", trigger: "blur"},
+
+                  ],
+                  payment: [
+                    {required: true, message: "请输入实付金额", trigger: "blur"},
+
+                  ],
+                  profit: [
+                    {required: true, message: "请输入利润", trigger: "blur"},
+
+                  ],
+                  purchaseOrders: [
+                    {required: true, message: "请输入采购订单", trigger: "blur"},
+
+                  ],
                 }
             };
         },
@@ -378,12 +453,12 @@
                 this.lastId = this.tableData[this.tableData.length - 1].deptId;
                 this.loadData();
             },
-            loadData() {//获取数据列表
+            loadData() {
                 if (!this.searchForm.deptName) {
                     this.searchForm = {};
                 }
                 this.$store
-                    .dispatch("order/getList",
+                    .dispatch("dept/getList",
                         this.searchForm
                     ).then(data => {
                     console.log(data)
@@ -394,34 +469,34 @@
                     console.log(error);
                 });
             },
-            // loadRoles() {
-            //     this.$store
-            //         .dispatch("role/getRoleList")
-            //         .then(data => {
-            //             this.allRoles = data;
-            //         })
-            //         .catch(error => {
-            //             console.log(error);
-            //         });
-            // },
-            // loadOneRole(id) {
-            //     this.$store
-            //         .dispatch("role/getOne", id)
-            //         .then(data => {
-            //             if (data) {
-            //                 this.paramsRoles.push(data);
-            //             }
-            //         })
-            //         .catch(error => {
-            //             console.log(error);
-            //         });
-            // },
-            loadTotal: function () {//查总数
+            loadRoles() {
+                this.$store
+                    .dispatch("role/getRoleList")
+                    .then(data => {
+                        this.allRoles = data;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            loadOneRole(id) {
+                this.$store
+                    .dispatch("role/getOne", id)
+                    .then(data => {
+                        if (data) {
+                            this.paramsRoles.push(data);
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            loadTotal: function () {
                 if (!this.searchForm.deptName) {
                     this.searchForm = {};
                 }
                 this.$store
-                    .dispatch("order/getTotal", {
+                    .dispatch("dept/getTotal", {
                         filter: this.searchForm
                     }).then(response => {
                     this.total = response.data;
@@ -429,32 +504,32 @@
                     console.log(error);
                 });
             },
-            // handleAddChild(deptId) {//添加子级
-            //     this.formData = defaultData;
-            //     this.formData.pid = deptId;
-            //     this.loadRoles();
-            //     this.dialogVisible = true;
-            // },
-            handleAdd() {//添加
+            handleAddChild(deptId) {
+                this.formData = defaultData;
+                this.formData.pid = deptId;
+                this.loadRoles();
+                this.dialogVisible = true;
+            },
+            handleAdd() {
                 this.formData = defaultData;
                 this.loadRoles();
                 this.dialogVisible = true;
             },
-            handleSearch() {//查询
+            handleSearch() {
                 this.loadData();
                 this.loadTotal();
             },
             handleCancel() {
                 this.dialogVisible = false;
             },
-            handleSave() {//保存
+            handleSave() {
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
                         if (this.paramsRoles && this.paramsRoles.length > 0) {
                             this.formData.roles = this.paramsRoles;
                         }
                         this.$store
-                            .dispatch("order/save", this.formData)
+                            .dispatch("dept/save", this.formData)
                             .then(() => {
                                 this.handleSearch();
                             }).catch(error => {
@@ -464,9 +539,9 @@
                     }
                 })
             },
-            handleUpdate(deptId) {//编辑
+            handleUpdate(deptId) {
                 this.$store
-                    .dispatch("order/getOne", deptId)
+                    .dispatch("dept/getOne", deptId)
                     .then(data => {
                         this.formData = data;
                         let arr = [];
@@ -486,14 +561,14 @@
                 this.pageSize = pageSize;
                 this.loadData();
             },
-            handleRemove(id) {//删除
+            handleRemove(id) {
                 this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
                     confirmButtonText: "确定",
                     cancelButtonText: "取消",
                     type: "warning"
                 }).then(() => {
                     this.$store
-                        .dispatch("order/removeOne", id)
+                        .dispatch("dept/removeOne", id)
                         .then(() => {
                             this.loadData();
                         });
