@@ -115,9 +115,9 @@
       <el-form-item>
         <el-button type="primary" @click="handleSearch">查询</el-button>
       </el-form-item>
-<!--      <el-form-item>-->
-<!--        <el-button type="primary" @click="handleAdd">添加</el-button>-->
-<!--      </el-form-item>-->
+      <el-form-item>
+        <el-button type="primary" @click="handleAdd">添加</el-button>
+      </el-form-item>
 
       </el-form>
     <el-table :data="tableData"
@@ -217,7 +217,7 @@
         align="center"
         width="300">
         <template slot-scope="scope">
-          <el-button @click="handleAdd(scope.row.deptId)" type="success" size="mini">添加</el-button>
+<!--          <el-button @click="handleAdd(scope.row.deptId)" type="success" size="mini">添加</el-button>-->
           <el-button @click="handleUpdate(scope.row.deptId)" type="primary" size="mini">编辑</el-button>
           <el-button @click.native.prevent="handleRemove(scope.row.deptId)" type="danger"
                      size="mini">删除
@@ -313,6 +313,53 @@
 <script>
 
     const defaultData = {
+        //
+        //航班字段
+      FlightDate:'',//出发日期
+      flightId:'',//主键唯一标识
+      airLine:'',//航司
+      actFlightCode:'',//主航班号
+      flightCode:'',//航班号
+      dpt:'',//出发地三字码
+      dptAirport:'',//出发机场
+      dptTerminal:'',//出发航楼站
+      dptTime:'',//起飞时间
+      arr:'',//到达地三字码
+      arrAirport:'',//到达机场
+      arrTerminal:'',//到达航站楼
+      arrTime:'',//到达时间
+      distance:'',//航程
+      flightTimes:'',//飞行时间
+      constructionFee:'',//机建费
+      fuelTax:'',//燃油费
+      childFuelTax:'',//儿童燃油费
+      planeType:'',//机型
+      flightTypeFullName:'',//机型全称
+      shareFlag:'',//共享标记
+      stopFlag:'',//经停标记
+      stopAirportCode:'',//经停机场三字码
+      meal:'',//餐食标记
+      stopCount:'',//经停次数
+      cycle:'',//飞行周期
+      RefundChangeRule:'',//退改规则
+        //
+        //乘客字段
+        cardNo:'',//乘机人证件号
+        cardType:'',//乘机人证件类型:NI=身份证PP=护照ID=其他HX=回乡证TB=台胞证GA=港澳通行证HY=国际海员证
+        ageType:'',//乘机人类型 0 为成人,1 为儿童，2为婴儿
+        birthday:'',//出生年月
+        gender:'',//性别
+        name:'',//姓名
+        linkOrderNo:'',//业务订单编号
+        ticketTime:'',//出票时间
+        ticketType:'',//出票方式
+        ticketNo:'',//票号
+        viewPrice:'',//票面价
+        amount:'',//金额
+        rootOrderNo:'',//销售出票订单编号
+        orderNo:'',//订单编号
+        passengerId:'',//乘客ID
+        //
         orderDate:'',//订单日期
         takeOffArrive:'',//起飞-到达
         totalPriceNumber:'',//总价/人数
