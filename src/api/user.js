@@ -8,7 +8,13 @@ export function signIn(data) {
   });
 }
 
-
+export function getList(data) {
+  return request({
+    url: '/user/list',
+    method: 'get',
+    params:data
+  });
+}
 
 export function getUser(token) {
   return request({

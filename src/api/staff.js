@@ -8,6 +8,14 @@ export function addOne(data) {
   });
 }
 
+export function addMany(data) {
+  return request({
+    url: '/staff/add/many',
+    method: 'post',
+    data
+  });
+}
+
 export function updateOne(data) {
   return request({
     url: '/staff/update/one',
@@ -16,10 +24,11 @@ export function updateOne(data) {
   });
 }
 
-export function removeOne(params) {
+export function removeOne(data) {
   return request({
-    url: `/staff/remove/one/${params}`,
-    method: 'delete'
+    url: `/staff/remove/one`,
+    method: 'post',
+    data
   });
 }
 

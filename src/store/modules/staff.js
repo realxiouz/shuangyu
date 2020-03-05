@@ -1,9 +1,20 @@
-import {addOne,updateOne,removeOne,getOne,getList,getTotal,getPageList} from '@/api/staff';
+import {addOne,addMany,updateOne,removeOne,getOne,getList,getTotal,getPageList} from '@/api/staff';
 
 const actions = {
   addOne({commit}, params) {
     return new Promise((resolve, reject) => {
       addOne(params)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  addMany({commit}, params) {
+    return new Promise((resolve, reject) => {
+      addMany(params)
         .then(response => {
           resolve(response);
         })

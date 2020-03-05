@@ -1,5 +1,5 @@
-import { signIn, signOut, getUser, getUserList,addUser } from '@/api/user';
-import { getToken, setToken, removeToken } from '@/utils/auth';
+import {signIn, signOut, getUser, getUserList, addUser, getList} from '@/api/user';
+import {getToken, setToken, removeToken} from '@/utils/auth';
 
 const state = {
   token: getToken(),
@@ -20,12 +20,12 @@ const mutations = {
 };
 
 const actions = {
-  signIn({ commit }, userInfo) {
-    const { username, password } = userInfo;
+  signIn({commit}, userInfo) {
+    const {username, password} = userInfo;
     return new Promise((resolve, reject) => {
-      signIn({ username: username.trim(), password: password })
+      signIn({username: username.trim(), password: password})
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           commit('SET_TOKEN', data.token);
           setToken(data.token);
           resolve();
@@ -36,17 +36,17 @@ const actions = {
     });
   },
 
-  getUser({ commit, state }) {
+  getUser({commit, state}) {
     return new Promise((resolve, reject) => {
       getUser(state.token)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
 
           if (!data) {
             reject('Verification failed, please Login again.');
           }
 
-          const { name, avatar } = data;
+          const {name, avatar} = data;
 
           commit('SET_NAME', name);
           commit('SET_AVATAR', avatar);
@@ -58,7 +58,7 @@ const actions = {
     });
   },
 
-  signOut({ commit, state }) {
+  signOut({commit, state}) {
     return new Promise((resolve, reject) => {
       signOut(state.token)
         .then(() => {
@@ -72,18 +72,18 @@ const actions = {
     });
   },
 
-  resetToken({ commit }) {
+  resetToken({commit}) {
     return new Promise(resolve => {
       commit('SET_TOKEN', '');
       resolve();
     });
   },
 
-  getList() {
+  getUserList({commit}, params) {
     return new Promise((resolve, reject) => {
-      getUserList(state.token)
+      getUserList(state.token, params)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -91,8 +91,19 @@ const actions = {
         });
     });
   },
-
-  add({ commit }, params){
+  getList({commit}, params) {
+    return new Promise((resolve, reject) => {
+      getList(params)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  add({commit}, params) {
     return new Promise((resolve, reject) => {
       addUser(params)
         .then(response => {
