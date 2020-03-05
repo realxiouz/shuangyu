@@ -24,7 +24,7 @@ export default new Router({
       children: [
         {
           title: '首页',
-          path: 'home',
+          path: '/home',
           name: 'home',
           uri: '/home',
           component: () => import('@/views/Home'),
@@ -41,64 +41,38 @@ export default new Router({
       ]
     },
     {
-      title: '用户管理',
-      path: '/user',
-      uri: '/user',
+      title: '系统管理',
+      path: '/admin',
+      name: 'index',
+      uri: '/admin',
       component: Layout,
       children: [
         {
-          title: '基本信息',
-          path: 'index',
-          name: 'User',
-          uri: '/user/index',
-          component: () => import('@/views/user/index'),
+          title: '用户管理',
+          path: '/user/list',
+          name: 'userList',
+          uri: '/user/list',
+          component: () => import('@/views/user/List'),
           meta: { title: 'Home', icon: 'home' }
-        }
-      ]
-    },
-    {
-      title: '应用管理',
-      path: '/app',
-      uri: '/app',
-      component: Layout,
-      children: [
+        },
         {
-          title: '基本信息',
-          path: 'index',
-          name: 'App',
-          uri: '/app/index',
+          title: '应用管理',
+          path: '/app',
+          uri: '/app',
           component: () => import('@/views/app/index'),
           meta: { title: 'Home', icon: 'home' }
-        }
-      ]
-    },
-    {
-      title: 'Api管理',
-      path: '/api',
-      uri: '/api',
-      component: Layout,
-      children: [
+        },
         {
-          title: '基本信息',
-          path: 'index',
-          name: 'Api',
-          uri: '/api/index',
+          title: 'Api管理',
+          path: '/api',
+          uri: '/api',
           component: () => import('@/views/api/index'),
           meta: { title: 'Home', icon: 'home' }
-        }
-      ]
-    },
-    {
-      title: '角色管理',
-      path: '/role',
-      uri: '/role',
-      component: Layout,
-      children: [
+        },
         {
-          title: '基本信息',
-          path: 'index',
-          name: 'role',
-          uri: '/role/index',
+          title: '角色管理',
+          path: '/role',
+          uri: '/role',
           component: () => import('@/views/role/index'),
           meta: { title: 'Home', icon: 'home' }
         }
@@ -166,8 +140,6 @@ export default new Router({
           component: () => import('@/views/order/orderFlightName'),
           meta: { title: 'Home', icon: 'home' }
         }
-
-
       ]
     },
     {

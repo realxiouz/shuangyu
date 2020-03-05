@@ -117,79 +117,16 @@
       :total="total">
     </el-pagination>
     <el-dialog title="用户信息" :visible.sync="dialogVisible" width="30%">
-      <el-form ref="form" :rules="rules" :model="formData" label-width="110px">
-        <el-form-item label="昵称" prop="nickName">
-          <el-input v-model="formData.nickName"></el-input>
-        </el-form-item>
-        <el-form-item label="姓名" prop="fullName">
-          <el-input v-model="formData.fullName"></el-input>
-        </el-form-item>
-        <el-form-item label="性别" prop="gender">
-          <el-select v-model="formData.gender" placeholder="请选择性别">
-            <el-option label="男" value="男"></el-option>
-            <el-option label="女" value="女"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="手机号码" prop="phone">
-          <el-input
-            type="text"
-            placeholder="请输入手机号码"
-            v-model="formData.phone"
-            maxlength="11"
-            show-word-limit
-          >
-          </el-input>
-        </el-form-item>
-        <el-form-item label="邮箱">
-          <el-input v-model="formData.email" prop="email"></el-input>
-        </el-form-item>
-        <el-form-item label="身份证号码" prop="idCardNo">
-          <el-input
-            type="text"
-            placeholder="请输入身份证号码"
-            v-model="formData.idCardNo"
-            maxlength="18"
-            show-word-limit
-          >
-          </el-input>
-        </el-form-item>
-        <el-form-item label="是否超级管理员" prop="super">
-          <el-switch v-model="formData.super" :active-value=true :inactive-value=false></el-switch>
-        </el-form-item>
-        <el-form-item label="是否启用" prop="enable">
-          <el-switch v-model="formData.enable" :active-value=true :inactive-value=false></el-switch>
-        </el-form-item>
-        <el-form-item label="备注" prop="comment">
-          <el-input type="textarea" v-model="formData.comment"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="handleCancel">取 消</el-button>
-        <el-button type="primary" @click="handleSave">确 定</el-button>
-      </div>
+      <user-edit @onSuccess="handleSuccess" @onCancel="handleCancel"></user-edit>
     </el-dialog>
   </div>
 </template>
 
 <script>
-  import { getUserList, getUserTotal, save, updUser } from "@/api/user";
-
-  const defaultProps = {
-    nickName: "",
-    fullName: "",
-    gender: "男",
-    birthDate: "",
-    phone: "",
-    email: "",
-    idCardNo: "",
-    super: false,
-    enable: true,
-    headImgUrl: "",
-    comment: ""
-  };
+  import userEdit from "./Edit.vue";
 
   export default {
-    name: "user",
+    name: "userList",
     data() {
       return {
         searchForm: {},
@@ -198,25 +135,7 @@
         pageSize: 10,
         total: 0,
         dialogVisible: false,
-        tableData: null,
-        formData: defaultProps,
-        rules: {
-          nickName: [
-            { required: true, message: "请输入昵称", trigger: "blur" }
-          ],
-          fullName: [
-            { required: true, message: "请输入姓名", trigger: "blur" }
-          ],
-          idCardNo: [
-            { required: true, message: "请输入身份证号码", trigger: "blur" }
-          ],
-          phone: [
-            { required: true, message: "请输入手机号码", trigger: "blur" }
-          ]
-          // phone: [
-          //   { required: true, message: '请输入手机号码', trigger: 'blur' }
-          // ]
-        }
+        tableData: null
       };
     },
     methods: {
@@ -228,39 +147,17 @@
       },
       userUpdate(row) {
         this.dialogVisible = true;
-        this.formData = row;
       },
       addUser() {
-        this.formData = defaultData;
         this.dialogVisible = true;
       },
       loadData() {
-        getUserList(this.pageFlag, this.pageSize, this.lastId, this.searchForm).then(response => {
-          console.log(response.data);
-          if (response.data) {
-            this.tableData = response.data;
-          }
-        }).catch(error => {
-          console.log(error);
-        });
+
       },
       handleSearch() {
 
       },
-      handleCancel() {
-        this.dialogVisible = false;
-      },
-      handleSave() {
-        const params = this.formData;
-        save(params).then(() => {
-          console.log(params);
-          this.loadData();
-          this.loadTotal();
-        }).catch(error => {
-          console.log(error);
-        });
-        this.dialogVisible = false;
-      },
+
       handleSizeChange(pageSize) {
         this.pageSize = pageSize;
         this.loadData();
@@ -276,25 +173,25 @@
         this.loadData();
       },
       changeSwitch(data) {
-        updUser(data).then(() => {
-          this.loadData();
-        }).catch(error => {
-          console.log(error);
-        });
+
       },
       loadTotal() {
         if (!this.searchForm.appName) {
           this.searchForm = {};
         }
-        getUserTotal(this.searchForm).then(response => {
-          this.total = response.data;
-        }).catch(error => {
-          console.log(error);
-        });
-      }
+      },
+      handleCancel(){
+        this.dialogVisible = false;
+      },
+      handleSuccess(){
+        this.dialogVisible = false;
+      },
     },
     mounted() {
       this.loadData();
+    },
+    components: {
+      "user-edit": userEdit
     }
   };
 </script>
