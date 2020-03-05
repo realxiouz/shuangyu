@@ -4,8 +4,8 @@
     <vue-orderFilght v-bind:dialogCreate="dialogCreate"  v-on:success="success(res)"></vue-orderFilght>
 
 
-    <el-dialog title="订单乘客信息" :visible.sync="dialogFormVisible" width="70%">
-      <el-form ref="form" :rules="rules" :model="formData" label-width="90px">
+    <el-dialog title="订单乘客信息" :visible.sync="dialogFormVisible" style="width: 100%;">
+      <el-form ref="form" :rules="rules" :model="formData" label-width="90px" :label-position="labelPosition">
         <el-row :gutter="20">
           <el-col :span="6">
             <el-form-item label="姓名:" prop="name">
@@ -61,25 +61,25 @@
 
     </el-dialog>
 
-    <el-form ref="form" :rules="rules" :model="formData" label-width="90px">
+    <el-form :inline="true" ref="form" :rules="rules" :model="formData" label-width="90px" :label-position="labelPosition">
       <el-row :gutter="20">
         <el-col :span="6">
-          <el-form-item label="订单号" prop="orderNumber">
+          <el-form-item label="订单号:" prop="orderNumber">
             <el-input v-model="formData.orderNumber"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">
-          <el-form-item label="类型" prop="flightType">
+          <el-form-item label="类型:" prop="flightType">
             <el-input v-model="formData.flightType"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">
-          <el-form-item label="订单日期" prop="orderDate">
+          <el-form-item label="订单日期:" prop="orderDate">
             <el-input v-model="formData.orderDate"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">
-          <el-form-item label="起飞-到达" prop="takeOffArrive">
+          <el-form-item label="起飞-到达:" prop="takeOffArrive">
             <el-input v-model="formData.takeOffArrive"></el-input>
           </el-form-item>
         </el-col>
@@ -87,22 +87,22 @@
 
       <el-row :gutter="20">
         <el-col :span="6">
-          <el-form-item label="航班日期/航班号" prop="flightNumber">
+          <el-form-item label="航班日期/航班号:" prop="flightNumber">
             <el-input v-model="formData.flightNumber"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">
-          <el-form-item label="PNR" prop="PNR">
+          <el-form-item label="PNR:" prop="PNR">
             <el-input v-model="formData.PNR"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">
-          <el-form-item label="总价/人数" prop="totalPriceNumber">
+          <el-form-item label="总价/人数:" prop="totalPriceNumber">
             <el-input v-modelr="formData.totalPriceNumber"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">
-          <el-form-item label="订单状态" prop="orderStatus">
+          <el-form-item label="订单状态:" prop="orderStatus">
             <el-input v-model="formData.orderStatus"></el-input>
           </el-form-item>
         </el-col>
@@ -110,48 +110,51 @@
 
       <el-row :gutter="20">
         <el-col :span="6">
-          <el-form-item label="政策ID" prop="policyId">
+          <el-form-item label="政策ID:" prop="policyId">
             <el-input v-model="formData.policyId"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">
-          <el-form-item label="是否退差额" prop="balance">
+          <el-form-item label="是否退差额:" prop="balance">
             <el-input v-model="formData.balance"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">
-          <el-form-item label="锁定人" prop="lockingPeople">
+          <el-form-item label="锁定人:" prop="lockingPeople">
             <el-input v-model="formData.lockingPeople"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
 
       <el-button type="primary" @click="handleAdd">添加航班信息</el-button>
-      <el-table>
+      <el-table :data="tableData"
+                style="width: 100%;margin-bottom: 20px;"
+                row-key="deptId"
+                border>
         <el-table-column
           prop="orderNumber"
           label="出发日期"
-          width="100"
+          width="50"
         ></el-table-column>
         <el-table-column
           prop="orderDate"
           label="航司"
-          width="100"
+          width="50"
         ></el-table-column>
         <el-table-column
           prop="takeOffArrive"
           label="主航班号"
-          width="100"
+          width="50"
         ></el-table-column>
         <el-table-column
           prop="flightDateNumber"
           label="航班号"
-          width="100"
+          width="50"
         ></el-table-column>
         <el-table-column
           prop="PNR"
           label="出发地三字码"
-          width="150"
+          width="50"
         ></el-table-column>
         <el-table-column
           prop="totalPriceNumber"
@@ -166,104 +169,104 @@
         <el-table-column
           prop="policyId"
           label="起飞时间"
-          width="100"
+          width="50"
         ></el-table-column>
         <el-table-column
           prop="balance"
           label="到达地三字码"
-          width="150"
+          width="50"
         ></el-table-column>
         <el-table-column
           prop="lockingPeople"
           label="到达机场"
-          width="100"
+          width="50"
         ></el-table-column>
         <el-table-column
           prop="lockingPeople"
           label="到达航站楼"
-          width="100"
+          width="50"
         ></el-table-column>
         <el-table-column
           prop="lockingPeople"
           label="到达时间"
-          width="100"
+          width="50"
         ></el-table-column>
         <el-table-column
           prop="lockingPeople"
           label="航程"
-          width="100"
+          width="50"
         ></el-table-column>
         <el-table-column
           prop="lockingPeople"
           label="飞行时间"
-          width="100"
+          width="50"
         ></el-table-column>
         <el-table-column
           prop="lockingPeople"
           label="机建费"
-          width="100"
+          width="50"
         ></el-table-column>
         <el-table-column
           prop="lockingPeople"
           label="燃油费"
-          width="100"
+          width="50"
         ></el-table-column>
         <el-table-column
           prop="lockingPeople"
           label="儿童燃油费"
-          width="100"
+          width="50"
         ></el-table-column>
         <el-table-column
           prop="lockingPeople"
           label="机型"
-          width="100"
+          width="50"
         ></el-table-column>
         <el-table-column
           prop="lockingPeople"
           label="机型全称"
-          width="100"
+          width="50"
         ></el-table-column>
         <el-table-column
           prop="lockingPeople"
           label="共享标记"
-          width="100"
+          width="50"
         ></el-table-column>
         <el-table-column
           prop="lockingPeople"
           label="经停标记"
-          width="100"
+          width="50"
         ></el-table-column>
         <el-table-column
           prop="lockingPeople"
           label="经停机场三字码"
-          width="150"
+          width="50"
         ></el-table-column>
         <el-table-column
           prop="lockingPeople"
           label="餐食标记"
-          width="100"
+          width="50"
         ></el-table-column>
         <el-table-column
           prop="lockingPeople"
           label="经停次数"
-          width="100"
+          width="50"
         ></el-table-column>
         <el-table-column
           prop="lockingPeople"
           label="飞行周期"
-          width="100"
+          width="50"
         ></el-table-column>
         <el-table-column
           prop="lockingPeople"
           label="退改规则"
-          width="100"
+          width="50"
         ></el-table-column>
 
         <el-table-column
           fixed="right"
           label="操作"
           align="center"
-          width="300">
+          width="150">
           <template slot-scope="scope">
             <el-button @click="handleUpdate(scope.row.deptId)" type="primary" size="mini">编辑</el-button>
             <el-button @click.native.prevent="handleRemove(scope.row.deptId)" type="danger"
@@ -271,32 +274,29 @@
             </el-button>
           </template>
         </el-table-column>
-
       </el-table>
-
       <br>
-
       <el-button type="primary" @click="dialogFormVisible = true">添加乘客信息</el-button>
       <el-table>
         <el-table-column
           prop="orderNumber"
           label="姓名"
-          width="200"
+          width="100"
         ></el-table-column>
         <el-table-column
           prop="flightType"
           label="性别"
-          width="100"
+          width="50"
         ></el-table-column>
         <el-table-column
           prop="orderDate"
           label="出生年月"
-          width="200"
+          width="100"
         ></el-table-column>
         <el-table-column
           prop="takeOffArrive"
           label="乘机人类型"
-          width="150"
+          width="200"
         ></el-table-column>
         <el-table-column
           prop="flightDateNumber"
@@ -314,7 +314,7 @@
           fixed="right"
           label="操作"
           align="center"
-          width="400">
+          width="200">
           <template slot-scope="scope">
 
             <el-button @click="handleUpdate(scope.row.deptId)" type="primary" size="mini">编辑</el-button>
@@ -384,7 +384,7 @@
     },
     data() {
       return {
-        labelPosition: 'left',
+        labelPosition: 'top',
         pageFlag: "next",
         pageSize: 10,
         formData: defaultData,
@@ -449,21 +449,47 @@
 
           ],
 
+          name: [
+            {required: true, message: "请输入姓名", trigger: "blur"},
+
+          ],
+          gender: [
+            {required: true, message: "请输入性别", trigger: "blur"},
+
+          ],
+          birthday: [
+            {required: true, message: "请输入出生年月", trigger: "blur"},
+
+          ],
+          ageType: [
+            {required: true, message: "请输入乘机人类型", trigger: "blur"},
+
+          ],
+          cardType: [
+            {required: true, message: "请输入乘机人证件类型", trigger: "blur"},
+
+          ],
+          cardNo: [
+            {required: true, message: "请输入乘机人证件号", trigger: "blur"},
+
+          ],
+
         }
       };
     },
     methods: {
+      handleCancel() {
+        this.dialogCreate = false;
+      },
       handleAdd() {
         this.dialogCreate = true;
       },
-      handleCancel() {
-        this.dialogVisible = false;
+
+      handleSave() {//保存
+          this.$refs['form'].validate((valid) => {
+              if (valid){}
+          })
       },
-      // handleSave() {//保存
-      //     this.$refs['form'].validate((valid) => {
-      //         if (valid){}
-      //     })
-      // },
       handleUpdate() {//编辑
 
       },

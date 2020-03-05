@@ -1,19 +1,19 @@
 <template>
-  <div class="orderR-container">
-    <el-form :inline="true" :model="searchForm"  :label-position="labelPosition" label-width="110px" >
+  <div class="order-container">
+    <el-form ref="form" :rules="rules"  :inline="true" :model="searchForm"  :label-position="labelPosition" label-width="100%" style="margin-bottom: 20px;" >
       <el-row :gutter="20">
         <el-col :span="6">
-      <el-form-item label="起始日期:">
-          <el-date-picker type="date" placeholder="选择日期" v-model="formData.startDate" style="width: 100%;" ></el-date-picker>
+      <el-form-item label="起始日期:" prop="startDate">
+          <el-date-picker type="date" placeholder="选择日期" v-model="formData.startDate"  ></el-date-picker>
       </el-form-item>
           </el-col>
         <el-col :span="6">
-      <el-form-item label="结束日期:">
-          <el-date-picker type="date" placeholder="选择日期" v-model="formData.endDate" style="width: 100%;" ></el-date-picker>
+      <el-form-item label="结束日期:"  prop="endDate">
+          <el-date-picker type="date" placeholder="选择日期" v-model="formData.endDate"  ></el-date-picker>
       </el-form-item>
         </el-col>
         <el-col :span="6">
-      <el-form-item label="特殊查询:">
+      <el-form-item label="特殊查询:" prop="specialQuery">
         <el-select v-model="formData.specialQuery" placeholder="全部" >
           <el-option label="测试1" value="shanghai"></el-option>
           <el-option label="测试2" value="beijing"></el-option>
@@ -21,7 +21,7 @@
       </el-form-item>
         </el-col>
         <el-col :span="6">
-      <el-form-item label="联系人电话:">
+      <el-form-item label="联系人电话:" prop="namePhone">
         <el-input v-model="formData.namePhone" ></el-input>
       </el-form-item>
           </el-col>
@@ -29,22 +29,22 @@
 
       <el-row :gutter="20">
         <el-col :span="6">
-      <el-form-item label="乘机人姓名:">
-        <el-input v-model="formData.nameAirplane" style="width: 230px"></el-input>
+      <el-form-item label="乘机人姓名:"  prop="nameAirplane">
+        <el-input v-model="formData.nameAirplane" ></el-input>
       </el-form-item>
           </el-col>
         <el-col :span="6">
-      <el-form-item label="订单号:">
-        <el-input v-model="formData.orderNumber" style="width: 230px"></el-input>
+      <el-form-item label="订单号:" prop="orderNumber">
+        <el-input v-model="formData.orderNumber" ></el-input>
       </el-form-item>
           </el-col>
         <el-col :span="6">
-      <el-form-item label="票号:">
-        <el-input v-model="formData.ticketNumber" style="width: 230px"></el-input>
+      <el-form-item label="票号:"  prop="ticketNumber">
+        <el-input v-model="formData.ticketNumber" ></el-input>
       </el-form-item>
         </el-col>
         <el-col :span="6">
-      <el-form-item label="PNR:">
+      <el-form-item label="PNR:"  prop="PNR">
         <el-input v-model="formData.PNR" ></el-input>
       </el-form-item>
         </el-col>
@@ -52,7 +52,7 @@
 
       <el-row :gutter="20">
         <el-col :span="6">
-      <el-form-item label="订单状态:">
+      <el-form-item label="订单状态:" prop="orderStatus">
         <el-select v-model="formData.orderStatus" placeholder="全部">
           <el-option label="出票中" value="ing"></el-option>
           <el-option label="退票完成" value="exit"></el-option>
@@ -61,21 +61,21 @@
       </el-form-item>
           </el-col>
         <el-col :span="6">
-      <el-form-item label="航班起始日期:">
+      <el-form-item label="航班起始日期:" prop="flightStartDate">
         <el-col>
-          <el-date-picker type="date" placeholder="选择日期" v-model="formData.flightStartDate" style="width: 100%;"></el-date-picker>
+          <el-date-picker type="date" placeholder="选择日期" v-model="formData.flightStartDate" ></el-date-picker>
         </el-col>
       </el-form-item>
         </el-col>
         <el-col :span="6">
-      <el-form-item label="航班截止日期:">
+      <el-form-item label="航班截止日期:" prop="flightEndDate">
         <el-col>
-          <el-date-picker type="date" placeholder="选择日期" v-model="formData.flightEndDate" style="width: 100%;"></el-date-picker>
+          <el-date-picker type="date" placeholder="选择日期" v-model="formData.flightEndDate" ></el-date-picker>
         </el-col>
       </el-form-item>
         </el-col>
         <el-col :span="6">
-      <el-form-item label="航班号:">
+      <el-form-item label="航班号:" prop="flightNumber">
         <el-input v-model="formData.flightNumber"></el-input>
       </el-form-item>
         </el-col>
@@ -83,7 +83,7 @@
 
       <el-row :gutter="20">
         <el-col :span="6">
-          <el-form-item label="订单类型:">
+          <el-form-item label="订单类型:" prop="orderType">
             <el-select v-model="formData.orderType" placeholder="选择类型">
               <el-option label="测试1" value="1"></el-option>
               <el-option label="测试2" value="2"></el-option>
@@ -91,7 +91,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="6">
-      <el-form-item label="订单来源:">
+      <el-form-item label="订单来源:" prop="orderSource">
         <el-select v-model="formData.orderSource" placeholder="全部">
           <el-option label="去哪网" value="qunawang"></el-option>
           <el-option label="飞猪" value="feizhu"></el-option>
@@ -123,9 +123,7 @@
     <el-table :data="tableData"
               style="width: 100%;margin-bottom: 20px;"
               row-key="deptId"
-              border
-              :tree-props="{children: 'children', hasChildren: 'test'}"
-    >
+              border>
       <el-table-column
         prop="orderNumber"
         label="订单号"
@@ -134,7 +132,7 @@
       <el-table-column
         prop="flightType"
         label="类型"
-        width="100"
+        width="50"
       ></el-table-column>
       <el-table-column
         prop="orderDate"
@@ -149,7 +147,7 @@
       <el-table-column
         prop="flightDateNumber"
         label="航班日期/航班号"
-        width="200"
+        width="100"
       ></el-table-column>
       <el-table-column
         prop="PNR"
@@ -164,7 +162,7 @@
       <el-table-column
         prop="orderStatus"
         label="订单状态"
-        width="100"
+        width="50"
       ></el-table-column>
       <el-table-column
         prop="policyId"
@@ -174,17 +172,17 @@
       <el-table-column
         prop="balance"
         label="是否退差额"
-        width="100"
+        width="50"
       ></el-table-column>
       <el-table-column
         prop="lockingPeople"
         label="锁定人"
-        width="100"
+        width="50"
       ></el-table-column>
       <el-table-column
         prop="receivable"
         label="应收"
-        width="100"
+        width="50"
       ></el-table-column>
       <el-table-column
         prop="payable"
@@ -215,9 +213,8 @@
         fixed="right"
         label="操作"
         align="center"
-        width="300">
+        width="150">
         <template slot-scope="scope">
-<!--          <el-button @click="handleAdd(scope.row.deptId)" type="success" size="mini">添加</el-button>-->
           <el-button @click="handleUpdate(scope.row.deptId)" type="primary" size="mini">编辑</el-button>
           <el-button @click.native.prevent="handleRemove(scope.row.deptId)" type="danger"
                      size="mini">删除
@@ -290,16 +287,6 @@
         <el-form-item label="采购订单" prop="purchaseOrders">
           <el-input v-model="formData.purchaseOrders"></el-input>
         </el-form-item>
-<!--        <template>-->
-<!--          <el-transfer-->
-<!--            :titles="['全部角色', '已选角色']"-->
-<!--            filter-placeholder="角色名称"-->
-<!--            v-model="formData.roles"-->
-<!--            @change="handleChange"-->
-<!--            :props="{ key: 'roleId',label: 'roleName' }"-->
-<!--            :data="allRoles">-->
-<!--          </el-transfer>-->
-<!--        </template>-->
 
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -390,11 +377,6 @@
         profit:'',//利润
         purchaseOrders:[],//采购订单
         //
-        deptName: "",
-        firmId: "",
-        domain: "",
-        ddId: "",
-        ddParentIdId: "",
         roles: []
     };
     export default {
@@ -484,6 +466,47 @@
                   ],
                   purchaseOrders: [
                     {required: true, message: "请输入采购订单", trigger: "blur"},
+
+                  ],
+
+                  startDate: [
+                    {required: true, message: "请输入起始日期", trigger: "blur"},
+
+                  ],
+                  endDate: [
+                    {required: true, message: "请输入结束日期", trigger: "blur"},
+
+                  ],
+                  specialQuery: [
+                    {required: true, message: "请输入特殊查询", trigger: "blur"},
+
+                  ],
+                  namePhone: [
+                    {required: true, message: "请输入联系人电话", trigger: "blur"},
+
+                  ],
+                  nameAirplane: [
+                    {required: true, message: "请输入乘机人姓名", trigger: "blur"},
+
+                  ],
+                  ticketNumber: [
+                    {required: true, message: "请输入票号", trigger: "blur"},
+
+                  ],
+                  flightStartDate: [
+                    {required: true, message: "请输入航班起始日期", trigger: "blur"},
+
+                  ],
+                  flightEndDate: [
+                    {required: true, message: "请输入航班截止日期", trigger: "blur"},
+
+                  ],
+                  orderType: [
+                    {required: true, message: "请输入订单类型", trigger: "blur"},
+
+                  ],
+                  orderSource: [
+                    {required: true, message: "请输入订单来源", trigger: "blur"},
 
                   ],
                 }

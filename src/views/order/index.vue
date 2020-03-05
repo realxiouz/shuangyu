@@ -1,19 +1,19 @@
 <template>
   <div class="order-container">
-    <el-form :inline="true" :model="searchForm"  :label-position="labelPosition" label-width="110px" >
+    <el-form :inline="true" ref="form" :rules="rules"  :model="searchForm"  :label-position="labelPosition" label-width="100%" >
       <el-row :gutter="20">
         <el-col :span="6">
-      <el-form-item label="起始日期:">
+      <el-form-item label="起始日期:"  prop="startDate">
           <el-date-picker type="date" placeholder="选择日期" v-model="formData.startDate" style="width: 100%;" ></el-date-picker>
       </el-form-item>
           </el-col>
         <el-col :span="6">
-      <el-form-item label="结束日期:">
+      <el-form-item label="结束日期:"  prop="endDate">
           <el-date-picker type="date" placeholder="选择日期" v-model="formData.endDate" style="width: 100%;" ></el-date-picker>
       </el-form-item>
         </el-col>
         <el-col :span="6">
-      <el-form-item label="特殊查询:">
+      <el-form-item label="特殊查询:"  prop="specialQuery">
         <el-select v-model="formData.specialQuery" placeholder="全部" >
           <el-option label="测试1" value="shanghai"></el-option>
           <el-option label="测试2" value="beijing"></el-option>
@@ -21,7 +21,7 @@
       </el-form-item>
         </el-col>
         <el-col :span="6">
-      <el-form-item label="联系人电话:">
+      <el-form-item label="联系人电话:"  prop="namePhone">
         <el-input v-model="formData.namePhone" ></el-input>
       </el-form-item>
           </el-col>
@@ -29,22 +29,22 @@
 
       <el-row :gutter="20">
         <el-col :span="6">
-      <el-form-item label="乘机人姓名:">
+      <el-form-item label="乘机人姓名:"  prop="nameAirplane">
         <el-input v-model="formData.nameAirplane" style="width: 230px"></el-input>
       </el-form-item>
           </el-col>
         <el-col :span="6">
-      <el-form-item label="订单号:">
+      <el-form-item label="订单号:"  prop="orderNumber">
         <el-input v-model="formData.orderNumber" style="width: 230px"></el-input>
       </el-form-item>
           </el-col>
         <el-col :span="6">
-      <el-form-item label="票号:">
+      <el-form-item label="票号:"  prop="ticketNumber">
         <el-input v-model="formData.ticketNumber" style="width: 230px"></el-input>
       </el-form-item>
         </el-col>
         <el-col :span="6">
-      <el-form-item label="PNR:">
+      <el-form-item label="PNR:"  prop="PNR">
         <el-input v-model="formData.PNR" ></el-input>
       </el-form-item>
         </el-col>
@@ -52,7 +52,7 @@
 
       <el-row :gutter="20">
         <el-col :span="6">
-      <el-form-item label="订单状态:">
+      <el-form-item label="订单状态:"  prop="orderStatus">
         <el-select v-model="formData.orderStatus" placeholder="全部">
           <el-option label="出票中" value="ing"></el-option>
           <el-option label="退票完成" value="exit"></el-option>
@@ -61,21 +61,21 @@
       </el-form-item>
           </el-col>
         <el-col :span="6">
-      <el-form-item label="航班起始日期:">
+      <el-form-item label="航班起始日期:"  prop="flightStartDate">
         <el-col>
           <el-date-picker type="date" placeholder="选择日期" v-model="formData.flightStartDate" style="width: 100%;"></el-date-picker>
         </el-col>
       </el-form-item>
         </el-col>
         <el-col :span="6">
-      <el-form-item label="航班截止日期:">
+      <el-form-item label="航班截止日期:"  prop="flightEndDate">
         <el-col>
           <el-date-picker type="date" placeholder="选择日期" v-model="formData.flightEndDate" style="width: 100%;"></el-date-picker>
         </el-col>
       </el-form-item>
         </el-col>
         <el-col :span="6">
-      <el-form-item label="航班号:">
+      <el-form-item label="航班号:"  prop="flightNumber">
         <el-input v-model="formData.flightNumber"></el-input>
       </el-form-item>
         </el-col>
@@ -83,7 +83,7 @@
 
       <el-row :gutter="20">
         <el-col :span="6">
-          <el-form-item label="订单类型:">
+          <el-form-item label="订单类型:"  prop="orderType">
             <el-select v-model="formData.orderType" placeholder="选择类型">
               <el-option label="测试1" value="1"></el-option>
               <el-option label="测试2" value="2"></el-option>
@@ -91,7 +91,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="6">
-      <el-form-item label="订单来源:">
+      <el-form-item label="订单来源:"  prop="orderSource">
         <el-select v-model="formData.orderSource" placeholder="全部">
           <el-option label="去哪网" value="qunawang"></el-option>
           <el-option label="飞猪" value="feizhu"></el-option>
@@ -99,7 +99,7 @@
       </el-form-item>
             </el-col>
         <el-col :span="6">
-      <el-form-item label="航程类型:" prop="flightType">
+      <el-form-item label="航程类型:" prop="flightType" >
         <el-radio-group v-model="formData.flightType">
           <el-radio v-model="radio" label="单程">单程</el-radio>
           <el-radio v-model="radio" label="往返">往返</el-radio>
@@ -120,12 +120,7 @@
       </el-form-item>
 
       </el-form>
-    <el-table :data="tableData"
-              style="width: 100%;margin-bottom: 20px;"
-              row-key="deptId"
-              border
-              :tree-props="{children: 'children', hasChildren: 'test'}"
-    >
+    <el-table>
       <el-table-column
         prop="orderNumber"
         label="订单号"
@@ -209,7 +204,7 @@
       :page-size="pageSize"
       :total="total">
     </el-pagination>
-    <el-dialog :inline="true" title="订单信息" :visible.sync="dialogVisible" width="90%">
+    <el-table :inline="true" title="订单信息" :visible.sync="dialogVisible" width="90%">
       <el-form ref="form" :rules="rules" :model="formData" label-width="90px">
         <el-row :gutter="20">
           <el-col :span="6">
@@ -274,238 +269,13 @@
         </el-form-item>
           </el-col>
         </el-row>
-
-        <el-button type="primary" >添加航班信息</el-button>
-        <el-table :data="tableData"
-                  style="width: 100%;margin-bottom: 20px;"
-                  row-key="deptId"
-                  border
-                  :tree-props="{children: 'children', hasChildren: 'test'}"
-        >
-          <el-table-column
-            prop="orderNumber"
-            label="出发日期"
-            width="100"
-          ></el-table-column>
-          <el-table-column
-            prop="flightType"
-            label="主键唯一标识"
-            width="150"
-          ></el-table-column>
-          <el-table-column
-            prop="orderDate"
-            label="航司"
-            width="100"
-          ></el-table-column>
-          <el-table-column
-            prop="takeOffArrive"
-            label="主航班号"
-            width="100"
-          ></el-table-column>
-          <el-table-column
-            prop="flightDateNumber"
-            label="航班号"
-            width="100"
-          ></el-table-column>
-          <el-table-column
-            prop="PNR"
-            label="出发地三字码"
-            width="150"
-          ></el-table-column>
-          <el-table-column
-            prop="totalPriceNumber"
-            label="出发机场"
-            width="100"
-          ></el-table-column>
-          <el-table-column
-            prop="orderStatus"
-            label="出发航站楼"
-            width="100"
-          ></el-table-column>
-          <el-table-column
-            prop="policyId"
-            label="起飞时间"
-            width="100"
-          ></el-table-column>
-          <el-table-column
-            prop="balance"
-            label="到达地三字码"
-            width="150"
-          ></el-table-column>
-          <el-table-column
-            prop="lockingPeople"
-            label="到达机场"
-            width="100"
-          ></el-table-column>
-          <el-table-column
-            prop="lockingPeople"
-            label="到达航站楼"
-            width="100"
-          ></el-table-column>
-          <el-table-column
-            prop="lockingPeople"
-            label="到达时间"
-            width="100"
-          ></el-table-column>
-          <el-table-column
-            prop="lockingPeople"
-            label="航程"
-            width="100"
-          ></el-table-column>
-          <el-table-column
-            prop="lockingPeople"
-            label="飞行时间"
-            width="100"
-          ></el-table-column>
-          <el-table-column
-            prop="lockingPeople"
-            label="机建费"
-            width="100"
-          ></el-table-column>
-          <el-table-column
-            prop="lockingPeople"
-            label="燃油费"
-            width="100"
-          ></el-table-column>
-          <el-table-column
-            prop="lockingPeople"
-            label="儿童燃油费"
-            width="100"
-          ></el-table-column>
-          <el-table-column
-            prop="lockingPeople"
-            label="机型"
-            width="100"
-          ></el-table-column>
-          <el-table-column
-            prop="lockingPeople"
-            label="机型全称"
-            width="100"
-          ></el-table-column>
-          <el-table-column
-            prop="lockingPeople"
-            label="共享标记"
-            width="100"
-          ></el-table-column>
-          <el-table-column
-            prop="lockingPeople"
-            label="经停标记"
-            width="100"
-          ></el-table-column>
-          <el-table-column
-            prop="lockingPeople"
-            label="经停机场三字码"
-            width="150"
-          ></el-table-column>
-          <el-table-column
-            prop="lockingPeople"
-            label="餐食标记"
-            width="100"
-          ></el-table-column>
-          <el-table-column
-            prop="lockingPeople"
-            label="经停次数"
-            width="100"
-          ></el-table-column>
-          <el-table-column
-            prop="lockingPeople"
-            label="飞行周期"
-            width="100"
-          ></el-table-column>
-          <el-table-column
-            prop="lockingPeople"
-            label="退改规则"
-            width="100"
-          ></el-table-column>
-
-          <!--     操作  按钮  需要 编辑 添加 删除  -->
-          <el-table-column
-            fixed="right"
-            label="操作"
-            align="center"
-            width="300">
-            <template slot-scope="scope">
-              <!--          <el-button @click="handleAdd(scope.row.deptId)" type="success" size="mini">添加</el-button>-->
-              <el-button @click="handleUpdate(scope.row.deptId)" type="primary" size="mini">编辑</el-button>
-              <el-button @click.native.prevent="handleRemove(scope.row.deptId)" type="danger"
-                         size="mini">删除
-              </el-button>
-            </template>
-          </el-table-column>
-
-        </el-table>
-
-        <el-table :data="tableData"
-                  style="width: 100%;margin-bottom: 20px;"
-                  row-key="deptId"
-                  border
-                  :tree-props="{children: 'children', hasChildren: 'test'}"
-        >
-          <el-table-column
-            prop="orderNumber"
-            label="姓名"
-            width="200"
-          ></el-table-column>
-          <el-table-column
-            prop="flightType"
-            label="性别"
-            width="100"
-          ></el-table-column>
-          <el-table-column
-            prop="orderDate"
-            label="出生年月"
-            width="200"
-          ></el-table-column>
-          <el-table-column
-            prop="takeOffArrive"
-            label="乘机人类型"
-            width="150"
-          ></el-table-column>
-          <el-table-column
-            prop="flightDateNumber"
-            label="乘机人证件类型"
-            width="200"
-          ></el-table-column>
-          <el-table-column
-            prop="PNR"
-            label="乘机人证件号"
-            width="350"
-          ></el-table-column>
-
-          <!--     操作  按钮  需要 编辑 添加 删除  -->
-          <el-table-column
-            fixed="right"
-            label="操作"
-            align="center"
-            width="400">
-            <template slot-scope="scope">
-              <!--          <el-button @click="handleAdd(scope.row.deptId)" type="success" size="mini">添加</el-button>-->
-              <el-button @click="handleUpdate(scope.row.deptId)" type="primary" size="mini">编辑</el-button>
-              <el-button @click.native.prevent="handleRemove(scope.row.deptId)" type="danger"
-                         size="mini">删除
-              </el-button>
-            </template>
-          </el-table-column>
-
-        </el-table>
-<!--        <template>-->
-<!--          <el-transfer-->
-<!--            :titles="['全部角色', '已选角色']"-->
-<!--            filter-placeholder="角色名称"-->
-<!--            v-model="formData.roles"-->
-<!--            @change="handleChange"-->
-<!--            :props="{ key: 'roleId',label: 'roleName' }"-->
-<!--            :data="allRoles">-->
-<!--          </el-transfer>-->
-<!--        </template>-->
-
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="handleCancel">取 消</el-button>
         <el-button type="primary" @click="handleSave">确 定</el-button>
       </div>
 
-    </el-dialog>
+    </el-table>
   </div>
 </template>
 <script>
@@ -553,7 +323,6 @@
         orderDate:'',//订单日期
         takeOffArrive:'',//起飞-到达
         totalPriceNumber:'',//总价/人数
-        Number:'',//人数
         policyId:'',//政策ID
         balance:'',//是否退差额
         lockingPeople:'',//锁定人
@@ -574,11 +343,6 @@
         startDate: '',//起始日期
 
         //
-        deptName: "",
-        firmId: "",
-        domain: "",
-        ddId: "",
-        ddParentIdId: "",
         roles: []
     };
     export default {
@@ -647,7 +411,46 @@
                     {required: true, message: "请输入锁定人", trigger: "blur"},
 
                   ],
+                  startDate: [
+                    {required: true, message: "请输入起始日期", trigger: "blur"},
 
+                  ],
+                  endDate: [
+                    {required: true, message: "请输入结束日期", trigger: "blur"},
+
+                  ],
+                  specialQuery: [
+                    {required: true, message: "请输入特殊查询", trigger: "blur"},
+
+                  ],
+                  namePhone: [
+                    {required: true, message: "请输入联系人电话", trigger: "blur"},
+
+                  ],
+                  nameAirplane: [
+                    {required: true, message: "请输入乘机人姓名", trigger: "blur"},
+
+                  ],
+                  ticketNumber: [
+                    {required: true, message: "请输入票号", trigger: "blur"},
+
+                  ],
+                  flightStartDate: [
+                    {required: true, message: "请输入航班起始日期", trigger: "blur"},
+
+                  ],
+                  flightEndDate: [
+                    {required: true, message: "请输入航班截止日期", trigger: "blur"},
+
+                  ],
+                  orderType: [
+                    {required: true, message: "请输入订单类型", trigger: "blur"},
+
+                  ],
+                  orderSource: [
+                    {required: true, message: "请输入订单来源", trigger: "blur"},
+
+                  ],
                 }
             };
         },

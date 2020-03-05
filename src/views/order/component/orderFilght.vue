@@ -1,8 +1,8 @@
 <template>
 
 
-  <el-dialog :inline="true" title="订单航班信息" :visible.sync=dialogCreate width="70%">
-    <el-form ref="form" :rules="rules" :model="formData" label-width="100px">
+  <el-dialog :inline="true" title="订单航班信息" :visible.sync=dialogCreate width="70%" >
+    <el-form ref="form" :rules="rules" :model="formData" label-width="100px" :label-position="labelPosition">
       <el-row :gutter="20">
         <el-col :span="6">
           <el-form-item label="出发日期:" prop="FlightDate">
@@ -26,7 +26,6 @@
           </el-form-item>
         </el-col>
       </el-row>
-
       <el-row :gutter="20">
         <el-col :span="6">
           <el-form-item label="经停次数:" prop="stopCount">
@@ -49,11 +48,11 @@
           </el-form-item>
         </el-col>
       </el-row>
-
       <el-row :gutter="20">
         <el-col :span="6">
           <el-form-item label="起飞时间:" prop="dptTime">
             <el-date-picker
+               style="width:310px"
               v-model="formData.dptTime"
               type="datetime"
               placeholder="选择起飞日期时间">
@@ -99,7 +98,7 @@
           </el-form-item>
         </el-col>
       </el-row>
-      `
+
       <el-row :gutter="20">
         <el-col :span="6">
           <el-form-item label="燃油费:" prop="fuelTax">
@@ -203,6 +202,7 @@
     name: "",
     data() {
       return {
+        labelPosition: 'top',
         formData: defaultData,
         total: 0,
         tableData: null,
@@ -212,6 +212,106 @@
         rules: {
           FlightDate: [
             {required: true, message: "请输入出发日期", trigger: "blur"},
+
+          ],
+          airLine: [
+            {required: true, message: "请输入航司", trigger: "blur"},
+
+          ],
+          actFlightCode: [
+            {required: true, message: "请输入主航班号", trigger: "blur"},
+
+          ],
+          flightCode: [
+            {required: true, message: "请输入航班号", trigger: "blur"},
+
+          ],
+          dpt: [
+            {required: true, message: "请输入出发地三字码", trigger: "blur"},
+
+          ],
+          dptAirport: [
+            {required: true, message: "请输入出发机场", trigger: "blur"},
+
+          ],
+          dptTerminal: [
+            {required: true, message: "请输入出发航楼站", trigger: "blur"},
+
+          ],
+          dptTime: [
+            {required: true, message: "请输入起飞时间", trigger: "blur"},
+
+          ],
+          arr: [
+            {required: true, message: "请输入到达地三字码", trigger: "blur"},
+
+          ],
+          arrAirport: [
+            {required: true, message: "请输入到达机场", trigger: "blur"},
+
+          ],
+          arrTerminal: [
+            {required: true, message: "请输入到达航站楼", trigger: "blur"},
+
+          ],
+          arrTime: [
+            {required: true, message: "请输入到达时间", trigger: "blur"},
+
+          ],
+          distance: [
+            {required: true, message: "请输入航程", trigger: "blur"},
+
+          ],
+          flightTimes: [
+            {required: true, message: "请输入飞行时间", trigger: "blur"},
+
+          ],
+          constructionFee: [
+            {required: true, message: "请输入机建费", trigger: "blur"},
+
+          ],
+          fuelTax: [
+            {required: true, message: "请输入燃油费", trigger: "blur"},
+
+          ],
+          childFuelTax: [
+            {required: true, message: "请输入儿童燃油费", trigger: "blur"},
+
+          ],
+          planeType: [
+            {required: true, message: "请输入机型", trigger: "blur"},
+
+          ],
+          flightTypeFullName: [
+            {required: true, message: "请输入机型全称", trigger: "blur"},
+
+          ],
+          shareFlag: [
+            {required: true, message: "请输入共享标记", trigger: "blur"},
+
+          ],
+          stopFlag: [
+            {required: true, message: "请输入经停标记", trigger: "blur"},
+
+          ],
+          stopAirportCode: [
+            {required: true, message: "请输入经停机场三字码", trigger: "blur"},
+
+          ],
+          meal: [
+            {required: true, message: "请输入餐食标记", trigger: "blur"},
+
+          ],
+          stopCount: [
+            {required: true, message: "请输入经停次数", trigger: "blur"},
+
+          ],
+          cycle: [
+            {required: true, message: "请输入飞行周期", trigger: "blur"},
+
+          ],
+          RefundChangeRule: [
+            {required: true, message: "请输入退改规则", trigger: "blur"},
 
           ],
         }
