@@ -1,22 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :inline="true" :model="searchForm">
-      <el-form-item label="姓名">
-        <el-input v-model="searchForm.user" placeholder="姓名"></el-input>
-      </el-form-item>
-      <el-form-item label="性别">
-        <el-select v-model="searchForm.region" placeholder="性别">
-          <el-option label="男" value="shanghai"></el-option>
-          <el-option label="女" value="beijing"></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="handleSearch">查询</el-button>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="addUser">添加</el-button>
-      </el-form-item>
-    </el-form>
+    <user-search @onSearch="handleSearch" @onAdd="addUser"></user-search>
     <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;" border
               default-expand-all>
       <el-table-column
@@ -117,19 +101,20 @@
       :total="total">
     </el-pagination>
     <el-dialog title="用户信息" :visible.sync="dialogVisible" width="30%">
-      <user-edit @onSuccess="handleSuccess" @onCancel="handleCancel"></user-edit>
+      <user-edit ref="userEdit" :init-user-id="userId" @onSave="handleSave" @onCancel="handleCancel"></user-edit>
     </el-dialog>
   </div>
 </template>
 
 <script>
   import userEdit from "./Edit.vue";
+  import userSearch from "./Search.vue";
 
   export default {
     name: "userList",
     data() {
       return {
-        searchForm: {},
+        userId: 1,
         lastId: "0",
         pageFlag: "next",
         pageSize: 10,
@@ -149,13 +134,18 @@
         this.dialogVisible = true;
       },
       addUser() {
+        /*this.userId = this.userId + 1;
         this.dialogVisible = true;
+        console.log(this.$refs.userEdit.formData);
+        this.$refs.userEdit.formData.gender = "女";
+        this.$refs.userEdit.loadForm();*/
+        this.$router.push('/user/edit');
       },
       loadData() {
 
       },
-      handleSearch() {
-
+      handleSearch(params) {
+        console.log(params);
       },
 
       handleSizeChange(pageSize) {
@@ -180,18 +170,19 @@
           this.searchForm = {};
         }
       },
-      handleCancel(){
+      handleCancel() {
         this.dialogVisible = false;
       },
-      handleSuccess(){
+      handleSave() {
         this.dialogVisible = false;
-      },
+      }
     },
     mounted() {
       this.loadData();
     },
     components: {
-      "user-edit": userEdit
+      userEdit,
+      userSearch
     }
   };
 </script>

@@ -53,6 +53,13 @@ export default new Router({
           name: 'userList',
           uri: '/user/list',
           component: () => import('@/views/user/List'),
+          meta: { title: 'Home', icon: 'home' },
+        },
+        {
+          title: '用户编辑',
+          path: '/user/edit',
+          uri: '/user/edit',
+          component: () => import('@/views/user/Edit_'),
           meta: { title: 'Home', icon: 'home' }
         },
         {

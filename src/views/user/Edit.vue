@@ -3,6 +3,7 @@
     <el-form ref="form" :rules="formRules" :model="formData" label-width="110px">
       <el-form-item label="昵称" prop="nickName">
         <el-input v-model="formData.nickName"></el-input>
+        <span>{{initUserId}}</span>
       </el-form-item>
       <el-form-item label="姓名" prop="fullName">
         <el-input v-model="formData.fullName"></el-input>
@@ -47,6 +48,7 @@
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
+      <el-button @click="resetForm">重 置</el-button>
       <el-button @click="$emit('onCancel')">取 消</el-button>
       <el-button type="primary" @click="handleSave">确 定</el-button>
     </div>
@@ -54,24 +56,27 @@
 </template>
 
 <script>
-  const defaultData = {
-    nickName: "",
-    fullName: "",
-    gender: "男",
-    birthDate: "",
-    phone: "",
-    email: "",
-    idCardNo: "",
-    super: false,
-    enable: true,
-    headImgUrl: "",
-    comment: ""
+  function defaultData() {
+    return {
+      nickName: "",
+      fullName: "",
+      gender: "男",
+      birthDate: "",
+      phone: "",
+      email: "",
+      idCardNo: "",
+      super: false,
+      enable: true,
+      headImgUrl: "",
+      comment: ""
+    };
   };
   export default {
     name: "userEdit",
+    props: ["initUserId"],
     data() {
       return {
-        formData: defaultData,
+        formData: defaultData(),
         formRules: {
           nickName: [
             { required: true, message: "请输入昵称", trigger: "blur" }
@@ -91,11 +96,30 @@
         }
       };
     },
+    computed: {
+      userId: function() {
+        return this.initUserId;
+      }
+    },
+    watch: {
+      userId: function(newValue, oldValue) {
+        console.log(newValue);
+      }
+    },
     methods: {
+      resetForm() {
+        this.formData = defaultData();
+        console.log(defaultData());
+      },
+      loadForm() {
+        console.log("loadForm");
+      },
       handleSave() {
         const params = this.formData;
-        this.$emit('onSuccess')
+        this.$emit("onSave");
       }
+    },
+    mounted() {
     }
   };
 </script>
