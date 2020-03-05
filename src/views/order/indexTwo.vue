@@ -39,7 +39,7 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="出发机场:" prop="dptAirport">
-              <el-input v-modelr="formData.dptAirport"></el-input>
+              <el-input v-model="formData.dptAirport"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
@@ -175,8 +175,8 @@
           <el-col :span="6">
             <el-form-item label="性别:" prop="gender">
               <el-select v-model="formData.gender" placeholder="请选择">
-                <el-option label="男" value=""></el-option>
-                <el-option label="女" value=""></el-option>
+                <el-option label="男" value="1"></el-option>
+                <el-option label="女" value="0"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -188,9 +188,9 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="乘机人类型:" prop="ageType">
-              <el-select v-model="formData.ageType" placeholder="请选择乘机人类型">
-                <el-option label="儿童" value=""></el-option>
-                <el-option label="成人" value=""></el-option>
+              <el-select v-model="formData.ageType" placeholder="请选择">
+                <el-option label="儿童" value="1"></el-option>
+                <el-option label="成人" value="2"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -199,10 +199,10 @@
         <el-row :gutter="20">
           <el-col :span="6">
             <el-form-item label="乘机人证件类型:" prop="cardType">
-              <el-select v-model="formData.cardType" placeholder="请选择乘机人证件类型">
-                <el-option label="身份证" value=""></el-option>
-                <el-option label="军人证" value=""></el-option>
-                <el-option label="测试" value=""></el-option>
+              <el-select v-model="formData.cardType" placeholder="请选择">
+                <el-option label="身份证" value="1"></el-option>
+                <el-option label="军人证" value="2"></el-option>
+                <el-option label="测试" value="3"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -257,8 +257,8 @@
           </el-form-item>
         </el-col>
         <el-col :span="6">
-          <el-form-item label="总价/人数:" prop="totalPriceNumber">
-            <el-input v-modelr="formData.totalPriceNumber"></el-input>
+          <el-form-item label="总价及人数:" prop="totalPriceNumber">
+            <el-input v-model="formData.totalPriceNumber"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">
@@ -317,7 +317,7 @@
           width="50"
         ></el-table-column>
         <el-table-column
-          prop="totalPriceNumber"
+          prop="dptAirport"
           label="出发机场"
           width="100"
         ></el-table-column>
@@ -743,7 +743,7 @@
 
           ],
           gender: [
-            {required: true, message: "请输入性别", trigger: "blur"},
+            {required: true, message: "请选择", trigger: "blur"},
 
           ],
           birthday: [
@@ -751,7 +751,7 @@
 
           ],
           ageType: [
-            {required: true, message: "请输入乘机人类型", trigger: "blur"},
+            {required: true, message: "请选择乘机人类型", trigger: "blur"},
 
           ],
           cardType: [

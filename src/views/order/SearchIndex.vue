@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form :inline="true"   :model="formData"   label-width="100%" >
+    <el-form :inline="true"   :model="formData" :label-position="labelPosition" label-width="100%" >
       <el-row :gutter="20">
         <el-col :span="6">
           <el-form-item label="起始日期:"  >

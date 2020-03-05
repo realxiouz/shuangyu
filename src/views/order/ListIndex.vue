@@ -1,6 +1,6 @@
 <template>
   <div class="order-container">
-<!--    <order-index> </order-index>-->
+<!--    <order-index > </order-index>-->
     <order-search  @onSearch="handleCancel" @onAdd="handleSave"></order-search>
     <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;" border
               default-expand-all>
@@ -91,7 +91,7 @@
 
 <script>
   import orderSearch from "./SearchIndex.vue";
-  // import orderIndex from "./index.vue";
+   import orderIndex from "./index.vue";
   export default {
     name: "orderList",
     data() {
@@ -127,7 +127,7 @@
       this.loadData();
     },
     components: {
-      //orderIndex,
+      orderIndex,
       orderSearch
 
     }

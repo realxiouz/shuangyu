@@ -255,7 +255,7 @@
           <el-input v-model="formData.PNR"></el-input>
         </el-form-item>
         <el-form-item label="总价/人数" prop="totalPriceNumber">
-          <el-input v-modelr="formData.totalPriceNumber"></el-input>
+          <el-input v-model="formData.totalPriceNumber"></el-input>
         </el-form-item>
         <el-form-item label="订单状态" prop="orderStatus">
           <el-input v-model="formData.orderStatus"></el-input>
