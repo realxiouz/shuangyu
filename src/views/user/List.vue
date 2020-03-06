@@ -114,7 +114,7 @@
       },
       loadData() {
         this.$store
-          .dispatch('user/getPageList', {pageFlag: this.pageFlag, pageSize: this.pageSize, lastId: this.lastId})
+          .dispatch('user/getPageList', {pageFlag: this.pageFlag, pageSize: 1, lastId: this.lastId})
           .then(data => {
             this.tableData = data.data;
           })
