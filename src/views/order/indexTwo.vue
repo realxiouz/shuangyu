@@ -1,8 +1,168 @@
 <template>
   <div class="order-container">
 
-    <vue-orderFilght v-bind:dialogCreate="dialogCreate"  v-on:success="success(res)"></vue-orderFilght>
+    <el-dialog :inline="true" title="订单航班信息" :visible.sync=dialogVisible width="70%" >
+      <el-form ref="form" :rules="rules" :model="formData" label-width="100px" :label-position="labelPosition">
+        <el-row :gutter="20">
+          <el-col :span="6">
+            <el-form-item label="出发日期:" prop="FlightDate">
+              <el-date-picker type="date" placeholder="选择日期" v-model="formData.FlightDate"
+                              style="width: 100%;"></el-date-picker>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="航司:" prop="airLine">
+              <el-input v-model="formData.airLine"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="主航班号:" prop="actFlightCode">
+              <el-input v-model="formData.actFlightCode"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="航班号:" prop="flightCode">
+              <el-input v-model="formData.flightCode"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="6">
+            <el-form-item label="经停次数:" prop="stopCount">
+              <el-input v-model="formData.stopCount"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="出发地三字码:" prop="dpt">
+              <el-input v-model="formData.dpt"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="出发机场:" prop="dptAirport">
+              <el-input v-model="formData.dptAirport"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="出发航楼站:" prop="dptTerminal">
+              <el-input v-model="formData.dptTerminal"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="6">
+            <el-form-item label="起飞时间:" prop="dptTime">
+              <el-date-picker
+                style="width:310px"
+                v-model="formData.dptTime"
+                type="datetime"
+                placeholder="选择起飞日期时间">
+              </el-date-picker>
 
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="到达地三字码:" prop="arr">
+              <el-input v-model="formData.arr"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="到达机场:" prop="arrAirport">
+              <el-input v-model="formData.arrAirport"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="到达航站楼:" prop="arrTerminal">
+              <el-input v-model="formData.arrTerminal"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="6">
+            <el-form-item label="到达时间:" prop="arrTime">
+              <el-input v-model="formData.arrTime"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="航程:" prop="distance">
+              <el-input v-model="formData.distance"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="飞行时间:" prop="flightTimes">
+              <el-input v-model="formData.flightTimes"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="机建费:" prop="constructionFee">
+              <el-input v-model="formData.constructionFee"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row :gutter="20">
+          <el-col :span="6">
+            <el-form-item label="燃油费:" prop="fuelTax">
+              <el-input v-model="formData.fuelTax"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="儿童燃油费:" prop="childFuelTax">
+              <el-input v-model="formData.childFuelTax"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="机型:" prop="planeType">
+              <el-input v-model="formData.planeType"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="机型全称:" prop="flightTypeFullName">
+              <el-input v-model="formData.flightTypeFullName"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="6">
+            <el-form-item label="共享标记:" prop="shareFlag">
+              <el-input v-model="formData.shareFlag"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="经停标记:" prop="stopFlag">
+              <el-input v-model="formData.stopFlag"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="经停机场三字码:" prop="stopAirportCode">
+              <el-input v-model="formData.stopAirportCode"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="餐食标记:" prop="meal">
+              <el-input v-model="formData.meal"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+
+          <el-col :span="6">
+            <el-form-item label="飞行周期:" prop="cycle">
+              <el-input v-model="formData.cycle"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="退改规则:" prop="RefundChangeRule">
+              <el-input v-model="formData.RefundChangeRule"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="handleCancel">取 消</el-button>
+        <el-button type="primary" @click="handleSave">确 定</el-button>
+      </div>
+    </el-dialog>
 
     <el-dialog title="订单乘客信息" :visible.sync="dialogFormVisible" style="width: 100%;">
       <el-form ref="form" :rules="rules" :model="formData" label-width="90px" :label-position="labelPosition">
@@ -15,8 +175,8 @@
           <el-col :span="6">
             <el-form-item label="性别:" prop="gender">
               <el-select v-model="formData.gender" placeholder="请选择">
-                <el-option label="男" value=""></el-option>
-                <el-option label="女" value=""></el-option>
+                <el-option label="男" value="1"></el-option>
+                <el-option label="女" value="0"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -28,9 +188,9 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="乘机人类型:" prop="ageType">
-              <el-select v-model="formData.ageType" placeholder="请选择乘机人类型">
-                <el-option label="儿童" value=""></el-option>
-                <el-option label="成人" value=""></el-option>
+              <el-select v-model="formData.ageType" placeholder="请选择">
+                <el-option label="儿童" value="1"></el-option>
+                <el-option label="成人" value="2"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -39,10 +199,10 @@
         <el-row :gutter="20">
           <el-col :span="6">
             <el-form-item label="乘机人证件类型:" prop="cardType">
-              <el-select v-model="formData.cardType" placeholder="请选择乘机人证件类型">
-                <el-option label="身份证" value=""></el-option>
-                <el-option label="军人证" value=""></el-option>
-                <el-option label="测试" value=""></el-option>
+              <el-select v-model="formData.cardType" placeholder="请选择">
+                <el-option label="身份证" value="1"></el-option>
+                <el-option label="军人证" value="2"></el-option>
+                <el-option label="测试" value="3"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -97,8 +257,8 @@
           </el-form-item>
         </el-col>
         <el-col :span="6">
-          <el-form-item label="总价/人数:" prop="totalPriceNumber">
-            <el-input v-modelr="formData.totalPriceNumber"></el-input>
+          <el-form-item label="总价及人数:" prop="totalPriceNumber">
+            <el-input v-model="formData.totalPriceNumber"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">
@@ -157,7 +317,7 @@
           width="50"
         ></el-table-column>
         <el-table-column
-          prop="totalPriceNumber"
+          prop="dptAirport"
           label="出发机场"
           width="100"
         ></el-table-column>
@@ -337,10 +497,39 @@
   </div>
 </template>
 <script>
-  import orderFilght from './component/orderFilght.vue'
+
 
   const defaultData = {
-
+    //
+    //航班字段
+    FlightDate: '',//出发日期
+    flightId: '',//主键唯一标识
+    airLine: '',//航司
+    actFlightCode: '',//主航班号
+    flightCode: '',//航班号
+    dpt: '',//出发地三字码
+    dptAirport: '',//出发机场
+    dptTerminal: '',//出发航楼站
+    dptTime: '',//起飞时间
+    arr: '',//到达地三字码
+    arrAirport: '',//到达机场
+    arrTerminal: '',//到达航站楼
+    arrTime: '',//到达时间
+    distance: '',//航程
+    flightTimes: '',//飞行时间
+    constructionFee: '',//机建费
+    fuelTax: '',//燃油费
+    childFuelTax: '',//儿童燃油费
+    planeType: '',//机型
+    flightTypeFullName: '',//机型全称
+    shareFlag: '',//共享标记
+    stopFlag: '',//经停标记
+    stopAirportCode: '',//经停机场三字码
+    meal: '',//餐食标记
+    stopCount: '',//经停次数
+    cycle: '',//飞行周期
+    RefundChangeRule: '',//退改规则
+    //
     //
     //乘客字段
     cardNo: '',//乘机人证件号
@@ -379,9 +568,7 @@
   };
   export default {
     name: "",
-    components: {
-      "vue-orderFilght": orderFilght
-    },
+
     data() {
       return {
         labelPosition: 'top',
@@ -390,7 +577,7 @@
         formData: defaultData,
         dialogVisible: false,
         dialogFormVisible: false,
-        dialogCreate:false,
+        //dialogCreate:false,
         total: 0,
         tableData: null,
 
@@ -449,12 +636,114 @@
 
           ],
 
+
+          airLine: [
+            {required: true, message: "请输入航司", trigger: "blur"},
+
+          ],
+          actFlightCode: [
+            {required: true, message: "请输入主航班号", trigger: "blur"},
+
+          ],
+          flightCode: [
+            {required: true, message: "请输入航班号", trigger: "blur"},
+
+          ],
+          dpt: [
+            {required: true, message: "请输入出发地三字码", trigger: "blur"},
+
+          ],
+          dptAirport: [
+            {required: true, message: "请输入出发机场", trigger: "blur"},
+
+          ],
+          dptTerminal: [
+            {required: true, message: "请输入出发航楼站", trigger: "blur"},
+
+          ],
+          dptTime: [
+            {required: true, message: "请输入起飞时间", trigger: "blur"},
+
+          ],
+          arr: [
+            {required: true, message: "请输入到达地三字码", trigger: "blur"},
+
+          ],
+          arrAirport: [
+            {required: true, message: "请输入到达机场", trigger: "blur"},
+
+          ],
+          arrTerminal: [
+            {required: true, message: "请输入到达航站楼", trigger: "blur"},
+
+          ],
+          arrTime: [
+            {required: true, message: "请输入到达时间", trigger: "blur"},
+
+          ],
+          distance: [
+            {required: true, message: "请输入航程", trigger: "blur"},
+
+          ],
+          flightTimes: [
+            {required: true, message: "请输入飞行时间", trigger: "blur"},
+
+          ],
+          constructionFee: [
+            {required: true, message: "请输入机建费", trigger: "blur"},
+
+          ],
+          fuelTax: [
+            {required: true, message: "请输入燃油费", trigger: "blur"},
+
+          ],
+          childFuelTax: [
+            {required: true, message: "请输入儿童燃油费", trigger: "blur"},
+
+          ],
+          planeType: [
+            {required: true, message: "请输入机型", trigger: "blur"},
+
+          ],
+          flightTypeFullName: [
+            {required: true, message: "请输入机型全称", trigger: "blur"},
+
+          ],
+          shareFlag: [
+            {required: true, message: "请输入共享标记", trigger: "blur"},
+
+          ],
+          stopFlag: [
+            {required: true, message: "请输入经停标记", trigger: "blur"},
+
+          ],
+          stopAirportCode: [
+            {required: true, message: "请输入经停机场三字码", trigger: "blur"},
+
+          ],
+          meal: [
+            {required: true, message: "请输入餐食标记", trigger: "blur"},
+
+          ],
+          stopCount: [
+            {required: true, message: "请输入经停次数", trigger: "blur"},
+
+          ],
+          cycle: [
+            {required: true, message: "请输入飞行周期", trigger: "blur"},
+
+          ],
+          RefundChangeRule: [
+            {required: true, message: "请输入退改规则", trigger: "blur"},
+
+          ],
+
           name: [
             {required: true, message: "请输入姓名", trigger: "blur"},
 
           ],
           gender: [
-            {required: true, message: "请输入性别", trigger: "blur"},
+            {required: true, message: "请选择", trigger: "blur"},
 
           ],
           birthday: [
@@ -462,7 +751,7 @@
 
           ],
           ageType: [
-            {required: true, message: "请输入乘机人类型", trigger: "blur"},
+            {required: true, message: "请选择乘机人类型", trigger: "blur"},
 
           ],
           cardType: [
@@ -479,16 +768,14 @@
     },
     methods: {
       handleCancel() {
-        this.dialogCreate = false;
+        this.dialogVisible = false;
       },
       handleAdd() {
-        this.dialogCreate = true;
+        this.dialogVisible = true;
       },
 
       handleSave() {//保存
-          this.$refs['form'].validate((valid) => {
-              if (valid){}
-          })
+
       },
       handleUpdate() {//编辑
 
@@ -497,9 +784,7 @@
       handleRemove() {//删除
 
       },
-      success(res){
-        this.dialogCreate = res;
-      }
+
     },
   };
 </script>

@@ -1,10 +1,8 @@
 <template>
   <el-container>
-    <el-scrollbar>
-      <el-aside width="auto">
-        <Sidebar :menuList="menuList" :collapse="isCollapse"/>
-      </el-aside>
-    </el-scrollbar>
+    <el-aside width="210px">
+      <Sidebar :menuList="menuList" :collapse="isCollapse"/>
+    </el-aside>
     <el-main>
       <div class="app-header">
         <el-row type="flex" class="row-bg" justify="space-between">
@@ -121,18 +119,6 @@
 </script>
 
 <style lang="scss" scoped>
-  .el-header,
-  .el-footer {
-    background-color: #b3c0d1;
-    color: #333;
-    line-height: 60px;
-  }
-
-  .el-aside {
-    background-color: #304156;
-    color: #304156;
-    overflow: hidden;
-  }
 
   .el-main {
     height: 100%;

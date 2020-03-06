@@ -125,14 +125,14 @@ export default new Router({
       children: [
         {
           title: '订单信息',
-          path: 'index',
-          name: 'order',
-          uri: '/order/index',
-          component: () => import('@/views/order/index'),
+          path: '/order/ListIndex',
+          name: 'orderListIndex',
+          uri: '/order/ListIndex',
+          component: () => import('@/views/order/ListIndex'),
           meta: { title: 'Home', icon: 'home' }
         },
         {
-          title: '订单报表',
+          title: '订单',
           path: 'indexReport',
           name: 'order',
           uri: '/order/indexReport',
@@ -140,11 +140,11 @@ export default new Router({
           meta: { title: 'Home', icon: 'home' }
         },
         {
-          title: '',
-          path: 'orderFlightName',
-          name: 'order',
-          uri: '/order/orderFlightName',
-          component: () => import('@/views/order/orderFlightName'),
+          title: '跳转的页面',
+          path: '/order/indexTwo',
+          name: '/order/indexTwo',
+          uri: '/order/indexTwo',
+          component: () => import('@/views/order/indexTwo'),
           meta: { title: 'Home', icon: 'home' }
         }
       ]

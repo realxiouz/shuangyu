@@ -1,16 +1,6 @@
 <template>
   <div class="dept-container">
-    <el-form :inline="true" :model="searchForm">
-      <el-form-item label="部门名称">
-        <el-input v-model="searchForm.deptName" placeholder="请输入部门名称"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="handleSearch">查询</el-button>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="handleAdd">添加</el-button>
-      </el-form-item>
-    </el-form>
+    <dept-search @onSearch="handleSearch" @onAdd="handleAdd"></dept-search>
     <el-table :data="tableData"
               style="width: 100%;margin-bottom: 20px;"
               row-key="deptId"
@@ -106,6 +96,7 @@
   </div>
 </template>
 <script>
+    import deptSearch from "./Search.vue"
 
     const defaultData = {
         deptName: "",
@@ -179,15 +170,14 @@
                 this.lastId = this.tableData[this.tableData.length - 1].deptId;
                 this.loadData();
             },
-            loadData() {
-                if (!this.searchForm.deptName) {
-                    this.searchForm = {};
+            loadData(params) {
+                if (!params.deptName) {
+                    params = {};
                 }
                 this.$store
                     .dispatch("dept/getList",
-                        this.searchForm
+                        params
                     ).then(data => {
-                    console.log(data)
                     if (data) {
                         this.tableData = data;
                     }
@@ -205,13 +195,13 @@
                         console.log(error);
                     });
             },
-            loadTotal: function () {
-                if (!this.searchForm.deptName) {
-                    this.searchForm = {};
+            loadTotal(params) {
+                if (!params.deptName) {
+                    params = {};
                 }
                 this.$store
                     .dispatch("dept/getTotal", {
-                        filter: this.searchForm
+                        filter: params
                     }).then(response => {
                     this.total = response.data;
                 }).catch(error => {
@@ -229,9 +219,12 @@
                 this.loadRoles();
                 this.dialogVisible = true;
             },
-            handleSearch() {
-                this.loadData();
-                this.loadTotal();
+            handleSearch(params) {
+                if (!params) {
+                    params = {};
+                }
+                this.loadData(params);
+                this.loadTotal(params);
             },
             handleCancel() {
                 this.dialogVisible = false;
@@ -289,6 +282,9 @@
         },
         mounted() {
             this.handleSearch();
+        },
+        components: {
+            deptSearch
         }
     };
 </script>

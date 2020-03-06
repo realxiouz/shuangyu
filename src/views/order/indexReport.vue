@@ -255,7 +255,7 @@
           <el-input v-model="formData.PNR"></el-input>
         </el-form-item>
         <el-form-item label="总价/人数" prop="totalPriceNumber">
-          <el-input v-modelr="formData.totalPriceNumber"></el-input>
+          <el-input v-model="formData.totalPriceNumber"></el-input>
         </el-form-item>
         <el-form-item label="订单状态" prop="orderStatus">
           <el-input v-model="formData.orderStatus"></el-input>
@@ -514,59 +514,25 @@
         },
         methods: {
             prevClick() {
-                this.pageFlag = "prev";
-                this.lastId = this.tableData[0].deptId;
-                this.loadData();
+
             },
             nextClick() {
-                this.pageFlag = "next";
-                this.lastId = this.tableData[this.tableData.length - 1].deptId;
-                this.loadData();
+
             },
             loadData() {
-                if (!this.searchForm.deptName) {
+                if (!this.searchForm) {
                     this.searchForm = {};
                 }
-                this.$store
-                    .dispatch("dept/getList",
-                        this.searchForm
-                    ).then(data => {
-                    console.log(data)
-                    if (data) {
-                        this.tableData = data;
-                    }
-                }).catch(error => {
-                    console.log(error);
-                });
+
             },
-            loadRoles() {
-                this.$store
-                    .dispatch("role/getRoleList")
-                    .then(data => {
-                        this.allRoles = data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            loadOneRole(id) {
-                this.$store
-                    .dispatch("role/getOne", id)
-                    .then(data => {
-                        if (data) {
-                            this.paramsRoles.push(data);
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
+
+
             loadTotal: function () {
                 if (!this.searchForm.deptName) {
                     this.searchForm = {};
                 }
                 this.$store
-                    .dispatch("dept/getTotal", {
+                    .dispatch("", {
                         filter: this.searchForm
                     }).then(response => {
                     this.total = response.data;
@@ -574,15 +540,9 @@
                     console.log(error);
                 });
             },
-            handleAddChild(deptId) {
-                this.formData = defaultData;
-                this.formData.pid = deptId;
-                this.loadRoles();
-                this.dialogVisible = true;
-            },
+
             handleAdd() {
                 this.formData = defaultData;
-                this.loadRoles();
                 this.dialogVisible = true;
             },
             handleSearch() {
@@ -592,70 +552,11 @@
             handleCancel() {
                 this.dialogVisible = false;
             },
-            handleSave() {
-                this.$refs['form'].validate((valid) => {
-                    if (valid) {
-                        if (this.paramsRoles && this.paramsRoles.length > 0) {
-                            this.formData.roles = this.paramsRoles;
-                        }
-                        this.$store
-                            .dispatch("dept/save", this.formData)
-                            .then(() => {
-                                this.handleSearch();
-                            }).catch(error => {
-                            console.log(error);
-                        });
-                        this.dialogVisible = false;
-                    }
-                })
-            },
-            handleUpdate(deptId) {
-                this.$store
-                    .dispatch("dept/getOne", deptId)
-                    .then(data => {
-                        this.formData = data;
-                        let arr = [];
-                        if (this.formData.roles && this.formData.roles.length > 0) {
-                            this.formData.roles.forEach((item) => {
-                                arr.push(item.roleId)
-                            })
-                            this.formData.roles = arr;
-                        }
-                        this.dialogVisible = true;
-                    }).catch(error => {
-                    console.log(error);
-                });
-                this.loadRoles();
-            },
-            handleSizeChange(pageSize) {
-                this.pageSize = pageSize;
-                this.loadData();
-            },
-            handleRemove(id) {
-                this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
-                    confirmButtonText: "确定",
-                    cancelButtonText: "取消",
-                    type: "warning"
-                }).then(() => {
-                    this.$store
-                        .dispatch("dept/removeOne", id)
-                        .then(() => {
-                            this.loadData();
-                        });
-                }).catch(err => {
-                    console.error(err);
-                });
-            },
-            handleChange(value, direction, movedKeys) {
-                this.paramsRoles = [];
-                value.forEach((item) => {
-                    this.loadOneRole(item)
-                })
-            }
-        },
+
         mounted() {
-            this.handleSearch();
+
         }
-    };
+     }
+    }
 </script>
 
