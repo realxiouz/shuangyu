@@ -73,7 +73,7 @@ export default new Router({
           title: 'Api管理',
           path: '/api',
           uri: '/api',
-          component: () => import('@/views/api/index'),
+          component: () => import('@/views/api/ListIndex'),
           meta: { title: 'Home', icon: 'home' }
         },
         {
