@@ -28,7 +28,7 @@
         align="center">
         <template slot-scope="scope">
           <i v-if="scope.row.birthDate" class="el-icon-time"></i>
-          <span style="margin-left: 10px">{{ formatDate(scope.row.birthDate,'YYYY-MM-DD') }}</span>
+          <span style="margin-left: 10px">{{ formatDate(scope.row.birthDate,"YYYY-MM-DD") }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -86,7 +86,7 @@
       @next-click="nextClick">
     </el-pagination>
     <el-dialog title="用户信息" :visible.sync="dialogVisible" width="30%">
-      <user-edit ref="userForm" @onSave="handleSave" @onCancel="handleCancel"></user-edit>
+      <user-edit ref="userForm" :init-user-id="userId" @onSave="handleSave" @onCancel="handleCancel"></user-edit>
     </el-dialog>
   </div>
 </template>
@@ -99,6 +99,7 @@
     name: "userList",
     data() {
       return {
+        userId: null,
         dialogVisible: false,
         pageFlag: "next",
         pageSize: 10,
@@ -113,7 +114,7 @@
       },
       loadData() {
         this.$store
-          .dispatch('user/getPageList', {pageFlag: this.pageFlag, pageSize: 1, lastId: this.lastId})
+          .dispatch("user/getPageList", { pageFlag: this.pageFlag, pageSize: 1, lastId: this.lastId })
           .then(data => {
             this.tableData = data.data;
           })
@@ -123,7 +124,7 @@
       },
       search(keyword) {
         this.$store
-          .dispatch('user/getList', {username:keyword})
+          .dispatch("user/getList", { username: keyword })
           .then(data => {
             this.tableData = data.data;
           })
@@ -133,14 +134,17 @@
       },
       addUser() {
         this.dialogVisible = true;
+        this.userId=1;
         /*this.userId = this.userId + 1;
         this.dialogVisible = true;
         console.log(this.$refs.userEdit.formData);
         this.$refs.userEdit.formData.gender = "女";
         this.$refs.userEdit.loadForm();*/
       },
-      superSwitch(){},
-      enableSwitch(){},
+      superSwitch() {
+      },
+      enableSwitch() {
+      },
       handleCancel() {
         this.dialogVisible = false;
       },
@@ -163,7 +167,7 @@
           let date = new Date(dateStr);
           return this.$moment(date).format(format);
         } else {
-          return '';
+          return "";
         }
       }
     },
@@ -172,14 +176,14 @@
     },
     computed: {
       formatDate() {
-        return function (dateStr, format) {
+        return function(dateStr, format) {
           return this.initDate(dateStr, format);
-        }
+        };
       },
       initGender() {
-        return function (gender) {
-          return 0 == gender ? '男' : '女';
-        }
+        return function(gender) {
+          return 0 == gender ? "男" : "女";
+        };
       }
     },
     components: {

@@ -86,7 +86,7 @@
       @next-click="nextClick">
     </el-pagination>
     <el-dialog title="用户信息" :visible.sync="dialogVisible" width="30%">
-      <userForm ref="form" :rowData="rowData" @onSave="handleSave" @onCancel="handleCancel"></userForm>
+      <userForm v-if="dialogVisible" ref="form" :rowData="rowData" @onSave="handleSave" @onCancel="handleCancel"></userForm>
     </el-dialog>
   </div>
 </template>
@@ -139,7 +139,6 @@
       },
       handleAdd() {
         this.dialogVisible = true;
-        console.log(this.$refs);
         this.$refs.form.clearForm();
       },
       superSwitch(){},
