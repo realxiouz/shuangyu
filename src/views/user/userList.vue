@@ -52,7 +52,7 @@
         <template slot-scope="scope">
           <el-switch
             :value="scope.row.super"
-            @change="superSwitch(scope.row.super )">
+            @change="superSwitch(scope.row)">
           </el-switch>
         </template>
       </el-table-column>
