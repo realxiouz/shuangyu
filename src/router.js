@@ -48,7 +48,7 @@ export default new Router({
       component: Layout,
       children: [
         {
-          title: '用户管理',
+          title: '模板',
           path: '/user/list',
           name: 'userList',
           uri: '/user/list',
@@ -56,10 +56,10 @@ export default new Router({
           meta: { title: 'Home', icon: 'home' },
         },
         {
-          title: '用户编辑',
+          title: '用户管理',
           path: '/user/edit',
           uri: '/user/edit',
-          component: () => import('@/views/user/Edit_'),
+          component: () => import('@/views/user/userList'),
           meta: { title: 'Home', icon: 'home' }
         },
         {
@@ -125,14 +125,14 @@ export default new Router({
       children: [
         {
           title: '订单信息',
-          path: '/order/ListIndex',
-          name: 'orderListIndex',
-          uri: '/order/ListIndex',
-          component: () => import('@/views/order/ListIndex'),
+          path: 'index',
+          name: 'order',
+          uri: '/order/index',
+          component: () => import('@/views/order/index'),
           meta: { title: 'Home', icon: 'home' }
         },
         {
-          title: '订单',
+          title: '订单报表',
           path: 'indexReport',
           name: 'order',
           uri: '/order/indexReport',
@@ -140,11 +140,11 @@ export default new Router({
           meta: { title: 'Home', icon: 'home' }
         },
         {
-          title: '跳转的页面',
-          path: '/order/indexTwo',
-          name: '/order/indexTwo',
-          uri: '/order/indexTwo',
-          component: () => import('@/views/order/indexTwo'),
+          title: '',
+          path: 'orderFlightName',
+          name: 'order',
+          uri: '/order/orderFlightName',
+          component: () => import('@/views/order/orderFlightName'),
           meta: { title: 'Home', icon: 'home' }
         }
       ]
