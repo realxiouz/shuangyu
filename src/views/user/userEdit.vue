@@ -107,10 +107,10 @@
       }
     },
     watch: {
-      'this.rowData': () =>{
-        this.formData = this.rowData;
-        console.log(this.formData);
-      }
+
+    },
+    mounted() {
+      console.log("mounted");
     }
   };
 </script>
