@@ -120,6 +120,9 @@
       }
     },
     mounted() {
+      if (this.initUserId) {
+        //load
+      }
     }
   };
 </script>
