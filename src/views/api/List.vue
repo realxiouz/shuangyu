@@ -149,8 +149,7 @@
         this.loadData();
       },
       handleSave(params) {
-        this.$refs['form'].validate((valid) => {
-          if (valid) {
+        console.log(params)
             this.$store
               .dispatch("api/save", params)
               .then(() => {
@@ -159,8 +158,6 @@
               console.log(error);
             });
             this.dialogVisible = false;
-          }
-        })
       },
       handleUpdate(id) {
         this.$store

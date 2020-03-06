@@ -21,7 +21,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="$emit('onCancel')">取 消</el-button>
-        <el-button type="primary"   @click="$emit('onSave',formData)">确 定</el-button>
+        <el-button type="primary"  @click="handleSave" >确 定</el-button>
       </div>
 
   </div>
@@ -70,9 +70,15 @@
         },
 
         methods: {
+          handleSave(){
+            this.$refs['form'].validate((valid) => {
+              if(valid){
+                this.$emit("onSave",this.formData);
+              }
+            })
+            },
+          }
 
-
-        },
 
     };
 </script>
