@@ -88,7 +88,6 @@
     <el-dialog title="用户信息" :visible.sync="dialogVisible" width="30%">
       <user-edit ref="userForm" @onSave="handleSave" @onCancel="handleCancel"></user-edit>
     </el-dialog>
-    <el-button @click="test">test</el-button>
   </div>
 </template>
 
