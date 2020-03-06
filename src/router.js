@@ -141,10 +141,10 @@ export default new Router({
         },
         {
           title: '',
-          path: 'orderFlightName',
+          path: 'indexTwo',
           name: 'order',
-          uri: '/order/orderFlightName',
-          component: () => import('@/views/order/orderFlightName'),
+          uri: '/order/indexTwo',
+          component: () => import('@/views/order/indexTwo'),
           meta: { title: 'Home', icon: 'home' }
         }
       ]
