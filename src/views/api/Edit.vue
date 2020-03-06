@@ -8,7 +8,6 @@
       <el-form ref="form" :rules="rules" :model="formData" label-width="110px">
         <el-form-item label="Api名称" prop="apiName">
           <el-input v-model="formData.apiName"></el-input>
-          <span>{{initApiId}}</span>
         </el-form-item>
         <el-form-item label="URL" prop="uri">
           <el-input v-model="formData.uri"></el-input>
@@ -22,7 +21,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="$emit('onCancel')">取 消</el-button>
-        <el-button type="primary" @click="handleSave">确 定</el-button>
+        <el-button type="primary"  @click="handleSave" >确 定</el-button>
       </div>
 
   </div>
@@ -42,7 +41,7 @@
     };
     export default {
         name: 'apiEdit',
-      props: ["initApiId"],
+
         data() {
             return {
                 formData: defaultData(),
@@ -69,24 +68,17 @@
                 }
             };
         },
-      computed: {
-        apiId: function() {
-          return this.initApiId;
-        }
-      },
-      watch: {
-        apiId: function(newValue, oldValue) {
-          console.log(newValue);
-        }
-      },
+
         methods: {
-          handleSave() {
-            this.$emit("onSave");
+          handleSave(){
+            this.$refs['form'].validate((valid) => {
+              if(valid){
+                this.$emit("onSave",this.formData);
+              }
+            })
+            },
           }
 
-
-
-        },
 
     };
 </script>

@@ -1,14 +1,14 @@
 <template>
   <div>
-  <el-form :inline="true" :model="formData">
+  <el-form :inline="true" :model="searchForm">
     <el-form-item label="api名称">
-      <el-input v-model="formData.apiName" placeholder="api名称"></el-input>
+      <el-input v-model="searchForm.apiName" placeholder="api名称"></el-input>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary"  @click="$emit('onSearch',formData)">查询</el-button>
+      <el-button type="primary"  @click="$emit('onSearch',searchForm)">查询</el-button>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="$emit('onAdd')">添加</el-button>
+      <el-button type="primary" @click="$emit('onAdd',)">添加</el-button>
     </el-form-item>
   </el-form>
   </div>
@@ -19,7 +19,7 @@
         name: "apiSearch",
       data() {
         return {
-          formData: {
+          searchForm: {
             apiName: "",
           }
         };

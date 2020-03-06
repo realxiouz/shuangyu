@@ -79,7 +79,7 @@
                 editDeptId: '',
                 pid: '',
                 total: 0,
-                tableData: null,
+                tableData: [],
             };
         },
         methods: {
