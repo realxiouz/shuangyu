@@ -60,7 +60,7 @@
         <template slot-scope="scope">
           <el-switch
             :value="scope.row.enable"
-            @change="enableSwitch(scope.row.enable)">
+            @change="enableSwitch(scope.row)">
           </el-switch>
         </template>
       </el-table-column>
@@ -164,8 +164,13 @@
         this.dialogVisible = true;
         this.userID = '';
       },
-      superSwitch(){},
-      enableSwitch(){},
+      superSwitch(row){
+        row.super = row.super?false:true;
+      },
+      enableSwitch(row){
+        row.enable = row.enable?false:true;
+        console.log(row);
+      },
       handleResetPwd(row){
         this.$confirm('此操作将重置该用户的登录密码, 是否继续?', '提示', {
           confirmButtonText: '确定',
