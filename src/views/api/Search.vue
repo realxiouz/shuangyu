@@ -16,7 +16,7 @@
 
 <script>
     export default {
-        name: "SearchIndex",
+        name: "apiSearch",
       data() {
         return {
           formData: {
