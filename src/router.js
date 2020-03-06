@@ -93,10 +93,10 @@ export default new Router({
       children: [
         {
           title: '基本信息',
-          path: 'index',
+          path: 'list',
           name: 'dept',
-          uri: '/dept/index',
-          component: () => import('@/views/dept/index'),
+          uri: '/dept/List',
+          component: () => import('@/views/dept/List'),
           meta: { title: 'Home', icon: 'home' }
         }
       ]
