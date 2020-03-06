@@ -1,6 +1,6 @@
 <template>
   <div  class="api-container">
-    <SearchIndex @onSearch="handleSearch" @onAdd="handleAdd"></SearchIndex>
+    <apiSearch @onSearch="handleSearch" @onAdd="handleAdd"></apiSearch>
   <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;" border>
     <el-table-column
       prop="uri"
@@ -57,19 +57,19 @@
     :total="total">
   </el-pagination>
     <el-dialog title="Api信息" :visible.sync="dialogVisible" width="30%">
-    <api ref="api"  :init-api-id="apiId"  @onCancel="handleCancel" @onSave="handleSave"></api>
+    <apiEdit ref="api"  :init-api-id="apiId"  @onCancel="handleCancel" @onSave="handleSave"></apiEdit>
     </el-dialog>
  </div>
 </template>
 
 <script>
-  import SearchIndex from "./SearchIndex.vue";
-  import Api from "./index.vue";
+  import apiSearch from "./Search.vue";
+  import apiEdit from "./Edit.vue";
 
 
 
     export default {
-        name: "ListIndex",
+        name: "apiList",
       data() {
         return {
           apiId: '',
@@ -198,8 +198,8 @@
         this.handleSearch();
       },
       components: {
-        Api,
-        SearchIndex,
+        apiEdit,
+        apiSearch,
       },
 
     }

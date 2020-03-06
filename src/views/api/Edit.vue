@@ -41,7 +41,7 @@
       };
     };
     export default {
-        name: 'api',
+        name: 'apiEdit',
       props: ["initApiId"],
         data() {
             return {

@@ -183,7 +183,7 @@
      };
     };
     export default {
-        name: "orderIndex",
+        name: "orderEdit",
 
         data() {
             return {

@@ -72,8 +72,8 @@ export default new Router({
         {
           title: 'Api管理',
           path: '/api',
-          uri: '/api',
-          component: () => import('@/views/api/ListIndex'),
+          uri: '/api/List',
+          component: () => import('@/views/api/List'),
           meta: { title: 'Home', icon: 'home' }
         },
         {
@@ -125,10 +125,10 @@ export default new Router({
       children: [
         {
           title: '订单信息',
-          path: 'index',
+          path: 'List',
           name: 'order',
-          uri: '/order/index',
-          component: () => import('@/views/order/index'),
+          uri: '/order/List',
+          component: () => import('@/views/order/List'),
           meta: { title: 'Home', icon: 'home' }
         },
         {
@@ -140,11 +140,11 @@ export default new Router({
           meta: { title: 'Home', icon: 'home' }
         },
         {
-          title: '',
-          path: 'indexTwo',
+          title: '跳转到',
+          path: 'Edit_',
           name: 'order',
-          uri: '/order/indexTwo',
-          component: () => import('@/views/order/indexTwo'),
+          uri: '/order/Edit_',
+          component: () => import('@/views/order/Edit_'),
           meta: { title: 'Home', icon: 'home' }
         }
       ]
