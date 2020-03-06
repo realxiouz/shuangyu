@@ -183,7 +183,7 @@
     },
     mounted() {
       this.loadData();
-      this.initChildrenModel();
+      // this.initChildrenModel();
     },
     computed: {
       formatDate() {
