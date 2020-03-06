@@ -86,23 +86,46 @@
       @next-click="nextClick">
     </el-pagination>
     <el-dialog title="用户信息" :visible.sync="dialogVisible" width="30%">
-      <userForm v-if="dialogVisible" ref="form" :rowData="rowData" @onSave="handleSave" @onCancel="handleCancel"></userForm>
+      <userForm v-if="dialogVisible" ref="form" :userID="userID" @onSave="handleSave" @onCancel="handleCancel"></userForm>
+    </el-dialog>
+    <el-dialog
+      title="修改密码"
+      :visible.sync="pwdDialogVisible"
+      width="30%">
+      <el-form label-width="120px" :model="userInfo">
+        <el-form-item label="请输入密码">
+          <el-input v-model="userInfo.newPwd"></el-input>
+        </el-form-item>
+        <el-form-item label="再次输入密码">
+          <el-input v-model="userInfo.againPwd"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="pwdDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="pwdDialogVisible = false">确 定</el-button>
+      </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
-  import userForm from "./userEdit";
-  import userSearch from "./userSearch";
+  import userForm from './userEdit';
+  import userSearch from './userSearch';
 
   export default {
     name: "userList",
     data() {
       return {
         dialogVisible: false,
-        rowData: {},
+        pwdDialogVisible: false,
+        userID: '',
+        userInfo: {
+          oldPwd: '',
+          newPwd: '',
+          againPwd: ''
+        },
         pageFlag: "next",
-        pageSize: 5,
+        pageSize: 10,
         lastId: "blank",
         total: 0,
         tableData: []
@@ -129,7 +152,7 @@
       },
       handleSearch(keyword) {
         this.$store
-          .dispatch('user/getList', {username:keyword})
+          .dispatch('user/getList', {nickName:keyword})
           .then(data => {
             this.tableData = data.data;
           })
@@ -139,32 +162,100 @@
       },
       handleAdd() {
         this.dialogVisible = true;
-        this.$refs.form.clearForm();
+        this.userID = '';
       },
       superSwitch(){},
       enableSwitch(){},
-      handleResetPwd(){},
+      handleResetPwd(row){
+        this.$confirm('此操作将重置该用户的登录密码, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.pwdDialogVisible = true;
+          /*this.$store
+            .dispatch('user/getList', {nickName:keyword})
+            .then(data => {
+              this.tableData = data.data;
+            })
+            .catch(error => {
+              console.log(error);
+            });*/
+        });
+      },
+      resetPwd(userID){
+
+      },
       handleEdit(row){
         this.dialogVisible = true;
-        this.rowData = row;
-        this.$refs.form.initRowData(row);
+        this.userID = row.userId;
       },
-      handleDelete(){},
+      /*对员工进行删除*/
+      handleDelete(row) {
+        this.open(this.delete, row.userId,'此操作将删除该用户的所有信息, 是否继续?');
+      },
+      delete(userID) {
+        this.$store
+          .dispatch('user/removeOne', userID)
+          .then(data => {
+            console.log(data);
+            this.loadData();
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
       handleCancel() {
         this.dialogVisible = false;
       },
-      handleSave() {
+      handleSave(formData) {
         this.dialogVisible = false;
+
+        let url = '';
+        if (this.userID){
+          url = 'user/updateOne';
+        }else{
+          url = 'user/addOne';
+        }
+        this.$store
+          .dispatch(url,formData)
+          .then(data => {
+            console.log(data);
+            this.loadData();
+          })
+          .catch(error => {
+            console.log(error);
+          });
       },
+      /*翻前页*/
       prevClick() {
         this.pageFlag = "prev";
         this.lastId = this.tableData[0].userId;
         this.loadData();
       },
+      /*翻后页*/
       nextClick() {
         this.pageFlag = "next";
         this.lastId = this.tableData[this.tableData.length - 1].userId;
         this.loadData();
+      },
+      open(func, data, message) {
+        this.$confirm(message, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          func(data);
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
       },
       /*初始化用工列表中的生日日期格式*/
       initDate(dateStr, format) {
@@ -180,10 +271,6 @@
         this.$refs.form.initRowData();
       }
     },
-    mounted() {
-      this.loadData();
-      // this.initChildrenModel();
-    },
     computed: {
       formatDate() {
         return function (dateStr, format) {
@@ -195,6 +282,10 @@
           return 0 == gender ? '男' : '女';
         }
       }
+    },
+    mounted() {
+      this.loadData();
+      // this.initChildrenModel();
     },
     components: {
       userForm,
