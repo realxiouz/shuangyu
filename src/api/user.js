@@ -8,22 +8,6 @@ export function signIn(data) {
   });
 }
 
-export function getList(data) {
-  return request({
-    url: '/user/list',
-    method: 'get',
-    params:data
-  });
-}
-
-export function getUser(token) {
-  return request({
-    url: '/user/info',
-    method: 'get',
-    params: {token}
-  });
-}
-
 export function signOut() {
   return request({
     url: '/admin/user/sign/out',
@@ -31,32 +15,56 @@ export function signOut() {
   });
 }
 
-export function getUserList(pageFlag, pageSize, lastId,data) {
+export function addOne(args) {
   return request({
-    url: `/user/page/list/${pageFlag}/${pageSize}/${lastId}`,
-    method: 'get',
-    params: data
+    url: '/user/add/one',
+    method: 'post',
+    args
   });
 }
 
-export function save(data) {
+export function removeOne(args) {
   return request({
-    url: '/user/save',
-    method: 'post',
-    data
+    url: `/user/remove/one/${args}`,
+    method: 'delete'
   });
 }
-export function updUser(data) {
+
+export function updateOne(args) {
   return request({
     url: '/user/update/one',
     method: 'post',
-    data
+    args
   });
 }
-export function getUserTotal(data) {
+
+export function getOne(args) {
+  return request({
+    url: `/user/one/${args}`,
+    method: 'get'
+  });
+}
+
+export function getList(args) {
+  return request({
+    url: '/user/list',
+    method: 'get',
+    params:args
+  });
+}
+
+export function getTotal(args) {
   return request({
     url: `/user/total`,
     method: 'get',
-    params: data
+    params: args
+  });
+}
+
+export function getPageList(args) {
+  return request({
+    url: `/user/page/list/${args.pageFlag}/${args.pageSize}/${args.lastId}`,
+    method: 'get',
+    params: args.filter
   });
 }

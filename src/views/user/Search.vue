@@ -1,23 +1,14 @@
 <template>
-  <div>
-    <el-form :inline="true" :model="formData">
-      <el-form-item label="姓名">
-        <el-input v-model="formData.fullName" placeholder="姓名"></el-input>
-      </el-form-item>
-      <el-form-item label="性别">
-        <el-select v-model="formData.gender" placeholder="性别">
-          <el-option label="男" value="男"></el-option>
-          <el-option label="女" value="女"></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="$emit('onSearch',formData)">查询</el-button>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="$emit('onAdd')">添加</el-button>
-      </el-form-item>
-    </el-form>
-  </div>
+  <el-container style="margin-bottom: 5px">
+    <el-input v-model="keyword" style="width: 300px; margin:0 10px 0 50px ;" placeholder="请输入用户名..">
+      <i class="el-icon-edit el-input__icon"
+         slot="suffix"
+         @click="$emit('onIconClick',keyword)">
+      </i>
+    </el-input>
+    <el-button type="primary" @click="$emit('onSearch',keyword)">查询</el-button>
+    <el-button type="primary" @click="$emit('onAdd')">添加</el-button>
+  </el-container>
 </template>
 
 <script>
@@ -25,15 +16,8 @@
     name: "userSearch",
     data() {
       return {
-        formData: {
-          fullName: "",
-          gender: ""
-        }
+        keyword: ''
       };
     }
   };
 </script>
-
-<style scoped>
-
-</style>

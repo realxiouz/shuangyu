@@ -1,4 +1,4 @@
-import {signIn, signOut, getUser, getUserList, addUser, getList} from '@/api/user';
+import {signIn, signOut, addOne, removeOne, updateOne, getOne, getList, getTotal, getPageList} from '@/api/user';
 import {getToken, setToken, removeToken} from '@/utils/auth';
 
 const state = {
@@ -36,7 +36,7 @@ const actions = {
     });
   },
 
-  getUser({commit, state}) {
+  /*getUser({commit, state}) {
     return new Promise((resolve, reject) => {
       getUser(state.token)
         .then(response => {
@@ -56,7 +56,7 @@ const actions = {
           reject(error);
         });
     });
-  },
+  },*/
 
   signOut({commit, state}) {
     return new Promise((resolve, reject) => {
@@ -79,12 +79,44 @@ const actions = {
     });
   },
 
-  getUserList({commit}, params) {
+  addOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      getUserList(state.token, params)
+      addOne(params)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  removeOne({commit}, params) {
+    return new Promise((resolve, reject) => {
+      removeOne(params)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  updateOne({commit}, params) {
+    return new Promise((resolve, reject) => {
+      updateOne(params)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getOne({commit}, params) {
+    return new Promise((resolve, reject) => {
+      getOne(params)
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -95,7 +127,6 @@ const actions = {
     return new Promise((resolve, reject) => {
       getList(params)
         .then(response => {
-          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -103,11 +134,21 @@ const actions = {
         });
     });
   },
-  add({commit}, params) {
+  getTotal({commit}, params) {
     return new Promise((resolve, reject) => {
-      addUser(params)
+      getTotal(params)
         .then(response => {
-          //const { data } = response;
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getPageList({commit}, params) {
+    return new Promise((resolve, reject) => {
+      getPageList(params)
+        .then(response => {
           resolve(response);
         })
         .catch(error => {
