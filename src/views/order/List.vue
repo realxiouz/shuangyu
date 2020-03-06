@@ -114,7 +114,7 @@
         // this.dialogVisible = false;
       },
       handleSave() {
-        this.$router.push('/order/indexTwo');
+        this.$router.push('/order/Edit_');
 
       }
     },
