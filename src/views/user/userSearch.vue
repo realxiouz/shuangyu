@@ -16,8 +16,7 @@
     name: "userSearch",
     data() {
       return {
-        keyword: '',
-        name: 'test'
+        keyword: ''
       };
     }
   };

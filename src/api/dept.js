@@ -16,11 +16,11 @@ export function removeOne(deptId) {
   });
 }
 
-export function getPageList(pageFlag, pageSize, lastId, filter) {
+export function getPageList(pageFlag, pageSize, lastId, data) {
   return request({
     url: `/dept/page/list/${pageFlag}/${pageSize}/${lastId}`,
     method: "get",
-    params: filter
+    params: data
   });
 }
 
@@ -32,11 +32,11 @@ export function getTotal(data) {
   });
 }
 
-export function getList(filters) {
+export function getList(data) {
   return request({
     url: `/dept/list/`,
     method: "get",
-    params: filters
+    params: data
   });
 }
 export function getOne(id) {

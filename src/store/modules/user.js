@@ -127,7 +127,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       getList(params)
         .then(response => {
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
