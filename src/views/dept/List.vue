@@ -180,7 +180,7 @@
             this.handleSearch();
         },
         components: {
-            deptSearch,
+            // deptSearch,
             deptEdit
         }
     };
