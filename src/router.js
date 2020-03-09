@@ -59,7 +59,7 @@ export default new Router({
           title: '用户管理',
           path: '/user/edit',
           uri: '/user/edit',
-          component: () => import('@/views/user/userList'),
+          component: () => import('@/views/user/List'),
           meta: { title: 'Home', icon: 'home' }
         },
         {
@@ -110,6 +110,7 @@ export default new Router({
       ]
     },
     {
+      title: '导航管理',
       path: '/nav',
       uri: '/nav',
       component: Layout,
@@ -175,7 +176,7 @@ export default new Router({
     {
       title: '航班信息管理',
       path: '/flightInfo',
-      name: 'index',
+      name: 'flightInfo',
       uri: '/flightInfo',
       component: Layout,
       children: [

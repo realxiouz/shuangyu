@@ -116,8 +116,8 @@
 </template>
 
 <script>
-  import userForm from './userEdit';
-  import userSearch from './userSearch';
+  import userForm from './Edit';
+  import userSearch from './Search';
 
   export default {
     name: "userList",
