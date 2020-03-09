@@ -57,7 +57,7 @@
       :total="total">
     </el-pagination>
     <el-dialog title="Api信息" :visible.sync="dialogVisible" width="30%">
-      <apiEdit v-if="dialogVisible" @onCancel="handleCancel" @onSave="handleSave"></apiEdit>
+      <apiEdit v-if="dialogVisible" :api-id="apiId" @onCancel="handleCancel" @onSave="handleSave"></apiEdit>
     </el-dialog>
   </div>
 </template>
@@ -76,7 +76,8 @@
                 pageSize: 10,
                 total: 0,
                 dialogVisible: false,
-                tableData: []
+                tableData: [],
+                apiId: ''
             };
         },
         methods: {
@@ -132,7 +133,6 @@
                     console.log(error);
                 });
             },
-
             handleRemove(id, index, rows) {
                 this.$confirm('此操作将状态改为删除状态, 是否继续?', '提示', {
                     confirmButtonText: '确定',
@@ -155,7 +155,6 @@
                 this.loadData();
             },
             handleSave(params) {
-                console.log(params)
                 this.$store
                     .dispatch("api/save", params)
                     .then(() => {
@@ -166,14 +165,8 @@
                 this.dialogVisible = false;
             },
             handleUpdate(id) {
-                this.$store
-                    .dispatch("api/getOne", id)
-                    .then(data => {
-                        this.formData = data;
-                        this.dialogVisible = true;
-                    }).catch(error => {
-                    console.log(error);
-                });
+                this.apiId = id;
+                this.dialogVisible = true;
             },
             handleCancel() {
                 this.dialogVisible = false;

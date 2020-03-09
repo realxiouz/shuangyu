@@ -1,10 +1,5 @@
 <template>
   <div>
-
-<!--    -->
-
-<!--    -->
-
       <el-form ref="form" :rules="rules" :model="formData" label-width="110px">
         <el-form-item label="Api名称" prop="apiName">
           <el-input v-model="formData.apiName"></el-input>
@@ -27,8 +22,6 @@
   </div>
 </template>
 <script>
-
-    // eslint-disable-next-line no-unused-vars
 
     function defaultData() {
       return{
@@ -77,8 +70,29 @@
               }
             })
             },
-          }
-
+            handleGetOne(id) {
+                if (id) {
+                    this.$store
+                        .dispatch("api/getOne", id)
+                        .then(data => {
+                            this.formData = data;
+                            this.dialogVisible = true;
+                        }).catch(error => {
+                        console.log(error);
+                    });
+                } else {
+                    this.formData = defaultData();
+                }
+            },
+          },
+        mounted() {
+            if (this.apiId) {
+                this.handleGetOne(this.apiId);
+            }
+        },
+        props: {
+            apiId: String,
+        }
 
     };
 </script>
