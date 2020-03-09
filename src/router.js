@@ -16,9 +16,9 @@ export default new Router({
     },
     {
       title: '首页',
-      path: '/',
+      path: '/index',
       name: 'index',
-      uri: '/',
+      uri: '/index',
       component: Layout,
       redirect: '/home',
       children: [
@@ -43,7 +43,7 @@ export default new Router({
     {
       title: '系统管理',
       path: '/admin',
-      name: 'index',
+      name: 'admin',
       uri: '/admin',
       component: Layout,
       children: [
@@ -120,7 +120,7 @@ export default new Router({
           path: 'index',
           name: 'Nav',
           uri: '/nav/index',
-          component: () => import('@/views/nav/index'),
+          component: () => import('@/views/nav/List'),
           meta: { title: 'Home', icon: 'home' }
         }
       ]
@@ -133,7 +133,7 @@ export default new Router({
       children: [
         {
           title: '订单信息',
-          path: 'List',
+          path: '/order/List',
           name: 'order',
           uri: '/order/List',
           component: () => import('@/views/order/List'),
@@ -142,7 +142,7 @@ export default new Router({
         {
           title: '订单报表',
           path: 'indexReport',
-          name: 'order',
+          name: 'indexReport',
           uri: '/order/indexReport',
           component: () => import('@/views/order/indexReport'),
           meta: { title: 'Home', icon: 'home' }
@@ -150,7 +150,7 @@ export default new Router({
         {
           title: '跳转到',
           path: 'Edit_',
-          name: 'order',
+          name: 'Edit_',
           uri: '/order/Edit_',
           component: () => import('@/views/order/Edit_'),
           meta: { title: 'Home', icon: 'home' }
