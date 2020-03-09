@@ -13,7 +13,8 @@ import app from './modules/app';
 import api from './modules/api';
 import order from './modules/order';
 import staff from './modules/staff';
-import thirdparty from './modules/thirdparty'
+import thirdparty from './modules/thirdparty';
+import orderRule from './modules/orderRule';
 
 Vue.use(Vuex);
 
@@ -32,7 +33,8 @@ export default new Vuex.Store({
     api,
     order,
     staff,
-    thirdparty
+    thirdparty,
+    orderRule
   },
   state: {},
   mutations: {},
