@@ -1,13 +1,11 @@
 <template>
   <div>
-    <span>{{checkboxFlag}}</span>
     <el-table v-if=checkboxFlag
-      ref="staffList"
-      highlight-current-row
-      :data="staffList"
-      tooltip-effect="dark"
-      style="width: 100%"
-      @selection-change="handleSelectionChange">
+              ref="staffList"
+              :data="staffList"
+              tooltip-effect="dark"
+              style="width: 100%"
+              @selection-change="handleSelectionChange">
       <el-table-column
         type="selection"
         width="55">
@@ -68,15 +66,15 @@
     },
     data() {
       return {
-        staffs:null,
+        staffs: [],
         lastId: "blank",
         pageFlag: "next",
         pageSize: 10,
         total: 0,
-        staffList:[]
+        staffList: []
       };
     },
-    methods:{
+    methods: {
       loadData() {
         this.$store
           .dispatch('staff/getPageList', {
@@ -103,11 +101,13 @@
           });
       },
       handleSelectionChange(val) {
-        this.staffs = val;
+        this.staffs = [];
+        this.staffs.push(val);
         console.log(this.staffs)
       },
       handleCurrentChange(val) {
-        this.staffs = val;
+        this.staffs = [];
+        this.staffs.push(val);
         console.log(this.staffs)
       },
       handleSizeChange(pageSize) {
@@ -126,7 +126,7 @@
       },
       mounted() {
         this.loadData();
-      }
+      },
     }
   };
 </script>
