@@ -121,7 +121,7 @@
       <el-button @click="goBack">返回</el-button>
     </div>
     <el-dialog title="员工信息" :visible.sync="dialogVisible" width="30%">
-      <select-staff ref="selectStaff" @onSelectStaff="onSelectStaff" @onStaffCancel="onStaffCancel" :checkbox-flag="checkboxFlag">
+      <select-staff v-if="dialogVisible" ref="selectStaff" @onSelectStaff="onSelectStaff" @onStaffCancel="onStaffCancel" :checkbox-flag="checkboxFlag">
 
       </select-staff>
     </el-dialog>
