@@ -62,7 +62,7 @@
                 }
             },
         },
-        mounted() {
+        created() {
             if (this.appId) {
                 this.handleGetOne(this.appId);
             }

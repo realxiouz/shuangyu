@@ -129,7 +129,7 @@
                 });
             }
         },
-        mounted() {
+        created() {
             this.loadRoles();
             if (this.editDeptId) {
                 this.handleGetOne(this.editDeptId);
