@@ -5,7 +5,12 @@
         <el-input v-model="formData.deptName"></el-input>
       </el-form-item>
       <el-form-item label="企业" prop="firmId">
-        <el-input v-model="formData.firmId"></el-input>
+        <el-cascader
+          v-model="formData.firmId"
+          placeholder="请选择企业"
+          :options="firmList"
+          :props="{ checkStrictly: true,value: 'firmId',label: 'firmName'}"
+          @change="handleFirmChange"></el-cascader>
       </el-form-item>
       <el-form-item label="域名" prop="domain">
         <el-input v-model="formData.domain"></el-input>
@@ -51,6 +56,7 @@
                 formData: defaultData(),
                 allRoles: [],
                 paramsRoles: [],
+                firmList: [],
                 newDialogVisible: false,
                 rules: {
                     deptName: [
@@ -102,6 +108,17 @@
                         console.log(error);
                     });
             },
+            loadFirms() {
+                this.$store
+                    .dispatch("firm/getList")
+                    .then(data => {
+                        this.firmList = data;
+                        console.log(this.firmList)
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
             handleChange(value) {
                 this.formData.roles = value;
             },
@@ -127,10 +144,14 @@
                         this.$emit('onSave', this.formData);
                     }
                 });
+            },
+            handleFirmChange(value) {
+                this.formData.firmId = value[0];
             }
         },
         created() {
             this.loadRoles();
+            this.loadFirms();
             if (this.editDeptId) {
                 this.handleGetOne(this.editDeptId);
             }
