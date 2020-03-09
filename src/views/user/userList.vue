@@ -56,7 +56,8 @@
           </el-switch>
         </template>
       </el-table-column>
-      <el-table-column label="是否启用">
+      <el-table-column
+        label="是否启用">
         <template slot-scope="scope">
           <el-switch
             :value="scope.row.enable"
