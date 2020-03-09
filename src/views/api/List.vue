@@ -57,7 +57,7 @@
       :total="total">
     </el-pagination>
     <el-dialog title="Api信息" :visible.sync="dialogVisible" width="30%">
-      <apiEdit @onCancel="handleCancel" @onSave="handleSave"></apiEdit>
+      <apiEdit v-if="dialogVisible" @onCancel="handleCancel" @onSave="handleSave"></apiEdit>
     </el-dialog>
   </div>
 </template>

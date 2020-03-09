@@ -66,7 +66,7 @@ export default new Router({
           title: '应用管理',
           path: '/app',
           uri: '/app',
-          component: () => import('@/views/app/index'),
+          component: () => import('@/views/app/List'),
           meta: { title: 'Home', icon: 'home' }
         },
         {
@@ -82,7 +82,15 @@ export default new Router({
           uri: '/role',
           component: () => import('@/views/role/index'),
           meta: { title: 'Home', icon: 'home' }
-        }
+        },
+        {
+          title: '第三方管理',
+          path: '/thirdparty/list',
+          name: 'thirdpartyList',
+          uri: '/thirdparty/list',
+          component: () => import('@/views/thirdparty/List'),
+          meta: { title: 'Home', icon: 'home' },
+        },
       ]
     },
     {

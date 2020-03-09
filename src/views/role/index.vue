@@ -97,7 +97,8 @@
   const defaultData = {
     roleId: "",
     roleName: "",
-    enable: true
+    enable: true,
+    navIds: []
   };
 
   export default {
@@ -127,7 +128,7 @@
           console.log("valid" + valid);
           if (valid) {
             this.$store
-              .dispatch("role/save", data)
+              .dispatch("role/save", {roleId:data.roleId,roleName:data.roleName,enable:data.enable,navIds:data.navIds})
               .then(data => {
                 console.log(data);
                 this.loadData();
@@ -167,12 +168,8 @@
           .dispatch("role/getOne", row.roleId)
           .then(data => {
             this.formData = data;
-            var selectedNavIds = [];
-            data.navs.forEach(e => {
-              selectedNavIds.push(e.navId);
-            });
             this.$nextTick(() => {
-              this.$refs.tree.setCheckedKeys(selectedNavIds);
+              this.$refs.tree.setCheckedKeys(data.navIds);
             });
           })
           .catch(error => {
@@ -222,14 +219,17 @@
             //处理展示的菜单名称
             data.forEach(e => {
               var navNames = "";
-              e.navs.forEach(nav => {
-                navNames += ", " + nav.navName;
-              });
-              if (navNames) {
-                navNames = navNames.substring(1, navNames.length);
+              console.log("=========="+JSON.stringify(e.navs))
+              if (e.navs){
+                e.navs.forEach (nav=>{
+                  navNames += ", " + nav.navName;
+                });
+                if (navNames) {
+                  navNames = navNames.substring(1, navNames.length);
+                }
+                e.navNames = navNames;
+                console.log("namNames:" + navNames);
               }
-              e.navNames = navNames;
-              console.log("namNames:" + navNames);
             });
             this.tableData = data;
           })
@@ -250,14 +250,14 @@
       },
 
       handleSave() {
-        var navs = [];
+        var navIds = [];
         this.$refs.tree.getCheckedKeys().forEach(node => {
             if (node) {
-              navs.push({ navId: node });
+              navIds.push(node);
             }
           }
         );
-        this.formData.navs = navs;
+        this.formData.navIds = navIds;
         this.save(this.formData);
       },
       handleCancel: function() {
