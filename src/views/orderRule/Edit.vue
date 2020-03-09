@@ -100,17 +100,17 @@
       </el-row>
       <el-row>
         <el-col :span="24">
-          <el-form-item label="负责人" prop="staffs">
+          <el-form-item label="负责人" prop="responsibleStaffName">
             <el-button type="primary" @click="selectPeople">选择</el-button>
-            <el-input v-model="formData.people" type="textarea" :rows="2" style="width: 800px"></el-input>
+            <el-input v-model="formData.responsibleStaffName" type="textarea" :rows="2" style="width: 800px"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="24">
-          <el-form-item label="员工" prop="staffs">
+          <el-form-item label="员工" prop="staffNames">
             <el-button type="primary" @click="selectStaff">选择</el-button>
-            <el-input v-model="formData.staffs" type="textarea" :rows="2" style="width: 800px"></el-input>
+            <el-input v-model="formData.staffNames" type="textarea" :rows="2" style="width: 800px"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -121,7 +121,8 @@
       <el-button @click="goBack">返回</el-button>
     </div>
     <el-dialog title="员工信息" :visible.sync="dialogVisible" width="30%">
-      <select-staff v-if="dialogVisible" ref="selectStaff" @onSelectStaff="onSelectStaff" @onStaffCancel="onStaffCancel" :checkbox-flag="checkboxFlag">
+      <select-staff v-if="dialogVisible" ref="selectStaff" @onSelectStaff="onSelectStaff" @onStaffCancel="onStaffCancel"
+                    :checkbox-flag="checkboxFlag">
 
       </select-staff>
     </el-dialog>
@@ -143,7 +144,9 @@
       policyCode: '',
       staffs: [],
       nextStaffId: '',
-      people:''
+      responsibleStaffName: '',
+      staffNames: '',
+      responsibleStaff: ''
     };
   };
   export default {
@@ -152,8 +155,8 @@
       console.log(this.$route.params);
       return {
         formData: defaultData(),
-        dialogVisible:false,
-        checkboxFlag:false,
+        dialogVisible: false,
+        checkboxFlag: false,
         formRules: {
           ruleName: [
             {required: true, message: "请输入规则名称", trigger: "blur"}
@@ -201,19 +204,33 @@
           });
       },
       onSelectStaff(rows) {
-        console.log('+++++++++++++++++++++');
-        this.staffs = rows;
-        console.log(this.staffs);
+        if (this.checkboxFlag) {
+          if (rows != null && rows != undefined && rows.length > 0) {
+            var staffNames = '';
+            this.staffs = [];
+            for (var i = 0; i < rows.length; i++) {
+              staffNames += rows[i].fullName;
+              this.staffs.push(rows[i].staffId);
+            }
+            this.formData.staffNames = staffNames;
+          }
+        } else {
+          if (rows != null && rows != undefined && rows.length > 0) {
+            this.formData.responsibleStaffName = rows[0].fullName;
+            this.formData.responsibleStaff = rows[0].staffId;
+          }
+        }
+        console.log(this.formData);
         this.dialogVisible = false
       },
       onStaffCancel() {
         this.dialogVisible = false
       },
-      selectStaff(){
+      selectStaff() {
         this.checkboxFlag = true;
         this.dialogVisible = true;
       },
-      selectPeople(){
+      selectPeople() {
         this.checkboxFlag = false;
         this.dialogVisible = true;
       }
