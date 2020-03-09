@@ -66,7 +66,7 @@
     },
     data() {
       return {
-        staffs: [],
+        staffs: {},
         lastId: "blank",
         pageFlag: "next",
         pageSize: 10,
@@ -102,12 +102,12 @@
       },
       handleSelectionChange(val) {
         this.staffs = [];
-        this.staffs.push(val);
+        this.staffs = val;
         console.log(this.staffs)
       },
       handleCurrentChange(val) {
-        this.staffs = [];
-        this.staffs.push(val);
+        this.staffs = {};
+        this.staffs = val;
         console.log(this.staffs)
       },
       handleSizeChange(pageSize) {

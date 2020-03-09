@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <el-form ref="form" :rules="formRules" :model="formData" :inline="true" class="demo-form-inline"
              label-width="110px">
       <el-row>
@@ -17,8 +16,8 @@
         <el-col :span="6">
           <el-form-item label="是否调用出票中" prop="isTicketing">
             <el-radio-group v-model="formData.isTicketing">
-              <el-radio :label="true">是</el-radio>
-              <el-radio :label="false">否</el-radio>
+              <el-radio :label=true>是</el-radio>
+              <el-radio :label=false>否</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-col>
@@ -123,7 +122,6 @@
     <el-dialog title="员工信息" :visible.sync="dialogVisible" width="30%">
       <select-staff v-if="dialogVisible" ref="selectStaff" @onSelectStaff="onSelectStaff" @onStaffCancel="onStaffCancel"
                     :checkbox-flag="checkboxFlag">
-
       </select-staff>
     </el-dialog>
 
@@ -152,7 +150,6 @@
   export default {
     name: "orderRuleEdit",
     data() {
-      console.log(this.$route.params);
       return {
         formData: defaultData(),
         dialogVisible: false,
@@ -161,14 +158,8 @@
           ruleName: [
             {required: true, message: "请输入规则名称", trigger: "blur"}
           ],
-          ruleTypes: [
-            {required: true, message: "请选择规则类型", trigger: "blur"}
-          ],
           policyCode: [
             {required: true, message: "请输入政策代码", trigger: "blur"}
-          ],
-          staffs: [
-            {required: true, message: "请选择员工", trigger: "blur"}
           ]
         }
       };
@@ -203,24 +194,24 @@
             console.log(error);
           });
       },
-      onSelectStaff(rows) {
+      onSelectStaff(params) {
         if (this.checkboxFlag) {
-          if (rows != null && rows != undefined && rows.length > 0) {
-            var staffNames = '';
-            this.staffs = [];
-            for (var i = 0; i < rows.length; i++) {
-              staffNames += rows[i].fullName;
-              this.staffs.push(rows[i].staffId);
+          if (params != null && params != undefined && params.length > 0) {
+            var staffNames = [];
+            this.formData.staffs = [];
+            for (var i = 0; i < params.length; i++) {
+              var staff = params[i];
+              staffNames.push(staff.fullName);
+              this.formData.staffs.push(staff.staffId);
             }
-            this.formData.staffNames = staffNames;
+            this.formData.staffNames = staffNames.join(",");
           }
         } else {
-          if (rows != null && rows != undefined && rows.length > 0) {
-            this.formData.responsibleStaffName = rows[0].fullName;
-            this.formData.responsibleStaff = rows[0].staffId;
+          if (params != null && params != undefined) {
+            this.formData.responsibleStaffName = params.fullName;
+            this.formData.responsibleStaff = params.staffId;
           }
         }
-        console.log(this.formData);
         this.dialogVisible = false
       },
       onStaffCancel() {
