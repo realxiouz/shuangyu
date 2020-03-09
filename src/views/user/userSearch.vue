@@ -3,7 +3,7 @@
     <el-input v-model="keyword" style="width: 300px; margin:0 10px 0 50px ;" placeholder="请输入用户昵称..">
       <i class="el-icon-edit el-input__icon"
          slot="suffix"
-         @click="$emit('onIconClick',keyword)">
+         @click="handleIconClick">
       </i>
     </el-input>
     <el-button type="primary" @click="$emit('onSearch',keyword)">查询</el-button>
@@ -18,6 +18,12 @@
       return {
         keyword: ''
       };
+    },
+    methods:{
+      /*清除输入框内已输入关键字*/
+      handleIconClick(){
+        this.keyword = '';
+      }
     }
   };
 </script>

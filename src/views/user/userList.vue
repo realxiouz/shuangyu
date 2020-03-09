@@ -82,27 +82,33 @@
       next-text="下一页"
       :page-size="pageSize"
       :total="total"
-      @prev-click="prevClick"
-      @next-click="nextClick">
+      @prev-click="handlePrevClick"
+      @next-click="handleNextClick">
     </el-pagination>
     <el-dialog title="用户信息" :visible.sync="dialogVisible" width="30%">
-      <userForm v-if="dialogVisible" ref="form" :userID="userID" @onSave="handleSave" @onCancel="handleCancel"></userForm>
+      <userForm v-if="dialogVisible" ref="form" :userID="userID" @onSave="handleSave"
+                @onCancel="handleCancel"></userForm>
     </el-dialog>
     <el-dialog
       title="修改密码"
       :visible.sync="pwdDialogVisible"
       width="30%">
-      <el-form label-width="120px" :model="userInfo">
+      <el-form label-width="120px" :model="userPwd">
         <el-form-item label="请输入密码">
-          <el-input v-model="userInfo.newPwd"></el-input>
+          <el-input :type="inputType" v-model="userPwd.newPwd">
+            <i class="el-icon-view"
+               slot="suffix"
+               @click="handleIconClick">
+            </i>
+          </el-input>
         </el-form-item>
         <el-form-item label="再次输入密码">
-          <el-input v-model="userInfo.againPwd"></el-input>
+          <el-input :type="inputType" v-model="userPwd.againPwd"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="pwdDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="pwdDialogVisible = false">确 定</el-button>
+        <el-button @click="handleCancel">取 消</el-button>
+        <el-button type="primary" @click="resetPwd">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -117,13 +123,16 @@
     data() {
       return {
         dialogVisible: false,
+        /*是否弹出重置用户密码弹窗*/
         pwdDialogVisible: false,
+        /*重置用户密码时的input类型*/
+        inputType: 'password',
+        /*进行编辑当前用户ID*/
         userID: '',
-        userInfo: {
-          oldPwd: '',
-          newPwd: '',
-          againPwd: ''
-        },
+        /*记录当前进行密码重置新密码和再次输入密码*/
+        userPwd: {},
+        /*重置用户密码时记录当前用户节点信息*/
+        curNode: {},
         pageFlag: "next",
         pageSize: 10,
         lastId: "blank",
@@ -150,9 +159,10 @@
             console.log(error);
           });
       },
+      /*根据关键字查询用户列表*/
       handleSearch(keyword) {
         this.$store
-          .dispatch('user/getList', {nickName:keyword})
+          .dispatch('user/getList', {nickName: keyword})
           .then(data => {
             this.tableData = data.data;
           })
@@ -160,45 +170,86 @@
             console.log(error);
           });
       },
+      /*添加用户按钮*/
       handleAdd() {
         this.dialogVisible = true;
         this.userID = '';
       },
-      superSwitch(row){
-        row.super = row.super?false:true;
+      /*修改是否超级管理员状态*/
+      superSwitch(row) {
+        row.super = row.super ? false : true;
+
+        this.$store
+          .dispatch("user/updateOne", row)
+          .then(data => {
+            console.log(data);
+            this.loadData();
+          })
+          .catch(error => {
+            console.log(error);
+          });
       },
-      enableSwitch(row){
-        row.enable = row.enable?false:true;
-        console.log(row);
+      /*修改是否启用状态*/
+      enableSwitch(row) {
+        row.enable = row.enable ? false : true;
+
+        this.$store
+          .dispatch("user/updateOne", row)
+          .then(data => {
+            console.log(data);
+            this.loadData();
+          })
+          .catch(error => {
+            console.log(error);
+          });
       },
-      handleResetPwd(row){
+      /*确认重置用户密码*/
+      handleResetPwd(row) {
         this.$confirm('此操作将重置该用户的登录密码, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           this.pwdDialogVisible = true;
-          /*this.$store
-            .dispatch('user/getList', {nickName:keyword})
+          this.clearUserPwd();
+          this.curNode = row;
+        }).catch(() => {
+        });
+      },
+      /*重置用户密码*/
+      resetPwd() {
+        if (this.userPwd.newPwd !== this.userPwd.againPwd) {
+          this.$message({
+            type: 'error',
+            message: '两次输入的密码不相同,请重新输入！'
+          });
+        } else {
+          this.curNode.password = this.userPwd.againPwd;
+
+          this.$store
+            .dispatch("user/updateOne", this.curNode)
             .then(data => {
-              this.tableData = data.data;
+              console.log(data);
+              this.loadData();
             })
             .catch(error => {
               console.log(error);
-            });*/
-        });
-      },
-      resetPwd(userID){
+            });
 
+          this.pwdDialogVisible = false;
+        }
+        this.clearUserPwd();
       },
-      handleEdit(row){
+      /*点击用户编辑按钮*/
+      handleEdit(row) {
         this.dialogVisible = true;
         this.userID = row.userId;
       },
       /*对员工进行删除*/
       handleDelete(row) {
-        this.open(this.delete, row.userId,'此操作将删除该用户的所有信息, 是否继续?');
+        this.open(this.delete, row.userId, '此操作将删除该用户的所有信息, 是否继续?');
       },
+      /*根据用户ID删除用户*/
       delete(userID) {
         this.$store
           .dispatch('user/removeOne', userID)
@@ -210,20 +261,27 @@
             console.log(error);
           });
       },
+      /*点击弹窗按钮*/
       handleCancel() {
-        this.dialogVisible = false;
+        if (this.dialogVisible) {
+          this.dialogVisible = false;
+        } else {
+          this.pwdDialogVisible = false;
+          this.clearUserPwd();
+        }
       },
+      /*添加保存用户*/
       handleSave(formData) {
         this.dialogVisible = false;
 
         let url = '';
-        if (this.userID){
+        if (this.userID) {
           url = 'user/updateOne';
-        }else{
+        } else {
           url = 'user/addOne';
         }
         this.$store
-          .dispatch(url,formData)
+          .dispatch(url, formData)
           .then(data => {
             console.log(data);
             this.loadData();
@@ -233,16 +291,26 @@
           });
       },
       /*翻前页*/
-      prevClick() {
+      handlePrevClick() {
         this.pageFlag = "prev";
         this.lastId = this.tableData[0].userId;
         this.loadData();
       },
       /*翻后页*/
-      nextClick() {
+      handleNextClick() {
         this.pageFlag = "next";
         this.lastId = this.tableData[this.tableData.length - 1].userId;
         this.loadData();
+      },
+      handleIconClick() {
+        this.inputType = this.inputType === 'password' ? '' : 'password';
+      },
+      /*清除修改密码表单*/
+      clearUserPwd() {
+        this.userPwd = {
+          newPwd: '',
+          againPwd: ''
+        }
       },
       open(func, data, message) {
         this.$confirm(message, '提示', {
@@ -271,10 +339,6 @@
           return '';
         }
       },
-      initChildrenModel(){
-        this.$refs.form.clearForm();
-        this.$refs.form.initRowData();
-      }
     },
     computed: {
       formatDate() {
@@ -290,7 +354,6 @@
     },
     mounted() {
       this.loadData();
-      // this.initChildrenModel();
     },
     components: {
       userForm,

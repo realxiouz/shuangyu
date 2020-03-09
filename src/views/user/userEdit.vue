@@ -35,10 +35,10 @@
         </el-input>
       </el-form-item>
       <el-form-item label="是否超级管理员">
-        <el-switch v-model="formData.isSuper" :active-value=true :inactive-value=false></el-switch>
+        <el-switch v-model="formData.super" :active-value=true :inactive-value=false></el-switch>
       </el-form-item>
       <el-form-item label="是否启用">
-        <el-switch v-model="formData.isEnable" :active-value=true :inactive-value=false></el-switch>
+        <el-switch v-model="formData.enable" :active-value=true :inactive-value=false></el-switch>
       </el-form-item>
       <el-form-item label="备注">
         <el-input type="textarea" v-model="formData.comment"></el-input>
@@ -57,18 +57,7 @@
     props: ['userID'],
     data() {
       return {
-        formData: {
-          userId: '',
-          nickName: '',
-          fullName: '',
-          gender: 0,
-          birthDate: null,
-          phone: '',
-          email: '',
-          idCardNo: '',
-          isSuper: false,
-          isEnable: true
-        }
+        formData: {}
         /*formRules: {
           nickName: [
             { required: true, message: "请输入昵称", trigger: "blur" }
@@ -86,8 +75,9 @@
       };
     },
     methods: {
-      clearForm() {
-        this.formData = {
+      /*表单默认加载数据*/
+      defaultFormData(){
+        return {
           userId: '',
           nickName: '',
           fullName: '',
@@ -97,10 +87,14 @@
           email: '',
           idCardNo: '',
           super: false,
-          enable: true,
-          headImgUrl: ''
+          enable: true
         };
       },
+      /*清除表单*/
+      clearForm() {
+        this.formData = this.defaultFormData();
+      },
+      /*根据用户ID查询用户信息*/
       loadUser() {
         if ('' != this.userID) {
           this.$store
