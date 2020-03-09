@@ -201,7 +201,9 @@
           });
       },
       onSelectStaff(rows) {
+        console.log('+++++++++++++++++++++');
         this.staffs = rows;
+        console.log(this.staffs);
         this.dialogVisible = false
       },
       onStaffCancel() {
