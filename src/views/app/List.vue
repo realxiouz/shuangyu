@@ -81,13 +81,13 @@
                 this.lastId = this.tableData[this.tableData.length - 1].appId;
                 this.loadData();
             },
-            loadTotal() {
-                if (!this.searchForm.appName) {
-                    this.searchForm = {};
+            loadTotal(searchForm) {
+                if (!searchForm.appName) {
+                    searchForm = {};
                 }
                 this.$store
                     .dispatch("app/getTotal", {
-                        filter: this.searchForm
+                        filter: searchForm
                     }).then(response => {
                     this.total = response.data;
                 }).catch(error => {
@@ -95,6 +95,9 @@
                 });
             },
             loadData(searchForm) {
+                if (!searchForm.appName) {
+                    searchForm = {};
+                }
                 this.$store
                     .dispatch("app/getPageList", {
                         pageFlag: this.pageFlag,
@@ -158,9 +161,12 @@
                 this.pageSize = pageSize;
                 this.loadData();
             },
-            handleSearch() {
-                this.loadData();
-                this.loadTotal();
+            handleSearch(params) {
+                if (!params) {
+                    params = {};
+                }
+                this.loadData(params);
+                this.loadTotal(params);
             }
         },
         mounted() {
