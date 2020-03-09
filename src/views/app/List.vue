@@ -58,7 +58,7 @@
     import appEdit from './Edit'
 
     export default {
-        name: "app",
+        name: "appList",
         data() {
             return {
                 lastId: "0",

@@ -63,132 +63,140 @@
 </template>
 
 <script>
-  import apiSearch from "./Search.vue";
-  import apiEdit from "./Edit.vue";
+    import apiSearch from "./Search.vue";
+    import apiEdit from "./Edit.vue";
 
 
-  export default {
-    name: "apiList",
-    data() {
-      return {
-        lastId: "0",
-        pageFlag: "next",
-        pageSize: 10,
-        total: 0,
-        dialogVisible: false,
-        tableData: []
-      };
-    },
-    methods: {
-      prevClick() {
-        this.pageFlag = 'prev';
-        this.lastId = this.tableData[0].apiId;
-        this.loadData();
-      },
-      nextClick() {
-        this.pageFlag = 'next';
-        this.lastId = this.tableData[this.tableData.length - 1].apiId;
-        this.loadData();
-      },
+    export default {
+        name: "apiList",
+        data() {
+            return {
+                lastId: "0",
+                pageFlag: "next",
+                pageSize: 10,
+                total: 0,
+                dialogVisible: false,
+                tableData: []
+            };
+        },
+        methods: {
+            prevClick() {
+                this.pageFlag = 'prev';
+                this.lastId = this.tableData[0].apiId;
+                this.loadData();
+            },
+            nextClick() {
+                this.pageFlag = 'next';
+                this.lastId = this.tableData[this.tableData.length - 1].apiId;
+                this.loadData();
+            },
 
-      loadData(params ) {
-        this.$store
-          .dispatch("api/getPageList", {
-            pageFlag: this.pageFlag,
-            pageSize: this.pageSize,
-            lastId: this.lastId,
-            filter: params,
-          }).then(data => {
-          if (data) {
-            this.tableData = data;
-          }
-        }).catch(error => {
-          console.log(error);
-        });
-      },
-      loadTotal: function (params) {
-        this.$store
-          .dispatch("api/getTotal", params).then(response => {
-          this.total = response.data;
-        }).catch(error => {
-          console.log(error);
-        });
-      },
-      handleAdd() {
-        this.dialogVisible = true;
-      },
-      handleSwitch(data) {
-        this.$store
-          .dispatch("api/updateOne", data)
-          .then(() => {
-            this.loadData();
-          }).catch(error => {
-          console.log(error);
-        });
-      },
+            loadData(params) {
+                if (!params.apiName) {
+                    params = {};
+                }
+                this.$store
+                    .dispatch("api/getPageList", {
+                        pageFlag: this.pageFlag,
+                        pageSize: this.pageSize,
+                        lastId: this.lastId,
+                        filter: params,
+                    }).then(data => {
+                    if (data) {
+                        this.tableData = data;
+                    }
+                }).catch(error => {
+                    console.log(error);
+                });
+            },
+            loadTotal: function (params) {
+                if (!params.apiName) {
+                    params = {};
+                }
+                this.$store
+                    .dispatch("api/getTotal", params).then(response => {
+                    this.total = response.data;
+                }).catch(error => {
+                    console.log(error);
+                });
+            },
+            handleAdd() {
+                this.dialogVisible = true;
+            },
+            handleSwitch(data) {
+                this.$store
+                    .dispatch("api/updateOne", data)
+                    .then(() => {
+                        this.loadData();
+                    }).catch(error => {
+                    console.log(error);
+                });
+            },
 
-      handleRemove(id, index, rows) {
-        this.$confirm('此操作将状态改为删除状态, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$store
-            .dispatch("api/removeOne", id)
-            .then(() => {
-              this.loadData();
-              rows.splice(index, 1);
-            })
-        }).catch(err => {
-          console.error(err);
-        });
-      },
+            handleRemove(id, index, rows) {
+                this.$confirm('此操作将状态改为删除状态, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.$store
+                        .dispatch("api/removeOne", id)
+                        .then(() => {
+                            this.loadData();
+                            rows.splice(index, 1);
+                        })
+                }).catch(err => {
+                    console.error(err);
+                });
+            },
 
-      handleSizeChange(pageSize) {
-        this.pageSize = pageSize;
-        this.loadData();
-      },
-      handleSave(params) {
-        console.log(params)
-            this.$store
-              .dispatch("api/save", params)
-              .then(() => {
-                this.handleSearch();
-              }).catch(error => {
-              console.log(error);
-            });
-            this.dialogVisible = false;
-      },
-      handleUpdate(id) {
-        this.$store
-          .dispatch("api/getOne", id)
-          .then(data => {
-            this.formData = data;
-            this.dialogVisible = true;
-          }).catch(error => {
-          console.log(error);
-        });
-      },
-      handleCancel() {
-        this.dialogVisible = false;
-      },
+            handleSizeChange(pageSize) {
+                this.pageSize = pageSize;
+                this.loadData();
+            },
+            handleSave(params) {
+                console.log(params)
+                this.$store
+                    .dispatch("api/save", params)
+                    .then(() => {
+                        this.handleSearch();
+                    }).catch(error => {
+                    console.log(error);
+                });
+                this.dialogVisible = false;
+            },
+            handleUpdate(id) {
+                this.$store
+                    .dispatch("api/getOne", id)
+                    .then(data => {
+                        this.formData = data;
+                        this.dialogVisible = true;
+                    }).catch(error => {
+                    console.log(error);
+                });
+            },
+            handleCancel() {
+                this.dialogVisible = false;
+            },
 
-      handleSearch(params) {
-        this.loadData(params);
-        console.log(params)
-        this.loadTotal(params);
-      },
+            handleSearch(params) {
+                if (!params) {
+                    params = {};
+                }
+                this.loadData(params);
+                this.loadTotal(params);
+            },
 
-    },
-    mounted() {
-      this.handleSearch();
-    },
-    components: {
-      apiEdit,
-      apiSearch,
-    },
+        },
+        mounted() {
+            this.handleSearch();
+        },
+        components: {
+            apiEdit,
+            apiSearch,
+        },
 
-  }
+    }
 
 </script>
 
