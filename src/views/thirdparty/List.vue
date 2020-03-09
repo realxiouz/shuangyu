@@ -1,21 +1,19 @@
 <template>
   <div class="app-container">
-    <user-search ref="user" @onSearch="search" @onAdd="addUser"></user-search>
+    <thirdparty-search ref="user" @onSearch="search" @onAdd="add"></thirdparty-search>
     <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;">
       <el-table-column
         prop="thirdName"
         label="平台名称"
-        width="180"
         align="center"
       ></el-table-column>
       <el-table-column
         label="操作"
         align="center"
-        width="350">
+      >
         <template slot-scope="scope">
-          <el-button @click="resetPwd(scope.row)" type="primary" size="mini">重置密码</el-button>
           <el-button @click="edit(scope.row)" type="primary" size="mini">编辑</el-button>
-          <el-button @click="delete(scope.row)" type="danger" size="mini">删除</el-button>
+          <el-button @click="remove(scope.row,scope.$index,tableData)" type="danger" size="mini">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -30,20 +28,22 @@
       @next-click="nextClick">
     </el-pagination>
     <el-dialog title="用户信息" :visible.sync="dialogVisible" width="30%">
-      <user-edit ref="userForm" :init-user-id="userId" @onSave="handleSave" @onCancel="handleCancel"></user-edit>
+      <thirdparty-edit v-if="dialogVisible" ref="userForm"  :third-id="thirdId" @onSave="handleSave"
+                       @onCancel="handleCancel"></thirdparty-edit>
     </el-dialog>
   </div>
 </template>
 
 <script>
-  import userEdit from "./Edit.vue";
+  import thirdpartyEdit from "./Edit.vue";
   import thirdpartySearch from "./Search.vue";
 
+
   export default {
-    name: "userList",
+    name: "List",
     data() {
       return {
-        userId: null,
+        thirdId: null,
         dialogVisible: false,
         pageFlag: "next",
         pageSize: 10,
@@ -55,9 +55,9 @@
     methods: {
       loadData() {
         this.$store
-          .dispatch("thirdparty/getPageList", { pageFlag: this.pageFlag, pageSize: 10, lastId: this.lastId })
+          .dispatch("thirdparty/getPageList", {pageFlag: this.pageFlag, pageSize: 10, lastId: this.lastId})
           .then(data => {
-            this.tableData = data.data;
+            this.tableData = data;
           })
           .catch(error => {
             console.log(error);
@@ -65,55 +65,99 @@
       },
       search(keyword) {
         this.$store
-          .dispatch("thirdparty/getPageList", {pageFlag: this.pageFlag, pageSize: 10, lastId: this.lastId, username: keyword })
+          .dispatch("thirdparty/getPageList", {
+            pageFlag: this.pageFlag,
+            pageSize: 10,
+            lastId: this.lastId,
+            thirdName: keyword
+          })
           .then(data => {
-            this.tableData = data.data;
+            console.log("-----------------" + data)
+            this.tableData = data;
           })
           .catch(error => {
             console.log(error);
           });
       },
-      addUser() {
+      add() {
         this.dialogVisible = true;
-        this.userId=1;
+        this.thirdId = '';
       },
-      superSwitch() {
+      remove(row,index, rows) {
+        console.log("--大的发顺丰-----" + row.thirdId);
+        this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).then(() => {
+          this.$store
+            .dispatch("thirdparty/removeOne", row.thirdId)
+            .then(data => {
+              console.log(data);
+              rows.splice(index, 1);
+              this.total--;
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        }).catch(err => {
+          console.error(err);
+        });
       },
-      enableSwitch() {
+      edit(row) {
+        console.log("----"+row.thirdId)
+        this.dialogVisible = true;
+        this.thirdId =  row.thirdId;
       },
       handleCancel() {
         this.dialogVisible = false;
       },
-      handleSave() {
+      handleSave(formData) {
+        this.$store
+          .dispatch("thirdparty/save", formData)
+          .then(data => {
+            console.log("-----------------" + data)
+            this.loadData();
+            this.loadTotal();
+          })
+          .catch(error => {
+            console.log(error);
+          });
         this.dialogVisible = false;
       },
       prevClick() {
         this.pageFlag = "prev";
-        this.lastId = this.tableData[0].appId;
+        this.lastId = this.tableData[0].thirdId;
         this.loadData();
-      },
+      }
+      ,
       nextClick() {
         this.pageFlag = "next";
-        this.lastId = this.tableData[this.tableData.length - 1].appId;
+        this.lastId = this.tableData[this.tableData.length - 1].thirdId;
         this.loadData();
-      },
-      loadTotal: function() {
+      }
+      ,
+      loadTotal: function () {
         this.$store
-          .dispatch("role/getTotal", this.searchForm)
+          .dispatch("thirdparty/getTotal", this.searchForm)
           .then(data => {
             this.total = data;
           })
           .catch(error => {
             console.log(error);
           });
-      },
+      }
+      ,
     },
     mounted() {
       this.loadData();
-    },
+      this.loadTotal();
+    }
+    ,
     components: {
-      userEdit,
+      thirdpartyEdit,
       thirdpartySearch
     }
-  };
+  }
+  ;
 </script>

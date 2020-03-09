@@ -102,7 +102,7 @@
                         console.log(error);
                     });
             },
-            handleChange(value, direction, movedKeys) {
+            handleChange(value) {
                 this.formData.roles = value;
             },
             handleGetOne(deptId) {
@@ -129,7 +129,7 @@
                 });
             }
         },
-        mounted() {
+        created() {
             this.loadRoles();
             if (this.editDeptId) {
                 this.handleGetOne(this.editDeptId);
@@ -138,7 +138,6 @@
                 this.formData.pid = this.pid;
             }
         },
-
         props: {
             editDeptId: String,
             pid: String
