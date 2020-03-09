@@ -154,71 +154,67 @@ export default new Router({
           uri: '/order/Edit_',
           component: () => import('@/views/order/Edit_'),
           meta: { title: 'Home', icon: 'home' }
-        }
+        },
+        {
+          title: '派单规则',
+          path: '/orderRule/list',
+          name: 'orderRuleList',
+          uri: '/orderRule/list',
+          component: () => import('@/views/orderRule/List'),
+          meta: {title: 'Home', icon: 'home'}
+        }, {
+          title: '规则编辑',
+          path: '/orderRule/edit',
+          name: 'orderRuleEdit',
+          uri: '/orderRule/edit',
+          component: () => import('@/views/orderRule/Edit'),
+          props: {default: true, sidebar: false},
+          meta: {title: 'Home', icon: 'home'}
+        },
       ]
     },
     {
-      title: '机场信息',
-      path: '/airport',
-      uri: '/airport',
+      title: '航班信息管理',
+      path: '/flightInfo',
+      name: 'index',
+      uri: '/flightInfo',
       component: Layout,
       children: [
-
         {
           title: '机场信息',
           path: 'index',
           name: 'airport',
           uri: '/airport/index',
           component: () => import('@/views/airport/index'),
-          meta: { title: 'Home', icon: 'home' }
-        }
-      ]
-    },{
-      title: '航司信息',
-      path: '/airline',
-      uri: '/airline',
-      component: Layout,
-      children: [
+          meta: {title: 'Home', icon: 'home'}
+        },
         {
           title: '航司信息',
           path: 'index',
           name: 'airline',
           uri: '/airline/index',
           component: () => import('@/views/airline/index'),
-          meta: { title: 'Home', icon: 'home' }
-        }
-      ]
-    },{
-      title: '退改规则',
-      path: '/refundChangeRule',
-      uri: '/refundChangeRule',
-      component: Layout,
-      children: [
+          meta: {title: 'Home', icon: 'home'}
+        },
         {
           title: '退改规则',
           path: 'index',
           name: 'refundChangeRule',
           uri: '/refundChangeRule/index',
           component: () => import('@/views/refundChangeRule/index'),
-          meta: { title: 'Home', icon: 'home' }
-        }
-      ]
-    },{
-      title: '航段',
-      path: '/flightSegment',
-      uri: '/flightSegment',
-      component: Layout,
-      children: [
+          meta: {title: 'Home', icon: 'home'}
+        },
         {
-          title: '航段',
+          title: '航段信息',
           path: 'index',
           name: 'flightSegment',
           uri: '/flightSegment/index',
           component: () => import('@/views/flightSegment/index'),
-          meta: { title: 'Home', icon: 'home' }
+          meta: {title: 'Home', icon: 'home'}
         }
       ]
-    },{
+    },
+    {
       title: '企业信息',
       path: '/firm',
       uri: '/firm',

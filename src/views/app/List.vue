@@ -170,7 +170,7 @@
                 this.loadTotal(params);
             }
         },
-        mounted() {
+        created() {
             this.handleSearch();
         },
         components: {
