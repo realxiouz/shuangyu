@@ -123,6 +123,7 @@
             },
             handleAdd() {
                 this.dialogVisible = true;
+                this.apiId = '';
             },
             handleSwitch(data) {
                 this.$store

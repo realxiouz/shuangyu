@@ -126,6 +126,7 @@
             },
             handleAdd() {
                 this.dialogVisible = true;
+                this.appId = '';
             },
             handleUpdate(id) {
                 this.appId = id;

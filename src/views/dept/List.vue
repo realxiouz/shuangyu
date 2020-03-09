@@ -1,6 +1,6 @@
 <template>
   <div class="dept-container">
-<!--    <dept-search @onSearch="handleSearch" @onAdd="handleAdd"></dept-search>-->
+    <dept-search @onSearch="handleSearch" @onAdd="handleAdd"></dept-search>
     <el-table :data="tableData"
               style="width: 100%;margin-bottom: 20px;"
               row-key="deptId"
