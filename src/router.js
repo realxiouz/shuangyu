@@ -49,10 +49,10 @@ export default new Router({
       children: [
         {
           title: '模板',
-          path: '/user/list',
-          name: 'userList',
-          uri: '/user/list',
-          component: () => import('@/views/user/List'),
+          path: '/temp/list',
+          name: 'temp',
+          uri: '/temp/list',
+          component: () => import('@/views/temp/List'),
           meta: { title: 'Home', icon: 'home' },
         },
         {
@@ -110,7 +110,6 @@ export default new Router({
       ]
     },
     {
-      title: '导航管理',
       path: '/nav',
       uri: '/nav',
       component: Layout,
