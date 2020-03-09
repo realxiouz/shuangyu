@@ -10,7 +10,6 @@
     <el-col :span="4" class="search-tools">
       <el-button type="primary" @click="$emit('onSearch',formData)">查询</el-button>
       <el-button type="primary" @click="$emit('onAdd')">添加</el-button>
-      <el-button type="primary" @click="handleMore">更多</el-button>
     </el-col>
   </el-row>
 </template>
@@ -25,11 +24,6 @@
           thirdName: "",
         }
       };
-    },
-    methods: {
-      handleMore() {
-        this.more = !this.more;
-      }
     }
   };
 </script>
