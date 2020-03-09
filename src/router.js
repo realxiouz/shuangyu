@@ -66,7 +66,7 @@ export default new Router({
           title: '应用管理',
           path: '/app',
           uri: '/app',
-          component: () => import('@/views/app/index'),
+          component: () => import('@/views/app/List'),
           meta: { title: 'Home', icon: 'home' }
         },
         {
