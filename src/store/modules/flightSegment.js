@@ -1,10 +1,10 @@
 import {
-  getSegment,
-  saveSegment,
-  getSegmentPageList,
-  getSegmentList,
-  removeSegment,
-  getSegmentTotal
+  getOne,
+  save,
+  getPageList,
+  getList,
+  removeOne,
+  getTotal
 } from '@/api/flightSegment';
 import {getToken} from '@/utils/auth';
 
@@ -29,7 +29,7 @@ const mutations = {
 const actions = {
   getOne({commit}, data) {
     return new Promise((resolve, reject) => {
-      getSegment(data)
+      getOne(data)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -41,7 +41,7 @@ const actions = {
   },
   save({commit}, params) {
     return new Promise((resolve, reject) => {
-      saveSegment(params)
+      save(params)
         .then(response => {
           //const { data } = response;
           resolve(response);
@@ -51,7 +51,7 @@ const actions = {
         });
     });
   },
-  list({commit}, params) {
+  getPageList({commit}, params) {
     var data = params.searchForm;
     var searchForm = {};
     for (var attr in data) {
@@ -61,7 +61,7 @@ const actions = {
     }
     params.searchForm = searchForm;
     return new Promise((resolve, reject) => {
-      getSegmentPageList(params)
+      getPageList(params)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -71,7 +71,7 @@ const actions = {
         });
     });
   },
-  listAll({commit}, params) {
+  getList({commit}, params) {
     var data = params.searchForm;
     var searchForm = {};
     for (var attr in data) {
@@ -81,7 +81,7 @@ const actions = {
     }
     params.searchForm = searchForm;
     return new Promise((resolve, reject) => {
-      getSegmentList(params)
+      getList(params)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -91,9 +91,9 @@ const actions = {
         });
     });
   },
-  total({commit}, params) {
+  getTotal({commit}, params) {
     return new Promise((resolve, reject) => {
-      getSegmentTotal(params)
+      getTotal(params)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -103,9 +103,9 @@ const actions = {
         });
     });
   },
-  remove({commit}, data) {
+  removeOne({commit}, data) {
     return new Promise((resolve, reject) => {
-      removeSegment(data)
+      removeOne(data)
         .then(response => {
           const {data} = response;
           resolve(data);
