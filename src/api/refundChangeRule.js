@@ -15,11 +15,11 @@ export function getOne(id) {
   });
 }
 
-export function getPageList(data) {
+export function getPageList(params) {
   return request({
-    url: '/flight/refund/change/rule/page/list/' + data.pageFlag + '/' + data.pageSize + '/' + data.lastId,
+    url: `/flight/refund/change/rule/page/list/${params.pageFlag}/${params.pageSize}/${params.lastId}`,
     method: 'get',
-    params: data.searchForm
+    params: params.searchForm
   });
 }
 
@@ -27,13 +27,13 @@ export function getTotal(params) {
   return request({
     url: '/flight/refund/change/rule/total',
     method: 'get',
-    params
+    params: params
   });
 }
 
-export function removeOne(data) {
+export function removeOne(id) {
   return request({
-    url: '/flight/refund/change/rule/remove/one/' + data,
+    url: `/flight/refund/change/rule/remove/one/${id}`,
     method: 'delete'
   });
 }

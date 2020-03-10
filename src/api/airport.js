@@ -8,18 +8,18 @@ export function save(data) {
   });
 }
 
-export function getOne(id) {
+export function getOne(airportCode) {
   return request({
-    url: `/flight/airport/one/${id}`,
+    url: `/flight/airport/one/${airportCode}`,
     method: 'get'
   });
 }
 
-export function getPageList(data) {
+export function getPageList(params) {
   return request({
-    url: '/flight/airport/page/list/' + data.pageFlag + '/' + data.pageSize + '/' + data.lastId,
+    url: `/flight/airport/page/list/${params.pageFlag}/${params.pageSize}/${params.lastId}`,
     method: 'get',
-    params: data.searchForm
+    params: params.searchForm
   });
 }
 
@@ -31,9 +31,9 @@ export function getTotal(params) {
   });
 }
 
-export function removeOne(data) {
+export function removeOne(airportCode) {
   return request({
-    url: '/flight/airport/remove/one/' + data,
+    url: `/flight/airport/remove/one/${airportCode}`,
     method: 'delete'
   });
 }

@@ -27,9 +27,10 @@ const mutations = {
 };
 
 const actions = {
-  getOne({commit}, data) {
+  getOne({commit}, params) {
+    const { segment } = params;
     return new Promise((resolve, reject) => {
-      getOne(data)
+      getOne(segment)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -39,9 +40,9 @@ const actions = {
         });
     });
   },
-  save({commit}, params) {
+  save({commit}, data) {
     return new Promise((resolve, reject) => {
-      save(params)
+      save(data)
         .then(response => {
           //const { data } = response;
           resolve(response);
@@ -103,9 +104,10 @@ const actions = {
         });
     });
   },
-  removeOne({commit}, data) {
+  removeOne({commit}, params) {
+    const { segment } = params;
     return new Promise((resolve, reject) => {
-      removeOne(data)
+      removeOne(segment)
         .then(response => {
           const {data} = response;
           resolve(data);
