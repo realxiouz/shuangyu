@@ -118,12 +118,16 @@
       },
       /*点击添加顶级企业信息*/
       rootAdd() {
+        this.formData = this.defaultFormData();
+
         //判断添加的导航是否是顶级导航
         this.rootNav = true;
         this.dialogVisible = true;
       },
       /*点击添加节点企业信息*/
       nodeAdd(idx, node) {
+        this.formData = this.defaultFormData();
+
         //添加的导航菜单不是顶级菜单
         this.formData.pid = node.navId;
         this.formData.level = node.level + 1;
@@ -168,7 +172,11 @@
       /*点击移除导航节点*/
       removeNode(data, node) {
         this.curLine = [];
-        this.curLine.push(node.pid);
+        if (null != node.pid){
+          this.curLine.push(node.pid);
+        }else{
+          this.curLine = [];
+        }
         this.open(this.remove, node.navId,'此操作将删除该条导航及子导航信息, 是否继续?');
       },
       /*移除导航节点*/

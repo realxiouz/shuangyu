@@ -15,7 +15,8 @@
       <el-table-column
         prop="category"
         label="类别"
-        width="240">
+        width="240"
+        align="center">
       </el-table-column>
       <el-table-column
         label="是否启用"
@@ -23,6 +24,7 @@
         align="center">
         <template slot-scope="scope">
           <el-switch
+            disabled
             :value="scope.row.enable"
             @change="enableSwitch(scope.row)">
           </el-switch>
