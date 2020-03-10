@@ -1,23 +1,23 @@
 import request from "@/utils/request";
 
-export function save(data) {
+export function save(role) {
   return request({
     url: "/role/save",
     method: "post",
-    data
+    role
   });
 }
 
-export function removeOne(data) {
+export function removeOne(roleID) {
   return request({
-    url: "/role/remove/one/" + data,
+    url: `/role/remove/one/${roleID}`,
     method: "delete"
   });
 }
 
-export function getOne(data) {
+export function getOne(roleID) {
   return request({
-    url: `/role/get/one/` + data,
+    url: `/role/get/one/${roleID}`,
     method: `get`
   });
 }
@@ -31,19 +31,19 @@ export function getRoleList(filter) {
 }
 
 
-export function getPageList(pageFlag, pageSize, lastId, searchForm) {
+export function getPageList(pageFlag, pageSize, lastId, filter) {
   return request({
-    url: "/role/page/list/" + pageFlag + "/" + pageSize + "/" + lastId,
+    url: `/role/page/list/${pageFlag}/${pageSize}/${lastId}`,
     method: "get",
-    params: searchForm
+    params: filter
   });
 }
 
-export function getTotal(data) {
+export function getTotal(filter) {
   return request({
     url: "/role/get/total",
     method: "get",
-    params: data
+    params: filter
   });
 }
 
