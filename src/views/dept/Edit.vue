@@ -6,15 +6,15 @@
       </el-form-item>
       <el-form-item label="企业" prop="firmId">
         <div class="block">
-        <el-cascader
-          style="width: 440px"
-          v-model="formData.firmId"
-          placeholder="请选择企业"
-          :options="firmList"
-          :props="{ checkStrictly: true ,value: 'firmId',label: 'firmName'}"
-          @change="handleFirmChange"
-          clearable></el-cascader>
-          </div>
+          <el-cascader
+            style="width: 440px"
+            v-model="formData.firmId"
+            placeholder="请选择企业"
+            :options="firmList"
+            :props="{ checkStrictly: true ,value: 'firmId',label: 'firmName'}"
+            @change="handleFirmChange"
+            clearable></el-cascader>
+        </div>
       </el-form-item>
       <el-form-item label="域名" prop="domain">
         <el-input v-model="formData.domain"></el-input>
@@ -104,7 +104,9 @@
         methods: {
             loadRoles() {
                 this.$store
-                    .dispatch("role/getRoleList")
+                    .dispatch("role/getRoleList",{
+                        filters: {}
+                    })
                     .then(data => {
                         this.allRoles = data;
                     })
@@ -114,7 +116,9 @@
             },
             loadFirms() {
                 this.$store
-                    .dispatch("firm/getList")
+                    .dispatch("firm/getList", {
+                        filters: {}
+                    })
                     .then(data => {
                         this.firmList = data;
                         console.log(this.firmList)
@@ -126,10 +130,10 @@
             handleChange(value) {
                 this.formData.roles = value;
             },
-            handleGetOne(deptId) {
-                if (deptId) {
+            handleGetOne(id) {
+                if (id) {
                     this.$store
-                        .dispatch("dept/getOne", deptId)
+                        .dispatch("dept/getOne", {deptId: id})
                         .then(data => {
                             this.formData = data;
                         }).catch(error => {
@@ -151,7 +155,7 @@
                 });
             },
             handleFirmChange(value) {
-                if(value){
+                if (value) {
                     this.formData.firmId = value;
                 }
             }

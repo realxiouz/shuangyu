@@ -68,7 +68,7 @@
       /*根据用户ID删除用户*/
       delete(roleID) {
         this.$store
-          .dispatch('role/removeOne', roleID)
+          .dispatch('role/removeOne', {roleID: roleID})
           .then(data => {
             console.log(data);
             this.loadData();
@@ -85,7 +85,7 @@
         row.enable = row.enable ? true : false;
 
         this.$store
-          .dispatch('role/save', row)
+          .dispatch('role/save', {role: row})
           .then(data => {
             console.log(data);
             this.loadData();
@@ -110,7 +110,7 @@
       },
       loadData() {
         this.$store
-          .dispatch("role/getTotal")
+          .dispatch("role/getTotal", {})
           .then(data => {
             this.total = data;
           })
@@ -119,7 +119,7 @@
           });
 
         this.$store
-          .dispatch("role/getPageList", {pageFlag:this.pageFlag,pageSize:this.pageSize,lastId:this.lastId})
+          .dispatch("role/getPageList", {pageFlag: this.pageFlag, pageSize: this.pageSize, lastId: this.lastId, filter: {}})
           .then(data => {
             this.tableData = data;
           })
@@ -129,7 +129,7 @@
       },
       handleSave(formData) {
         this.$store
-          .dispatch("role/save", formData)
+          .dispatch("role/save", {role: formData})
           .then(data => {
             console.log(data);
             this.loadData();
@@ -145,7 +145,12 @@
       },
       handleSearch: function (keyword) {
         this.$store
-          .dispatch("role/getPageList", {pageFlag:this.pageFlag,pageSize:this.pageSize,lastId:this.lastId,filter:{roleName:keyword}})
+          .dispatch("role/getPageList", {
+            pageFlag: this.pageFlag,
+            pageSize: this.pageSize,
+            lastId: this.lastId,
+            filter: {roleName: keyword}
+          })
           .then(data => {
             this.tableData = data;
           })

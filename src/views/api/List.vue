@@ -101,7 +101,7 @@
                         pageFlag: this.pageFlag,
                         pageSize: this.pageSize,
                         lastId: this.lastId,
-                        filter: params,
+                        filters: params,
                     }).then(data => {
                     if (data) {
                         this.tableData = data;
@@ -115,7 +115,7 @@
                     params = {};
                 }
                 this.$store
-                    .dispatch("api/getTotal", params).then(response => {
+                    .dispatch("api/getTotal", {filters:params}).then(response => {
                     this.total = response.data;
                 }).catch(error => {
                     console.log(error);
@@ -141,7 +141,7 @@
                     type: 'warning'
                 }).then(() => {
                     this.$store
-                        .dispatch("api/removeOne", id)
+                        .dispatch("api/removeOne", {apiId: id})
                         .then(() => {
                             this.loadData();
                             rows.splice(index, 1);

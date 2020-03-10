@@ -33,9 +33,9 @@ const actions = {
         });
     });
   },
-  removeOne({ commit }, data) {
+  removeOne({ commit }, thirdId) {
     return new Promise((resolve, reject) => {
-      removeOne(data)
+      removeOne(thirdId)
         .then(response => {
           const { data } = response;
           resolve(data);

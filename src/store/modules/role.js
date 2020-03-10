@@ -1,5 +1,5 @@
-import { save, removeOne, getNavsTreeData, getRoleList, getPageList, getTotal, getOne, getAll} from "@/api/role";
-import { getToken } from "@/utils/auth";
+import {save, removeOne, getNavsTreeData, getRoleList, getPageList, getTotal, getOne, getAll} from "@/api/role";
+import {getToken} from "@/utils/auth";
 
 
 const state = {
@@ -21,9 +21,10 @@ const mutations = {
 };
 
 const actions = {
-  save({ commit }, params) {
+  save({commit}, params) {
     return new Promise((resolve, reject) => {
-      save(params)
+      const {role} = params;
+      save(role)
         .then(response => {
           //const { data } = response;
           resolve(response);
@@ -33,11 +34,12 @@ const actions = {
         });
     });
   },
-  removeOne({ commit }, data) {
+  removeOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      removeOne(data)
+      const {roleID} = params;
+      removeOne(roleID)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -46,11 +48,12 @@ const actions = {
     });
   },
 
-  getRoleList({ commit }, params) {
+  getRoleList({commit}, params) {
     return new Promise((resolve, reject) => {
-      getRoleList(params)
+      const {filter} = params;
+      getRoleList(filter)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -59,11 +62,11 @@ const actions = {
     });
   },
 
-  getNavsTreeData({ commit }) {
+  getNavsTreeData({commit}) {
     return new Promise((resolve, reject) => {
       getNavsTreeData()
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -72,12 +75,12 @@ const actions = {
     });
   },
 
-  getPageList({ commit }, params) {
-    const { pageFlag, pageSize, lastId, filter } = params;
+  getPageList({commit}, params) {
+    const {pageFlag, pageSize, lastId, filter} = params;
     return new Promise((resolve, reject) => {
       getPageList(pageFlag, pageSize, lastId, filter)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -85,11 +88,12 @@ const actions = {
         });
     });
   },
-  getTotal({ commit }, params) {
+  getTotal({commit}, params) {
     return new Promise((resolve, reject) => {
-      getTotal(params)
+      const {filter} = params;
+      getTotal(filter)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -97,11 +101,12 @@ const actions = {
         });
     });
   },
-  getOne({ commit }, params) {
+  getOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      getOne(params)
+      const {roleID} = params;
+      getOne(roleID)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -109,11 +114,11 @@ const actions = {
         });
     });
   },
-  getAll({ commit }, params) {
+  getAll({commit}, params) {
     return new Promise((resolve, reject) => {
       getAll(params)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {

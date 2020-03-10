@@ -2,22 +2,22 @@
   <div>
     <el-form :model="formData" label-width="120px">
       <el-form-item label="角色名称" prop="roleName">
-        <el-input v-model="formData.roleName"  placeholder="请输入角色名称"></el-input>
+        <el-input v-model="formData.roleName" placeholder="请输入角色名称"></el-input>
       </el-form-item>
       <el-form-item label="是否启用">
         <el-switch v-model="formData.enable" @change="changeSwitch"></el-switch>
       </el-form-item>
       <el-form-item label="选择菜单">
-          <el-tree
-            :data="treeData"
-            show-checkbox
-            default-expand-all
-            node-key="navId"
-            highlight-current
-            :default-checked-keys="formData.navIds"
-            @check="getCheckedKeys"
-            :props="{label:'navName'}">
-          </el-tree>
+        <el-tree
+          :data="treeData"
+          show-checkbox
+          default-expand-all
+          node-key="navId"
+          highlight-current
+          :default-checked-keys="formData.navIds"
+          @check="getCheckedKeys"
+          :props="{label:'navName'}">
+        </el-tree>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -43,10 +43,10 @@
       };
     },
     methods: {
-      getCheckedKeys(data,selection){
+      getCheckedKeys(data, selection) {
         this.formData.navIds = selection.checkedKeys;
       },
-      defaultFormData(){
+      defaultFormData() {
         return {
           roleId: '',
           roleName: '',
@@ -54,12 +54,12 @@
           navIds: []
         }
       },
-      clearForm(){
+      clearForm() {
         this.formData = this.defaultFormData();
       },
       initTreeData: function () {
         this.$store
-          .dispatch("nav/getList")
+          .dispatch("nav/getList", {filter: {}})
           .then(data => {
             this.treeData = data;
           })
@@ -68,15 +68,15 @@
           });
       },
       loadRoleByID(roleID) {
-          this.$store
-            .dispatch("role/getOne",roleID)
-            .then(data => {
-              this.formData = data;
-            })
-            .catch(error => {
-              console.log(error);
-            });
-          this.dialogVisible = true;
+        this.$store
+          .dispatch("role/getOne", {roleID: roleID})
+          .then(data => {
+            this.formData = data;
+          })
+          .catch(error => {
+            console.log(error);
+          });
+        this.dialogVisible = true;
       },
       changeSwitch() {
         this.formData.enable = this.formData.enable ? true : false;
@@ -85,7 +85,7 @@
     created() {
       this.clearForm();
       this.initTreeData();
-      if ('' != this.roleId){
+      if ('' != this.roleId) {
         this.loadRoleByID(this.roleId);
       }
     }
