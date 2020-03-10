@@ -1,22 +1,23 @@
 import request from '@/utils/request';
 
-export function getPageList() {
+export function getPageList(pageFlag, pageSize, lastID, filter) {
   return request({
-    url: '/nav/page/list' ,
-    method: 'get'
+    url: `/nav/page/list/${pageFlag}/${pageSize}/${lastID}`,
+    method: 'get',
+    params: filter
   });
 }
 
-export function removeOne(params) {
+export function removeOne(navID) {
   return request({
-    url: `/nav/remove/one/${params}`,
+    url: `/nav/remove/one/${navID}`,
     method: 'delete'
   });
 }
 
-export function getOne(params) {
+export function getOne(navID) {
   return request({
-    url: `/nav/one/${params}`,
+    url: `/nav/one/${navID}`,
     method: 'get'
   });
 }
@@ -37,10 +38,10 @@ export function updateOne(data) {
   });
 }
 
-export function getList(data) {
+export function getList(filter) {
   return request({
     url: '/nav/list',
     method: 'get',
-    data
+    filter
   });
 }

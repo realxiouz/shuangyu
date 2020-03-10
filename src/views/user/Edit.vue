@@ -98,7 +98,7 @@
       loadUser() {
         if ("" != this.userID) {
           this.$store
-            .dispatch("user/getOne", { userId: this.userId })
+            .dispatch("user/getOne", {userId: this.userId})
             .then(data => {
               this.formData = data.data;
             })

@@ -1,164 +1,137 @@
 <template>
-  <el-container>
-    <el-aside width="200px">
-      <el-tree
-        :data="treeData"
-        :props="treeProps"
-        :highlight-current="true"
-        @node-click="handleNodeClick">
-
-      </el-tree>
-    </el-aside>
-    <el-container>
-      <el-header>
-        <el-button @click="addStaff" :disabled="staffAddVisible">添 加</el-button>
-      </el-header>
-      <el-main>
-        <!-- 员工列表 -->
+  <div>
+    <el-header>
+      <el-button @click="addStaff" :disabled="staffAddVisible">添 加</el-button>
+    </el-header>
+    <el-main>
+      <!-- 员工列表 -->
+      <el-table
+        stripe
+        :data="tableData">
+        <el-table-column
+          prop="nickName"
+          label="昵称"
+          width="170">
+        </el-table-column>
+        <el-table-column
+          prop="fullName"
+          label="姓名"
+          width="165">
+        </el-table-column>
+        <el-table-column
+          prop="gender"
+          label="性别"
+          width="165">
+          <template slot-scope="scope">
+            <span style="margin-left: 10px">{{ initGender(scope.row.gender) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="出生日期"
+          width="240"
+          align="center">
+          <template slot-scope="scope">
+            <i v-if="scope.row.birthDate" class="el-icon-time"></i>
+            <span style="margin-left: 10px">{{ formatDate(scope.row.birthDate,'YYYY-MM-DD') }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="phone"
+          label="手机号"
+          width="220"
+          align="center">
+        </el-table-column>
+        <el-table-column
+          prop="email"
+          label="电子邮箱"
+          width="240"
+          align="center">
+        </el-table-column>
+        <el-table-column
+          label="操作">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="danger"
+              @click="handleDelete(scope.$index, scope.row)">删除
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <!-- 员工查询弹窗 -->
+      <el-dialog
+        title="提示"
+        width="37%"
+        :visible.sync="dialogVisible"
+        :close-on-click-modal="false">
+        <el-input v-model="keyword" placeholder="请输入昵称进行查询.." style="width: 300px; margin-left: 50px;">
+          <i class="el-icon-edit el-input__icon"
+             slot="suffix"
+             @click="handleIconClick">
+          </i>
+        </el-input>
+        <el-button type="primary" icon="el-icon-search" @click="searchUser"></el-button>
         <el-table
-          stripe
-          :data="tableData">
+          :data="userTable"
+          style="width: 100%"
+          @selection-change="handleSelectionChange">
+          <el-table-column
+            type="selection"
+            width="55">
+          </el-table-column>
           <el-table-column
             prop="nickName"
             label="昵称"
-            width="170">
+            width="120">
           </el-table-column>
           <el-table-column
             prop="fullName"
             label="姓名"
-            width="165">
+            width="120">
           </el-table-column>
           <el-table-column
             prop="gender"
             label="性别"
-            width="165">
-            <template slot-scope="scope">
-              <span style="margin-left: 10px">{{ initGender(scope.row.gender) }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="出生日期"
-            width="240"
-            align="center">
-            <template slot-scope="scope">
-              <i v-if="scope.row.birthDate" class="el-icon-time"></i>
-              <span style="margin-left: 10px">{{ formatDate(scope.row.birthDate,'YYYY-MM-DD') }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="phone"
-            label="手机号"
-            width="220"
-            align="center">
+            width="120">
           </el-table-column>
           <el-table-column
             prop="email"
-            label="电子邮箱"
-            width="240"
-            align="center">
-          </el-table-column>
-          <el-table-column
-            label="操作">
-            <template slot-scope="scope">
-              <el-button
-                size="mini"
-                type="danger"
-                @click="handleDelete(scope.$index, scope.row)">删除
-              </el-button>
-            </template>
+            label="邮箱"
+            width="240">
           </el-table-column>
         </el-table>
-        <!-- 员工查询弹窗 -->
-        <el-dialog
-          title="提示"
-          width="37%"
-          :visible.sync="dialogVisible"
-          :close-on-click-modal="false">
-          <el-input v-model="keyword" placeholder="请输入昵称进行查询.." style="width: 300px; margin-left: 50px;">
-            <i class="el-icon-edit el-input__icon"
-               slot="suffix"
-               @click="handleIconClick">
-            </i>
-          </el-input>
-          <el-button type="primary" icon="el-icon-search" @click="searchUser"></el-button>
-          <el-table
-            :data="userTable"
-            style="width: 100%"
-            @selection-change="handleSelectionChange">
-            <el-table-column
-              type="selection"
-              width="55">
-            </el-table-column>
-            <el-table-column
-              prop="nickName"
-              label="昵称"
-              width="120">
-            </el-table-column>
-            <el-table-column
-              prop="fullName"
-              label="姓名"
-              width="120">
-            </el-table-column>
-            <el-table-column
-              prop="gender"
-              label="性别"
-              width="120">
-            </el-table-column>
-            <el-table-column
-              prop="email"
-              label="邮箱"
-              width="240">
-            </el-table-column>
-          </el-table>
-          <span slot="footer" class="dialog-footer">
+        <span slot="footer" class="dialog-footer">
             <el-button @click="handleCancel">取 消</el-button>
             <el-button type="primary" @click="handleSave">添 加</el-button>
           </span>
-        </el-dialog>
-      </el-main>
-    </el-container>
-  </el-container>
+      </el-dialog>
+    </el-main>
+  </div>
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
+  export default{
+    name: 'staffEdit',
+    props: ['curNode', 'staffAddVisible'],
+    data(){
+      return{
         dialogVisible: false,
-        staffAddVisible: true,
-        treeData: [],
         /*点击部门后用于展示的员工列表*/
         tableData: [],
-        curNode: null,
         /*选择用户后生成的列表*/
         prepares: [],
         /*待提交的员工列表*/
         prepareStaffs: [],
         /*进行用户查询后待选择的用户列表*/
         userTable: [],
-        keyword: '',
-        treeProps: {
-          label: 'deptName',
-          children: 'children'
-        }
+        keyword: ''
       }
     },
     methods: {
-      /*获取部门树*/
-      loadTreeData() {
-        this.$store
-          .dispatch('dept/getList', {firmId: '8e0e85fae96a44b9abc64c61192a986f'})
-          .then(data => {
-            this.treeData = data;
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      },
       /*获取该部门下的员工列表*/
       loadTableData() {
         this.$store
-          .dispatch('staff/getList', {firmId: this.curNode.firmId, deptId: this.curNode.deptId, filter: {}})
+          .dispatch('staff/getList', {filter:{firmId: this.curNode.firmId, deptId: this.curNode.deptId}})
           .then(data => {
             this.tableData = data.data;
           })
@@ -176,7 +149,7 @@
       searchUser() {
         this.clearUsersTable();
         this.$store
-          .dispatch('user/getList', {filter: this.keyword ? {nickName: this.keyword} : {}})
+          .dispatch('user/getList', {filter: (this.keyword ? {nickName: this.keyword} : {})})
           .then(data => {
             data.forEach((user) => {
               let flag = false;
@@ -238,12 +211,6 @@
             console.log(error);
           });
       },
-      /*点击部门树时调用*/
-      handleNodeClick(data) {
-        this.staffAddVisible = false;
-        this.curNode = data;
-        this.loadTableData();
-      },
       open(func, data) {
         this.$confirm('此操作将删除该企业信息及子企业信息, 是否继续?', '提示', {
           confirmButtonText: '确定',
@@ -294,9 +261,6 @@
         this.prepareStaffs = [];
       }
     },
-    mounted() {
-      this.loadTreeData();
-    },
     computed: {
       formatDate() {
         return function (dateStr, format) {
@@ -307,6 +271,11 @@
         return function (gender) {
           return 0 == gender ? '男' : '女';
         }
+      }
+    },
+    watch:{
+      curNode(){
+        this.loadTableData();
       }
     }
   };

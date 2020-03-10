@@ -95,7 +95,7 @@
     },
     methods: {
       /*初始化导航添加表单*/
-      defaultFormData(){
+      defaultFormData() {
         return {
           navId: '',
           navName: '',
@@ -108,7 +108,7 @@
       /*加载导航树*/
       loadData() {
         this.$store
-          .dispatch('nav/getList')
+          .dispatch('nav/getList', {})
           .then(data => {
             this.treeData = data;
           })
@@ -142,7 +142,7 @@
 
         if (this.formData.navId != '') {
           this.$store
-            .dispatch('nav/updateOne', this.formData)
+            .dispatch('nav/updateOne', {nav: this.formData})
             .then(data => {
               console.log(data);
               this.loadData();
@@ -157,7 +157,7 @@
           }
 
           this.$store
-            .dispatch('nav/addOne', this.formData)
+            .dispatch('nav/addOne', {nav: this.formData})
             .then(data => {
               console.log(data);
               this.curLine.push(data.data);
@@ -172,17 +172,17 @@
       /*点击移除导航节点*/
       removeNode(data, node) {
         this.curLine = [];
-        if (null != node.pid){
+        if (null != node.pid) {
           this.curLine.push(node.pid);
-        }else{
+        } else {
           this.curLine = [];
         }
-        this.open(this.remove, node.navId,'此操作将删除该条导航及子导航信息, 是否继续?');
+        this.open(this.remove, node.navId, '此操作将删除该条导航及子导航信息, 是否继续?');
       },
       /*移除导航节点*/
       remove(params) {
         this.$store
-          .dispatch('nav/removeOne', params)
+          .dispatch('nav/removeOne', {navID: params})
           .then(data => {
             console.log(data);
             this.loadData();
