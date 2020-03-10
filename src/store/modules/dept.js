@@ -33,9 +33,9 @@ const actions = {
         });
     });
   },
-  getList({commit}, data) {
+  getList({commit}, params) {
     return new Promise((resolve, reject) => {
-      getList(data)
+      getList(params)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -45,9 +45,10 @@ const actions = {
         });
     });
   },
-  removeOne({commit}, data) {
+  removeOne({commit}, params) {
+    const { deptId } = params;
     return new Promise((resolve, reject) => {
-      removeOne(data)
+      removeOne(deptId)
         .then(response => {
           const {data} = response;
           resolve(data);

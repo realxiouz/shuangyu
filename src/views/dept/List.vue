@@ -98,8 +98,7 @@
                     params = {};
                 }
                 this.$store
-                    .dispatch("dept/getList",
-                        params
+                    .dispatch("dept/getList", params
                     ).then(data => {
                     if (data) {
                         this.tableData = data;
@@ -154,7 +153,7 @@
                     type: "warning"
                 }).then(() => {
                     this.$store
-                        .dispatch("dept/removeOne", id)
+                        .dispatch("dept/removeOne", {deptId: id})
                         .then(() => {
                             this.loadData();
                         });

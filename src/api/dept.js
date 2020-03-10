@@ -9,9 +9,9 @@ export function save(data) {
   });
 }
 
-export function removeOne(deptId) {
+export function removeOne(id) {
   return request({
-    url: `/dept/remove/one/${deptId}`,
+    url: `/dept/remove/one/${id}`,
     method: "delete"
   });
 }
@@ -32,11 +32,11 @@ export function getTotal(data) {
   });
 }
 
-export function getList(data) {
+export function getList(params) {
   return request({
     url: `/dept/list/`,
     method: "get",
-    params: data
+    params: params
   });
 }
 export function getOne(id) {
