@@ -64,8 +64,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       getOne(airlineCode)
         .then(response => {
-          //const {data} = response;
-          resolve(response);
+          const {data} = response;
+          resolve(data);
         })
         .catch(error => {
           reject(error);
