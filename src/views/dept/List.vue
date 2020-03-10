@@ -185,4 +185,8 @@
         }
     };
 </script>
-
+<style>
+  .el-cascader-menu {
+    height: 200px;
+  }
+</style>
