@@ -145,11 +145,20 @@
       },
       handleSearch: function (keyword) {
         this.$store
+          .dispatch("role/getTotal", {filter: keyword?{roleName: keyword}:{}})
+          .then(data => {
+            this.total = data;
+          })
+          .catch(error => {
+            console.log(error);
+          });
+
+        this.$store
           .dispatch("role/getPageList", {
             pageFlag: this.pageFlag,
             pageSize: this.pageSize,
             lastId: this.lastId,
-            filter: {roleName: keyword}
+            filter: keyword?{roleName: keyword}:{}
           })
           .then(data => {
             this.tableData = data;

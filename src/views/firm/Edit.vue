@@ -142,7 +142,6 @@
         this.$store
           .dispatch('role/getAll',{})
           .then(data => {
-            console.log(data);
             this.transData = data;
           })
           .catch(error => {
