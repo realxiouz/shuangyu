@@ -87,7 +87,7 @@
             },
 
             loadData(params) {
-                if (!params.apiName) {
+                if (!params || !params.apiName) {
                     params = {};
                 }
                 this.$store
@@ -105,7 +105,7 @@
                 });
             },
             loadTotal: function (params) {
-                if (!params.apiName) {
+                if (!params || !params.apiName) {
                     params = {};
                 }
                 this.$store
@@ -124,7 +124,6 @@
                 this.$store
                     .dispatch("api/updateOne", row)
                     .then(() => {
-                        this.loadData();
                     }).catch(error => {
                     console.log(error);
                 });

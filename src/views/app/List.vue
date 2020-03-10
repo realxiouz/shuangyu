@@ -76,7 +76,7 @@
                 this.loadData();
             },
             loadTotal(searchForm) {
-                if (!searchForm.appName) {
+                if (!searchForm || !searchForm.appName) {
                     searchForm = {};
                 }
                 this.$store
@@ -89,7 +89,7 @@
                 });
             },
             loadData(searchForm) {
-                if (!searchForm.appName) {
+                if (!searchForm || !searchForm.appName) {
                     searchForm = {};
                 }
                 this.$store
@@ -111,7 +111,6 @@
                 this.$store
                     .dispatch("app/updateOne", row)
                     .then(() => {
-                        this.loadData();
                     }).catch(error => {
                     console.log(error);
                 });
