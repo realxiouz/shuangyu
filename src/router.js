@@ -225,7 +225,7 @@ export default new Router({
           path: 'index',
           name: 'firm',
           uri: '/firm/index',
-          component: () => import('@/views/firm/index'),
+          component: () => import('@/views/firm/List'),
           meta: { title: 'Home', icon: 'home' }
         }
       ]
