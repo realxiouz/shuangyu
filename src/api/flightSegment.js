@@ -1,6 +1,6 @@
 import request from '@/utils/request';
 
-export function saveSegment(data) {
+export function save(data) {
   return request({
     url: '/flight/segment/save',
     method: 'post',
@@ -8,14 +8,22 @@ export function saveSegment(data) {
   });
 }
 
-export function getSegmentPageList(data) {
+export function getOne(id) {
+  return request({
+    url: `/flight/segment/one/${id}`,
+    method: 'get'
+  });
+}
+
+export function getPageList(data) {
   return request({
     url: '/flight/segment/page/list/' + data.pageFlag + '/' + data.pageSize + '/' + data.lastId,
     method: 'get',
     params: data.searchForm
   });
 }
-export function getSegmentList(data) {
+
+export function getList(data) {
   return request({
     url: '/flight/segment/list',
     method: 'get',
@@ -23,7 +31,7 @@ export function getSegmentList(data) {
   });
 }
 
-export function getSegmentTotal(params) {
+export function getTotal(params) {
   return request({
     url: '/flight/segment/total',
     method: 'get',
@@ -31,7 +39,7 @@ export function getSegmentTotal(params) {
   });
 }
 
-export function removeSegment(data) {
+export function removeOne(data) {
   return request({
     url: '/flight/segment/remove/one/' + data,
     method: 'delete'

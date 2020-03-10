@@ -1,4 +1,10 @@
-import {saveAirport, getAirportPageList, removeAirport, getAirportTotal} from '@/api/airport';
+import {
+  getOne,
+  save,
+  getPageList,
+  removeOne,
+  getTotal
+} from '@/api/airport';
 import {getToken} from '@/utils/auth';
 
 const state = {
@@ -20,29 +26,9 @@ const mutations = {
 };
 
 const actions = {
-  save({commit}, params) {
+  getOne({commit}, data) {
     return new Promise((resolve, reject) => {
-      saveAirport(params)
-        .then(response => {
-          //const { data } = response;
-          resolve(response);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  list({commit}, params) {
-    var data= params.searchForm;
-    var searchForm = {};
-    for (var attr in data){
-      if (data[attr]!=null && data[attr]!=undefined && data[attr]!=''){
-        searchForm[attr] = data[attr];
-      }
-    }
-    params.searchForm = searchForm;
-    return new Promise((resolve, reject) => {
-      getAirportPageList(params)
+      getOne(data)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -52,9 +38,41 @@ const actions = {
         });
     });
   },
-  total({commit}, params) {
+  save({commit}, params) {
     return new Promise((resolve, reject) => {
-      getAirportTotal(params)
+      save(params)
+        .then(response => {
+          //const { data } = response;
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getPageList({commit}, params) {
+    var data = params.searchForm;
+    var searchForm = {};
+    for (var attr in data) {
+      if (data[attr] != null && data[attr] != undefined && data[attr] != '') {
+        searchForm[attr] = data[attr];
+      }
+    }
+    params.searchForm = searchForm;
+    return new Promise((resolve, reject) => {
+      getPageList(params)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getTotal({commit}, params) {
+    return new Promise((resolve, reject) => {
+      getTotal(params)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -66,7 +84,7 @@ const actions = {
   },
   removeOne({commit}, data) {
     return new Promise((resolve, reject) => {
-      removeAirport(data)
+      removeOne(data)
         .then(response => {
           const {data} = response;
           resolve(data);

@@ -42,6 +42,7 @@
       @size-change="handleSizeChange"
       @prev-click="prevClick"
       @next-click="nextClick"
+      :current-page="currentPage"
       background
       layout="total,sizes,prev,next"
       prev-text="上一页"
@@ -71,7 +72,8 @@
         pageFlag: "next",
         pageSize: 10,
         total: 0,
-        staffList: []
+        staffList: [],
+        currentPage: 0
       };
     },
     methods: {
@@ -94,7 +96,7 @@
         this.$store
           .dispatch('staff/getTotal', null)
           .then(data => {
-            this.total = data;
+            this.total = data.data;
           })
           .catch(error => {
             console.log(error);
@@ -127,6 +129,9 @@
       mounted() {
         this.loadData();
       },
+      create(){
+        this.loadData();
+      }
     }
   };
 </script>
