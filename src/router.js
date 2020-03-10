@@ -91,6 +91,14 @@ export default new Router({
           component: () => import('@/views/thirdparty/List'),
           meta: { title: 'Home', icon: 'home' },
         },
+        {
+          title: '政策接口参数管理',
+          path: '/policyInterfaceParam',
+          name: 'policyInterfaceParam',
+          uri: '/policyinterfaceparam',
+          component: () => import('@/views/policyInterfaceParam/List'),
+          meta: { title: 'Home', icon: 'home' },
+        },
       ]
     },
     {

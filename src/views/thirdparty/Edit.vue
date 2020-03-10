@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-form ref="formData" :rules="formRules" :model="formData" label-width="110px">
-      <el-form-item label="平台名称" prop="thirdName">
+      <el-form-item label="第三方平台名称" prop="thirdName">
         <el-input v-model="formData.thirdName" placeholder="请输入平台名称"></el-input>
       </el-form-item>
     </el-form>
