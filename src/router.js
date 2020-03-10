@@ -110,8 +110,8 @@ export default new Router({
         {
           title: '基本信息',
           path: 'list',
-          name: 'dept',
-          uri: '/dept/List',
+          name: 'list',
+          uri: '/dept/list',
           component: () => import('@/views/dept/List'),
           meta: { title: 'Home', icon: 'home' }
         }
@@ -149,10 +149,10 @@ export default new Router({
         },
         {
           title: '订单报表',
-          path: 'indexReport',
-          name: 'indexReport',
-          uri: '/order/indexReport',
-          component: () => import('@/views/order/indexReport'),
+          path: '/orderReport/List',
+          name: 'orderReport',
+          uri: '/orderReport/List',
+          component: () => import('@/views/orderReport/List'),
           meta: { title: 'Home', icon: 'home' }
         },
         {

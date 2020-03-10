@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-aside width="210px">
+    <el-aside width="auto">
       <Sidebar :menuList="menuList" :collapse="isCollapse"/>
     </el-aside>
     <el-main>

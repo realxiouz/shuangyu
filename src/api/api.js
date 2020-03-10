@@ -55,10 +55,10 @@ export function getAll() {
   });
 }
 
-export function getMany(params) {
+export function getMany(data) {
   return request({
     url: `/api/many`,
     method: 'post',
-    params
+    data
   });
 }

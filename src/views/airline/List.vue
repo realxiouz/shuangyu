@@ -63,6 +63,7 @@
     },
     methods: {
       handleAdd() {
+        this.airlineCode = '';
         this.dialogVisible = true;
       },
       loadData() {

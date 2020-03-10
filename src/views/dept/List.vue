@@ -13,11 +13,6 @@
         width="300"
       ></el-table-column>
       <el-table-column
-        prop="firmId"
-        label="企业"
-        width="200"
-      ></el-table-column>
-      <el-table-column
         prop="ddId"
         label="钉钉Id"
         width="200"
@@ -36,7 +31,7 @@
         fixed="right"
         label="操作"
         align="center"
-        width="300">
+        width="500">
         <template slot-scope="scope">
           <el-button @click="handleAddChild(scope.row.deptId)" type="success" size="mini">添加子级</el-button>
           <el-button @click="handleUpdate(scope.row.deptId)" type="primary" size="mini">编辑</el-button>
