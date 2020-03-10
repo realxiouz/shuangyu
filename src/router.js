@@ -47,14 +47,14 @@ export default new Router({
       uri: '/admin',
       component: Layout,
       children: [
-        {
+        /*{
           title: '模板',
           path: '/temp/list',
           name: 'temp',
           uri: '/temp/list',
           component: () => import('@/views/temp/List'),
           meta: { title: 'Home', icon: 'home' },
-        },
+        },*/
         {
           title: '用户管理',
           path: '/user/edit',
@@ -188,13 +188,20 @@ export default new Router({
           component: () => import('@/views/airport/index'),
           meta: {title: 'Home', icon: 'home'}
         },
-        {
+        /*{
           title: '航司信息',
           path: 'index',
           name: 'airline',
           uri: '/airline/index',
           component: () => import('@/views/airline/index'),
           meta: {title: 'Home', icon: 'home'}
+        },*/
+        {
+          title: '航司信息',
+          path: '/airline/list',
+          uri: '/airline/list',
+          component: () => import('@/views/airline/List'),
+          meta: { title: 'Home', icon: 'home' }
         },
         {
           title: '退改规则',
