@@ -8,16 +8,10 @@
         label="应用名称"
         width="500"
       ></el-table-column>
-      <el-table-column prop="enable" label="是否启用">
+      <el-table-column label="是否启用" align="center">
         <template slot-scope="scope">
           <el-switch
             v-model="scope.row.enable"
-            on-color="#00A854"
-            on-text="启动"
-            on-value=true
-            off-color="#F04134"
-            off-text="禁止"
-            off-value=false
             @change="handleSwitch(scope.row)">
           </el-switch>
         </template>
@@ -112,9 +106,10 @@
                     console.log(error);
                 });
             },
-            handleSwitch(data) {
+            handleSwitch(row) {
+                row.enable = row.enable ? true : false;
                 this.$store
-                    .dispatch("app/updateOne", data)
+                    .dispatch("app/updateOne", row)
                     .then(() => {
                         this.loadData();
                     }).catch(error => {
