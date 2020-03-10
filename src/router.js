@@ -80,14 +80,14 @@ export default new Router({
           title: '角色管理',
           path: '/role',
           uri: '/role',
-          component: () => import('@/views/role/index'),
+          component: () => import('@/views/role/List'),
           meta: { title: 'Home', icon: 'home' }
         },
         {
           title: '第三方管理',
-          path: '/thirdparty/list',
-          name: 'thirdpartyList',
-          uri: '/thirdparty/list',
+          path: '/thirdparty',
+          name: 'thirdparty',
+          uri: '/thirdparty',
           component: () => import('@/views/thirdparty/List'),
           meta: { title: 'Home', icon: 'home' },
         },

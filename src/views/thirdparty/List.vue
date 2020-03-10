@@ -28,7 +28,7 @@
       @next-click="nextClick">
     </el-pagination>
     <el-dialog title="用户信息" :visible.sync="dialogVisible" width="30%">
-      <thirdparty-edit v-if="dialogVisible" ref="userForm"  :third-id="thirdId" @onSave="handleSave"
+      <thirdparty-edit v-if="dialogVisible" ref="thirdpartyForm"  :third-id="thirdId" @onSave="handleSave"
                        @onCancel="handleCancel"></thirdparty-edit>
     </el-dialog>
   </div>
