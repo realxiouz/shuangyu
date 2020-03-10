@@ -8,6 +8,7 @@
         text-color="#bfcbd9"
         active-text-color="#409EFF"
         :collapse="collapse"
+        class="el-menu-vertical-demo"
       >
         <sidebar-item v-for="menu in menuList" :key="menu.uri" :item="menu"/>
       </el-menu>
@@ -43,6 +44,10 @@
     .el-scrollbar {
       background-color: #304156;
     }
+  }
+  .el-menu-vertical-demo:not(.el-menu--collapse) {
+    width: 200px;
+    min-height: 400px;
   }
 
 </style>
