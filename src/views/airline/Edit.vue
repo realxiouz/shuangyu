@@ -73,6 +73,7 @@
           this.$store
             .dispatch("airline/getOne", {airlineCode:id})
             .then(data => {
+              console.log(data)
               this.formData = data;
             }).catch(error => {
             console.log(error);

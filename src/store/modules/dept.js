@@ -86,9 +86,10 @@ const actions = {
         });
     });
   },
-  getOne({commit}, data) {
+  getOne({commit}, params) {
+    const {deptId} = params;
     return new Promise((resolve, reject) => {
-      getOne(data)
+      getOne(deptId)
         .then(response => {
           const {data} = response;
           resolve(data);
