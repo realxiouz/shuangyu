@@ -24,9 +24,9 @@ export function addOne(data) {
   });
 }
 
-export function removeOne(data) {
+export function removeOne(id) {
   return request({
-    url: `/user/remove/one/${data}`,
+    url: `/user/remove/one/${id}`,
     method: 'delete'
   });
 }
@@ -39,9 +39,9 @@ export function updateOne(data) {
   });
 }
 
-export function getOne(data) {
+export function getOne(id) {
   return request({
-    url: `/user/one/${data}`,
+    url: `/user/one/${id}`,
     method: 'get'
   });
 }

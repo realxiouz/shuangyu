@@ -1,10 +1,10 @@
-import {signIn, signOut, addOne, removeOne, updateOne, getOne, getList, getTotal, getPageList} from '@/api/user';
-import {getToken, setToken, removeToken} from '@/utils/auth';
+import { signIn, signOut, addOne, removeOne, updateOne, getOne, getList, getTotal, getPageList } from "@/api/user";
+import { getToken, setToken, removeToken } from "@/utils/auth";
 
 const state = {
   token: getToken(),
-  name: '',
-  avatar: ''
+  name: "",
+  avatar: ""
 };
 
 const mutations = {
@@ -20,13 +20,13 @@ const mutations = {
 };
 
 const actions = {
-  signIn({commit}, userInfo) {
-    const {username, password} = userInfo;
+  signIn({ commit }, userInfo) {
+    const { username, password } = userInfo;
     return new Promise((resolve, reject) => {
-      signIn({username: username.trim(), password: password})
+      signIn({ username: username.trim(), password: password })
         .then(response => {
-          const {data} = response;
-          commit('SET_TOKEN', data.token);
+          const { data } = response;
+          commit("SET_TOKEN", data.token);
           setToken(data.token);
           resolve();
         })
@@ -58,11 +58,11 @@ const actions = {
     });
   },*/
 
-  signOut({commit, state}) {
+  signOut({ commit, state }) {
     return new Promise((resolve, reject) => {
       signOut(state.token)
         .then(() => {
-          commit('SET_TOKEN', '');
+          commit("SET_TOKEN", "");
           removeToken();
           resolve();
         })
@@ -72,14 +72,14 @@ const actions = {
     });
   },
 
-  resetToken({commit}) {
+  resetToken({ commit }) {
     return new Promise(resolve => {
-      commit('SET_TOKEN', '');
+      commit("SET_TOKEN", "");
       resolve();
     });
   },
 
-  addOne({commit}, params) {
+  addOne({ commit }, params) {
     return new Promise((resolve, reject) => {
       addOne(params)
         .then(response => {
@@ -90,7 +90,7 @@ const actions = {
         });
     });
   },
-  removeOne({commit}, params) {
+  removeOne({ commit }, params) {
     return new Promise((resolve, reject) => {
       removeOne(params)
         .then(response => {
@@ -101,7 +101,7 @@ const actions = {
         });
     });
   },
-  updateOne({commit}, params) {
+  updateOne({ commit }, params) {
     return new Promise((resolve, reject) => {
       updateOne(params)
         .then(response => {
@@ -112,9 +112,10 @@ const actions = {
         });
     });
   },
-  getOne({commit}, params) {
+  getOne({ commit }, params) {
     return new Promise((resolve, reject) => {
-      getOne(params)
+      const { userId } = params;
+      getOne(userId)
         .then(response => {
           resolve(response);
         })
@@ -123,7 +124,7 @@ const actions = {
         });
     });
   },
-  getList({commit}, params) {
+  getList({ commit }, params) {
     return new Promise((resolve, reject) => {
       getList(params)
         .then(response => {
@@ -134,7 +135,7 @@ const actions = {
         });
     });
   },
-  getTotal({commit}, params) {
+  getTotal({ commit }, params) {
     return new Promise((resolve, reject) => {
       getTotal(params)
         .then(response => {
@@ -145,7 +146,7 @@ const actions = {
         });
     });
   },
-  getPageList({commit}, params) {
+  getPageList({ commit }, params) {
     return new Promise((resolve, reject) => {
       getPageList(params)
         .then(response => {
