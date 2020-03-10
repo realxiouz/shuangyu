@@ -1,6 +1,6 @@
 import request from '@/utils/request';
 
-export function saveRefundChangeRule(data) {
+export function save(data) {
   return request({
     url: '/flight/refund/change/rule/save',
     method: 'post',
@@ -8,14 +8,14 @@ export function saveRefundChangeRule(data) {
   });
 }
 
-export function getRefundChangeRule(id) {
+export function getOne(id) {
   return request({
     url: `/flight/refund/change/rule/one/${id}`,
     method: 'get'
   });
 }
 
-export function getRefundChangeRulePageList(data) {
+export function getPageList(data) {
   return request({
     url: '/flight/refund/change/rule/page/list/' + data.pageFlag + '/' + data.pageSize + '/' + data.lastId,
     method: 'get',
@@ -23,7 +23,7 @@ export function getRefundChangeRulePageList(data) {
   });
 }
 
-export function getRefundChangeRuleTotal(params) {
+export function getTotal(params) {
   return request({
     url: '/flight/refund/change/rule/total',
     method: 'get',
@@ -31,7 +31,7 @@ export function getRefundChangeRuleTotal(params) {
   });
 }
 
-export function removeRefundChangeRule(data) {
+export function removeOne(data) {
   return request({
     url: '/flight/refund/change/rule/remove/one/' + data,
     method: 'delete'

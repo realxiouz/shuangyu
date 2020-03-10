@@ -1,6 +1,6 @@
 import request from '@/utils/request';
 
-export function saveAirport(data) {
+export function save(data) {
   return request({
     url: '/flight/airport/save',
     method: 'post',
@@ -8,14 +8,14 @@ export function saveAirport(data) {
   });
 }
 
-export function getAirport(id) {
+export function getOne(id) {
   return request({
     url: `/flight/airport/one/${id}`,
     method: 'get'
   });
 }
 
-export function getAirportPageList(data) {
+export function getPageList(data) {
   return request({
     url: '/flight/airport/page/list/' + data.pageFlag + '/' + data.pageSize + '/' + data.lastId,
     method: 'get',
@@ -23,7 +23,7 @@ export function getAirportPageList(data) {
   });
 }
 
-export function getAirportTotal(params) {
+export function getTotal(params) {
   return request({
     url: '/flight/airport/total',
     method: 'get',
@@ -31,7 +31,7 @@ export function getAirportTotal(params) {
   });
 }
 
-export function removeAirport(data) {
+export function removeOne(data) {
   return request({
     url: '/flight/airport/remove/one/' + data,
     method: 'delete'
