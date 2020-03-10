@@ -50,7 +50,7 @@
             handleGetOne(id) {
                 if (id) {
                     this.$store
-                        .dispatch("app/getOne", id)
+                        .dispatch("app/getOne", {appId: id})
                         .then(data => {
                             this.formData = data;
                             this.dialogVisible = true;

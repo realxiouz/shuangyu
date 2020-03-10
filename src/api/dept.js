@@ -9,34 +9,34 @@ export function save(data) {
   });
 }
 
-export function removeOne(deptId) {
+export function removeOne(id) {
   return request({
-    url: `/dept/remove/one/${deptId}`,
+    url: `/dept/remove/one/${id}`,
     method: "delete"
   });
 }
 
-export function getPageList(pageFlag, pageSize, lastId, data) {
+export function getPageList(pageFlag, pageSize, lastId, params) {
   return request({
     url: `/dept/page/list/${pageFlag}/${pageSize}/${lastId}`,
     method: "get",
-    params: data
+    params: params
   });
 }
 
-export function getTotal(data) {
+export function getTotal(params) {
   return request({
     url: `/dept/get/total`,
     method: "get",
-    params: data
+    params: params
   });
 }
 
-export function getList(data) {
+export function getList(params) {
   return request({
     url: `/dept/list/`,
     method: "get",
-    params: data
+    params: params
   });
 }
 export function getOne(id) {
