@@ -1,4 +1,4 @@
-import {getOne, getPageList, getTotal, removeOne, save, updateOne, getAll,getMany} from "@/api/api";
+import {getAll, getMany, getOne, getPageList, getTotal, removeOne, save, updateOne} from "@/api/api";
 import {getToken} from "@/utils/auth";
 
 
@@ -45,9 +45,10 @@ const actions = {
         });
     });
   },
-  removeOne({commit}, data) {
+  removeOne({commit}, params) {
+    const {apiId} = params;
     return new Promise((resolve, reject) => {
-      removeOne(data)
+      removeOne(apiId)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -58,9 +59,9 @@ const actions = {
     });
   },
   getPageList({commit}, params) {
-    const {pageFlag, pageSize, lastId, filter} = params;
+    const {pageFlag, pageSize, lastId, filters} = params;
     return new Promise((resolve, reject) => {
-      getPageList(pageFlag, pageSize, lastId, filter)
+      getPageList(pageFlag, pageSize, lastId, filters)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -72,8 +73,9 @@ const actions = {
   },
 
   getTotal({commit}, params) {
+    const {filters} = params;
     return new Promise((resolve, reject) => {
-      getTotal(params)
+      getTotal(filters)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -83,9 +85,10 @@ const actions = {
         });
     });
   },
-  getOne({commit}, data) {
+  getOne({commit}, params) {
+    const {apiId} = params;
     return new Promise((resolve, reject) => {
-      getOne(data)
+      getOne(apiId)
         .then(response => {
           const {data} = response;
           resolve(data);

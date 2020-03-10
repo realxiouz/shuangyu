@@ -71,7 +71,7 @@
       handleGetOne(id) {
         if (id) {
           this.$store
-            .dispatch("airline/getOne", id)
+            .dispatch("airline/getOne", {airlineCode:id})
             .then(data => {
               this.formData = data;
             }).catch(error => {

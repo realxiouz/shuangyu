@@ -17,19 +17,19 @@ export function updateOne(data) {
   });
 }
 
-export function getPageList(pageFlag, pageSize, lastId, data) {
+export function getPageList(pageFlag, pageSize, lastId, params) {
   return request({
     url: `/api/page/list/${pageFlag}/${pageSize}/${lastId}`,
     method: 'get',
-    params: data
+    params: params
   });
 }
 
-export function getTotal(data) {
+export function getTotal(params) {
   return request({
     url: `/api/total`,
     method: 'get',
-    params: data
+    params: params
   });
 }
 
@@ -55,10 +55,10 @@ export function getAll() {
   });
 }
 
-export function getMany(data) {
+export function getMany(params) {
   return request({
     url: `/api/many`,
     method: 'post',
-    data
+    params
   });
 }

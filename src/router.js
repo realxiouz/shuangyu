@@ -180,13 +180,20 @@ export default new Router({
       uri: '/flightInfo',
       component: Layout,
       children: [
-        {
+        /*{
           title: '机场信息',
           path: 'index',
           name: 'airport',
           uri: '/airport/index',
           component: () => import('@/views/airport/index'),
           meta: {title: 'Home', icon: 'home'}
+        },*/
+        {
+          title: '机场信息',
+          path: '/airport/list',
+          uri: '/airport/list',
+          component: () => import('@/views/airport/List'),
+          meta: { title: 'Home', icon: 'home' }
         },
         /*{
           title: '航司信息',
