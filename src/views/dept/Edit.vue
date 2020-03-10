@@ -4,18 +4,6 @@
       <el-form-item label="部门名称" prop="deptName">
         <el-input v-model="formData.deptName"></el-input>
       </el-form-item>
-      <el-form-item label="企业" prop="firmId">
-        <div class="block">
-          <el-cascader
-            style="width: 440px"
-            v-model="formData.firmId"
-            placeholder="请选择企业"
-            :options="firmList"
-            :props="{ checkStrictly: true ,value: 'firmId',label: 'firmName'}"
-            @change="handleFirmChange"
-            clearable></el-cascader>
-        </div>
-      </el-form-item>
       <el-form-item label="域名" prop="domain">
         <el-input v-model="formData.domain"></el-input>
       </el-form-item>
@@ -46,7 +34,6 @@
     function defaultData() {
         return {
             deptName: "",
-            firmId: "",
             domain: "",
             ddId: "",
             ddParentIdId: "",
@@ -70,9 +57,6 @@
                             max: 20,
                             message: '长度在 1到 20 个字符'
                         }
-                    ],
-                    firmId: [
-                        {required: true, message: "请输入企业", trigger: "blur"}
                     ],
                     domain: [
                         {required: true, message: "请输入域名", trigger: "blur"},
@@ -149,16 +133,10 @@
                         if (this.paramsRoles && this.paramsRoles.length > 0) {
                             this.formData.roles = this.paramsRoles;
                         }
-                        this.formData.firmId = this.formData.firmId.pop();
                         this.$emit('onSave', this.formData);
                     }
                 });
             },
-            handleFirmChange(value) {
-                if (value) {
-                    this.formData.firmId = value;
-                }
-            }
         },
         created() {
             this.loadRoles();

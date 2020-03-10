@@ -102,8 +102,8 @@ export default new Router({
         {
           title: '基本信息',
           path: 'list',
-          name: 'dept',
-          uri: '/dept/List',
+          name: 'list',
+          uri: '/dept/list',
           component: () => import('@/views/dept/List'),
           meta: { title: 'Home', icon: 'home' }
         }
