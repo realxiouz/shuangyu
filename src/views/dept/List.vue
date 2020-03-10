@@ -176,7 +176,7 @@
                 this.dialogVisible = false;
             },
         },
-        mounted() {
+        created() {
             this.handleSearch();
         },
         components: {

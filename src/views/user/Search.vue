@@ -1,78 +1,14 @@
 <template>
-  <el-row type="flex" class="row-bg" justify="space-between" align="bottom">
-    <el-col :span="20">
-      <el-form :inline="true" :model="formData">
-        <el-form-item label="姓名">
-          <el-input v-model="formData.fullName" placeholder="姓名"></el-input>
-        </el-form-item>
-        <el-form-item label="性别">
-          <el-select v-model="formData.gender" placeholder="性别">
-            <el-option label="男" value="男"></el-option>
-            <el-option label="女" value="女"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="姓名">
-          <el-input v-model="formData.fullName" placeholder="姓名"></el-input>
-        </el-form-item>
-        <el-form-item v-if="more" label="性别">
-          <el-select v-model="formData.gender" placeholder="性别">
-            <el-option label="男" value="男"></el-option>
-            <el-option label="女" value="女"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item v-if="more" label="姓名">
-          <el-input v-model="formData.fullName" placeholder="姓名"></el-input>
-        </el-form-item>
-        <el-form-item v-if="more" label="性别">
-          <el-select v-model="formData.gender" placeholder="性别">
-            <el-option label="男" value="男"></el-option>
-            <el-option label="女" value="女"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item v-if="more" label="姓名">
-          <el-input v-model="formData.fullName" placeholder="姓名"></el-input>
-        </el-form-item>
-        <el-form-item v-if="more" label="性别">
-          <el-select v-model="formData.gender" placeholder="性别">
-            <el-option label="男" value="男"></el-option>
-            <el-option label="女" value="女"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item v-if="more" label="姓名">
-          <el-input v-model="formData.fullName" placeholder="姓名"></el-input>
-        </el-form-item>
-        <el-form-item v-if="more" label="性别">
-          <el-select v-model="formData.gender" placeholder="性别">
-            <el-option label="男" value="男"></el-option>
-            <el-option label="女" value="女"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item v-if="more" label="姓名">
-          <el-input v-model="formData.fullName" placeholder="姓名"></el-input>
-        </el-form-item>
-        <el-form-item v-if="more" label="性别">
-          <el-select v-model="formData.gender" placeholder="性别">
-            <el-option label="男" value="男"></el-option>
-            <el-option label="女" value="女"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item v-if="more" label="姓名">
-          <el-input v-model="formData.fullName" placeholder="姓名"></el-input>
-        </el-form-item>
-        <el-form-item v-if="more" label="性别">
-          <el-select v-model="formData.gender" placeholder="性别">
-            <el-option label="男" value="男"></el-option>
-            <el-option label="女" value="女"></el-option>
-          </el-select>
-        </el-form-item>
-      </el-form>
-    </el-col>
-    <el-col :span="4" class="search-tools">
-      <el-button type="primary" @click="$emit('onSearch',formData)">查询</el-button>
-      <el-button type="primary" @click="$emit('onAdd')">添加</el-button>
-      <el-button type="primary" @click="handleMore">更多</el-button>
-    </el-col>
-  </el-row>
+  <el-container style="margin-bottom: 5px">
+    <el-input v-model="keyword" style="width: 300px; margin:0 10px 0 50px ;" placeholder="请输入用户昵称..">
+      <i class="el-icon-edit el-input__icon"
+         slot="suffix"
+         @click="handleIconClick">
+      </i>
+    </el-input>
+    <el-button type="primary" @click="$emit('onSearch',keyword)">查询</el-button>
+    <el-button type="primary" @click="$emit('onAdd')">添加</el-button>
+  </el-container>
 </template>
 
 <script>
@@ -80,21 +16,14 @@
     name: "userSearch",
     data() {
       return {
-        more: false,
-        formData: {
-          fullName: "",
-          gender: ""
-        }
+        keyword: ''
       };
     },
-    methods: {
-      handleMore() {
-        this.more = !this.more;
+    methods:{
+      /*清除输入框内已输入关键字*/
+      handleIconClick(){
+        this.keyword = '';
       }
     }
   };
 </script>
-
-<style scoped>
-
-</style>

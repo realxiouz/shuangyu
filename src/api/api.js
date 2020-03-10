@@ -1,4 +1,5 @@
 import request from '@/utils/request';
+import de from "element-ui/src/locale/lang/de";
 
 
 export function removeOne(id) {
@@ -51,5 +52,13 @@ export function getAll() {
   return request({
     url: `/api/all`,
     method: 'get'
+  });
+}
+
+export function getMany(data) {
+  return request({
+    url: `/api/many`,
+    method: 'post',
+    data
   });
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <user-search ref="user" @onSearch="search" @onAdd="addUser"></user-search>
+    <userSearch ref="search" @onSearch="handleSearch" @onAdd="handleAdd"></userSearch>
     <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;">
       <el-table-column
         prop="nickName"
@@ -28,7 +28,7 @@
         align="center">
         <template slot-scope="scope">
           <i v-if="scope.row.birthDate" class="el-icon-time"></i>
-          <span style="margin-left: 10px">{{ formatDate(scope.row.birthDate,"YYYY-MM-DD") }}</span>
+          <span style="margin-left: 10px">{{ formatDate(scope.row.birthDate,'YYYY-MM-DD') }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -52,15 +52,16 @@
         <template slot-scope="scope">
           <el-switch
             :value="scope.row.super"
-            @change="superSwitch(scope.row.super )">
+            @change="superSwitch(scope.row)">
           </el-switch>
         </template>
       </el-table-column>
-      <el-table-column prop="isEnable" label="是否启用">
+      <el-table-column
+        label="是否启用">
         <template slot-scope="scope">
           <el-switch
             :value="scope.row.enable"
-            @change="enableSwitch(scope.row.enable)">
+            @change="enableSwitch(scope.row)">
           </el-switch>
         </template>
       </el-table-column>
@@ -69,9 +70,9 @@
         align="center"
         width="350">
         <template slot-scope="scope">
-          <el-button @click="resetPwd(scope.row)" type="primary" size="mini">重置密码</el-button>
-          <el-button @click="edit(scope.row)" type="primary" size="mini">编辑</el-button>
-          <el-button @click="delete(scope.row)" type="danger" size="mini">删除</el-button>
+          <el-button @click="handleResetPwd(scope.row)" type="primary" size="mini">重置密码</el-button>
+          <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
+          <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -82,25 +83,57 @@
       next-text="下一页"
       :page-size="pageSize"
       :total="total"
-      @prev-click="prevClick"
-      @next-click="nextClick">
+      @prev-click="handlePrevClick"
+      @next-click="handleNextClick">
     </el-pagination>
     <el-dialog title="用户信息" :visible.sync="dialogVisible" width="30%">
-      <user-edit ref="userForm" :init-user-id="userId" @onSave="handleSave" @onCancel="handleCancel"></user-edit>
+      <userForm v-if="dialogVisible" ref="form" :userID="userID" @onSave="handleSave"
+                @onCancel="handleCancel"></userForm>
+    </el-dialog>
+    <el-dialog
+      title="修改密码"
+      :visible.sync="pwdDialogVisible"
+      width="30%">
+      <el-form label-width="120px" :model="userPwd">
+        <el-form-item label="请输入密码">
+          <el-input :type="inputType" v-model="userPwd.newPwd">
+            <i class="el-icon-view"
+               slot="suffix"
+               @click="handleIconClick">
+            </i>
+          </el-input>
+        </el-form-item>
+        <el-form-item label="再次输入密码">
+          <el-input :type="inputType" v-model="userPwd.againPwd"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleCancel">取 消</el-button>
+        <el-button type="primary" @click="resetPwd">确 定</el-button>
+      </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
-  import userEdit from "./Edit.vue";
-  import userSearch from "./Search.vue";
+  import userForm from './Edit';
+  import userSearch from './Search';
 
   export default {
     name: "userList",
     data() {
       return {
-        userId: null,
         dialogVisible: false,
+        /*是否弹出重置用户密码弹窗*/
+        pwdDialogVisible: false,
+        /*重置用户密码时的input类型*/
+        inputType: 'password',
+        /*进行编辑当前用户ID*/
+        userID: '',
+        /*记录当前进行密码重置新密码和再次输入密码*/
+        userPwd: {},
+        /*重置用户密码时记录当前用户节点信息*/
+        curNode: {},
         pageFlag: "next",
         pageSize: 10,
         lastId: "blank",
@@ -109,22 +142,17 @@
       };
     },
     methods: {
-      test() {
-
-      },
       loadData() {
         this.$store
-          .dispatch("user/getPageList", { pageFlag: this.pageFlag, pageSize: 1, lastId: this.lastId })
+          .dispatch('user/getTotal')
           .then(data => {
-            this.tableData = data.data;
+            this.total = data.data;
           })
           .catch(error => {
             console.log(error);
           });
-      },
-      search(keyword) {
         this.$store
-          .dispatch("user/getList", { username: keyword })
+          .dispatch('user/getPageList', {pageFlag: this.pageFlag, pageSize: this.pageSize, lastId: this.lastId})
           .then(data => {
             this.tableData = data.data;
           })
@@ -132,34 +160,176 @@
             console.log(error);
           });
       },
-      addUser() {
+      /*根据关键字查询用户列表*/
+      handleSearch(keyword) {
+        this.$store
+          .dispatch('user/getList', {nickName: keyword})
+          .then(data => {
+            this.tableData = data.data;
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      /*添加用户按钮*/
+      handleAdd() {
         this.dialogVisible = true;
-        this.userId=1;
-        /*this.userId = this.userId + 1;
+        this.userID = '';
+      },
+      /*修改是否超级管理员状态*/
+      superSwitch(row) {
+        row.super = row.super ? false : true;
+
+        this.$store
+          .dispatch("user/updateOne", row)
+          .then(data => {
+            console.log(data);
+            this.loadData();
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      /*修改是否启用状态*/
+      enableSwitch(row) {
+        row.enable = row.enable ? false : true;
+
+        this.$store
+          .dispatch("user/updateOne", row)
+          .then(data => {
+            console.log(data);
+            this.loadData();
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      /*确认重置用户密码*/
+      handleResetPwd(row) {
+        this.$confirm('此操作将重置该用户的登录密码, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.pwdDialogVisible = true;
+          this.clearUserPwd();
+          this.curNode = row;
+        }).catch(() => {
+        });
+      },
+      /*重置用户密码*/
+      resetPwd() {
+        if (this.userPwd.newPwd !== this.userPwd.againPwd) {
+          this.$message({
+            type: 'error',
+            message: '两次输入的密码不相同,请重新输入！'
+          });
+        } else {
+          this.curNode.password = this.userPwd.againPwd;
+
+          this.$store
+            .dispatch("user/updateOne", this.curNode)
+            .then(data => {
+              console.log(data);
+              this.loadData();
+            })
+            .catch(error => {
+              console.log(error);
+            });
+
+          this.pwdDialogVisible = false;
+        }
+        this.clearUserPwd();
+      },
+      /*点击用户编辑按钮*/
+      handleEdit(row) {
         this.dialogVisible = true;
-        console.log(this.$refs.userEdit.formData);
-        this.$refs.userEdit.formData.gender = "女";
-        this.$refs.userEdit.loadForm();*/
+        this.userID = row.userId;
       },
-      superSwitch() {
+      /*对员工进行删除*/
+      handleDelete(row) {
+        this.open(this.delete, row.userId, '此操作将删除该用户的所有信息, 是否继续?');
       },
-      enableSwitch() {
+      /*根据用户ID删除用户*/
+      delete(userID) {
+        this.$store
+          .dispatch('user/removeOne', userID)
+          .then(data => {
+            console.log(data);
+            this.loadData();
+          })
+          .catch(error => {
+            console.log(error);
+          });
       },
+      /*点击弹窗按钮*/
       handleCancel() {
-        this.dialogVisible = false;
+        if (this.dialogVisible) {
+          this.dialogVisible = false;
+        } else {
+          this.pwdDialogVisible = false;
+          this.clearUserPwd();
+        }
       },
-      handleSave() {
+      /*添加保存用户*/
+      handleSave(formData) {
         this.dialogVisible = false;
+
+        let url = '';
+        if (this.userID) {
+          url = 'user/updateOne';
+        } else {
+          url = 'user/addOne';
+        }
+        this.$store
+          .dispatch(url, formData)
+          .then(data => {
+            console.log(data);
+            this.loadData();
+          })
+          .catch(error => {
+            console.log(error);
+          });
       },
-      prevClick() {
+      /*翻前页*/
+      handlePrevClick() {
         this.pageFlag = "prev";
-        this.lastId = this.tableData[0].appId;
+        this.lastId = this.tableData[0].userId;
         this.loadData();
       },
-      nextClick() {
+      /*翻后页*/
+      handleNextClick() {
         this.pageFlag = "next";
-        this.lastId = this.tableData[this.tableData.length - 1].appId;
+        this.lastId = this.tableData[this.tableData.length - 1].userId;
         this.loadData();
+      },
+      handleIconClick() {
+        this.inputType = this.inputType === 'password' ? '' : 'password';
+      },
+      /*清除修改密码表单*/
+      clearUserPwd() {
+        this.userPwd = {
+          newPwd: '',
+          againPwd: ''
+        }
+      },
+      open(func, data, message) {
+        this.$confirm(message, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          func(data);
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
       },
       /*初始化用工列表中的生日日期格式*/
       initDate(dateStr, format) {
@@ -167,27 +337,27 @@
           let date = new Date(dateStr);
           return this.$moment(date).format(format);
         } else {
-          return "";
+          return '';
+        }
+      },
+    },
+    computed: {
+      formatDate() {
+        return function (dateStr, format) {
+          return this.initDate(dateStr, format);
+        }
+      },
+      initGender() {
+        return function (gender) {
+          return 0 == gender ? '男' : '女';
         }
       }
     },
     mounted() {
       this.loadData();
     },
-    computed: {
-      formatDate() {
-        return function(dateStr, format) {
-          return this.initDate(dateStr, format);
-        };
-      },
-      initGender() {
-        return function(gender) {
-          return 0 == gender ? "男" : "女";
-        };
-      }
-    },
     components: {
-      userEdit,
+      userForm,
       userSearch
     }
   };

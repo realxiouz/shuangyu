@@ -182,7 +182,7 @@
             },
 
         },
-        mounted() {
+        created() {
             this.handleSearch();
         },
         components: {
