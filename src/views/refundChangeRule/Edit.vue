@@ -1,8 +1,8 @@
 <template>
   <div>
-    <el-form ref="form" :model="formData" :rules="verify" label-width="90px" :inline="true">
+    <el-form ref="form" :model="formData" :rules="verify" label-width="100px" :inline="true">
       <el-form-item prop="airlineCode" label="航司二字码">
-        <el-select v-model="formData.airlineCode" @change="initCabins" filterable allow-create>
+        <el-select v-bind:disabled="disabled" v-model="formData.airlineCode" @change="initCabins" filterable allow-create>
           <el-option
             v-for="item in airlines"
             :key="item.airlineCode"
@@ -12,7 +12,7 @@
         </el-select>
       </el-form-item>
       <el-form-item prop="cabin" label="舱位">
-        <el-select v-model="formData.cabin" filterable allow-create default-first-option>
+        <el-select v-bind:disabled="disabled" v-model="formData.cabin" filterable allow-create default-first-option>
           <el-option
             v-for="item in cabins"
             :key="item.value"
@@ -21,18 +21,26 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-row v-for="(ruleItem, index) in formData.rules" :key="formData.rules[index].key">
-        <el-form-item>
-          <el-input v-model="formData.rules[index].id" placeholder="退改规则标识（例如：T0  G0）"></el-input>
+      <el-row v-for="(ruleItem, index) in formData.rules" :key="formData.rules[index].key" id="rule-item">
+        <el-form-item class="rule-item">
+          <el-input class="rule-item-input" v-model="formData.rules[index].id" placeholder="退改规则标识（例如：T0  G0）"></el-input>
         </el-form-item>
-        <el-form-item>
-          <el-input v-model="formData.rules[index].value" placeholder="退改规则值"></el-input>
+        <el-form-item class="rule-item">
+          <el-input class="rule-item-input" v-model="formData.rules[index].value" placeholder="退改规则值"></el-input>
         </el-form-item>
-        <el-form-item>
-          <el-input v-model="formData.rules[index].label" placeholder="退改规则说明"></el-input>
+        <el-form-item class="rule-item">
+          <el-input class="rule-item-input" v-model="formData.rules[index].label" placeholder="退改规则说明"></el-input>
         </el-form-item>
-        <el-form-item>
-          <el-input v-model="formData.rules[index].category" placeholder="类别"></el-input>
+        <el-form-item class="rule-item">
+          <el-select class="rule-item-input" v-model="formData.rules[index].category" filterable allow-create default-first-option
+                     placeholder="类别">
+            <el-option
+              v-for="item in categorys"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item>
           <el-button v-if="index!=0" type="danger" class="el-icon-remove-outline"
@@ -70,6 +78,15 @@
         formData: defaultData(),
         airlines: [{}],
         cabins: [{}],
+        disabled:false,
+        categorys: [
+          {
+            label:'退票规则',
+            value:0
+          }, {
+            label:'改签规则',
+            value:1
+          }],
         verify: {
           airlineCode: [
             {required: true, message: "请选择航司", trigger: "blur"}
@@ -93,20 +110,21 @@
       },
       initCabins(airlineCode) {
         this.formData.cabin = '';
-        var cabinsArr = [];
+        var cabinsArray = [];
         for (var i = 0; i < this.airlines.length; i++) {
           if (this.airlines[i].airlineCode == airlineCode) {
-            cabinsArr = this.airlines[i].cabins.split(",");
+            console.log(this.airlines[i]);
+            cabinsArray = this.airlines[i].cabins;
             break;
           }
         }
         var _cabins = [{}];
-        if (cabinsArr.length > 0) {
-          for (var j = 0; j < cabinsArr.length; j++) {
-            _cabins.push({value: cabinsArr[j], label: cabinsArr[j]});
+        if (cabinsArray.length > 0) {
+          for (var j = 0; j < cabinsArray.length; j++) {
+            _cabins.push({value: cabinsArray[j], label: cabinsArray[j]});
           }
         }
-        this.cabins=_cabins;
+        this.cabins = _cabins;
       },
       addRuleItem() {
         this.formData.rules.push({});
@@ -131,7 +149,7 @@
       handleGetOne(id) {
         if (id) {
           this.$store
-            .dispatch("refundChangeRule/getOne", {ruleId:id})
+            .dispatch("refundChangeRule/getOne", {ruleId: id})
             .then(data => {
               this.formData = data;
             }).catch(error => {
@@ -149,8 +167,20 @@
       this.clearForm();
       this.initAirlines();
       if (this.ruleId) {
+        this.disabled = true;
         this.handleGetOne(this.ruleId);
       }
     }
   }
 </script>
+<style>
+  #rule-item .el-form-item__content {
+    width: 100%;
+  }
+  .rule-item{
+    width: 20%;
+  }
+  .rule-item-input{
+    width: 100%;
+  }
+</style>

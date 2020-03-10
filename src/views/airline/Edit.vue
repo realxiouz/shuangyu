@@ -5,11 +5,11 @@
         <el-input v-model="formData.airlineName"></el-input>
       </el-form-item>
       <el-form-item prop="airlineCode" label="航司二字码">
-        <el-input v-model="formData.airlineCode"></el-input>
+        <el-input v-bind:disabled="disabled" v-model="formData.airlineCode"></el-input>
       </el-form-item>
-      <!--<el-form-item prop="cabins" label="舱位">
-        <el-input v-model="formData.cabins"></el-input>
-      </el-form-item>-->
+      <el-form-item prop="_cabins" label="舱位">
+        <el-input v-model="_cabins"></el-input>
+      </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button type="primary" @click="handleSave">确 定</el-button>
@@ -38,6 +38,7 @@
     data() {
       return {
         formData: defaultData(),
+        disabled: false,
         rules: {
           airlineName: [
             {required: true, message: "请输入航司名称", trigger: "blur"}
@@ -50,6 +51,16 @@
               message: '长度为2字符'
             }
           ]
+        }
+      }
+    },
+    computed: {
+      _cabins:{
+        get: function () {
+          return this.formData.cabins.join(',');
+        },
+        set: function (newValue) {
+          this.formData.cabins = newValue.split(",")
         }
       }
     },
@@ -71,10 +82,11 @@
       handleGetOne(id) {
         if (id) {
           this.$store
-            .dispatch("airline/getOne", {airlineCode:id})
+            .dispatch("airline/getOne", {airlineCode: id})
             .then(data => {
-              console.log(data)
               this.formData = data;
+              this.formData.cabinNames = this.formData.cabins.join(",");
+              console.log(this.formData);
             }).catch(error => {
             console.log(error);
           });
@@ -89,6 +101,7 @@
     created() {
       this.clearForm();
       if (this.airlineCode) {
+        this.disabled = true;
         this.handleGetOne(this.airlineCode);
       }
     }

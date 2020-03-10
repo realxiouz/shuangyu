@@ -2,10 +2,10 @@
   <div>
     <el-form ref="form" :model="formData" :rules="rules" label-width="110px">
       <el-form-item prop="dpt" label="出发地">
-        <el-input v-model="formData.dpt"></el-input>
+        <el-input v-bind:disabled="disabled" v-model="formData.dpt"></el-input>
       </el-form-item>
       <el-form-item prop="arr" label="目的地">
-        <el-input v-model="formData.arr"></el-input>
+        <el-input v-bind:disabled="disabled" v-model="formData.arr"></el-input>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -34,6 +34,7 @@
     data() {
       return {
         formData: defaultData(),
+        disabled:false,
         rules: {
           dpt: [
             {required: true, message: "请输入出发地三字码", trigger: "blur"},
@@ -89,6 +90,7 @@
     created() {
       this.clearForm();
       if (this.segment) {
+        this.disabled = true;
         this.handleGetOne(this.segment);
       }
     }

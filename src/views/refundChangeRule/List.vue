@@ -32,7 +32,7 @@
       :page-size="pageSize"
       :total="total">
     </el-pagination>
-    <el-dialog title="航司" :visible.sync="dialogVisible" width="30%">
+    <el-dialog title="退改规则" :visible.sync="dialogVisible" width="60%">
       <refund-change-rule-edit v-if="dialogVisible" :rule-id="ruleId" ref="form" @onSave="handleSave"
                     @onCancel="handleCancel">
       </refund-change-rule-edit>
@@ -59,6 +59,7 @@
     },
     methods: {
       handleAdd() {
+        this.ruleId = '';
         this.dialogVisible = true;
       },
       loadData() {
@@ -103,7 +104,7 @@
         this.loadData();
       },
       removeOne(id) {
-        this.$confirm('是否确定删除航司舱位信息?', '提示', {
+        this.$confirm('是否确定删除退改规则信息?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'

@@ -36,7 +36,7 @@
       :page-size="pageSize"
       :total="total">
     </el-pagination>
-    <el-dialog title="航司" :visible.sync="dialogVisible" width="30%">
+    <el-dialog title="机场" :visible.sync="dialogVisible" width="30%">
       <airport-edit v-if="dialogVisible" :airport-code="airportCode" ref="form" @onSave="handleSave"
                     @onCancel="handleCancel">
       </airport-edit>
@@ -63,6 +63,7 @@
     },
     methods: {
       handleAdd() {
+        this.airportCode='';
         this.dialogVisible = true;
       },
       loadData() {
@@ -107,7 +108,7 @@
         this.loadData();
       },
       removeOne(id) {
-        this.$confirm('是否确定删除航司舱位信息?', '提示', {
+        this.$confirm('是否确定删除机场信息?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'

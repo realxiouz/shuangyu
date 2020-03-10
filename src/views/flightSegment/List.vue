@@ -33,7 +33,7 @@
       :page-size="pageSize"
       :total="total">
     </el-pagination>
-    <el-dialog title="航司" :visible.sync="dialogVisible" width="30%">
+    <el-dialog title="航段" :visible.sync="dialogVisible" width="30%">
       <segment-edit v-if="dialogVisible" :segment="segment" ref="form" @onSave="handleSave"
                     @onCancel="handleCancel">
       </segment-edit>
@@ -59,6 +59,7 @@
     },
     methods: {
       handleAdd() {
+        this.segment = '';
         this.dialogVisible = true;
       },
       loadData() {
@@ -103,7 +104,7 @@
         this.loadData();
       },
       removeOne(id) {
-        this.$confirm('是否确定删除航司舱位信息?', '提示', {
+        this.$confirm('是否确定删除航段信息?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
