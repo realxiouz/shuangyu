@@ -8,6 +8,13 @@ export function saveAirport(data) {
   });
 }
 
+export function getAirport(id) {
+  return request({
+    url: `/flight/airport/one/${id}`,
+    method: 'get'
+  });
+}
+
 export function getAirportPageList(data) {
   return request({
     url: '/flight/airport/page/list/' + data.pageFlag + '/' + data.pageSize + '/' + data.lastId,

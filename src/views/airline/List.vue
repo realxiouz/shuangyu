@@ -40,7 +40,6 @@
     <el-dialog title="航司" :visible.sync="dialogVisible" width="30%">
       <airline-edit v-if="dialogVisible" :airline-code="airlineCode" ref="form" @onSave="handleSave"
                     @onCancel="handleCancel">
-
       </airline-edit>
     </el-dialog>
   </div>
@@ -52,7 +51,7 @@
   export default {
     data() {
       return {
-        airlineCode:'',
+        airlineCode: '',
         searchForm: {},
         dialogVisible: false,
         tableData: [],
@@ -136,6 +135,7 @@
       },
       handleSave() {
         this.dialogVisible = false;
+        this.loadData();
       },
       handleSearch(params) {
         this.searchForm = params;

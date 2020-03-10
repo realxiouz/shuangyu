@@ -8,6 +8,13 @@ export function saveSegment(data) {
   });
 }
 
+export function getSegment(id) {
+  return request({
+    url: `/flight/segment/one/${id}`,
+    method: 'get'
+  });
+}
+
 export function getSegmentPageList(data) {
   return request({
     url: '/flight/segment/page/list/' + data.pageFlag + '/' + data.pageSize + '/' + data.lastId,
@@ -15,6 +22,7 @@ export function getSegmentPageList(data) {
     params: data.searchForm
   });
 }
+
 export function getSegmentList(data) {
   return request({
     url: '/flight/segment/list',

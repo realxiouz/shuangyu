@@ -1,4 +1,4 @@
-import {saveAirport, getAirportPageList, removeAirport, getAirportTotal} from '@/api/airport';
+import {getAirport, saveAirport, getAirportPageList, removeAirport, getAirportTotal} from '@/api/airport';
 import {getToken} from '@/utils/auth';
 
 const state = {
@@ -20,6 +20,18 @@ const mutations = {
 };
 
 const actions = {
+  getOne({commit}, data) {
+    return new Promise((resolve, reject) => {
+      getAirport(data)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
   save({commit}, params) {
     return new Promise((resolve, reject) => {
       saveAirport(params)
@@ -33,10 +45,10 @@ const actions = {
     });
   },
   list({commit}, params) {
-    var data= params.searchForm;
+    var data = params.searchForm;
     var searchForm = {};
-    for (var attr in data){
-      if (data[attr]!=null && data[attr]!=undefined && data[attr]!=''){
+    for (var attr in data) {
+      if (data[attr] != null && data[attr] != undefined && data[attr] != '') {
         searchForm[attr] = data[attr];
       }
     }

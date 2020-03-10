@@ -1,4 +1,10 @@
-import {saveRefundChangeRule, getRefundChangeRulePageList, removeRefundChangeRule, getRefundChangeRuleTotal} from '@/api/refundChangeRule';
+import {
+  getRefundChangeRule,
+  saveRefundChangeRule,
+  getRefundChangeRulePageList,
+  removeRefundChangeRule,
+  getRefundChangeRuleTotal
+} from '@/api/refundChangeRule';
 import {getToken} from '@/utils/auth';
 
 const state = {
@@ -20,6 +26,18 @@ const mutations = {
 };
 
 const actions = {
+  getOne({commit}, data) {
+    return new Promise((resolve, reject) => {
+      getRefundChangeRule(data)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
   save({commit}, params) {
     return new Promise((resolve, reject) => {
       saveRefundChangeRule(params)
@@ -33,10 +51,10 @@ const actions = {
     });
   },
   list({commit}, params) {
-    var data= params.searchForm;
+    var data = params.searchForm;
     var searchForm = {};
-    for (var attr in data){
-      if (data[attr]!=null && data[attr]!=undefined && data[attr]!=''){
+    for (var attr in data) {
+      if (data[attr] != null && data[attr] != undefined && data[attr] != '') {
         searchForm[attr] = data[attr];
       }
     }
