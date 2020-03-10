@@ -8,34 +8,32 @@ export function save(data) {
   });
 }
 
-export function removeOne(data) {
+export function removeOne(thirdId) {
   return request({
-    url: "/third/party/remove/one/" + data,
+    url: `/third/party/remove/one/${thirdId}`,
     method: "delete"
   });
 }
 
-export function getOne(data) {
+export function getOne(thirdId) {
   return request({
-    url: `/third/party/` + data,
+    url: `/third/party/${thirdId}`,
     method: `get`
   });
 }
 
 
-
 export function getPageList(pageFlag, pageSize, lastId, searchForm) {
   return request({
-    url: "/third/party/page/list/" + pageFlag + "/" + pageSize + "/" + lastId,
+    url: `/third/party/page/list/${pageFlag}/${pageSize}/${lastId}`,
     method: "get",
     params: searchForm
   });
 }
 
-export function getTotal(data) {
+export function getTotal(thirdName) {
   return request({
-    url: "/third/party/get/total",
-    method: "get",
-    params: data
+    url: `/third/party/get/total/${thirdName}`,
+    method: "get"
   });
 }
