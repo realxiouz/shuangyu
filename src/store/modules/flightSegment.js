@@ -1,4 +1,11 @@
-import {saveSegment, getSegmentPageList, getSegmentList, removeSegment, getSegmentTotal} from '@/api/flightSegment';
+import {
+  getOne,
+  save,
+  getPageList,
+  getList,
+  removeOne,
+  getTotal
+} from '@/api/flightSegment';
 import {getToken} from '@/utils/auth';
 
 const state = {
@@ -20,9 +27,22 @@ const mutations = {
 };
 
 const actions = {
-  save({commit}, params) {
+  getOne({commit}, params) {
+    const { segment } = params;
     return new Promise((resolve, reject) => {
-      saveSegment(params)
+      getOne(segment)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  save({commit}, data) {
+    return new Promise((resolve, reject) => {
+      save(data)
         .then(response => {
           //const { data } = response;
           resolve(response);
@@ -32,17 +52,17 @@ const actions = {
         });
     });
   },
-  list({commit}, params) {
-    var data= params.searchForm;
+  getPageList({commit}, params) {
+    var data = params.searchForm;
     var searchForm = {};
-    for (var attr in data){
-      if (data[attr]!=null && data[attr]!=undefined && data[attr]!=''){
+    for (var attr in data) {
+      if (data[attr] != null && data[attr] != undefined && data[attr] != '') {
         searchForm[attr] = data[attr];
       }
     }
     params.searchForm = searchForm;
     return new Promise((resolve, reject) => {
-      getSegmentPageList(params)
+      getPageList(params)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -52,17 +72,17 @@ const actions = {
         });
     });
   },
-  listAll({commit}, params) {
-    var data= params.searchForm;
+  getList({commit}, params) {
+    var data = params.searchForm;
     var searchForm = {};
-    for (var attr in data){
-      if (data[attr]!=null && data[attr]!=undefined && data[attr]!=''){
+    for (var attr in data) {
+      if (data[attr] != null && data[attr] != undefined && data[attr] != '') {
         searchForm[attr] = data[attr];
       }
     }
     params.searchForm = searchForm;
     return new Promise((resolve, reject) => {
-      getSegmentList(params)
+      getList(params)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -72,9 +92,9 @@ const actions = {
         });
     });
   },
-  total({commit}, params) {
+  getTotal({commit}, params) {
     return new Promise((resolve, reject) => {
-      getSegmentTotal(params)
+      getTotal(params)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -84,9 +104,10 @@ const actions = {
         });
     });
   },
-  remove({commit}, data) {
+  removeOne({commit}, params) {
+    const { segment } = params;
     return new Promise((resolve, reject) => {
-      removeSegment(data)
+      removeOne(segment)
         .then(response => {
           const {data} = response;
           resolve(data);

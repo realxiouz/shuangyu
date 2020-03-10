@@ -93,13 +93,11 @@
                 this.lastId = this.tableData[this.tableData.length - 1].deptId;
                 this.loadData();
             },
-            loadData(params) {
-                if (!params.deptName) {
-                    params = {};
-                }
+            loadData() {
                 this.$store
-                    .dispatch("dept/getList",
-                        params
+                    .dispatch("dept/getList", {
+                        filters: {}
+                        }
                     ).then(data => {
                     if (data) {
                         this.tableData = data;
@@ -108,13 +106,10 @@
                     console.log(error);
                 });
             },
-            loadTotal(params) {
-                if (!params.deptName) {
-                    params = {};
-                }
+            loadTotal() {
                 this.$store
                     .dispatch("dept/getTotal", {
-                        filter: params
+                        filters: {}
                     }).then(response => {
                     this.total = response.data;
                 }).catch(error => {
@@ -154,9 +149,9 @@
                     type: "warning"
                 }).then(() => {
                     this.$store
-                        .dispatch("dept/removeOne", id)
+                        .dispatch("dept/removeOne", {deptId: id})
                         .then(() => {
-                            this.loadData();
+                            this.loadData("{}");
                         });
                 }).catch(err => {
                     console.error(err);
@@ -185,4 +180,8 @@
         }
     };
 </script>
-
+<style>
+  .el-cascader-menu {
+    height: 200px;
+  }
+</style>

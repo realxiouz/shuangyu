@@ -1,0 +1,95 @@
+<template>
+  <div>
+    <el-form ref="form" :model="formData" :rules="rules" label-width="110px">
+      <el-form-item prop="airlineName" label="航司名称">
+        <el-input v-model="formData.airlineName"></el-input>
+      </el-form-item>
+      <el-form-item prop="airlineCode" label="航司二字码">
+        <el-input v-model="formData.airlineCode"></el-input>
+      </el-form-item>
+      <!--<el-form-item prop="cabins" label="舱位">
+        <el-input v-model="formData.cabins"></el-input>
+      </el-form-item>-->
+    </el-form>
+    <div slot="footer" class="dialog-footer">
+      <el-button type="primary" @click="handleSave">确 定</el-button>
+      <el-button @click="$emit('onCancel')">取 消</el-button>
+    </div>
+  </div>
+</template>
+<script>
+  function defaultData() {
+    return {
+      airlineCode: '',
+      airlineName: '',
+      cabins: [],
+      flights: [],
+      segments: []
+    };
+  };
+  export default {
+    name: 'airlineEdit',
+    props: {
+      airlineCode: {
+        String,
+        required: true
+      }
+    },
+    data() {
+      return {
+        formData: defaultData(),
+        rules: {
+          airlineName: [
+            {required: true, message: "请输入航司名称", trigger: "blur"}
+          ],
+          airlineCode: [
+            {required: true, message: "请输入航司二字码", trigger: "blur"},
+            {
+              min: 2,
+              max: 2,
+              message: '长度为2字符'
+            }
+          ]
+        }
+      }
+    },
+    methods: {
+      handleSave() {
+        this.$refs['form'].validate((valid) => {
+          if (valid) {
+            this.$store
+              .dispatch('airline/save', this.formData)
+              .then(() => {
+                this.$emit("onSave");
+              })
+              .catch(error => {
+                console.log(error);
+              });
+          }
+        })
+      },
+      handleGetOne(id) {
+        if (id) {
+          this.$store
+            .dispatch("airline/getOne", {airlineCode:id})
+            .then(data => {
+              this.formData = data;
+            }).catch(error => {
+            console.log(error);
+          });
+        } else {
+          this.formData = defaultData();
+        }
+      },
+      clearForm() {
+        this.formData = defaultData();
+      },
+    },
+    created() {
+      this.clearForm();
+      if (this.airlineCode) {
+        this.handleGetOne(this.airlineCode);
+      }
+    }
+  }
+</script>

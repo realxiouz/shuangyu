@@ -1,6 +1,6 @@
 import request from '@/utils/request';
 
-export function saveAirline(data) {
+export function save(data) {
   return request({
     url: '/flight/airline/save',
     method: 'post',
@@ -8,32 +8,40 @@ export function saveAirline(data) {
   });
 }
 
-export function getAirlinePageList(data) {
+export function getOne(airlineCode) {
   return request({
-    url: '/flight/airline/page/list/' + data.pageFlag + '/' + data.pageSize + '/' + data.lastId,
-    method: 'get',
-    params: data.searchForm
+    url: `/flight/airline/one/${airlineCode}`,
+    method: 'get'
   });
 }
-export function getAirlineList(data) {
+
+export function getPageList(params) {
+  return request({
+    url:  `/flight/airline/page/list/${params.pageFlag}/${params.pageSize}/${params.lastId}`,
+    method: 'get',
+    params: params.searchForm
+  });
+}
+
+export function getList(params) {
   return request({
     url: '/flight/airline/list',
     method: 'get',
-    params: data.searchForm
+    params: params.searchForm
   });
 }
 
-export function getAirlineTotal(params) {
+export function getTotal(params) {
   return request({
     url: '/flight/airline/total',
     method: 'get',
-    params
+    params:params
   });
 }
 
-export function removeAirline(data) {
+export function removeOne(airlineCode) {
   return request({
-    url: '/flight/airline/remove/one/' + data,
+    url: `/flight/airline/remove/one/${airlineCode}`,
     method: 'delete'
   });
 }

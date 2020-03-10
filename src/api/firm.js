@@ -9,7 +9,6 @@ export function getPageList(params) {
 }
 
 export function addOne(data) {
-  debugger
   return request({
     url: `/firm/add/one`,
     method: `post`,

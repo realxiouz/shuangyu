@@ -87,7 +87,7 @@
                 }
                 this.$store
                     .dispatch("app/getTotal", {
-                        filter: searchForm
+                        filters: searchForm
                     }).then(response => {
                     this.total = response.data;
                 }).catch(error => {
@@ -139,7 +139,7 @@
                     type: "warning"
                 }).then(() => {
                     this.$store
-                        .dispatch("app/removeOne", id)
+                        .dispatch("app/removeOne", {appId: id})
                         .then(() => {
                             this.loadData();
                             rows.splice(index, 1);

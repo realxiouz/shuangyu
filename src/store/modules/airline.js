@@ -1,4 +1,11 @@
-import {saveAirline, getAirlinePageList, getAirlineList, removeAirline, getAirlineTotal} from '@/api/airline';
+import {
+  getOne,
+  save,
+  getPageList,
+  getList,
+  removeOne,
+  getTotal
+} from '@/api/airline';
 import {getToken} from '@/utils/auth';
 
 const state = {
@@ -20,11 +27,44 @@ const mutations = {
 };
 
 const actions = {
-  save({commit}, params) {
+  save({commit}, data) {
     return new Promise((resolve, reject) => {
-      saveAirline(params)
+      save(data)
         .then(response => {
-          //const { data } = response;
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getPageList({commit}, params) {
+    var data = params.searchForm;
+    var searchForm = {};
+    for (var attr in data) {
+      if (data[attr] != null && data[attr] != undefined && data[attr] != '') {
+        searchForm[attr] = data[attr];
+      }
+    }
+    params.searchForm = searchForm;
+    return new Promise((resolve, reject) => {
+      getPageList(params)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getOne({commit}, params) {
+    const { airlineCode } = params;
+    return new Promise((resolve, reject) => {
+      getOne(airlineCode)
+        .then(response => {
+          //const {data} = response;
           resolve(response);
         })
         .catch(error => {
@@ -32,17 +72,17 @@ const actions = {
         });
     });
   },
-  list({commit}, params) {
-    var data= params.searchForm;
+  getList({commit}, params) {
+    var data = params.searchForm;
     var searchForm = {};
-    for (var attr in data){
-      if (data[attr]!=null && data[attr]!=undefined && data[attr]!=''){
+    for (var attr in data) {
+      if (data[attr] != null && data[attr] != undefined && data[attr] != '') {
         searchForm[attr] = data[attr];
       }
     }
     params.searchForm = searchForm;
     return new Promise((resolve, reject) => {
-      getAirlinePageList(params)
+      getList(params)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -52,17 +92,9 @@ const actions = {
         });
     });
   },
-  listAll({commit}, params) {
-    var data= params.searchForm;
-    var searchForm = {};
-    for (var attr in data){
-      if (data[attr]!=null && data[attr]!=undefined && data[attr]!=''){
-        searchForm[attr] = data[attr];
-      }
-    }
-    params.searchForm = searchForm;
+  getTotal({commit}, params) {
     return new Promise((resolve, reject) => {
-      getAirlineList(params)
+      getTotal(params)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -72,21 +104,10 @@ const actions = {
         });
     });
   },
-  total({commit}, params) {
+  removeOne({commit}, params) {
+    const { airlineCode } = params;
     return new Promise((resolve, reject) => {
-      getAirlineTotal(params)
-        .then(response => {
-          const {data} = response;
-          resolve(data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  removeOne({commit}, data) {
-    return new Promise((resolve, reject) => {
-      removeAirline(data)
+      removeOne(airlineCode)
         .then(response => {
           const {data} = response;
           resolve(data);

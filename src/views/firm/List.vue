@@ -76,8 +76,10 @@
     data() {
       return {
         dialogVisible: false,
+        /*用于判断是否添加的是根节点*/
         rootNav: false,
         tableData: [],
+        /*记录当前进行操作的节点数据*/
         curNode: {},
         tableProps: {
           hasChildren: 'xxx',
@@ -86,6 +88,7 @@
       };
     },
     methods: {
+      /*加载企业列表*/
       loadData() {
         this.$store
           .dispatch('firm/getTotal')
@@ -104,6 +107,7 @@
             console.log(error);
           });
       },
+      /*根据关键字进行企业搜索*/
       search(keyword) {
         this.$store
           .dispatch('firm/getList', {firmName: keyword})
@@ -114,6 +118,7 @@
             console.log(error);
           });
       },
+      /*点击根节点添加按钮*/
       rootAdd() {
         //判断添加的导航是否是顶级导航
         this.rootNav = true;
@@ -121,6 +126,7 @@
 
         this.curNode = {};
       },
+      /*企业的添加、编辑保存*/
       handleSave(formData) {
         this.dialogVisible = false;
         /*更新*/
@@ -157,6 +163,7 @@
       handleCancel() {
         this.dialogVisible = false;
       },
+      /*点击添加企业子节点按钮*/
       handleAppend(idx, row) {
         this.rootNav = false;
         this.dialogVisible = true;
@@ -165,13 +172,16 @@
         this.curNode.firmId = row.firmId;
         this.curNode.level = row.level;
       },
+      /*点击编辑*/
       handleEdit(index, row) {
         this.curNode = row;
         this.dialogVisible = true;
       },
+      /*点击删除*/
       handleDelete(index, row) {
         this.open(this.remove, row.firmId, '此操作将删除该企业信息及子企业信息, 是否继续?');
       },
+      /*删除企业数据*/
       remove(params) {
         this.$store
           .dispatch('firm/removeOne', params)

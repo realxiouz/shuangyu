@@ -1,4 +1,10 @@
-import {saveAirport, getAirportPageList, removeAirport, getAirportTotal} from '@/api/airport';
+import {
+  getOne,
+  save,
+  getPageList,
+  removeOne,
+  getTotal
+} from '@/api/airport';
 import {getToken} from '@/utils/auth';
 
 const state = {
@@ -20,29 +26,42 @@ const mutations = {
 };
 
 const actions = {
-  save({commit}, params) {
+  getOne({commit}, params) {
+    const { airportCode } = params;
     return new Promise((resolve, reject) => {
-      saveAirport(params)
+      getOne(airportCode)
         .then(response => {
-          //const { data } = response;
-          resolve(response);
+          const {data} = response;
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  list({commit}, params) {
-    var data= params.searchForm;
+  save({commit}, data) {
+    return new Promise((resolve, reject) => {
+      save(data)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getPageList({commit}, params) {
+    var data = params.searchForm;
     var searchForm = {};
-    for (var attr in data){
-      if (data[attr]!=null && data[attr]!=undefined && data[attr]!=''){
+    for (var attr in data) {
+      if (data[attr] != null && data[attr] != undefined && data[attr] != '') {
         searchForm[attr] = data[attr];
       }
     }
     params.searchForm = searchForm;
     return new Promise((resolve, reject) => {
-      getAirportPageList(params)
+      getPageList(params)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -52,9 +71,9 @@ const actions = {
         });
     });
   },
-  total({commit}, params) {
+  getTotal({commit}, params) {
     return new Promise((resolve, reject) => {
-      getAirportTotal(params)
+      getTotal(params)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -64,9 +83,10 @@ const actions = {
         });
     });
   },
-  removeOne({commit}, data) {
+  removeOne({commit}, params) {
+    const { airportCode } = params;
     return new Promise((resolve, reject) => {
-      removeAirport(data)
+      removeOne(airportCode)
         .then(response => {
           const {data} = response;
           resolve(data);
