@@ -13,11 +13,6 @@
         width="300"
       ></el-table-column>
       <el-table-column
-        prop="firmId"
-        label="企业"
-        width="200"
-      ></el-table-column>
-      <el-table-column
         prop="ddId"
         label="钉钉Id"
         width="200"
