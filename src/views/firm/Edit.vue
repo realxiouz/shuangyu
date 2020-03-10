@@ -99,9 +99,11 @@
 
 <script>
   export default {
+    /*当前进行操作的企业节点*/
     props: ['curNode'],
     data() {
       return {
+        /*所有的可操作的角色信息*/
         transData: [],
         formData:{},
         transferProps: {
@@ -134,6 +136,7 @@
           roles: []
         };
       },
+      /*加载所有的角色信息*/
       loadRoles() {
         this.clearRoles();
         this.$store
@@ -146,12 +149,14 @@
             console.log(error);
           });
       },
+      /*清除穿梭框内的数据*/
       clearRoles() {
         this.transData = [];
       },
       clearForm(){
         this.formData = this.defaultFormData();
       },
+      /*初始化表单*/
       initFormData(){
         if (this.curNode.firmName){
           this.formData = this.curNode;
