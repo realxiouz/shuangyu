@@ -112,7 +112,8 @@ const actions = {
   },
   getMany({commit}, params) {
     return new Promise((resolve, reject) => {
-      getMany(params)
+      const {apiIDList} = params;
+      getMany(apiIDList)
         .then(response => {
           const {data} = response;
           resolve(data);

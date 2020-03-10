@@ -80,7 +80,7 @@
       /*加载所有的api数据*/
       loadAllApis() {
         this.$store
-          .dispatch('api/getAll')
+          .dispatch('api/getAll', {})
           .then(data => {
             this.allApiData = data;
           })
@@ -91,7 +91,7 @@
       /*根据apiID数组加载api数据列表*/
       loadApisTableList(apiIDList) {
         this.$store
-          .dispatch('api/getMany',apiIDList)
+          .dispatch('api/getMany', {apiIDList: apiIDList})
           .then(data => {
             this.tableData = data;
           })
@@ -136,7 +136,7 @@
         this.dialogVisible = false;
         this.curNode.apis = this.transferData;
         this.$store
-          .dispatch('nav/updateOne', this.curNode)
+          .dispatch('nav/updateOne', {nav: this.curNode})
           .then(data => {
             console.log(data);
             //对数据列表进行重新加载

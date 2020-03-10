@@ -81,7 +81,8 @@ const actions = {
 
   addOne({ commit }, params) {
     return new Promise((resolve, reject) => {
-      addOne(params)
+      const {user} = params;
+      addOne(user)
         .then(response => {
           resolve(response);
         })
@@ -92,7 +93,8 @@ const actions = {
   },
   removeOne({ commit }, params) {
     return new Promise((resolve, reject) => {
-      removeOne(params)
+      const {userID} = params
+      removeOne(userID)
         .then(response => {
           resolve(response);
         })
@@ -103,7 +105,8 @@ const actions = {
   },
   updateOne({ commit }, params) {
     return new Promise((resolve, reject) => {
-      updateOne(params)
+      const {user} = params;
+      updateOne(user)
         .then(response => {
           resolve(response);
         })
@@ -126,7 +129,8 @@ const actions = {
   },
   getList({ commit }, params) {
     return new Promise((resolve, reject) => {
-      getList(params)
+      const {filter} = params;
+      getList(filter)
         .then(response => {
           resolve(response);
         })
@@ -137,7 +141,8 @@ const actions = {
   },
   getTotal({ commit }, params) {
     return new Promise((resolve, reject) => {
-      getTotal(params)
+      const {filter} = params;
+      getTotal(filter)
         .then(response => {
           resolve(response);
         })
@@ -148,7 +153,8 @@ const actions = {
   },
   getPageList({ commit }, params) {
     return new Promise((resolve, reject) => {
-      getPageList(params)
+      const {pageFlag, pageSize, lastID, filter} = params;
+      getPageList(pageFlag, pageSize, lastID, filter)
         .then(response => {
           resolve(response);
         })

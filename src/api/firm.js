@@ -8,19 +8,19 @@ export function getPageList(pageFlag, pageSize, lastId, filter) {
   });
 }
 
-export function addOne(firm) {
+export function addOne(data) {
   return request({
     url: `/firm/add/one`,
     method: `post`,
-    firm
+    data
   });
 }
 
-export function updateOne(firm) {
+export function updateOne(data) {
   return request({
     url: `/firm/update/one`,
     method: `post`,
-    firm
+    data
   });
 }
 

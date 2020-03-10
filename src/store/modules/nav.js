@@ -1,9 +1,11 @@
 import {removeOne, addOne, updateOne, getOne, getPageList, getList} from '@/api/nav';
+import {parseMinWidth} from "element-ui/packages/table/src/util";
 
 const actions = {
-  removeOne({commit}, Id) {
+  removeOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      removeOne(Id)
+      const {navID} = params;
+      removeOne(navID)
         .then(response => {
           //const { data } = response;
           resolve(response);
@@ -15,7 +17,8 @@ const actions = {
   },
   addOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      addOne(params)
+      const {nav} = params;
+      addOne(nav)
         .then(response => {
           //const { data } = response;
           resolve(response);
@@ -27,7 +30,8 @@ const actions = {
   },
   updateOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      updateOne(params)
+      const {nav} = params;
+      updateOne(nav)
         .then(response => {
           //const { data } = response;
           resolve(response);
@@ -39,7 +43,8 @@ const actions = {
   },
   getOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      getOne(params)
+      const {navID} = params;
+      getOne(navID)
         .then(response => {
           //const { data } = response;
           resolve(response);
@@ -51,7 +56,8 @@ const actions = {
   },
   getPageList({commit}, params) {
     return new Promise((resolve, reject) => {
-      getPageList(params)
+      const {pageFlag, pageSize, lastID, filter} = params;
+      getPageList(pageFlag, pageSize, lastID, filter)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -63,7 +69,8 @@ const actions = {
   },
   getList({commit}, params) {
     return new Promise((resolve, reject) => {
-      getList(params)
+      const {filter} = params;
+      getList(filter)
         .then(response => {
           const {data} = response;
           resolve(data);

@@ -32,33 +32,33 @@ export function removeOne(data) {
   });
 }
 
-export function getOne(params) {
+export function getOne(staffID) {
   return request({
-    url: `/staff/one/${params}`,
+    url: `/staff/one/${staffID}`,
     method: 'get'
   });
 }
 
-export function getList(params) {
+export function getList(filter) {
   return request({
     url: `/staff/list`,
     method: 'get',
-    params
+    params: filter
   });
 }
 
-export function getTotal(params) {
+export function getTotal(filter) {
   return request({
     url: '/staff/total',
     method: 'get',
-    params
+    params: filter
   });
 }
 
-export function getPageList(params) {
+export function getPageList(pageFlag, pageSize, lastId, filter) {
   return request({
-    url: `/staff/page/list/${params.pageFlag}/${params.pageSize}/${params.lastId}`,
+    url: `/staff/page/list/${pageFlag}/${pageSize}/${lastId}`,
     method: 'get',
-    params: params.filter
+    params: filter
   });
 }

@@ -158,7 +158,7 @@
       /*获取该部门下的员工列表*/
       loadTableData() {
         this.$store
-          .dispatch('staff/getList', {firmId: this.curNode.firmId, deptId: this.curNode.deptId})
+          .dispatch('staff/getList', {firmId: this.curNode.firmId, deptId: this.curNode.deptId, filter: {}})
           .then(data => {
             this.tableData = data.data;
           })
@@ -176,7 +176,7 @@
       searchUser() {
         this.clearUsersTable();
         this.$store
-          .dispatch('user/getList', this.keyword ? {nickName: this.keyword} : {})
+          .dispatch('user/getList', {filter: this.keyword ? {nickName: this.keyword} : {}})
           .then(data => {
             data.forEach((user) => {
               let flag = false;

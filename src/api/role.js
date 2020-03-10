@@ -1,10 +1,10 @@
 import request from "@/utils/request";
 
-export function save(role) {
+export function save(data) {
   return request({
     url: "/role/save",
     method: "post",
-    role
+    data
   });
 }
 

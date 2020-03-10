@@ -144,7 +144,7 @@
     methods: {
       loadData() {
         this.$store
-          .dispatch('user/getTotal')
+          .dispatch('user/getTotal', {filter:{}})
           .then(data => {
             this.total = data.data;
           })
@@ -152,7 +152,7 @@
             console.log(error);
           });
         this.$store
-          .dispatch('user/getPageList', {pageFlag: this.pageFlag, pageSize: this.pageSize, lastId: this.lastId})
+          .dispatch('user/getPageList', {pageFlag: this.pageFlag, pageSize: this.pageSize, lastId: this.lastId, filter: {}})
           .then(data => {
             this.tableData = data.data;
           })
@@ -163,7 +163,7 @@
       /*根据关键字查询用户列表*/
       handleSearch(keyword) {
         this.$store
-          .dispatch('user/getList', {nickName: keyword})
+          .dispatch('user/getList', {filter: {nickName: keyword}})
           .then(data => {
             this.tableData = data.data;
           })
@@ -181,7 +181,7 @@
         row.super = row.super ? false : true;
 
         this.$store
-          .dispatch("user/updateOne", row)
+          .dispatch("user/updateOne", {user: row})
           .then(data => {
             console.log(data);
             this.loadData();
@@ -195,7 +195,7 @@
         row.enable = row.enable ? false : true;
 
         this.$store
-          .dispatch("user/updateOne", row)
+          .dispatch("user/updateOne", {user: row})
           .then(data => {
             console.log(data);
             this.loadData();
@@ -228,7 +228,7 @@
           this.curNode.password = this.userPwd.againPwd;
 
           this.$store
-            .dispatch("user/updateOne", this.curNode)
+            .dispatch("user/updateOne", {user: this.curNode})
             .then(data => {
               console.log(data);
               this.loadData();
@@ -253,7 +253,7 @@
       /*根据用户ID删除用户*/
       delete(userID) {
         this.$store
-          .dispatch('user/removeOne', userID)
+          .dispatch('user/removeOne', {userID: userID})
           .then(data => {
             console.log(data);
             this.loadData();
@@ -282,7 +282,7 @@
           url = 'user/addOne';
         }
         this.$store
-          .dispatch(url, formData)
+          .dispatch(url, {user: formData})
           .then(data => {
             console.log(data);
             this.loadData();
