@@ -10,7 +10,7 @@ export function getPageList(params) {
 
 export function addOne(data) {
   return request({
-    url: `/firm/save`,
+    url: `/firm/add/one`,
     method: `post`,
     data
   });
@@ -18,7 +18,7 @@ export function addOne(data) {
 
 export function updateOne(data) {
   return request({
-    url: `/firm/save`,
+    url: `/firm/update/one`,
     method: `post`,
     data
   });
