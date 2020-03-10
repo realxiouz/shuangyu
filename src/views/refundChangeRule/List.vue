@@ -1,17 +1,13 @@
 <template>
-  <div class="airline-container">
-    <airline-search @onSearch="handleSearch" @onAdd="handleAdd"></airline-search>
+  <div class="refund-change-rule-container">
+    <refund-change-rule-search @onSearch="handleSearch" @onAdd="handleAdd"></refund-change-rule-search>
     <el-table :data="tableData" ref="tableData" @row-dblclick="handleEdit" style="width: 100%">
-      <el-table-column
-        prop="airlineName"
-        label="航司名称"
-      ></el-table-column>
       <el-table-column
         prop="airlineCode"
         label="航司二字码"
       ></el-table-column>
       <el-table-column
-        prop="cabins"
+        prop="cabin"
         label="舱位"
       ></el-table-column>
       <el-table-column
@@ -20,7 +16,7 @@
         width="200">
         <template slot-scope="scope">
           <el-button @click="handleEdit(scope.row)" type="primary" size="small">编辑</el-button>
-          <el-button @click="removeOne(scope.row.airlineCode)" type="danger" size="small">删除</el-button>
+          <el-button @click="removeOne(scope.row.ruleId)" type="danger" size="small">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -36,21 +32,21 @@
       :page-size="pageSize"
       :total="total">
     </el-pagination>
-    <el-dialog title="航司" :visible.sync="dialogVisible" width="30%">
-      <airline-edit v-if="dialogVisible" :airline-code="airlineCode" ref="form" @onSave="handleSave"
+    <el-dialog title="退改规则" :visible.sync="dialogVisible" width="60%">
+      <refund-change-rule-edit v-if="dialogVisible" :rule-id="ruleId" ref="form" @onSave="handleSave"
                     @onCancel="handleCancel">
-      </airline-edit>
+      </refund-change-rule-edit>
     </el-dialog>
   </div>
 </template>
 <script>
-  import airlineSearch from './Search.vue';
-  import airlineEdit from './Edit.vue';
+  import refundChangeRuleSearch from './Search.vue';
+  import refundChangeRuleEdit from './Edit.vue';
 
   export default {
     data() {
       return {
-        airlineCode: '',
+        ruleId: '',
         searchForm: {},
         dialogVisible: false,
         tableData: [],
@@ -63,12 +59,12 @@
     },
     methods: {
       handleAdd() {
-        this.airlineCode = '';
+        this.ruleId = '';
         this.dialogVisible = true;
       },
       loadData() {
         this.$store
-          .dispatch('airline/getPageList', {
+          .dispatch('refundChangeRule/getPageList', {
             pageSize: this.pageSize,
             lastId: this.lastId,
             pageFlag: this.pageFlag,
@@ -84,7 +80,7 @@
       },
       loadTotal() {
         this.$store
-          .dispatch('airline/getTotal', this.searchForm)
+          .dispatch('refundChangeRule/getTotal', this.searchForm)
           .then(data => {
             this.total = data;
           })
@@ -99,22 +95,22 @@
       },
       prevClick() {
         this.pageFlag = 'prev';
-        this.lastId = this.tableData[0].airlineCode;
+        this.lastId = this.tableData[0].ruleId;
         this.loadData();
       },
       nextClick() {
         this.pageFlag = 'next';
-        this.lastId = this.tableData[this.tableData.length - 1].airlineCode;
+        this.lastId = this.tableData[this.tableData.length - 1].ruleId;
         this.loadData();
       },
       removeOne(id) {
-        this.$confirm('是否确定删除航司舱位信息?', '提示', {
+        this.$confirm('是否确定删除退改规则信息?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           this.$store
-            .dispatch('airline/removeOne', {airlineCode:id})
+            .dispatch('refundChangeRule/removeOne', {ruleId:id})
             .then(data => {
               console.log(data);
               this.loadData();
@@ -127,7 +123,7 @@
         });
       },
       handleEdit(row) {
-        this.airlineCode = row.airlineCode;
+        this.ruleId = row.ruleId;
         this.dialogVisible = true;
       },
       handleCancel() {
@@ -147,8 +143,8 @@
       this.loadData();
     },
     components: {
-      airlineEdit,
-      airlineSearch
+      refundChangeRuleEdit,
+      refundChangeRuleSearch
     }
   }
 </script>

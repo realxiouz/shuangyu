@@ -1,26 +1,23 @@
 <template>
-  <div class="airline-container">
-    <airline-search @onSearch="handleSearch" @onAdd="handleAdd"></airline-search>
+  <div class="segment-container">
+    <segment-search @onSearch="handleSearch" @onAdd="handleAdd"></segment-search>
     <el-table :data="tableData" ref="tableData" @row-dblclick="handleEdit" style="width: 100%">
       <el-table-column
-        prop="airlineName"
-        label="航司名称"
+        prop="dpt"
+        label="出发地"
       ></el-table-column>
       <el-table-column
-        prop="airlineCode"
-        label="航司二字码"
-      ></el-table-column>
-      <el-table-column
-        prop="cabins"
-        label="舱位"
+        prop="arr"
+        label="目的地"
       ></el-table-column>
       <el-table-column
         label="操作"
         align="center"
-        width="200">
+        width="200"
+      >
         <template slot-scope="scope">
           <el-button @click="handleEdit(scope.row)" type="primary" size="small">编辑</el-button>
-          <el-button @click="removeOne(scope.row.airlineCode)" type="danger" size="small">删除</el-button>
+          <el-button @click="removeOne(scope.row.segment)" type="danger" size="small">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -36,21 +33,20 @@
       :page-size="pageSize"
       :total="total">
     </el-pagination>
-    <el-dialog title="航司" :visible.sync="dialogVisible" width="30%">
-      <airline-edit v-if="dialogVisible" :airline-code="airlineCode" ref="form" @onSave="handleSave"
+    <el-dialog title="航段" :visible.sync="dialogVisible" width="30%">
+      <segment-edit v-if="dialogVisible" :segment="segment" ref="form" @onSave="handleSave"
                     @onCancel="handleCancel">
-      </airline-edit>
+      </segment-edit>
     </el-dialog>
   </div>
 </template>
 <script>
-  import airlineSearch from './Search.vue';
-  import airlineEdit from './Edit.vue';
-
+  import segmentSearch from './Search.vue';
+  import segmentEdit from './Edit.vue';
   export default {
     data() {
       return {
-        airlineCode: '',
+        segment: '',
         searchForm: {},
         dialogVisible: false,
         tableData: [],
@@ -63,12 +59,12 @@
     },
     methods: {
       handleAdd() {
-        this.airlineCode = '';
+        this.segment = '';
         this.dialogVisible = true;
       },
       loadData() {
         this.$store
-          .dispatch('airline/getPageList', {
+          .dispatch('flightSegment/getPageList', {
             pageSize: this.pageSize,
             lastId: this.lastId,
             pageFlag: this.pageFlag,
@@ -84,7 +80,7 @@
       },
       loadTotal() {
         this.$store
-          .dispatch('airline/getTotal', this.searchForm)
+          .dispatch('flightSegment/getTotal', this.searchForm)
           .then(data => {
             this.total = data;
           })
@@ -99,22 +95,22 @@
       },
       prevClick() {
         this.pageFlag = 'prev';
-        this.lastId = this.tableData[0].airlineCode;
+        this.lastId = this.tableData[0].segment;
         this.loadData();
       },
       nextClick() {
         this.pageFlag = 'next';
-        this.lastId = this.tableData[this.tableData.length - 1].airlineCode;
+        this.lastId = this.tableData[this.tableData.length - 1].segment;
         this.loadData();
       },
       removeOne(id) {
-        this.$confirm('是否确定删除航司舱位信息?', '提示', {
+        this.$confirm('是否确定删除航段信息?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           this.$store
-            .dispatch('airline/removeOne', {airlineCode:id})
+            .dispatch('flightSegment/removeOne', {segment:id})
             .then(data => {
               console.log(data);
               this.loadData();
@@ -127,7 +123,7 @@
         });
       },
       handleEdit(row) {
-        this.airlineCode = row.airlineCode;
+        this.segment = row.segment;
         this.dialogVisible = true;
       },
       handleCancel() {
@@ -147,8 +143,8 @@
       this.loadData();
     },
     components: {
-      airlineEdit,
-      airlineSearch
+      segmentEdit,
+      segmentSearch
     }
   }
 </script>

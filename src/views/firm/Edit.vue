@@ -140,7 +140,7 @@
       loadRoles() {
         this.clearRoles();
         this.$store
-          .dispatch('role/getAll')
+          .dispatch('role/getAll',{})
           .then(data => {
             console.log(data);
             this.transData = data;

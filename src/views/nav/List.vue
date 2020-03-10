@@ -95,7 +95,7 @@
     },
     methods: {
       /*初始化导航添加表单*/
-      defaultFormData(){
+      defaultFormData() {
         return {
           navId: '',
           navName: '',
@@ -108,7 +108,7 @@
       /*加载导航树*/
       loadData() {
         this.$store
-          .dispatch('nav/getList')
+          .dispatch('nav/getList', {})
           .then(data => {
             this.treeData = data;
           })
@@ -118,12 +118,16 @@
       },
       /*点击添加顶级企业信息*/
       rootAdd() {
+        this.formData = this.defaultFormData();
+
         //判断添加的导航是否是顶级导航
         this.rootNav = true;
         this.dialogVisible = true;
       },
       /*点击添加节点企业信息*/
       nodeAdd(idx, node) {
+        this.formData = this.defaultFormData();
+
         //添加的导航菜单不是顶级菜单
         this.formData.pid = node.navId;
         this.formData.level = node.level + 1;
@@ -138,7 +142,7 @@
 
         if (this.formData.navId != '') {
           this.$store
-            .dispatch('nav/updateOne', this.formData)
+            .dispatch('nav/updateOne', {nav: this.formData})
             .then(data => {
               console.log(data);
               this.loadData();
@@ -153,7 +157,7 @@
           }
 
           this.$store
-            .dispatch('nav/addOne', this.formData)
+            .dispatch('nav/addOne', {nav: this.formData})
             .then(data => {
               console.log(data);
               this.curLine.push(data.data);
@@ -168,13 +172,17 @@
       /*点击移除导航节点*/
       removeNode(data, node) {
         this.curLine = [];
-        this.curLine.push(node.pid);
-        this.open(this.remove, node.navId,'此操作将删除该条导航及子导航信息, 是否继续?');
+        if (null != node.pid) {
+          this.curLine.push(node.pid);
+        } else {
+          this.curLine = [];
+        }
+        this.open(this.remove, node.navId, '此操作将删除该条导航及子导航信息, 是否继续?');
       },
       /*移除导航节点*/
       remove(params) {
         this.$store
-          .dispatch('nav/removeOne', params)
+          .dispatch('nav/removeOne', {navID: params})
           .then(data => {
             console.log(data);
             this.loadData();

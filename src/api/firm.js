@@ -1,10 +1,10 @@
 import request from '@/utils/request';
 
-export function getPageList(params) {
+export function getPageList(pageFlag, pageSize, lastId, filter) {
   return request({
-    url: `/firm/page/list/${params.pageFlag}/${params.pageSize}/${params.lastId}`,
+    url: `/firm/page/list/${pageFlag}/${pageSize}/${lastId}`,
     method: `get`,
-    params: params.filter
+    params: filter
   });
 }
 
@@ -24,24 +24,25 @@ export function updateOne(data) {
   });
 }
 
-export function removeOne(data) {
+export function removeOne(firmID) {
   return request({
-    url: `/firm/remove/one/${data}`,
+    url: `/firm/remove/one/${firmID}`,
     method: `delete`,
   });
 }
 
-export function getTotal() {
+export function getTotal(filter) {
   return request({
     url: `/firm/get/total`,
-    method: `get`
+    method: `get`,
+    params: filter
   });
 }
 
-export function getList(params) {
+export function getList(filter) {
   return request({
     url: `/firm/list`,
     method: `get`,
-    params
+    params: filter
   });
 }

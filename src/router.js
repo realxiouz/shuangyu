@@ -102,8 +102,8 @@ export default new Router({
         {
           title: '基本信息',
           path: 'list',
-          name: 'dept',
-          uri: '/dept/List',
+          name: 'list',
+          uri: '/dept/list',
           component: () => import('@/views/dept/List'),
           meta: { title: 'Home', icon: 'home' }
         }
@@ -182,41 +182,34 @@ export default new Router({
       children: [
         {
           title: '机场信息',
-          path: 'index',
-          name: 'airport',
-          uri: '/airport/index',
-          component: () => import('@/views/airport/index'),
-          meta: {title: 'Home', icon: 'home'}
+          path: '/airport/list',
+          name: 'airportList',
+          uri: '/airport/list',
+          component: () => import('@/views/airport/List'),
+          meta: { title: 'Home', icon: 'home' }
         },
-        /*{
-          title: '航司信息',
-          path: 'index',
-          name: 'airline',
-          uri: '/airline/index',
-          component: () => import('@/views/airline/index'),
-          meta: {title: 'Home', icon: 'home'}
-        },*/
         {
           title: '航司信息',
           path: '/airline/list',
+          name: 'airlineList',
           uri: '/airline/list',
           component: () => import('@/views/airline/List'),
           meta: { title: 'Home', icon: 'home' }
         },
         {
           title: '退改规则',
-          path: 'index',
-          name: 'refundChangeRule',
-          uri: '/refundChangeRule/index',
-          component: () => import('@/views/refundChangeRule/index'),
+          path: '/refund/change/rule/list',
+          name: 'refundChangeRuleList',
+          uri: '/refund/change/rule/list',
+          component: () => import('@/views/refundChangeRule/List'),
           meta: {title: 'Home', icon: 'home'}
         },
         {
           title: '航段信息',
-          path: 'index',
-          name: 'flightSegment',
-          uri: '/flightSegment/index',
-          component: () => import('@/views/flightSegment/index'),
+          path: '/segment/list',
+          name: 'segmentList',
+          uri: '/segment/list',
+          component: () => import('@/views/flightSegment/List'),
           meta: {title: 'Home', icon: 'home'}
         }
       ]

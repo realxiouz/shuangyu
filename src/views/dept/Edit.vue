@@ -4,14 +4,6 @@
       <el-form-item label="部门名称" prop="deptName">
         <el-input v-model="formData.deptName"></el-input>
       </el-form-item>
-      <el-form-item label="企业" prop="firmId">
-        <el-cascader
-          v-model="formData.firmId"
-          placeholder="请选择企业"
-          :options="firmList"
-          :props="{ checkStrictly: true,value: 'firmId',label: 'firmName'}"
-          @change="handleFirmChange"></el-cascader>
-      </el-form-item>
       <el-form-item label="域名" prop="domain">
         <el-input v-model="formData.domain"></el-input>
       </el-form-item>
@@ -42,7 +34,6 @@
     function defaultData() {
         return {
             deptName: "",
-            firmId: "",
             domain: "",
             ddId: "",
             ddParentIdId: "",
@@ -66,9 +57,6 @@
                             max: 20,
                             message: '长度在 1到 20 个字符'
                         }
-                    ],
-                    firmId: [
-                        {required: true, message: "请输入企业", trigger: "blur"}
                     ],
                     domain: [
                         {required: true, message: "请输入域名", trigger: "blur"},
@@ -100,7 +88,9 @@
         methods: {
             loadRoles() {
                 this.$store
-                    .dispatch("role/getRoleList")
+                    .dispatch("role/getRoleList",{
+                        filters: {}
+                    })
                     .then(data => {
                         this.allRoles = data;
                     })
@@ -110,7 +100,9 @@
             },
             loadFirms() {
                 this.$store
-                    .dispatch("firm/getList")
+                    .dispatch("firm/getList", {
+                        filters: {}
+                    })
                     .then(data => {
                         this.firmList = data;
                         console.log(this.firmList)
@@ -122,10 +114,10 @@
             handleChange(value) {
                 this.formData.roles = value;
             },
-            handleGetOne(deptId) {
-                if (deptId) {
+            handleGetOne(id) {
+                if (id) {
                     this.$store
-                        .dispatch("dept/getOne", deptId)
+                        .dispatch("dept/getOne", {deptId: id})
                         .then(data => {
                             this.formData = data;
                         }).catch(error => {
@@ -145,9 +137,6 @@
                     }
                 });
             },
-            handleFirmChange(value) {
-                this.formData.firmId = value[0];
-            }
         },
         created() {
             this.loadRoles();

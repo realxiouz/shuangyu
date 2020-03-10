@@ -4,7 +4,8 @@ import {addOne, removeOne, updateOne, getPageList, getTotal, getList} from '@/ap
 const actions = {
   getList({ commit }, params) {
     return new Promise((resolve, reject) => {
-      getList(params)
+      const {filter} = params;
+      getList(filter)
         .then(response => {
           const { data } = response;
           resolve(data);
@@ -16,7 +17,8 @@ const actions = {
   },
   getPageList({ commit }, params) {
     return new Promise((resolve, reject) => {
-      getPageList(params)
+      const {pageFlag, pageSize, lastID, filter} = params;
+      getPageList(pageFlag, pageSize, lastID, filter)
         .then(response => {
           // const { data } = response;
           resolve(response);
@@ -26,9 +28,10 @@ const actions = {
         });
     });
   },
-  getTotal() {
+  getTotal({ commit }, params) {
     return new Promise((resolve, reject) => {
-      getTotal()
+      const {filter} = params;
+      getTotal(filter)
         .then(response => {
           // const { data } = response;
           resolve(response);
@@ -40,7 +43,8 @@ const actions = {
   },
   updateOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      updateOne(params)
+      const {firm} = params;
+      updateOne(firm)
         .then(response => {
           // const { data } = response;
           resolve(response);
@@ -52,7 +56,8 @@ const actions = {
   },
   removeOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      removeOne(params)
+      const {firmID} = params;
+      removeOne(firmID)
         .then(response => {
           // const { data } = response;
           resolve(response);
@@ -64,7 +69,8 @@ const actions = {
   },
   addOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      addOne(params)
+      const {firm} = params;
+      addOne(firm)
         .then(response => {
           resolve(response);
         })

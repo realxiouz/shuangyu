@@ -28,7 +28,7 @@
       @next-click="nextClick">
     </el-pagination>
     <el-dialog title="用户信息" :visible.sync="dialogVisible" width="30%">
-      <thirdparty-edit v-if="dialogVisible" ref="thirdpartyForm"  :third-id="thirdId" @onSave="handleSave"
+      <thirdparty-edit v-if="dialogVisible" ref="thirdpartyForm" :third-id="thirdId" @onSave="handleSave"
                        @onCancel="handleCancel"></thirdparty-edit>
     </el-dialog>
   </div>
@@ -83,7 +83,7 @@
         this.dialogVisible = true;
         this.thirdId = '';
       },
-      remove(row,index, rows) {
+      remove(row, index, rows) {
         console.log("--大的发顺丰-----" + row.thirdId);
         this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
           confirmButtonText: "确定",
@@ -91,7 +91,7 @@
           type: "warning"
         }).then(() => {
           this.$store
-            .dispatch("thirdparty/removeOne", row.thirdId)
+            .dispatch("thirdparty/removeOne", {thirdId: row.thirdId})
             .then(data => {
               console.log(data);
               rows.splice(index, 1);
@@ -105,9 +105,9 @@
         });
       },
       edit(row) {
-        console.log("----"+row.thirdId)
+        console.log("----" + row.thirdId)
         this.dialogVisible = true;
-        this.thirdId =  row.thirdId;
+        this.thirdId = row.thirdId;
       },
       handleCancel() {
         this.dialogVisible = false;
@@ -139,7 +139,7 @@
       ,
       loadTotal: function () {
         this.$store
-          .dispatch("thirdparty/getTotal", this.searchForm)
+          .dispatch("thirdparty/getTotal", {thirdName: this.searchForm})
           .then(data => {
             this.total = data;
           })

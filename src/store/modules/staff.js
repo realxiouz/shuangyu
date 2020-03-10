@@ -47,7 +47,8 @@ const actions = {
   },
   getOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      getOne(params)
+      const {staffID} = params;
+      getOne(staffID)
         .then(response => {
           resolve(response);
         })
@@ -58,7 +59,8 @@ const actions = {
   },
   getTotal({commit}, params) {
     return new Promise((resolve, reject) => {
-      getTotal(params)
+      const {filter} = params;
+      getTotal(filter)
         .then(response => {
           resolve(response);
         })
@@ -69,7 +71,8 @@ const actions = {
   },
   getList({commit}, params) {
     return new Promise((resolve, reject) => {
-      getList(params)
+      const {filter} = params;
+      getList(filter)
         .then(response => {
           resolve(response);
         })
@@ -80,7 +83,8 @@ const actions = {
   },
   getPageList({commit}, params) {
     return new Promise((resolve, reject) => {
-      getPageList(params)
+      const {pageFlag, pageSize, lastID, filter} = params;
+      getPageList(pageFlag, pageSize, lastID, filter)
         .then(response => {
           resolve(response);
         })

@@ -33,9 +33,10 @@ const actions = {
         });
     });
   },
-  getList({commit}, data) {
+  getList({commit}, params) {
+    const {filters} = params;
     return new Promise((resolve, reject) => {
-      getList(data)
+      getList(filters)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -45,9 +46,10 @@ const actions = {
         });
     });
   },
-  removeOne({commit}, data) {
+  removeOne({commit}, params) {
+    const {deptId} = params;
     return new Promise((resolve, reject) => {
-      removeOne(data)
+      removeOne(deptId)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -72,8 +74,9 @@ const actions = {
   },
 
   getTotal({commit}, params) {
+    const {filters} = params;
     return new Promise((resolve, reject) => {
-      getTotal(params)
+      getTotal(filters)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -83,9 +86,10 @@ const actions = {
         });
     });
   },
-  getOne({commit}, data) {
+  getOne({commit}, params) {
+    const {deptId} = params;
     return new Promise((resolve, reject) => {
-      getOne(data)
+      getOne(deptId)
         .then(response => {
           const {data} = response;
           resolve(data);

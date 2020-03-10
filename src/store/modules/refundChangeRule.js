@@ -1,4 +1,10 @@
-import {saveRefundChangeRule, getRefundChangeRulePageList, removeRefundChangeRule, getRefundChangeRuleTotal} from '@/api/refundChangeRule';
+import {
+  getOne,
+  save,
+  getPageList,
+  removeOne,
+  getTotal
+} from '@/api/refundChangeRule';
 import {getToken} from '@/utils/auth';
 
 const state = {
@@ -20,29 +26,42 @@ const mutations = {
 };
 
 const actions = {
-  save({commit}, params) {
+  getOne({commit}, params) {
+    const {ruleId} = params;
     return new Promise((resolve, reject) => {
-      saveRefundChangeRule(params)
+      getOne(ruleId)
         .then(response => {
-          //const { data } = response;
-          resolve(response);
+          const {data} = response;
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  list({commit}, params) {
-    var data= params.searchForm;
+  save({commit}, data) {
+    return new Promise((resolve, reject) => {
+      save(data)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getPageList({commit}, params) {
+    var data = params.searchForm;
     var searchForm = {};
-    for (var attr in data){
-      if (data[attr]!=null && data[attr]!=undefined && data[attr]!=''){
+    for (var attr in data) {
+      if (data[attr] != null && data[attr] != undefined && data[attr] != '') {
         searchForm[attr] = data[attr];
       }
     }
     params.searchForm = searchForm;
     return new Promise((resolve, reject) => {
-      getRefundChangeRulePageList(params)
+      getPageList(params)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -52,9 +71,9 @@ const actions = {
         });
     });
   },
-  total({commit}, params) {
+  getTotal({commit}, params) {
     return new Promise((resolve, reject) => {
-      getRefundChangeRuleTotal(params)
+      getTotal(params)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -64,9 +83,10 @@ const actions = {
         });
     });
   },
-  removeOne({commit}, data) {
+  removeOne({commit}, params) {
+    const {ruleId} = params;
     return new Promise((resolve, reject) => {
-      removeRefundChangeRule(data)
+      removeOne(ruleId)
         .then(response => {
           const {data} = response;
           resolve(data);

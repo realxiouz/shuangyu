@@ -24,9 +24,9 @@ export function addOne(data) {
   });
 }
 
-export function removeOne(data) {
+export function removeOne(userID) {
   return request({
-    url: `/user/remove/one/${data}`,
+    url: `/user/remove/one/${userID}`,
     method: 'delete'
   });
 }
@@ -39,33 +39,33 @@ export function updateOne(data) {
   });
 }
 
-export function getOne(data) {
+export function getOne(userID) {
   return request({
-    url: `/user/one/${data}`,
+    url: `/user/one/${userID}`,
     method: 'get'
   });
 }
 
-export function getList(data) {
+export function getList(filter) {
   return request({
     url: '/user/list',
     method: 'get',
-    params:data
+    params: filter
   });
 }
 
-export function getTotal(data) {
+export function getTotal(filter) {
   return request({
     url: `/user/total`,
     method: 'get',
-    params: data
+    params: filter
   });
 }
 
-export function getPageList(data) {
+export function getPageList(pageFlag, pageSize, lastId, filter) {
   return request({
-    url: `/user/page/list/${data.pageFlag}/${data.pageSize}/${data.lastId}`,
+    url: `/user/page/list/${pageFlag}/${pageSize}/${lastId}`,
     method: 'get',
-    params: data.filter
+    params: filter
   });
 }

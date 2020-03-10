@@ -91,7 +91,7 @@
       /*加载企业列表*/
       loadData() {
         this.$store
-          .dispatch('firm/getTotal')
+          .dispatch('firm/getTotal',{filter:{}})
           .then(data => {
             this.total = data.data;
           })
@@ -99,7 +99,7 @@
             console.log(error);
           });
         this.$store
-          .dispatch('firm/getList')
+          .dispatch('firm/getList',{filter:{}})
           .then(data => {
             this.tableData = data;
           })
@@ -132,7 +132,7 @@
         /*更新*/
         if (formData.firmId != '') {
           this.$store
-            .dispatch('firm/updateOne', formData)
+            .dispatch('firm/updateOne', {firm:formData})
             .then(data => {
               console.log(data);
               this.loadData();
@@ -150,7 +150,7 @@
           }
 
           this.$store
-            .dispatch('firm/addOne', formData)
+            .dispatch('firm/addOne', {firm:formData})
             .then(data => {
               console.log(data);
               this.loadData();
@@ -184,7 +184,7 @@
       /*删除企业数据*/
       remove(params) {
         this.$store
-          .dispatch('firm/removeOne', params)
+          .dispatch('firm/removeOne', {firmID:params})
           .then(data => {
             console.log(data);
           })

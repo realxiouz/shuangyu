@@ -1,14 +1,14 @@
 <template>
   <div>
     <el-form ref="form" :model="formData" :rules="rules" label-width="110px">
-      <el-form-item prop="airlineName" label="航司名称">
-        <el-input v-model="formData.airlineName"></el-input>
+      <el-form-item prop="airportCode" label="三字码">
+        <el-input v-bind:disabled="disabled" v-model="formData.airportCode" maxlength = "3"></el-input>
       </el-form-item>
-      <el-form-item prop="airlineCode" label="航司二字码">
-        <el-input v-bind:disabled="disabled" v-model="formData.airlineCode"></el-input>
+      <el-form-item prop="airportName" label="机场名称">
+        <el-input v-model="formData.airportName"></el-input>
       </el-form-item>
-      <el-form-item prop="_cabins" label="舱位">
-        <el-input v-model="_cabins"></el-input>
+      <el-form-item prop="airportCity" label="机场所在城市">
+        <el-input v-model="formData.airportCity"></el-input>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -20,17 +20,15 @@
 <script>
   function defaultData() {
     return {
-      airlineCode: '',
-      airlineName: '',
-      cabins: [],
-      flights: [],
-      segments: []
+      airportCode: '',
+      airportName: '',
+      airportCity: ''
     };
   };
   export default {
-    name: 'airlineEdit',
+    name: 'airportEdit',
     props: {
-      airlineCode: {
+      airportCode: {
         String,
         required: true
       }
@@ -38,29 +36,22 @@
     data() {
       return {
         formData: defaultData(),
-        disabled: false,
+        disabled:false,
         rules: {
-          airlineName: [
-            {required: true, message: "请输入航司名称", trigger: "blur"}
+          airportName: [
+            {required: true, message: "请输入机场名称", trigger: "blur"}
           ],
-          airlineCode: [
-            {required: true, message: "请输入航司二字码", trigger: "blur"},
+          airportCity: [
+            {required: true, message: "请输入机场城市名称", trigger: "blur"}
+          ],
+          airportCode: [
+            {required: true, message: "请输入机场三字码", trigger: "blur"},
             {
-              min: 2,
-              max: 2,
-              message: '长度为2字符'
+              min: 3,
+              max: 3,
+              message: '长度为3字符'
             }
           ]
-        }
-      }
-    },
-    computed: {
-      _cabins:{
-        get: function () {
-          return this.formData.cabins.join(',');
-        },
-        set: function (newValue) {
-          this.formData.cabins = newValue.split(",")
         }
       }
     },
@@ -69,7 +60,7 @@
         this.$refs['form'].validate((valid) => {
           if (valid) {
             this.$store
-              .dispatch('airline/save', this.formData)
+              .dispatch('airport/save', this.formData)
               .then(() => {
                 this.$emit("onSave");
               })
@@ -82,11 +73,9 @@
       handleGetOne(id) {
         if (id) {
           this.$store
-            .dispatch("airline/getOne", {airlineCode: id})
+            .dispatch("airport/getOne", {airportCode:id})
             .then(data => {
               this.formData = data;
-              this.formData.cabinNames = this.formData.cabins.join(",");
-              console.log(this.formData);
             }).catch(error => {
             console.log(error);
           });
@@ -100,9 +89,9 @@
     },
     created() {
       this.clearForm();
-      if (this.airlineCode) {
+      if (this.airportCode) {
         this.disabled = true;
-        this.handleGetOne(this.airlineCode);
+        this.handleGetOne(this.airportCode);
       }
     }
   }

@@ -54,7 +54,7 @@
 <script>
   export default {
     name: "userEdit",
-    props: ['userID'],
+    props: ["userID"],
     data() {
       return {
         formData: {}
@@ -76,16 +76,16 @@
     },
     methods: {
       /*表单默认加载数据*/
-      defaultFormData(){
+      defaultFormData() {
         return {
-          userId: '',
-          nickName: '',
-          fullName: '',
+          userId: "",
+          nickName: "",
+          fullName: "",
           gender: 0,
           birthDate: null,
-          phone: '',
-          email: '',
-          idCardNo: '',
+          phone: "",
+          email: "",
+          idCardNo: "",
           super: false,
           enable: true
         };
@@ -96,9 +96,9 @@
       },
       /*根据用户ID查询用户信息*/
       loadUser() {
-        if ('' != this.userID) {
+        if ("" != this.userID) {
           this.$store
-            .dispatch('user/getOne', this.userID)
+            .dispatch("user/getOne", {userId: this.userId})
             .then(data => {
               this.formData = data.data;
             })
