@@ -132,7 +132,8 @@ const actions = {
       const {filter} = params;
       getList(filter)
         .then(response => {
-          resolve(response);
+          const {data} = response;
+          resolve(data);
         })
         .catch(error => {
           reject(error);
