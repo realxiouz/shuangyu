@@ -27,12 +27,12 @@ const mutations = {
 };
 
 const actions = {
-  save({commit}, params) {
+  save({commit}, data) {
     return new Promise((resolve, reject) => {
-      save(params)
+      save(data)
         .then(response => {
-          //const { data } = response;
-          resolve(response);
+          const { data } = response;
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -60,8 +60,9 @@ const actions = {
     });
   },
   getOne({commit}, params) {
+    const { airlineCode } = params;
     return new Promise((resolve, reject) => {
-      getOne(params)
+      getOne(airlineCode)
         .then(response => {
           //const {data} = response;
           resolve(response);
@@ -103,9 +104,10 @@ const actions = {
         });
     });
   },
-  removeOne({commit}, data) {
+  removeOne({commit}, params) {
+    const { airlineCode } = params;
     return new Promise((resolve, reject) => {
-      removeOne(data)
+      removeOne(airlineCode)
         .then(response => {
           const {data} = response;
           resolve(data);

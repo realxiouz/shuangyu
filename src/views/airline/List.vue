@@ -25,7 +25,6 @@
       </el-table-column>
     </el-table>
     <el-pagination
-      style="float: right"
       @size-change="handleSizeChange"
       @prev-click="prevClick"
       @next-click="nextClick"
@@ -114,7 +113,7 @@
           type: 'warning'
         }).then(() => {
           this.$store
-            .dispatch('airline/removeOne', id)
+            .dispatch('airline/removeOne', {airlineCode:id})
             .then(data => {
               console.log(data);
               this.loadData();

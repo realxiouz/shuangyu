@@ -8,26 +8,26 @@ export function save(data) {
   });
 }
 
-export function getOne(id) {
+export function getOne(segment) {
   return request({
-    url: `/flight/segment/one/${id}`,
+    url: `/flight/segment/one/${segment}`,
     method: 'get'
   });
 }
 
-export function getPageList(data) {
+export function getPageList(params) {
   return request({
-    url: '/flight/segment/page/list/' + data.pageFlag + '/' + data.pageSize + '/' + data.lastId,
+    url: `/flight/segment/page/list/${params.pageFlag}/${params.pageSize}/${params.lastId}`,
     method: 'get',
-    params: data.searchForm
+    params: params.searchForm
   });
 }
 
-export function getList(data) {
+export function getList(params) {
   return request({
     url: '/flight/segment/list',
     method: 'get',
-    params: data.searchForm
+    params: params.searchForm
   });
 }
 
@@ -35,13 +35,13 @@ export function getTotal(params) {
   return request({
     url: '/flight/segment/total',
     method: 'get',
-    params
+    params: params
   });
 }
 
-export function removeOne(data) {
+export function removeOne(segment) {
   return request({
-    url: '/flight/segment/remove/one/' + data,
+    url: `/flight/segment/remove/one/${segment}`,
     method: 'delete'
   });
 }
