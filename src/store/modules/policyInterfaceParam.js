@@ -1,4 +1,4 @@
-import {save, removeOne, getPageList, getTotal, getOne, getPolicyEnumList,getThirdPartyList} from "@/api/policyInterfaceParam";
+import {save, removeOne, getPageList, getTotal, getOne, getPolicyEnumList,getThirdPartyList,getList} from "@/api/policyInterfaceParam";
 import {getToken} from "@/utils/auth";
 
 
@@ -98,6 +98,18 @@ const actions = {
   getThirdPartyList({commit}, params) {
     return new Promise((resolve, reject) => {
       getThirdPartyList(params)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getList({commit}, params) {
+    return new Promise((resolve, reject) => {
+      getList(params)
         .then(response => {
           const {data} = response;
           resolve(data);

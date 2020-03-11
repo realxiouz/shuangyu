@@ -14,10 +14,10 @@
       <el-form-item label="政策" prop="policyId">
         <el-select v-model="formData.policyId" placeholder="请选择">
           <el-option
-            v-for="item in policys"
-            :key="item"
-            :label="item"
-            :value="item">
+            v-for="(value, key) in policys"
+            :key="key"
+            :label="value"
+            :value="key">
           </el-option>
         </el-select>
       </el-form-item>

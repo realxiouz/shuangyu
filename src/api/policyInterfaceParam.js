@@ -38,12 +38,21 @@ export function getTotal() {
   });
 }
 
-  export function getPolicyEnumList() {
-    return request({
-      url: `/policy/interface/param/policy/enum/list`,
-      method: "get"
-    });
+export function getList(params) {
+  return request({
+    url: `/policy/interface/param/list`,
+    method: "get",
+    params: params
+  });
 }
+
+export function getPolicyEnumList() {
+  return request({
+    url: `/policy/interface/param/policy/enum/list`,
+    method: "get"
+  });
+}
+
 export function getThirdPartyList() {
   return request({
     url: `/third/party/list`,
