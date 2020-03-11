@@ -6,7 +6,7 @@
       row-key="paramId"
       :tree-props="{ hasChildren: 'xxx',children: 'children'}">
       <el-table-column prop="thirdName" label="第三方平台" align="center"></el-table-column>
-      <el-table-column prop="url" label="接口url" align="center"></el-table-column>
+      <el-table-column prop="apiUrl" label="接口url" align="center"></el-table-column>
       <el-table-column prop="label" label="接口标签" align="center"></el-table-column>
       <el-table-column prop="name" label="接口名称" align="center"></el-table-column>
       <el-table-column prop="defaultValue" label="默认值" align="center"></el-table-column>

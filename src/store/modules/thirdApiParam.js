@@ -83,7 +83,7 @@ const actions = {
         });
     });
   },
-  getPolicyEnumList({commit}, params) {
+  getApiUrlList({commit}, params) {
     return new Promise((resolve, reject) => {
       getApiUrlList(params)
         .then(response => {
