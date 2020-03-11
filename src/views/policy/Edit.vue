@@ -10,11 +10,11 @@
       <el-form-item label="回调地址" prop="callbackUrl">
         <el-input v-model.number="formData.callbackUrl"></el-input>
       </el-form-item>
-      <el-form-item label="备注" prop="remark">
-        <el-input v-model.number="formData.remark"></el-input>
-      </el-form-item>
       <el-form-item label="域名" prop="domain">
         <el-input v-model.number="formData.domain"></el-input>
+      </el-form-item>
+      <el-form-item label="备注" prop="remark">
+        <el-input v-model.number="formData.remark"></el-input>
       </el-form-item>
     </el-form>
     <div slot="footer">
@@ -48,9 +48,6 @@
                     callbackUrl: [
                         {required: true, message: "请输入回调地址", trigger: "blur"},
                     ],
-                    remark: [
-                        {required: true, message: "请输入备注", trigger: "blur"},
-                    ],
                     domain: [
                         {required: true, message: "请输入域名", trigger: "blur"},
                     ]
@@ -58,20 +55,27 @@
             }
         },
         methods: {
-            handleGetOne(user,domain) {
+            handleGetOne(user, domain) {
                 this.$store
-                    .dispatch("policy/getOne", {user: user,domain:domain})
+                    .dispatch("policy/getOne", {user: user, domain: domain})
                     .then(data => {
                         this.formData = data;
                     }).catch(error => {
                     console.log(error);
                 });
             },
+            handleSave() {
+                this.$refs['form'].validate((valid) => {
+                    if (valid) {
+                        this.$emit('onSave', this.formData);
+                    }
+                });
+            }
         },
         created() {
             if (this.user && this.domain) {
-                this.handleGetOne(this.user,this.domain);
-            }else {
+                this.handleGetOne(this.user, this.domain);
+            } else {
                 this.formData = defaultData();
             }
         },
