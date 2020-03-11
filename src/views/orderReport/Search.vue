@@ -26,12 +26,12 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="实收:">
-              <el-input v-model="formData.namePhone"></el-input>
+              <el-input v-model="formData.namePhone" style="width: 230px"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="实付:">
-              <el-input v-model="formData.namePhone"></el-input>
+              <el-input v-model="formData.namePhone" style="width: 230px"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
