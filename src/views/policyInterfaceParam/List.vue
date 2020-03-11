@@ -75,7 +75,7 @@
             console.log(error);
           });
       },
-      handleAddChild(row){
+      handleAddChild(row) {
         this.dialogVisible = true;
         this.pid = row.paramId;
         this.paramId = '';
@@ -150,14 +150,9 @@
       handleCancel: function () {
         this.dialogVisible = false;
       },
-      handleSearch: function (keyword) {
+      handleSearch: function () {
         this.$store
-          .dispatch("policyInterfaceParam/getPageList", {
-            pageFlag: this.pageFlag,
-            pageSize: this.pageSize,
-            lastId: this.lastId,
-            filter: {name: keyword}
-          })
+          .dispatch("policyInterfaceParam/getList")
           .then(data => {
             this.tableData = data;
           })
