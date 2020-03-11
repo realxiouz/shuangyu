@@ -63,10 +63,10 @@
             }
         },
         methods: {
-            loadData() {
+            loadData(params) {
                 this.$store
                     .dispatch("policy/getList", {
-                            filters: {}
+                            filters: params
                         }
                     ).then(data => {
                     if (data) {
@@ -79,8 +79,17 @@
             handleSearch(params) {
                 if (!params) {
                     params = {};
+                    this.loadData(params);
+                }else {
+                    const newParams ={};
+                    if(params.user){
+                        newParams.user = params.user;
+                    }
+                    if(params.domain){
+                        newParams.domain = params.domain;
+                    }
+                    this.loadData(newParams);
                 }
-                this.loadData(params);
             },
             handleUpdate(user, domain) {
                 this.user = user;
