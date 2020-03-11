@@ -239,6 +239,22 @@ export default new Router({
       ]
     },
     {
+      title: '政策信息',
+      path: '/policy',
+      uri: '/policy',
+      component: Layout,
+      children: [
+        {
+          title: '政策管理',
+          path: '/policy/index',
+          name: 'policy',
+          uri: '/policy/index',
+          component: () => import('@/views/policy/List'),
+          meta: { title: 'Home', icon: 'home' }
+        }
+      ]
+    },
+    {
       title: '员工管理',
       path: '/staff',
       uri: '/staff',

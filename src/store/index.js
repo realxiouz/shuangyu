@@ -8,6 +8,7 @@ import airline from './modules/airline';
 import refundChangeRule from './modules/refundChangeRule';
 import flightSegment from './modules/flightSegment';
 import firm from './modules/firm';
+import policy from './modules/policy';
 import dept from './modules/dept';
 import app from './modules/app';
 import api from './modules/api';
@@ -27,6 +28,7 @@ export default new Vuex.Store({
     airline,
     nav,
     firm,
+    policy,
     refundChangeRule,
     flightSegment,
     dept,
