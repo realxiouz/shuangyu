@@ -74,8 +74,8 @@
         align="center"
         width="300">
         <template slot-scope="scope">
-          <el-button @click="handleUpdate(scope.row.user,scope.row.domain)" type="primary" size="mini">编辑</el-button>
-          <el-button @click="handleRemove(scope.row.user,scope.row.domain)" type="danger"
+          <el-button @click="handleUpdate(scope.row.policyId)" type="primary" size="mini">编辑</el-button>
+          <el-button @click="handleRemove(scope.row.policyId)" type="danger"
                      size="mini">删除
           </el-button>
         </template>
@@ -131,6 +131,7 @@
                 }
             },
             handleUpdate(policyId) {
+                debugger
                 this.policyId = policyId;
                 this.dialogVisible = true;
             },
