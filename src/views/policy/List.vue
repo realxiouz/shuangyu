@@ -96,7 +96,7 @@
                     this.$store
                         .dispatch("policy/removeOne", {user: user, domain: domain})
                         .then(() => {
-                            this.loadData("{}");
+                            this.handleSearch();
                         });
                 }).catch(err => {
                     console.error(err);
