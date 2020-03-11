@@ -51,7 +51,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="航司:" prop="values">
-              <el-input v-model="formData.airlines.values"  type="textarea" :rows="1"style="" ></el-input>
+              <el-input v-model="formData.airlines.values"  type="textarea" :rows="1" style=""></el-input>
             </el-form-item>
           </el-col>
         </el-col>
@@ -360,6 +360,6 @@
 </script>
 <style scoped>
   .el-form-item {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
   }
 </style>
