@@ -136,17 +136,16 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="4">
-          <el-form-item label="负责人:" prop="principalName">
-            <el-button type="primary" @click="selectPeople">选择</el-button>
+        <el-col :span="24">
+          <el-form-item label="负责人" prop="principalName">
+            <el-button type="primary" @click="selectPeople">添加</el-button>
 
 <!--            <el-input v-model="formData.principalName" type="textarea" :rows="2" style="width: 800px"></el-input>-->
           </el-form-item>
         </el-col>
-        <el-col :span="20">
+        <el-col :span="24">
           <el-table
             :data="peopleData"
-            border
             style="width: 100%">
             <el-table-column
               prop="fullName"
@@ -160,22 +159,21 @@
             <el-table-column
               prop=""
               label="操作">
-              <el-button type="primary" size ="mini" @click="selectPeople">重新选择</el-button>
+              <el-button type="primary" size ="mini" @click="selectPeople">重新添加</el-button>
             </el-table-column>
           </el-table>
         </el-col>
       </el-row>
       <el-row style="margin-top:20px;margin-bottom:20px">
-        <el-col :span="4">
-          <el-form-item label="员工：" prop="staffNames">
-            <el-button type="primary" @click="selectStaff">选择</el-button>
+        <el-col :span="24">
+          <el-form-item label="员工" prop="staffNames">
+            <el-button type="primary" @click="selectStaff">添加</el-button>
 <!--            <el-input v-model="formData.staffNames" type="textarea" :rows="2" style="width: 800px"></el-input>-->
           </el-form-item>
         </el-col>
-        <el-col :span="20">
+        <el-col :span="24">
           <el-table
             :data="staffData"
-            border
             style="width: 100%">
             <el-table-column
               prop="fullName"
