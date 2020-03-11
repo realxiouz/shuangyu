@@ -35,7 +35,7 @@
         width="300">
         <template slot-scope="scope">
           <el-button @click="handleUpdate(scope.row.user,scope.row.domain)" type="primary" size="mini">编辑</el-button>
-          <el-button @click.native.prevent="handleRemove(scope.row.appId,scope.$index,tableData)" type="danger"
+          <el-button @click="handleRemove(scope.row.user,scope.row.domain)" type="danger"
                      size="mini">删除
           </el-button>
         </template>
