@@ -1,27 +1,27 @@
 <template>
   <div class="app-container">
-    <app-search @onSearch="handleSearch" @onAdd="handleAdd"></app-search>
+    <policy-search @onSearch="handleSearch" @onAdd="handleAdd"></policy-search>
     <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;"
               border>
       <el-table-column
         prop="user"
         label="用户名"
-        width="500"
+        width="300"
       ></el-table-column>
       <el-table-column
         prop="ip"
         label="ip"
-        width="500"
+        width="300"
       ></el-table-column>
       <el-table-column
         prop="callbackUrl"
         label="回调地址"
-        width="500"
+        width="300"
       ></el-table-column>
       <el-table-column
         prop="remark"
         label="备注"
-        width="500"
+        width="300"
       ></el-table-column>
       <el-table-column
         fixed="right"
@@ -118,9 +118,9 @@
         created() {
             this.handleSearch();
         },
-        components() {
+        components: {
             policySearch,
-                policyEdit
+            policyEdit
         }
     }
 </script>
