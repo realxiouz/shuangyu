@@ -110,8 +110,7 @@
             handleSave(formData) {
                 this.$store
                     .dispatch("policy/save", formData)
-                    .then(data => {
-                        console.log(data);
+                    .then(() => {
                         this.handleSearch();
                     })
                     .catch(error => {
