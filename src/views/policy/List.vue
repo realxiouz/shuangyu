@@ -9,9 +9,14 @@
         width="300"
       ></el-table-column>
       <el-table-column
+        prop="domain"
+        label="域名"
+        width="300"
+      ></el-table-column>
+      <el-table-column
         prop="ip"
         label="ip"
-        width="300"
+        width="200"
       ></el-table-column>
       <el-table-column
         prop="callbackUrl"
@@ -27,7 +32,7 @@
         fixed="right"
         label="操作"
         align="center"
-        width="350">
+        width="300">
         <template slot-scope="scope">
           <el-button @click="handleUpdate(scope.row.user,scope.row.domain)" type="primary" size="mini">编辑</el-button>
           <el-button @click.native.prevent="handleRemove(scope.row.appId,scope.$index,tableData)" type="danger"
