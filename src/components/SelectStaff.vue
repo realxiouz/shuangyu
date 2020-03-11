@@ -20,7 +20,7 @@
       </el-table-column>
     </el-table>
     <el-table v-else
-              ref="staffList"
+              ref="staffList2"
               :data="staffList"
               highlight-current-row
               @current-change="handleCurrentChange"
@@ -63,18 +63,32 @@
       checkboxFlag: {
         type: Boolean,
         required: true
+      },
+      staffData:{
+        type:Array,
+        required: false
       }
     },
     data() {
       return {
-        staffs: {},
+        staffs: [],
         lastId: "blank",
         pageFlag: "next",
         pageSize: 10,
         total: 0,
         staffList: [],
-        currentPage: 0
+        currentPage: 0,
+        // staffList1: [
+        //   {fullName:"小明",phone:"12345678910"} ,
+        //   {fullName:"小明1",phone:"12345678911"} ,
+        //   {fullName:"小明2",phone:"12345678912"} ,
+        //   {fullName:"小明3",phone:"12345678913"} ,
+        // ]
+
       };
+    },
+    mounted() {
+      this.toggleSelection(this.staffData)
     },
     methods: {
       loadData() {
@@ -103,7 +117,7 @@
           });
       },
       handleSelectionChange(val) {
-        this.staffs = [];
+        // this.staffs = [];
         this.staffs = val;
         console.log(this.staffs)
       },
@@ -131,7 +145,21 @@
       },
       create(){
         this.loadData();
-      }
+
+      },
+      toggleSelection(rows) {
+        console.log(this.$refs.staffList)
+        // this.staffs=rows
+        if (rows) {
+          this.staffs=rows
+          rows.forEach(row => {
+            this.$refs.staffList.toggleRowSelection(row,true);
+          });
+        }
+        else {
+          this.$refs.staffList.clearSelection();
+        }
+      },
     }
   };
 </script>
