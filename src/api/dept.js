@@ -34,7 +34,7 @@ export function getTotal(params) {
 
 export function getList(params) {
   return request({
-    url: `/dept/list/`,
+    url: `/dept/list`,
     method: "get",
     params: params
   });

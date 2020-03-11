@@ -149,7 +149,7 @@
       searchUser() {
         this.clearUsersTable();
         this.$store
-          .dispatch('user/getList', {filter: (this.keyword ? {nickName: this.keyword} : {})})
+          .dispatch('user/getList', {filter: this.keyword ? {nickName: this.keyword} : {}})
           .then(data => {
             data.forEach((user) => {
               let flag = false;
@@ -245,11 +245,14 @@
             let temp = {};
             temp.userId = item.userId;
             temp.firmId = this.curNode.firmId;
-            temp.deptId = this.curNode.deptId;
+            temp.depts = [this.curNode.deptId];
 
             this.prepareStaffs.push(temp);
           });
         }
+      },
+      clearTableData(){
+        this.tableData = [];
       },
       /*清空用户查询列表*/
       clearUsersTable() {
@@ -275,6 +278,7 @@
     },
     watch:{
       curNode(){
+        this.clearTableData();
         this.loadTableData();
       }
     }
