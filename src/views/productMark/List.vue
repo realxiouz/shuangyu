@@ -1,9 +1,9 @@
 <template>
   <div class="app-container">
-    <el-button type="primary" @click="rootAdd">添加</el-button>
+    <product-mark-search ref="user" @onSearch="handleSearch" @onAdd="addOne"></product-mark-search>
     <el-table
       :data="tableData"
-      row-key="paramId"
+      row-key="markId"
       :tree-props="{ hasChildren: 'xxx',children: 'children'}">
       <el-table-column prop="thirdName" label="第三方平台" align="center"></el-table-column>
       <el-table-column prop="apiUrl" label="接口url" align="center"></el-table-column>
@@ -20,14 +20,15 @@
       </el-table-column>
     </el-table>
     <el-dialog title="接口参数信息" :visible.sync="dialogVisible" width="30%">
-      <param-edit v-if="dialogVisible" :paramId="paramId" @onSave="handleSave" @onCancel="handleCancel">
-      </param-edit>
+      <product-mark-edit v-if="dialogVisible" :markId="markId" @onSave="handleSave" @onCancel="handleCancel">
+      </product-mark-edit>
     </el-dialog>
   </div>
 </template>
 
 <script>
-  import paramEdit from "./Edit.vue";
+  import productMarkEdit from "./Edit.vue";
+  import productMarkSearch from "./Search.vue";
 
   export default {
     name: "List",
@@ -35,7 +36,7 @@
       return {
         rootNav: false,
         dialogVisible: false,
-        paramId: null,
+        markId: null,
         tableData: [],
         parentNode: {}
       };
@@ -43,7 +44,7 @@
     methods: {
       loadData() {
         this.$store
-          .dispatch("thirdApiParam/getTotal")
+          .dispatch("productMark/getTotal")
           .then(data => {
             this.total = data;
           })
@@ -52,7 +53,7 @@
           });
 
         this.$store
-          .dispatch("thirdApiParam/getList")
+          .dispatch("productMark/getList")
           .then(data => {
             this.tableData = data;
           })
@@ -60,22 +61,31 @@
             console.log(error);
           });
       },
-      rootAdd() {
+      addOne() {
         //判断添加的导航是否是顶级导航
         this.rootNav = true;
         this.dialogVisible = true;
-
-        this.paramId = '';
+        this.markId = '';
+      },
+      handleSearch: function (keyword) {
+        this.$store
+          .dispatch("productMark/getList", {filter: keyword ? {roleName: keyword} : {}})
+          .then(data => {
+            this.total = data;
+          })
+          .catch(error => {
+            console.log(error);
+          });
       },
       handleSave(formData) {
         if (this.rootNav) { //如果添加的顶级企业信息，对某些属性进行初始化
           formData.level = 0;
-        }else{
-          formData.pid = this.parentNode.paramId;
+        } else {
+          formData.pid = this.parentNode.markId;
           formData.level = this.parentNode.level + 1;
         }
         this.$store
-          .dispatch('thirdApiParam/save', formData)
+          .dispatch('productMark/save', formData)
           .then(data => {
             console.log(data);
             this.loadData();
@@ -86,26 +96,26 @@
 
         this.dialogVisible = false;
       },
-      handleCancel(){
+      handleCancel() {
         this.dialogVisible = false;
       },
       handleAddChild(row) {
         this.rootNav = false;
         this.dialogVisible = true;
 
-        this.paramId = '';
+        this.markId = '';
         this.parentNode = {};
-        this.parentNode.paramId = row.paramId;
+        this.parentNode.markId = row.markId;
         this.parentNode.level = row.level;
       },
       handleEdit(row) {
         this.dialogVisible = true;
-        this.paramId = row.paramId;
+        this.markId = row.markId;
       },
       changeSwitch(row) {
         row.enable = row.enable ? true : false;
         this.$store
-          .dispatch('thirdApiParam/save', row)
+          .dispatch('productMark/save', row)
           .then(data => {
             console.log(data);
             this.loadData();
@@ -116,12 +126,12 @@
       },
       /*对员工进行删除*/
       handleDelete(row) {
-        this.open(this.delete, row.paramId, '此操作将删除该用户的所有信息, 是否继续?');
+        this.open(this.delete, row.markId, '此操作将删除该用户的所有信息, 是否继续?');
       },
       /*根据用户ID删除用户*/
-      delete(paramId) {
+      delete(markId) {
         this.$store
-          .dispatch('thirdApiParam/removeOne', paramId)
+          .dispatch('productMark/removeOne', markId)
           .then(data => {
             console.log(data);
             this.loadData();
@@ -153,7 +163,8 @@
       this.loadData();
     },
     components: {
-      paramEdit
+      productMarkEdit,
+      productMarkSearch
     }
   }
 </script>

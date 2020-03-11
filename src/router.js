@@ -99,6 +99,14 @@ export default new Router({
           component: () => import('@/views/thirdApiParam/List'),
           meta: { title: 'Home', icon: 'home' },
         },
+        {
+          title: '产品标签管理',
+          path: '/productMark',
+          name: 'productMark',
+          uri: '/productMark',
+          component: () => import('@/views/productMark/List'),
+          meta: { title: 'Home', icon: 'home' },
+        }
       ]
     },
     {

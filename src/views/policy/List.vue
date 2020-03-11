@@ -1,43 +1,48 @@
 <template>
   <div class="app-container">
-    <app-search @onSearch="handleSearch" @onAdd="handleAdd"></app-search>
+    <policy-search @onSearch="handleSearch" @onAdd="handleAdd"></policy-search>
     <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;"
               border>
       <el-table-column
         prop="user"
         label="用户名"
-        width="500"
+        width="300"
+      ></el-table-column>
+      <el-table-column
+        prop="domain"
+        label="域名"
+        width="300"
       ></el-table-column>
       <el-table-column
         prop="ip"
         label="ip"
-        width="500"
+        width="200"
       ></el-table-column>
       <el-table-column
         prop="callbackUrl"
         label="回调地址"
-        width="500"
+        width="300"
       ></el-table-column>
       <el-table-column
         prop="remark"
         label="备注"
-        width="500"
+        width="300"
       ></el-table-column>
       <el-table-column
         fixed="right"
         label="操作"
         align="center"
-        width="350">
+        width="300">
         <template slot-scope="scope">
           <el-button @click="handleUpdate(scope.row.user,scope.row.domain)" type="primary" size="mini">编辑</el-button>
-          <el-button @click.native.prevent="handleRemove(scope.row.appId,scope.$index,tableData)" type="danger"
+          <el-button @click="handleRemove(scope.row.user,scope.row.domain)" type="danger"
                      size="mini">删除
           </el-button>
         </template>
       </el-table-column>
 
     </el-table>
-    <el-dialog title="应用信息" :visible.sync="dialogVisible" width="30%">
+    <el-dialog title="政策信息" :visible.sync="dialogVisible" width="30%">
       <policy-edit v-if="dialogVisible" :user="user" :domain="domain" @onSave="handleSave"
                    @onCancel="handleCancel"></policy-edit>
     </el-dialog>
@@ -58,10 +63,10 @@
             }
         },
         methods: {
-            loadData() {
+            loadData(params) {
                 this.$store
                     .dispatch("policy/getList", {
-                            filters: {}
+                            filters: params
                         }
                     ).then(data => {
                     if (data) {
@@ -74,9 +79,17 @@
             handleSearch(params) {
                 if (!params) {
                     params = {};
+                    this.loadData(params);
+                }else {
+                    const newParams ={};
+                    if(params.user){
+                        newParams.user = params.user;
+                    }
+                    if(params.domain){
+                        newParams.domain = params.domain;
+                    }
+                    this.loadData(newParams);
                 }
-                this.loadData(params);
-                this.loadTotal(params);
             },
             handleUpdate(user, domain) {
                 this.user = user;
@@ -90,9 +103,9 @@
                     type: "warning"
                 }).then(() => {
                     this.$store
-                        .dispatch("policy/removeOne", {user: user,domain:domain})
+                        .dispatch("policy/removeOne", {user: user, domain: domain})
                         .then(() => {
-                            this.loadData("{}");
+                            this.handleSearch();
                         });
                 }).catch(err => {
                     console.error(err);
@@ -102,15 +115,18 @@
             },
             handleAdd() {
                 this.dialogVisible = true;
+                this.user = '';
+                this.domain = '';
             },
             handleSave(formData) {
                 this.$store
                     .dispatch("policy/save", formData)
                     .then(() => {
                         this.handleSearch();
-                    }).catch(error => {
-                    console.log(error);
-                });
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
                 this.dialogVisible = false;
             },
 
@@ -118,9 +134,9 @@
         created() {
             this.handleSearch();
         },
-        components() {
+        components: {
             policySearch,
-                policyEdit
+            policyEdit
         }
     }
 </script>

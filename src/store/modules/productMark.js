@@ -1,4 +1,4 @@
-import {save, removeOne, getPageList, getTotal, getOne, getApiUrlList,getThirdPartyList,getList} from "@/api/thirdApiParam";
+import {save, removeOne, getPageList, getTotal, getOne, getFirmList, getFlagList, getList} from "@/api/productMark";
 import {getToken} from "@/utils/auth";
 
 
@@ -83,9 +83,9 @@ const actions = {
         });
     });
   },
-  getApiUrlList({commit}, params) {
+  getFirmList({commit}, params) {
     return new Promise((resolve, reject) => {
-      getApiUrlList(params)
+      getFirmList(params)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -95,9 +95,9 @@ const actions = {
         });
     });
   },
-  getThirdPartyList({commit}, params) {
+  getFlagList({commit}, params) {
     return new Promise((resolve, reject) => {
-      getThirdPartyList(params)
+      getFlagList(params)
         .then(response => {
           const {data} = response;
           resolve(data);

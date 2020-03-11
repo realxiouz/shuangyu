@@ -9,6 +9,7 @@ import refundChangeRule from './modules/refundChangeRule';
 import flightSegment from './modules/flightSegment';
 import firm from './modules/firm';
 import dept from './modules/dept';
+import policy from './modules/policy';
 import app from './modules/app';
 import api from './modules/api';
 import order from './modules/order';
@@ -16,6 +17,7 @@ import staff from './modules/staff';
 import thirdparty from './modules/thirdparty';
 import orderRule from './modules/orderRule';
 import thirdApiParam from './modules/thirdApiParam'
+import productMark from './modules/productMark'
 import fare from './modules/fare'
 
 Vue.use(Vuex);
@@ -28,6 +30,7 @@ export default new Vuex.Store({
     airline,
     nav,
     firm,
+    policy,
     refundChangeRule,
     flightSegment,
     dept,
@@ -38,6 +41,7 @@ export default new Vuex.Store({
     thirdparty,
     orderRule,
     thirdApiParam,
+    productMark,
     fare
   },
   state: {},
