@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form ref="form" :rules="rules" :model="formData" label-width="90px">
+    <el-form ref="form" :rules="rules" :model="formData" label-width="110px">
       <el-form-item label="航司" prop="airlineCode">
         <el-input v-model="formData.airlineCode"></el-input>
       </el-form-item>
@@ -22,14 +22,29 @@
       <el-form-item label="票面价/折扣" prop="discountValue">
         <el-input v-model.number="formData.discountValue"></el-input>
       </el-form-item>
-      <el-form-item label="销售起始日期" prop="sellStartDate">
-        <el-input v-model.number="formData.sellStartDate"></el-input>
+      <el-form-item label="销售起始日期:" prop="sellStartDate">
+        <el-date-picker
+          type="date"
+          placeholder="选择日期"
+          v-model="formData.sellStartDate"
+          style="width: 100%;"
+        ></el-date-picker>
       </el-form-item>
-      <el-form-item label="销售结束日期" prop="sellEndDate">
-        <el-input v-model.number="formData.sellEndDate"></el-input>
+      <el-form-item label="销售结束日期:" prop="sellEndDate">
+        <el-date-picker
+          type="date"
+          placeholder="选择日期"
+          v-model="formData.sellEndDate"
+          style="width: 100%;"
+        ></el-date-picker>
       </el-form-item>
-      <el-form-item label="出发日期" prop="flightDate">
-        <el-input v-model.number="formData.flightDate"></el-input>
+      <el-form-item label="出发日期:" prop="flightDate">
+        <el-date-picker
+          type="date"
+          placeholder="选择日期"
+          v-model="formData.flightDate"
+          style="width: 100%;"
+        ></el-date-picker>
       </el-form-item>
       <el-form-item label="最早出票时限" prop="earliestAdvanceDays">
         <el-input v-model.number="formData.earliestAdvanceDays"></el-input>
@@ -71,6 +86,27 @@
                     ],
                     actFlightCode: [
                         {required: true, message: "请输入主航班号", trigger: "blur"},
+                    ],
+                    flightCode: [
+                        {required: true, message: "请输入航班号", trigger: "blur"},
+                    ],
+                    cabin: [
+                        {required: true, message: "请输入舱位", trigger: "blur"},
+                    ],
+                    discountValue: [
+                        {required: true, message: "票面价/折扣", trigger: "blur"},
+                    ],
+                    sellStartDate: [
+                        {required: true, message: "请选择销售起始日期", trigger: "blur"},
+                    ],
+                    sellEndDate: [
+                        {required: true, message: "请选择销售结束日期", trigger: "blur"},
+                    ],
+                    flightDate: [
+                        {required: true, message: "请选择出发日期", trigger: "blur"},
+                    ],
+                    policyCode: [
+                        {required: true, message: "请输入政策编码", trigger: "blur"},
                     ]
                 }
             }

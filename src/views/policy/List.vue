@@ -121,11 +121,17 @@
                     this.loadData(params);
                 }else {
                     const newParams ={};
-                    if(params.user){
-                        newParams.user = params.user;
+                    if(params.policyCode){
+                        newParams.policyCode = params.policyCode;
                     }
-                    if(params.domain){
-                        newParams.domain = params.domain;
+                    if(params.airlineCode){
+                        newParams.airlineCode = params.airlineCode;
+                    }
+                    if(params.dpt){
+                        newParams.dpt = params.dpt;
+                    }
+                    if(params.arr){
+                        newParams.arr = params.arr;
                     }
                     this.loadData(newParams);
                 }
