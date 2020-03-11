@@ -99,9 +99,9 @@
       </el-row>
       <el-row>
         <el-col :span="24">
-          <el-form-item label="负责人" prop="responsibleStaffName">
+          <el-form-item label="负责人" prop="principalName">
             <el-button type="primary" @click="selectPeople">选择</el-button>
-            <el-input v-model="formData.responsibleStaffName" type="textarea" :rows="2" style="width: 800px"></el-input>
+            <el-input v-model="formData.principalName" type="textarea" :rows="2" style="width: 800px"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -142,9 +142,9 @@
       policyCode: '',
       staffs: [],
       nextStaffId: '',
-      responsibleStaffName: '',
+      principalName: '',
       staffNames: '',
-      responsibleStaff: ''
+      principal: ''
     };
   };
   export default {
@@ -208,8 +208,8 @@
           }
         } else {
           if (params != null && params != undefined) {
-            this.formData.responsibleStaffName = params.fullName;
-            this.formData.responsibleStaff = params.staffId;
+            this.formData.principalName = params.fullName;
+            this.formData.principal = params.staffId;
           }
         }
         this.dialogVisible = false
