@@ -1,177 +1,190 @@
 <template>
   <div>
-    <el-form ref="form" :rules="formRules" :model="formData" :inline="true" class="demo-form-inline"
+    <el-form ref="form" :rules="formRules" :model="formData"  class="demo-form-inline"
              label-width="130px">
-      <el-row >
+      <el-row type="flex"  justify="center">
         <el-col :span="12">
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="规则名称:" prop="ruleName">
-                <el-input v-model="formData.ruleName"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="序号:" prop="sort">
-                <el-input v-model="formData.sort"></el-input>
-              </el-form-item>
-            </el-col>
-
-          </el-row>
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="政策代码:" prop="policyCode">
-                <el-input v-model="formData.policyCode"></el-input>
-              </el-form-item>
-
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="是否调用出票中:" prop="isTicketing">
-                <el-switch
-                  v-model="formData.isTicketing"
-                  active-color="#13ce66"
-                  inactive-color="#ff4949">
-                </el-switch>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="24">
-              <el-form-item label="规则类型:" prop="formData.ruleTypes">
-                <el-checkbox-group v-model="formData.ruleTypes">
-                  <el-checkbox :label=3 name="ruleTypes">出票</el-checkbox>
-                  <el-checkbox :label=10 name="ruleTypes">未出票申请退款</el-checkbox>
-                  <el-checkbox :label=11 name="ruleTypes">退票</el-checkbox>
-                  <el-checkbox :label=20 name="ruleTypes">改签</el-checkbox>
-                  <el-checkbox :label=4 name="ruleTypes">消息</el-checkbox>
-                  <el-checkbox :label=5 name="ruleTypes">质检</el-checkbox>
-                </el-checkbox-group>
-              </el-form-item>
-            </el-col>
-          </el-row>
+          <el-form-item label="规则名称:" prop="ruleName">
+            <el-input v-model="formData.ruleName"></el-input>
+          </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-row>
-            <el-col :span="6">
-              <el-form-item label="" prop="inOrEx">
-                <el-switch
-                  v-model="formData.airlines.inOrEx"
-                  active-color="#13ce66"
-                  inactive-color="#ff4949"
-                  active-text="排除航司"
-                  inactive-text="指定航司">
-                  >
+          <el-form-item label="政策代码:" prop="policyCode">
+            <el-input v-model="formData.policyCode"></el-input>
+          </el-form-item>
 
-                </el-switch>
+        </el-col>
+      </el-row>
 
-              </el-form-item>
-            </el-col>
-            <el-col :span="18">
-              <el-form-item label="航司:" prop="values">
-                <el-input v-model="formData.airlines.values"  type="textarea" :rows="1"style="width: 300px" ></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="6">
-              <el-form-item label="" prop="inOrEx">
-                <el-switch
-                  v-model="formData.segments.inOrEx"
-                  active-color="#13ce66"
-                  inactive-color="#ff4949"
-                  active-text="排除航线"
-                  inactive-text="指定航线">
-                  >
-                </el-switch>
 
-              </el-form-item>
-            </el-col>
+      <el-row type="flex"  justify="center">
+        <el-col :span="12">
+          <el-form-item label="序号:" prop="sort">
+            <el-input v-model="formData.sort"></el-input>
+          </el-form-item>
 
-            <el-col :span="18">
-              <el-form-item label="航线:" prop="values">
-                <el-input v-model="formData.segments.values" type="textarea" :rows="1" style="width: 300px"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="6">
-              <el-form-item label="" prop="inOrEx">
-                <el-switch
-                  v-model="formData.flights.inOrEx"
-                  active-color="#13ce66"
-                  inactive-color="#ff4949"
-                  active-text="排除航班"
-                  inactive-text="指定航班">
-                  >
-                </el-switch>
+        </el-col>
+        <el-col :span="12" >
+          <el-form-item label="是否调用出票中:" prop="isTicketing">
+            <el-switch
+              v-model="formData.isTicketing"
+              active-color="#13ce66"
+              inactive-color="#ff4949">
+            </el-switch>
+          </el-form-item>
+        </el-col>
+      </el-row>
 
-              </el-form-item>
-            </el-col>
-            <el-col :span="18">
-              <el-form-item label="航班:" prop="values">
-                <el-input v-model="formData.flights.values" type="textarea" :rows="1" style="width: 300px"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="6">
-              <el-form-item label="" prop="inOrEx">
-                <el-switch
-                  v-model="formData.cabins.inOrEx"
-                  active-color="#13ce66"
-                  inactive-color="#ff4949"
-                  active-text="排除舱位"
-                  inactive-text="指定舱位">
-                  >
-                </el-switch>
-              </el-form-item>
-            </el-col>
-            <el-col :span="18">
-              <el-form-item label="舱位:" prop="values">
-                <el-input v-model="formData.cabins.values" type="textarea" :rows="1" style="width: 300px"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
+      <el-row type="flex"  justify="center">
+        <el-col :span="12">
+          <el-col :span="12">
+            <el-form-item label="" prop="inOrEx">
+              <el-switch
+                v-model="formData.airlines.inOrEx"
+                active-color="#13ce66"
+                inactive-color="#ff4949"
+                active-text="排除航司"
+                inactive-text="指定航司">
+                >
+              </el-switch>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="航司:" prop="values">
+              <el-input v-model="formData.airlines.values"  type="textarea" :rows="1"style="" ></el-input>
+            </el-form-item>
+          </el-col>
+        </el-col>
+        <el-col :span="12">
+          <el-col :span="12">
+            <el-form-item label="" prop="inOrEx">
+              <el-switch
+                v-model="formData.segments.inOrEx"
+                active-color="#13ce66"
+                inactive-color="#ff4949"
+                active-text="排除航线"
+                inactive-text="指定航线">
+                >
+              </el-switch>
+
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="12">
+            <el-form-item label="航线:" prop="values">
+              <el-input v-model="formData.segments.values" type="textarea" :rows="1" style=""></el-input>
+            </el-form-item>
+          </el-col>
+
+        </el-col>
+      </el-row>
+
+
+      <el-row type="flex"  justify="center">
+        <el-col :span="12">
+          <el-col :span="12">
+            <el-form-item label="" prop="inOrEx">
+              <el-switch
+                v-model="formData.flights.inOrEx"
+                active-color="#13ce66"
+                inactive-color="#ff4949"
+                active-text="排除航班"
+                inactive-text="指定航班">
+                >
+              </el-switch>
+
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="航班:" prop="values">
+              <el-input v-model="formData.flights.values" type="textarea" :rows="1" style=""></el-input>
+            </el-form-item>
+          </el-col>
+        </el-col>
+        <el-col :span="12">
+          <el-col :span="12">
+            <el-form-item label="" prop="inOrEx">
+              <el-switch
+                v-model="formData.cabins.inOrEx"
+                active-color="#13ce66"
+                inactive-color="#ff4949"
+                active-text="排除舱位"
+                inactive-text="指定舱位">
+                >
+              </el-switch>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="舱位:" prop="values">
+              <el-input v-model="formData.cabins.values" type="textarea" :rows="1" style=""></el-input>
+            </el-form-item>
+          </el-col>
+        </el-col>
+
+      </el-row>
+
+
+
+      <el-row type="flex"  justify="center">
+        <el-col :span="12">
+          <el-form-item label="规则类型:" prop="formData.ruleTypes">
+            <el-checkbox-group v-model="formData.ruleTypes">
+              <el-checkbox :label=3 name="ruleTypes">出票</el-checkbox>
+              <el-checkbox :label=10 name="ruleTypes">未出票申请退款</el-checkbox>
+              <el-checkbox :label=11 name="ruleTypes">退票</el-checkbox>
+              <el-checkbox :label=20 name="ruleTypes">改签</el-checkbox>
+              <el-checkbox :label=4 name="ruleTypes">消息</el-checkbox>
+              <el-checkbox :label=5 name="ruleTypes">质检</el-checkbox>
+            </el-checkbox-group>
+          </el-form-item>
         </el-col>
 
       </el-row >
 
 
-      <el-row >
-        <el-row >
+
+      <el-row type="flex" justify="space-between" >
+        <el-col :span="1">
           <el-form-item label="负责人" prop="principalName">
-            <el-button type="primary" @click="selectPeople">添加</el-button>
           </el-form-item>
-        </el-row>
-        <el-row>
-          <el-table
-            :data="peopleData"
-            style="width: 100%">
-            <el-table-column
-              prop="fullName"
-              label="姓名"
-              width="180">
-            </el-table-column>
-            <el-table-column
-              prop="phone"
-              label="手机号">
-            </el-table-column>
-            <el-table-column
-              prop=""
-              label="操作">
-              <el-button type="primary" size ="mini" @click="selectPeople">重新添加</el-button>
-            </el-table-column>
-          </el-table>
-        </el-row>
+        </el-col>
+        <el-col :span="1">
+          <el-button type="primary" @click="selectPeople" size="mini">添加</el-button>
+
+        </el-col>
+
+      </el-row>
+      <el-row>
+        <el-table
+          :data="peopleData"
+          style="width: 100%">
+          <el-table-column
+            prop="fullName"
+            label="姓名"
+            width="180">
+          </el-table-column>
+          <el-table-column
+            prop="phone"
+            label="手机号">
+          </el-table-column>
+          <el-table-column
+            prop=""
+            label="操作">
+            <el-button type="primary" size ="mini" @click="selectPeople">重新添加</el-button>
+          </el-table-column>
+        </el-table>
       </el-row>
 
-      <el-row style="margin-top:20px;margin-bottom:20px">
-        <el-row>
+      <el-row style="margin-top:20px;margin-bottom:20px" type="flex" justify="space-between">
+        <el-col :span="1">
           <el-form-item label="员工" prop="staffNames">
-            <el-button type="primary" @click="selectStaff">添加</el-button>
           </el-form-item>
-
-        </el-row>
-        <el-row>
+        </el-col>
+        <el-col :span="1">
+          <el-button type="primary" @click="selectStaff" size="mini">添加</el-button>
+        </el-col>
+      </el-row>
+        <el-row style="margin-top:20px;margin-bottom:20px">
           <el-table
             :data="staffData"
             style="width: 100%">
