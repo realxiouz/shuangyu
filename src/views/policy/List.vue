@@ -9,9 +9,14 @@
         width="300"
       ></el-table-column>
       <el-table-column
+        prop="domain"
+        label="域名"
+        width="300"
+      ></el-table-column>
+      <el-table-column
         prop="ip"
         label="ip"
-        width="300"
+        width="200"
       ></el-table-column>
       <el-table-column
         prop="callbackUrl"
@@ -27,10 +32,10 @@
         fixed="right"
         label="操作"
         align="center"
-        width="350">
+        width="300">
         <template slot-scope="scope">
           <el-button @click="handleUpdate(scope.row.user,scope.row.domain)" type="primary" size="mini">编辑</el-button>
-          <el-button @click.native.prevent="handleRemove(scope.row.appId,scope.$index,tableData)" type="danger"
+          <el-button @click="handleRemove(scope.row.user,scope.row.domain)" type="danger"
                      size="mini">删除
           </el-button>
         </template>
@@ -58,10 +63,10 @@
             }
         },
         methods: {
-            loadData() {
+            loadData(params) {
                 this.$store
                     .dispatch("policy/getList", {
-                            filters: {}
+                            filters: params
                         }
                     ).then(data => {
                     if (data) {
@@ -74,8 +79,17 @@
             handleSearch(params) {
                 if (!params) {
                     params = {};
+                    this.loadData(params);
+                }else {
+                    const newParams ={};
+                    if(params.user){
+                        newParams.user = params.user;
+                    }
+                    if(params.domain){
+                        newParams.domain = params.domain;
+                    }
+                    this.loadData(newParams);
                 }
-                this.loadData(params);
             },
             handleUpdate(user, domain) {
                 this.user = user;
@@ -91,7 +105,7 @@
                     this.$store
                         .dispatch("policy/removeOne", {user: user, domain: domain})
                         .then(() => {
-                            this.loadData("{}");
+                            this.handleSearch();
                         });
                 }).catch(err => {
                     console.error(err);
@@ -105,8 +119,7 @@
             handleSave(formData) {
                 this.$store
                     .dispatch("policy/save", formData)
-                    .then(data => {
-                        console.log(data);
+                    .then(() => {
                         this.handleSearch();
                     })
                     .catch(error => {

@@ -132,8 +132,7 @@
         }).then(() => {
           this.$store
             .dispatch('orderRule/removeOne', id)
-            .then(data => {
-              console.log(data);
+            .then(() => {
               this.loadData();
             })
             .catch(error => {
