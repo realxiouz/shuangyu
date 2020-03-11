@@ -93,10 +93,10 @@ export default new Router({
         },
         {
           title: '政策接口参数管理',
-          path: '/policyInterfaceParam',
-          name: 'policyInterfaceParam',
-          uri: '/policyinterfaceparam',
-          component: () => import('@/views/policyInterfaceParam/List'),
+          path: '/thirdApiParam',
+          name: 'thirdApiParam',
+          uri: '/thirdApiParam',
+          component: () => import('@/views/thirdApiParam/List'),
           meta: { title: 'Home', icon: 'home' },
         },
       ]
@@ -125,8 +125,8 @@ export default new Router({
       children: [
         {
           title: '导航管理',
-          path: 'index',
-          name: 'Nav',
+          path: '/nav/index',
+          name: 'nav',
           uri: '/nav/index',
           component: () => import('@/views/nav/List'),
           meta: { title: 'Home', icon: 'home' }
@@ -230,7 +230,7 @@ export default new Router({
       children: [
         {
           title: '企业管理',
-          path: 'index',
+          path: '/firm/index',
           name: 'firm',
           uri: '/firm/index',
           component: () => import('@/views/firm/List'),
@@ -246,10 +246,10 @@ export default new Router({
       children: [
         {
           title: '员工管理',
-          path: 'index',
+          path: '/staff/index',
           name: 'staff',
           uri: '/staff/index',
-          component: () => import('@/views/staff/index'),
+          component: () => import('@/views/staff/List'),
           meta: { title: 'Home', icon: 'home' }
         }
       ]

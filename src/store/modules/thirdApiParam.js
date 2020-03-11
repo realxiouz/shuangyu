@@ -1,4 +1,4 @@
-import {save, removeOne, getPageList, getTotal, getOne, getPolicyEnumList,getThirdPartyList,getList} from "@/api/policyInterfaceParam";
+import {save, removeOne, getPageList, getTotal, getOne, getPolicyEnumList,getThirdPartyList,getList} from "@/api/thirdApiParam";
 import {getToken} from "@/utils/auth";
 
 
