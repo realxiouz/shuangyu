@@ -14,7 +14,7 @@
       <el-form-item label="政策" prop="apiId">
         <el-select v-model="formData.apiId" placeholder="请选择">
           <el-option
-            v-for="(item, idx) in policyList"
+            v-for="(item, idx) in apiList"
             :key="idx"
             :label="item"
             :value="item"
@@ -52,8 +52,8 @@
     data() {
       return {
         formData: {},
-        policyList: [],
         thirdPartyList: [],
+        apiList: [],
         /*formRules: {
           thirdId: [
             {required: true, message: "请选择第三方平台", trigger: "blur"}
@@ -76,7 +76,6 @@
     methods: {
       defaultFormData() {
         return {
-
           thirdId: '',
           apiId: '',
           label: '',
@@ -98,9 +97,9 @@
             console.log(error);
           });
         this.$store
-          .dispatch("thirdApiParam/getPolicyEnumList")
+          .dispatch("thirdApiParam/getApiUrlList")
           .then(data => {
-            this.policyList = data;
+            this.apiList = data;
           })
           .catch(error => {
             console.log(error);
