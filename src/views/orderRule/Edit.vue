@@ -47,12 +47,16 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="4">
-          <el-form-item label="指定或排除航司:" prop="inOrEx">
+        <el-col :span="5">
+          <el-form-item label="" prop="inOrEx">
             <el-switch
               v-model="formData.airlines.inOrEx"
               active-color="#13ce66"
-              inactive-color="#ff4949">
+              inactive-color="#ff4949"
+              active-text="指定或排除航司"
+              inactive-text="不指定或排除航司">
+            >
+
             </el-switch>
 <!--            <el-radio-group v-model="formData.airlines.inOrEx">-->
 <!--              <el-radio :label=0>指定</el-radio>-->
@@ -60,17 +64,20 @@
 <!--            </el-radio-group>-->
           </el-form-item>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="7">
           <el-form-item label="航司:" prop="values">
-            <el-input v-model="formData.airlines.values"  :disabled="!formData.airlines.inOrEx" type="textarea" :rows="1" style="width: 400px"></el-input>
+            <el-input v-model="formData.airlines.values"  :disabled="!formData.airlines.inOrEx" type="textarea" :rows="1" style="width: 300px"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="4">
-          <el-form-item label="指定或排除航线:" prop="inOrEx">
+        <el-col :span="5">
+          <el-form-item label="" prop="inOrEx">
             <el-switch
               v-model="formData.segments.inOrEx"
               active-color="#13ce66"
-              inactive-color="#ff4949">
+              inactive-color="#ff4949"
+              active-text="指定或排除航线"
+              inactive-text="不指定或排除航线">
+            >
             </el-switch>
 <!--            <el-radio-group v-model="formData.segments.inOrEx">-->
 <!--              <el-radio :label=0>指定</el-radio>-->
@@ -78,19 +85,22 @@
 <!--            </el-radio-group>-->
           </el-form-item>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="7">
           <el-form-item label="航线:" prop="values">
-            <el-input v-model="formData.segments.values" :disabled="!formData.segments.inOrEx" type="textarea" :rows="1" style="width: 400px"></el-input>
+            <el-input v-model="formData.segments.values" :disabled="!formData.segments.inOrEx" type="textarea" :rows="1" style="width: 300px"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="4">
-          <el-form-item label="指定或排除航班:" prop="inOrEx">
+        <el-col :span="5">
+          <el-form-item label="" prop="inOrEx">
             <el-switch
               v-model="formData.flights.inOrEx"
               active-color="#13ce66"
-              inactive-color="#ff4949">
+              inactive-color="#ff4949"
+              active-text="指定或排除航班"
+              inactive-text="不指定或排除航班">
+            >
             </el-switch>
 <!--            <el-radio-group v-model="formData.flights.inOrEx">-->
 <!--              <el-radio :label=0>指定</el-radio>-->
@@ -98,17 +108,20 @@
 <!--            </el-radio-group>-->
           </el-form-item>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="7">
           <el-form-item label="航班:" prop="values">
-            <el-input v-model="formData.flights.values" :disabled="!formData.flights.inOrEx" type="textarea" :rows="1" style="width: 400px"></el-input>
+            <el-input v-model="formData.flights.values" :disabled="!formData.flights.inOrEx" type="textarea" :rows="1" style="width: 300px"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="4">
-          <el-form-item label="指定或排除舱位:" prop="inOrEx">
+        <el-col :span="5">
+          <el-form-item label="" prop="inOrEx">
             <el-switch
               v-model="formData.cabins.inOrEx"
               active-color="#13ce66"
-              inactive-color="#ff4949">
+              inactive-color="#ff4949"
+              active-text="指定或排除舱位"
+              inactive-text="不指定或排除舱位">
+            >
             </el-switch>
 <!--            <el-radio-group v-model="formData.cabins.inOrEx">-->
 <!--              <el-radio :label=0>指定</el-radio>-->
@@ -116,9 +129,9 @@
 <!--            </el-radio-group>-->
           </el-form-item>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="7">
           <el-form-item label="舱位:" prop="values">
-            <el-input v-model="formData.cabins.values" :disabled="!formData.cabins.inOrEx"  type="textarea" :rows="1" style="width: 400px"></el-input>
+            <el-input v-model="formData.cabins.values" :disabled="!formData.cabins.inOrEx"  type="textarea" :rows="1" style="width: 300px"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
