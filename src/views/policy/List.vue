@@ -115,6 +115,8 @@
             },
             handleAdd() {
                 this.dialogVisible = true;
+                this.user = '';
+                this.domain = '';
             },
             handleSave(formData) {
                 this.$store
