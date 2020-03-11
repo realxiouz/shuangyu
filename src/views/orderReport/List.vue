@@ -45,7 +45,7 @@
 <!--&lt;!&ndash;      </el-form-item>&ndash;&gt;-->
 
 <!--      </el-form>-->
-    <order-report-search @onSearch="handleCancel" @onAdd="handleSave"></order-report-search>
+    <order-report-search></order-report-search>
     <el-table :data="tableData"
               style="width: 100%;margin-bottom: 20px;"
               row-key="deptId"
