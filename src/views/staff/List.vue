@@ -5,6 +5,7 @@
         :data="treeData"
         :props="treeProps"
         :highlight-current="true"
+        :expand-on-click-node="false"
         @node-click="handleNodeClick">
       </el-tree>
     </el-aside>
