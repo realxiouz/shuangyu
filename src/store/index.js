@@ -15,7 +15,7 @@ import order from './modules/order';
 import staff from './modules/staff';
 import thirdparty from './modules/thirdparty';
 import orderRule from './modules/orderRule';
-import policyInterfaceParam from './modules/policyInterfaceParam'
+import thirdApiParam from './modules/thirdApiParam'
 
 Vue.use(Vuex);
 
@@ -36,7 +36,7 @@ export default new Vuex.Store({
     staff,
     thirdparty,
     orderRule,
-    policyInterfaceParam
+    thirdApiParam
   },
   state: {},
   mutations: {},

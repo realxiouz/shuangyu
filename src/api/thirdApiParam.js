@@ -2,7 +2,7 @@ import request from "@/utils/request";
 
 export function save(data) {
   return request({
-    url: "/policy/interface/param/save",
+    url: "/third/api/param/save",
     method: "post",
     data
   });
@@ -10,14 +10,14 @@ export function save(data) {
 
 export function removeOne(paramId) {
   return request({
-    url: `/policy/interface/param/remove/one/${paramId}`,
+    url: `/third/api/param/remove/one/${paramId}`,
     method: "delete"
   });
 }
 
 export function getOne(paramId) {
   return request({
-    url: `/policy/interface/param/${paramId}`,
+    url: `/third/api/param/${paramId}`,
     method: `get`
   });
 }
@@ -25,7 +25,7 @@ export function getOne(paramId) {
 
 export function getPageList(pageFlag, pageSize, lastId, searchForm) {
   return request({
-    url: `/policy/interface/param/page/list/${pageFlag}/${pageSize}/${lastId}`,
+    url: `/third/api/param/page/list/${pageFlag}/${pageSize}/${lastId}`,
     method: "get",
     params: searchForm
   });
@@ -33,22 +33,22 @@ export function getPageList(pageFlag, pageSize, lastId, searchForm) {
 
 export function getTotal() {
   return request({
-    url: `/policy/interface/param/total`,
+    url: `/third/api/param/total`,
     method: "get"
   });
 }
 
 export function getList(params) {
   return request({
-    url: `/policy/interface/param/list`,
+    url: `/third/api/param/list`,
     method: "get",
     params: params
   });
 }
 
-export function getPolicyEnumList() {
+export function getApiUrlList() {
   return request({
-    url: `/policy/interface/param/policy/enum/list`,
+    url: `/third/api/param/api/url/list`,
     method: "get"
   });
 }
