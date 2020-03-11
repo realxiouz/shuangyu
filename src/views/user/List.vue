@@ -144,7 +144,7 @@
     methods: {
       loadData() {
         this.$store
-          .dispatch('user/getTotal', {filter:{}})
+          .dispatch('user/getTotal', {filter: {}})
           .then(data => {
             this.total = data.data;
           })
@@ -152,7 +152,12 @@
             console.log(error);
           });
         this.$store
-          .dispatch('user/getPageList', {pageFlag: this.pageFlag, pageSize: this.pageSize, lastId: this.lastId, filter: {}})
+          .dispatch('user/getPageList', {
+            pageFlag: this.pageFlag,
+            pageSize: this.pageSize,
+            lastId: this.lastId,
+            filter: {}
+          })
           .then(data => {
             this.tableData = data.data;
           })
@@ -163,9 +168,17 @@
       /*根据关键字查询用户列表*/
       handleSearch(keyword) {
         this.$store
-          .dispatch('user/getList', {filter: {nickName: keyword}})
+          .dispatch('user/getTotal', {filter: keyword ? {nickName: keyword} : {}})
           .then(data => {
-            this.tableData = data.data;
+            this.total = data.data;
+          })
+          .catch(error => {
+            console.log(error);
+          });
+        this.$store
+          .dispatch('user/getList', {filter: keyword ? {nickName: keyword} : {}})
+          .then(data => {
+            this.tableData = data;
           })
           .catch(error => {
             console.log(error);
