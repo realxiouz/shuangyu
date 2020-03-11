@@ -81,7 +81,7 @@
         this.$store
           .dispatch('staff/getPageList', {
             pageSize: this.pageSize,
-            lastId: this.lastId,
+            lastID: this.lastId,
             pageFlag: this.pageFlag
           })
           .then(data => {
