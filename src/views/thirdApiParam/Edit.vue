@@ -4,8 +4,8 @@
       <el-form-item label="第三方平台" prop="thirdId">
         <el-select v-model="formData.thirdId" placeholder="请选择">
           <el-option
-            v-for="item in thirdPartyList"
-            :key="item.thirdId"
+            v-for="(item,idx) in thirdPartyList"
+            :key="idx"
             :label="item.thirdName"
             :value="item.thirdId">
           </el-option>
@@ -14,10 +14,11 @@
       <el-form-item label="政策" prop="apiId">
         <el-select v-model="formData.apiId" placeholder="请选择">
           <el-option
-            v-for="(value, key) in policyList"
-            :key="key"
-            :label="value"
-            :value="key">
+            v-for="(item, idx) in policyList"
+            :key="idx"
+            :label="item"
+            :value="item"
+          >
           </el-option>
         </el-select>
       </el-form-item>
@@ -75,8 +76,7 @@
     methods: {
       defaultFormData() {
         return {
-          thirdPartyList: [],
-          policyList: [],
+
           thirdId: '',
           apiId: '',
           label: '',
