@@ -64,6 +64,13 @@
                     console.log(error);
                 });
             },
+            handleSave() {
+                this.$refs['form'].validate((valid) => {
+                    if (valid) {
+                        this.$emit('onSave', this.formData);
+                    }
+                });
+            }
         },
         created() {
             if (this.user && this.domain) {

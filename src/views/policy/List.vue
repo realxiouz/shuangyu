@@ -37,7 +37,7 @@
       </el-table-column>
 
     </el-table>
-    <el-dialog title="应用信息" :visible.sync="dialogVisible" width="30%">
+    <el-dialog title="政策信息" :visible.sync="dialogVisible" width="30%">
       <policy-edit v-if="dialogVisible" :user="user" :domain="domain" @onSave="handleSave"
                    @onCancel="handleCancel"></policy-edit>
     </el-dialog>
@@ -76,7 +76,6 @@
                     params = {};
                 }
                 this.loadData(params);
-                this.loadTotal(params);
             },
             handleUpdate(user, domain) {
                 this.user = user;
@@ -90,7 +89,7 @@
                     type: "warning"
                 }).then(() => {
                     this.$store
-                        .dispatch("policy/removeOne", {user: user,domain:domain})
+                        .dispatch("policy/removeOne", {user: user, domain: domain})
                         .then(() => {
                             this.loadData("{}");
                         });
@@ -106,11 +105,13 @@
             handleSave(formData) {
                 this.$store
                     .dispatch("policy/save", formData)
-                    .then(() => {
+                    .then(data => {
+                        console.log(data);
                         this.handleSearch();
-                    }).catch(error => {
-                    console.log(error);
-                });
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
                 this.dialogVisible = false;
             },
 
