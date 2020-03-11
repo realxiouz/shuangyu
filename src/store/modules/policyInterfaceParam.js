@@ -22,7 +22,6 @@ const mutations = {
 
 const actions = {
   save({commit}, params) {
-    debugger
     return new Promise((resolve, reject) => {
       save(params)
         .then(response => {

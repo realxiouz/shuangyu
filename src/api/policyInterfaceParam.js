@@ -8,16 +8,16 @@ export function save(data) {
   });
 }
 
-export function removeOne(thirdId, policyId, paramName) {
+export function removeOne(paramId) {
   return request({
-    url: `/policy/interface/param/remove/one/${thirdId}/${policyId}/${paramName}`,
+    url: `/policy/interface/param/remove/one/${paramId}`,
     method: "delete"
   });
 }
 
-export function getOne(thirdId, policyId, paramName) {
+export function getOne(paramId) {
   return request({
-    url: `/policy/interface/param/${thirdId}/${policyId}/${paramName}`,
+    url: `/policy/interface/param/${paramId}`,
     method: `get`
   });
 }

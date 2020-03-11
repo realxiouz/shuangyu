@@ -51,7 +51,7 @@
 <script>
   export default {
     name: "paramEdit",
-    props: ["roleId"],
+    props: ["paramId","pid"],
     data() {
       return {
         formData: {},
@@ -117,9 +117,9 @@
             console.log(error);
           });
       },
-      getOne(roleID) {
+      getOne(paramId) {
         this.$store
-          .dispatch("role/getOne", roleID)
+          .dispatch("policyInterfaceParam/getOne", paramId)
           .then(data => {
             this.formData = data;
           })
@@ -133,8 +133,11 @@
       },
       handleSave() {
         this.$refs["formData"].validate((valid) => {
-          console.log("valid"+valid)
+          console.log("--------------"+this.pid)
           if (valid) {
+            if (this.pid){
+              this.formData.pid=this.pid;
+            }
             this.$emit("onSave", this.formData);
           }
         });
@@ -143,8 +146,8 @@
     created() {
       this.clearForm();
       this.initSelectData();
-      if ('' != this.roleId) {
-        this.getOne(this.roleId);
+      if ('' != this.paramId&&this.paramId!=null) {
+        this.getOne(this.paramId);
       }
     }
   };

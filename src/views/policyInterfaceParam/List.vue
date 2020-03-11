@@ -1,7 +1,13 @@
 <template>
   <div class="app-container">
-    <param-search ref="user" @onSearch="handleSearch" @onAdd="addRole"></param-search>
-    <el-table :data="tableData" style="width: 100%">
+    <param-search ref="user" @onSearch="handleSearch" @onAdd="addParam"></param-search>
+    <el-table
+      :data="tableData"
+      row-key="tableProps"
+      :tree-props=" {
+          hasChildren: 'xxx',
+          children: 'children'
+        }">
       <el-table-column prop="thirdName" label="第三方平台" align="center"></el-table-column>
       <el-table-column prop="policyName" label="政策" align="center"></el-table-column>
       <el-table-column prop="label" label="接口标签" align="center"></el-table-column>
@@ -12,6 +18,7 @@
         label="操作"
         align="center">
         <template slot-scope="scope">
+          <el-button @click="handleAddChild(scope.row)" type="text" size="small">添加</el-button>
           <el-button @click="handleEdit(scope.row)" type="text" size="small">编辑</el-button>
           <el-button @click="handleDelete(scope.row)" type="text" size="small">删除</el-button>
         </template>
@@ -27,10 +34,8 @@
       :page-size="pageSize"
       :total="total">
     </el-pagination>
-    <el-dialog title="角色信息" :visible.sync="dialogVisible" width="30%">
-      <param-edit v-if="dialogVisible" :roleId="roleId"
-                  @onSave="handleSave"
-                  @onCancel="handleCancel">
+    <el-dialog title="接口参数信息" :visible.sync="dialogVisible" width="30%">
+      <param-edit v-if="dialogVisible" :pid="pid" :paramId="paramId" @onSave="handleSave" @onCancel="handleCancel">
       </param-edit>
     </el-dialog>
   </div>
@@ -44,12 +49,11 @@
     name: "List",
     data() {
       return {
-        thirdId: null,
-        policyId: null,
+        paramId: null,
         dialogVisible: false,
         pageFlag: "next",
         pageSize: 10,
-        lastId: "0",
+        lastId: "blank",
         total: 0,
         tableData: []
       };
@@ -57,13 +61,12 @@
     methods: {
       /*对员工进行删除*/
       handleDelete(row) {
-        this.open(this.delete, row.thirdId, row.policyId, '此操作将删除该用户的所有信息, 是否继续?');
+        this.open(this.delete, row.paramId, '此操作将删除该用户的所有信息, 是否继续?');
       },
       /*根据用户ID删除用户*/
-      delete(thirdId, policyId) {
-        console.log("---" + thirdId + "----------" + policyId);
+      delete(paramId) {
         this.$store
-          .dispatch('policyInterfaceParam/removeOne', {thirdId: thirdId, policyId: policyId})
+          .dispatch('policyInterfaceParam/removeOne', paramId)
           .then(data => {
             console.log(data);
             this.loadData();
@@ -72,9 +75,15 @@
             console.log(error);
           });
       },
+      handleAddChild(row){
+        this.dialogVisible = true;
+        this.pid = row.paramId;
+        this.paramId = '';
+      },
       handleEdit(row) {
         this.dialogVisible = true;
-        this.roleId = row.roleId;
+        this.paramId = row.paramId;
+        this.pid = '';
       },
       changeSwitch(row) {
         row.enable = row.enable ? true : false;
@@ -90,16 +99,16 @@
       },
       prevClick: function () {
         this.pageFlag = "prev";
-        this.lastId = this.tableData[0].roleId;
+        this.lastId = this.tableData[0].paramId;
         this.loadData();
       },
       nextClick: function () {
         this.pageFlag = "next";
-        this.lastId = this.tableData[this.tableData.length - 1].roleId;
+        this.lastId = this.tableData[this.tableData.length - 1].paramId;
         this.loadData();
       },
-      addRole: function () {
-        this.roleId = '';
+      addParam: function () {
+        this.paramId = '';
         this.dialogVisible = true;
       },
       loadData() {
@@ -147,7 +156,7 @@
             pageFlag: this.pageFlag,
             pageSize: this.pageSize,
             lastId: this.lastId,
-            filter: {roleName: keyword}
+            filter: {name: keyword}
           })
           .then(data => {
             this.tableData = data;
