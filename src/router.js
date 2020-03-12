@@ -92,14 +92,6 @@ export default new Router({
           meta: { title: 'Home', icon: 'home' }
         },
         {
-          title: '第三方管理',
-          path: '/thirdparty',
-          name: 'thirdparty',
-          uri: '/thirdparty',
-          component: () => import('@/views/thirdparty/List'),
-          meta: { title: 'Home', icon: 'home' },
-        },
-        {
           title: '政策接口参数管理',
           path: '/thirdApiParam',
           name: 'thirdApiParam',
@@ -261,6 +253,32 @@ export default new Router({
           meta: { title: 'Home', icon: 'home' }
         }
       ]
-    }
+    },
+    {
+      title: '第三方Api管理',
+      path: '/thirdapi',
+      uri: '/thirdapi',
+      component: Layout,
+      children: [
+        {
+          title: '第三方平台',
+          path: '/thirdparty',
+          name: 'thirdparty',
+          uri: '/thirdparty',
+          component: () => import('@/views/thirdparty/List'),
+          meta: { title: 'Home', icon: 'home' }
+        },
+        {
+          title: '第三方Api',
+          path: '/thirdapi/index',
+          name: 'thirdapi',
+          uri: '/thirdapi/index',
+          component: () => import('@/views/thirdapi/List'),
+          meta: { title: 'Home', icon: 'home' }
+        }
+
+      ]
+    },
+
   ]
 });

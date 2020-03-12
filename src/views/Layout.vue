@@ -101,9 +101,10 @@
       goBack() {
       },
       handleSwitch() {
-        this.display = "block";
+        if(screenWidth>500){
+          this.isCollapse = !this.isCollapse;
+        }
 
-        this.isCollapse = !this.isCollapse;
       },
       handleCommand(command) {
         switch (command) {
