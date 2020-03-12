@@ -295,7 +295,7 @@
           url = 'user/addOne';
         }
         this.$store
-          .dispatch(url, {user: formData})
+          .dispatch(url,  formData)
           .then(data => {
             console.log(data);
             this.loadData();
