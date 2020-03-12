@@ -39,6 +39,7 @@ export function getList(filter) {
 }
 
 export function getTotal(filter) {
+  debugger
   return request({
     url: '/fare/total',
     method: 'get',
