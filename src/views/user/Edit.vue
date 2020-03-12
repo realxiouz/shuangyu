@@ -46,6 +46,7 @@
     </el-form>
     <div>
       <el-button @click="$emit('onCancel')">取 消</el-button>
+      <el-button type="primary">下一步</el-button>
       <el-button type="primary" @click="$emit('onSave',formData)">确 定</el-button>
     </div>
   </div>

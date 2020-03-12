@@ -10,7 +10,7 @@ export function signIn(data) {
 
 export function signOut() {
   return request({
-    url: '/admin/user/sign/out',
+    url: '/user/sign/out',
     method: 'post'
   });
 }
