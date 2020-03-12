@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-aside width="auto" :style="{display:display}">
+    <el-aside width="auto" v-show="isDisplay">
       <Sidebar :menuList="menuList" :collapse="isCollapse"/>
     </el-aside>
     <el-main>
@@ -61,14 +61,13 @@
     data() {
       return {
         isCollapse: false,
+        isDisplay: true,
         tags: [
           { name: "首页", closable: false, type: "" },
           { name: "用户管理", closable: true, type: "success" },
           { name: "添加用户", closable: true, type: "info" }
         ],
-        display:"block",
-        fullWidth:document.documentElement.clientWidth
-
+        screenWidth: document.body.clientWidth
       };
     },
     computed: {
@@ -84,38 +83,27 @@
         return this.$router.options.routes;
       }
     },
-    created(){
-      window.addEventListener('resize', this.handleResize)
+    watch: {
+      screenWidth(val) {
+        if (val <= 500) {
+          this.isDisplay = false;
+        } else {
+          this.isDisplay = true;
+        }
+        if (val < 760) {
+          this.isCollapse = true;
+        } else {
+          this.isCollapse = false;
+        }
+      }
     },
     methods: {
       goBack() {
       },
-      handleResize (event) {
-        // console.log(this.fullWidth)
-        this.fullWidth = document.documentElement.clientWidth
-        if(this.fullWidth<501){
-          this.display="none"
-        }else if (this.fullWidth<1000){
-          this.display="block"
-          this.isCollapse = true;
-        }else {
-          this.isCollapse = false;
-        }
-      },
       handleSwitch() {
-        this.display="block"
+        this.display = "block";
 
         this.isCollapse = !this.isCollapse;
-      },
-      handleOpen(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      handleClose(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      handleLink(route) {
-        console.log(route);
-        this.$router.push(route.path);
       },
       handleCommand(command) {
         switch (command) {
@@ -134,6 +122,15 @@
           .catch(() => {
           });
       }
+    },
+    mounted() {
+      const _this = this;
+      window.onresize = () => {
+        return (() => {
+          window.screenWidth = document.body.clientWidth;
+          _this.screenWidth = window.screenWidth;
+        })();
+      };
     }
   };
 </script>
