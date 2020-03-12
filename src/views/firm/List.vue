@@ -110,7 +110,7 @@
       /*根据关键字进行企业搜索*/
       search(keyword) {
         this.$store
-          .dispatch('firm/getList', {firmName: keyword})
+          .dispatch('firm/getList', {filter:{firmName: keyword}})
           .then(data => {
             this.tableData = data;
           })
