@@ -1,8 +1,11 @@
 <template>
   <div class="app-container">
     <policy-search @onSearch="handleSearch" @onAdd="handleAdd"></policy-search>
-    <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;"
-              border>
+    <el-table :data="tableData"
+              highlight-current-row
+              style="width: 100%;"
+              border
+              fit>
       <el-table-column
         prop="airlineCode"
         label="航司"
