@@ -1,7 +1,14 @@
 <template>
   <el-row align="left">
-    <el-input v-model="keyword" placeholder="请输入角色名称" style="width: 20%; margin-right: 10px"></el-input>
-    <el-button type="primary" @click="$emit('onSearch',keyword)">查询</el-button>
+    <el-select v-model="firmId" placeholder="请选择">
+      <el-option
+        v-for="item in firmList"
+        :key="item.firmId"
+        :label="item.firmName"
+        :value="item.firmId">
+      </el-option>
+    </el-select>
+    <el-button type="primary" @click="$emit('onSearch',firmId)">查询</el-button>
     <el-button type="primary" @click="$emit('onAdd')">添加</el-button>
   </el-row>
 </template>
@@ -11,8 +18,26 @@
     name: "productMarkSearch",
     data() {
       return {
-        keyword:''
+        firmId: '',
+        firmList:[]
       };
+    },
+    methods: {
+      loadFirms() {
+        this.$store
+          .dispatch("productMark/getFirmList"
+          )
+          .then(data => {
+            this.firmList = data;
+            console.log(this.firmList)
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }
+    },
+    mounted() {
+      this.loadFirms();
     }
   };
 </script>

@@ -1,27 +1,38 @@
 <template>
   <div class="app-container">
     <product-mark-search ref="user" @onSearch="handleSearch" @onAdd="addOne"></product-mark-search>
-    <el-table
-      :data="tableData"
-      row-key="markId"
-      :tree-props="{ hasChildren: 'xxx',children: 'children'}">
-      <el-table-column prop="thirdName" label="第三方平台" align="center"></el-table-column>
-      <el-table-column prop="apiUrl" label="接口url" align="center"></el-table-column>
-      <el-table-column prop="label" label="接口标签" align="center"></el-table-column>
-      <el-table-column prop="name" label="接口名称" align="center"></el-table-column>
-      <el-table-column prop="defaultValue" label="默认值" align="center"></el-table-column>
-      <el-table-column prop="required" label="是否必须" align="center"></el-table-column>
+    <el-table :data="tableData" style="width: 100%">
+      <el-table-column prop="firmName" label="企业" align="center"></el-table-column>
+      <el-table-column prop="domain" label="接口url" align="center"></el-table-column>
+      <el-table-column label="第三方标签" align="center">
+        <template slot-scope="scope">
+          <el-button @click="showFlagList(scope.row)" type="primary" size="small">查看</el-button>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
-          <el-button @click="handleAddChild(scope.row)" type="text" size="small">添加</el-button>
-          <el-button @click="handleEdit(scope.row)" type="text" size="small">编辑</el-button>
-          <el-button @click="handleDelete(scope.row)" type="text" size="small">删除</el-button>
+          <el-button @click="handleEdit(scope.row)" type="primary" size="small">编辑</el-button>
+          <el-button @click="handleDelete(scope.row)" type="danger" size="small">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+      @prev-click="prevClick"
+      @next-click="nextClick"
+      background
+      layout="total,prev,next"
+      prev-text="上一页"
+      next-text="下一页"
+      :page-size="pageSize"
+      :total="total">
+    </el-pagination>
     <el-dialog title="接口参数信息" :visible.sync="dialogVisible" width="30%">
       <product-mark-edit v-if="dialogVisible" :markId="markId" @onSave="handleSave" @onCancel="handleCancel">
       </product-mark-edit>
+    </el-dialog>
+    <el-dialog title="接口参数信息" :visible.sync="flagListVisible" width="30%">
+      <flg-list v-if="flagListVisible" :flags="flags" @onCancel="handleCancelFlagList">
+      </flg-list>
     </el-dialog>
   </div>
 </template>
@@ -29,33 +40,44 @@
 <script>
   import productMarkEdit from "./Edit.vue";
   import productMarkSearch from "./Search.vue";
+  import FlgList from "./FlagList.vue";
 
   export default {
     name: "List",
     data() {
       return {
-        rootNav: false,
         dialogVisible: false,
+        flagListVisible: false,
         markId: null,
-        tableData: [],
-        parentNode: {}
+        flags: [],
+        pageFlag: "next",
+        pageSize: 10,
+        lastId: "blank",
+        total: 0,
+        tableData: []
       };
     },
     methods: {
       loadData() {
         this.$store
-          .dispatch("productMark/getTotal")
+          .dispatch("productMark/getPageList", {
+            pageFlag: this.pageFlag,
+            pageSize: this.pageSize,
+            lastId: this.lastId,
+            filter: {}
+          })
           .then(data => {
-            this.total = data;
+            this.tableData = data;
           })
           .catch(error => {
             console.log(error);
           });
-
+      },
+      loadTotal() {
         this.$store
-          .dispatch("productMark/getList")
+          .dispatch("productMark/getTotal")
           .then(data => {
-            this.tableData = data;
+            this.total = data;
           })
           .catch(error => {
             console.log(error);
@@ -67,28 +89,24 @@
         this.dialogVisible = true;
         this.markId = '';
       },
-      handleSearch: function (keyword) {
+      handleSearch: function (firmId) {
+        console.log("firmId========" + firmId);
         this.$store
-          .dispatch("productMark/getList", {filter: keyword ? {roleName: keyword} : {}})
+          .dispatch("productMark/getList", {firmId: firmId})
           .then(data => {
-            this.total = data;
+            this.tableData = data;
           })
           .catch(error => {
             console.log(error);
           });
       },
       handleSave(formData) {
-        if (this.rootNav) { //如果添加的顶级企业信息，对某些属性进行初始化
-          formData.level = 0;
-        } else {
-          formData.pid = this.parentNode.markId;
-          formData.level = this.parentNode.level + 1;
-        }
         this.$store
           .dispatch('productMark/save', formData)
           .then(data => {
             console.log(data);
             this.loadData();
+            this.total += 1;
           })
           .catch(error => {
             console.log(error);
@@ -99,36 +117,22 @@
       handleCancel() {
         this.dialogVisible = false;
       },
-      handleAddChild(row) {
-        this.rootNav = false;
-        this.dialogVisible = true;
-
-        this.markId = '';
-        this.parentNode = {};
-        this.parentNode.markId = row.markId;
-        this.parentNode.level = row.level;
-      },
       handleEdit(row) {
         this.dialogVisible = true;
         this.markId = row.markId;
       },
-      changeSwitch(row) {
-        row.enable = row.enable ? true : false;
-        this.$store
-          .dispatch('productMark/save', row)
-          .then(data => {
-            console.log(data);
-            this.loadData();
-          })
-          .catch(error => {
-            console.log(error);
-          });
+      //点击查看标签列表
+      showFlagList(row) {
+        console.log("markid---" + row.flags)
+        this.flagListVisible = true;
+        this.flags = row.flags;
       },
-      /*对员工进行删除*/
+      handleCancelFlagList() {
+        this.flagListVisible = false;
+      },
       handleDelete(row) {
         this.open(this.delete, row.markId, '此操作将删除该用户的所有信息, 是否继续?');
       },
-      /*根据用户ID删除用户*/
       delete(markId) {
         this.$store
           .dispatch('productMark/removeOne', markId)
@@ -139,6 +143,16 @@
           .catch(error => {
             console.log(error);
           });
+      },
+      prevClick: function () {
+        this.pageFlag = "prev";
+        this.lastId = this.tableData[0].markId;
+        this.loadData();
+      },
+      nextClick: function () {
+        this.pageFlag = "next";
+        this.lastId = this.tableData[this.tableData.length - 1].markId;
+        this.loadData();
       },
       open(func, data, message) {
         this.$confirm(message, '提示', {
@@ -161,10 +175,12 @@
     },
     mounted() {
       this.loadData();
+      this.loadTotal();
     },
     components: {
       productMarkEdit,
-      productMarkSearch
+      productMarkSearch,
+      FlgList
     }
   }
 </script>

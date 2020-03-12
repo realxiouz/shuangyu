@@ -59,24 +59,10 @@
       };
     },
     methods: {
-      defaultFormData() {
-        return {
-          thirdId: '',
-          apiId: '',
-          label: '',
-          name: '',
-          defaultValue: '',
-          required: false
-        }
-      },
-      clearForm() {
-        this.formData = this.defaultFormData();
-      },
       loadFirms() {
         this.$store
-          .dispatch("productMark/getFirmList", {
-            filters: {}
-          })
+          .dispatch("productMark/getFirmList"
+          )
           .then(data => {
             this.firmList = data;
             console.log(this.firmList)
@@ -85,13 +71,10 @@
             console.log(error);
           });
       },
-      loadRoles() {
+      loadFlags() {
         this.$store
-          .dispatch("productMark/getFlagList", {
-            filters: {}
-          })
+          .dispatch("productMark/getFlagList")
           .then(data => {
-            console.log("data0----"+JSON.stringify(data))
             this.allFlags = data;
           })
           .catch(error => {
@@ -109,20 +92,20 @@
           });
         this.dialogVisible = true;
       },
-      changeSwitch() {
-        this.formData.enable = this.formData.enable ? true : false;
-      },
       handleSave() {
         this.$refs['formData'].validate((valid) => {
           if (valid) {
             this.$emit('onSave', this.formData);
           }
         });
-      }
+      },
+    handleChange(value) {
+      this.formData.flags = value;
+    }
     },
     created() {
       this.loadFirms();
-      this.loadRoles();
+      this.loadFlags();
       if ('' != this.markId && this.markId != null) {
         this.getOne(this.markId);
       }
