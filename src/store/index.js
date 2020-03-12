@@ -8,8 +8,8 @@ import airline from './modules/airline';
 import refundChangeRule from './modules/refundChangeRule';
 import flightSegment from './modules/flightSegment';
 import firm from './modules/firm';
-import policy from './modules/policy';
 import dept from './modules/dept';
+import policy from './modules/policy';
 import app from './modules/app';
 import api from './modules/api';
 import order from './modules/order';
@@ -18,6 +18,7 @@ import thirdparty from './modules/thirdparty';
 import orderRule from './modules/orderRule';
 import thirdApiParam from './modules/thirdApiParam'
 import productMark from './modules/productMark'
+import fare from './modules/fare'
 
 Vue.use(Vuex);
 
@@ -40,7 +41,8 @@ export default new Vuex.Store({
     thirdparty,
     orderRule,
     thirdApiParam,
-    productMark
+    productMark,
+    fare
   },
   state: {},
   mutations: {},

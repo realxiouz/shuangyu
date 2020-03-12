@@ -227,6 +227,14 @@ export default new Router({
           uri: '/segment/list',
           component: () => import('@/views/flightSegment/List'),
           meta: {title: 'Home', icon: 'home'}
+        },
+        {
+          title: '票价信息',
+          path: '/fare/index',
+          name: 'fare',
+          uri: '/fare/index',
+          component: () => import('@/views/fare/List'),
+          meta: {title: 'Home', icon: 'home'}
         }
       ]
     },
