@@ -18,6 +18,14 @@
           <el-option label="女" :value=1></el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="出生日期">
+        <el-date-picker
+          type="date"
+          placeholder="选择日期"
+          v-model="formData.birthDate"
+          style="width: 100%;"
+        ></el-date-picker>
+      </el-form-item>
       <el-form-item label="手机号码">
         <el-input
           placeholder="请输入手机号码"
@@ -101,7 +109,7 @@
           nickName: "",
           fullName: "",
           gender: 0,
-          birthDate: null,
+          birthDate: '',
           phone: "",
           email: "",
           idCardNo: "",
