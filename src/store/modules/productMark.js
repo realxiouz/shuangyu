@@ -1,4 +1,4 @@
-import {save, removeOne, getPageList, getTotal, getOne, getFirmList, getFlagList, getList} from "@/api/productMark";
+import {save, removeOne, getPageList, getTotal, getOne, getFirmList, getFlagList, getList,getListByFlagIds} from "@/api/productMark";
 import {getToken} from "@/utils/auth";
 
 
@@ -47,9 +47,9 @@ const actions = {
   },
 
   getPageList({commit}, params) {
-    const {pageFlag, pageSize, lastId, thirdName} = params;
+    const {pageFlag, pageSize, lastId, filter} = params;
     return new Promise((resolve, reject) => {
-      getPageList(pageFlag, pageSize, lastId, thirdName)
+      getPageList(pageFlag, pageSize, lastId, filter)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -98,6 +98,19 @@ const actions = {
   getFlagList({commit}, params) {
     return new Promise((resolve, reject) => {
       getFlagList(params)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getListByFlagIds({commit}, params) {
+    const {flagIds} = params;
+    return new Promise((resolve, reject) => {
+      getListByFlagIds(flagIds)
         .then(response => {
           const {data} = response;
           resolve(data);

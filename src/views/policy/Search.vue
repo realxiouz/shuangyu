@@ -22,6 +22,7 @@
           placeholder="选择日期"
           v-model="searchForm.sellStartDate"
           style="width: 100%;"
+          value-format="yyyy-MM-dd"
         ></el-date-picker>
       </el-form-item>
       <el-form-item label="销售结束日期:">
@@ -30,6 +31,7 @@
           placeholder="选择日期"
           v-model="searchForm.sellEndDate"
           style="width: 100%;"
+          value-format="yyyy-MM-dd"
         ></el-date-picker>
       </el-form-item>
       <el-form-item label="出发日期:">
@@ -38,6 +40,7 @@
           placeholder="选择日期"
           v-model="searchForm.flightDate"
           style="width: 100%;"
+          value-format="yyyy-MM-dd"
         ></el-date-picker>
       </el-form-item>
       <el-form-item>

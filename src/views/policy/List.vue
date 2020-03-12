@@ -149,7 +149,6 @@
                 }
             },
             handleUpdate(policyId) {
-                debugger
                 this.policyId = policyId;
                 this.dialogVisible = true;
             },

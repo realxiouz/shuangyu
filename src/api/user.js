@@ -16,7 +16,6 @@ export function signOut() {
 }
 
 export function addOne(data) {
-  debugger
   return request({
     url: '/user/add/one',
     method: 'post',
