@@ -56,29 +56,34 @@
         <el-input type="textarea" v-model="formData.comment"></el-input>
       </el-form-item>
     </el-form>
-    <select-roles v-show="stepIndex===1"></select-roles>
-    <div>
+    <el-transfer v-show="stepIndex>0" v-model="formData.roles" :data="transData" :props="transferProps" style="margin-top: 20px">
+    </el-transfer>
+    <div style="margin-top: 25px">
       <el-button @click="$emit('onCancel')">取 消</el-button>
       <el-button v-if="stepIndex===0" type="primary" @click="nextStep">下一步</el-button>
       <el-button v-if="stepIndex>0" type="primary" @click="prevStep">上一步</el-button>
-      <el-button v-if="stepIndex===1" type="primary" @click="$emit('onSave',formData)">确 定</el-button>
+      <el-button v-if="stepIndex===1" type="primary" @click="handleConfirm">确 定</el-button>
     </div>
   </div>
 </template>
 
 <script>
   import selectRoles from "../../components/SelectRoles.vue";
-  import SelectRoles from "../../components/SelectRoles";
 
   export default {
     name: "userEdit",
-    components: { SelectRoles },
     props: ["userID"],
-    comments: { selectRoles },
+    comments: {selectRoles},
     data() {
       return {
         stepIndex: 0,
-        formData: {}
+        formData: {},
+        /*所有的可操作的角色信息*/
+        transData: [],
+        transferProps: {
+          key: 'roleId',
+          label: 'roleName'
+        },
         /*formRules: {
           nickName: [
             { required: true, message: "请输入昵称", trigger: "blur" }
@@ -117,15 +122,24 @@
           enable: true
         };
       },
+      handleConfirm(){
+        if ('number' != typeof this.formData.birthDate){
+          this.formData.birthDate = this.formData.birthDate.getTime();
+        }
+        this.$emit('onSave',this.formData)
+      },
       /*清除表单*/
       clearForm() {
         this.formData = this.defaultFormData();
+      },
+      clearRoles() {
+        this.transData = [];
       },
       /*根据用户ID查询用户信息*/
       loadUser() {
         if ("" != this.userID) {
           this.$store
-            .dispatch("user/getOne", { userId: this.userId })
+            .dispatch("user/getOne", {userId: this.userID})
             .then(data => {
               this.formData = data.data;
             })
@@ -133,11 +147,24 @@
               console.log(error);
             });
         }
+      },
+      /*加载所有的角色信息*/
+      loadRoles() {
+        this.clearRoles();
+        this.$store
+          .dispatch('role/getAll',{})
+          .then(data => {
+            this.transData = data;
+          })
+          .catch(error => {
+            console.log(error);
+          });
       }
     },
     created() {
       this.clearForm();
       this.loadUser();
+      this.loadRoles();
     }
   };
 </script>

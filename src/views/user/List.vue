@@ -197,7 +197,7 @@
         row.super = row.super ? false : true;
 
         this.$store
-          .dispatch("user/updateOne", {user: row})
+          .dispatch("user/updateOne", row)
           .then(data => {
             console.log(data);
             this.loadData();
@@ -211,7 +211,7 @@
         row.enable = row.enable ? false : true;
 
         this.$store
-          .dispatch("user/updateOne", {user: row})
+          .dispatch("user/updateOne", row)
           .then(data => {
             console.log(data);
             this.loadData();
@@ -244,7 +244,7 @@
           this.curNode.password = this.userPwd.againPwd;
 
           this.$store
-            .dispatch("user/updateOne", {user: this.curNode})
+            .dispatch("user/updateOne", this.curNode)
             .then(data => {
               console.log(data);
               this.loadData();
@@ -355,7 +355,7 @@
         } else {
           return '';
         }
-      },
+      }
     },
     computed: {
       formatDate() {

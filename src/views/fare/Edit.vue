@@ -65,23 +65,27 @@
       clearForm() {
         this.formData = this.defaultFormData();
       },
+      /*对提交的数据进行类型格式*/
       handleConfirm(){
         this.formData.segment = this.formData.segment.toUpperCase();
         this.formData.dpt = this.formData.dpt.toUpperCase();
         this.formData.arr = this.formData.arr.toUpperCase();
         this.formData.airlineCode = this.formData.airlineCode.toUpperCase();
-        this.formData.startDate = this.formData.startDate.getTime();
+        this.formData.cabin = this.formData.cabin.toUpperCase();
+        if ('number' != this.formData.startDate){
+          this.formData.startDate = this.formData.startDate.getTime();
+        }
         this.$emit('onSave',this.formData);
+      },
+      initFormData(){
+        this.clearForm();
+        if ('' != this.curNode.fareId){
+          this.formData = this.curNode;
+        }
       }
     },
     created() {
-      this.clearForm();
-    },
-    watch:{
-      curNode(){
-        this.clearForm();
-        this.formData = this.curNode;
-      }
+      this.initFormData();
     }
   };
 </script>

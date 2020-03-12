@@ -45,7 +45,7 @@
           </el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="$emit('onSearch',searchForm)">查询</el-button>
+          <el-button type="primary" @click="handleSearch">查询</el-button>
           <el-button type="primary" @click="clearSearchForm">清除</el-button>
         </el-form-item>
       </el-row>
@@ -73,6 +73,24 @@
       },
       clearSearchForm(){
         this.searchForm = this.defaultSearchFormData();
+      },
+      handleSearch(){
+        if (this.searchForm.segment){
+          this.searchForm.segment = this.searchForm.segment.toUpperCase();
+        }
+        if (this.searchForm.dpt){
+          this.searchForm.dpt = this.searchForm.dpt.toUpperCase();
+        }
+        if (this.searchForm.arr){
+          this.searchForm.arr = this.searchForm.arr.toUpperCase();
+        }
+        if (this.searchForm.airlineCode){
+          this.searchForm.airlineCode = this.searchForm.airlineCode.toUpperCase();
+        }
+        if (this.searchForm.cabin){
+          this.searchForm.cabin = this.searchForm.cabin.toUpperCase();
+        }
+        this.$emit('onSearch',this.searchForm)
       },
       segmentIconClick(){
         this.searchForm.segment = null;
