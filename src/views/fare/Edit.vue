@@ -72,7 +72,7 @@
         this.formData.arr = this.formData.arr.toUpperCase();
         this.formData.airlineCode = this.formData.airlineCode.toUpperCase();
         this.formData.cabin = this.formData.cabin.toUpperCase();
-        if ('number' != this.formData.startDate){
+        if ('number' != typeof this.formData.startDate){
           this.formData.startDate = this.formData.startDate.getTime();
         }
         this.$emit('onSave',this.formData);

@@ -93,6 +93,7 @@
       return {
         dialogVisible: false,
         tableData: [],
+        /*记录当前进行操作的节点*/
         curNode: {},
         pageFlag: "next",
         pageSize: 10,
@@ -101,6 +102,7 @@
       };
     },
     methods: {
+      /*加载数据列表*/
       loadData() {
         this.$store
           .dispatch('fare/getTotal', {filter: {}})
@@ -124,6 +126,7 @@
             console.log(error);
           });
       },
+      /*输入条件时可进行条件查询*/
       search(searchForm) {
         this.$store
           .dispatch('fare/getTotal', {filter: searchForm})
@@ -147,11 +150,13 @@
             console.log(error);
           });
       },
+      /*添加记录*/
       handleAdd(){
         this.dialogVisible = true;
         this.curNode = {};
         this.curNode.fareId = '';
       },
+      /*添加记录时完成数据填写或编辑记录时，点击对数据进行保存*/
       handleSave(formData){
         this.dialogVisible = false;
 
@@ -174,6 +179,7 @@
       handleCancel(){
         this.dialogVisible = false;
       },
+      /*点击记录进行编辑*/
       handleEdit(row) {
         this.dialogVisible = true;
         this.curNode = row;
@@ -194,6 +200,7 @@
             console.log(error);
           });
       },
+      /*前翻页*/
       handlePrevClick() {
         this.pageFlag = "prev";
         this.lastId = this.tableData[0].fareId;
