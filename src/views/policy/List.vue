@@ -136,6 +136,15 @@
                     if(params.arr){
                         newParams.arr = params.arr;
                     }
+                    if(params.sellStartDate){
+                        newParams.sellStartDate = params.sellStartDate;
+                    }
+                    if(params.sellEndDate){
+                        newParams.sellEndDate = params.sellEndDate;
+                    }
+                    if(params.flightDate){
+                        newParams.flightDate = params.flightDate;
+                    }
                     this.loadData(newParams);
                 }
             },
