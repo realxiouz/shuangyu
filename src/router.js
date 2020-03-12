@@ -70,6 +70,14 @@ export default new Router({
           meta: { title: 'Home', icon: 'home' }
         },
         {
+          title: '导航菜单管理',
+          path: '/nav/index',
+          name: 'nav',
+          uri: '/nav/index',
+          component: () => import('@/views/nav/List'),
+          meta: { title: 'Home', icon: 'home' }
+        },
+        {
           title: 'Api管理',
           path: '/api',
           uri: '/api',
@@ -106,38 +114,6 @@ export default new Router({
           uri: '/productMark',
           component: () => import('@/views/productMark/List'),
           meta: { title: 'Home', icon: 'home' },
-        }
-      ]
-    },
-    {
-      title: '部门管理',
-      path: '/dept',
-      uri: '/dept',
-      component: Layout,
-      children: [
-        {
-          title: '基本信息',
-          path: 'list',
-          name: 'list',
-          uri: '/dept/list',
-          component: () => import('@/views/dept/List'),
-          meta: { title: 'Home', icon: 'home' }
-        }
-      ]
-    },
-    {
-      title: '导航管理',
-      path: '/nav',
-      uri: '/nav',
-      component: Layout,
-      children: [
-        {
-          title: '导航管理',
-          path: '/nav/index',
-          name: 'nav',
-          uri: '/nav/index',
-          component: () => import('@/views/nav/List'),
-          meta: { title: 'Home', icon: 'home' }
         }
       ]
     },
@@ -251,6 +227,22 @@ export default new Router({
           uri: '/firm/index',
           component: () => import('@/views/firm/List'),
           meta: { title: 'Home', icon: 'home' }
+        },
+        {
+          title: '部门管理',
+          path: '/dept',
+          name: 'dept',
+          uri: '/dept',
+          component: () => import('@/views/dept/List'),
+          meta: { title: 'Home', icon: 'home' }
+        },
+        {
+          title: '员工管理',
+          path: '/staff/index',
+          name: 'staff',
+          uri: '/staff/index',
+          component: () => import('@/views/staff/List'),
+          meta: { title: 'Home', icon: 'home' }
         }
       ]
     },
@@ -266,22 +258,6 @@ export default new Router({
           name: 'policy',
           uri: '/policy/index',
           component: () => import('@/views/policy/List'),
-          meta: { title: 'Home', icon: 'home' }
-        }
-      ]
-    },
-    {
-      title: '员工管理',
-      path: '/staff',
-      uri: '/staff',
-      component: Layout,
-      children: [
-        {
-          title: '员工管理',
-          path: '/staff/index',
-          name: 'staff',
-          uri: '/staff/index',
-          component: () => import('@/views/staff/List'),
           meta: { title: 'Home', icon: 'home' }
         }
       ]
