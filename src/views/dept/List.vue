@@ -2,9 +2,11 @@
   <div class="dept-container">
     <dept-search @onSearch="handleSearch" @onAdd="handleAdd"></dept-search>
     <el-table :data="tableData"
-              style="width: 100%;margin-bottom: 20px;"
               row-key="deptId"
+              highlight-current-row
+              style="width: 100%;"
               border
+              fit
               :tree-props="{children: 'children', hasChildren: 'test'}"
     >
       <el-table-column

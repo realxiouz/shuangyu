@@ -2,22 +2,22 @@ import request from '@/utils/request';
 
 export function save(data) {
   return request({
-    url: '/policy/domain/save',
+    url: '/policy/save',
     method: 'post',
     data
   });
 }
 
-export function removeOne(user, domain) {
+export function removeOne(id) {
   return request({
-    url: `/policy/domain/remove/one/${user}/${domain}`,
+    url: `/policy/remove/one/${id}`,
     method: 'delete'
   });
 }
 
 export function updateOne(data) {
   return request({
-    url: '/policy/domain/update/one',
+    url: '/policy/update/one',
     method: 'post',
     data
   });
@@ -25,15 +25,15 @@ export function updateOne(data) {
 
 export function getList(params) {
   return request({
-    url: `/policy/domain/list`,
+    url: `/policy/list`,
     method: "get",
     params: params
   });
 }
 
-export function getOne(user, domain) {
+export function getOne(id) {
   return request({
-    url: `/policy/domain/one/${user}/${domain}`,
+    url: `/policy/one/${id}`,
     method: 'get'
   });
 }

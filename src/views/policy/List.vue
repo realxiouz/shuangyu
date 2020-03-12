@@ -1,32 +1,75 @@
 <template>
   <div class="app-container">
     <policy-search @onSearch="handleSearch" @onAdd="handleAdd"></policy-search>
-    <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;"
-              border>
+    <el-table :data="tableData"
+              highlight-current-row
+              style="width: 100%;"
+              border
+              fit>
       <el-table-column
-        prop="user"
-        label="用户名"
-        width="300"
+        prop="airlineCode"
+        label="航司"
+        width="100"
       ></el-table-column>
       <el-table-column
-        prop="domain"
-        label="域名"
-        width="300"
+        prop="dpt"
+        label="出发地三字码"
+        width="100"
       ></el-table-column>
       <el-table-column
-        prop="ip"
-        label="ip"
-        width="200"
+        prop="arr"
+        label="到达地三字码"
+        width="100"
       ></el-table-column>
       <el-table-column
-        prop="callbackUrl"
-        label="回调地址"
-        width="300"
+        prop="actFlightCode"
+        label="主航班号"
+        width="100"
       ></el-table-column>
       <el-table-column
-        prop="remark"
-        label="备注"
-        width="300"
+        prop="flightCode"
+        label="航班号"
+        width="100"
+      ></el-table-column>
+      <el-table-column
+        prop="cabin"
+        label="舱位"
+        width="100"
+      ></el-table-column>
+      <el-table-column
+        prop="discountValue"
+        label="票面价/折扣"
+        width="100"
+      ></el-table-column>
+      <el-table-column
+        prop="sellStartDate"
+        label="销售起始日期"
+        width="100"
+      ></el-table-column>
+      <el-table-column
+        prop="sellEndDate"
+        label="销售结束日期"
+        width="100"
+      ></el-table-column>
+      <el-table-column
+        prop="flightDate"
+        label="出发日期"
+        width="100"
+      ></el-table-column>
+      <el-table-column
+        prop="earliestAdvanceDays"
+        label="最早出票时限"
+        width="100"
+      ></el-table-column>
+      <el-table-column
+        prop="policyCode"
+        label="政策编码"
+        width="100"
+      ></el-table-column>
+      <el-table-column
+        prop="policySource"
+        label="政策来源"
+        width="100"
       ></el-table-column>
       <el-table-column
         fixed="right"
@@ -34,8 +77,8 @@
         align="center"
         width="300">
         <template slot-scope="scope">
-          <el-button @click="handleUpdate(scope.row.user,scope.row.domain)" type="primary" size="mini">编辑</el-button>
-          <el-button @click="handleRemove(scope.row.user,scope.row.domain)" type="danger"
+          <el-button @click="handleUpdate(scope.row.policyId)" type="primary" size="mini">编辑</el-button>
+          <el-button @click="handleRemove(scope.row.policyId)" type="danger"
                      size="mini">删除
           </el-button>
         </template>
@@ -43,7 +86,7 @@
 
     </el-table>
     <el-dialog title="政策信息" :visible.sync="dialogVisible" width="30%">
-      <policy-edit v-if="dialogVisible" :user="user" :domain="domain" @onSave="handleSave"
+      <policy-edit v-if="dialogVisible" :policy-id="policyId"  @onSave="handleSave"
                    @onCancel="handleCancel"></policy-edit>
     </el-dialog>
   </div>
@@ -58,8 +101,7 @@
             return {
                 tableData: [],
                 dialogVisible: false,
-                user: '',
-                domain: ''
+                policyId: ''
             }
         },
         methods: {
@@ -82,18 +124,33 @@
                     this.loadData(params);
                 }else {
                     const newParams ={};
-                    if(params.user){
-                        newParams.user = params.user;
+                    if(params.policyCode){
+                        newParams.policyCode = params.policyCode;
                     }
-                    if(params.domain){
-                        newParams.domain = params.domain;
+                    if(params.airlineCode){
+                        newParams.airlineCode = params.airlineCode;
+                    }
+                    if(params.dpt){
+                        newParams.dpt = params.dpt;
+                    }
+                    if(params.arr){
+                        newParams.arr = params.arr;
+                    }
+                    if(params.sellStartDate){
+                        newParams.sellStartDate = params.sellStartDate;
+                    }
+                    if(params.sellEndDate){
+                        newParams.sellEndDate = params.sellEndDate;
+                    }
+                    if(params.flightDate){
+                        newParams.flightDate = params.flightDate;
                     }
                     this.loadData(newParams);
                 }
             },
-            handleUpdate(user, domain) {
-                this.user = user;
-                this.domain = domain;
+            handleUpdate(policyId) {
+                debugger
+                this.policyId = policyId;
                 this.dialogVisible = true;
             },
             handleRemove(user, domain) {
