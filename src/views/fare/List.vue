@@ -49,10 +49,13 @@
           align="center"
         ></el-table-column>
         <el-table-column
-          prop="startDate"
           label="开始日期"
           width="150"
           align="center">
+            <template slot-scope="scope">
+              <i v-if="scope.row.startDate" class="el-icon-time"></i>
+              <span style="margin-left: 10px">{{ formatDate(scope.row.startDate,'YYYY-MM-DD') }}</span>
+            </template>
         </el-table-column>
         <el-table-column
           label="操作"
@@ -75,7 +78,7 @@
       </el-pagination>
 
       <el-dialog title="票价信息" :visible.sync="dialogVisible" width="30%">
-        <fare-edit :cur-node="curNode" @onSave="handleSave" @onCancel="handleCancel"></fare-edit>
+        <fare-edit v-if="dialogVisible" :curNode="curNode" @onSave="handleSave" @onCancel="handleCancel"></fare-edit>
       </el-dialog>
     </el-main>
   </el-container>
@@ -147,12 +150,13 @@
       handleAdd(){
         this.dialogVisible = true;
         this.curNode = {};
+        this.curNode.fareId = '';
       },
       handleSave(formData){
         this.dialogVisible = false;
 
         let url = '';
-        if ('' !== formData.fareId) {
+        if ('' != formData.fareId) {
           url = 'fare/updateOne';
         } else {
           url = 'fare/addOne';
@@ -176,7 +180,7 @@
       },
       /*对员工进行删除*/
       handleDelete(row) {
-        this.open(this.delete, row.fareId, '此操作将删除该用户的所有信息, 是否继续?');
+        this.open(this.delete, row.fareId, '此操作将删除条票价信息, 是否继续?');
       },
       /*根据用户ID删除用户*/
       delete(fareID) {
@@ -218,10 +222,26 @@
             message: '已取消删除'
           });
         });
-      }
+      },
+      /*初始化用工列表中的生日日期格式*/
+      initDate(dateStr, format) {
+    if (null != dateStr) {
+      const date = new Date(dateStr);
+      return this.$moment(date).format(format);
+    } else {
+      return '';
+    }
+  }
     },
     created() {
       this.loadData();
+    },
+    computed: {
+      formatDate() {
+        return function (dateStr, format) {
+          return this.initDate(dateStr, format);
+        }
+      }
     },
     components: {
       fareSearch,
