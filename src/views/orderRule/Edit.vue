@@ -220,7 +220,7 @@
   </div>
 </template>
 <script>
-  import selectStaff from "../../components/SelectStaff.vue";
+  import selectStaff from "../../components/SelectStaffs.vue";
 
   function defaultData() {
     return {
