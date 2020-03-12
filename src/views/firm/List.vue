@@ -91,14 +91,6 @@
       /*加载企业列表*/
       loadData() {
         this.$store
-          .dispatch('firm/getTotal',{filter:{}})
-          .then(data => {
-            this.total = data.data;
-          })
-          .catch(error => {
-            console.log(error);
-          });
-        this.$store
           .dispatch('firm/getList',{filter:{}})
           .then(data => {
             this.tableData = data;
