@@ -37,6 +37,9 @@
           <el-option label="否" :value="false"></el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="备注">
+        <el-input v-model="formData.remark" placeholder="请输入备注"></el-input>
+      </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="$emit('onCancel')">取 消</el-button>
