@@ -6,6 +6,9 @@
     <el-form-item label="航司">
       <el-input v-model="searchForm.airlineCode" placeholder="航司"></el-input>
     </el-form-item>
+    <el-form-item label="舱位">
+      <el-input v-model="searchForm.cabin" placeholder="舱位"></el-input>
+    </el-form-item>
     <el-form-item label="起飞城市">
       <el-input v-model="searchForm.dpt" placeholder="起飞城市"></el-input>
     </el-form-item>
@@ -29,7 +32,8 @@
                     policyCode: '',
                     airlineCode: '',
                     dpt: '',
-                    arr: ''
+                    arr: '',
+                    cabin:''
                 }
             }
         }

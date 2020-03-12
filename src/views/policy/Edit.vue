@@ -62,11 +62,18 @@
 <script>
     function defaultData() {
         return {
-            user: '',
-            ip: '',
-            callbackUrl: '',
-            remark: '',
-            domain: ''
+            airlineCode: '',
+            dpt: '',
+            arr: '',
+            actFlightCode: '',
+            flightCode: '',
+            cabin: '',
+            discountValue: '',
+            sellStartDate: '',
+            sellEndDate: '',
+            flightDate: '',
+            earliestAdvanceDays: '',
+            policyCode: '',
         }
     };
     export default {
