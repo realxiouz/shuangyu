@@ -14,7 +14,7 @@ import app from './modules/app';
 import api from './modules/api';
 import order from './modules/order';
 import staff from './modules/staff';
-import thirdparty from './modules/thirdparty';
+import thirdParty from './modules/thirdParty';
 import orderRule from './modules/orderRule';
 import thirdApiParam from './modules/thirdApiParam'
 import productMark from './modules/productMark'
@@ -38,7 +38,7 @@ export default new Vuex.Store({
     api,
     order,
     staff,
-    thirdparty,
+    thirdParty,
     orderRule,
     thirdApiParam,
     productMark,

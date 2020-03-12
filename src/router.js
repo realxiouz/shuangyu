@@ -222,17 +222,17 @@ export default new Router({
         },
         {
           title: '部门管理',
-          path: '/dept',
+          path: '/dept/list',
           name: 'dept',
-          uri: '/dept',
+          uri: '/dept/list',
           component: () => import('@/views/dept/List'),
           meta: { title: 'Home', icon: 'home' }
         },
         {
           title: '员工管理',
-          path: '/staff/index',
+          path: '/staff/list',
           name: 'staff',
-          uri: '/staff/index',
+          uri: '/staff/list',
           component: () => import('@/views/staff/List'),
           meta: { title: 'Home', icon: 'home' }
         }
@@ -262,9 +262,9 @@ export default new Router({
       children: [
         {
           title: '第三方平台',
-          path: '/thirdParty',
-          name: 'thirdparty',
-          uri: '/thirdParty',
+          path: '/third/party',
+          name: 'thirdParty',
+          uri: '/third/party/list',
           component: () => import('@/views/thirdParty/List'),
           meta: { title: 'Home', icon: 'home' }
         },
