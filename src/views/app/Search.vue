@@ -4,7 +4,7 @@
       <el-input v-model="searchForm.appName" placeholder="应用名称"></el-input>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="$emit('onSearch',searchForm)">查询</el-button>
+      <el-button type="primary" icon="el-icon-search"  @click="$emit('onSearch',searchForm)">查询</el-button>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="$emit('onAdd',true)">添加</el-button>
