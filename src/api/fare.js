@@ -1,6 +1,7 @@
 import request from '@/utils/request';
 
 export function addOne(data) {
+  debugger
   return request({
     url: '/fare/add/one',
     method: 'post',
