@@ -10,7 +10,8 @@
       <el-table-column prop="label" label="接口标签" align="center"></el-table-column>
       <el-table-column prop="name" label="接口名称" align="center"></el-table-column>
       <el-table-column prop="defaultValue" label="默认值" align="center"></el-table-column>
-      <el-table-column prop="required" label="是否必须" align="center"></el-table-column>
+      <el-table-column prop="required" label="是否必须" :formatter="formatBoolean" align="center"></el-table-column>
+      <el-table-column prop="remark"  label="备注" align="center"></el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
           <el-button @click="handleAddChild(scope.row)" type="text" size="small">添加</el-button>
@@ -59,6 +60,15 @@
           .catch(error => {
             console.log(error);
           });
+      },
+      formatBoolean(row, column, cellValue){
+        var ret = ''  //你想在页面展示的值
+        if (cellValue) {
+          ret = "是"  //根据自己的需求设定
+        } else {
+          ret = "否"
+        }
+        return ret;
       },
       rootAdd() {
         //判断添加的导航是否是顶级导航

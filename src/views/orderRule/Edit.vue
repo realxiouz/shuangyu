@@ -1,206 +1,209 @@
 <template>
   <div>
-    <el-form ref="form" :rules="formRules" :model="formData" :inline="true" class="demo-form-inline"
-             label-width="130px">
-      <el-row >
-        <el-col :span="12">
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="规则名称:" prop="ruleName">
-                <el-input v-model="formData.ruleName"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="序号:" prop="sort">
-                <el-input v-model="formData.sort"></el-input>
-              </el-form-item>
-            </el-col>
-
-          </el-row>
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="政策代码:" prop="policyCode">
-                <el-input v-model="formData.policyCode"></el-input>
-              </el-form-item>
-
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="是否调用出票中:" prop="isTicketing">
-                <el-switch
-                  v-model="formData.isTicketing"
-                  active-color="#13ce66"
-                  inactive-color="#ff4949">
-                </el-switch>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="24">
-              <el-form-item label="规则类型:" prop="formData.ruleTypes">
-                <el-checkbox-group v-model="formData.ruleTypes">
-                  <el-checkbox :label=3 name="ruleTypes">出票</el-checkbox>
-                  <el-checkbox :label=10 name="ruleTypes">未出票申请退款</el-checkbox>
-                  <el-checkbox :label=11 name="ruleTypes">退票</el-checkbox>
-                  <el-checkbox :label=20 name="ruleTypes">改签</el-checkbox>
-                  <el-checkbox :label=4 name="ruleTypes">消息</el-checkbox>
-                  <el-checkbox :label=5 name="ruleTypes">质检</el-checkbox>
-                </el-checkbox-group>
-              </el-form-item>
-            </el-col>
-          </el-row>
+    <el-form ref="form" :rules="formRules" :model="formData" label-width="120px">
+      <el-row>
+        <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+          <el-form-item label="规则名称:" prop="ruleName">
+            <el-input v-model="formData.ruleName"></el-input>
+          </el-form-item>
         </el-col>
-        <el-col :span="12">
-          <el-row>
-            <el-col :span="6">
-              <el-form-item label="" prop="inOrEx">
+        <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+          <el-form-item label="政策代码:" prop="policyCode">
+            <el-input v-model="formData.policyCode"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+          <el-form-item label="序号:" prop="sort">
+            <el-input v-model="formData.sort"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+          <el-form-item label="是否调出票中:" prop="isTicketing">
+            <el-switch
+              v-model="formData.isTicketing"
+              active-color="#13ce66"
+              inactive-color="#ff4949">
+            </el-switch>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+          <el-form-item label="航司:">
+            <el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="5">
+              <el-form-item prop="inOrEx">
                 <el-switch
                   v-model="formData.airlines.inOrEx"
                   active-color="#13ce66"
                   inactive-color="#ff4949"
-                  active-text="排除航司"
-                  inactive-text="指定航司">
+                  active-text="排除"
+                  inactive-text="指定">
                   >
-
                 </el-switch>
-
               </el-form-item>
             </el-col>
-            <el-col :span="18">
-              <el-form-item label="航司:" prop="values">
-                <el-input v-model="formData.airlines.values"  type="textarea" :rows="1"style="width: 300px" ></el-input>
+            <el-col :xs="24" :sm="24" :md="12" :lg="16" :xl="19">
+              <el-form-item prop="values">
+                <el-input v-model="formData.airlines.values" type="textarea" :rows="1"></el-input>
               </el-form-item>
             </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="6">
-              <el-form-item label="" prop="inOrEx">
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+          <el-form-item label="航线:">
+            <el-col xs="24" :sm="24" :md="12" :lg="8" :xl="5">
+              <el-form-item prop="inOrEx">
                 <el-switch
                   v-model="formData.segments.inOrEx"
                   active-color="#13ce66"
                   inactive-color="#ff4949"
-                  active-text="排除航线"
-                  inactive-text="指定航线">
+                  active-text="排除"
+                  inactive-text="指定">
                   >
                 </el-switch>
-
               </el-form-item>
             </el-col>
-
-            <el-col :span="18">
-              <el-form-item label="航线:" prop="values">
-                <el-input v-model="formData.segments.values" type="textarea" :rows="1" style="width: 300px"></el-input>
+            <el-col xs="24" :sm="24" :md="12" :lg="16" :xl="19">
+              <el-form-item prop="values">
+                <el-input v-model="formData.segments.values" type="textarea" :rows="1" ></el-input>
               </el-form-item>
             </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="6">
-              <el-form-item label="" prop="inOrEx">
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+          <el-form-item label="航班:">
+            <el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="5">
+              <el-form-item prop="inOrEx">
                 <el-switch
                   v-model="formData.flights.inOrEx"
                   active-color="#13ce66"
                   inactive-color="#ff4949"
-                  active-text="排除航班"
-                  inactive-text="指定航班">
+                  active-text="排除"
+                  inactive-text="指定">
                   >
                 </el-switch>
-
               </el-form-item>
             </el-col>
-            <el-col :span="18">
-              <el-form-item label="航班:" prop="values">
-                <el-input v-model="formData.flights.values" type="textarea" :rows="1" style="width: 300px"></el-input>
+            <el-col :xs="24" :sm="24" :md="12" :lg="16" :xl="19">
+              <el-form-item prop="values">
+                <el-input v-model="formData.flights.values" type="textarea" :rows="1" ></el-input>
               </el-form-item>
             </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="6">
-              <el-form-item label="" prop="inOrEx">
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+          <el-form-item label="舱位:">
+            <el-col xs="24" :sm="24" :md="12" :lg="8" :xl="5">
+              <el-form-item prop="inOrEx">
                 <el-switch
                   v-model="formData.cabins.inOrEx"
                   active-color="#13ce66"
                   inactive-color="#ff4949"
-                  active-text="排除舱位"
-                  inactive-text="指定舱位">
+                  active-text="排除"
+                  inactive-text="指定">
                   >
                 </el-switch>
               </el-form-item>
             </el-col>
-            <el-col :span="18">
-              <el-form-item label="舱位:" prop="values">
-                <el-input v-model="formData.cabins.values" type="textarea" :rows="1" style="width: 300px"></el-input>
+            <el-col xs="24" :sm="24" :md="12" :lg="16" :xl="19">
+              <el-form-item prop="values">
+                <el-input v-model="formData.cabins.values" type="textarea" :rows="1" ></el-input>
               </el-form-item>
             </el-col>
-          </el-row>
-        </el-col>
-
-      </el-row >
-
-
-      <el-row >
-        <el-row >
-          <el-form-item label="负责人" prop="principalName">
-            <el-button type="primary" @click="selectPeople">添加</el-button>
           </el-form-item>
-        </el-row>
-        <el-row>
-          <el-table
-            :data="peopleData"
-            style="width: 100%">
-            <el-table-column
-              prop="fullName"
-              label="姓名"
-              width="180">
-            </el-table-column>
-            <el-table-column
-              prop="phone"
-              label="手机号">
-            </el-table-column>
-            <el-table-column
-              prop=""
-              label="操作">
-              <el-button type="primary" size ="mini" @click="selectPeople">重新添加</el-button>
-            </el-table-column>
-          </el-table>
-        </el-row>
+        </el-col>
       </el-row>
 
-      <el-row style="margin-top:20px;margin-bottom:20px">
-        <el-row>
-          <el-form-item label="员工" prop="staffNames">
-            <el-button type="primary" @click="selectStaff">添加</el-button>
+      <el-row >
+        <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+          <el-form-item label="规则类型:" prop="formData.ruleTypes">
+            <el-checkbox-group v-model="formData.ruleTypes">
+              <el-checkbox :label=3 name="ruleTypes">出票</el-checkbox>
+              <el-checkbox :label=10 name="ruleTypes">未出票申请退款</el-checkbox>
+              <el-checkbox :label=11 name="ruleTypes">退票</el-checkbox>
+              <el-checkbox :label=20 name="ruleTypes">改签</el-checkbox>
+              <el-checkbox :label=4 name="ruleTypes">消息</el-checkbox>
+              <el-checkbox :label=5 name="ruleTypes">质检</el-checkbox>
+            </el-checkbox-group>
           </el-form-item>
+        </el-col>
 
-        </el-row>
-        <el-row>
-          <el-table
-            :data="staffData"
-            style="width: 100%">
-            <el-table-column
-              prop="fullName"
-              label="姓名"
-              width="180">
-            </el-table-column>
-            <el-table-column
-              prop="phone"
-              label="手机号">
-            </el-table-column>
-            <el-table-column
-              label="操作">
-              <template slot-scope="scope">
-                <el-button
-                  @click.native.prevent="handleRemove(scope.$index, scope.row)"
-                  type="danger"
-                  size="mini"
-                >
-                  删除
-                </el-button>
-                <el-button type="primary" size="mini" @click="selectStaff">继续添加</el-button>
+      </el-row>
+      <el-row type="flex" justify="space-between">
+        <el-col :xs="2" :sm="2" :md="1" :lg="1" :xl="1">
+          <el-form-item label="负责人" prop="principalName">
+          </el-form-item>
+        </el-col>
+        <el-col :xs="4" :sm="3" :md="2" :lg="1" :xl="1">
+          <el-button type="primary" @click="selectPeople" size="mini">添加</el-button>
 
-              </template>
+        </el-col>
 
-            </el-table-column>
-          </el-table>
-        </el-row>
+      </el-row>
+
+
+      <el-row>
+        <el-table
+          :data="peopleData"
+          style="width: 100%">
+          <el-table-column
+            prop="fullName"
+            label="姓名"
+            width="180">
+          </el-table-column>
+          <el-table-column
+            prop="phone"
+            label="手机号">
+          </el-table-column>
+          <el-table-column
+            prop=""
+            label="操作">
+            <el-button type="primary" size="mini" @click="selectPeople">重新添加</el-button>
+          </el-table-column>
+        </el-table>
+      </el-row>
+      <el-row style="margin-top:20px;margin-bottom:20px" type="flex" justify="space-between">
+        <el-col :xs="2" :sm="2" :md="1" :lg="1" :xl="1">
+          <el-form-item label="员工" prop="staffNames">
+          </el-form-item>
+        </el-col>
+        <el-col :xs="4" :sm="3" :md="2" :lg="1" :xl="1">
+          <el-button type="primary" @click="selectStaff" size="mini">添加</el-button>
+        </el-col>
+      </el-row>
+      <el-row style="margin-top:20px;margin-bottom:20px">
+        <el-table
+          :data="staffData"
+          style="width: 100%">
+          <el-table-column
+            prop="fullName"
+            label="姓名"
+            width="180">
+          </el-table-column>
+          <el-table-column
+            prop="phone"
+            label="手机号">
+          </el-table-column>
+          <el-table-column
+            label="操作">
+            <template slot-scope="scope">
+              <el-button
+                @click.native.prevent="handleRemove(scope.$index, scope.row)"
+                type="danger"
+                size="mini"
+              >
+                删除
+              </el-button>
+              <el-button type="primary" size="mini" @click="selectStaff">继续添加</el-button>
+
+            </template>
+
+          </el-table-column>
+        </el-table>
       </el-row>
     </el-form>
     <div>
@@ -217,25 +220,26 @@
   </div>
 </template>
 <script>
-  import selectStaff from "../../components/SelectStaff.vue";
+  import selectStaff from "../../components/SelectStaffs.vue";
 
   function defaultData() {
     return {
-      ruleName: '',
+      ruleName: "",
       ruleTypes: [],
-      isTicketing: '',
+      isTicketing: "",
       airlines: {},
       segments: {},
       flights: {},
       cabins: {},
-      policyCode: '',
+      policyCode: "",
       staffs: [],
-      nextStaffId: '',
-      principalName: '',
-      staffNames: '',
-      principal: '',
-    }
+      nextStaffId: "",
+      principalName: "",
+      staffNames: "",
+      principal: ""
+    };
   }
+
   export default {
     name: "orderRuleEdit",
     data() {
@@ -247,10 +251,10 @@
         staffData: [],
         formRules: {
           ruleName: [
-            {required: true, message: "请输入规则名称", trigger: "blur"}
+            { required: true, message: "请输入规则名称", trigger: "blur" }
           ],
           policyCode: [
-            {required: true, message: "请输入政策代码", trigger: "blur"}
+            { required: true, message: "请输入政策代码", trigger: "blur" }
           ]
         }
       };
@@ -269,16 +273,16 @@
         var params = JSON.parse(JSON.stringify(this.formData));
         console.log(this.formData);
         console.log(params);
-        params.airlines.values = this.formData.airlines.values.split(',');
-        params.segments.values = this.formData.segments.values.split(',');
-        params.flights.values = this.formData.flights.values.split(',');
-        params.cabins.values = this.formData.cabins.values.split(',');
+        params.airlines.values = this.formData.airlines.values.split(",");
+        params.segments.values = this.formData.segments.values.split(",");
+        params.flights.values = this.formData.flights.values.split(",");
+        params.cabins.values = this.formData.cabins.values.split(",");
         console.log(params);
         this.$store
-          .dispatch('orderRule/save', params)
+          .dispatch("orderRule/save", params)
           .then(data => {
             console.log(data);
-            this.lastId = '0';
+            this.lastId = "0";
             this.loadData();
           })
           .catch(error => {
@@ -287,12 +291,12 @@
       },
       onSelectStaff(params) {
         // this.peopleData=[]
-        if(!this.checkboxFlag){
-          var tempData=[]
-          tempData.push(params)
-          this.peopleData=tempData
-        }else{
-          this.staffData=params
+        if (!this.checkboxFlag) {
+          var tempData = [];
+          tempData.push(params);
+          this.peopleData = tempData;
+        } else {
+          this.staffData = params;
         }
 
         // console.log(this.peopleData)
@@ -316,10 +320,10 @@
         //     this.formData.principal = params.staffId;
         //   }
         // }
-        this.dialogVisible = false
+        this.dialogVisible = false;
       },
       onStaffCancel() {
-        this.dialogVisible = false
+        this.dialogVisible = false;
       },
       selectStaff() {
         this.checkboxFlag = true;
@@ -331,7 +335,7 @@
       },
       handleRemove(index, row) {
         console.log(row);
-        this.staffData.splice(index,1)
+        this.staffData.splice(index, 1);
       }
     },
     mounted() {
@@ -347,6 +351,6 @@
 </script>
 <style scoped>
   .el-form-item {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
   }
 </style>

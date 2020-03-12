@@ -27,9 +27,9 @@ const actions = {
     });
   },
   removeOne({commit}, params) {
-    const {user, domain} = params;
+    const {policyId} = params;
     return new Promise((resolve, reject) => {
-      removeOne(user, domain)
+      removeOne(policyId)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -40,9 +40,9 @@ const actions = {
     });
   },
   getOne({commit}, params) {
-    const {user, domain} = params;
+    const {policyId} = params;
     return new Promise((resolve, reject) => {
-      getOne(user, domain)
+      getOne(policyId)
         .then(response => {
           const {data} = response;
           resolve(data);

@@ -89,6 +89,8 @@
     <el-dialog title="用户信息" :visible.sync="dialogVisible" width="30%">
       <userForm v-if="dialogVisible" ref="form" :userID="userID" @onSave="handleSave"
                 @onCancel="handleCancel"></userForm>
+
+
     </el-dialog>
     <el-dialog
       title="修改密码"
@@ -118,6 +120,7 @@
 <script>
   import userForm from './Edit';
   import userSearch from './Search';
+  // import  userSelectRoles from
 
   export default {
     name: "userList",
@@ -295,7 +298,7 @@
           url = 'user/addOne';
         }
         this.$store
-          .dispatch(url, {user: formData})
+          .dispatch(url,  formData)
           .then(data => {
             console.log(data);
             this.loadData();

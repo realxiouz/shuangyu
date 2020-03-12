@@ -10,13 +10,12 @@ export function signIn(data) {
 
 export function signOut() {
   return request({
-    url: '/admin/user/sign/out',
+    url: '/user/sign/out',
     method: 'post'
   });
 }
 
 export function addOne(data) {
-  debugger
   return request({
     url: '/user/add/one',
     method: 'post',
