@@ -3,7 +3,7 @@
     <product-mark-search ref="user" @onSearch="handleSearch" @onAdd="addOne"></product-mark-search>
     <el-table :data="tableData" style="width: 100%">
       <el-table-column prop="firmName" label="企业" align="center"></el-table-column>
-      <el-table-column prop="domain" label="接口url" align="center"></el-table-column>
+      <el-table-column prop="domain" label="域名" align="center"></el-table-column>
       <el-table-column label="第三方标签" align="center">
         <template slot-scope="scope">
           <el-button @click="showFlagList(scope.row)" type="primary" size="small">查看</el-button>
