@@ -16,11 +16,35 @@
     <el-form-item label="到达城市">
       <el-input class="filter-item" v-model="searchForm.arr" placeholder="到达城市"></el-input>
     </el-form-item>
-    <el-form-item>
-      <el-button icon="el-icon-search"  type="primary" @click="$emit('onSearch',searchForm)">查询</el-button>
+    <el-form-item label="销售起始日期:">
+      <el-date-picker
+        type="date"
+        placeholder="选择日期"
+        v-model="searchForm.sellStartDate"
+        style="width: 100%;"
+      ></el-date-picker>
+    </el-form-item>
+    <el-form-item label="销售结束日期:">
+      <el-date-picker
+        type="date"
+        placeholder="选择日期"
+        v-model="searchForm.sellEndDate"
+        style="width: 100%;"
+      ></el-date-picker>
+    </el-form-item>
+    <el-form-item label="出发日期:">
+      <el-date-picker
+        type="date"
+        placeholder="选择日期"
+        v-model="searchForm.flightDate"
+        style="width: 100%;"
+      ></el-date-picker>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="$emit('onAdd',true)">添加</el-button>
+      <el-button icon="el-icon-search"  class="filter-item"  type="primary" @click="$emit('onSearch',searchForm)">查询</el-button>
+    </el-form-item>
+    <el-form-item>
+      <el-button icon="el-icon-edit" class="filter-item"  type="primary"   @click="$emit('onAdd',true)">添加</el-button>
     </el-form-item>
   </el-form>
   </div>
@@ -35,7 +59,10 @@
                     airlineCode: '',
                     dpt: '',
                     arr: '',
-                    cabin:''
+                    cabin:'',
+                    sellStartDate:'',
+                    sellEndDate:'',
+                    flightDate:'',
                 }
             }
         }
