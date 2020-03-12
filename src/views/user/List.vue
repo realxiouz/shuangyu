@@ -87,8 +87,16 @@
       @next-click="handleNextClick">
     </el-pagination>
     <el-dialog title="用户信息" :visible.sync="dialogVisible" width="30%">
+      <el-row style="margin-bottom:10px">
+        <el-steps :space="200" :active="0" finish-status="success" simple style="background:#fff;">
+          <el-step title="基本信息" icon="el-icon-edit"></el-step>
+          <el-step title="角色管理"></el-step>
+        </el-steps>
+      </el-row>
       <userForm v-if="dialogVisible" ref="form" :userID="userID" @onSave="handleSave"
                 @onCancel="handleCancel"></userForm>
+
+
     </el-dialog>
     <el-dialog
       title="修改密码"
@@ -118,6 +126,7 @@
 <script>
   import userForm from './Edit';
   import userSearch from './Search';
+  // import  userSelectRoles from
 
   export default {
     name: "userList",
