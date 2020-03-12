@@ -7,8 +7,8 @@
       <el-form-item label="出发地三字码" prop="dpt">
         <el-input v-model="formData.dpt"></el-input>
       </el-form-item>
-      <el-form-item label="到达地三字码" prop="callbackUrl">
-        <el-input v-model.number="formData.callbackUrl"></el-input>
+      <el-form-item label="到达地三字码" prop="arr">
+        <el-input v-model.number="formData.arr"></el-input>
       </el-form-item>
       <el-form-item label="主航班号" prop="actFlightCode">
         <el-input v-model.number="formData.actFlightCode"></el-input>
