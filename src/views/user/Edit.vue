@@ -1,6 +1,10 @@
 <template>
   <div>
-    <el-form ref="form" :model="formData" label-width="110px">
+    <el-steps :space="200" :active="stepIndex" finish-status="success" simple style="background:#fff;">
+      <el-step title="基本信息" icon="el-icon-edit"></el-step>
+      <el-step title="角色管理"></el-step>
+    </el-steps>
+    <el-form v-show="stepIndex===0" ref="form" :model="formData" label-width="110px">
       <input type="hidden" v-model="formData.userId"/>
       <el-form-item label="昵称">
         <el-input v-model="formData.nickName"></el-input>
@@ -44,20 +48,28 @@
         <el-input type="textarea" v-model="formData.comment"></el-input>
       </el-form-item>
     </el-form>
+    <select-roles v-show="stepIndex===1"></select-roles>
     <div>
       <el-button @click="$emit('onCancel')">取 消</el-button>
-      <el-button type="primary">下一步</el-button>
-      <el-button type="primary" @click="$emit('onSave',formData)">确 定</el-button>
+      <el-button v-if="stepIndex===0" type="primary" @click="nextStep">下一步</el-button>
+      <el-button v-if="stepIndex>0" type="primary" @click="prevStep">上一步</el-button>
+      <el-button v-if="stepIndex===1" type="primary" @click="$emit('onSave',formData)">确 定</el-button>
     </div>
   </div>
 </template>
 
 <script>
+  import selectRoles from "../../components/SelectRoles.vue";
+  import SelectRoles from "../../components/SelectRoles";
+
   export default {
     name: "userEdit",
+    components: { SelectRoles },
     props: ["userID"],
+    comments: { selectRoles },
     data() {
       return {
+        stepIndex: 0,
         formData: {}
         /*formRules: {
           nickName: [
@@ -76,6 +88,12 @@
       };
     },
     methods: {
+      prevStep() {
+        if (this.stepIndex-- === 0) this.stepIndex = 0;
+      },
+      nextStep() {
+        if (this.stepIndex++ > 1) this.stepIndex = 0;
+      },
       /*表单默认加载数据*/
       defaultFormData() {
         return {
@@ -99,7 +117,7 @@
       loadUser() {
         if ("" != this.userID) {
           this.$store
-            .dispatch("user/getOne", {userId: this.userId})
+            .dispatch("user/getOne", { userId: this.userId })
             .then(data => {
               this.formData = data.data;
             })
