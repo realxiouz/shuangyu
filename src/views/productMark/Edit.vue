@@ -2,7 +2,7 @@
   <div>
     <el-form :rules="formRules" ref="formData" :model="formData" label-width="120px">
       <el-form-item label="企业" prop="firmId">
-        <el-select v-model="formData.firmId" placeholder="请选择">
+        <el-select v-model="formData.firmId"  style="width:100%" placeholder="请选择">
           <el-option
             v-for="item in firmList"
             :key="item.firmId"
