@@ -81,8 +81,7 @@ const actions = {
 
   addOne({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const {user} = params;
-      addOne(user)
+      addOne(params)
         .then(response => {
           resolve(response);
         })
