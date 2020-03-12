@@ -13,16 +13,6 @@
       <el-form-item label="钉钉父节点" prop="ddParentIdId">
         <el-input v-model.number="formData.ddParentIdId"></el-input>
       </el-form-item>
-      <template>
-        <el-transfer
-          :titles="['全部角色', '已选角色']"
-          filter-placeholder="角色名称"
-          v-model="formData.roles"
-          @change="handleChange"
-          :props="{ key: 'roleId',label: 'roleName' }"
-          :data="allRoles">
-        </el-transfer>
-      </template>
     </el-form>
     <div slot="footer">
       <el-button type="primary" @click="$emit('onCancel')">取 消</el-button>
@@ -37,7 +27,6 @@
             domain: "",
             ddId: "",
             ddParentIdId: "",
-            roles: []
         }
     };
     export default {
@@ -45,8 +34,6 @@
         data() {
             return {
                 formData: defaultData(),
-                allRoles: [],
-                paramsRoles: [],
                 firmList: [],
                 newDialogVisible: false,
                 rules: {
@@ -86,18 +73,6 @@
             }
         },
         methods: {
-            loadRoles() {
-                this.$store
-                    .dispatch("role/getRoleList",{
-                        filters: {}
-                    })
-                    .then(data => {
-                        this.allRoles = data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
             loadFirms() {
                 this.$store
                     .dispatch("firm/getList", {
@@ -130,16 +105,12 @@
             handleSave() {
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
-                        if (this.paramsRoles && this.paramsRoles.length > 0) {
-                            this.formData.roles = this.paramsRoles;
-                        }
                         this.$emit('onSave', this.formData);
                     }
                 });
             },
         },
         created() {
-            this.loadRoles();
             this.loadFirms();
             if (this.editDeptId) {
                 this.handleGetOne(this.editDeptId);
