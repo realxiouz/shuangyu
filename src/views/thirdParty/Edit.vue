@@ -35,7 +35,7 @@
       loadThirdparty() {
         if ('' != this.thirdId) {
           this.$store
-            .dispatch("thirdparty/getOne", {thirdId: this.thirdId})
+            .dispatch("thirdParty/getOne", {thirdId: this.thirdId})
             .then(data => {
               this.formData = data;
             })

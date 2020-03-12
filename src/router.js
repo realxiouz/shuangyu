@@ -256,24 +256,24 @@ export default new Router({
     },
     {
       title: '第三方Api管理',
-      path: '/thirdapi',
-      uri: '/thirdapi',
+      path: '/thirdApi',
+      uri: '/thirdApi',
       component: Layout,
       children: [
         {
           title: '第三方平台',
-          path: '/thirdparty',
+          path: '/thirdParty',
           name: 'thirdparty',
-          uri: '/thirdparty',
-          component: () => import('@/views/thirdparty/List'),
+          uri: '/thirdParty',
+          component: () => import('@/views/thirdParty/List'),
           meta: { title: 'Home', icon: 'home' }
         },
         {
           title: '第三方Api',
-          path: '/thirdapi/index',
-          name: 'thirdapi',
-          uri: '/thirdapi/index',
-          component: () => import('@/views/thirdapi/List'),
+          path: '/thirdApi/index',
+          name: 'thirdApi',
+          uri: '/thirdApi/index',
+          component: () => import('@/views/thirdApi/List'),
           meta: { title: 'Home', icon: 'home' }
         }
 
