@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-aside width="auto">
+    <el-aside width="auto" :style="{display:display}">
       <Sidebar :menuList="menuList" :collapse="isCollapse"/>
     </el-aside>
     <el-main>
@@ -65,7 +65,10 @@
           { name: "首页", closable: false, type: "" },
           { name: "用户管理", closable: true, type: "success" },
           { name: "添加用户", closable: true, type: "info" }
-        ]
+        ],
+        display:"block",
+        fullWidth:document.documentElement.clientWidth
+
       };
     },
     computed: {
@@ -81,10 +84,27 @@
         return this.$router.options.routes;
       }
     },
+    created(){
+      window.addEventListener('resize', this.handleResize)
+    },
     methods: {
       goBack() {
       },
+      handleResize (event) {
+        // console.log(this.fullWidth)
+        this.fullWidth = document.documentElement.clientWidth
+        if(this.fullWidth<501){
+          this.display="none"
+        }else if (this.fullWidth<1000){
+          this.display="block"
+          this.isCollapse = true;
+        }else {
+          this.isCollapse = false;
+        }
+      },
       handleSwitch() {
+        this.display="block"
+
         this.isCollapse = !this.isCollapse;
       },
       handleOpen(key, keyPath) {
