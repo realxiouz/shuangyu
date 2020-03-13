@@ -11,7 +11,7 @@ export default new Router({
       path: '/login',
       name: 'login',
       uri: '/login',
-      component: () => import('@/views/Login'),
+      component: () => import('@/views/user/Login'),
       hidden: true
     },
     {
@@ -71,9 +71,9 @@ export default new Router({
         },
         {
           title: '导航菜单管理',
-          path: '/nav/index',
+          path: '/nav/list',
           name: 'nav',
-          uri: '/nav/index',
+          uri: '/nav/list',
           component: () => import('@/views/nav/List'),
           meta: { title: 'Home', icon: 'home' }
         },
@@ -86,32 +86,24 @@ export default new Router({
         },
         {
           title: '角色管理',
-          path: '/role',
-          uri: '/role',
+          path: '/role/list',
+          uri: '/role/list',
           component: () => import('@/views/role/List'),
           meta: { title: 'Home', icon: 'home' }
         },
         {
-          title: '第三方管理',
-          path: '/thirdparty',
-          name: 'thirdparty',
-          uri: '/thirdparty',
-          component: () => import('@/views/thirdparty/List'),
-          meta: { title: 'Home', icon: 'home' },
-        },
-        {
           title: '政策接口参数管理',
-          path: '/thirdApiParam',
+          path: '/thirdApiParam/list',
           name: 'thirdApiParam',
-          uri: '/thirdApiParam',
+          uri: '/thirdApiParam/list',
           component: () => import('@/views/thirdApiParam/List'),
           meta: { title: 'Home', icon: 'home' },
         },
         {
           title: '产品标签管理',
-          path: '/productMark',
+          path: '/productMark/list',
           name: 'productMark',
-          uri: '/productMark',
+          uri: '/productMark/list',
           component: () => import('@/views/productMark/List'),
           meta: { title: 'Home', icon: 'home' },
         }
@@ -206,9 +198,9 @@ export default new Router({
         },
         {
           title: '票价信息',
-          path: '/fare/index',
+          path: '/fare/list',
           name: 'fare',
-          uri: '/fare/index',
+          uri: '/fare/list',
           component: () => import('@/views/fare/List'),
           meta: {title: 'Home', icon: 'home'}
         }
@@ -222,25 +214,25 @@ export default new Router({
       children: [
         {
           title: '企业管理',
-          path: '/firm/index',
+          path: '/firm/list',
           name: 'firm',
-          uri: '/firm/index',
+          uri: '/firm/list',
           component: () => import('@/views/firm/List'),
           meta: { title: 'Home', icon: 'home' }
         },
         {
           title: '部门管理',
-          path: '/dept',
+          path: '/dept/list',
           name: 'dept',
-          uri: '/dept',
+          uri: '/dept/list',
           component: () => import('@/views/dept/List'),
           meta: { title: 'Home', icon: 'home' }
         },
         {
           title: '员工管理',
-          path: '/staff/index',
+          path: '/staff/list',
           name: 'staff',
-          uri: '/staff/index',
+          uri: '/staff/list',
           component: () => import('@/views/staff/List'),
           meta: { title: 'Home', icon: 'home' }
         }
@@ -254,13 +246,39 @@ export default new Router({
       children: [
         {
           title: '政策管理',
-          path: '/policy/index',
+          path: '/policy/list',
           name: 'policy',
-          uri: '/policy/index',
+          uri: '/policy/list',
           component: () => import('@/views/policy/List'),
           meta: { title: 'Home', icon: 'home' }
         }
       ]
-    }
+    },
+    {
+      title: '第三方Api管理',
+      path: '/thirdApi',
+      uri: '/thirdApi',
+      component: Layout,
+      children: [
+        {
+          title: '第三方平台',
+          path: '/third/party/list',
+          name: 'thirdParty',
+          uri: '/third/party/list',
+          component: () => import('@/views/thirdParty/List'),
+          meta: { title: 'Home', icon: 'home' }
+        },
+        {
+          title: '第三方Api',
+          path: '/thirdApi/list',
+          name: 'thirdApi',
+          uri: '/thirdApi/list',
+          component: () => import('@/views/thirdApi/List'),
+          meta: { title: 'Home', icon: 'home' }
+        }
+
+      ]
+    },
+
   ]
 });

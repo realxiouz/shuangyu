@@ -55,7 +55,7 @@
     methods: {
       loadData() {
         this.$store
-          .dispatch("thirdparty/getPageList", {pageFlag: this.pageFlag, pageSize: 10, lastId: this.lastId})
+          .dispatch("thirdParty/getPageList", {pageFlag: this.pageFlag, pageSize: 10, lastId: this.lastId})
           .then(data => {
             this.tableData = data;
           })
@@ -65,7 +65,7 @@
       },
       search(keyword) {
         this.$store
-          .dispatch("thirdparty/getPageList", {
+          .dispatch("thirdParty/getPageList", {
             pageFlag: this.pageFlag,
             pageSize: 10,
             lastId: this.lastId,
@@ -91,7 +91,7 @@
           type: "warning"
         }).then(() => {
           this.$store
-            .dispatch("thirdparty/removeOne", {thirdId: row.thirdId})
+            .dispatch("thirdParty/removeOne", {thirdId: row.thirdId})
             .then(data => {
               console.log(data);
               rows.splice(index, 1);
@@ -114,7 +114,7 @@
       },
       handleSave(formData) {
         this.$store
-          .dispatch("thirdparty/save", formData)
+          .dispatch("thirdParty/save", formData)
           .then(data => {
             console.log("-----------------" + data)
             this.loadData();
@@ -139,7 +139,7 @@
       ,
       loadTotal: function () {
         this.$store
-          .dispatch("thirdparty/getTotal", {thirdName: this.searchForm})
+          .dispatch("thirdParty/getTotal", {thirdName: this.searchForm})
           .then(data => {
             this.total = data;
           })
