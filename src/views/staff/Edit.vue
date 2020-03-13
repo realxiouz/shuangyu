@@ -176,7 +176,7 @@
       searchUser() {
         this.clearUsersTable();
         this.$store
-          .dispatch('user/getList', {filter: this.keyword ? {nickName: this.keyword} : {}})
+          .dispatch('user/getList', {filter: this.keyword ? {nickName: this.keyword, enable: true} : {}})
           .then(data => {
             data.forEach((user) => {
               let flag = false;
