@@ -85,7 +85,7 @@
       </el-table-column>
 
     </el-table>
-    <el-dialog title="政策信息" :visible.sync="dialogVisible" width="30%">
+    <el-dialog title="政策信息" :visible.sync="dialogVisible" width="30%" :close-on-click-modal="false">
       <policy-edit v-if="dialogVisible" :policy-id="policyId"  @onSave="handleSave"
                    @onCancel="handleCancel"></policy-edit>
     </el-dialog>

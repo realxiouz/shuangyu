@@ -54,7 +54,7 @@
       :page-size="pageSize"
       :total="total">
     </el-pagination>
-    <el-dialog title="部门信息" :visible.sync=dialogVisible width="30%">
+    <el-dialog title="部门信息" :visible.sync=dialogVisible width="30%" :close-on-click-modal="false">
       <dept-edit v-if="dialogVisible" :edit-dept-id="editDeptId" :pid="pid" @onSave="handleSave"
                  @onCancel="handleCancel"></dept-edit>
     </el-dialog>
