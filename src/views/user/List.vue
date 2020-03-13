@@ -86,7 +86,7 @@
       @prev-click="handlePrevClick"
       @next-click="handleNextClick">
     </el-pagination>
-    <el-dialog title="用户信息" :visible.sync="dialogVisible" width="30%">
+    <el-dialog title="用户信息" :visible.sync="dialogVisible" width="30%" :close-on-click-modal="false">
       <userForm v-if="dialogVisible" ref="form" :userID="userID" @onSave="handleSave"
                 @onCancel="handleCancel"></userForm>
 
@@ -95,6 +95,7 @@
     <el-dialog
       title="修改密码"
       :visible.sync="pwdDialogVisible"
+      :close-on-click-modal="false"
       width="30%">
       <el-form label-width="120px" :model="userPwd">
         <el-form-item label="请输入密码">
