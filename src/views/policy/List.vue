@@ -9,17 +9,17 @@
       <el-table-column
         prop="airlineCode"
         label="航司"
-        width="100"
+        width="50"
       ></el-table-column>
       <el-table-column
         prop="dpt"
-        label="出发地三字码"
-        width="100"
+        label="出发地"
+        width="80"
       ></el-table-column>
       <el-table-column
         prop="arr"
-        label="到达地三字码"
-        width="100"
+        label="到达地"
+        width="80"
       ></el-table-column>
       <el-table-column
         prop="actFlightCode"
@@ -34,7 +34,7 @@
       <el-table-column
         prop="cabin"
         label="舱位"
-        width="100"
+        width="50"
       ></el-table-column>
       <el-table-column
         prop="discountValue"
