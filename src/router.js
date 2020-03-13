@@ -15,6 +15,14 @@ export default new Router({
       hidden: true
     },
     {
+      title: '首次登陆修改密码',
+      path: '/changePassword',
+      name: 'changePassword',
+      uri: '/changePassword',
+      component: () => import('@/views/user/ChangePassword'),
+      hidden: true
+    },
+    {
       title: '首页',
       path: '/index',
       name: 'index',
