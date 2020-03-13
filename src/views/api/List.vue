@@ -50,7 +50,7 @@
       :page-size="pageSize"
       :total="total">
     </el-pagination>
-    <el-dialog title="Api信息" :visible.sync="dialogVisible" width="30%">
+    <el-dialog title="Api信息" :visible.sync="dialogVisible" width="30%" :close-on-click-modal="false">
       <apiEdit v-if="dialogVisible" :api-id="apiId" @onCancel="handleCancel" @onSave="handleSave"></apiEdit>
     </el-dialog>
   </div>
