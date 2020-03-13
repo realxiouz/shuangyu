@@ -142,6 +142,9 @@
                     if(params.airlineCode){
                         newParams.airlineCode = params.airlineCode;
                     }
+                    if(params.cabin){
+                        newParams.cabin = params.cabin;
+                    }
                     if(params.dpt){
                         newParams.dpt = params.dpt;
                     }
