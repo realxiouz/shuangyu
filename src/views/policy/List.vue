@@ -42,20 +42,32 @@
         width="100"
       ></el-table-column>
       <el-table-column
-        prop="sellStartDate"
         label="销售起始日期"
-        width="100"
-      ></el-table-column>
+        width="150"
+        align="center">
+        <template slot-scope="scope">
+          <i v-if="scope.row.sellStartDate" class="el-icon-time"></i>
+          <span style="margin-left: 10px">{{ formatDate(scope.row.sellStartDate,'YYYY-MM-DD') }}</span>
+        </template>
+      </el-table-column>
       <el-table-column
-        prop="sellEndDate"
         label="销售结束日期"
-        width="100"
-      ></el-table-column>
+        width="150"
+        align="center">
+        <template slot-scope="scope">
+          <i v-if="scope.row.sellEndDate" class="el-icon-time"></i>
+          <span style="margin-left: 10px">{{ formatDate(scope.row.sellEndDate,'YYYY-MM-DD') }}</span>
+        </template>
+      </el-table-column>
       <el-table-column
-        prop="flightDate"
         label="出发日期"
-        width="100"
-      ></el-table-column>
+        width="150"
+        align="center">
+        <template slot-scope="scope">
+          <i v-if="scope.row.flightDate" class="el-icon-time"></i>
+          <span style="margin-left: 10px">{{ formatDate(scope.row.flightDate,'YYYY-MM-DD') }}</span>
+        </template>
+      </el-table-column>
       <el-table-column
         prop="earliestAdvanceDays"
         label="最早出票时限"
