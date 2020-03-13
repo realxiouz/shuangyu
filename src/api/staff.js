@@ -24,17 +24,23 @@ export function updateOne(data) {
   });
 }
 
-export function removeOne(data) {
+export function removeOne(firmID, userID, deptID) {
   return request({
-    url: `/staff/remove/one`,
-    method: 'post',
-    data
+    url: `/staff/remove/one/${firmID}/${userID}/${deptID}`,
+    method: 'delete'
   });
 }
 
 export function getOne(staffID) {
   return request({
     url: `/staff/one/${staffID}`,
+    method: 'get'
+  });
+}
+
+export function getOneByFidAndUid(firmID, userID) {
+  return request({
+    url: `/staff/one/${firmID}/${userID}`,
     method: 'get'
   });
 }

@@ -9,9 +9,7 @@
         @node-click="handleNodeClick">
       </el-tree>
     </el-aside>
-    <el-container>
-      <staff-form :curNode="curNode" :staffAddVisible="staffAddVisible"/>
-    </el-container>
+      <staff-form :curNode="curNode" :staffAddVisible="staffAddVisible" style="width: 100%"/>
   </el-container>
 </template>
 

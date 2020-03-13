@@ -1,4 +1,14 @@
-import {addOne,addMany,updateOne,removeOne,getOne,getList,getTotal,getPageList} from '@/api/staff';
+import {
+  addOne,
+  addMany,
+  updateOne,
+  removeOne,
+  getOne,
+  getOneByFidAndUid,
+  getList,
+  getTotal,
+  getPageList
+} from '@/api/staff';
 
 const actions = {
   addOne({commit}, params) {
@@ -36,7 +46,8 @@ const actions = {
   },
   removeOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      removeOne(params)
+      const {firmID, deptID, userID} = params;
+      removeOne(firmID, userID, deptID)
         .then(response => {
           resolve(response);
         })
@@ -49,6 +60,18 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {staffID} = params;
       getOne(staffID)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getOneByFidAndUid({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {firmID, userID} = params;
+      getOneByFidAndUid(firmID, userID)
         .then(response => {
           resolve(response);
         })

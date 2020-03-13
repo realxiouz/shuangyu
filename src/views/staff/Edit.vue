@@ -52,6 +52,11 @@
           <template slot-scope="scope">
             <el-button
               size="mini"
+              type="success"
+              @click="permissionChange(scope.$index, scope.row)">修改权限
+            </el-button>
+            <el-button
+              size="mini"
               type="danger"
               @click="handleDelete(scope.$index, scope.row)">删除
             </el-button>
@@ -105,17 +110,31 @@
             <el-button type="primary" @click="handleSave">添 加</el-button>
           </span>
       </el-dialog>
+      <!-- 权限修改弹窗 -->
+      <el-dialog
+        title="提示"
+        width="37%"
+        :visible.sync="permissionDialogVisible"
+        :close-on-click-modal="false">
+        <el-transfer v-model="zombie.roles" :data="transData" :props="transferProps" style="margin-top: 20px">
+        </el-transfer>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="permissionAlterCancel">取 消</el-button>
+            <el-button type="primary" @click="permissionAlterSave">添 加</el-button>
+        </span>
+      </el-dialog>
     </el-main>
   </div>
 </template>
 
 <script>
-  export default{
+  export default {
     name: 'staffEdit',
     props: ['curNode', 'staffAddVisible'],
-    data(){
-      return{
+    data() {
+      return {
         dialogVisible: false,
+        permissionDialogVisible: false,
         /*点击部门后用于展示的员工列表*/
         tableData: [],
         /*选择用户后生成的列表*/
@@ -124,14 +143,22 @@
         prepareStaffs: [],
         /*进行用户查询后待选择的用户列表*/
         userTable: [],
-        keyword: ''
+        keyword: '',
+        zombie: {
+          roles: []
+        },
+        transData: [],
+        transferProps: {
+          key: 'roleId',
+          label: 'roleName'
+        }
       }
     },
     methods: {
       /*获取该部门下的员工列表*/
       loadTableData() {
         this.$store
-          .dispatch('staff/getList', {filter:{firmId: this.curNode.firmId, deptId: this.curNode.deptId}})
+          .dispatch('staff/getList', {filter: {firmId: this.curNode.firmId, deptId: this.curNode.deptId}})
           .then(data => {
             this.tableData = data.data;
           })
@@ -154,14 +181,26 @@
             data.forEach((user) => {
               let flag = false;
               this.tableData.forEach((staff) => {
-                if (staff.userId == user.userId){
+                if (staff.userId == user.userId) {
                   flag = true;
                 }
               });
-              if (!flag){
+              if (!flag) {
                 this.userTable.push(user);
               }
             });
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      /*加载所有的角色信息*/
+      loadRoles() {
+        this.clearRoles();
+        this.$store
+          .dispatch('role/getAll',{})
+          .then(data => {
+            this.transData = data;
           })
           .catch(error => {
             console.log(error);
@@ -181,7 +220,7 @@
         this.initPreparesToStaff();
 
         this.$store
-          .dispatch("staff/addMany",this.prepareStaffs)
+          .dispatch("staff/addMany", this.prepareStaffs)
           .then(data => {
             console.log(data);
             this.loadTableData();
@@ -196,13 +235,53 @@
       handleCancel() {
         this.dialogVisible = false;
       },
+      /*点击修改权限*/
+      permissionChange(idx, row) {
+        /*根据对应的企业ID和用户ID查询对应的用工对象*/
+        this.$store
+          .dispatch("staff/getOneByFidAndUid", {firmID:this.curNode.firmId, userID: row.userId})
+          .then(data => {
+            /*如果请求到的数据roles为null会报错*/
+            if (!data.data.roles){
+              data.data.roles = [];
+            }
+            this.zombie = data.data;
+            /*if (data.data.roles && row.roles.length && data.data.roles.length < row.roles.length){
+              this.zombie.roles = row.roles;
+            }*/
+          })
+          .catch(error => {
+            console.log(error);
+          });
+
+        this.permissionDialogVisible = true;
+      },
+      /*点击修改权限弹窗取消按钮*/
+      permissionAlterCancel(){
+        this.permissionDialogVisible = false;
+      },
+      /*点击修改权限弹窗保存按钮*/
+      permissionAlterSave(){
+        this.permissionDialogVisible = false;
+
+        this.$store
+          .dispatch("staff/updateOne", this.zombie)
+          .then(data => {
+            console.log(data);
+            this.loadTableData();
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
       /*对员工进行删除*/
       handleDelete(idx, row) {
         this.open(this.delete, row.userId);
       },
+      /*根据对应用户ID*/
       delete(userID) {
         this.$store
-          .dispatch('staff/removeOne', {firmId: this.curNode.firmId, deptId: this.curNode.deptId,userId: userID})
+          .dispatch('staff/removeOne', {firmID: this.curNode.firmId, deptID: this.curNode.deptId, userID: userID})
           .then(data => {
             console.log(data);
             this.loadTableData();
@@ -246,20 +325,24 @@
             temp.userId = item.userId;
             temp.firmId = this.curNode.firmId;
             temp.depts = [this.curNode.deptId];
+            temp.roles = this.curNode.roles;
 
             this.prepareStaffs.push(temp);
           });
         }
       },
-      clearTableData(){
+      clearTableData() {
         this.tableData = [];
+      },
+      clearRoles() {
+        this.transData = [];
       },
       /*清空用户查询列表*/
       clearUsersTable() {
         this.userTable = [];
       },
       /*清除待提交员工列表的缓存*/
-      clearPreparesList(){
+      clearPreparesList() {
         this.prepares = [];
         this.prepareStaffs = [];
       }
@@ -276,8 +359,11 @@
         }
       }
     },
-    watch:{
-      curNode(){
+    created() {
+      this.loadRoles();
+    },
+    watch: {
+      curNode() {
         this.clearTableData();
         this.loadTableData();
       }
