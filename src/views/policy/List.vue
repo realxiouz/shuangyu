@@ -142,6 +142,9 @@
                     if(params.airlineCode){
                         newParams.airlineCode = params.airlineCode;
                     }
+                    if(params.cabin){
+                        newParams.cabin = params.cabin;
+                    }
                     if(params.dpt){
                         newParams.dpt = params.dpt;
                     }
@@ -197,10 +200,25 @@
                     });
                 this.dialogVisible = false;
             },
-
+            /*初始化用工列表中的生日日期格式*/
+            initDate(dateStr, format) {
+                if (null != dateStr) {
+                    let date = new Date(dateStr);
+                    return this.$moment(date).format(format);
+                } else {
+                    return '';
+                }
+            }
         },
         created() {
             this.handleSearch();
+        },
+        computed:{
+            formatDate() {
+                return function (dateStr, format) {
+                    return this.initDate(dateStr, format);
+                }
+            },
         },
         components: {
             policySearch,
