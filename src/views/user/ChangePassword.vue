@@ -4,17 +4,12 @@
     <el-form ref="userPwd" :model="userPwd" :rules="userRules" >
       <el-form-item prop="newPwd" label="您的新密码：">
         <el-col :span="24">
-          <el-input :type="inputType" v-model="userPwd.newPwd" placeholder="请输入您的新密码">
-            <i class="el-icon-view"
-               slot="suffix"
-               @click="handleIconClick">
-            </i>
-          </el-input>
+          <el-input :type="inputType" v-model="userPwd.newPwd" placeholder="请输入您的新密码" show-password></el-input>
         </el-col>
       </el-form-item>
       <el-form-item prop="againPwd" label="确认您的新密码">
         <el-col :span="24">
-          <el-input :type="inputType" v-model="userPwd.againPwd" placeholder="请确认您的新密码"></el-input>
+          <el-input :type="inputType" v-model="userPwd.againPwd" placeholder="请确认您的新密码" show-password></el-input>
         </el-col>
       </el-form-item>
     </el-form>
@@ -61,16 +56,11 @@
       }
     },
     methods:{
-      handleIconClick() {
-        this.inputType = this.inputType === 'password' ? '' : 'password';
-      },
       goHome(){
-
         if (this.userPwd.newPwd ==='' || this.userPwd.againPwd ==='' ) {
           this.$message({
             type: 'error',
             message: '密码不能为空,请重新输入密码！'
-
           });
           return
         }
@@ -94,7 +84,7 @@
     left: 50%;
     margin-top: -200px;
     margin-left: -200px;
-    height: 400px;
+    height: 370px;
     width: 400px;
   }
 
