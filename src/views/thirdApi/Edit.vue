@@ -73,7 +73,7 @@
             handleGetOne(id) {
                 if (id) {
                     this.$store
-                        .dispatch("api/getOne", {apiId: id})
+                        .dispatch("thirdApiService/getOne", {apiId: id})
                         .then(data => {
                             this.formData = data;
                             this.dialogVisible = true;
