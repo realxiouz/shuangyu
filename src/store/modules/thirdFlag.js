@@ -1,5 +1,4 @@
-import {getOne, getPageList, getTotal, removeOne, save} from "@/api/thirdParty";
-
+import {save, removeOne, getPageList, getTotal,getOne} from '@/api/thirdFlag';
 import {getToken} from "@/utils/auth";
 
 
@@ -49,9 +48,9 @@ const actions = {
   },
 
   getPageList({commit}, params) {
-    const {pageFlag, pageSize, lastId, thirdName} = params;
+    const {pageFlag, pageSize, lastId, filters} = params;
     return new Promise((resolve, reject) => {
-      getPageList(pageFlag, pageSize, lastId, thirdName)
+      getPageList(pageFlag, pageSize, lastId, filters)
         .then(response => {
           const {data} = response;
           resolve(data);

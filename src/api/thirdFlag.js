@@ -31,9 +31,10 @@ export function getPageList(pageFlag, pageSize, lastId, searchForm) {
   });
 }
 
-export function getTotal(params) {
+export function getTotal(searchForm) {
   return request({
-    url: `/third/flag/get/total/${params}`,
-    method: "get"
+    url: `/third/flag/get/total/`,
+    method: "get",
+    params: searchForm
   });
 }
