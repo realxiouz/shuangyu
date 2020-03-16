@@ -283,6 +283,14 @@ export default new Router({
           uri: '/thirdApi/list',
           component: () => import('@/views/thirdApi/List'),
           meta: { title: 'Home', icon: 'home' }
+        },
+        {
+          title: '第三方标签',
+          path: '/thirdFlag/list',
+          name: 'flag',
+          uri: '/thirdFlag/list',
+          component: () => import('@/views/thirdFlag/List'),
+          meta: { title: 'Home', icon: 'home' }
         }
 
       ]
