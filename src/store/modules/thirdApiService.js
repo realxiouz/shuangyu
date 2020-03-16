@@ -1,4 +1,4 @@
-import { addApi, getApiList,getPageList,getTotal,removeOne,updateOne} from "@/api/thirdApiService";
+import { addApi, getApiList,getPageList,getTotal,removeOne,updateOne,getOne} from "@/api/thirdApiService";
 import { getToken } from "@/utils/auth";
 
 
@@ -93,7 +93,19 @@ const actions = {
           reject(error);
         });
     });
-  }
+  },
+  getOne({commit}, params) {
+    return new Promise((resolve, reject) => {
+      getOne(params)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
 
 };
 
