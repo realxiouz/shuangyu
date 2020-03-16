@@ -3,7 +3,7 @@
     <el-container>
       <el-aside width="300px">
         <el-header>
-          <el-button type="text" @click="rootAdd">添加</el-button>
+          <el-button type="primary" size="mini" @click="rootAdd">添加</el-button>
         </el-header>
         <!--  导航树  -->
         <el-tree

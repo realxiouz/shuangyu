@@ -9,17 +9,17 @@
       <el-table-column
         prop="airlineCode"
         label="航司"
-        width="100"
+        width="50"
       ></el-table-column>
       <el-table-column
         prop="dpt"
-        label="出发地三字码"
-        width="100"
+        label="出发地"
+        width="80"
       ></el-table-column>
       <el-table-column
         prop="arr"
-        label="到达地三字码"
-        width="100"
+        label="到达地"
+        width="80"
       ></el-table-column>
       <el-table-column
         prop="actFlightCode"
@@ -34,7 +34,7 @@
       <el-table-column
         prop="cabin"
         label="舱位"
-        width="100"
+        width="50"
       ></el-table-column>
       <el-table-column
         prop="discountValue"
@@ -42,20 +42,32 @@
         width="100"
       ></el-table-column>
       <el-table-column
-        prop="sellStartDate"
         label="销售起始日期"
-        width="100"
-      ></el-table-column>
+        width="150"
+        align="center">
+        <template slot-scope="scope">
+          <i v-if="scope.row.sellStartDate" class="el-icon-time"></i>
+          <span style="margin-left: 10px">{{ formatDate(scope.row.sellStartDate,'YYYY-MM-DD') }}</span>
+        </template>
+      </el-table-column>
       <el-table-column
-        prop="sellEndDate"
         label="销售结束日期"
-        width="100"
-      ></el-table-column>
+        width="150"
+        align="center">
+        <template slot-scope="scope">
+          <i v-if="scope.row.sellEndDate" class="el-icon-time"></i>
+          <span style="margin-left: 10px">{{ formatDate(scope.row.sellEndDate,'YYYY-MM-DD') }}</span>
+        </template>
+      </el-table-column>
       <el-table-column
-        prop="flightDate"
         label="出发日期"
-        width="100"
-      ></el-table-column>
+        width="150"
+        align="center">
+        <template slot-scope="scope">
+          <i v-if="scope.row.flightDate" class="el-icon-time"></i>
+          <span style="margin-left: 10px">{{ formatDate(scope.row.flightDate,'YYYY-MM-DD') }}</span>
+        </template>
+      </el-table-column>
       <el-table-column
         prop="earliestAdvanceDays"
         label="最早出票时限"
@@ -130,6 +142,9 @@
                     if(params.airlineCode){
                         newParams.airlineCode = params.airlineCode;
                     }
+                    if(params.cabin){
+                        newParams.cabin = params.cabin;
+                    }
                     if(params.dpt){
                         newParams.dpt = params.dpt;
                     }
@@ -185,10 +200,25 @@
                     });
                 this.dialogVisible = false;
             },
-
+            /*初始化用工列表中的生日日期格式*/
+            initDate(dateStr, format) {
+                if (null != dateStr) {
+                    let date = new Date(dateStr);
+                    return this.$moment(date).format(format);
+                } else {
+                    return '';
+                }
+            }
         },
         created() {
             this.handleSearch();
+        },
+        computed:{
+            formatDate() {
+                return function (dateStr, format) {
+                    return this.initDate(dateStr, format);
+                }
+            },
         },
         components: {
             policySearch,
