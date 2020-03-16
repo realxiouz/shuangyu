@@ -41,7 +41,7 @@
       :page-size="pageSize"
       :total="total">
     </el-pagination>
-    <el-dialog title="应用信息" :visible.sync="dialogVisible" width="30%">
+    <el-dialog title="应用信息" :visible.sync="dialogVisible" width="30%" :close-on-click-modal="false">
       <app-edit v-if="dialogVisible" :app-id="appId" @onSave="handleSave"
                 @onCancel="handleCancel"></app-edit>
     </el-dialog>

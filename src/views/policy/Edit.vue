@@ -27,6 +27,7 @@
           type="date"
           placeholder="选择日期"
           v-model="formData.sellStartDate"
+          @change="getTimeSellStartDate"
           style="width: 100%;"
         ></el-date-picker>
       </el-form-item>
@@ -35,6 +36,7 @@
           type="date"
           placeholder="选择日期"
           v-model="formData.sellEndDate"
+          @change="getTimeSellEndDate"
           style="width: 100%;"
         ></el-date-picker>
       </el-form-item>
@@ -43,6 +45,7 @@
           type="date"
           placeholder="选择日期"
           v-model="formData.flightDate"
+          @change="getTimeFlightDate"
           style="width: 100%;"
         ></el-date-picker>
       </el-form-item>
@@ -134,6 +137,15 @@
                         this.$emit('onSave', this.formData);
                     }
                 });
+            },
+            getTimeSellStartDate(date) {
+                this.formData.sellStartDate = date.getTime();
+            },
+            getTimeSellEndDate(date) {
+                this.formData.sellEndDate = date.getTime();
+            },
+            getTimeFlightDate(date) {
+                this.formData.flightDate = date.getTime();
             }
         },
         created() {

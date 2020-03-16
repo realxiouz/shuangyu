@@ -3,7 +3,7 @@
     <el-container>
       <el-aside width="300px">
         <el-header>
-          <el-button type="text" @click="rootAdd">添加</el-button>
+          <el-button type="primary" size="mini" @click="rootAdd">添加</el-button>
         </el-header>
         <!--  导航树  -->
         <el-tree
@@ -53,7 +53,7 @@
           <el-input
             type="text"
             placeholder="请输入导航路径"
-            v-model="formData.url">
+            v-model="formData.uri">
           </el-input>
         </el-form-item>
         <el-form-item label="是否启用">
@@ -100,7 +100,7 @@
           navId: '',
           navName: '',
           enable: true,
-          url: '',
+          uri: '',
           pid: null,
           apis: []
         };

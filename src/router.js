@@ -15,6 +15,14 @@ export default new Router({
       hidden: true
     },
     {
+      title: '首次登陆修改密码',
+      path: '/changePassword',
+      name: 'changePassword',
+      uri: '/changePassword',
+      component: () => import('@/views/user/ChangePassword'),
+      hidden: true
+    },
+    {
       title: '首页',
       path: '/index',
       name: 'index',
@@ -32,7 +40,7 @@ export default new Router({
         },
         {
           title: '关于',
-          path: 'about',
+          path: '/about',
           name: 'about',
           uri: '/about',
           component: () => import('@/views/About'),
@@ -57,8 +65,8 @@ export default new Router({
         },*/
         {
           title: '用户管理',
-          path: '/user/edit',
-          uri: '/user/edit',
+          path: '/user/list',
+          uri: '/user/list',
           component: () => import('@/views/user/List'),
           meta: { title: 'Home', icon: 'home' }
         },
@@ -133,7 +141,7 @@ export default new Router({
         },
         {
           title: '跳转到',
-          path: 'Edit_',
+          path: '/order/Edit_',
           name: 'Edit_',
           uri: '/order/Edit_',
           component: () => import('@/views/order/Edit_'),
