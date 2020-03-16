@@ -17,13 +17,13 @@
         align="center"
       >
         <template slot-scope="scope">
-          <el-button @click="handleUpdate(scope.row)" type="primary" size="mini">编辑</el-button>
+          <el-button @click="handleUpdate(scope.row.flagId)" type="primary" size="mini">编辑</el-button>
           <el-button @click="handleRemove(scope.row,scope.$index,tableData)" type="danger" size="mini">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
     <el-dialog title="用户信息" :visible.sync="dialogVisible" width="30%">
-      <third-flag-edit v-if="dialogVisible" :third-id="flagId" @onSave="handleSave"
+      <third-flag-edit v-if="dialogVisible" :flag-id="flagId" @onSave="handleSave"
                        @onCancel="handleCancel"></third-flag-edit>
     </el-dialog>
   </div>

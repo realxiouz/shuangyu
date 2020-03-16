@@ -32,7 +32,6 @@
         };
     };
     export default {
-        props: ["flagId"],
         name: 'thirdFlagEdit',
         data() {
             return {
@@ -88,6 +87,9 @@
                 this.handleGetOne(this.flagId);
             }
             this.thirdPartyList();
+        },
+        props: {
+            flagId: String,
         }
     }
 </script>
