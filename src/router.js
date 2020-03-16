@@ -283,8 +283,23 @@ export default new Router({
           uri: '/thirdApi/list',
           component: () => import('@/views/thirdApi/List'),
           meta: { title: 'Home', icon: 'home' }
-        }
-
+        },
+        {
+          title: '第三方调度',
+          path: '/third/api/scheduler/list',
+          name: 'thirdApiSchedulerList',
+          uri: '/third/api/scheduler/list',
+          component: () => import('@/views/thirdApiScheduler/List'),
+          meta: {title: 'Home', icon: 'home'}
+        }, {
+          title: '第三方调度编辑',
+          path: '/third/api/scheduler/edit',
+          name: 'ThirdApiSchedulerEdit',
+          uri: '/third/api/scheduler/edit',
+          component: () => import('@/views/thirdApiScheduler/Edit'),
+          props: {default: true, sidebar: false},
+          meta: {title: 'Home', icon: 'home'}
+        },
       ]
     },
 
