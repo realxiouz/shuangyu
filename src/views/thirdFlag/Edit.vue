@@ -59,7 +59,7 @@
             handleGetOne(id) {
                 if (id) {
                     this.$store
-                        .dispatch("flag/getOne", {flagId: id})
+                        .dispatch("thirdFlag/getOne", {flagId: id})
                         .then(data => {
                             this.formData = data;
                             this.dialogVisible = true;

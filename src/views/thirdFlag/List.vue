@@ -77,7 +77,7 @@
             },
             handleSave(formData) {
                 this.$store
-                    .dispatch("flag/save", formData)
+                    .dispatch("thirdFlag/save", formData)
                     .then(() => {
                         this.handleSearch();
                     }).catch(error => {
