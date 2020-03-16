@@ -29,9 +29,16 @@
         name: 'thirdFlagEdit',
         data() {
             return {
-                formData: defaultData()
+                formData: defaultData(),
+                rules: {
+                    thirdId: [
+                        {required: true, message: "请选择平台", trigger: "blur"},
+                    ],
+                    flag: [
+                        {required: true, message: "请输入标签名称", trigger: "blur"},
+                    ]
+                }
             }
-                ;
         },
         methods: {
             handleSave() {
