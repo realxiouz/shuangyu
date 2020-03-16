@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <third-party-search  @onSearch="handleSearch" @onAdd="handleAdd"></third-party-search>
+    <third-party-search @onSearch="handleSearch" @onAdd="handleAdd"></third-party-search>
     <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;">
       <el-table-column
         prop="thirdName"
@@ -29,7 +29,7 @@
     </el-pagination>
     <el-dialog title="用户信息" :visible.sync="dialogVisible" width="30%">
       <third-party-edit v-if="dialogVisible" ref="thirdpartyForm" :third-id="thirdId" @onSave="handleSave"
-                       @onCancel="handleCancel"></third-party-edit>
+                        @onCancel="handleCancel"></third-party-edit>
     </el-dialog>
   </div>
 </template>
@@ -147,7 +147,7 @@
             }
             ,
         },
-        mounted() {
+        created() {
             this.loadData();
             this.loadTotal();
         }
