@@ -22,6 +22,13 @@ export function getOne(flagId) {
   });
 }
 
+export function getList(searchForm) {
+  return request({
+    url: `/third/flag/list`,
+    method: "get",
+    params: searchForm
+  });
+}
 
 export function getPageList(pageFlag, pageSize, lastId, searchForm) {
   return request({
