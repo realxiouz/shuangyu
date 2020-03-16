@@ -31,6 +31,14 @@ export function getPageList(pageFlag, pageSize, lastId, searchForm) {
   });
 }
 
+export function getList(searchForm) {
+  return request({
+    url: `/third/party/list/`,
+    method: "get",
+    params: searchForm
+  });
+}
+
 export function getTotal(thirdName) {
   return request({
     url: `/third/party/get/total/${thirdName}`,
