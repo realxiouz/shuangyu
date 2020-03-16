@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <thirdparty-search ref="user" @onSearch="handleSearch" @onAdd="add"></thirdparty-search>
+    <thirdparty-search  @onSearch="handleSearch" @onAdd="handleAdd"></thirdparty-search>
     <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;">
       <el-table-column
         prop="thirdName"
@@ -35,8 +35,8 @@
 </template>
 
 <script>
-    import thirdpartyEdit from "./Edit.vue";
-    import thirdpartySearch from "./Search.vue";
+    import thirdPartyEdit from "./Edit.vue";
+    import thirdPartySearch from "./Search.vue";
 
 
     export default {
@@ -79,12 +79,11 @@
                         console.log(error);
                     });
             },
-            add() {
+            handleAdd() {
                 this.dialogVisible = true;
                 this.thirdId = '';
             },
             handRemove(row, index, rows) {
-                console.log("--大的发顺丰-----" + row.thirdId);
                 this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
                     confirmButtonText: "确定",
                     cancelButtonText: "取消",
@@ -154,8 +153,8 @@
         }
         ,
         components: {
-            thirdpartyEdit,
-            thirdpartySearch
+            thirdPartyEdit,
+            thirdPartySearch
         }
     }
     ;

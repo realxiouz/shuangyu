@@ -19,7 +19,7 @@
     };
   };
   export default {
-    name: "thirdpartyEdit",
+    name: "thirdPartyEdit",
     props: ["thirdId"],
     data() {
       return {
