@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <third-flag-search @onSearch="handSearch" @onAdd="handleAdd"></third-flag-search>
+    <third-flag-search @onSearch="handleSearch" @onAdd="handleAdd"></third-flag-search>
     <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;">
       <el-table-column
         prop="thirdName"
@@ -53,23 +53,16 @@
             }
         }
         , methods: {
-            loadData() {
-                this.$store
-                    .dispatch("thirdFlag/getList", {})
-                    .then(data => {
-                        this.tableData = data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            handSearch(keyword) {
+            handleSearch(searchForm) {
+                if (!searchForm && !searchForm.flag) {
+                    searchForm = {}
+                }
                 this.$store
                     .dispatch("thirdFlag/getPageList", {
                         pageFlag: this.pageFlag,
                         pageSize: 10,
                         lastId: this.lastId,
-                        flag: keyword
+                        filters: searchForm
                     })
                     .then(data => {
                         this.tableData = data;
@@ -78,50 +71,57 @@
                         console.log(error);
                     });
             },
-        },
-        handleAdd() {
-            this.dialogVisible = true;
-            this.flagId = '';
-        },
-        handleSave(data) {
-        },
-        handleUpdate(id) {
-            this.flagId = id;
-            this.dialogVisible = true;
-
-        },
-        handleRemove(row, index, rows) {
-            this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
-                confirmButtonText: "确定",
-                cancelButtonText: "取消",
-                type: "warning"
-            }).then(() => {
+            handleAdd() {
+                this.dialogVisible = true;
+                this.flagId = '';
+            },
+            handleSave(formData) {
                 this.$store
-                    .dispatch("thirdParty/removeOne", {flagId: row.flagId})
-                    .then(data => {
-                        console.log(data);
-                        rows.splice(index, 1);
-                        this.total--;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            }).catch(err => {
-                console.error(err);
-            });
-        },
-        handleCancel() {
-            this.dialogVisible = false;
+                    .dispatch("flag/save", formData)
+                    .then(() => {
+                        this.handleSearch();
+                    }).catch(error => {
+                    console.log(error);
+                });
+                this.dialogVisible = false;
+            },
+            handleUpdate(id) {
+                this.flagId = id;
+                this.dialogVisible = true;
+            },
+            handleRemove(row, index, rows) {
+                this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消",
+                    type: "warning"
+                }).then(() => {
+                    this.$store
+                        .dispatch("thirdFlag/removeOne", {flagId: row.flagId})
+                        .then(data => {
+                            console.log(data);
+                            rows.splice(index, 1);
+                            this.total--;
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                }).catch(err => {
+                    console.error(err);
+                });
+            },
+            handleCancel() {
+                this.dialogVisible = false;
+            }
         }
-    }
-    ,
-    created()
-    {
-    }
-    ,
-    components: {
-        thirdFlagEdit,
+        ,
+        created() {
+            this.handleSearch();
+            this.loadTotal();
+        }
+        ,
+        components: {
+            thirdFlagEdit,
             thirdFlagSearch
-    }
+        }
     }
 </script>

@@ -20,7 +20,7 @@
 <script>
     function defaultData() {
         return {
-            thirdId:"",
+            thirdId: "",
             flag: ""
         };
     };
@@ -30,8 +30,8 @@
         data() {
             return {
                 formData: defaultData()
-        }
-            ;
+            }
+                ;
         },
         methods: {
             handleSave() {
@@ -40,6 +40,25 @@
                         this.$emit("onSave", this.formData);
                     }
                 });
+            },
+            handleGetOne(id) {
+                if (id) {
+                    this.$store
+                        .dispatch("flag/getOne", {flagId: id})
+                        .then(data => {
+                            this.formData = data;
+                            this.dialogVisible = true;
+                        }).catch(error => {
+                        console.log(error);
+                    });
+                } else {
+                    this.formData = defaultData();
+                }
+            }
+        },
+        created() {
+            if (this.flagId) {
+                this.handleGetOne(this.flagId);
             }
         }
     }
