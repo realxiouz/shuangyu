@@ -123,6 +123,9 @@
           });
       }
     },
+    created() {
+
+    },
     mounted() {
       const _this = this;
       window.onresize = () => {
