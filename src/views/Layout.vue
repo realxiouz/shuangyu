@@ -121,9 +121,28 @@
           })
           .catch(() => {
           });
+      },
+      getMenuList(){
+        this.$store
+          .dispatch('nav/getAllList',{filter:{}})
+          .then(data=>{
+            var temp =[]
+            data.forEach((item,index)=>{
+              temp.push(item.attributes)
+            })
+            console.log(temp);
+          })
+          .catch(error=>{
+            console.log(error);
+          })
+
       }
     },
+    created() {
+
+    },
     mounted() {
+      this.getMenuList()
       const _this = this;
       window.onresize = () => {
         return (() => {

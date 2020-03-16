@@ -1,11 +1,29 @@
-import {removeOne, addOne, updateOne, getOne, getPageList, getList, getAllList} from '@/api/nav';
-import {parseMinWidth} from "element-ui/packages/table/src/util";
+import { addApi, getApiList,getPageList,getTotal,removeOne,updateOne,getOne} from "@/api/thirdApiService";
+import { getToken } from "@/utils/auth";
+
+
+const state = {
+  token: getToken(),
+  name: "",
+  avatar: ""
+};
+
+const mutations = {
+  SET_TOKEN: (state, token) => {
+    state.token = token;
+  },
+  SET_NAME: (state, name) => {
+    state.name = name;
+  },
+  SET_AVATAR: (state, avatar) => {
+    state.avatar = avatar;
+  }
+};
 
 const actions = {
-  removeOne({commit}, params) {
+  addApi({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const {navID} = params;
-      removeOne(navID)
+      addApi(params)
         .then(response => {
           //const { data } = response;
           resolve(response);
@@ -15,12 +33,11 @@ const actions = {
         });
     });
   },
-  addOne({commit}, params) {
+  getApiList({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const {nav} = params;
-      addOne(nav)
+      getApiList(params)
         .then(response => {
-          //const { data } = response;
+          const { data } = response;
           resolve(response);
         })
         .catch(error => {
@@ -28,13 +45,49 @@ const actions = {
         });
     });
   },
-  updateOne({commit}, params) {
+  getPageList({commit}, params){
+    const {pageFlag, pageSize, lastId, thirdName} = params;
     return new Promise((resolve, reject) => {
-      const {nav} = params;
-      updateOne(nav)
+      getPageList(pageFlag, pageSize, lastId, thirdName)
         .then(response => {
-          //const { data } = response;
-          resolve(response);
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getTotal({commit}, params) {
+    return new Promise((resolve, reject) => {
+      getTotal(params)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  removeOne({commit}, thirdId) {
+    return new Promise((resolve, reject) => {
+      removeOne(thirdId)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  updateOne({commit}, params){
+    return new Promise((resolve, reject) => {
+      updateOne(params)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -43,21 +96,7 @@ const actions = {
   },
   getOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {navID} = params;
-      getOne(navID)
-        .then(response => {
-          //const { data } = response;
-          resolve(response);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  getPageList({commit}, params) {
-    return new Promise((resolve, reject) => {
-      const {pageFlag, pageSize, lastId, filter} = params;
-      getPageList(pageFlag, pageSize, lastId, filter)
+      getOne(params)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -67,35 +106,12 @@ const actions = {
         });
     });
   },
-  getList({commit}, params) {
-    return new Promise((resolve, reject) => {
-      const {filter} = params;
-      getList(filter)
-        .then(response => {
-          const {data} = response;
-          resolve(data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  getAllList({commit}, params){
-    return new Promise((resolve, reject) => {
-      const {filter} = params;
-      getAllList(filter)
-        .then(response => {
-          const {data} = response;
-          resolve(data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  }
-}
+
+};
 
 export default {
   namespaced: true,
+  state,
+  mutations,
   actions
 };

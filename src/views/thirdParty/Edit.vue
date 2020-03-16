@@ -13,50 +13,50 @@
 </template>
 
 <script>
-  function defaultData() {
-    return {
-      thirdName: ""
+    function defaultData() {
+        return {
+            thirdName: ""
+        };
     };
-  };
-  export default {
-    name: "thirdpartyEdit",
-    props: ["thirdId"],
-    data() {
-      return {
-        formData: defaultData(),
-        formRules: {
-          thirdName: [
-            {required: true, message: "请输入平台名称", trigger: "blur"}
-          ]
+    export default {
+        name: "thirdPartyEdit",
+        props: ["thirdId"],
+        data() {
+            return {
+                formData: defaultData(),
+                formRules: {
+                    thirdName: [
+                        {required: true, message: "请输入平台名称", trigger: "blur"}
+                    ]
+                }
+            };
+        },
+        methods: {
+            loadThirdparty() {
+                if ('' != this.thirdId) {
+                    this.$store
+                        .dispatch("thirdParty/getOne", {thirdId: this.thirdId})
+                        .then(data => {
+                            this.formData = data;
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                    this.dialogVisible = true;
+                }
+            },
+            handleSave() {
+                this.$refs["formData"].validate((valid) => {
+                    if (valid) {
+                        this.$emit("onSave", this.formData);
+                    }
+                });
+            }
+        },
+        created() {
+            this.loadThirdparty();
         }
-      };
-    },
-    methods: {
-      loadThirdparty() {
-        if ('' != this.thirdId) {
-          this.$store
-            .dispatch("thirdParty/getOne", {thirdId: this.thirdId})
-            .then(data => {
-              this.formData = data;
-            })
-            .catch(error => {
-              console.log(error);
-            });
-          this.dialogVisible = true;
-        }
-      },
-      handleSave() {
-        this.$refs["formData"].validate((valid) => {
-          if (valid) {
-            this.$emit("onSave", this.formData);
-          }
-        });
-      }
-    },
-    mounted() {
-      this.loadThirdparty();
-    }
-  };
+    };
 </script>
 
 <style scoped>

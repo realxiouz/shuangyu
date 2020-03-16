@@ -1,4 +1,4 @@
-import {getList, getOne, getPageList, getTotal, removeOne, save} from "@/api/thirdParty";
+import {save, removeOne, getPageList, getTotal,getOne} from '@/api/thirdFlag';
 import {getToken} from "@/utils/auth";
 
 
@@ -33,9 +33,10 @@ const actions = {
         });
     });
   },
-  removeOne({commit}, thirdId) {
+  removeOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      removeOne(thirdId)
+      const {flagId} = params;
+      removeOne(flagId)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -47,22 +48,9 @@ const actions = {
   },
 
   getPageList({commit}, params) {
-    const {pageFlag, pageSize, lastId, thirdName} = params;
+    const {pageFlag, pageSize, lastId, filters} = params;
     return new Promise((resolve, reject) => {
-      getPageList(pageFlag, pageSize, lastId, thirdName)
-        .then(response => {
-          const {data} = response;
-          resolve(data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  getList({commit}, params) {
-    const {filter} = params;
-    return new Promise((resolve, reject) => {
-      getList(filter)
+      getPageList(pageFlag, pageSize, lastId, filters)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -85,8 +73,9 @@ const actions = {
     });
   },
   getOne({commit}, params) {
+    const {flagId} = params;
     return new Promise((resolve, reject) => {
-      getOne(params)
+      getOne(flagId)
         .then(response => {
           const {data} = response;
           resolve(data);

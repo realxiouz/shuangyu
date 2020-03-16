@@ -62,7 +62,7 @@
 
 
     export default {
-        name: "apiList",
+        name: "thirdApiList",
         data() {
             return {
                 lastId: "0",
@@ -91,7 +91,7 @@
                     params = {};
                 }
                 this.$store
-                    .dispatch("api/getPageList", {
+                    .dispatch("thirdApiService/getPageList", {
                         pageFlag: this.pageFlag,
                         pageSize: this.pageSize,
                         lastId: this.lastId,
@@ -109,7 +109,7 @@
                     params = {};
                 }
                 this.$store
-                    .dispatch("api/getTotal", {filters: params}).then(response => {
+                    .dispatch("thirdApiService/getTotal", {filters: params}).then(response => {
                     this.total = response.data;
                 }).catch(error => {
                     console.log(error);
@@ -122,7 +122,7 @@
             handleSwitch(row) {
                 row.enable = row.enable ? true : false;
                 this.$store
-                    .dispatch("api/updateOne", row)
+                    .dispatch("thirdApiService/updateOne", row)
                     .then(() => {
                     }).catch(error => {
                     console.log(error);
@@ -135,7 +135,7 @@
                     type: 'warning'
                 }).then(() => {
                     this.$store
-                        .dispatch("api/removeOne", {apiId: id})
+                        .dispatch("thirdApiService/removeOne", {apiId: id})
                         .then(() => {
                             this.loadData();
                             rows.splice(index, 1);
@@ -151,7 +151,7 @@
             },
             handleSave(params) {
                 this.$store
-                    .dispatch("api/save", params)
+                    .dispatch("thirdApiService/addApi", params)
                     .then(() => {
                         this.handleSearch();
                     }).catch(error => {

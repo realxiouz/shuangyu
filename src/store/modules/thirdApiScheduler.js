@@ -1,11 +1,17 @@
-import {getList, getOne, getPageList, getTotal, removeOne, save} from "@/api/thirdParty";
-import {getToken} from "@/utils/auth";
-
+import {
+  getOne,
+  save,
+  getPageList,
+  getList,
+  removeOne,
+  getTotal
+} from '@/api/thirdApiScheduler';
+import {getToken} from '@/utils/auth';
 
 const state = {
   token: getToken(),
-  name: "",
-  avatar: ""
+  name: '',
+  avatar: ''
 };
 
 const mutations = {
@@ -21,21 +27,29 @@ const mutations = {
 };
 
 const actions = {
-  save({commit}, params) {
+  save({commit}, data) {
     return new Promise((resolve, reject) => {
-      save(params)
+      save(data)
         .then(response => {
-          //const { data } = response;
-          resolve(response);
+          const { data } = response;
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  removeOne({commit}, thirdId) {
+  getPageList({commit}, params) {
+    var data = params.searchForm;
+    var searchForm = {};
+    for (var attr in data) {
+      if (data[attr] != null && data[attr] != undefined && data[attr] != '') {
+        searchForm[attr] = data[attr];
+      }
+    }
+    params.searchForm = searchForm;
     return new Promise((resolve, reject) => {
-      removeOne(thirdId)
+      getPageList(params)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -45,11 +59,10 @@ const actions = {
         });
     });
   },
-
-  getPageList({commit}, params) {
-    const {pageFlag, pageSize, lastId, thirdName} = params;
+  getOne({commit}, params) {
+    const { schedulerId } = params;
     return new Promise((resolve, reject) => {
-      getPageList(pageFlag, pageSize, lastId, thirdName)
+      getOne(schedulerId)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -60,9 +73,16 @@ const actions = {
     });
   },
   getList({commit}, params) {
-    const {filter} = params;
+    var data = params.searchForm;
+    var searchForm = {};
+    for (var attr in data) {
+      if (data[attr] != null && data[attr] != undefined && data[attr] != '') {
+        searchForm[attr] = data[attr];
+      }
+    }
+    params.searchForm = searchForm;
     return new Promise((resolve, reject) => {
-      getList(filter)
+      getList(params)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -84,9 +104,10 @@ const actions = {
         });
     });
   },
-  getOne({commit}, params) {
+  removeOne({commit}, params) {
+    const { schedulerId } = params;
     return new Promise((resolve, reject) => {
-      getOne(params)
+      removeOne(schedulerId)
         .then(response => {
           const {data} = response;
           resolve(data);
