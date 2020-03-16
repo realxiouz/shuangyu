@@ -40,8 +40,8 @@
 </template>
 
 <script>
-    import thirdFlagEdit from './Search'
-    import thirdFlagSearch from './Edit'
+    import thirdFlagSearch from './Search'
+    import thirdFlagEdit from './Edit'
 
     export default {
         name: 'flagList',
@@ -77,7 +77,7 @@
             },
             handleSave(formData) {
                 this.$store
-                    .dispatch("flag/save", formData)
+                    .dispatch("thirdFlag/save", formData)
                     .then(() => {
                         this.handleSearch();
                     }).catch(error => {

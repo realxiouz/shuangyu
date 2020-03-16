@@ -62,7 +62,7 @@
 
 
     export default {
-        name: "apiList",
+        name: "thirdApiList",
         data() {
             return {
                 lastId: "0",

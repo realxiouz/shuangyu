@@ -20,7 +20,6 @@ export function getApiList(data) {
 }
 
 //获取分页列表
-
 export function getPageList(pageFlag, pageSize, lastId, searchForm) {
   return request({
     url: `/third/api/page/list/${pageFlag}/${pageSize}/${lastId}`,
@@ -52,5 +51,13 @@ export function updateOne() {
   return request({
     url: `/third/api/update/one`,
     method: "post"
+  });
+}
+
+// 获取第三方api信息
+export function getOne(paramId) {
+  return request({
+    url: `/third/api/one/${paramId}`,
+    method: `get`
   });
 }

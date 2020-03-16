@@ -1,4 +1,4 @@
-import {removeOne, addOne, updateOne, getOne, getPageList, getList} from '@/api/nav';
+import {removeOne, addOne, updateOne, getOne, getPageList, getList, getAllList} from '@/api/nav';
 import {parseMinWidth} from "element-ui/packages/table/src/util";
 
 const actions = {
@@ -71,6 +71,19 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {filter} = params;
       getList(filter)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getAllList({commit}, params){
+    return new Promise((resolve, reject) => {
+      const {filter} = params;
+      getAllList(filter)
         .then(response => {
           const {data} = response;
           resolve(data);

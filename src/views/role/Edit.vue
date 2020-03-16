@@ -14,7 +14,7 @@
           default-expand-all
           node-key="navId"
           highlight-current
-          :default-checked-keys="formData.navIds"
+          :default-checked-keys="formData.navs"
           @check="getCheckedKeys"
           :props="{label:'navName'}">
         </el-tree>
@@ -44,14 +44,14 @@
     },
     methods: {
       getCheckedKeys(data, selection) {
-        this.formData.navIds = selection.checkedKeys;
+        this.formData.navs = selection.checkedKeys;
       },
       defaultFormData() {
         return {
           roleId: '',
           roleName: '',
           enable: true,
-          navIds: []
+          navs: []
         }
       },
       clearForm() {

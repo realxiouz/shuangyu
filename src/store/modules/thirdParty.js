@@ -1,5 +1,5 @@
-import { save, removeOne, getPageList, getTotal, getOne} from "@/api/thirdParty";
-import { getToken } from "@/utils/auth";
+import {getList, getOne, getPageList, getTotal, removeOne, save} from "@/api/thirdParty";
+import {getToken} from "@/utils/auth";
 
 
 const state = {
@@ -21,7 +21,7 @@ const mutations = {
 };
 
 const actions = {
-  save({ commit }, params) {
+  save({commit}, params) {
     return new Promise((resolve, reject) => {
       save(params)
         .then(response => {
@@ -33,11 +33,11 @@ const actions = {
         });
     });
   },
-  removeOne({ commit }, thirdId) {
+  removeOne({commit}, thirdId) {
     return new Promise((resolve, reject) => {
       removeOne(thirdId)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -46,12 +46,12 @@ const actions = {
     });
   },
 
-  getPageList({ commit }, params) {
-    const { pageFlag, pageSize, lastId, thirdName } = params;
+  getPageList({commit}, params) {
+    const {pageFlag, pageSize, lastId, thirdName} = params;
     return new Promise((resolve, reject) => {
       getPageList(pageFlag, pageSize, lastId, thirdName)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -59,11 +59,24 @@ const actions = {
         });
     });
   },
-  getTotal({ commit }, params) {
+  getList({commit}, params) {
+    const {filter} = params;
+    return new Promise((resolve, reject) => {
+      getList(filter)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getTotal({commit}, params) {
     return new Promise((resolve, reject) => {
       getTotal(params)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -71,11 +84,11 @@ const actions = {
         });
     });
   },
-  getOne({ commit }, params) {
+  getOne({commit}, params) {
     return new Promise((resolve, reject) => {
       getOne(params)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {

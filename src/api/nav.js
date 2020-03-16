@@ -45,3 +45,11 @@ export function getList(filter) {
     filter
   });
 }
+
+export function getAllList(filter) {
+  return request({
+    url: '/nav/get/sync/tree',
+    method: 'get',
+    filter
+  })
+}
