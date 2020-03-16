@@ -17,10 +17,11 @@ import staff from './modules/staff';
 import thirdParty from './modules/thirdParty';
 import thirdFlag from './modules/thirdFlag';
 import orderRule from './modules/orderRule';
-import thirdApiParam from './modules/thirdApiParam'
-import productMark from './modules/productMark'
-import fare from './modules/fare'
-import thirdApiService from './modules/thirdApiService'
+import thirdApiParam from './modules/thirdApiParam';
+import productMark from './modules/productMark';
+import fare from './modules/fare';
+import thirdApiService from './modules/thirdApiService';
+import thirdApiScheduler from './modules/thirdApiScheduler';
 
 Vue.use(Vuex);
 
@@ -46,7 +47,8 @@ export default new Vuex.Store({
     thirdApiParam,
     productMark,
     fare,
-    thirdApiService
+    thirdApiService,
+    thirdApiScheduler
   },
   state: {},
   mutations: {},
