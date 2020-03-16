@@ -19,6 +19,7 @@ import orderRule from './modules/orderRule';
 import thirdApiParam from './modules/thirdApiParam'
 import productMark from './modules/productMark'
 import fare from './modules/fare'
+import thirdApiService from './modules/thirdApiService'
 
 Vue.use(Vuex);
 
@@ -42,7 +43,8 @@ export default new Vuex.Store({
     orderRule,
     thirdApiParam,
     productMark,
-    fare
+    fare,
+    thirdApiService
   },
   state: {},
   mutations: {},
