@@ -22,16 +22,6 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination
-      background
-      layout="total,prev,next"
-      prev-text="上一页"
-      next-text="下一页"
-      :page-size="pageSize"
-      :total="total"
-      @prev-click="prevClick"
-      @next-click="nextClick">
-    </el-pagination>
     <el-dialog title="用户信息" :visible.sync="dialogVisible" width="30%">
       <third-flag-edit v-if="dialogVisible" :third-id="flagId" @onSave="handleSave"
                        @onCancel="handleCancel"></third-flag-edit>
@@ -49,22 +39,21 @@
             return {
                 tableData: '',
                 dialogVisible: false,
-                flagId: ''
+                flagId: '',
+                total: 0
             }
         }
         , methods: {
             handleSearch(searchForm) {
-                if (!searchForm && !searchForm.flag) {
+                if (!searchForm || !searchForm.flag) {
                     searchForm = {}
                 }
                 this.$store
-                    .dispatch("thirdFlag/getPageList", {
-                        pageFlag: this.pageFlag,
-                        pageSize: 10,
-                        lastId: this.lastId,
+                    .dispatch("thirdFlag/getList", {
                         filters: searchForm
                     })
                     .then(data => {
+                        console.log(data)
                         this.tableData = data;
                     })
                     .catch(error => {
@@ -116,7 +105,6 @@
         ,
         created() {
             this.handleSearch();
-            this.loadTotal();
         }
         ,
         components: {

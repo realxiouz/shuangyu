@@ -1,4 +1,4 @@
-import {save, removeOne, getPageList, getTotal,getOne} from '@/api/thirdFlag';
+import {getList, getOne, getPageList, getTotal, removeOne, save} from '@/api/thirdFlag';
 import {getToken} from "@/utils/auth";
 
 
@@ -46,7 +46,19 @@ const actions = {
         });
     });
   },
-
+  getList({commit}, params) {
+    const {filters} = params;
+    return new Promise((resolve, reject) => {
+      getList(filters)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
   getPageList({commit}, params) {
     const {pageFlag, pageSize, lastId, filters} = params;
     return new Promise((resolve, reject) => {
