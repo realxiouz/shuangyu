@@ -69,8 +69,7 @@
       delete(roleID) {
         this.$store
           .dispatch('role/removeOne', {roleID: roleID})
-          .then(data => {
-            console.log(data);
+          .then(() => {
             this.loadData();
           })
           .catch(error => {
@@ -86,8 +85,7 @@
 
         this.$store
           .dispatch('role/save', {role: row})
-          .then(data => {
-            console.log(data);
+          .then(() => {
             this.loadData();
           })
           .catch(error => {
@@ -130,8 +128,7 @@
       handleSave(formData) {
         this.$store
           .dispatch("role/save", {role: formData})
-          .then(data => {
-            console.log(data);
+          .then(() => {
             this.loadData();
           })
           .catch(error => {
