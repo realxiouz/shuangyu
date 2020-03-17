@@ -8,40 +8,41 @@ export function save(data) {
   });
 }
 
-export function removeOne(thirdId) {
+export function removeOne(id) {
   return request({
-    url: `/third/party/remove/one/${thirdId}`,
+    url: `/third/party/remove/one/${id}`,
     method: "delete"
   });
 }
 
-export function getOne(thirdId) {
+export function getOne(id) {
   return request({
-    url: `/third/party/${thirdId}`,
+    url: `/third/party/${id}`,
     method: `get`
   });
 }
 
 
-export function getPageList(pageFlag, pageSize, lastId, searchForm) {
+export function getPageList(pageFlag, pageSize, lastId, params) {
   return request({
     url: `/third/party/page/list/${pageFlag}/${pageSize}/${lastId}`,
     method: "get",
-    params: searchForm
+    params: params
   });
 }
 
-export function getList(searchForm) {
+export function getList(params) {
   return request({
     url: `/third/party/list/`,
     method: "get",
-    params: searchForm
+    params: params
   });
 }
 
-export function getTotal(thirdName) {
+export function getTotal(params) {
   return request({
-    url: `/third/party/get/total/${thirdName}`,
-    method: "get"
+    url: `/third/party/get/total`,
+    method: "get",
+    params:params
   });
 }

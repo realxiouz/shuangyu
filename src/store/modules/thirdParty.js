@@ -48,9 +48,9 @@ const actions = {
   },
 
   getPageList({commit}, params) {
-    const {pageFlag, pageSize, lastId, thirdName} = params;
+    const {pageFlag, pageSize, lastId, filters} = params;
     return new Promise((resolve, reject) => {
-      getPageList(pageFlag, pageSize, lastId, thirdName)
+      getPageList(pageFlag, pageSize, lastId, filters)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -61,9 +61,9 @@ const actions = {
     });
   },
   getList({commit}, params) {
-    const {filter} = params;
+    const {filters} = params;
     return new Promise((resolve, reject) => {
-      getList(filter)
+      getList(filters)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -74,8 +74,9 @@ const actions = {
     });
   },
   getTotal({commit}, params) {
+    const {filters} = params;
     return new Promise((resolve, reject) => {
-      getTotal(params)
+      getTotal(filters)
         .then(response => {
           const {data} = response;
           resolve(data);
