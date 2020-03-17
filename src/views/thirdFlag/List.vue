@@ -2,11 +2,11 @@
   <div class="app-container">
     <third-flag-search @onSearch="handleSearch" @onAdd="handleAdd"></third-flag-search>
     <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;">
-<!--      <el-table-column
+      <el-table-column
         prop="thirdName"
         label="平台"
         align="center"
-      ></el-table-column>-->
+      ></el-table-column>
       <el-table-column
         prop="flag"
         label="标签名称"
