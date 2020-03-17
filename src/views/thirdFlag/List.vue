@@ -37,7 +37,7 @@
         name: 'flagList',
         data() {
             return {
-                tableData: '',
+                tableData: [],
                 dialogVisible: false,
                 flagId: '',
                 total: 0
