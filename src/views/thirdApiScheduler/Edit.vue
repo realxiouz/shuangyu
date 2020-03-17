@@ -109,11 +109,9 @@
       },
       handleSave() {
         this.formData.params = this.tableData;
-        console.log(this.formData);
         this.$store
           .dispatch("thirdApiScheduler/save", this.formData)
-          .then(data => {
-            console.log(data);
+          .then(() => {
             this.lastId = "0";
             this.loadData();
           })
