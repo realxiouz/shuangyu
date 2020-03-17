@@ -122,7 +122,7 @@
           });
       },
     },
-    mounted() {
+      created() {
       const {schedulerId} = this.$route.params;
       if (schedulerId) {
         this.handleGetOne(schedulerId);

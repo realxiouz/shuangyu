@@ -128,7 +128,7 @@
         });
       },
     },
-    mounted() {
+    created() {
       this.loadData();
     },
     components: {
