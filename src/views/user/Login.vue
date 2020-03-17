@@ -67,7 +67,7 @@
             this.$store
               .dispatch("user/signIn", this.loginForm)
               .then(() => {
-                this.$router.push({path: this.redirect || "/home"});
+                this.$router.push({path: this.redirect || "/"});
                 this.loading = false;
               })
               .catch(() => {
