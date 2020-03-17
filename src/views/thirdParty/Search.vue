@@ -8,8 +8,8 @@
       </el-form>
     </el-col>
     <el-col :span="4" class="search-tools">
-      <el-button type="primary" @click="$emit('onSearch',formData)">查询</el-button>
-      <el-button type="primary" @click="$emit('onAdd')">添加</el-button>
+      <el-button type="primary" icon="el-icon-search"  @click="$emit('onSearch',formData)">查询</el-button>
+      <el-button type="primary" icon="el-icon-edit" @click="$emit('onAdd')">添加</el-button>
     </el-col>
   </el-row>
 </template>
