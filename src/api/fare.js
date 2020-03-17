@@ -16,16 +16,16 @@ export function updateOne(data) {
   });
 }
 
-export function removeOne(fareID) {
+export function removeOne(fareId) {
   return request({
-    url: `/fare/remove/one/${fareID}`,
+    url: `/fare/remove/one/${fareId}`,
     method: 'delete'
   });
 }
 
-export function getOne(fareID) {
+export function getOne(fareId) {
   return request({
-    url: `/fare/one/${fareID}`,
+    url: `/fare/one/${fareId}`,
     method: 'get'
   });
 }

@@ -23,9 +23,9 @@ export function addOne(data) {
   });
 }
 
-export function removeOne(userID) {
+export function removeOne(userId) {
   return request({
-    url: `/user/remove/one/${userID}`,
+    url: `/user/remove/one/${userId}`,
     method: 'delete'
   });
 }
@@ -38,9 +38,9 @@ export function updateOne(data) {
   });
 }
 
-export function getOne(userID) {
+export function getOne(userId) {
   return request({
-    url: `/user/one/${userID}`,
+    url: `/user/one/${userId}`,
     method: 'get'
   });
 }
