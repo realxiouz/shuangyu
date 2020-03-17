@@ -20,7 +20,6 @@
     };
     export default {
         name: "thirdPartyEdit",
-        props: ["thirdId"],
         data() {
             return {
                 formData: defaultData(),
@@ -55,6 +54,9 @@
         },
         created() {
             this.loadData();
+        },
+        props: {
+            thirdId: String,
         }
     };
 </script>

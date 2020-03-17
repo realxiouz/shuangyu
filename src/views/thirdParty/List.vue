@@ -72,7 +72,6 @@
                         thirdName: keyword
                     })
                     .then(data => {
-                        console.log("-----------------" + data)
                         this.tableData = data;
                     })
                     .catch(error => {
@@ -91,8 +90,7 @@
                 }).then(() => {
                     this.$store
                         .dispatch("thirdParty/removeOne", {thirdId: row.thirdId})
-                        .then(data => {
-                            console.log(data);
+                        .then(() => {
                             rows.splice(index, 1);
                             this.total--;
                         })
@@ -113,10 +111,8 @@
             handleSave(formData) {
                 this.$store
                     .dispatch("thirdParty/save", formData)
-                    .then(data => {
-                        console.log("-----------------" + data)
+                    .then(() => {
                         this.loadData();
-                        this.loadTotal();
                     })
                     .catch(error => {
                         console.log(error);
@@ -135,21 +131,9 @@
                 this.loadData();
             }
             ,
-            loadTotal: function () {
-                this.$store
-                    .dispatch("thirdParty/getTotal", {thirdName: this.searchForm})
-                    .then(data => {
-                        this.total = data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            }
-            ,
         },
         created() {
             this.loadData();
-            this.loadTotal();
         }
         ,
         components: {
