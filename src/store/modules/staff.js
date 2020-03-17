@@ -46,8 +46,8 @@ const actions = {
   },
   removeOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {firmID, deptID, userID} = params;
-      removeOne(firmID, userID, deptID)
+      const {firmId, deptId, userId} = params;
+      removeOne(firmId, userId, deptId)
         .then(response => {
           resolve(response);
         })
@@ -58,8 +58,8 @@ const actions = {
   },
   getOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {staffID} = params;
-      getOne(staffID)
+      const {staffId} = params;
+      getOne(staffId)
         .then(response => {
           resolve(response);
         })
@@ -70,8 +70,8 @@ const actions = {
   },
   getOneByFidAndUid({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {firmID, userID} = params;
-      getOneByFidAndUid(firmID, userID)
+      const {firmId, userId} = params;
+      getOneByFidAndUid(firmId, userId)
         .then(response => {
           resolve(response);
         })

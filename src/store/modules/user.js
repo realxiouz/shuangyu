@@ -92,8 +92,8 @@ const actions = {
   },
   removeOne({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const {userID} = params
-      removeOne(userID)
+      const {userId} = params
+      removeOne(userId)
         .then(response => {
           resolve(response);
         })
