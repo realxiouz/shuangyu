@@ -180,7 +180,7 @@
       /*移除导航节点*/
       remove(params) {
         this.$store
-          .dispatch('nav/removeOne', {navID: params})
+          .dispatch('nav/removeOne', {navId: params})
           .then(() => {
             this.loadData();
           })
