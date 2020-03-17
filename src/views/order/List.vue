@@ -100,7 +100,7 @@ export default {
       pageSize: 10,
       total: 0,
       dialogVisible: false,
-      tableData: null,
+      tableData: [],
       labelPosition: "left",
       searchForm: {},
       allRoles: [],
