@@ -97,9 +97,16 @@
                 }).then(() => {
                     this.$store
                         .dispatch("thirdParty/removeOne", {thirdId: row.thirdId})
-                        .then(() => {
-                            rows.splice(index, 1);
-                            this.total--;
+                        .then((res) => {
+                            if(res){
+                                rows.splice(index, 1);
+                                this.total--;
+                                this.$message({
+                                type: "success",
+                                message: "删除成功！"
+                                });
+                            }
+                            
                         })
                         .catch(error => {
                             console.log(error);
@@ -118,9 +125,17 @@
             handleSave(formData) {
                 this.$store
                     .dispatch("thirdParty/save", formData)
-                    .then(() => {
-                        this.handleSearch();
-                        this.loadTotal();
+                    .then((res) => {
+                        console.log(res)
+                        if(res.code === 0){
+                            this.handleSearch();
+                            this.loadTotal();
+                            this.$message({
+                                type: "success",
+                                message: "添加成功"
+                            });
+                        }
+                        
                     })
                     .catch(error => {
                         console.log(error);
