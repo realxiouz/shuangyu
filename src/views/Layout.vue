@@ -62,6 +62,7 @@
       return {
         isCollapse: false,
         isDisplay: true,
+        menuList:[],
         tags: [
           { name: "首页", closable: false, type: "" },
           { name: "用户管理", closable: true, type: "success" },
@@ -79,9 +80,9 @@
       key() {
         return this.$router.path;
       },
-      menuList() {
-        return this.$router.options.routes;
-      }
+      // menuList() {
+      //   return this.$router.options.routes;
+      // }
     },
     watch: {
       screenWidth(val) {
