@@ -8,6 +8,25 @@
         label="调度名称"
       ></el-table-column>
       <el-table-column
+        prop="cron"
+        label="时间表达式"
+        width="150"
+      ></el-table-column>
+      <el-table-column
+        prop="remark"
+        label="备注"
+      ></el-table-column>
+      <el-table-column
+        prop="status"
+        label="调度程序状态"
+        width="120"
+      >
+        <template slot-scope="scope">
+          <span v-if="scope.row.status==1" style="color: green">启动</span>
+          <span v-else style="color: red">停止</span>
+        </template>
+      </el-table-column>
+      <el-table-column
         fixed="right"
         label="操作"
         align="center"

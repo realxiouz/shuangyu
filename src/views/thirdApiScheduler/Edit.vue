@@ -8,7 +8,7 @@
         <el-input v-model="formData.cron"></el-input>
       </el-form-item>
     </el-form>
-    <el-table ref="paramTable" :data="tableData" style="width: 100%;" border default-expand-all>
+    <el-table ref="paramTable" :data="tableData" style="width: 100%;" v-bind:row-style="{height:'10px'}" border default-expand-all>
       <el-table-column
         prop="label"
         label="参数名称"
@@ -30,14 +30,18 @@
         width="80"
       >
         <template slot-scope="scope">
-          <span v-if="scope.row.required">是</span>
-          <span v-else>否</span>
+          <span v-if="scope.row.required" style="color: red">必填</span>
+          <span v-else>非必填</span>
         </template>
       </el-table-column>
       <el-table-column
         prop="remark"
         label="参数说明"
-      ></el-table-column>
+      >
+        <template slot-scope="scope">
+          <span style="color: red">{{scope.row.remark}}</span>
+        </template>
+      </el-table-column>
     </el-table>
     <div>
       <el-button type="primary" @click="handleSave">保存</el-button>
