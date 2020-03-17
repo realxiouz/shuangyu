@@ -143,8 +143,7 @@
         if (this.formData.navId != '') {
           this.$store
             .dispatch('nav/updateOne', {nav: this.formData})
-            .then(data => {
-              console.log(data);
+            .then(() => {
               this.loadData();
             })
             .catch(error => {
@@ -159,7 +158,6 @@
           this.$store
             .dispatch('nav/addOne', {nav: this.formData})
             .then(data => {
-              console.log(data);
               this.curLine.push(data.data);
               this.loadData();
             })
@@ -183,8 +181,7 @@
       remove(params) {
         this.$store
           .dispatch('nav/removeOne', {navID: params})
-          .then(data => {
-            console.log(data);
+          .then(() => {
             this.loadData();
           })
           .catch(error => {

@@ -125,8 +125,7 @@
         if (formData.firmId != '') {
           this.$store
             .dispatch('firm/updateOne', {firm:formData})
-            .then(data => {
-              console.log(data);
+            .then(() => {
               this.loadData();
             })
             .catch(error => {
@@ -143,8 +142,7 @@
 
           this.$store
             .dispatch('firm/addOne', {firm:formData})
-            .then(data => {
-              console.log(data);
+            .then(() => {
               this.loadData();
             })
             .catch(error => {
@@ -177,8 +175,7 @@
       remove(params) {
         this.$store
           .dispatch('firm/removeOne', {firmID:params})
-          .then(data => {
-            console.log(data);
+          .then(() => {
           })
           .catch(error => {
             console.log(error);
