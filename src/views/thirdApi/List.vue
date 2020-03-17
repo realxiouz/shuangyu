@@ -3,18 +3,18 @@
     <apiSearch @onSearch="handleSearch" @onAdd="handleAdd"></apiSearch>
     <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;" border>
       <el-table-column
-        prop="uri"
-        label="URL"
+        prop="thirdId"
+        label="第三方平台"
         width="200"
       ></el-table-column>
       <el-table-column
-        prop="category"
-        label="类别"
+        prop="url"
+        label="url"
         width="200"
       ></el-table-column>
       <el-table-column
-        prop="apiName"
-        label="api名称"
+        prop="method"
+        label="方法名称"
         width="300"
       ></el-table-column>
       <el-table-column label="是否启用" align="center">
@@ -85,7 +85,6 @@
                 this.lastId = this.tableData[this.tableData.length - 1].apiId;
                 this.loadData();
             },
-
             loadData(params) {
                 if (!params || !params.apiName) {
                     params = {};
@@ -144,7 +143,6 @@
                     console.error(err);
                 });
             },
-
             handleSizeChange(pageSize) {
                 this.pageSize = pageSize;
                 this.loadData();
@@ -172,8 +170,7 @@
                 }
                 this.loadData(params);
                 this.loadTotal(params);
-            },
-
+            }
         },
         created() {
             this.handleSearch();

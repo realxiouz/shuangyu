@@ -1,17 +1,15 @@
 <template>
   <div>
     <el-form ref="form" :rules="rules" :model="formData" label-width="110px">
-      <el-form-item label="Api名称" prop="apiName">
-        <el-input v-model="formData.apiName"></el-input>
+      <input type="hidden" v-model="formData.apiId"/>
+      <el-form-item label="第三方平台">
+        <el-input v-model="formData.thirdId"></el-input>
       </el-form-item>
-      <el-form-item label="URL" prop="uri">
-        <el-input v-model="formData.uri"></el-input>
+      <el-form-item label="URL">
+        <el-input v-model="formData.url"></el-input>
       </el-form-item>
-      <el-form-item label="类别" prop="category">
-        <el-input v-model="formData.category"></el-input>
-      </el-form-item>
-      <el-form-item label="是否启用">
-        <el-switch v-model="formData.enable" :active-value=true :inactive-value=false></el-switch>
+      <el-form-item label="方法">
+        <el-input v-model="formData.method"></el-input>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -21,47 +19,24 @@
 
   </div>
 </template>
+
 <script>
 
     function defaultData() {
         return {
             apiId: '',
-            apiName: "",
-            uri: "",
-            enable: true,
-            category: "",
+            thirdId: '',
+            url: '',
+            method: ''
         };
     };
     export default {
         name: 'apiEdit',
-
         data() {
             return {
-                formData: defaultData(),
-                rules: {
-                    apiName: [
-                        {required: true, message: "请输入api名称", trigger: "blur"},
-                        {
-                            min: 1,
-                            max: 10,
-                            message: '长度在 1到 10 个字符'
-                        }
-                    ],
-                    uri: [
-                        {required: true, message: "请输入uri", trigger: "blur"}
-                    ],
-                    category: [
-                        {required: true, message: "请输入类别", trigger: "blur"},
-                        {
-                            min: 1,
-                            max: 10,
-                            message: '长度在 1到 10 个字符'
-                        }
-                    ]
-                }
+                formData: defaultData()
             };
         },
-
         methods: {
             handleSave() {
                 this.$refs['form'].validate((valid) => {
