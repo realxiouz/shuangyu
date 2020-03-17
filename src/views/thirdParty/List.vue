@@ -53,27 +53,33 @@
             };
         },
         methods: {
-            loadData() {
+            handleSearch(searchForm) {
+                if (!searchForm || !searchForm.thirdName) {
+                    searchForm = {}
+                }
                 this.$store
-                    .dispatch("thirdParty/getPageList", {pageFlag: this.pageFlag, pageSize: 10, lastId: this.lastId})
+                    .dispatch("thirdParty/getPageList", {
+                        pageFlag: this.pageFlag,
+                        pageSize: 10,
+                        lastId: this.lastId,
+                        filters: searchForm
+                    })
                     .then(data => {
                         this.tableData = data;
                     })
                     .catch(error => {
                         console.log(error);
                     });
+                this.loadTotal(searchForm);
             },
-            handleSearch(keyword) {
+            loadTotal(searchForm) {
+                if (!searchForm || !searchForm.thirdName) {
+                    searchForm = {}
+                }
                 this.$store
-                    .dispatch("thirdParty/getPageList", {
-                        pageFlag: this.pageFlag,
-                        pageSize: 10,
-                        lastId: this.lastId,
-                        thirdName: keyword
-                    })
+                    .dispatch("thirdParty/getTotal", {filters: searchForm})
                     .then(data => {
-                        console.log("-----------------" + data)
-                        this.tableData = data;
+                        this.total = data;
                     })
                     .catch(error => {
                         console.log(error);
@@ -91,8 +97,7 @@
                 }).then(() => {
                     this.$store
                         .dispatch("thirdParty/removeOne", {thirdId: row.thirdId})
-                        .then(data => {
-                            console.log(data);
+                        .then(() => {
                             rows.splice(index, 1);
                             this.total--;
                         })
@@ -113,9 +118,8 @@
             handleSave(formData) {
                 this.$store
                     .dispatch("thirdParty/save", formData)
-                    .then(data => {
-                        console.log("-----------------" + data)
-                        this.loadData();
+                    .then(() => {
+                        this.handleSearch();
                         this.loadTotal();
                     })
                     .catch(error => {
@@ -126,29 +130,18 @@
             prevClick() {
                 this.pageFlag = "prev";
                 this.lastId = this.tableData[0].thirdId;
-                this.loadData();
+                this.handleSearch();
             }
             ,
             nextClick() {
                 this.pageFlag = "next";
                 this.lastId = this.tableData[this.tableData.length - 1].thirdId;
-                this.loadData();
-            }
-            ,
-            loadTotal: function () {
-                this.$store
-                    .dispatch("thirdParty/getTotal", {thirdName: this.searchForm})
-                    .then(data => {
-                        this.total = data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
+                this.handleSearch();
             }
             ,
         },
         created() {
-            this.loadData();
+            this.handleSearch();
             this.loadTotal();
         }
         ,

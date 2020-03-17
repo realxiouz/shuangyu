@@ -1,23 +1,23 @@
 import request from '@/utils/request';
 
-export function getPageList(pageFlag, pageSize, lastID, filter) {
+export function getPageList(pageFlag, pageSize, lastId, filter) {
   return request({
-    url: `/nav/page/list/${pageFlag}/${pageSize}/${lastID}`,
+    url: `/nav/page/list/${pageFlag}/${pageSize}/${lastId}`,
     method: 'get',
     params: filter
   });
 }
 
-export function removeOne(navID) {
+export function removeOne(navId) {
   return request({
-    url: `/nav/remove/one/${navID}`,
+    url: `/nav/remove/one/${navId}`,
     method: 'delete'
   });
 }
 
-export function getOne(navID) {
+export function getOne(navId) {
   return request({
-    url: `/nav/one/${navID}`,
+    url: `/nav/one/${navId}`,
     method: 'get'
   });
 }
@@ -42,7 +42,7 @@ export function getList(filter) {
   return request({
     url: '/nav/list',
     method: 'get',
-    filter
+    params: filter
   });
 }
 
@@ -50,6 +50,6 @@ export function getAllList(filter) {
   return request({
     url: '/nav/get/sync/tree',
     method: 'get',
-    filter
+    params: filter
   })
 }

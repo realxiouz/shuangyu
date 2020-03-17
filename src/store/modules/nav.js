@@ -1,11 +1,10 @@
-import {removeOne, addOne, updateOne, getOne, getPageList, getList, getAllList} from '@/api/nav';
-import {parseMinWidth} from "element-ui/packages/table/src/util";
+import {addOne, getAllList, getList, getOne, getPageList, removeOne, updateOne} from '@/api/nav';
 
 const actions = {
   removeOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {navID} = params;
-      removeOne(navID)
+      const {navId} = params;
+      removeOne(navId)
         .then(response => {
           //const { data } = response;
           resolve(response);
@@ -43,8 +42,8 @@ const actions = {
   },
   getOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {navID} = params;
-      getOne(navID)
+      const {navId} = params;
+      getOne(navId)
         .then(response => {
           //const { data } = response;
           resolve(response);
@@ -80,7 +79,7 @@ const actions = {
         });
     });
   },
-  getAllList({commit}, params){
+  getAllList({commit}, params) {
     return new Promise((resolve, reject) => {
       const {filter} = params;
       getAllList(filter)
