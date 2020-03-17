@@ -117,7 +117,6 @@
           </el-form-item>
         </el-col>
       </el-row>
-
       <el-row >
         <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
           <el-form-item label="规则类型:" prop="formData.ruleTypes">
@@ -131,7 +130,6 @@
             </el-checkbox-group>
           </el-form-item>
         </el-col>
-
       </el-row>
       <el-row type="flex" justify="space-between">
         <el-col :xs="2" :sm="2" :md="1" :lg="1" :xl="1">
@@ -140,12 +138,8 @@
         </el-col>
         <el-col :xs="4" :sm="3" :md="2" :lg="1" :xl="1">
           <el-button type="primary" @click="selectPeople" size="mini">添加</el-button>
-
         </el-col>
-
       </el-row>
-
-
       <el-row>
         <el-table
           :data="peopleData"

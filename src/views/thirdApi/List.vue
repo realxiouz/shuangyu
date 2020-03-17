@@ -50,7 +50,7 @@
       :page-size="pageSize"
       :total="total">
     </el-pagination>
-    <el-dialog title="Api信息" :visible.sync="dialogVisible" width="30%">
+    <el-dialog title="第三方Api信息" :visible.sync="dialogVisible" width="30%">
       <apiEdit v-if="dialogVisible" :api-id="apiId" @onCancel="handleCancel" @onSave="handleSave"></apiEdit>
     </el-dialog>
   </div>
@@ -65,7 +65,7 @@
         name: "thirdApiList",
         data() {
             return {
-                lastId: "0",
+                lastId: "blank",
                 pageFlag: "next",
                 pageSize: 10,
                 total: 0,

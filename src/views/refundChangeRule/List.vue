@@ -111,8 +111,7 @@
         }).then(() => {
           this.$store
             .dispatch('refundChangeRule/removeOne', {ruleId:id})
-            .then(data => {
-              console.log(data);
+            .then(() => {
               this.loadData();
             })
             .catch(error => {

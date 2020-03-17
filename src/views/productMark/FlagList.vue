@@ -37,7 +37,6 @@
             .dispatch("productMark/getListByFlagIds", {flagIds: flagIds})
             .then(data => {
               this.tableData = data;
-              console.log(this.firmList)
             })
             .catch(error => {
               console.log(error);

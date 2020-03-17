@@ -25,8 +25,8 @@ const actions = {
   },
   removeOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {fareID} = params;
-      removeOne(fareID)
+      const {fareId} = params;
+      removeOne(fareId)
         .then(response => {
           resolve(response);
         })
@@ -37,8 +37,8 @@ const actions = {
   },
   getOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {fareID} = params;
-      getOne(fareID)
+      const {fareId} = params;
+      getOne(fareId)
         .then(response => {
           resolve(response);
         })

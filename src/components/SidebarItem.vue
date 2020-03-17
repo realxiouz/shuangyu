@@ -5,7 +5,7 @@
   >
     <template slot="title">
       <i class="el-icon-menu"></i>
-      <span slot="title">{{ item.title }}</span>
+      <span slot="title">{{ item.navName }}</span>
     </template>
 
     <template v-for="child in item.children">
@@ -16,13 +16,13 @@
       />
       <el-menu-item v-else :key="child.uri" :index="child.uri">
         <i class="el-icon-location"></i>
-        <span slot="title">{{ child.title }}</span>
+        <span slot="title">{{ child.navName }}</span>
       </el-menu-item>
     </template>
   </el-submenu>
   <el-menu-item v-else :index="item.uri">
     <i class="el-icon-menu"></i>
-    <span slot="title">{{ item.title }}</span>
+    <span slot="title">{{ item.navName }}</span>
   </el-menu-item>
 </template>
 

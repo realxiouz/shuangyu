@@ -20,7 +20,6 @@
     };
     export default {
         name: "thirdPartyEdit",
-        props: ["thirdId"],
         data() {
             return {
                 formData: defaultData(),
@@ -32,7 +31,7 @@
             };
         },
         methods: {
-            loadThirdparty() {
+            loadData() {
                 if ('' != this.thirdId) {
                     this.$store
                         .dispatch("thirdParty/getOne", {thirdId: this.thirdId})
@@ -54,7 +53,10 @@
             }
         },
         created() {
-            this.loadThirdparty();
+            this.loadData();
+        },
+        props: {
+            thirdId: String,
         }
     };
 </script>

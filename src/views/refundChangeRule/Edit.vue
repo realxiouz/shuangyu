@@ -113,7 +113,6 @@
         var cabinsArray = [];
         for (var i = 0; i < this.airlines.length; i++) {
           if (this.airlines[i].airlineCode == airlineCode) {
-            console.log(this.airlines[i]);
             cabinsArray = this.airlines[i].cabins;
             break;
           }

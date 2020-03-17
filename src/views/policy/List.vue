@@ -137,19 +137,19 @@
                 }else {
                     const newParams ={};
                     if(params.policyCode){
-                        newParams.policyCode = params.policyCode;
+                        newParams.policyCode = params.policyCode.toLocaleLowerCase();
                     }
                     if(params.airlineCode){
-                        newParams.airlineCode = params.airlineCode;
+                        newParams.airlineCode = params.airlineCode.toLocaleLowerCase();
                     }
                     if(params.cabin){
-                        newParams.cabin = params.cabin;
+                        newParams.cabin = params.cabin.toLocaleLowerCase();
                     }
                     if(params.dpt){
-                        newParams.dpt = params.dpt;
+                        newParams.dpt = params.dpt.toLocaleLowerCase();
                     }
                     if(params.arr){
-                        newParams.arr = params.arr;
+                        newParams.arr = params.arr.toLocaleLowerCase();
                     }
                     if(params.sellStartDate){
                         newParams.sellStartDate = params.sellStartDate;

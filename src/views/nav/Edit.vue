@@ -111,8 +111,7 @@
 
         this.$store
           .dispatch("api/updateOne", row)
-          .then(data => {
-            console.log(data);
+          .then(() => {
             this.tableLoad();
           })
           .catch(error => {
@@ -137,8 +136,7 @@
         this.curNode.apis = this.transferData;
         this.$store
           .dispatch('nav/updateOne', {nav: this.curNode})
-          .then(data => {
-            console.log(data);
+          .then(() => {
             //对数据列表进行重新加载
             this.tableLoad();
           })

@@ -7,7 +7,9 @@
           <el-input
             placeholder="请输入账号"
             v-model="loginForm.username"
-          ></el-input>
+          >
+          <i slot="prefix" class="el-input__icon el-icon-user-solid"></i>
+          </el-input>
         </el-col>
       </el-form-item>
       <el-form-item prop="password">
@@ -16,7 +18,9 @@
             placeholder="请输入密码"
             v-model="loginForm.password"
             show-password
-          ></el-input>
+          >
+          <i slot="prefix" class="el-input__icon el-icon-lock"></i>
+          </el-input>
         </el-col>
       </el-form-item>
     </el-form>
@@ -42,9 +46,9 @@
           password: ""
         },
         loginRules: {
-          username: [{required: true, message: "请输入账号", trigger: "blur"}],
+          username: [{required: true, message: "请输入您的账号", trigger: "blur"}],
           password: [
-            {required: true, message: "请输入密码", trigger: "change"},
+            {required: true, message: "请输入您的密码", trigger: "change"},
             {
               min: 3,
               max: 18,
@@ -93,6 +97,8 @@
   .el-form-title {
     text-align: center;
     margin-bottom: 20px;
+    font-weight: 700;
+    font-size: 30px;
     margin-top: 20px;
   }
 

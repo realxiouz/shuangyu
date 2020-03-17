@@ -32,7 +32,6 @@
         };
     };
     export default {
-        props: ["flagId"],
         name: 'thirdFlagEdit',
         data() {
             return {
@@ -50,7 +49,7 @@
         },
         methods: {
             handleSave() {
-                this.$refs["formData"].validate((valid) => {
+                this.$refs["form"].validate((valid) => {
                     if (valid) {
                         this.$emit("onSave", this.formData);
                     }
@@ -88,6 +87,9 @@
                 this.handleGetOne(this.flagId);
             }
             this.thirdPartyList();
+        },
+        props: {
+            flagId: String,
         }
     }
 </script>

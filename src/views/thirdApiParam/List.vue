@@ -86,8 +86,7 @@
                 }
                 this.$store
                     .dispatch('thirdApiParam/save', formData)
-                    .then(data => {
-                        console.log(data);
+                    .then(() => {
                         this.loadData();
                     })
                     .catch(error => {
@@ -132,8 +131,7 @@
             delete(paramId) {
                 this.$store
                     .dispatch('thirdApiParam/removeOne', paramId)
-                    .then(data => {
-                        console.log(data);
+                    .then(() => {
                         this.loadData();
                     })
                     .catch(error => {

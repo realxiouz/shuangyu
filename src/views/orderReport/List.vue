@@ -182,7 +182,7 @@ export default {
       formData: defaultData,
       dialogVisible: false,
       total: 0,
-      tableData: null,
+      tableData: [],
 
       allRoles: [],
       paramsRoles: [],

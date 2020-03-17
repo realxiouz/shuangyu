@@ -168,8 +168,7 @@
         }
         this.$store
           .dispatch(url, formData)
-          .then(data => {
-            console.log(data);
+          .then(() => {
             this.loadData();
           })
           .catch(error => {
@@ -192,8 +191,7 @@
       delete(fareID) {
         this.$store
           .dispatch('fare/removeOne', {fareID: fareID})
-          .then(data => {
-            console.log(data);
+          .then(() => {
             this.loadData();
           })
           .catch(error => {

@@ -579,7 +579,7 @@
         dialogFormVisible: false,
         //dialogCreate:false,
         total: 0,
-        tableData: null,
+        tableData: [],
 
         allRoles: [],
         paramsRoles: [],

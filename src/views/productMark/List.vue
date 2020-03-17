@@ -90,7 +90,6 @@
         this.markId = '';
       },
       handleSearch: function (firmId) {
-        console.log("firmId========" + firmId);
         this.$store
           .dispatch("productMark/getList", {firmId: firmId})
           .then(data => {
@@ -103,8 +102,7 @@
       handleSave(formData) {
         this.$store
           .dispatch('productMark/save', formData)
-          .then(data => {
-            console.log(data);
+          .then(() => {
             this.loadData();
             this.total += 1;
           })
@@ -123,7 +121,6 @@
       },
       //点击查看标签列表
       showFlagList(row) {
-        console.log("markid---" + row.flags)
         this.flagListVisible = true;
         this.flags = row.flags;
       },
@@ -136,8 +133,7 @@
       delete(markId) {
         this.$store
           .dispatch('productMark/removeOne', markId)
-          .then(data => {
-            console.log(data);
+          .then(() => {
             this.loadData();
           })
           .catch(error => {
