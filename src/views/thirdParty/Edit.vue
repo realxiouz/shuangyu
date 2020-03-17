@@ -32,7 +32,7 @@
             };
         },
         methods: {
-            loadThirdparty() {
+            loadData() {
                 if ('' != this.thirdId) {
                     this.$store
                         .dispatch("thirdParty/getOne", {thirdId: this.thirdId})
@@ -54,7 +54,7 @@
             }
         },
         created() {
-            this.loadThirdparty();
+            this.loadData();
         }
     };
 </script>
