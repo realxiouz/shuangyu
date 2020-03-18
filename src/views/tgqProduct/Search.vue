@@ -16,7 +16,7 @@
 
 <script>
   export default {
-    name: "thirdApiSchedulerSearch",
+    name: "tgqProductSearch",
     data() {
       return {
         formData: {
@@ -27,6 +27,3 @@
   };
 </script>
 
-<style scoped>
-
-</style>
