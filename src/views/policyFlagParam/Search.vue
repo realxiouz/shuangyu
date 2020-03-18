@@ -2,9 +2,9 @@
   <el-row type="flex" class="row-bg" justify="space-between" align="bottom">
     <el-col :span="10">
       <el-form :inline="true" :model="searchFrom">
-        <el-form-item label="参数标签">
+<!--        <el-form-item label="参数标签">
           <el-input v-model="searchFrom.label" placeholder="标签名称"></el-input>
-        </el-form-item>
+        </el-form-item>-->
         <el-form-item label="参数名称">
           <el-input v-model="searchFrom.name" placeholder="标签名称"></el-input>
         </el-form-item>
@@ -22,7 +22,6 @@
         data() {
             return {
                 searchFrom: {
-                    label: '',
                     name: ''
                 }
             }

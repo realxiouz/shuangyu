@@ -54,7 +54,6 @@
                         filters: searchForm
                     })
                     .then(data => {
-                        console.log(data)
                         this.tableData = data;
                     })
                     .catch(error => {

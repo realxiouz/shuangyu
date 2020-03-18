@@ -56,7 +56,7 @@
         }
         , methods: {
             handleSearch(searchForm) {
-                if (!searchForm || !searchForm.flag) {
+                if (!searchForm || !searchForm.name) {
                     searchForm = {}
                 }
                 this.$store
@@ -64,7 +64,6 @@
                         filters: searchForm
                     })
                     .then(data => {
-                        console.log(data)
                         this.tableData = data;
                     })
                     .catch(error => {
