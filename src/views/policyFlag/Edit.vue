@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form ref="form" :rules="rules" :model="formData" label-width="110px">
+    <el-form ref="form" :rules="rules" :model="formData" label-width="150px">
       <el-form-item label="平台" prop="thirdId">
         <el-select v-model="formData.thirdId" filterable placeholder="请选择平台" @change="handleChange">
           <el-option
@@ -27,12 +27,20 @@
           prop="value"
           label="参数值"
           align="center"
-        ></el-table-column>
+        >
+          <template slot-scope="{row}">
+            <input class="edit-input" size="small" v-model="row.value">
+          </template>
+        </el-table-column>
         <el-table-column
           prop="group"
           label="参数分组"
           align="center"
-        ></el-table-column>
+        >
+          <template slot-scope="{row}">
+            <input class="edit-input" size="small" v-model="row.group">
+          </template>
+        </el-table-column>
       </el-table>
     </el-form>
     <div slot="footer" class="dialog-footer">
