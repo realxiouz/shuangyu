@@ -24,6 +24,7 @@ import fare from './modules/fare';
 import thirdApiService from './modules/thirdApiService';
 import thirdAccount from './modules/thirdAccount';
 import tgqProduct from './modules/tgqProduct';
+import pnrjyOrder from "./modules/pnrjyOrder";
 
 Vue.use(Vuex);
 
@@ -52,7 +53,8 @@ export default new Vuex.Store({
     fare,
     thirdApiService,
     thirdAccount,
-    tgqProduct
+    tgqProduct,
+    pnrjyOrder
   },
   state: {},
   mutations: {},
