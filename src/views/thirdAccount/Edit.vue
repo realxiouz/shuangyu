@@ -1,8 +1,12 @@
 <template>
   <div>
     <el-form :model="formData" label-width="110px">
+      <input type="hidden" v-model="formData.accoutId"/>
       <el-form-item label="账号">
-        <el-input v-model="formData.accoutId" :disabled="update"></el-input>
+        <el-input v-model="formData.username"></el-input>
+      </el-form-item>
+      <el-form-item label="密码">
+        <el-input v-model="formData.password"></el-input>
       </el-form-item>
       <el-form-item label="登录地址">
         <el-input v-model="formData.loginUrl"></el-input>
@@ -40,6 +44,8 @@
             defaultFormData() {
                 return {
                     accoutId: '',
+                    username: '',
+                    password: '',
                     loginUrl: '',
                     contactPerson: '',
                     contactPhone: '',

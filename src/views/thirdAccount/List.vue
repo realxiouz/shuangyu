@@ -7,7 +7,7 @@
       </el-header>
       <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;">
         <el-table-column
-          prop="accoutId"
+          prop="username"
           label="账号"
           width="300"
           align="center"
@@ -104,7 +104,7 @@
             /*输入条件时可进行条件查询*/
             search(keyword) {
                 this.$store
-                    .dispatch('thirdAccount/getTotal', {filter: keyword ? {accoutId: keyword} : {}})
+                    .dispatch('thirdAccount/getTotal', {filter: keyword ? {username: keyword} : {}})
                     .then(data => {
                         this.total = data.data;
                     })
@@ -116,7 +116,7 @@
                         pageFlag: this.pageFlag,
                         pageSize: this.pageSize,
                         lastId: this.lastId,
-                        filter: keyword ? {accoutId: keyword} : {}
+                        filter: keyword ? {username: keyword} : {}
                     })
                     .then(data => {
                         this.tableData = data.data;
