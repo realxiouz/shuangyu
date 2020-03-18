@@ -33,7 +33,7 @@
       </el-table-column>
     </el-table>
     <el-dialog title="用户信息" :visible.sync="dialogVisible" width="30%">
-      <flag-param-edit v-if="dialogVisible" :flag-id="flagId" @onSave="handleSave"
+      <flag-param-edit v-if="dialogVisible" :param-id="paramId" @onSave="handleSave"
                         @onCancel="handleCancel"></flag-param-edit>
     </el-dialog>
   </div>
@@ -45,12 +45,12 @@
 
 
     export default {
-        name: 'flagList',
+        name: 'flagParamList',
         data() {
             return {
                 tableData: [],
                 dialogVisible: false,
-                flagId: '',
+                paramId: '',
                 total: 0
             }
         }
@@ -73,7 +73,7 @@
             },
             handleAdd() {
                 this.dialogVisible = true;
-                this.flagId = '';
+                this.paramId = '';
             },
             handleSave(formData) {
                 this.$store
@@ -86,7 +86,7 @@
                 this.dialogVisible = false;
             },
             handleUpdate(id) {
-                this.flagId = id;
+                this.paramId = id;
                 this.dialogVisible = true;
             },
             handleRemove(row, index, rows) {
@@ -96,7 +96,7 @@
                     type: "warning"
                 }).then(() => {
                     this.$store
-                        .dispatch("policyFlagParam/removeOne", {flagId: row.flagId})
+                        .dispatch("policyFlagParam/removeOne", {paramId: row.paramId})
                         .then(data => {
                             console.log(data);
                             rows.splice(index, 1);
