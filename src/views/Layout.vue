@@ -1,14 +1,14 @@
 <template>
   <el-container>
     <el-aside width="auto" v-show="isDisplay">
-      <Sidebar :menuList="navs" :collapse="isCollapse" />
+      <Sidebar :menuList="menus" :collapse="isCollapse"/>
     </el-aside>
     <el-main>
       <div class="app-header">
         <el-row type="flex" class="row-bg" justify="space-between">
           <el-col :span="20">
             <div class="grid-content bg-purple">
-              <span class="nav-switch" v-bind:class="switchClass" @click="handleSwitch" />
+              <span class="nav-switch" v-bind:class="switchClass" @click="handleSwitch"/>
             </div>
           </el-col>
           <el-col :span="2">
@@ -32,7 +32,8 @@
             :key="tag.name"
             :closable="tag.closable"
             :type="tag.type"
-          >{{tag.name}}</el-tag>
+          >{{tag.name}}
+          </el-tag>
         </div>
         <el-breadcrumb class="nav-router" separator="/">
           <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
@@ -46,7 +47,7 @@
       </div>
       <section class="app-main">
         <transition name="fade-transform" mode="out-in">
-          <router-view :key="key" />
+          <router-view :key="key"/>
         </transition>
       </section>
     </el-main>
@@ -82,8 +83,8 @@
         return this.$router.path;
       },
       menus() {
-
-        return this.navs;
+        let menus = this.buildTree(null, this.navs);
+        return menus;
       }
     },
     watch: {
@@ -102,6 +103,21 @@
     },
     methods: {
       goBack() {
+      },
+      buildTree(pid, navs) {
+        let menus = [];
+        for (let i = 0; i < navs.length; i++) {
+          if (navs[i].pid === pid) {
+            menus.push(navs[i]);
+          }
+        }
+        if (menus.length > 0) {
+          for (let i = 0; i < menus.length; i++) {
+            let children = this.buildTree(menus[i].navId, navs);
+            menus[i].children = children;
+          }
+        }
+        return menus;
       },
       handleSwitch() {
         if (this.screenWidth > 500) {
@@ -125,21 +141,20 @@
           .catch(() => {
           });
       },
-      getMenuList() {
+      getLoginInfo() {
         this.$store
-          .dispatch("staff/getLoginInfo",{firmId:""})
+          .dispatch("staff/getLoginInfo", { firmId: "" })
           .then(res => {
-            this.navs = res.data.navs
-            console.log(this.navs)
+            this.navs = res.data.navs;
           })
           .catch(error => {
             console.log(error);
           });
-      },
-      
+      }
+
     },
     created() {
-      this.getMenuList();
+      this.getLoginInfo();
     },
     mounted() {
       const _this = this;
@@ -154,62 +169,62 @@
 </script>
 
 <style lang="scss" scoped>
-.el-main {
-  height: 100%;
-  padding: 0;
-  color: #333;
-  background-color: #f0f2f5;
+  .el-main {
+    height: 100%;
+    padding: 0;
+    color: #333;
+    background-color: #f0f2f5;
 
-  .app-header {
-    height: 175px;
-    overflow: hidden;
-    position: relative;
-    background: #fff;
-    -webkit-box-shadow: 0px 1px 4px rgba(0, 21, 41, 0.08);
-    box-shadow: 0px 1px 4px rgba(0, 21, 41, 0.08);
+    .app-header {
+      height: 175px;
+      overflow: hidden;
+      position: relative;
+      background: #fff;
+      -webkit-box-shadow: 0px 1px 4px rgba(0, 21, 41, 0.08);
+      box-shadow: 0px 1px 4px rgba(0, 21, 41, 0.08);
 
-    .el-page-header {
-      padding-left: 20px;
-    }
+      .el-page-header {
+        padding-left: 20px;
+      }
 
-    .grid-content {
-      height: 40px;
-      display: table-cell;
-      vertical-align: middle;
-    }
+      .grid-content {
+        height: 40px;
+        display: table-cell;
+        vertical-align: middle;
+      }
 
-    .nav-switch {
-      display: inline-block;
-      font-size: 28px;
-    }
+      .nav-switch {
+        display: inline-block;
+        font-size: 28px;
+      }
 
-    .nav-router {
-      padding: 20px;
-    }
+      .nav-router {
+        padding: 20px;
+      }
 
-    .tags-view {
-      height: 40px;
-      padding-top: 6px;
-      border-top: 1px solid #edeff0;
-      border-bottom: 1px solid #edeff0;
+      .tags-view {
+        height: 40px;
+        padding-top: 6px;
+        border-top: 1px solid #edeff0;
+        border-bottom: 1px solid #edeff0;
 
-      .tags-view-item {
-        margin: 0 5px;
-        cursor: pointer;
-        height: 26px;
-        line-height: 26px;
+        .tags-view-item {
+          margin: 0 5px;
+          cursor: pointer;
+          height: 26px;
+          line-height: 26px;
+        }
       }
     }
+
+    .app-main {
+      margin: 15px;
+      padding: 15px;
+      background-color: #ffffff;
+    }
   }
 
-  .app-main {
-    margin: 15px;
-    padding: 15px;
-    background-color: #ffffff;
+  body .el-container {
+    height: 100%;
   }
-}
-
-body .el-container {
-  height: 100%;
-}
 </style>
