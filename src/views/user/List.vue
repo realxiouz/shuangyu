@@ -87,7 +87,7 @@
       @next-click="handleNextClick">
     </el-pagination>
     <el-dialog title="用户信息" :visible.sync="dialogVisible" width="30%" :close-on-click-modal="false">
-      <userForm v-if="dialogVisible" ref="form" :userID="userID" @onSave="handleSave"
+      <userForm v-if="dialogVisible" ref="form" :userId="userId" @onSave="handleSave"
                 @onCancel="handleCancel"></userForm>
 
 
@@ -133,7 +133,7 @@
         /*重置用户密码时的input类型*/
         inputType: 'password',
         /*进行编辑当前用户ID*/
-        userID: '',
+        userId: '',
         /*记录当前进行密码重置新密码和再次输入密码*/
         userPwd: {},
         /*重置用户密码时记录当前用户节点信息*/
@@ -191,7 +191,7 @@
       /*添加用户按钮*/
       handleAdd() {
         this.dialogVisible = true;
-        this.userID = '';
+        this.userId = '';
       },
       /*修改是否超级管理员状态*/
       superSwitch(row) {
@@ -261,16 +261,16 @@
       /*点击用户编辑按钮*/
       handleEdit(row) {
         this.dialogVisible = true;
-        this.userID = row.userId;
+        this.userId = row.userId;
       },
       /*对员工进行删除*/
       handleDelete(row) {
         this.open(this.delete, row.userId, '此操作将删除该用户的所有信息, 是否继续?');
       },
       /*根据用户ID删除用户*/
-      delete(userID) {
+      delete(userId) {
         this.$store
-          .dispatch('user/removeOne', {userID: userID})
+          .dispatch('user/removeOne', {userId: userId})
           .then(data => {
             console.log(data);
             this.loadData();
@@ -293,7 +293,7 @@
         this.dialogVisible = false;
 
         let url = '';
-        if (this.userID) {
+        if (this.userId) {
           url = 'user/updateOne';
         } else {
           url = 'user/addOne';
