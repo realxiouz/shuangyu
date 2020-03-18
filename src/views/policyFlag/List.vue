@@ -50,7 +50,7 @@
                     searchForm = {}
                 }
                 this.$store
-                    .dispatch("thirdFlag/getList", {
+                    .dispatch("policyFlag/getList", {
                         filters: searchForm
                     })
                     .then(data => {
@@ -67,7 +67,7 @@
             },
             handleSave(formData) {
                 this.$store
-                    .dispatch("thirdFlag/save", formData)
+                    .dispatch("policyFlag/save", formData)
                     .then(() => {
                         this.handleSearch();
                     }).catch(error => {
@@ -86,7 +86,7 @@
                     type: "warning"
                 }).then(() => {
                     this.$store
-                        .dispatch("thirdFlag/removeOne", {flagId: row.flagId})
+                        .dispatch("policyFlag/removeOne", {flagId: row.flagId})
                         .then(data => {
                             console.log(data);
                             rows.splice(index, 1);

@@ -307,8 +307,15 @@ export default new Router({
           uri: '/policyFlag/list',
           component: () => import('@/views/policyFlag/List'),
           meta: { title: 'Home', icon: 'home' }
+        },
+        {
+          title: '第三方标签参数',
+          path: '/policy/flag/param/list',
+          name: 'policyFlagParam',
+          uri: '/policy/flag/param/list',
+          component: () => import('@/views/policyFlagParam/List'),
+          meta: { title: 'Home', icon: 'home' }
         }
-
       ]
     },
 
