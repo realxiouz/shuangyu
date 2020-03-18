@@ -104,7 +104,6 @@
                         .dispatch("policyFlag/getOne", {flagId: id})
                         .then(data => {
                             this.formData = data;
-                            this.paramList(data.thirdId);
                         }).catch(error => {
                         console.log(error);
                     });
