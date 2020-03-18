@@ -3,10 +3,10 @@
     <div class="el-form-title">
       <span>首次登录请修改密码</span>
     </div>
-    <el-form ref="userPwd" :model="userPwd" :rules="userRules">
+    <el-form ref="userPwd" :model="formData" :rules="formRules">
       <el-form-item prop="newPwd" label="您的新密码：">
         <el-col :span="24">
-          <el-input :type="inputType" v-model="userPwd.newPwd" placeholder="请输入您的新密码" show-password>
+          <el-input :type="inputType" v-model="formData.newPassword" placeholder="请输入您的新密码" show-password>
             <i slot="prefix" class="el-input__icon el-icon-lock"></i>
           </el-input>
         </el-col>
@@ -15,7 +15,7 @@
         <el-col :span="24">
           <el-input
             :type="inputType"
-            v-model="userPwd.againPwd"
+            v-model="formData.confirmPassword"
             placeholder="请确认您的新密码"
             show-password
           >
@@ -35,12 +35,12 @@ export default {
     return {
       inputType: "password",
       loading: false,
-      userPwd: {
-        newPwd: "",
-        againPwd: ""
+      formData: {
+        newPassword: "",
+        confirmPassword: ""
       },
-      userRules: {
-        newPwd: [
+      formRules: {
+        newPassword: [
           { required: true, message: "请输入新密码", trigger: "change" },
           {
             min: 3,
@@ -49,7 +49,7 @@ export default {
             trigger: "change"
           }
         ],
-        againPwd: [
+        confirmPassword: [
           { required: true, message: "请输入新密码", trigger: "change" },
           {
             min: 3,
@@ -66,7 +66,7 @@ export default {
       this.$refs.userPwd.validate(valid => {
         if (valid) {
           this.loading = true;
-          if (this.userPwd.newPwd !== this.userPwd.againPwd) {
+          if (this.formData.newPassword !== this.formData.confirmPassword) {
             this.$message({
               type: "error",
               message: "两次输入的密码不相同,请重新输入！"
@@ -76,7 +76,7 @@ export default {
           }
           if (this.userPwd.newPwd === this.userPwd.againPwd) {
             this.$store
-              .dispatch("user/updateActivate", {newPassword:this.userPwd.againPwd})
+              .dispatch("user/activate", {newPassword:this.userPwd.againPwd})
               .then(res => {
                 console.log(res);
                 this.$message({
