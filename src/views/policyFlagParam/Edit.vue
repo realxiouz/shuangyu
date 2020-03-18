@@ -56,7 +56,7 @@
             handleGetOne(id) {
                 if (id) {
                     this.$store
-                        .dispatch("policyFlagParam/getOne", {flagId: id})
+                        .dispatch("policyFlagParam/getOne", {paramId: id})
                         .then(data => {
                             this.formData = data;
                             this.dialogVisible = true;
@@ -69,8 +69,8 @@
             },
         },
         created() {
-            if (this.flagId) {
-                this.handleGetOne(this.flagId);
+            if (this.paramId) {
+                this.handleGetOne(this.paramId);
             }
         },
         props: {
