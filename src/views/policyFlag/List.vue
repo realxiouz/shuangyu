@@ -65,6 +65,7 @@
                 this.flagId = '';
             },
             handleSave(formData) {
+                console.log(formData)
                 this.$store
                     .dispatch("policyFlag/save", formData)
                     .then(() => {
