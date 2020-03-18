@@ -72,7 +72,7 @@
 
   export default {
     name: "userEdit",
-    props: ["userID"],
+    props: ["userId"],
     comments: {selectRoles},
     data() {
       return {
@@ -137,9 +137,9 @@
       },
       /*根据用户ID查询用户信息*/
       loadUser() {
-        if ("" != this.userID) {
+        if ("" != this.userId) {
           this.$store
-            .dispatch("user/getOne", {userId: this.userID})
+            .dispatch("user/getOne", {userId: this.userId})
             .then(data => {
               this.formData = data.data;
             })
