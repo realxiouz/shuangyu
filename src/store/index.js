@@ -26,7 +26,7 @@ import thirdAccount from "./modules/thirdAccount";
 import tgqProduct from "./modules/tgqProduct";
 import pnrjyOrder from "./modules/pnrjyOrder";
 
-import { getLoginInfo } from '@/api/staff';
+import { getLoginInfo } from "@/api/staff";
 
 Vue.use(Vuex);
 export default new Vuex.Store({
@@ -57,7 +57,9 @@ export default new Vuex.Store({
     tgqProduct,
     pnrjyOrder
   },
-  state: {},
+  state: {
+    loginInfo: {}
+  },
   mutations: {
     SET_LOGIN_INFO: (state, data) => {
       state.loginInfo = data;

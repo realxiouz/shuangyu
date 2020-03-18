@@ -15,7 +15,7 @@
             <div class="grid-content bg-purple">
               <el-dropdown @command="handleCommand">
                 <span class="el-dropdown-link">
-                  设置
+                  {{this.$store.state.loginInfo.fullName}}设置
                   <i class="el-icon-arrow-down el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
@@ -146,7 +146,6 @@
           .dispatch("getLoginInfo", { firmId: "" })
           .then(data => {
             this.navs = data.navs;
-            console.log(this.$store);
           })
           .catch(error => {
             console.log(error);
