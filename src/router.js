@@ -293,18 +293,18 @@ export default new Router({
           meta: { title: 'Home', icon: 'home' }
         },
         {
-          title: '第三方调度',
-          path: '/third/api/scheduler/list',
-          name: 'thirdApiSchedulerList',
-          uri: '/third/api/scheduler/list',
-          component: () => import('@/views/thirdApiScheduler/List'),
+          title: 'TGQ调度',
+          path: '/tgq/product/list',
+          name: 'tgqProductList',
+          uri: '/tgq/product/list',
+          component: () => import('@/views/tgqProduct/List'),
           meta: {title: 'Home', icon: 'home'}
         }, {
-          title: '第三方调度编辑',
-          path: '/third/api/scheduler/edit',
-          name: 'ThirdApiSchedulerEdit',
-          uri: '/third/api/scheduler/edit',
-          component: () => import('@/views/thirdApiScheduler/Edit'),
+          title: 'TGQ编辑',
+          path: '/tgq/product/edit',
+          name: 'tgqProductEdit',
+          uri: '/tgq/product/edit',
+          component: () => import('@/views/tgqProduct/Edit'),
           props: {default: true, sidebar: false},
           meta: {title: 'Home', icon: 'home'}
         },
@@ -323,7 +323,16 @@ export default new Router({
           uri: '/policy/flag/param/list',
           component: () => import('@/views/policyFlagParam/List'),
           meta: { title: 'Home', icon: 'home' }
+        },
+        {
+          title: '第三方平台账号',
+          path: '/third/account/list',
+          name: 'account',
+          uri: '/third/account/list',
+          component: () => import('@/views/thirdAccount/List'),
+          meta: { title: 'Home', icon: 'home' }
         }
+
       ]
     },
 

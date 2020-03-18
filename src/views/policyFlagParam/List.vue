@@ -34,7 +34,7 @@
     </el-table>
     <el-dialog title="用户信息" :visible.sync="dialogVisible" width="30%">
       <flag-param-edit v-if="dialogVisible" :param-id="paramId" @onSave="handleSave"
-                        @onCancel="handleCancel"></flag-param-edit>
+                       @onCancel="handleCancel"></flag-param-edit>
     </el-dialog>
   </div>
 </template>
@@ -56,7 +56,7 @@
         }
         , methods: {
             handleSearch(searchForm) {
-                if (!searchForm || !searchForm.flag) {
+                if (!searchForm || !searchForm.name) {
                     searchForm = {}
                 }
                 this.$store
@@ -64,7 +64,6 @@
                         filters: searchForm
                     })
                     .then(data => {
-                        console.log(data)
                         this.tableData = data;
                     })
                     .catch(error => {

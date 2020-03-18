@@ -4,9 +4,8 @@
     <order-search @onSearch="handleCancel" @onAdd="handleSave"></order-search>
     <el-table
       :data="tableData"
-      style="width: 100%;margin-bottom: 20px;"
-      border
-      default-expand-all
+      border="true"
+      size="mini"
     >
       <el-table-column
         prop="orderNumber"

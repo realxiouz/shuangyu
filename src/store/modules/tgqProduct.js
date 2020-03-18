@@ -3,9 +3,13 @@ import {
   save,
   getPageList,
   getList,
+  getParamList,
   removeOne,
-  getTotal
-} from '@/api/thirdApiScheduler';
+  getTotal,
+  saveAndStart,
+  start,
+  stop
+} from '@/api/tgqProduct';
 import {getToken} from '@/utils/auth';
 
 const state = {
@@ -30,6 +34,18 @@ const actions = {
   save({commit}, data) {
     return new Promise((resolve, reject) => {
       save(data)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  saveAndStart({commit}, data) {
+    return new Promise((resolve, reject) => {
+      saveAndStart(data)
         .then(response => {
           const { data } = response;
           resolve(data);
@@ -72,6 +88,32 @@ const actions = {
         });
     });
   },
+  start({commit}, params) {
+    const { schedulerId } = params;
+    return new Promise((resolve, reject) => {
+      start(schedulerId)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  stop({commit}, params) {
+    const { schedulerId } = params;
+    return new Promise((resolve, reject) => {
+      stop(schedulerId)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
   getList({commit}, params) {
     var data = params.searchForm;
     var searchForm = {};
@@ -83,6 +125,26 @@ const actions = {
     params.searchForm = searchForm;
     return new Promise((resolve, reject) => {
       getList(params)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getParamList({commit}, params) {
+    var data = params.searchForm;
+    var searchForm = {};
+    for (var attr in data) {
+      if (data[attr] != null && data[attr] != undefined && data[attr] != '') {
+        searchForm[attr] = data[attr];
+      }
+    }
+    params.searchForm = searchForm;
+    return new Promise((resolve, reject) => {
+      getParamList(params)
         .then(response => {
           const {data} = response;
           resolve(data);

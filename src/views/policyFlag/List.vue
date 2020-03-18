@@ -54,7 +54,6 @@
                         filters: searchForm
                     })
                     .then(data => {
-                        console.log(data)
                         this.tableData = data;
                     })
                     .catch(error => {
@@ -66,6 +65,7 @@
                 this.flagId = '';
             },
             handleSave(formData) {
+                console.log(formData)
                 this.$store
                     .dispatch("policyFlag/save", formData)
                     .then(() => {

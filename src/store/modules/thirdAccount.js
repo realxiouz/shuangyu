@@ -1,51 +1,9 @@
-import {
-  addOne,
-  addMany,
-  updateOne,
-  removeOne,
-  getOne,
-  getOneByFidAndUid,
-  getList,
-  getTotal,
-  getPageList,
-  getLoginInfo
-} from '@/api/staff';
-import { getToken, setToken, removeToken } from "@/utils/auth";
-
-
-const state = {
-  token: getToken(),
-  name: "",
-  avatar: ""
-};
-
-const mutations = {
-  SET_TOKEN: (state, token) => {
-    state.token = token;
-  },
-  SET_NAME: (state, name) => {
-    state.name = name;
-  },
-  SET_AVATAR: (state, avatar) => {
-    state.avatar = avatar;
-  }
-};
+import {addOne,updateOne,removeOne,getOne,getList,getTotal,getPageList} from '@/api/thirdAccount';
 
 const actions = {
   addOne({commit}, params) {
     return new Promise((resolve, reject) => {
       addOne(params)
-        .then(response => {
-          resolve(response);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  addMany({commit}, params) {
-    return new Promise((resolve, reject) => {
-      addMany(params)
         .then(response => {
           resolve(response);
         })
@@ -67,8 +25,8 @@ const actions = {
   },
   removeOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {firmId, deptId, userId} = params;
-      removeOne(firmId, userId, deptId)
+      const {thirdAccountId} = params;
+      removeOne(thirdAccountId)
         .then(response => {
           resolve(response);
         })
@@ -79,20 +37,8 @@ const actions = {
   },
   getOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {staffId} = params;
-      getOne(staffId)
-        .then(response => {
-          resolve(response);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  getOneByFidAndUid({commit}, params) {
-    return new Promise((resolve, reject) => {
-      const {firmId, userId} = params;
-      getOneByFidAndUid(firmId, userId)
+      const {thirdAccountId} = params;
+      getOne(thirdAccountId)
         .then(response => {
           resolve(response);
         })
@@ -129,18 +75,6 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {pageFlag, pageSize, lastId, filter} = params;
       getPageList(pageFlag, pageSize, lastId, filter)
-        .then(response => {
-          resolve(response);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  getLoginInfo({commit}, params) {
-    return new Promise((resolve, reject) => {
-      const {firmId} = params;
-      getLoginInfo(firmId)
         .then(response => {
           resolve(response);
         })
