@@ -70,9 +70,9 @@ export function getPageList(pageFlag, pageSize, lastId, filter) {
 }
 
 // 更新激活标记
-export function updateActivate(data) {
+export function activate(data) {
   return request({
-    url: `/admin/user/login/activate`,
+    url: `/admin/user/activate`,
     method: 'post',
     data
   });
