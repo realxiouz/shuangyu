@@ -26,8 +26,7 @@ const actions = {
       signIn({ username: username.trim(), password: password })
         .then(response => {
           const { data } = response;
-          commit("SET_TOKEN", data.token);
-          setToken(data.token);
+          commit("SET_TOKEN", data.key);
           resolve();
         })
         .catch(error => {
