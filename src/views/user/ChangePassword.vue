@@ -3,11 +3,11 @@
     <div class="el-form-title">
       <span>首次登录请修改密码</span>
     </div>
-    <el-form ref="userPwd" :model="userPwd" :rules="userRules">
+    <el-form ref="userPwd" :model="formData" :rules="formRules">
       <el-form-item prop="newPwd" label="您的新密码：">
         <el-col :span="24">
-          <el-input :type="inputType" v-model="userPwd.newPwd" placeholder="请输入您的新密码" show-password>
-          <i slot="prefix" class="el-input__icon el-icon-lock"></i>
+          <el-input :type="inputType" v-model="formData.newPassword" placeholder="请输入您的新密码" show-password>
+            <i slot="prefix" class="el-input__icon el-icon-lock"></i>
           </el-input>
         </el-col>
       </el-form-item>
@@ -15,11 +15,11 @@
         <el-col :span="24">
           <el-input
             :type="inputType"
-            v-model="userPwd.againPwd"
+            v-model="formData.confirmPassword"
             placeholder="请确认您的新密码"
             show-password
           >
-          <i slot="prefix" class="el-input__icon el-icon-lock"></i>
+            <i slot="prefix" class="el-input__icon el-icon-lock"></i>
           </el-input>
         </el-col>
       </el-form-item>
@@ -35,12 +35,12 @@ export default {
     return {
       inputType: "password",
       loading: false,
-      userPwd: {
-        newPwd: "",
-        againPwd: ""
+      formData: {
+        newPassword: "",
+        confirmPassword: ""
       },
-      userRules: {
-        newPwd: [
+      formRules: {
+        newPassword: [
           { required: true, message: "请输入新密码", trigger: "change" },
           {
             min: 3,
@@ -49,7 +49,7 @@ export default {
             trigger: "change"
           }
         ],
-        againPwd: [
+        confirmPassword: [
           { required: true, message: "请输入新密码", trigger: "change" },
           {
             min: 3,
@@ -65,14 +65,33 @@ export default {
     goHome() {
       this.$refs.userPwd.validate(valid => {
         if (valid) {
-          if (this.userPwd.newPwd !== this.userPwd.againPwd) {
+          this.loading = true;
+          if (this.formData.newPassword !== this.formData.confirmPassword) {
             this.$message({
               type: "error",
               message: "两次输入的密码不相同,请重新输入！"
             });
+            this.loading = false;
             return;
           }
-          this.$router.push({ path: "index" });
+          if (this.userPwd.newPwd === this.userPwd.againPwd) {
+            this.$store
+              .dispatch("user/activate", {newPassword:this.userPwd.againPwd})
+              .then(res => {
+                console.log(res);
+                this.$message({
+                  type: "success",
+                  message: "修改成功！"
+                });
+                this.$router.push({ path: "index" });
+                this.loading = false;
+              })
+              .catch(()=>{
+                this.loading = false;
+              })
+          }
+        }else{
+          return false;
         }
       });
     }

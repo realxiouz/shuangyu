@@ -66,9 +66,15 @@
             this.loading = true;
             this.$store
               .dispatch("user/signIn", this.loginForm)
-              .then(() => {
-                this.$router.push({path: this.redirect || "/home"});
-                this.loading = false;
+              .then(res => {
+                var flag =res.data.activateFlag
+                if(!flag){
+                  this.$router.push({name: "changePassword"});
+                  this.loading = false;
+                }else{
+                  this.$router.push({path: this.redirect || "index"});
+                  this.loading = false;
+                }
               })
               .catch(() => {
                 this.loading = false;

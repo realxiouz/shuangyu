@@ -68,3 +68,12 @@ export function getPageList(pageFlag, pageSize, lastId, filter) {
     params: filter
   });
 }
+
+// 更新激活标记
+export function activate(data) {
+  return request({
+    url: `/admin/user/activate`,
+    method: 'post',
+    data
+  });
+}
