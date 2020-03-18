@@ -273,7 +273,7 @@ export default new Router({
           path: '/third/party/list',
           name: 'thirdParty',
           uri: '/third/party/list',
-          component: () => import('@/views/thirdParty/List'),
+          component: () => import('@/views/thirdparty/List'),
           meta: { title: 'Home', icon: 'home' }
         },
         {
@@ -315,7 +315,16 @@ export default new Router({
           uri: '/policy/flag/param/list',
           component: () => import('@/views/policyFlagParam/List'),
           meta: { title: 'Home', icon: 'home' }
+        },
+        {
+          title: '第三方平台账号',
+          path: '/third/account/list',
+          name: 'account',
+          uri: '/third/account/list',
+          component: () => import('@/views/thirdAccount/List'),
+          meta: { title: 'Home', icon: 'home' }
         }
+
       ]
     },
 
