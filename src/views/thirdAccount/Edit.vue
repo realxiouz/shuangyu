@@ -2,7 +2,7 @@
   <div>
     <el-form :model="formData" label-width="110px">
       <el-form-item label="账号">
-        <el-input v-model="formData.accoutId"></el-input>
+        <el-input v-model="formData.accoutId" :disabled="update"></el-input>
       </el-form-item>
       <el-form-item label="登录地址">
         <el-input v-model="formData.loginUrl"></el-input>

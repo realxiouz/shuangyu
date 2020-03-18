@@ -51,7 +51,8 @@
       </el-pagination>
 
       <el-dialog title="第三方平台账号信息" :visible.sync="dialogVisible" width="30%" :close-on-click-modal="false">
-        <third-account-edit v-if="dialogVisible" :curNode="curNode" :update="update" @onSave="handleSave" @onCancel="handleCancel"></third-account-edit>
+        <third-account-edit v-if="dialogVisible" :curNode="curNode" :update="update" @onSave="handleSave"
+                            @onCancel="handleCancel"></third-account-edit>
       </el-dialog>
     </el-main>
   </el-container>
@@ -101,9 +102,9 @@
                     });
             },
             /*输入条件时可进行条件查询*/
-            search(searchForm) {
+            search(keyword) {
                 this.$store
-                    .dispatch('thirdAccount/getTotal', {filter: searchForm})
+                    .dispatch('thirdAccount/getTotal', {filter: keyword ? {accoutId: keyword} : {}})
                     .then(data => {
                         this.total = data.data;
                     })
@@ -115,7 +116,7 @@
                         pageFlag: this.pageFlag,
                         pageSize: this.pageSize,
                         lastId: this.lastId,
-                        filter: searchForm
+                        filter: keyword ? {accoutId: keyword} : {}
                     })
                     .then(data => {
                         this.tableData = data.data;
@@ -125,13 +126,13 @@
                     });
             },
             /*添加记录*/
-            handleAdd(){
+            handleAdd() {
                 this.dialogVisible = true;
                 this.curNode = {};
                 this.update = false;
             },
             /*添加记录时完成数据填写或编辑记录时，点击对数据进行保存*/
-            handleSave(formData){
+            handleSave(formData) {
                 this.dialogVisible = false;
 
                 let url = '';
@@ -149,7 +150,7 @@
                         console.log(error);
                     });
             },
-            handleCancel(){
+            handleCancel() {
                 this.dialogVisible = false;
             },
             /*点击记录进行编辑*/
