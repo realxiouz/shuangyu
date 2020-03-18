@@ -63,6 +63,7 @@
         isCollapse: false,
         isDisplay: true,
         navs: [],
+        menuList:[],
         tags: [
           { name: "首页", closable: false, type: "" },
           { name: "用户管理", closable: true, type: "success" },
@@ -125,14 +126,15 @@
       },
       getMenuList() {
         this.$store
-          .dispatch("staff/getLoginInfo")
+          .dispatch("nav/getAllList",{filter:{}})
           .then(data => {
+            // console.log(res)
             var temp = [];
             data.forEach((item, index) => {
               temp.push(item.attributes);
             });
             this.menuList = temp;
-            // console.log(temp);
+            console.log(temp);
           })
           .catch(error => {
             console.log(error);
