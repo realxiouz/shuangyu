@@ -1,22 +1,39 @@
 <template>
-  <div>
+  <div class="app-container">
     <el-form ref="form" :rules="rules" :model="formData" label-width="110px">
       <el-form-item label="平台" prop="thirdId">
-        <el-select v-model="formData.thirdId" filterable placeholder="请选择平台">
+        <el-select v-model="formData.thirdId" filterable placeholder="请选择平台" @change="handleChange">
           <el-option
             v-for="item in partyList"
             :key="item.thirdId"
             :label="item.thirdName"
-            :value="item.thirdId">
+            :value="item.thirdId"
+          >
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="标签" prop="flag">
-        <el-input v-model="formData.flag"></el-input>
-      </el-form-item>
-      <el-form-item label="是否启用">
-        <el-switch v-model="formData.enable" :active-value=true :inactive-value=false></el-switch>
-      </el-form-item>
+      <el-table :data="flagList" border fit highlight-current-row style="width: 100%">
+        <el-table-column
+          prop="label"
+          label="参数标签"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="name"
+          label="参数名称"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="value"
+          label="参数值"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="group"
+          label="参数分组"
+          align="center"
+        ></el-table-column>
+      </el-table>
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="$emit('onCancel')">取 消</el-button>
@@ -36,7 +53,8 @@
         data() {
             return {
                 formData: defaultData(),
-                partyList:[],
+                partyList: [],
+                flagList: [],
                 rules: {
                     thirdId: [
                         {required: true, message: "请选择平台", trigger: "blur"},
@@ -48,6 +66,20 @@
             }
         },
         methods: {
+            handleChange(thirdId) {
+                const searchForm = {};
+                searchForm.thirdId = thirdId;
+                this.$store
+                    .dispatch("policyFlagParam/getList", {
+                        filters: searchForm
+                    })
+                    .then(data => {
+                        this.flagList = data;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
             handleSave() {
                 this.$refs["form"].validate((valid) => {
                     if (valid) {
@@ -69,7 +101,7 @@
                     this.formData = defaultData();
                 }
             },
-            thirdPartyList(){
+            thirdPartyList() {
                 this.$store
                     .dispatch("thirdParty/getList", {
                         filters: {}
