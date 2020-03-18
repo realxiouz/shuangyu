@@ -34,7 +34,7 @@
     </el-table>
     <el-dialog title="用户信息" :visible.sync="dialogVisible" width="30%">
       <flag-param-edit v-if="dialogVisible" :param-id="paramId" @onSave="handleSave"
-                        @onCancel="handleCancel"></flag-param-edit>
+                       @onCancel="handleCancel"></flag-param-edit>
     </el-dialog>
   </div>
 </template>
