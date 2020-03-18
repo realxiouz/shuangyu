@@ -7,8 +7,29 @@ import {
   getOneByFidAndUid,
   getList,
   getTotal,
-  getPageList
+  getPageList,
+  getLoginInfo
 } from '@/api/staff';
+import { getToken, setToken, removeToken } from "@/utils/auth";
+
+
+const state = {
+  token: getToken(),
+  name: "",
+  avatar: ""
+};
+
+const mutations = {
+  SET_TOKEN: (state, token) => {
+    state.token = token;
+  },
+  SET_NAME: (state, name) => {
+    state.name = name;
+  },
+  SET_AVATAR: (state, avatar) => {
+    state.avatar = avatar;
+  }
+};
 
 const actions = {
   addOne({commit}, params) {
@@ -108,6 +129,18 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {pageFlag, pageSize, lastId, filter} = params;
       getPageList(pageFlag, pageSize, lastId, filter)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getLoginInfo({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {firmId} = params;
+      getLoginInfo(firmId)
         .then(response => {
           resolve(response);
         })

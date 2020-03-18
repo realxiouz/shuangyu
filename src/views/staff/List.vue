@@ -32,7 +32,7 @@
       /*获取部门树*/
       loadTreeData() {
         this.$store
-          .dispatch('dept/getList', {filters: {firmId: '8e0e85fae96a44b9abc64c61192a986f'}})
+          .dispatch('dept/getList', {filters: {firmId: '78ac36e7f76747a7aa069cd22177577f'}})
           .then(data => {
             this.treeData = data;
           })
