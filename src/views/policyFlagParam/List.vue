@@ -27,7 +27,7 @@
         align="center"
       >
         <template slot-scope="scope">
-          <el-button @click="handleUpdate(scope.row.flagId)" type="primary" size="mini">编辑</el-button>
+          <el-button @click="handleUpdate(scope.row.paramId)" type="primary" size="mini">编辑</el-button>
           <el-button @click="handleRemove(scope.row,scope.$index,tableData)" type="danger" size="mini">删除</el-button>
         </template>
       </el-table-column>
@@ -85,6 +85,7 @@
                 this.dialogVisible = false;
             },
             handleUpdate(id) {
+                console.log(id);
                 this.paramId = id;
                 this.dialogVisible = true;
             },
