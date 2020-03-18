@@ -12,7 +12,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-table :data="flagList" border fit highlight-current-row style="width: 100%">
+      <el-table :data="formData.params" border fit highlight-current-row style="width: 100%">
         <el-table-column
           prop="label"
           label="参数标签"
@@ -53,7 +53,8 @@
     function defaultData() {
         return {
             thirdId: "",
-            flag: ""
+            flag: "",
+            params: []
         };
     };
     export default {
@@ -62,7 +63,6 @@
             return {
                 formData: defaultData(),
                 partyList: [],
-                flagList: [],
                 rules: {
                     thirdId: [
                         {required: true, message: "请选择平台", trigger: "blur"},
@@ -75,14 +75,17 @@
         },
         methods: {
             handleChange(thirdId) {
-                const searchForm = {};
+                this.paramList(thirdId);
+            },
+            paramList(thirdId) {
+                let searchForm = {};
                 searchForm.thirdId = thirdId;
                 this.$store
                     .dispatch("policyFlagParam/getList", {
                         filters: searchForm
                     })
                     .then(data => {
-                        this.flagList = data;
+                        this.formData.params = data;
                     })
                     .catch(error => {
                         console.log(error);
@@ -101,10 +104,10 @@
                         .dispatch("policyFlag/getOne", {flagId: id})
                         .then(data => {
                             this.formData = data;
-                            this.dialogVisible = true;
                         }).catch(error => {
                         console.log(error);
                     });
+                    this.dialogVisible = true;
                 } else {
                     this.formData = defaultData();
                 }

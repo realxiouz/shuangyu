@@ -8,11 +8,6 @@
         align="center"
       ></el-table-column>
       <el-table-column
-        prop="flag"
-        label="标签名称"
-        align="center"
-      ></el-table-column>
-      <el-table-column
         label="操作"
         align="center"
       >
@@ -65,6 +60,7 @@
                 this.flagId = '';
             },
             handleSave(formData) {
+                console.log(formData)
                 this.$store
                     .dispatch("policyFlag/save", formData)
                     .then(() => {
