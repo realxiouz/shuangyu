@@ -136,18 +136,6 @@ const actions = {
           reject(error);
         });
     });
-  },
-  getLoginInfo({commit}, params) {
-    return new Promise((resolve, reject) => {
-      const {firmId} = params;
-      getLoginInfo(firmId)
-        .then(response => {
-          resolve(response);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
   }
 }
 

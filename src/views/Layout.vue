@@ -143,9 +143,10 @@
       },
       getLoginInfo() {
         this.$store
-          .dispatch("staff/getLoginInfo", { firmId: "" })
-          .then(res => {
-            this.navs = res.data.navs;
+          .dispatch("getLoginInfo", { firmId: "" })
+          .then(data => {
+            this.navs = data.navs;
+            console.log(this.$store);
           })
           .catch(error => {
             console.log(error);
