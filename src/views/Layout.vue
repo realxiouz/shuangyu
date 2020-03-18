@@ -62,6 +62,7 @@
       return {
         isCollapse: false,
         isDisplay: true,
+        navs: [],
         menuList:[],
         tags: [
           { name: "首页", closable: false, type: "" },
@@ -80,9 +81,9 @@
       key() {
         return this.$router.path;
       },
-      // menuList() {
-      //   return this.$router.options.routes;
-      // }
+      menus() {
+        return this.navs;
+      }
     },
     watch: {
       screenWidth(val) {
@@ -123,28 +124,28 @@
           .catch(() => {
           });
       },
-      getMenuList(){
+      getMenuList() {
         this.$store
-          .dispatch('nav/getAllList',{filter:{}})
-          .then(data=>{
-            var temp =[]
-            data.forEach((item,index)=>{
-              temp.push(item.attributes)
-            })
-            this.menuList = temp
+          .dispatch("nav/getAllList",{filter:{}})
+          .then(data => {
+            // console.log(res)
+            var temp = [];
+            data.forEach((item, index) => {
+              temp.push(item.attributes);
+            });
+            this.menuList = temp;
             console.log(temp);
           })
-          .catch(error=>{
+          .catch(error => {
             console.log(error);
-          })
+          });
 
       }
     },
     created() {
-
+      this.getMenuList();
     },
     mounted() {
-      this.getMenuList()
       const _this = this;
       window.onresize = () => {
         return (() => {
