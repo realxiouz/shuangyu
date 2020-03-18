@@ -104,11 +104,11 @@
                         .dispatch("policyFlag/getOne", {flagId: id})
                         .then(data => {
                             this.formData = data;
-                            this.dialogVisible = true;
                             this.paramList(data.thirdId);
                         }).catch(error => {
                         console.log(error);
                     });
+                    this.dialogVisible = true;
                 } else {
                     this.formData = defaultData();
                 }
