@@ -1,6 +1,16 @@
 <template>
   <div>
     <el-form ref="form" :rules="rules" :model="formData" label-width="110px">
+      <el-form-item label="平台" prop="thirdId">
+        <el-select v-model="formData.thirdId" filterable placeholder="请选择平台">
+          <el-option
+            v-for="item in partyList"
+            :key="item.thirdId"
+            :label="item.thirdName"
+            :value="item.thirdId">
+          </el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item label="参数标签" prop="label">
         <el-input v-model="formData.label"></el-input>
       </el-form-item>
@@ -67,11 +77,24 @@
                     this.formData = defaultData();
                 }
             },
+            thirdPartyList(){
+                this.$store
+                    .dispatch("thirdParty/getList", {
+                        filters: {}
+                    })
+                    .then(data => {
+                        this.partyList = data;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            }
         },
         created() {
             if (this.paramId) {
                 this.handleGetOne(this.paramId);
             }
+            this.thirdPartyList();
         },
         props: {
             paramId: String,
