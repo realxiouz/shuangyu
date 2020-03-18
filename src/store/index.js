@@ -22,7 +22,7 @@ import thirdApiParam from './modules/thirdApiParam';
 import productMark from './modules/productMark';
 import fare from './modules/fare';
 import thirdApiService from './modules/thirdApiService';
-import thirdApiScheduler from './modules/thirdApiScheduler';
+import tgqProduct from './modules/tgqProduct';
 
 Vue.use(Vuex);
 
@@ -50,7 +50,7 @@ export default new Vuex.Store({
     productMark,
     fare,
     thirdApiService,
-    thirdApiScheduler
+    tgqProduct
   },
   state: {},
   mutations: {},
