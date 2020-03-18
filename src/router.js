@@ -273,7 +273,7 @@ export default new Router({
           path: '/third/party/list',
           name: 'thirdParty',
           uri: '/third/party/list',
-          component: () => import('@/views/thirdparty/List'),
+          component: () => import('@/views/thirdParty/List'),
           meta: { title: 'Home', icon: 'home' }
         },
         {
