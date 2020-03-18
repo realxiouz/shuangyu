@@ -237,9 +237,9 @@
       },
       /*点击修改权限*/
       permissionChange(idx, row) {
-        /*根据对应的企业ID和用户ID查询对应的用工对象*/
+          /*根据对应的企业ID和用户ID查询对应的用工对象*/
         this.$store
-          .dispatch("staff/getOneByFidAndUid", {firmID:this.curNode.firmId, userID: row.userId})
+          .dispatch("staff/getOneByFidAndUid", {firmId:this.curNode.firmId, userId: row.userId})
           .then(data => {
             /*如果请求到的数据roles为null会报错*/
             if (!data.data.roles){
@@ -281,7 +281,7 @@
       /*根据对应用户ID*/
       delete(userID) {
         this.$store
-          .dispatch('staff/removeOne', {firmID: this.curNode.firmId, deptID: this.curNode.deptId, userID: userID})
+          .dispatch('staff/removeOne', {firmId: this.curNode.firmId, deptId: this.curNode.deptId, userId: userID})
           .then(data => {
             console.log(data);
             this.loadTableData();
