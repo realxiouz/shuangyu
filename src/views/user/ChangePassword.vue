@@ -7,7 +7,7 @@
       <el-form-item prop="newPwd" label="您的新密码：">
         <el-col :span="24">
           <el-input :type="inputType" v-model="userPwd.newPwd" placeholder="请输入您的新密码" show-password>
-          <i slot="prefix" class="el-input__icon el-icon-lock"></i>
+            <i slot="prefix" class="el-input__icon el-icon-lock"></i>
           </el-input>
         </el-col>
       </el-form-item>
@@ -19,7 +19,7 @@
             placeholder="请确认您的新密码"
             show-password
           >
-          <i slot="prefix" class="el-input__icon el-icon-lock"></i>
+            <i slot="prefix" class="el-input__icon el-icon-lock"></i>
           </el-input>
         </el-col>
       </el-form-item>
@@ -65,14 +65,33 @@ export default {
     goHome() {
       this.$refs.userPwd.validate(valid => {
         if (valid) {
+          this.loading = true;
           if (this.userPwd.newPwd !== this.userPwd.againPwd) {
             this.$message({
               type: "error",
               message: "两次输入的密码不相同,请重新输入！"
             });
+            this.loading = false;
             return;
           }
-          this.$router.push({ path: "index" });
+          if (this.userPwd.newPwd === this.userPwd.againPwd) {
+            this.$store
+              .dispatch("user/updateActivate", {newPassword:this.userPwd.againPwd})
+              .then(res => {
+                console.log(res);
+                this.$message({
+                  type: "success",
+                  message: "修改成功！"
+                });
+                this.$router.push({ path: "index" });
+                this.loading = false;
+              })
+              .catch(()=>{
+                this.loading = false;
+              })
+          }
+        }else{
+          return false;
         }
       });
     }

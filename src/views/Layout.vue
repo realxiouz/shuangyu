@@ -132,7 +132,7 @@
               temp.push(item.attributes)
             })
             this.menuList = temp
-            console.log(temp);
+            // console.log(temp);
           })
           .catch(error=>{
             console.log(error);

@@ -1,4 +1,4 @@
-import { signIn, signOut, addOne, removeOne, updateOne, getOne, getList, getTotal, getPageList } from "@/api/user";
+import { signIn, signOut, addOne, removeOne, updateOne, getOne, getList, getTotal, getPageList ,updateActivate} from "@/api/user";
 import { getToken, setToken, removeToken } from "@/utils/auth";
 
 const state = {
@@ -26,6 +26,7 @@ const actions = {
       signIn({ username: username.trim(), password: password })
         .then(response => {
           const { data } = response;
+          resolve(response);
           commit("SET_TOKEN", data.key);
           resolve();
         })
@@ -160,7 +161,18 @@ const actions = {
           reject(error);
         });
     });
-  }
+  },
+  updateActivate({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      updateActivate(params)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
 };
 
 export default {
