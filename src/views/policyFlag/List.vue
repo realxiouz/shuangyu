@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <third-flag-search @onSearch="handleSearch" @onAdd="handleAdd"></third-flag-search>
+    <policy-flag-search @onSearch="handleSearch" @onAdd="handleAdd"></policy-flag-search>
     <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;">
       <el-table-column
         prop="thirdName"
@@ -23,15 +23,16 @@
       </el-table-column>
     </el-table>
     <el-dialog title="用户信息" :visible.sync="dialogVisible" width="30%">
-      <third-flag-edit v-if="dialogVisible" :flag-id="flagId" @onSave="handleSave"
-                       @onCancel="handleCancel"></third-flag-edit>
+      <policy-flag-edit v-if="dialogVisible" :flag-id="flagId" @onSave="handleSave"
+                       @onCancel="handleCancel"></policy-flag-edit>
     </el-dialog>
   </div>
 </template>
 
 <script>
-    import thirdFlagSearch from './Search'
-    import thirdFlagEdit from './Edit'
+    import policyFlagSearch from './Search'
+    import policyFlagEdit from './Edit'
+
 
     export default {
         name: 'flagList',
@@ -108,8 +109,8 @@
         }
         ,
         components: {
-            thirdFlagEdit,
-            thirdFlagSearch
+            policyFlagEdit,
+            policyFlagSearch
         }
     }
 </script>

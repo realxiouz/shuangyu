@@ -15,7 +15,7 @@
 </template>
 <script>
     export default {
-        name:'thirdFlagSearch',
+        name:'flagSearch',
         data(){
             return{
                 searchData:{

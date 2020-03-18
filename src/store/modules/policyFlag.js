@@ -1,4 +1,4 @@
-import {getList, getOne, getPageList, getTotal, removeOne, save} from '@/api/thirdFlag';
+import {getList, getOne, getPageList, getTotal, removeOne, save} from '@/api/policyFlag';
 import {getToken} from "@/utils/auth";
 
 

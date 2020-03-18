@@ -32,7 +32,7 @@
         };
     };
     export default {
-        name: 'thirdFlagEdit',
+        name: 'flagEdit',
         data() {
             return {
                 formData: defaultData(),

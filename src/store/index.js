@@ -15,7 +15,7 @@ import api from './modules/api';
 import order from './modules/order';
 import staff from './modules/staff';
 import thirdParty from './modules/thirdParty';
-import thirdFlag from './modules/thirdFlag';
+import policyFlag from './modules/policyFlag';
 import orderRule from './modules/orderRule';
 import thirdApiParam from './modules/thirdApiParam';
 import productMark from './modules/productMark';
@@ -42,7 +42,7 @@ export default new Vuex.Store({
     order,
     staff,
     thirdParty,
-    thirdFlag,
+    policyFlag,
     orderRule,
     thirdApiParam,
     productMark,
