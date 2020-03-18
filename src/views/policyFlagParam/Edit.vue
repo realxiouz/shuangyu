@@ -17,12 +17,6 @@
       <el-form-item label="参数名称" prop="name">
         <el-input v-model="formData.name"></el-input>
       </el-form-item>
-      <el-form-item label="参数值" prop="value">
-        <el-input v-model="formData.value"></el-input>
-      </el-form-item>
-      <el-form-item label="参数分组" prop="group">
-        <el-input v-model="formData.group"></el-input>
-      </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="$emit('onCancel')">取 消</el-button>
@@ -33,10 +27,9 @@
 <script>
     function defaultData() {
         return {
+            thirdId: "",
             label: "",
-            name: "",
-            value: "",
-            group: ""
+            name: ""
         };
     };
     export default {
@@ -46,6 +39,9 @@
                 formData: defaultData(),
                 partyList: [],
                 rules: {
+                    thirdId: [
+                        {required: true, message: "请选择平台", trigger: "blur"}
+                    ],
                     label: [
                         {required: true, message: "请输入参数标签", trigger: "blur"},
                     ],
@@ -77,7 +73,7 @@
                     this.formData = defaultData();
                 }
             },
-            thirdPartyList(){
+            thirdPartyList() {
                 this.$store
                     .dispatch("thirdParty/getList", {
                         filters: {}
