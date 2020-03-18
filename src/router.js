@@ -124,6 +124,14 @@ export default new Router({
       component: Layout,
       children: [
         {
+          title: 'Pnrjy导单',
+          path: '/pnrjyOrder/Export',
+          name: 'pnrjyOrder',
+          uri: '/pnrjyOrder/Export',
+          component: () => import('@/views/pnrjyOrder/Export'),
+          meta: { title: 'Home', icon: 'home' }
+        },
+        {
           title: '订单信息',
           path: '/order/List',
           name: 'order',
