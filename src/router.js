@@ -302,9 +302,9 @@ export default new Router({
         },
         {
           title: '第三方标签',
-          path: '/policyFlag/list',
+          path: '/policy/flag/list',
           name: 'flag',
-          uri: '/policyFlag/list',
+          uri: '/policy/flag/list',
           component: () => import('@/views/policyFlag/List'),
           meta: { title: 'Home', icon: 'home' }
         },
