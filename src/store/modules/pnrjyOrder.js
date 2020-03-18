@@ -1,5 +1,5 @@
-import {exportOrder} from "@/api/pnrjyOrder";
-import {getToken} from "@/utils/auth";
+import { exportOrder } from "@/api/pnrjyOrder";
+import { getToken } from "@/utils/auth";
 
 
 const state = {
@@ -21,9 +21,10 @@ const mutations = {
 };
 
 const actions = {
-  exportOrder({commit}, params) {
+  exportOrder({ commit }, params) {
+    const { orderType, file } = params;
     return new Promise((resolve, reject) => {
-      exportOrder(params)
+      exportOrder(orderType, file)
         .then(response => {
           //const { data } = response;
           resolve(response);
