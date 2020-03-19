@@ -1,11 +1,10 @@
 import request from "@/utils/request";
 
-export function exportOrder(orderType, file) {
-  debugger
+export function exportOrder(data) {
   return request({
-    url: "/pnrjy/order/export?orderType="+orderType,
+    url: "/pnrjy/order/export",
     method: "post",
-    file
+    data
   });
 }
 

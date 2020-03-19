@@ -1,4 +1,4 @@
-import {getList, getOne, getPageList, getTotal, removeOne, save} from "@/api/order";
+import {getList, getOne, removeOne, save} from "@/api/order";
 import {getToken} from "@/utils/auth";
 
 
@@ -33,9 +33,9 @@ const actions = {
         });
     });
   },
-  getList({commit}, data) {
+  getList({commit}, params) {
     return new Promise((resolve, reject) => {
-      getList(data)
+      getList(params)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -48,19 +48,6 @@ const actions = {
   removeOne({commit}, data) {
     return new Promise((resolve, reject) => {
       removeOne(data)
-        .then(response => {
-          const {data} = response;
-          resolve(data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  getPageList({commit}, params) {
-    const {pageFlag, pageSize, lastId, filter} = params;
-    return new Promise((resolve, reject) => {
-      getPageList(pageFlag, pageSize, lastId, filter)
         .then(response => {
           const {data} = response;
           resolve(data);
