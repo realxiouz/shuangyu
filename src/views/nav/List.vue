@@ -7,7 +7,6 @@
         </el-header>
         <!--  导航树  -->
         <el-tree
-          accordion
           node-key="navId"
           auto-expand-parent
           :expand-on-click-node="false"
