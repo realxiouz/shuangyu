@@ -8,7 +8,7 @@
             placeholder="请输入账号"
             v-model="loginForm.username"
           >
-          <i slot="prefix" class="el-input__icon el-icon-user-solid"></i>
+            <i slot="prefix" class="el-input__icon el-icon-user-solid"></i>
           </el-input>
         </el-col>
       </el-form-item>
@@ -19,7 +19,7 @@
             v-model="loginForm.password"
             show-password
           >
-          <i slot="prefix" class="el-input__icon el-icon-lock"></i>
+            <i slot="prefix" class="el-input__icon el-icon-lock"></i>
           </el-input>
         </el-col>
       </el-form-item>
@@ -46,9 +46,9 @@
           password: ""
         },
         loginRules: {
-          username: [{required: true, message: "请输入您的账号", trigger: "blur"}],
+          username: [{ required: true, message: "请输入您的账号", trigger: "blur" }],
           password: [
-            {required: true, message: "请输入您的密码", trigger: "change"},
+            { required: true, message: "请输入您的密码", trigger: "change" },
             {
               min: 3,
               max: 18,
@@ -60,6 +60,33 @@
       };
     },
     methods: {
+      buildTree(pid, navs) {
+        let menus = [];
+        for (let i = 0; i < navs.length; i++) {
+          if (navs[i].pid === pid) {
+            menus.push(navs[i]);
+          }
+        }
+        if (menus.length > 0) {
+          for (let i = 0; i < menus.length; i++) {
+            let children = this.buildTree(menus[i].navId, navs);
+            menus[i].children = children;
+          }
+        }
+        return menus;
+      },
+      getLoginInfo() {
+        this.$store
+          .dispatch("getLoginInfo", { firmId: null })
+          .then(data => {
+            let menus = this.buildTree(null, data.navs);
+            this.$store.dispatch("initMenus", { menus });
+            this.$router.push({ path: this.redirect || "index" });
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
       handleLogin() {
         this.$refs.loginForm.validate(valid => {
           if (valid) {
@@ -67,12 +94,12 @@
             this.$store
               .dispatch("user/signIn", this.loginForm)
               .then(res => {
-                var flag =res.data.activateFlag
-                if(!flag){
-                  this.$router.push({name: "changePassword"});
+                var flag = res.data.activateFlag;
+                if (!flag) {
+                  this.$router.push({ name: "changePassword" });
                   this.loading = false;
-                }else{
-                  this.$router.push({path: this.redirect || "index"});
+                } else {
+                  this.getLoginInfo();
                   this.loading = false;
                 }
               })
