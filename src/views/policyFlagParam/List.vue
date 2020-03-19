@@ -3,6 +3,11 @@
     <flag-param-search @onSearch="handleSearch" @onAdd="handleAdd"></flag-param-search>
     <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;">
       <el-table-column
+        prop="thirdName"
+        label="平台"
+        align="center"
+      ></el-table-column>
+      <el-table-column
         prop="label"
         label="参数标签"
         align="center"
@@ -12,7 +17,7 @@
         label="参数名称"
         align="center"
       ></el-table-column>
-      <el-table-column
+<!--      <el-table-column
         prop="value"
         label="参数值"
         align="center"
@@ -21,13 +26,13 @@
         prop="group"
         label="参数分组"
         align="center"
-      ></el-table-column>
+      ></el-table-column>-->
       <el-table-column
         label="操作"
         align="center"
       >
         <template slot-scope="scope">
-          <el-button @click="handleUpdate(scope.row.flagId)" type="primary" size="mini">编辑</el-button>
+          <el-button @click="handleUpdate(scope.row.paramId)" type="primary" size="mini">编辑</el-button>
           <el-button @click="handleRemove(scope.row,scope.$index,tableData)" type="danger" size="mini">删除</el-button>
         </template>
       </el-table-column>
@@ -85,6 +90,7 @@
                 this.dialogVisible = false;
             },
             handleUpdate(id) {
+                console.log(id);
                 this.paramId = id;
                 this.dialogVisible = true;
             },

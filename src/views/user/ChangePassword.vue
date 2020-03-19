@@ -6,7 +6,7 @@
     <el-form ref="userPwd" :model="formData" :rules="formRules">
       <el-form-item prop="newPwd" label="您的新密码：">
         <el-col :span="24">
-          <el-input :type="inputType" v-model="formData.newPassword" placeholder="请输入您的新密码" show-password>
+          <el-input v-model="formData.newPassword" placeholder="请输入您的新密码" show-password>
             <i slot="prefix" class="el-input__icon el-icon-lock"></i>
           </el-input>
         </el-col>
@@ -14,7 +14,6 @@
       <el-form-item prop="againPwd" label="确认您的新密码">
         <el-col :span="24">
           <el-input
-            :type="inputType"
             v-model="formData.confirmPassword"
             placeholder="请确认您的新密码"
             show-password
@@ -24,7 +23,7 @@
         </el-col>
       </el-form-item>
     </el-form>
-    <el-button type="primary" :loading="loading" @click="goHome" round>去首页</el-button>
+    <el-button type="primary" :loading="loading" @click="goHome" round>重新登录</el-button>
   </el-card>
 </template>
 
@@ -33,7 +32,6 @@ export default {
   name: "changePassword",
   data() {
     return {
-      inputType: "password",
       loading: false,
       formData: {
         newPassword: "",
@@ -74,16 +72,15 @@ export default {
             this.loading = false;
             return;
           }
-          if (this.userPwd.newPwd === this.userPwd.againPwd) {
+          if (this.formData.newPassword === this.formData.newPassword) {
             this.$store
-              .dispatch("user/activate", {newPassword:this.userPwd.againPwd})
+              .dispatch("user/activate", {newPassword:this.formData.newPassword})
               .then(res => {
                 console.log(res);
                 this.$message({
                   type: "success",
                   message: "修改成功！"
                 });
-                this.$router.push({ path: "index" });
                 this.loading = false;
               })
               .catch(()=>{

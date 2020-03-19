@@ -167,6 +167,8 @@ const actions = {
       activate(params)
         .then(response => {
           resolve(response);
+          commit("SET_TOKEN", "");
+          removeToken();
         })
         .catch(error => {
           reject(error);
