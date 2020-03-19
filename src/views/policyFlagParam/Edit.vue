@@ -17,6 +17,9 @@
       <el-form-item label="参数名称" prop="name">
         <el-input v-model="formData.name"></el-input>
       </el-form-item>
+      <el-form-item label="备注" prop="remark">
+        <el-input v-model="formData.remark"></el-input>
+      </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="$emit('onCancel')">取 消</el-button>
@@ -29,7 +32,8 @@
         return {
             thirdId: "",
             label: "",
-            name: ""
+            name: "",
+            remark:""
         };
     };
     export default {
