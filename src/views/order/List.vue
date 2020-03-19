@@ -8,57 +8,80 @@
       size="mini"
     >
       <el-table-column
-        prop="orderNumber"
+        prop="orderNo"
         label="订单号"
+        width="160"
+      ></el-table-column>
+      <el-table-column
+        prop="rootOrderNo"
+        label="销售出票单号"
         width="100"
       ></el-table-column>
       <el-table-column
-        prop="flightType"
-        label="类型"
+        prop="orderSource"
+        label="订单来源"
+        width="50"
+      ></el-table-column>
+      <el-table-column
+        prop="sourceOrderNo"
+        label="订单来源单号"
         width="100"
       ></el-table-column>
       <el-table-column
-        prop="orderDate"
-        label="订单日期"
-        width="100"
-      ></el-table-column>
-      <el-table-column
-        prop="takeOffArrive"
-        label="起飞-到达"
-        width="100"
-      ></el-table-column>
-      <el-table-column
-        prop="flightDateNumber"
-        label="航班日期/航班号"
+        prop="policyCode"
+        label="政策代码"
         width="200"
       ></el-table-column>
-      <el-table-column prop="PNR" label="PNR" width="100"></el-table-column>
       <el-table-column
-        prop="totalPriceNumber"
-        label="总价/人数"
-        width="100"
+        prop="policyType"
+        label="政策类型"
+        width="50"
       ></el-table-column>
       <el-table-column
-        prop="orderStatus"
+        prop="orderType"
+        label="订单类型"
+        width="50"
+      ></el-table-column>
+      <el-table-column
+        prop="status"
         label="订单状态"
+        width="50"
+      ></el-table-column>
+      <el-table-column
+        prop="deadlineTicketTime"
+        label="最晚出票时限"
         width="100"
       ></el-table-column>
       <el-table-column
-        prop="policyId"
-        label="政策ID"
+        prop="RefundChangeRule"
+        label="退改签说明"
         width="100"
       ></el-table-column>
       <el-table-column
-        prop="balance"
-        label="是否退差额"
+        prop="category"
+        label="0：销售订单,1：采购订单"
+        width="50"
+      ></el-table-column>
+      <el-table-column
+        prop="voyageType"
+        label="航程类型"
+        width="50"
+      ></el-table-column>
+      <el-table-column
+        prop="amount"
+        label="金额"
+        width="50"
+      ></el-table-column>
+      <el-table-column
+        prop="pnr"
+        label="PNR"
         width="100"
       ></el-table-column>
       <el-table-column
-        prop="lockingPeople"
-        label="锁定人"
+        prop="bigPnr"
+        label="大编"
         width="100"
       ></el-table-column>
-
       <!--     操作  按钮  需要 编辑 添加 删除  -->
       <el-table-column fixed="right" label="操作" align="center" width="300">
         <template slot-scope="scope">
@@ -107,8 +130,7 @@
         methods: {
             handleSearch() {
                 this.$store
-                    .dispatch("order/getList", {
-                    })
+                    .dispatch("order/getList", {})
                     .then(data => {
                         this.tableData = data;
                     })
