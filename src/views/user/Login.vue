@@ -60,33 +60,7 @@
       };
     },
     methods: {
-      buildTree(pid, navs) {
-        let menus = [];
-        for (let i = 0; i < navs.length; i++) {
-          if (navs[i].pid === pid) {
-            menus.push(navs[i]);
-          }
-        }
-        if (menus.length > 0) {
-          for (let i = 0; i < menus.length; i++) {
-            let children = this.buildTree(menus[i].navId, navs);
-            menus[i].children = children;
-          }
-        }
-        return menus;
-      },
-      getLoginInfo() {
-        this.$store
-          .dispatch("getLoginInfo", { firmId: null })
-          .then(data => {
-            let menus = this.buildTree(null, data.navs);
-            this.$store.dispatch("initMenus", { menus });
-            this.$router.push({ path: this.redirect || "index" });
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      },
+
       handleLogin() {
         this.$refs.loginForm.validate(valid => {
           if (valid) {
@@ -97,11 +71,10 @@
                 var flag = res.data.activateFlag;
                 if (!flag) {
                   this.$router.push({ name: "changePassword" });
-                  this.loading = false;
                 } else {
-                  this.getLoginInfo();
-                  this.loading = false;
+                  this.$router.push({ path: this.redirect || '/index' });
                 }
+                this.loading = false;
               })
               .catch(() => {
                 this.loading = false;
