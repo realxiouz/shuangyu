@@ -48,10 +48,14 @@
         width="50"
       ></el-table-column>
       <el-table-column
-        prop="deadlineTicketTime"
         label="最晚出票时限"
-        width="100"
-      ></el-table-column>
+        width="120"
+        align="center">
+        <template slot-scope="scope">
+          <i v-if="scope.row.deadlineTicketTime" class="el-icon-time"></i>
+          <span style="margin-left: 10px">{{ formatDate(scope.row.deadlineTicketTime,'YYYY-MM-DD') }}</span>
+        </template>
+      </el-table-column>
       <el-table-column
         prop="RefundChangeRule"
         label="退改签说明"
@@ -141,14 +145,30 @@
             handleCancel() {
             },
             handleSave() {
+            },
+            /*初始化用工列表中的生日日期格式*/
+            initDate(dateStr, format) {
+                if (null != dateStr) {
+                    let date = new Date(dateStr);
+                    return this.$moment(date).format(format);
+                } else {
+                    return '';
+                }
             }
         },
-        created() {
-            this.handleSearch();
+        computed:{
+            formatDate() {
+                return function (dateStr, format) {
+                    return this.initDate(dateStr, format);
+                }
+            },
         },
         components: {
             orderEdit,
             orderSearch
-        }
+        },
+        created() {
+            this.handleSearch();
+        },
     };
 </script>
