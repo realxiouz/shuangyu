@@ -1,7 +1,7 @@
 <template>
   <div class="order-container">
     <!--    <orderEdit > </orderEdit>-->
-    <order-search @onSearch="handleCancel" @onAdd="handleSave"></order-search>
+    <order-search @onSearch="handleSearch" @onAdd="handleAdd"></order-search>
     <el-table
       :data="tableData"
       border="true"
@@ -63,12 +63,13 @@
       <el-table-column fixed="right" label="操作" align="center" width="300">
         <template slot-scope="scope">
           <el-button
-            @click="handleUpdate(scope.row.deptId)"
+            @click="handleUpdate(scope.row)"
             type="primary"
             size="mini"
-            >编辑</el-button
+          >编辑
+          </el-button
           >
-          <el-button type="danger" size="mini">删除 </el-button>
+          <el-button type="danger" size="mini">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -88,43 +89,44 @@
 </template>
 
 <script>
-import orderSearch from "./Search.vue";
-import orderEdit from "./Edit.vue";
-export default {
-  name: "orderList",
-  data() {
-    return {
-      lastId: "0",
-      pageFlag: "next",
-      pageSize: 10,
-      total: 0,
-      dialogVisible: false,
-      tableData: [],
-      labelPosition: "left",
-      searchForm: {},
-      allRoles: [],
-      paramsRoles: []
-    };
-  },
-  methods: {
-    handleCancel(params) {
-      console.log(params);
-      // this.dialogVisible = false;
-    },
-    handleSave() {
-      this.$router.push("/order/Edit_");
-    }
-  },
-  addUser() {
-    this.dialogVisible = false;
-  },
+    import orderSearch from "./Search.vue";
+    import orderEdit from "./Edit.vue";
 
-  mounted() {
-    this.loadData();
-  },
-  components: {
-    orderEdit,
-    orderSearch
-  }
-};
+    export default {
+        name: "orderList",
+        data() {
+            return {
+                lastId: "0",
+                pageFlag: "next",
+                pageSize: 10,
+                total: 0,
+                dialogVisible: false,
+                tableData: [],
+            };
+        },
+        methods: {
+            handleSearch() {
+                this.$store
+                    .dispatch("order/getList", {
+                    })
+                    .then(data => {
+                        this.tableData = data;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            handleCancel() {
+            },
+            handleSave() {
+            }
+        },
+        created() {
+            this.handleSearch();
+        },
+        components: {
+            orderEdit,
+            orderSearch
+        }
+    };
 </script>

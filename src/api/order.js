@@ -3,45 +3,30 @@ import request from "@/utils/request";
 
 export function save(data) {
   return request({
-    url: "/dept/save",
+    url: "/order/save",
     method: "post",
     data
   });
 }
 
-export function removeOne(deptId) {
+export function removeOne(id) {
   return request({
-    url: `/dept/remove/one/${deptId}`,
+    url: `/order/remove/one/${id}`,
     method: "delete"
   });
 }
 
-export function getPageList(pageFlag, pageSize, lastId, filter) {
+export function getList(params) {
   return request({
-    url: `/dept/page/list/${pageFlag}/${pageSize}/${lastId}`,
+    url: `/order/list`,
     method: "get",
-    params: filter
+    params: params
   });
 }
 
-export function getTotal(data) {
-  return request({
-    url: `/dept/get/total`,
-    method: "get",
-    params: data
-  });
-}
-
-export function getList(filters) {
-  return request({
-    url: `/dept/list/`,
-    method: "get",
-    params: filters
-  });
-}
 export function getOne(id) {
   return request({
-    url: `/dept/one/${id}`,
+    url: `/order/one/${id}`,
     method: 'get'
   });
 }
