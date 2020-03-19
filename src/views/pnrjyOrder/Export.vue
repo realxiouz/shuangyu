@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form ref="formData" :model="formData" label-width="120px">
+    <el-form :rules="formRules" ref="formData" :model="formData" label-width="120px">
       <el-form-item label="导单类型" prop="orderType">
         <el-select v-model="formData.orderType" placeholder="请选择">
           <el-option label="出票" :value="0"></el-option>
@@ -8,15 +8,15 @@
           <el-option label="改签" :value="2"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="导单类型">
-        <el-upload
+      <el-form-item label="导单类型" >
+        <el-upload prop="file"
           class="upload-demo"
           ref="upload"
           action="test"
           :limit="1"
           :data="formData"
           :http-request="uploadSectionFile"
-          :on-preview="handlePreview"
+          :on-change="handleChange"
           :on-remove="handleRemove"
           :before-upload="beforeUpload"
           :file-list="fileList"
@@ -30,7 +30,6 @@
   </div>
 </template>
 <script>
-  import axios from 'axios';
   function defaultData() {
     return {
       orderType: ""
@@ -45,23 +44,33 @@
         formRules: {
           orderType: [
             {required: true, message: "导单类型必须选择", trigger: "blur"}
-          ]
+          ],
+          file: [
+            {required: true, message: "没有上传文件", trigger: "blur"}
+          ],
         }
       };
     },
     methods: {
       uploadSectionFile(params) {
-        var form = new FormData();
-        form.append("file", params.file);
-        form.append("orderType",this.formData.orderType);
-        this.$store
-          .dispatch('pnrjyOrder/exportOrder',form)
-          .then(data => {
-            console.log(data)
-          })
-          .catch(error => {
-            console.log(error);
-          });
+        console.log("---------");
+        this.$refs['formData'].validate((valid) => {
+          console.log("---------");
+          if (valid) {
+            var form = new FormData();
+            form.append("file", params.file);
+            form.append("orderType", this.formData.orderType);
+            this.$store
+              .dispatch('pnrjyOrder/exportOrder', form)
+              .then(data => {
+                alert("上传成功");
+              })
+              .catch(error => {
+                alert("上传失败");
+              });
+          }
+        });
+
       },
 
       beforeUpload(file) {
@@ -89,8 +98,8 @@
       handleRemove(file, fileList) {
         console.log(file, fileList);
       },
-      handlePreview(file) {
-        console.log(file);
+      handleChange(file, fileList) {
+        this.fileList = fileList.slice(-1)
       }
     }
   };
