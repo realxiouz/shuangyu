@@ -6,12 +6,6 @@
       label-width="100"
       size="mini"
     >
-      <el-form-item label="乘机人姓名:">
-        <el-input
-          v-model="searchForm.passengerName"
-          style="width: 230px"
-        ></el-input>
-      </el-form-item>
       <el-form-item label="订单号:">
         <el-input
           v-model="searchForm.orderNo"
@@ -21,6 +15,18 @@
       <el-form-item label="票号:">
         <el-input
           v-model="searchForm.rootOrderNo"
+          style="width: 230px"
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="乘机人姓名:">
+        <el-input
+          v-model="searchForm.name"
+          style="width: 230px"
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="乘机人证件号:">
+        <el-input
+          v-model="searchForm.cardNo"
           style="width: 230px"
         ></el-input>
       </el-form-item>
@@ -34,25 +40,18 @@
           <el-option label="出票完成" value="2"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="航班起始日期:">
+      <el-form-item label="出发日期:">
         <el-col>
           <el-date-picker
             type="date"
             placeholder="选择日期"
-            v-model="searchForm.dptTime"
+            v-model="searchForm.flightDate"
             style="width: 100%;"
           ></el-date-picker>
         </el-col>
       </el-form-item>
-      <el-form-item label="航班截止日期:">
-        <el-col>
-          <el-date-picker
-            type="date"
-            placeholder="选择日期"
-            v-model="searchForm.arrTime"
-            style="width: 100%;"
-          ></el-date-picker>
-        </el-col>
+      <el-form-item label="舱位:">
+        <el-input v-model="searchForm.cabin"></el-input>
       </el-form-item>
       <el-form-item label="航班号:">
         <el-input v-model="searchForm.flightCode"></el-input>
@@ -98,13 +97,14 @@
                     voyageType: "", //航程类型
                     orderSource: "", //订单来源
                     flightCode: "", //航班号
-                    dptTime: "", //航班起飞时间
-                    arrTime: "", //航班到达时间
+                    flightDate: "", //出发日期
+                    cabin: "", //舱位
                     status: "", //订单状态
                     pnr: "", //PNR
                     rootOrderNo: "", //票号
                     orderNo: "", //订单号
-                    passengerName: "" //乘机人姓名
+                    name: "", //乘机人姓名
+                    cardNo: "" //乘机人证件号
                 }
             };
         }

@@ -12,9 +12,9 @@
       <sidebar-item
         v-if="child.children && child.children.length > 0"
         :item="child"
-        :key="child.uri"
+        :key="child.navId"
       />
-      <el-menu-item v-else :key="child.uri" :index="child.uri">
+      <el-menu-item v-else :key="child.navId" :index="child.uri">
         <i class="el-icon-location"></i>
         <span slot="title">{{ child.navName }}</span>
       </el-menu-item>
