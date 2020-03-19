@@ -197,7 +197,11 @@
                 this.dialogVisible = true;
 
                 this.curLine = [];
-                this.curLine.push(node.navId);
+                if (null != node.pid) {
+                    this.curLine.push(node.pid);
+                } else {
+                    this.curLine = [];
+                }
             },
             clearForm() {
                 this.formData = this.defaultFormData();
