@@ -8,7 +8,7 @@
           <el-option label="改签" :value="2"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="导单类型" >
+      <el-form-item label="文件" >
         <el-upload prop="file"
           class="upload-demo"
           ref="upload"
