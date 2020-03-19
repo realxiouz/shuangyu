@@ -12,9 +12,10 @@
         <el-upload
           class="upload-demo"
           ref="upload"
-          action="/dev-api/pnrjy/order/export"
+          action="test"
           :limit="1"
           :data="formData"
+          :http-request="uploadSectionFile"
           :on-preview="handlePreview"
           :on-remove="handleRemove"
           :file-list="fileList"
@@ -27,8 +28,8 @@
     </el-form>
   </div>
 </template>
-
 <script>
+  import axios from 'axios';
   function defaultData() {
     return {
       orderType: ""
@@ -40,15 +41,27 @@
       return {
         formData: defaultData(),
         fileList: [],
-        datas: {},
         formRules: {
           orderType: [
-            { required: true, message: "导单类型必须选择", trigger: "blur" }
+            {required: true, message: "导单类型必须选择", trigger: "blur"}
           ]
         }
       };
     },
     methods: {
+      uploadSectionFile(params) {
+        var form = new FormData();
+        form.append("file", params.file);
+        form.append("orderType",this.formData.orderType);
+        this.$store
+          .dispatch('pnrjyOrder/exportOrder',form)
+          .then(data => {
+            console.log(data)
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
       submitUpload() {
         this.$refs.upload.submit();
       },
