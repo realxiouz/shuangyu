@@ -29,9 +29,9 @@
       </el-form-item>
       <el-form-item label="订单状态:">
         <el-select v-model="searchForm.status" placeholder="全部">
-          <el-option label="出票中" value="ing"></el-option>
-          <el-option label="退票完成" value="exit"></el-option>
-          <el-option label="出票完成" value="ok"></el-option>
+          <el-option label="出票中" value="0"></el-option>
+          <el-option label="退票完成" value="1"></el-option>
+          <el-option label="出票完成" value="2"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="航班起始日期:">
@@ -39,7 +39,7 @@
           <el-date-picker
             type="date"
             placeholder="选择日期"
-            v-model="searchForm.flightStartDate"
+            v-model="searchForm.dptTime"
             style="width: 100%;"
           ></el-date-picker>
         </el-col>
@@ -49,7 +49,7 @@
           <el-date-picker
             type="date"
             placeholder="选择日期"
-            v-model="searchForm.flightEndDate"
+            v-model="searchForm.arrTime"
             style="width: 100%;"
           ></el-date-picker>
         </el-col>
@@ -77,12 +77,11 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="$emit('onSearch', searchForm)"
-        >查询
+        <el-button icon="el-icon-search" class="filter-item" type="primary" @click="$emit('onSearch',searchForm)">查询
         </el-button>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="$emit('onAdd')">添加</el-button>
+        <el-button icon="el-icon-edit" class="filter-item" type="primary" @click="$emit('onAdd',true)">添加</el-button>
       </el-form-item>
     </el-form>
   </div>

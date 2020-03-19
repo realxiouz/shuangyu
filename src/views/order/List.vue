@@ -1,6 +1,5 @@
 <template>
   <div class="order-container">
-    <!--    <orderEdit > </orderEdit>-->
     <order-search @onSearch="handleSearch" @onAdd="handleAdd"></order-search>
     <el-table
       :data="tableData"
@@ -91,7 +90,7 @@
         width="110"
         align="center">
         <template slot-scope="scope">
-          <i v-if="scope.row.finishTime"  class="el-icon-time"></i>
+          <i v-if="scope.row.finishTime" class="el-icon-time"></i>
           <span style="margin-left: 10px">{{ formatDate(scope.row.finishTime,'YYYY-MM-DD') }}</span>
         </template>
       </el-table-column>
@@ -115,7 +114,7 @@
         width="110"
         align="center">
         <template slot-scope="scope">
-          <i v-if="scope.row.transactionTime"  class="el-icon-time"></i>
+          <i v-if="scope.row.transactionTime" class="el-icon-time"></i>
           <span style="margin-left: 10px">{{ formatDate(scope.row.transactionTime,'YYYY-MM-DD') }}</span>
         </template>
       </el-table-column>
@@ -165,17 +164,59 @@
             };
         },
         methods: {
-            handleSearch() {
+            loadData(params) {
                 this.$store
-                    .dispatch("order/getList", {})
-                    .then(data => {
+                    .dispatch("order/getList", {
+                            filters: params
+                        }
+                    ).then(data => {
+                    if (data) {
                         this.tableData = data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
+                    }
+                }).catch(error => {
+                    console.log(error);
+                });
             },
-            handleRemove(orderNo){
+            handleSearch(params) {
+                if (!params) {
+                    params = {};
+                    this.loadData(params);
+                } else {
+                    const newParams = {};
+                    if (params.passengerName) {
+                        newParams.passengerName = params.passengerName;
+                    }
+                    if (params.orderNo) {
+                        newParams.orderNo = params.orderNo.toLocaleLowerCase();
+                    }
+                    if (params.rootOrderNo) {
+                        newParams.rootOrderNo = params.rootOrderNo.toLocaleLowerCase();
+                    }
+                    if (params.pnr) {
+                        newParams.pnr = params.pnr.toLocaleLowerCase();
+                    }
+                    if (params.status) {
+                        newParams.status = params.status.toLocaleLowerCase();
+                    }
+                    if (params.dptTime) {
+                        newParams.dptTime = params.dptTime;
+                    }
+                    if (params.arrTime) {
+                        newParams.arrTime = params.arrTime;
+                    }
+                    if (params.flightCode) {
+                        newParams.flightCode = params.flightCode.toLocaleLowerCase();
+                    }
+                    if (params.orderSource) {
+                        newParams.orderSource = params.orderSource;
+                    }
+                    if (params.voyageType) {
+                        newParams.voyageType = params.voyageType;
+                    }
+                    this.loadData(newParams);
+                }
+            },
+            handleRemove(orderNo) {
                 this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
                     confirmButtonText: "确定",
                     cancelButtonText: "取消",
@@ -194,8 +235,12 @@
                 });
             },
             handleCancel() {
+                this.dialogVisible = false;
             },
             handleSave() {
+            },
+            handleAdd() {
+                this.dialogVisible = true;
             },
             /*初始化用工列表中的生日日期格式*/
             initDate(dateStr, format) {
@@ -207,7 +252,7 @@
                 }
             }
         },
-        computed:{
+        computed: {
             formatDate() {
                 return function (dateStr, format) {
                     return this.initDate(dateStr, format);
