@@ -4,14 +4,14 @@
       <span>首次登录请修改密码</span>
     </div>
     <el-form ref="form1" :model="formData" :rules="formRules">
-      <el-form-item prop="newPwd" label="您的新密码：">
+      <el-form-item prop="newPassword" label="您的新密码：">
         <el-col :span="24">
           <el-input v-model="formData.newPassword" placeholder="请输入您的新密码" show-password>
             <i slot="prefix" class="el-input__icon el-icon-lock"></i>
           </el-input>
         </el-col>
       </el-form-item>
-      <el-form-item prop="againPwd" label="确认您的新密码">
+      <el-form-item prop="confirmPassword" label="确认您的新密码">
         <el-col :span="24">
           <el-input
             v-model="formData.confirmPassword"
