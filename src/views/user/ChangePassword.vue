@@ -81,6 +81,8 @@ export default {
                   type: "success",
                   message: "修改成功！"
                 });
+                  this.$router.push({name: "login"});
+
                 this.loading = false;
               })
               .catch(()=>{
