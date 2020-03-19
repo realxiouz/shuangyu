@@ -3,8 +3,18 @@
     <policy-flag-search @onSearch="handleSearch" @onAdd="handleAdd"></policy-flag-search>
     <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;">
       <el-table-column
+        prop="flagId"
+        label="标签id"
+        align="center"
+      ></el-table-column>
+      <el-table-column
         prop="thirdName"
         label="平台"
+        align="center"
+      ></el-table-column>
+      <el-table-column
+        prop="remark"
+        label="备注"
         align="center"
       ></el-table-column>
       <el-table-column
