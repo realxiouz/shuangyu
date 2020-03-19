@@ -13,6 +13,7 @@ import policy from "./modules/policy";
 import app from "./modules/app";
 import api from "./modules/api";
 import order from "./modules/order";
+import orderReport from "./modules/orderReport";
 import staff from "./modules/staff";
 import thirdParty from "./modules/thirdParty";
 import policyFlag from "./modules/policyFlag";
@@ -44,6 +45,7 @@ export default new Vuex.Store({
     app,
     api,
     order,
+    orderReport,
     staff,
     thirdParty,
     policyFlag,
