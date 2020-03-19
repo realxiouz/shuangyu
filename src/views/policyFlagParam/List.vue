@@ -17,6 +17,11 @@
         label="参数名称"
         align="center"
       ></el-table-column>
+      <el-table-column
+        prop="remark"
+        label="备注"
+        align="center"
+      ></el-table-column>
 <!--      <el-table-column
         prop="value"
         label="参数值"
