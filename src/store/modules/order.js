@@ -45,9 +45,10 @@ const actions = {
         });
     });
   },
-  removeOne({commit}, data) {
+  removeOne({commit}, params) {
+    const {orderNo} = params;
     return new Promise((resolve, reject) => {
-      removeOne(data)
+      removeOne(orderNo)
         .then(response => {
           const {data} = response;
           resolve(data);

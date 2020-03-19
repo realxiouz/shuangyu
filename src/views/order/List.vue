@@ -49,7 +49,7 @@
       ></el-table-column>
       <el-table-column
         label="最晚出票时限"
-        width="120"
+        width="110"
         align="center">
         <template slot-scope="scope">
           <i v-if="scope.row.deadlineTicketTime" class="el-icon-time"></i>
@@ -79,19 +79,19 @@
       <el-table-column
         prop="pnr"
         label="PNR"
-        width="80"
+        width="50"
       ></el-table-column>
       <el-table-column
         prop="bigPnr"
         label="大编"
-        width="80"
+        width="50"
       ></el-table-column>
       <el-table-column
         label="业务完结时间"
-        width="120"
+        width="110"
         align="center">
         <template slot-scope="scope">
-          <i v-if="scope.row.finishTime" class="el-icon-time"></i>
+          <i v-if="scope.row.finishTime"  class="el-icon-time"></i>
           <span style="margin-left: 10px">{{ formatDate(scope.row.finishTime,'YYYY-MM-DD') }}</span>
         </template>
       </el-table-column>
@@ -112,10 +112,10 @@
       ></el-table-column>
       <el-table-column
         label="交易时间"
-        width="120"
+        width="110"
         align="center">
         <template slot-scope="scope">
-          <i v-if="scope.row.transactionTime" class="el-icon-time"></i>
+          <i v-if="scope.row.transactionTime"  class="el-icon-time"></i>
           <span style="margin-left: 10px">{{ formatDate(scope.row.transactionTime,'YYYY-MM-DD') }}</span>
         </template>
       </el-table-column>
@@ -123,13 +123,13 @@
       <el-table-column fixed="right" label="操作" align="center" width="200">
         <template slot-scope="scope">
           <el-button
-            @click="handleUpdate(scope.row)"
+            @click="handleUpdate(scope.row.orderNo)"
             type="primary"
             size="mini"
           >编辑
           </el-button
           >
-          <el-button type="danger" size="mini">删除</el-button>
+          <el-button type="danger" size="mini" @click="handleRemove(scope.row.orderNo)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -174,6 +174,24 @@
                     .catch(error => {
                         console.log(error);
                     });
+            },
+            handleRemove(orderNo){
+                this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消",
+                    type: "warning"
+                }).then(() => {
+                    this.$store
+                        .dispatch("order/removeOne", {orderNo: orderNo})
+                        .then(() => {
+                            this.handleSearch();
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                }).catch(err => {
+                    console.error(err);
+                });
             },
             handleCancel() {
             },
