@@ -1,11 +1,11 @@
 <template>
   <div class="order-container">
     <order-search @onSearch="handleSearch" @onAdd="handleAdd"></order-search>
-    <el-table
-      :data="tableData"
-      border="true"
-      size="mini"
-    >
+    <el-table :data="tableData"
+              highlight-current-row
+              style="width: 100%;"
+              border
+              fit>
       <el-table-column
         prop="orderNo"
         label="订单号"
@@ -164,6 +164,9 @@
             };
         },
         methods: {
+            prevClick() {},
+            nextClick() {},
+            handleSizeChange() {},
             loadData(params) {
                 this.$store
                     .dispatch("order/getList", {
