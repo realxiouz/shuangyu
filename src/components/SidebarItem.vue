@@ -1,7 +1,7 @@
 <template v-if="item.children">
   <el-submenu
     v-if="item.children && item.children.length > 0"
-    :index="item.uri"
+    :index="item.navId"
   >
     <template slot="title">
       <i class="el-icon-menu"></i>
@@ -14,13 +14,13 @@
         :item="child"
         :key="child.uri"
       />
-      <el-menu-item v-else :key="child.uri" :index="child.uri">
+      <el-menu-item v-else :key="child.uri" :index="child.navId">
         <i class="el-icon-location"></i>
         <span slot="title">{{ child.navName }}</span>
       </el-menu-item>
     </template>
   </el-submenu>
-  <el-menu-item v-else :index="item.uri">
+  <el-menu-item v-else :index="item.navId">
     <i class="el-icon-menu"></i>
     <span slot="title">{{ item.navName }}</span>
   </el-menu-item>
