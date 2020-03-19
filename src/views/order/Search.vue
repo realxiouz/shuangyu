@@ -6,18 +6,6 @@
       label-width="100"
       size="mini"
     >
-      <el-form-item label="乘机人姓名:">
-        <el-input
-          v-model="searchForm.name"
-          style="width: 230px"
-        ></el-input>
-      </el-form-item>
-      <el-form-item label="乘机人证件号:">
-        <el-input
-          v-model="searchForm.cardNo"
-          style="width: 230px"
-        ></el-input>
-      </el-form-item>
       <el-form-item label="订单号:">
         <el-input
           v-model="searchForm.orderNo"
@@ -27,6 +15,18 @@
       <el-form-item label="票号:">
         <el-input
           v-model="searchForm.rootOrderNo"
+          style="width: 230px"
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="乘机人姓名:">
+        <el-input
+          v-model="searchForm.name"
+          style="width: 230px"
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="乘机人证件号:">
+        <el-input
+          v-model="searchForm.cardNo"
           style="width: 230px"
         ></el-input>
       </el-form-item>
