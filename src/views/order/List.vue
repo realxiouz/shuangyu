@@ -1,6 +1,9 @@
 <template>
   <div class="order-container">
-    <order-search @onSearch="handleSearch" @onAdd="handleAdd"></order-search>
+    <order-search @onSearch="handleSearch" ></order-search>
+    <el-row style="margin-bottom:15px;">
+      <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+    </el-row>
     <el-table :data="tableData"
               highlight-current-row
               style="width: 100%;"

@@ -1,51 +1,10 @@
 <template>
   <div class="order-container">
-    <!--    <el-form :inline="true" :model="searchForm"  :label-position="labelPosition" label-width="110px" >-->
-    <!--      <el-row :gutter="20">-->
-    <!--        <el-col :span="6">-->
-    <!--          <el-form-item label="应收:">-->
-    <!--            <el-input v-model="formData.namePhone" style="width: 230px"></el-input>-->
-    <!--          </el-form-item>-->
-    <!--          </el-col>-->
-    <!--        <el-col :span="6">-->
-    <!--          <el-form-item label="应付:">-->
-    <!--            <el-input v-model="formData.namePhone"  style="width: 230px"></el-input>-->
-    <!--          </el-form-item>-->
-    <!--        </el-col>-->
-    <!--        <el-col :span="6">-->
-    <!--          <el-form-item label="实收:">-->
-    <!--            <el-input v-model="formData.namePhone" ></el-input>-->
-    <!--          </el-form-item>-->
-    <!--        </el-col>-->
-    <!--        <el-col :span="6">-->
-    <!--      <el-form-item label="实付:">-->
-    <!--        <el-input v-model="formData.namePhone" ></el-input>-->
-    <!--      </el-form-item>-->
-    <!--          </el-col>-->
-    <!--      </el-row>-->
-
-    <!--      <el-row :gutter="20">-->
-    <!--        <el-col :span="6">-->
-    <!--      <el-form-item label="利润:">-->
-    <!--        <el-input v-model="formData.nameAirplane" style="width: 230px"></el-input>-->
-    <!--      </el-form-item>-->
-    <!--          </el-col>-->
-    <!--        <el-col :span="6">-->
-    <!--      <el-form-item label="采购订单:">-->
-    <!--        <el-input v-model="formData.orderNumber" style="width: 230px"></el-input>-->
-    <!--      </el-form-item>-->
-    <!--          </el-col>-->
-    <!--      </el-row>-->
-
-    <!--      <el-form-item>-->
-    <!--        <el-button type="primary" @click="handleSearch">查询</el-button>-->
-    <!--      </el-form-item>-->
-    <!--&lt;!&ndash;      <el-form-item>&ndash;&gt;-->
-    <!--&lt;!&ndash;        <el-button type="primary" @click="handleAdd">添加</el-button>&ndash;&gt;-->
-    <!--&lt;!&ndash;      </el-form-item>&ndash;&gt;-->
-
-    <!--      </el-form>-->
-    <order-report-search @onSearch="handleSearch" @onAdd="handleAdd"></order-report-search>
+    <order-report-search @onSearch="handleSearch" @onAdd="handleAdd"></order-report-search>    
+    <el-row style="margin-bottom:15px;">
+      <el-button type="primary" size="mini" @click="handleAdd">添加</el-button>
+      <span style="margin-left:5px;">订单报表</span>
+    </el-row>
     <el-table
       :data="tableData"
       style="width: 100%;margin-bottom: 20px;"

@@ -1,74 +1,48 @@
 <template>
   <el-row type="flex" class="row-bg" justify="space-between" align="bottom">
-    <el-col :span="20">
-      <el-form
-        :inline="true"
-        :model="searchForm"
-        :label-position="labelPosition"
-        label-width="110px"
-      >
-        <el-row :gutter="20">
-          <el-col :span="6">
+    <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
+      <el-form :model="searchForm" :label-position="labelPosition" label-width="110px" size="mini">
+        <el-row>
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="应收:">
-              <el-input
-                v-model="formData.namePhone"
-                style="width: 230px"
-              ></el-input>
+              <el-input v-model="formData.namePhone"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="6">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="应付:">
-              <el-input
-                v-model="formData.namePhone"
-                style="width: 230px"
-              ></el-input>
+              <el-input v-model="formData.namePhone"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="6">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="实收:">
-              <el-input v-model="formData.namePhone" style="width: 230px"></el-input>
+              <el-input v-model="formData.namePhone"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="6">
-            <el-form-item label="实付:">
-              <el-input v-model="formData.namePhone" style="width: 230px"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row :gutter="20">
-          <el-col :span="6">
-            <el-form-item label="利润:">
-              <el-input
-                v-model="formData.nameAirplane"
-                style="width: 230px"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="6">
-            <el-form-item label="采购订单:">
-              <el-input
-                v-model="formData.orderNumber"
-                style="width: 230px"
-              ></el-input>
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item v-show="more" label="实付:">
+              <el-input v-model="formData.namePhone"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
 
-<!--        <el-form-item>-->
-<!--          <el-button type="primary" @click="handleSearch">查询</el-button>-->
-<!--        </el-form-item>-->
-        <!--      <el-form-item>-->
-        <!--        <el-button type="primary" @click="handleAdd">添加</el-button>-->
-        <!--      </el-form-item>-->
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="利润:">
+            <el-input v-model="formData.nameAirplane"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="采购订单:">
+            <el-input v-model="formData.orderNumber"></el-input>
+          </el-form-item>
+        </el-col>
       </el-form>
     </el-col>
-    <el-col :span="4" class="search-tools">
-      <el-button type="primary" @click="$emit('onSearch', formData)"
-        >查询</el-button
-      >
-      <el-button type="primary" @click="$emit('onAdd')">添加</el-button>
-      <el-button type="primary" @click="handleMore">更多</el-button>
+    <el-col :xs="8" :sm="6" :md="6" :lg="4" :xl="4" class="search-tools">
+      <el-button type="primary" size="mini" @click="$emit('onSearch', formData)">查询</el-button>
+      <el-button type="text" size="mini" @click="handleMore">
+        更多
+        <i :class="switchIcon"></i>
+      </el-button>
     </el-col>
   </el-row>
 </template>
@@ -84,6 +58,15 @@ export default {
         gender: ""
       }
     };
+  },
+  computed: {
+    switchIcon() {
+      if (!this.more) {
+        return "el-icon-arrow-down el-icon--right";
+      } else {
+        return "el-icon-arrow-up el-icon--right";
+      }
+    }
   },
   methods: {
     handleMore() {
