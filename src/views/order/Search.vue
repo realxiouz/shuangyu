@@ -70,9 +70,9 @@
       </el-form-item>
       <el-form-item label="航程类型:">
         <el-radio-group v-model="searchForm.voyageType">
-          <el-radio label="单程" value="0">单程</el-radio>
-          <el-radio label="往返" value="1">往返</el-radio>
-          <el-radio label="连程" value="2">连程</el-radio>
+          <el-radio label="0">单程</el-radio>
+          <el-radio label="1">往返</el-radio>
+          <el-radio label="2">连程</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item>
