@@ -82,10 +82,8 @@
                   type: "success",
                   message: "修改成功！"
                 });
-                  this.$router.push({name: "login"});
-
                 this.loading = false;
-                this.$router.push({name: "login"});
+                this.$router.push({ name: "login" });
               })
               .catch(() => {
                 this.loading = false;
