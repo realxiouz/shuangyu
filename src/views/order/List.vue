@@ -110,6 +110,15 @@
         label="业务编号"
         width="50"
       ></el-table-column>
+      <el-table-column
+        label="交易时间"
+        width="120"
+        align="center">
+        <template slot-scope="scope">
+          <i v-if="scope.row.transactionTime" class="el-icon-time"></i>
+          <span style="margin-left: 10px">{{ formatDate(scope.row.transactionTime,'YYYY-MM-DD') }}</span>
+        </template>
+      </el-table-column>
       <!--     操作  按钮  需要 编辑 添加 删除  -->
       <el-table-column fixed="right" label="操作" align="center" width="200">
         <template slot-scope="scope">
