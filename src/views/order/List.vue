@@ -25,12 +25,12 @@
       <el-table-column
         prop="sourceOrderNo"
         label="订单来源单号"
-        width="100"
+        width="80"
       ></el-table-column>
       <el-table-column
         prop="policyCode"
         label="政策代码"
-        width="200"
+        width="100"
       ></el-table-column>
       <el-table-column
         prop="policyType"
@@ -59,7 +59,7 @@
       <el-table-column
         prop="RefundChangeRule"
         label="退改签说明"
-        width="100"
+        width="80"
       ></el-table-column>
       <el-table-column
         prop="category"
@@ -79,15 +79,39 @@
       <el-table-column
         prop="pnr"
         label="PNR"
-        width="100"
+        width="80"
       ></el-table-column>
       <el-table-column
         prop="bigPnr"
         label="大编"
-        width="100"
+        width="80"
+      ></el-table-column>
+      <el-table-column
+        label="业务完结时间"
+        width="120"
+        align="center">
+        <template slot-scope="scope">
+          <i v-if="scope.row.finishTime" class="el-icon-time"></i>
+          <span style="margin-left: 10px">{{ formatDate(scope.row.finishTime,'YYYY-MM-DD') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="transactionAmount"
+        label="交易金额"
+        width="50"
+      ></el-table-column>
+      <el-table-column
+        prop="transactionNo"
+        label="交易编号"
+        width="50"
+      ></el-table-column>
+      <el-table-column
+        prop="businessNo"
+        label="业务编号"
+        width="50"
       ></el-table-column>
       <!--     操作  按钮  需要 编辑 添加 删除  -->
-      <el-table-column fixed="right" label="操作" align="center" width="300">
+      <el-table-column fixed="right" label="操作" align="center" width="200">
         <template slot-scope="scope">
           <el-button
             @click="handleUpdate(scope.row)"
