@@ -34,6 +34,15 @@
         label="利润"
         width="200">
       </el-table-column>
+      <el-table-column
+        label="系统利润时间"
+        width="150"
+        align="center">
+        <template slot-scope="scope">
+          <i v-if="scope.row.systemProfitTime" class="el-icon-time"></i>
+          <span style="margin-left: 10px">{{ formatDate(scope.row.systemProfitTime,'YYYY-MM-DD') }}</span>
+        </template>
+      </el-table-column>
       <el-table-column fixed="right" label="操作" align="center" width="300">
         <template slot-scope="scope">
           <el-button
@@ -116,9 +125,25 @@
             },
             handleSave() {
             },
+            /*初始化用工列表中的生日日期格式*/
+            initDate(dateStr, format) {
+                if (null != dateStr) {
+                    let date = new Date(dateStr);
+                    return this.$moment(date).format(format);
+                } else {
+                    return '';
+                }
+            }
         },
         components: {
             orderReportSearch
+        },
+        computed: {
+            formatDate() {
+                return function (dateStr, format) {
+                    return this.initDate(dateStr, format);
+                }
+            },
         },
         created() {
             this.handleSearch();
