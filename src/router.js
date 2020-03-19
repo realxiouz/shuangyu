@@ -15,11 +15,15 @@ export default new Router({
       hidden: true
     },
     {
-      title: '首次登陆修改密码',
-      path: '/changePassword',
-      name: 'changePassword',
-      uri: '/changePassword',
-      component: () => import('@/views/user/ChangePassword'),
+      path: '/404',
+      component: () => import('@/views/404'),
+      hidden: true
+    },
+    {
+      title: "首次登陆修改密码",
+      path: "/change/password",
+      name: "changePassword",
+      component: () => import("@/views/user/ChangePassword"),
       hidden: true
     },
     {
@@ -335,6 +339,10 @@ export default new Router({
 
       ]
     },
-
+    {
+      path: "*",
+      redirect: "/404",
+      hidden: true
+    }
   ]
 });

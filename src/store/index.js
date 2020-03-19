@@ -58,11 +58,15 @@ export default new Vuex.Store({
     pnrjyOrder
   },
   state: {
-    loginInfo: {}
+    loginInfo: {},
+    menus: []
   },
   mutations: {
     SET_LOGIN_INFO: (state, data) => {
       state.loginInfo = data;
+    },
+    SET_MENUS: (state, array) => {
+      state.menus = array;
     }
   },
   actions: {
@@ -79,6 +83,10 @@ export default new Vuex.Store({
             reject(error);
           });
       });
+    },
+    initMenus({ commit }, params) {
+      const { menus } = params;
+      commit("SET_MENUS", menus);
     }
   }
 });

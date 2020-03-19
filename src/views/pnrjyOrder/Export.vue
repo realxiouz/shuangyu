@@ -18,6 +18,7 @@
           :http-request="uploadSectionFile"
           :on-preview="handlePreview"
           :on-remove="handleRemove"
+          :before-upload="beforeUpload"
           :file-list="fileList"
           :auto-upload="false">
           <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
@@ -61,6 +62,26 @@
           .catch(error => {
             console.log(error);
           });
+      },
+
+      beforeUpload(file) {
+        var testmsg = file.name.substring(file.name.lastIndexOf('.') + 1)
+        const extension = testmsg === 'xls'
+        const extension2 = testmsg === 'xlsx'
+        const isLt2M = file.size / 1024 / 1024 < 10     //这里做文件大小限制
+        if (!extension && !extension2) {
+          this.$message({
+            message: '上传文件只能是 xls、xlsx格式!',
+            type: 'warning'
+          });
+        }
+        if (!isLt2M) {
+          this.$message({
+            message: '上传文件大小不能超过 10MB!',
+            type: 'warning'
+          });
+        }
+        return extension || extension2 && isLt2M
       },
       submitUpload() {
         this.$refs.upload.submit();
