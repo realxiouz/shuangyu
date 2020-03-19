@@ -34,7 +34,7 @@
           <el-option label="出票完成" value="2"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="航班起始日期:">
+      <el-form-item label="航班起飞日期:">
         <el-col>
           <el-date-picker
             type="date"
@@ -44,7 +44,7 @@
           ></el-date-picker>
         </el-col>
       </el-form-item>
-      <el-form-item label="航班截止日期:">
+      <el-form-item label="航班到达日期:">
         <el-col>
           <el-date-picker
             type="date"
