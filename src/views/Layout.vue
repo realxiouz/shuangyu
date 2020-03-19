@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-aside width="auto" v-show="isDisplay">
-      <Sidebar :menuList="menus" :collapse="isCollapse"/>
+      <Sidebar :menuList="this.$store.state.menus" :collapse="isCollapse"/>
     </el-aside>
     <el-main>
       <div class="app-header">
@@ -64,7 +64,6 @@
       return {
         isCollapse: false,
         isDisplay: true,
-        navs: [],
         tags: [
           { name: "首页", closable: false, type: "" },
           { name: "用户管理", closable: true, type: "success" },
@@ -81,10 +80,6 @@
       },
       key() {
         return this.$router.path;
-      },
-      menus() {
-        let menus = this.buildTree(null, this.navs);
-        return menus;
       }
     },
     watch: {
@@ -103,21 +98,6 @@
     },
     methods: {
       goBack() {
-      },
-      buildTree(pid, navs) {
-        let menus = [];
-        for (let i = 0; i < navs.length; i++) {
-          if (navs[i].pid === pid) {
-            menus.push(navs[i]);
-          }
-        }
-        if (menus.length > 0) {
-          for (let i = 0; i < menus.length; i++) {
-            let children = this.buildTree(menus[i].navId, navs);
-            menus[i].children = children;
-          }
-        }
-        return menus;
       },
       handleSwitch() {
         if (this.screenWidth > 500) {
@@ -140,21 +120,7 @@
           })
           .catch(() => {
           });
-      },
-      getLoginInfo() {
-        this.$store
-          .dispatch("getLoginInfo", { firmId: "" })
-          .then(data => {
-            this.navs = data.navs;
-          })
-          .catch(error => {
-            console.log(error);
-          });
       }
-
-    },
-    created() {
-      this.getLoginInfo();
     },
     mounted() {
       const _this = this;
