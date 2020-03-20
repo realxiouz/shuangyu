@@ -4,7 +4,7 @@
     <el-row style="margin-bottom:15px;">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
     </el-row>
-    <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;">
+    <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;" size="mini">
       <el-table-column prop="flagId" label="标签id" align="center"></el-table-column>
       <el-table-column prop="thirdName" label="平台" align="center"></el-table-column>
       <el-table-column prop="remark" label="备注" align="center"></el-table-column>
