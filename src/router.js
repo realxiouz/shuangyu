@@ -64,17 +64,19 @@ export default new Router({
         {
           title: '用户管理',
           path: '/user/list',
+          name:'user',
           component: () => import('@/views/user/List'),
           meta: { title: 'Home', icon: 'home' }
         },
         {
           title: '应用管理',
           path: '/app',
+          naem:'app',
           component: () => import('@/views/app/List'),
           meta: { title: 'Home', icon: 'home' }
         },
         {
-          title: '导航菜单管理',
+          title: '',
           path: '/nav/list',
           name: 'nav',
           component: () => import('@/views/nav/List'),
@@ -83,12 +85,14 @@ export default new Router({
         {
           title: 'Api管理',
           path: '/api',
+          name:'api',
           component: () => import('@/views/api/List'),
           meta: { title: 'Home', icon: 'home' }
         },
         {
           title: '角色管理',
           path: '/role/list',
+          name:'role',
           component: () => import('@/views/role/List'),
           meta: { title: 'Home', icon: 'home' }
         },
@@ -111,6 +115,7 @@ export default new Router({
     {
       title: '订单管理',
       path: '/order',
+      name:'orderList',
       component: Layout,
       children: [
         {
@@ -203,12 +208,13 @@ export default new Router({
     {
       title: '企业信息',
       path: '/firm',
+      name:'firm',
       component: Layout,
       children: [
         {
           title: '企业管理',
           path: '/firm/list',
-          name: 'firm',
+          name: 'firmList',
           component: () => import('@/views/firm/List'),
           meta: { title: 'Home', icon: 'home' }
         },
@@ -231,6 +237,7 @@ export default new Router({
     {
       title: '政策信息',
       path: '/policy',
+      name:'policyList',
       component: Layout,
       children: [
         {
@@ -245,6 +252,7 @@ export default new Router({
     {
       title: '第三方Api管理',
       path: '/thirdApi',
+      namr:'thirdApi',
       component: Layout,
       children: [
         {

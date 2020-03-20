@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form ref="form" :rules="rules" :model="formData" label-width="110px">
+    <el-form ref="form" :rules="rules" :model="formData" label-width="120px" size="mini">
       <el-form-item label="航司" prop="airlineCode">
         <el-input v-model="formData.airlineCode"></el-input>
       </el-form-item>
