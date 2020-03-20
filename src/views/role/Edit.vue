@@ -1,13 +1,13 @@
 <template>
   <div>
-    <el-form :model="formData" label-width="120px">
-      <el-form-item label="角色名称" prop="roleName">
-        <el-input v-model="formData.roleName" placeholder="请输入角色名称"></el-input>
+    <el-form :model="formData" label-width="110px" size="mini">
+      <el-form-item label="角色名称:" prop="roleName">
+        <el-input v-model="formData.roleName" placeholder="请输入你要添加的角色名称"></el-input>
       </el-form-item>
-      <el-form-item label="是否启用">
+      <el-form-item label="是否启用:">
         <el-switch v-model="formData.enable" @change="changeSwitch"></el-switch>
       </el-form-item>
-      <el-form-item label="选择菜单">
+      <el-form-item label="选择菜单:">
         <el-tree
           :data="treeData"
           show-checkbox
@@ -20,9 +20,9 @@
         </el-tree>
       </el-form-item>
     </el-form>
-    <div slot="footer" class="dialog-footer">
-      <el-button @click="$emit('onCancel')">取 消</el-button>
-      <el-button type="primary" @click="$emit('onSave',formData)">确 定</el-button>
+    <div slot="footer" class="dialog-footer" style="text-align: right;">
+      <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
+      <el-button size="mini" type="primary" @click="$emit('onSave',formData)">确 定</el-button>
     </div>
   </div>
 </template>
