@@ -26,6 +26,9 @@ import thirdApiService from "./modules/thirdApiService";
 import thirdAccount from "./modules/thirdAccount";
 import tgqProduct from "./modules/tgqProduct";
 import pnrjyOrder from "./modules/pnrjyOrder";
+import qunarOrderConfig from "./modules/qunarOrderConfig";
+import qunarOrderNotifyConfig from "./modules/qunarOrderNotifyConfig";
+import qunarPolicyConfig from "./modules/qunarPolicyConfig";
 
 import { getLoginInfo } from "@/api/staff";
 
@@ -57,7 +60,10 @@ export default new Vuex.Store({
     thirdApiService,
     thirdAccount,
     tgqProduct,
-    pnrjyOrder
+    pnrjyOrder,
+    qunarOrderConfig,
+    qunarOrderNotifyConfig,
+    qunarPolicyConfig
   },
   state: {
     loginInfo: {}
