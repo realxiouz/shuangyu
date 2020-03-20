@@ -5,34 +5,70 @@
       <el-button type="primary" size="mini" @click="handleAdd">添加</el-button>
     </el-row>
     <el-table :data="tableData"
+              size="mini"
               highlight-current-row
               style="width: 100%;"
               border
               fit>
       <el-table-column
+        prop="orderNo"
+        label="订单号"
+        width="160"
+      ></el-table-column>
+      <el-table-column
+        prop="rootOrderNo"
+        label="销售出票单号"
+        width="100"
+      ></el-table-column>
+      <el-table-column
+        prop="orderSource"
+        label="订单来源"
+        width="100"
+      ></el-table-column>
+      <el-table-column
+        prop="sourceOrderNo"
+        label="订单来源单号"
+        width="100"
+      ></el-table-column>
+      <el-table-column
+        prop="policyCode"
+        label="政策代码"
+        width="100"
+      ></el-table-column>
+      <el-table-column
+        prop="policyType"
+        label="政策类型"
+        width="100"
+      ></el-table-column>
+      <el-table-column
+        prop="statusName"
+        label="订单状态"
+        width="100"
+      ></el-table-column>
+      <el-table-column
         prop="receivable"
         label="应收"
-        width="200"
+        width="100"
       ></el-table-column>
       <el-table-column
         prop="payable"
         label="应付"
-        width="200"
+        width="100"
       ></el-table-column>
       <el-table-column
         prop="receipt"
         label="实收"
-        width="200"
+        width="100"
       ></el-table-column>
       <el-table-column
         prop="payment"
         label="实付"
-        width="200"
+        width="100"
       ></el-table-column>
       <el-table-column
         prop="systemProfit"
         label="利润"
-        width="200">
+        width="100">
       </el-table-column>
       <el-table-column
         label="系统利润时间"
@@ -43,7 +79,7 @@
           <span style="margin-left: 10px">{{ formatDate(scope.row.systemProfitTime,'YYYY-MM-DD') }}</span>
         </template>
       </el-table-column>
-      <el-table-column fixed="right" label="操作" align="center" width="300">
+      <el-table-column fixed="right" label="操作" align="center" width="150">
         <template slot-scope="scope">
           <el-button
             @click="handleUpdate(scope.row.deptId)"

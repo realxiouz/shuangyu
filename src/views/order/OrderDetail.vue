@@ -1,35 +1,83 @@
 <template>
   <div class="order-container">
-    <h1>订单详情</h1>
-
-    <el-form :inline="true" :model="orderDetail">
+    <h2>订单详情:</h2>
+    <el-form :inline="true" :model="tableData">
       <el-form-item label="订单编号:">
-        <scops>{{orderDetail.orderNo}}</scops>
+        <scops>{{tableData.orderNo}}</scops>
       </el-form-item>
       <el-form-item label="销售出票订单编号:">
-        <scops>{{orderDetail.rootOrderNo}}</scops>
+        <scops>{{tableData.rootOrderNo}}</scops>
+      </el-form-item>
+      <el-form-item label="订单来源:">
+        <scops>{{tableData.orderSource}}</scops>
+      </el-form-item>
+      <el-form-item label="订单来源单号:">
+        <scops>{{tableData.sourceOrderNo}}</scops>
+      </el-form-item>
+      <el-form-item label="政策代码:">
+        <scops>{{tableData.policyCode}}</scops>
+      </el-form-item>
+      <el-form-item label="政策类型:">
+        <scops>{{tableData.policyType}}</scops>
+      </el-form-item>
+      <el-form-item label="订单类型:">
+        <scops>{{tableData.orderType}}</scops>
       </el-form-item>
       <el-form-item label="订单状态:">
-        <scops>{{orderDetail.status}}</scops>
+        <scops>{{tableData.statusName}}</scops>
+      </el-form-item>
+      <el-form-item label="最晚出票时限:">
+        <template>
+          <i v-if="tableData.deadlineTicketTime"></i>
+          <span style="margin-left: 10px">{{ formatDate(tableData.deadlineTicketTime,'YYYY-MM-DD') }}</span>
+        </template>
+      </el-form-item>
+      <el-form-item label="退改签说明:">
+        <scops>{{tableData.RefundChangeRule}}</scops>
       </el-form-item>
       <el-form-item label="金额:">
-        <scops>{{orderDetail.amount}}</scops>
+        <scops>{{tableData.amount}}</scops>
       </el-form-item>
       <el-form-item label="航程类型:">
-        <scops>{{orderDetail.voyageType}}</scops>
+        <scops>{{tableData.voyageTypeName}}</scops>
       </el-form-item>
       <el-form-item label="PNR:">
-        <scops>{{orderDetail.pnr}}</scops>
+        <scops>{{tableData.pnr}}</scops>
       </el-form-item>
       <el-form-item label="大编:">
-        <scops>{{orderDetail.bigPnr}}</scops>
+        <scops>{{tableData.bigPnr}}</scops>
       </el-form-item>
       <el-form-item label="业务完结时间:">
-        <scops>{{orderDetail.finishTime}}</scops>
+        <template>
+          <i v-if="tableData.finishTime"></i>
+          <span style="margin-left: 10px">{{ formatDate(tableData.finishTime,'YYYY-MM-DD') }}</span>
+        </template>
+      </el-form-item>
+      <el-form-item label="交易金额:">
+        <scops>{{tableData.transactionAmount}}</scops>
+      </el-form-item>
+      <el-form-item label="交易编号:">
+        <scops>{{tableData.transactionNo}}</scops>
+      </el-form-item>
+      <el-form-item label="业务编号:">
+        <scops>{{tableData.businessNo}}</scops>
+      </el-form-item>
+      <el-form-item label="交易时间:">
+        <template>
+          <i v-if="tableData.transactionTime"></i>
+          <span style="margin-left: 10px">{{ formatDate(tableData.transactionTime,'YYYY-MM-DD') }}</span>
+        </template>
+      </el-form-item>
+      <el-form-item label="资金账号:">
+        <scops>{{tableData.fundAccount}}</scops>
+      </el-form-item>
+      <el-form-item label="企业/单位域名:">
+        <scops>{{tableData.domain}}</scops>
       </el-form-item>
     </el-form>
-    <h1>航班</h1>
-    <el-table :data="flightTableData"
+    <h2>航班信息:</h2>
+    <el-table :data="flightData"
+              size="mini"
               highlight-current-row
               style="width: 100%;"
               border
@@ -40,10 +88,14 @@
         width="160"
       ></el-table-column>
       <el-table-column
-        prop="flightDate"
         label="出发日期"
-        width="100"
-      ></el-table-column>
+        width="110"
+        align="center">
+        <template slot-scope="scope">
+          <i v-if="scope.row.flightDate" class="el-icon-time"></i>
+          <span style="margin-left: 10px">{{ formatDate(scope.row.flightDate,'YYYY-MM-DD') }}</span>
+        </template>
+      </el-table-column>
       <el-table-column
         prop="airlineCode"
         label="航司"
@@ -105,10 +157,14 @@
         width="50"
       ></el-table-column>
       <el-table-column
-        prop="flightTimes"
         label="飞行时间"
-        width="50"
-      ></el-table-column>
+        width="110"
+        align="center">
+        <template slot-scope="scope">
+          <i v-if="scope.row.flightTimes" class="el-icon-time"></i>
+          <span style="margin-left: 10px">{{ formatDate(scope.row.flightTimes,'YYYY-MM-DD') }}</span>
+        </template>
+      </el-table-column>
       <el-table-column
         prop="constructionFee"
         label="机建费"
@@ -120,8 +176,8 @@
         width="50"
       ></el-table-column>
       <el-table-column
-        prop="planeType"
-        label="机型"
+        prop="childFuelTax"
+        label="儿童燃油费"
         width="50"
       ></el-table-column>
       <el-table-column
@@ -132,6 +188,21 @@
       <el-table-column
         prop="flightTypeFullName"
         label="机型全称"
+        width="50"
+      ></el-table-column>
+      <el-table-column
+        prop="shareFlag"
+        label="共享标记"
+        width="50"
+      ></el-table-column>
+      <el-table-column
+        prop="stopFlag"
+        label="经停标记"
+        width="50"
+      ></el-table-column>
+      <el-table-column
+        prop="meal"
+        label="餐食标记"
         width="50"
       ></el-table-column>
       <el-table-column
@@ -155,8 +226,10 @@
         width="50"
       ></el-table-column>
     </el-table>
-    <h1>乘客</h1>
-    <el-table :data="PassengerTableData"
+
+    <h2>乘客信息:</h2>
+    <el-table :data="PassengerData"
+              size="mini"
               highlight-current-row
               style="width: 100%;"
               border
@@ -172,10 +245,14 @@
         width="200"
       ></el-table-column>
       <el-table-column
-        prop="birthday"
         label="出生年月"
-        width="250"
-      ></el-table-column>
+        width="110"
+        align="center">
+        <template slot-scope="scope">
+          <i v-if="scope.row.birthday" class="el-icon-time"></i>
+          <span style="margin-left: 10px">{{ formatDate(scope.row.birthday,'YYYY-MM-DD') }}</span>
+        </template>
+      </el-table-column>
       <el-table-column
         prop="ageType"
         label="乘机人类型 0 为成人,1 为儿童，2为婴儿"
@@ -198,29 +275,48 @@
       ></el-table-column>
     </el-table>
   </div>
-
 </template>
 <script>
 
     export default {
         name: "orderDetail",
-
         data() {
             return {
-                flightTableData: [],
-                PassengerTableData: [],
-                orderDetail: {}
+                flightData: [],
+                PassengerData: [],
+                tableData: {}
             };
         },
         methods: {
-
+            /*初始化用工列表中的生日日期格式*/
+            initDate(dateStr, format) {
+                if (null != dateStr) {
+                    let date = new Date(dateStr);
+                    return this.$moment(date).format(format);
+                } else {
+                    return '';
+                }
+            }
         },
         created() {
-            console.log(this.$route);
             const paramData = this.$route.params;
-            console.log(paramData);
-        }
-
+            if (paramData) {
+                this.tableData = paramData;
+                if (paramData.passengers) {
+                    this.PassengerData = paramData.passengers;
+                }
+                if (paramData.flights) {
+                    this.flightData = paramData.flights;
+                }
+            }
+        },
+        computed: {
+            formatDate() {
+                return function (dateStr, format) {
+                    return this.initDate(dateStr, format);
+                }
+            },
+        },
     };
 </script>
 

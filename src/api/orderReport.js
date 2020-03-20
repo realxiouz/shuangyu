@@ -24,6 +24,14 @@ export function getList(params) {
   });
 }
 
+export function getTotal(params) {
+  return request({
+    url: `/order/report/total`,
+    method: 'get',
+    params: params
+  });
+}
+
 export function getOne(id) {
   return request({
     url: `/order/report/one/${id}`,
