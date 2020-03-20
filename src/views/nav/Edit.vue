@@ -1,12 +1,18 @@
 <template>
   <div>
-    <el-header>
-      <el-button type="primary" size="mini" @click="apisEdit" :disabled="apiVisible">编辑</el-button>
-    </el-header>
-    <el-table :data="tableData" tooltip-effect="dark" style="width: 100%">
-      <el-table-column prop="apiName" label="API名称" width="240"></el-table-column>
-      <el-table-column prop="category" label="类别" width="240" align="center"></el-table-column>
-      <el-table-column label="是否启用" width="240" align="center">
+    <el-button type="primary" style="margin-bottom:20px" size="mini" @click="apisEdit" :disabled="apiVisible">编辑</el-button>
+    <el-table
+      :data="tableData"
+      fit
+      tooltip-effect="dark"
+      highlight-current-row
+      size="mini"
+      style="width: 100%;"
+      border
+    >
+      <el-table-column prop="apiName" label="API名称" ></el-table-column>
+      <el-table-column prop="category" label="类别" align="center"></el-table-column>
+      <el-table-column label="是否启用"  align="center">
         <template slot-scope="scope">
           <el-switch disabled :value="scope.row.enable" @change="enableSwitch(scope.row)"></el-switch>
         </template>

@@ -1,11 +1,8 @@
 <template>
-  <div class="tree-node">
-    <el-container>
-      <el-aside width="300px">
-        <el-header>
-          <el-button type="primary" size="mini" @click="rootAdd">添加</el-button>
-        </el-header>
-        <!--  导航树  -->
+  <div class>
+    <el-row :gutter="20">
+      <el-col :xs="11" :sm="10" :md="9" :lg="8" :xl="6">
+        <el-button type="primary" style="margin-bottom:20px" size="mini" @click="rootAdd">添加</el-button>
         <el-tree
           node-key="navId"
           auto-expand-parent
@@ -23,11 +20,11 @@
             </span>
           </span>
         </el-tree>
-      </el-aside>
-      <el-main>
+      </el-col>
+      <el-col :xs="13" :sm="14" :md="15" :lg="16" :xl="18">
         <navEdit ref="search" :apiVisible="apiVisible" :curNode="curNode"></navEdit>
-      </el-main>
-    </el-container>
+      </el-col>
+    </el-row>
     <!-- 表单对话框 -->
     <el-dialog
       title="导航菜单信息"
