@@ -1,6 +1,9 @@
 <template>
   <div class="app-container">
     <policy-search @onSearch="handleSearch" @onAdd="handleAdd"></policy-search>
+    <el-row style="margin-bottom:15px;">
+      <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+    </el-row>
     <el-table :data="tableData"
               highlight-current-row
               style="width: 100%;"
@@ -97,7 +100,7 @@
       </el-table-column>
 
     </el-table>
-    <el-dialog title="政策信息" :visible.sync="dialogVisible" width="30%" :close-on-click-modal="false">
+    <el-dialog title="政策信息" :visible.sync="dialogVisible" width="35%" :close-on-click-modal="false">
       <policy-edit v-if="dialogVisible" :policy-id="policyId"  @onSave="handleSave"
                    @onCancel="handleCancel"></policy-edit>
     </el-dialog>
