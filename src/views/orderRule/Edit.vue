@@ -339,10 +339,8 @@
         if (this.formData.cabins.values){
           params.cabins.values = this.formData.cabins.values.split(",");
         }
-        console.log(this.peopleData[0]);
         params.principal = this.peopleData[0].staffId;
         var staffs = [];
-        console.log(this.staffData[0]);
         for (var i = 0;i<this.staffData.length;i++){
            staffs.push(this.staffData[i].staffId);
         }
