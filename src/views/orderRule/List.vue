@@ -70,7 +70,7 @@
         this.$router.push({name:'orderRuleEdit',params:row});
       },
       add() {
-        this.$router.push('/orderRule/edit');
+        this.$router.push('/order/rule/edit');
       },
       loadData() {
         this.$store

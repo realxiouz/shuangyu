@@ -93,9 +93,9 @@
     methods: {
       loadData() {
         this.$store
-          .dispatch('staff/getPageList', {
+          .dispatch('staff/getList', {
             pageSize: this.pageSize,
-            lastID: this.lastId,
+            lastId: this.lastId,
             pageFlag: this.pageFlag
           })
           .then(data => {
@@ -145,7 +145,6 @@
       },
       create(){
         this.loadData();
-
       },
       toggleSelection(rows) {
         console.log(this.$refs.staffList)

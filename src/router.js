@@ -148,13 +148,13 @@ export default new Router({
         },
         {
           title: '派单规则',
-          path: '/orderRule/list',
+          path: '/order/rule/list',
           name: 'orderRuleList',
           component: () => import('@/views/orderRule/List'),
           meta: {title: 'Home', icon: 'home'}
         }, {
           title: '规则编辑',
-          path: '/orderRule/edit',
+          path: '/order/rule/edit',
           name: 'orderRuleEdit',
           component: () => import('@/views/orderRule/Edit'),
           props: {default: true, sidebar: false},

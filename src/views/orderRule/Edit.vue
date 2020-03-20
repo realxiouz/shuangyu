@@ -20,11 +20,16 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
-          <el-form-item label="是否调出票中:" prop="isTicketing">
+          <el-form-item label="是否调出票中:" prop="ticketing">
             <el-switch
-              v-model="formData.isTicketing"
+              v-model="formData.ticketing"
               active-color="#13ce66"
-              inactive-color="#ff4949">
+              inactive-color="#ff4949"
+              active-text="是"
+              inactive-text="否"
+              active-value=true
+              inactive-value=false
+            >
             </el-switch>
           </el-form-item>
         </el-col>
@@ -39,8 +44,9 @@
                   active-color="#13ce66"
                   inactive-color="#ff4949"
                   active-text="排除"
-                  inactive-text="指定">
-                  >
+                  inactive-text="指定"
+                  active-value=1
+                  inactive-value=0>
                 </el-switch>
               </el-form-item>
             </el-col>
@@ -60,14 +66,15 @@
                   active-color="#13ce66"
                   inactive-color="#ff4949"
                   active-text="排除"
-                  inactive-text="指定">
-                  >
+                  inactive-text="指定"
+                  active-value=1
+                  inactive-value=0>
                 </el-switch>
               </el-form-item>
             </el-col>
             <el-col xs="24" :sm="24" :md="12" :lg="16" :xl="19">
               <el-form-item prop="values">
-                <el-input v-model="formData.segments.values" type="textarea" :rows="1" ></el-input>
+                <el-input v-model="formData.segments.values" type="textarea" :rows="1"></el-input>
               </el-form-item>
             </el-col>
           </el-form-item>
@@ -83,14 +90,15 @@
                   active-color="#13ce66"
                   inactive-color="#ff4949"
                   active-text="排除"
-                  inactive-text="指定">
-                  >
+                  inactive-text="指定"
+                  active-value=1
+                  inactive-value=0>
                 </el-switch>
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="24" :md="12" :lg="16" :xl="19">
               <el-form-item prop="values">
-                <el-input v-model="formData.flights.values" type="textarea" :rows="1" ></el-input>
+                <el-input v-model="formData.flights.values" type="textarea" :rows="1"></el-input>
               </el-form-item>
             </el-col>
           </el-form-item>
@@ -104,20 +112,74 @@
                   active-color="#13ce66"
                   inactive-color="#ff4949"
                   active-text="排除"
-                  inactive-text="指定">
-                  >
+                  inactive-text="指定"
+                  active-value=1
+                  inactive-value=0>
                 </el-switch>
               </el-form-item>
             </el-col>
             <el-col xs="24" :sm="24" :md="12" :lg="16" :xl="19">
               <el-form-item prop="values">
-                <el-input v-model="formData.cabins.values" type="textarea" :rows="1" ></el-input>
+                <el-input v-model="formData.cabins.values" type="textarea" :rows="1"></el-input>
               </el-form-item>
             </el-col>
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row >
+      <el-row>
+        <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6">
+          <el-form-item label="规则类型:" prop="formData.ruleType" :rows="1">
+            <el-select v-model="formData.ruleType" placeholder="请选择" :rows="1">
+              <el-option
+                v-for="item in ruleTypes"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+                :disabled="item.disabled">
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6">
+          <el-form-item label="任务类型:" prop="formData.taskType">
+            <el-switch
+              v-model="formData.taskType"
+              active-color="#13ce66"
+              inactive-color="#ff4949"
+              active-text="系统"
+              inactive-text="手工"
+              active-value=1
+              inactive-value=0>
+            </el-switch>
+          </el-form-item>
+        </el-col>
+        <el-col v-if="formData.taskType==1" :xs="24" :sm="24" :md="6" :lg="6" :xl="6">
+          <el-form-item label="规则类型:" prop="formData.channel">
+            <el-select v-model="formData.channel" placeholder="请选择">
+              <el-option
+                v-for="item in channels"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6">
+          <el-form-item label="是否自动抢票:" prop="formData.autoGrabTicket">
+            <el-switch
+              v-model="formData.autoGrabTicket"
+              active-color="#13ce66"
+              inactive-color="#ff4949"
+              active-text="是"
+              inactive-text="否"
+              active-value=true
+              inactive-value=false>
+            </el-switch>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
         <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
           <el-form-item label="规则类型:" prop="formData.ruleTypes">
             <el-checkbox-group v-model="formData.ruleTypes">
@@ -193,9 +255,7 @@
                 删除
               </el-button>
               <el-button type="primary" size="mini" @click="selectStaff">继续添加</el-button>
-
             </template>
-
           </el-table-column>
         </el-table>
       </el-row>
@@ -210,7 +270,6 @@
                     :checkbox-flag="checkboxFlag" :staffData="staffData">
       </select-staff>
     </el-dialog>
-
   </div>
 </template>
 <script>
@@ -219,8 +278,9 @@
   function defaultData() {
     return {
       ruleName: "",
-      ruleTypes: [],
-      isTicketing: "",
+      ruleType: 1,
+      taskType: 0,
+      ticketing: false,
       airlines: {},
       segments: {},
       flights: {},
@@ -230,7 +290,8 @@
       nextStaffId: "",
       principalName: "",
       staffNames: "",
-      principal: ""
+      principal: "",
+      autoGrabTicket:false
     };
   }
 
@@ -243,12 +304,25 @@
         checkboxFlag: false,
         peopleData: [],
         staffData: [],
+        ruleTypes: [
+          {label: "出票", value: 1},
+          {label: "退票", value: 2},
+          {label: "改签", value: 3},
+          {label: "消息", value: 4},
+          {label: "质检", value: 5},
+          {label: "补单", value: 6},
+          {label: "补单号", value: 7}
+        ],
+        channels:[
+          {label: "蜗牛", value: 1},
+          {label: "BSP", value: 2}
+        ],
         formRules: {
           ruleName: [
-            { required: true, message: "请输入规则名称", trigger: "blur" }
+            {required: true, message: "请输入规则名称", trigger: "blur"}
           ],
           policyCode: [
-            { required: true, message: "请输入政策代码", trigger: "blur" }
+            {required: true, message: "请输入政策代码", trigger: "blur"}
           ]
         }
       };
@@ -272,6 +346,10 @@
         params.flights.values = this.formData.flights.values.split(",");
         params.cabins.values = this.formData.cabins.values.split(",");
         console.log(params);
+        if (params){
+          return;
+
+        }
         this.$store
           .dispatch("orderRule/save", params)
           .then(data => {
@@ -284,7 +362,6 @@
           });
       },
       onSelectStaff(params) {
-        // this.peopleData=[]
         if (!this.checkboxFlag) {
           var tempData = [];
           tempData.push(params);
@@ -292,28 +369,6 @@
         } else {
           this.staffData = params;
         }
-
-        // console.log(this.peopleData)
-        // if (params){
-        //   this.principaldata=this.principaldata.push(params)
-        // }
-        // if (this.checkboxFlag) {
-        //   if (params != null && params != undefined && params.length > 0) {
-        //     var staffNames = [];
-        //     this.formData.staffs = [];
-        //     for (var i = 0; i < params.length; i++) {
-        //       var staff = params[i];
-        //       staffNames.push(staff.fullName);
-        //       this.formData.staffs.push(staff.staffId);
-        //     }
-        //     this.formData.staffNames = staffNames.join(",");
-        //   }
-        // } else {
-        //   if (params != null && params != undefined) {
-        //     this.formData.principalName = params.fullName;
-        //     this.formData.principal = params.staffId;
-        //   }
-        // }
         this.dialogVisible = false;
       },
       onStaffCancel() {
