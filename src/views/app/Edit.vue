@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form ref="form" :rules="rules" :model="formData" label-width="110px">
+    <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
       <el-form-item label="应用名称" prop="appName">
         <el-input v-model="formData.appName"></el-input>
       </el-form-item>
@@ -9,8 +9,8 @@
       </el-form-item>
     </el-form>
     <div slot="footer">
-      <el-button type="primary" @click="$emit('onCancel')">取 消</el-button>
-      <el-button type="primary" @click="handleSave">确 定</el-button>
+      <el-button size="mini" type="primary" @click="$emit('onCancel')">取 消</el-button>
+      <el-button size="mini" type="primary" @click="handleSave">确 定</el-button>
     </div>
   </div>
 </template>
