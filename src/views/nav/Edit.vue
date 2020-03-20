@@ -1,6 +1,10 @@
 <template>
   <div>
-    <el-button type="primary" style="margin-bottom:20px" size="mini" @click="apisEdit" :disabled="apiVisible">编辑</el-button>
+    <el-row type="flex" justify="space-between" style="margin-bottom:20px;" align="bottom">
+      <span v-if="!apiVisible">{{this.curNode.title}}</span>
+      <span></span>
+      <el-button type="primary" size="mini" @click="apisEdit" :disabled="apiVisible">添加</el-button>
+    </el-row>
     <el-table
       :data="tableData"
       fit
@@ -10,9 +14,9 @@
       style="width: 100%;"
       border
     >
-      <el-table-column prop="apiName" label="API名称" ></el-table-column>
+      <el-table-column prop="apiName" label="API名称"></el-table-column>
       <el-table-column prop="category" label="类别" align="center"></el-table-column>
-      <el-table-column label="是否启用"  align="center">
+      <el-table-column label="是否启用" align="center">
         <template slot-scope="scope">
           <el-switch disabled :value="scope.row.enable" @change="enableSwitch(scope.row)"></el-switch>
         </template>
@@ -165,6 +169,7 @@ export default {
     curNode() {
       /*监听导航节点的点击并加载其中的api列表*/
       this.tableLoad();
+      console.log(this.curNode);
     }
   }
 };

@@ -1,7 +1,7 @@
 <template>
   <div class>
     <el-row :gutter="20">
-      <el-col :xs="11" :sm="10" :md="9" :lg="8" :xl="6">
+      <el-col :xs="11" :sm="10" :md="9" :lg="8" :xl="8">
         <el-button type="primary" style="margin-bottom:20px" size="mini" @click="rootAdd">添加</el-button>
         <el-tree
           node-key="navId"
@@ -21,7 +21,7 @@
           </span>
         </el-tree>
       </el-col>
-      <el-col :xs="13" :sm="14" :md="15" :lg="16" :xl="18">
+      <el-col :xs="13" :sm="14" :md="15" :lg="16" :xl="16">
         <navEdit ref="search" :apiVisible="apiVisible" :curNode="curNode"></navEdit>
       </el-col>
     </el-row>
