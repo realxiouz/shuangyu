@@ -120,10 +120,10 @@
       <el-table-column fixed="right" label="操作" align="center" width="200">
         <template slot-scope="scope">
           <el-button
-            @click="handleUpdate(scope.row.orderNo)"
+            @click="handleOrderDetail(scope.row.orderNo)"
             type="primary"
             size="mini"
-          >编辑
+          >详情
           </el-button
           >
           <el-button type="danger" size="mini" @click="handleRemove(scope.row.orderNo)">删除</el-button>
@@ -254,7 +254,8 @@
                     this.$store
                         .dispatch("order/removeOne", {orderNo: orderNo})
                         .then(() => {
-                            this.handleSearch();
+                            this.loadData(this.searchParams);
+                            this.loadTotal();
                         })
                         .catch(error => {
                             console.log(error);
@@ -270,6 +271,9 @@
             },
             handleAdd() {
                 this.dialogVisible = true;
+            },
+            handleOrderDetail(row) {
+                this.$router.push({name:'orderDetail',params:row});
             },
             /*初始化用工列表中的生日日期格式*/
             initDate(dateStr, format) {
