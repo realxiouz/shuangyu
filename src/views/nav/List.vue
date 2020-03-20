@@ -33,6 +33,7 @@
       title="导航菜单信息"
       :visible.sync="dialogVisible"
       width="30%"
+      center
       :close-on-click-modal="false"
     >
       <el-form
@@ -66,8 +67,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="handleCancel">取 消</el-button>
-        <el-button type="primary" @click="handleSave">确 定</el-button>
+        <el-button size="mini" @click="handleCancel">取 消</el-button>
+        <el-button size="mini" type="primary" @click="handleSave">确 定</el-button>
       </div>
     </el-dialog>
   </div>

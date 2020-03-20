@@ -16,7 +16,7 @@
           highlight-current
           :default-checked-keys="formData.navs"
           @check="getCheckedKeys"
-          :props="{label:'navName'}">
+          :props="{label:'title'}">
         </el-tree>
       </el-form-item>
     </el-form>
