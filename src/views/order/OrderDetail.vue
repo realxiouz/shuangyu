@@ -176,8 +176,8 @@
         width="50"
       ></el-table-column>
       <el-table-column
-        prop="planeType"
-        label="机型"
+        prop="childFuelTax"
+        label="儿童燃油费"
         width="50"
       ></el-table-column>
       <el-table-column
@@ -188,6 +188,21 @@
       <el-table-column
         prop="flightTypeFullName"
         label="机型全称"
+        width="50"
+      ></el-table-column>
+      <el-table-column
+        prop="shareFlag"
+        label="共享标记"
+        width="50"
+      ></el-table-column>
+      <el-table-column
+        prop="stopFlag"
+        label="经停标记"
+        width="50"
+      ></el-table-column>
+      <el-table-column
+        prop="meal"
+        label="餐食标记"
         width="50"
       ></el-table-column>
       <el-table-column
