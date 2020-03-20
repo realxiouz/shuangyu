@@ -308,6 +308,35 @@ export default new Router({
       ]
     },
     {
+      title: '去哪儿',
+      path: '/qunar',
+      name: 'qunar',
+      component: Layout,
+      children: [
+        {
+          title: '去哪儿订单管理',
+          path: '/qunar/order',
+          name: 'qunarOrder',
+          component: () => import('@/views/qunarOrderConfig/List'),
+          meta: { title: 'Home', icon: 'home' }
+        },
+        {
+          title: '去哪儿订单通知管理',
+          path: '/qunar/order/notify',
+          name: 'qunarOrderNotify',
+          component: () => import('@/views/qunarOrderNotifyConfig/List'),
+          meta: { title: 'Home', icon: 'home' }
+        },
+        {
+          title: '去哪儿政策管理',
+          path: '/qunar/policy',
+          name: 'qunarPolicyConfig',
+          component: () => import('@/views/qunarPolicyConfig/List'),
+          meta: { title: 'About', icon: 'about' }
+        }
+      ]
+    },
+    {
       path: "*",
       redirect: "/404",
       hidden: true
