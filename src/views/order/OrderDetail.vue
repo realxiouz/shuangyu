@@ -9,13 +9,13 @@
         <scops>{{tableData.rootOrderNo}}</scops>
       </el-form-item>
       <el-form-item label="订单状态:">
-        <scops>{{tableData.status}}</scops>
+        <scops>{{tableData.statusName}}</scops>
       </el-form-item>
       <el-form-item label="金额:">
         <scops>{{tableData.amount}}</scops>
       </el-form-item>
       <el-form-item label="航程类型:">
-        <scops>{{tableData.voyageType}}</scops>
+        <scops>{{tableData.voyageTypeName}}</scops>
       </el-form-item>
       <el-form-item label="PNR:">
         <scops>{{tableData.pnr}}</scops>
@@ -32,6 +32,7 @@
     </el-form>
     <h2>航班信息:</h2>
     <el-table :data="flightData"
+              size="mini"
               highlight-current-row
               style="width: 100%;"
               border
@@ -168,6 +169,7 @@
 
     <h2>乘客信息:</h2>
     <el-table :data="PassengerData"
+              size="mini"
               highlight-current-row
               style="width: 100%;"
               border
@@ -218,7 +220,6 @@
 
     export default {
         name: "orderDetail",
-
         data() {
             return {
                 flightData: [],
