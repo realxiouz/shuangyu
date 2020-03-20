@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form ref="form" :model="formData" :rules="verify" label-width="100px" :inline="true">
+    <el-form ref="form" :model="formData" :rules="verify" label-width="100px" :inline="true" size="mini">
       <el-form-item prop="airlineCode" label="航司二字码">
         <el-select v-bind:disabled="disabled" v-model="formData.airlineCode" @change="initCabins" filterable allow-create>
           <el-option

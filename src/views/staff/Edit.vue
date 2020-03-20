@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-header>
-      <el-button @click="addStaff" :disabled="staffAddVisible">添 加</el-button>
+      <el-button type="primary" size="mini" @click="addStaff" :disabled="staffAddVisible">添 加</el-button>
     </el-header>
     <el-main>
       <!-- 员工列表 -->
