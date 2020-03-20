@@ -1,6 +1,9 @@
 <template>
   <div class="airline-container">
-    <airline-search @onSearch="handleSearch" @onAdd="handleAdd"></airline-search>
+    <airline-search @onSearch="handleSearch"></airline-search>
+    <el-row style="margin-bottom:15px;">
+      <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+    </el-row>
     <el-table :data="tableData" ref="tableData" @row-dblclick="handleEdit" style="width: 100%">
       <el-table-column
         prop="airlineName"
