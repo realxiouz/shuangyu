@@ -1,6 +1,9 @@
 <template>
   <div class="app-container">
-    <el-button type="primary" @click="rootAdd">添加</el-button>
+    <!-- <el-button type="primary" @click="rootAdd">添加</el-button> -->
+     <el-row style="margin-bottom:15px;">
+      <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+    </el-row>
     <el-table
       :data="tableData"
       row-key="paramId"
@@ -20,7 +23,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog title="接口参数信息" :visible.sync="dialogVisible" width="30%">
+    <el-dialog title="接口参数信息" center :visible.sync="dialogVisible" width="30%">
       <param-edit v-if="dialogVisible" :paramId="paramId" @onSave="handleSave" @onCancel="handleCancel">
       </param-edit>
     </el-dialog>
@@ -70,7 +73,7 @@
                 }
                 return ret;
             },
-            rootAdd() {
+            handleAdd() {
                 //判断添加的导航是否是顶级导航
                 this.rootNav = true;
                 this.dialogVisible = true;

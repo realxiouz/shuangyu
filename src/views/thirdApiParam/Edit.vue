@@ -1,8 +1,8 @@
 <template>
   <div>
-    <el-form ref="formData" :model="formData" label-width="120px">
+    <el-form ref="formData" :model="formData" label-width="110px" size="mini">
       <el-form-item label="第三方平台" prop="thirdId">
-        <el-select v-model="formData.thirdId" placeholder="请选择">
+        <el-select v-model="formData.thirdId" placeholder="请选择" style="width:100%">
           <el-option
             v-for="(item,idx) in thirdPartyList"
             :key="idx"
@@ -12,7 +12,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="政策" prop="apiId">
-        <el-select v-model="formData.apiId" placeholder="请选择">
+        <el-select v-model="formData.apiId" placeholder="请选择" style="width:100%">
           <el-option
             v-for="(item, idx) in apiList"
             :key="idx"
@@ -31,19 +31,19 @@
       <el-form-item label="默认值" prop="defaultValue">
         <el-input v-model="formData.defaultValue" placeholder="请输入默认值"></el-input>
       </el-form-item>
-      <el-form-item label="是否必须">
-        <el-select v-model="formData.required" placeholder="请选择">
+      <el-form-item label="是否必须" >
+        <el-select v-model="formData.required" placeholder="请选择" style="width:100%">
           <el-option label="是" :value="true"></el-option>
           <el-option label="否" :value="false"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="备注">
-        <el-input v-model="formData.remark" placeholder="请输入备注"></el-input>
+        <el-input type="textarea" :rows="3" v-model="formData.remark" placeholder="请输入备注"></el-input>
       </el-form-item>
     </el-form>
-    <div slot="footer" class="dialog-footer">
-      <el-button @click="$emit('onCancel')">取 消</el-button>
-      <el-button type="primary" @click="$emit('onSave',formData)">确 定</el-button>
+    <div slot="footer" class="dialog-footer" style="text-align: right;">
+      <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
+      <el-button size="mini" type="primary" @click="$emit('onSave',formData)">确 定</el-button>
     </div>
   </div>
 </template>
