@@ -8,19 +8,19 @@
           <el-option label="改签" :value="2"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="文件" >
+      <el-form-item label="文件">
         <el-upload prop="file"
-          class="upload-demo"
-          ref="upload"
-          action="test"
-          :limit="1"
-          :data="formData"
-          :http-request="uploadSectionFile"
-          :on-change="handleChange"
-          :on-remove="handleRemove"
-          :before-upload="beforeUpload"
-          :file-list="fileList"
-          :auto-upload="false">
+                   class="upload-demo"
+                   ref="upload"
+                   action="test"
+                   :limit="2"
+                   :data="formData"
+                   :http-request="uploadSectionFile"
+                   :on-change="handleChange"
+                   :on-remove="handleRemove"
+                   :before-upload="beforeUpload"
+                   :file-list="fileList"
+                   :auto-upload="false">
           <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
           <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
           <div slot="tip" class="el-upload__tip">只能上传xls/xlsx文件</div>
@@ -99,7 +99,7 @@
         console.log(file, fileList);
       },
       handleChange(file, fileList) {
-        this.fileList = fileList.slice(-1)
+        this.fileList = fileList.slice(-1);
       }
     }
   };
