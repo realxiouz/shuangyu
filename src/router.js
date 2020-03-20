@@ -140,10 +140,10 @@ export default new Router({
           meta: { title: 'Home', icon: 'home' }
         },
         {
-          title: '跳转到',
-          path: '/order/Edit_',
-          name: 'Edit_',
-          component: () => import('@/views/order/Edit_'),
+          title: '订单详情',
+          path: '/order/detail',
+          name: 'orderDetail',
+          component: () => import('@/views/order/OrderDetail'),
           meta: { title: 'Home', icon: 'home' }
         },
         {
