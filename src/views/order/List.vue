@@ -163,25 +163,19 @@
         methods: {
             handleSizeChange: function (size) {
                 this.pageSize = size;
-                this.loadData();
+                this.loadData(this.searchParams);
             },
             prevClick(page) {
                 this.currentPage = page;
-                this.loadData();
+                this.loadData(this.searchParams);
             },
             nextClick(page) {
                 this.currentPage = page;
-                this.loadData();
+                this.loadData(this.searchParams);
             },
             loadData(params) {
-                if (params) {
-                    params.page = this.currentPage;
-                    params.rows = this.pageSize;
-                } else {
-                    params = {};
-                    params.page = this.currentPage;
-                    params.rows = this.pageSize;
-                }
+                params.page = this.currentPage;
+                params.rows = this.pageSize;
                 this.$store
                     .dispatch("order/getList", {
                             filters: params
@@ -298,7 +292,7 @@
             orderSearch
         },
         created() {
-            this.loadData();
+            this.loadData(this.searchParams);
             this.loadTotal();
         },
     };
