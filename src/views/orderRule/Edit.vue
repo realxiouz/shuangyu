@@ -326,16 +326,29 @@
       handleSave() {
         var params = JSON.parse(JSON.stringify(this.formData));
         console.log(this.formData);
-        console.log(params);
-        params.airlines.values = this.formData.airlines.values.split(",");
-        params.segments.values = this.formData.segments.values.split(",");
-        params.flights.values = this.formData.flights.values.split(",");
-        params.cabins.values = this.formData.cabins.values.split(",");
-        console.log(params);
-        if (params){
-          return;
-
+        console.log(params)
+        if (this.formData.airlines.values){
+          params.airlines.values = this.formData.airlines.values.split(",");
         }
+        if (this.formData.segments.values){
+          params.segments.values = this.formData.segments.values.split(",");
+        }
+        if (this.formData.flights.values){
+          params.flights.values = this.formData.flights.values.split(",");
+        }
+        if (this.formData.cabins.values){
+          params.cabins.values = this.formData.cabins.values.split(",");
+        }
+        console.log(this.peopleData[0]);
+        params.principal = this.peopleData[0].staffId;
+        var staffs = [];
+        console.log(this.staffData[0]);
+        for (var i = 0;i<this.staffData.length;i++){
+           staffs.push(this.staffData[i].staffId);
+        }
+
+        params.staffs = staffs;
+        console.log(params);
         this.$store
           .dispatch("orderRule/save", params)
           .then(data => {

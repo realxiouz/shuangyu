@@ -93,7 +93,7 @@
     methods: {
       loadData() {
         this.$store
-          .dispatch('staff/getList', {
+          .dispatch('staff/getPageList', {
             pageSize: this.pageSize,
             lastId: this.lastId,
             pageFlag: this.pageFlag
