@@ -99,7 +99,6 @@ export default {
   data() {
     return {
       more: false,
-      labelPosition: "left",
       formData: {
         orderType: "", //订单类型
         voyageType: "", //航程类型
