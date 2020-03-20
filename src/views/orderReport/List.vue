@@ -5,6 +5,7 @@
       <el-button type="primary" size="mini" @click="handleAdd">添加</el-button>
     </el-row>
     <el-table :data="tableData"
+              size="mini"
               highlight-current-row
               style="width: 100%;"
               border
