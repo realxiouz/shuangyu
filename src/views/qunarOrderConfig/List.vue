@@ -12,17 +12,15 @@
           width="280"
           align="center"
         ></el-table-column>
-        <el-table-column
-          prop="firmId"
-          label="企业"
-          width="280"
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          prop="thirdId"
-          label="平台"
-          width="280"
-          align="center">
+        <el-table-column label="企业" width="200" align="center">
+          <template slot-scope="scope">
+            <span style="margin-left: 10px">{{ formatFirmData(scope.row.firmId) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="平台" width="200" align="center">
+          <template slot-scope="scope">
+            <span style="margin-left: 10px">{{ formatPartyData(scope.row.thirdId) }}</span>
+          </template>
         </el-table-column>
         <el-table-column
           prop="user"
@@ -57,8 +55,9 @@
       </el-pagination>
 
       <el-dialog title="第三方平台账号信息" :visible.sync="dialogVisible" width="30%" :close-on-click-modal="false">
-        <qunar-order-config-edit v-if="dialogVisible" :curNode="curNode" :update="update" @onSave="handleSave"
-                            @onCancel="handleCancel"/>
+        <qunar-order-config-edit v-if="dialogVisible" :curNode="curNode" :update="update" :firmList="firmList"
+                                 :partyList="partyList"
+                                 @onSave="handleSave" @onCancel="handleCancel"/>
       </el-dialog>
     </el-main>
   </el-container>
@@ -73,6 +72,8 @@
             return {
                 dialogVisible: false,
                 tableData: [],
+                partyList: [],
+                firmList: [],
                 /*记录当前进行操作的节点*/
                 curNode: {},
                 update: false,
@@ -209,10 +210,64 @@
                         message: '已取消删除'
                     });
                 });
+            },
+            loadFirmData() {
+                this.$store
+                    .dispatch("firm/getList", {filter: {}})
+                    .then(data => {
+                        this.firmList = data;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            loadPartyData() {
+                this.$store
+                    .dispatch("thirdParty/getList", {filters: {}})
+                    .then(data => {
+                        this.partyList = data;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            initFirmData(firmID) {
+                let firmName = '';
+                for (let i = 0; i < this.firmList.length; i++) {
+                    if (firmID === this.firmList[i].firmId) {
+                        firmName = this.firmList[i].firmName;
+                        break;
+                    }
+                }
+                return firmName;
+            },
+            initPartyData(thirdID) {
+                let thirdName = '';
+                for (let i = 0; i < this.partyList.length; i++) {
+                    if (thirdID === this.partyList[i].thirdId) {
+                        thirdName = this.partyList[i].thirdName;
+                        break;
+                    }
+                }
+                return thirdName;
             }
         },
         created() {
+            this.loadFirmData();
+            this.loadPartyData();
             this.loadData();
+        },
+        computed: {
+            formatFirmData() {
+                return function (firmID) {
+                    return this.initFirmData(firmID);
+                };
+            },
+            formatPartyData() {
+                return function (thirdID) {
+                    return this.initPartyData(thirdID);
+                };
+            }
         },
         components: {
             qunarOrderConfigSearch,

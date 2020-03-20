@@ -5,10 +5,22 @@
         <el-input v-model="formData.domain"></el-input>
       </el-form-item>
       <el-form-item label="企业">
-        <el-input v-model="formData.firmId"></el-input>
+        <el-select v-model="formData.firmId" placeholder="请选择企业" style="width: 420px">
+          <el-option v-for="item in firmList"
+                     :key="item.firmId"
+                     :label="item.firmName"
+                     :value="item.firmId">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="平台">
-        <el-input v-model="formData.thirdId"></el-input>
+        <el-select v-model="formData.thirdId" placeholder="请选择平台" style="width: 420px">
+          <el-option v-for="item in partyList"
+                     :key="item.thirdId"
+                     :label="item.thirdName"
+                     :value="item.thirdId">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="用户名">
         <el-input v-model="formData.user"></el-input>
@@ -29,10 +41,10 @@
 
 <script>
     export default {
-        props: ["curNode", "update"],
+        props: ["curNode", "update", "firmList", "partyList"],
         data() {
             return {
-                formData: {}
+                formData: {},
             };
         },
         methods: {
