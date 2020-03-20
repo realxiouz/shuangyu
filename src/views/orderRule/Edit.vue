@@ -59,7 +59,7 @@
         </el-col>
         <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
           <el-form-item label="航线:">
-            <el-col xs="24" :sm="24" :md="12" :lg="8" :xl="5">
+            <el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="5">
               <el-form-item prop="inOrEx">
                 <el-switch
                   v-model="formData.segments.inOrEx"
@@ -72,7 +72,7 @@
                 </el-switch>
               </el-form-item>
             </el-col>
-            <el-col xs="24" :sm="24" :md="12" :lg="16" :xl="19">
+            <el-col :xs="24" :sm="24" :md="12" :lg="16" :xl="19">
               <el-form-item prop="values">
                 <el-input v-model="formData.segments.values" type="textarea" :rows="1"></el-input>
               </el-form-item>
@@ -105,7 +105,7 @@
         </el-col>
         <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
           <el-form-item label="舱位:">
-            <el-col xs="24" :sm="24" :md="12" :lg="8" :xl="5">
+            <el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="5">
               <el-form-item prop="inOrEx">
                 <el-switch
                   v-model="formData.cabins.inOrEx"
@@ -118,7 +118,7 @@
                 </el-switch>
               </el-form-item>
             </el-col>
-            <el-col xs="24" :sm="24" :md="12" :lg="16" :xl="19">
+            <el-col :xs="24" :sm="24" :md="12" :lg="16" :xl="19">
               <el-form-item prop="values">
                 <el-input v-model="formData.cabins.values" type="textarea" :rows="1"></el-input>
               </el-form-item>
@@ -128,8 +128,8 @@
       </el-row>
       <el-row>
         <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6">
-          <el-form-item label="规则类型:" prop="formData.ruleType" :rows="1">
-            <el-select v-model="formData.ruleType" placeholder="请选择" :rows="1">
+          <el-form-item label="规则类型:" prop="ruleType">
+            <el-select v-model="formData.ruleType" placeholder="请选择" >
               <el-option
                 v-for="item in ruleTypes"
                 :key="item.value"
@@ -141,7 +141,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6">
-          <el-form-item label="任务类型:" prop="formData.taskType">
+          <el-form-item label="任务类型:" prop="taskType">
             <el-switch
               v-model="formData.taskType"
               active-color="#13ce66"
@@ -154,7 +154,7 @@
           </el-form-item>
         </el-col>
         <el-col v-if="formData.taskType==1" :xs="24" :sm="24" :md="6" :lg="6" :xl="6">
-          <el-form-item label="规则类型:" prop="formData.channel">
+          <el-form-item label="规则类型:" prop="channel">
             <el-select v-model="formData.channel" placeholder="请选择">
               <el-option
                 v-for="item in channels"
@@ -166,7 +166,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6">
-          <el-form-item label="是否自动抢票:" prop="formData.autoGrabTicket">
+          <el-form-item label="是否自动抢票:" prop="autoGrabTicket">
             <el-switch
               v-model="formData.autoGrabTicket"
               active-color="#13ce66"
@@ -176,20 +176,6 @@
               active-value=true
               inactive-value=false>
             </el-switch>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-          <el-form-item label="规则类型:" prop="formData.ruleTypes">
-            <el-checkbox-group v-model="formData.ruleTypes">
-              <el-checkbox :label=3 name="ruleTypes">出票</el-checkbox>
-              <el-checkbox :label=10 name="ruleTypes">未出票申请退款</el-checkbox>
-              <el-checkbox :label=11 name="ruleTypes">退票</el-checkbox>
-              <el-checkbox :label=20 name="ruleTypes">改签</el-checkbox>
-              <el-checkbox :label=4 name="ruleTypes">消息</el-checkbox>
-              <el-checkbox :label=5 name="ruleTypes">质检</el-checkbox>
-            </el-checkbox-group>
           </el-form-item>
         </el-col>
       </el-row>
@@ -388,7 +374,7 @@
       }
     },
     mounted() {
-      const paramData = this.$route.params;
+      let paramData = this.$route.params;
       if (Object.keys(paramData).length > 0) {
         this.formData = JSON.parse(JSON.stringify(paramData));
       }
