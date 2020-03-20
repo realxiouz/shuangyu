@@ -59,14 +59,6 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="订单类型:">
-            <el-select v-model="formData.orderType" placeholder="选择类型" style="width: 100%">
-              <el-option label="测试1" value="1"></el-option>
-              <el-option label="测试2" value="2"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="订单来源:">
             <el-select  v-model="formData.orderSource" placeholder="全部" style="width: 100%">
               <el-option label="去哪网" value="qunawang"></el-option>

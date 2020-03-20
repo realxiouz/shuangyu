@@ -1,6 +1,6 @@
 <template>
   <div class="order-container">
-    <order-search @onSearch="handleSearch" ></order-search>
+    <order-search @onSearch="handleSearch"></order-search>
     <el-row style="margin-bottom:15px;">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
     </el-row>
@@ -40,12 +40,7 @@
         width="50"
       ></el-table-column>
       <el-table-column
-        prop="orderType"
-        label="订单类型"
-        width="50"
-      ></el-table-column>
-      <el-table-column
-        prop="status"
+        prop="statusName"
         label="订单状态"
         width="50"
       ></el-table-column>
@@ -69,7 +64,7 @@
         width="50"
       ></el-table-column>
       <el-table-column
-        prop="voyageType"
+        prop="voyageTypeName"
         label="航程类型"
         width="50"
       ></el-table-column>
@@ -167,9 +162,12 @@
             };
         },
         methods: {
-            prevClick() {},
-            nextClick() {},
-            handleSizeChange() {},
+            prevClick() {
+            },
+            nextClick() {
+            },
+            handleSizeChange() {
+            },
             loadData(params) {
                 this.$store
                     .dispatch("order/getList", {
@@ -179,6 +177,16 @@
                     if (data) {
                         this.tableData = data;
                     }
+                }).catch(error => {
+                    console.log(error);
+                });
+            },
+            loadTotal(params) {
+                this.$store
+                    .dispatch("order/getTotal", {
+                        filters: params
+                    }).then(response => {
+                    this.total = response.data;
                 }).catch(error => {
                     console.log(error);
                 });
