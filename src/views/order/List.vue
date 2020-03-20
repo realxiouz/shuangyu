@@ -116,11 +116,10 @@
           <span style="margin-left: 10px">{{ formatDate(scope.row.transactionTime,'YYYY-MM-DD') }}</span>
         </template>
       </el-table-column>
-      <!--     操作  按钮  需要 编辑 添加 删除  -->
       <el-table-column fixed="right" label="操作" align="center" width="200">
         <template slot-scope="scope">
           <el-button
-            @click="handleOrderDetail(scope.row.orderNo)"
+            @click="handleOrderDetail(scope.row)"
             type="primary"
             size="mini"
           >详情
