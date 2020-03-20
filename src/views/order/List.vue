@@ -134,41 +134,53 @@
       @size-change="handleSizeChange"
       @prev-click="prevClick"
       @next-click="nextClick"
+      :current-page="currentPage"
       background
       layout="total,sizes,prev,next"
       prev-text="上一页"
       next-text="下一页"
       :page-size="pageSize"
-      :total="total"
-    >
+      :total="total">
     </el-pagination>
   </div>
 </template>
 
 <script>
     import orderSearch from "./Search.vue";
-    import orderEdit from "./Edit.vue";
 
     export default {
         name: "orderList",
         data() {
             return {
-                lastId: "0",
-                pageFlag: "next",
+                currentPage: 1,
                 pageSize: 10,
                 total: 0,
                 dialogVisible: false,
-                tableData: [],
+                tableData: []
             };
         },
         methods: {
-            prevClick() {
+            handleSizeChange: function (size) {
+                this.pageSize = size;
+                this.loadData();
             },
-            nextClick() {
+            prevClick(page) {
+                this.currentPage = page;
+                this.loadData();
             },
-            handleSizeChange() {
+            nextClick(page) {
+                this.currentPage = page;
+                this.loadData();
             },
             loadData(params) {
+                if (params) {
+                    params.page = this.currentPage;
+                    params.rows = this.pageSize;
+                } else {
+                    params = {};
+                    params.page = this.currentPage;
+                    params.rows = this.pageSize;
+                }
                 this.$store
                     .dispatch("order/getList", {
                             filters: params
@@ -185,8 +197,8 @@
                 this.$store
                     .dispatch("order/getTotal", {
                         filters: params
-                    }).then(response => {
-                    this.total = response.data;
+                    }).then(data => {
+                    this.total = data;
                 }).catch(error => {
                     console.log(error);
                 });
@@ -195,6 +207,7 @@
                 if (!params) {
                     params = {};
                     this.loadData(params);
+                    this.loadTotal(params);
                 } else {
                     const newParams = {};
                     if (params.name) {
@@ -231,6 +244,7 @@
                         newParams.voyageType = params.voyageType;
                     }
                     this.loadData(newParams);
+                    this.loadTotal(newParams);
                 }
             },
             handleRemove(orderNo) {
@@ -277,11 +291,11 @@
             },
         },
         components: {
-            orderEdit,
             orderSearch
         },
         created() {
-            this.handleSearch();
+            this.loadData();
+            this.loadTotal();
         },
     };
 </script>
