@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form ref="form" :model="formData" :rules="rules" label-width="110px">
+    <el-form ref="form" :model="formData" :rules="rules" label-width="110px" size="mini">
       <el-form-item prop="airportCode" label="三字码">
         <el-input v-bind:disabled="disabled" v-model="formData.airportCode" maxlength = "3"></el-input>
       </el-form-item>
