@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
+    <el-form ref="form" :rules="rules" :model="formData" label-width="80px" size="mini">
       <el-form-item label="平台" prop="thirdId">
         <el-select v-model="formData.thirdId" style="width:100%"  filterable placeholder="请选择平台" @change="handleChange">
           <el-option
@@ -11,7 +11,7 @@
           ></el-option>
         </el-select>
       </el-form-item>
-      <el-table :data="formData.params" border fit highlight-current-row style="width: 100%">
+      <el-table :data="formData.params" size="mini" fit highlight-current-row style="width: 100%">
         <el-table-column prop="label" label="参数标签" align="center"></el-table-column>
         <el-table-column prop="name" label="参数名称" align="center"></el-table-column>
         <el-table-column prop="value" label="参数值" align="center">
@@ -26,8 +26,8 @@
         </el-table-column>
       </el-table>
     </el-form>
-    <div slot="footer" class="dialog-footer" style="margin-top:10px">
-      <el-button size="mini" type="primary" @click="$emit('onCancel')">取 消</el-button>
+    <div slot="footer" class="dialog-footer" style="margin-top:10px;text-align: right;">
+      <el-button size="mini"  @click="$emit('onCancel')">取 消</el-button>
       <el-button  size="mini" type="primary" @click="handleSave">确 定</el-button>
     </div>
   </div>
