@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form ref="form" :model="formData" :rules="rules" label-width="110px">
+    <el-form ref="form" :model="formData" :rules="rules" label-width="110px" size="mini">
       <el-form-item prop="dpt" label="出发地">
         <el-input v-bind:disabled="disabled" v-model="formData.dpt"></el-input>
       </el-form-item>
@@ -15,84 +15,85 @@
   </div>
 </template>
 <script>
-  function defaultData() {
-    return {
-      dpt: '',
-      arr: '',
-      flights: [],
-      airlines: []
-    };
+function defaultData() {
+  return {
+    dpt: "",
+    arr: "",
+    flights: [],
+    airlines: []
   };
-  export default {
-    name: 'segmentEdit',
-    props: {
-      segment: {
-        String,
-        required: true
-      }
-    },
-    data() {
-      return {
-        formData: defaultData(),
-        disabled:false,
-        rules: {
-          dpt: [
-            {required: true, message: "请输入出发地三字码", trigger: "blur"},
-            {
-              min: 3,
-              max: 3,
-              message: '长度为3字符'
-            }
-          ],
-          arr: [
-            {required: true, message: "请输入目的地三字码", trigger: "blur"},
-            {
-              min: 3,
-              max: 3,
-              message: '长度为3字符'
-            }
-          ]
-        }
-      }
-    },
-    methods: {
-      handleSave() {
-        this.$refs['form'].validate((valid) => {
-          if (valid) {
-            this.$store
-              .dispatch('flightSegment/save', this.formData)
-              .then(() => {
-                this.$emit("onSave");
-              })
-              .catch(error => {
-                console.log(error);
-              });
+}
+export default {
+  name: "segmentEdit",
+  props: {
+    segment: {
+      String,
+      required: true
+    }
+  },
+  data() {
+    return {
+      formData: defaultData(),
+      disabled: false,
+      rules: {
+        dpt: [
+          { required: true, message: "请输入出发地三字码", trigger: "blur" },
+          {
+            min: 3,
+            max: 3,
+            message: "长度为3字符"
           }
-        })
-      },
-      handleGetOne(id) {
-        if (id) {
+        ],
+        arr: [
+          { required: true, message: "请输入目的地三字码", trigger: "blur" },
+          {
+            min: 3,
+            max: 3,
+            message: "长度为3字符"
+          }
+        ]
+      }
+    };
+  },
+  methods: {
+    handleSave() {
+      this.$refs["form"].validate(valid => {
+        if (valid) {
           this.$store
-            .dispatch("flightSegment/getOne", {segment:id})
-            .then(data => {
-              this.formData = data;
-            }).catch(error => {
+            .dispatch("flightSegment/save", this.formData)
+            .then(() => {
+              this.$emit("onSave");
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        }
+      });
+    },
+    handleGetOne(id) {
+      if (id) {
+        this.$store
+          .dispatch("flightSegment/getOne", { segment: id })
+          .then(data => {
+            this.formData = data;
+          })
+          .catch(error => {
             console.log(error);
           });
-        } else {
-          this.formData = defaultData();
-        }
-      },
-      clearForm() {
+      } else {
         this.formData = defaultData();
-      },
-    },
-    created() {
-      this.clearForm();
-      if (this.segment) {
-        this.disabled = true;
-        this.handleGetOne(this.segment);
       }
+    },
+    clearForm() {
+      this.formData = defaultData();
+    }
+  },
+  created() {
+    this.clearForm();
+    if (this.segment) {
+      this.disabled = true;
+      this.handleGetOne(this.segment);
     }
   }
+};
 </script>

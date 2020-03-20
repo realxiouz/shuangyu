@@ -1,27 +1,53 @@
 <template>
-  <el-row type="flex" class="row-bg" justify="space-between" align="bottom">
-    <el-col :span="20">
-      <el-form :inline="true" :model="searchData">
-        <el-form-item label="标签名称">
-          <el-input v-model="searchData.flag" placeholder="标签名称"></el-input>
-        </el-form-item>
+  <el-row type="flex" justify="space-between" align="bottom">
+    <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
+      <el-form :model="formData" label-width="110px" size="mini">
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="标签名称">
+            <el-input v-model="formData.flag" placeholder="标签名称" style="width:100%"></el-input>
+          </el-form-item>
+        </el-col>
       </el-form>
     </el-col>
-    <el-col :span="4" class="search-tools">
-      <el-button type="primary" icon="el-icon-search"  @click="$emit('onSearch',searchData)">查询</el-button>
-      <el-button type="primary" icon="el-icon-edit" @click="$emit('onAdd')">添加</el-button>
+    <el-col :xs="8" :sm="6" :md="6" :lg="4" :xl="4" class="search-tools">
+      <el-button
+        icon="el-icon-search"
+        class="filter-item"
+        type="primary"
+        size="mini"
+        @click="$emit('onSearch', formData)"
+      >查询</el-button>
+      <el-button type="text" size="mini" @click="handleMore">
+        更多
+        <i :class="switchIcon"></i>
+      </el-button>
     </el-col>
   </el-row>
 </template>
 <script>
-    export default {
-        name:'flagSearch',
-        data(){
-            return{
-                searchData:{
-                    flag:''
-                }
-            }
-        }
+export default {
+  name: "flagSearch",
+  data() {
+    return {
+      more: false,
+      formData: {
+        flag: ""
+      }
+    };
+  },
+  computed: {
+    switchIcon() {
+      if (!this.more) {
+        return "el-icon-arrow-down el-icon--right";
+      } else {
+        return "el-icon-arrow-up el-icon--right";
+      }
     }
+  },
+  methods: {
+    handleMore() {
+      this.more = !this.more;
+    }
+  }
+};
 </script>

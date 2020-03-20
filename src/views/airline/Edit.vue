@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form ref="form" :model="formData" :rules="rules" label-width="110px">
+    <el-form ref="form" :model="formData" :rules="rules" label-width="110px" size="mini">
       <el-form-item prop="airlineName" label="航司名称">
         <el-input v-model="formData.airlineName"></el-input>
       </el-form-item>
@@ -18,92 +18,93 @@
   </div>
 </template>
 <script>
-  function defaultData() {
-    return {
-      airlineCode: '',
-      airlineName: '',
-      cabins: [],
-      flights: [],
-      segments: []
-    };
+function defaultData() {
+  return {
+    airlineCode: "",
+    airlineName: "",
+    cabins: [],
+    flights: [],
+    segments: []
   };
-  export default {
-    name: 'airlineEdit',
-    props: {
-      airlineCode: {
-        String,
-        required: true
-      }
-    },
-    data() {
-      return {
-        formData: defaultData(),
-        disabled: false,
-        rules: {
-          airlineName: [
-            {required: true, message: "请输入航司名称", trigger: "blur"}
-          ],
-          airlineCode: [
-            {required: true, message: "请输入航司二字码", trigger: "blur"},
-            {
-              min: 2,
-              max: 2,
-              message: '长度为2字符'
-            }
-          ]
-        }
-      }
-    },
-    computed: {
-      _cabins:{
-        get: function () {
-          return this.formData.cabins.join(',');
-        },
-        set: function (newValue) {
-          this.formData.cabins = newValue.split(",")
-        }
-      }
-    },
-    methods: {
-      handleSave() {
-        this.$refs['form'].validate((valid) => {
-          if (valid) {
-            this.$store
-              .dispatch('airline/save', this.formData)
-              .then(() => {
-                this.$emit("onSave");
-              })
-              .catch(error => {
-                console.log(error);
-              });
+}
+export default {
+  name: "airlineEdit",
+  props: {
+    airlineCode: {
+      String,
+      required: true
+    }
+  },
+  data() {
+    return {
+      formData: defaultData(),
+      disabled: false,
+      rules: {
+        airlineName: [
+          { required: true, message: "请输入航司名称", trigger: "blur" }
+        ],
+        airlineCode: [
+          { required: true, message: "请输入航司二字码", trigger: "blur" },
+          {
+            min: 2,
+            max: 2,
+            message: "长度为2字符"
           }
-        })
+        ]
+      }
+    };
+  },
+  computed: {
+    _cabins: {
+      get: function() {
+        return this.formData.cabins.join(",");
       },
-      handleGetOne(id) {
-        if (id) {
-          this.$store
-            .dispatch("airline/getOne", {airlineCode: id})
-            .then(data => {
-              this.formData = data;
-              this.formData.cabinNames = this.formData.cabins.join(",");
-              console.log(this.formData);
-            }).catch(error => {
-            console.log(error);
-          });
-        } else {
-          this.formData = defaultData();
-        }
-      },
-      clearForm() {
-        this.formData = defaultData();
-      },
-    },
-    created() {
-      this.clearForm();
-      if (this.airlineCode) {
-        this.disabled = true;
-        this.handleGetOne(this.airlineCode);
+      set: function(newValue) {
+        this.formData.cabins = newValue.split(",");
       }
     }
+  },
+  methods: {
+    handleSave() {
+      this.$refs["form"].validate(valid => {
+        if (valid) {
+          this.$store
+            .dispatch("airline/save", this.formData)
+            .then(() => {
+              this.$emit("onSave");
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        }
+      });
+    },
+    handleGetOne(id) {
+      if (id) {
+        this.$store
+          .dispatch("airline/getOne", { airlineCode: id })
+          .then(data => {
+            this.formData = data;
+            this.formData.cabinNames = this.formData.cabins.join(",");
+            console.log(this.formData);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      } else {
+        this.formData = defaultData();
+      }
+    },
+    clearForm() {
+      this.formData = defaultData();
+    }
+  },
+  created() {
+    this.clearForm();
+    if (this.airlineCode) {
+      this.disabled = true;
+      this.handleGetOne(this.airlineCode);
+    }
   }
+};
 </script>

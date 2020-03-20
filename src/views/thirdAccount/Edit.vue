@@ -1,32 +1,32 @@
 <template>
   <div>
-    <el-form :model="formData" label-width="110px">
+    <el-form :model="formData" label-width="110px" size="mini">
       <input type="hidden" v-model="formData.accoutId"/>
-      <el-form-item label="账号">
+      <el-form-item label="账号:">
         <el-input v-model="formData.username"></el-input>
       </el-form-item>
-      <el-form-item label="密码">
-        <el-input v-model="formData.password"></el-input>
+      <el-form-item label="密码:">
+        <el-input v-model="formData.password" type="password" show-password></el-input>
       </el-form-item>
-      <el-form-item label="登录地址">
+      <el-form-item label="登录地址:">
         <el-input v-model="formData.loginUrl"></el-input>
       </el-form-item>
-      <el-form-item label="联系人">
+      <el-form-item label="联系人:">
         <el-input v-model="formData.contactPerson"></el-input>
       </el-form-item>
-      <el-form-item label="联系电话">
+      <el-form-item label="联系电话:">
         <el-input v-model="formData.contactPhone"></el-input>
       </el-form-item>
-      <el-form-item label="token">
+      <el-form-item label="token:">
         <el-input v-model="formData.token"></el-input>
       </el-form-item>
-      <el-form-item label="secretKey">
+      <el-form-item label="secretKey:">
         <el-input v-model="formData.secretKey"></el-input>
       </el-form-item>
     </el-form>
     <div>
-      <el-button @click="$emit('onCancel')">取 消</el-button>
-      <el-button type="primary" @click="handleConfirm">确 定</el-button>
+      <el-button type="primary" size="mini" @click="$emit('onCancel')">取 消</el-button>
+      <el-button type="primary" size="mini" @click="handleConfirm">确 定</el-button>
     </div>
   </div>
 </template>

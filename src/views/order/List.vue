@@ -1,6 +1,6 @@
 <template>
   <div class="order-container">
-    <order-search @onSearch="handleSearch" ></order-search>
+    <order-search @onSearch="handleSearch"></order-search>
     <el-row style="margin-bottom:15px;">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
     </el-row>
@@ -40,12 +40,7 @@
         width="50"
       ></el-table-column>
       <el-table-column
-        prop="orderType"
-        label="订单类型"
-        width="50"
-      ></el-table-column>
-      <el-table-column
-        prop="status"
+        prop="statusName"
         label="订单状态"
         width="50"
       ></el-table-column>
@@ -69,7 +64,7 @@
         width="50"
       ></el-table-column>
       <el-table-column
-        prop="voyageType"
+        prop="voyageTypeName"
         label="航程类型"
         width="50"
       ></el-table-column>
@@ -121,14 +116,13 @@
           <span style="margin-left: 10px">{{ formatDate(scope.row.transactionTime,'YYYY-MM-DD') }}</span>
         </template>
       </el-table-column>
-      <!--     操作  按钮  需要 编辑 添加 删除  -->
       <el-table-column fixed="right" label="操作" align="center" width="200">
         <template slot-scope="scope">
           <el-button
-            @click="handleUpdate(scope.row.orderNo)"
+            @click="handleOrderDetail(scope.row)"
             type="primary"
             size="mini"
-          >编辑
+          >详情
           </el-button
           >
           <el-button type="danger" size="mini" @click="handleRemove(scope.row.orderNo)">删除</el-button>
@@ -139,38 +133,48 @@
       @size-change="handleSizeChange"
       @prev-click="prevClick"
       @next-click="nextClick"
+      :current-page="currentPage"
       background
       layout="total,sizes,prev,next"
       prev-text="上一页"
       next-text="下一页"
       :page-size="pageSize"
-      :total="total"
-    >
+      :total="total">
     </el-pagination>
   </div>
 </template>
 
 <script>
     import orderSearch from "./Search.vue";
-    import orderEdit from "./Edit.vue";
 
     export default {
         name: "orderList",
         data() {
             return {
-                lastId: "0",
-                pageFlag: "next",
+                currentPage: 1,
                 pageSize: 10,
                 total: 0,
                 dialogVisible: false,
                 tableData: [],
+                searchParams: {}
             };
         },
         methods: {
-            prevClick() {},
-            nextClick() {},
-            handleSizeChange() {},
+            handleSizeChange: function (size) {
+                this.pageSize = size;
+                this.loadData(this.searchParams);
+            },
+            prevClick(page) {
+                this.currentPage = page;
+                this.loadData(this.searchParams);
+            },
+            nextClick(page) {
+                this.currentPage = page;
+                this.loadData(this.searchParams);
+            },
             loadData(params) {
+                params.page = this.currentPage;
+                params.rows = this.pageSize;
                 this.$store
                     .dispatch("order/getList", {
                             filters: params
@@ -183,10 +187,22 @@
                     console.log(error);
                 });
             },
+            loadTotal(params) {
+                this.$store
+                    .dispatch("order/getTotal", {
+                        filters: params
+                    }).then(data => {
+                    this.total = data;
+                }).catch(error => {
+                    console.log(error);
+                });
+            },
             handleSearch(params) {
                 if (!params) {
                     params = {};
-                    this.loadData(params);
+                    this.searchParams = params;
+                    this.loadData(this.searchParams);
+                    this.loadTotal(this.searchParams);
                 } else {
                     const newParams = {};
                     if (params.name) {
@@ -222,7 +238,10 @@
                     if (params.voyageType) {
                         newParams.voyageType = params.voyageType;
                     }
-                    this.loadData(newParams);
+                    this.searchParams = newParams;
+                    this.loadData(this.searchParams);
+                    this.loadTotal(this.searchParams);
+
                 }
             },
             handleRemove(orderNo) {
@@ -234,7 +253,8 @@
                     this.$store
                         .dispatch("order/removeOne", {orderNo: orderNo})
                         .then(() => {
-                            this.handleSearch();
+                            this.loadData(this.searchParams);
+                            this.loadTotal();
                         })
                         .catch(error => {
                             console.log(error);
@@ -250,6 +270,9 @@
             },
             handleAdd() {
                 this.dialogVisible = true;
+            },
+            handleOrderDetail(row) {
+                this.$router.push({name:'orderDetail',params:row});
             },
             /*初始化用工列表中的生日日期格式*/
             initDate(dateStr, format) {
@@ -269,11 +292,11 @@
             },
         },
         components: {
-            orderEdit,
             orderSearch
         },
         created() {
-            this.handleSearch();
+            this.loadData(this.searchParams);
+            this.loadTotal();
         },
     };
 </script>

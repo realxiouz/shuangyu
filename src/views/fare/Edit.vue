@@ -1,7 +1,7 @@
 <template>
   <div>
-    <el-form :model="formData" label-width="110px">
-      <input type="hidden" v-model="formData.fareId"/>
+    <el-form :model="formData" label-width="110px" size="mini">
+      <input type="hidden" v-model="formData.fareId" />
       <el-form-item label="航段">
         <el-input v-model="formData.segment"></el-input>
       </el-form-item>
@@ -27,8 +27,9 @@
         <el-date-picker
           v-model="formData.startDate"
           type="datetime"
-          placeholder="选择日期时间">
-        </el-date-picker>
+          style="width:100%"
+          placeholder="选择日期时间"
+        ></el-date-picker>
       </el-form-item>
     </el-form>
     <div>
@@ -39,53 +40,53 @@
 </template>
 
 <script>
-  export default {
-    props: ["curNode"],
-    data() {
+export default {
+  props: ["curNode"],
+  data() {
+    return {
+      formData: {}
+    };
+  },
+  methods: {
+    /*表单默认加载数据*/
+    defaultFormData() {
       return {
-        formData: {}
+        fareId: "",
+        segment: "",
+        dpt: "",
+        arr: "",
+        airlineCode: "",
+        cabin: "",
+        price: null,
+        roundTripPrice: null,
+        startDate: null
       };
     },
-    methods: {
-      /*表单默认加载数据*/
-      defaultFormData() {
-        return {
-          fareId: '',
-          segment: '',
-          dpt: '',
-          arr: '',
-          airlineCode: '',
-          cabin: '',
-          price: null,
-          roundTripPrice: null,
-          startDate: null
-        };
-      },
-      /*清除表单*/
-      clearForm() {
-        this.formData = this.defaultFormData();
-      },
-      /*对提交的数据进行类型格式*/
-      handleConfirm(){
-        this.formData.segment = this.formData.segment.toUpperCase();
-        this.formData.dpt = this.formData.dpt.toUpperCase();
-        this.formData.arr = this.formData.arr.toUpperCase();
-        this.formData.airlineCode = this.formData.airlineCode.toUpperCase();
-        this.formData.cabin = this.formData.cabin.toUpperCase();
-        if ('number' != typeof this.formData.startDate){
-          this.formData.startDate = this.formData.startDate.getTime();
-        }
-        this.$emit('onSave',this.formData);
-      },
-      initFormData(){
-        this.clearForm();
-        if ('' != this.curNode.fareId){
-          this.formData = this.curNode;
-        }
-      }
+    /*清除表单*/
+    clearForm() {
+      this.formData = this.defaultFormData();
     },
-    created() {
-      this.initFormData();
+    /*对提交的数据进行类型格式*/
+    handleConfirm() {
+      this.formData.segment = this.formData.segment.toUpperCase();
+      this.formData.dpt = this.formData.dpt.toUpperCase();
+      this.formData.arr = this.formData.arr.toUpperCase();
+      this.formData.airlineCode = this.formData.airlineCode.toUpperCase();
+      this.formData.cabin = this.formData.cabin.toUpperCase();
+      if ("number" != typeof this.formData.startDate) {
+        this.formData.startDate = this.formData.startDate.getTime();
+      }
+      this.$emit("onSave", this.formData);
+    },
+    initFormData() {
+      this.clearForm();
+      if ("" != this.curNode.fareId) {
+        this.formData = this.curNode;
+      }
     }
-  };
+  },
+  created() {
+    this.initFormData();
+  }
+};
 </script>
