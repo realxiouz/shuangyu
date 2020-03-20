@@ -156,7 +156,8 @@
                 pageSize: 10,
                 total: 0,
                 dialogVisible: false,
-                tableData: []
+                tableData: [],
+                searchParams: {}
             };
         },
         methods: {
@@ -206,8 +207,9 @@
             handleSearch(params) {
                 if (!params) {
                     params = {};
-                    this.loadData(params);
-                    this.loadTotal(params);
+                    this.searchParams = params;
+                    this.loadData(this.searchParams);
+                    this.loadTotal(this.searchParams);
                 } else {
                     const newParams = {};
                     if (params.name) {
@@ -243,8 +245,10 @@
                     if (params.voyageType) {
                         newParams.voyageType = params.voyageType;
                     }
-                    this.loadData(newParams);
-                    this.loadTotal(newParams);
+                    this.searchParams = newParams;
+                    this.loadData(this.searchParams);
+                    this.loadTotal(this.searchParams);
+
                 }
             },
             handleRemove(orderNo) {
