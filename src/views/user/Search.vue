@@ -1,29 +1,56 @@
 <template>
-  <el-container style="margin-bottom: 5px">
-    <el-input v-model="keyword" style="width: 300px; margin:0 10px 0 50px ;" placeholder="请输入用户昵称..">
-      <i class="el-icon-edit el-input__icon"
-         slot="suffix"
-         @click="handleIconClick">
-      </i>
-    </el-input>
-    <el-button type="primary" @click="$emit('onSearch',keyword)">查询</el-button>
-    <el-button type="primary" @click="$emit('onAdd')">添加</el-button>
-  </el-container>
+  <el-row type="flex" justify="space-between" align="bottom">
+    <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
+      <el-form :model="formData" label-width="110px" size="mini">
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="用户昵称:">
+            <el-input v-model="formData.keyword" placeholder="请输入用户昵称搜索..."></el-input>
+          </el-form-item>
+        </el-col>
+      </el-form>
+    </el-col>
+    <el-col :xs="8" :sm="6" :md="6" :lg="4" :xl="4" class="search-tools">
+      <el-button
+        icon="el-icon-search"
+        class="filter-item"
+        type="primary"
+        size="mini"
+        @click="$emit('onSearch', formData)"
+      >查询</el-button>
+      <el-button type="text" size="mini" @click="handleMore">
+        更多
+        <i :class="switchIcon"></i>
+      </el-button>
+    </el-col>
+    <!-- <el-button type="primary" @click="$emit('onSearch',keyword)">查询</el-button>
+    <el-button type="primary" @click="$emit('onAdd')">添加</el-button>-->
+  </el-row>
 </template>
 
 <script>
-  export default {
-    name: "userSearch",
-    data() {
-      return {
-        keyword: ''
-      };
-    },
-    methods:{
-      /*清除输入框内已输入关键字*/
-      handleIconClick(){
-        this.keyword = '';
+export default {
+  name: "userSearch",
+  data() {
+    return {
+      more: false,
+      formData: {
+        keyword: ""
+      }
+    };
+  },
+  computed: {
+    switchIcon() {
+      if (!this.more) {
+        return "el-icon-arrow-down el-icon--right";
+      } else {
+        return "el-icon-arrow-up el-icon--right";
       }
     }
-  };
+  },
+  methods: {
+    handleMore() {
+      this.more = !this.more;
+    }
+  }
+};
 </script>

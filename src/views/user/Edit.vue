@@ -4,7 +4,7 @@
       <el-step title="基本信息" icon="el-icon-edit"></el-step>
       <el-step title="角色管理"></el-step>
     </el-steps>
-    <el-form v-show="stepIndex===0" ref="form" :model="formData" label-width="110px">
+    <el-form v-show="stepIndex===0" ref="form" size="mini" :model="formData" label-width="110px">
       <input type="hidden" v-model="formData.userId"/>
       <el-form-item label="昵称">
         <el-input v-model="formData.nickName"></el-input>
@@ -13,7 +13,7 @@
         <el-input v-model="formData.fullName"></el-input>
       </el-form-item>
       <el-form-item label="性别">
-        <el-select v-model="formData.gender" placeholder="请选择性别">
+        <el-select v-model="formData.gender" placeholder="请选择性别" style="width:100%">
           <el-option label="男" :value=0></el-option>
           <el-option label="女" :value=1></el-option>
         </el-select>
@@ -58,11 +58,11 @@
     </el-form>
     <el-transfer v-show="stepIndex>0" v-model="formData.roles" :data="transData" :props="transferProps" style="margin-top: 20px">
     </el-transfer>
-    <div style="margin-top: 25px">
-      <el-button @click="$emit('onCancel')">取 消</el-button>
-      <el-button v-if="stepIndex===0" type="primary" @click="nextStep">下一步</el-button>
-      <el-button v-if="stepIndex>0" type="primary" @click="prevStep">上一步</el-button>
-      <el-button v-if="stepIndex===1" type="primary" @click="handleConfirm">确 定</el-button>
+    <div style="margin-top: 25px;text-align: right;" >
+      <el-button  size="mini" @click="$emit('onCancel')">取 消</el-button>
+      <el-button v-if="stepIndex===0" size="mini" type="primary" @click="nextStep">下一步</el-button>
+      <el-button v-if="stepIndex>0" size="mini" type="primary" @click="prevStep">上一步</el-button>
+      <el-button v-if="stepIndex===1" size="mini" type="primary" @click="handleConfirm">确 定</el-button>
     </div>
   </div>
 </template>
