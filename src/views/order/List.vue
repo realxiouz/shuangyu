@@ -196,7 +196,7 @@
                         newParams.cardNo = params.cardNo;
                     }
                     if (params.orderNo) {
-                        newParams.orderNo = params.orderNo.toLocaleLowerCase();
+                        newParams.orderNo = params.orderNo;
                     }
                     if (params.rootOrderNo) {
                         newParams.rootOrderNo = params.rootOrderNo.toLocaleLowerCase();
