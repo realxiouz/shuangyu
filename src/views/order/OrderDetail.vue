@@ -8,8 +8,32 @@
       <el-form-item label="销售出票订单编号:">
         <scops>{{tableData.rootOrderNo}}</scops>
       </el-form-item>
+      <el-form-item label="订单来源:">
+        <scops>{{tableData.orderSource}}</scops>
+      </el-form-item>
+      <el-form-item label="订单来源单号:">
+        <scops>{{tableData.sourceOrderNo}}</scops>
+      </el-form-item>
+      <el-form-item label="政策代码:">
+        <scops>{{tableData.policyCode}}</scops>
+      </el-form-item>
+      <el-form-item label="政策类型:">
+        <scops>{{tableData.policyType}}</scops>
+      </el-form-item>
+      <el-form-item label="订单类型:">
+        <scops>{{tableData.orderType}}</scops>
+      </el-form-item>
       <el-form-item label="订单状态:">
         <scops>{{tableData.statusName}}</scops>
+      </el-form-item>
+      <el-form-item label="最晚出票时限:">
+        <template>
+          <i v-if="tableData.deadlineTicketTime"></i>
+          <span style="margin-left: 10px">{{ formatDate(tableData.deadlineTicketTime,'YYYY-MM-DD') }}</span>
+        </template>
+      </el-form-item>
+      <el-form-item label="退改签说明:">
+        <scops>{{tableData.RefundChangeRule}}</scops>
       </el-form-item>
       <el-form-item label="金额:">
         <scops>{{tableData.amount}}</scops>
@@ -28,6 +52,27 @@
           <i v-if="tableData.finishTime"></i>
           <span style="margin-left: 10px">{{ formatDate(tableData.finishTime,'YYYY-MM-DD') }}</span>
         </template>
+      </el-form-item>
+      <el-form-item label="交易金额:">
+        <scops>{{tableData.transactionAmount}}</scops>
+      </el-form-item>
+      <el-form-item label="交易编号:">
+        <scops>{{tableData.transactionNo}}</scops>
+      </el-form-item>
+      <el-form-item label="业务编号:">
+        <scops>{{tableData.businessNo}}</scops>
+      </el-form-item>
+      <el-form-item label="交易时间:">
+        <template>
+          <i v-if="tableData.transactionTime"></i>
+          <span style="margin-left: 10px">{{ formatDate(tableData.transactionTime,'YYYY-MM-DD') }}</span>
+        </template>
+      </el-form-item>
+      <el-form-item label="资金账号:">
+        <scops>{{tableData.fundAccount}}</scops>
+      </el-form-item>
+      <el-form-item label="企业/单位域名:">
+        <scops>{{tableData.domain}}</scops>
       </el-form-item>
     </el-form>
     <h2>航班信息:</h2>
