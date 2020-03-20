@@ -27,6 +27,7 @@ export default {
   name: "airlineSearch",
   data() {
     return {
+      more: false,
       formData: {
         airlineCode: ""
       }
