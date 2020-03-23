@@ -1,4 +1,4 @@
-import {getList, getOne, removeOne, save, updateOne} from "@/api/policy";
+import {getList, getOne, getTotal, removeOne, save, updateOne} from "@/api/policy";
 
 const actions = {
   save({commit}, params) {
@@ -17,6 +17,19 @@ const actions = {
     const {filters} = params;
     return new Promise((resolve, reject) => {
       getList(filters)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getTotal({commit}, params) {
+    const {filters} = params;
+    return new Promise((resolve, reject) => {
+      getTotal(filters)
         .then(response => {
           const {data} = response;
           resolve(data);

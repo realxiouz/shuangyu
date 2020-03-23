@@ -99,10 +99,21 @@
           </el-button>
         </template>
       </el-table-column>
-
     </el-table>
+    <el-pagination
+      @size-change="handleSizeChange"
+      @prev-click="prevClick"
+      @next-click="nextClick"
+      :current-page="currentPage"
+      background
+      layout="total,sizes,prev,next"
+      prev-text="上一页"
+      next-text="下一页"
+      :page-size="pageSize"
+      :total="total">
+    </el-pagination>
     <el-dialog center title="政策信息" :visible.sync="dialogVisible" width="35%" :close-on-click-modal="false">
-      <policy-edit v-if="dialogVisible" :policy-id="policyId"  @onSave="handleSave"
+      <policy-edit v-if="dialogVisible" :policy-id="policyId" @onSave="handleSave"
                    @onCancel="handleCancel"></policy-edit>
     </el-dialog>
   </div>
@@ -115,13 +126,31 @@
         name: 'policyList',
         data() {
             return {
+                currentPage: 1,
+                pageSize: 10,
+                total: 0,
                 tableData: [],
                 dialogVisible: false,
-                policyId: ''
+                policyId: '',
+                searchParams: {}
             }
         },
         methods: {
+            handleSizeChange: function (size) {
+                this.pageSize = size;
+                this.loadData(this.searchParams);
+            },
+            prevClick(page) {
+                this.currentPage = page;
+                this.loadData(this.searchParams);
+            },
+            nextClick(page) {
+                this.currentPage = page;
+                this.loadData(this.searchParams);
+            },
             loadData(params) {
+                params.currentPage = this.currentPage;
+                params.pageSize = this.pageSize;
                 this.$store
                     .dispatch("policy/getList", {
                             filters: params
@@ -134,37 +163,51 @@
                     console.log(error);
                 });
             },
+            loadTotal(params) {
+                this.$store
+                    .dispatch("policy/getTotal", {
+                        filters: params
+                    }).then(data => {
+                    this.total = data;
+                }).catch(error => {
+                    console.log(error);
+                });
+            },
             handleSearch(params) {
                 if (!params) {
                     params = {};
-                    this.loadData(params);
-                }else {
-                    const newParams ={};
-                    if(params.policyCode){
+                    this.searchParams = params;
+                    this.loadData(this.searchParams);
+                    this.loadTotal(this.searchParams);
+                } else {
+                    const newParams = {};
+                    if (params.policyCode) {
                         newParams.policyCode = params.policyCode.toLocaleLowerCase();
                     }
-                    if(params.airlineCode){
+                    if (params.airlineCode) {
                         newParams.airlineCode = params.airlineCode.toLocaleLowerCase();
                     }
-                    if(params.cabin){
+                    if (params.cabin) {
                         newParams.cabin = params.cabin.toLocaleLowerCase();
                     }
-                    if(params.dpt){
+                    if (params.dpt) {
                         newParams.dpt = params.dpt.toLocaleLowerCase();
                     }
-                    if(params.arr){
+                    if (params.arr) {
                         newParams.arr = params.arr.toLocaleLowerCase();
                     }
-                    if(params.sellStartDate){
+                    if (params.sellStartDate) {
                         newParams.sellStartDate = params.sellStartDate;
                     }
-                    if(params.sellEndDate){
+                    if (params.sellEndDate) {
                         newParams.sellEndDate = params.sellEndDate;
                     }
-                    if(params.flightDate){
+                    if (params.flightDate) {
                         newParams.flightDate = params.flightDate;
                     }
-                    this.loadData(newParams);
+                    this.searchParams = newParams;
+                    this.loadData(this.searchParams);
+                    this.loadTotal(this.searchParams);
                 }
             },
             handleUpdate(policyId) {
@@ -215,9 +258,10 @@
             }
         },
         created() {
-            this.handleSearch();
+            this.loadData(this.searchParams);
+            this.loadTotal();
         },
-        computed:{
+        computed: {
             formatDate() {
                 return function (dateStr, format) {
                     return this.initDate(dateStr, format);

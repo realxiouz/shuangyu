@@ -31,6 +31,14 @@ export function getList(params) {
   });
 }
 
+export function getTotal(params) {
+  return request({
+    url: `/policy/total`,
+    method: 'get',
+    params: params
+  });
+}
+
 export function getOne(id) {
   return request({
     url: `/policy/one/${id}`,
