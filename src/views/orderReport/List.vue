@@ -1,6 +1,6 @@
 <template>
   <div class="order-container">
-    <order-report-search @onSearch="handleSearch" @onAdd="handleAdd"></order-report-search>
+    <order-report-search @onSearch="handleSearch"></order-report-search>
     <el-row style="margin-bottom:15px;margin-left:30px">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
     </el-row>

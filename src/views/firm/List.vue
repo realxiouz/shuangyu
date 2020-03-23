@@ -10,7 +10,7 @@
       <el-table-column prop="location" label="机构所在地" width="360"></el-table-column>
       <el-table-column prop="linkPerson" label="联系人" width="220"></el-table-column>
       <el-table-column prop="remark" label="备注"></el-table-column>
-      <el-table-column label="操作" align="center">
+      <el-table-column label="操作" align="center" width="300">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleAppend(scope.$index, scope.row)">添加</el-button>
           <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
