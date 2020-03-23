@@ -97,6 +97,18 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+      @size-change="handleSizeChange"
+      @prev-click="prevClick"
+      @next-click="nextClick"
+      :current-page="currentPage"
+      background
+      layout="total,sizes,prev,next"
+      prev-text="上一页"
+      next-text="下一页"
+      :page-size="pageSize"
+      :total="total">
+    </el-pagination>
   </div>
 </template>
 <script>
@@ -106,13 +118,30 @@
         name: "orderReportList",
         data() {
             return {
+                currentPage: 1,
+                pageSize: 10,
                 total: 0,
                 dialogVisible: false,
                 tableData: [],
+                searchParams: {}
             }
         },
         methods: {
+            handleSizeChange: function (size) {
+                this.pageSize = size;
+                this.loadData(this.searchParams);
+            },
+            prevClick(page) {
+                this.currentPage = page;
+                this.loadData(this.searchParams);
+            },
+            nextClick(page) {
+                this.currentPage = page;
+                this.loadData(this.searchParams);
+            },
             loadData(params) {
+                params.currentPage = this.currentPage;
+                params.pageSize = this.pageSize;
                 this.$store
                     .dispatch("orderReport/getList", {
                             filters: params
@@ -125,13 +154,25 @@
                     console.log(error);
                 });
             },
+            loadTotal(params) {
+                this.$store
+                    .dispatch("orderReport/getTotal", {
+                        filters: params
+                    }).then(data => {
+                    this.total = data;
+                }).catch(error => {
+                    console.log(error);
+                });
+            },
             handleAdd() {
                 this.dialogVisible = true;
             },
             handleSearch(params) {
                 if (!params) {
                     params = {};
-                    this.loadData(params);
+                    this.searchParams = params;
+                    this.loadData(this.searchParams);
+                    this.loadTotal(this.searchParams);
                 } else {
                     const newParams = {};
                     if (params.receivable) {
@@ -152,8 +193,9 @@
                     if (params.systemProfit) {
                         newParams.systemProfit = params.systemProfit;
                     }
-
-                    this.loadData(newParams);
+                    this.searchParams = newParams;
+                    this.loadData(this.searchParams);
+                    this.loadTotal(this.searchParams);
                 }
             },
             handleCancel() {
@@ -182,7 +224,8 @@
             },
         },
         created() {
-            this.handleSearch();
+            this.loadData(this.searchParams);
+            this.loadTotal();
         }
     };
 </script>
