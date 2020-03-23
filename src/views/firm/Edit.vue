@@ -16,8 +16,8 @@
       </el-form-item>
     </el-form>
     <el-transfer v-model="formData.roles" :data="transData" :props="transferProps"></el-transfer>
-    <div slot="footer" class="dialog-footer" style="margin-top:10px;">
-      <el-button size="mini" type="primary" @click="$emit('onCancel')">取 消</el-button>
+    <div slot="footer" class="dialog-footer" style="margin-top:10px;text-align:right">
+      <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
       <el-button size="mini" type="primary" @click="$emit('onSave',formData)">确 定</el-button>
     </div>
   </div>
