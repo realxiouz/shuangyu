@@ -122,7 +122,7 @@ export default {
         .then(() => {
           this.dialogVisible = false;
         })
-        .catch(_ => {});
+        .catch(() => {});
     },
     handleCancel() {
       this.dialogVisible = false;

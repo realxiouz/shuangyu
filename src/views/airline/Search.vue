@@ -3,8 +3,8 @@
     <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
       <el-form :inline="true" :model="formData" label-width="110px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="航司二字码">
-            <el-input v-model="formData.airlineCode" placeholder="航司二字码"></el-input>
+          <el-form-item label="航司二字码:">
+            <el-input v-model="formData.airlineCode" placeholder="请输入航司二字码搜索..."></el-input>
           </el-form-item>
         </el-col>
       </el-form>
