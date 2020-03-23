@@ -1,10 +1,10 @@
 <template>
   <div class="api-container">
     <apiSearch @onSearch="handleSearch" @onAdd="handleAdd"></apiSearch>
-    <el-row style="margin-bottom:15px;">
+    <el-row style="margin-bottom:15px;margin-left:15px;">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
     </el-row>
-    <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;" border>
+    <el-table size="mini" :data="tableData" style="width: 100%;margin-bottom: 20px;" border>
       <el-table-column prop="thirdId" label="第三方平台" width="200"></el-table-column>
       <el-table-column prop="url" label="url" width="200"></el-table-column>
       <el-table-column prop="method" label="方法名称" width="300"></el-table-column>
@@ -35,8 +35,8 @@
       :page-size="pageSize"
       :total="total"
     ></el-pagination>
-    <el-dialog title="第三方Api信息" center :visible.sync="dialogVisible" width="30%">
-      <apiEdit v-if="dialogVisible" :api-id="apiId" @onCancel="handleCancel" @onSave="handleSave"></apiEdit>
+    <el-dialog title="第三方Api信息" center :visible.sync="dialogVisible" width="33%">
+      <api-edit ref="apiFrom" v-if="dialogVisible" :api-id="apiId" @onCancel="handleCancel" @onSave="handleSave"></api-edit>
     </el-dialog>
   </div>
 </template>
