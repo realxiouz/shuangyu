@@ -1,11 +1,11 @@
 <template>
   <div>
-    <el-form :model="formData" label-width="110px">
+    <el-form :model="formData" label-width="110px" size="mini">
       <el-form-item label="代理商域名">
         <el-input v-model="formData.domain"></el-input>
       </el-form-item>
       <el-form-item label="企业">
-        <el-select v-model="formData.firmId" placeholder="请选择企业" style="width: 420px">
+        <el-select v-model="formData.firmId" placeholder="请选择企业" style="width: 100%">
           <el-option v-for="item in firmList"
                      :key="item.firmId"
                      :label="item.firmName"
@@ -14,7 +14,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="平台">
-        <el-select v-model="formData.thirdId" placeholder="请选择平台" style="width: 420px">
+        <el-select v-model="formData.thirdId" placeholder="请选择平台" style="width: 100%">
           <el-option v-for="item in partyList"
                      :key="item.thirdId"
                      :label="item.thirdName"
@@ -29,9 +29,9 @@
         <el-input v-model="formData.url"></el-input>
       </el-form-item>
     </el-form>
-    <div>
-      <el-button @click="$emit('onCancel')">取 消</el-button>
-      <el-button type="primary" @click="handleConfirm">确 定</el-button>
+    <div style="text-align:right">
+      <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
+      <el-button size="mini" type="primary" @click="handleConfirm">确 定</el-button>
     </div>
   </div>
 </template>
