@@ -24,8 +24,8 @@
         <el-input v-model="formData.secretKey"></el-input>
       </el-form-item>
     </el-form>
-    <div>
-      <el-button type="primary" size="mini" @click="$emit('onCancel')">取 消</el-button>
+    <div style="text-align:right;">
+      <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
       <el-button type="primary" size="mini" @click="handleConfirm">确 定</el-button>
     </div>
   </div>
