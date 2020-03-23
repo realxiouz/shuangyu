@@ -39,7 +39,6 @@
       center
       :visible.sync="dialogVisible"
       width="30%"
-      :close-on-click-modal="handleClose"
     >
       <app-edit v-if="dialogVisible" :app-id="appId" @onSave="handleSave" @onCancel="handleCancel"></app-edit>
     </el-dialog>

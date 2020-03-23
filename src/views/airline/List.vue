@@ -36,7 +36,6 @@
     <el-dialog
       title="添加航司信息"
       :before-close="handleClose"
-      :close-on-click-modal="handleClose"
       center
       :visible.sync="dialogVisible"
       width="30%"

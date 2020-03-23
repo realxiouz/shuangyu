@@ -32,9 +32,9 @@
         ></el-date-picker>
       </el-form-item>
     </el-form>
-    <div>
-      <el-button @click="$emit('onCancel')">取 消</el-button>
-      <el-button type="primary" @click="handleConfirm">确 定</el-button>
+    <div style="text-align:right;">
+      <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
+      <el-button size="mini" type="primary" @click="handleConfirm">确 定</el-button>
     </div>
   </div>
 </template>
