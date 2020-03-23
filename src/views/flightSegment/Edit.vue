@@ -1,16 +1,16 @@
 <template>
   <div>
     <el-form ref="form" :model="formData" :rules="rules" label-width="110px" size="mini">
-      <el-form-item prop="dpt" label="出发地">
+      <el-form-item prop="dpt" label="出发地:">
         <el-input v-bind:disabled="disabled" v-model="formData.dpt"></el-input>
       </el-form-item>
-      <el-form-item prop="arr" label="目的地">
+      <el-form-item prop="arr" label="目的地:">
         <el-input v-bind:disabled="disabled" v-model="formData.arr"></el-input>
       </el-form-item>
     </el-form>
-    <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="handleSave">确 定</el-button>
-      <el-button @click="$emit('onCancel')">取 消</el-button>
+    <div slot="footer" class="dialog-footer" style="text-align:right;">
+      <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
+      <el-button size="mini" type="primary" @click="handleSave">确 定</el-button>
     </div>
   </div>
 </template>
