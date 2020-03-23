@@ -13,7 +13,11 @@
     >
       <el-table-column prop="ruleName" label="规则名称"></el-table-column>
       <el-table-column prop="domain" label="公司域名"></el-table-column>
-      <el-table-column prop="policyCode" label="政策代码"></el-table-column>
+      <el-table-column prop="policyCodes" label="政策代码">
+        <template slot-scope="scope">
+          <span>{{scope.row.policyCodes.join(",")}}</span>
+        </template>
+      </el-table-column>
       <el-table-column fixed="right" label="操作" align="center" width="300">
         <template slot-scope="scope">
           <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>

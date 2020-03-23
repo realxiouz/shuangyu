@@ -61,6 +61,14 @@ export function getTotal(filter) {
   });
 }
 
+export function getMany(staffIdList) {
+  return request({
+    url: "/staff/many",
+    method: "get",
+    params: staffIdList
+  });
+}
+
 export function getPageList(pageFlag, pageSize, lastId, filter) {
   return request({
     url: `/staff/page/list/${pageFlag}/${pageSize}/${lastId}`,
