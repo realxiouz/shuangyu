@@ -66,7 +66,7 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+        <el-col :xs="24" :sm="18" :md="14" :lg="10" :xl="6">
           <el-form-item v-show="more" label="航程类型:">
             <el-radio-group v-model="formData.voyageType" style="width: 100%">
               <el-radio label="0">单程</el-radio>
