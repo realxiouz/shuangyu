@@ -21,7 +21,7 @@
         <span>{{tableData.policyType}}</span>
       </el-form-item>
       <el-form-item label="订单类型:">
-        <span>{{tableData.orderType}}</span>
+        <span>{{tableData.categoryName}}</span>
       </el-form-item>
       <el-form-item label="订单状态:">
         <span>{{tableData.statusName}}</span>
