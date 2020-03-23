@@ -1,10 +1,10 @@
 <template>
   <div class="app-container">
     <tgq-product-search @onSearch="handleSearch"></tgq-product-search>
-    <el-row style="margin-bottom:15px;">
+    <el-row style="margin-bottom:15px;margin-left:40px;">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
     </el-row>
-    <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;" fit default-expand-all>
+    <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;" fit default-expand-all size="mini">
       <el-table-column prop="cron" label="时间表达式" width="150"></el-table-column>
       <el-table-column prop="schedulerName" label="调度名称"></el-table-column>
       <el-table-column prop="remark" label="备注"></el-table-column>
