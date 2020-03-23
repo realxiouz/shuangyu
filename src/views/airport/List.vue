@@ -1,10 +1,10 @@
 <template>
   <div class="airport-container">
     <airport-search @onSearch="handleSearch"></airport-search>
-    <el-row style="margin-bottom:15px;">
+    <el-row style="margin-bottom:15px;margin-left:22px;">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
     </el-row>
-    <el-table :data="tableData" ref="tableData" @row-dblclick="handleEdit" style="width: 100%">
+    <el-table size="mini" :data="tableData" ref="tableData" @row-dblclick="handleEdit" style="width: 100%;margin-bottom:15px;">
       <el-table-column
         prop="airportCode"
         label="三字码"
@@ -39,7 +39,7 @@
       :page-size="pageSize"
       :total="total">
     </el-pagination>
-    <el-dialog title="机场" :visible.sync="dialogVisible" width="30%">
+    <el-dialog title="添加机场信息" center :before-close="handleClose" :visible.sync="dialogVisible" width="30%">
       <airport-edit v-if="dialogVisible" :airport-code="airportCode" ref="form" @onSave="handleSave"
                     @onCancel="handleCancel">
       </airport-edit>
@@ -133,6 +133,13 @@
         this.airportCode = row.airportCode;
         this.dialogVisible = true;
       },
+      handleClose() {
+      this.$confirm("确认关闭添加机场信息对话框？")
+        .then(() => {
+          this.dialogVisible = false;
+        })
+        .catch(() => {});
+    },
       handleCancel() {
         this.dialogVisible = false;
       },

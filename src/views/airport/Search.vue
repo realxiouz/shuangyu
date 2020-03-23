@@ -2,7 +2,7 @@
   <el-row type="flex" justify="space-between" align="bottom">
     <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
       <el-form :inline="true" :model="formData" label-width="110px" size="mini">
-        <el-form-item label="机场三字码">
+        <el-form-item label="机场三字码:">
           <el-input v-model="formData.airportCode" placeholder="机场三字码"></el-input>
         </el-form-item>
       </el-form>
