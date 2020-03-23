@@ -1,10 +1,10 @@
 <template>
   <div class="app-container">
     <app-search @onSearch="handleSearch"></app-search>
-    <el-row style="margin-bottom:15px;">
+    <el-row style="margin-bottom:15px;margin-left:40px">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
     </el-row>
-    <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;" border>
+    <el-table :data="tableData" style="width: 100%;margin-bottom: 15px;" size="mini" border>
       <el-table-column prop="appName" label="应用名称" width="500"></el-table-column>
       <el-table-column label="是否启用" align="center">
         <template slot-scope="scope">
@@ -33,7 +33,7 @@
       :page-size="pageSize"
       :total="total"
     ></el-pagination>
-    <el-dialog title="应用信息" center :visible.sync="dialogVisible" width="30%" :close-on-click-modal="false">
+    <el-dialog title="添加应用" center :visible.sync="dialogVisible" width="30%" :close-on-click-modal="false">
       <app-edit v-if="dialogVisible" :app-id="appId" @onSave="handleSave" @onCancel="handleCancel"></app-edit>
     </el-dialog>
   </div>
