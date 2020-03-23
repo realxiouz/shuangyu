@@ -1,6 +1,11 @@
 <template>
-  <div class="app-container">
+  <div class="bigBox">
+      <div class="searchBox">
     <policy-search @onSearch="handleSearch"></policy-search>
+
+      </div>
+      <div class="contentBox">
+
     <el-row style="margin-bottom:15px;margin-left:35px;">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
     </el-row>
@@ -117,6 +122,8 @@
                    @onCancel="handleCancel"></policy-edit>
     </el-dialog>
   </div>
+      </div>
+
 </template>
 <script>
     import policySearch from "./Search.vue"

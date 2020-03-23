@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="contentBox">
     <el-row style="margin-bottom:15px;">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
     </el-row>

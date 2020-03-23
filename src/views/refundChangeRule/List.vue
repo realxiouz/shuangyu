@@ -1,52 +1,56 @@
 <template>
-  <div class="refund-change-rule-container">
-    <refund-change-rule-search @onSearch="handleSearch"></refund-change-rule-search>
-    <el-row style="margin-bottom:15px;margin-left:25px;">
-      <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
-    </el-row>
-    <el-table
-      size="mini"
-      :data="tableData"
-      ref="tableData"
-      @row-dblclick="handleEdit"
-      style="width: 100%;margin-bottom:15px;"
-    >
-      <el-table-column prop="airlineCode" label="航司二字码"></el-table-column>
-      <el-table-column prop="cabin" label="舱位"></el-table-column>
-      <el-table-column label="操作" align="center" width="200">
-        <template slot-scope="scope">
-          <el-button @click="handleEdit(scope.row)" type="primary" size="small">编辑</el-button>
-          <el-button @click="removeOne(scope.row.ruleId)" type="danger" size="small">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-pagination
-      @size-change="handleSizeChange"
-      @prev-click="prevClick"
-      @next-click="nextClick"
-      :current-page="currentPage"
-      background
-      layout="total,sizes,prev,next"
-      prev-text="上一页"
-      next-text="下一页"
-      :page-size="pageSize"
-      :total="total"
-    ></el-pagination>
-    <el-dialog
-      title="退改规则"
-      center
-      :before-close="handleClose"
-      :visible.sync="dialogVisible"
-      width="55%"
-    >
-      <refund-change-rule-edit
-        v-if="dialogVisible"
-        :rule-id="ruleId"
-        ref="form"
-        @onSave="handleSave"
-        @onCancel="handleCancel"
-      ></refund-change-rule-edit>
-    </el-dialog>
+  <div class="bigBox">
+    <div class="searchBox">
+      <refund-change-rule-search @onSearch="handleSearch"></refund-change-rule-search>
+    </div>
+    <div class="contentBox">
+      <el-row style="margin-bottom:15px;margin-left:25px;">
+        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+      </el-row>
+      <el-table
+        size="mini"
+        :data="tableData"
+        ref="tableData"
+        @row-dblclick="handleEdit"
+        style="width: 100%;margin-bottom:15px;"
+      >
+        <el-table-column prop="airlineCode" label="航司二字码"></el-table-column>
+        <el-table-column prop="cabin" label="舱位"></el-table-column>
+        <el-table-column label="操作" align="center" width="200">
+          <template slot-scope="scope">
+            <el-button @click="handleEdit(scope.row)" type="primary" size="small">编辑</el-button>
+            <el-button @click="removeOne(scope.row.ruleId)" type="danger" size="small">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+        @size-change="handleSizeChange"
+        @prev-click="prevClick"
+        @next-click="nextClick"
+        :current-page="currentPage"
+        background
+        layout="total,sizes,prev,next"
+        prev-text="上一页"
+        next-text="下一页"
+        :page-size="pageSize"
+        :total="total"
+      ></el-pagination>
+      <el-dialog
+        title="退改规则"
+        center
+        :before-close="handleClose"
+        :visible.sync="dialogVisible"
+        width="55%"
+      >
+        <refund-change-rule-edit
+          v-if="dialogVisible"
+          :rule-id="ruleId"
+          ref="form"
+          @onSave="handleSave"
+          @onCancel="handleCancel"
+        ></refund-change-rule-edit>
+      </el-dialog>
+    </div>
   </div>
 </template>
 <script>

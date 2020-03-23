@@ -1,45 +1,49 @@
 <template>
-  <div class="app-container">
-    <product-mark-search ref="user" @onSearch="handleSearch"></product-mark-search>
-    <el-row style="margin-bottom:15px; margin-left:28px;">
-      <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
-    </el-row>
-    <el-table :data="tableData" style="width: 100%;margin-bottom:15px;" size="mini">
-      <el-table-column prop="firmName" label="企业" align="center"></el-table-column>
-      <el-table-column prop="domain" label="域名" align="center"></el-table-column>
-      <el-table-column label="第三方标签" align="center">
-        <template slot-scope="scope">
-          <el-button @click="showFlagList(scope.row)" type="primary" size="small">查看</el-button>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" align="center">
-        <template slot-scope="scope">
-          <el-button @click="handleEdit(scope.row)" type="primary" size="small">编辑</el-button>
-          <el-button @click="handleDelete(scope.row)" type="danger" size="small">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-pagination
-      @prev-click="prevClick"
-      @next-click="nextClick"
-      background
-      layout="total,prev,next"
-      prev-text="上一页"
-      next-text="下一页"
-      :page-size="pageSize"
-      :total="total"
-    ></el-pagination>
-    <el-dialog center title="接口参数信息" :visible.sync="dialogVisible" width="33%">
-      <product-mark-edit
-        v-if="dialogVisible"
-        :markId="markId"
-        @onSave="handleSave"
-        @onCancel="handleCancel"
-      ></product-mark-edit>
-    </el-dialog>
-    <el-dialog center title="接口参数信息" :visible.sync="flagListVisible" width="33%">
-      <flg-list v-if="flagListVisible" :flags="flags" @onCancel="handleCancelFlagList"></flg-list>
-    </el-dialog>
+  <div class="bigBox">
+    <div class="searchBox">
+      <product-mark-search ref="user" @onSearch="handleSearch"></product-mark-search>
+    </div>
+    <div class="contentBox">
+      <el-row style="margin-bottom:15px; margin-left:28px;">
+        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+      </el-row>
+      <el-table :data="tableData" style="width: 100%;margin-bottom:15px;" size="mini">
+        <el-table-column prop="firmName" label="企业" align="center"></el-table-column>
+        <el-table-column prop="domain" label="域名" align="center"></el-table-column>
+        <el-table-column label="第三方标签" align="center">
+          <template slot-scope="scope">
+            <el-button @click="showFlagList(scope.row)" type="primary" size="small">查看</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" align="center">
+          <template slot-scope="scope">
+            <el-button @click="handleEdit(scope.row)" type="primary" size="small">编辑</el-button>
+            <el-button @click="handleDelete(scope.row)" type="danger" size="small">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+        @prev-click="prevClick"
+        @next-click="nextClick"
+        background
+        layout="total,prev,next"
+        prev-text="上一页"
+        next-text="下一页"
+        :page-size="pageSize"
+        :total="total"
+      ></el-pagination>
+      <el-dialog center title="接口参数信息" :visible.sync="dialogVisible" width="33%">
+        <product-mark-edit
+          v-if="dialogVisible"
+          :markId="markId"
+          @onSave="handleSave"
+          @onCancel="handleCancel"
+        ></product-mark-edit>
+      </el-dialog>
+      <el-dialog center title="接口参数信息" :visible.sync="flagListVisible" width="33%">
+        <flg-list v-if="flagListVisible" :flags="flags" @onCancel="handleCancelFlagList"></flg-list>
+      </el-dialog>
+    </div>
   </div>
 </template>
 

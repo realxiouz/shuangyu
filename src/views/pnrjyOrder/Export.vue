@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="contentBox">
     <el-form :rules="formRules" ref="formData" :model="formData" label-width="110px" size="mini">
       <el-form-item label="导单类型:" prop="orderType">
         <el-select v-model="formData.orderType" placeholder="请选择">
