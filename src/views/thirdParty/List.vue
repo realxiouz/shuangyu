@@ -4,7 +4,7 @@
     <el-row style="margin-bottom:15px;">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
     </el-row>
-    <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;">
+    <el-table size="mini" :data="tableData" style="width: 100%;margin-bottom: 15px;">
       <el-table-column prop="thirdName" label="平台名称" align="center"></el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
@@ -27,7 +27,13 @@
       @prev-click="prevClick"
       @next-click="nextClick"
     ></el-pagination>
-    <el-dialog title="用户信息" center :visible.sync="dialogVisible" width="30%">
+    <el-dialog
+      title="用户信息"
+      :close-on-click-modal="false"
+      center
+      :visible.sync="dialogVisible"
+      width="30%"
+    >
       <third-party-edit
         v-if="dialogVisible"
         ref="thirdpartyForm"
