@@ -34,7 +34,7 @@
       :total="total"
     ></el-pagination>
     <el-dialog
-      title="添加应用"
+      title="应用"
       :before-close="handleClose"
       center
       :visible.sync="dialogVisible"

@@ -23,6 +23,7 @@
     </el-row>
     <el-table
       ref="paramTable"
+      size="mini"
       :data="tableData"
       style="width: 100%;"
       v-bind:row-style="{height:'10px'}"

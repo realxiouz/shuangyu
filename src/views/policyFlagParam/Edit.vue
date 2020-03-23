@@ -21,8 +21,8 @@
         <el-input v-model="formData.remark"></el-input>
       </el-form-item>
     </el-form>
-    <div slot="footer" class="dialog-footer">
-      <el-button type="primary" size="mini" @click="$emit('onCancel')">取 消</el-button>
+    <div slot="footer" class="dialog-footer" style="text-align:right;">
+      <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
       <el-button type="primary" size="mini" @click="handleSave">确 定</el-button>
     </div>
   </div>
