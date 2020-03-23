@@ -174,8 +174,8 @@
                 this.loadData(this.searchParams);
             },
             loadData(params) {
-                params.page = this.currentPage;
-                params.rows = this.pageSize;
+                params.currentPage = this.currentPage;
+                params.pageSize = this.pageSize;
                 this.$store
                     .dispatch("order/getList", {
                             filters: params
