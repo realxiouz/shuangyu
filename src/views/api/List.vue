@@ -1,19 +1,19 @@
 <template>
   <div class="api-container">
     <apiSearch @onSearch="handleSearch"></apiSearch>
-    <el-row style="margin-bottom:15px;">
+    <el-row style="margin-bottom:15px;margin-left:40px;">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
     </el-row>
-    <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;" border>
-      <el-table-column prop="uri" label="URL" width="200"></el-table-column>
-      <el-table-column prop="category" label="类别" width="200"></el-table-column>
-      <el-table-column prop="apiName" label="api名称" width="300"></el-table-column>
+    <el-table size="mini" :data="tableData" style="width: 100%;margin-bottom: 15px;" border fit>
+      <el-table-column prop="uri" label="URL" ></el-table-column>
+      <el-table-column prop="category" label="类别" ></el-table-column>
+      <el-table-column prop="apiName" label="api名称" ></el-table-column>
       <el-table-column label="是否启用" align="center">
         <template slot-scope="scope">
           <el-switch v-model="scope.row.enable" @change="handleSwitch(scope.row)"></el-switch>
         </template>
       </el-table-column>
-      <el-table-column fixed="right" label="操作" align="center" width="350">
+      <el-table-column fixed="right" label="操作" align="center" width="300">
         <template slot-scope="scope">
           <el-button @click="handleUpdate(scope.row.apiId)" type="primary" size="mini">编辑</el-button>
           <el-button

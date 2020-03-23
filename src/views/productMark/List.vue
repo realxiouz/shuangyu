@@ -1,10 +1,10 @@
 <template>
   <div class="app-container">
     <product-mark-search ref="user" @onSearch="handleSearch"></product-mark-search>
-    <el-row style="margin-bottom:15px;">
+    <el-row style="margin-bottom:15px; margin-left:28px;">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
     </el-row>
-    <el-table :data="tableData" style="width: 100%">
+    <el-table :data="tableData" style="width: 100%;margin-bottom:15px;" size="mini">
       <el-table-column prop="firmName" label="企业" align="center"></el-table-column>
       <el-table-column prop="domain" label="域名" align="center"></el-table-column>
       <el-table-column label="第三方标签" align="center">

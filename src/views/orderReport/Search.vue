@@ -1,7 +1,7 @@
 <template>
   <el-row type="flex" class="row-bg" justify="space-between" align="bottom">
     <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
-      <el-form :model="formData" label-width="110px" size="mini">
+      <el-form :model="formData" label-width="80px" size="mini">
         <el-row>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="应收:">
@@ -37,7 +37,7 @@
       </el-form>
     </el-col>
     <el-col :xs="8" :sm="6" :md="6" :lg="4" :xl="4" class="search-tools">
-      <el-button type="primary" size="mini" @click="$emit('onSearch', formData)">查询</el-button>
+      <el-button type="primary" icon="el-icon-search" size="mini" @click="$emit('onSearch', formData)">查询</el-button>
       <el-button type="text" size="mini" @click="handleMore">
         更多
         <i :class="switchIcon"></i>

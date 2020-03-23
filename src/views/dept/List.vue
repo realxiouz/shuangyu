@@ -1,23 +1,24 @@
 <template>
   <div class="dept-container">
     <dept-search @onSearch="handleSearch"></dept-search>
-    <el-row style="margin-bottom:15px;">
+    <el-row style="margin-bottom:15px; margin-left:30px">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
     </el-row>
     <el-table
       :data="tableData"
       row-key="deptId"
       highlight-current-row
-      style="width: 100%;"
+      style="width: 100%;margin-bottom:15px"
+      size="mini"
       border
       fit
       :tree-props="{children: 'children', hasChildren: 'test'}"
     >
-      <el-table-column prop="deptName" label="部门名称" width="300"></el-table-column>
-      <el-table-column prop="ddId" label="钉钉Id" width="200"></el-table-column>
-      <el-table-column prop="ddParentIdId" label="钉钉父节点" width="200"></el-table-column>
-      <el-table-column prop="domain" label="域名" width="250"></el-table-column>
-      <el-table-column fixed="right" label="操作" align="center" width="500">
+      <el-table-column prop="deptName" label="部门名称"></el-table-column>
+      <el-table-column prop="ddId" label="钉钉Id"></el-table-column>
+      <el-table-column prop="ddParentIdId" label="钉钉父节点"></el-table-column>
+      <el-table-column prop="domain" label="域名"></el-table-column>
+      <el-table-column fixed="right" label="操作" width="300" align="center">
         <template slot-scope="scope">
           <el-button @click="handleAddChild(scope.row.deptId)" type="success" size="mini">添加子级</el-button>
           <el-button @click="handleUpdate(scope.row.deptId)" type="primary" size="mini">编辑</el-button>

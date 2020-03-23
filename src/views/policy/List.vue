@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <policy-search @onSearch="handleSearch" @onAdd="handleAdd"></policy-search>
-    <el-row style="margin-bottom:15px;">
+    <el-row style="margin-bottom:15px;margin-left:35px;">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
     </el-row>
     <el-table :data="tableData"
