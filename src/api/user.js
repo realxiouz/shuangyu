@@ -77,3 +77,11 @@ export function activate(data) {
     data
   });
 }
+
+export function isExist(filed) {
+  debugger
+  return request({
+    url: `/admin/user/exists/${filed}`,
+    method: 'get'
+  });
+}

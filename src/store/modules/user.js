@@ -1,4 +1,4 @@
-import { signIn, signOut, addOne, removeOne, updateOne, getOne, getList, getTotal, getPageList ,activate} from "@/api/user";
+import { signIn, signOut, addOne, removeOne, updateOne, getOne, getList, getTotal, getPageList ,activate, isExist} from "@/api/user";
 import { getToken, setToken, removeToken } from "@/utils/auth";
 
 const state = {
@@ -175,6 +175,18 @@ const actions = {
         });
     });
   },
+  isExist({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      const {filed} = params;
+      isExist(filed)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
 };
 
 export default {
