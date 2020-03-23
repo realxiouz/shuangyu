@@ -3,28 +3,28 @@
     <h2>订单详情:</h2>
     <el-form :inline="true" :model="tableData">
       <el-form-item label="订单编号:">
-        <scops>{{tableData.orderNo}}</scops>
+        <span>{{tableData.orderNo}}</span>
       </el-form-item>
       <el-form-item label="销售出票订单编号:">
-        <scops>{{tableData.rootOrderNo}}</scops>
+        <span>{{tableData.rootOrderNo}}</span>
       </el-form-item>
       <el-form-item label="订单来源:">
-        <scops>{{tableData.orderSource}}</scops>
+        <span>{{tableData.orderSource}}</span>
       </el-form-item>
       <el-form-item label="订单来源单号:">
-        <scops>{{tableData.sourceOrderNo}}</scops>
+        <span>{{tableData.sourceOrderNo}}</span>
       </el-form-item>
       <el-form-item label="政策代码:">
-        <scops>{{tableData.policyCode}}</scops>
+        <span>{{tableData.policyCode}}</span>
       </el-form-item>
       <el-form-item label="政策类型:">
-        <scops>{{tableData.policyType}}</scops>
+        <span>{{tableData.policyType}}</span>
       </el-form-item>
       <el-form-item label="订单类型:">
-        <scops>{{tableData.orderType}}</scops>
+        <span>{{tableData.orderType}}</span>
       </el-form-item>
       <el-form-item label="订单状态:">
-        <scops>{{tableData.statusName}}</scops>
+        <span>{{tableData.statusName}}</span>
       </el-form-item>
       <el-form-item label="最晚出票时限:">
         <template>
@@ -33,19 +33,19 @@
         </template>
       </el-form-item>
       <el-form-item label="退改签说明:">
-        <scops>{{tableData.RefundChangeRule}}</scops>
+        <span>{{tableData.RefundChangeRule}}</span>
       </el-form-item>
       <el-form-item label="金额:">
-        <scops>{{tableData.amount}}</scops>
+        <span>{{tableData.amount}}</span>
       </el-form-item>
       <el-form-item label="航程类型:">
-        <scops>{{tableData.voyageTypeName}}</scops>
+        <span>{{tableData.voyageTypeName}}</span>
       </el-form-item>
       <el-form-item label="PNR:">
-        <scops>{{tableData.pnr}}</scops>
+        <span>{{tableData.pnr}}</span>
       </el-form-item>
       <el-form-item label="大编:">
-        <scops>{{tableData.bigPnr}}</scops>
+        <span>{{tableData.bigPnr}}</span>
       </el-form-item>
       <el-form-item label="业务完结时间:">
         <template>
@@ -54,13 +54,13 @@
         </template>
       </el-form-item>
       <el-form-item label="交易金额:">
-        <scops>{{tableData.transactionAmount}}</scops>
+        <span>{{tableData.transactionAmount}}</span>
       </el-form-item>
       <el-form-item label="交易编号:">
-        <scops>{{tableData.transactionNo}}</scops>
+        <span>{{tableData.transactionNo}}</span>
       </el-form-item>
       <el-form-item label="业务编号:">
-        <scops>{{tableData.businessNo}}</scops>
+        <span>{{tableData.businessNo}}</span>
       </el-form-item>
       <el-form-item label="交易时间:">
         <template>
@@ -69,10 +69,10 @@
         </template>
       </el-form-item>
       <el-form-item label="资金账号:">
-        <scops>{{tableData.fundAccount}}</scops>
+        <span>{{tableData.fundAccount}}</span>
       </el-form-item>
       <el-form-item label="企业/单位域名:">
-        <scops>{{tableData.domain}}</scops>
+        <span>{{tableData.domain}}</span>
       </el-form-item>
     </el-form>
     <h2>航班信息:</h2>
