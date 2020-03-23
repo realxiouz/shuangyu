@@ -14,16 +14,19 @@
         prop="orderNo"
         label="订单号"
         width="160"
+        align="center"
       ></el-table-column>
       <el-table-column
         prop="policyCode"
         label="政策代码"
         width="150"
+        align="center"
       ></el-table-column>
       <el-table-column
         prop="statusName"
         label="订单状态"
         width="80"
+        align="center"
       ></el-table-column>
       <el-table-column
         label="订单日期"
@@ -38,46 +41,64 @@
         prop="categoryName"
         label="订单类型"
         width="80"
+        align="center"
       ></el-table-column>
       <el-table-column
-        prop="RefundChangeRule"
         label="航班号"
         width="80"
-      ></el-table-column>
-      <el-table-column
-        prop="RefundChangeRule"
-        label="起飞-到达"
-        width="80"
-      ></el-table-column>
+        align="center"
+      >
+        <template slot-scope="scope">
+          <i v-if="scope.row.flights"></i>
+          <span style="margin-left: 10px">{{ formatFlightNo(scope.row.flights)}}</span>
+        </template>
+      </el-table-column>
       <el-table-column
         label="航班日期"
         width="110"
         align="center">
         <template slot-scope="scope">
-          <i v-if="scope.row.flightDate" class="el-icon-time"></i>
-          <span style="margin-left: 10px">{{ formatDate(scope.row.flightDate,'YYYY-MM-DD') }}</span>
+          <i v-if="scope.row.flights"></i>
+          <span style="margin-left: 10px">{{ formatFlightDate(scope.row.flights)}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="起飞-到达"
+        width="80"
+        align="center"
+      >
+        <template slot-scope="scope">
+          <i v-if="scope.row.flights"></i>
+          <span style="margin-left: 10px">{{ formatFlight(scope.row.flights)}}</span>
         </template>
       </el-table-column>
       <el-table-column
         prop="voyageTypeName"
         label="航程类型"
         width="80"
+        align="center"
       ></el-table-column>
       <el-table-column
         prop="pnr"
         label="PNR"
         width="150"
+        align="center"
       ></el-table-column>
       <el-table-column
         prop="amount"
         label="总价"
         width="80"
+        align="center"
       ></el-table-column>
       <el-table-column
-        prop="amount"
         label="乘客"
-        width="200"
-      ></el-table-column>
+        align="center"
+        width="200">
+        <template slot-scope="scope">
+          <i v-if="scope.row.passengers"></i>
+          <span style="margin-left: 10px">{{ formatPassengers(scope.row.passengers)}}</span>
+        </template>
+      </el-table-column>
       <el-table-column fixed="right" label="操作" align="center" width="200">
         <template slot-scope="scope">
           <el-button
@@ -118,8 +139,6 @@
                 total: 0,
                 dialogVisible: false,
                 tableData: [],
-                flightData: [],
-                PassengerData: [],
                 searchParams: {}
             };
         },
@@ -146,12 +165,6 @@
                     ).then(data => {
                     if (data) {
                         this.tableData = data;
-                        if (data.passengers) {
-                            this.PassengerData = data.passengers;
-                        }
-                        if (data.flights) {
-                            this.flightData = data.flights;
-                        }
                     }
                 }).catch(error => {
                     console.log(error);
@@ -252,6 +265,48 @@
                 } else {
                     return '';
                 }
+            },
+            formatFlight(data) {
+                if (!data || data.length == 0) {
+                    return '';
+                }
+                let str = '';
+                data.forEach(item => {
+                    str += item.dptTime + ' ' + item.dpt + '-' + item.arrTime + ' ' + item.arr + ',';
+                    ;
+                })
+                return str.substring(0, str.length - 1);
+            },
+            formatFlightDate(data) {
+                if (!data || data.length == 0) {
+                    return '';
+                }
+                let str = '';
+                data.forEach(item => {
+                    str += this.initDate(item.flightDate, 'YYYY-MM-DD') + '/' + ',';
+                })
+                return str.substring(0, str.length - 1);
+            },
+            formatFlightNo(data) {
+                if (!data || data.length == 0) {
+                    return '';
+                }
+                let str = '';
+                data.forEach(item => {
+                    str += item.flightCode + '/' + ',';
+                })
+                return str.substring(0, str.length - 1);
+            },
+            formatPassengers(data) {
+                if (!data || data.length == 0) {
+                    return '';
+                }
+                let str = '';
+                data.forEach(item => {
+                    str += item.name + '/' + item.cardNo + ',';
+                })
+
+                return str.substring(0, str.length - 1);
             }
         },
         computed: {
@@ -259,7 +314,7 @@
                 return function (dateStr, format) {
                     return this.initDate(dateStr, format);
                 }
-            },
+            }
         },
         components: {
             orderSearch
