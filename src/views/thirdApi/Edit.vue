@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form ref="form" :model="formData" label-width="110px" size="mini">
+    <el-form ref="formData" :model="formData" label-width="100px" size="mini">
       <input type="hidden" v-model="formData.apiId" />
       <el-form-item label="第三方平台:">
         <el-input v-model="formData.thirdId"></el-input>
@@ -12,8 +12,8 @@
         <el-input v-model="formData.method"></el-input>
       </el-form-item>
     </el-form>
-    <div slot="footer" class="dialog-footer">
-      <el-button size="mini" type="primary" @click="$emit('onCancel')">取 消</el-button>
+    <div slot="footer" class="dialog-footer" style="text-align:right;">
+      <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
       <el-button size="mini" type="primary" @click="handleSave">确 定</el-button>
     </div>
   </div>
