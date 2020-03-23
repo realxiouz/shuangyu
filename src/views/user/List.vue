@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <userSearch ref="search" @onSearch="handleSearch"></userSearch>
-    <el-row style="margin-bottom:15px;">
+    <el-row style="margin-bottom:15px; margin-left:38px;">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
     </el-row>
     <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;" size="mini">
