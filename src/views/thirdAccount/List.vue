@@ -4,7 +4,7 @@
     <el-row style="margin-bottom:15px;margin-left:20px">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
     </el-row>
-    <el-table highlight-current-row :data="tableData" style="width: 100%;margin-bottom: 20px;" fit>
+    <el-table size="mini" highlight-current-row :data="tableData" style="width: 100%;margin-bottom: 20px;" fit>
       <el-table-column prop="username" label="账号" width="300" align="center"></el-table-column>
       <el-table-column prop="loginUrl" label="登录地址" width="300" align="center"></el-table-column>
       <el-table-column prop="contactPerson" label="联系人" width="300" align="center"></el-table-column>
