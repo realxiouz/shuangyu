@@ -7,7 +7,8 @@ import {
   getOneByFidAndUid,
   getList,
   getTotal,
-  getPageList
+  getPageList,
+  getMany
 } from "@/api/staff";
 import { getToken, setToken, removeToken } from "@/utils/auth";
 
@@ -130,6 +131,19 @@ const actions = {
       getPageList(pageFlag, pageSize, lastId, filter)
         .then(response => {
           resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getMany({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      //const {staffIdList} = params;
+      getMany(params)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
         })
         .catch(error => {
           reject(error);

@@ -8,8 +8,8 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
-          <el-form-item label="政策代码:" prop="policyCode">
-            <el-input v-model="formData.policyCode"></el-input>
+          <el-form-item label="政策代码:" prop="policyCodes">
+            <el-input v-model="_policyCodes"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -23,12 +23,12 @@
           <el-form-item label="是否调出票中:" prop="ticketing">
             <el-switch
               v-model="formData.ticketing"
-              active-color="#13ce66"
-              inactive-color="#ff4949"
-              active-text="是"
-              inactive-text="否"
-              active-value=true
-              inactive-value=false
+              active-color="#ff4949"
+              inactive-color="#13ce66"
+              active-text="否"
+              inactive-text="是"
+              :active-value=false
+              :inactive-value=true
             >
             </el-switch>
           </el-form-item>
@@ -41,18 +41,18 @@
               <el-form-item prop="inOrEx">
                 <el-switch
                   v-model="formData.airlines.inOrEx"
-                  active-color="#13ce66"
-                  inactive-color="#ff4949"
+                  active-color="#ff4949"
+                  inactive-color="#13ce66"
                   active-text="排除"
                   inactive-text="指定"
-                  active-value=1
-                  inactive-value=0>
+                  :active-value=1
+                  :inactive-value=0>
                 </el-switch>
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="24" :md="12" :lg="16" :xl="19">
               <el-form-item prop="values">
-                <el-input v-model="formData.airlines.values" type="textarea" :rows="1"></el-input>
+                <el-input v-model="_airlines" type="textarea" :rows="1"></el-input>
               </el-form-item>
             </el-col>
           </el-form-item>
@@ -63,18 +63,18 @@
               <el-form-item prop="inOrEx">
                 <el-switch
                   v-model="formData.segments.inOrEx"
-                  active-color="#13ce66"
-                  inactive-color="#ff4949"
+                  active-color="#ff4949"
+                  inactive-color="#13ce66"
                   active-text="排除"
                   inactive-text="指定"
-                  active-value=1
-                  inactive-value=0>
+                  :active-value=1
+                  :inactive-value=0>
                 </el-switch>
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="24" :md="12" :lg="16" :xl="19">
               <el-form-item prop="values">
-                <el-input v-model="formData.segments.values" type="textarea" :rows="1"></el-input>
+                <el-input v-model="_segments" type="textarea" :rows="1"></el-input>
               </el-form-item>
             </el-col>
           </el-form-item>
@@ -87,18 +87,18 @@
               <el-form-item prop="inOrEx">
                 <el-switch
                   v-model="formData.flights.inOrEx"
-                  active-color="#13ce66"
-                  inactive-color="#ff4949"
+                  active-color="#ff4949"
+                  inactive-color="#13ce66"
                   active-text="排除"
                   inactive-text="指定"
-                  active-value=1
-                  inactive-value=0>
+                  :active-value=1
+                  :inactive-value=0>
                 </el-switch>
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="24" :md="12" :lg="16" :xl="19">
               <el-form-item prop="values">
-                <el-input v-model="formData.flights.values" type="textarea" :rows="1"></el-input>
+                <el-input v-model="_flights" type="textarea" :rows="1"></el-input>
               </el-form-item>
             </el-col>
           </el-form-item>
@@ -109,18 +109,18 @@
               <el-form-item prop="inOrEx">
                 <el-switch
                   v-model="formData.cabins.inOrEx"
-                  active-color="#13ce66"
-                  inactive-color="#ff4949"
+                  active-color="#ff4949"
+                  inactive-color="#13ce66"
                   active-text="排除"
                   inactive-text="指定"
-                  active-value=1
-                  inactive-value=0>
+                  :active-value=1
+                  :inactive-value=0>
                 </el-switch>
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="24" :md="12" :lg="16" :xl="19">
               <el-form-item prop="values">
-                <el-input v-model="formData.cabins.values" type="textarea" :rows="1"></el-input>
+                <el-input v-model="_cabins" type="textarea" :rows="1"></el-input>
               </el-form-item>
             </el-col>
           </el-form-item>
@@ -129,7 +129,7 @@
       <el-row>
         <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6">
           <el-form-item label="规则类型:" prop="ruleType">
-            <el-select v-model="formData.ruleType" placeholder="请选择" >
+            <el-select v-model="formData.ruleType" placeholder="请选择">
               <el-option
                 v-for="item in ruleTypes"
                 :key="item.value"
@@ -144,12 +144,12 @@
           <el-form-item label="任务类型:" prop="taskType">
             <el-switch
               v-model="formData.taskType"
-              active-color="#13ce66"
-              inactive-color="#ff4949"
+              active-color="#ff4949"
+              inactive-color="#13ce66"
               active-text="系统"
               inactive-text="手工"
-              active-value=1
-              inactive-value=0>
+              :active-value=1
+              :inactive-value=0>
             </el-switch>
           </el-form-item>
         </el-col>
@@ -169,12 +169,12 @@
           <el-form-item label="是否自动抢票:" prop="autoGrabTicket">
             <el-switch
               v-model="formData.autoGrabTicket"
-              active-color="#13ce66"
-              inactive-color="#ff4949"
-              active-text="是"
-              inactive-text="否"
-              active-value=true
-              inactive-value=false>
+              active-color="#ff4949"
+              inactive-color="#13ce66"
+              active-text="否"
+              inactive-text="是"
+              :active-value=false
+              :inactive-value=true>
             </el-switch>
           </el-form-item>
         </el-col>
@@ -230,8 +230,7 @@
             prop="phone"
             label="手机号">
           </el-table-column>
-          <el-table-column
-            label="操作">
+          <el-table-column label="操作">
             <template slot-scope="scope">
               <el-button
                 @click.native.prevent="handleRemove(scope.$index, scope.row)"
@@ -267,17 +266,33 @@
       ruleType: 1,
       taskType: 0,
       ticketing: false,
-      airlines: {},
-      segments: {},
-      flights: {},
-      cabins: {},
-      policyCode: "",
+      airlines: {
+        inOrEx: 0,
+        values: [],
+        remark: ''
+      },
+      segments: {
+        inOrEx: 0,
+        values: [],
+        remark: ''
+      },
+      flights: {
+        inOrEx: 0,
+        values: [],
+        remark: ''
+      },
+      cabins: {
+        inOrEx: 0,
+        values: [],
+        remark: ''
+      },
+      policyCodes: [],
       staffs: [],
       nextStaffId: "",
       principalName: "",
       staffNames: "",
       principal: "",
-      autoGrabTicket:false
+      autoGrabTicket: false,
     };
   }
 
@@ -290,6 +305,7 @@
         checkboxFlag: false,
         peopleData: [],
         staffData: [],
+        staffIdList:[],
         ruleTypes: [
           {label: "出票", value: 1},
           {label: "退票", value: 2},
@@ -299,7 +315,7 @@
           {label: "补单", value: 6},
           {label: "补单号", value: 7}
         ],
-        channels:[
+        channels: [
           {label: "蜗牛", value: 1},
           {label: "BSP", value: 2}
         ],
@@ -307,11 +323,56 @@
           ruleName: [
             {required: true, message: "请输入规则名称", trigger: "blur"}
           ],
-          policyCode: [
+          sort: [
+            {required: true, message: "请输入序号", trigger: "blur"}
+          ],
+          policyCodes: [
             {required: true, message: "请输入政策代码", trigger: "blur"}
           ]
         }
       };
+    },
+    computed: {
+      _airlines: {
+        get: function () {
+          return this.formData.airlines.values.join(",");
+        },
+        set: function (newValue) {
+          this.formData.airlines.values = newValue.split(",");
+        }
+      },
+      _segments: {
+        get: function () {
+          return this.formData.segments.values.join(",");
+        },
+        set: function (newValue) {
+          this.formData.segments.values = newValue.split(",");
+        }
+      },
+      _flights: {
+        get: function () {
+          return this.formData.flights.values.join(",");
+        },
+        set: function (newValue) {
+          this.formData.flights.values = newValue.split(",");
+        }
+      },
+      _cabins: {
+        get: function () {
+          return this.formData.cabins.values.join(",");
+        },
+        set: function (newValue) {
+          this.formData.cabins.values = newValue.split(",");
+        }
+      },
+      _policyCodes: {
+        get: function () {
+          return this.formData.policyCodes.join(",");
+        },
+        set: function (newValue) {
+          this.formData.policyCodes = newValue.split(",");
+        }
+      },
     },
     methods: {
       resetForm() {
@@ -323,32 +384,31 @@
       loadForm() {
         console.log("loadForm");
       },
-      handleSave() {
-        var params = JSON.parse(JSON.stringify(this.formData));
-        console.log(this.formData);
-        console.log(params)
-        if (this.formData.airlines.values){
-          params.airlines.values = this.formData.airlines.values.split(",");
-        }
-        if (this.formData.segments.values){
-          params.segments.values = this.formData.segments.values.split(",");
-        }
-        if (this.formData.flights.values){
-          params.flights.values = this.formData.flights.values.split(",");
-        }
-        if (this.formData.cabins.values){
-          params.cabins.values = this.formData.cabins.values.split(",");
-        }
-        params.principal = this.peopleData[0].staffId;
-        var staffs = [];
-        for (var i = 0;i<this.staffData.length;i++){
-           staffs.push(this.staffData[i].staffId);
-        }
-
-        params.staffs = staffs;
-        console.log(params);
+      loadStaffData(flag) {
         this.$store
-          .dispatch("orderRule/save", params)
+          .dispatch("staff/getMany", {
+            staffIdList: JSON.stringify(this.staffIdList)
+          })
+          .then(data => {
+            if (flag == '1') {
+              this.peopleData = data;
+            } else {
+              this.staffData = data;
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      handleSave() {
+        this.formData.principal = this.peopleData[0].staffId;
+        var staffs = [];
+        for (var i = 0; i < this.staffData.length; i++) {
+          staffs.push(this.staffData[i].staffId);
+        }
+        this.formData.staffs = staffs;
+        this.$store
+          .dispatch("orderRule/save", this.formData)
           .then(data => {
             console.log(data);
             this.lastId = "0";
@@ -388,6 +448,16 @@
       let paramData = this.$route.params;
       if (Object.keys(paramData).length > 0) {
         this.formData = JSON.parse(JSON.stringify(paramData));
+        if (this.formData.principal && this.formData.principal!=null) {
+          this.staffIdList = [];
+          this.staffIdList.push(this.formData.principal);
+          this.loadStaffData('1');
+        }
+        if (this.formData.staffs && this.formData.staffs!=null && this.formData.staffs.length>0) {
+          this.staffIdList = [];
+          this.staffIdList.push(this.formData.principal);
+          this.loadStaffData('0');
+        }
       }
     },
     components: {
