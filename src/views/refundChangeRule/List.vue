@@ -1,10 +1,16 @@
 <template>
   <div class="refund-change-rule-container">
-    <refund-change-rule-search @onSearch="handleSearch" @onAdd="handleAdd"></refund-change-rule-search>
-    <el-row style="margin-bottom:15px;">
+    <refund-change-rule-search @onSearch="handleSearch"></refund-change-rule-search>
+    <el-row style="margin-bottom:15px;margin-left:25px;">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
     </el-row>
-    <el-table :data="tableData" ref="tableData" @row-dblclick="handleEdit" style="width: 100%">
+    <el-table
+      size="mini"
+      :data="tableData"
+      ref="tableData"
+      @row-dblclick="handleEdit"
+      style="width: 100%;margin-bottom:15px;"
+    >
       <el-table-column prop="airlineCode" label="航司二字码"></el-table-column>
       <el-table-column prop="cabin" label="舱位"></el-table-column>
       <el-table-column label="操作" align="center" width="200">
@@ -26,7 +32,13 @@
       :page-size="pageSize"
       :total="total"
     ></el-pagination>
-    <el-dialog title="退改规则" :visible.sync="dialogVisible" width="60%">
+    <el-dialog
+      title="退改规则"
+      center
+      :before-close="handleClose"
+      :visible.sync="dialogVisible"
+      width="55%"
+    >
       <refund-change-rule-edit
         v-if="dialogVisible"
         :rule-id="ruleId"
@@ -127,6 +139,13 @@ export default {
     },
     handleCancel() {
       this.dialogVisible = false;
+    },
+    handleClose() {
+      this.$confirm("确认关闭退改规则对话框？")
+        .then(() => {
+          this.dialogVisible = false;
+        })
+        .catch(() => {});
     },
     handleSave() {
       this.dialogVisible = false;
