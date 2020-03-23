@@ -1,4 +1,4 @@
-import {getList, getOne, removeOne, save} from "@/api/orderReport";
+import {getList, getOne, removeOne, save,getTotal} from "@/api/orderReport";
 import {getToken} from "@/utils/auth";
 
 
