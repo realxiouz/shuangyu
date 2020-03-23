@@ -112,23 +112,6 @@
             menus.push(navs[i]);
           }
         }
-        //根据sort字段对数组进行排序
-        let tempList = menus;
-        menus = [];
-        //每次取出符合条件的元素时都从数组中移除。
-        while (0 != tempList.length){
-            let minItem = tempList[0];
-            let index = 0;
-            //查询出sort字段值最小的元素
-            tempList.forEach((item, idx) => {
-                if (minItem.sort > item.sort){
-                    minItem = item;
-                    index = idx;
-                }
-            })
-            menus.push(minItem);
-            tempList.splice(index,1);
-        }
         if (menus.length > 0) {
           for (let i = 0; i < menus.length; i++) {
             let children = this.buildTree(menus[i].navId, navs);
