@@ -33,7 +33,14 @@
       :page-size="pageSize"
       :total="total"
     ></el-pagination>
-    <el-dialog title="添加应用" center :visible.sync="dialogVisible" width="30%" :close-on-click-modal="false">
+    <el-dialog
+      title="添加应用"
+      :before-close="handleClose"
+      center
+      :visible.sync="dialogVisible"
+      width="30%"
+      :close-on-click-modal="handleClose"
+    >
       <app-edit v-if="dialogVisible" :app-id="appId" @onSave="handleSave" @onCancel="handleCancel"></app-edit>
     </el-dialog>
   </div>
@@ -109,6 +116,13 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+    handleClose() {
+      this.$confirm("确认关闭添加应用对话框？")
+        .then(() => {
+          this.dialogVisible = false;
+        })
+        .catch(_ => {});
     },
     handleCancel() {
       this.dialogVisible = false;
