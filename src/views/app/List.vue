@@ -117,7 +117,7 @@ export default {
         });
     },
     handleClose() {
-      this.$confirm("确认关闭添加应用对话框？")
+      this.$confirm("确认关闭对话框？")
         .then(() => {
           this.dialogVisible = false;
         })
