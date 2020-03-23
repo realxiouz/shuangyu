@@ -1,12 +1,12 @@
 <template>
   <div class="app-container">
     <order-rule-search @onSearch="handleSearch"></order-rule-search>
-    <el-row style="margin-bottom:15px;">
+    <el-row style="margin-bottom:15px; margin-left:30px;">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
     </el-row>
     <el-table
       :data="tableData"
-      style="width: 100%;margin-bottom: 20px;"
+      style="width: 100%;margin-bottom: 15px;"
       border
       default-expand-all
       size="mini"
@@ -36,14 +36,10 @@
       :page-size="pageSize"
       :total="total"
     ></el-pagination>
-    <!--<order-rule-edit ref="orderRuleEdit" :init-order-rule-id="orderRuleId" @onSave="handleSave"
-    @onCancel="handleCancel"></order-rule-edit>-->
   </div>
 </template>
 
 <script>
-/* import orderRuleEdit from "./Edit.vue";*/
-
 import orderRuleSearch from "./Search.vue";
 
 export default {
