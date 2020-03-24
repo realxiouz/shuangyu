@@ -44,6 +44,7 @@
         <div class="tags-view">
           <el-tag
             class="tags-view-item"
+            @close="handleClose(tag)"
             v-for="tag in tags"
             :key="tag.name"
             :closable="tag.closable"
@@ -72,9 +73,9 @@ export default {
       isCollapse: false,
       isDisplay: true,
       tags: [
-        { name: "首页", closable: false, type: "" },
-        { name: "用户管理", closable: true, type: "success" },
-        { name: "添加用户", closable: true, type: "info" }
+        { name: "首页", closable: false, type: "", path: "/home" }
+        // { name: "用户管理", closable: true, type: "success" },
+        // { name: "添加用户", closable: true, type: "info" }
       ],
       screenWidth: document.body.clientWidth,
       menus: []
@@ -161,15 +162,25 @@ export default {
       };
       let matched = this.$route.matched;
       matched.forEach(item => {
-        tag = {
-          name: item.meta.title,
-          path: item.path,
-          closable: true,
-          type: "success"
-        };
-
+        if (item.meta.title != tag.name) {
+          tag = {
+            name: item.meta.title,
+            path: item.path,
+            closable: true,
+            type: "success"
+          };
+        }
+        this.tags.push(tag);
       });
-      console.log(tag);
+      let obj = {};
+      this.tags = this.tags.reduce((item, next) => {
+        obj[next.name] ? "" : (obj[next.name] = true && item.push(next));
+        return item;
+      }, []);
+      console.log(this.tags);
+    },
+    handleClose(tag) {
+      this.tags.splice(this.tags.indexOf(tag), 1);
     }
   },
   created() {
