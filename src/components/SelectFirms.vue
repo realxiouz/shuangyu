@@ -30,7 +30,8 @@ export default {
     },
     handleSave() {
       this.$emit("onSave", this.firmId);
-    }
+    },
+    
   }
 };
 </script>

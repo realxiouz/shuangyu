@@ -63,6 +63,7 @@
           title="请选择一个你的企业"
           :close-on-click-modal="false"
           :visible.sync="dialogVisible"
+          :before-close="handleCloseDialog"
           width="30%"
           center
         >
@@ -149,7 +150,6 @@ export default {
     },
     getLoginInfo(firmId) {
       this.dialogVisible = false;
-
       this.$store
         .dispatch("getLoginInfo", { firmId: firmId })
         .then(data => {
@@ -207,6 +207,11 @@ export default {
     },
     handleClose(tag) {
       this.tags.splice(this.tags.indexOf(tag), 1);
+    },
+    handleCloseDialog() {
+      this.$confirm("请选择一个你的企业").then(_ => {
+        this.dialogVisible = true;
+      })
     }
   },
   created() {
