@@ -7,7 +7,7 @@
       <el-row style="margin-bottom:15px;margin-left:50px;">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
-      <el-table :data="tableData" style="width: 100%" size="mini">
+      <el-table :data="tableData" style="width:100%;margin-bottom:15px;" size="mini">
         <el-table-column prop="roleName" label="角色名称" align="center"></el-table-column>
         <el-table-column label="是否启用" align="center">
           <template slot-scope="scope">

@@ -25,7 +25,7 @@
       </el-table-column>
     </el-table>
     <el-dialog
-      title="添加接口"
+      title="接口信息"
       :before-close="handleClose"
       :close-on-click-modal="handleClose"
       center
@@ -112,7 +112,7 @@ export default {
       this.dialogVisible = false;
     },
     handleClose() {
-      this.$confirm("确认关闭添加接口对话框？")
+      this.$confirm("确认关闭接口信息对话框？")
         .then(() => {
           this.dialogVisible = false;
         })
