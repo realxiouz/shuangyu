@@ -11,13 +11,13 @@
       tooltip-effect="dark"
       highlight-current-row
       size="mini"
-      style="width: 100%;"
+      style="width: 100%;margin-bottom:15px"
       border
     >
-      <el-table-column prop="apiName" label="API名称"></el-table-column>
+      <el-table-column prop="apiName" label="API名称" align="center"></el-table-column>
       <el-table-column prop="category" label="类别" align="center"></el-table-column>
-      <el-table-column label="是否启用" align="center">
-        <template slot-scope="scope">
+      <el-table-column label="是否启用" align="center" width="100">
+        <template slot-scope="scope" >
           <el-switch disabled :value="scope.row.enable" @change="enableSwitch(scope.row)"></el-switch>
         </template>
       </el-table-column>
