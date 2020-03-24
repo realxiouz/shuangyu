@@ -38,7 +38,7 @@
         </el-table-column>
         <el-table-column prop="voyageTypeName" label="航程类型" width="80" align="center"></el-table-column>
         <el-table-column prop="pnr" label="PNR" width="150" align="center"></el-table-column>
-        <el-table-column label="总价" width="80" align="center">
+        <el-table-column label="总价" width="100" align="center">
           <template slot-scope="scope">
             <i v-if="scope.row.amount"></i>
             <span style="margin-left: 10px">{{ formatAmount(scope.row.amount)}}</span>
@@ -146,11 +146,11 @@
                     if (params.orderNo) {
                         newParams.orderNo = params.orderNo;
                     }
-                    if (params.rootOrderNo) {
-                        newParams.rootOrderNo = params.rootOrderNo.toLocaleLowerCase();
+                    if (params.ticketNo) {
+                        newParams.ticketNo = params.ticketNo;
                     }
                     if (params.pnr) {
-                        newParams.pnr = params.pnr.toLocaleLowerCase();
+                        newParams.pnr = params.pnr;
                     }
                     if (params.status) {
                         newParams.status = params.status;
