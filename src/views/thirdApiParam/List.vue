@@ -27,7 +27,6 @@
     <el-dialog
       title="接口信息"
       :before-close="handleClose"
-      :close-on-click-modal="handleClose"
       center
       :visible.sync="dialogVisible"
       width="30%"
