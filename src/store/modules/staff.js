@@ -8,9 +8,10 @@ import {
   getList,
   getTotal,
   getPageList,
+  getPrepareUserList,
   getMany
 } from "@/api/staff";
-import { getToken, setToken, removeToken } from "@/utils/auth";
+import {getToken, setToken, removeToken} from "@/utils/auth";
 
 
 const state = {
@@ -32,7 +33,7 @@ const mutations = {
 };
 
 const actions = {
-  addOne({ commit }, params) {
+  addOne({commit}, params) {
     return new Promise((resolve, reject) => {
       addOne(params)
         .then(response => {
@@ -43,7 +44,7 @@ const actions = {
         });
     });
   },
-  addMany({ commit }, params) {
+  addMany({commit}, params) {
     return new Promise((resolve, reject) => {
       addMany(params)
         .then(response => {
@@ -54,7 +55,7 @@ const actions = {
         });
     });
   },
-  updateOne({ commit }, params) {
+  updateOne({commit}, params) {
     return new Promise((resolve, reject) => {
       updateOne(params)
         .then(response => {
@@ -65,9 +66,9 @@ const actions = {
         });
     });
   },
-  removeOne({ commit }, params) {
+  removeOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const { firmId, deptId, userId } = params;
+      const {firmId, deptId, userId} = params;
       removeOne(firmId, userId, deptId)
         .then(response => {
           resolve(response);
@@ -77,9 +78,9 @@ const actions = {
         });
     });
   },
-  getOne({ commit }, params) {
+  getOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const { staffId } = params;
+      const {staffId} = params;
       getOne(staffId)
         .then(response => {
           resolve(response);
@@ -89,9 +90,9 @@ const actions = {
         });
     });
   },
-  getOneByFidAndUid({ commit }, params) {
+  getOneByFidAndUid({commit}, params) {
     return new Promise((resolve, reject) => {
-      const { firmId, userId } = params;
+      const {firmId, userId} = params;
       getOneByFidAndUid(firmId, userId)
         .then(response => {
           resolve(response);
@@ -101,9 +102,9 @@ const actions = {
         });
     });
   },
-  getTotal({ commit }, params) {
+  getTotal({commit}, params) {
     return new Promise((resolve, reject) => {
-      const { filter } = params;
+      const {filter} = params;
       getTotal(filter)
         .then(response => {
           resolve(response);
@@ -113,9 +114,9 @@ const actions = {
         });
     });
   },
-  getList({ commit }, params) {
+  getList({commit}, params) {
     return new Promise((resolve, reject) => {
-      const { filter } = params;
+      const {filter} = params;
       getList(filter)
         .then(response => {
           resolve(response);
@@ -125,9 +126,9 @@ const actions = {
         });
     });
   },
-  getPageList({ commit }, params) {
+  getPageList({commit}, params) {
     return new Promise((resolve, reject) => {
-      const { pageFlag, pageSize, lastId, filter } = params;
+      const {pageFlag, pageSize, lastId, filter} = params;
       getPageList(pageFlag, pageSize, lastId, filter)
         .then(response => {
           resolve(response);
@@ -137,7 +138,20 @@ const actions = {
         });
     });
   },
-  getMany({ commit }, params) {
+  /*filter为对用户进行查询所需的条件*/
+  getPrepareUserList({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {firmId, deptId, filter} = params;
+      getPrepareUserList(firmId, deptId, filter)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getMany({commit}, params) {
     return new Promise((resolve, reject) => {
       //const {staffIdList} = params;
       getMany(params)
