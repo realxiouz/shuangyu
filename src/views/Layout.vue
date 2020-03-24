@@ -6,7 +6,7 @@
     <el-main>
       <div class="app-header">
         <el-row type="flex" class="row-bg" justify="space-between">
-          <el-col :xs="18" :sm="17" :md="16" :lg="15" :xl="20">
+          <el-col :xs="13" :sm="14" :md="16" :lg="19" :xl="20">
             <div class="grid-content bg-purple">
               <span class="nav-switch" v-bind:class="switchClass" @click="handleSwitch" />
             </div>
@@ -22,6 +22,11 @@
                   <router-link :to="item.path">{{ item.meta.title }}</router-link>
                 </el-breadcrumb-item>
               </el-breadcrumb>
+            </div>
+          </el-col>
+          <el-col :xs="3" :sm="5" :md="4" :lg="2" :xl="2" style="overflow:hidden;">
+            <div class="grid-content bg-purple">
+              <span v-if="this.$store.state.loginInfo.firm">{{this.$store.state.loginInfo.firm.firmName}}</span>
             </div>
           </el-col>
           <el-col :xs="6" :sm="5" :md="4" :lg="3" :xl="2">
@@ -211,7 +216,7 @@ export default {
     handleCloseDialog() {
       this.$confirm("请选择一个你的企业").then(_ => {
         this.dialogVisible = true;
-      })
+      });
     }
   },
   created() {
