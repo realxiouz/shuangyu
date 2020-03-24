@@ -137,23 +137,17 @@
                     this.loadTotal(this.searchParams);
                 } else {
                     const newParams = {};
-                    if (params.receivable) {
-                        newParams.receivable = params.receivable;
-                    }
-                    if (params.payable) {
-                        newParams.payable = params.payable;
-                    }
                     if (params.orderNo) {
-                        newParams.orderNo = params.orderNo.toLocaleLowerCase();
+                        newParams.orderNo = params.orderNo;
                     }
-                    if (params.receipt) {
-                        newParams.receipt = params.receipt;
+                    if (params.ticketNo) {
+                        newParams.ticketNo = params.ticketNo;
                     }
-                    if (params.payment) {
-                        newParams.payment = params.payment;
+                    if (params.flightCode) {
+                        newParams.flightCode = params.flightCode;
                     }
-                    if (params.systemProfit) {
-                        newParams.systemProfit = params.systemProfit;
+                    if (params.name) {
+                        newParams.name = params.name;
                     }
                     this.searchParams = newParams;
                     this.loadData(this.searchParams);

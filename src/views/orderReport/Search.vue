@@ -41,11 +41,9 @@
             return {
                 more: false,
                 formData: {
-                    receivable: "",
-                    payable: "",
-                    receipt: "",
-                    payment: "",
-                    systemProfit: "",
+                    name: "",
+                    flightCode: "",
+                    ticketNo: "",
                     orderNo: ""
                 }
             };
