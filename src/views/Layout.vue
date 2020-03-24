@@ -203,7 +203,7 @@ export default {
         obj[next.name] ? "" : (obj[next.name] = true && item.push(next));
         return item;
       }, []);
-      console.log(this.tags);
+      // console.log(this.tags);
     },
     handleClose(tag) {
       this.tags.splice(this.tags.indexOf(tag), 1);
