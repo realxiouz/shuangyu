@@ -5,7 +5,8 @@
       <el-form :model="tableData" label-width="130px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="订单编号:">
-            <el-input v-model="tableData.orderNo" style="width: 100%" :disabled="true">
+            <el-input v-if="!tableData.orderNo" placeholder="暂无数据" :disabled="true"></el-input>
+            <el-input v-else v-model="tableData.orderNo" style="width: 100%" :disabled="true">
             </el-input>
           </el-form-item>
         </el-col>
@@ -16,7 +17,8 @@
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="订单来源:">
-            <el-input v-model="tableData.orderSource" :disabled="true"></el-input>
+            <el-input v-if="!tableData.orderSource" placeholder="暂无数据" :disabled="true"></el-input>
+            <el-input v-else v-model="tableData.orderSource" :disabled="true"></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -62,7 +64,9 @@
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="金额:">
-            <el-input v-model="tableData.amount" :disabled="true"></el-input>
+            <!-- <el-input  :placeholder="'￥'+ this.$numeral(tableData.amount).format('0.00')" :disabled="true"></el-input> -->
+
+            <el-input :value="'￥'+ this.$numeral(tableData.amount).format('0.00')" :disabled="true"></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -93,7 +97,8 @@
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="交易金额:">
-            <el-input v-model="tableData.transactionAmount" :disabled="true"></el-input>
+            
+            <el-input :value="'￥'+ this.$numeral(tableData.transactionAmount).format('0.00')" :disabled="true"></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -135,7 +140,7 @@
       <el-table-column label="出发日期" width="110" align="center">
         <template slot-scope="scope">
           <i v-if="scope.row.flightDate" class="el-icon-time"></i>
-          <span style="margin-left: 10px">{{ formatDate(scope.row.flightDate,'YYYY-MM-DD') }}</span>
+          <span >{{ formatDate(scope.row.flightDate,'YYYY-MM-DD') }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="airlineCode" label="航司" width="50"></el-table-column>
@@ -153,7 +158,7 @@
       <el-table-column label="飞行时间" width="110" align="center">
         <template slot-scope="scope">
           <i v-if="scope.row.flightTimes" class="el-icon-time"></i>
-          <span style="margin-left: 10px">{{ formatDate(scope.row.flightTimes,'YYYY-MM-DD') }}</span>
+          <span>{{ formatDate(scope.row.flightTimes,'YYYY-MM-DD') }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="constructionFee" label="机建费" width="50"></el-table-column>
@@ -184,12 +189,12 @@
       <el-table-column label="出生年月" width="110" align="center">
         <template slot-scope="scope">
           <i v-if="scope.row.birthday" class="el-icon-time"></i>
-          <span style="margin-left: 10px">{{ formatDate(scope.row.birthday,'YYYY-MM-DD') }}</span>
+          <span>{{ formatDate(scope.row.birthday,'YYYY-MM-DD') }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="ageType" label="乘机人类型 0 为成人,1 为儿童，2为婴儿" width="250" align="center">
         <template slot-scope="scope">
-          <span style="margin-left: 10px">{{ formatAgeType(scope.row.ageType) }}</span>
+          <span >{{ formatAgeType(scope.row.ageType) }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="cardType" label="乘机人证件类型" width="250" align="center"></el-table-column>
