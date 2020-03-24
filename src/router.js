@@ -37,14 +37,14 @@ export default new Router({
           path: '/home',
           name: 'home',
           component: () => import('@/views/Home'),
-          meta: { title: 'Home', icon: 'home' }
+          meta: {title: 'Home', icon: 'home'}
         },
         {
           title: '关于',
           path: '/about',
           name: 'about',
           component: () => import('@/views/About'),
-          meta: { title: 'About', icon: 'about' }
+          meta: {title: 'About', icon: 'about'}
         }
       ]
     },
@@ -64,58 +64,58 @@ export default new Router({
         {
           title: '用户管理',
           path: '/user/list',
-          name:'user',
+          name: 'user',
           component: () => import('@/views/user/List'),
-          meta: { title: 'Home', icon: 'home' }
+          meta: {title: 'Home', icon: 'home'}
         },
         {
           title: '应用管理',
           path: '/app',
-          naem:'app',
+          naem: 'app',
           component: () => import('@/views/app/List'),
-          meta: { title: 'Home', icon: 'home' }
+          meta: {title: 'Home', icon: 'home'}
         },
         {
           title: '',
           path: '/nav/list',
           name: 'nav',
           component: () => import('@/views/nav/List'),
-          meta: { title: 'Home', icon: 'home' }
+          meta: {title: 'Home', icon: 'home'}
         },
         {
           title: 'Api管理',
           path: '/api',
-          name:'api',
+          name: 'api',
           component: () => import('@/views/api/List'),
-          meta: { title: 'Home', icon: 'home' }
+          meta: {title: 'Home', icon: 'home'}
         },
         {
           title: '角色管理',
           path: '/role/list',
-          name:'role',
+          name: 'role',
           component: () => import('@/views/role/List'),
-          meta: { title: 'Home', icon: 'home' }
+          meta: {title: 'Home', icon: 'home'}
         },
         {
           title: '政策接口参数管理',
           path: '/thirdApiParam/list',
           name: 'thirdApiParam',
           component: () => import('@/views/thirdApiParam/List'),
-          meta: { title: 'Home', icon: 'home' },
+          meta: {title: 'Home', icon: 'home'},
         },
         {
           title: '产品标签管理',
           path: '/productMark/list',
           name: 'productMark',
           component: () => import('@/views/productMark/List'),
-          meta: { title: 'Home', icon: 'home' },
+          meta: {title: 'Home', icon: 'home'},
         }
       ]
     },
     {
       title: '订单管理',
       path: '/order',
-      name:'orderList',
+      name: 'orderList',
       component: Layout,
       children: [
         {
@@ -123,28 +123,28 @@ export default new Router({
           path: '/pnrjyOrder/Export',
           name: 'pnrjyOrder',
           component: () => import('@/views/pnrjyOrder/Export'),
-          meta: { title: 'Home', icon: 'home' }
+          meta: {title: 'Home', icon: 'home'}
         },
         {
           title: '订单信息',
           path: '/order/List',
           name: 'order',
           component: () => import('@/views/order/List'),
-          meta: { title: 'Home', icon: 'home' }
+          meta: {title: 'Home', icon: 'home'}
         },
         {
           title: '订单报表',
           path: '/orderReport/List',
           name: 'orderReport',
           component: () => import('@/views/orderReport/List'),
-          meta: { title: 'Home', icon: 'home' }
+          meta: {title: 'Home', icon: 'home'}
         },
         {
           title: '订单详情',
           path: '/order/detail',
           name: 'orderDetail',
           component: () => import('@/views/order/OrderDetail'),
-          meta: { title: 'Home', icon: 'home' }
+          meta: {title: 'Home', icon: 'home'}
         },
         {
           title: '派单规则',
@@ -159,7 +159,22 @@ export default new Router({
           component: () => import('@/views/orderRule/Edit'),
           props: {default: true, sidebar: false},
           meta: {title: 'Home', icon: 'home'}
+        }, {
+          title: '派单员工',
+          path: '/order/staff/list',
+          name: 'orderStaffList',
+          component: () => import('@/views/orderStaff/List'),
+          props: {default: true, sidebar: false},
+          meta: {title: 'Home', icon: 'home'}
         },
+        {
+          title: '员工上线',
+          path: '/order/staff/online',
+          name: 'orderStaffOnline',
+          component: () => import('@/views/orderStaff/Online'),
+          props: {default: true, sidebar: false},
+          meta: {title: 'Home', icon: 'home'}
+        }
       ]
     },
     {
@@ -173,14 +188,14 @@ export default new Router({
           path: '/airport/list',
           name: 'airportList',
           component: () => import('@/views/airport/List'),
-          meta: { title: 'Home', icon: 'home' }
+          meta: {title: 'Home', icon: 'home'}
         },
         {
           title: '航司信息',
           path: '/airline/list',
           name: 'airlineList',
           component: () => import('@/views/airline/List'),
-          meta: { title: 'Home', icon: 'home' }
+          meta: {title: 'Home', icon: 'home'}
         },
         {
           title: '退改规则',
@@ -208,7 +223,7 @@ export default new Router({
     {
       title: '企业信息',
       path: '/firm',
-      name:'firm',
+      name: 'firm',
       component: Layout,
       children: [
         {
@@ -216,28 +231,28 @@ export default new Router({
           path: '/firm/list',
           name: 'firmList',
           component: () => import('@/views/firm/List'),
-          meta: { title: 'Home', icon: 'home' }
+          meta: {title: 'Home', icon: 'home'}
         },
         {
           title: '部门管理',
           path: '/dept/list',
           name: 'dept',
           component: () => import('@/views/dept/List'),
-          meta: { title: 'Home', icon: 'home' }
+          meta: {title: 'Home', icon: 'home'}
         },
         {
           title: '员工管理',
           path: '/staff/list',
           name: 'staff',
           component: () => import('@/views/staff/List'),
-          meta: { title: 'Home', icon: 'home' }
+          meta: {title: 'Home', icon: 'home'}
         }
       ]
     },
     {
       title: '政策信息',
       path: '/policy',
-      name:'policyList',
+      name: 'policyList',
       component: Layout,
       children: [
         {
@@ -245,14 +260,14 @@ export default new Router({
           path: '/policy/list',
           name: 'policy',
           component: () => import('@/views/policy/List'),
-          meta: { title: 'Home', icon: 'home' }
+          meta: {title: 'Home', icon: 'home'}
         }
       ]
     },
     {
       title: '第三方Api管理',
       path: '/thirdApi',
-      namr:'thirdApi',
+      namr: 'thirdApi',
       component: Layout,
       children: [
         {
@@ -260,14 +275,14 @@ export default new Router({
           path: '/third/party/list',
           name: 'thirdParty',
           component: () => import('@/views/thirdParty/List'),
-          meta: { title: 'Home', icon: 'home' }
+          meta: {title: 'Home', icon: 'home'}
         },
         {
           title: '第三方Api',
           path: '/thirdApi/list',
           name: 'thirdApi',
           component: () => import('@/views/thirdApi/List'),
-          meta: { title: 'Home', icon: 'home' }
+          meta: {title: 'Home', icon: 'home'}
         },
         {
           title: 'TGQ调度',
@@ -288,21 +303,21 @@ export default new Router({
           path: '/policy/flag/list',
           name: 'flag',
           component: () => import('@/views/policyFlag/List'),
-          meta: { title: 'Home', icon: 'home' }
+          meta: {title: 'Home', icon: 'home'}
         },
         {
           title: '第三方标签参数',
           path: '/policy/flag/param/list',
           name: 'policyFlagParam',
           component: () => import('@/views/policyFlagParam/List'),
-          meta: { title: 'Home', icon: 'home' }
+          meta: {title: 'Home', icon: 'home'}
         },
         {
           title: '第三方平台账号',
           path: '/third/account/list',
           name: 'account',
           component: () => import('@/views/thirdAccount/List'),
-          meta: { title: 'Home', icon: 'home' }
+          meta: {title: 'Home', icon: 'home'}
         }
 
       ]
@@ -318,21 +333,21 @@ export default new Router({
           path: '/qunar/order',
           name: 'qunarOrder',
           component: () => import('@/views/qunarOrderConfig/List'),
-          meta: { title: 'Home', icon: 'home' }
+          meta: {title: 'Home', icon: 'home'}
         },
         {
           title: '去哪儿订单通知管理',
           path: '/qunar/order/notify',
           name: 'qunarOrderNotify',
           component: () => import('@/views/qunarOrderNotifyConfig/List'),
-          meta: { title: 'Home', icon: 'home' }
+          meta: {title: 'Home', icon: 'home'}
         },
         {
           title: '去哪儿政策管理',
           path: '/qunar/policy',
           name: 'qunarPolicyConfig',
           component: () => import('@/views/qunarPolicyConfig/List'),
-          meta: { title: 'About', icon: 'about' }
+          meta: {title: 'About', icon: 'about'}
         }
       ]
     },
