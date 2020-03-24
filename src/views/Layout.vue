@@ -44,12 +44,15 @@
         <div class="tags-view">
           <el-tag
             class="tags-view-item"
+            size="mini"
             @close="handleClose(tag)"
             v-for="tag in tags"
             :key="tag.name"
             :closable="tag.closable"
             :type="tag.type"
-          >{{tag.name}}</el-tag>
+          >
+            <router-link :to="tag.path">{{tag.name}}</router-link>
+          </el-tag>
         </div>
         <!-- <el-page-header content="添加用户"></el-page-header> -->
       </div>
@@ -162,14 +165,12 @@ export default {
       };
       let matched = this.$route.matched;
       matched.forEach(item => {
-        if (item.meta.title != tag.name) {
-          tag = {
-            name: item.meta.title,
-            path: item.path,
-            closable: true,
-            type: "success"
-          };
-        }
+        tag = {
+          name: item.meta.title,
+          path: item.path,
+          closable: true,
+          type: "success"
+        };
         this.tags.push(tag);
       });
       let obj = {};
@@ -177,7 +178,6 @@ export default {
         obj[next.name] ? "" : (obj[next.name] = true && item.push(next));
         return item;
       }, []);
-      console.log(this.tags);
     },
     handleClose(tag) {
       this.tags.splice(this.tags.indexOf(tag), 1);
