@@ -78,6 +78,13 @@ export function activate(data) {
   });
 }
 
+export function resetPassword(userID) {
+  return request({
+    url: `/admin/user/reset/password/${userID}`,
+    method: 'post'
+  });
+}
+
 export function isExist(filed) {
   debugger
   return request({

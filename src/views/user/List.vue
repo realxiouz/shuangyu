@@ -67,27 +67,6 @@
           @onCancel="handleCancel"
         ></userForm>
       </el-dialog>
-      <el-dialog
-        title="修改密码"
-        :visible.sync="pwdDialogVisible"
-        :close-on-click-modal="false"
-        width="30%"
-      >
-        <el-form label-width="120px" :model="userPwd">
-          <el-form-item label="请输入密码">
-            <el-input :type="inputType" v-model="userPwd.newPwd">
-              <i class="el-icon-view" slot="suffix" @click="handleIconClick"></i>
-            </el-input>
-          </el-form-item>
-          <el-form-item label="再次输入密码">
-            <el-input :type="inputType" v-model="userPwd.againPwd"></el-input>
-          </el-form-item>
-        </el-form>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="handleCancel">取 消</el-button>
-          <el-button type="primary" @click="resetPwd">确 定</el-button>
-        </span>
-      </el-dialog>
     </div>
   </div>
 </template>
@@ -102,14 +81,8 @@ export default {
   data() {
     return {
       dialogVisible: false,
-      /*是否弹出重置用户密码弹窗*/
-      pwdDialogVisible: false,
-      /*重置用户密码时的input类型*/
-      inputType: "password",
       /*进行编辑当前用户ID*/
       userId: "",
-      /*记录当前进行密码重置新密码和再次输入密码*/
-      userPwd: {},
       /*重置用户密码时记录当前用户节点信息*/
       curNode: {},
       pageFlag: "next",
@@ -207,35 +180,21 @@ export default {
         type: "warning"
       })
         .then(() => {
-          this.pwdDialogVisible = true;
-          this.clearUserPwd();
-          this.curNode = row;
+            this.$store
+                .dispatch("user/resetPassword", {userId: row.userId})
+                .then(data => {
+                    console.log(data);
+                    this.loadData();
+                    this.$message({
+                        type: "success",
+                        message: "新密码已通过邮件发送给用户!"
+                    });
+                })
+                .catch(error => {
+                    console.log(error);
+                });
         })
         .catch(() => {});
-    },
-    /*重置用户密码*/
-    resetPwd() {
-      if (this.userPwd.newPwd !== this.userPwd.againPwd) {
-        this.$message({
-          type: "error",
-          message: "两次输入的密码不相同,请重新输入！"
-        });
-      } else {
-        this.curNode.password = this.userPwd.againPwd;
-
-        this.$store
-          .dispatch("user/updateOne", this.curNode)
-          .then(data => {
-            console.log(data);
-            this.loadData();
-          })
-          .catch(error => {
-            console.log(error);
-          });
-
-        this.pwdDialogVisible = false;
-      }
-      this.clearUserPwd();
     },
     /*点击用户编辑按钮*/
     handleEdit(row) {
@@ -305,13 +264,6 @@ export default {
     },
     handleIconClick() {
       this.inputType = this.inputType === "password" ? "" : "password";
-    },
-    /*清除修改密码表单*/
-    clearUserPwd() {
-      this.userPwd = {
-        newPwd: "",
-        againPwd: ""
-      };
     },
     open(func, data, message) {
       this.$confirm(message, "提示", {
