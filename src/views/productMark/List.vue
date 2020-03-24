@@ -15,7 +15,7 @@
             <el-button @click="showFlagList(scope.row)" type="primary" size="small">查看</el-button>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center">
+        <el-table-column label="操作" align="center" width="200">
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary" size="small">编辑</el-button>
             <el-button @click="handleDelete(scope.row)" type="danger" size="small">删除</el-button>
