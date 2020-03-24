@@ -43,8 +43,14 @@
       };
     },
     methods: {
-      getCheckedKeys(data, selection) {
-        this.formData.navs = selection.checkedKeys;
+      getCheckedKeys(nodes, selection) {
+          let tmpList = [];
+          selection.checkedNodes.forEach(item => {
+              if (!item.hasChildren){
+                  tmpList.push(item.navId);
+              }
+          })
+          this.formData.navs = tmpList;
       },
       defaultFormData() {
         return {
