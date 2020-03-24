@@ -1,147 +1,75 @@
 <template>
-  <div class="order-container">
-    <order-search @onSearch="handleSearch"></order-search>
-    <el-row style="margin-bottom:15px;margin-left:40px">
-      <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
-    </el-row>
-    <el-table :data="tableData"
-              size="mini"
-              highlight-current-row
-              style="width: 100%;"
-              border
-              fit>
-      <el-table-column
-        prop="orderNo"
-        label="订单号"
-        width="160"
-      ></el-table-column>
-      <el-table-column
-        prop="rootOrderNo"
-        label="销售出票单号"
-        width="100"
-      ></el-table-column>
-      <el-table-column
-        prop="orderSource"
-        label="订单来源"
-        width="50"
-      ></el-table-column>
-      <el-table-column
-        prop="sourceOrderNo"
-        label="订单来源单号"
-        width="80"
-      ></el-table-column>
-      <el-table-column
-        prop="policyCode"
-        label="政策代码"
-        width="100"
-      ></el-table-column>
-      <el-table-column
-        prop="policyType"
-        label="政策类型"
-        width="50"
-      ></el-table-column>
-      <el-table-column
-        prop="statusName"
-        label="订单状态"
-        width="50"
-      ></el-table-column>
-      <el-table-column
-        label="最晚出票时限"
-        width="110"
-        align="center">
-        <template slot-scope="scope">
-          <i v-if="scope.row.deadlineTicketTime" class="el-icon-time"></i>
-          <span style="margin-left: 10px">{{ formatDate(scope.row.deadlineTicketTime,'YYYY-MM-DD') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="RefundChangeRule"
-        label="退改签说明"
-        width="80"
-      ></el-table-column>
-      <el-table-column
-        prop="category"
-        label="0：销售订单,1：采购订单"
-        width="50"
-      ></el-table-column>
-      <el-table-column
-        prop="voyageTypeName"
-        label="航程类型"
-        width="50"
-      ></el-table-column>
-      <el-table-column
-        prop="amount"
-        label="金额"
-        width="50"
-      ></el-table-column>
-      <el-table-column
-        prop="pnr"
-        label="PNR"
-        width="50"
-      ></el-table-column>
-      <el-table-column
-        prop="bigPnr"
-        label="大编"
-        width="50"
-      ></el-table-column>
-      <el-table-column
-        label="业务完结时间"
-        width="110"
-        align="center">
-        <template slot-scope="scope">
-          <i v-if="scope.row.finishTime" class="el-icon-time"></i>
-          <span style="margin-left: 10px">{{ formatDate(scope.row.finishTime,'YYYY-MM-DD') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="transactionAmount"
-        label="交易金额"
-        width="50"
-      ></el-table-column>
-      <el-table-column
-        prop="transactionNo"
-        label="交易编号"
-        width="50"
-      ></el-table-column>
-      <el-table-column
-        prop="businessNo"
-        label="业务编号"
-        width="50"
-      ></el-table-column>
-      <el-table-column
-        label="交易时间"
-        width="110"
-        align="center">
-        <template slot-scope="scope">
-          <i v-if="scope.row.transactionTime" class="el-icon-time"></i>
-          <span style="margin-left: 10px">{{ formatDate(scope.row.transactionTime,'YYYY-MM-DD') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column fixed="right" label="操作" align="center" width="200">
-        <template slot-scope="scope">
-          <el-button
-            @click="handleOrderDetail(scope.row)"
-            type="primary"
-            size="mini"
-          >详情
-          </el-button
-          >
-          <el-button type="danger" size="mini" @click="handleRemove(scope.row.orderNo)">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-pagination
-      @size-change="handleSizeChange"
-      @prev-click="prevClick"
-      @next-click="nextClick"
-      :current-page="currentPage"
-      background
-      layout="total,sizes,prev,next"
-      prev-text="上一页"
-      next-text="下一页"
-      :page-size="pageSize"
-      :total="total">
-    </el-pagination>
+  <div class="bigBox">
+    <div class="searchBox">
+      <order-search @onSearch="handleSearch"></order-search>
+    </div>
+    <div class="contentBox">
+      <el-row style="margin-bottom:15px;margin-left:40px">
+        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+      </el-row>
+      <el-table :data="tableData" size="mini" highlight-current-row style="width: 100%;margin-bottom:15px;" border fit>
+        <el-table-column prop="orderNo" label="订单号" width="180" align="center"></el-table-column>
+        <el-table-column prop="policyCode" label="政策代码" align="center"></el-table-column>
+        <el-table-column prop="statusName" label="订单状态" width="80" align="center"></el-table-column>
+        <el-table-column label="订单日期" width="110" align="center">
+          <template slot-scope="scope">
+            <i v-if="scope.row.createTime" class="el-icon-time"></i>
+            <span style="margin-left: 10px">{{ formatDate(scope.row.createTime,'YYYY-MM-DD') }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="categoryName" label="订单类型" width="80" align="center"></el-table-column>
+        <el-table-column label="航班号" width="80" align="center">
+          <template slot-scope="scope">
+            <i v-if="scope.row.flights"></i>
+            <span style="margin-left: 10px">{{ formatFlightNo(scope.row.flights)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="航班日期" width="110" align="center">
+          <template slot-scope="scope">
+            <i v-if="scope.row.flights"></i>
+            <span style="margin-left: 10px">{{ formatFlightDate(scope.row.flights)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="起飞-到达" width="80" align="center">
+          <template slot-scope="scope">
+            <i v-if="scope.row.flights"></i>
+            <span style="margin-left: 10px">{{ formatFlight(scope.row.flights)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="voyageTypeName" label="航程类型" width="80" align="center"></el-table-column>
+        <el-table-column prop="pnr" label="PNR" width="150" align="center"></el-table-column>
+        <el-table-column label="总价" width="80" align="center">
+          <template slot-scope="scope">
+            <i v-if="scope.row.amount"></i>
+            <span style="margin-left: 10px">{{ formatAmount(scope.row.amount)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="乘客" align="center" width="200">
+          <template slot-scope="scope">
+            <i v-if="scope.row.passengers"></i>
+            <span style="margin-left: 10px">{{ formatPassengers(scope.row.passengers)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column fixed="right" label="操作" align="center" width="150">
+          <template slot-scope="scope">
+            <el-button @click="handleOrderDetail(scope.row)" type="primary" size="mini">查看</el-button>
+            <el-button type="danger" size="mini" @click="handleRemove(scope.row.orderNo)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+        @size-change="handleSizeChange"
+        @prev-click="prevClick"
+        @next-click="nextClick"
+        :current-page="currentPage"
+        background
+        layout="total,sizes,prev,next"
+        prev-text="上一页"
+        next-text="下一页"
+        :page-size="pageSize"
+        :total="total"
+      ></el-pagination>
+    </div>
   </div>
 </template>
 
@@ -178,25 +106,28 @@
                 params.pageSize = this.pageSize;
                 this.$store
                     .dispatch("order/getList", {
-                            filters: params
+                        filters: params
+                    })
+                    .then(data => {
+                        if (data) {
+                            this.tableData = data;
                         }
-                    ).then(data => {
-                    if (data) {
-                        this.tableData = data;
-                    }
-                }).catch(error => {
-                    console.log(error);
-                });
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
             },
             loadTotal(params) {
                 this.$store
                     .dispatch("order/getTotal", {
                         filters: params
-                    }).then(data => {
-                    this.total = data;
-                }).catch(error => {
-                    console.log(error);
-                });
+                    })
+                    .then(data => {
+                        this.total = data;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
             },
             handleSearch(params) {
                 if (!params) {
@@ -242,7 +173,6 @@
                     this.searchParams = newParams;
                     this.loadData(this.searchParams);
                     this.loadTotal(this.searchParams);
-
                 }
             },
             handleRemove(orderNo) {
@@ -250,19 +180,21 @@
                     confirmButtonText: "确定",
                     cancelButtonText: "取消",
                     type: "warning"
-                }).then(() => {
-                    this.$store
-                        .dispatch("order/removeOne", {orderNo: orderNo})
-                        .then(() => {
-                            this.loadData(this.searchParams);
-                            this.loadTotal();
-                        })
-                        .catch(error => {
-                            console.log(error);
-                        });
-                }).catch(err => {
-                    console.error(err);
-                });
+                })
+                    .then(() => {
+                        this.$store
+                            .dispatch("order/removeOne", {orderNo: orderNo})
+                            .then(() => {
+                                this.loadData(this.searchParams);
+                                this.loadTotal();
+                            })
+                            .catch(error => {
+                                console.log(error);
+                            });
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    });
             },
             handleCancel() {
                 this.dialogVisible = false;
@@ -273,7 +205,7 @@
                 this.dialogVisible = true;
             },
             handleOrderDetail(row) {
-                this.$router.push({name:'orderDetail',params:row});
+                this.$router.push({name: "orderDetail", params: row});
             },
             /*初始化用工列表中的生日日期格式*/
             initDate(dateStr, format) {
@@ -281,16 +213,57 @@
                     let date = new Date(dateStr);
                     return this.$moment(date).format(format);
                 } else {
-                    return '';
+                    return "";
                 }
+            },
+            formatFlight(data) {
+                if (!data || data.length == 0) {
+                    return "";
+                }
+                return data[0].dptTime +
+                    " " +
+                    data[0].dpt +
+                    "-" +
+                    data[0].arrTime +
+                    " " +
+                    data[0].arr;
+            },
+            formatFlightDate(data) {
+                if (!data || data.length == 0) {
+                    return "";
+                }
+                return this.initDate(data[0].flightDate, "YYYY-MM-DD");
+            },
+            formatFlightNo(data) {
+                if (!data || data.length == 0) {
+                    return "";
+                }
+                return data[0].flightCode;
+            },
+            formatPassengers(data) {
+                if (!data || data.length == 0) {
+                    return "";
+                }
+                let str = "";
+                data.forEach(item => {
+                    str += item.name + ",";
+                });
+
+                return str.substring(0, str.length - 1);
+            },
+            formatAmount(amount) {
+                if (!amount) {
+                    return "";
+                }
+                return '￥' + this.$numeral(amount).format('0.00');
             }
         },
         computed: {
             formatDate() {
                 return function (dateStr, format) {
                     return this.initDate(dateStr, format);
-                }
-            },
+                };
+            }
         },
         components: {
             orderSearch
@@ -298,6 +271,6 @@
         created() {
             this.loadData(this.searchParams);
             this.loadTotal();
-        },
+        }
     };
 </script>

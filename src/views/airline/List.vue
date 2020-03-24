@@ -1,53 +1,57 @@
 <template>
-  <div class="airline-container">
-    <airline-search @onSearch="handleSearch"></airline-search>
-    <el-row style="margin-bottom:15px;margin-left:26px;">
-      <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
-    </el-row>
-    <el-table
-      :data="tableData"
-      ref="tableData"
-      @row-dblclick="handleEdit"
-      style="width: 100%;margin-bottom:15px;"
-      size="mini"
-    >
-      <el-table-column prop="airlineName" label="航司名称"></el-table-column>
-      <el-table-column prop="airlineCode" label="航司二字码"></el-table-column>
-      <el-table-column prop="cabins" label="舱位"></el-table-column>
-      <el-table-column label="操作" align="center" width="200">
-        <template slot-scope="scope">
-          <el-button @click="handleEdit(scope.row)" type="primary" size="small">编辑</el-button>
-          <el-button @click="removeOne(scope.row.airlineCode)" type="danger" size="small">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-pagination
-      @size-change="handleSizeChange"
-      @prev-click="prevClick"
-      @next-click="nextClick"
-      :current-page="currentPage"
-      background
-      layout="total,sizes,prev,next"
-      prev-text="上一页"
-      next-text="下一页"
-      :page-size="pageSize"
-      :total="total"
-    ></el-pagination>
-    <el-dialog
-      title="添加航司信息"
-      :before-close="handleClose"
-      center
-      :visible.sync="dialogVisible"
-      width="30%"
-    >
-      <airline-edit
-        v-if="dialogVisible"
-        :airline-code="airlineCode"
-        ref="form"
-        @onSave="handleSave"
-        @onCancel="handleCancel"
-      ></airline-edit>
-    </el-dialog>
+  <div class="bigBox">
+    <div class="searchBox">
+      <airline-search @onSearch="handleSearch"></airline-search>
+    </div>
+    <div class="contentBox">
+      <el-row style="margin-bottom:15px;margin-left:26px;">
+        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+      </el-row>
+      <el-table
+        :data="tableData"
+        ref="tableData"
+        @row-dblclick="handleEdit"
+        style="width: 100%;margin-bottom:15px;"
+        size="mini"
+      >
+        <el-table-column prop="airlineName" label="航司名称"></el-table-column>
+        <el-table-column prop="airlineCode" label="航司二字码"></el-table-column>
+        <el-table-column prop="cabins" label="舱位"></el-table-column>
+        <el-table-column label="操作" align="center" width="200">
+          <template slot-scope="scope">
+            <el-button @click="handleEdit(scope.row)" type="primary" size="small">编辑</el-button>
+            <el-button @click="removeOne(scope.row.airlineCode)" type="danger" size="small">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+        @size-change="handleSizeChange"
+        @prev-click="prevClick"
+        @next-click="nextClick"
+        :current-page="currentPage"
+        background
+        layout="total,sizes,prev,next"
+        prev-text="上一页"
+        next-text="下一页"
+        :page-size="pageSize"
+        :total="total"
+      ></el-pagination>
+      <el-dialog
+        title="添加航司信息"
+        :before-close="handleClose"
+        center
+        :visible.sync="dialogVisible"
+        width="30%"
+      >
+        <airline-edit
+          v-if="dialogVisible"
+          :airline-code="airlineCode"
+          ref="form"
+          @onSave="handleSave"
+          @onCancel="handleCancel"
+        ></airline-edit>
+      </el-dialog>
+    </div>
   </div>
 </template>
 <script>
@@ -142,7 +146,7 @@ export default {
     handleCancel() {
       this.dialogVisible = false;
     },
-     handleClose() {
+    handleClose() {
       this.$confirm("确认关闭添加航司信息对话框？")
         .then(() => {
           this.dialogVisible = false;

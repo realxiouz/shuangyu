@@ -1,52 +1,56 @@
 <template>
-  <div class="segment-container">
-    <segment-search @onSearch="handleSearch"></segment-search>
-    <el-row style="margin-bottom:15px;margin-left:10px;">
-      <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
-    </el-row>
-    <el-table
-      size="mini"
-      :data="tableData"
-      ref="tableData"
-      @row-dblclick="handleEdit"
-      style="width: 100%;margin-bottom:15px;"
-    >
-      <el-table-column prop="dpt" label="出发地"></el-table-column>
-      <el-table-column prop="arr" label="目的地"></el-table-column>
-      <el-table-column label="操作" align="center" width="200">
-        <template slot-scope="scope">
-          <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
-          <el-button @click="removeOne(scope.row.segment)" type="danger" size="mini">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-pagination
-      @size-change="handleSizeChange"
-      @prev-click="prevClick"
-      @next-click="nextClick"
-      :current-page="currentPage"
-      background
-      layout="total,sizes,prev,next"
-      prev-text="上一页"
-      next-text="下一页"
-      :page-size="pageSize"
-      :total="total"
-    ></el-pagination>
-    <el-dialog
-      title="航段"
-      :before-close="handleClose"
-      center
-      :visible.sync="dialogVisible"
-      width="30%"
-    >
-      <segment-edit
-        v-if="dialogVisible"
-        :segment="segment"
-        ref="form"
-        @onSave="handleSave"
-        @onCancel="handleCancel"
-      ></segment-edit>
-    </el-dialog>
+  <div class="bigBox">
+    <div class="searchBox">
+      <segment-search @onSearch="handleSearch"></segment-search>
+    </div>
+    <div class="contentBox">
+      <el-row style="margin-bottom:15px;margin-left:10px;">
+        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+      </el-row>
+      <el-table
+        size="mini"
+        :data="tableData"
+        ref="tableData"
+        @row-dblclick="handleEdit"
+        style="width: 100%;margin-bottom:15px;"
+      >
+        <el-table-column prop="dpt" label="出发地"></el-table-column>
+        <el-table-column prop="arr" label="目的地"></el-table-column>
+        <el-table-column label="操作" align="center" width="200">
+          <template slot-scope="scope">
+            <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="removeOne(scope.row.segment)" type="danger" size="mini">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+        @size-change="handleSizeChange"
+        @prev-click="prevClick"
+        @next-click="nextClick"
+        :current-page="currentPage"
+        background
+        layout="total,sizes,prev,next"
+        prev-text="上一页"
+        next-text="下一页"
+        :page-size="pageSize"
+        :total="total"
+      ></el-pagination>
+      <el-dialog
+        title="航段"
+        :before-close="handleClose"
+        center
+        :visible.sync="dialogVisible"
+        width="30%"
+      >
+        <segment-edit
+          v-if="dialogVisible"
+          :segment="segment"
+          ref="form"
+          @onSave="handleSave"
+          @onCancel="handleCancel"
+        ></segment-edit>
+      </el-dialog>
+    </div>
   </div>
 </template>
 <script>

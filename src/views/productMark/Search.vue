@@ -4,7 +4,7 @@
       <el-form :model="formData" label-width="110px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="选择企业：">
-            <el-select v-model="firmId" placeholder="请选择">
+            <el-select v-model="formData.firmId" placeholder="请选择">
               <el-option
                 v-for="item in firmList"
                 :key="item.firmId"
@@ -26,7 +26,7 @@
         class="filter-item"
         type="primary"
         size="mini"
-        @click="$emit('onSearch', firmId)"
+        @click="$emit('onSearch', formData)"
       >查询</el-button>
       <el-button type="text" size="mini" @click="handleMore">
         更多
@@ -42,7 +42,9 @@ export default {
   data() {
     return {
       more: false,
+      formData:{
       firmId: "",
+      },
       firmList: []
     };
   },
@@ -61,7 +63,7 @@ export default {
         .dispatch("productMark/getFirmList")
         .then(data => {
           this.firmList = data;
-          console.log(this.firmList);
+          // console.log(this.firmList);
         })
         .catch(error => {
           console.log(error);
