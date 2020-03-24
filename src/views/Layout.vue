@@ -68,7 +68,7 @@
           title="请选择一个你的企业"
           :close-on-click-modal="false"
           :visible.sync="dialogVisible"
-          :before-close="handleCloseDialog"
+          :show-close="false"
           width="30%"
           center
         >
@@ -76,7 +76,7 @@
             v-if="dialogVisible"
             ref="selectFirms"
             :firms="firms"
-            @onSave="getLoginInfo"
+            @onSelectFirm="getLoginInfo"
           ></select-firms>
         </el-dialog>
       </div>
@@ -213,11 +213,6 @@ export default {
     handleClose(tag) {
       this.tags.splice(this.tags.indexOf(tag), 1);
     },
-    handleCloseDialog() {
-      this.$confirm("请选择一个你的企业").then(_ => {
-        this.dialogVisible = true;
-      });
-    }
   },
   created() {
     this.getLoginInfo(null);
