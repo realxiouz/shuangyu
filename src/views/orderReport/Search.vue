@@ -2,39 +2,24 @@
   <el-row type="flex" class="row-bg" justify="space-between" align="bottom">
     <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
       <el-form :model="formData" label-width="80px" size="mini">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="订单号:">
-              <el-input v-model="formData.orderNo" style="width: 100%"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="应收:">
-              <el-input v-model="formData.receivable"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="应付:">
-              <el-input v-model="formData.payable"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="实收:">
-              <el-input v-model="formData.receipt"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item v-show="more" label="实付:">
-              <el-input v-model="formData.payment"></el-input>
-            </el-form-item>
-          </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="利润:">
-            <el-input v-model="formData.systemProfit"></el-input>
+          <el-form-item label="订单号:">
+            <el-input v-model="formData.orderNo" style="width: 100%"></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="采购订单:">
-            <el-input v-model="formData.orderNo"></el-input>
+          <el-form-item label="票号:">
+            <el-input v-model="formData.ticketNo" style="width: 100%"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="航班号:">
+            <el-input v-model="formData.flightCode"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="乘机人姓名:">
+            <el-input v-model="formData.name"></el-input>
           </el-form-item>
         </el-col>
       </el-form>
