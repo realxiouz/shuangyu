@@ -13,22 +13,22 @@
     <el-main>
       <!-- 员工列表 -->
       <el-table stripe size="mini" style="width: 100%;" fit :data="tableData">
-        <el-table-column prop="nickName" label="昵称" width="170"></el-table-column>
-        <el-table-column prop="fullName" label="姓名" width="165"></el-table-column>
-        <el-table-column prop="gender" label="性别" width="165">
+        <el-table-column prop="nickName" label="昵称" width="170" align="center"></el-table-column>
+        <el-table-column prop="fullName" label="姓名" width="150" align="center"></el-table-column>
+        <el-table-column prop="gender" label="性别" width="80" align="center">
           <template slot-scope="scope">
             <span style="margin-left: 10px">{{ initGender(scope.row.gender) }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="出生日期" width="240" align="center">
+        <el-table-column label="出生日期" align="center">
           <template slot-scope="scope">
             <i v-if="scope.row.birthDate" class="el-icon-time"></i>
             <span style="margin-left: 10px">{{ formatDate(scope.row.birthDate,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="phone" label="手机号" width="220" align="center"></el-table-column>
-        <el-table-column prop="email" label="电子邮箱" width="240" align="center"></el-table-column>
-        <el-table-column label="操作">
+        <el-table-column prop="phone" label="手机号" width="200" align="center"></el-table-column>
+        <el-table-column prop="email" label="电子邮箱" width="200" align="center"></el-table-column>
+        <el-table-column label="操作" width="180" align="center"> 
           <template slot-scope="scope">
             <el-button
               size="mini"
