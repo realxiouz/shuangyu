@@ -38,7 +38,12 @@
         </el-table-column>
         <el-table-column prop="voyageTypeName" label="航程类型" width="80" align="center"></el-table-column>
         <el-table-column prop="pnr" label="PNR" width="150" align="center"></el-table-column>
-        <el-table-column prop="amount" label="总价" width="80" align="center"></el-table-column>
+        <el-table-column label="总价" width="80" align="center">
+          <template slot-scope="scope">
+            <i v-if="scope.row.amount"></i>
+            <span style="margin-left: 10px">{{ formatAmount(scope.row.amount)}}</span>
+          </template>
+        </el-table-column>
         <el-table-column label="乘客" align="center" width="200">
           <template slot-scope="scope">
             <i v-if="scope.row.passengers"></i>
@@ -245,6 +250,12 @@
                 });
 
                 return str.substring(0, str.length - 1);
+            },
+            formatAmount(amount) {
+                if (!amount) {
+                    return "";
+                }
+                return '￥' + this.$numeral(amount).format('0.00');
             }
         },
         computed: {
