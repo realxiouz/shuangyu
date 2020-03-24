@@ -11,6 +11,7 @@
         <el-table-column prop="orderNo" label="订单号" width="180"></el-table-column>
         <el-table-column prop="policyCode" label="政策代码" width="150"></el-table-column>
         <el-table-column prop="statusName" label="订单状态" width="100"></el-table-column>
+        <el-table-column prop="categoryName" label="订单类型" width="80" align="center"></el-table-column>
         <el-table-column label="订单日期" width="110" align="center">
           <template slot-scope="scope">
             <i v-if="scope.row.createTime" class="el-icon-time"></i>
