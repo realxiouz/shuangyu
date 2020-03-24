@@ -1,58 +1,62 @@
 <template>
-  <div>
-    <qunar-order-notify-config-search @onSearch="search" />
-    <el-row style="margin-bottom:15px;margin-left:25px">
-      <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
-    </el-row>
-    <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;" sizi="mini">
-      <el-table-column prop="domain" label="代理商域名" width="260" align="center"></el-table-column>
-      <el-table-column label="企业" width="200" align="center">
-        <template slot-scope="scope">
-          <span style="margin-left: 10px">{{ formatFirmData(scope.row.firmId) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="平台" width="200" align="center">
-        <template slot-scope="scope">
-          <span style="margin-left: 10px">{{ formatPartyData(scope.row.thirdId) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column prop="securityCode" label="安全码" width="260" align="center"></el-table-column>
-      <el-table-column prop="url" label="地址" width="260" align="center"></el-table-column>
-      <el-table-column label="操作" align="center">
-        <template slot-scope="scope">
-          <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
-          <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-pagination
-      background
-      layout="total,prev,next"
-      prev-text="上一页"
-      next-text="下一页"
-      :page-size="pageSize"
-      :total="total"
-      @prev-click="handlePrevClick"
-      @next-click="handleNextClick"
-    ></el-pagination>
+  <div class="bigBox">
+    <div class="searchBox">
+      <qunar-order-notify-config-search @onSearch="search" />
+    </div>
+    <div class="contentBox">
+      <el-row style="margin-bottom:15px;margin-left:25px">
+        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+      </el-row>
+      <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;" sizi="mini">
+        <el-table-column prop="domain" label="代理商域名" width="260" align="center"></el-table-column>
+        <el-table-column label="企业" width="200" align="center">
+          <template slot-scope="scope">
+            <span style="margin-left: 10px">{{ formatFirmData(scope.row.firmId) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="平台" width="200" align="center">
+          <template slot-scope="scope">
+            <span style="margin-left: 10px">{{ formatPartyData(scope.row.thirdId) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="securityCode" label="安全码" width="260" align="center"></el-table-column>
+        <el-table-column prop="url" label="地址" width="260" align="center"></el-table-column>
+        <el-table-column label="操作" align="center">
+          <template slot-scope="scope">
+            <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+        background
+        layout="total,prev,next"
+        prev-text="上一页"
+        next-text="下一页"
+        :page-size="pageSize"
+        :total="total"
+        @prev-click="handlePrevClick"
+        @next-click="handleNextClick"
+      ></el-pagination>
 
-    <el-dialog
-      title="第三方平台账号信息"
-      :visible.sync="dialogVisible"
-      center
-      width="30%"
-      :close-on-click-modal="false"
-    >
-      <qunar-order-notify-config-edit
-        v-if="dialogVisible"
-        :curNode="curNode"
-        :update="update"
-        :firmList="firmList"
-        :partyList="partyList"
-        @onSave="handleSave"
-        @onCancel="handleCancel"
-      />
-    </el-dialog>
+      <el-dialog
+        title="第三方平台账号信息"
+        :visible.sync="dialogVisible"
+        center
+        width="30%"
+        :close-on-click-modal="false"
+      >
+        <qunar-order-notify-config-edit
+          v-if="dialogVisible"
+          :curNode="curNode"
+          :update="update"
+          :firmList="firmList"
+          :partyList="partyList"
+          @onSave="handleSave"
+          @onCancel="handleCancel"
+        />
+      </el-dialog>
+    </div>
   </div>
 </template>
 

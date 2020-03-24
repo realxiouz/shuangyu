@@ -1,41 +1,45 @@
 <template>
-  <div class="app-container">
-    <role-search ref="user" @onSearch="handleSearch"></role-search>
-    <el-row style="margin-bottom:15px;margin-left:50px;">
-      <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
-    </el-row>
-    <el-table :data="tableData" style="width: 100%" size="mini">
-      <el-table-column prop="roleName" label="角色名称" align="center"></el-table-column>
-      <el-table-column label="是否启用" align="center">
-        <template slot-scope="scope">
-          <el-switch v-model="scope.row.enable" @change="changeSwitch(scope.row)"></el-switch>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" align="center">
-        <template slot-scope="scope">
-          <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
-          <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-pagination
-      @prev-click="prevClick"
-      @next-click="nextClick"
-      background
-      layout="total,prev,next"
-      prev-text="上一页"
-      next-text="下一页"
-      :page-size="pageSize"
-      :total="total"
-    ></el-pagination>
-    <el-dialog title="角色信息" center :visible.sync="dialogVisible" width="30%">
-      <role-edit
-        v-if="dialogVisible"
-        :roleId="roleId"
-        @onSave="handleSave"
-        @onCancel="handleCancel"
-      ></role-edit>
-    </el-dialog>
+  <div class="bigBox">
+    <div class="searchBox">
+      <role-search ref="user" @onSearch="handleSearch"></role-search>
+    </div>
+    <div class="contentBox">
+      <el-row style="margin-bottom:15px;margin-left:50px;">
+        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+      </el-row>
+      <el-table :data="tableData" style="width: 100%" size="mini">
+        <el-table-column prop="roleName" label="角色名称" align="center"></el-table-column>
+        <el-table-column label="是否启用" align="center">
+          <template slot-scope="scope">
+            <el-switch v-model="scope.row.enable" @change="changeSwitch(scope.row)"></el-switch>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" align="center">
+          <template slot-scope="scope">
+            <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+        @prev-click="prevClick"
+        @next-click="nextClick"
+        background
+        layout="total,prev,next"
+        prev-text="上一页"
+        next-text="下一页"
+        :page-size="pageSize"
+        :total="total"
+      ></el-pagination>
+      <el-dialog title="角色信息" center :visible.sync="dialogVisible" width="30%">
+        <role-edit
+          v-if="dialogVisible"
+          :roleId="roleId"
+          @onSave="handleSave"
+          @onCancel="handleCancel"
+        ></role-edit>
+      </el-dialog>
+    </div>
   </div>
 </template>
 

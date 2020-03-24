@@ -1,6 +1,9 @@
 <template>
-  <div class="api-container">
+  <div class="bigBox">
+    <div class="searchBox">
     <apiSearch @onSearch="handleSearch"></apiSearch>
+    </div>
+    <div class="contentBox">
     <el-row style="margin-bottom:15px;margin-left:40px;">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
     </el-row>
@@ -44,6 +47,7 @@
     >
       <apiEdit v-if="dialogVisible" :api-id="apiId" @onCancel="handleCancel" @onSave="handleSave"></apiEdit>
     </el-dialog>
+  </div>
   </div>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="contentBox">
     <el-row style="margin-bottom:15px;">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
     </el-row>
@@ -9,14 +9,14 @@
       size="mini"
       :tree-props="{ hasChildren: 'xxx',children: 'children'}"
     >
-      <el-table-column prop="thirdName" label="第三方平台" align="center"></el-table-column>
-      <el-table-column prop="apiUrl" label="接口url" align="center"></el-table-column>
-      <el-table-column prop="label" label="接口标签" align="center"></el-table-column>
-      <el-table-column prop="name" label="接口名称" align="center"></el-table-column>
-      <el-table-column prop="defaultValue" label="默认值" align="center"></el-table-column>
-      <el-table-column prop="required" label="是否必须" :formatter="formatBoolean" align="center"></el-table-column>
+      <el-table-column prop="thirdName" label="第三方平台" align="center" width="150"></el-table-column>
+      <el-table-column prop="apiUrl" label="接口url" align="center" width="220"></el-table-column>
+      <el-table-column prop="label" label="接口标签" align="center" width="200"></el-table-column>
+      <el-table-column prop="name" label="接口名称" align="center" width="150"></el-table-column>
+      <el-table-column prop="defaultValue" label="默认值" align="center" width="150"></el-table-column>
+      <el-table-column prop="required" label="是否必须" :formatter="formatBoolean" align="center" width="80"></el-table-column>
       <el-table-column prop="remark" label="备注" align="center"></el-table-column>
-      <el-table-column label="操作" align="center">
+      <el-table-column label="操作" align="center" width="250">
         <template slot-scope="scope">
           <el-button @click="handleAddChild(scope.row)" type="primary" size="mini">添加</el-button>
           <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>

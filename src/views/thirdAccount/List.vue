@@ -1,47 +1,57 @@
 <template>
-  <div>
-    <third-account-search @onSearch="handleSearch" />
-    <el-row style="margin-bottom:15px;margin-left:20px">
-      <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
-    </el-row>
-    <el-table size="mini" highlight-current-row :data="tableData" style="width: 100%;margin-bottom: 20px;" fit>
-      <el-table-column prop="username" label="账号" width="300" align="center"></el-table-column>
-      <el-table-column prop="loginUrl" label="登录地址" width="300" align="center"></el-table-column>
-      <el-table-column prop="contactPerson" label="联系人" width="300" align="center"></el-table-column>
-      <el-table-column prop="contactPhone" label="联系电话" width="300" align="center"></el-table-column>
-      <el-table-column label="操作" align="center">
-        <template slot-scope="scope">
-          <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
-          <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-pagination
-      background
-      layout="total,prev,next"
-      prev-text="上一页"
-      next-text="下一页"
-      :page-size="pageSize"
-      :total="total"
-      @prev-click="handlePrevClick"
-      @next-click="handleNextClick"
-    ></el-pagination>
+  <div class="bigBox">
+    <div class="searchBox">
+      <third-account-search @onSearch="handleSearch" />
+    </div>
+    <div class="contentBox">
+      <el-row style="margin-bottom:15px;margin-left:20px">
+        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+      </el-row>
+      <el-table
+        size="mini"
+        highlight-current-row
+        :data="tableData"
+        style="width: 100%;margin-bottom: 20px;"
+        fit
+      >
+        <el-table-column prop="username" label="账号" width="300" align="center"></el-table-column>
+        <el-table-column prop="loginUrl" label="登录地址" width="300" align="center"></el-table-column>
+        <el-table-column prop="contactPerson" label="联系人" width="300" align="center"></el-table-column>
+        <el-table-column prop="contactPhone" label="联系电话" width="300" align="center"></el-table-column>
+        <el-table-column label="操作" align="center">
+          <template slot-scope="scope">
+            <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+        background
+        layout="total,prev,next"
+        prev-text="上一页"
+        next-text="下一页"
+        :page-size="pageSize"
+        :total="total"
+        @prev-click="handlePrevClick"
+        @next-click="handleNextClick"
+      ></el-pagination>
 
-    <el-dialog
-      title="第三方平台账号信息"
-      :visible.sync="dialogVisible"
-      width="30%"
-      :close-on-click-modal="false"
-      center
-    >
-      <third-account-edit
-        v-if="dialogVisible"
-        :curNode="curNode"
-        :update="update"
-        @onSave="handleSave"
-        @onCancel="handleCancel"
-      ></third-account-edit>
-    </el-dialog>
+      <el-dialog
+        title="第三方平台账号信息"
+        :visible.sync="dialogVisible"
+        width="30%"
+        :close-on-click-modal="false"
+        center
+      >
+        <third-account-edit
+          v-if="dialogVisible"
+          :curNode="curNode"
+          :update="update"
+          @onSave="handleSave"
+          @onCancel="handleCancel"
+        ></third-account-edit>
+      </el-dialog>
+    </div>
   </div>
 </template>
 

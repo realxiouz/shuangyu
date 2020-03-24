@@ -1,32 +1,36 @@
 <template>
-  <div class="app-container">
-    <policy-flag-search @onSearch="handleSearch"></policy-flag-search>
-    <el-row style="margin-bottom:15px; margin-left:10px;">
-      <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
-    </el-row>
-    <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;" size="mini">
-      <el-table-column prop="flagId" label="标签id" align="center"></el-table-column>
-      <el-table-column prop="thirdName" label="平台" align="center"></el-table-column>
-      <el-table-column prop="remark" label="备注" align="center"></el-table-column>
-      <el-table-column label="操作" align="center">
-        <template slot-scope="scope">
-          <el-button @click="handleUpdate(scope.row.flagId)" type="primary" size="mini">编辑</el-button>
-          <el-button
-            @click="handleRemove(scope.row,scope.$index,tableData)"
-            type="danger"
-            size="mini"
-          >删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-dialog title="第三方标签" :visible.sync="dialogVisible" width="30%" center>
-      <policy-flag-edit
-        v-if="dialogVisible"
-        :flag-id="flagId"
-        @onSave="handleSave"
-        @onCancel="handleCancel"
-      ></policy-flag-edit>
-    </el-dialog>
+  <div class="bigBox">
+    <div class="searchBox">
+      <policy-flag-search @onSearch="handleSearch"></policy-flag-search>
+    </div>
+    <div class="contentBox">
+      <el-row style="margin-bottom:15px; margin-left:10px;">
+        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+      </el-row>
+      <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;" size="mini">
+        <el-table-column prop="flagId" label="标签id" align="center"></el-table-column>
+        <el-table-column prop="thirdName" label="平台" align="center"></el-table-column>
+        <el-table-column prop="remark" label="备注" align="center"></el-table-column>
+        <el-table-column label="操作" align="center">
+          <template slot-scope="scope">
+            <el-button @click="handleUpdate(scope.row.flagId)" type="primary" size="mini">编辑</el-button>
+            <el-button
+              @click="handleRemove(scope.row,scope.$index,tableData)"
+              type="danger"
+              size="mini"
+            >删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-dialog title="第三方标签" :visible.sync="dialogVisible" width="30%" center>
+        <policy-flag-edit
+          v-if="dialogVisible"
+          :flag-id="flagId"
+          @onSave="handleSave"
+          @onCancel="handleCancel"
+        ></policy-flag-edit>
+      </el-dialog>
+    </div>
   </div>
 </template>
 

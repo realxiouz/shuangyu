@@ -1,47 +1,51 @@
 <template>
-  <div class="app-container">
-    <third-party-search @onSearch="handleSearch"></third-party-search>
-    <el-row style="margin-bottom:15px; margin-left:40px;">
-      <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
-    </el-row>
-    <el-table size="mini" :data="tableData" style="width: 100%;margin-bottom: 15px;">
-      <el-table-column prop="thirdName" label="平台名称" align="center"></el-table-column>
-      <el-table-column label="操作" align="center">
-        <template slot-scope="scope">
-          <el-button @click="handleUpdate(scope.row)" type="primary" size="mini">编辑</el-button>
-          <el-button
-            @click="handRemove(scope.row,scope.$index,tableData)"
-            type="danger"
-            size="mini"
-          >删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-pagination
-      background
-      layout="total,prev,next"
-      prev-text="上一页"
-      next-text="下一页"
-      :page-size="pageSize"
-      :total="total"
-      @prev-click="prevClick"
-      @next-click="nextClick"
-    ></el-pagination>
-    <el-dialog
-      title="用户信息"
-      :close-on-click-modal="false"
-      center
-      :visible.sync="dialogVisible"
-      width="30%"
-    >
-      <third-party-edit
-        v-if="dialogVisible"
-        ref="thirdpartyForm"
-        :third-id="thirdId"
-        @onSave="handleSave"
-        @onCancel="handleCancel"
-      ></third-party-edit>
-    </el-dialog>
+  <div class="bigBox">
+    <div class="searchBox">
+      <third-party-search @onSearch="handleSearch"></third-party-search>
+    </div>
+    <div class="contentBox">
+      <el-row style="margin-bottom:15px; margin-left:40px;">
+        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+      </el-row>
+      <el-table size="mini" :data="tableData" style="width: 100%;margin-bottom: 15px;">
+        <el-table-column prop="thirdName" label="平台名称" align="center"></el-table-column>
+        <el-table-column label="操作" align="center">
+          <template slot-scope="scope">
+            <el-button @click="handleUpdate(scope.row)" type="primary" size="mini">编辑</el-button>
+            <el-button
+              @click="handRemove(scope.row,scope.$index,tableData)"
+              type="danger"
+              size="mini"
+            >删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+        background
+        layout="total,prev,next"
+        prev-text="上一页"
+        next-text="下一页"
+        :page-size="pageSize"
+        :total="total"
+        @prev-click="prevClick"
+        @next-click="nextClick"
+      ></el-pagination>
+      <el-dialog
+        title="用户信息"
+        :close-on-click-modal="false"
+        center
+        :visible.sync="dialogVisible"
+        width="30%"
+      >
+        <third-party-edit
+          v-if="dialogVisible"
+          ref="thirdpartyForm"
+          :third-id="thirdId"
+          @onSave="handleSave"
+          @onCancel="handleCancel"
+        ></third-party-edit>
+      </el-dialog>
+    </div>
   </div>
 </template>
 

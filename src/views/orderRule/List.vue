@@ -1,45 +1,49 @@
 <template>
-  <div class="app-container">
-    <order-rule-search @onSearch="handleSearch"></order-rule-search>
-    <el-row style="margin-bottom:15px; margin-left:30px;">
-      <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
-    </el-row>
-    <el-table
-      :data="tableData"
-      style="width: 100%;margin-bottom: 15px;"
-      border
-      default-expand-all
-      size="mini"
-    >
-      <el-table-column prop="ruleName" label="规则名称"></el-table-column>
-      <el-table-column prop="domain" label="公司域名"></el-table-column>
-      <el-table-column prop="policyCodes" label="政策代码">
-        <template slot-scope="scope">
-          <span>{{scope.row.policyCodes.join(",")}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column fixed="right" label="操作" align="center" width="300">
-        <template slot-scope="scope">
-          <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
-          <el-button
-            @click.native.prevent="removeOne(scope.row.orderRuleId)"
-            type="danger"
-            size="mini"
-          >删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-pagination
-      @size-change="handleSizeChange"
-      @prev-click="prevClick"
-      @next-click="nextClick"
-      background
-      layout="total,sizes,prev,next"
-      prev-text="上一页"
-      next-text="下一页"
-      :page-size="pageSize"
-      :total="total"
-    ></el-pagination>
+  <div class="bigBox">
+    <div class="searchBox">
+      <order-rule-search @onSearch="handleSearch"></order-rule-search>
+    </div>
+    <div class="contentBox">
+      <el-row style="margin-bottom:15px; margin-left:30px;">
+        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+      </el-row>
+      <el-table
+        :data="tableData"
+        style="width: 100%;margin-bottom: 15px;"
+        border
+        default-expand-all
+        size="mini"
+      >
+        <el-table-column prop="ruleName" label="规则名称"></el-table-column>
+        <el-table-column prop="domain" label="公司域名"></el-table-column>
+        <el-table-column prop="policyCodes" label="政策代码">
+          <template slot-scope="scope">
+            <span>{{scope.row.policyCodes.join(",")}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column fixed="right" label="操作" align="center" width="300">
+          <template slot-scope="scope">
+            <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
+            <el-button
+              @click.native.prevent="removeOne(scope.row.orderRuleId)"
+              type="danger"
+              size="mini"
+            >删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+        @size-change="handleSizeChange"
+        @prev-click="prevClick"
+        @next-click="nextClick"
+        background
+        layout="total,sizes,prev,next"
+        prev-text="上一页"
+        next-text="下一页"
+        :page-size="pageSize"
+        :total="total"
+      ></el-pagination>
+    </div>
   </div>
 </template>
 

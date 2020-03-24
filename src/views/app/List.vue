@@ -1,47 +1,56 @@
 <template>
-  <div class="app-container">
-    <app-search @onSearch="handleSearch"></app-search>
-    <el-row style="margin-bottom:15px;margin-left:40px">
-      <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
-    </el-row>
-    <el-table :data="tableData" style="width: 100%;margin-bottom: 15px;" size="mini" border>
-      <el-table-column prop="appName" label="应用名称" width="500"></el-table-column>
-      <el-table-column label="是否启用" align="center">
-        <template slot-scope="scope">
-          <el-switch v-model="scope.row.enable" @change="handleSwitch(scope.row)"></el-switch>
-        </template>
-      </el-table-column>
-      <el-table-column fixed="right" label="操作" align="center" width="350">
-        <template slot-scope="scope">
-          <el-button @click="handleUpdate(scope.row.appId)" type="primary" size="mini">编辑</el-button>
-          <el-button
-            @click.native.prevent="handleRemove(scope.row.appId,scope.$index,tableData)"
-            type="danger"
-            size="mini"
-          >删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-pagination
-      @size-change="handleSizeChange"
-      @prev-click="prevClick"
-      @next-click="nextClick"
-      background
-      layout="total,sizes,prev,next"
-      prev-text="上一页"
-      next-text="下一页"
-      :page-size="pageSize"
-      :total="total"
-    ></el-pagination>
-    <el-dialog
-      title="应用"
-      :before-close="handleClose"
-      center
-      :visible.sync="dialogVisible"
-      width="30%"
-    >
-      <app-edit v-if="dialogVisible" :app-id="appId" @onSave="handleSave" @onCancel="handleCancel"></app-edit>
-    </el-dialog>
+  <div class="bigBox">
+    <div class="searchBox">
+      <app-search @onSearch="handleSearch"></app-search>
+    </div>
+    <div class="contentBox">
+      <el-row style="margin-bottom:15px;margin-left:40px">
+        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+      </el-row>
+      <el-table :data="tableData" style="width: 100%;margin-bottom: 15px;" size="mini" border>
+        <el-table-column prop="appName" label="应用名称" width="500"></el-table-column>
+        <el-table-column label="是否启用" align="center">
+          <template slot-scope="scope">
+            <el-switch v-model="scope.row.enable" @change="handleSwitch(scope.row)"></el-switch>
+          </template>
+        </el-table-column>
+        <el-table-column fixed="right" label="操作" align="center" width="350">
+          <template slot-scope="scope">
+            <el-button @click="handleUpdate(scope.row.appId)" type="primary" size="mini">编辑</el-button>
+            <el-button
+              @click.native.prevent="handleRemove(scope.row.appId,scope.$index,tableData)"
+              type="danger"
+              size="mini"
+            >删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+        @size-change="handleSizeChange"
+        @prev-click="prevClick"
+        @next-click="nextClick"
+        background
+        layout="total,sizes,prev,next"
+        prev-text="上一页"
+        next-text="下一页"
+        :page-size="pageSize"
+        :total="total"
+      ></el-pagination>
+      <el-dialog
+        title="应用"
+        :before-close="handleClose"
+        center
+        :visible.sync="dialogVisible"
+        width="30%"
+      >
+        <app-edit
+          v-if="dialogVisible"
+          :app-id="appId"
+          @onSave="handleSave"
+          @onCancel="handleCancel"
+        ></app-edit>
+      </el-dialog>
+    </div>
   </div>
 </template>
 <script>

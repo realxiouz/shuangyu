@@ -1,5 +1,5 @@
 <template>
-  <div class="order-container">
+  <div class="contentBox">
     <h2>订单详情:</h2>
     <el-form :inline="true" :model="tableData">
       <el-form-item label="订单编号:">
