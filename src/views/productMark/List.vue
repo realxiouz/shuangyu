@@ -99,9 +99,9 @@ export default {
       this.dialogVisible = true;
       this.markId = "";
     },
-    handleSearch(firmId) {
+    handleSearch(params) {
       this.$store
-        .dispatch("productMark/getList", { firmId: firmId })
+        .dispatch("productMark/getList", { firmId: params.firmId })
         .then(data => {
           this.tableData = data;
         })

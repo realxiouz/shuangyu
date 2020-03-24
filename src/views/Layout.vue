@@ -22,7 +22,7 @@
           </el-col>
           <el-col :xs="6" :sm="5" :md="4" :lg="3" :xl="2">
             <div class="grid-content bg-purple">
-              <span style="margin-right:10px;">{{this.$store.state.loginInfo.fullName}}</span>
+              <span style="margin-right:10px; font-size:16px;">{{this.$store.state.loginInfo.fullName}}</span>
               <el-dropdown @command="handleCommand">
                 <span class="el-dropdown-link">
                   设置
