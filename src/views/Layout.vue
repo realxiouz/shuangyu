@@ -12,17 +12,23 @@
             </div>
             <div class="grid-content bg-purple">
               <el-breadcrumb class="nav-router" separator="/">
-                <el-breadcrumb-item>
-                  <a href="/">活动管理</a>
+                <!-- <el-breadcrumb-item>
+                  <router-link to="/home">活动管理</router-link>
                 </el-breadcrumb-item>
                 <el-breadcrumb-item>活动列表</el-breadcrumb-item>
                 <el-breadcrumb-item>活动详情</el-breadcrumb-item>
+                <el-breadcrumb-item >活动详情</el-breadcrumb-item>-->
+                <el-breadcrumb-item v-for="item in $route.matched" :key="item.path">
+                  <router-link :to="item.path">{{ item.meta.title }}</router-link>
+                </el-breadcrumb-item>
               </el-breadcrumb>
             </div>
           </el-col>
           <el-col :xs="6" :sm="5" :md="4" :lg="3" :xl="2">
             <div class="grid-content bg-purple">
-              <span style="margin-right:10px; font-size:16px;">{{this.$store.state.loginInfo.fullName}}</span>
+              <span
+                style="margin-right:10px; font-size:16px;"
+              >{{this.$store.state.loginInfo.fullName}}</span>
               <el-dropdown @command="handleCommand">
                 <span class="el-dropdown-link">
                   设置
@@ -95,6 +101,9 @@ export default {
       } else {
         this.isCollapse = false;
       }
+    },
+    $route() {
+      this.getTag();
     }
   },
   methods: {
@@ -142,6 +151,25 @@ export default {
           this.$router.push({ path: "/login" });
         })
         .catch(() => {});
+    },
+    getTag() {
+      let tag = {
+        name: "",
+        path: "",
+        closable: true,
+        type: "success"
+      };
+      let matched = this.$route.matched;
+      matched.forEach(item => {
+        tag = {
+          name: item.meta.title,
+          path: item.path,
+          closable: true,
+          type: "success"
+        };
+
+      });
+      console.log(tag);
     }
   },
   created() {
@@ -214,7 +242,6 @@ export default {
     // padding: 15px;
     background-color: #ffffff;
   }
- 
 }
 
 body .el-container {
