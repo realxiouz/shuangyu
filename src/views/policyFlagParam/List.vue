@@ -1,39 +1,43 @@
 <template>
-  <div class="app-container">
-    <flag-param-search @onSearch="handleSearch"></flag-param-search>
-    <el-row style="margin-bottom:15px;margin-left:40px;">
-      <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
-    </el-row>
-    <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;" size="mini">
-      <el-table-column prop="thirdName" label="平台" align="center"></el-table-column>
-      <el-table-column prop="label" label="参数标签" align="center"></el-table-column>
-      <el-table-column prop="name" label="参数名称" align="center"></el-table-column>
-      <el-table-column prop="remark" label="备注" align="center"></el-table-column>
-      <el-table-column label="操作" align="center">
-        <template slot-scope="scope">
-          <el-button @click="handleUpdate(scope.row.paramId)" type="primary" size="mini">编辑</el-button>
-          <el-button
-            @click="handleRemove(scope.row,scope.$index,tableData)"
-            type="danger"
-            size="mini"
-          >删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-dialog
-      title="用户信息"
-      :before-close="handleClose"
-      center
-      :visible.sync="dialogVisible"
-      width="30%"
-    >
-      <flag-param-edit
-        v-if="dialogVisible"
-        :param-id="paramId"
-        @onSave="handleSave"
-        @onCancel="handleCancel"
-      ></flag-param-edit>
-    </el-dialog>
+  <div class="bigBox">
+    <div class="searchBox">
+      <flag-param-search @onSearch="handleSearch"></flag-param-search>
+    </div>
+    <div class="contentBox">
+      <el-row style="margin-bottom:15px;margin-left:40px;">
+        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+      </el-row>
+      <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;" size="mini">
+        <el-table-column prop="thirdName" label="平台" align="center"></el-table-column>
+        <el-table-column prop="label" label="参数标签" align="center"></el-table-column>
+        <el-table-column prop="name" label="参数名称" align="center"></el-table-column>
+        <el-table-column prop="remark" label="备注" align="center"></el-table-column>
+        <el-table-column label="操作" align="center">
+          <template slot-scope="scope">
+            <el-button @click="handleUpdate(scope.row.paramId)" type="primary" size="mini">编辑</el-button>
+            <el-button
+              @click="handleRemove(scope.row,scope.$index,tableData)"
+              type="danger"
+              size="mini"
+            >删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-dialog
+        title="用户信息"
+        :before-close="handleClose"
+        center
+        :visible.sync="dialogVisible"
+        width="30%"
+      >
+        <flag-param-edit
+          v-if="dialogVisible"
+          :param-id="paramId"
+          @onSave="handleSave"
+          @onCancel="handleCancel"
+        ></flag-param-edit>
+      </el-dialog>
+    </div>
   </div>
 </template>
 

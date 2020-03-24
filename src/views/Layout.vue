@@ -214,18 +214,7 @@ export default {
     // padding: 15px;
     background-color: #ffffff;
   }
-  .searchBox {
-    padding: 15px;
-    background-color: #fff;
-  }
-  .contentBox {
-    padding: 15px;
-    margin-top: 15px;
-    background-color: #fff;
-  }
-  .bigBox {
-    background-color: #f0f2f5;
-  }
+ 
 }
 
 body .el-container {

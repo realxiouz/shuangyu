@@ -1,5 +1,5 @@
 <template>
-  <el-container>
+  <div class="contentBox">
     <el-aside width="200px">
       <el-tree
         :data="treeData"
@@ -10,7 +10,7 @@
       </el-tree>
     </el-aside>
       <staff-form :curNode="curNode" :staffAddVisible="staffAddVisible" style="width: 100%"/>
-  </el-container>
+  </div>
 </template>
 
 <script>

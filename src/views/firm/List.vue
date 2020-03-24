@@ -1,27 +1,37 @@
 <template>
-  <div class="tree-node">
-    <firm-search @onSearch="handleSearch"></firm-search>
-    <el-row style="margin-bottom:15px; margin-left:25px;">
-      <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
-    </el-row>
-    <el-table :data="tableData" row-key="firmId" :tree-props="tableProps">
-      <el-table-column prop="firmName" label="企业名称" sortable width="180"></el-table-column>
-      <el-table-column prop="firmCode" label="企业代码" sortable width="180"></el-table-column>
-      <el-table-column prop="location" label="机构所在地" width="360"></el-table-column>
-      <el-table-column prop="linkPerson" label="联系人" width="220"></el-table-column>
-      <el-table-column prop="remark" label="备注"></el-table-column>
-      <el-table-column label="操作" align="center" width="300">
-        <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleAppend(scope.$index, scope.row)">添加</el-button>
-          <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-          <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <!-- 表单对话框 -->
-    <el-dialog title="导航信息" center :visible.sync="dialogVisible" width="33%" :close-on-click-modal="false">
-      <firm-edit :curNode="curNode" @onSave="handleSave" @onCancel="handleCancel" />
-    </el-dialog>
+  <div class="bigBox">
+    <div class="searchBox">
+      <firm-search @onSearch="handleSearch"></firm-search>
+    </div>
+    <div class="contentBox">
+      <el-row style="margin-bottom:15px; margin-left:25px;">
+        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+      </el-row>
+      <el-table :data="tableData" row-key="firmId" :tree-props="tableProps">
+        <el-table-column prop="firmName" label="企业名称" sortable width="180"></el-table-column>
+        <el-table-column prop="firmCode" label="企业代码" sortable width="180"></el-table-column>
+        <el-table-column prop="location" label="机构所在地" width="360"></el-table-column>
+        <el-table-column prop="linkPerson" label="联系人" width="220"></el-table-column>
+        <el-table-column prop="remark" label="备注"></el-table-column>
+        <el-table-column label="操作" align="center" width="300">
+          <template slot-scope="scope">
+            <el-button type="primary" size="mini" @click="handleAppend(scope.$index, scope.row)">添加</el-button>
+            <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+            <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <!-- 表单对话框 -->
+      <el-dialog
+        title="导航信息"
+        center
+        :visible.sync="dialogVisible"
+        width="33%"
+        :close-on-click-modal="false"
+      >
+        <firm-edit :curNode="curNode" @onSave="handleSave" @onCancel="handleCancel" />
+      </el-dialog>
+    </div>
   </div>
 </template>
 

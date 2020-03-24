@@ -365,7 +365,7 @@ export default {
 };
 </script>
 <style>
-.searchBox {
+/* .searchBox {
   padding: 15px;
   background-color: #fff;
 }
@@ -376,5 +376,5 @@ export default {
 }
 .bigBox {
   background-color: #f0f2f5;
-}
+} */
 </style>
