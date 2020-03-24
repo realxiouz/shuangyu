@@ -6,8 +6,7 @@
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="订单编号:">
             <el-input v-if="!tableData.orderNo" placeholder="暂无数据" :disabled="true"></el-input>
-            <el-input v-else v-model="tableData.orderNo" style="width: 100%" :disabled="true">
-            </el-input>
+            <el-input v-else v-model="tableData.orderNo" style="width: 100%" :disabled="true"></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -97,8 +96,10 @@
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="交易金额:">
-            
-            <el-input :value="'￥'+ this.$numeral(tableData.transactionAmount).format('0.00')" :disabled="true"></el-input>
+            <el-input
+              :value="'￥'+ this.$numeral(tableData.transactionAmount).format('0.00')"
+              :disabled="true"
+            ></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -140,7 +141,7 @@
       <el-table-column label="出发日期" width="110" align="center">
         <template slot-scope="scope">
           <i v-if="scope.row.flightDate" class="el-icon-time"></i>
-          <span >{{ formatDate(scope.row.flightDate,'YYYY-MM-DD') }}</span>
+          <span>{{ formatDate(scope.row.flightDate,'YYYY-MM-DD') }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="airlineCode" label="航司" width="50"></el-table-column>
@@ -194,12 +195,17 @@
       </el-table-column>
       <el-table-column prop="ageType" label="乘机人类型 0 为成人,1 为儿童，2为婴儿" width="250" align="center">
         <template slot-scope="scope">
-          <span >{{ formatAgeType(scope.row.ageType) }}</span>
+          <span>{{ formatAgeType(scope.row.ageType) }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="cardType" label="乘机人证件类型" width="250" align="center"></el-table-column>
       <el-table-column prop="cardNo" label="乘机人证件号" width="300" align="center"></el-table-column>
-      <el-table-column prop="viewPrice" label="票面价" align="center"></el-table-column>
+      <el-table-column label="票面价" align="center">
+        <template slot-scope="scope">
+          <i v-if="scope.row.viewPrice"></i>
+          <span>{{formatAmount(scope.row.viewPrice)}}</span>
+        </template>
+      </el-table-column>
     </el-table>
   </div>
 </template>
@@ -231,6 +237,12 @@ export default {
       } else {
         return (ageType = "婴儿");
       }
+    },
+    formatAmount1(amount) {
+      if (!amount) {
+        return "";
+      }
+      return "￥" + this.$numeral(amount).format("0.00");
     }
   },
   created() {
@@ -250,7 +262,13 @@ export default {
       return function(dateStr, format) {
         return this.initDate(dateStr, format);
       };
+    },
+    formatAmount(){
+      return function(amount){
+        return this.formatAmount1(amount)
+      }
     }
+
   }
 };
 </script>

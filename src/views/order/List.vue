@@ -7,9 +7,9 @@
       <el-row style="margin-bottom:15px;margin-left:40px">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
-      <el-table :data="tableData" size="mini" highlight-current-row style="width: 100%;" border fit>
-        <el-table-column prop="orderNo" label="订单号" width="160" align="center"></el-table-column>
-        <el-table-column prop="policyCode" label="政策代码" width="150" align="center"></el-table-column>
+      <el-table :data="tableData" size="mini" highlight-current-row style="width: 100%;margin-bottom:15px;" border fit>
+        <el-table-column prop="orderNo" label="订单号" width="180" align="center"></el-table-column>
+        <el-table-column prop="policyCode" label="政策代码" align="center"></el-table-column>
         <el-table-column prop="statusName" label="订单状态" width="80" align="center"></el-table-column>
         <el-table-column label="订单日期" width="110" align="center">
           <template slot-scope="scope">
@@ -50,7 +50,7 @@
             <span style="margin-left: 10px">{{ formatPassengers(scope.row.passengers)}}</span>
           </template>
         </el-table-column>
-        <el-table-column fixed="right" label="操作" align="center" width="200">
+        <el-table-column fixed="right" label="操作" align="center" width="150">
           <template slot-scope="scope">
             <el-button @click="handleOrderDetail(scope.row)" type="primary" size="mini">查看</el-button>
             <el-button type="danger" size="mini" @click="handleRemove(scope.row.orderNo)">删除</el-button>
