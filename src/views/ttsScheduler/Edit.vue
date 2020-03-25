@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="contentBox">
     <el-row>
       <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
         <el-form ref="form" :model="formData" size="mini" :rules="rules" label-width="110px">
@@ -30,10 +30,18 @@
       border
       default-expand-all
     >
-      <el-table-column prop="label" label="参数名称" width="200"></el-table-column>
-      <el-table-column prop="defaultValue" label="参数值" width="700">
+      <el-table-column prop="label" label="参数名称" width="200" align="center"></el-table-column>
+      <el-table-column prop="defaultValue" label="参数值" width="450" align="center">
         <template slot-scope="scope">
+          <el-date-picker
+            v-if="scope.row.label.indexOf('日期') !=-1"
+            v-model="scope.row.defaultValue"
+            type="date"
+            placeholder="选择日期"
+            style="width:100%"
+          ></el-date-picker>
           <el-input
+            v-else
             placeholder="请输入内容"
             v-model="scope.row.defaultValue"
             v-bind:type="scope.row.inputType"
@@ -60,118 +68,118 @@
   </div>
 </template>
 <script>
-  function defaultData() {
-    return {
-      cron: "",
-      schedulerName: "",
-      remark: "",
-      thirdId: "55e7ae33b24748f1b1022a305dd40ac7",
-      apiId: "f7b566a333284551910f8c9fedb979ba1"
-    };
-  }
+function defaultData() {
+  return {
+    cron: "",
+    schedulerName: "",
+    remark: "",
+    thirdId: "55e7ae33b24748f1b1022a305dd40ac7",
+    apiId: "f7b566a333284551910f8c9fedb979ba1"
+  };
+}
 
-  export default {
-    name: "ttsSchedulerEdit",
-    data() {
-      return {
-        formData: defaultData(),
-        tableData: [],
-        copyFlag: false,
-        rules: {
-          schedulerName: [
-            { required: true, message: "请输入名称", trigger: "blur" }
-          ],
-          cron: [{ required: true, message: "请输入时间表达式", trigger: "blur" }]
-        }
-      };
-    },
-    methods: {
-      handleGetOne(id) {
-        if (id) {
-          this.$store
-            .dispatch("ttsScheduler/getOne", { schedulerId: id })
-            .then(data => {
-              this.formData = data;
-              this.tableData = this.formData.params;
-            })
-            .catch(error => {
-              console.log(error);
-            });
-        } else {
-          this.formData = defaultData();
-        }
-      },
-      getDefaultParam() {
+export default {
+  name: "ttsSchedulerEdit",
+  data() {
+    return {
+      formData: defaultData(),
+      tableData: [],
+      copyFlag: false,
+      rules: {
+        schedulerName: [
+          { required: true, message: "请输入名称", trigger: "blur" }
+        ],
+        cron: [{ required: true, message: "请输入时间表达式", trigger: "blur" }]
+      }
+    };
+  },
+  methods: {
+    handleGetOne(id) {
+      if (id) {
         this.$store
-          .dispatch("ttsScheduler/getParamList", {
-            searchForm: {
-              thirdId: "55e7ae33b24748f1b1022a305dd40ac7",
-              apiId: "f7b566a333284551910f8c9fedb979ba1"
-            }
-          })
+          .dispatch("ttsScheduler/getOne", { schedulerId: id })
           .then(data => {
-            this.tableData = data;
+            this.formData = data;
+            this.tableData = this.formData.params;
           })
           .catch(error => {
             console.log(error);
           });
-      },
-      handleSaveStart() {
-        this.$refs["form"].validate(valid => {
-          if (valid) {
-            console.log(this.copyFlag);
-            if (this.copyFlag) {
-              this.formData.schedulerId = null;
-            }
-            this.formData.params = this.tableData;
-            this.$store
-              .dispatch("ttsScheduler/saveAndStart", this.formData)
-              .then(() => {
-                this.goBack();
-              })
-              .catch(error => {
-                console.log(error);
-              });
-          }
-        });
-      },
-      goBack() {
-        this.$router.go(-1);
-      },
-      handleSave() {
-        this.$refs["form"].validate(valid => {
-          if (valid) {
-            if (this.copyFlag) {
-              this.formData.schedulerId = null;
-            }
-            this.formData.params = this.tableData;
-            this.$store
-              .dispatch("ttsScheduler/save", this.formData)
-              .then(() => {
-                this.goBack();
-              })
-              .catch(error => {
-                console.log(error);
-              });
-          }
-        });
+      } else {
+        this.formData = defaultData();
       }
     },
-    created() {
-      const { schedulerId } = this.$route.params;
-      const { copyFlag } = this.$route.params;
-      console.log(copyFlag);
-      this.copyFlag = copyFlag;
-      if (schedulerId) {
-        this.handleGetOne(schedulerId);
-      } else {
-        this.getDefaultParam();
-      }
+    getDefaultParam() {
+      this.$store
+        .dispatch("ttsScheduler/getParamList", {
+          searchForm: {
+            thirdId: "55e7ae33b24748f1b1022a305dd40ac7",
+            apiId: "f7b566a333284551910f8c9fedb979ba1"
+          }
+        })
+        .then(data => {
+          this.tableData = data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    handleSaveStart() {
+      this.$refs["form"].validate(valid => {
+        if (valid) {
+          console.log(this.copyFlag);
+          if (this.copyFlag) {
+            this.formData.schedulerId = null;
+          }
+          this.formData.params = this.tableData;
+          this.$store
+            .dispatch("ttsScheduler/saveAndStart", this.formData)
+            .then(() => {
+              this.goBack();
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        }
+      });
+    },
+    goBack() {
+      this.$router.go(-1);
+    },
+    handleSave() {
+      this.$refs["form"].validate(valid => {
+        if (valid) {
+          if (this.copyFlag) {
+            this.formData.schedulerId = null;
+          }
+          this.formData.params = this.tableData;
+          this.$store
+            .dispatch("ttsScheduler/save", this.formData)
+            .then(() => {
+              this.goBack();
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        }
+      });
     }
-  };
+  },
+  created() {
+    const { schedulerId } = this.$route.params;
+    const { copyFlag } = this.$route.params;
+    console.log(copyFlag);
+    this.copyFlag = copyFlag;
+    if (schedulerId) {
+      this.handleGetOne(schedulerId);
+    } else {
+      this.getDefaultParam();
+    }
+  }
+};
 </script>
 <style scoped>
-  .el-form-item {
-    margin-bottom: 20px;
-  }
+.el-form-item {
+  margin-bottom: 20px;
+}
 </style>
