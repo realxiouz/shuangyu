@@ -147,8 +147,8 @@
               inactive-color="#13ce66"
               active-text="系统"
               inactive-text="手工"
-              :active-value="1"
-              :inactive-value="0"
+              :active-value="0"
+              :inactive-value="1"
             ></el-switch>
           </el-form-item>
         </el-col>
@@ -291,10 +291,11 @@ export default {
         { label: "出票", value: 1 },
         { label: "退票", value: 2 },
         { label: "改签", value: 3 },
-        { label: "消息", value: 4 },
-        { label: "质检", value: 5 },
-        { label: "补单", value: 6 },
-        { label: "补单号", value: 7 }
+        { label: "未出票申请退款", value: 4 },
+        { label: "消息", value: 5 },
+        { label: "质检", value: 6 },
+        { label: "补单", value: 11 },
+        { label: "填写单号", value: 12 }
       ],
       channels: [
         { label: "蜗牛", value: 1 },
