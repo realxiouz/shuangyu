@@ -12,7 +12,6 @@
       highlight-current-row
       size="mini"
       style="width: 100%;margin-bottom:15px"
-      border
     >
       <el-table-column prop="apiName" label="API名称" align="center"></el-table-column>
       <el-table-column prop="category" label="类别" align="center"></el-table-column>

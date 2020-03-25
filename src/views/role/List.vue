@@ -149,10 +149,10 @@ export default {
     handleCancel: function() {
       this.dialogVisible = false;
     },
-    handleSearch(keyword) {
+    handleSearch(formData) {
       this.$store
         .dispatch("role/getTotal", {
-          filter: keyword ? { roleName: keyword } : {}
+          filter: formData ? { roleName: formData.keyword } : {}
         })
         .then(data => {
           this.total = data;
@@ -166,7 +166,7 @@ export default {
           pageFlag: this.pageFlag,
           pageSize: this.pageSize,
           lastId: this.lastId,
-          filter: keyword ? { roleName: keyword } : {}
+          filter: formData ? { roleName: formData.keyword } : {}
         })
         .then(data => {
           this.tableData = data;
