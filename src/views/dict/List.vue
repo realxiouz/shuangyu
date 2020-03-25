@@ -52,9 +52,6 @@
         <el-form-item label="排序">
           <el-input type="text" v-model="formData.sort"></el-input>
         </el-form-item>
-        <el-form-item label="是否启用">
-          <el-switch v-model="formData.enable"></el-switch>
-        </el-form-item>
         <el-form-item label="备注">
           <el-input type="textarea" :rows="3" v-model="formData.remark"></el-input>
         </el-form-item>
@@ -204,6 +201,7 @@
                 this.dictVisible = false;
             },
             handleEdit(data, node) {
+                console.log(node);
                 this.formData = node;
                 this.dialogVisible = true;
                 this.update = true;
