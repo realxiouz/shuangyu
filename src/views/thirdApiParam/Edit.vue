@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-form ref="formData" :model="formData" label-width="110px" size="mini">
-      <el-form-item label="第三方平台" prop="thirdId">
+      <el-form-item label="第三方平台:" prop="thirdId">
         <el-select v-model="formData.thirdId" placeholder="请选择" style="width:100%">
           <el-option
             v-for="(item,idx) in thirdPartyList"
@@ -11,7 +11,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="政策" prop="apiId">
+      <el-form-item label="政策:" prop="apiId">
         <el-select v-model="formData.apiId" placeholder="请选择" style="width:100%">
           <el-option
             v-for="(item, idx) in apiList"
@@ -22,22 +22,22 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="接口标签" prop="label">
+      <el-form-item label="接口标签:" prop="label">
         <el-input v-model="formData.label" placeholder="请输入接口标签"></el-input>
       </el-form-item>
-      <el-form-item label="接口名称" prop="name">
+      <el-form-item label="接口名称:" prop="name">
         <el-input v-model="formData.name" placeholder="请输入接口名称"></el-input>
       </el-form-item>
-      <el-form-item label="默认值" prop="defaultValue">
+      <el-form-item label="默认值:" prop="defaultValue">
         <el-input v-model="formData.defaultValue" placeholder="请输入默认值"></el-input>
       </el-form-item>
-      <el-form-item label="是否必须" >
+      <el-form-item label="是否必须:" >
         <el-select v-model="formData.required" placeholder="请选择" style="width:100%">
           <el-option label="是" :value="true"></el-option>
           <el-option label="否" :value="false"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="备注">
+      <el-form-item label="备注:">
         <el-input type="textarea" :rows="3" v-model="formData.remark" placeholder="请输入备注"></el-input>
       </el-form-item>
     </el-form>

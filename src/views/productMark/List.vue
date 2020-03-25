@@ -32,7 +32,7 @@
         :page-size="pageSize"
         :total="total"
       ></el-pagination>
-      <el-dialog center title="接口参数信息" :visible.sync="dialogVisible" width="33%">
+      <el-dialog center title="接口参数信息" :visible.sync="dialogVisible" width="35%">
         <product-mark-edit
           v-if="dialogVisible"
           :markId="markId"
@@ -40,7 +40,7 @@
           @onCancel="handleCancel"
         ></product-mark-edit>
       </el-dialog>
-      <el-dialog center title="接口参数信息" :visible.sync="flagListVisible" width="33%">
+      <el-dialog center title="接口参数信息" :visible.sync="flagListVisible" width="35%">
         <flg-list v-if="flagListVisible" :flags="flags" @onCancel="handleCancelFlagList"></flg-list>
       </el-dialog>
     </div>

@@ -14,9 +14,9 @@
         style="width: 100%;margin-bottom:15px;"
         size="mini"
       >
-        <el-table-column prop="airlineName" label="航司名称"></el-table-column>
-        <el-table-column prop="airlineCode" label="航司二字码"></el-table-column>
-        <el-table-column prop="cabins" label="舱位"></el-table-column>
+        <el-table-column prop="airlineName" label="航司名称" align="center"></el-table-column>
+        <el-table-column prop="airlineCode" label="航司二字码" align="center"></el-table-column>
+        <el-table-column prop="cabins" label="舱位" align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="200">
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary" size="small">编辑</el-button>
@@ -37,8 +37,7 @@
         :total="total"
       ></el-pagination>
       <el-dialog
-        title="添加航司信息"
-        :before-close="handleClose"
+        title="航司信息"
         center
         :visible.sync="dialogVisible"
         width="30%"
@@ -145,13 +144,6 @@ export default {
     },
     handleCancel() {
       this.dialogVisible = false;
-    },
-    handleClose() {
-      this.$confirm("确认关闭添加航司信息对话框？")
-        .then(() => {
-          this.dialogVisible = false;
-        })
-        .catch(() => {});
     },
     handleSave() {
       this.dialogVisible = false;
