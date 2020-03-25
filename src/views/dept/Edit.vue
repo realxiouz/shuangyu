@@ -1,16 +1,16 @@
 <template>
   <div>
     <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
-      <el-form-item label="部门名称" prop="deptName">
+      <el-form-item label="部门名称:" prop="deptName">
         <el-input v-model="formData.deptName"></el-input>
       </el-form-item>
-      <el-form-item label="域名" prop="domain">
+      <el-form-item label="域名:" prop="domain">
         <el-input v-model="formData.domain"></el-input>
       </el-form-item>
-      <el-form-item label="钉钉Id" prop="ddId">
+      <el-form-item label="钉钉Id:" prop="ddId">
         <el-input v-model.number="formData.ddId"></el-input>
       </el-form-item>
-      <el-form-item label="钉钉父节点" prop="ddParentIdId">
+      <el-form-item label="钉钉父节点:" prop="ddParentIdId">
         <el-input v-model.number="formData.ddParentIdId"></el-input>
       </el-form-item>
     </el-form>
