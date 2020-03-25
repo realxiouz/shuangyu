@@ -10,7 +10,11 @@
       >
         <el-table-column prop="taskNo" label="任务编号" align="center"></el-table-column>
         <el-table-column prop="taskName" label="任务名称" align="center"></el-table-column>
-        <el-table-column prop="taskType" label="任务类型" align="center"></el-table-column>
+        <el-table-column prop="taskType" label="任务类型" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatTaskType(scope.row.taskType)}}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="orderRuleId" label="规则类型" align="center"></el-table-column>
         <el-table-column prop="profit" label="利润" align="center">
           <template slot-scope="scope">
@@ -128,6 +132,35 @@ export default {
         return "￥0.00";
       }
       return "￥" + this.$numeral(amount).format("0.00");
+    },
+    formatTaskType(taskType) {
+      // 任务类型，1:出票（支付成功等待出票），
+      // 2：退票（申请退票），
+      // 3：改签（申请改签），
+      // 4：未出票申请退款（未出票申请退款）
+      // ，5：消息，
+      // 6：质检，11：补订单，12：填写订单号
+      if (!taskType) {
+        return "";
+      } else if (taskType == 1) {
+        return "出票（支付成功等待出票）";
+      } else if (taskType == 2) {
+        return "退票（申请退票）";
+      } else if (taskType == 3) {
+        return "改签（申请改签）";
+      } else if (taskType == 4) {
+        return "未出票申请退款（未出票申请退款）";
+      } else if (taskType == 5) {
+        return "消息";
+      } else if (taskType == 6) {
+        return "质检";
+      } else if (taskType == 11) {
+        return "补订单";
+      } else if(taskType == 12) {
+        return "填写订单号";
+      }else{
+        return ''
+      }
     }
   },
   created() {
