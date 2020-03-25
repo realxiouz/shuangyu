@@ -14,8 +14,8 @@
         @row-dblclick="handleEdit"
         style="width: 100%;margin-bottom:15px;"
       >
-        <el-table-column prop="airlineCode" label="航司二字码"></el-table-column>
-        <el-table-column prop="cabin" label="舱位"></el-table-column>
+        <el-table-column prop="airlineCode" label="航司二字码" align="center"></el-table-column>
+        <el-table-column prop="cabin" label="舱位" align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="200">
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary" size="small">编辑</el-button>
@@ -38,7 +38,6 @@
       <el-dialog
         title="退改规则"
         center
-        :before-close="handleClose"
         :visible.sync="dialogVisible"
         width="55%"
       >
@@ -143,13 +142,6 @@ export default {
     },
     handleCancel() {
       this.dialogVisible = false;
-    },
-    handleClose() {
-      this.$confirm("确认关闭退改规则对话框？")
-        .then(() => {
-          this.dialogVisible = false;
-        })
-        .catch(() => {});
     },
     handleSave() {
       this.dialogVisible = false;
