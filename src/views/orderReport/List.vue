@@ -54,8 +54,8 @@
         <el-table-column prop="receipt" label="实收" width="60" align="center"></el-table-column>
         <el-table-column prop="payment" label="实付" width="60" align="center"></el-table-column>
         <el-table-column prop="systemProfit" label="系统利润" width="80" align="center"></el-table-column>
-        <el-table-column prop="shouldProfit" label="应该利润" width="80" align="center"></el-table-column>
-        <el-table-column prop="profit" label="实际利润" width="80" align="center"></el-table-column>
+        <el-table-column prop="shouldProfit" label="业务利润" width="80" align="center"></el-table-column>
+        <el-table-column prop="profit" label="财务利润" width="80" align="center"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="150">
           <template slot-scope="scope">
             <el-button @click="handleUpdate(scope.row.deptId)" type="primary" size="mini">编辑</el-button>
