@@ -7,7 +7,6 @@
     </el-row>
     <el-table
       size="mini"
-      highlight-current-row
       :data="tableData"
       style="width: 100%;margin-bottom: 20px;">
       <el-table-column prop="name" label="字典名称" width="200"></el-table-column>
