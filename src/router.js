@@ -321,7 +321,7 @@ export default new Router({
           path: '/ttsScheduler/list',
           name: 'ttsSchedulerList',
           component: () => import('@/views/ttsScheduler/List'),
-          meta: {title: 'Home', icon: 'home'}
+          meta: {title: 'TTS调度', icon: 'home'}
         },
         {
           title: 'TTS编辑',
@@ -329,7 +329,7 @@ export default new Router({
           name: 'ttsSchedulerEdit',
           component: () => import('@/views/ttsScheduler/Edit'),
           props: {default: true, sidebar: false},
-          meta: {title: 'Home', icon: 'home'}
+          meta: {title: 'TTS编辑', icon: 'home'}
         },
         {
           title: '第三方标签',
