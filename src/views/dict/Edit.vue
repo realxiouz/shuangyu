@@ -10,7 +10,7 @@
       :data="tableData"
       style="width: 100%;margin-bottom: 20px;">
       <el-table-column prop="name" label="字典名称" width="200"></el-table-column>
-      <el-table-column prop="key" label="键值" width="200"></el-table-column>
+      <el-table-column prop="key" label="字典键" width="200"></el-table-column>
       <el-table-column prop="value" label="字典值" width="200" align="center"></el-table-column>
       <el-table-column label="类别" width="200" align="center">
         <template slot-scope="scope">
