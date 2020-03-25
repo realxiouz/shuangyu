@@ -1,13 +1,13 @@
 <template>
   <div>
     <el-form ref="form" :model="formData" :rules="rules" label-width="110px" size="mini">
-      <el-form-item prop="airlineName" label="航司名称">
+      <el-form-item prop="airlineName" label="航司名称:">
         <el-input v-model="formData.airlineName"></el-input>
       </el-form-item>
-      <el-form-item prop="airlineCode" label="航司二字码">
+      <el-form-item prop="airlineCode" label="航司二字码:">
         <el-input v-bind:disabled="disabled" v-model="formData.airlineCode"></el-input>
       </el-form-item>
-      <el-form-item prop="_cabins" label="舱位">
+      <el-form-item prop="_cabins" label="舱位:">
         <el-input v-model="_cabins"></el-input>
       </el-form-item>
     </el-form>
