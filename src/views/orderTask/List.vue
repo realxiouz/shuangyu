@@ -15,7 +15,11 @@
             <span>{{ formatTaskType(scope.row.taskType)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="orderRuleId" label="规则类型" align="center"></el-table-column>
+        <el-table-column prop="ruleType" label="规则类型" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatTaskType(scope.row.taskType)==0?"系统":"手工"}}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="profit" label="利润" align="center">
           <template slot-scope="scope">
             <span>{{ formatAmount(scope.row.profit)}}</span>
@@ -120,7 +124,7 @@ export default {
     },
     /*初始化用工列表中的生日日期格式*/
     initDate(dateStr, format) {
-      if (null != dateStr) {
+      if (null != dateStr && dateStr != 0) {
         let date = new Date(dateStr);
         return this.$moment(date).format(format);
       } else {
@@ -156,10 +160,10 @@ export default {
         return "质检";
       } else if (taskType == 11) {
         return "补订单";
-      } else if(taskType == 12) {
+      } else if (taskType == 12) {
         return "填写订单号";
-      }else{
-        return ''
+      } else {
+        return "";
       }
     }
   },
