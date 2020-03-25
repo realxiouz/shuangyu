@@ -50,8 +50,8 @@
           </template>
         </el-table-column>
         <el-table-column prop="receivable" label="应收" width="60" align="center"></el-table-column>
-        <el-table-column prop="payable" label="应付" width="60" align="center"></el-table-column>
         <el-table-column prop="receipt" label="实收" width="60" align="center"></el-table-column>
+        <el-table-column prop="payable" label="应付" width="60" align="center"></el-table-column>
         <el-table-column prop="payment" label="实付" width="60" align="center"></el-table-column>
         <el-table-column prop="systemProfit" label="系统利润" width="80" align="center"></el-table-column>
         <el-table-column prop="shouldProfit" label="业务利润" width="80" align="center"></el-table-column>
