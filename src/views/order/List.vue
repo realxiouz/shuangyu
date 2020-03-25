@@ -91,19 +91,20 @@
         methods: {
             handleSizeChange: function (size) {
                 this.pageSize = size;
+                this.searchParams.pageSize = this.pageSize;
                 this.loadData(this.searchParams);
             },
             prevClick(page) {
                 this.currentPage = page;
+                this.searchParams.currentPage = this.currentPage;
                 this.loadData(this.searchParams);
             },
             nextClick(page) {
                 this.currentPage = page;
+                this.searchParams.currentPage = this.currentPage;
                 this.loadData(this.searchParams);
             },
             loadData(params) {
-                params.currentPage = this.currentPage;
-                params.pageSize = this.pageSize;
                 this.$store
                     .dispatch("order/getList", {
                         filters: params
