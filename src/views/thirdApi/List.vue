@@ -7,16 +7,16 @@
       <el-row style="margin-bottom:15px;margin-left:15px;">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
-      <el-table size="mini" :data="tableData" style="width: 100%;margin-bottom: 20px;" border>
-        <el-table-column prop="thirdId" label="第三方平台" width="300"></el-table-column>
-        <el-table-column prop="url" label="url" width="300"></el-table-column>
-        <el-table-column prop="method" label="方法名称" ></el-table-column>
+      <el-table size="mini" :data="tableData" style="width: 100%;margin-bottom: 15px;">
+        <el-table-column prop="thirdId" label="第三方平台" width="300" align="center"></el-table-column>
+        <el-table-column prop="url" label="url" width="300" align="center"></el-table-column>
+        <el-table-column prop="method" label="方法名称" align="center" ></el-table-column>
         <el-table-column label="是否启用" align="center" width="100">
           <template slot-scope="scope">
             <el-switch v-model="scope.row.enable" @change="handleSwitch(scope.row)"></el-switch>
           </template>
         </el-table-column>
-        <el-table-column fixed="right" label="操作" align="center" width="200">
+        <el-table-column fixed="right" label="操作" align="center" width="180">
           <template slot-scope="scope">
             <el-button @click="handleUpdate(scope.row.apiId)" type="primary" size="mini">编辑</el-button>
             <el-button

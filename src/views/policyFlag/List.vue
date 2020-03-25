@@ -11,7 +11,7 @@
         <el-table-column prop="flagId" label="标签id" align="center"></el-table-column>
         <el-table-column prop="thirdName" label="平台" align="center"></el-table-column>
         <el-table-column prop="remark" label="备注" align="center"></el-table-column>
-        <el-table-column label="操作" align="center">
+        <el-table-column label="操作" align="center" width="180">
           <template slot-scope="scope">
             <el-button @click="handleUpdate(scope.row.flagId)" type="primary" size="mini">编辑</el-button>
             <el-button
