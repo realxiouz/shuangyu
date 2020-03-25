@@ -18,6 +18,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="categoryName" label="订单类型" width="80" align="center"></el-table-column>
+        <el-table-column prop="voyageTypeName" label="航程类型" width="80" align="center"></el-table-column>
         <el-table-column label="航班号" width="80" align="center">
           <template slot-scope="scope">
             <i v-if="scope.row.flights"></i>
@@ -36,18 +37,17 @@
             <span style="margin-left: 10px">{{ formatFlight(scope.row.flights)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="voyageTypeName" label="航程类型" width="80" align="center"></el-table-column>
         <el-table-column prop="pnr" label="PNR" width="150" align="center"></el-table-column>
-        <el-table-column label="总价" width="100" align="center">
-          <template slot-scope="scope">
-            <i v-if="scope.row.amount"></i>
-            <span style="margin-left: 10px">{{ formatAmount(scope.row.amount)}}</span>
-          </template>
-        </el-table-column>
         <el-table-column label="乘客" align="center" width="200">
           <template slot-scope="scope">
             <i v-if="scope.row.passengers"></i>
             <span style="margin-left: 10px">{{ formatPassengers(scope.row.passengers)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="总价" width="100" align="center">
+          <template slot-scope="scope">
+            <i v-if="scope.row.amount"></i>
+            <span style="margin-left: 10px">{{ formatAmount(scope.row.amount)}}</span>
           </template>
         </el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="150">
@@ -96,11 +96,13 @@
             },
             prevClick(page) {
                 this.currentPage = page;
+                this.searchParams.pageSize = this.pageSize;
                 this.searchParams.currentPage = this.currentPage;
                 this.loadData(this.searchParams);
             },
             nextClick(page) {
                 this.currentPage = page;
+                this.searchParams.pageSize = this.pageSize;
                 this.searchParams.currentPage = this.currentPage;
                 this.loadData(this.searchParams);
             },

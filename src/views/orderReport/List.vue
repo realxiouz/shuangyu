@@ -37,16 +37,16 @@
           </template>
         </el-table-column>
         <el-table-column prop="pnr" label="PNR" width="80" align="center"></el-table-column>
-        <el-table-column label="总价" width="90" align="center">
-          <template slot-scope="scope">
-            <i v-if="scope.row.amount"></i>
-            <span style="margin-left: 10px">{{ formatAmount(scope.row.amount)}}</span>
-          </template>
-        </el-table-column>
         <el-table-column label="乘客" align="center" width="100">
           <template slot-scope="scope">
             <i v-if="scope.row.passengers"></i>
             <span style="margin-left: 10px">{{ formatPassengers(scope.row.passengers)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="总价" width="90" align="center">
+          <template slot-scope="scope">
+            <i v-if="scope.row.amount"></i>
+            <span style="margin-left: 10px">{{ formatAmount(scope.row.amount)}}</span>
           </template>
         </el-table-column>
         <el-table-column prop="receivable" label="应收" width="60"></el-table-column>
