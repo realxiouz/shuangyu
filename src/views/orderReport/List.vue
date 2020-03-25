@@ -14,7 +14,7 @@
         <el-table-column prop="categoryName" label="订单类型" width="80" align="center"></el-table-column>
         <el-table-column label="订单日期" width="100" align="center">
           <template slot-scope="scope">
-            <i v-if="scope.row.createTime" ></i>
+            <i v-if="scope.row.createTime"></i>
             <span style="margin-left: 10px">{{ formatDate(scope.row.createTime,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
@@ -101,19 +101,20 @@
         methods: {
             handleSizeChange: function (size) {
                 this.pageSize = size;
+                this.searchParams.pageSize = this.pageSize;
                 this.loadData(this.searchParams);
             },
             prevClick(page) {
                 this.currentPage = page;
+                this.searchParams.currentPage = this.currentPage;
                 this.loadData(this.searchParams);
             },
             nextClick(page) {
                 this.currentPage = page;
+                this.searchParams.currentPage = this.currentPage;
                 this.loadData(this.searchParams);
             },
             loadData(params) {
-                params.currentPage = this.currentPage;
-                params.pageSize = this.pageSize;
                 this.$store
                     .dispatch("orderReport/getList", {
                         filters: params
@@ -150,17 +151,41 @@
                     this.loadTotal(this.searchParams);
                 } else {
                     const newParams = {};
+                    if (params.name) {
+                        newParams.name = params.name;
+                    }
+                    if (params.cardNo) {
+                        newParams.cardNo = params.cardNo;
+                    }
                     if (params.orderNo) {
                         newParams.orderNo = params.orderNo;
                     }
                     if (params.ticketNo) {
                         newParams.ticketNo = params.ticketNo;
                     }
+                    if (params.pnr) {
+                        newParams.pnr = params.pnr;
+                    }
+                    if (params.status) {
+                        newParams.status = params.status;
+                    }
+                    if (params.flightDate) {
+                        newParams.flightDate = params.flightDate;
+                    }
+                    if (params.cabin) {
+                        newParams.cabin = params.cabin;
+                    }
                     if (params.flightCode) {
                         newParams.flightCode = params.flightCode;
                     }
-                    if (params.name) {
-                        newParams.name = params.name;
+                    if (params.orderSource) {
+                        newParams.orderSource = params.orderSource;
+                    }
+                    if (params.voyageType) {
+                        newParams.voyageType = params.voyageType;
+                    }
+                    if (params.createTime) {
+                        newParams.createTime = params.createTime;
                     }
                     this.searchParams = newParams;
                     this.loadData(this.searchParams);
@@ -197,7 +222,7 @@
                 if (!data || data.length == 0) {
                     return "";
                 }
-                let dptTime =data[0].dptTime.split(" ");
+                let dptTime = data[0].dptTime.split(" ");
                 return data[0].dpt +
                     " " +
                     dptTime[1] +

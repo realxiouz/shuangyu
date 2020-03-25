@@ -13,7 +13,7 @@
         <el-table-column prop="statusName" label="订单状态" width="80" align="center"></el-table-column>
         <el-table-column label="订单日期" width="100" align="center">
           <template slot-scope="scope">
-            <i v-if="scope.row.createTime" ></i>
+            <i v-if="scope.row.createTime"></i>
             <span style="margin-left: 10px">{{ formatDate(scope.row.createTime,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
@@ -171,6 +171,9 @@
                     if (params.voyageType) {
                         newParams.voyageType = params.voyageType;
                     }
+                    if (params.createTime) {
+                        newParams.createTime = params.createTime;
+                    }
                     this.searchParams = newParams;
                     this.loadData(this.searchParams);
                     this.loadTotal(this.searchParams);
@@ -221,7 +224,7 @@
                 if (!data || data.length == 0) {
                     return "";
                 }
-                 let dptTime =data[0].dptTime.split(" ");
+                let dptTime = data[0].dptTime.split(" ");
                 return data[0].dpt +
                     " " +
                     dptTime[1] +

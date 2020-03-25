@@ -114,7 +114,6 @@
             return {
                 more: false,
                 formData: {
-                    orderType: "", //订单类型
                     voyageType: "", //航程类型
                     orderSource: "", //订单来源
                     flightCode: "", //航班号
@@ -122,7 +121,7 @@
                     cabin: "", //舱位
                     status: "", //订单状态
                     pnr: "", //PNR
-                    rootOrderNo: "", //票号
+                    ticketNo: "", //票号
                     orderNo: "", //订单号
                     name: "", //乘机人姓名
                     cardNo: "",//乘机人证件号
