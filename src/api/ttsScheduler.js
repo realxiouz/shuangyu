@@ -54,7 +54,6 @@ export function getList(params) {
 }
 
 export function getParamList(params) {
-  debugger
   return request({
     url: '/tts/scheduler/param/list',
     method: 'get',

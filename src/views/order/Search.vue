@@ -61,10 +61,11 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="订单来源:">
-            <el-select v-model="formData.orderSource" placeholder="全部" style="width: 100%">
-              <el-option label="去哪网" value="qunawang"></el-option>
-              <el-option label="飞猪" value="feizhu"></el-option>
+          <el-form-item v-show="more" label="订单类型:">
+            <el-select v-model="formData.orderType" placeholder="全部" style="width: 100%">
+              <el-option label="出票完成" value="10"></el-option>
+              <el-option label="改签完成" value="30"></el-option>
+              <el-option label="退票完成" value="20"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
@@ -119,7 +120,7 @@
                 more: false,
                 formData: {
                     voyageType: "", //航程类型
-                    orderSource: "", //订单来源
+                    orderType: "", //订单来源
                     flightCode: "", //航班号
                     flightDate: "", //出发日期
                     cabin: "", //舱位

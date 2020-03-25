@@ -178,8 +178,8 @@
                     if (params.flightCode) {
                         newParams.flightCode = params.flightCode;
                     }
-                    if (params.orderSource) {
-                        newParams.orderSource = params.orderSource;
+                    if (params.orderType) {
+                        newParams.orderType = params.orderType;
                     }
                     if (params.voyageType) {
                         newParams.voyageType = params.voyageType;

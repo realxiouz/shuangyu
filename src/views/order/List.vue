@@ -17,7 +17,7 @@
             <span style="margin-left: 10px">{{ formatDate(scope.row.createTime,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="categoryName" label="订单类型" width="80" align="center"></el-table-column>
+        <el-table-column prop="categoryName" label="订单分类" width="80" align="center"></el-table-column>
         <el-table-column prop="voyageTypeName" label="航程类型" width="80" align="center"></el-table-column>
         <el-table-column label="航班号" width="80" align="center">
           <template slot-scope="scope">
@@ -167,8 +167,8 @@
                     if (params.flightCode) {
                         newParams.flightCode = params.flightCode;
                     }
-                    if (params.orderSource) {
-                        newParams.orderSource = params.orderSource;
+                    if (params.orderType) {
+                        newParams.orderType = params.orderType;
                     }
                     if (params.voyageType) {
                         newParams.voyageType = params.voyageType;
