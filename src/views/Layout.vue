@@ -57,7 +57,9 @@
               :key="tag.name"
               :closable="tag.closable"
               :type="tag.type"
-            >{{tag.name}}</el-tag>
+            >
+              <router-link :to="tag.path">{{tag.name}}</router-link>
+            </el-tag>
           </div>
           <!-- <el-page-header content="添加用户"></el-page-header> -->
         </div>
@@ -243,59 +245,59 @@ export default {
   background-color: #f0f2f5;
 }
 
-  .app-header {
-    height: 94px;
+.app-header {
+  height: 94px;
+  overflow: hidden;
+  position: relative;
+  background: #fff;
+  -webkit-box-shadow: 0px 6px 6px rgba(0, 21, 41, 0.08);
+  box-shadow: 0px 6px 6px rgba(0, 21, 41, 0.08);
+
+  .headFirm {
+    white-space: nowrap;
     overflow: hidden;
-    position: relative;
-    background: #fff;
-    -webkit-box-shadow: 0px 6px 6px rgba(0, 21, 41, 0.08);
-    box-shadow: 0px 6px 6px rgba(0, 21, 41, 0.08);
-
-    .headFirm {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .el-page-header {
-      padding-left: 20px;
-      line-height: 32px;
-    }
-
-    .grid-content {
-      height: 40px;
-      display: table-cell;
-      vertical-align: middle;
-    }
-
-    .nav-switch {
-      display: inline-block;
-      font-size: 28px;
-    }
-
-    .nav-router {
-      padding: 20px;
-    }
-
-    .tags-view {
-      height: 40px;
-      padding-top: 6px;
-      border-top: 1px solid #edeff0;
-      border-bottom: 1px solid #edeff0;
-
-      .tags-view-item {
-        margin: 0 5px;
-        cursor: pointer;
-        height: 26px;
-        line-height: 26px;
-      }
-    }
+    text-overflow: ellipsis;
+  }
+  .el-page-header {
+    padding-left: 20px;
+    line-height: 32px;
   }
 
-  .app-main {
-    margin: 15px;
-    // padding: 15px;
-    background-color: #ffffff;
+  .grid-content {
+    height: 40px;
+    display: table-cell;
+    vertical-align: middle;
   }
+
+  .nav-switch {
+    display: inline-block;
+    font-size: 28px;
+  }
+
+  .nav-router {
+    padding: 20px;
+  }
+
+  .tags-view {
+    height: 40px;
+    padding-top: 6px;
+    border-top: 1px solid #edeff0;
+    border-bottom: 1px solid #edeff0;
+
+    .tags-view-item {
+      margin: 0 5px;
+      cursor: pointer;
+      height: 26px;
+      line-height: 26px;
+    }
+  }
+}
+
+.app-main {
+  margin: 15px;
+  // padding: 15px;
+  background-color: #ffffff;
+}
 
 body .el-container {
   height: 100%;
