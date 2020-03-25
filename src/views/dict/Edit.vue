@@ -1,71 +1,75 @@
 <template>
-    <div class="contentBox">
-      <el-row style="margin-bottom:15px;margin-left:20px">
-        <el-button type="primary" size="mini" @click="handleAdd" :disabled="dictVisible">添加字典</el-button>
-      </el-row>
-      <el-table
-        size="mini"
-        highlight-current-row
-        :data="tableData"
-        style="width: 100%;margin-bottom: 20px;">
-        <el-table-column prop="name" label="字典名称" width="260" align="center"></el-table-column>
-        <el-table-column prop="value" label="字典值" width="260" align="center"></el-table-column>
-        <el-table-column label="类别" width="200" align="center">
-          <template slot-scope="scope">
-            <span style="margin-left: 10px">{{ formatCategory(scope.row.categoryId) }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="categoryCode" label="类别编码" width="200" align="center"></el-table-column>
-        <el-table-column label="操作" align="center">
-          <template slot-scope="scope">
-            <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
-            <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-pagination
-        background
-        layout="total,prev,next"
-        prev-text="上一页"
-        next-text="下一页"
-        :page-size="pageSize"
-        :total="total"
-        @prev-click="handlePrevClick"
-        @next-click="handleNextClick"
-      ></el-pagination>
+  <div class="contentBox">
+    <el-row style="margin-bottom:15px;margin-left:20px">
+      <el-button type="primary" size="mini" @click="handleAdd" :disabled="dictVisible">添加字典</el-button>
+    </el-row>
+    <el-table
+      size="mini"
+      highlight-current-row
+      :data="tableData"
+      style="width: 100%;margin-bottom: 20px;">
+      <el-table-column label="类别" width="200" align="center">
+        <template slot-scope="scope">
+          <span style="margin-left: 10px">{{ formatCategory(scope.row.categoryId) }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="categoryCode" label="类别编码" width="200" align="center"></el-table-column>
+      <el-table-column prop="name" label="字典名称" width="200" align="center"></el-table-column>
+      <el-table-column prop="key" label="键值" width="200" align="center"></el-table-column>
+      <el-table-column prop="value" label="字典值" width="200" align="center"></el-table-column>
+      <el-table-column label="操作" align="center">
+        <template slot-scope="scope">
+          <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
+          <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-pagination
+      background
+      layout="total,prev,next"
+      prev-text="上一页"
+      next-text="下一页"
+      :page-size="pageSize"
+      :total="total"
+      @prev-click="handlePrevClick"
+      @next-click="handleNextClick"
+    ></el-pagination>
 
-      <el-dialog
-            title="第三方平台账号信息"
-            :visible.sync="dialogVisible"
-            width="30%"
-            :close-on-click-modal="false"
-            center>
-        <el-form :model="formData" label-width="110px" size="mini">
-          <input type="hidden" v-model="formData.dictId"/>
-          <el-form-item label="字典名称">
-            <el-input v-model="formData.name"></el-input>
-          </el-form-item>
-          <el-form-item label="字典值">
-            <el-input v-model="formData.value"></el-input>
-          </el-form-item>
-          <el-form-item label="类别">
-            <el-input :placeholder="curNode.name" disabled="disabled"></el-input>
-          </el-form-item>
-          <el-form-item label="类别编码">
-            <el-input :placeholder="curNode.categoryCode" disabled="disabled"></el-input>
-          </el-form-item>
-        </el-form>
-        <span slot="footer" class="dialog-footer">
-         <el-button size="mini" @click="handleCancel">取 消</el-button>
-      <el-button type="primary" @click="handleSave">确 定</el-button>
+    <el-dialog
+      title="第三方平台账号信息"
+      :visible.sync="dialogVisible"
+      width="30%"
+      :close-on-click-modal="false"
+      center>
+      <el-form :model="formData" label-width="110px" size="mini">
+        <input type="hidden" v-model="formData.dictId"/>
+        <el-form-item label="类别">
+          <el-input :placeholder="curNode.name" disabled="disabled"></el-input>
+        </el-form-item>
+        <el-form-item label="类别编码">
+          <el-input :placeholder="curNode.categoryCode" disabled="disabled"></el-input>
+        </el-form-item>
+        <el-form-item label="字典名称">
+          <el-input v-model="formData.name"></el-input>
+        </el-form-item>
+        <el-form-item label="键值">
+          <el-input v-model="formData.key" @input="toUpperCase"></el-input>
+        </el-form-item>
+        <el-form-item label="字典值">
+          <el-input v-model="formData.value"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleCancel">取 消</el-button>
+        <el-button type="primary" @click="handleSave">确 定</el-button>
         </span>
-      </el-dialog>
-    </div>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
     export default {
-        props: ["curNode","dictVisible"],
+        props: ["curNode", "dictVisible"],
         data() {
             return {
                 dialogVisible: false,
@@ -83,6 +87,7 @@
                 return {
                     dictId: '',
                     name: '',
+                    key: '',
                     value: '',
                     categoryId: '',
                     categoryCode: ''
@@ -91,7 +96,7 @@
             /*加载数据列表*/
             loadData() {
                 this.$store
-                    .dispatch('dict/getTotal', { filter: {categoryId: this.curNode.categoryId} })
+                    .dispatch('dict/getTotal', {filter: {categoryId: this.curNode.categoryId}})
                     .then(data => {
                         this.total = data.data;
                     })
@@ -112,9 +117,9 @@
                         console.log(error);
                     });
             },
-            loadCategory(){
+            loadCategory() {
                 this.$store
-                    .dispatch('category/getList', { filter: {} })
+                    .dispatch('category/getList', {filter: {}})
                     .then(data => {
                         this.categoryList = data.data;
                     })
@@ -131,6 +136,7 @@
             },
             /*添加记录时完成数据填写或编辑记录时，点击对数据进行保存*/
             handleSave() {
+                console.log(this.formData);
                 this.dialogVisible = false;
 
                 let url = '';
@@ -139,6 +145,7 @@
                 } else {
                     url = 'dict/addOne';
                 }
+                debugger
                 this.$store
                     .dispatch(url, this.formData)
                     .then(() => {
@@ -169,7 +176,7 @@
             /*根据字典ID删除字典*/
             delete(dictId) {
                 this.$store
-                    .dispatch('dict/removeOne', { dictId: dictId })
+                    .dispatch('dict/removeOne', {dictId: dictId})
                     .then(() => {
                         this.loadData();
                     })
@@ -189,7 +196,7 @@
                 this.lastId = this.tableData[this.tableData.length - 1].dictId;
                 this.loadData();
             },
-            clearForm(){
+            clearForm() {
                 this.formData = this.defaultFormData();
             },
             open(func, data, message) {
@@ -212,11 +219,14 @@
                         });
                     });
             },
-            initCategory(categoryId){
+            toUpperCase() {
+                this.formData.categoryCode = this.formData.categoryCode.toUpperCase();
+            },
+            initCategory(categoryId) {
                 let idx = 0;
                 const _categoryList = this.categoryList;
-                for (; idx < _categoryList.length; idx++){
-                    if (_categoryList[idx].categoryId === categoryId){
+                for (; idx < _categoryList.length; idx++) {
+                    if (_categoryList[idx].categoryId === categoryId) {
                         break;
                     }
                 }
@@ -225,12 +235,12 @@
         },
         computed: {
             formatCategory() {
-                return function(categoryId) {
+                return function (categoryId) {
                     return this.initCategory(categoryId);
                 };
             }
         },
-        watch:{
+        watch: {
             curNode() {
                 this.loadData();
                 this.loadCategory();

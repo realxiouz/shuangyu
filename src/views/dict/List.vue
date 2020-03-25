@@ -10,6 +10,7 @@
           :default-expanded-keys="curLine"
           :props="treeProps"
           :expand-on-click-node="false"
+          :highlight-current="true"
           @node-click="handleNodeClick">
           <span class="tree-node" slot-scope="{ node, data }">
             <span>{{ node.data.name }}</span>
@@ -38,16 +39,8 @@
         <el-form-item label="类别编码">
           <el-input type="text" v-model="formData.categoryCode" @input="toUpperCase" :disabled="update"></el-input>
         </el-form-item>
-        <el-form-item label="类别类型">
-          <el-select v-model="formData.categoryType" placeholder="请选择类型.." style="width: 100%">
-            <el-option label="类型一" :value=0></el-option>
-          </el-select>
-        </el-form-item>
         <el-form-item label="类别名称">
           <el-input type="text" v-model="formData.name"></el-input>
-        </el-form-item>
-        <el-form-item label="图标">
-          <el-input type="text" v-model="formData.icon"></el-input>
         </el-form-item>
         <el-form-item label="排序">
           <el-input type="text" v-model="formData.sort"></el-input>
@@ -96,7 +89,7 @@
                 return {
                     categoryId: '',
                     categoryCode: '',
-                    categoryType: null,
+                    categoryType: 0,
                     name: '',
                     icon: '',
                     title: '',
@@ -196,9 +189,12 @@
             },
             /*选择类别节点后对该节点进行编辑*/
             handleNodeClick(data, node) {
-                /*加载该节点所有的api数据*/
-                this.curNode = node.data;
-                this.dictVisible = false;
+                if (!node.data.hasChildren){
+                    this.curNode = node.data;
+                    this.dictVisible = false;
+                }else{
+                    this.dictVisible = true;
+                }
             },
             handleEdit(data, node) {
                 console.log(node);
