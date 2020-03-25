@@ -8,20 +8,27 @@
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table :data="tableData" style="width: 100%;margin-bottom: 15px;" size="mini">
-        <el-table-column prop="segment" label="航段" width="180" align="center"></el-table-column>
-        <el-table-column prop="dpt" label="出发地三字码" width="150" align="center"></el-table-column>
-        <el-table-column prop="arr" label="目的地三字码" width="150" align="center"></el-table-column>
-        <el-table-column prop="airlineCode" label="航司二字码" width="150" align="center"></el-table-column>
-        <el-table-column prop="cabin" label="航司舱位" width="150" align="center"></el-table-column>
-        <el-table-column prop="price" label="价格" width="150" align="center"></el-table-column>
-        <el-table-column prop="roundTripPrice" label="往返价格" width="150" align="center"></el-table-column>
-        <el-table-column label="开始日期" width="150" align="center">
+        <el-table-column prop="segment" label="航段" width="100" align="center"></el-table-column>
+        <el-table-column prop="dpt" label="出发地三字码" align="center"></el-table-column>
+        <el-table-column prop="arr" label="目的地三字码" align="center"></el-table-column>
+        <el-table-column prop="airlineCode" label="航司二字码" width="100" align="center"></el-table-column>
+        <el-table-column prop="cabin" label="航司舱位" width="100" align="center"></el-table-column>
+        <el-table-column prop="price" label="价格" width="150" align="center">
           <template slot-scope="scope">
-            <i v-if="scope.row.startDate" class="el-icon-time"></i>
-            <span style="margin-left: 10px">{{ formatDate(scope.row.startDate,'YYYY-MM-DD') }}</span>
+            <span>{{ formatAmount(scope.row.price)}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center">
+        <el-table-column prop="roundTripPrice" label="往返价格" width="150" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatAmount(scope.row.roundTripPrice)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="开始日期" width="150" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatDate(scope.row.startDate,'YYYY-MM-DD') }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" align="center" width="180">
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
             <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
@@ -40,9 +47,8 @@
       ></el-pagination>
 
       <el-dialog
-        title="添加票价信息"
+        title="票价信息"
         center
-        :before-close="handleClose"
         :visible.sync="dialogVisible"
         width="30%"
       >
@@ -151,13 +157,6 @@ export default {
     handleCancel() {
       this.dialogVisible = false;
     },
-    handleClose() {
-      this.$confirm("确认关闭添加票价信息对话框？")
-        .then(() => {
-          this.dialogVisible = false;
-        })
-        .catch(() => {});
-    },
     /*点击记录进行编辑*/
     handleEdit(row) {
       this.dialogVisible = true;
@@ -218,6 +217,12 @@ export default {
       } else {
         return "";
       }
+    },
+    formatAmount(amount) {
+      if (!amount) {
+        return "";
+      }
+      return "￥" + this.$numeral(amount).format("0.00");
     }
   },
   created() {

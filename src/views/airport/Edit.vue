@@ -1,13 +1,13 @@
 <template>
   <div>
-    <el-form ref="form" :model="formData" :rules="rules" label-width="110px" size="mini">
-      <el-form-item prop="airportCode" label="三字码">
+    <el-form ref="form" :model="formData" :rules="rules" label-width="120px" size="mini">
+      <el-form-item prop="airportCode" label="三字码:">
         <el-input v-bind:disabled="disabled" v-model="formData.airportCode" maxlength = "3"></el-input>
       </el-form-item>
-      <el-form-item prop="airportName" label="机场名称">
+      <el-form-item prop="airportName" label="机场名称:">
         <el-input v-model="formData.airportName"></el-input>
       </el-form-item>
-      <el-form-item prop="airportCity" label="机场所在城市">
+      <el-form-item prop="airportCity" label="机场所在城市:">
         <el-input v-model="formData.airportCity"></el-input>
       </el-form-item>
     </el-form>
