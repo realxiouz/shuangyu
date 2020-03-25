@@ -3,86 +3,92 @@
     <el-aside width="auto" v-show="isDisplay">
       <Sidebar :menuList="menus" :collapse="isCollapse" />
     </el-aside>
-    <el-main>
-      <div class="app-header">
-        <el-row type="flex" class="row-bg" justify="space-between" :gutter="20">
-          <el-col :xs="13" :sm="14" :md="16" :lg="19" :xl="20">
-            <div class="grid-content bg-purple">
-              <span class="nav-switch" v-bind:class="switchClass" @click="handleSwitch" />
-            </div>
-            <div class="grid-content bg-purple">
-              <el-breadcrumb class="nav-router" separator="/">
-                <!-- <el-breadcrumb-item>
+    <el-container>
+      <el-header style="height:94px;padding:0 0;">
+        <div class="app-header">
+          <el-row type="flex" class="row-bg" justify="space-between" :gutter="20">
+            <el-col :xs="13" :sm="14" :md="16" :lg="19" :xl="20">
+              <div class="grid-content bg-purple">
+                <span class="nav-switch" v-bind:class="switchClass" @click="handleSwitch" />
+              </div>
+              <div class="grid-content bg-purple">
+                <el-breadcrumb class="nav-router" separator="/">
+                  <!-- <el-breadcrumb-item>
                   <router-link to="/home">活动管理</router-link>
                 </el-breadcrumb-item>
                 <el-breadcrumb-item>活动列表</el-breadcrumb-item>
                 <el-breadcrumb-item>活动详情</el-breadcrumb-item>
-                <el-breadcrumb-item >活动详情</el-breadcrumb-item>-->
-                <el-breadcrumb-item v-for="item in $route.matched" :key="item.path">
-                  <router-link :to="item.path">{{ item.meta.title }}</router-link>
-                </el-breadcrumb-item>
-              </el-breadcrumb>
-            </div>
-          </el-col>
-          <el-col :xs="3" :sm="5" :md="4" :lg="2" :xl="2" class="headFirm">
-            <div class="grid-content bg-purple">
-              <span
-                v-if="this.$store.state.loginInfo.firm"
-              >{{this.$store.state.loginInfo.firm.firmName}}</span>
-            </div>
-          </el-col>
-          <el-col :xs="6" :sm="5" :md="4" :lg="3" :xl="2">
-            <div class="grid-content bg-purple">
-              <span
-                style="margin-right:10px; font-size:16px;"
-              >{{this.$store.state.loginInfo.fullName}}</span>
-              <el-dropdown @command="handleCommand">
-                <span class="el-dropdown-link">
-                  设置
-                  <i class="el-icon-arrow-down el-icon--right"></i>
-                </span>
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item command="logout">退出</el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
-            </div>
-          </el-col>
-        </el-row>
-        <div class="tags-view">
-          <el-tag
-            class="tags-view-item"
-            @close="handleClose(tag)"
-            v-for="tag in tags"
-            :key="tag.name"
-            :closable="tag.closable"
-            :type="tag.type"
-          >{{tag.name}}</el-tag>
+                  <el-breadcrumb-item >活动详情</el-breadcrumb-item>-->
+                  <el-breadcrumb-item v-for="item in $route.matched" :key="item.path">
+                    <router-link :to="item.path">{{ item.meta.title }}</router-link>
+                  </el-breadcrumb-item>
+                </el-breadcrumb>
+              </div>
+            </el-col>
+            <el-col :xs="3" :sm="5" :md="4" :lg="2" :xl="2" class="headFirm">
+              <div class="grid-content bg-purple">
+                <span
+                  v-if="this.$store.state.loginInfo.firm"
+                >{{this.$store.state.loginInfo.firm.firmName}}</span>
+              </div>
+            </el-col>
+            <el-col :xs="6" :sm="5" :md="4" :lg="3" :xl="2">
+              <div class="grid-content bg-purple">
+                <span
+                  style="margin-right:10px; font-size:16px;"
+                >{{this.$store.state.loginInfo.fullName}}</span>
+                <el-dropdown @command="handleCommand">
+                  <span class="el-dropdown-link">
+                    设置
+                    <i class="el-icon-arrow-down el-icon--right"></i>
+                  </span>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item command="logout">退出</el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
+              </div>
+            </el-col>
+          </el-row>
+          <div class="tags-view">
+            <el-tag
+              class="tags-view-item"
+              @close="handleClose(tag)"
+              v-for="tag in tags"
+              :key="tag.name"
+              :closable="tag.closable"
+              :type="tag.type"
+            >
+              <router-link :to="tag.path">{{tag.name}}</router-link>
+            </el-tag>
+          </div>
+          <!-- <el-page-header content="添加用户"></el-page-header> -->
         </div>
-        <!-- <el-page-header content="添加用户"></el-page-header> -->
-      </div>
-      <section class="app-main">
-        <transition name="fade-transform" mode="out-in">
-          <router-view :key="key" />
-        </transition>
-      </section>
-      <div>
-        <el-dialog
-          title="请选择一个你的企业"
-          :close-on-click-modal="false"
-          :visible.sync="dialogVisible"
-          :show-close="false"
-          width="30%"
-          center
-        >
-          <select-firms
-            v-if="dialogVisible"
-            ref="selectFirms"
-            :firms="firms"
-            @onSelectFirm="getLoginInfo"
-          ></select-firms>
-        </el-dialog>
-      </div>
-    </el-main>
+      </el-header>
+      <el-main>
+        <section class="app-main">
+          <transition name="fade-transform" mode="out-in">
+            <router-view :key="key" />
+          </transition>
+        </section>
+        <div>
+          <el-dialog
+            title="请选择一个你的企业"
+            :close-on-click-modal="false"
+            :visible.sync="dialogVisible"
+            :show-close="false"
+            width="30%"
+            center
+          >
+            <select-firms
+              v-if="dialogVisible"
+              ref="selectFirms"
+              :firms="firms"
+              @onSelectFirm="getLoginInfo"
+            ></select-firms>
+          </el-dialog>
+        </div>
+      </el-main>
+    </el-container>
   </el-container>
 </template>
 
@@ -100,7 +106,7 @@ export default {
       isDisplay: true,
       firms: [],
       tags: [
-        { name: "首页", closable: false, type: "", path: "/home" }
+        // { name: "首页", closable: false, type: "", path: "/home" }
         // { name: "用户管理", closable: true, type: "success" },
         // { name: "添加用户", closable: true, type: "info" }
       ],
@@ -188,14 +194,14 @@ export default {
     },
     getTag() {
       let tag = {
-        name: "",
-        path: "",
-        closable: true,
-        type: "success"
+        name: "首页",
+        closable: false,
+        type: "",
+        path: "/home"
       };
       let matched = this.$route.matched;
       matched.forEach(item => {
-        if (item.meta.title != tag.name) {
+        if (item.parent != undefined) {
           tag = {
             name: item.meta.title,
             path: item.path,
@@ -210,7 +216,6 @@ export default {
         obj[next.name] ? "" : (obj[next.name] = true && item.push(next));
         return item;
       }, []);
-      // console.log(this.tags);
     },
     handleClose(tag) {
       this.tags.splice(this.tags.indexOf(tag), 1);
@@ -218,6 +223,7 @@ export default {
   },
   created() {
     this.getLoginInfo(null);
+    this.getTag();
   },
   mounted() {
     const _this = this;
@@ -237,60 +243,60 @@ export default {
   padding: 0;
   color: #333;
   background-color: #f0f2f5;
+}
 
-  .app-header {
-    height: 94px;
+.app-header {
+  height: 94px;
+  overflow: hidden;
+  position: relative;
+  background: #fff;
+  -webkit-box-shadow: 0px 6px 6px rgba(0, 21, 41, 0.08);
+  box-shadow: 0px 6px 6px rgba(0, 21, 41, 0.08);
+
+  .headFirm {
+    white-space: nowrap;
     overflow: hidden;
-    position: relative;
-    background: #fff;
-    -webkit-box-shadow: 0px 1px 4px rgba(0, 21, 41, 0.08);
-    box-shadow: 0px 1px 4px rgba(0, 21, 41, 0.08);
-
-    .headFirm {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .el-page-header {
-      padding-left: 20px;
-      line-height: 32px;
-    }
-
-    .grid-content {
-      height: 40px;
-      display: table-cell;
-      vertical-align: middle;
-    }
-
-    .nav-switch {
-      display: inline-block;
-      font-size: 28px;
-    }
-
-    .nav-router {
-      padding: 20px;
-    }
-
-    .tags-view {
-      height: 40px;
-      padding-top: 6px;
-      border-top: 1px solid #edeff0;
-      border-bottom: 1px solid #edeff0;
-
-      .tags-view-item {
-        margin: 0 5px;
-        cursor: pointer;
-        height: 26px;
-        line-height: 26px;
-      }
-    }
+    text-overflow: ellipsis;
+  }
+  .el-page-header {
+    padding-left: 20px;
+    line-height: 32px;
   }
 
-  .app-main {
-    margin: 15px;
-    // padding: 15px;
-    background-color: #ffffff;
+  .grid-content {
+    height: 40px;
+    display: table-cell;
+    vertical-align: middle;
   }
+
+  .nav-switch {
+    display: inline-block;
+    font-size: 28px;
+  }
+
+  .nav-router {
+    padding: 20px;
+  }
+
+  .tags-view {
+    height: 40px;
+    padding-top: 6px;
+    border-top: 1px solid #edeff0;
+    border-bottom: 1px solid #edeff0;
+
+    .tags-view-item {
+      margin: 0 5px;
+      cursor: pointer;
+      height: 26px;
+      line-height: 26px;
+    }
+  }
+}
+
+.app-main {
+  margin: 15px;
+  // padding: 15px;
+  background-color: #ffffff;
 }
 
 body .el-container {
