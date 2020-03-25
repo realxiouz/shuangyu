@@ -7,7 +7,7 @@
     <el-row style="margin-bottom:15px;margin-left:40px;">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
     </el-row>
-    <el-table size="mini" :data="tableData" style="width: 100%;margin-bottom: 15px;" border fit>
+    <el-table size="mini" :data="tableData" style="width: 100%;margin-bottom: 15px;"  fit>
       <el-table-column prop="uri" label="URL" align="center"></el-table-column>
       <el-table-column prop="category" align="center" label="类别" ></el-table-column>
       <el-table-column prop="apiName" align="center" label="api名称" ></el-table-column>
