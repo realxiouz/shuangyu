@@ -39,6 +39,14 @@ export function staffOnline(params) {
   });
 }
 
+export function updateStaffOnline(params) {
+  return request({
+    url: '/order/staff/update/online',
+    method: 'get',
+    params: params
+  });
+}
+
 export function getTotal(params) {
   return request({
     url: '/order/staff/total',

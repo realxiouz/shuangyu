@@ -2,16 +2,16 @@
   <div>
     <el-form ref="form" label-width="110px" size="mini">
       <input type="hidden" v-model="formData.firmId" />
-      <el-form-item label="企业名称">
+      <el-form-item label="企业名称:">
         <el-input type="text" placeholder="请输入企业名称" v-model="formData.firmName"></el-input>
       </el-form-item>
-      <el-form-item label="企业代码">
+      <el-form-item label="企业代码:">
         <el-input type="text" placeholder="请输入企业代码" v-model="formData.firmCode"></el-input>
       </el-form-item>
-      <el-form-item label="机构所在地">
+      <el-form-item label="机构所在地:">
         <el-input type="text" placeholder="请输入机构所在地" v-model="formData.location"></el-input>
       </el-form-item>
-      <el-form-item label="类别">
+      <el-form-item label="类别:">
         <el-input type="text" placeholder="请输入类别" v-model="formData.type"></el-input>
       </el-form-item>
     </el-form>

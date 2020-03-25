@@ -12,7 +12,7 @@
       >添 加</el-button>
     </el-row>
     <!-- 员工列表 -->
-    <el-table stripe size="mini" style="width: 100%;" border fit :data="tableData">
+    <el-table stripe size="mini" style="width: 100%;" fit :data="tableData">
       <el-table-column prop="nickName" label="昵称" width="150" align="center"></el-table-column>
       <el-table-column prop="fullName" label="姓名" width="100" align="center"></el-table-column>
       <el-table-column prop="gender" label="性别" width="80" align="center">

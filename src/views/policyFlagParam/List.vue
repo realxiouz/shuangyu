@@ -12,7 +12,7 @@
         <el-table-column prop="label" label="参数标签" align="center"></el-table-column>
         <el-table-column prop="name" label="参数名称" align="center"></el-table-column>
         <el-table-column prop="remark" label="备注" align="center"></el-table-column>
-        <el-table-column label="操作" align="center">
+        <el-table-column label="操作" align="center" width="180">
           <template slot-scope="scope">
             <el-button @click="handleUpdate(scope.row.paramId)" type="primary" size="mini">编辑</el-button>
             <el-button
@@ -25,7 +25,6 @@
       </el-table>
       <el-dialog
         title="用户信息"
-        :before-close="handleClose"
         center
         :visible.sync="dialogVisible"
         width="30%"
@@ -115,13 +114,6 @@ export default {
     },
     handleCancel() {
       this.dialogVisible = false;
-    },
-    handleClose() {
-      this.$confirm("确认关闭对话框？")
-        .then(() => {
-          this.dialogVisible = false;
-        })
-        .catch(() => {});
     }
   },
   created() {

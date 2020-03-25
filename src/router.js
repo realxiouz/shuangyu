@@ -167,6 +167,20 @@ export default new Router({
           component: () => import('@/views/orderRule/Edit'),
           props: { default: true, sidebar: false },
           meta: { title: '规则编辑', icon: 'home' }
+        },{
+          title: '派单员工',
+          path: '/order/staff/list',
+          name: 'orderStaffList',
+          component: () => import('@/views/orderStaff/List'),
+          props: { default: true, sidebar: false },
+          meta: { title: '派单员工', icon: 'home' }
+        },{
+          title: '员工上线',
+          path: '/order/staff/online',
+          name: 'orderStaffOnline',
+          component: () => import('@/views/orderStaff/Online'),
+          props: { default: true, sidebar: false },
+          meta: { title: '派单员工', icon: 'home' }
         },
       ]
     },

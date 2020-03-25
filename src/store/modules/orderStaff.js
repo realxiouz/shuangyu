@@ -5,7 +5,8 @@ import {
   getList,
   removeOne,
   getTotal,
-  staffOnline
+  staffOnline,
+  updateStaffOnline
 } from '@/api/orderStaff';
 import {getToken} from '@/utils/auth';
 
@@ -98,6 +99,18 @@ const actions = {
       staffOnline(params)
         .then(response => {
           const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  updateStaffOnline({commit}, params) {
+    return new Promise((resolve, reject) => {
+      updateStaffOnline(params)
+        .then(response => {
+          const { data } = response;
           resolve(data);
         })
         .catch(error => {

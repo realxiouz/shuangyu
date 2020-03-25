@@ -53,7 +53,7 @@
           <el-table-column prop="name" label="操作人"></el-table-column>
         </el-table>
         <span slot="footer" class="dialog-footer">
-          <el-button @click="handleClose">关 闭</el-button>
+          <el-button size="mini" @click="handleClose">关 闭</el-button>
         </span>
       </el-dialog>
     </el-main>
@@ -74,13 +74,14 @@
         tableData: [],
         logTableData: [],
         ownFlags: [
-          {label: "出票", value: '1'},
-          {label: "退票", value: '2'},
-          {label: "改签", value: '3'},
-          {label: "消息", value: '4'},
-          {label: "质检", value: '5'},
-          {label: "补单", value: '6'},
-          {label: "补单号", value: '7'}
+          { label: "出票", value: 1 },
+          { label: "退票", value: 2 },
+          { label: "改签", value: 3 },
+          { label: "未出票申请退款", value: 4 },
+          { label: "消息", value: 5 },
+          { label: "质检", value: 6 },
+          { label: "补单", value: 11 },
+          { label: "填写单号", value: 12 }
         ]
       };
     },
