@@ -1,23 +1,22 @@
 <template>
   <div>
-    <el-main>
       <el-table stripe size="mini" style="width: 100%;" fit :data="tableData">
-        <el-table-column prop="fullName" label="姓名" width="165"></el-table-column>
-        <el-table-column prop="phone" label="手机号" width="220" align="center"></el-table-column>
-        <el-table-column prop="email" label="电子邮箱" width="240" align="center"></el-table-column>
-        <el-table-column prop="status" label="状态" width="240" align="center">
+        <el-table-column prop="fullName" label="姓名" width="100" align="center"></el-table-column>
+        <el-table-column prop="phone" label="手机号"  align="center"></el-table-column>
+        <el-table-column prop="email" label="电子邮箱"  align="center"></el-table-column>
+        <el-table-column prop="status" label="状态" width="100" align="center">
           <template slot-scope="scope">
             <span v-if="scope.row.status==1" style="color: green">在线</span>
             <span v-else style="color: red">离线</span>
           </template>
         </el-table-column>
-        <el-table-column label="上线/下线时间" width="240" align="center">
+        <el-table-column label="上线/下线时间" width="200" align="center">
           <template slot-scope="scope">
-            <span v-if="scope.row.status==1" style="margin-left: 10px">{{ formatDate(scope.row.onlineTime,'YYYY-MM-DD HH:mm:ss') }}</span>
-            <span v-else style="margin-left: 10px">{{ formatDate(scope.row.offlineTime,'YYYY-MM-DD HH:mm:ss') }}</span>
+            <span v-if="scope.row.status==1" >{{ formatDate(scope.row.onlineTime,'YYYY-MM-DD HH:mm:ss') }}</span>
+            <span v-else >{{ formatDate(scope.row.offlineTime,'YYYY-MM-DD HH:mm:ss') }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center">
+        <el-table-column label="操作" align="center" width="200">
           <template slot-scope="scope">
             <el-button size="mini" type="primary" @click="handleFlag(scope.row)">配置标签</el-button>
             <el-button size="mini" type="primary" @click="logSearch(scope.row)">查看日志</el-button>
@@ -56,7 +55,6 @@
           <el-button size="mini" @click="handleClose">关 闭</el-button>
         </span>
       </el-dialog>
-    </el-main>
   </div>
 </template>
 

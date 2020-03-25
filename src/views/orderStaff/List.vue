@@ -1,57 +1,66 @@
 <template>
-  <el-container>
-    <el-aside width="200px">
-      <el-tree
-        :data="treeData"
-        :props="treeProps"
-        :highlight-current="true"
-        :expand-on-click-node="false"
-        @node-click="handleNodeClick">
-      </el-tree>
-    </el-aside>
-    <staff-form :curNode="curNode" :staffAddVisible="staffAddVisible" style="width: 100%"/>
-  </el-container>
+  <div class="contentBox">
+    <el-row :gutter="20">
+      <el-col :xs="11" :sm="10" :md="9" :lg="8" :xl="8">
+        <el-tree
+          :data="treeData"
+          :props="treeProps"
+          :highlight-current="true"
+          :expand-on-click-node="false"
+          @node-click="handleNodeClick"
+        ></el-tree>
+      </el-col>
+      <el-col :xs="13" :sm="14" :md="15" :lg="16" :xl="16">
+        <staff-form :curNode="curNode" :staffAddVisible="staffAddVisible" style="width: 100%" />
+      </el-col>
+    </el-row>
+  </div>
 </template>
 
 <script>
-  import staffForm from "./Edit";
+import staffForm from "./Edit";
 
-  export default {
-    data() {
-      return {
-        staffAddVisible: true,
-        curNode: null,
-        treeData: [],
-        treeProps: {
-          label: 'deptName',
-          children: 'children'
-        }
+export default {
+  data() {
+    return {
+      staffAddVisible: true,
+      curNode: null,
+      treeData: [],
+      treeProps: {
+        label: "deptName",
+        children: "children"
+      }
+    };
+  },
+  methods: {
+    loadTreeData() {
+      if (
+        this.$store.state.loginInfo.firm &&
+        this.$store.state.loginInfo.firm.firmId &&
+        this.$store.state.loginInfo.firm.firmId != null
+      ) {
+        this.$store
+          .dispatch("dept/getList", {
+            filters: { firmId: this.$store.state.loginInfo.firm.firmId }
+          })
+          .then(data => {
+            this.treeData = data;
+          })
+          .catch(error => {
+            console.log(error);
+          });
       }
     },
-    methods: {
-      loadTreeData() {
-        if (this.$store.state.loginInfo.firm && this.$store.state.loginInfo.firm.firmId && this.$store.state.loginInfo.firm.firmId != null) {
-          this.$store
-            .dispatch('dept/getList', {filters: {firmId: this.$store.state.loginInfo.firm.firmId}})
-            .then(data => {
-              this.treeData = data;
-            })
-            .catch(error => {
-              console.log(error);
-            });
-        }
-
-      },
-      handleNodeClick(data) {
-        this.staffAddVisible = false;
-        this.curNode = data;
-      }
-    },
-    mounted() {
-      this.loadTreeData();
-    },
-    components: {
-      staffForm
+    handleNodeClick(data) {
+      this.staffAddVisible = false;
+      this.curNode = data;
     }
-  };
+  },
+  mounted() {
+    this.loadTreeData();
+  },
+  components: {
+    staffForm
+  }
+};
 </script>
