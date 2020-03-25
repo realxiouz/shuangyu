@@ -9,14 +9,14 @@
       size="mini"
       :tree-props="{ hasChildren: 'xxx',children: 'children'}"
     >
-      <el-table-column prop="thirdName" label="第三方平台" align="center"></el-table-column>
-      <el-table-column prop="apiUrl" label="接口url" align="center"></el-table-column>
-      <el-table-column prop="label" label="接口标签" align="center"></el-table-column>
+      <el-table-column prop="thirdName" label="第三方平台" align="center" width="150"></el-table-column>
+      <el-table-column prop="apiUrl" label="接口url" align="center" width="220"></el-table-column>
+      <el-table-column prop="label" label="接口标签" align="center" ></el-table-column>
       <el-table-column prop="name" label="接口名称" align="center"></el-table-column>
-      <el-table-column prop="defaultValue" label="默认值" align="center"></el-table-column>
-      <el-table-column prop="required" label="是否必须" :formatter="formatBoolean" align="center"></el-table-column>
+      <el-table-column prop="defaultValue" label="默认值" align="center" width="150"></el-table-column>
+      <el-table-column prop="required" label="是否必须" :formatter="formatBoolean" align="center" width="80"></el-table-column>
       <el-table-column prop="remark" label="备注" align="center"></el-table-column>
-      <el-table-column label="操作" align="center">
+      <el-table-column label="操作" align="center" width="250">
         <template slot-scope="scope">
           <el-button @click="handleAddChild(scope.row)" type="primary" size="mini">添加</el-button>
           <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
@@ -25,9 +25,8 @@
       </el-table-column>
     </el-table>
     <el-dialog
-      title="添加接口"
+      title="接口信息"
       :before-close="handleClose"
-      :close-on-click-modal="handleClose"
       center
       :visible.sync="dialogVisible"
       width="30%"
@@ -112,7 +111,7 @@ export default {
       this.dialogVisible = false;
     },
     handleClose() {
-      this.$confirm("确认关闭添加接口对话框？")
+      this.$confirm("确认关闭接口信息对话框？")
         .then(() => {
           this.dialogVisible = false;
         })

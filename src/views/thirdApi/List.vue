@@ -1,43 +1,53 @@
 <template>
-  <div class="api-container">
-    <apiSearch @onSearch="handleSearch" @onAdd="handleAdd"></apiSearch>
-    <el-row style="margin-bottom:15px;margin-left:15px;">
-      <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
-    </el-row>
-    <el-table size="mini" :data="tableData" style="width: 100%;margin-bottom: 20px;" border>
-      <el-table-column prop="thirdId" label="第三方平台" width="200"></el-table-column>
-      <el-table-column prop="url" label="url" width="200"></el-table-column>
-      <el-table-column prop="method" label="方法名称" width="300"></el-table-column>
-      <el-table-column label="是否启用" align="center">
-        <template slot-scope="scope">
-          <el-switch v-model="scope.row.enable" @change="handleSwitch(scope.row)"></el-switch>
-        </template>
-      </el-table-column>
-      <el-table-column fixed="right" label="操作" align="center" width="350">
-        <template slot-scope="scope">
-          <el-button @click="handleUpdate(scope.row.apiId)" type="primary" size="mini">编辑</el-button>
-          <el-button
-            @click.native.prevent="handleRemove(scope.row.apiId,scope.$index,tableData)"
-            type="danger"
-            size="mini"
-          >删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-pagination
-      @size-change="handleSizeChange"
-      @prev-click="prevClick"
-      @next-click="nextClick"
-      background
-      layout="total,sizes,prev,next"
-      prev-text="上一页"
-      next-text="下一页"
-      :page-size="pageSize"
-      :total="total"
-    ></el-pagination>
-    <el-dialog title="第三方Api信息" center :visible.sync="dialogVisible" width="33%">
-      <api-edit ref="apiFrom" v-if="dialogVisible" :api-id="apiId" @onCancel="handleCancel" @onSave="handleSave"></api-edit>
-    </el-dialog>
+  <div class="bigBox">
+    <div class="searchBox">
+      <apiSearch @onSearch="handleSearch"></apiSearch>
+    </div>
+    <div class="contentBox">
+      <el-row style="margin-bottom:15px;margin-left:15px;">
+        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+      </el-row>
+      <el-table size="mini" :data="tableData" style="width: 100%;margin-bottom: 15px;">
+        <el-table-column prop="thirdId" label="第三方平台" width="300" align="center"></el-table-column>
+        <el-table-column prop="url" label="url" width="300" align="center"></el-table-column>
+        <el-table-column prop="method" label="方法名称" align="center" ></el-table-column>
+        <el-table-column label="是否启用" align="center" width="100">
+          <template slot-scope="scope">
+            <el-switch v-model="scope.row.enable" @change="handleSwitch(scope.row)"></el-switch>
+          </template>
+        </el-table-column>
+        <el-table-column fixed="right" label="操作" align="center" width="180">
+          <template slot-scope="scope">
+            <el-button @click="handleUpdate(scope.row.apiId)" type="primary" size="mini">编辑</el-button>
+            <el-button
+              @click.native.prevent="handleRemove(scope.row.apiId,scope.$index,tableData)"
+              type="danger"
+              size="mini"
+            >删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+        @size-change="handleSizeChange"
+        @prev-click="prevClick"
+        @next-click="nextClick"
+        background
+        layout="total,sizes,prev,next"
+        prev-text="上一页"
+        next-text="下一页"
+        :page-size="pageSize"
+        :total="total"
+      ></el-pagination>
+      <el-dialog title="第三方Api信息" center :visible.sync="dialogVisible" width="33%">
+        <api-edit
+          ref="apiFrom"
+          v-if="dialogVisible"
+          :api-id="apiId"
+          @onCancel="handleCancel"
+          @onSave="handleSave"
+        ></api-edit>
+      </el-dialog>
+    </div>
   </div>
 </template>
 

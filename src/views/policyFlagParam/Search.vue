@@ -4,7 +4,7 @@
       <el-form :model="formData" label-width="110px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="参数名称:">
-            <el-input v-model="formData.name" placeholder="标签名称"></el-input>
+            <el-input v-model="formData.name" placeholder="请输入标签名称搜索..."></el-input>
           </el-form-item>
         </el-col>
       </el-form>

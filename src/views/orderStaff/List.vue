@@ -33,7 +33,6 @@ export default {
     };
   },
   methods: {
-    /*获取部门树*/
     loadTreeData() {
       this.$store
         .dispatch("dept/getList", {
@@ -46,7 +45,6 @@ export default {
           console.log(error);
         });
     },
-    /*点击部门树时调用*/
     handleNodeClick(data) {
       this.staffAddVisible = false;
       this.curNode = data;

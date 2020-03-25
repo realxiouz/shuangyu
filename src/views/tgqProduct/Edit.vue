@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="contentBox">
     <el-row>
       <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
         <el-form ref="form" :model="formData" size="mini" :rules="rules" label-width="110px">
@@ -26,14 +26,21 @@
       size="mini"
       :data="tableData"
       style="width: 100%;"
-      v-bind:row-style="{height:'10px'}"
       border
       default-expand-all
     >
-      <el-table-column prop="label" label="参数名称" width="200"></el-table-column>
-      <el-table-column prop="defaultValue" label="参数值" width="700">
+      <el-table-column prop="label" label="参数名称" width="200" align="center"></el-table-column>
+      <el-table-column prop="defaultValue" label="参数值" width="450" align="center">
         <template slot-scope="scope">
+          <el-date-picker
+            v-if="scope.row.label.indexOf('日期') !=-1"
+            v-model="scope.row.defaultValue"
+            type="date"
+            placeholder="选择日期"
+            style="width:100%"
+          ></el-date-picker>
           <el-input
+            v-else
             placeholder="请输入内容"
             v-model="scope.row.defaultValue"
             v-bind:type="scope.row.inputType"
@@ -119,7 +126,7 @@ export default {
     handleSaveStart() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          console.log(this.copyFlag);
+          // console.log(this.copyFlag);
           if (this.copyFlag) {
             this.formData.schedulerId = null;
           }

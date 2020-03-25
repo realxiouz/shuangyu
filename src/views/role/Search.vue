@@ -1,10 +1,10 @@
 <template>
   <el-row type="flex" justify="space-between" align="bottom">
     <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
-      <el-form :model="keyword" label-width="110px" size="mini">
+      <el-form :model="formData" label-width="110px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="订单号:">
-            <el-input v-model="keyword" placeholder="请输入角色名称搜素..."></el-input>
+            <el-input v-model="formData.keyword" placeholder="请输入角色名称搜素..."></el-input>
           </el-form-item>
         </el-col>
       </el-form>
@@ -15,7 +15,7 @@
         class="filter-item"
         type="primary"
         size="mini"
-        @click="$emit('onSearch', keyword)"
+        @click="$emit('onSearch', formData)"
       >查询</el-button>
       <el-button type="text" size="mini" @click="handleMore">
         更多
@@ -31,8 +31,9 @@ export default {
   data() {
     return {
       more: false,
-
-      keyword: ""
+      formData: {
+        keyword: ""
+      }
     };
   },
   computed: {

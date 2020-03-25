@@ -29,7 +29,7 @@ import pnrjyOrder from "./modules/pnrjyOrder";
 import qunarOrderConfig from "./modules/qunarOrderConfig";
 import qunarOrderNotifyConfig from "./modules/qunarOrderNotifyConfig";
 import qunarPolicyConfig from "./modules/qunarPolicyConfig";
-import ttsScheduler from "./modules/ttsScheduler";
+import orderStaff from "./modules/orderStaff";
 
 import { getLoginInfo } from "@/api/staff";
 
@@ -65,7 +65,7 @@ export default new Vuex.Store({
     qunarOrderConfig,
     qunarOrderNotifyConfig,
     qunarPolicyConfig,
-    ttsScheduler
+    orderStaff
   },
   state: {
     loginInfo: {}
