@@ -8,7 +8,7 @@
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;" size="mini">
-        <el-table-column prop="domain" label="代理商域名" width="280" align="center"></el-table-column>
+        <el-table-column prop="domain" label="代理商域名" width="260" align="center"></el-table-column>
         <el-table-column label="企业" width="200" align="center">
           <template slot-scope="scope">
             <span style="margin-left: 10px">{{ formatFirmData(scope.row.firmId) }}</span>
@@ -21,7 +21,7 @@
         </el-table-column>
         <el-table-column prop="user" label="用户名" align="center"></el-table-column>
         <el-table-column prop="ips" label="服务器IP" align="center"></el-table-column>
-        <el-table-column label="操作" width="280" align="center">
+        <el-table-column label="操作" width="180" align="center">
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
             <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>

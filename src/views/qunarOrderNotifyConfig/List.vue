@@ -14,14 +14,14 @@
             <span style="margin-left: 10px">{{ formatFirmData(scope.row.firmId) }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="平台" width="200" align="center">
+        <el-table-column label="平台" align="center">
           <template slot-scope="scope">
             <span style="margin-left: 10px">{{ formatPartyData(scope.row.thirdId) }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="securityCode" label="安全码" width="260" align="center"></el-table-column>
-        <el-table-column prop="url" label="地址" width="260" align="center"></el-table-column>
-        <el-table-column label="操作" align="center">
+        <el-table-column prop="securityCode" label="安全码" align="center"></el-table-column>
+        <el-table-column prop="url" label="地址" align="center"></el-table-column>
+        <el-table-column label="操作" align="center" width="180">
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
             <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
