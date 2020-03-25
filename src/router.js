@@ -189,6 +189,13 @@ export default new Router({
           props: { default: true, sidebar: false },
           meta: { title: '派单员工', icon: 'home' }
         },
+        {
+          title: '订单任务',
+          path: '/order/task/list',
+          name: 'orderTask',
+          component: () => import('@/views/orderTask/List'),
+          meta: { title: '订单任务', icon: 'home' }
+        },
       ]
     },
     {

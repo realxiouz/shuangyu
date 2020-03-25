@@ -31,7 +31,7 @@
             <span style="margin-left: 10px">{{ formatFlightDate(scope.row.flights)}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="起飞-到达" width="100" align="center">
+        <el-table-column label="起飞-到达" width="180" align="center">
           <template slot-scope="scope">
             <i v-if="scope.row.flights"></i>
             <span style="margin-left: 10px">{{ formatFlight(scope.row.flights)}}</span>
@@ -226,10 +226,10 @@
                 if (!data || data.length == 0) {
                     return "";
                 }
-                let dptTime = data[0].dptTime.split(" ");
+                let dptTime = data[0].dptTime.match(/.*(.{5})/)[1];
                 return data[0].dpt +
                     " " +
-                    dptTime[1] +
+                    dptTime +
                     " - " +
                     data[0].arr +
                     " " +
@@ -253,10 +253,10 @@
                 }
                 let str = "";
                 data.forEach(item => {
-                    str += item.name + "/";
+                    str += item.name + " / ";
                 });
 
-                return str.substring(0, str.length - 1);
+                return str.substring(0, str.length - 2);
             },
             formatAmount(amount) {
                 if (!amount) {

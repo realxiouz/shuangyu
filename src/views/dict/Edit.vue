@@ -2,6 +2,11 @@
   <div class="contentBox">
     <el-row style="margin-bottom:15px;margin-left:20px">
       <el-button type="primary" size="mini" @click="handleAdd" :disabled="dictVisible">添加字典</el-button>
+    </el-row>-->
+    <el-row type="flex" justify="space-between" style="margin-bottom:20px;" align="bottom">
+      <span style="font-weight:700;color:#303133;" v-if="!dictVisible">{{this.curNode.name}}</span>
+      <span></span>
+      <el-button type="primary" size="mini" @click="handleAdd" :disabled="dictVisible">添加</el-button>
     </el-row>
     <el-table
       size="mini"
