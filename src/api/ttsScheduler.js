@@ -24,7 +24,6 @@ export function getOne(schedulerId) {
 }
 
 export function start(schedulerId) {
-  debugger
   return request({
     url: `/tts/scheduler/start/${schedulerId}`,
     method: 'get'
