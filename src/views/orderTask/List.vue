@@ -25,12 +25,12 @@
         <el-table-column prop="fullName" label="员工姓名" align="center"></el-table-column>
         <el-table-column prop="startTime" label="开始时间" align="center">
           <template slot-scope="scope">
-            <span>{{ formatDate(scope.row.startTime,'YYYY-MM-DD HH:MM:SS') }}</span>
+            <span>{{ formatDate(scope.row.startTime,'YYYY-MM-DD HH:mm:ss') }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="endTime" label="结束时间" align="center">
           <template slot-scope="scope">
-            <span>{{ formatDate(scope.row.endTime,'YYYY-MM-DD HH:MM:SS') }}</span>
+            <span>{{ formatDate(scope.row.endTime,'YYYY-MM-DD HH:mm:ss') }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="duration" label="持续时长" align="center"></el-table-column>
