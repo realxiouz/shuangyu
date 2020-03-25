@@ -106,7 +106,7 @@ export default {
       isDisplay: true,
       firms: [],
       tags: [
-        { name: "首页", closable: false, type: "", path: "/home" }
+        // { name: "首页", closable: false, type: "", path: "/home" }
         // { name: "用户管理", closable: true, type: "success" },
         // { name: "添加用户", closable: true, type: "info" }
       ],
@@ -194,14 +194,14 @@ export default {
     },
     getTag() {
       let tag = {
-        name: "",
-        path: "",
-        closable: true,
-        type: "success"
+        name: "首页",
+        closable: false,
+        type: "",
+        path: "/home"
       };
       let matched = this.$route.matched;
       matched.forEach(item => {
-        if (item.meta.title != tag.name) {
+        if (item.parent != undefined) {
           tag = {
             name: item.meta.title,
             path: item.path,
@@ -216,7 +216,6 @@ export default {
         obj[next.name] ? "" : (obj[next.name] = true && item.push(next));
         return item;
       }, []);
-      // console.log(this.tags);
     },
     handleClose(tag) {
       this.tags.splice(this.tags.indexOf(tag), 1);
@@ -224,7 +223,7 @@ export default {
   },
   created() {
     this.getLoginInfo(null);
-    this.getTag()
+    this.getTag();
   },
   mounted() {
     const _this = this;
