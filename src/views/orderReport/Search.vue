@@ -44,6 +44,8 @@
                 placeholder="选择日期"
                 v-model="formData.flightDate"
                 style="width: 100%;"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
               ></el-date-picker>
             </el-col>
           </el-form-item>
@@ -83,6 +85,8 @@
                 placeholder="选择日期"
                 v-model="formData.createTime"
                 style="width: 100%;"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
               ></el-date-picker>
             </el-col>
           </el-form-item>
