@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-main>
-      <el-form :model="formData" label-width="80px">
+      <el-form :model="formData" label-width="80px" size="mini">
         <el-row>
           <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
             <el-form-item label="姓名:">
@@ -46,12 +46,12 @@
         </el-row>
       </el-form>
       <div style="text-align: center">
-        <el-button v-if="formData.status ==1" type="primary" @click="handleOffline">下 线</el-button>
-        <el-button v-else type="danger" @click="handleOnline">上 线</el-button>
-        <el-button v-if="formData.status ==1" type="primary" @click="handleEditFlags">修改标签</el-button>
+        <el-button size="mini" v-if="formData.status ==1" type="primary" @click="handleOffline">下 线</el-button>
+        <el-button size="mini" v-else type="danger" @click="handleOnline">上 线</el-button>
+        <el-button size="mini" v-if="formData.status ==1" type="primary" @click="handleEditFlags">修改标签</el-button>
       </div>
-      <el-dialog title="标签信息" width="30%" :visible.sync="dialogVisible" :close-on-click-modal="false">
-        <el-form ref="form" :model="formData" label-width="45px">
+      <el-dialog  center title="标签信息" width="30%" :visible.sync="dialogVisible" :close-on-click-modal="false">
+        <el-form size="mini" ref="form" :model="formData" label-width="45px">
           <el-form-item label="标签:" prop="onlineFlags">
             <el-select v-model="formData.onlineFlags" multiple placeholder="请选择">
               <el-option
@@ -64,8 +64,8 @@
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
+          <el-button size="mini" @click="handleClose">取 消</el-button>
           <el-button type="primary" size="mini" @click="handleSave">保 存</el-button>
-          <el-button size="mini" @click="handleClose">关 闭</el-button>
         </span>
       </el-dialog>
     </el-main>

@@ -261,7 +261,7 @@ export default {
     },
     formatAmount1(amount) {
       if (!amount) {
-        return "";
+        return "￥0.00";
       }
       return "￥" + this.$numeral(amount).format("0.00");
     }

@@ -8,19 +8,31 @@
         style="width: 100%;margin-bottom:15px;"
         size="mini"
       >
-        <el-table-column prop="createTime" label="创建日期" align="center">
+        <el-table-column prop="taskNo" label="任务编号" align="center"></el-table-column>
+        <el-table-column prop="taskName" label="任务名称" align="center"></el-table-column>
+        <el-table-column prop="taskType" label="任务类型" align="center"></el-table-column>
+        <el-table-column prop="orderRuleId" label="规则类型" align="center"></el-table-column>
+        <el-table-column prop="profit" label="利润" align="center">
           <template slot-scope="scope">
-            <span>{{ formatDate(scope.row.createTime,'YYYY-MM-DD HH:MM:SS') }}</span>
+            <span>{{ formatAmount(scope.row.profit)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="startTime" label="开始日期" align="center">
+        <el-table-column prop="taskStatus" label="任务状态" align="center"></el-table-column>
+        <el-table-column prop="fullName" label="员工姓名" align="center"></el-table-column>
+        <el-table-column prop="startTime" label="开始时间" align="center">
           <template slot-scope="scope">
             <span>{{ formatDate(scope.row.startTime,'YYYY-MM-DD HH:MM:SS') }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="policyCode" label="政策代码" align="center"></el-table-column>
-        <el-table-column prop="taskId" label="任务ID" align="center"></el-table-column>
-        <el-table-column label="操作" align="center"></el-table-column>
+        <el-table-column prop="endTime" label="结束时间" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatDate(scope.row.endTime,'YYYY-MM-DD HH:MM:SS') }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="duration" label="持续时长" align="center"></el-table-column>
+        <el-table-column label="操作" align="center" width="80">
+          <el-button type="primary" size="mini">处理</el-button>
+        </el-table-column>
       </el-table>
       <el-pagination
         :current-page="currentPage"
@@ -110,6 +122,12 @@ export default {
       } else {
         return "";
       }
+    },
+    formatAmount(amount) {
+      if (!amount) {
+        return "￥0.00";
+      }
+      return "￥" + this.$numeral(amount).format("0.00");
     }
   },
   created() {
