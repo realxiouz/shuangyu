@@ -19,7 +19,7 @@
             <el-input v-model="formData.sort"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+        <el-col :xs="24" :sm="24" :md="4" :lg="4" :xl="4">
           <el-form-item label="是否调出票中:" prop="ticketing">
             <el-switch
               v-model="formData.ticketing"
@@ -32,7 +32,62 @@
             ></el-switch>
           </el-form-item>
         </el-col>
+        <el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
+          <el-form-item label="是否自动抢票:" prop="autoGrabTicket">
+            <el-switch
+              v-model="formData.autoGrabTicket"
+              active-color="#ff4949"
+              inactive-color="#13ce66"
+              active-text="否"
+              inactive-text="是"
+              :active-value="false"
+              :inactive-value="true"
+            ></el-switch>
+          </el-form-item>
+        </el-col>
       </el-row>
+      <el-row>
+        <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+          <el-form-item label="任务类型:" prop="taskType">
+            <el-select v-model="formData.taskType" placeholder="请选择" multiple style="width: 100%">
+              <el-option
+                v-for="item in taskTypes"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+                :disabled="item.disabled"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="24" :md="4" :lg="4" :xl="4">
+          <el-form-item label="规则类型:" prop="ruleType">
+            <el-switch
+              v-model="formData.ruleType"
+              active-color="#ff4949"
+              inactive-color="#13ce66"
+              active-text="系统"
+              inactive-text="手工"
+              :active-value="0"
+              :inactive-value="1"
+            ></el-switch>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
+          <el-form-item v-if="formData.ruleType==0" label="渠道:" prop="channel">
+            <el-select v-model="formData.channel" placeholder="请选择" style="width: 100%">
+              <el-option
+                v-for="item in channels"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+
+      </el-row>
+
       <el-row>
         <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
           <el-form-item label="航司:">
@@ -125,59 +180,6 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row>
-        <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6">
-          <el-form-item label="规则类型:" prop="ruleType">
-            <el-select v-model="formData.ruleType" placeholder="请选择">
-              <el-option
-                v-for="item in ruleTypes"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-                :disabled="item.disabled"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6">
-          <el-form-item label="任务类型:" prop="taskType">
-            <el-switch
-              v-model="formData.taskType"
-              active-color="#ff4949"
-              inactive-color="#13ce66"
-              active-text="系统"
-              inactive-text="手工"
-              :active-value="0"
-              :inactive-value="1"
-            ></el-switch>
-          </el-form-item>
-        </el-col>
-        <el-col v-if="formData.taskType==1" :xs="24" :sm="24" :md="6" :lg="6" :xl="6">
-          <el-form-item label="规则类型:" prop="channel">
-            <el-select v-model="formData.channel" placeholder="请选择">
-              <el-option
-                v-for="item in channels"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6">
-          <el-form-item label="是否自动抢票:" prop="autoGrabTicket">
-            <el-switch
-              v-model="formData.autoGrabTicket"
-              active-color="#ff4949"
-              inactive-color="#13ce66"
-              active-text="否"
-              inactive-text="是"
-              :active-value="false"
-              :inactive-value="true"
-            ></el-switch>
-          </el-form-item>
-        </el-col>
-      </el-row>
        <el-divider></el-divider>
       <el-row type="flex" justify="space-between">
         <el-col :xs="2" :sm="2" :md="1" :lg="1" :xl="1">
@@ -245,7 +247,7 @@ function defaultData() {
   return {
     ruleName: "",
     ruleType: 1,
-    taskType: 0,
+    taskType: [],
     ticketing: false,
     airlines: {
       inOrEx: 0,
@@ -287,7 +289,7 @@ export default {
       peopleData: [],
       staffData: [],
       staffIdList: [],
-      ruleTypes: [
+      taskTypes: [
         { label: "出票", value: 1 },
         { label: "退票", value: 2 },
         { label: "改签", value: 3 },
@@ -389,10 +391,8 @@ export default {
       this.formData.staffs = staffs;
       this.$store
         .dispatch("orderRule/save", this.formData)
-        .then(data => {
-          console.log(data);
-          this.lastId = "0";
-          this.loadData();
+        .then(() => {
+          this.goBack();
         })
         .catch(error => {
           console.log(error);
@@ -439,7 +439,7 @@ export default {
         this.formData.staffs.length > 0
       ) {
         this.staffIdList = [];
-        this.staffIdList.push(this.formData.principal);
+        this.staffIdList=this.formData.staffs;
         this.loadStaffData("0");
       }
     }

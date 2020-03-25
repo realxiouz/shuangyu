@@ -72,20 +72,23 @@ export default {
       this.$router.push("/order/rule/edit");
     },
     loadData() {
-      this.$store
-        .dispatch("orderRule/list", {
-          pageSize: this.pageSize,
-          lastId: this.lastId,
-          pageFlag: this.pageFlag,
-          searchForm: this.searchForm
-        })
-        .then(data => {
-          this.loadTotal(this.searchForm);
-          this.tableData = data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      if (this.$store.state.loginInfo.firm && this.$store.state.loginInfo.firm.firmId && this.$store.state.loginInfo.firm.firmId != null) {
+        this.searchForm.firmId = this.$store.state.loginInfo.firm.firmId;
+        this.$store
+          .dispatch("orderRule/list", {
+            pageSize: this.pageSize,
+            lastId: this.lastId,
+            pageFlag: this.pageFlag,
+            searchForm: this.searchForm
+          })
+          .then(data => {
+            this.loadTotal(this.searchForm);
+            this.tableData = data;
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }
     },
     loadTotal() {
       this.$store
