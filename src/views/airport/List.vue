@@ -14,9 +14,9 @@
         @row-dblclick="handleEdit"
         style="width: 100%;margin-bottom:15px;"
       >
-        <el-table-column prop="airportCode" label="三字码"></el-table-column>
-        <el-table-column prop="airportName" label="机场名称"></el-table-column>
-        <el-table-column prop="airportCity" label="机场所在城市"></el-table-column>
+        <el-table-column prop="airportCode" label="三字码" align="center"></el-table-column>
+        <el-table-column prop="airportName" label="机场名称" align="center"></el-table-column>
+        <el-table-column prop="airportCity" label="机场所在城市" align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="200">
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary" size="small">编辑</el-button>
@@ -37,9 +37,8 @@
         :total="total"
       ></el-pagination>
       <el-dialog
-        title="添加机场信息"
+        title="机场信息"
         center
-        :before-close="handleClose"
         :visible.sync="dialogVisible"
         width="30%"
       >
@@ -142,13 +141,6 @@ export default {
     handleEdit(row) {
       this.airportCode = row.airportCode;
       this.dialogVisible = true;
-    },
-    handleClose() {
-      this.$confirm("确认关闭添加机场信息对话框？")
-        .then(() => {
-          this.dialogVisible = false;
-        })
-        .catch(() => {});
     },
     handleCancel() {
       this.dialogVisible = false;

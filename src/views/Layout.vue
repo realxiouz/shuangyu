@@ -5,8 +5,8 @@
     </el-aside>
     <el-main>
       <div class="app-header">
-        <el-row type="flex" class="row-bg" justify="space-between">
-          <el-col :xs="18" :sm="17" :md="16" :lg="15" :xl="20">
+        <el-row type="flex" class="row-bg" justify="space-between" :gutter="20">
+          <el-col :xs="13" :sm="14" :md="16" :lg="19" :xl="20">
             <div class="grid-content bg-purple">
               <span class="nav-switch" v-bind:class="switchClass" @click="handleSwitch" />
             </div>
@@ -22,6 +22,13 @@
                   <router-link :to="item.path">{{ item.meta.title }}</router-link>
                 </el-breadcrumb-item>
               </el-breadcrumb>
+            </div>
+          </el-col>
+          <el-col :xs="3" :sm="5" :md="4" :lg="2" :xl="2" class="headFirm">
+            <div class="grid-content bg-purple">
+              <span
+                v-if="this.$store.state.loginInfo.firm"
+              >{{this.$store.state.loginInfo.firm.firmName}}</span>
             </div>
           </el-col>
           <el-col :xs="6" :sm="5" :md="4" :lg="3" :xl="2">
@@ -63,7 +70,7 @@
           title="请选择一个你的企业"
           :close-on-click-modal="false"
           :visible.sync="dialogVisible"
-          :before-close="handleCloseDialog"
+          :show-close="false"
           width="30%"
           center
         >
@@ -71,7 +78,7 @@
             v-if="dialogVisible"
             ref="selectFirms"
             :firms="firms"
-            @onSave="getLoginInfo"
+            @onSelectFirm="getLoginInfo"
           ></select-firms>
         </el-dialog>
       </div>
@@ -203,15 +210,10 @@ export default {
         obj[next.name] ? "" : (obj[next.name] = true && item.push(next));
         return item;
       }, []);
-      console.log(this.tags);
+      // console.log(this.tags);
     },
     handleClose(tag) {
       this.tags.splice(this.tags.indexOf(tag), 1);
-    },
-    handleCloseDialog() {
-      this.$confirm("请选择一个你的企业").then(_ => {
-        this.dialogVisible = true;
-      })
     }
   },
   created() {
@@ -244,6 +246,11 @@ export default {
     -webkit-box-shadow: 0px 1px 4px rgba(0, 21, 41, 0.08);
     box-shadow: 0px 1px 4px rgba(0, 21, 41, 0.08);
 
+    .headFirm {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
     .el-page-header {
       padding-left: 20px;
       line-height: 32px;

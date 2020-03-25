@@ -15,7 +15,7 @@
             <el-button @click="showFlagList(scope.row)" type="primary" size="small">查看</el-button>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center">
+        <el-table-column label="操作" align="center" width="200">
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary" size="small">编辑</el-button>
             <el-button @click="handleDelete(scope.row)" type="danger" size="small">删除</el-button>
@@ -32,7 +32,7 @@
         :page-size="pageSize"
         :total="total"
       ></el-pagination>
-      <el-dialog center title="接口参数信息" :visible.sync="dialogVisible" width="33%">
+      <el-dialog center title="接口参数信息" :visible.sync="dialogVisible" width="35%">
         <product-mark-edit
           v-if="dialogVisible"
           :markId="markId"
@@ -40,7 +40,7 @@
           @onCancel="handleCancel"
         ></product-mark-edit>
       </el-dialog>
-      <el-dialog center title="接口参数信息" :visible.sync="flagListVisible" width="33%">
+      <el-dialog center title="接口参数信息" :visible.sync="flagListVisible" width="35%">
         <flg-list v-if="flagListVisible" :flags="flags" @onCancel="handleCancelFlagList"></flg-list>
       </el-dialog>
     </div>

@@ -11,8 +11,8 @@
     >
       <el-table-column prop="thirdName" label="第三方平台" align="center" width="150"></el-table-column>
       <el-table-column prop="apiUrl" label="接口url" align="center" width="220"></el-table-column>
-      <el-table-column prop="label" label="接口标签" align="center" width="200"></el-table-column>
-      <el-table-column prop="name" label="接口名称" align="center" width="150"></el-table-column>
+      <el-table-column prop="label" label="接口标签" align="center" ></el-table-column>
+      <el-table-column prop="name" label="接口名称" align="center"></el-table-column>
       <el-table-column prop="defaultValue" label="默认值" align="center" width="150"></el-table-column>
       <el-table-column prop="required" label="是否必须" :formatter="formatBoolean" align="center" width="80"></el-table-column>
       <el-table-column prop="remark" label="备注" align="center"></el-table-column>
@@ -25,9 +25,8 @@
       </el-table-column>
     </el-table>
     <el-dialog
-      title="添加接口"
+      title="接口信息"
       :before-close="handleClose"
-      :close-on-click-modal="handleClose"
       center
       :visible.sync="dialogVisible"
       width="30%"
@@ -112,7 +111,7 @@ export default {
       this.dialogVisible = false;
     },
     handleClose() {
-      this.$confirm("确认关闭添加接口对话框？")
+      this.$confirm("确认关闭接口信息对话框？")
         .then(() => {
           this.dialogVisible = false;
         })

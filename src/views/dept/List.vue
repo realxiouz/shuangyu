@@ -13,15 +13,14 @@
         highlight-current-row
         style="width: 100%;margin-bottom:15px"
         size="mini"
-        border
         fit
         :tree-props="{children: 'children', hasChildren: 'test'}"
       >
-        <el-table-column prop="deptName" label="部门名称"></el-table-column>
-        <el-table-column prop="ddId" label="钉钉Id"></el-table-column>
-        <el-table-column prop="ddParentIdId" label="钉钉父节点"></el-table-column>
-        <el-table-column prop="domain" label="域名"></el-table-column>
-        <el-table-column fixed="right" label="操作" width="300" align="center">
+        <el-table-column prop="deptName" label="部门名称" align="center"></el-table-column>
+        <el-table-column prop="ddId" label="钉钉Id"  align="center"> </el-table-column>
+        <el-table-column prop="ddParentIdId" label="钉钉父节点"  align="center"></el-table-column>
+        <el-table-column prop="domain" label="域名"  align="center"></el-table-column>
+        <el-table-column fixed="right" label="操作" width="280" align="center">
           <template slot-scope="scope">
             <el-button @click="handleAddChild(scope.row.deptId)" type="success" size="mini">添加子级</el-button>
             <el-button @click="handleUpdate(scope.row.deptId)" type="primary" size="mini">编辑</el-button>
