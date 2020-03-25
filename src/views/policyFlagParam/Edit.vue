@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
-      <el-form-item label="平台" prop="thirdId">
+      <el-form-item label="平台:" prop="thirdId">
         <el-select v-model="formData.thirdId" style="width:100%;" filterable placeholder="请选择平台">
           <el-option
             v-for="item in partyList"
@@ -11,13 +11,13 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="参数标签" prop="label">
+      <el-form-item label="参数标签:" prop="label">
         <el-input v-model="formData.label"></el-input>
       </el-form-item>
-      <el-form-item label="参数名称" prop="name">
+      <el-form-item label="参数名称:" prop="name">
         <el-input v-model="formData.name"></el-input>
       </el-form-item>
-      <el-form-item label="备注" prop="remark">
+      <el-form-item label="备注:" prop="remark">
         <el-input v-model="formData.remark"></el-input>
       </el-form-item>
     </el-form>
