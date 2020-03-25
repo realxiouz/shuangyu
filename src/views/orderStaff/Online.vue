@@ -99,6 +99,11 @@
         ]
       };
     },
+    mounted() {
+      if (this.$store.state.loginInfo.staffId && this.$store.state.loginInfo.staffId!=null){
+        this.loadData();
+      }
+    },
     methods: {
       loadData() {
         this.$store
@@ -185,6 +190,11 @@
         }
       }
     },
+    created() {
+      if (this.$store.state.loginInfo.staffId && this.$store.state.loginInfo.staffId!=null){
+        this.loadData();
+      }
+    },
     computed: {
       formatDate() {
         return function (dateStr, format) {
@@ -206,17 +216,7 @@
 
         }
       },
-    },
-   /* created() {
-      if (this.$store.state.loginInfo.staffId && this.$store.state.loginInfo.staffId!=null){
-        this.loadData();
-      }
-    },*/
-    mounted() {
-      if (this.$store.state.loginInfo.staffId && this.$store.state.loginInfo.staffId!=null){
-        this.loadData();
-      }
-    },
+    }
   };
 </script>
 <style>

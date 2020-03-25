@@ -1,0 +1,240 @@
+<template>
+    <div class="contentBox">
+      <el-row style="margin-bottom:15px;margin-left:20px">
+        <el-button type="primary" size="mini" @click="handleAdd" :disabled="dictVisible">添加字典</el-button>
+      </el-row>
+      <el-table
+        size="mini"
+        highlight-current-row
+        :data="tableData"
+        style="width: 100%;margin-bottom: 20px;">
+        <el-table-column prop="name" label="字典名称" width="260" align="center"></el-table-column>
+        <el-table-column prop="value" label="字典值" width="260" align="center"></el-table-column>
+        <el-table-column label="类别" width="200" align="center">
+          <template slot-scope="scope">
+            <span style="margin-left: 10px">{{ formatCategory(scope.row.categoryId) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="categoryCode" label="类别编码" width="200" align="center"></el-table-column>
+        <el-table-column label="操作" align="center">
+          <template slot-scope="scope">
+            <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+        background
+        layout="total,prev,next"
+        prev-text="上一页"
+        next-text="下一页"
+        :page-size="pageSize"
+        :total="total"
+        @prev-click="handlePrevClick"
+        @next-click="handleNextClick"
+      ></el-pagination>
+
+      <el-dialog
+            title="第三方平台账号信息"
+            :visible.sync="dialogVisible"
+            width="30%"
+            :close-on-click-modal="false"
+            center>
+        <el-form :model="formData" label-width="110px" size="mini">
+          <input type="hidden" v-model="formData.dictId"/>
+          <el-form-item label="字典名称">
+            <el-input v-model="formData.name"></el-input>
+          </el-form-item>
+          <el-form-item label="字典值">
+            <el-input v-model="formData.value"></el-input>
+          </el-form-item>
+          <el-form-item label="类别">
+            <el-input :placeholder="curNode.name" disabled="disabled"></el-input>
+          </el-form-item>
+          <el-form-item label="类别编码">
+            <el-input :placeholder="curNode.categoryCode" disabled="disabled"></el-input>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+         <el-button size="mini" @click="handleCancel">取 消</el-button>
+      <el-button type="primary" @click="handleSave">确 定</el-button>
+        </span>
+      </el-dialog>
+    </div>
+</template>
+
+<script>
+    export default {
+        props: ["curNode","dictVisible"],
+        data() {
+            return {
+                dialogVisible: false,
+                tableData: [],
+                formData: {},
+                categoryList: [],
+                pageFlag: 'next',
+                pageSize: 10,
+                lastId: 'blank',
+                total: 0
+            };
+        },
+        methods: {
+            defaultFormData() {
+                return {
+                    dictId: '',
+                    name: '',
+                    value: '',
+                    categoryId: '',
+                    categoryCode: ''
+                };
+            },
+            /*加载数据列表*/
+            loadData() {
+                this.$store
+                    .dispatch('dict/getTotal', { filter: {categoryId: this.curNode.categoryId} })
+                    .then(data => {
+                        this.total = data.data;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+                this.$store
+                    .dispatch('dict/getPageList', {
+                        pageFlag: this.pageFlag,
+                        pageSize: this.pageSize,
+                        lastId: this.lastId,
+                        filter: {categoryId: this.curNode.categoryId}
+                    })
+                    .then(data => {
+                        this.tableData = data.data;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            loadCategory(){
+                this.$store
+                    .dispatch('category/getList', { filter: {} })
+                    .then(data => {
+                        this.categoryList = data.data;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            /*添加记录*/
+            handleAdd() {
+                this.dialogVisible = true;
+
+                this.formData.categoryId = this.curNode.categoryId;
+                this.formData.categoryCode = this.curNode.categoryCode;
+            },
+            /*添加记录时完成数据填写或编辑记录时，点击对数据进行保存*/
+            handleSave() {
+                this.dialogVisible = false;
+
+                let url = '';
+                if (this.formData.dictId != '') {
+                    url = 'dict/updateOne';
+                } else {
+                    url = 'dict/addOne';
+                }
+                this.$store
+                    .dispatch(url, this.formData)
+                    .then(() => {
+                        this.loadData();
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+                this.clearForm();
+            },
+            handleCancel() {
+                this.dialogVisible = false;
+                this.clearForm();
+            },
+            /*点击记录进行编辑*/
+            handleEdit(row) {
+                this.dialogVisible = true;
+                this.formData = row;
+            },
+            /*对字典信息进行删除*/
+            handleDelete(row) {
+                this.open(
+                    this.delete,
+                    row.dictId,
+                    '此操作将删除该条字典信息, 是否继续?'
+                );
+            },
+            /*根据字典ID删除字典*/
+            delete(dictId) {
+                this.$store
+                    .dispatch('dict/removeOne', { dictId: dictId })
+                    .then(() => {
+                        this.loadData();
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            /*前翻页*/
+            handlePrevClick() {
+                this.pageFlag = 'prev';
+                this.lastId = this.tableData[0].dictId;
+                this.loadData();
+            },
+            /*翻后页*/
+            handleNextClick() {
+                this.pageFlag = 'next';
+                this.lastId = this.tableData[this.tableData.length - 1].dictId;
+                this.loadData();
+            },
+            clearForm(){
+                this.formData = this.defaultFormData();
+            },
+            open(func, data, message) {
+                this.$confirm(message, '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                })
+                    .then(() => {
+                        func(data);
+                        this.$message({
+                            type: 'success',
+                            message: '删除成功!'
+                        });
+                    })
+                    .catch(() => {
+                        this.$message({
+                            type: 'info',
+                            message: '已取消删除'
+                        });
+                    });
+            },
+            initCategory(categoryId){
+                let idx = 0;
+                const _categoryList = this.categoryList;
+                for (; idx < _categoryList.length; idx++){
+                    if (_categoryList[idx].categoryId === categoryId){
+                        break;
+                    }
+                }
+                return _categoryList[idx].name;
+            }
+        },
+        computed: {
+            formatCategory() {
+                return function(categoryId) {
+                    return this.initCategory(categoryId);
+                };
+            }
+        },
+        watch:{
+            curNode() {
+                this.loadData();
+                this.loadCategory();
+            }
+        }
+    };
+</script>

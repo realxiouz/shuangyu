@@ -114,6 +114,13 @@ export default new Router({
           name: 'productMark',
           component: () => import('@/views/productMark/List'),
           meta: { title: '产品标签管理', icon: 'home' },
+        },
+        {
+          title: '字典管理',
+          path: '/dict/list',
+          name: 'dict',
+          component: () => import('@/views/dict/List'),
+          meta: { title: '字典管理', icon: 'home' }
         }
       ]
     },
@@ -315,6 +322,21 @@ export default new Router({
           component: () => import('@/views/tgqProduct/Edit'),
           props: { default: true, sidebar: false },
           meta: { title: 'TGQ编辑', icon: 'home' }
+        },
+        {
+          title: 'TTS调度',
+          path: '/ttsScheduler/list',
+          name: 'ttsSchedulerList',
+          component: () => import('@/views/ttsScheduler/List'),
+          meta: {title: 'TTS调度', icon: 'home'}
+        },
+        {
+          title: 'TTS编辑',
+          path: '/tts/scheduler/edit',
+          name: 'ttsSchedulerEdit',
+          component: () => import('@/views/ttsScheduler/Edit'),
+          props: {default: true, sidebar: false},
+          meta: {title: 'TTS编辑', icon: 'home'}
         },
         {
           title: '第三方标签',

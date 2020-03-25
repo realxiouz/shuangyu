@@ -10,18 +10,17 @@
       <el-table
         :data="tableData"
         style="width: 100%;margin-bottom: 15px;"
-        border
         default-expand-all
         size="mini"
       >
-        <el-table-column prop="ruleName" label="规则名称"></el-table-column>
-        <el-table-column prop="domain" label="公司域名"></el-table-column>
-        <el-table-column prop="policyCodes" label="政策代码">
+        <el-table-column prop="ruleName" label="规则名称" align="center"></el-table-column>
+        <el-table-column prop="domain" label="公司域名" align="center"></el-table-column>
+        <el-table-column prop="policyCodes" label="政策代码" align="center">
           <template slot-scope="scope">
             <span>{{scope.row.policyCodes.join(",")}}</span>
           </template>
         </el-table-column>
-        <el-table-column fixed="right" label="操作" align="center" width="300">
+        <el-table-column label="操作" align="center" width="180">
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
             <el-button
@@ -72,20 +71,23 @@ export default {
       this.$router.push("/order/rule/edit");
     },
     loadData() {
-      this.$store
-        .dispatch("orderRule/list", {
-          pageSize: this.pageSize,
-          lastId: this.lastId,
-          pageFlag: this.pageFlag,
-          searchForm: this.searchForm
-        })
-        .then(data => {
-          this.loadTotal(this.searchForm);
-          this.tableData = data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      if (this.$store.state.loginInfo.firm && this.$store.state.loginInfo.firm.firmId && this.$store.state.loginInfo.firm.firmId != null) {
+        this.searchForm.firmId = this.$store.state.loginInfo.firm.firmId;
+        this.$store
+          .dispatch("orderRule/list", {
+            pageSize: this.pageSize,
+            lastId: this.lastId,
+            pageFlag: this.pageFlag,
+            searchForm: this.searchForm
+          })
+          .then(data => {
+            this.loadTotal(this.searchForm);
+            this.tableData = data;
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }
     },
     loadTotal() {
       this.$store
