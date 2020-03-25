@@ -10,6 +10,7 @@
       >
         <el-table-column prop="taskNo" label="任务编号" align="center"></el-table-column>
         <el-table-column prop="taskName" label="任务名称" align="center"></el-table-column>
+        <el-table-column prop="fullName" label="员工姓名" align="center"></el-table-column>
         <el-table-column prop="taskType" label="任务类型" align="center">
           <template slot-scope="scope">
             <span>{{ formatTaskType(scope.row.taskType)}}</span>
@@ -26,7 +27,6 @@
           </template>
         </el-table-column>
         <el-table-column prop="taskStatus" label="任务状态" align="center"></el-table-column>
-        <el-table-column prop="fullName" label="员工姓名" align="center"></el-table-column>
         <el-table-column prop="startTime" label="开始时间" align="center">
           <template slot-scope="scope">
             <span>{{ formatDate(scope.row.startTime,'YYYY-MM-DD HH:mm:ss') }}</span>
