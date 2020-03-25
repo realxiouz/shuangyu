@@ -284,6 +284,21 @@ export default new Router({
           meta: {title: 'Home', icon: 'home'}
         },
         {
+          title: 'TTS调度',
+          path: '/ttsScheduler/list',
+          name: 'ttsSchedulerList',
+          component: () => import('@/views/ttsScheduler/List'),
+          meta: {title: 'Home', icon: 'home'}
+        },
+        {
+          title: 'TTS编辑',
+          path: '/tts/scheduler/edit',
+          name: 'ttsSchedulerEdit',
+          component: () => import('@/views/ttsScheduler/Edit'),
+          props: {default: true, sidebar: false},
+          meta: {title: 'Home', icon: 'home'}
+        },
+        {
           title: '第三方标签',
           path: '/policy/flag/list',
           name: 'flag',
