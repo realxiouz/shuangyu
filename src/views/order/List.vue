@@ -11,9 +11,9 @@
         <el-table-column prop="orderNo" label="订单号" width="180" align="center"></el-table-column>
         <el-table-column prop="policyCode" label="政策代码" align="center"></el-table-column>
         <el-table-column prop="statusName" label="订单状态" width="80" align="center"></el-table-column>
-        <el-table-column label="订单日期" width="110" align="center">
+        <el-table-column label="订单日期" width="100" align="center">
           <template slot-scope="scope">
-            <i v-if="scope.row.createTime" class="el-icon-time"></i>
+            <i v-if="scope.row.createTime" ></i>
             <span style="margin-left: 10px">{{ formatDate(scope.row.createTime,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
@@ -24,7 +24,7 @@
             <span style="margin-left: 10px">{{ formatFlightNo(scope.row.flights)}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="航班日期" width="110" align="center">
+        <el-table-column label="航班日期" width="100" align="center">
           <template slot-scope="scope">
             <i v-if="scope.row.flights"></i>
             <span style="margin-left: 10px">{{ formatFlightDate(scope.row.flights)}}</span>
@@ -221,13 +221,14 @@
                 if (!data || data.length == 0) {
                     return "";
                 }
-                return data[0].dptTime +
+                 let dptTime =data[0].dptTime.split(" ");
+                return data[0].dpt +
                     " " +
-                    data[0].dpt +
+                    dptTime[1] +
                     " - " +
-                    data[0].arrTime +
+                    data[0].arr +
                     " " +
-                    data[0].arr;
+                    data[0].arrTime;
             },
             formatFlightDate(data) {
                 if (!data || data.length == 0) {

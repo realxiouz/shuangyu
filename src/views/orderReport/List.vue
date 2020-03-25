@@ -8,41 +8,54 @@
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table :data="tableData" size="mini" highlight-current-row style="width: 100%;" border fit>
-        <el-table-column prop="orderNo" label="订单号" width="180"></el-table-column>
-        <el-table-column prop="policyCode" label="政策代码" width="150"></el-table-column>
+        <el-table-column prop="orderNo" label="订单号" width="150"></el-table-column>
+        <el-table-column prop="policyCode" label="政策代码" width="100"></el-table-column>
         <el-table-column prop="statusName" label="订单状态" width="100"></el-table-column>
         <el-table-column prop="categoryName" label="订单类型" width="80" align="center"></el-table-column>
-        <el-table-column label="订单日期" width="110" align="center">
+        <el-table-column label="订单日期" width="100" align="center">
           <template slot-scope="scope">
-            <i v-if="scope.row.createTime" class="el-icon-time"></i>
+            <i v-if="scope.row.createTime" ></i>
             <span style="margin-left: 10px">{{ formatDate(scope.row.createTime,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="航班号" width="100" align="center">
+        <el-table-column label="航班号" width="80" align="center">
           <template slot-scope="scope">
             <i v-if="scope.row.flights"></i>
             <span style="margin-left: 10px">{{ formatFlightNo(scope.row.flights)}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="航班日期" width="110" align="center">
+        <el-table-column label="航班日期" width="100" align="center">
           <template slot-scope="scope">
             <i v-if="scope.row.flights"></i>
             <span style="margin-left: 10px">{{ formatFlightDate(scope.row.flights)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="receivable" label="应收" width="100"></el-table-column>
-        <el-table-column prop="payable" label="应付" width="100"></el-table-column>
-        <el-table-column prop="receipt" label="实收" width="100"></el-table-column>
-        <el-table-column prop="payment" label="实付" width="100"></el-table-column>
-        <el-table-column prop="systemProfit" label="利润" width="100"></el-table-column>
-        <el-table-column label="系统利润时间" width="150" align="center">
+        <el-table-column label="起飞-到达" width="100" align="center">
           <template slot-scope="scope">
-            <i v-if="scope.row.systemProfitTime" class="el-icon-time"></i>
-            <span
-              style="margin-left: 10px"
-            >{{ formatDate(scope.row.systemProfitTime,'YYYY-MM-DD') }}</span>
+            <i v-if="scope.row.flights"></i>
+            <span style="margin-left: 10px">{{ formatFlight(scope.row.flights)}}</span>
           </template>
         </el-table-column>
+        <el-table-column prop="pnr" label="PNR" width="80" align="center"></el-table-column>
+        <el-table-column label="总价" width="90" align="center">
+          <template slot-scope="scope">
+            <i v-if="scope.row.amount"></i>
+            <span style="margin-left: 10px">{{ formatAmount(scope.row.amount)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="乘客" align="center" width="100">
+          <template slot-scope="scope">
+            <i v-if="scope.row.passengers"></i>
+            <span style="margin-left: 10px">{{ formatPassengers(scope.row.passengers)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="receivable" label="应收" width="60"></el-table-column>
+        <el-table-column prop="payable" label="应付" width="60"></el-table-column>
+        <el-table-column prop="receipt" label="实收" width="60"></el-table-column>
+        <el-table-column prop="payment" label="实付" width="60"></el-table-column>
+        <el-table-column prop="systemProfit" label="系统利润" width="60"></el-table-column>
+        <el-table-column prop="shouldProfit" label="应该利润" width="60"></el-table-column>
+        <el-table-column prop="profit" label="实际利润" width="80"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="150">
           <template slot-scope="scope">
             <el-button @click="handleUpdate(scope.row.deptId)" type="primary" size="mini">编辑</el-button>
@@ -180,6 +193,36 @@
                 }
                 return data[0].flightCode;
             },
+            formatFlight(data) {
+                if (!data || data.length == 0) {
+                    return "";
+                }
+                let dptTime =data[0].dptTime.split(" ");
+                return data[0].dpt +
+                    " " +
+                    dptTime[1] +
+                    " - " +
+                    data[0].arr +
+                    " " +
+                    data[0].arrTime;
+            },
+            formatPassengers(data) {
+                if (!data || data.length == 0) {
+                    return "";
+                }
+                let str = "";
+                data.forEach(item => {
+                    str += item.name + "/";
+                });
+
+                return str.substring(0, str.length - 1);
+            },
+            formatAmount(amount) {
+                if (!amount) {
+                    return "";
+                }
+                return '￥' + this.$numeral(amount).format('0.00');
+            }
         },
         components: {
             orderReportSearch
