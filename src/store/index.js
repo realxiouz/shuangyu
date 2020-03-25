@@ -30,6 +30,8 @@ import qunarOrderConfig from "./modules/qunarOrderConfig";
 import qunarOrderNotifyConfig from "./modules/qunarOrderNotifyConfig";
 import qunarPolicyConfig from "./modules/qunarPolicyConfig";
 import orderStaff from "./modules/orderStaff";
+import category from "./modules/category";
+import dict from "./modules/dict";
 
 import { getLoginInfo } from "@/api/staff";
 
@@ -65,7 +67,9 @@ export default new Vuex.Store({
     qunarOrderConfig,
     qunarOrderNotifyConfig,
     qunarPolicyConfig,
-    orderStaff
+    orderStaff,
+    category,
+    dict
   },
   state: {
     loginInfo: {}

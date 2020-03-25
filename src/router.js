@@ -114,6 +114,13 @@ export default new Router({
           name: 'productMark',
           component: () => import('@/views/productMark/List'),
           meta: { title: '产品标签管理', icon: 'home' },
+        },
+        {
+          title: '字典管理',
+          path: '/dict/list',
+          name: 'dict',
+          component: () => import('@/views/dict/List'),
+          meta: { title: '字典管理', icon: 'home' }
         }
       ]
     },
