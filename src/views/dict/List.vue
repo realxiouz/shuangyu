@@ -100,7 +100,7 @@
             /*加载类别树*/
             loadData() {
                 this.$store
-                    .dispatch("category/getTreeList", {})
+                    .dispatch("category/getTreeList", {filter: {categoryType: 0}})
                     .then(data => {
                         this.treeData = data.data;
                     })
@@ -189,10 +189,10 @@
             },
             /*选择类别节点后对该节点进行编辑*/
             handleNodeClick(data, node) {
-                if (!node.data.hasChildren){
+                if (!node.data.hasChildren) {
                     this.curNode = node.data;
                     this.dictVisible = false;
-                }else{
+                } else {
                     this.dictVisible = true;
                 }
             },
@@ -232,11 +232,11 @@
                         });
                     });
             },
-            toUpperCase(){
+            toUpperCase() {
                 this.formData.categoryCode = this.formData.categoryCode.toUpperCase();
             }
         },
-        mounted() {
+        created() {
             this.loadData();
         },
         components: {

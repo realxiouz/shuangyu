@@ -8,15 +8,15 @@
       highlight-current-row
       :data="tableData"
       style="width: 100%;margin-bottom: 20px;">
+      <el-table-column prop="name" label="字典名称" width="200"></el-table-column>
+      <el-table-column prop="key" label="键值" width="200"></el-table-column>
+      <el-table-column prop="value" label="字典值" width="200" align="center"></el-table-column>
       <el-table-column label="类别" width="200" align="center">
         <template slot-scope="scope">
           <span style="margin-left: 10px">{{ formatCategory(scope.row.categoryId) }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="categoryCode" label="类别编码" width="200" align="center"></el-table-column>
-      <el-table-column prop="name" label="字典名称" width="200" align="center"></el-table-column>
-      <el-table-column prop="key" label="键值" width="200" align="center"></el-table-column>
-      <el-table-column prop="value" label="字典值" width="200" align="center"></el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
           <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
@@ -52,10 +52,10 @@
         <el-form-item label="字典名称">
           <el-input v-model="formData.name"></el-input>
         </el-form-item>
-        <el-form-item label="键值">
+        <el-form-item label="键">
           <el-input v-model="formData.key" @input="toUpperCase"></el-input>
         </el-form-item>
-        <el-form-item label="字典值">
+        <el-form-item label="值">
           <el-input v-model="formData.value"></el-input>
         </el-form-item>
       </el-form>
@@ -119,7 +119,7 @@
             },
             loadCategory() {
                 this.$store
-                    .dispatch('category/getList', {filter: {}})
+                    .dispatch('category/getList', {filter: {categoryType: 0}})
                     .then(data => {
                         this.categoryList = data.data;
                     })
@@ -130,13 +130,13 @@
             /*添加记录*/
             handleAdd() {
                 this.dialogVisible = true;
+                this.clearForm();
 
                 this.formData.categoryId = this.curNode.categoryId;
                 this.formData.categoryCode = this.curNode.categoryCode;
             },
             /*添加记录时完成数据填写或编辑记录时，点击对数据进行保存*/
             handleSave() {
-                console.log(this.formData);
                 this.dialogVisible = false;
 
                 let url = '';
@@ -145,7 +145,6 @@
                 } else {
                     url = 'dict/addOne';
                 }
-                debugger
                 this.$store
                     .dispatch(url, this.formData)
                     .then(() => {
@@ -220,7 +219,7 @@
                     });
             },
             toUpperCase() {
-                this.formData.categoryCode = this.formData.categoryCode.toUpperCase();
+                this.formData.key = this.formData.key.toUpperCase();
             },
             initCategory(categoryId) {
                 let idx = 0;
@@ -242,8 +241,8 @@
         },
         watch: {
             curNode() {
-                this.loadData();
                 this.loadCategory();
+                this.loadData();
             }
         }
     };
