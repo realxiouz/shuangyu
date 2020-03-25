@@ -10,12 +10,12 @@
       >
         <el-table-column prop="createTime" label="创建日期" align="center">
           <template slot-scope="scope">
-            <span>{{ formatDate(scope.row.createTime,'YYYY-MM-DD') }}</span>
+            <span>{{ formatDate(scope.row.createTime,'YYYY-MM-DD HH:MM:SS') }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="startTime" label="开始日期" align="center">
           <template slot-scope="scope">
-            <span>{{ formatDate(scope.row.startTime,'YYYY-MM-DD') }}</span>
+            <span>{{ formatDate(scope.row.startTime,'YYYY-MM-DD HH:MM:SS') }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="policyCode" label="政策代码" align="center"></el-table-column>
