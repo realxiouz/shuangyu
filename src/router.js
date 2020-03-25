@@ -31,8 +31,6 @@ export default new Router({
       name: 'index',
       component: Layout,
       redirect: '/home',
-      meta: { title: '首页', icon: 'home' },
-
       children: [
         {
           title: '首页',
@@ -56,8 +54,6 @@ export default new Router({
       name: 'admin',
       redirect: '/user/list',
       component: Layout,
-      meta: { title: '系统管理', icon: 'home' },
-
       children: [
         /*{
           title: '模板',
@@ -123,8 +119,6 @@ export default new Router({
       name: 'orderList',
       component: Layout,
       redirect: '/order/list',
-      meta: { title: '订单管理', icon: 'home' },
-
       children: [
         {
           title: 'Pnrjy导单',
@@ -190,8 +184,6 @@ export default new Router({
       name: 'flightInfo',
       component: Layout,
       redirect: '/airline/list',
-      meta: { title: '航班信息管理', icon: 'home' },
-
       children: [
         {
           title: '机场信息',
@@ -236,7 +228,6 @@ export default new Router({
       name: 'firm',
       component: Layout,
       redirect: '/firm/list',
-      meta: { title: '企业信息', icon: 'home' },
       children: [
         {
           title: '企业管理',
@@ -267,8 +258,6 @@ export default new Router({
       name: 'policyList',
       component: Layout,
       redirect: '/policy/list',
-      meta: { title: '政策信息', icon: 'home' },
-
       children: [
         {
           title: '政策管理',
@@ -285,8 +274,6 @@ export default new Router({
       namr: 'thirdApi',
       component: Layout,
       redirect: '/third/party/list',
-      meta: { title: '第三方Api管理', icon: 'home' },
-
       children: [
         {
           title: '第三方平台',
@@ -346,7 +333,6 @@ export default new Router({
       name: 'qunar',
       component: Layout,
       redirect: '/qunar/order',
-      meta: { title: '去哪儿', icon: 'home' },
 
       children: [
         {
