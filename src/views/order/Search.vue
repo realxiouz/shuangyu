@@ -23,7 +23,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item  v-show="more" label="PNR:">
+          <el-form-item v-show="more" label="PNR:">
             <el-input v-model="formData.pnr" style="width: 100%"></el-input>
           </el-form-item>
         </el-col>
@@ -60,7 +60,7 @@
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="订单来源:">
-            <el-select  v-model="formData.orderSource" placeholder="全部" style="width: 100%">
+            <el-select v-model="formData.orderSource" placeholder="全部" style="width: 100%">
               <el-option label="去哪网" value="qunawang"></el-option>
               <el-option label="飞猪" value="feizhu"></el-option>
             </el-select>
@@ -75,6 +75,18 @@
             </el-radio-group>
           </el-form-item>
         </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="订单日期:">
+            <el-col>
+              <el-date-picker
+                type="date"
+                placeholder="选择日期"
+                v-model="formData.createTime"
+                style="width: 100%;"
+              ></el-date-picker>
+            </el-col>
+          </el-form-item>
+        </el-col>
       </el-form>
     </el-col>
     <el-col :xs="8" :sm="6" :md="6" :lg="4" :xl="4" class="search-tools">
@@ -84,50 +96,53 @@
         type="primary"
         size="mini"
         @click="$emit('onSearch', formData)"
-      >查询</el-button>
+      >查询
+      </el-button>
       <el-button type="text" size="mini" @click="handleMore">
         更多
         <i :class="switchIcon"></i>
       </el-button>
     </el-col>
+
   </el-row>
 </template>
 
 <script>
-export default {
-  name: "orderSearch",
-  data() {
-    return {
-      more: false,
-      formData: {
-        orderType: "", //订单类型
-        voyageType: "", //航程类型
-        orderSource: "", //订单来源
-        flightCode: "", //航班号
-        flightDate: "", //出发日期
-        cabin: "", //舱位
-        status: "", //订单状态
-        pnr: "", //PNR
-        rootOrderNo: "", //票号
-        orderNo: "", //订单号
-        name: "", //乘机人姓名
-        cardNo: "" //乘机人证件号
-      }
+    export default {
+        name: "orderSearch",
+        data() {
+            return {
+                more: false,
+                formData: {
+                    orderType: "", //订单类型
+                    voyageType: "", //航程类型
+                    orderSource: "", //订单来源
+                    flightCode: "", //航班号
+                    flightDate: "", //出发日期
+                    cabin: "", //舱位
+                    status: "", //订单状态
+                    pnr: "", //PNR
+                    rootOrderNo: "", //票号
+                    orderNo: "", //订单号
+                    name: "", //乘机人姓名
+                    cardNo: "",//乘机人证件号
+                    createTime: ""
+                }
+            };
+        },
+        computed: {
+            switchIcon() {
+                if (!this.more) {
+                    return "el-icon-arrow-down el-icon--right";
+                } else {
+                    return "el-icon-arrow-up el-icon--right";
+                }
+            }
+        },
+        methods: {
+            handleMore() {
+                this.more = !this.more;
+            }
+        }
     };
-  },
-  computed: {
-    switchIcon() {
-      if (!this.more) {
-        return "el-icon-arrow-down el-icon--right";
-      } else {
-        return "el-icon-arrow-up el-icon--right";
-      }
-    }
-  },
-  methods: {
-    handleMore() {
-      this.more = !this.more;
-    }
-  }
-};
 </script>

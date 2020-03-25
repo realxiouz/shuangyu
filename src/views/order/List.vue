@@ -247,7 +247,7 @@
                 }
                 let str = "";
                 data.forEach(item => {
-                    str += item.name + ",";
+                    str += item.name + "/";
                 });
 
                 return str.substring(0, str.length - 1);

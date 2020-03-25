@@ -44,7 +44,8 @@
                     name: "",
                     flightCode: "",
                     ticketNo: "",
-                    orderNo: ""
+                    orderNo: "",
+                    createTime: ""
                 }
             };
         },
