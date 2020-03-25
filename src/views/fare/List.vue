@@ -47,7 +47,7 @@
       ></el-pagination>
 
       <el-dialog
-        title="添加票价信息"
+        title="票价信息"
         center
         :visible.sync="dialogVisible"
         width="30%"
