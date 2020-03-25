@@ -30,9 +30,9 @@
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="订单状态:">
             <el-select v-model="formData.status" placeholder="全部" style="width: 100%">
-              <el-option label="出票中" value="0"></el-option>
-              <el-option label="退票完成" value="1"></el-option>
-              <el-option label="出票完成" value="2"></el-option>
+              <el-option label="出票中" value="3"></el-option>
+              <el-option label="出票完成" value="4"></el-option>
+              <el-option label="退票完成" value="13"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
