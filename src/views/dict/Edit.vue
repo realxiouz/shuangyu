@@ -60,6 +60,9 @@
         <el-form-item label="值">
           <el-input v-model="formData.value"></el-input>
         </el-form-item>
+        <el-form-item label="备注">
+          <el-input type="textarea" :rows="3" placeholder="请输入备注(remark)" v-model="formData.remark"></el-input>
+        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleCancel">取 消</el-button>
@@ -92,7 +95,8 @@
                     key: '',
                     value: '',
                     categoryId: '',
-                    categoryCode: ''
+                    categoryCode: '',
+                    remark: ''
                 };
             },
             /*加载数据列表*/
