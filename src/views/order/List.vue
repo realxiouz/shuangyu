@@ -226,10 +226,10 @@
                 if (!data || data.length == 0) {
                     return "";
                 }
-                let dptTime = data[0].dptTime.split(" ");
+                let dptTime = data[0].dptTime.match(/.*(.{5})/)[1];
                 return data[0].dpt +
                     " " +
-                    dptTime[1] +
+                    dptTime +
                     " - " +
                     data[0].arr +
                     " " +
