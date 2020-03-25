@@ -224,6 +224,7 @@ export default {
   },
   created() {
     this.getLoginInfo(null);
+    this.getTag()
   },
   mounted() {
     const _this = this;
