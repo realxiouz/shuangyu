@@ -33,6 +33,7 @@ import orderStaff from "./modules/orderStaff";
 import ttsScheduler from "./modules/ttsScheduler";
 import category from "./modules/category";
 import dict from "./modules/dict";
+import orderTask from "./modules/orderTask"
 
 import { getLoginInfo } from "@/api/staff";
 
@@ -71,7 +72,8 @@ export default new Vuex.Store({
     orderStaff,
     ttsScheduler,
     category,
-    dict
+    dict,
+    orderTask
   },
   state: {
     loginInfo: {}
