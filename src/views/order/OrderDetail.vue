@@ -122,7 +122,7 @@
             <span>{{ formatDate(scope.row.birthday,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="ageType" label="乘机人类型 0 为成人,1 为儿童，2为婴儿" width="250" align="center">
+        <el-table-column prop="ageType" label="乘机人类型" width="250" align="center">
           <template slot-scope="scope">
             <span>{{ formatAgeType(scope.row.ageType) }}</span>
           </template>
