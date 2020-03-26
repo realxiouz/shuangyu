@@ -1,4 +1,4 @@
-import {getList, getOne, removeOne, save,getTotal} from "@/api/order";
+import {getList, getOne, removeOne, save,getTotal,getOrderDetail} from "@/api/order";
 import {getToken} from "@/utils/auth";
 
 
@@ -84,7 +84,20 @@ const actions = {
           reject(error);
         });
     });
-  }
+  },
+  getOrderDetail({commit}, data) {
+    return new Promise((resolve, reject) => {
+      getOrderDetail(data)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+
 
 };
 
