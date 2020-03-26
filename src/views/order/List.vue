@@ -11,14 +11,13 @@
         :data="tableData"
         size="mini"
         highlight-current-row
-        style="width: 100%;margin-bottom:15px;"
-        border
+        style="width: 100%;margin-bottom:15px"
         fit
       >
         <el-table-column
           label="序号"
           type="index"
-          width="40"
+          width="50"
           align="center">
           <template slot-scope="scope">
             <span>{{(currentPage - 1) * pageSize + scope.$index + 1}}</span>
