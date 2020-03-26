@@ -14,6 +14,15 @@
         style="width: 100%;margin-bottom:15px"
         fit
       >
+        <el-table-column
+          label="序号"
+          type="index"
+          width="40"
+          align="center">
+          <template slot-scope="scope">
+            <span>{{(currentPage - 1) * pageSize + scope.$index + 1}}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="orderNo" label="订单号" align="center"></el-table-column>
         <el-table-column prop="policyCode" label="政策代码" width="100" align="center"></el-table-column>
         <el-table-column prop="statusName" label="订单状态" width="100" align="center"></el-table-column>
