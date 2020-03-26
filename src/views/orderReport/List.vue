@@ -44,27 +44,27 @@
             <span>{{ formatPassengers(scope.row.passengers)}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="总价" width="90" align="center">
+        <el-table-column label="总价" width="80" align="center">
           <template slot-scope="scope">
             <span>{{ formatAmount(scope.row.amount)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="receivable" label="应收" width="60" align="center">
+        <el-table-column prop="receivable" label="应收" width="80" align="center">
           <template slot-scope="scope">
             <span>{{ formatAmount(scope.row.receivable)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="receipt" label="实收" width="60" align="center">
+        <el-table-column prop="receipt" label="实收" width="80" align="center">
           <template slot-scope="scope">
             <span>{{ formatAmount(scope.row.receipt)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="payable" label="应付" width="60" align="center">
+        <el-table-column prop="payable" label="应付" width="80" align="center">
           <template slot-scope="scope">
             <span>{{ formatAmount(scope.row.payable)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="payment" label="实付" width="60" align="center">
+        <el-table-column prop="payment" label="实付" width="80" align="center">
           <template slot-scope="scope">
             <span>{{ formatAmount(scope.row.payment)}}</span>
           </template>
