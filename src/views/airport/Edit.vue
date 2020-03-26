@@ -4,23 +4,20 @@
       <el-form-item label="三字码">
         <el-input type="text" v-model="formData.airportCode" @input="toUpperCase" :disabled="update" maxlength="3"></el-input>
       </el-form-item>
+
       <el-form-item label="机场">
-        <el-row style="display: inline-block"><el-input v-model="airportName" style="width: 60%;"></el-input><el-button @click="addAirport" style="margin-left: 5px">添加</el-button></el-row>
-          <el-dropdown trigger="click" size="small">
-          <span class="el-dropdown-link">
-            机场名称<i class="el-icon-arrow-down"></i>
-          </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item
-                v-for="(item,idx) in formData.airportName" :key="idx">
-                <span style="float: left">{{item}}</span>
-                <span style="float: right">
-                  <i class="el-icon-circle-close" @click="itemRemove(idx)" style="margin-left: 14px"></i>
-                </span>
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
+        <el-input v-model="airportName" style="width: 60%;"></el-input><el-button @click="addAirport" style="margin-left: 5px">添加</el-button>
       </el-form-item>
+      <div class="tags-view">
+        <el-tag
+          class="tags-view-item"
+          @close="tagClose(tag)"
+          v-for="(tag,idx) in this.formData.airportName"
+          :key="idx"
+          closable="closable">
+          {{tag}}
+        </el-tag>
+      </div>
       <el-form-item prop="airportCity" label="所在城市">
         <el-input v-model="formData.airportCity" :disabled="update"></el-input>
       </el-form-item>
@@ -39,6 +36,7 @@
             return {
                 formData: {},
                 airportName: '',
+                tags: [],
                 /*rules: {
                   airportName: [
                     {required: true, message: "请输入机场名称", trigger: "blur"}
@@ -85,6 +83,9 @@
             },
             toUpperCase() {
                 this.formData.airportCode = this.formData.airportCode.toUpperCase();
+            },
+            tagClose(tag){
+                this.formData.airportName.splice(this.formData.airportName.indexOf(tag), 1);
             }
         },
         created() {
@@ -96,3 +97,19 @@
     }
 </script>
 
+<style>
+  .tags-view {
+    height: 80px;
+    width: 330px;
+    margin: 5px 0px 10px 120px;
+    padding-top: 6px;
+    border: 1px solid #edeff0;
+  }
+
+  .tags-view-item {
+    margin: 0 3px 2px 0;
+    cursor: pointer;
+    height: 22px;
+    line-height: 26px;
+  }
+</style>
