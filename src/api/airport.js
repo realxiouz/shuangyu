@@ -1,10 +1,26 @@
 import request from '@/utils/request';
 
-export function save(data) {
+export function addOne(data) {
   return request({
-    url: '/flight/airport/save',
+    url: '/flight/airport/add/one',
     method: 'post',
     data
+  });
+}
+
+export function updateOne(data) {
+  return request({
+    url: '/flight/airport/update/one',
+    method: 'post',
+    data
+  });
+}
+
+export function removeOne(airportCode) {
+  debugger
+  return request({
+    url: `/flight/airport/remove/one/${airportCode}`,
+    method: 'delete'
   });
 }
 
@@ -15,25 +31,33 @@ export function getOne(airportCode) {
   });
 }
 
-export function getPageList(params) {
+export function getOneByAirportName(airportName) {
   return request({
-    url: `/flight/airport/page/list/${params.pageFlag}/${params.pageSize}/${params.lastId}`,
-    method: 'get',
-    params: params.searchForm
+    url: `/flight/airport/one/name/${airportName}`,
+    method: 'get'
   });
 }
 
-export function getTotal(params) {
+export function getList(filter) {
+  return request({
+    url: `/flight/airport/list`,
+    method: 'get',
+    params: filter
+  });
+}
+
+export function getTotal(filter) {
   return request({
     url: '/flight/airport/total',
     method: 'get',
-    params
+    params: filter
   });
 }
 
-export function removeOne(airportCode) {
+export function getPageList(pageFlag, pageSize, lastId, filter) {
   return request({
-    url: `/flight/airport/remove/one/${airportCode}`,
-    method: 'delete'
+    url: `/flight/airport/page/list/${pageFlag}/${pageSize}/${lastId}`,
+    method: 'get',
+    params: filter
   });
 }

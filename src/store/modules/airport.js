@@ -1,70 +1,58 @@
-import {
-  getOne,
-  save,
-  getPageList,
-  removeOne,
-  getTotal
-} from '@/api/airport';
-import {getToken} from '@/utils/auth';
-
-const state = {
-  token: getToken(),
-  name: '',
-  avatar: ''
-};
-
-const mutations = {
-  SET_TOKEN: (state, token) => {
-    state.token = token;
-  },
-  SET_NAME: (state, name) => {
-    state.name = name;
-  },
-  SET_AVATAR: (state, avatar) => {
-    state.avatar = avatar;
-  }
-};
+import {addOne,updateOne,removeOne,getOne,getOneByAirportName,getList,getTotal,getPageList} from '@/api/airport';
 
 const actions = {
-  getOne({commit}, params) {
-    const { airportCode } = params;
+  addOne({commit}, params) {
     return new Promise((resolve, reject) => {
+      addOne(params)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  updateOne({commit}, params) {
+    return new Promise((resolve, reject) => {
+      updateOne(params)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  removeOne({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {airportCode} = params;
+      removeOne(airportCode)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getOne({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {airportCode} = params;
       getOne(airportCode)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  save({commit}, data) {
+  getOneByAirportName({commit}, params) {
     return new Promise((resolve, reject) => {
-      save(data)
+      const {airportName} = params;
+      getOneByAirportName(airportName)
         .then(response => {
-          const { data } = response;
-          resolve(data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  getPageList({commit}, params) {
-    var data = params.searchForm;
-    var searchForm = {};
-    for (var attr in data) {
-      if (data[attr] != null && data[attr] != undefined && data[attr] != '') {
-        searchForm[attr] = data[attr];
-      }
-    }
-    params.searchForm = searchForm;
-    return new Promise((resolve, reject) => {
-      getPageList(params)
-        .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -73,34 +61,43 @@ const actions = {
   },
   getTotal({commit}, params) {
     return new Promise((resolve, reject) => {
-      getTotal(params)
+      const {filter} = params;
+      getTotal(filter)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  removeOne({commit}, params) {
-    const { airportCode } = params;
+  getList({commit}, params) {
     return new Promise((resolve, reject) => {
-      removeOne(airportCode)
+      const {filter} = params;
+      getList(filter)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getPageList({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {pageFlag, pageSize, lastId, filter} = params;
+      getPageList(pageFlag, pageSize, lastId, filter)
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
         });
     });
   }
-};
+}
 
 export default {
   namespaced: true,
-  state,
-  mutations,
   actions
 };
