@@ -7,8 +7,7 @@
       <el-row style="margin-bottom:15px;margin-left:22px;">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
-      <el-table size="mini" :data="tableData" ref="tableData" @row-dblclick="handleEdit"
-                style="width: 100%;margin-bottom:15px;">
+      <el-table :data="tableData" style="width: 100%;margin-bottom:15px;">
         <el-table-column prop="airportCode" label="三字码" align="center"></el-table-column>
         <el-table-column label="机场名称" align="center">
           <template slot-scope="scope">
@@ -88,29 +87,31 @@
                     });
             },
             search(keyword) {
-                this.$store
-                    .dispatch("airport/getTotal", {
-                        airportName: keyword ? keyword : ''
-                    })
-                    .then(data => {
-                        this.total = data.data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-                this.$store
-                    .dispatch("airport/getOneByAirportName", {
-                        pageFlag: this.pageFlag,
-                        pageSize: this.pageSize,
-                        lastId: this.lastId,
-                        airportName: keyword ? keyword : ''
-                    })
-                    .then(data => {
-                        this.tableData = data.data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
+                if (keyword){
+                    this.$store
+                        .dispatch("airport/getTotal", {
+                            airportName: keyword ? keyword : ''
+                        })
+                        .then(data => {
+                            this.total = data.data;
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                    this.$store
+                        .dispatch("airport/getOneByAirportName", {airportName: keyword ? keyword : ''})
+                        .then(data => {
+                            this.tableData = [];
+                            if (data.data){
+                                this.tableData.push(data.data);
+                            }
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                }else{
+                    this.loadData();
+                }
             },
             handleAdd() {
                 this.dialogVisible = true;

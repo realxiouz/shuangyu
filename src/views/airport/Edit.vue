@@ -11,8 +11,8 @@
       <div class="_tags-view">
         <el-tag
           class="_tags-view-item"
-          @close="tagClose(tag)"
-          v-for="(tag,idx) in this.formData.airportName"
+          @close="tagClose(idx)"
+          v-for="(tag,idx) in tags"
           :key="idx"
           closable="closable">
           {{tag}}
@@ -24,7 +24,7 @@
     </el-form>
     <div slot="footer" class="dialog-footer" style="text-align:right">
       <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
-      <el-button size="mini" type="primary" @click="$emit('onSave', formData)">确 定</el-button>
+      <el-button size="mini" type="primary" @click="handleSave">确 定</el-button>
     </div>
   </div>
 </template>
@@ -65,18 +65,19 @@
             },
             addAirport(){
                 let exit = true;
-                for(let i = 0; i < this.formData.airportName.length; i++){
-                    if (this.formData.airportName[i] === this.airportName){
+                for(let i = 0; i < this.tags.length; i++){
+                    if (this.tags[i] === this.airportName){
                         exit = false;
                         break;
                     }
                 }
                 if (exit){
-                    this.formData.airportName.push(this.airportName);
+                    this.tags.push(this.airportName);
                 }
             },
-            itemRemove(idx){
-                this.formData.airportName.splice(idx, 1);
+            handleSave(){
+                this.formData.airportName = this.tags;
+                return  this.$emit('onSave', this.formData);
             },
             clearForm() {
                 this.formData = this.defaultFormData();
@@ -84,14 +85,15 @@
             toUpperCase() {
                 this.formData.airportCode = this.formData.airportCode.toUpperCase();
             },
-            tagClose(tag){
-                this.formData.airportName.splice(this.formData.airportName.indexOf(tag), 1);
+            tagClose(idx){
+                this.tags.splice(this.tags[idx], 1);
             }
         },
         created() {
             this.clearForm();
             if (this.update){
                 this.formData = this.curNode;
+                this.tags = this.formData.airportName;
             }
         }
     }
