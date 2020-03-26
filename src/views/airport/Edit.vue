@@ -8,9 +8,9 @@
       <el-form-item label="机场">
         <el-input v-model="airportName" style="width: 60%;"></el-input><el-button @click="addAirport" style="margin-left: 5px">添加</el-button>
       </el-form-item>
-      <div class="tags-view">
+      <div class="_tags-view">
         <el-tag
-          class="tags-view-item"
+          class="_tags-view-item"
           @close="tagClose(tag)"
           v-for="(tag,idx) in this.formData.airportName"
           :key="idx"
@@ -98,7 +98,7 @@
 </script>
 
 <style>
-  .tags-view {
+  ._tags-view {
     height: 80px;
     width: 330px;
     margin: 5px 0px 10px 120px;
@@ -106,7 +106,7 @@
     border: 1px solid #edeff0;
   }
 
-  .tags-view-item {
+  ._tags-view-item {
     margin: 0 3px 2px 0;
     cursor: pointer;
     height: 22px;
