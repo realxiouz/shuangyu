@@ -1,11 +1,11 @@
 <template>
   <div class="bigBox">
-    <div class="contentBox">
-      <el-row>
-        <h3>订单信息:</h3>
-      </el-row>
+    <el-card class="contentBox">
+      <div slot="header">
+        <span>订单详情</span>
+      </div>
       <el-row :gutter="20">
-        <el-form :model="tableData" label-width="110px" size="mini">
+        <el-form :model="tableData" label-width="130px" size="mini">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="订单编号:">
               <span>{{tableData.orderNo}}</span>
@@ -17,22 +17,23 @@
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="交易金额:">
+              <span>￥{{this.$numeral(tableData.transactionAmount).format('0.00')}}</span>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="金额:">
               <span>￥{{this.$numeral(tableData.amount).format('0.00')}}</span>
             </el-form-item>
           </el-col>
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="航程类型:">
-              <span>{{tableData.voyageTypeName}}</span>
-            </el-form-item>
-          </el-col>
         </el-form>
       </el-row>
-    </div>
-    <div class="contentBox">
-      <el-row>
-        <h3>乘客信息:</h3>
-      </el-row>
+    </el-card>
+
+    <el-card class="contentBox">
+      <div slot="header">
+        <span>乘客信息</span>
+      </div>
       <el-table :data="PassengerData" size="mini" highlight-current-row style="width: 100%;" fit>
         <el-table-column prop="name" label="姓名" width="100" align="center"></el-table-column>
         <el-table-column prop="gender" label="性别" width="100" align="center"></el-table-column>
@@ -55,66 +56,52 @@
         </el-table-column>
       </el-table>
       <el-row style="margin-top:20px">
-        <el-button type="primary" @click="goTicket" size="mini">出票</el-button>
+        <el-button type="primary" @click="goTicket" size="mini">下单</el-button>
       </el-row>
-    </div>
-    <div class="contentBox" v-if="flightShow">
-      <el-row>
-        <h3>航班信息:</h3>
-      </el-row>
+    </el-card>
+    <el-card class="contentBox" v-if="flightShow">
+      <div slot="header">
+        <span>航班信息</span>
+      </div>
+      <el-table :data="flightData" size="mini" highlight-current-row style="width: 100%;" fit>
+        <el-table-column prop label="渠道" width="160" align="center"></el-table-column>
+        <el-table-column prop="最低价" label="到达机场" width="160" align="center"></el-table-column>
+        <el-table-column prop="refundRule" label="退票规则" align="center"></el-table-column>
+        <el-table-column prop="changeRule" label="改签规则" align="center"></el-table-column>
+        <el-table-column prop="changeRule" label="预定" align="center" type="expand">
+          <template>
+            <el-table :data="flightData">
+              <el-table-column prop="dptAirport" label="起始地" align="center"></el-table-column>
+              <el-table-column prop="arrAirport" label="目的地" align="center"></el-table-column>
+              <el-table-column prop="airlineCode" label="航司" width="100" align="center"></el-table-column>
+              <el-table-column prop="actFlightCode" label="主飞航班" align="center"></el-table-column>
+              <el-table-column prop="shareFlag" label="是否共享" width="100" align="center"></el-table-column>
+              <el-table-column prop="flightCode" label="航班号" align="center"></el-table-column>
+              <el-table-column prop="cabin" label="舱位" width="50" align="center"></el-table-column>
+              <el-table-column prop label="售价" width="100" align="center"></el-table-column>
+              <el-table-column label="操作" width="80" align="center">
+                <el-button type="primary" @click="handlePay" size="mini">支付</el-button>
+              </el-table-column>
+            </el-table>
+          </template>
+        </el-table-column>
+      </el-table>
+      <!-- <el-row style="margin-top:20px">
+          <el-button type="primary" size="mini">下单</el-button>
+          <el-button type="primary" size="mini">手动下单</el-button>
+      </el-row>-->
+    </el-card>
+    <el-card class="contentBox" v-if="showPay" id="jumpPay">
+      <div slot="header">
+        <span>支付</span>
+      </div>
       <div>
-        <el-table>
-          <el-table-column label="航班信息"></el-table-column>
-          <el-table-column label="航班信息"></el-table-column>
-          <el-table-column label="航班信息"></el-table-column>
-        </el-table>
-        <el-row style="margin-top:20px">
-          <el-button type="primary" @click="automaticBuyTicket" size="mini">自动抢票</el-button>
-          <el-button type="primary" @click="handleBuyTicket" size="mini">手动抢票</el-button>
+        <el-row style="margin-bottom:15px">金额：￥0.00</el-row>
+        <el-row>
+          <el-button type="primary" size="mini">去付款</el-button>
         </el-row>
       </div>
-      <div>
-        <el-dialog title="抢票" center :visible.sync="dialogVisible" width="35%">
-          <el-form :model="tableData" label-width="110px" size="mini">
-            <el-form-item label="订单编号:">
-              <span>{{tableData.orderNo}}</span>
-            </el-form-item>
-            <el-form-item label="订单类型:">
-              <span>{{tableData.categoryName}}</span>
-            </el-form-item>
-            <el-form-item label="金额:">
-              <span>￥{{this.$numeral(tableData.amount).format('0.00')}}</span>
-            </el-form-item>
-            <el-form-item label="航程类型:">
-              <span>{{tableData.voyageTypeName}}</span>
-            </el-form-item>
-          </el-form>
-          <el-row>
-            <h3>乘客信息:</h3>
-          </el-row>
-          <el-table
-            :data="PassengerData"
-            size="mini"
-            highlight-current-row
-            style="width: 100%;"
-            fit
-          >
-            <el-table-column prop="name" label="姓名" width="100" align="center"></el-table-column>
-            <el-table-column prop="gender" label="性别" width="100" align="center"></el-table-column>
-            <el-table-column label="出生年月" width="110" align="center">
-              <template slot-scope="scope">
-                <span>{{ formatDate(scope.row.birthday,'YYYY-MM-DD') }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column prop="cardNo" label="乘机人证件号" align="center"></el-table-column>
-          </el-table>
-          <span slot="footer" class="dialog-footer">
-            <el-button @click="handleCancel">取 消</el-button>
-            <el-button type="primary" @click="handleSave">确 定</el-button>
-          </span>
-        </el-dialog>
-      </div>
-    </div>
+    </el-card>
   </div>
 </template>
 
@@ -123,13 +110,14 @@ export default {
   name: "goTicket",
   data() {
     return {
-      dialogVisible: false,
+      showPay: false,
       flightShow: false,
-      purchaseShow:true,
+      purchaseShow: true,
       flightData: [],
       PassengerData: [],
       tableData: {},
-      orderNo: this.$route.query.orderNo
+      orderNo: this.$route.query.orderNo,
+      PassengerData: this.$route.query.passengersInfo
     };
   },
   methods: {
@@ -137,12 +125,8 @@ export default {
       this.$store
         .dispatch("order/getOrderDetail", this.orderNo)
         .then(data => {
-          console.log(data);
           if (data) {
             this.tableData = data;
-            if (data.passengers) {
-              this.PassengerData = data.passengers;
-            }
             if (data.flights) {
               this.flightData = data.flights;
             }
@@ -152,20 +136,8 @@ export default {
           console.log(error);
         });
     },
-    handleCancel() {
-      this.dialogVisible = true;
-    },
-    handleSave() {
-      console.log("aaa",this.orderNo)
-      this.$router.push({
-        path: "/order/detail",
-        query: {
-          orderNo: this.orderNo,
-          purchaseShow:this.purchaseShow
-
-        }
-      });
-      this.dialogVisible = false;
+    handlePay() {
+      this.showPay = true;
     },
     goTicket() {
       this.flightShow = true;
@@ -193,10 +165,6 @@ export default {
         return "￥0.00";
       }
       return "￥" + this.$numeral(amount).format("0.00");
-    },
-    automaticBuyTicket() {},
-    handleBuyTicket() {
-      this.dialogVisible = true;
     }
   },
   computed: {

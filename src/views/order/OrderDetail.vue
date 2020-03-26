@@ -1,10 +1,9 @@
 <template>
   <div class="bigBox">
-    <div class="searchBox">
-      <el-row>
-        <h3>订单详情:</h3>
-        <el-divider></el-divider>
-      </el-row>
+    <el-card class="contentBox">
+      <div slot="header" class="clearfix">
+        <span>订单详情</span>
+      </div>
       <el-row :gutter="20">
         <el-form :model="tableData" label-width="130px" size="mini">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -77,12 +76,11 @@
           </el-col>
         </el-form>
       </el-row>
-      <el-divider></el-divider>
-    </div>
-    <div class="contentBox">
-      <el-row>
-        <h3>航班信息:</h3>
-      </el-row>
+    </el-card>
+    <el-card class="contentBox">
+      <div slot="header" class="clearfix">
+        <span>航班信息</span>
+      </div>
       <el-table :data="flightData" size="mini" highlight-current-row style="width: 100%;" fit>
         <el-table-column prop="dptAirport" label="出发机场" width="160" align="center"></el-table-column>
         <el-table-column prop="arrAirport" label="到达机场" width="160" align="center"></el-table-column>
@@ -101,11 +99,11 @@
         <el-table-column prop="refundRule" label="退票规则" align="center"></el-table-column>
         <el-table-column prop="changeRule" label="改签规则" align="center"></el-table-column>
       </el-table>
-    </div>
-    <div class="contentBox">
-      <el-row>
-        <h3>乘客信息:</h3>
-      </el-row>
+    </el-card>
+    <el-card class="contentBox">
+      <div slot="header" class="clearfix">
+        <span>乘客信息</span>
+      </div>
       <el-table
         :data="PassengerData"
         size="mini"
@@ -138,9 +136,9 @@
       <el-row style="margin-top:20px">
         <el-button type="primary" @click="goTicket" size="mini">出票</el-button>
       </el-row>
-    </div>
+    </el-card>
 
-    <div class="contentBox" v-if="purchaseShow">
+    <!-- <div class="contentBox" v-if="purchaseShow">
       <el-row>
         <h3>采购信息:</h3>
       </el-row>
@@ -150,7 +148,7 @@
         <el-table-column prop label="采购信息" align="center"></el-table-column>
         <el-table-column prop label="采购信息" align="center"></el-table-column>
       </el-table>
-    </div>
+    </div>-->
   </div>
 </template>
 <script>
@@ -161,7 +159,9 @@ export default {
       purchaseShow: this.$route.query.purchaseShow,
       flightData: [],
       PassengerData: [],
-      tableData: {}
+      tableData: {},
+      passengersInfo:[]
+      
     };
   },
   methods: {
@@ -190,14 +190,17 @@ export default {
       return "￥" + this.$numeral(amount).format("0.00");
     },
     handleSelectionChange(passengersInfo) {
-      console.log(passengersInfo);
+      // console.log(passengersInfo);
+      this.passengersInfo=passengersInfo
+
     },
     goTicket() {
       const orderNo = this.$route.query.orderNo;
       this.$router.push({
         path: "/order/detail/go/ticket",
         query: {
-          orderNo: orderNo
+          orderNo: orderNo,
+          passengersInfo:this.passengersInfo
         }
       });
     },
@@ -222,7 +225,7 @@ export default {
     }
   },
   created() {
-    this.getOrderDetail()
+    this.getOrderDetail();
   },
   computed: {
     formatDate() {
