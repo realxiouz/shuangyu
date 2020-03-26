@@ -162,6 +162,13 @@ export default new Router({
           meta: { title: '订单详情', icon: 'home' }
         },
         {
+          title: '出票',
+          path: '/order/detail/go/ticket',
+          name: 'goTicket',
+          component: () => import('@/views/order/GoTicket'),
+          meta: { title: '出票', icon: 'home' }
+        },
+        {
           title: '派单规则',
           path: '/order/rule/list',
           name: 'orderRuleList',

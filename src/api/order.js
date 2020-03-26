@@ -39,3 +39,9 @@ export function getOne(id) {
   });
 }
 
+export function getOrderDetail(orderNo) {
+  return request({
+    url: `/order/ticket/${orderNo}`,
+    method: 'get'
+  });
+}
