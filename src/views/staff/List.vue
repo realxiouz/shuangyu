@@ -37,7 +37,7 @@
             loadTreeData() {
                 this.$store
                     .dispatch("dept/getList", {
-                        filters: {firmId: this.$store.state.loginInfo.firm.firmId}
+                        filters: {}
                     })
                     .then(data => {
                         this.treeData = data;
