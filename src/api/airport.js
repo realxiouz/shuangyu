@@ -17,7 +17,6 @@ export function updateOne(data) {
 }
 
 export function removeOne(airportCode) {
-  debugger
   return request({
     url: `/flight/airport/remove/one/${airportCode}`,
     method: 'delete'
