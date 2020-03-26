@@ -73,7 +73,7 @@
     methods: {
       loadData() {
         this.$store
-          .dispatch('staff/getList', {filter: {firmId: this.$store.state.loginInfo.firm.firmId}})
+          .dispatch('staff/getList', {filter: {}})
           .then(data => {
             this.staffList = data.data;
           })

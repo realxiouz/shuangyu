@@ -94,7 +94,7 @@ export default {
     loadData() {
         this.$store
         .dispatch("dept/getList", {
-          filters: {firmId: this.$store.state.loginInfo.firm.firmId}
+          filters: {}
         })
         .then(data => {
           if (data) {

@@ -7,10 +7,10 @@
       <el-form-item label="域名:" prop="domain">
         <el-input v-model="formData.domain"></el-input>
       </el-form-item>
-      <el-form-item label="钉钉Id:" prop="ddId">
+      <el-form-item label="钉钉Id:">
         <el-input v-model.number="formData.ddId"></el-input>
       </el-form-item>
-      <el-form-item label="钉钉父节点:" prop="ddParentIdId">
+      <el-form-item label="钉钉父节点:">
         <el-input v-model.number="formData.ddParentIdId"></el-input>
       </el-form-item>
     </el-form>
