@@ -65,24 +65,60 @@
       </div>
       <el-table :data="flightData" size="mini" highlight-current-row style="width: 100%;" fit>
         <el-table-column prop label="渠道" width="160" align="center"></el-table-column>
-        <el-table-column prop="最低价" label="到达机场" width="160" align="center"></el-table-column>
+        <el-table-column prop="dptAirport" label="起始地" align="center"></el-table-column>
+        <el-table-column prop="arrAirport" label="目的地" align="center"></el-table-column>
+        <el-table-column prop="airlineCode" label="航司" width="100" align="center"></el-table-column>
+        <el-table-column prop="actFlightCode" label="主飞航班" align="center"></el-table-column>
+        <el-table-column prop="shareFlag" label="是否共享" width="100" align="center"></el-table-column>
+        <el-table-column prop="flightCode" label="航班号" align="center"></el-table-column>
+        <el-table-column prop label="到达机场" width="160" align="center"></el-table-column>
         <el-table-column prop="refundRule" label="退票规则" align="center"></el-table-column>
         <el-table-column prop="changeRule" label="改签规则" align="center"></el-table-column>
-        <el-table-column prop="changeRule" label="预定" align="center" type="expand">
-          <template>
-            <el-table :data="flightData">
-              <el-table-column prop="dptAirport" label="起始地" align="center"></el-table-column>
-              <el-table-column prop="arrAirport" label="目的地" align="center"></el-table-column>
-              <el-table-column prop="airlineCode" label="航司" width="100" align="center"></el-table-column>
-              <el-table-column prop="actFlightCode" label="主飞航班" align="center"></el-table-column>
-              <el-table-column prop="shareFlag" label="是否共享" width="100" align="center"></el-table-column>
-              <el-table-column prop="flightCode" label="航班号" align="center"></el-table-column>
+        <el-table-column prop="changeRule" width="80" label="预定" align="center" type="expand">
+          <template slot-scope="props">
+            <el-row type="flex" justify="center">
+              <el-col style="text-align:center;line-height:28px;">
+                舱位:
+                <span>{{ props.row.cabin }}</span>
+              </el-col>
+              <el-col style="text-align:center;line-height:28px;">
+                票面价:
+                <span>{{ props.row.sall }}</span>
+              </el-col>
+              <el-col style="text-align:center;line-height:28px;">
+                售价:
+                <span>{{ props.row.sall1 }}</span>
+              </el-col>
+              <el-col style="text-align:right;line-height:28px;">
+                <span>
+                  <el-button type="primary" @click="handlePay" size="mini">支付</el-button>
+                </span>
+              </el-col>
+            </el-row>
+
+            <!-- <el-form style="background-color:#CCC" label-position="left" inline class="demo-table-expand">
+              <el-form-item label="舱位: ">
+                <span>{{ props.row.dptAirport }}</span>
+              </el-form-item>
+              <el-form-item label="票面价: ">
+                <span>{{ props.row.dptAirport }}</span>
+              </el-form-item>
+              <el-form-item label="售价: ">
+                <span>{{ props.row.dptAirport }}</span>
+              </el-form-item>
+              <el-form-item label="操作: ">
+                <span>
+                  <el-button type="primary" @click="handlePay" size="mini">支付</el-button>
+                </span>
+              </el-form-item>
+            </el-form>-->
+            <!-- <el-table :data="flightData1">
               <el-table-column prop="cabin" label="舱位" width="50" align="center"></el-table-column>
               <el-table-column prop label="售价" width="100" align="center"></el-table-column>
               <el-table-column label="操作" width="80" align="center">
                 <el-button type="primary" @click="handlePay" size="mini">支付</el-button>
               </el-table-column>
-            </el-table>
+            </el-table>-->
           </template>
         </el-table-column>
       </el-table>
@@ -91,17 +127,18 @@
           <el-button type="primary" size="mini">手动下单</el-button>
       </el-row>-->
     </el-card>
-    <el-card class="contentBox" v-if="showPay" id="jumpPay">
-      <div slot="header">
-        <span>支付</span>
-      </div>
-      <div>
-        <el-row style="margin-bottom:15px">金额：￥0.00</el-row>
-        <el-row>
+    <div>
+      <el-dialog title="支付" center :visible.sync="showPay" width="30%">
+        <el-row type="flex" class="row-bg" justify="center" align="center">
+          <span style="margin-right:20px;">金额：￥0.00</span>
           <el-button type="primary" size="mini">去付款</el-button>
         </el-row>
-      </div>
-    </el-card>
+        <span slot="footer" class="dialog-footer">
+          <el-button size="mini" @click="handleCancel">取 消</el-button>
+          <el-button size="mini" type="primary" @click="handleSave">确 定</el-button>
+        </span>
+      </el-dialog>
+    </div>
   </div>
 </template>
 
@@ -114,6 +151,21 @@ export default {
       flightShow: false,
       purchaseShow: true,
       flightData: [],
+      // flightData1: [
+      //   {
+      //     dptAirport: "云南",
+      //     cabin: "M",
+      //     sall: "￥100.00",
+      //     sall1: "￥100.00"
+      //   },
+      //   {
+      //     dptAirport: "昆明",
+      //     cabin: "Y",
+      //     sall: "￥200.00",
+      //     sall1: "￥210.00"
+      //   }
+      // ],
+
       PassengerData: [],
       tableData: {},
       orderNo: this.$route.query.orderNo,
@@ -137,6 +189,12 @@ export default {
         });
     },
     handlePay() {
+      this.showPay = true;
+    },
+    handleCancel() {
+      this.showPay = false;
+    },
+    handleSave() {
       this.showPay = true;
     },
     goTicket() {
