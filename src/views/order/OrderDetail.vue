@@ -84,26 +84,20 @@
         <h3>航班信息:</h3>
       </el-row>
       <el-table :data="flightData" size="mini" highlight-current-row style="width: 100%;" fit>
+        <el-table-column prop="dptAirport" label="出发机场" width="160" align="center"></el-table-column>
+        <el-table-column prop="arrAirport" label="到达机场" width="160" align="center"></el-table-column>
+        <el-table-column prop="airlineCode" label="航司" width="50" align="center"></el-table-column>
+        <el-table-column prop="flightCode" label="航班号" width="100" align="center"></el-table-column>
+
         <el-table-column prop="cabin" label="舱位" width="160" align="center"></el-table-column>
         <el-table-column label="出发日期" width="110" align="center">
           <template slot-scope="scope">
             <span>{{ formatDate(scope.row.flightDate,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="airlineCode" label="航司" width="50" align="center"></el-table-column>
-        <el-table-column prop="actFlightCode" label="主航班号" width="80" align="center"></el-table-column>
-        <el-table-column prop="flightCode" label="航班号" width="100" align="center"></el-table-column>
-        <el-table-column prop="dptTime" label="起飞时间" width="100" align="center"></el-table-column>
-        <el-table-column prop="arrAirport" label="到达机场" width="100" align="center"></el-table-column>
-        <el-table-column prop="arrTerminal" label="到达航楼站" width="100" align="center"></el-table-column>
+        <el-table-column prop="dptTime" label="起飞时间" width="150" align="center"></el-table-column>
         <el-table-column prop="arrTime" label="到达时间" width="100" align="center"></el-table-column>
         <el-table-column prop="distance" label="航程" width="50" align="center"></el-table-column>
-        <el-table-column label="飞行时间" width="110" align="center">
-          <template slot-scope="scope">
-            <i v-if="scope.row.flightTimes" class="el-icon-time"></i>
-            <span>{{ formatDate(scope.row.flightTimes,'YYYY-MM-DD') }}</span>
-          </template>
-        </el-table-column>
         <el-table-column prop="refundRule" label="退票规则" align="center"></el-table-column>
         <el-table-column prop="changeRule" label="改签规则" align="center"></el-table-column>
       </el-table>
@@ -164,7 +158,7 @@ export default {
   name: "orderDetail",
   data() {
     return {
-      purchaseShow:true,
+      purchaseShow: this.$route.query.purchaseShow,
       flightData: [],
       PassengerData: [],
       tableData: {}
@@ -199,23 +193,36 @@ export default {
       console.log(passengersInfo);
     },
     goTicket() {
-      this.$router.push({ name: "goTicket" });
+      const orderNo = this.$route.query.orderNo;
+      this.$router.push({
+        path: "/order/detail/go/ticket",
+        query: {
+          orderNo: orderNo
+        }
+      });
+    },
+    getOrderDetail() {
+      const orderNo = this.$route.query.orderNo;
+      this.$store
+        .dispatch("order/getOrderDetail", orderNo)
+        .then(data => {
+          if (data) {
+            this.tableData = data;
+            if (data.passengers) {
+              this.PassengerData = data.passengers;
+            }
+            if (data.flights) {
+              this.flightData = data.flights;
+            }
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   },
   created() {
-    const paramData = this.$route.params;
-    // const paramData = this.$route.query.params;
-
-    
-    if (paramData) {
-      this.tableData = paramData;
-      if (paramData.passengers) {
-        this.PassengerData = paramData.passengers;
-      }
-      if (paramData.flights) {
-        this.flightData = paramData.flights;
-      }
-    }
+    this.getOrderDetail()
   },
   computed: {
     formatDate() {
