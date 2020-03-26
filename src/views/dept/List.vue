@@ -92,9 +92,9 @@ export default {
       this.loadData();
     },
     loadData() {
-      this.$store
+        this.$store
         .dispatch("dept/getList", {
-          filters: {}
+          filters: {firmId: this.$store.state.loginInfo.firm.firmId}
         })
         .then(data => {
           if (data) {
