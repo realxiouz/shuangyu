@@ -23,7 +23,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-dialog title="标签信息" width="30%" :visible.sync="dialogVisible" :close-on-click-modal="false">
+      <el-dialog title="标签信息" center width="30%" :visible.sync="dialogVisible" :close-on-click-modal="false">
         <el-form ref="form" :model="formData" label-width="120px">
           <el-form-item label="标签:" prop="ownFlags">
             <el-select v-model="formData.ownFlags" multiple placeholder="请选择">
@@ -37,8 +37,8 @@
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
-          <el-button @click="handleCancel">取 消</el-button>
-          <el-button type="primary" @click="handleSave">保存</el-button>
+          <el-button size="mini" @click="handleCancel">取 消</el-button>
+          <el-button size="mini" type="primary" @click="handleSave">保存</el-button>
         </span>
       </el-dialog>
       <el-dialog title="日志信息" width="30%" :visible.sync="logDialogVisible" :close-on-click-modal="false">
