@@ -38,6 +38,7 @@
           v-if="dialogVisible"
           :cur-node="curNode"
           :update="update"
+          :close-on-click-modal="false"
           @onSave="handleSave"
           @onCancel="handleCancel">
         </airport-edit>
