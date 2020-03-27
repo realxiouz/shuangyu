@@ -22,6 +22,13 @@ export function getOne(roleID) {
   });
 }
 
+export function getMany() {
+  return request({
+    url: `/role/get/many`,
+    method: `get`
+  });
+}
+
 export function getRoleList(filter) {
   return request({
     url: "/role/list",
