@@ -85,11 +85,8 @@
           <el-option label="类别一" :value=0></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="备注">
-        <el-input type="textarea" :rows="3" placeholder="请输入备注" v-model="formData.remark"></el-input>
-      </el-form-item>
     </el-form>
-    <el-transfer v-model="formData.roles" :data="transData" :props="transferProps" v-show="!hasStep" style="width: 100%"/>
+    <el-transfer v-model="formData.roles" :data="transData" :props="transferProps" v-show="!hasStep" :titles="['未分配列表', '已分配列表']" style="width: 100%"/>
     <div slot="footer" class="dialog-footer" style="margin-top:10px;text-align:right">
       <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
       <el-button v-show="hasStep" size="mini" type="primary" @click="nextStep">下一步</el-button>
@@ -132,7 +129,6 @@
                     ddAppSecret: '',
                     domain: '',
                     type: 0,
-                    remark: '',
                     roles: []
                 };
             },
@@ -140,7 +136,7 @@
             loadRoles() {
                 this.clearRoles();
                 this.$store
-                    .dispatch('role/getMany')
+                    .dispatch("role/getAll", {})
                     .then(data => {
                         this.transData = data;
                     })

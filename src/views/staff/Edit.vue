@@ -161,7 +161,7 @@ export default {
     loadRoles() {
       this.clearRoles();
       this.$store
-        .dispatch("role/getAll", {})
+        .dispatch("role/getMany")
         .then(data => {
           this.transData = data;
         })
