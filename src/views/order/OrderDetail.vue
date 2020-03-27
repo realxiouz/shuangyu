@@ -160,8 +160,8 @@ export default {
       flightData: [],
       PassengerData: [],
       tableData: {},
-      passengersInfo:[]
-      
+      passengersInfo: [],
+      orderNo: this.$route.query.orderNo
     };
   },
   methods: {
@@ -191,18 +191,24 @@ export default {
     },
     handleSelectionChange(passengersInfo) {
       // console.log(passengersInfo);
-      this.passengersInfo=passengersInfo
-
+      this.passengersInfo = passengersInfo;
     },
     goTicket() {
-      const orderNo = this.$route.query.orderNo;
-      this.$router.push({
-        path: "/order/detail/go/ticket",
-        query: {
-          orderNo: orderNo,
-          passengersInfo:this.passengersInfo
-        }
-      });
+      if (this.passengersInfo.length < 1) {
+        this.$message({
+          message: "请选择要出票的乘客!",
+          type: "warning"
+        });
+        return
+      } else {
+        this.$router.push({
+          path: "/order/detail/go/ticket",
+          query: {
+            orderNo: this.orderNo,
+            passengersInfo: this.passengersInfo
+          }
+        });
+      }
     },
     getOrderDetail() {
       const orderNo = this.$route.query.orderNo;

@@ -64,7 +64,7 @@
         <span>航班信息</span>
       </div>
       <el-table :data="flightData" size="mini" highlight-current-row style="width: 100%;" fit>
-        <el-table-column prop label="渠道" width="160" align="center"></el-table-column>
+        <el-table-column prop label="渠道" width="150" align="center"></el-table-column>
         <el-table-column prop="dptAirport" label="起始地" align="center"></el-table-column>
         <el-table-column prop="arrAirport" label="目的地" align="center"></el-table-column>
         <el-table-column prop="airlineCode" label="航司" width="100" align="center"></el-table-column>
