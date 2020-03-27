@@ -8,7 +8,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="机场三字码查询:">
+          <el-form-item v-show="more" label="机场三字码查询:">
             <el-input v-model="formData.airportCode" placeholder="请输入机场三字码.."></el-input>
           </el-form-item>
         </el-col>
