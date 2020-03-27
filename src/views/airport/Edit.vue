@@ -93,7 +93,7 @@
             this.clearForm();
             if (this.update){
                 this.formData = this.curNode;
-                this.tags = this.formData.airportName;
+                this.tags = this.formData.airportName.concat();
             }
         }
     }
