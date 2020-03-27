@@ -126,7 +126,11 @@ export default {
             .dispatch("flightSegment/removeOne", { segment: id })
             .then(data => {
               console.log(data);
-              this.loadData();
+                if (1 === this.tableData.length){
+                    this.prevClick();
+                }else{
+                    this.loadData();
+                }
             })
             .catch(error => {
               console.log(error);

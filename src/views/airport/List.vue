@@ -165,7 +165,11 @@
                 this.$store
                     .dispatch("airport/removeOne", {airportCode: airportCode})
                     .then(() => {
-                        this.loadData();
+                        if (1 === this.tableData.length){
+                            this.handlePrevClick();
+                        }else{
+                            this.loadData();
+                        }
                     })
                     .catch(error => {
                         console.log(error);

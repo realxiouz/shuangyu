@@ -213,9 +213,12 @@ export default {
     delete(userId) {
       this.$store
         .dispatch("user/removeOne", { userId: userId })
-        .then(data => {
-          console.log(data);
-          this.loadData();
+        .then(() => {
+            if (1 === this.tableData.length){
+                this.handlePrevClick();
+            }else{
+                this.loadData();
+            }
         })
         .catch(error => {
           console.log(error);

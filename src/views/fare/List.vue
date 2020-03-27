@@ -171,7 +171,11 @@ export default {
       this.$store
         .dispatch("fare/removeOne", { fareID: fareID })
         .then(() => {
-          this.loadData();
+            if (1 === this.tableData.length){
+                this.handlePrevClick();
+            }else{
+                this.loadData();
+            }
         })
         .catch(error => {
           console.log(error);

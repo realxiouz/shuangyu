@@ -134,7 +134,11 @@ export default {
       })
         .then(() => {
           this.$store.dispatch("api/removeOne", { apiId: id }).then(() => {
-            this.loadData();
+              if (1 === this.tableData.length){
+                  this.prevClick();
+              }else{
+                  this.loadData();
+              }
             rows.splice(index, 1);
           });
         })

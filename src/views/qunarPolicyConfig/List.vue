@@ -182,7 +182,11 @@ export default {
       this.$store
         .dispatch("qunarPolicyConfig/removeOne", { domain: domain })
         .then(() => {
-          this.loadData();
+            if (1 === this.tableData.length){
+                this.handlePrevClick();
+            }else{
+                this.loadData();
+            }
         })
         .catch(error => {
           console.log(error);

@@ -126,9 +126,12 @@ export default {
         .then(() => {
           this.$store
             .dispatch("airline/removeOne", { airlineCode: id })
-            .then(data => {
-              console.log(data);
-              this.loadData();
+            .then(() => {
+                if (1 === this.tableData.length){
+                    this.prevClick();
+                }else{
+                    this.loadData();
+                }
             })
             .catch(error => {
               console.log(error);

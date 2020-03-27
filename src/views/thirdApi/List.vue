@@ -135,7 +135,11 @@ export default {
           this.$store
             .dispatch("thirdApiService/removeOne", { apiId: id })
             .then(() => {
-              this.loadData();
+                if (1 === this.tableData.length){
+                    this.prevClick();
+                }else{
+                    this.loadData();
+                }
               rows.splice(index, 1);
             });
         })

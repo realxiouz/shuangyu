@@ -54,7 +54,7 @@ export default {
       roleId: null,
       dialogVisible: false,
       pageFlag: "next",
-      pageSize: 10,
+      pageSize: 5,
       lastId: "0",
       total: 0,
       tableData: []
@@ -74,7 +74,11 @@ export default {
       this.$store
         .dispatch("role/removeOne", { roleID: roleID })
         .then(() => {
-          this.loadData();
+            if (1 === this.tableData.length){
+                this.prevClick();
+            }else{
+                this.loadData();
+            }
         })
         .catch(error => {
           console.log(error);

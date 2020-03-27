@@ -135,7 +135,11 @@ export default {
           this.$store
             .dispatch("orderRule/removeOne", id)
             .then(() => {
-              this.loadData();
+                if (1 === this.tableData.length){
+                    this.prevClick();
+                }else{
+                    this.loadData();
+                }
             })
             .catch(error => {
               console.log(error);

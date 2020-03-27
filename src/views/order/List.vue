@@ -204,7 +204,11 @@ export default {
           this.$store
             .dispatch("order/removeOne", { orderNo: orderNo })
             .then(() => {
-              this.loadData(this.searchParams);
+                if (1 === this.tableData.length){
+                    this.prevClick();
+                }else{
+                    this.loadData(this.searchParams);
+                }
               this.loadTotal();
             })
             .catch(error => {

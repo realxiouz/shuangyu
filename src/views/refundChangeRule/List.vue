@@ -126,7 +126,11 @@ export default {
           this.$store
             .dispatch("refundChangeRule/removeOne", { ruleId: id })
             .then(() => {
-              this.loadData();
+                if (1 === this.tableData.length){
+                    this.prevClick();
+                }else{
+                    this.loadData();
+                }
             })
             .catch(error => {
               console.log(error);
