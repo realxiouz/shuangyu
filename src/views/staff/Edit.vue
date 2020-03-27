@@ -51,16 +51,25 @@
           <el-button type="primary" size="mini" icon="el-icon-search" @click="searchUser"></el-button>
         </el-form-item>
       </el-form>
-      <el-table :data="userTable" style="width: 100%" @selection-change="handleSelectionChange">
-        <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column prop="nickName" label="昵称" width="120"></el-table-column>
-        <el-table-column prop="fullName" label="姓名" width="120"></el-table-column>
-        <el-table-column prop="gender" label="性别" width="120"></el-table-column>
-        <el-table-column prop="email" label="邮箱" width="240"></el-table-column>
+      <el-table
+        size="mini"
+        :data="userTable"
+        style="width: 100%"
+        @selection-change="handleSelectionChange"
+      >
+        <el-table-column type="selection" width="55" align="center"></el-table-column>
+        <el-table-column prop="nickName" label="昵称" align="center" width="120"></el-table-column>
+        <el-table-column prop="fullName" label="姓名" align="center" width="120"></el-table-column>
+        <el-table-column prop="gender" label="性别" align="center" width="120">
+          <template slot-scope="scope">
+            <span>{{ initGender(scope.row.gender) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="email" label="邮箱" align="center"></el-table-column>
       </el-table>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="handleCancel">取 消</el-button>
-        <el-button type="primary" @click="handleSave">添 加</el-button>
+        <el-button size="mini" @click="handleCancel">取 消</el-button>
+        <el-button size="mini" type="primary" @click="handleSave">添 加</el-button>
       </span>
     </el-dialog>
     <!-- 权限修改弹窗 -->
