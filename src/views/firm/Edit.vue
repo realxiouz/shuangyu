@@ -15,7 +15,16 @@
         <el-input type="text" placeholder="请输入类别" v-model="formData.type"></el-input>
       </el-form-item>
     </el-form>
-    <el-transfer v-model="formData.roles" :data="transData" :props="transferProps"></el-transfer>
+    <div style="text-align:center;">
+      <el-transfer
+        style="text-align: left; display: inline-block"
+        v-model="formData.roles"
+        :data="transData"
+        :props="transferProps"
+        :titles="['未分配列表', '已分配列表']"
+      ></el-transfer>
+    </div>
+
     <div slot="footer" class="dialog-footer" style="margin-top:10px;text-align:right">
       <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
       <el-button size="mini" type="primary" @click="$emit('onSave',formData)">确 定</el-button>
