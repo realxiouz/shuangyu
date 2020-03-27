@@ -83,11 +83,11 @@
               </el-col>
               <el-col style="text-align:center;line-height:28px;">
                 票面价:
-                <span>{{ props.row.sall }}</span>
+                <span>{{ props.row.viewPrice }}</span>
               </el-col>
               <el-col style="text-align:center;line-height:28px;">
                 售价:
-                <span>{{ props.row.sall1 }}</span>
+                <span>{{ props.row.viewPrice }}</span>
               </el-col>
               <el-col style="text-align:right;line-height:28px;">
                 <span>
