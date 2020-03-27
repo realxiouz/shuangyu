@@ -35,7 +35,7 @@
               type="success"
               @click="submitUpload"
             >上传到服务器</el-button>
-            <div slot="tip" class="el-upload__tip">只能上传xls/xlsx文件</div>
+            <div slot="tip" class="el-upload__tip" style="color:red">只能上传xls/xlsx文件</div>
           </el-upload>
         </el-form-item>
       </el-row>

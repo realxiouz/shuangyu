@@ -56,7 +56,12 @@
         <el-input type="textarea" v-model="formData.comment"></el-input>
       </el-form-item>
     </el-form>
-    <el-transfer v-show="stepIndex>0" v-model="formData.roles" :data="transData" :props="transferProps" style="margin-top: 20px">
+    <el-transfer v-show="stepIndex>0"
+       v-model="formData.roles" 
+       :data="transData" 
+       :props="transferProps" 
+       :titles="['未分配角色列表', '已分配角色列表']"
+       style="margin-top: 20px">
     </el-transfer>
     <div style="margin-top: 25px;text-align: right;" >
       <el-button  size="mini" @click="$emit('onCancel')">取 消</el-button>

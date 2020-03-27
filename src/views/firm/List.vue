@@ -23,7 +23,7 @@
       </el-table>
       <!-- 表单对话框 -->
       <el-dialog
-        title="导航信息"
+        title="添加企业"
         center
         :visible.sync="dialogVisible"
         width="35%"
