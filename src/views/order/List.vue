@@ -30,6 +30,12 @@
           </template>
         </el-table-column>
         <el-table-column prop="categoryName" label="订单分类" width="80" align="center"></el-table-column>
+        <el-table-column label="乘客" align="center" width="200">
+          <template slot-scope="scope">
+            <i v-if="scope.row.passengers"></i>
+            <span style="margin-left: 10px">{{ formatPassengers(scope.row.passengers)}}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="voyageTypeName" label="航程类型" width="80" align="center"></el-table-column>
         <el-table-column label="航班号" width="80" align="center">
           <template slot-scope="scope">
@@ -50,12 +56,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="pnr" label="PNR" width="150" align="center"></el-table-column>
-        <el-table-column label="乘客" align="center" width="200">
-          <template slot-scope="scope">
-            <i v-if="scope.row.passengers"></i>
-            <span style="margin-left: 10px">{{ formatPassengers(scope.row.passengers)}}</span>
-          </template>
-        </el-table-column>
+
         <el-table-column label="总价" width="100" align="center">
           <template slot-scope="scope">
             <i v-if="scope.row.amount"></i>
