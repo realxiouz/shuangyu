@@ -60,7 +60,7 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+        <el-col :xs="24" :sm="24" :md="12" :lg="4" :xl="4">
           <el-form-item label="规则类型:" prop="ruleType">
             <el-switch
               v-model="formData.ruleType"
