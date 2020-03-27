@@ -11,14 +11,11 @@
               <span>{{tableData.orderNo}}</span>
             </el-form-item>
           </el-col>
-          <!-- <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="销售出票订单编号:">
-              <span>{{tableData.rootOrderNo}}</span>
-            </el-form-item>
-          </el-col>-->
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="订单类型:">
-              <span>{{tableData.orderTypeName}}</span>
+              <span v-if="tableData.orderType==10">出票</span>
+              <span v-if="tableData.orderType==20">退票</span>
+              <span v-if="tableData.orderType==30">改签</span>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -31,13 +28,6 @@
               <span>{{tableData.voyageTypeName}}</span>
             </el-form-item>
           </el-col>
-
-          <!-- <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="PNR:">
-              <span>{{tableData.pnr}}</span>
-            </el-form-item>
-          </el-col>-->
-
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="交易金额:">
               <span>￥{{this.$numeral(tableData.transactionAmount).format('0.00')}}</span>
@@ -60,18 +50,12 @@
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="交易时间:">
-              <span>{{tableData.transactionTime}}</span>
+              <span>{{formatDate(tableData.transactionTime,'YYYY-MM-DD HH:mm:ss')}}</span>
             </el-form-item>
           </el-col>
-
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="最晚出票时限:">
               <span>{{formatDate(tableData.deadlineTicketTime,'YYYY-MM-DD HH:mm:ss')}}</span>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="退改签说明:">
-              <span>{{tableData.RefundChangeRule}}</span>
             </el-form-item>
           </el-col>
         </el-form>
@@ -199,13 +183,13 @@ export default {
           message: "请选择要出票的乘客!",
           type: "warning"
         });
-        return
+        return;
       } else {
         this.$router.push({
           path: "/order/detail/go/ticket",
           query: {
             orderNo: this.orderNo,
-            passengersInfo: this.passengersInfo
+            passengersInfo: JSON.stringify(this.passengersInfo)
           }
         });
       }

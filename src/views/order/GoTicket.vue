@@ -5,31 +5,32 @@
         <span>订单详情</span>
       </div>
       <el-row :gutter="20">
-        <el-form :model="tableData" label-width="130px" size="mini">
+        <el-form :model="orderData" label-width="130px" size="mini">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="订单编号:">
-              <span>{{tableData.orderNo}}</span>
+              <span>{{orderData.orderNo}}</span>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="订单类型:">
-              <span>{{tableData.categoryName}}</span>
+              <span v-if="orderData.orderType==10">出票</span>
+              <span v-if="orderData.orderType==20">退票</span>
+              <span v-if="orderData.orderType==30">改签</span>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="交易金额:">
-              <span>￥{{this.$numeral(tableData.transactionAmount).format('0.00')}}</span>
+              <span>￥{{this.$numeral(orderData.transactionAmount).format('0.00')}}</span>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="金额:">
-              <span>￥{{this.$numeral(tableData.amount).format('0.00')}}</span>
+              <span>￥{{this.$numeral(orderData.amount).format('0.00')}}</span>
             </el-form-item>
           </el-col>
         </el-form>
       </el-row>
     </el-card>
-
     <el-card class="contentBox">
       <div slot="header">
         <span>乘客信息</span>
@@ -64,7 +65,7 @@
         <span>航班信息</span>
       </div>
       <el-table
-        :data="flightData"
+        :data="newFlightData"
         size="mini"
         highlight-current-row
         style="width: 100%;"
@@ -73,37 +74,28 @@
         :row-key="getRowKeys"
         fit
       >
-        <el-table-column prop label="渠道" width="150" align="center"></el-table-column>
+        <el-table-column label="渠道" width="150" align="center">蜗牛</el-table-column>
         <el-table-column prop="dptAirport" label="起始地" align="center"></el-table-column>
         <el-table-column prop="arrAirport" label="目的地" align="center"></el-table-column>
+        <el-table-column prop label="最低价" align="center"></el-table-column>
         <el-table-column prop="airlineCode" label="航司" width="100" align="center"></el-table-column>
         <el-table-column prop="actFlightCode" label="主飞航班" align="center"></el-table-column>
         <el-table-column prop="shareFlag" label="是否共享" width="100" align="center"></el-table-column>
-        <el-table-column prop="flightCode" label="航班号" align="center"></el-table-column>
         <el-table-column prop label="到达机场" width="160" align="center"></el-table-column>
+        <el-table-column prop="flightCode" label="航班号" align="center"></el-table-column>
         <el-table-column prop="refundRule" label="退票规则" align="center"></el-table-column>
         <el-table-column prop="changeRule" label="改签规则" align="center"></el-table-column>
-        <el-table-column
-          prop="changeRule"
-          width="80"
-          label="预定"
-          align="center"
-          type="expand"
-          look="预定"
-        >
+        <el-table-column width="80" label="预定" align="center" type="expand">
           <template slot-scope="props">
             <el-row type="flex" justify="center">
               <el-col style="text-align:center;line-height:28px;">
-                舱位:
-                <span>{{ props.row.cabin }}</span>
+                <span>舱位：{{ props.row.cabin }}</span>
               </el-col>
               <el-col style="text-align:center;line-height:28px;">
-                票面价:
-                <span>{{ props.row.viewPrice }}</span>
+                <span>票面价：{{ props.row.viewPrice }}</span>
               </el-col>
               <el-col style="text-align:center;line-height:28px;">
-                售价:
-                <span>{{ props.row.viewPrice }}</span>
+                <span>售价：{{ props.row.viewPrice }}</span>
               </el-col>
               <el-col style="text-align:right;line-height:28px;">
                 <span>
@@ -118,7 +110,7 @@
     <div>
       <el-dialog title="支付" center :visible.sync="showPay" width="30%">
         <el-row type="flex" class="row-bg" justify="center" align="center">
-          <span style="margin-right:20px;">金额：￥0.00</span>
+          <span style="margin-right:20px;line-height:28px;">金额：￥0.00</span>
           <el-button type="primary" size="mini">去付款</el-button>
         </el-row>
         <span slot="footer" class="dialog-footer">
@@ -139,26 +131,12 @@ export default {
       flightShow: false,
       purchaseShow: true,
       flightData: [],
+      newFlightData: [],
       expands: [],
-      // flightData1: [
-      //   {
-      //     dptAirport: "云南",
-      //     cabin: "M",
-      //     sall: "￥100.00",
-      //     sall1: "￥100.00"
-      //   },
-      //   {
-      //     dptAirport: "昆明",
-      //     cabin: "Y",
-      //     sall: "￥200.00",
-      //     sall1: "￥210.00"
-      //   }
-      // ],
-
       PassengerData: [],
-      tableData: {},
+      orderData: {},
       orderNo: this.$route.query.orderNo,
-      PassengerData: this.$route.query.passengersInfo,
+      PassengerData: JSON.parse(this.$route.query.passengersInfo),
       getRowKeys(row) {
         return row.id;
       }
@@ -170,7 +148,7 @@ export default {
         .dispatch("order/getOrderDetail", this.orderNo)
         .then(data => {
           if (data) {
-            this.tableData = data;
+            this.orderData = data;
             if (data.flights) {
               this.flightData = data.flights;
             }
@@ -191,8 +169,26 @@ export default {
     },
     goTicket() {
       this.flightShow = true;
-    },
+      let dptDay = this.formatDate(this.flightData[0].flightDate, "YYYY-MM-DD");
+      let flightInfo = {
+        arr: this.flightData[0].arr,
+        dpt: this.flightData[0].dpt,
+        dptDay: dptDay,
+        dptTime: this.flightData[0].dptTime.substr(-5, 5),
+        flightCode: this.flightData[0].flightCode
+      };
 
+      let flightInfo2 = {
+        arr: "CTU",
+        dpt: "CGO",
+        dptDay: "2020-04-03",
+        dptTime: "19:10",
+        flightCode: "8L9678"
+      };
+
+      this.getOrderFlight(flightInfo2);
+      // this.getOrderMinPrice(flightInfo2);
+    },
     clickRowHandle(row) {
       if (this.expands.includes(row.id)) {
         this.expands = this.expands.filter(val => val !== row.id);
@@ -223,6 +219,27 @@ export default {
         return "￥0.00";
       }
       return "￥" + this.$numeral(amount).format("0.00");
+    },
+    getOrderFlight(flightInfo) {
+      this.$store
+        .dispatch("order/getOrderFlight", flightInfo)
+        .then(data => {
+          if (data) {
+            this.newFlightData = data;
+          }
+          console.log(this.newFlightData, "134234");
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    getOrderMinPrice(flightInfo) {
+      this.$store
+        .dispatch("order/getOrderMinPrice", flightInfo)
+        .then(data => {})
+        .catch(error => {
+          console.log(error);
+        });
     }
   },
   computed: {
