@@ -18,7 +18,7 @@
           </el-col>-->
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="订单类型:">
-              <span>{{tableData.categoryName}}</span>
+              <span>{{tableData.orderTypeName}}</span>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
