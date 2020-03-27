@@ -191,9 +191,9 @@
       </el-row>
       <el-row>
         <el-table size="mini" :data="peopleData" style="width: 100%">
-          <el-table-column prop="fullName" label="姓名" width="180"></el-table-column>
-          <el-table-column prop="phone" label="手机号"></el-table-column>
-          <el-table-column prop label="操作">
+          <el-table-column prop="fullName" label="姓名" width="180" align="center"></el-table-column>
+          <el-table-column prop="phone" label="手机号" align="center"></el-table-column>
+          <el-table-column prop label="操作" align="center" width="180">
             <el-button type="primary" size="mini" @click="selectPeople">重新添加</el-button>
           </el-table-column>
         </el-table>
@@ -208,9 +208,9 @@
       </el-row>
       <el-row style="margin-top:20px;margin-bottom:20px">
         <el-table :data="staffData" style="width: 100%" size="mini">
-          <el-table-column prop="fullName" label="姓名" width="180"></el-table-column>
-          <el-table-column prop="phone" label="手机号"></el-table-column>
-          <el-table-column label="操作">
+          <el-table-column prop="fullName" label="姓名" width="180" align="center"></el-table-column>
+          <el-table-column prop="phone" label="手机号" align="center"></el-table-column>
+          <el-table-column label="操作" width="180" align="center">
             <template slot-scope="scope">
               <el-button
                 @click.native.prevent="handleRemove(scope.$index, scope.row)"
@@ -228,7 +228,7 @@
       <el-button size="mini" @click="resetForm">重 置</el-button>
       <el-button size="mini" @click="goBack">返回</el-button>
     </div>
-    <el-dialog title="员工信息" :visible.sync="dialogVisible" width="30%">
+    <el-dialog center title="员工信息" :visible.sync="dialogVisible" width="30%">
       <select-staff
         v-if="dialogVisible"
         ref="selectStaff"
