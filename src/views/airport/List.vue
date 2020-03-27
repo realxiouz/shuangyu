@@ -86,30 +86,30 @@
                         console.log(error);
                     });
             },
-            search(keyword) {
-                if (keyword){
+            search(searchForm) {
+                if (searchForm) {
+                    let url = '';
+                    let params = {};
+                    if (searchForm.airportName) {
+                        url = 'airport/getOneByAirportName';
+                        params = {airportName: searchForm.airportName};
+                    } else {
+                        url = 'airport/getOne';
+                        params = {airportCode: searchForm.airportCode};
+                    }
                     this.$store
-                        .dispatch("airport/getTotal", {
-                            airportName: keyword ? keyword : ''
-                        })
-                        .then(data => {
-                            this.total = data.data;
-                        })
-                        .catch(error => {
-                            console.log(error);
-                        });
-                    this.$store
-                        .dispatch("airport/getOneByAirportName", {airportName: keyword ? keyword : ''})
+                        .dispatch(url, params)
                         .then(data => {
                             this.tableData = [];
-                            if (data.data){
+                            if (data.data) {
                                 this.tableData.push(data.data);
                             }
+                            this.total = 1;
                         })
                         .catch(error => {
                             console.log(error);
                         });
-                }else{
+                } else {
                     this.loadData();
                 }
             },
