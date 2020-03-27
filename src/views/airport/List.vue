@@ -33,12 +33,11 @@
         :total="total">
       </el-pagination>
 
-      <el-dialog title="机场信息" center :visible.sync="dialogVisible" width="24%">
+      <el-dialog title="机场信息" center :visible.sync="dialogVisible" :close-on-click-modal="false" width="24%">
         <airport-edit
           v-if="dialogVisible"
           :cur-node="curNode"
           :update="update"
-          :close-on-click-modal="false"
           @onSave="handleSave"
           @onCancel="handleCancel">
         </airport-edit>
