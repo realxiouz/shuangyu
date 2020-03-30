@@ -83,24 +83,30 @@
         <el-button type="primary" @click="goTicket" size="mini">搜索航班</el-button>
       </el-row>
     </el-card>
+
     <el-card class="contentBox" v-if="flightShow">
       <div slot="header">
         <span>渠道信息</span>
       </div>
       <el-table
-        :data="newFlightData"
+        :data="newFlightData1"
         size="mini"
         highlight-current-row
         style="width: 100%;"
         @row-click="clickRowHandle"
         :expand-row-keys="expands"
         :row-key="getRowKeys"
+        lazy
         fit
       >
         <el-table-column label="渠道" width="150" align="center">蜗牛</el-table-column>
         <el-table-column prop="dptAirport" label="起始地" align="center"></el-table-column>
         <el-table-column prop="arrAirport" label="目的地" align="center"></el-table-column>
-        <el-table-column prop label="最低价" align="center"></el-table-column>
+        <el-table-column prop="minPrice" label="最低价" align="center">
+          <template slot-scope="scope">
+            <span>{{formatAmount(scope.row.minPrice)}}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="airlineCode" label="航司" width="100" align="center">
           <template slot-scope="scope">
             <span>{{scope.row.flightQuotePrices.arrAirport}}</span>
@@ -113,20 +119,20 @@
         <el-table-column prop="refundRule" label="退票规则" align="center"></el-table-column>
         <el-table-column prop="changeRule" label="改签规则" align="center"></el-table-column>
         <el-table-column width="80" label="预定" align="center" type="expand">
-          <template slot-scope="props">
-            <el-row type="flex" justify="center">
+          <template >
+            <el-row type="flex" justify="center" v-for="(item,index) in flightPrice" :key="index">
               <el-col style="text-align:center;line-height:28px;">
-                <span>舱位：{{ props.row.cabin }}</span>
+                <span>舱位：{{ item.cabin }}</span>
               </el-col>
               <el-col style="text-align:center;line-height:28px;">
-                <span>票面价：{{ props.row.viewPrice }}</span>
+                <span>票面价：{{ formatAmount(item.barePrice) }}</span>
               </el-col>
               <el-col style="text-align:center;line-height:28px;">
-                <span>售价：{{ props.row.viewPrice }}</span>
+                <span>售价：{{ formatAmount(item.price) }}</span>
               </el-col>
               <el-col style="text-align:right;line-height:28px;">
                 <span>
-                  <el-button type="primary" @click="handlePay" size="mini">预定</el-button>
+                  <el-button type="primary" style="margin-top:10px;" @click="handlePay" size="mini">预定</el-button>
                 </span>
               </el-col>
             </el-row>
@@ -157,8 +163,11 @@ export default {
       showPay: false,
       flightShow: false,
       purchaseShow: true,
+      load:false,
       flightData: [],
+      flightPrice: [],
       newFlightData: [],
+      newFlightData1: "",
       expands: [],
       PassengerData: [],
       orderData: {},
@@ -212,16 +221,72 @@ export default {
         dptTime: "19:10",
         flightCode: "8L9678"
       };
-
+      this.getOrderMinPrice(flightInfo2);
       this.getOrderFlight(flightInfo2);
-      // this.getOrderMinPrice(flightInfo2);
     },
     clickRowHandle(row) {
+      let dptDay = this.formatDate(this.flightData[0].flightDate, "YYYY-MM-DD");
+      let _flightInfo = {
+        arr: this.flightData[0].arr,
+        dpt: this.flightData[0].dpt,
+        date: dptDay,
+        ex_track: this.newFlightData1.exTrack,
+        flightNum: this.flightData[0].flightCode
+      };
+
+      let _flightInfo2 = {
+        arr: "SHA",
+        dpt: "KMG",
+        date: "2020-04-03",
+        ex_track: "djjj",
+        flightNum: "HO1122"
+      };
+      this.getOrderPrice(_flightInfo2);
       if (this.expands.includes(row.exTrack)) {
         this.expands = this.expands.filter(val => val !== row.exTrack);
       } else {
         this.expands.push(row.exTrack);
       }
+    },
+    getOrderFlight(flightInfo) {
+      this.$store
+        .dispatch("order/getOrderFlight", flightInfo)
+        .then(data => {
+          if (data) {
+            this.newFlightData = data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    getOrderMinPrice(flightInfo) {
+      this.$store
+        .dispatch("order/getOrderMinPrice", flightInfo)
+        .then(data => {
+          if (data) {
+            this.newFlightData.forEach(item => {
+              item.minPrice = data.sortPrices[0].price;
+            });
+            this.newFlightData1 = this.newFlightData;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    getOrderPrice(flightInfo) {
+      this.$store
+        .dispatch("order/getOrderPrice", flightInfo)
+        .then(data => {
+          if (data) {
+            console.log(data, "getOrderPrice");
+            this.flightPrice = data.sortPrices;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
     /*初始化用工列表中的生日日期格式*/
     initDate(dateStr, format) {
@@ -246,27 +311,6 @@ export default {
         return "￥0.00";
       }
       return "￥" + this.$numeral(amount).format("0.00");
-    },
-    getOrderFlight(flightInfo) {
-      this.$store
-        .dispatch("order/getOrderFlight", flightInfo)
-        .then(data => {
-          if (data) {
-            this.newFlightData = data;
-          }
-          console.log(this.newFlightData, "134234");
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    getOrderMinPrice(flightInfo) {
-      this.$store
-        .dispatch("order/getOrderMinPrice", flightInfo)
-        .then(data => {})
-        .catch(error => {
-          console.log(error);
-        });
     }
   },
   computed: {

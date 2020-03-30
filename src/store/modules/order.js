@@ -1,4 +1,4 @@
-import {getList, getOne, removeOne, save,getTotal,getOrderDetail,getOrderMinPrice,getOrderFlight,getOrderprice} from "@/api/order";
+import {getList, getOne, removeOne, save,getTotal,getOrderDetail,getOrderMinPrice,getOrderFlight,getOrderPrice} from "@/api/order";
 import {getToken} from "@/utils/auth";
 
 
@@ -121,9 +121,9 @@ const actions = {
         });
     });
   },
-  getOrderprice({commit}, params) {
+  getOrderPrice({commit}, params) {
     return new Promise((resolve, reject) => {
-      getOrderFlight(params)
+      getOrderPrice(params)
         .then(response => {
           const { data } = response;
           resolve(data);

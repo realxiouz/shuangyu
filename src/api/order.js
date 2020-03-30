@@ -64,7 +64,7 @@ export function getOrderFlight(data) {
   });
 }
 // 报价搜素
-export function getOrderprice(data) {
+export function getOrderPrice(data) {
   return request({
     url: `/get/price`,
     method: 'post',
