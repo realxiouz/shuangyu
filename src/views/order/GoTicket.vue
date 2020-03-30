@@ -230,8 +230,9 @@ export default {
         dptTime: "19:10",
         flightCode: "8L9678"
       };
-      this.getOrderMinPrice(flightInfo2);
       this.getOrderFlight(flightInfo2);
+      this.getOrderMinPrice(flightInfo2);
+
     },
     clickRowHandle(row) {
       let dptDay = this.formatDate(this.flightData[0].flightDate, "YYYY-MM-DD");
