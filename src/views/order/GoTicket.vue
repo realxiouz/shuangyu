@@ -119,7 +119,7 @@
         <el-table-column prop="refundRule" label="退票规则" align="center"></el-table-column>
         <el-table-column prop="changeRule" label="改签规则" align="center"></el-table-column>
         <el-table-column width="80" label="预定" align="center" type="expand">
-          <template >
+          <template v-if="flightPrice!=null">
             <el-row type="flex" justify="center" v-for="(item,index) in flightPrice" :key="index">
               <el-col style="text-align:center;line-height:28px;">
                 <span>舱位：{{ item.cabin }}</span>
@@ -132,7 +132,12 @@
               </el-col>
               <el-col style="text-align:right;line-height:28px;">
                 <span>
-                  <el-button type="primary" style="margin-top:10px;" @click="handlePay" size="mini">预定</el-button>
+                  <el-button
+                    type="primary"
+                    style="margin-top:10px;"
+                    @click="handlePay"
+                    size="mini"
+                  >预定</el-button>
                 </span>
               </el-col>
             </el-row>
@@ -163,7 +168,7 @@ export default {
       showPay: false,
       flightShow: false,
       purchaseShow: true,
-      load:false,
+      load: false,
       flightData: [],
       flightPrice: [],
       newFlightData: [],
@@ -230,7 +235,7 @@ export default {
         arr: this.flightData[0].arr,
         dpt: this.flightData[0].dpt,
         date: dptDay,
-        ex_track: this.newFlightData1.exTrack,
+        ex_track: row.exTrack,
         flightNum: this.flightData[0].flightCode
       };
 
@@ -241,7 +246,7 @@ export default {
         ex_track: "djjj",
         flightNum: "HO1122"
       };
-      this.getOrderPrice(_flightInfo2);
+      this.getFlightPrice(_flightInfo2);
       if (this.expands.includes(row.exTrack)) {
         this.expands = this.expands.filter(val => val !== row.exTrack);
       } else {
@@ -275,12 +280,12 @@ export default {
           console.log(error);
         });
     },
-    getOrderPrice(flightInfo) {
+    getFlightPrice(flightInfo) {
       this.$store
-        .dispatch("order/getOrderPrice", flightInfo)
+        .dispatch("order/getFlightPrice", flightInfo)
         .then(data => {
           if (data) {
-            console.log(data, "getOrderPrice");
+            console.log(data, "getFlightPrice");
             this.flightPrice = data.sortPrices;
           }
         })
