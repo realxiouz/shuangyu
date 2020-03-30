@@ -22,13 +22,15 @@
         <el-table-column prop="domain" label="域名"  align="center"></el-table-column>
         <el-table-column fixed="right" label="操作" width="280" align="center">
           <template slot-scope="scope">
-            <el-button @click="handleAddChild(scope.row.deptId)" type="success" size="mini">添加子级</el-button>
-            <el-button @click="handleUpdate(scope.row.deptId)" type="primary" size="mini">编辑</el-button>
-            <el-button
-              @click.native.prevent="handleRemove(scope.row.deptId)"
-              type="danger"
-              size="mini"
-            >删除</el-button>
+            <div v-show="0 != scope.row.level.number">
+              <el-button @click="handleAddChild(scope.row.deptId)" type="success" size="mini">添加子级</el-button>
+              <el-button @click="handleUpdate(scope.row.deptId)" type="primary" size="mini">编辑</el-button>
+              <el-button
+                @click.native.prevent="handleRemove(scope.row.deptId)"
+                type="danger"
+                size="mini"
+              >删除</el-button>
+            </div>
           </template>
         </el-table-column>
       </el-table>
