@@ -7,7 +7,12 @@
       <el-row style="margin-bottom:15px; margin-left:38px;">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
-      <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;" size="mini">
+      <el-table
+        v-loading="loading"
+        :data="tableData"
+        style="width: 100%;margin-bottom: 20px;"
+        size="mini"
+      >
         <el-table-column prop="nickName" label="昵称" width="100" align="center"></el-table-column>
         <el-table-column prop="fullName" label="姓名" width="100" align="center"></el-table-column>
         <el-table-column label="性别" width="100" align="center">
@@ -88,7 +93,8 @@ export default {
       pageSize: 10,
       lastId: "blank",
       total: 0,
-      tableData: []
+      tableData: [],
+      loading: true
     };
   },
   methods: {
@@ -109,7 +115,10 @@ export default {
           filter: {}
         })
         .then(data => {
-          this.tableData = data.data;
+          if (data) {
+            this.tableData = data.data;
+            this.loading = false;
+          }
         })
         .catch(error => {
           console.log(error);
@@ -179,19 +188,19 @@ export default {
         type: "warning"
       })
         .then(() => {
-            this.$store
-                .dispatch("user/resetPassword", {userId: row.userId})
-                .then(data => {
-                    console.log(data);
-                    this.loadData();
-                    this.$message({
-                        type: "success",
-                        message: "新密码已通过邮件发送给用户!"
-                    });
-                })
-                .catch(error => {
-                    console.log(error);
-                });
+          this.$store
+            .dispatch("user/resetPassword", { userId: row.userId })
+            .then(data => {
+              console.log(data);
+              this.loadData();
+              this.$message({
+                type: "success",
+                message: "新密码已通过邮件发送给用户!"
+              });
+            })
+            .catch(error => {
+              console.log(error);
+            });
         })
         .catch(() => {});
     },
@@ -213,11 +222,11 @@ export default {
       this.$store
         .dispatch("user/removeOne", { userId: userId })
         .then(() => {
-            if (1 === this.tableData.length){
-                this.handlePrevClick();
-            }else{
-                this.loadData();
-            }
+          if (1 === this.tableData.length) {
+            this.handlePrevClick();
+          } else {
+            this.loadData();
+          }
         })
         .catch(error => {
           console.log(error);
