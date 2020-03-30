@@ -1,53 +1,59 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-    <apiSearch @onSearch="handleSearch"></apiSearch>
+      <apiSearch @onSearch="handleSearch"></apiSearch>
     </div>
     <div class="contentBox">
-    <el-row style="margin-bottom:15px;margin-left:40px;">
-      <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
-    </el-row>
-    <el-table size="mini" :data="tableData" style="width: 100%;margin-bottom: 15px;"  fit>
-      <el-table-column prop="uri" label="URL" align="center"></el-table-column>
-      <el-table-column prop="category" align="center" label="类别" ></el-table-column>
-      <el-table-column prop="apiName" align="center" label="api名称" ></el-table-column>
-      <el-table-column label="是否启用" align="center">
-        <template slot-scope="scope">
-          <el-switch v-model="scope.row.enable" @change="handleSwitch(scope.row)"></el-switch>
-        </template>
-      </el-table-column>
-      <el-table-column fixed="right" label="操作" align="center" width="180">
-        <template slot-scope="scope">
-          <el-button @click="handleUpdate(scope.row.apiId)" type="primary" size="mini">编辑</el-button>
-          <el-button
-            @click.native.prevent="handleRemove(scope.row.apiId,scope.$index,tableData)"
-            type="danger"
-            size="mini"
-          >删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-pagination
-      @size-change="handleSizeChange"
-      @prev-click="prevClick"
-      @next-click="nextClick"
-      background
-      layout="total,sizes,prev,next"
-      prev-text="上一页"
-      next-text="下一页"
-      :page-size="pageSize"
-      :total="total"
-    ></el-pagination>
-    <el-dialog
-      center
-      title="Api信息"
-      :visible.sync="dialogVisible"
-      width="30%"
-      :close-on-click-modal="false"
-    >
-      <apiEdit v-if="dialogVisible" :api-id="apiId" @onCancel="handleCancel" @onSave="handleSave"></apiEdit>
-    </el-dialog>
-  </div>
+      <el-row style="margin-bottom:15px;margin-left:40px;">
+        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+      </el-row>
+      <el-table
+        size="mini"
+        v-loading="loading"
+        :data="tableData"
+        style="width: 100%;margin-bottom: 15px;"
+        fit
+      >
+        <el-table-column prop="uri" label="URL" align="center"></el-table-column>
+        <el-table-column prop="category" align="center" label="类别"></el-table-column>
+        <el-table-column prop="apiName" align="center" label="api名称"></el-table-column>
+        <el-table-column label="是否启用" align="center">
+          <template slot-scope="scope">
+            <el-switch v-model="scope.row.enable" @change="handleSwitch(scope.row)"></el-switch>
+          </template>
+        </el-table-column>
+        <el-table-column fixed="right" label="操作" align="center" width="180">
+          <template slot-scope="scope">
+            <el-button @click="handleUpdate(scope.row.apiId)" type="primary" size="mini">编辑</el-button>
+            <el-button
+              @click.native.prevent="handleRemove(scope.row.apiId,scope.$index,tableData)"
+              type="danger"
+              size="mini"
+            >删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+        @size-change="handleSizeChange"
+        @prev-click="prevClick"
+        @next-click="nextClick"
+        background
+        layout="total,sizes,prev,next"
+        prev-text="上一页"
+        next-text="下一页"
+        :page-size="pageSize"
+        :total="total"
+      ></el-pagination>
+      <el-dialog
+        center
+        title="Api信息"
+        :visible.sync="dialogVisible"
+        width="30%"
+        :close-on-click-modal="false"
+      >
+        <apiEdit v-if="dialogVisible" :api-id="apiId" @onCancel="handleCancel" @onSave="handleSave"></apiEdit>
+      </el-dialog>
+    </div>
   </div>
 </template>
 
@@ -59,6 +65,7 @@ export default {
   name: "apiList",
   data() {
     return {
+      loading: true,
       lastId: "0",
       pageFlag: "next",
       pageSize: 10,
@@ -94,6 +101,7 @@ export default {
         .then(data => {
           if (data) {
             this.tableData = data;
+            this.loading = false;
           }
         })
         .catch(error => {
@@ -134,11 +142,11 @@ export default {
       })
         .then(() => {
           this.$store.dispatch("api/removeOne", { apiId: id }).then(() => {
-              if (1 === this.tableData.length){
-                  this.prevClick();
-              }else{
-                  this.loadData();
-              }
+            if (1 === this.tableData.length) {
+              this.prevClick();
+            } else {
+              this.loadData();
+            }
             rows.splice(index, 1);
           });
         })

@@ -10,6 +10,7 @@
           :default-expanded-keys="curLine"
           :props="treeProps"
           @node-click="handleNodeClick"
+          v-loading="treeLoading"
         >
           <span class="tree-node" slot-scope="{ node, data }">
             <span>{{ node.data.title }}</span>
@@ -77,6 +78,7 @@ import navEdit from "./Edit";
 export default {
   data() {
     return {
+      treeLoading: true,
       dialogVisible: false,
       /*是否选择导航节点，没有选择则不可编辑*/
       apiVisible: true,
@@ -128,7 +130,10 @@ export default {
       this.$store
         .dispatch("nav/getList", {})
         .then(data => {
-          this.treeData = data;
+          if (data) {
+            this.treeData = data;
+            this.treeLoading = false;
+          }
         })
         .catch(error => {
           console.log(error);
