@@ -37,15 +37,6 @@
       <el-form-item label="邮箱">
         <el-input v-model="formData.email"></el-input>
       </el-form-item>
-      <el-form-item label="身份证号码">
-        <el-input
-          type="text"
-          placeholder="请输入身份证号码"
-          v-model="formData.idCardNo"
-          maxlength="18"
-          show-word-limit>
-        </el-input>
-      </el-form-item>
       <el-form-item label="是否超级管理员">
         <el-switch v-model="formData.super" :active-value=true :inactive-value=false></el-switch>
       </el-form-item>
@@ -57,9 +48,9 @@
       </el-form-item>
     </el-form>
     <el-transfer v-show="stepIndex>0"
-       v-model="formData.roles" 
-       :data="transData" 
-       :props="transferProps" 
+       v-model="formData.roles"
+       :data="transData"
+       :props="transferProps"
        :titles="['未分配角色列表', '已分配角色列表']"
        style="margin-top: 20px">
     </el-transfer>
@@ -122,7 +113,6 @@
           birthDate: '',
           phone: "",
           email: "",
-          idCardNo: "",
           super: false,
           enable: true
         };

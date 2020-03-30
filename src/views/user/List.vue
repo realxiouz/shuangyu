@@ -23,7 +23,6 @@
         </el-table-column>
         <el-table-column prop="phone" label="手机号" align="center"></el-table-column>
         <el-table-column prop="email" label="电子邮箱" align="center"></el-table-column>
-        <el-table-column prop="idCardNo" label="身份证号" align="center"></el-table-column>
         <el-table-column label="是否超级管理员" width="120" align="center">
           <template slot-scope="scope">
             <el-switch :value="scope.row.super" @change="superSwitch(scope.row)"></el-switch>
