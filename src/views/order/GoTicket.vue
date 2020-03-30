@@ -32,6 +32,29 @@
       </el-row>
     </el-card>
     <el-card class="contentBox">
+      <div slot="header" class="clearfix">
+        <span>航班信息</span>
+      </div>
+      <el-table :data="flightData" size="mini" highlight-current-row style="width: 100%;" fit>
+        <el-table-column prop="dptAirport" label="出发机场" width="160" align="center"></el-table-column>
+        <el-table-column prop="arrAirport" label="到达机场" width="160" align="center"></el-table-column>
+        <el-table-column prop="airlineCode" label="航司" width="50" align="center"></el-table-column>
+        <el-table-column prop="flightCode" label="航班号" width="100" align="center"></el-table-column>
+
+        <el-table-column prop="cabin" label="舱位" width="160" align="center"></el-table-column>
+        <el-table-column label="出发日期" width="110" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatDate(scope.row.flightDate,'YYYY-MM-DD') }}</span>
+          </template>
+        </el-table-column>
+        <!-- <el-table-column prop="dptTime" label="起飞时间" width="150" align="center"></el-table-column> -->
+        <el-table-column prop="arrTime" label="到达时间" width="100" align="center"></el-table-column>
+        <!-- <el-table-column prop="distance" label="航程" width="50" align="center"></el-table-column> -->
+        <el-table-column prop="refundRule" label="退票规则" align="center"></el-table-column>
+        <el-table-column prop="changeRule" label="改签规则" align="center"></el-table-column>
+      </el-table>
+    </el-card>
+    <el-card class="contentBox">
       <div slot="header">
         <span>乘客信息</span>
       </div>
@@ -57,12 +80,12 @@
         </el-table-column>
       </el-table>
       <el-row style="margin-top:20px">
-        <el-button type="primary" @click="goTicket" size="mini">下单</el-button>
+        <el-button type="primary" @click="goTicket" size="mini">搜索航班</el-button>
       </el-row>
     </el-card>
     <el-card class="contentBox" v-if="flightShow">
       <div slot="header">
-        <span>航班信息</span>
+        <span>渠道信息</span>
       </div>
       <el-table
         :data="newFlightData"
@@ -78,7 +101,11 @@
         <el-table-column prop="dptAirport" label="起始地" align="center"></el-table-column>
         <el-table-column prop="arrAirport" label="目的地" align="center"></el-table-column>
         <el-table-column prop label="最低价" align="center"></el-table-column>
-        <el-table-column prop="airlineCode" label="航司" width="100" align="center"></el-table-column>
+        <el-table-column prop="airlineCode" label="航司" width="100" align="center">
+          <template slot-scope="scope">
+            <span>{{scope.row.flightQuotePrices.arrAirport}}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="actFlightCode" label="主飞航班" align="center"></el-table-column>
         <el-table-column prop="shareFlag" label="是否共享" width="100" align="center"></el-table-column>
         <el-table-column prop label="到达机场" width="160" align="center"></el-table-column>
@@ -99,7 +126,7 @@
               </el-col>
               <el-col style="text-align:right;line-height:28px;">
                 <span>
-                  <el-button type="primary" @click="handlePay" size="mini">支付</el-button>
+                  <el-button type="primary" @click="handlePay" size="mini">预定</el-button>
                 </span>
               </el-col>
             </el-row>
@@ -138,7 +165,7 @@ export default {
       orderNo: this.$route.query.orderNo,
       PassengerData: JSON.parse(this.$route.query.passengersInfo),
       getRowKeys(row) {
-        return row.id;
+        return row.exTrack;
       }
     };
   },
@@ -190,10 +217,10 @@ export default {
       // this.getOrderMinPrice(flightInfo2);
     },
     clickRowHandle(row) {
-      if (this.expands.includes(row.id)) {
-        this.expands = this.expands.filter(val => val !== row.id);
+      if (this.expands.includes(row.exTrack)) {
+        this.expands = this.expands.filter(val => val !== row.exTrack);
       } else {
-        this.expands.push(row.id);
+        this.expands.push(row.exTrack);
       }
     },
     /*初始化用工列表中的生日日期格式*/
@@ -261,4 +288,7 @@ export default {
 </script>
 
 <style scoped>
+.contentBox {
+  padding-top: 0px !important;
+}
 </style>
