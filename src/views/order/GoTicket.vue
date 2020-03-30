@@ -32,6 +32,29 @@
       </el-row>
     </el-card>
     <el-card class="contentBox">
+      <div slot="header" class="clearfix">
+        <span>航班信息</span>
+      </div>
+      <el-table :data="flightData" size="mini" highlight-current-row style="width: 100%;" fit>
+        <el-table-column prop="dptAirport" label="出发机场" width="160" align="center"></el-table-column>
+        <el-table-column prop="arrAirport" label="到达机场" width="160" align="center"></el-table-column>
+        <el-table-column prop="airlineCode" label="航司" width="50" align="center"></el-table-column>
+        <el-table-column prop="flightCode" label="航班号" width="100" align="center"></el-table-column>
+
+        <el-table-column prop="cabin" label="舱位" width="160" align="center"></el-table-column>
+        <el-table-column label="出发日期" width="110" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatDate(scope.row.flightDate,'YYYY-MM-DD') }}</span>
+          </template>
+        </el-table-column>
+        <!-- <el-table-column prop="dptTime" label="起飞时间" width="150" align="center"></el-table-column> -->
+        <el-table-column prop="arrTime" label="到达时间" width="100" align="center"></el-table-column>
+        <!-- <el-table-column prop="distance" label="航程" width="50" align="center"></el-table-column> -->
+        <el-table-column prop="refundRule" label="退票规则" align="center"></el-table-column>
+        <el-table-column prop="changeRule" label="改签规则" align="center"></el-table-column>
+      </el-table>
+    </el-card>
+    <el-card class="contentBox">
       <div slot="header">
         <span>乘客信息</span>
       </div>
@@ -62,7 +85,7 @@
     </el-card>
     <el-card class="contentBox" v-if="flightShow">
       <div slot="header">
-        <span>航班信息</span>
+        <span>渠道信息</span>
       </div>
       <el-table
         :data="newFlightData"
@@ -265,9 +288,7 @@ export default {
 </script>
 
 <style scoped>
-
-.el-card__header{
-  padding-top: 4px!important;
-
+.contentBox {
+  padding-top: 0px !important;
 }
 </style>

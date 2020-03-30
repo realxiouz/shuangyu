@@ -232,3 +232,8 @@ export default {
 };
 </script>
 
+<style scoped>
+.contentBox {
+  padding-top: 0px !important;
+}
+</style>
