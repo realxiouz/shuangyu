@@ -6,12 +6,13 @@
     <div class="contentBox">
       <!-- <el-row style="margin-bottom:15px;margin-left:40px">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
-      </el-row> -->
+      </el-row>-->
       <el-table
         :data="tableData"
         size="mini"
         highlight-current-row
         style="width: 100%;margin-bottom:15px"
+        v-loading="loading"
         fit
       >
         <el-table-column label="序号" type="index" width="50" align="center">
@@ -96,6 +97,7 @@ export default {
       currentPage: 1,
       pageSize: 10,
       total: 0,
+      loading: true,
       dialogVisible: false,
       tableData: [],
       searchParams: {}
@@ -127,6 +129,7 @@ export default {
         .then(data => {
           if (data) {
             this.tableData = data;
+            this.loading = false;
           }
         })
         .catch(error => {
@@ -204,11 +207,11 @@ export default {
           this.$store
             .dispatch("order/removeOne", { orderNo: orderNo })
             .then(() => {
-                if (1 === this.tableData.length){
-                    this.prevClick();
-                }else{
-                    this.loadData(this.searchParams);
-                }
+              if (1 === this.tableData.length) {
+                this.prevClick();
+              } else {
+                this.loadData(this.searchParams);
+              }
               this.loadTotal();
             })
             .catch(error => {
