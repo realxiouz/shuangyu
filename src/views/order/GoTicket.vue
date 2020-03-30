@@ -100,6 +100,7 @@
         @expand-change="expandChange"
         lazy
         fit
+        v-loading="loading"
       >
         <el-table-column label="渠道" width="150" align="center">蜗牛</el-table-column>
         <el-table-column prop="dptAirport" label="起始地" align="center"></el-table-column>
@@ -121,7 +122,7 @@
         <el-table-column prop="refundRule" label="退票规则" align="center"></el-table-column>
         <el-table-column prop="changeRule" label="改签规则" align="center"></el-table-column>
         <el-table-column width="80" label="预定" align="center" type="expand">
-          <template v-if="flightPrice.length">
+          <template v-if="flightPrice.length>0">
             <el-row type="flex" justify="center" v-for="(item,index) in flightPrice" :key="index">
               <el-col style="text-align:center;line-height:38px;">
                 <span>舱位：{{ item.cabin }}</span>
@@ -170,11 +171,12 @@ export default {
       showPay: false,
       flightShow: false,
       purchaseShow: true,
-      load: false,
+      loading: true,
       flightData: [],
       flightPrice: [],
       newFlightData: [],
-      newFlightData1: "",
+
+      newFlightData1: [],
       expands: [],
       PassengerData: [],
       orderData: {},
@@ -255,7 +257,7 @@ export default {
         this.expands.push(row.exTrack);
       }
     },
-    expandChange(row,expandedRows ){
+    expandChange(row, expandedRows) {
       let dptDay = this.formatDate(this.flightData[0].flightDate, "YYYY-MM-DD");
       let _flightInfo = {
         arr: this.flightData[0].arr,
@@ -295,6 +297,7 @@ export default {
               item.minPrice = data.sortPrices[0].price;
             });
             this.newFlightData1 = this.newFlightData;
+            this.loading = false;
           }
         })
         .catch(error => {
