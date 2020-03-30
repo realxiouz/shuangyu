@@ -117,8 +117,8 @@
         </el-table-column>
         <el-table-column prop="actFlightCode" label="主飞航班" align="center"></el-table-column>
         <el-table-column prop="shareFlag" label="是否共享" width="100" align="center"></el-table-column>
-        <el-table-column prop label="到达机场" width="160" align="center"></el-table-column>
-        <el-table-column prop="flightCode" label="航班号" align="center"></el-table-column>
+        <!-- <el-table-column prop label="到达机场" width="160" align="center"></el-table-column> -->
+        <el-table-column prop="flightNum" label="航班号" align="center"></el-table-column>
         <el-table-column prop="refundRule" label="退票规则" align="center"></el-table-column>
         <el-table-column prop="changeRule" label="改签规则" align="center"></el-table-column>
         <el-table-column width="80" label="预定" align="center" type="expand">
@@ -138,7 +138,7 @@
                   <el-button
                     type="primary"
                     style="margin-top:10px;"
-                    @click="handlePay"
+                    @click="handlePay(item)"
                     size="mini"
                   >预定</el-button>
                 </span>
@@ -203,8 +203,9 @@ export default {
           console.log(error);
         });
     },
-    handlePay() {
+    handlePay(item) {
       this.showPay = true;
+      console.log(item)
     },
     handleCancel() {
       this.showPay = false;
@@ -226,7 +227,7 @@ export default {
       let flightInfo2 = {
         arr: "CTU",
         dpt: "CGO",
-        dptDay: "2020-04-03",
+        dptDay: "2020-04-06",
         dptTime: "19:10",
         flightCode: "8L9678"
       };
