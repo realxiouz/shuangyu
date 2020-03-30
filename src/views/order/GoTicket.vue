@@ -57,7 +57,7 @@
         </el-table-column>
       </el-table>
       <el-row style="margin-top:20px">
-        <el-button type="primary" @click="goTicket" size="mini">下单</el-button>
+        <el-button type="primary" @click="goTicket" size="mini">搜索航班</el-button>
       </el-row>
     </el-card>
     <el-card class="contentBox" v-if="flightShow">
@@ -78,7 +78,11 @@
         <el-table-column prop="dptAirport" label="起始地" align="center"></el-table-column>
         <el-table-column prop="arrAirport" label="目的地" align="center"></el-table-column>
         <el-table-column prop label="最低价" align="center"></el-table-column>
-        <el-table-column prop="airlineCode" label="航司" width="100" align="center"></el-table-column>
+        <el-table-column prop="airlineCode" label="航司" width="100" align="center">
+          <template slot-scope="scope">
+            <span>{{scope.row.flightQuotePrices.arrAirport}}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="actFlightCode" label="主飞航班" align="center"></el-table-column>
         <el-table-column prop="shareFlag" label="是否共享" width="100" align="center"></el-table-column>
         <el-table-column prop label="到达机场" width="160" align="center"></el-table-column>
@@ -99,7 +103,7 @@
               </el-col>
               <el-col style="text-align:right;line-height:28px;">
                 <span>
-                  <el-button type="primary" @click="handlePay" size="mini">支付</el-button>
+                  <el-button type="primary" @click="handlePay" size="mini">预定</el-button>
                 </span>
               </el-col>
             </el-row>
@@ -138,7 +142,7 @@ export default {
       orderNo: this.$route.query.orderNo,
       PassengerData: JSON.parse(this.$route.query.passengersInfo),
       getRowKeys(row) {
-        return row.id;
+        return row.exTrack;
       }
     };
   },
@@ -190,10 +194,10 @@ export default {
       // this.getOrderMinPrice(flightInfo2);
     },
     clickRowHandle(row) {
-      if (this.expands.includes(row.id)) {
-        this.expands = this.expands.filter(val => val !== row.id);
+      if (this.expands.includes(row.exTrack)) {
+        this.expands = this.expands.filter(val => val !== row.exTrack);
       } else {
-        this.expands.push(row.id);
+        this.expands.push(row.exTrack);
       }
     },
     /*初始化用工列表中的生日日期格式*/
@@ -261,4 +265,9 @@ export default {
 </script>
 
 <style scoped>
+
+.el-card__header{
+  padding-top: 4px!important;
+
+}
 </style>
