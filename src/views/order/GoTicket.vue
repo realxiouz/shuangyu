@@ -31,29 +31,7 @@
         </el-form>
       </el-row>
     </el-card>
-    <el-card class="contentBox">
-      <div slot="header" class="clearfix">
-        <span>航班信息</span>
-      </div>
-      <el-table :data="flightData" size="mini" highlight-current-row style="width: 100%;" fit>
-        <el-table-column prop="dptAirport" label="出发机场" width="160" align="center"></el-table-column>
-        <el-table-column prop="arrAirport" label="到达机场" width="160" align="center"></el-table-column>
-        <el-table-column prop="airlineCode" label="航司" width="50" align="center"></el-table-column>
-        <el-table-column prop="flightCode" label="航班号" width="100" align="center"></el-table-column>
 
-        <el-table-column prop="cabin" label="舱位" width="160" align="center"></el-table-column>
-        <el-table-column label="出发日期" width="110" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatDate(scope.row.flightDate,'YYYY-MM-DD') }}</span>
-          </template>
-        </el-table-column>
-        <!-- <el-table-column prop="dptTime" label="起飞时间" width="150" align="center"></el-table-column> -->
-        <el-table-column prop="arrTime" label="到达时间" width="100" align="center"></el-table-column>
-        <!-- <el-table-column prop="distance" label="航程" width="50" align="center"></el-table-column> -->
-        <el-table-column prop="refundRule" label="退票规则" align="center"></el-table-column>
-        <el-table-column prop="changeRule" label="改签规则" align="center"></el-table-column>
-      </el-table>
-    </el-card>
     <el-card class="contentBox">
       <div slot="header">
         <span>乘客信息</span>
@@ -79,6 +57,29 @@
           </template>
         </el-table-column>
       </el-table>
+    </el-card>
+    <el-card class="contentBox">
+      <div slot="header" class="clearfix">
+        <span>航班信息</span>
+      </div>
+      <el-table :data="flightData" size="mini" highlight-current-row style="width: 100%;" fit>
+        <el-table-column prop="dptAirport" label="出发机场" width="160" align="center"></el-table-column>
+        <el-table-column prop="arrAirport" label="到达机场" width="160" align="center"></el-table-column>
+        <el-table-column prop="airlineCode" label="航司" width="50" align="center"></el-table-column>
+        <el-table-column prop="flightCode" label="航班号" width="100" align="center"></el-table-column>
+
+        <el-table-column prop="cabin" label="舱位" width="160" align="center"></el-table-column>
+        <el-table-column label="出发日期" width="110" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatDate(scope.row.flightDate,'YYYY-MM-DD') }}</span>
+          </template>
+        </el-table-column>
+        <!-- <el-table-column prop="dptTime" label="起飞时间" width="150" align="center"></el-table-column> -->
+        <el-table-column prop="arrTime" label="到达时间" width="100" align="center"></el-table-column>
+        <!-- <el-table-column prop="distance" label="航程" width="50" align="center"></el-table-column> -->
+        <el-table-column prop="refundRule" label="退票规则" align="center"></el-table-column>
+        <el-table-column prop="changeRule" label="改签规则" align="center"></el-table-column>
+      </el-table>
       <el-row style="margin-top:20px">
         <el-button type="primary" @click="goTicket" size="mini">搜索航班</el-button>
       </el-row>
@@ -96,6 +97,7 @@
         @row-click="clickRowHandle"
         :expand-row-keys="expands"
         :row-key="getRowKeys"
+        @expand-change="expandChange"
         lazy
         fit
       >
@@ -119,18 +121,18 @@
         <el-table-column prop="refundRule" label="退票规则" align="center"></el-table-column>
         <el-table-column prop="changeRule" label="改签规则" align="center"></el-table-column>
         <el-table-column width="80" label="预定" align="center" type="expand">
-          <template v-if="flightPrice!=null">
+          <template v-if="flightPrice.length">
             <el-row type="flex" justify="center" v-for="(item,index) in flightPrice" :key="index">
-              <el-col style="text-align:center;line-height:28px;">
+              <el-col style="text-align:center;line-height:38px;">
                 <span>舱位：{{ item.cabin }}</span>
               </el-col>
-              <el-col style="text-align:center;line-height:28px;">
+              <el-col style="text-align:center;line-height:38px;">
                 <span>票面价：{{ formatAmount(item.barePrice) }}</span>
               </el-col>
-              <el-col style="text-align:center;line-height:28px;">
+              <el-col style="text-align:center;line-height:38px;">
                 <span>售价：{{ formatAmount(item.price) }}</span>
               </el-col>
-              <el-col style="text-align:right;line-height:28px;">
+              <el-col style="text-align:right;line-height:38px;">
                 <span>
                   <el-button
                     type="primary"
@@ -253,6 +255,25 @@ export default {
         this.expands.push(row.exTrack);
       }
     },
+    expandChange(row,expandedRows ){
+      let dptDay = this.formatDate(this.flightData[0].flightDate, "YYYY-MM-DD");
+      let _flightInfo = {
+        arr: this.flightData[0].arr,
+        dpt: this.flightData[0].dpt,
+        date: dptDay,
+        ex_track: row.exTrack,
+        flightNum: this.flightData[0].flightCode
+      };
+
+      let _flightInfo2 = {
+        arr: "SHA",
+        dpt: "KMG",
+        date: "2020-04-03",
+        ex_track: "djjj",
+        flightNum: "HO1122"
+      };
+      this.getFlightPrice(_flightInfo2);
+    },
     getOrderFlight(flightInfo) {
       this.$store
         .dispatch("order/getOrderFlight", flightInfo)
@@ -286,7 +307,7 @@ export default {
         .then(data => {
           if (data) {
             console.log(data, "getFlightPrice");
-            this.flightPrice = data.sortPrices;
+            this.flightPrice = [...data.sortPrices];
           }
         })
         .catch(error => {
