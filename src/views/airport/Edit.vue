@@ -86,7 +86,7 @@
                 this.formData.airportCode = this.formData.airportCode.toUpperCase();
             },
             tagClose(idx){
-                this.tags.splice(this.tags[idx], 1);
+                this.tags.splice(idx, 1);
             }
         },
         created() {
