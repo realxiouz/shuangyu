@@ -7,6 +7,7 @@
       :data="tableData"
       row-key="paramId"
       size="mini"
+      v-loading="loading"
       :tree-props="{ hasChildren: 'xxx',children: 'children'}"
     >
       <el-table-column prop="thirdName" label="第三方平台" align="center" width="150"></el-table-column>
@@ -49,6 +50,7 @@ export default {
   data() {
     return {
       rootNav: false,
+      loading:true,
       dialogVisible: false,
       paramId: null,
       tableData: [],
@@ -70,6 +72,7 @@ export default {
         .dispatch("thirdApiParam/getList")
         .then(data => {
           this.tableData = data;
+          this.loading=false;
         })
         .catch(error => {
           console.log(error);

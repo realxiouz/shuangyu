@@ -103,8 +103,8 @@
         v-loading="loading"
       >
         <el-table-column label="渠道" width="150" align="center">蜗牛</el-table-column>
-        <el-table-column prop="dptAirport" label="起始地" align="center"></el-table-column>
-        <el-table-column prop="arrAirport" label="目的地" align="center"></el-table-column>
+        <el-table-column prop="dpt" label="起始地" align="center"></el-table-column>
+        <el-table-column prop="arr" label="目的地" align="center"></el-table-column>
         <el-table-column prop="minPrice" label="最低价" align="center">
           <template slot-scope="scope">
             <span>{{formatAmount(scope.row.minPrice)}}</span>
@@ -115,12 +115,11 @@
             <span>{{scope.row.flightQuotePrices.arrAirport}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="actFlightCode" label="主飞航班" align="center"></el-table-column>
+        <el-table-column prop="flightNum" label="主飞航班" align="center"></el-table-column>
         <el-table-column prop="shareFlag" label="是否共享" width="100" align="center"></el-table-column>
-        <!-- <el-table-column prop label="到达机场" width="160" align="center"></el-table-column> -->
         <el-table-column prop="flightNum" label="航班号" align="center"></el-table-column>
-        <el-table-column prop="refundRule" label="退票规则" align="center"></el-table-column>
-        <el-table-column prop="changeRule" label="改签规则" align="center"></el-table-column>
+        <!-- <el-table-column prop="refundRule" label="退票规则" align="center"></el-table-column> -->
+        <!-- <el-table-column prop="changeRule" label="改签规则" align="center"></el-table-column> -->
         <el-table-column width="80" label="预定" align="center" type="expand">
           <template v-if="flightPrice.length>0">
             <el-row type="flex" justify="center" v-for="(item,index) in flightPrice" :key="index">
@@ -175,7 +174,6 @@ export default {
       flightData: [],
       flightPrice: [],
       newFlightData: [],
-
       newFlightData1: [],
       expands: [],
       PassengerData: [],
@@ -215,11 +213,10 @@ export default {
     },
     goTicket() {
       this.flightShow = true;
-      let dptDay = this.formatDate(this.flightData[0].flightDate, "YYYY-MM-DD");
       let flightInfo = {
         arr: this.flightData[0].arr,
         dpt: this.flightData[0].dpt,
-        dptDay: dptDay,
+        dptDay: this.formatDate(this.flightData[0].flightDate, "YYYY-MM-DD"),
         dptTime: this.flightData[0].dptTime.substr(-5, 5),
         flightCode: this.flightData[0].flightCode
       };
@@ -268,7 +265,6 @@ export default {
         ex_track: row.exTrack,
         flightNum: this.flightData[0].flightCode
       };
-
       let _flightInfo2 = {
         arr: "SHA",
         dpt: "KMG",
