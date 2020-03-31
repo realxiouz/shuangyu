@@ -61,6 +61,7 @@ export default {
             console.log(error);
           });
       }
+      this.loading = false;
     },
     handleNodeClick(data) {
       this.staffAddVisible = false;
