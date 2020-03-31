@@ -203,7 +203,7 @@ export default {
     },
     handlePay(item) {
       this.showPay = true;
-      console.log(item)
+      console.log(item);
     },
     handleCancel() {
       this.showPay = false;
@@ -226,11 +226,10 @@ export default {
         dpt: "CGO",
         dptDay: "2020-04-06",
         dptTime: "19:10",
-        flightCode: "8L9678"
+        flightCode: "HO1122"
       };
       this.getOrderFlight(flightInfo2);
       this.getOrderMinPrice(flightInfo2);
-
     },
     clickRowHandle(row) {
       let dptDay = this.formatDate(this.flightData[0].flightDate, "YYYY-MM-DD");
@@ -245,7 +244,7 @@ export default {
       let _flightInfo2 = {
         arr: "SHA",
         dpt: "KMG",
-        date: "2020-04-03",
+        date: "2020-04-06",
         ex_track: "djjj",
         flightNum: "HO1122"
       };
@@ -268,7 +267,7 @@ export default {
       let _flightInfo2 = {
         arr: "SHA",
         dpt: "KMG",
-        date: "2020-04-03",
+        date: "2020-04-06",
         ex_track: "djjj",
         flightNum: "HO1122"
       };
@@ -295,8 +294,8 @@ export default {
               item.minPrice = data.sortPrices[0].price;
             });
             this.newFlightData1 = this.newFlightData;
-            this.loading = false;
           }
+          this.loading = false;
         })
         .catch(error => {
           console.log(error);

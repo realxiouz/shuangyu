@@ -6,6 +6,7 @@
       <el-button type="primary" size="mini" @click="apisEdit" :disabled="apiVisible">添加</el-button>
     </el-row>
     <el-table
+      v-loading="tableLoading"
       :data="tableData"
       fit
       tooltip-effect="dark"
@@ -16,7 +17,7 @@
       <el-table-column prop="apiName" label="API名称" align="center"></el-table-column>
       <el-table-column prop="category" label="类别" align="center"></el-table-column>
       <el-table-column label="是否启用" align="center" width="100">
-        <template slot-scope="scope" >
+        <template slot-scope="scope">
           <el-switch disabled :value="scope.row.enable" @change="enableSwitch(scope.row)"></el-switch>
         </template>
       </el-table-column>
@@ -56,7 +57,7 @@
 export default {
   name: "Edit",
   /*apiVisible为false时不可编辑*/
-  props: ["apiVisible", "curNode"],
+  props: ["apiVisible", "curNode", "tableLoading"],
   data() {
     return {
       dialogVisible: false,
@@ -94,7 +95,10 @@ export default {
       this.$store
         .dispatch("api/getMany", { apiIDList: apiIDList })
         .then(data => {
-          this.tableData = data;
+          if (data) {
+            this.tableData = data;
+          }
+          this.tableLoading = false;
         })
         .catch(error => {
           console.log(error);

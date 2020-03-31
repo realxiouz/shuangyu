@@ -23,7 +23,12 @@
         </el-tree>
       </el-col>
       <el-col :xs="13" :sm="14" :md="15" :lg="16" :xl="16">
-        <navEdit ref="search" :apiVisible="apiVisible" :curNode="curNode"></navEdit>
+        <navEdit
+          ref="search"
+          :tableLoading="tableLoading"
+          :apiVisible="apiVisible"
+          :curNode="curNode"
+        ></navEdit>
       </el-col>
     </el-row>
     <!-- 表单对话框 -->
@@ -79,6 +84,7 @@ export default {
   data() {
     return {
       treeLoading: true,
+      tableLoading: false,
       dialogVisible: false,
       /*是否选择导航节点，没有选择则不可编辑*/
       apiVisible: true,
@@ -226,6 +232,7 @@ export default {
       /*加载该节点所有的api数据*/
       this.curNode = node.data;
       this.apiVisible = false;
+      this.tableLoading = true;
     },
     handleEdit(data, node) {
       this.formData = node;
