@@ -32,9 +32,9 @@
         <template slot-scope="scope">
           <el-button
             size="mini"
-            type="success"
+            type="primary"
             @click="permissionChange(scope.$index, scope.row)"
-          >修改权限</el-button>
+          >编辑</el-button>
           <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
         </template>
       </el-table-column>
@@ -49,6 +49,9 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" size="mini" icon="el-icon-search" @click="searchUser"></el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" size="mini" @click="handleQuiklyAdd">新增员工</el-button>
         </el-form-item>
       </el-form>
       <el-table
@@ -74,20 +77,70 @@
     </el-dialog>
     <!-- 权限修改弹窗 -->
     <el-dialog
-      title="提示"
-      width="37%"
+      title="员工信息"
+      width="29%"
       :visible.sync="permissionDialogVisible"
       :close-on-click-modal="false"
     >
+        <el-button type="primary" size="mini" @click="handleQuiklyAdd" style="margin-bottom: 10px; margin-left: 80%;">快速添加</el-button>
+      <el-form size="mini" label-width="120px" v-show="hasStep">
+        <!--   企业ID  -->
+        <input type="hidden" v-model="formData.staffId"/>
+        <el-form-item label="员工姓名">
+          <el-input
+            type="text"
+            placeholder="请输入姓名"
+            v-model="formData.fullName">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="性别">
+          <el-select v-model="formData.gender" placeholder="请选择性别" style="width:100%">
+            <el-option label="男" :value=0></el-option>
+            <el-option label="女" :value=1></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="出生日期">
+          <el-date-picker
+            type="date"
+            placeholder="选择日期"
+            v-model="formData.birthDate"
+            style="width: 100%;"
+          ></el-date-picker>
+        </el-form-item>
+        <el-form-item label="身份证号">
+          <el-input v-model="formData.idCardNo"  @blur="isUsedForIDNo"></el-input>
+          <span v-if="isExistsForIDNo && ''===formData.staffId" style="color: red">*信息已被注册，建议通过 "快速添加" 添加员工</span>
+          <span v-if="isExistsForIDNo && ''!=formData.staffId" style="color: red">*信息已被使用</span>
+        </el-form-item>
+        <el-form-item label="手机号码">
+          <el-input
+            placeholder="请输入手机号码"
+            v-model="formData.phone"
+            maxlength="11"
+            show-word-limit
+          @blur="isUsedForPhone">
+          </el-input>
+          <span v-if="isExistsForPhone && ''===formData.staffId" style="color: red">*信息已被注册，建议通过 "快速添加" 添加员工</span>
+          <span v-if="isExistsForPhone && ''!=formData.staffId" style="color: red">*信息已被使用</span>
+        </el-form-item>
+        <el-form-item label="邮箱">
+          <el-input v-model="formData.email" @blur="isUsedForEmail"></el-input>
+          <span v-if="isExistsForEmail && ''===formData.staffId" style="color: red">*信息已被注册，建议通过 "快速添加" 添加员工</span>
+          <span v-if="isExistsForEmail && ''!=formData.staffId" style="color: red">*信息已被使用</span>
+        </el-form-item>
+      </el-form>
       <el-transfer
-        v-model="zombie.roles"
+        v-model="formData.roles"
         :data="transData"
         :props="transferProps"
+        v-show="!hasStep"
         style="margin-top: 20px"
       ></el-transfer>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="permissionAlterCancel">取 消</el-button>
-        <el-button type="primary" @click="permissionAlterSave">添 加</el-button>
+        <el-button size="mini" @click="permissionAlterCancel">取 消</el-button>
+        <el-button v-show="hasStep" size="mini" type="primary" @click="nextStep">下一步</el-button>
+      <el-button v-show="!hasStep" size="mini" type="primary" @click="prevStep">上一步</el-button>
+      <el-button v-show="!hasStep" size="mini" type="primary" @click="permissionAlterSave">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -110,17 +163,41 @@ export default {
       /*进行用户查询后待选择的用户列表*/
       userTable: [],
       keyword: "",
-      zombie: {
-        roles: []
-      },
+        hasStep: true,
+        formData: {},
       transData: [],
       transferProps: {
         key: "roleId",
         label: "roleName"
-      }
+      },
+        /*用于校验所填写的信息是否已经被使用*/
+        isExistsForPhone: false,
+        isExistsForIDNo: false,
+        isExistsForEmail: false
     };
   },
   methods: {
+      defaultFormData(){
+        return {
+            staffId: '',
+            userId: '',
+            firmId: '',
+            fullName: '',
+            gender: 0,
+            birthDate: new Date(),
+            phone: '',
+            email: '',
+            idCardNo: '',
+            deptID: '',
+            domain: '',
+            roles: []
+        };
+      },
+      /*两种员工注册方式间的切换*/
+      handleQuiklyAdd(){
+        this.dialogVisible = this.dialogVisible ? false : true;
+        this.permissionDialogVisible = this.permissionDialogVisible ? false : true;
+      },
     /*获取该部门下的员工列表*/
     loadTableData() {
       this.$store
@@ -128,7 +205,7 @@ export default {
           filter: { firmId: this.curNode.firmId, deptId: this.curNode.deptId }
         })
         .then(data => {
-          this.tableData = data.data;
+            this.tableData = data.data;
         })
         .catch(error => {
           console.log(error);
@@ -139,7 +216,12 @@ export default {
       this.clearUsersTable();
       this.handleIconClick();
       this.searchUser();
-      this.dialogVisible = true;
+      this.clearFormData();
+        this.hasStep = true;
+      this.permissionDialogVisible = true;
+        this.isExistsForPhone = false;
+        this.isExistsForIDNo = false;
+        this.isExistsForEmail = false;
     },
     /*进行用户查询*/
     searchUser() {
@@ -186,6 +268,11 @@ export default {
         .dispatch("staff/addMany", this.prepareStaffs)
         .then(data => {
           console.log(data);
+            this.$confirm("员工添加成功，请注意通过编辑员工完善员工信息！", "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "success"
+            }).then();
           this.loadTableData();
         })
         .catch(error => {
@@ -198,20 +285,20 @@ export default {
     handleCancel() {
       this.dialogVisible = false;
     },
-    /*点击修改权限*/
+    /*点击修改*/
     permissionChange(idx, row) {
-      /*根据对应的企业ID和用户ID查询对应的用工对象*/
+      /*根据对应的员工ID查询对应的用工对象*/
       this.$store
-        .dispatch("staff/getOneByFidAndUid", {
-          firmId: this.curNode.firmId,
-          userId: row.userId
+        .dispatch("staff/getOne", {
+          staffId: row.staffId
         })
         .then(data => {
-          /*如果请求到的数据roles为null会报错*/
+            console.log(data);
+            /*如果请求到的数据roles为null会报错*/
           if (!data.data.roles) {
             data.data.roles = [];
           }
-          this.zombie = data.data;
+          this.formData = data.data;
           /*if (data.data.roles && row.roles.length && data.data.roles.length < row.roles.length){
                             this.zombie.roles = row.roles;
                           }*/
@@ -220,21 +307,48 @@ export default {
           console.log(error);
         });
 
+        this.hasStep = true;
       this.permissionDialogVisible = true;
+        this.isExistsForPhone = false;
+        this.isExistsForIDNo = false;
+        this.isExistsForEmail = false;
     },
-    /*点击修改权限弹窗取消按钮*/
+    /*点击修改弹窗取消按钮*/
     permissionAlterCancel() {
       this.permissionDialogVisible = false;
     },
-    /*点击修改权限弹窗保存按钮*/
+    /*点击修改弹窗保存按钮*/
     permissionAlterSave() {
-      this.permissionDialogVisible = false;
+      //对添加的员工信息进行初始化和格式化
+        if ('number' != typeof this.formData.birthDate){
+            this.formData.birthDate = this.formData.birthDate.getTime();
+        }
+        //如果填写的信息未通过校验，不允许保存
+        if(this.isExistsForPhone || this.isExistsForIDNo || this.isExistsForEmail){
+            this.$message({ type: "warning", message: "请重新填写已被使用的信息!"});
+            return;
+        }
+
+        //进行数据的保存
+        let url = '';
+        if ('' != this.formData.staffId){
+            url = 'staff/updateOne';
+        }else{
+            url = 'staff/addOne';
+            this.formData.firmId = this.curNode.firmId;
+            this.formData.depts = [this.curNode.deptId];
+            this.formData.domain = this.curNode.domain;
+        }
 
       this.$store
-        .dispatch("staff/updateOne", this.zombie)
+        .dispatch(url, this.formData)
         .then(data => {
           console.log(data);
+          //数据保存成功后可以关闭弹窗
+            this.permissionDialogVisible = false;
           this.loadTableData();
+            this.hasStep = true;
+            this.clearFormData();
         })
         .catch(error => {
           console.log(error);
@@ -242,15 +356,14 @@ export default {
     },
     /*对员工进行删除*/
     handleDelete(idx, row) {
-      this.open(this.delete, row.userId);
+      this.open(this.delete, row.staffId);
     },
-    /*根据对应用户ID*/
-    delete(userID) {
+    /*根据对应员工ID*/
+    delete(staffId) {
       this.$store
         .dispatch("staff/removeOne", {
-          firmId: this.curNode.firmId,
           deptId: this.curNode.deptId,
-          userId: userID
+            staffId: staffId
         })
         .then(data => {
           console.log(data);
@@ -261,7 +374,7 @@ export default {
         });
     },
     open(func, data) {
-      this.$confirm("此操作将删除该企业信息及子企业信息, 是否继续?", "提示", {
+      this.$confirm("此操作将删除该员工信息, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
@@ -280,6 +393,13 @@ export default {
           });
         });
     },
+      /*是否可以点击下一步*/
+      nextStep() {
+          this.hasStep = false;
+      },
+      prevStep() {
+          this.hasStep = true;
+      },
     /*初始化用工列表中的生日日期格式*/
     initDate(dateStr, format) {
       if (null != dateStr) {
@@ -298,6 +418,14 @@ export default {
           temp.firmId = this.curNode.firmId;
           temp.depts = [this.curNode.deptId];
           temp.roles = this.curNode.roles;
+          //从用户信息中冗余到员工中的数据
+          temp.fullName = item.fullName;
+            temp.gender = item.gender;
+            temp.birthDate = item.birthDate;
+            temp.phone = item.phone;
+            temp.email = item.email;
+          //从企业中冗余
+          temp.domain = this.curNode.domain;
 
           this.prepareStaffs.push(temp);
         });
@@ -313,11 +441,87 @@ export default {
     clearUsersTable() {
       this.userTable = [];
     },
+      clearFormData(){
+        this.formData = this.defaultFormData();
+      },
     /*清除待提交员工列表的缓存*/
     clearPreparesList() {
       this.prepares = [];
       this.prepareStaffs = [];
-    }
+    },
+      /*校验所填写的信息是否已经被使用*/
+      isUsedForPhone(){
+          if (!this.formData.phone && '' == this.formData.phone){
+              return null;
+          }
+        if ('' != this.formData.staffId){
+            this.$store
+                .dispatch("staff/permissionsForUpdate",{filedValue: this.formData.phone, staffId: this.formData.staffId})
+                .then(data => {
+                    this.isExistsForPhone = !data;
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }else{
+            this.$store
+                .dispatch("staff/permissionsForAdd",{filedValue: this.formData.phone})
+                .then(data => {
+                    this.isExistsForPhone = !data;
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
+      },
+      isUsedForIDNo(){
+        if (!this.formData.idCardNo && '' == this.formData.idCardNo){
+            return null;
+        }
+          if ('' != this.formData.staffId){
+              this.$store
+                  .dispatch("staff/permissionsForUpdate",{filedValue: this.formData.idCardNo, staffId: this.formData.staffId})
+                  .then(data => {
+                      this.isExistsForIDNo = !data;
+                  })
+                  .catch(error => {
+                      console.log(error);
+                  });
+          }else{
+              this.$store
+                  .dispatch("staff/permissionsForAdd",{filedValue: this.formData.idCardNo, staffId: this.formData.staffId})
+                  .then(data => {
+                      this.isExistsForIDNo = !data;
+                  })
+                  .catch(error => {
+                      console.log(error);
+                  });
+          }
+      },
+      isUsedForEmail(){
+          if (!this.formData.email && '' == this.formData.email){
+              return null;
+          }
+          if ('' != this.formData.staffId){
+              this.$store
+                  .dispatch("staff/permissionsForUpdate",{filedValue: this.formData.email, staffId: this.formData.staffId})
+                  .then(data => {
+                      this.isExistsForEmail = !data;
+                  })
+                  .catch(error => {
+                      console.log(error);
+                  });
+          }else{
+              this.$store
+                  .dispatch("staff/permissionsForAdd",{filedValue: this.formData.email})
+                  .then(data => {
+                      this.isExistsForEmail = !data;
+                  })
+                  .catch(error => {
+                      console.log(error);
+                  });
+          }
+      }
   },
   computed: {
     formatDate() {
