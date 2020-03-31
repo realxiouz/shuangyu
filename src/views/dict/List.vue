@@ -188,18 +188,16 @@ export default {
     handleCancel() {
       this.clearForm();
       this.dialogVisible = false;
-
     },
     /*选择类别节点后对该节点进行编辑*/
     handleNodeClick(data, node) {
       if (!node.data.hasChildren) {
         this.curNode = node.data;
         this.dictVisible = false;
+        this.tableLoading = true;
       } else {
         this.dictVisible = true;
       }
-      this.tableLoading= true;
-
     },
     handleEdit(data, node) {
       console.log(node);
