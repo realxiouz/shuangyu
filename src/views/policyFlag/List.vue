@@ -7,7 +7,12 @@
       <el-row style="margin-bottom:15px; margin-left:10px;">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
-      <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;" size="mini">
+      <el-table
+        v-loading="loading"
+        :data="tableData"
+        style="width: 100%;margin-bottom: 20px;"
+        size="mini"
+      >
         <el-table-column prop="flagId" label="标签id" align="center"></el-table-column>
         <el-table-column prop="thirdName" label="平台" align="center"></el-table-column>
         <el-table-column prop="remark" label="备注" align="center"></el-table-column>
@@ -43,6 +48,7 @@ export default {
   data() {
     return {
       tableData: [],
+      loading: true,
       dialogVisible: false,
       flagId: "",
       total: 0
@@ -58,7 +64,10 @@ export default {
           filters: formData
         })
         .then(data => {
-          this.tableData = data;
+          if (data) {
+            this.tableData = data;
+            this.loading = false;
+          }
         })
         .catch(error => {
           console.log(error);

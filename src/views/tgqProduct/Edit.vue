@@ -28,6 +28,7 @@
       style="width: 100%;"
       border
       default-expand-all
+      v-loading="loading"
     >
       <el-table-column prop="label" label="参数名称" width="200" align="center"></el-table-column>
       <el-table-column prop="defaultValue" label="参数值" width="450" align="center">
@@ -82,6 +83,7 @@ export default {
   data() {
     return {
       formData: defaultData(),
+      loading: true,
       tableData: [],
       copyFlag: false,
       rules: {
@@ -98,8 +100,11 @@ export default {
         this.$store
           .dispatch("tgqProduct/getOne", { schedulerId: id })
           .then(data => {
-            this.formData = data;
-            this.tableData = this.formData.params;
+            if (data) {
+              this.formData = data;
+              this.tableData = this.formData.params;
+              this.loading = false;
+            }
           })
           .catch(error => {
             console.log(error);

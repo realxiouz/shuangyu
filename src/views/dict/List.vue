@@ -4,6 +4,7 @@
       <el-col :xs="11" :sm="10" :md="9" :lg="8" :xl="6">
         <el-button type="primary" style="margin-bottom:20px" size="mini" @click="rootAdd">添加</el-button>
         <el-tree
+        v-loading="loading"
           node-key="categoryId"
           auto-expand-parent
           :data="treeData"
@@ -63,6 +64,7 @@
     export default {
         data() {
             return {
+                loading:true,
                 dialogVisible: false,
                 /*是否选择类别节点，没有选择则不可编辑*/
                 dictVisible: true,
@@ -103,6 +105,7 @@
                     .dispatch("category/getTreeList", {filter: {categoryType: 0}})
                     .then(data => {
                         this.treeData = data.data;
+                        this.loading=false;
                     })
                     .catch(error => {
                         console.log(error);

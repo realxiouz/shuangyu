@@ -8,6 +8,7 @@
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table
+        v-loading="loading"
         :data="tableData"
         row-key="deptId"
         highlight-current-row
@@ -17,9 +18,9 @@
         :tree-props="{children: 'children', hasChildren: 'test'}"
       >
         <el-table-column prop="deptName" label="部门名称" align="center"></el-table-column>
-        <el-table-column prop="ddId" label="钉钉Id"  align="center"> </el-table-column>
-        <el-table-column prop="ddParentIdId" label="钉钉父节点"  align="center"></el-table-column>
-        <el-table-column prop="domain" label="域名"  align="center"></el-table-column>
+        <el-table-column prop="ddId" label="钉钉Id" align="center"></el-table-column>
+        <el-table-column prop="ddParentIdId" label="钉钉父节点" align="center"></el-table-column>
+        <el-table-column prop="domain" label="域名" align="center"></el-table-column>
         <el-table-column fixed="right" label="操作" width="280" align="center">
           <template slot-scope="scope">
             <div v-show="0 != scope.row.level.number">
@@ -71,6 +72,7 @@ export default {
   name: "dept",
   data() {
     return {
+      loading: true,
       searchForm: {},
       lastId: "0",
       pageFlag: "next",
@@ -94,13 +96,14 @@ export default {
       this.loadData();
     },
     loadData() {
-        this.$store
+      this.$store
         .dispatch("dept/getList", {
           filters: {}
         })
         .then(data => {
           if (data) {
             this.tableData = data;
+            this.loading = false;
           }
         })
         .catch(error => {
@@ -153,11 +156,11 @@ export default {
       })
         .then(() => {
           this.$store.dispatch("dept/removeOne", { deptId: id }).then(() => {
-              if (1 === this.tableData.length){
-                  this.prevClick();
-              }else{
-                  this.loadData("{}");
-              }
+            if (1 === this.tableData.length) {
+              this.prevClick();
+            } else {
+              this.loadData("{}");
+            }
           });
         })
         .catch(err => {

@@ -1,7 +1,7 @@
 <template>
   <el-container>
-    <el-aside width="auto" v-show="isDisplay">
-      <Sidebar :menuList="menus" :collapse="isCollapse" />
+    <el-aside width="auto"  v-show="isDisplay">
+      <Sidebar v-loading="loading" :menuList="menus" :collapse="isCollapse" />
     </el-aside>
     <el-container>
       <el-header style="height:94px;padding:0 0;">
@@ -104,6 +104,7 @@ export default {
       dialogVisible: false,
       isCollapse: false,
       isDisplay: true,
+      loading:true,
       firms: [],
       tags: [
         // { name: "首页", closable: false, type: "", path: "/home" }
@@ -171,6 +172,7 @@ export default {
             this.dialogVisible = true;
           } else {
             this.menus = this.buildTree(null, data.navs);
+            this.loading=false;
           }
         })
         .catch(error => {

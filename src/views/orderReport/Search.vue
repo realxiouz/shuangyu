@@ -28,15 +28,6 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="订单状态:">
-            <el-select v-model="formData.status" placeholder="全部" style="width: 100%">
-              <el-option label="出票中" value="3"></el-option>
-              <el-option label="出票完成" value="4"></el-option>
-              <el-option label="退票完成" value="13"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="出发日期:">
             <el-col>
               <el-date-picker
@@ -61,11 +52,15 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="订单来源:">
+          <el-form-item v-show="more" label="订单类型:">
             <el-select v-model="formData.orderType" placeholder="全部" style="width: 100%">
               <el-option label="出票完成" value="10"></el-option>
               <el-option label="改签完成" value="30"></el-option>
+              <el-option label="二次改签" value="31"></el-option>
               <el-option label="退票完成" value="20"></el-option>
+              <el-option label="二次退票" value="21"></el-option>
+              <el-option label="退差" value="22"></el-option>
+              <el-option label="退改" value="23"></el-option>
             </el-select>
           </el-form-item>
         </el-col>

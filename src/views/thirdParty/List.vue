@@ -7,7 +7,12 @@
       <el-row style="margin-bottom:15px; margin-left:40px;">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
-      <el-table size="mini" :data="tableData" style="width: 100%;margin-bottom: 15px;">
+      <el-table
+        v-loading="loading"
+        size="mini"
+        :data="tableData"
+        style="width: 100%;margin-bottom: 15px;"
+      >
         <el-table-column prop="thirdName" label="平台名称" align="center"></el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
@@ -57,6 +62,7 @@ export default {
   name: "List",
   data() {
     return {
+      loading: true,
       thirdId: null,
       dialogVisible: false,
       pageFlag: "next",
@@ -79,7 +85,10 @@ export default {
           filters: formData
         })
         .then(data => {
-          this.tableData = data;
+          if (data) {
+            this.tableData = data;
+            this.loading = false;
+          }
         })
         .catch(error => {
           console.log(error);

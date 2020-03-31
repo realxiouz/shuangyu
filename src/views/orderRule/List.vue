@@ -12,6 +12,7 @@
         style="width: 100%;margin-bottom: 15px;"
         default-expand-all
         size="mini"
+        v-loading="loading"
       >
         <el-table-column prop="ruleName" label="规则名称" align="center"></el-table-column>
         <el-table-column prop="domain" label="公司域名" align="center"></el-table-column>
@@ -53,6 +54,7 @@ export default {
   name: "orderRuleList",
   data() {
     return {
+      loading:true,
       orderRuleId: 1,
       lastId: "0",
       pageFlag: "next",
@@ -83,6 +85,7 @@ export default {
           .then(data => {
             this.loadTotal(this.searchForm);
             this.tableData = data;
+            this.loading=false
           })
           .catch(error => {
             console.log(error);

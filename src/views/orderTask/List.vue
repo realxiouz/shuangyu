@@ -7,6 +7,7 @@
         ref="tableData"
         style="width: 100%;margin-bottom:15px;"
         size="mini"
+        v-loading="loading"
       >
         <el-table-column prop="taskNo" label="任务编号" align="center"></el-table-column>
         <el-table-column prop="taskName" label="任务名称" align="center"></el-table-column>
@@ -64,6 +65,7 @@ export default {
 
   data() {
     return {
+      loading: true,
       currentPage: 1,
       tableData: [],
       pageSize: 10,
@@ -104,7 +106,10 @@ export default {
           taskId: this.taskId
         })
         .then(data => {
-          this.tableData = data;
+          if (data) {
+            this.tableData = data;
+            this.loading = false;
+          }
         })
         .catch(error => {
           console.log(error);

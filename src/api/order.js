@@ -49,7 +49,7 @@ export function getOrderDetail(orderNo) {
 // 查最低报价
 export function getOrderMinPrice(data) {
   return request({
-    url: `/minimum/price`,
+    url: `/open/minimum/price`,
     method: 'post',
     data
   });
@@ -58,15 +58,15 @@ export function getOrderMinPrice(data) {
 // 查航班
 export function getOrderFlight(data) {
   return request({
-    url: `/get/flight`,
+    url: `/open/get/flight`,
     method: 'post',
     data
   });
 }
 // 报价搜素
-export function getOrderprice(data) {
+export function getFlightPrice(data) {
   return request({
-    url: `/get/price`,
+    url: `/open/get/price`,
     method: 'post',
     data
   });

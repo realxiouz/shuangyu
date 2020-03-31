@@ -8,6 +8,7 @@
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table
+        v-loading="loading"
         size="mini"
         :data="tableData"
         ref="tableData"
@@ -35,12 +36,7 @@
         :page-size="pageSize"
         :total="total"
       ></el-pagination>
-      <el-dialog
-        title="退改规则"
-        center
-        :visible.sync="dialogVisible"
-        width="55%"
-      >
+      <el-dialog title="退改规则" center :visible.sync="dialogVisible" width="55%">
         <refund-change-rule-edit
           v-if="dialogVisible"
           :rule-id="ruleId"
@@ -59,6 +55,7 @@ import refundChangeRuleEdit from "./Edit.vue";
 export default {
   data() {
     return {
+      loading: true,
       ruleId: "",
       searchForm: {},
       dialogVisible: false,
@@ -84,8 +81,11 @@ export default {
           searchForm: this.searchForm
         })
         .then(data => {
-          this.loadTotal(this.searchForm);
-          this.tableData = data;
+          if (data) {
+            this.loadTotal(this.searchForm);
+            this.tableData = data;
+            this.loadData = false;
+          }
         })
         .catch(error => {
           console.log(error);
@@ -126,11 +126,11 @@ export default {
           this.$store
             .dispatch("refundChangeRule/removeOne", { ruleId: id })
             .then(() => {
-                if (1 === this.tableData.length){
-                    this.prevClick();
-                }else{
-                    this.loadData();
-                }
+              if (1 === this.tableData.length) {
+                this.prevClick();
+              } else {
+                this.loadData();
+              }
             })
             .catch(error => {
               console.log(error);

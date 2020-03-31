@@ -7,7 +7,12 @@
       <el-row style="margin-bottom:15px; margin-left:28px;">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
-      <el-table :data="tableData" style="width: 100%;margin-bottom:15px;" size="mini">
+      <el-table
+        v-loading="loading"
+        :data="tableData"
+        style="width: 100%;margin-bottom:15px;"
+        size="mini"
+      >
         <el-table-column prop="firmName" label="企业" align="center"></el-table-column>
         <el-table-column prop="domain" label="域名" align="center"></el-table-column>
         <el-table-column label="第三方标签" align="center">
@@ -58,6 +63,7 @@ export default {
     return {
       dialogVisible: false,
       flagListVisible: false,
+      loading: true,
       markId: null,
       flags: [],
       pageFlag: "next",
@@ -77,7 +83,10 @@ export default {
           filter: {}
         })
         .then(data => {
-          this.tableData = data;
+          if (data) {
+            this.tableData = data;
+            this.loading = false;
+          }
         })
         .catch(error => {
           console.log(error);

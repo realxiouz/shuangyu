@@ -22,6 +22,7 @@
       </el-col>
     </el-row>
     <el-table
+      v-loading="loading"
       ref="paramTable"
       size="mini"
       :data="tableData"
@@ -83,6 +84,7 @@ export default {
   data() {
     return {
       formData: defaultData(),
+      loading: true,
       tableData: [],
       copyFlag: false,
       rules: {
@@ -99,8 +101,11 @@ export default {
         this.$store
           .dispatch("ttsScheduler/getOne", { schedulerId: id })
           .then(data => {
-            this.formData = data;
-            this.tableData = this.formData.params;
+            if (data) {
+              this.formData = data;
+              this.tableData = this.formData.params;
+              this.loading = false;
+            }
           })
           .catch(error => {
             console.log(error);

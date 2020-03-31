@@ -7,12 +7,15 @@
       <el-row style="margin-bottom:15px;margin-left:35px;">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
-      <el-table :data="tableData" highlight-current-row size="mini" style="width: 100%; margin-bottom:15px" fit>
-        <el-table-column
-          label="序号"
-          type="index"
-          width="60"
-          align="center">
+      <el-table
+        v-loading="loading"
+        :data="tableData"
+        highlight-current-row
+        size="mini"
+        style="width: 100%; margin-bottom:15px"
+        fit
+      >
+        <el-table-column label="序号" type="index" width="60" align="center">
           <template slot-scope="scope">
             <span>{{(currentPage - 1) * pageSize + scope.$index + 1}}</span>
           </template>
@@ -82,166 +85,168 @@
   </div>
 </template>
 <script>
-    import policySearch from "./Search.vue";
-    import policyEdit from "./Edit.vue";
+import policySearch from "./Search.vue";
+import policyEdit from "./Edit.vue";
 
-    export default {
-        name: "policyList",
-        data() {
-            return {
-                currentPage: 1,
-                pageSize: 10,
-                total: 0,
-                tableData: [],
-                dialogVisible: false,
-                policyId: "",
-                searchParams: {}
-            };
-        },
-        methods: {
-            handleSizeChange: function (size) {
-                this.pageSize = size;
-                this.loadData(this.searchParams);
-            },
-            prevClick(page) {
-                this.currentPage = page;
-                this.searchParams.pageSize = this.pageSize;
-                this.searchParams.currentPage = this.currentPage;
-                this.loadData(this.searchParams);
-            },
-            nextClick(page) {
-                this.currentPage = page;
-                this.searchParams.pageSize = this.pageSize;
-                this.searchParams.currentPage = this.currentPage;
-                this.loadData(this.searchParams);
-            },
-            loadData(params) {
-                this.$store
-                    .dispatch("policy/getList", {
-                        filters: params
-                    })
-                    .then(data => {
-                        if (data) {
-                            this.tableData = data;
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            loadTotal(params) {
-                this.$store
-                    .dispatch("policy/getTotal", {
-                        filters: params
-                    })
-                    .then(data => {
-                        this.total = data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            handleSearch(params) {
-                if (!params) {
-                    params = {};
-                    this.searchParams = params;
-                    this.loadData(this.searchParams);
-                    this.loadTotal(this.searchParams);
-                } else {
-                    const newParams = {};
-                    if (params.policyCode) {
-                        newParams.policyCode = params.policyCode.toLocaleLowerCase();
-                    }
-                    if (params.airlineCode) {
-                        newParams.airlineCode = params.airlineCode.toLocaleLowerCase();
-                    }
-                    if (params.cabin) {
-                        newParams.cabin = params.cabin.toLocaleLowerCase();
-                    }
-                    if (params.dpt) {
-                        newParams.dpt = params.dpt.toLocaleLowerCase();
-                    }
-                    if (params.arr) {
-                        newParams.arr = params.arr.toLocaleLowerCase();
-                    }
-                    if (params.sellStartDate) {
-                        newParams.sellStartDate = params.sellStartDate;
-                    }
-                    if (params.sellEndDate) {
-                        newParams.sellEndDate = params.sellEndDate;
-                    }
-                    if (params.flightDate) {
-                        newParams.flightDate = params.flightDate;
-                    }
-                    this.searchParams = newParams;
-                    this.loadData(this.searchParams);
-                    this.loadTotal(this.searchParams);
-                }
-            },
-            handleUpdate(policyId) {
-                this.policyId = policyId;
-                this.dialogVisible = true;
-            },
-            handleRemove(user, domain) {
-                this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
-                    confirmButtonText: "确定",
-                    cancelButtonText: "取消",
-                    type: "warning"
-                })
-                    .then(() => {
-                        this.$store
-                            .dispatch("policy/removeOne", {user: user, domain: domain})
-                            .then(() => {
-                                this.handleSearch();
-                            });
-                    })
-                    .catch(err => {
-                        console.error(err);
-                    });
-            },
-            handleCancel() {
-                this.dialogVisible = false;
-            },
-            handleAdd() {
-                this.dialogVisible = true;
-                this.user = "";
-                this.domain = "";
-            },
-            handleSave(formData) {
-                this.$store
-                    .dispatch("policy/save", formData)
-                    .then(() => {
-                        this.handleSearch();
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-                this.dialogVisible = false;
-            },
-            /*初始化用工列表中的生日日期格式*/
-            initDate(dateStr, format) {
-                if (null != dateStr) {
-                    let date = new Date(dateStr);
-                    return this.$moment(date).format(format);
-                } else {
-                    return "";
-                }
-            }
-        },
-        created() {
-            this.loadData(this.searchParams);
-            this.loadTotal();
-        },
-        computed: {
-            formatDate() {
-                return function (dateStr, format) {
-                    return this.initDate(dateStr, format);
-                };
-            }
-        },
-        components: {
-            policySearch,
-            policyEdit
-        }
+export default {
+  name: "policyList",
+  data() {
+    return {
+      loading: true,
+      currentPage: 1,
+      pageSize: 10,
+      total: 0,
+      tableData: [],
+      dialogVisible: false,
+      policyId: "",
+      searchParams: {}
     };
+  },
+  methods: {
+    handleSizeChange: function(size) {
+      this.pageSize = size;
+      this.loadData(this.searchParams);
+    },
+    prevClick(page) {
+      this.currentPage = page;
+      this.searchParams.pageSize = this.pageSize;
+      this.searchParams.currentPage = this.currentPage;
+      this.loadData(this.searchParams);
+    },
+    nextClick(page) {
+      this.currentPage = page;
+      this.searchParams.pageSize = this.pageSize;
+      this.searchParams.currentPage = this.currentPage;
+      this.loadData(this.searchParams);
+    },
+    loadData(params) {
+      this.$store
+        .dispatch("policy/getList", {
+          filters: params
+        })
+        .then(data => {
+          if (data) {
+            this.tableData = data;
+            this.loading = false;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    loadTotal(params) {
+      this.$store
+        .dispatch("policy/getTotal", {
+          filters: params
+        })
+        .then(data => {
+          this.total = data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    handleSearch(params) {
+      if (!params) {
+        params = {};
+        this.searchParams = params;
+        this.loadData(this.searchParams);
+        this.loadTotal(this.searchParams);
+      } else {
+        const newParams = {};
+        if (params.policyCode) {
+          newParams.policyCode = params.policyCode.toLocaleLowerCase();
+        }
+        if (params.airlineCode) {
+          newParams.airlineCode = params.airlineCode.toLocaleLowerCase();
+        }
+        if (params.cabin) {
+          newParams.cabin = params.cabin.toLocaleLowerCase();
+        }
+        if (params.dpt) {
+          newParams.dpt = params.dpt.toLocaleLowerCase();
+        }
+        if (params.arr) {
+          newParams.arr = params.arr.toLocaleLowerCase();
+        }
+        if (params.sellStartDate) {
+          newParams.sellStartDate = params.sellStartDate;
+        }
+        if (params.sellEndDate) {
+          newParams.sellEndDate = params.sellEndDate;
+        }
+        if (params.flightDate) {
+          newParams.flightDate = params.flightDate;
+        }
+        this.searchParams = newParams;
+        this.loadData(this.searchParams);
+        this.loadTotal(this.searchParams);
+      }
+    },
+    handleUpdate(policyId) {
+      this.policyId = policyId;
+      this.dialogVisible = true;
+    },
+    handleRemove(user, domain) {
+      this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$store
+            .dispatch("policy/removeOne", { user: user, domain: domain })
+            .then(() => {
+              this.handleSearch();
+            });
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    },
+    handleCancel() {
+      this.dialogVisible = false;
+    },
+    handleAdd() {
+      this.dialogVisible = true;
+      this.user = "";
+      this.domain = "";
+    },
+    handleSave(formData) {
+      this.$store
+        .dispatch("policy/save", formData)
+        .then(() => {
+          this.handleSearch();
+        })
+        .catch(error => {
+          console.log(error);
+        });
+      this.dialogVisible = false;
+    },
+    /*初始化用工列表中的生日日期格式*/
+    initDate(dateStr, format) {
+      if (null != dateStr) {
+        let date = new Date(dateStr);
+        return this.$moment(date).format(format);
+      } else {
+        return "";
+      }
+    }
+  },
+  created() {
+    this.loadData(this.searchParams);
+    this.loadTotal();
+  },
+  computed: {
+    formatDate() {
+      return function(dateStr, format) {
+        return this.initDate(dateStr, format);
+      };
+    }
+  },
+  components: {
+    policySearch,
+    policyEdit
+  }
+};
 </script>

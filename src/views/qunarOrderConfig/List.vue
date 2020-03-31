@@ -7,7 +7,12 @@
       <el-row style="margin-bottom:15px;margin-left:23px">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
-      <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;" size="mini">
+      <el-table
+        v-loading="loading"
+        :data="tableData"
+        style="width: 100%;margin-bottom: 20px;"
+        size="mini"
+      >
         <el-table-column prop="domain" label="代理商域名" width="260" align="center"></el-table-column>
         <el-table-column label="企业" width="200" align="center">
           <template slot-scope="scope">
@@ -67,6 +72,7 @@ import qunarOrderConfigEdit from "./Edit";
 export default {
   data() {
     return {
+      loading: true,
       dialogVisible: false,
       tableData: [],
       partyList: [],
@@ -99,7 +105,10 @@ export default {
           filter: {}
         })
         .then(data => {
-          this.tableData = data.data;
+          if (data) {
+            this.tableData = data.data;
+            this.loading = false;
+          }
         })
         .catch(error => {
           console.log(error);
@@ -178,11 +187,11 @@ export default {
       this.$store
         .dispatch("qunarOrderConfig/removeOne", { domain: domain })
         .then(() => {
-            if (1 === this.tableData.length){
-                this.handlePrevClick();
-            }else{
-                this.loadData();
-            }
+          if (1 === this.tableData.length) {
+            this.handlePrevClick();
+          } else {
+            this.loadData();
+          }
         })
         .catch(error => {
           console.log(error);

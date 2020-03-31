@@ -9,6 +9,7 @@
       </el-row>
       <el-table
         size="mini"
+        v-loading="loading"
         highlight-current-row
         :data="tableData"
         style="width: 100%;margin-bottom: 15px;"
@@ -62,6 +63,7 @@ import thirdAccountEdit from "./Edit";
 export default {
   data() {
     return {
+      loading: true,
       dialogVisible: false,
       tableData: [],
       /*记录当前进行操作的节点*/
@@ -92,7 +94,10 @@ export default {
           filter: {}
         })
         .then(data => {
-          this.tableData = data.data;
+          if (data) {
+            this.tableData = data.data;
+            this.loading = false;
+          }
         })
         .catch(error => {
           console.log(error);
@@ -170,11 +175,11 @@ export default {
       this.$store
         .dispatch("thirdAccount/removeOne", { thirdAccountId: thirdAccountId })
         .then(() => {
-            if (1 === this.tableData.length){
-                this.handlePrevClick();
-            }else{
-                this.loadData();
-            }
+          if (1 === this.tableData.length) {
+            this.handlePrevClick();
+          } else {
+            this.loadData();
+          }
         })
         .catch(error => {
           console.log(error);

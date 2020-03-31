@@ -7,7 +7,12 @@
       <el-row style="margin-bottom:15px; margin-left:50px;">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
-      <el-table :data="tableData" style="width: 100%;margin-bottom: 15px;" size="mini">
+      <el-table
+        v-loading="loading"
+        :data="tableData"
+        style="width: 100%;margin-bottom: 15px;"
+        size="mini"
+      >
         <el-table-column prop="segment" label="航段" width="100" align="center"></el-table-column>
         <el-table-column prop="dpt" label="出发地三字码" align="center"></el-table-column>
         <el-table-column prop="arr" label="目的地三字码" align="center"></el-table-column>
@@ -46,12 +51,7 @@
         @next-click="handleNextClick"
       ></el-pagination>
 
-      <el-dialog
-        title="票价信息"
-        center
-        :visible.sync="dialogVisible"
-        width="30%"
-      >
+      <el-dialog title="票价信息" center :visible.sync="dialogVisible" width="30%">
         <fare-edit
           v-if="dialogVisible"
           :curNode="curNode"
@@ -70,6 +70,7 @@ import fareEdit from "./Edit";
 export default {
   data() {
     return {
+      loading: true,
       dialogVisible: false,
       tableData: [],
       /*记录当前进行操作的节点*/
@@ -99,7 +100,10 @@ export default {
           filter: {}
         })
         .then(data => {
-          this.tableData = data.data;
+          if (data) {
+            this.tableData = data.data;
+            this.loading = false;
+          }
         })
         .catch(error => {
           console.log(error);
@@ -171,11 +175,11 @@ export default {
       this.$store
         .dispatch("fare/removeOne", { fareID: fareID })
         .then(() => {
-            if (1 === this.tableData.length){
-                this.handlePrevClick();
-            }else{
-                this.loadData();
-            }
+          if (1 === this.tableData.length) {
+            this.handlePrevClick();
+          } else {
+            this.loadData();
+          }
         })
         .catch(error => {
           console.log(error);
