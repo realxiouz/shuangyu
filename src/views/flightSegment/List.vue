@@ -8,6 +8,7 @@
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table
+        v-loading="loading"
         size="mini"
         :data="tableData"
         ref="tableData"
@@ -35,12 +36,7 @@
         :page-size="pageSize"
         :total="total"
       ></el-pagination>
-      <el-dialog
-        title="航段"
-        center
-        :visible.sync="dialogVisible"
-        width="30%"
-      >
+      <el-dialog title="航段" center :visible.sync="dialogVisible" width="30%">
         <segment-edit
           v-if="dialogVisible"
           :segment="segment"
@@ -58,6 +54,7 @@ import segmentEdit from "./Edit.vue";
 export default {
   data() {
     return {
+      loading: true,
       segment: "",
       searchForm: {},
       dialogVisible: false,
@@ -83,8 +80,11 @@ export default {
           searchForm: this.searchForm
         })
         .then(data => {
-          this.loadTotal(this.searchForm);
-          this.tableData = data;
+          if (data) {
+            this.loadTotal(this.searchForm);
+            this.tableData = data;
+            this.loadData = false;
+          }
         })
         .catch(error => {
           console.log(error);
@@ -126,11 +126,11 @@ export default {
             .dispatch("flightSegment/removeOne", { segment: id })
             .then(data => {
               console.log(data);
-                if (1 === this.tableData.length){
-                    this.prevClick();
-                }else{
-                    this.loadData();
-                }
+              if (1 === this.tableData.length) {
+                this.prevClick();
+              } else {
+                this.loadData();
+              }
             })
             .catch(error => {
               console.log(error);

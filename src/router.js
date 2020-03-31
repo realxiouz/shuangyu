@@ -142,14 +142,14 @@ export default new Router({
         },
         {
           title: '订单信息',
-          path: '/order/List',
+          path: '/order/list',
           name: 'order',
           component: () => import('@/views/order/List'),
           meta: { title: '订单信息', icon: 'home' }
         },
         {
           title: '订单报表',
-          path: '/orderReport/List',
+          path: '/orderReport/list',
           name: 'orderReport',
           component: () => import('@/views/orderReport/List'),
           meta: { title: '订单报表', icon: 'home' }
