@@ -13,6 +13,7 @@
         @row-dblclick="handleEdit"
         style="width: 100%;margin-bottom:15px;"
         size="mini"
+        v-loading="loading"
       >
         <el-table-column prop="airlineName" label="航司名称" align="center"></el-table-column>
         <el-table-column prop="airlineCode" label="航司二字码" align="center"></el-table-column>
@@ -36,12 +37,7 @@
         :page-size="pageSize"
         :total="total"
       ></el-pagination>
-      <el-dialog
-        title="航司信息"
-        center
-        :visible.sync="dialogVisible"
-        width="30%"
-      >
+      <el-dialog title="航司信息" center :visible.sync="dialogVisible" width="30%">
         <airline-edit
           v-if="dialogVisible"
           :airline-code="airlineCode"
@@ -60,6 +56,7 @@ import airlineEdit from "./Edit.vue";
 export default {
   data() {
     return {
+      loading: true,
       airlineCode: "",
       searchForm: {},
       dialogVisible: false,
@@ -85,8 +82,11 @@ export default {
           searchForm: this.searchForm
         })
         .then(data => {
-          this.loadTotal(this.searchForm);
-          this.tableData = data;
+          if (data) {
+            this.loadTotal(this.searchForm);
+            this.tableData = data;
+            this.loading = false;
+          }
         })
         .catch(error => {
           console.log(error);
@@ -127,11 +127,11 @@ export default {
           this.$store
             .dispatch("airline/removeOne", { airlineCode: id })
             .then(() => {
-                if (1 === this.tableData.length){
-                    this.prevClick();
-                }else{
-                    this.loadData();
-                }
+              if (1 === this.tableData.length) {
+                this.prevClick();
+              } else {
+                this.loadData();
+              }
             })
             .catch(error => {
               console.log(error);

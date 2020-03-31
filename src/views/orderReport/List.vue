@@ -6,19 +6,16 @@
     <div class="contentBox">
       <!-- <el-row style="margin-bottom:15px;margin-left:50px">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
-      </el-row> -->
+      </el-row>-->
       <el-table
         :data="tableData"
         size="mini"
         highlight-current-row
         style="width: 100%;margin-bottom:15px"
+        v-loading="loading"
         fit
       >
-        <el-table-column
-          label="序号"
-          type="index"
-          width="40"
-          align="center">
+        <el-table-column label="序号" type="index" width="40" align="center">
           <template slot-scope="scope">
             <span>{{(currentPage - 1) * pageSize + scope.$index + 1}}</span>
           </template>
@@ -100,8 +97,7 @@
               @click.native.prevent="handleRemove(scope.row.deptId)"
               type="danger"
               size="mini"
-            >删除
-            </el-button>
+            >删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -121,188 +117,189 @@
   </div>
 </template>
 <script>
-    import orderReportSearch from "./Search.vue";
+import orderReportSearch from "./Search.vue";
 
-    export default {
-        name: "orderReportList",
-        data() {
-            return {
-                currentPage: 1,
-                pageSize: 10,
-                total: 0,
-                dialogVisible: false,
-                tableData: [],
-                searchParams: {}
-            };
-        },
-        methods: {
-            handleSizeChange: function (size) {
-                this.pageSize = size;
-                this.searchParams.pageSize = this.pageSize;
-                this.loadData(this.searchParams);
-            },
-            prevClick(page) {
-                this.currentPage = page;
-                this.searchParams.pageSize = this.pageSize;
-                this.searchParams.currentPage = this.currentPage;
-                this.loadData(this.searchParams);
-            },
-            nextClick(page) {
-                this.currentPage = page;
-                this.searchParams.pageSize = this.pageSize;
-                this.searchParams.currentPage = this.currentPage;
-                this.loadData(this.searchParams);
-            },
-            loadData(params) {
-                this.$store
-                    .dispatch("orderReport/getList", {
-                        filters: params
-                    })
-                    .then(data => {
-                        if (data) {
-                            this.tableData = data;
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            loadTotal(params) {
-                this.$store
-                    .dispatch("orderReport/getTotal", {
-                        filters: params
-                    })
-                    .then(data => {
-                        this.total = data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            handleAdd() {
-                this.dialogVisible = true;
-            },
-            handleSearch(params) {
-                if (!params) {
-                    params = {};
-                    this.searchParams = params;
-                    this.loadData(this.searchParams);
-                    this.loadTotal(this.searchParams);
-                } else {
-                    const newParams = {};
-                    if (params.name) {
-                        newParams.name = params.name;
-                    }
-                    if (params.cardNo) {
-                        newParams.cardNo = params.cardNo;
-                    }
-                    if (params.orderNo) {
-                        newParams.orderNo = params.orderNo;
-                    }
-                    if (params.ticketNo) {
-                        newParams.ticketNo = params.ticketNo;
-                    }
-                    if (params.pnr) {
-                        newParams.pnr = params.pnr;
-                    }
-                    if (params.status) {
-                        newParams.status = params.status;
-                    }
-                    if (params.flightDate) {
-                        newParams.flightDate = params.flightDate;
-                    }
-                    if (params.cabin) {
-                        newParams.cabin = params.cabin;
-                    }
-                    if (params.flightCode) {
-                        newParams.flightCode = params.flightCode;
-                    }
-                    if (params.orderType) {
-                        newParams.orderType = params.orderType;
-                    }
-                    if (params.voyageType) {
-                        newParams.voyageType = params.voyageType;
-                    }
-                    if (params.createTime) {
-                        newParams.createTime = params.createTime;
-                    }
-                    this.searchParams = newParams;
-                    this.loadData(this.searchParams);
-                    this.loadTotal(this.searchParams);
-                }
-            },
-            handleCancel() {
-                this.dialogVisible = false;
-            },
-            handleSave() {
-            },
-            /*初始化用工列表中的生日日期格式*/
-            initDate(dateStr, format) {
-                if (null != dateStr) {
-                    let date = new Date(dateStr);
-                    return this.$moment(date).format(format);
-                } else {
-                    return "";
-                }
-            },
-            formatFlightDate(data) {
-                if (!data || data.length == 0) {
-                    return "";
-                }
-                return this.initDate(data[0].flightDate, "YYYY-MM-DD");
-            },
-            formatFlightNo(data) {
-                if (!data || data.length == 0) {
-                    return "";
-                }
-                return data[0].flightCode;
-            },
-            formatFlight(data) {
-                if (!data || data.length == 0) {
-                    return "";
-                }
-                let dptTime = data[0].dptTime.match(/.*(.{5})/)[1];
-                return (
-                    data[0].dpt +
-                    " " +
-                    dptTime +
-                    " - " +
-                    data[0].arr +
-                    " " +
-                    data[0].arrTime
-                );
-            },
-            formatPassengers(data) {
-                if (!data || data.length == 0) {
-                    return "";
-                }
-                let str = "";
-                data.forEach(item => {
-                    str += item.name + " / ";
-                });
-
-                return str.substring(0, str.length - 2);
-            },
-            formatAmount(amount) {
-                if (!amount) {
-                    return "￥0.00";
-                }
-                return "￥" + this.$numeral(amount).format("0.00");
-            }
-        },
-        components: {
-            orderReportSearch
-        },
-        computed: {
-            formatDate() {
-                return function (dateStr, format) {
-                    return this.initDate(dateStr, format);
-                };
-            }
-        },
-        created() {
-            this.loadData(this.searchParams);
-            this.loadTotal();
-        }
+export default {
+  name: "orderReportList",
+  data() {
+    return {
+      loading: true,
+      currentPage: 1,
+      pageSize: 10,
+      total: 0,
+      dialogVisible: false,
+      tableData: [],
+      searchParams: {}
     };
+  },
+  methods: {
+    handleSizeChange: function(size) {
+      this.pageSize = size;
+      this.searchParams.pageSize = this.pageSize;
+      this.loadData(this.searchParams);
+    },
+    prevClick(page) {
+      this.currentPage = page;
+      this.searchParams.pageSize = this.pageSize;
+      this.searchParams.currentPage = this.currentPage;
+      this.loadData(this.searchParams);
+    },
+    nextClick(page) {
+      this.currentPage = page;
+      this.searchParams.pageSize = this.pageSize;
+      this.searchParams.currentPage = this.currentPage;
+      this.loadData(this.searchParams);
+    },
+    loadData(params) {
+      this.$store
+        .dispatch("orderReport/getList", {
+          filters: params
+        })
+        .then(data => {
+          if (data) {
+            this.tableData = data;
+            this.loading=false;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    loadTotal(params) {
+      this.$store
+        .dispatch("orderReport/getTotal", {
+          filters: params
+        })
+        .then(data => {
+          this.total = data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    handleAdd() {
+      this.dialogVisible = true;
+    },
+    handleSearch(params) {
+      if (!params) {
+        params = {};
+        this.searchParams = params;
+        this.loadData(this.searchParams);
+        this.loadTotal(this.searchParams);
+      } else {
+        const newParams = {};
+        if (params.name) {
+          newParams.name = params.name;
+        }
+        if (params.cardNo) {
+          newParams.cardNo = params.cardNo;
+        }
+        if (params.orderNo) {
+          newParams.orderNo = params.orderNo;
+        }
+        if (params.ticketNo) {
+          newParams.ticketNo = params.ticketNo;
+        }
+        if (params.pnr) {
+          newParams.pnr = params.pnr;
+        }
+        if (params.status) {
+          newParams.status = params.status;
+        }
+        if (params.flightDate) {
+          newParams.flightDate = params.flightDate;
+        }
+        if (params.cabin) {
+          newParams.cabin = params.cabin;
+        }
+        if (params.flightCode) {
+          newParams.flightCode = params.flightCode;
+        }
+        if (params.orderType) {
+          newParams.orderType = params.orderType;
+        }
+        if (params.voyageType) {
+          newParams.voyageType = params.voyageType;
+        }
+        if (params.createTime) {
+          newParams.createTime = params.createTime;
+        }
+        this.searchParams = newParams;
+        this.loadData(this.searchParams);
+        this.loadTotal(this.searchParams);
+      }
+    },
+    handleCancel() {
+      this.dialogVisible = false;
+    },
+    handleSave() {},
+    /*初始化用工列表中的生日日期格式*/
+    initDate(dateStr, format) {
+      if (null != dateStr) {
+        let date = new Date(dateStr);
+        return this.$moment(date).format(format);
+      } else {
+        return "";
+      }
+    },
+    formatFlightDate(data) {
+      if (!data || data.length == 0) {
+        return "";
+      }
+      return this.initDate(data[0].flightDate, "YYYY-MM-DD");
+    },
+    formatFlightNo(data) {
+      if (!data || data.length == 0) {
+        return "";
+      }
+      return data[0].flightCode;
+    },
+    formatFlight(data) {
+      if (!data || data.length == 0) {
+        return "";
+      }
+      let dptTime = data[0].dptTime.match(/.*(.{5})/)[1];
+      return (
+        data[0].dpt +
+        " " +
+        dptTime +
+        " - " +
+        data[0].arr +
+        " " +
+        data[0].arrTime
+      );
+    },
+    formatPassengers(data) {
+      if (!data || data.length == 0) {
+        return "";
+      }
+      let str = "";
+      data.forEach(item => {
+        str += item.name + " / ";
+      });
+
+      return str.substring(0, str.length - 2);
+    },
+    formatAmount(amount) {
+      if (!amount) {
+        return "￥0.00";
+      }
+      return "￥" + this.$numeral(amount).format("0.00");
+    }
+  },
+  components: {
+    orderReportSearch
+  },
+  computed: {
+    formatDate() {
+      return function(dateStr, format) {
+        return this.initDate(dateStr, format);
+      };
+    }
+  },
+  created() {
+    this.loadData(this.searchParams);
+    this.loadTotal();
+  }
+};
 </script>
