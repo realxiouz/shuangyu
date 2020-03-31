@@ -8,7 +8,10 @@
     <el-table
       size="mini"
       :data="tableData"
-      style="width: 100%;margin-bottom: 20px;">
+      v-loading="tableLoading"
+      fit
+      style="width: 100%;margin-bottom: 20px;"
+    >
       <el-table-column prop="name" label="字典名称" width="200"></el-table-column>
       <el-table-column prop="key" label="字典键" width="200"></el-table-column>
       <el-table-column prop="value" label="字典值" width="200" align="center"></el-table-column>
@@ -41,9 +44,10 @@
       :visible.sync="dialogVisible"
       width="30%"
       :close-on-click-modal="false"
-      center>
+      center
+    >
       <el-form :model="formData" label-width="110px" size="mini">
-        <input type="hidden" v-model="formData.dictId"/>
+        <input type="hidden" v-model="formData.dictId" />
         <el-form-item label="类别">
           <el-input :placeholder="curNode.name" disabled="disabled"></el-input>
         </el-form-item>
@@ -66,193 +70,196 @@
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleCancel">取 消</el-button>
         <el-button type="primary" @click="handleSave">确 定</el-button>
-        </span>
+      </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
-    export default {
-        props: ["curNode", "dictVisible"],
-        data() {
-            return {
-                dialogVisible: false,
-                tableData: [],
-                formData: {},
-                categoryList: [],
-                pageFlag: 'next',
-                pageSize: 10,
-                lastId: 'blank',
-                total: 0
-            };
-        },
-        methods: {
-            defaultFormData() {
-                return {
-                    dictId: '',
-                    name: '',
-                    key: '',
-                    value: '',
-                    categoryId: '',
-                    categoryCode: '',
-                    remark: ''
-                };
-            },
-            /*加载数据列表*/
-            loadData() {
-                this.$store
-                    .dispatch('dict/getTotal', {filter: {categoryId: this.curNode.categoryId}})
-                    .then(data => {
-                        this.total = data.data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-                this.$store
-                    .dispatch('dict/getPageList', {
-                        pageFlag: this.pageFlag,
-                        pageSize: this.pageSize,
-                        lastId: this.lastId,
-                        filter: {categoryId: this.curNode.categoryId}
-                    })
-                    .then(data => {
-                        this.tableData = data.data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            loadCategory() {
-                this.$store
-                    .dispatch('category/getList', {filter: {categoryType: 0}})
-                    .then(data => {
-                        this.categoryList = data.data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            /*添加记录*/
-            handleAdd() {
-                this.dialogVisible = true;
-                this.clearForm();
-
-                this.formData.categoryId = this.curNode.categoryId;
-                this.formData.categoryCode = this.curNode.categoryCode;
-            },
-            /*添加记录时完成数据填写或编辑记录时，点击对数据进行保存*/
-            handleSave() {
-                this.dialogVisible = false;
-
-                let url = '';
-                if (this.formData.dictId != '') {
-                    url = 'dict/updateOne';
-                } else {
-                    url = 'dict/addOne';
-                }
-                this.$store
-                    .dispatch(url, this.formData)
-                    .then(() => {
-                        this.loadData();
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-                this.clearForm();
-            },
-            handleCancel() {
-                this.dialogVisible = false;
-                this.clearForm();
-            },
-            /*点击记录进行编辑*/
-            handleEdit(row) {
-                this.dialogVisible = true;
-                this.formData = row;
-            },
-            /*对字典信息进行删除*/
-            handleDelete(row) {
-                this.open(
-                    this.delete,
-                    row.dictId,
-                    '此操作将删除该条字典信息, 是否继续?'
-                );
-            },
-            /*根据字典ID删除字典*/
-            delete(dictId) {
-                this.$store
-                    .dispatch('dict/removeOne', {dictId: dictId})
-                    .then(() => {
-                        if (1 === this.tableData.length){
-                            this.handlePrevClick();
-                        }else{
-                            this.loadData();
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            /*前翻页*/
-            handlePrevClick() {
-                this.pageFlag = 'prev';
-                this.lastId = this.tableData[0].dictId;
-                this.loadData();
-            },
-            /*翻后页*/
-            handleNextClick() {
-                this.pageFlag = 'next';
-                this.lastId = this.tableData[this.tableData.length - 1].dictId;
-                this.loadData();
-            },
-            clearForm() {
-                this.formData = this.defaultFormData();
-            },
-            open(func, data, message) {
-                this.$confirm(message, '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                })
-                    .then(() => {
-                        func(data);
-                        this.$message({
-                            type: 'success',
-                            message: '删除成功!'
-                        });
-                    })
-                    .catch(() => {
-                        this.$message({
-                            type: 'info',
-                            message: '已取消删除'
-                        });
-                    });
-            },
-            toUpperCase() {
-                this.formData.key = this.formData.key.toUpperCase();
-            },
-            initCategory(categoryId) {
-                let idx = 0;
-                const _categoryList = this.categoryList;
-                for (; idx < _categoryList.length; idx++) {
-                    if (_categoryList[idx].categoryId === categoryId) {
-                        break;
-                    }
-                }
-                return _categoryList[idx].name;
-            }
-        },
-        computed: {
-            formatCategory() {
-                return function (categoryId) {
-                    return this.initCategory(categoryId);
-                };
-            }
-        },
-        watch: {
-            curNode() {
-                this.loadCategory();
-                this.loadData();
-            }
-        }
+export default {
+  props: ["curNode", "dictVisible", "tableLoading"],
+  data() {
+    return {
+      dialogVisible: false,
+      tableData: [],
+      formData: {},
+      categoryList: [],
+      pageFlag: "next",
+      pageSize: 10,
+      lastId: "blank",
+      total: 0
     };
+  },
+  methods: {
+    defaultFormData() {
+      return {
+        dictId: "",
+        name: "",
+        key: "",
+        value: "",
+        categoryId: "",
+        categoryCode: "",
+        remark: ""
+      };
+    },
+    /*加载数据列表*/
+    loadData() {
+      this.$store
+        .dispatch("dict/getTotal", {
+          filter: { categoryId: this.curNode.categoryId }
+        })
+        .then(data => {
+          if (data) {
+            this.total = data.data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+      this.$store
+        .dispatch("dict/getPageList", {
+          pageFlag: this.pageFlag,
+          pageSize: this.pageSize,
+          lastId: this.lastId,
+          filter: { categoryId: this.curNode.categoryId }
+        })
+        .then(data => {
+          if (data) {
+            this.tableData = data.data;
+          }
+          this.tableLoading = false;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    loadCategory() {
+      this.$store
+        .dispatch("category/getList", { filter: { categoryType: 0 } })
+        .then(data => {
+          this.categoryList = data.data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    /*添加记录*/
+    handleAdd() {
+      this.dialogVisible = true;
+      this.clearForm();
+
+      this.formData.categoryId = this.curNode.categoryId;
+      this.formData.categoryCode = this.curNode.categoryCode;
+    },
+    /*添加记录时完成数据填写或编辑记录时，点击对数据进行保存*/
+    handleSave() {
+      this.dialogVisible = false;
+
+      let url = "";
+      if (this.formData.dictId != "") {
+        url = "dict/updateOne";
+      } else {
+        url = "dict/addOne";
+      }
+      this.$store
+        .dispatch(url, this.formData)
+        .then(() => {
+          this.loadData();
+        })
+        .catch(error => {
+          console.log(error);
+        });
+      this.clearForm();
+    },
+    handleCancel() {
+      this.dialogVisible = false;
+      this.clearForm();
+    },
+    /*点击记录进行编辑*/
+    handleEdit(row) {
+      this.dialogVisible = true;
+      this.formData = row;
+    },
+    /*对字典信息进行删除*/
+    handleDelete(row) {
+      this.open(this.delete, row.dictId, "此操作将删除该条字典信息, 是否继续?");
+    },
+    /*根据字典ID删除字典*/
+    delete(dictId) {
+      this.$store
+        .dispatch("dict/removeOne", { dictId: dictId })
+        .then(() => {
+          if (1 === this.tableData.length) {
+            this.handlePrevClick();
+          } else {
+            this.loadData();
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    /*前翻页*/
+    handlePrevClick() {
+      this.pageFlag = "prev";
+      this.lastId = this.tableData[0].dictId;
+      this.loadData();
+    },
+    /*翻后页*/
+    handleNextClick() {
+      this.pageFlag = "next";
+      this.lastId = this.tableData[this.tableData.length - 1].dictId;
+      this.loadData();
+    },
+    clearForm() {
+      this.formData = this.defaultFormData();
+    },
+    open(func, data, message) {
+      this.$confirm(message, "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          func(data);
+          this.$message({
+            type: "success",
+            message: "删除成功!"
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
+    toUpperCase() {
+      this.formData.key = this.formData.key.toUpperCase();
+    },
+    initCategory(categoryId) {
+      let idx = 0;
+      const _categoryList = this.categoryList;
+      for (; idx < _categoryList.length; idx++) {
+        if (_categoryList[idx].categoryId === categoryId) {
+          break;
+        }
+      }
+      return _categoryList[idx].name;
+    }
+  },
+  computed: {
+    formatCategory() {
+      return function(categoryId) {
+        return this.initCategory(categoryId);
+      };
+    }
+  },
+  watch: {
+    curNode() {
+      this.loadCategory();
+      this.loadData();
+    }
+  }
+};
 </script>

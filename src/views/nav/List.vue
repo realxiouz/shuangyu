@@ -4,13 +4,13 @@
       <el-col :xs="11" :sm="10" :md="9" :lg="8" :xl="8">
         <el-button type="primary" style="margin-bottom:20px" size="mini" @click="rootAdd">添加</el-button>
         <el-tree
+          v-loading="treeLoading"
           node-key="navId"
           auto-expand-parent
           :data="treeData"
           :default-expanded-keys="curLine"
           :props="treeProps"
           @node-click="handleNodeClick"
-          v-loading="treeLoading"
         >
           <span class="tree-node" slot-scope="{ node, data }">
             <span>{{ node.data.title }}</span>
