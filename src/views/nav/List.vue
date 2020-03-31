@@ -23,12 +23,12 @@
         </el-tree>
       </el-col>
       <el-col :xs="13" :sm="14" :md="15" :lg="16" :xl="16">
-        <navEdit
+        <nav-edit
           ref="search"
           :tableLoading="tableLoading"
           :apiVisible="apiVisible"
           :curNode="curNode"
-        ></navEdit>
+        ></nav-edit>
       </el-col>
     </el-row>
     <!-- 表单对话框 -->
