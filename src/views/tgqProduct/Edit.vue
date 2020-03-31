@@ -103,8 +103,8 @@ export default {
             if (data) {
               this.formData = data;
               this.tableData = this.formData.params;
-              this.loading = false;
             }
+            this.loading = false;
           })
           .catch(error => {
             console.log(error);

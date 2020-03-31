@@ -158,8 +158,8 @@ export default {
         .then(data => {
           if (data) {
             this.tableData = data;
-            this.loading=false;
           }
+          this.loading = false;
         })
         .catch(error => {
           console.log(error);

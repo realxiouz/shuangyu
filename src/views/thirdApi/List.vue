@@ -64,7 +64,7 @@ export default {
   name: "thirdApiList",
   data() {
     return {
-      loading:true,
+      loading: true,
       lastId: "blank",
       pageFlag: "next",
       pageSize: 10,
@@ -99,8 +99,8 @@ export default {
         .then(data => {
           if (data) {
             this.tableData = data;
-            this.loading=false;
           }
+          this.loading = false;
         })
         .catch(error => {
           console.log(error);

@@ -12,10 +12,16 @@
     >
       <el-table-column prop="thirdName" label="第三方平台" align="center" width="150"></el-table-column>
       <el-table-column prop="apiUrl" label="接口url" align="center" width="220"></el-table-column>
-      <el-table-column prop="label" label="接口标签" align="center" ></el-table-column>
+      <el-table-column prop="label" label="接口标签" align="center"></el-table-column>
       <el-table-column prop="name" label="接口名称" align="center"></el-table-column>
       <el-table-column prop="defaultValue" label="默认值" align="center" width="150"></el-table-column>
-      <el-table-column prop="required" label="是否必须" :formatter="formatBoolean" align="center" width="80"></el-table-column>
+      <el-table-column
+        prop="required"
+        label="是否必须"
+        :formatter="formatBoolean"
+        align="center"
+        width="80"
+      ></el-table-column>
       <el-table-column prop="remark" label="备注" align="center"></el-table-column>
       <el-table-column label="操作" align="center" width="250">
         <template slot-scope="scope">
@@ -50,7 +56,7 @@ export default {
   data() {
     return {
       rootNav: false,
-      loading:true,
+      loading: true,
       dialogVisible: false,
       paramId: null,
       tableData: [],
@@ -71,8 +77,10 @@ export default {
       this.$store
         .dispatch("thirdApiParam/getList")
         .then(data => {
-          this.tableData = data;
-          this.loading=false;
+          if (data) {
+            this.tableData = data;
+          }
+          this.loading = false;
         })
         .catch(error => {
           console.log(error);

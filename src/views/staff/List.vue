@@ -12,7 +12,12 @@
         ></el-tree>
       </el-col>
       <el-col :xs="13" :sm="14" :md="15" :lg="16" :xl="16">
-        <staff-form :tableLoading="tableLoading" :curNode="curNode" :staffAddVisible="staffAddVisible" style="width: 100%" />
+        <staff-form
+          :tableLoading="tableLoading"
+          :curNode="curNode"
+          :staffAddVisible="staffAddVisible"
+          style="width: 100%"
+        />
       </el-col>
     </el-row>
   </div>
@@ -45,8 +50,8 @@ export default {
         .then(data => {
           if (data) {
             this.treeData = data;
-            this.loading = false;
           }
+          this.loading = false;
         })
         .catch(error => {
           console.log(error);
@@ -56,7 +61,7 @@ export default {
     handleNodeClick(data) {
       this.staffAddVisible = false;
       this.curNode = data;
-      this.tableLoading=true;
+      this.tableLoading = true;
     }
   },
   mounted() {
