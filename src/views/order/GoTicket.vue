@@ -222,11 +222,11 @@ export default {
       };
 
       let flightInfo2 = {
-        arr: "CTU",
-        dpt: "CGO",
-        dptDay: "2020-04-06",
-        dptTime: "19:10",
-        flightCode: "HO1122"
+        arr: "PVG",
+        dpt: "YCU",
+        dptDay: "2020-04-12",
+        dptTime: "13:10",
+        flightCode: "MU5192"
       };
       this.getOrderFlight(flightInfo2);
       this.getOrderMinPrice(flightInfo2);
