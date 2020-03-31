@@ -89,9 +89,8 @@ export default {
         .then(data => {
           if (data) {
             this.tableData = data.data;
-
-            this.loadData = false;
           }
+          this.loadData = false;
         })
         .catch(error => {
           console.log(error);
