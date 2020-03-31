@@ -24,9 +24,9 @@ export function updateOne(data) {
   });
 }
 
-export function removeOne(firmId, userId, deptId) {
+export function removeOne(staffId, deptId) {
   return request({
-    url: `/staff/remove/one/${firmId}/${userId}/${deptId}`,
+    url: `/staff/remove/one/${staffId}/${deptId}`,
     method: "delete"
   });
 }
@@ -91,5 +91,19 @@ export function getLoginInfo(firmId) {
     url: `/staff/login/info`,
     method: "get",
     params: { firmId }
+  });
+}
+
+export function permissionsForUpdate(filedValue, staffId) {
+  return request({
+    url: `/staff/permissions/update/${filedValue}/${staffId}`,
+    method: "get"
+  });
+}
+
+export function permissionsForAdd(filedValue) {
+  return request({
+    url: `/staff/permissions/add/${filedValue}`,
+    method: "get"
   });
 }

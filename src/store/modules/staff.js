@@ -9,7 +9,9 @@ import {
   getTotal,
   getPageList,
   getPrepareUserList,
-  getMany
+  getMany,
+  permissionsForUpdate,
+  permissionsForAdd
 } from "@/api/staff";
 import {getToken, setToken, removeToken} from "@/utils/auth";
 
@@ -68,8 +70,8 @@ const actions = {
   },
   removeOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {firmId, deptId, userId} = params;
-      removeOne(firmId, userId, deptId)
+      const {staffId, deptId} = params;
+      removeOne(staffId, deptId)
         .then(response => {
           resolve(response);
         })
@@ -155,6 +157,32 @@ const actions = {
     return new Promise((resolve, reject) => {
       //const {staffIdList} = params;
       getMany(params)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  permissionsForUpdate({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {filedValue, staffId} = params;
+      permissionsForUpdate(filedValue, staffId)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  permissionsForAdd({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {filedValue} = params;
+      permissionsForAdd(filedValue)
         .then(response => {
           const {data} = response;
           resolve(data);
