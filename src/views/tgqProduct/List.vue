@@ -8,6 +8,7 @@
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table
+        v-loading="loading"
         :data="tableData"
         style="width: 100%;margin-bottom:20px;"
         fit
@@ -15,7 +16,7 @@
         size="mini"
       >
         <el-table-column prop="cron" label="时间表达式" width="150" align="center"></el-table-column>
-        <el-table-column prop="schedulerName" label="调度名称" align="center" ></el-table-column>
+        <el-table-column prop="schedulerName" label="调度名称" align="center"></el-table-column>
         <el-table-column prop="remark" label="备注" align="center"></el-table-column>
         <el-table-column prop="status" label="调度程序状态" width="120" align="center">
           <template slot-scope="scope">
@@ -58,6 +59,7 @@ export default {
   name: "tgqProductList",
   data() {
     return {
+      loading: true,
       schedulerId: "",
       searchForm: {},
       tableData: []
@@ -127,7 +129,10 @@ export default {
           searchForm: this.searchForm
         })
         .then(data => {
-          this.tableData = data;
+          if (data) {
+            this.tableData = data;
+            this.loading = false;
+          }
         })
         .catch(error => {
           console.log(error);

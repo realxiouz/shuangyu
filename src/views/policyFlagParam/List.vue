@@ -7,7 +7,12 @@
       <el-row style="margin-bottom:15px;margin-left:40px;">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
-      <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;" size="mini">
+      <el-table
+        v-loading="loading"
+        :data="tableData"
+        style="width: 100%;margin-bottom: 20px;"
+        size="mini"
+      >
         <el-table-column prop="thirdName" label="平台" align="center"></el-table-column>
         <el-table-column prop="label" label="参数标签" align="center"></el-table-column>
         <el-table-column prop="name" label="参数名称" align="center"></el-table-column>
@@ -23,12 +28,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-dialog
-        title="用户信息"
-        center
-        :visible.sync="dialogVisible"
-        width="30%"
-      >
+      <el-dialog title="用户信息" center :visible.sync="dialogVisible" width="30%">
         <flag-param-edit
           v-if="dialogVisible"
           :param-id="paramId"
@@ -48,6 +48,7 @@ export default {
   name: "flagParamList",
   data() {
     return {
+      loading: true,
       tableData: [],
       dialogVisible: false,
       paramId: "",
@@ -64,7 +65,10 @@ export default {
           filters: formatDate
         })
         .then(data => {
-          this.tableData = data;
+          if (data) {
+            this.tableData = data;
+            this.loading = false;
+          }
         })
         .catch(error => {
           console.log(error);

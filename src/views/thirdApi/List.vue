@@ -7,10 +7,15 @@
       <el-row style="margin-bottom:15px;margin-left:15px;">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
-      <el-table size="mini" :data="tableData" style="width: 100%;margin-bottom: 15px;">
+      <el-table
+        v-loading="loading"
+        size="mini"
+        :data="tableData"
+        style="width: 100%;margin-bottom: 15px;"
+      >
         <el-table-column prop="thirdId" label="第三方平台" width="300" align="center"></el-table-column>
         <el-table-column prop="url" label="url" width="300" align="center"></el-table-column>
-        <el-table-column prop="method" label="方法名称" align="center" ></el-table-column>
+        <el-table-column prop="method" label="方法名称" align="center"></el-table-column>
         <el-table-column label="是否启用" align="center" width="100">
           <template slot-scope="scope">
             <el-switch v-model="scope.row.enable" @change="handleSwitch(scope.row)"></el-switch>
@@ -59,6 +64,7 @@ export default {
   name: "thirdApiList",
   data() {
     return {
+      loading:true,
       lastId: "blank",
       pageFlag: "next",
       pageSize: 10,
@@ -93,6 +99,7 @@ export default {
         .then(data => {
           if (data) {
             this.tableData = data;
+            this.loading=false;
           }
         })
         .catch(error => {
@@ -135,11 +142,11 @@ export default {
           this.$store
             .dispatch("thirdApiService/removeOne", { apiId: id })
             .then(() => {
-                if (1 === this.tableData.length){
-                    this.prevClick();
-                }else{
-                    this.loadData();
-                }
+              if (1 === this.tableData.length) {
+                this.prevClick();
+              } else {
+                this.loadData();
+              }
               rows.splice(index, 1);
             });
         })

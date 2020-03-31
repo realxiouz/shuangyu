@@ -8,6 +8,7 @@
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table
+        v-loading="loading"
         :data="tableData"
         style="width: 100%;margin-bottom: 20px;"
         fit
@@ -58,6 +59,7 @@ export default {
   name: "ttsSchedulerList",
   data() {
     return {
+      loading: true,
       schedulerId: "",
       searchForm: {},
       tableData: []
@@ -127,7 +129,10 @@ export default {
           searchForm: this.searchForm
         })
         .then(data => {
-          this.tableData = data;
+          if (data) {
+            this.tableData = data;
+            this.loadData = false;
+          }
         })
         .catch(error => {
           console.log(error);
