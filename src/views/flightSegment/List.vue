@@ -83,8 +83,8 @@ export default {
           if (data) {
             this.loadTotal(this.searchForm);
             this.tableData = data;
-            this.loadData = false;
           }
+          this.loadData = false;
         })
         .catch(error => {
           console.log(error);

@@ -103,7 +103,9 @@ export default {
       this.$store
         .dispatch("category/getTreeList", { filter: { categoryType: 0 } })
         .then(data => {
-          this.treeData = data.data;
+          if (data) {
+            this.treeData = data.data;
+          }
           this.loading = false;
         })
         .catch(error => {

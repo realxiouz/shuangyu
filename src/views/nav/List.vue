@@ -138,8 +138,8 @@ export default {
         .then(data => {
           if (data) {
             this.treeData = data;
-            this.treeLoading = false;
           }
+          this.treeLoading = false;
         })
         .catch(error => {
           console.log(error);
