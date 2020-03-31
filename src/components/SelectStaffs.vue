@@ -54,13 +54,7 @@ export default {
     };
   },
   mounted() {
-    if (
-      this.$store.state.loginInfo.firm &&
-      this.$store.state.loginInfo.firm.firmId &&
-      this.$store.state.loginInfo.firm.firmId != null
-    ) {
-      this.loadData();
-    }
+    this.loadData();
     this.toggleSelection(this.staffData);
   },
   methods: {

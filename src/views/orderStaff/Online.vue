@@ -100,27 +100,25 @@
       };
     },
     mounted() {
-      if (this.$store.state.loginInfo.staffId && this.$store.state.loginInfo.staffId!=null){
         this.loadData();
-      }
     },
     methods: {
       loadData() {
         this.$store
           .dispatch("orderStaff/getList", {
-            searchForm: {
-              staffId: this.$store.state.loginInfo.staffId
-            }
+            searchForm: {onlineFlag:"1"}
           })
           .then(data => {
-            this.formData = data[0];
-            this.selectFlags = [];
-            if (this.formData.ownFlags && this.formData.ownFlags != null && this.formData.ownFlags.length > 0) {
-              for (var i = 0; i < this.formData.ownFlags.length; i++) {
-                for (var j = 0; j < this.ownFlags.length; j++) {
-                  if (this.ownFlags[j].value == this.formData.ownFlags[i]) {
-                    this.selectFlags.push(this.ownFlags[j]);
-                    break;
+            if (data.length>0){
+              this.formData = data[0];
+              this.selectFlags = [];
+              if (this.formData.ownFlags && this.formData.ownFlags != null && this.formData.ownFlags.length > 0) {
+                for (var i = 0; i < this.formData.ownFlags.length; i++) {
+                  for (var j = 0; j < this.ownFlags.length; j++) {
+                    if (this.ownFlags[j].value == this.formData.ownFlags[i]) {
+                      this.selectFlags.push(this.ownFlags[j]);
+                      break;
+                    }
                   }
                 }
               }
@@ -191,9 +189,7 @@
       }
     },
     created() {
-      if (this.$store.state.loginInfo.staffId && this.$store.state.loginInfo.staffId!=null){
-        this.loadData();
-      }
+      this.loadData();
     },
     computed: {
       formatDate() {

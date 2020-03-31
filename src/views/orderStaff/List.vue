@@ -24,33 +24,26 @@
 </template>
 
 <script>
-import staffForm from "./Edit";
+  import staffForm from "./Edit";
 
-export default {
-  data() {
-    return {
-      staffAddVisible: true,
-      loading: true,
-      tableLoading: false,
-      curNode: null,
-      treeData: [],
-      treeProps: {
-        label: "deptName",
-        children: "children"
-      }
-    };
-  },
-  methods: {
-    loadTreeData() {
-      if (
-        this.$store.state.loginInfo.firm &&
-        this.$store.state.loginInfo.firm.firmId &&
-        this.$store.state.loginInfo.firm.firmId != null
-      ) {
+  export default {
+    data() {
+      return {
+        staffAddVisible: true,
+        loading: true,
+        tableLoading: false,
+        curNode: null,
+        treeData: [],
+        treeProps: {
+          label: "deptName",
+          children: "children"
+        }
+      };
+    },
+    methods: {
+      loadTreeData() {
         this.$store
-          .dispatch("dept/getList", {
-            filters: { firmId: this.$store.state.loginInfo.firm.firmId }
-          })
+          .dispatch("dept/getList", {filters: {}})
           .then(data => {
             if (data) {
               this.treeData = data;
@@ -60,20 +53,19 @@ export default {
           .catch(error => {
             console.log(error);
           });
+        this.loading = false;
+      },
+      handleNodeClick(data) {
+        this.staffAddVisible = false;
+        this.curNode = data;
+        this.tableLoading = true;
       }
-      this.loading = false;
     },
-    handleNodeClick(data) {
-      this.staffAddVisible = false;
-      this.curNode = data;
-      this.tableLoading = true;
+    mounted() {
+      this.loadTreeData();
+    },
+    components: {
+      staffForm
     }
-  },
-  mounted() {
-    this.loadTreeData();
-  },
-  components: {
-    staffForm
-  }
-};
+  };
 </script>
