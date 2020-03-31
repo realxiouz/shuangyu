@@ -179,9 +179,15 @@ export default {
     },
     goTicket() {
       if (this.passengersInfo.length < 1) {
-        this.$message({
-          message: "请选择要出票的乘客!",
-          type: "warning"
+        // this.$message({
+        //   message: "请选择要出票的乘客!",
+        //   type: "warning"
+        // });
+        this.$notify({
+          title: "提示",
+          message: "至少选择一名要出票的乘客",
+          type: "warning",
+          duration: 4500
         });
         return;
       } else {
