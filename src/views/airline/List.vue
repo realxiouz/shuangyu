@@ -156,6 +156,10 @@ export default {
       this.searchForm = params;
       this.lastId = "0";
       this.loadData();
+      this.$message({
+        type:"success",
+        message:"查询成功！"
+      })
     }
   },
   mounted() {
