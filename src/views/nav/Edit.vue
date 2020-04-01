@@ -7,6 +7,7 @@
     </el-row>
     <el-table
       :data="tableData"
+      v-loading="loading"
       fit
       tooltip-effect="dark"
       highlight-current-row
@@ -60,6 +61,7 @@ export default {
   data() {
     return {
       dialogVisible: false,
+      loading:false,
       /*数据列表*/
       tableData: [],
       /*所有的可选api数据*/
@@ -91,12 +93,14 @@ export default {
     },
     /*根据apiID数组加载api数据列表*/
     loadApisTableList(apiIDList) {
+      this.loading=true;
       this.$store
         .dispatch("api/getMany", { apiIDList: apiIDList })
         .then(data => {
           if (data) {
             this.tableData = data;
           }
+          this.loading=false;
         })
         .catch(error => {
           console.log(error);
