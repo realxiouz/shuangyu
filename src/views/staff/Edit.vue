@@ -55,7 +55,6 @@
         </el-form-item>
       </el-form>
       <el-table
-        v-loading="tableLoading"
         size="mini"
         :data="userTable"
         style="width: 100%"
@@ -221,7 +220,6 @@ export default {
           if (data) {
             this.tableData = data.data;
           }
-          this.tableLoading = false;
         })
         .catch(error => {
           console.log(error);
