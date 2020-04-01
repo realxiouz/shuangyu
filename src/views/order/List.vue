@@ -250,11 +250,11 @@ export default {
       if (!data || data.length == 0) {
         return "";
       }
-      let dptTime = data[0].dptTime.match(/.*(.{5})/)[1];
+      // let dptTime = data[0].dptTime.match(/.*(.{5})/)[1];
       return (
         data[0].dpt +
         " " +
-        dptTime +
+        data[0].dptTime +
         " - " +
         data[0].arr +
         " " +
