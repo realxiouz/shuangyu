@@ -360,5 +360,6 @@ export default {
 <style scoped>
 .contentBox {
   padding-top: 0px !important;
+  padding-bottom: 0px !important;
 }
 </style>

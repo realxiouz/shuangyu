@@ -113,6 +113,7 @@ export default {
         .dispatch("productMark/getList", { firmId: params.firmId })
         .then(data => {
           this.tableData = data;
+          this.loading = false;
         })
         .catch(error => {
           console.log(error);
