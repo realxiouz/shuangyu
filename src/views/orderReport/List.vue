@@ -20,8 +20,14 @@
             <span>{{(currentPage - 1) * pageSize + scope.$index + 1}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="orderNo" label="订单号" align="center"></el-table-column>
-        <el-table-column prop="policyCode" label="政策代码" width="100" align="center"></el-table-column>
+        <el-table-column prop="orderNo" label="订单号" align="center" width="160"></el-table-column>
+        <el-table-column
+          prop="policyCode"
+          :show-overflow-tooltip="true"
+          label="政策代码"
+          width="100"
+          align="center"
+        ></el-table-column>
         <el-table-column prop="statusName" label="订单状态" width="100" align="center"></el-table-column>
         <el-table-column prop="categoryName" label="订单类型" width="80" align="center"></el-table-column>
         <el-table-column label="订单日期" width="100" align="center">
