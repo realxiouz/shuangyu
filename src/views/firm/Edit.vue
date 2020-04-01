@@ -32,18 +32,24 @@
         </el-input>
       </el-form-item>
       <el-form-item label="联系电话">
-        <el-input
-          type="text"
+        <div v-if="isExistsForPhone" style="color: crimson">*该信息已被以下用户注册,你可直接选择用户</div>
+        <el-autocomplete
+          v-model="formData.phone"
+          :fetch-suggestions="querySearchAsync"
           placeholder="请输入联系电话"
-          v-model="formData.phone">
-        </el-input>
+          @select="handleSelect"
+          style="width: 100%"
+        ></el-autocomplete>
       </el-form-item>
       <el-form-item label="电子邮箱">
-        <el-input
-          type="text"
+        <div v-if="isExistsForEmail" style="color: crimson">*该信息已被以下用户注册,你可直接选择用户</div>
+        <el-autocomplete
+          v-model="formData.email"
+          :fetch-suggestions="querySearchAsync"
           placeholder="请输入联系电子邮箱"
-          v-model="formData.email">
-        </el-input>
+          @select="handleSelect"
+          style="width: 100%"
+        ></el-autocomplete>
       </el-form-item>
       <el-form-item label="机构所在地">
         <el-input
@@ -91,7 +97,7 @@
       <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
       <el-button v-show="hasStep" size="mini" type="primary" @click="nextStep">下一步</el-button>
       <el-button v-show="!hasStep" size="mini" type="primary" @click="prevStep">上一步</el-button>
-      <el-button v-show="!hasStep" size="mini" type="primary" @click="$emit('onSave',formData)">确 定</el-button>
+      <el-button v-show="!hasStep" size="mini" type="primary" @click="handleSave">确 定</el-button>
     </div>
   </div>
 </template>
@@ -106,6 +112,9 @@
                 transData: [],
                 formData: {},
                 hasStep: true,
+                /*用于校验所填写的信息是否已经被使用*/
+                isExistsForPhone: false,
+                isExistsForEmail: false,
                 transferProps: {
                     key: 'roleId',
                     label: 'roleName'
@@ -160,12 +169,54 @@
             /*初始化表单*/
             initFormData() {
                 this.hasStep = true;
+                this.initChecked();
                 if (this.curNode.firmName) {
                     this.formData = this.curNode;
                 } else {
                     this.clearForm();
                 }
                 this.loadRoles();
+            },
+            querySearchAsync(keyword, callBack) {
+                if (keyword){
+                    this.$store.dispatch("staff/existedStaffList",{filedValue: keyword}).then(data =>{
+                        data.forEach(item => {
+                            item.value = item.fullName;
+                        })
+                        callBack(data);
+                        this.initChecked();
+                        console.log(keyword);
+                        console.log(this.formData.phone);
+                        if (0 != data.length && keyword === this.formData.phone){
+                            this.isExistsForPhone = true;
+                        }else if (0 != data.length && keyword === this.formData.phone){
+                            this.isExistsForEmail = true;
+                        }
+                    }).catch(error => {
+                        console.log(error);
+                    })
+                    console.log(this.isExistsForPhone);
+                }else{
+                    callBack([]);
+                }
+            },
+            //重置校验
+            initChecked(){
+                this.isExistsForPhone = false;
+                this.isExistsForEmail = false;
+            },
+            handleSelect(item) {
+                this.initChecked();
+                this.formData.contactPerson = item.fullName;
+                this.formData.phone = item.phone;
+                this.formData.email = item.email;
+            },
+            handleSave(){
+                if (this.isExistsForPhone || this.isExistsForEmail){
+                    return;
+                }else{
+                    this.$emit('onSave',this.formData);
+                }
             }
         },
         watch: {

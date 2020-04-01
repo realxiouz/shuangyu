@@ -32,7 +32,7 @@
         title="添加企业"
         center
         :visible.sync="dialogVisible"
-        width="33%"
+        width="29%"
         :close-on-click-modal="false"
       >
         <firm-edit :curNode="curNode" @onSave="handleSave" @onCancel="handleCancel" />
