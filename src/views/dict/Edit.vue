@@ -12,15 +12,15 @@
       fit
       style="width: 100%;margin-bottom: 20px;"
     >
-      <el-table-column prop="name" label="字典名称" width="200"></el-table-column>
-      <el-table-column prop="key" label="字典键" width="200"></el-table-column>
-      <el-table-column prop="value" label="字典值" width="200" align="center"></el-table-column>
-      <el-table-column label="类别" width="200" align="center">
+      <el-table-column prop="name" align="center" label="字典名称"></el-table-column>
+      <el-table-column prop="key" align="center" label="字典键"></el-table-column>
+      <el-table-column prop="value" align="center" label="字典值" width="80"></el-table-column>
+      <el-table-column label="类别" align="center" >
         <template slot-scope="scope">
           <span style="margin-left: 10px">{{ formatCategory(scope.row.categoryId) }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="categoryCode" label="类别编码" width="200" align="center"></el-table-column>
+      <el-table-column align="center" prop="categoryCode" label="类别编码" ></el-table-column>
       <el-table-column label="操作" align="center" width="180">
         <template slot-scope="scope">
           <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
