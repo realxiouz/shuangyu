@@ -4,7 +4,11 @@
       <el-form :model="formData" label-width="110px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="订单号:">
-            <el-input v-model="formData.keyword" placeholder="请输入角色名称搜素..."></el-input>
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.keyword"
+              placeholder="请输入角色名称搜素..."
+            ></el-input>
           </el-form-item>
         </el-col>
       </el-form>

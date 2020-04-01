@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form :model="formData" label-width="110px" size="mini">
+    <el-form ref="form" :model="formData" label-width="110px" size="mini" :rules="formRules">
       <el-form-item label="角色名称:" prop="roleName">
         <el-input v-model="formData.roleName" placeholder="请输入你要添加的角色名称"></el-input>
       </el-form-item>
@@ -9,6 +9,7 @@
       </el-form-item>
       <el-form-item label="选择菜单:">
         <el-tree
+          v-loading="loading"
           :data="treeData"
           show-checkbox
           default-expand-all
@@ -16,84 +17,93 @@
           highlight-current
           :default-checked-keys="formData.navs"
           @check="getCheckedKeys"
-          :props="{label:'title'}">
-        </el-tree>
+          :props="{label:'title'}"
+        ></el-tree>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer" style="text-align: right;">
       <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
-      <el-button size="mini" type="primary" @click="$emit('onSave',formData)">确 定</el-button>
+      <el-button size="mini" type="primary" @click="handeleSave">确 定</el-button>
     </div>
   </div>
 </template>
 
 <script>
-  export default {
-    name: "roleEdit",
-    props: ["roleId"],
-    data() {
+export default {
+  name: "roleEdit",
+  props: ["roleId"],
+  data() {
+    return {
+      formData: {},
+      loading: true,
+      treeData: [],
+      formRules: {
+        roleName: [
+          { required: true, message: "请输入角色名称", trigger: "blur" }
+        ]
+      }
+    };
+  },
+  methods: {
+    handeleSave() {
+      this.$refs["form"].validate(valid => {
+        if (valid) {
+          this.$emit("onSave", this.formData);
+        }
+      });
+    },
+    getCheckedKeys(nodes, selection) {
+      let tmpList = [];
+      selection.checkedNodes.forEach(item => {
+        if (!item.hasChildren) {
+          tmpList.push(item.navId);
+        }
+      });
+      this.formData.navs = tmpList;
+    },
+    defaultFormData() {
       return {
-        formData: {},
-        treeData: [],
-        /*formRules: {
-          roleName: [
-            { required: true, message: "请输入角色名称", trigger: "blur" }
-          ]
-        }*/
+        roleId: "",
+        roleName: "",
+        enable: true,
+        navs: []
       };
     },
-    methods: {
-      getCheckedKeys(nodes, selection) {
-          let tmpList = [];
-          selection.checkedNodes.forEach(item => {
-              if (!item.hasChildren){
-                  tmpList.push(item.navId);
-              }
-          })
-          this.formData.navs = tmpList;
-      },
-      defaultFormData() {
-        return {
-          roleId: '',
-          roleName: '',
-          enable: true,
-          navs: []
-        }
-      },
-      clearForm() {
-        this.formData = this.defaultFormData();
-      },
-      initTreeData: function () {
-        this.$store
-          .dispatch("nav/getList", {filter: {}})
-          .then(data => {
-            this.treeData = data;
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      },
-      loadRoleByID(roleID) {
-        this.$store
-          .dispatch("role/getOne", {roleID: roleID})
-          .then(data => {
-            this.formData = data;
-          })
-          .catch(error => {
-            console.log(error);
-          });
-        this.dialogVisible = true;
-      },
-      changeSwitch() {
-        this.formData.enable = this.formData.enable ? true : false;
-      }
+    clearForm() {
+      this.formData = this.defaultFormData();
     },
-    created() {
-      this.clearForm();
-      this.initTreeData();
-      if ('' != this.roleId) {
-        this.loadRoleByID(this.roleId);
-      }
+    initTreeData: function() {
+      this.$store
+        .dispatch("nav/getList", { filter: {} })
+        .then(data => {
+          this.treeData = data;
+          this.loading = false;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    loadRoleByID(roleID) {
+      this.$store
+        .dispatch("role/getOne", { roleID: roleID })
+        .then(data => {
+          this.formData = data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+      this.dialogVisible = true;
+    },
+    changeSwitch() {
+      this.formData.enable = this.formData.enable ? true : false;
     }
-  };
+  },
+  created() {
+    this.clearForm();
+    this.initTreeData();
+    if ("" != this.roleId) {
+      this.loadRoleByID(this.roleId);
+    }
+  }
+};
 </script>
