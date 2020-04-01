@@ -21,17 +21,17 @@
         <el-table-column prop="ddId" label="钉钉Id" align="center"></el-table-column>
         <el-table-column prop="ddParentIdId" label="钉钉父节点" align="center"></el-table-column>
         <el-table-column prop="domain" label="域名" align="center"></el-table-column>
-        <el-table-column fixed="right" label="操作" width="280" align="center">
+        <el-table-column fixed="right" label="操作" width="280">
           <template slot-scope="scope">
-            <div v-show="0 != scope.row.level.number">
-              <el-button @click="handleAddChild(scope.row.deptId)" type="success" size="mini">添加子级</el-button>
+            <el-button @click="handleAddChild(scope.row.deptId)" type="success" size="mini">添加子级</el-button>
+            <span v-show="'0' != scope.row.level" style="margin-left: 10px;">
               <el-button @click="handleUpdate(scope.row.deptId)" type="primary" size="mini">编辑</el-button>
-              <el-button
-                @click.native.prevent="handleRemove(scope.row.deptId)"
-                type="danger"
-                size="mini"
-              >删除</el-button>
-            </div>
+            <el-button
+              @click.native.prevent="handleRemove(scope.row.deptId)"
+              type="danger"
+              size="mini"
+            >删除</el-button>
+            </span>
           </template>
         </el-table-column>
       </el-table>
@@ -101,7 +101,8 @@ export default {
           filters: {}
         })
         .then(data => {
-          if (data) {
+            console.log(data);
+            if (data) {
             this.tableData = data;
           }
           this.loading = false;

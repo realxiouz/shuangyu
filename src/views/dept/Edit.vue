@@ -4,9 +4,6 @@
       <el-form-item label="部门名称:" prop="deptName">
         <el-input v-model="formData.deptName"></el-input>
       </el-form-item>
-      <el-form-item label="域名:" prop="domain">
-        <el-input v-model="formData.domain"></el-input>
-      </el-form-item>
       <el-form-item label="钉钉Id:">
         <el-input v-model.number="formData.ddId"></el-input>
       </el-form-item>
@@ -24,7 +21,6 @@
 function defaultData() {
   return {
     deptName: "",
-    domain: "",
     ddId: "",
     ddParentIdId: ""
   };
