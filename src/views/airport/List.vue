@@ -156,12 +156,12 @@ export default {
     },
     handlePrevClick() {
       this.pageFlag = "prev";
-      this.lastId = this.tableData[0].domain;
+      this.lastId = this.tableData[0].airportCode;
       this.loadData();
     },
     handleNextClick() {
       this.pageFlag = "next";
-      this.lastId = this.tableData[this.tableData.length - 1].domain;
+      this.lastId = this.tableData[this.tableData.length - 1].airportCode;
       this.loadData();
     },
     handleDelete(row) {
