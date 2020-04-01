@@ -159,7 +159,7 @@
 <script>
 export default {
   name: "staffEdit",
-  props: ["curNode", "staffAddVisible", "tableLoading"],
+  props: ["curNode", "staffAddVisible"],
   data() {
     return {
       dialogVisible: false,

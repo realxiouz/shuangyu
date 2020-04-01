@@ -6,7 +6,6 @@
       <el-button type="primary" size="mini" @click="apisEdit" :disabled="apiVisible">添加</el-button>
     </el-row>
     <el-table
-      v-loading="tableLoading"
       :data="tableData"
       fit
       tooltip-effect="dark"
@@ -57,7 +56,7 @@
 export default {
   name: "Edit",
   /*apiVisible为false时不可编辑*/
-  props: ["apiVisible", "curNode", "tableLoading"],
+  props: ["apiVisible", "curNode"],
   data() {
     return {
       dialogVisible: false,
@@ -98,7 +97,6 @@ export default {
           if (data) {
             this.tableData = data;
           }
-          this.tableLoading = false;
         })
         .catch(error => {
           console.log(error);
