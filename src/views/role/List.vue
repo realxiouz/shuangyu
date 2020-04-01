@@ -154,7 +154,7 @@ export default {
           this.loadData();
           this.$message({
             type:"success",
-            message:"添加成功！"
+            message:"操作成功！"
           })
         })
         .catch(error => {

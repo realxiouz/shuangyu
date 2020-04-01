@@ -22,7 +22,7 @@
         align="center"
         width="80"
       ></el-table-column>
-      <el-table-column prop="remark" label="备注" align="center"></el-table-column>
+      <el-table-column prop="remark" label="备注" :show-overflow-tooltip="true" width="300" align="center"></el-table-column>
       <el-table-column label="操作" align="center" width="250">
         <template slot-scope="scope">
           <el-button @click="handleAddChild(scope.row)" type="primary" size="mini">添加</el-button>
