@@ -12,7 +12,7 @@
       >添 加</el-button>
     </el-row>
     <!-- 员工列表 -->
-    <el-table stripe size="mini" style="width: 100%;" fit :data="tableData">
+    <el-table v-loading="loading" stripe size="mini" style="width: 100%;" fit :data="tableData">
       <el-table-column prop="nickName" label="昵称" width="150" align="center"></el-table-column>
       <el-table-column prop="fullName" label="姓名" width="100" align="center"></el-table-column>
       <el-table-column prop="gender" label="性别" width="80" align="center">
@@ -162,6 +162,7 @@ export default {
   props: ["curNode", "staffAddVisible"],
   data() {
     return {
+      loading: '',
       dialogVisible: false,
       permissionDialogVisible: false,
       /*点击部门后用于展示的员工列表*/
@@ -212,13 +213,18 @@ export default {
     },
     /*获取该部门下的员工列表*/
     loadTableData() {
+      this.loading=true
       this.$store
         .dispatch("staff/getList", {
           filter: { firmId: this.curNode.firmId, deptId: this.curNode.deptId }
         })
         .then(data => {
           if (data) {
+            if(data){
             this.tableData = data.data;
+              
+            }
+            this.loading=false;
           }
         })
         .catch(error => {
@@ -317,9 +323,6 @@ export default {
             data.data.roles = [];
           }
           this.formData = data.data;
-          /*if (data.data.roles && row.roles.length && data.data.roles.length < row.roles.length){
-                            this.zombie.roles = row.roles;
-                          }*/
         })
         .catch(error => {
           console.log(error);
