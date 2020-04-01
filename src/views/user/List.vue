@@ -254,8 +254,11 @@ export default {
       this.$store
         .dispatch(url, formData)
         .then(data => {
-          console.log(data);
           this.loadData();
+          this.$message({
+            type: "success",
+            message: "修改成功!"
+          });
         })
         .catch(error => {
           console.log(error);
