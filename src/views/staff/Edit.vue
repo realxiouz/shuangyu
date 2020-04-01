@@ -77,8 +77,9 @@
     </el-dialog>
     <!-- 权限修改弹窗 -->
     <el-dialog
+      center
       title="员工信息"
-      width="29%"
+      width="33%"
       :visible.sync="permissionDialogVisible"
       :close-on-click-modal="false"
     >
@@ -162,7 +163,7 @@ export default {
   props: ["curNode", "staffAddVisible"],
   data() {
     return {
-      loading: '',
+      loading: "",
       dialogVisible: false,
       permissionDialogVisible: false,
       /*点击部门后用于展示的员工列表*/
@@ -213,18 +214,17 @@ export default {
     },
     /*获取该部门下的员工列表*/
     loadTableData() {
-      this.loading=true
+      this.loading = true;
       this.$store
         .dispatch("staff/getList", {
           filter: { firmId: this.curNode.firmId, deptId: this.curNode.deptId }
         })
         .then(data => {
           if (data) {
-            if(data){
-            this.tableData = data.data;
-              
+            if (data) {
+              this.tableData = data.data;
             }
-            this.loading=false;
+            this.loading = false;
           }
         })
         .catch(error => {
