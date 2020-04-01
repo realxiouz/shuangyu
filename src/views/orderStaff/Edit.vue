@@ -5,7 +5,6 @@
       <span></span>
     </el-row>
     <el-table
-      v-loading="tableLoading"
       stripe
       size="mini"
       style="width: 100%;"
@@ -85,7 +84,7 @@
 <script>
 export default {
   name: "orderStaffEdit",
-  props: ["curNode", "tableLoading","staffAddVisible"],
+  props: ["curNode","staffAddVisible"],
   data() {
     return {
       formData: {
@@ -126,7 +125,6 @@ export default {
           if (data) {
             this.tableData = data;
           }
-          this.tableLoading = false;
         })
         .catch(error => {
           console.log(error);
