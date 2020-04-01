@@ -90,7 +90,7 @@ export default {
           if (data) {
             this.tableData = data.data;
           }
-          this.loadData = false;
+          this.loading = false;
         })
         .catch(error => {
           console.log(error);
