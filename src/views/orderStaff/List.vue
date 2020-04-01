@@ -13,7 +13,6 @@
       </el-col>
       <el-col :xs="13" :sm="14" :md="15" :lg="16" :xl="16">
         <staff-form
-          :tableLoading="tableLoading"
           :curNode="curNode"
           :staffAddVisible="staffAddVisible"
           style="width: 100%"
@@ -24,48 +23,45 @@
 </template>
 
 <script>
-  import staffForm from "./Edit";
+import staffForm from "./Edit";
 
-  export default {
-    data() {
-      return {
-        staffAddVisible: true,
-        loading: true,
-        tableLoading: false,
-        curNode: null,
-        treeData: [],
-        treeProps: {
-          label: "deptName",
-          children: "children"
-        }
-      };
-    },
-    methods: {
-      loadTreeData() {
-        this.$store
-          .dispatch("dept/getList", {filters: {}})
-          .then(data => {
-            if (data) {
-              this.treeData = data;
-            }
-            this.loading = false;
-          })
-          .catch(error => {
-            console.log(error);
-          });
-        this.loading = false;
-      },
-      handleNodeClick(data) {
-        this.staffAddVisible = false;
-        this.curNode = data;
-        this.tableLoading = true;
+export default {
+  data() {
+    return {
+      staffAddVisible: true,
+      loading: true,
+      curNode: null,
+      treeData: [],
+      treeProps: {
+        label: "deptName",
+        children: "children"
       }
+    };
+  },
+  methods: {
+    loadTreeData() {
+      this.$store
+        .dispatch("dept/getList", { filters: {} })
+        .then(data => {
+          if (data) {
+            this.treeData = data;
+          }
+          this.loading = false;
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
-    mounted() {
-      this.loadTreeData();
-    },
-    components: {
-      staffForm
+    handleNodeClick(data) {
+      this.staffAddVisible = false;
+      this.curNode = data;
     }
-  };
+  },
+  mounted() {
+    this.loadTreeData();
+  },
+  components: {
+    staffForm
+  }
+};
 </script>

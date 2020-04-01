@@ -97,7 +97,7 @@ export default {
         });
     },
     search(searchForm) {
-      if (searchForm) {
+        if (searchForm.airportName || searchForm.airportCode) {
         let url = "";
         let params = {};
         if (searchForm.airportName) {
