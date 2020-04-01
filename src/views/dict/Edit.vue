@@ -6,9 +6,9 @@
       <el-button type="primary" size="mini" @click="handleAdd" :disabled="dictVisible">添加</el-button>
     </el-row>
     <el-table
+      v-loading="loading"
       size="mini"
       :data="tableData"
-      v-loading="tableLoading"
       fit
       style="width: 100%;margin-bottom: 20px;"
     >
@@ -77,10 +77,11 @@
 
 <script>
 export default {
-  props: ["curNode", "dictVisible", "tableLoading"],
+  props: ["curNode", "dictVisible"],
   data() {
     return {
       dialogVisible: false,
+      loading: false,
       tableData: [],
       formData: {},
       categoryList: [],
@@ -104,6 +105,7 @@ export default {
     },
     /*加载数据列表*/
     loadData() {
+      this.loading = true;
       this.$store
         .dispatch("dict/getTotal", {
           filter: { categoryId: this.curNode.categoryId }
@@ -127,7 +129,7 @@ export default {
           if (data) {
             this.tableData = data.data;
           }
-          this.tableLoading = false;
+          this.loading = false;
         })
         .catch(error => {
           console.log(error);

@@ -100,13 +100,13 @@
               type="danger"
               icon="el-icon-remove-outline"
               @click="deleteRuleItem(index)"
-            >减少</el-button>
+            ></el-button>
             <el-button
               v-if="index==0"
               type="primary"
               icon="el-icon-circle-plus-outline"
               @click="addRuleItem()"
-            >增加</el-button>
+            ></el-button>
           </el-form-item>
         </el-col>
       </el-row>

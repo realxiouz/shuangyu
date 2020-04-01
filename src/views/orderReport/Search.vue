@@ -4,7 +4,11 @@
       <el-form :model="formData" label-width="110px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="订单号:">
-            <el-input v-model="formData.orderNo" style="width: 100%"></el-input>
+            <el-input
+              v-model="formData.orderNo"
+              @keyup.enter.native="$emit('onSearch', formData)"
+              style="width: 100%"
+            ></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -48,7 +52,11 @@
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="航班号:">
-            <el-input v-model="formData.flightCode" style="width: 100%"></el-input>
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.flightCode"
+              style="width: 100%"
+            ></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -90,7 +98,12 @@
       </el-form>
     </el-col>
     <el-col :xs="8" :sm="6" :md="6" :lg="4" :xl="4" class="search-tools">
-      <el-button type="primary" icon="el-icon-search" size="mini" @click="$emit('onSearch', formData)">查询</el-button>
+      <el-button
+        type="primary"
+        icon="el-icon-search"
+        size="mini"
+        @click="$emit('onSearch', formData)"
+      >查询</el-button>
       <el-button type="text" size="mini" @click="handleMore">
         更多
         <i :class="switchIcon"></i>
@@ -100,42 +113,42 @@
 </template>
 
 <script>
-    export default {
-        name: "orderReportSearch",
-        data() {
-            return {
-                more: false,
-                formData: {
-                    voyageType: "", //航程类型
-                    orderType: "", //订单来源
-                    flightCode: "", //航班号
-                    flightDate: "", //出发日期
-                    cabin: "", //舱位
-                    status: "", //订单状态
-                    pnr: "", //PNR
-                    ticketNo: "", //票号
-                    orderNo: "", //订单号
-                    name: "", //乘机人姓名
-                    cardNo: "",//乘机人证件号
-                    createTime: ""
-                }
-            };
-        },
-        computed: {
-            switchIcon() {
-                if (!this.more) {
-                    return "el-icon-arrow-down el-icon--right";
-                } else {
-                    return "el-icon-arrow-up el-icon--right";
-                }
-            }
-        },
-        methods: {
-            handleMore() {
-                this.more = !this.more;
-            }
-        }
+export default {
+  name: "orderReportSearch",
+  data() {
+    return {
+      more: false,
+      formData: {
+        voyageType: "", //航程类型
+        orderType: "", //订单来源
+        flightCode: "", //航班号
+        flightDate: "", //出发日期
+        cabin: "", //舱位
+        status: "", //订单状态
+        pnr: "", //PNR
+        ticketNo: "", //票号
+        orderNo: "", //订单号
+        name: "", //乘机人姓名
+        cardNo: "", //乘机人证件号
+        createTime: ""
+      }
     };
+  },
+  computed: {
+    switchIcon() {
+      if (!this.more) {
+        return "el-icon-arrow-down el-icon--right";
+      } else {
+        return "el-icon-arrow-up el-icon--right";
+      }
+    }
+  },
+  methods: {
+    handleMore() {
+      this.more = !this.more;
+    }
+  }
+};
 </script>
 
 <style scoped></style>

@@ -25,7 +25,6 @@
       <el-col :xs="13" :sm="14" :md="15" :lg="16" :xl="16">
         <nav-edit
           ref="search"
-          :tableLoading="tableLoading"
           :apiVisible="apiVisible"
           :curNode="curNode"
         ></nav-edit>
@@ -84,7 +83,6 @@ export default {
   data() {
     return {
       treeLoading: true,
-      tableLoading: false,
       dialogVisible: false,
       /*是否选择导航节点，没有选择则不可编辑*/
       apiVisible: true,
@@ -174,6 +172,10 @@ export default {
           .dispatch("nav/updateOne", { nav: this.formData })
           .then(() => {
             this.loadData();
+            this.$message({
+              type:"success",
+              message:"修改成功！"
+            })
           })
           .catch(error => {
             console.log(error);
@@ -190,6 +192,10 @@ export default {
           .then(data => {
             this.curLine.push(data.data);
             this.loadData();
+             this.$message({
+              type:"success",
+              message:"添加成功！"
+            })
           })
           .catch(error => {
             console.log(error);
@@ -232,7 +238,6 @@ export default {
       /*加载该节点所有的api数据*/
       this.curNode = node.data;
       this.apiVisible = false;
-      this.tableLoading = true;
     },
     handleEdit(data, node) {
       this.formData = node;

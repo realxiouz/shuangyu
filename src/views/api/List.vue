@@ -148,6 +148,10 @@ export default {
               this.loadData();
             }
             rows.splice(index, 1);
+            this.$message({
+              type: "success",
+              message: "删除成功！"
+            });
           });
         })
         .catch(err => {
@@ -164,6 +168,10 @@ export default {
         .dispatch("api/save", params)
         .then(() => {
           this.handleSearch();
+          this.$message({
+            type: "success",
+            message: "操作成功！"
+          });
         })
         .catch(error => {
           console.log(error);

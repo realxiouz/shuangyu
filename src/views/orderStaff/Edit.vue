@@ -4,14 +4,7 @@
       <span style="font-weight:700;color:#303133;" v-if="!staffAddVisible">{{this.curNode.title}}</span>
       <span></span>
     </el-row>
-    <el-table
-      v-loading="tableLoading"
-      stripe
-      size="mini"
-      style="width: 100%;"
-      fit
-      :data="tableData"
-    >
+    <el-table v-loading="loading" stripe size="mini" style="width: 100%;" fit :data="tableData">
       <el-table-column prop="fullName" label="姓名" width="100" align="center"></el-table-column>
       <el-table-column prop="phone" label="手机号" align="center"></el-table-column>
       <el-table-column prop="email" label="电子邮箱" align="center"></el-table-column>
@@ -85,12 +78,13 @@
 <script>
 export default {
   name: "orderStaffEdit",
-  props: ["curNode", "tableLoading","staffAddVisible"],
+  props: ["curNode", "staffAddVisible"],
   data() {
     return {
       formData: {
         ownFlags: []
       },
+      loading: false,
       dialogVisible: false,
       logDialogVisible: false,
       tableData: [],
@@ -109,6 +103,7 @@ export default {
   },
   methods: {
     loadTableData() {
+      this.loading = true;
       var searchForm = {};
       if (this.curNode && this.curNode != null) {
         searchForm = {
@@ -126,7 +121,7 @@ export default {
           if (data) {
             this.tableData = data;
           }
-          this.tableLoading = false;
+          this.loading = false;
         })
         .catch(error => {
           console.log(error);

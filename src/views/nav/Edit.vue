@@ -6,8 +6,8 @@
       <el-button type="primary" size="mini" @click="apisEdit" :disabled="apiVisible">添加</el-button>
     </el-row>
     <el-table
-      v-loading="tableLoading"
       :data="tableData"
+      v-loading="loading"
       fit
       tooltip-effect="dark"
       highlight-current-row
@@ -57,10 +57,11 @@
 export default {
   name: "Edit",
   /*apiVisible为false时不可编辑*/
-  props: ["apiVisible", "curNode", "tableLoading"],
+  props: ["apiVisible", "curNode"],
   data() {
     return {
       dialogVisible: false,
+      loading: false,
       /*数据列表*/
       tableData: [],
       /*所有的可选api数据*/
@@ -92,13 +93,14 @@ export default {
     },
     /*根据apiID数组加载api数据列表*/
     loadApisTableList(apiIDList) {
+      this.loading = true;
       this.$store
         .dispatch("api/getMany", { apiIDList: apiIDList })
         .then(data => {
           if (data) {
             this.tableData = data;
           }
-          this.tableLoading = false;
+          this.loading = false;
         })
         .catch(error => {
           console.log(error);
@@ -144,6 +146,10 @@ export default {
         .then(() => {
           //对数据列表进行重新加载
           this.tableLoad();
+          this.$message({
+            type: "success",
+            message: "操作成功！"
+          });
         })
         .catch(error => {
           console.log(error);

@@ -81,7 +81,7 @@
         <el-table-column prop="changeRule" label="改签规则" align="center"></el-table-column>
       </el-table>
       <el-row style="margin-top:20px">
-        <el-button type="primary" @click="goTicket" size="mini">搜索航班</el-button>
+        <el-button type="primary" @click="searchFlight" size="mini">搜索航班</el-button>
       </el-row>
     </el-card>
 
@@ -211,7 +211,7 @@ export default {
     handleSave() {
       this.showPay = true;
     },
-    goTicket() {
+    searchFlight() {
       this.flightShow = true;
       let flightInfo = {
         arr: this.flightData[0].arr,
