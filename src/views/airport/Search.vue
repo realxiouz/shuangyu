@@ -36,10 +36,7 @@ export default {
   data() {
     return {
       more: false,
-      formData: {
-        airportName: "",
-        airportCode: ""
-      }
+      formData: {}
     };
   },
   computed: {
