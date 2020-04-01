@@ -152,6 +152,10 @@ export default {
         .dispatch("role/save", { role: formData })
         .then(() => {
           this.loadData();
+          this.$message({
+            type:"success",
+            message:"添加成功！"
+          })
         })
         .catch(error => {
           console.log(error);
@@ -187,6 +191,10 @@ export default {
         .catch(error => {
           console.log(error);
         });
+      this.$message({
+        type: "success",
+        message: "查询成功!"
+      });
     },
     open(func, data, message) {
       this.$confirm(message, "提示", {

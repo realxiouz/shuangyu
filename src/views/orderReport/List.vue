@@ -15,7 +15,7 @@
         v-loading="loading"
         fit
       >
-        <el-table-column label="序号" type="index" width="40" align="center">
+        <el-table-column label="序号" type="index" width="50" align="center">
           <template slot-scope="scope">
             <span>{{(currentPage - 1) * pageSize + scope.$index + 1}}</span>
           </template>
