@@ -409,6 +409,23 @@ export default new Router({
       ]
     },
     {
+      title: '财务管理',
+      path: '/finance',
+      name: 'finance',
+      component: Layout,
+      redirect: '/finance/list',
+      meta: { title: '去哪儿', icon: 'home' },
+      children: [
+        {
+          title: '资金账号管理',
+          path: '/finance/fund/account',
+          name: 'fundAccount',
+          component: () => import('@/views/fundAccount/List'),
+          meta: { title: '去哪儿订单管理', icon: 'home' }
+        }
+      ]
+    },
+    {
       path: "*",
       redirect: "/404",
       hidden: true
