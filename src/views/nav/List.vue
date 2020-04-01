@@ -172,6 +172,10 @@ export default {
           .dispatch("nav/updateOne", { nav: this.formData })
           .then(() => {
             this.loadData();
+            this.$message({
+              type:"success",
+              message:"修改成功！"
+            })
           })
           .catch(error => {
             console.log(error);
@@ -188,6 +192,10 @@ export default {
           .then(data => {
             this.curLine.push(data.data);
             this.loadData();
+             this.$message({
+              type:"success",
+              message:"添加成功！"
+            })
           })
           .catch(error => {
             console.log(error);

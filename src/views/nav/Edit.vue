@@ -61,7 +61,7 @@ export default {
   data() {
     return {
       dialogVisible: false,
-      loading:false,
+      loading: false,
       /*数据列表*/
       tableData: [],
       /*所有的可选api数据*/
@@ -93,14 +93,14 @@ export default {
     },
     /*根据apiID数组加载api数据列表*/
     loadApisTableList(apiIDList) {
-      this.loading=true;
+      this.loading = true;
       this.$store
         .dispatch("api/getMany", { apiIDList: apiIDList })
         .then(data => {
           if (data) {
             this.tableData = data;
           }
-          this.loading=false;
+          this.loading = false;
         })
         .catch(error => {
           console.log(error);
@@ -146,6 +146,10 @@ export default {
         .then(() => {
           //对数据列表进行重新加载
           this.tableLoad();
+          this.$message({
+            type: "success",
+            message: "操作成功！"
+          });
         })
         .catch(error => {
           console.log(error);
