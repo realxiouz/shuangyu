@@ -83,7 +83,7 @@ export default {
         .dispatch("airport/getPageList", {
           pageFlag: this.pageFlag,
           pageSize: this.pageSize,
-          lastId: this.lastId,
+          lastId: 'blank',
           filter: {}
         })
         .then(data => {

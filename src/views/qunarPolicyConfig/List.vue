@@ -103,7 +103,7 @@ export default {
         .dispatch("qunarPolicyConfig/getPageList", {
           pageFlag: this.pageFlag,
           pageSize: this.pageSize,
-          lastId: this.lastId,
+          lastId: 'blank',
           filter: {}
         })
         .then(data => {

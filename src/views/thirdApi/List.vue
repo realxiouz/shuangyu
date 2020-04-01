@@ -93,7 +93,7 @@ export default {
         .dispatch("thirdApiService/getPageList", {
           pageFlag: this.pageFlag,
           pageSize: this.pageSize,
-          lastId: this.lastId,
+          lastId: 'blank',
           filters: params
         })
         .then(data => {

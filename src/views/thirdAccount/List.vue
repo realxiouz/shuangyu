@@ -90,7 +90,7 @@ export default {
         .dispatch("thirdAccount/getPageList", {
           pageFlag: this.pageFlag,
           pageSize: this.pageSize,
-          lastId: this.lastId,
+          lastId: 'blank',
           filter: {}
         })
         .then(data => {
