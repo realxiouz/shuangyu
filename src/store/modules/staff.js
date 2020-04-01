@@ -11,7 +11,8 @@ import {
   getPrepareUserList,
   getMany,
   permissionsForUpdate,
-  permissionsForAdd
+  permissionsForAdd,
+  existedStaffList
 } from "@/api/staff";
 import {getToken, setToken, removeToken} from "@/utils/auth";
 
@@ -183,6 +184,19 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {filedValue} = params;
       permissionsForAdd(filedValue)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  existedStaffList({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {filedValue} = params;
+      existedStaffList(filedValue)
         .then(response => {
           const {data} = response;
           resolve(data);

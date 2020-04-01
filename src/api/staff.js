@@ -107,3 +107,10 @@ export function permissionsForAdd(filedValue) {
     method: "get"
   });
 }
+
+export function existedStaffList(filedValue) {
+  return request({
+    url: `/staff/existed/list/${filedValue}`,
+    method: "get"
+  });
+}
