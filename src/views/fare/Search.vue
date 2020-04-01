@@ -3,28 +3,48 @@
     <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
       <el-form label-width="110px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="航段:" >
-            <el-input v-model="formData.segment" placeholder="航段"></el-input>
+          <el-form-item label="航段:">
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.segment"
+              placeholder="航段"
+            ></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="出发地三字码:">
-            <el-input v-model="formData.dpt" placeholder="出发地三字码"></el-input>
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.dpt"
+              placeholder="出发地三字码"
+            ></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="目的地三字码:">
-            <el-input v-model="formData.arr" placeholder="目的地三字码"></el-input>
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.arr"
+              placeholder="目的地三字码"
+            ></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="航司二字码:">
-            <el-input v-model="formData.airlineCode" placeholder="航司二字码"></el-input>
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.airlineCode"
+              placeholder="航司二字码"
+            ></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="航司舱位:">
-            <el-input v-model="formData.cabin" placeholder="航司舱位"></el-input>
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.cabin"
+              placeholder="航司舱位"
+            ></el-input>
           </el-form-item>
         </el-col>
       </el-form>
