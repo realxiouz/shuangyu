@@ -8,7 +8,6 @@
     <el-table
       size="mini"
       :data="tableData"
-      v-loading="tableLoading"
       fit
       style="width: 100%;margin-bottom: 20px;"
     >
@@ -77,7 +76,7 @@
 
 <script>
 export default {
-  props: ["curNode", "dictVisible", "tableLoading"],
+  props: ["curNode", "dictVisible"],
   data() {
     return {
       dialogVisible: false,
@@ -127,7 +126,6 @@ export default {
           if (data) {
             this.tableData = data.data;
           }
-          this.tableLoading = false;
         })
         .catch(error => {
           console.log(error);

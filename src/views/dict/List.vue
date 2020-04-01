@@ -24,7 +24,7 @@
         </el-tree>
       </el-col>
       <el-col :xs="13" :sm="14" :md="15" :lg="16" :xl="18">
-        <dict-edit :tableLoading="tableLoading" :dictVisible="dictVisible" :curNode="curNode" />
+        <dict-edit :dictVisible="dictVisible" :curNode="curNode" />
       </el-col>
     </el-row>
     <el-dialog title="添加类别" :visible.sync="dialogVisible" width="24%" :close-on-click-modal="false">
@@ -63,7 +63,6 @@ export default {
   data() {
     return {
       loading: true,
-      tableLoading: false,
       dialogVisible: false,
       /*是否选择类别节点，没有选择则不可编辑*/
       dictVisible: true,
@@ -196,7 +195,6 @@ export default {
       if (!node.data.hasChildren) {
         this.curNode = node.data;
         this.dictVisible = false;
-        this.tableLoading = true;
       } else {
         this.dictVisible = true;
       }
