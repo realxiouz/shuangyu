@@ -1,6 +1,8 @@
 <template>
   <div class="bigBox">
-    <!-- <div class="searchBox"></div> -->
+    <div class="searchBox">
+      <order-task-search  @onSearch="handleSearch"></order-task-search>
+    </div>
     <div class="contentBox">
       <el-table
         :data="tableData"
@@ -60,6 +62,8 @@
 </template>
 
 <script>
+import orderTaskSearch from "./Search.vue";
+
 export default {
   name: "orderTask",
 
@@ -75,7 +79,9 @@ export default {
       searchParams: {}
     };
   },
-  components: {},
+  components: {
+    orderTaskSearch
+  },
   methods: {
     handleSizeChange(size) {
       this.pageSize = size;
@@ -170,6 +176,10 @@ export default {
       } else {
         return "";
       }
+    },
+    handleSearch(params){
+      console.log(params)
+
     }
   },
   created() {
