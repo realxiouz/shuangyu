@@ -1,4 +1,4 @@
-import {getList, getOne, removeOne, save,getTotal,getOrderDetail,getOrderMinPrice,getOrderFlight,getFlightPrice} from "@/api/order";
+import {getList, getOne, removeOne, save,getTotal,getOrderDetail,getOrderMinPrice,getOrderFlight,getFlightPrice,placeAnOrder,openPay} from "@/api/order";
 import {getToken} from "@/utils/auth";
 
 
@@ -133,8 +133,32 @@ const actions = {
         });
     });
   },
-
-
+  // 蜗牛下单
+  placeAnOrder({commit}, params) {
+    return new Promise((resolve, reject) => {
+      placeAnOrder(params)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  // 蜗牛支付
+  openPay({commit}, params) {
+    return new Promise((resolve, reject) => {
+      openPay(params)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
 };
 
 export default {

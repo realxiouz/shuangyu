@@ -71,3 +71,22 @@ export function getFlightPrice(data) {
     data
   });
 }
+
+// place an order下单
+
+export function placeAnOrder(data) {
+  return request({
+    url: `/open/place/an/order`,
+    method: 'post',
+    data
+  });
+}
+
+// 蜗牛支付
+export function openPay(params) {
+  return request({
+    url: `/open/pay`,
+    method: 'get',
+    params: params
+  });
+}
