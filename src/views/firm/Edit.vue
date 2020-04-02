@@ -16,24 +16,12 @@
         <el-input type="text" placeholder="请输入联系人" v-model="formData.contactPerson"></el-input>
       </el-form-item>
       <el-form-item label="联系电话">
-        <div v-if="isExistsForPhone" style="color: crimson">*该信息已被以下用户注册,你可直接选择用户</div>
-        <el-autocomplete
-          v-model="formData.phone"
-          :fetch-suggestions="querySearchAsync"
-          placeholder="请输入联系电话"
-          @select="handleSelect"
-          style="width: 100%"
-        ></el-autocomplete>
+        <el-input type="text" v-model="formData.phone" placeholder="请输入联系电话" @blur="isUsedForPhone"></el-input>
+        <span v-if="isExistsForPhone" style="color: crimson">*该信息已注册</span>
       </el-form-item>
       <el-form-item label="电子邮箱">
-        <div v-if="isExistsForEmail" style="color: crimson">*该信息已被以下用户注册,你可直接选择用户</div>
-        <el-autocomplete
-          v-model="formData.email"
-          :fetch-suggestions="querySearchAsync"
-          placeholder="请输入联系电子邮箱"
-          @select="handleSelect"
-          style="width: 100%"
-        ></el-autocomplete>
+        <el-input type="text" v-model="formData.email" placeholder="请输入联系电子邮箱" @blur="isUsedForEmail"></el-input>
+        <span v-if="isExistsForEmail" style="color: crimson">*该信息已注册</span>
       </el-form-item>
       <el-form-item label="机构所在地">
         <el-input type="text" placeholder="请输入机构所在地" v-model="formData.location"></el-input>
@@ -85,6 +73,7 @@ export default {
       transData: [],
       formData: {},
       hasStep: true,
+        updateTempData: {},
       /*用于校验所填写的信息是否已经被使用*/
       isExistsForPhone: false,
       isExistsForEmail: false,
@@ -145,47 +134,16 @@ export default {
       this.initChecked();
       if (this.curNode.firmName) {
         this.formData = this.curNode;
+        Object.assign(this.updateTempData, this.curNode);
       } else {
         this.clearForm();
       }
       this.loadRoles();
     },
-    querySearchAsync(keyword, callBack) {
-      if (keyword) {
-        this.$store
-          .dispatch("staff/existedStaffList", { filedValue: keyword })
-          .then(data => {
-            data.forEach(item => {
-              item.value = item.fullName;
-            });
-            callBack(data);
-            this.initChecked();
-            console.log(keyword);
-            console.log(this.formData.phone);
-            if (0 != data.length && keyword === this.formData.phone) {
-              this.isExistsForPhone = true;
-            } else if (0 != data.length && keyword === this.formData.phone) {
-              this.isExistsForEmail = true;
-            }
-          })
-          .catch(error => {
-            console.log(error);
-          });
-        console.log(this.isExistsForPhone);
-      } else {
-        callBack([]);
-      }
-    },
     //重置校验
     initChecked() {
       this.isExistsForPhone = false;
       this.isExistsForEmail = false;
-    },
-    handleSelect(item) {
-      this.initChecked();
-      this.formData.contactPerson = item.fullName;
-      this.formData.phone = item.phone;
-      this.formData.email = item.email;
     },
     handleSave() {
       if (this.isExistsForPhone || this.isExistsForEmail) {
@@ -193,7 +151,38 @@ export default {
       } else {
         this.$emit("onSave", this.formData);
       }
-    }
+    },
+      /*校验所填写的信息是否已经被使用*/
+      isUsedForPhone() {
+          if (!this.formData.phone || "" == this.formData.phone || this.formData.phone === this.updateTempData.phone) {
+              return;
+          }
+          this.$store
+              .dispatch("staff/isExist", {
+                  filedValue: this.formData.phone
+              })
+              .then(data => {
+                  this.isExistsForPhone = data;
+              })
+              .catch(error => {
+                  console.log(error);
+              });
+      },
+      isUsedForEmail() {
+          if (!this.formData.email || "" == this.formData.email || this.formData.email === this.updateTempData.email) {
+              return;
+          }
+          this.$store
+              .dispatch("staff/isExist", {
+                  filedValue: this.formData.email
+              })
+              .then(data => {
+                  this.isExistsForEmail = data;
+              })
+              .catch(error => {
+                  console.log(error);
+              });
+      }
   },
   watch: {
     curNode() {
