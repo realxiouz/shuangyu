@@ -1,18 +1,18 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <fund-account-search @onSearch="search"></fund-account-search>
+      <fund-account-search @onSearch="handleSearch"></fund-account-search>
     </div>
     <div class="contentBox">
       <el-row style="margin-bottom:15px;margin-left:22px;">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
-      <el-table v-loading="loading" :data="tableData" style="width: 100%;margin-bottom:15px;">
+      <el-table size="mini" v-loading="loading" :data="tableData" style="width: 100%;margin-bottom:15px;">
         <el-table-column prop="platform" label="资金账号平台" align="center"></el-table-column>
         <el-table-column prop="fundAccount" label="资金账号" align="center"></el-table-column>
         <el-table-column prop="initBalance" label="初始余额" align="center"></el-table-column>
         <el-table-column prop="balance" label="余额" align="center"></el-table-column>
-        <el-table-column label="操作" align="center" width="200">
+        <el-table-column label="操作" align="center" width="180">
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary" size="small">编辑</el-button>
             <el-button @click="handleDelete(scope.row)" type="danger" size="small">删除</el-button>
@@ -89,8 +89,8 @@
                         console.log(error);
                     });
             },
-            search(keyword) {
-                this.$store.dispatch("fundAccount/getTotal", {filter: keyword ? {fundAccount: keyword} : {}})
+            handleSearch(params) {
+                this.$store.dispatch("fundAccount/getTotal", {filter: params.keyword ? {fundAccount: params.keyword} : {}})
                     .then(data => {
                         this.total = data.data;
                     }).catch(error => {
@@ -100,7 +100,7 @@
                     pageFlag: this.pageFlag,
                     pageSize: this.pageSize,
                     lastId: this.lastId,
-                    filter: keyword ? {fundAccount: keyword} : {}
+                    filter: params.keyword ? {fundAccount: params.keyword} : {}
                 }).then(data => {
                     this.tableData = data.data;
                 }).catch(error => {

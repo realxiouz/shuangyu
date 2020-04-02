@@ -2,6 +2,13 @@
   <div class="contentBox">
     <el-row :gutter="20">
       <el-col :xs="11" :sm="10" :md="9" :lg="8" :xl="8">
+        <el-row style="margin-bottom:20px;">
+          <span
+            style="font-weight:700;color:#303133;"
+            v-if="this.$store.state.loginInfo.firm"
+          >{{this.$store.state.loginInfo.firm.firmName}}</span>
+        </el-row>
+
         <el-tree
           v-loading="loading"
           :data="treeData"
@@ -12,11 +19,7 @@
         ></el-tree>
       </el-col>
       <el-col :xs="13" :sm="14" :md="15" :lg="16" :xl="16">
-        <staff-form
-          :curNode="curNode"
-          :staffAddVisible="staffAddVisible"
-          style="width: 100%"
-        />
+        <staff-form :curNode="curNode" :staffAddVisible="staffAddVisible" style="width: 100%" />
       </el-col>
     </el-row>
   </div>

@@ -200,6 +200,10 @@ export default {
         this.searchParams = newParams;
         this.loadData(this.searchParams);
         this.loadTotal(this.searchParams);
+        this.$message({
+          type:'success',
+          message:'查询成功！'
+        })
       }
     },
     handleRemove(orderNo) {
