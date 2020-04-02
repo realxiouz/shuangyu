@@ -414,14 +414,14 @@ export default new Router({
       name: 'finance',
       component: Layout,
       redirect: '/finance/list',
-      meta: { title: '去哪儿', icon: 'home' },
+      meta: { title: '财务管理', icon: 'home' },
       children: [
         {
           title: '资金账号管理',
           path: '/finance/fund/account',
           name: 'fundAccount',
           component: () => import('@/views/fundAccount/List'),
-          meta: { title: '去哪儿订单管理', icon: 'home' }
+          meta: { title: '资金账号管理', icon: 'home' }
         }
       ]
     },
