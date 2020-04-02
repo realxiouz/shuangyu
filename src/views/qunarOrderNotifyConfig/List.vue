@@ -101,7 +101,7 @@ export default {
         .dispatch("qunarOrderNotifyConfig/getPageList", {
           pageFlag: this.pageFlag,
           pageSize: this.pageSize,
-          lastId: 'blank',
+          lastId: this.lastId,
           filter: {}
         })
         .then(data => {

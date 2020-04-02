@@ -134,7 +134,7 @@ export default {
         .dispatch("role/getPageList", {
           pageFlag: this.pageFlag,
           pageSize: this.pageSize,
-          lastId: '0',
+          lastId: this.lastId,
           filter: {}
         })
         .then(data => {

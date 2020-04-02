@@ -80,7 +80,7 @@
                     .dispatch("fundAccount/getPageList", {
                         pageFlag: this.pageFlag,
                         pageSize: this.pageSize,
-                        lastId: 'blank',
+                        lastId: this.lastId,
                         filter: {}
                     }).then(data => {
                     this.tableData = data.data;

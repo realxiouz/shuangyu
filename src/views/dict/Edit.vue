@@ -122,7 +122,7 @@ export default {
         .dispatch("dict/getPageList", {
           pageFlag: this.pageFlag,
           pageSize: this.pageSize,
-          lastId: 'blank',
+          lastId: this.lastId,
           filter: { categoryId: this.curNode.categoryId }
         })
         .then(data => {
