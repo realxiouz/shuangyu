@@ -185,11 +185,13 @@ export default {
       };
     },
     /*获取该部门下的员工列表*/
-    loadTableData() {
+    loadTableData(params) {
       this.loading = true;
       this.$store
         .dispatch("staff/getList", {
-          filter: { firmId: this.curNode.firmId, deptId: this.curNode.deptId }
+          filter: params
+            ? params
+            : { firmId: this.curNode.firmId, deptId: this.curNode.deptId }
         })
         .then(data => {
           if (data) {
@@ -492,6 +494,8 @@ export default {
   },
   created() {
     this.loadRoles();
+    let params = {};
+    this.loadTableData(params);
   },
   watch: {
     curNode() {
