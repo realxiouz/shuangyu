@@ -10,9 +10,7 @@ import {
   getPageList,
   getPrepareUserList,
   getMany,
-  permissionsForUpdate,
-  permissionsForAdd,
-  existedStaffList
+  isExist
 } from "@/api/staff";
 import {getToken, setToken, removeToken} from "@/utils/auth";
 
@@ -167,36 +165,10 @@ const actions = {
         });
     });
   },
-  permissionsForUpdate({commit}, params) {
-    return new Promise((resolve, reject) => {
-      const {filedValue, staffId} = params;
-      permissionsForUpdate(filedValue, staffId)
-        .then(response => {
-          const {data} = response;
-          resolve(data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  permissionsForAdd({commit}, params) {
+  isExist({commit}, params) {
     return new Promise((resolve, reject) => {
       const {filedValue} = params;
-      permissionsForAdd(filedValue)
-        .then(response => {
-          const {data} = response;
-          resolve(data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  existedStaffList({commit}, params) {
-    return new Promise((resolve, reject) => {
-      const {filedValue} = params;
-      existedStaffList(filedValue)
+      isExist(filedValue)
         .then(response => {
           const {data} = response;
           resolve(data);

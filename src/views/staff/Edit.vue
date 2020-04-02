@@ -28,8 +28,9 @@
       </el-table-column>
       <el-table-column prop="phone" label="手机号" align="center"></el-table-column>
       <el-table-column prop="email" label="电子邮箱" align="center"></el-table-column>
-      <el-table-column label="操作" width="180" align="center">
+      <el-table-column label="操作" width="240" align="center">
         <template slot-scope="scope">
+          <el-button size="mini" :type="scope.row.userId?'success':'info'" :disabled="scope.row.userId?true:false" @click="handleAssociate(scope.$index, scope.row)">关联用户</el-button>
           <el-button
             size="mini"
             type="primary"
@@ -50,17 +51,14 @@
         <el-form-item>
           <el-button type="primary" size="mini" icon="el-icon-search" @click="searchUser"></el-button>
         </el-form-item>
-        <el-form-item>
-          <el-button type="primary" size="mini" @click="handleQuiklyAdd">新增员工</el-button>
-        </el-form-item>
       </el-form>
       <el-table
+        highlight-current-row
         size="mini"
         :data="userTable"
         style="width: 100%"
-        @selection-change="handleSelectionChange"
+        @row-click="handleRowClick"
       >
-        <el-table-column type="selection" width="55" align="center"></el-table-column>
         <el-table-column prop="nickName" label="昵称" align="center" width="120"></el-table-column>
         <el-table-column prop="fullName" label="姓名" align="center" width="120"></el-table-column>
         <el-table-column prop="gender" label="性别" align="center" width="120">
@@ -83,12 +81,6 @@
       :visible.sync="permissionDialogVisible"
       :close-on-click-modal="false"
     >
-      <el-button
-        type="primary"
-        size="mini"
-        @click="handleQuiklyAdd"
-        style="margin-bottom: 10px; margin-left: 80%;"
-      >快速添加</el-button>
       <el-form size="mini" label-width="120px" v-show="hasStep">
         <!--   企业ID  -->
         <input type="hidden" v-model="formData.staffId" />
@@ -111,11 +103,7 @@
         </el-form-item>
         <el-form-item label="身份证号">
           <el-input v-model="formData.idCardNo" @blur="isUsedForIDNo"></el-input>
-          <span
-            v-if="isExistsForIDNo && ''===formData.staffId"
-            style="color: red"
-          >*信息已被注册，建议通过 "快速添加" 添加员工</span>
-          <span v-if="isExistsForIDNo && ''!=formData.staffId" style="color: red">*信息已被使用</span>
+          <span v-if="isExistsForIDNo" style="color: red">*信息已被使用</span>
         </el-form-item>
         <el-form-item label="手机号码">
           <el-input
@@ -125,19 +113,11 @@
             show-word-limit
             @blur="isUsedForPhone"
           ></el-input>
-          <span
-            v-if="isExistsForPhone && ''===formData.staffId"
-            style="color: red"
-          >*信息已被注册，建议通过 "快速添加" 添加员工</span>
-          <span v-if="isExistsForPhone && ''!=formData.staffId" style="color: red">*信息已被使用</span>
+          <span v-if="isExistsForPhone" style="color: red">*信息已被使用</span>
         </el-form-item>
         <el-form-item label="邮箱">
           <el-input v-model="formData.email" @blur="isUsedForEmail"></el-input>
-          <span
-            v-if="isExistsForEmail && ''===formData.staffId"
-            style="color: red"
-          >*信息已被注册，建议通过 "快速添加" 添加员工</span>
-          <span v-if="isExistsForEmail && ''!=formData.staffId" style="color: red">*信息已被使用</span>
+          <span v-if="isExistsForEmail" style="color: red">*信息已被使用</span>
         </el-form-item>
       </el-form>
       <el-transfer
@@ -168,16 +148,15 @@ export default {
       permissionDialogVisible: false,
       /*点击部门后用于展示的员工列表*/
       tableData: [],
-      /*选择用户后生成的列表*/
-      prepares: [],
-      /*待提交的员工列表*/
-      prepareStaffs: [],
+        //当点击用户选择列表时
+        curRow: {},
       /*进行用户查询后待选择的用户列表*/
       userTable: [],
       keyword: "",
       hasStep: true,
       formData: {},
       transData: [],
+        updateTempData: {},
       transferProps: {
         key: "roleId",
         label: "roleName"
@@ -204,13 +183,6 @@ export default {
         domain: "",
         roles: []
       };
-    },
-    /*两种员工注册方式间的切换*/
-    handleQuiklyAdd() {
-      this.dialogVisible = this.dialogVisible ? false : true;
-      this.permissionDialogVisible = this.permissionDialogVisible
-        ? false
-        : true;
     },
     /*获取该部门下的员工列表*/
     loadTableData() {
@@ -275,42 +247,26 @@ export default {
     handleIconClick() {
       this.keyword = "";
     },
-    /*当用户列表的选择状态发生改变时调用*/
-    handleSelectionChange(selection) {
-      this.prepares = selection;
-    },
     /*对待提交员工列表进行提交*/
     handleSave() {
       this.dialogVisible = false;
-      this.initPreparesToStaff();
+      this.formData.userId = this.curRow.userId;
 
       this.$store
-        .dispatch("staff/addMany", this.prepareStaffs)
-        .then(data => {
-          console.log(data);
-          this.$confirm(
-            "员工添加成功，请注意通过编辑员工完善员工信息！",
-            "提示",
-            {
-              confirmButtonText: "确定",
-              cancelButtonText: "取消",
-              type: "success"
-            }
-          ).then();
+        .dispatch("staff/updateOne", this.formData)
+        .then(() => {
           this.loadTableData();
         })
         .catch(error => {
           console.log(error);
         });
-
-      //清除列表缓存
-      this.clearPreparesList();
     },
     handleCancel() {
       this.dialogVisible = false;
     },
     /*点击修改*/
     permissionChange(idx, row) {
+        this.clearFormData();
       /*根据对应的员工ID查询对应的用工对象*/
       this.$store
         .dispatch("staff/getOne", {
@@ -323,6 +279,7 @@ export default {
             data.data.roles = [];
           }
           this.formData = data.data;
+          Object.assign(this.updateTempData,data.data);
         })
         .catch(error => {
           console.log(error);
@@ -382,10 +339,34 @@ export default {
           console.log(error);
         });
     },
+      handleAssociate(idx, row){
+        this.clearFormData();
+          this.searchUser();
+          /*根据对应的员工ID查询对应的用工对象*/
+          this.$store
+              .dispatch("staff/getOne", {
+                  staffId: row.staffId
+              })
+              .then(data => {
+                  /*如果请求到的数据roles为null会报错*/
+                  if (!data.data.roles) {
+                      data.data.roles = [];
+                  }
+                  this.formData = data.data;
+                  this.dialogVisible = true;
+              })
+              .catch(error => {
+                  console.log(error);
+              });
+      },
     /*对员工进行删除*/
     handleDelete(idx, row) {
       this.open(this.delete, row.staffId);
     },
+      //选中当前行
+      handleRowClick(row){
+          this.curRow = row;
+      },
     /*根据对应员工ID*/
     delete(staffId) {
       this.$store
@@ -437,28 +418,6 @@ export default {
         return "";
       }
     },
-    /*格式化待提交员工列表*/
-    initPreparesToStaff() {
-      if (0 != this.prepares.length) {
-        this.prepares.forEach(item => {
-          let temp = {};
-          temp.userId = item.userId;
-          temp.firmId = this.curNode.firmId;
-          temp.depts = [this.curNode.deptId];
-          temp.roles = this.curNode.roles;
-          //从用户信息中冗余到员工中的数据
-          temp.fullName = item.fullName;
-          temp.gender = item.gender;
-          temp.birthDate = item.birthDate;
-          temp.phone = item.phone;
-          temp.email = item.email;
-          //从企业中冗余
-          temp.domain = this.curNode.domain;
-
-          this.prepareStaffs.push(temp);
-        });
-      }
-    },
     clearTableData() {
       this.tableData = [];
     },
@@ -472,99 +431,51 @@ export default {
     clearFormData() {
       this.formData = this.defaultFormData();
     },
-    /*清除待提交员工列表的缓存*/
-    clearPreparesList() {
-      this.prepares = [];
-      this.prepareStaffs = [];
-    },
     /*校验所填写的信息是否已经被使用*/
     isUsedForPhone() {
-      if (!this.formData.phone && "" == this.formData.phone) {
-        return null;
+        if (!this.formData.phone || "" == this.formData.phone || this.formData.phone === this.updateTempData.phone) {
+        return;
       }
-      if ("" != this.formData.staffId) {
         this.$store
-          .dispatch("staff/permissionsForUpdate", {
-            filedValue: this.formData.phone,
-            staffId: this.formData.staffId
-          })
-          .then(data => {
-            this.isExistsForPhone = !data;
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      } else {
-        this.$store
-          .dispatch("staff/permissionsForAdd", {
+          .dispatch("staff/isExist", {
             filedValue: this.formData.phone
           })
           .then(data => {
-            this.isExistsForPhone = !data;
+            this.isExistsForPhone = data;
           })
           .catch(error => {
             console.log(error);
           });
-      }
     },
     isUsedForIDNo() {
-      if (!this.formData.idCardNo && "" == this.formData.idCardNo) {
-        return null;
+      if (!this.formData.idCardNo || "" == this.formData.idCardNo || this.formData.idCardNo === this.updateTempData.idCardNo) {
+        return;
       }
-      if ("" != this.formData.staffId) {
         this.$store
-          .dispatch("staff/permissionsForUpdate", {
+          .dispatch("staff/isExist", {
             filedValue: this.formData.idCardNo,
-            staffId: this.formData.staffId
           })
           .then(data => {
-            this.isExistsForIDNo = !data;
+            this.isExistsForIDNo = data;
           })
           .catch(error => {
             console.log(error);
           });
-      } else {
-        this.$store
-          .dispatch("staff/permissionsForAdd", {
-            filedValue: this.formData.idCardNo,
-            staffId: this.formData.staffId
-          })
-          .then(data => {
-            this.isExistsForIDNo = !data;
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      }
     },
     isUsedForEmail() {
-      if (!this.formData.email && "" == this.formData.email) {
-        return null;
+        if (!this.formData.email || "" == this.formData.email || this.formData.email === this.updateTempData.email) {
+        return;
       }
-      if ("" != this.formData.staffId) {
         this.$store
-          .dispatch("staff/permissionsForUpdate", {
-            filedValue: this.formData.email,
-            staffId: this.formData.staffId
-          })
-          .then(data => {
-            this.isExistsForEmail = !data;
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      } else {
-        this.$store
-          .dispatch("staff/permissionsForAdd", {
+          .dispatch("staff/isExist", {
             filedValue: this.formData.email
           })
           .then(data => {
-            this.isExistsForEmail = !data;
+            this.isExistsForEmail = data;
           })
           .catch(error => {
             console.log(error);
           });
-      }
     }
   },
   computed: {

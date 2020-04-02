@@ -94,23 +94,9 @@ export function getLoginInfo(firmId) {
   });
 }
 
-export function permissionsForUpdate(filedValue, staffId) {
+export function isExist(filedValue) {
   return request({
-    url: `/staff/permissions/update/${filedValue}/${staffId}`,
-    method: "get"
-  });
-}
-
-export function permissionsForAdd(filedValue) {
-  return request({
-    url: `/staff/permissions/add/${filedValue}`,
-    method: "get"
-  });
-}
-
-export function existedStaffList(filedValue) {
-  return request({
-    url: `/staff/existed/list/${filedValue}`,
+    url: `/staff/exists/${filedValue}`,
     method: "get"
   });
 }
