@@ -1,12 +1,9 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <order-search @onSearch="handleSearch"></order-search>
+      <order-info-search @onSearch="handleSearch"></order-info-search>
     </div>
     <div class="contentBox">
-      <!-- <el-row style="margin-bottom:15px;margin-left:40px">
-        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
-      </el-row>-->
       <el-table
         :data="tableData"
         size="mini"
@@ -20,8 +17,17 @@
             <span>{{(currentPage - 1) * pageSize + scope.$index + 1}}</span>
           </template>
         </el-table-column>
-
         <el-table-column prop="orderNo" label="订单号" width="180" align="center"></el-table-column>
+        <el-table-column prop="fundAccount" label="资金账号" align="center"></el-table-column>
+        <el-table-column prop="accountId" label="平台账号"  align="center"></el-table-column>
+        <el-table-column prop="pid" label="PID"  align="center"></el-table-column>
+        <el-table-column prop="level" label="level" align="center"></el-table-column>
+
+        <el-table-column prop="rootOrderNo" label="销售出票单号" align="center"></el-table-column>
+        <el-table-column prop="linkOrderNo" label="业务订单编号" align="center"></el-table-column>
+        <el-table-column prop="finishTime" label="业务完结时间" align="center"></el-table-column>
+        <el-table-column prop="transactionTime" label="交易时间" align="center"></el-table-column>
+
         <el-table-column
           prop="policyCode"
           :show-overflow-tooltip="true"
@@ -93,7 +99,7 @@
 </template>
 
 <script>
-import orderSearch from "./Search.vue";
+import orderInfoSearch from "./Search.vue";
 
 export default {
   name: "orderList",
@@ -107,6 +113,9 @@ export default {
       tableData: [],
       searchParams: {}
     };
+  },
+  components: {
+    orderInfoSearch
   },
   methods: {
     handleSizeChange: function(size) {
@@ -162,49 +171,46 @@ export default {
         this.loadTotal(this.searchParams);
       } else {
         const newParams = {};
-        if (params.name) {
-          newParams.name = params.name;
+        if (params.fundAccount) {
+          newParams.fundAccount = params.fundAccount;
         }
-        if (params.cardNo) {
-          newParams.cardNo = params.cardNo;
+        if (params.accountId) {
+          newParams.accountId = params.accountId;
         }
         if (params.orderNo) {
           newParams.orderNo = params.orderNo;
         }
-        if (params.ticketNo) {
-          newParams.ticketNo = params.ticketNo;
+        if (params.pid) {
+          newParams.pid = params.pid;
         }
-        if (params.pnr) {
-          newParams.pnr = params.pnr;
+        if (params.path) {
+          newParams.path = params.path;
         }
-        if (params.status) {
-          newParams.status = params.status;
+        if (params.level) {
+          newParams.level = params.level;
         }
-        if (params.flightDate) {
-          newParams.flightDate = params.flightDate;
+        if (params.rootOrderNo) {
+          newParams.rootOrderNo = params.rootOrderNo;
         }
-        if (params.cabin) {
-          newParams.cabin = params.cabin;
-        }
-        if (params.flightCode) {
-          newParams.flightCode = params.flightCode;
-        }
-        if (params.orderType) {
-          newParams.orderType = params.orderType;
-        }
-        if (params.voyageType) {
-          newParams.voyageType = params.voyageType;
+        if (params.linkOrderNo) {
+          newParams.linkOrderNo = params.linkOrderNo;
         }
         if (params.createTime) {
           newParams.createTime = params.createTime;
+        }
+        if (params.finishTime) {
+          newParams.finishTime = params.finishTime;
+        }
+        if (params.transactionTime) {
+          newParams.transactionTime = params.transactionTime;
         }
         this.searchParams = newParams;
         this.loadData(this.searchParams);
         this.loadTotal(this.searchParams);
         this.$message({
-          type:'success',
-          message:'查询成功！'
-        })
+          type: "success",
+          message: "查询成功！"
+        });
       }
     },
     handleRemove(orderNo) {
@@ -308,9 +314,7 @@ export default {
       };
     }
   },
-  components: {
-    orderSearch
-  },
+
   created() {
     this.loadData(this.searchParams);
     this.loadTotal();

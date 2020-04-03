@@ -49,6 +49,7 @@ export default {
           this.loading = false;
         })
         .catch(error => {
+          this.loading = false;
           console.log(error);
         });
     },

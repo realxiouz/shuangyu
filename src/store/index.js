@@ -75,7 +75,7 @@ export default new Vuex.Store({
     category,
     dict,
     orderTask,
-    fundAccount
+    fundAccount,
   },
   state: {
     loginInfo: {}

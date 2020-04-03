@@ -1,0 +1,162 @@
+<template>
+  <el-row type="flex" justify="space-between" align="bottom">
+    <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
+      <el-form :model="formData" label-width="110px" size="mini">
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="资金账号:">
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.fundAccount"
+              style="width: 100%"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="平台账号:">
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.accountId"
+              style="width: 100%"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="PID:">
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.pid"
+              style="width: 100%"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="path:">
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.path"
+              style="width: 100%"
+            ></el-input>
+          </el-form-item>
+        </el-col><el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="level:">
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.level"
+              style="width: 100%"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="销售出票单号:">
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.rootOrderNo"
+              style="width: 100%"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="业务订单编号:">
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.linkOrderNo"
+              style="width: 100%"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="订单日期:">
+            <el-col>
+              <el-date-picker
+                type="date"
+                placeholder="选择日期"
+                v-model="formData.createTime"
+                style="width: 100%;"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+              ></el-date-picker>
+            </el-col>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="业务完结时间:">
+            <el-col>
+              <el-date-picker
+                type="date"
+                placeholder="选择日期"
+                v-model="formData.finishTime"
+                style="width: 100%;"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+              ></el-date-picker>
+            </el-col>
+          </el-form-item>
+        </el-col>
+       <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="交易时间:">
+            <el-col>
+              <el-date-picker
+                type="date"
+                placeholder="选择日期"
+                v-model="formData.transactionTime"
+                style="width: 100%;"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+              ></el-date-picker>
+            </el-col>
+          </el-form-item>
+        </el-col>
+      </el-form>
+    </el-col>
+    <el-col :xs="8" :sm="6" :md="6" :lg="4" :xl="4" class="search-tools">
+      <el-button
+        icon="el-icon-search"
+        class="filter-item"
+        type="primary"
+        size="mini"
+        @click="$emit('onSearch', formData)"
+      >查询</el-button>
+      <el-button type="text" size="mini" @click="handleMore">
+        更多
+        <i :class="switchIcon"></i>
+      </el-button>
+    </el-col>
+  </el-row>
+</template>
+
+<script>
+export default {
+  name: "orderSearch",
+  data() {
+    return {
+      more: false,
+      formData: {
+        fundAccount:'',
+        accountId:'',
+        pid:'',
+        path:'',
+        level:'',
+        rootOrderNo:'',
+        linkOrderNo:'',
+        createTime:'',
+        finishTime:'',
+        transactionTime:''
+      }
+    };
+  },
+  computed: {
+    switchIcon() {
+      if (!this.more) {
+        return "el-icon-arrow-down el-icon--right";
+      } else {
+        return "el-icon-arrow-up el-icon--right";
+      }
+    }
+  },
+  methods: {
+    handleMore() {
+      this.more = !this.more;
+    }
+  }
+};
+</script>
