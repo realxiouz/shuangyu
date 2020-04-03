@@ -15,6 +15,7 @@
         style="width: 100%;margin-bottom:15px"
         size="mini"
         fit
+        :expand-row-keys="expandRowKeys"
         :tree-props="{children: 'children', hasChildren: 'test'}"
       >
         <el-table-column prop="deptName" label="部门名称" align="center"></el-table-column>
@@ -81,7 +82,8 @@ export default {
       editDeptId: "",
       pid: "",
       total: 0,
-      tableData: []
+      tableData: [],
+        expandRowKeys: []
     };
   },
   methods: {
@@ -101,9 +103,10 @@ export default {
           filters: {}
         })
         .then(data => {
-            console.log(data);
             if (data) {
             this.tableData = data;
+                this.expandRowKeys = [];
+            this.expandRowKeys.push(data[0].deptId);
           }
           this.loading = false;
         })
