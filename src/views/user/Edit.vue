@@ -27,15 +27,12 @@
         ></el-date-picker>
       </el-form-item>
       <el-form-item label="手机号码">
-        <el-input
-          placeholder="请输入手机号码"
-          v-model="formData.phone"
-          maxlength="11"
-          show-word-limit>
-        </el-input>
+        <el-input placeholder="请输入手机号码" v-model="formData.phone" maxlength="11" show-word-limit @blur="isUsedForPhone"/>
+        <span v-if="isExistsForPhone" style="color: crimson">*该信息已被注册</span>
       </el-form-item>
       <el-form-item label="邮箱">
-        <el-input v-model="formData.email"></el-input>
+        <el-input v-model="formData.email" @blur="isUsedForEmail"></el-input>
+        <span v-if="isExistsForEmail" style="color: crimson">*该信息已被注册</span>
       </el-form-item>
       <el-form-item label="是否超级管理员">
         <el-switch v-model="formData.super" :active-value=true :inactive-value=false></el-switch>
@@ -78,6 +75,10 @@
         formData: {},
         /*所有的可操作的角色信息*/
         transData: [],
+          updateTempData: {},
+          /*用于校验所填写的信息是否已经被使用*/
+          isExistsForPhone: false,
+          isExistsForEmail: false,
         transferProps: {
           key: 'roleId',
           label: 'roleName'
@@ -128,6 +129,7 @@
       /*清除表单*/
       clearForm() {
         this.formData = this.defaultFormData();
+        this.updateTempData = {};
       },
       clearRoles() {
         this.transData = [];
@@ -139,6 +141,7 @@
             .dispatch("user/getOne", {userId: this.userId})
             .then(data => {
               this.formData = data.data;
+              Object.assign(this.updateTempData, data.data);
             })
             .catch(error => {
               console.log(error);
@@ -156,7 +159,38 @@
           .catch(error => {
             console.log(error);
           });
+      },
+  /*校验所填写的信息是否已经被使用*/
+  isUsedForPhone() {
+      if (!this.formData.phone || "" == this.formData.phone || this.formData.phone === this.updateTempData.phone) {
+          return;
       }
+      this.$store
+          .dispatch("user/isExist", {
+              filed: this.formData.phone
+          })
+          .then(data => {
+              this.isExistsForPhone = data;
+          })
+          .catch(error => {
+              console.log(error);
+          });
+  },
+  isUsedForEmail() {
+      if (!this.formData.email || "" == this.formData.email || this.formData.email === this.updateTempData.email) {
+          return;
+      }
+      this.$store
+          .dispatch("user/isExist", {
+              filed: this.formData.email
+          })
+          .then(data => {
+              this.isExistsForEmail = data;
+          })
+          .catch(error => {
+              console.log(error);
+          });
+  }
     },
     created() {
       this.clearForm();
