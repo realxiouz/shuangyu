@@ -122,7 +122,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="PID:">
+          <el-form-item v-show="more" label="pid:">
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.pid"
@@ -135,15 +135,6 @@
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.path"
-              style="width: 100%"
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="level:">
-            <el-input
-              @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.level"
               style="width: 100%"
             ></el-input>
           </el-form-item>
@@ -216,10 +207,11 @@
         </el-col>
 
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="空查询:">
+          <el-form-item v-show="more" label="为空查询:">
             <el-select
               style="width: 100%;"
               clearable
+              multiple 
               v-model="formData.emptyData"
               placeholder="请选择"
             >
@@ -287,30 +279,26 @@ export default {
       emptyData: [
          {
           value: "rootOrderNo",
-          label: "销售出票单号"
+          label: "rootOrderNo"
         },{
           value: "linkOrderNo",
-          label: "业务订单编号"
+          label: "linkOrderNo"
         },
         {
           value: "fundAccount",
-          label: "资金账号"
+          label: "fundAccount"
         },
         {
           value: "accountId",
-          label: "平台账号"
+          label: "accountId"
         },
         {
           value: "pid",
-          label: "PID"
+          label: "pid"
         },
         {
           value: "path",
-          label: "订单来源"
-        },
-        {
-          value: "level",
-          label: "level"
+          label: "path"
         }
       ]
     };

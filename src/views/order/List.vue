@@ -200,9 +200,11 @@ export default {
         if (params.rootOrderNo) {
           newParams.rootOrderNo = params.rootOrderNo;
         }
-
         if (params.fundAccount) {
           newParams.fundAccount = params.fundAccount;
+        }
+        if (params.accountId) {
+          newParams.accountId = params.accountId;
         }
         if (params.pid) {
           newParams.pid = params.pid;
@@ -210,10 +212,6 @@ export default {
         if (params.path) {
           newParams.path = params.path;
         }
-        if (params.level) {
-          newParams.level = params.level;
-        }
-
         if (params.linkOrderNo) {
           newParams.linkOrderNo = params.linkOrderNo;
         }
@@ -231,25 +229,22 @@ export default {
         }
         if (params.emptyData) {
           if (params.emptyData == "fundAccount") {
-            newParams.fundAccount = '';
+            newParams.fundAccount = "";
           }
           if (params.emptyData == "accountId") {
-            newParams.accountId = '';
+            newParams.accountId = "";
           }
           if (params.emptyData == "pid") {
-            newParams.pid = '';
+            newParams.pid = "";
           }
           if (params.emptyData == "path") {
-            newParams.path = '';
-          }
-          if (params.emptyData == "level") {
-            newParams.level = '';
+            newParams.path = "";
           }
           if (params.emptyData == "rootOrderNo") {
-            newParams.rootOrderNo = '';
+            newParams.rootOrderNo = "";
           }
           if (params.emptyData == "linkOrderNo") {
-            newParams.linkOrderNo = '';
+            newParams.linkOrderNo = "";
           }
         }
         this.searchParams = newParams;
