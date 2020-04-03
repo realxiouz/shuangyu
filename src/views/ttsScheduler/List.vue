@@ -131,10 +131,11 @@ export default {
         .then(data => {
           if (data) {
             this.tableData = data;
-            this.loading = false;
           }
+          this.loading = false;
         })
         .catch(error => {
+          this.loading = false;
           console.log(error);
         });
     },
