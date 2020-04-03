@@ -214,7 +214,8 @@ export default {
           newParams.status = params.status;
         }
         if (params.flightDate) {
-          newParams.flightDate = params.flightDate;
+          newParams.startFlightDate = params.flightDate[0];
+          newParams.endFlightDate = params.flightDate[1];
         }
         if (params.cabin) {
           newParams.cabin = params.cabin;
@@ -229,7 +230,62 @@ export default {
           newParams.voyageType = params.voyageType;
         }
         if (params.createTime) {
-          newParams.createTime = params.createTime;
+          newParams.startCreateTime = params.createTime[0];
+          newParams.endCreateTime = params.createTime[1];
+        }
+
+        if (params.startAmount) {
+          newParams.startAmount = params.startAmount;
+        }
+        if (params.endAmount) {
+          newParams.endAmount = params.endAmount;
+        }
+
+        if (params.startReceivable) {
+          newParams.startReceivable = params.startReceivable;
+        }
+        if (params.endReceivable) {
+          newParams.endReceivable = params.endReceivable;
+        }
+        if (params.startReceipt) {
+          newParams.startReceipt = params.startReceipt;
+        }
+        if (params.endReceipt) {
+          newParams.endReceipt = params.endReceipt;
+        }
+
+        if (params.endReceipt) {
+          newParams.endReceipt = params.endReceipt;
+        }
+        if (params.endReceipt) {
+          newParams.endReceipt = params.endReceipt;
+        }
+
+        if (params.startPayable) {
+          newParams.startPayable = params.startPayable;
+        }
+        if (params.endPayable) {
+          newParams.endPayable = params.endPayable;
+        }
+
+        if (params.startPayment) {
+          newParams.startPayment = params.startPayment;
+        }
+        if (params.endPayment) {
+          newParams.endPayment = params.endPayment;
+        }
+        if (params.startSystemProfit) {
+          newParams.startSystemProfit = params.startSystemProfit;
+        }
+        if (params.endSystemProfit) {
+          newParams.endSystemProfit = params.endSystemProfit;
+        }
+
+        if (params.startShouldProfit) {
+          newParams.startShouldProfit = params.startShouldProfit;
+        }
+        if (params.endShouldProfit) {
+          newParams.endShouldProfit = params.endShouldProfit;
         }
         this.searchParams = newParams;
         this.loadData(this.searchParams);
