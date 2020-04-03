@@ -260,6 +260,7 @@
               style="width: 100%;"
               clearable
               multiple
+              collapse-tags
               v-model="formData.emptyData"
               placeholder="请选择"
             >
