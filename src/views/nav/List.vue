@@ -140,6 +140,7 @@ export default {
           this.treeLoading = false;
         })
         .catch(error => {
+          this.treeLoading = false;
           console.log(error);
         });
     },
