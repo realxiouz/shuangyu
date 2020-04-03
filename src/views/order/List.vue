@@ -155,6 +155,7 @@ export default {
         });
     },
     handleSearch(params) {
+      console.log(params);
       if (!params) {
         params = {};
         this.searchParams = params;
@@ -181,7 +182,8 @@ export default {
           newParams.status = params.status;
         }
         if (params.flightDate) {
-          newParams.flightDate = params.flightDate;
+          newParams.startFlightDate = params.flightDate[0];
+          newParams.endFlightDate = params.flightDate[1];
         }
         if (params.cabin) {
           newParams.cabin = params.cabin;
@@ -195,14 +197,12 @@ export default {
         if (params.voyageType) {
           newParams.voyageType = params.voyageType;
         }
+        if (params.rootOrderNo) {
+          newParams.rootOrderNo = params.rootOrderNo;
+        }
+
         if (params.fundAccount) {
           newParams.fundAccount = params.fundAccount;
-        }
-        if (params.accountId) {
-          newParams.accountId = params.accountId;
-        }
-        if (params.orderNo) {
-          newParams.orderNo = params.orderNo;
         }
         if (params.pid) {
           newParams.pid = params.pid;
@@ -213,28 +213,52 @@ export default {
         if (params.level) {
           newParams.level = params.level;
         }
-        if (params.rootOrderNo) {
-          newParams.rootOrderNo = params.rootOrderNo;
-        }
+
         if (params.linkOrderNo) {
           newParams.linkOrderNo = params.linkOrderNo;
         }
         if (params.createTime) {
-          newParams.createTime = params.createTime;
+          newParams.startCreateTime = params.createTime[0];
+          newParams.endCreateTime = params.createTime[1];
         }
         if (params.finishTime) {
-          newParams.finishTime = params.finishTime;
+          newParams.startFinishTime = params.finishTime[0];
+          newParams.endFinishTime = params.finishTime[1];
         }
         if (params.transactionTime) {
-          newParams.transactionTime = params.transactionTime;
+          newParams.startTransactionTime = params.transactionTime[0];
+          newParams.endTransactionTime = params.transactionTime[0];
+        }
+        if (params.emptyData) {
+          if (params.emptyData == "fundAccount") {
+            newParams.fundAccount = '';
+          }
+          if (params.emptyData == "accountId") {
+            newParams.accountId = '';
+          }
+          if (params.emptyData == "pid") {
+            newParams.pid = '';
+          }
+          if (params.emptyData == "path") {
+            newParams.path = '';
+          }
+          if (params.emptyData == "level") {
+            newParams.level = '';
+          }
+          if (params.emptyData == "rootOrderNo") {
+            newParams.rootOrderNo = '';
+          }
+          if (params.emptyData == "linkOrderNo") {
+            newParams.linkOrderNo = '';
+          }
         }
         this.searchParams = newParams;
         this.loadData(this.searchParams);
         this.loadTotal(this.searchParams);
         this.$message({
-          type:'success',
-          message:'查询成功！'
-        })
+          type: "success",
+          message: "查询成功！"
+        });
       }
     },
     handleRemove(orderNo) {

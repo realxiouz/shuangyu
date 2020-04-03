@@ -60,7 +60,9 @@
           <el-form-item v-show="more" label="出发日期:">
             <el-col>
               <el-date-picker
-                type="date"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                type="daterange"
                 placeholder="选择日期"
                 v-model="formData.flightDate"
                 style="width: 100%;"
@@ -165,26 +167,14 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="订单日期:">
+          <el-form-item v-show="more" label="订单创建日期:">
             <el-col>
               <el-date-picker
-                type="date"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                type="daterange"
                 placeholder="选择日期"
                 v-model="formData.createTime"
-                style="width: 100%;"
-                format="yyyy-MM-dd"
-                value-format="yyyy-MM-dd"
-              ></el-date-picker>
-            </el-col>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="业务完结时间:">
-            <el-col>
-              <el-date-picker
-                type="date"
-                placeholder="选择日期"
-                v-model="formData.finishTime"
                 style="width: 100%;"
                 format="yyyy-MM-dd"
                 value-format="yyyy-MM-dd"
@@ -196,7 +186,9 @@
           <el-form-item v-show="more" label="交易时间:">
             <el-col>
               <el-date-picker
-                type="date"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                type="daterange"
                 placeholder="选择日期"
                 v-model="formData.transactionTime"
                 style="width: 100%;"
@@ -204,6 +196,40 @@
                 value-format="yyyy-MM-dd"
               ></el-date-picker>
             </el-col>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="业务完结时间:">
+            <el-col>
+              <el-date-picker
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                type="daterange"
+                placeholder="选择日期"
+                v-model="formData.finishTime"
+                style="width: 100%;"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+              ></el-date-picker>
+            </el-col>
+          </el-form-item>
+        </el-col>
+
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="空查询:">
+            <el-select
+              style="width: 100%;"
+              clearable
+              v-model="formData.emptyData"
+              placeholder="请选择"
+            >
+              <el-option
+                v-for="item in emptyData"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="18" :md="14" :lg="10" :xl="6">
@@ -251,17 +277,42 @@ export default {
         orderNo: "", //订单号
         name: "", //乘机人姓名
         cardNo: "", //乘机人证件号
-        fundAccount: "",
-        accountId: "",
-        pid: "",
-        path: "",
-        level: "",
         rootOrderNo: "",
         linkOrderNo: "",
         createTime: "",
         finishTime: "",
         transactionTime: ""
-      }
+      },
+      // pid,path,level,rootOrderNo,linkOrderNo
+      emptyData: [
+         {
+          value: "rootOrderNo",
+          label: "销售出票单号"
+        },{
+          value: "linkOrderNo",
+          label: "业务订单编号"
+        },
+        {
+          value: "fundAccount",
+          label: "资金账号"
+        },
+        {
+          value: "accountId",
+          label: "平台账号"
+        },
+        {
+          value: "pid",
+          label: "PID"
+        },
+        {
+          value: "path",
+          label: "订单来源"
+        },
+        {
+          value: "level",
+          label: "level"
+        }
+      ]
     };
   },
   computed: {
