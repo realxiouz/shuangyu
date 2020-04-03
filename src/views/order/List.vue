@@ -155,7 +155,6 @@ export default {
         });
     },
     handleSearch(params) {
-      console.log(params);
       if (!params) {
         params = {};
         this.searchParams = params;
@@ -228,23 +227,12 @@ export default {
           newParams.endTransactionTime = params.transactionTime[0];
         }
         if (params.emptyData) {
-          if (params.emptyData == "fundAccount") {
-            newParams.fundAccount = "";
-          }
-          if (params.emptyData == "accountId") {
-            newParams.accountId = "";
-          }
-          if (params.emptyData == "pid") {
-            newParams.pid = "";
-          }
-          if (params.emptyData == "path") {
-            newParams.path = "";
-          }
-          if (params.emptyData == "rootOrderNo") {
-            newParams.rootOrderNo = "";
-          }
-          if (params.emptyData == "linkOrderNo") {
-            newParams.linkOrderNo = "";
+          if (params.emptyData.length > 1) {
+            params.emptyData.forEach(item => {
+              newParams[item] = "";
+            });
+          } else {
+            newParams[params.emptyData] = "";
           }
         }
         this.searchParams = newParams;
