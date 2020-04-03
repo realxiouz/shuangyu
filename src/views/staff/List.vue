@@ -11,8 +11,10 @@
 
         <el-tree
           v-loading="loading"
+          node-key="deptId"
           :data="treeData"
           :props="treeProps"
+          :default-expanded-keys="defaultExpandedKeys"
           :highlight-current="true"
           :expand-on-click-node="false"
           @node-click="handleNodeClick"
@@ -35,6 +37,7 @@ export default {
       loading: true,
       curNode: null,
       treeData: [],
+        defaultExpandedKeys: [],
       treeProps: {
         label: "deptName",
         children: "children"
@@ -50,7 +53,8 @@ export default {
         })
         .then(data => {
           if (data) {
-            this.treeData = data;
+              this.treeData = data;
+              this.defaultExpandedKeys.push(data[0].deptId);
           }
           this.loading = false;
         })

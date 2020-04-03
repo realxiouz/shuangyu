@@ -167,8 +167,8 @@ const actions = {
   },
   isExist({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {filedValue} = params;
-      isExist(filedValue)
+      const {filedValue,deptId} = params;
+      isExist( deptId, filedValue)
         .then(response => {
           const {data} = response;
           resolve(data);

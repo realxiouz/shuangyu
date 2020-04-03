@@ -94,9 +94,10 @@ export function getLoginInfo(firmId) {
   });
 }
 
-export function isExist(filedValue) {
+export function isExist(deptId, filedValue) {
   return request({
     url: `/staff/exists/${filedValue}`,
-    method: "get"
+    method: "get",
+    params: {deptId}
   });
 }
