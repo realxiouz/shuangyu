@@ -17,11 +17,11 @@
       </el-form-item>
       <el-form-item label="联系电话">
         <el-input type="text" v-model="formData.phone" placeholder="请输入联系电话" @blur="isUsedForPhone"></el-input>
-        <span v-if="isExistsForPhone" style="color: crimson">*该信息已注册</span>
+        <span v-if="isExistsForPhone" style="color: crimson">*该信息已被注册</span>
       </el-form-item>
       <el-form-item label="电子邮箱">
         <el-input type="text" v-model="formData.email" placeholder="请输入联系电子邮箱" @blur="isUsedForEmail"></el-input>
-        <span v-if="isExistsForEmail" style="color: crimson">*该信息已注册</span>
+        <span v-if="isExistsForEmail" style="color: crimson">*该信息已被注册</span>
       </el-form-item>
       <el-form-item label="机构所在地">
         <el-input type="text" placeholder="请输入机构所在地" v-model="formData.location"></el-input>
@@ -127,6 +127,7 @@ export default {
     },
     clearForm() {
       this.formData = this.defaultFormData();
+        this.updateTempData = {};
     },
     /*初始化表单*/
     initFormData() {
@@ -159,7 +160,8 @@ export default {
           }
           this.$store
               .dispatch("staff/isExist", {
-                  filedValue: this.formData.phone
+                  filedValue: this.formData.phone,
+                  deptId: null
               })
               .then(data => {
                   this.isExistsForPhone = data;
@@ -174,7 +176,8 @@ export default {
           }
           this.$store
               .dispatch("staff/isExist", {
-                  filedValue: this.formData.email
+                  filedValue: this.formData.email,
+                  deptId: null
               })
               .then(data => {
                   this.isExistsForEmail = data;
