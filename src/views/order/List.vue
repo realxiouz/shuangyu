@@ -195,8 +195,38 @@ export default {
         if (params.voyageType) {
           newParams.voyageType = params.voyageType;
         }
+        if (params.fundAccount) {
+          newParams.fundAccount = params.fundAccount;
+        }
+        if (params.accountId) {
+          newParams.accountId = params.accountId;
+        }
+        if (params.orderNo) {
+          newParams.orderNo = params.orderNo;
+        }
+        if (params.pid) {
+          newParams.pid = params.pid;
+        }
+        if (params.path) {
+          newParams.path = params.path;
+        }
+        if (params.level) {
+          newParams.level = params.level;
+        }
+        if (params.rootOrderNo) {
+          newParams.rootOrderNo = params.rootOrderNo;
+        }
+        if (params.linkOrderNo) {
+          newParams.linkOrderNo = params.linkOrderNo;
+        }
         if (params.createTime) {
           newParams.createTime = params.createTime;
+        }
+        if (params.finishTime) {
+          newParams.finishTime = params.finishTime;
+        }
+        if (params.transactionTime) {
+          newParams.transactionTime = params.transactionTime;
         }
         this.searchParams = newParams;
         this.loadData(this.searchParams);
