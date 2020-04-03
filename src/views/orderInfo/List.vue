@@ -1,7 +1,7 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <order-task-search  @onSearch="handleSearch"></order-task-search>
+      <order-info-search  @onSearch="handleSearch"></order-info-search>
     </div>
     <div class="contentBox">
       <el-table
@@ -19,17 +19,11 @@
             <span>{{ formatTaskType(scope.row.taskType)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="ruleType" label="规则类型" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatTaskType(scope.row.taskType)==0?"系统":"手工"}}</span>
-          </template>
-        </el-table-column>
         <el-table-column prop="profit" label="利润" align="center">
           <template slot-scope="scope">
             <span>{{ formatAmount(scope.row.profit)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="taskStatus" label="任务状态" align="center"></el-table-column>
         <el-table-column prop="startTime" label="开始时间" align="center">
           <template slot-scope="scope">
             <span>{{ formatDate(scope.row.startTime,'YYYY-MM-DD HH:mm:ss') }}</span>
@@ -40,7 +34,6 @@
             <span>{{ formatDate(scope.row.endTime,'YYYY-MM-DD HH:mm:ss') }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="duration" label="持续时长" align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="80">
           <el-button type="primary" size="mini">处理</el-button>
         </el-table-column>
@@ -62,7 +55,7 @@
 </template>
 
 <script>
-import orderTaskSearch from "./Search.vue";
+import orderInfoSearch from "./Search.vue";
 
 export default {
   name: "orderTask",
@@ -80,7 +73,7 @@ export default {
     };
   },
   components: {
-    orderTaskSearch
+    orderInfoSearch
   },
   methods: {
     handleSizeChange(size) {
