@@ -90,7 +90,7 @@
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="订单类型:">
-            <el-select clearable  v-model="formData.orderType" placeholder="全部" style="width: 100%">
+            <el-select clearable v-model="formData.orderType" placeholder="全部" style="width: 100%">
               <el-option label="出票完成" value="10"></el-option>
               <el-option label="改签完成" value="30"></el-option>
               <el-option label="二次改签" value="31"></el-option>
@@ -101,13 +101,67 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :xs="24" :sm="18" :md="14" :lg="10" :xl="6">
-          <el-form-item v-show="more" label="航程类型:">
-            <el-radio-group v-model="formData.voyageType" style="width: 100%">
-              <el-radio label="0">单程</el-radio>
-              <el-radio label="1">往返</el-radio>
-              <el-radio label="2">连程</el-radio>
-            </el-radio-group>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="资金账号:">
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.fundAccount"
+              style="width: 100%"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="平台账号:">
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.accountId"
+              style="width: 100%"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="PID:">
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.pid"
+              style="width: 100%"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="path:">
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.path"
+              style="width: 100%"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="level:">
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.level"
+              style="width: 100%"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="销售出票单号:">
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.rootOrderNo"
+              style="width: 100%"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="业务订单编号:">
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.linkOrderNo"
+              style="width: 100%"
+            ></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -122,6 +176,43 @@
                 value-format="yyyy-MM-dd"
               ></el-date-picker>
             </el-col>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="业务完结时间:">
+            <el-col>
+              <el-date-picker
+                type="date"
+                placeholder="选择日期"
+                v-model="formData.finishTime"
+                style="width: 100%;"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+              ></el-date-picker>
+            </el-col>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="交易时间:">
+            <el-col>
+              <el-date-picker
+                type="date"
+                placeholder="选择日期"
+                v-model="formData.transactionTime"
+                style="width: 100%;"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+              ></el-date-picker>
+            </el-col>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="18" :md="14" :lg="10" :xl="6">
+          <el-form-item v-show="more" label="航程类型:">
+            <el-radio-group v-model="formData.voyageType" style="width: 100%">
+              <el-radio label="0">单程</el-radio>
+              <el-radio label="1">往返</el-radio>
+              <el-radio label="2">连程</el-radio>
+            </el-radio-group>
           </el-form-item>
         </el-col>
       </el-form>
@@ -160,7 +251,16 @@ export default {
         orderNo: "", //订单号
         name: "", //乘机人姓名
         cardNo: "", //乘机人证件号
-        createTime: ""
+        fundAccount: "",
+        accountId: "",
+        pid: "",
+        path: "",
+        level: "",
+        rootOrderNo: "",
+        linkOrderNo: "",
+        createTime: "",
+        finishTime: "",
+        transactionTime: ""
       }
     };
   },
