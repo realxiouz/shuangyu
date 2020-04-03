@@ -86,7 +86,6 @@ export function resetPassword(userID) {
 }
 
 export function isExist(filed) {
-  debugger
   return request({
     url: `/admin/user/exists/${filed}`,
     method: 'get'
