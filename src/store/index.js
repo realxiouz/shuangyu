@@ -35,7 +35,6 @@ import category from "./modules/category";
 import dict from "./modules/dict";
 import fundAccount from "./modules/fundAccount";
 import orderTask from "./modules/orderTask"
-import orderInfo from "./modules/orderInfo"
 
 import { getLoginInfo } from "@/api/staff";
 
@@ -77,7 +76,6 @@ export default new Vuex.Store({
     dict,
     orderTask,
     fundAccount,
-    orderInfo
   },
   state: {
     loginInfo: {}
