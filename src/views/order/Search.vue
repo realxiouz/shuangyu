@@ -205,13 +205,61 @@
             </el-col>
           </el-form-item>
         </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="最晚出票时限:">
+            <el-col>
+              <el-date-picker
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                type="daterange"
+                placeholder="选择日期"
+                v-model="formData.deadlineTicketTime"
+                style="width: 100%;"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+              ></el-date-picker>
+            </el-col>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="最晚退票时限:">
+            <el-col>
+              <el-date-picker
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                type="daterange"
+                placeholder="选择日期"
+                v-model="formData.deadlineReturnTime"
+                style="width: 100%;"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+              ></el-date-picker>
+            </el-col>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="最晚改签时限:">
+            <el-col>
+              <el-date-picker
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                type="daterange"
+                placeholder="选择日期"
+                v-model="formData.deadlineChangeTime"
+                style="width: 100%;"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+              ></el-date-picker>
+            </el-col>
+          </el-form-item>
+        </el-col>
 
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="为空查询:">
             <el-select
               style="width: 100%;"
               clearable
-              multiple 
+              multiple
               v-model="formData.emptyData"
               placeholder="请选择"
             >
@@ -277,10 +325,11 @@ export default {
       },
       // pid,path,level,rootOrderNo,linkOrderNo
       emptyData: [
-         {
+        {
           value: "rootOrderNo",
           label: "rootOrderNo"
-        },{
+        },
+        {
           value: "linkOrderNo",
           label: "linkOrderNo"
         },

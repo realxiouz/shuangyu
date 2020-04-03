@@ -222,18 +222,26 @@ export default {
           newParams.startFinishTime = params.finishTime[0];
           newParams.endFinishTime = params.finishTime[1];
         }
-        if (params.transactionTime) {
+        if (params.DdeadlineChangeTime) {
           newParams.startTransactionTime = params.transactionTime[0];
           newParams.endTransactionTime = params.transactionTime[0];
         }
-        if (params.emptyData) {
-          if (params.emptyData.length > 1) {
-            params.emptyData.forEach(item => {
-              newParams[item] = "";
-            });
-          } else {
-            newParams[params.emptyData] = "";
-          }
+        if (params.deadlineTicketTime) {
+          newParams.startDeadlineTicketTime = params.deadlineTicketTime[0];
+          newParams.endDeadlineTicketTime = params.deadlineTicketTime[0];
+        }
+        if (params.deadlineReturnTime) {
+          newParams.startDeadlineReturnTime = params.deadlineReturnTime[0];
+          newParams.endDeadlineReturnTime = params.deadlineReturnTime[0];
+        }
+        if (params.deadlineChangeTime) {
+          newParams.startDeadlineChangeTime = params.deadlineChangeTime[0];
+          newParams.endDeadlineChangeTime = params.deadlineChangeTime[0];
+        }
+        if (params.emptyData.length > 0) {
+          params.emptyData.forEach(item => {
+            newParams[item] = "";
+          });
         }
         this.searchParams = newParams;
         this.loadData(this.searchParams);
