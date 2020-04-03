@@ -52,6 +52,7 @@ export default {
           filters: {}
         })
         .then(data => {
+            this.defaultExpandedKeys = [];
           if (data) {
               this.treeData = data;
               this.defaultExpandedKeys.push(data[0].deptId);
