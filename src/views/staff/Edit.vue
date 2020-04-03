@@ -30,7 +30,12 @@
       <el-table-column prop="email" label="电子邮箱" align="center"></el-table-column>
       <el-table-column label="操作" width="240" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" :type="scope.row.userId?'success':'info'" :disabled="scope.row.userId?true:false" @click="handleAssociate(scope.$index, scope.row)">关联用户</el-button>
+          <el-button
+            size="mini"
+            :type="scope.row.userId?'success':'info'"
+            :disabled="scope.row.userId?true:false"
+            @click="handleAssociate(scope.$index, scope.row)"
+          >关联用户</el-button>
           <el-button
             size="mini"
             type="primary"
@@ -102,8 +107,8 @@
           ></el-date-picker>
         </el-form-item>
         <el-form-item label="身份证号">
-          <el-input v-model="formData.idCardNo" @blur="isUsedForIDNo"></el-input>
-          <span v-if="isExistsForIDNo" style="color: red">*信息已被使用</span>
+          <el-input v-model="formData.idCardNo" @blur="isUsedForIdNo"></el-input>
+          <span v-if="isExistsForIdNo" style="color: red">*信息已被使用</span>
         </el-form-item>
         <el-form-item label="手机号码">
           <el-input
@@ -148,22 +153,22 @@ export default {
       permissionDialogVisible: false,
       /*点击部门后用于展示的员工列表*/
       tableData: [],
-        //当点击用户选择列表时
-        curRow: {},
+      //当点击用户选择列表时
+      curRow: {},
       /*进行用户查询后待选择的用户列表*/
       userTable: [],
       keyword: "",
       hasStep: true,
       formData: {},
       transData: [],
-        updateTempData: {},
+      updateTempData: {},
       transferProps: {
         key: "roleId",
         label: "roleName"
       },
       /*用于校验所填写的信息是否已经被使用*/
       isExistsForPhone: false,
-      isExistsForIDNo: false,
+      isExistsForIdNo: false,
       isExistsForEmail: false
     };
   },
@@ -214,7 +219,7 @@ export default {
       this.hasStep = true;
       this.permissionDialogVisible = true;
       this.isExistsForPhone = false;
-      this.isExistsForIDNo = false;
+      this.isExistsForIdNo = false;
       this.isExistsForEmail = false;
     },
     /*进行用户查询*/
@@ -258,6 +263,7 @@ export default {
         .dispatch("staff/updateOne", this.formData)
         .then(() => {
           this.loadTableData();
+          this.loading = false;
         })
         .catch(error => {
           console.log(error);
@@ -268,7 +274,7 @@ export default {
     },
     /*点击修改*/
     permissionChange(idx, row) {
-        this.clearFormData();
+      this.clearFormData();
       /*根据对应的员工ID查询对应的用工对象*/
       this.$store
         .dispatch("staff/getOne", {
@@ -276,12 +282,14 @@ export default {
         })
         .then(data => {
           console.log(data);
+          this.loading = false;
+
           /*如果请求到的数据roles为null会报错*/
           if (!data.data.roles) {
             data.data.roles = [];
           }
           this.formData = data.data;
-          Object.assign(this.updateTempData,data.data);
+          Object.assign(this.updateTempData, data.data);
         })
         .catch(error => {
           console.log(error);
@@ -290,7 +298,7 @@ export default {
       this.hasStep = true;
       this.permissionDialogVisible = true;
       this.isExistsForPhone = false;
-      this.isExistsForIDNo = false;
+      this.isExistsForIdNo = false;
       this.isExistsForEmail = false;
     },
     /*点击修改弹窗取消按钮*/
@@ -306,7 +314,7 @@ export default {
       //如果填写的信息未通过校验，不允许保存
       if (
         this.isExistsForPhone ||
-        this.isExistsForIDNo ||
+        this.isExistsForIdNo ||
         this.isExistsForEmail
       ) {
         this.$message({
@@ -341,34 +349,34 @@ export default {
           console.log(error);
         });
     },
-      handleAssociate(idx, row){
-        this.clearFormData();
-          this.searchUser();
-          /*根据对应的员工ID查询对应的用工对象*/
-          this.$store
-              .dispatch("staff/getOne", {
-                  staffId: row.staffId
-              })
-              .then(data => {
-                  /*如果请求到的数据roles为null会报错*/
-                  if (!data.data.roles) {
-                      data.data.roles = [];
-                  }
-                  this.formData = data.data;
-                  this.dialogVisible = true;
-              })
-              .catch(error => {
-                  console.log(error);
-              });
-      },
+    handleAssociate(idx, row) {
+      this.clearFormData();
+      this.searchUser();
+      /*根据对应的员工ID查询对应的用工对象*/
+      this.$store
+        .dispatch("staff/getOne", {
+          staffId: row.staffId
+        })
+        .then(data => {
+          /*如果请求到的数据roles为null会报错*/
+          if (!data.data.roles) {
+            data.data.roles = [];
+          }
+          this.formData = data.data;
+          this.dialogVisible = true;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     /*对员工进行删除*/
     handleDelete(idx, row) {
       this.open(this.delete, row.staffId);
     },
-      //选中当前行
-      handleRowClick(row){
-          this.curRow = row;
-      },
+    //选中当前行
+    handleRowClick(row) {
+      this.curRow = row;
+    },
     /*根据对应员工ID*/
     delete(staffId) {
       this.$store
@@ -435,49 +443,61 @@ export default {
     },
     /*校验所填写的信息是否已经被使用*/
     isUsedForPhone() {
-        if (!this.formData.phone || "" == this.formData.phone || this.formData.phone === this.updateTempData.phone) {
+      if (
+        !this.formData.phone ||
+        "" == this.formData.phone ||
+        this.formData.phone === this.updateTempData.phone
+      ) {
         return;
       }
-        this.$store
-          .dispatch("staff/isExist", {
-            filedValue: this.formData.phone
-          })
-          .then(data => {
-            this.isExistsForPhone = data;
-          })
-          .catch(error => {
-            console.log(error);
-          });
+      this.$store
+        .dispatch("staff/isExist", {
+          filedValue: this.formData.phone
+        })
+        .then(data => {
+          this.isExistsForPhone = data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
-    isUsedForIDNo() {
-      if (!this.formData.idCardNo || "" == this.formData.idCardNo || this.formData.idCardNo === this.updateTempData.idCardNo) {
+    isUsedForIdNo() {
+      if (
+        !this.formData.idCardNo ||
+        "" == this.formData.idCardNo ||
+        this.formData.idCardNo === this.updateTempData.idCardNo
+      ) {
         return;
       }
-        this.$store
-          .dispatch("staff/isExist", {
-            filedValue: this.formData.idCardNo,
-          })
-          .then(data => {
-            this.isExistsForIDNo = data;
-          })
-          .catch(error => {
-            console.log(error);
-          });
+      this.$store
+        .dispatch("staff/isExist", {
+          filedValue: this.formData.idCardNo
+        })
+        .then(data => {
+          this.isExistsForIdNo = data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
     isUsedForEmail() {
-        if (!this.formData.email || "" == this.formData.email || this.formData.email === this.updateTempData.email) {
+      if (
+        !this.formData.email ||
+        "" == this.formData.email ||
+        this.formData.email === this.updateTempData.email
+      ) {
         return;
       }
-        this.$store
-          .dispatch("staff/isExist", {
-            filedValue: this.formData.email
-          })
-          .then(data => {
-            this.isExistsForEmail = data;
-          })
-          .catch(error => {
-            console.log(error);
-          });
+      this.$store
+        .dispatch("staff/isExist", {
+          filedValue: this.formData.email
+        })
+        .then(data => {
+          this.isExistsForEmail = data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   },
   computed: {
