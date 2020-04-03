@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-aside width="auto"  v-show="isDisplay">
+    <el-aside width="auto" v-show="isDisplay">
       <Sidebar v-loading="loading" :menuList="menus" :collapse="isCollapse" />
     </el-aside>
     <el-container>
@@ -13,27 +13,19 @@
               </div>
               <div class="grid-content bg-purple">
                 <el-breadcrumb class="nav-router" separator="/">
-                  <!-- <el-breadcrumb-item>
-                  <router-link to="/home">活动管理</router-link>
-                </el-breadcrumb-item>
-                <el-breadcrumb-item>活动列表</el-breadcrumb-item>
-                <el-breadcrumb-item>活动详情</el-breadcrumb-item>
-                  <el-breadcrumb-item >活动详情</el-breadcrumb-item>-->
                   <el-breadcrumb-item v-for="item in $route.matched" :key="item.path">
                     <router-link :to="item.path">{{ item.meta.title }}</router-link>
                   </el-breadcrumb-item>
                 </el-breadcrumb>
               </div>
             </el-col>
-            <el-col :xs="3" :sm="5" :md="4" :lg="2" :xl="2" class="headFirm">
-              <div class="grid-content bg-purple">
+
+              <div class="grid-content bg-purple firmClass">
                 <span
                   v-if="this.$store.state.loginInfo.firm"
                 >{{this.$store.state.loginInfo.firm.firmName}}</span>
               </div>
-            </el-col>
-            <el-col :xs="6" :sm="5" :md="4" :lg="3" :xl="2">
-              <div class="grid-content bg-purple">
+              <div class="grid-content bg-purple userClass">
                 <span
                   style="margin-right:10px; font-size:16px;"
                 >{{this.$store.state.loginInfo.fullName}}</span>
@@ -47,7 +39,6 @@
                   </el-dropdown-menu>
                 </el-dropdown>
               </div>
-            </el-col>
           </el-row>
           <div class="tags-view">
             <el-tag
@@ -104,7 +95,7 @@ export default {
       dialogVisible: false,
       isCollapse: false,
       isDisplay: true,
-      loading:true,
+      loading: true,
       firms: [],
       tags: [
         // { name: "首页", closable: false, type: "", path: "/home" }
@@ -172,7 +163,7 @@ export default {
             this.dialogVisible = true;
           } else {
             this.menus = this.buildTree(null, data.navs);
-            this.loading=false;
+            this.loading = false;
           }
         })
         .catch(error => {
@@ -255,11 +246,6 @@ export default {
   -webkit-box-shadow: 0px 6px 6px rgba(0, 21, 41, 0.08);
   box-shadow: 0px 6px 6px rgba(0, 21, 41, 0.08);
 
-  .headFirm {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
   .el-page-header {
     padding-left: 20px;
     line-height: 32px;
@@ -269,6 +255,17 @@ export default {
     height: 40px;
     display: table-cell;
     vertical-align: middle;
+  }
+  .firmClass {
+    position: absolute;
+    // top: 15px;
+    line-height: 54px;
+    right: 158px;
+  }
+  .userClass{
+    position: absolute;
+    line-height: 54px;
+    right: 20px;
   }
 
   .nav-switch {
