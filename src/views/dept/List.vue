@@ -107,7 +107,7 @@ export default {
             this.tableData = data;
                 this.expandRowKeys = [];
             this.expandRowKeys.push(data[0].deptId);
-          }
+            }
           this.loading = false;
         })
         .catch(error => {
