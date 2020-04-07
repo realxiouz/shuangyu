@@ -69,7 +69,7 @@ export default {
     var validateEmail = (rule, value, callback) => {
       var reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
       if (!reg.test(value)) {
-        callback(new Error("邮箱格式错误"));
+        callback(new Error("邮箱输入格式错误！"));
       } else {
         callback();
       }

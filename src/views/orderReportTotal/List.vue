@@ -158,7 +158,7 @@ export default {
     },
     loadData(params) {
       this.$store
-        .dispatch("orderReport/getList", {
+        .dispatch("orderReportTotal/getList", {
           filters: params
         })
         .then(data => {
@@ -174,7 +174,7 @@ export default {
     },
     loadTotal(params) {
       this.$store
-        .dispatch("orderReport/getTotal", {
+        .dispatch("orderReportTotal/getTotal", {
           filters: params
         })
         .then(data => {

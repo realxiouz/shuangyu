@@ -6,4 +6,12 @@ export function getList(params) {
       method: "get",
       params: params
     });
+}
+
+export function getTotal(params) {
+    return request({
+      url: `/order/total/report/total`,
+      method: 'get',
+      params: params
+    });
   }
