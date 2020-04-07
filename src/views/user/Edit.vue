@@ -24,7 +24,7 @@
       </el-form-item>
       <el-form-item label="邮箱" prop="email">
         <el-input v-model="formData.email" @blur="isUsedForEmail"></el-input>
-        <!-- <span v-if="isExistsForEmail" style="color: crimson">*该信息已被注册</span> -->
+        <span v-if="isExistsForEmail" style="color: crimson">*该信息已被注册</span>
       </el-form-item>
       <el-form-item label="邮箱验证码" prop="emailCode">
         <el-input placeholder="请输入邮箱验证码" v-model="formData.emailCode" />
@@ -68,7 +68,7 @@ export default {
   data() {
     var validateEmail = (rule, value, callback) => {
       var reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
-      if (reg.test(value)) {
+      if (!reg.test(value)) {
         callback(new Error("邮箱格式错误"));
       } else {
         callback();
@@ -89,10 +89,10 @@ export default {
       },
       formRules: {
         emailCode: [
-          { required: true, message: "请输入邮箱验证码", trigger: "change" }
+          { required: true, message: "请输入邮箱验证码", trigger: "blur" }
         ],
         email: [
-          { required: true, message: "请输入邮箱", trigger: "change" },
+          { required: true, message: "请输入邮箱", trigger: "blur" },
           { validator: validateEmail, trigger: "blur" }
         ]
       }
