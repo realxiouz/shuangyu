@@ -1,12 +1,9 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <order-report-search @onSearch="handleSearch"></order-report-search>
+      <order-report-total-search @onSearch="handleSearch"></order-report-total-search>
     </div>
     <div class="contentBox">
-      <!-- <el-row style="margin-bottom:15px;margin-left:50px">
-        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
-      </el-row>-->
       <el-table
         :data="tableData"
         size="mini"
@@ -123,10 +120,10 @@
   </div>
 </template>
 <script>
-import orderReportSearch from "./Search.vue";
+import orderReportTotalSearch from "./Search.vue";
 
 export default {
-  name: "orderReportList",
+  name: "orderReportTotal",
   data() {
     return {
       loading: true,
@@ -137,6 +134,9 @@ export default {
       tableData: [],
       searchParams: {}
     };
+  },
+  components: {
+    orderReportTotalSearch
   },
   methods: {
     handleSizeChange: function(size) {
@@ -350,9 +350,7 @@ export default {
       return "￥" + this.$numeral(amount).format("0.00");
     }
   },
-  components: {
-    orderReportSearch
-  },
+
   computed: {
     formatDate() {
       return function(dateStr, format) {
