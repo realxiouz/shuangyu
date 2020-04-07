@@ -192,7 +192,6 @@ export default {
           this.$store
             .dispatch("user/resetPassword", { userId: row.userId })
             .then(data => {
-              console.log(data);
               this.loadData();
               this.$message({
                 type: "success",
@@ -331,16 +330,4 @@ export default {
 };
 </script>
 <style>
-/* .searchBox {
-  padding: 15px;
-  background-color: #fff;
-}
-.contentBox {
-  padding: 15px;
-  margin-top: 15px;
-  background-color: #fff;
-}
-.bigBox {
-  background-color: #f0f2f5;
-} */
 </style>

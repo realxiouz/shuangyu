@@ -3,10 +3,10 @@
     <el-form ref="form" size="mini" :model="formData" label-width="110px" :rules="formRules">
       <input type="hidden" v-model="formData.userId" />
       <el-form-item label="昵称">
-        <el-input v-model="formData.nickName"></el-input>
+        <el-input placeholder="请输入您的昵称"  v-model="formData.nickName"></el-input>
       </el-form-item>
       <el-form-item label="姓名">
-        <el-input v-model="formData.fullName"></el-input>
+        <el-input placeholder="请输入您的姓名"  v-model="formData.fullName"></el-input>
       </el-form-item>
       <el-form-item label="性别">
         <el-select v-model="formData.gender" placeholder="请选择性别" style="width:100%">
@@ -23,13 +23,13 @@
         ></el-date-picker>
       </el-form-item>
       <el-form-item label="邮箱" prop="email">
-        <el-input v-model="formData.email" @blur="isUsedForEmail"></el-input>
+        <el-input placeholder="请输入您的邮箱"  v-model="formData.email" @blur="isUsedForEmail"></el-input>
         <span v-if="isExistsForEmail" style="color: crimson">*该信息已被注册</span>
       </el-form-item>
       <el-form-item label="验证码" prop="emailCode">
         <el-row :gutter="20">
           <el-col style="padding-left:0;padding-right:0;" :span="20">
-            <el-input placeholder="请输入邮箱验证码" v-model="formData.emailCode" />
+            <el-input placeholder="请输入验证码" v-model="formData.emailCode" />
           </el-col>
           <el-col :span="2">
             <el-button size="mini" type="primary">获取</el-button>
@@ -122,7 +122,7 @@ export default {
       };
     },
     handleConfirm() {
-      if ("number" != typeof this.formData.birthDate) {
+      if (this.formData.birthDate && "number" != typeof this.formData.birthDate) {
         this.formData.birthDate = this.formData.birthDate.getTime();
       }
       this.$refs.form.validate(valid => {
