@@ -60,7 +60,7 @@
         title="用户信息"
         center
         :visible.sync="dialogVisible"
-        width="33%"
+        width="35%"
         :close-on-click-modal="false"
       >
         <userForm
