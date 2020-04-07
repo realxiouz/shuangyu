@@ -28,11 +28,11 @@
           width="100"
           align="center"
         ></el-table-column>
-        <el-table-column
-          prop="status"
-          :formatter="formateStatus"
-          label="订单状态"
-          width="100"
+         <el-table-column
+          :formatter="formateOrderType"
+          prop="orderType"
+          label="订单类型"
+          width="80"
           align="center"
         ></el-table-column>
         <el-table-column
@@ -43,10 +43,10 @@
           align="center"
         ></el-table-column>
         <el-table-column
-          :formatter="formateOrderType"
-          prop="orderType"
-          label="订单类型"
-          width="80"
+          prop="status"
+          :formatter="formateStatus"
+          label="订单状态"
+          width="100"
           align="center"
         ></el-table-column>
         <el-table-column label="订单日期" width="100" align="center">

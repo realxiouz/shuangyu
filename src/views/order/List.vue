@@ -36,6 +36,13 @@
           align="center"
         ></el-table-column>
         <el-table-column
+          prop="category"
+          :formatter="formateCategory"
+          label="订单分类"
+          width="80"
+          align="center"
+        ></el-table-column>
+        <el-table-column
           prop="status"
           :formatter="formateStatus"
           label="订单状态"
@@ -48,13 +55,7 @@
             <span style="margin-left: 10px">{{ formatDate(scope.row.createTime,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
-        <el-table-column
-          prop="category"
-          :formatter="formateCategory"
-          label="订单分类"
-          width="80"
-          align="center"
-        ></el-table-column>
+
         <el-table-column label="乘客" align="center" width="200">
           <template slot-scope="scope">
             <i v-if="scope.row.passengers"></i>
