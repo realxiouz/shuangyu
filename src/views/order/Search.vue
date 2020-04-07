@@ -327,6 +327,14 @@ export default {
       // pid,path,level,rootOrderNo,linkOrderNo
       emptyData: [
         {
+          value: "pid",
+          label: "pid"
+        },
+        {
+          value: "path",
+          label: "path"
+        },
+        {
           value: "rootOrderNo",
           label: "rootOrderNo"
         },
@@ -341,14 +349,6 @@ export default {
         {
           value: "accountId",
           label: "accountId"
-        },
-        {
-          value: "pid",
-          label: "pid"
-        },
-        {
-          value: "path",
-          label: "path"
         }
       ]
     };
