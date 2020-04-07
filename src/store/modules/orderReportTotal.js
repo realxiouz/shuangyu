@@ -33,7 +33,7 @@ const actions = {
               reject(error);
             });
         });
-      },
+    },
 
 };
 
