@@ -203,6 +203,13 @@ export default new Router({
           component: () => import('@/views/orderTask/List'),
           meta: { title: '订单任务', icon: 'home' }
         },
+        {
+          title: '订单总报表',
+          path: '/order/reportTotal/list',
+          name: 'orderReportTotal',
+          component: () => import('@/views/orderReportTotal/List'),
+          meta: { title: '订单任务', icon: 'home' }
+        },
       ]
     },
     {
