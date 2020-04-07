@@ -1,7 +1,6 @@
 <template>
   <div>
-   
-    <el-form ref="form" size="mini" :model="formData" label-width="110px">
+    <el-form ref="form" size="mini" :model="formData" label-width="110px" :rules="formRules">
       <input type="hidden" v-model="formData.userId" />
       <el-form-item label="昵称">
         <el-input v-model="formData.nickName"></el-input>
@@ -23,12 +22,12 @@
           style="width: 100%;"
         ></el-date-picker>
       </el-form-item>
-      <el-form-item label="邮箱">
+      <el-form-item label="邮箱" prop="email">
         <el-input v-model="formData.email" @blur="isUsedForEmail"></el-input>
-        <span v-if="isExistsForEmail" style="color: crimson">*该信息已被注册</span>
+        <!-- <span v-if="isExistsForEmail" style="color: crimson">*该信息已被注册</span> -->
       </el-form-item>
-      <el-form-item label="邮箱验证码">
-        <el-input type="email" placeholder="请输入邮箱验证码" v-model="formData.emailCode"/>
+      <el-form-item label="邮箱验证码" prop="emailCode">
+        <el-input placeholder="请输入邮箱验证码" v-model="formData.emailCode" />
         <el-row style="text-align:right">
           <el-button size="mini" type="text">获取</el-button>
         </el-row>
@@ -67,6 +66,15 @@ export default {
   props: ["userId"],
   comments: { selectRoles },
   data() {
+    var validateEmail = (rule, value, callback) => {
+      var reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+      if (reg.test(value)) {
+        callback(new Error("邮箱格式错误"));
+      } else {
+        callback();
+      }
+    };
+
     return {
       formData: {},
       /*所有的可操作的角色信息*/
@@ -78,21 +86,16 @@ export default {
       transferProps: {
         key: "roleId",
         label: "roleName"
+      },
+      formRules: {
+        emailCode: [
+          { required: true, message: "请输入邮箱验证码", trigger: "change" }
+        ],
+        email: [
+          { required: true, message: "请输入邮箱", trigger: "change" },
+          { validator: validateEmail, trigger: "blur" }
+        ]
       }
-      /*formRules: {
-          nickName: [
-            { required: true, message: "请输入昵称", trigger: "blur" }
-          ],
-          fullName: [
-            { required: true, message: "请输入姓名", trigger: "blur" }
-          ],
-          idCardNo: [
-            { required: true, message: "请输入身份证号码", trigger: "blur" }
-          ],
-          phone: [
-            { required: true, message: "请输入手机号码", trigger: "blur" }
-          ]
-        }*/
     };
   },
   methods: {
@@ -104,17 +107,21 @@ export default {
         fullName: "",
         gender: 0,
         birthDate: "",
-        phone: "",
+        emailCode: "",
         email: "",
         super: false,
         enable: true
       };
     },
     handleConfirm() {
-      if ("number" != typeof this.formData.birthDate) {
-        this.formData.birthDate = this.formData.birthDate.getTime();
-      }
-      this.$emit("onSave", this.formData);
+      // if ("number" != typeof this.formData.birthDate) {
+      //   this.formData.birthDate = this.formData.birthDate.getTime();
+      // }
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          this.$emit("onSave", this.formData);
+        }
+      });
     },
     /*清除表单*/
     clearForm() {
@@ -151,25 +158,6 @@ export default {
         });
     },
     /*校验所填写的信息是否已经被使用*/
-    isUsedForPhone() {
-      if (
-        !this.formData.phone ||
-        "" == this.formData.phone ||
-        this.formData.phone === this.updateTempData.phone
-      ) {
-        return;
-      }
-      this.$store
-        .dispatch("user/isExist", {
-          filed: this.formData.phone
-        })
-        .then(data => {
-          this.isExistsForPhone = data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
     isUsedForEmail() {
       if (
         !this.formData.email ||
