@@ -222,11 +222,11 @@ export default {
       };
 
       let flightInfo2 = {
-        arr: "PVG",
-        dpt: "YCU",
-        dptDay: "2020-04-12",
-        dptTime: "13:10",
-        flightCode: "MU5192"
+        arr: "KWE",
+        dpt: "ZHA",
+        dptDay: "2020-04-9",
+        dptTime: "22:30",
+        flightCode: "CA5834"
       };
       this.getOrderFlight(flightInfo2);
       this.getOrderMinPrice(flightInfo2);
@@ -242,11 +242,11 @@ export default {
       };
 
       let _flightInfo2 = {
-        arr: "SHA",
-        dpt: "KMG",
-        date: "2020-04-06",
-        ex_track: "djjj",
-        flightNum: "HO1122"
+        arr: "KWE",
+        dpt: "ZHA",
+        dptDay: "2020-04-9",
+        dptTime: "22:30",
+        flightCode: "CA5834"
       };
       this.getFlightPrice(_flightInfo2);
       if (this.expands.includes(row.exTrack)) {
@@ -298,6 +298,7 @@ export default {
           this.loading = false;
         })
         .catch(error => {
+          this.loading = false;
           console.log(error);
         });
     },
