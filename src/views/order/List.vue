@@ -28,21 +28,47 @@
           label="政策代码"
           align="center"
         ></el-table-column>
-        <el-table-column prop="status" label="订单状态" width="80" align="center"></el-table-column>
+        <el-table-column
+          :formatter="formateOrderType"
+          prop="orderType"
+          label="订单类型"
+          width="80"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="status"
+          :formatter="formateStatus"
+          label="订单状态"
+          width="80"
+          align="center"
+        ></el-table-column>
         <el-table-column label="订单日期" width="100" align="center">
           <template slot-scope="scope">
             <i v-if="scope.row.createTime"></i>
             <span style="margin-left: 10px">{{ formatDate(scope.row.createTime,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="category" label="订单分类" width="80" align="center"></el-table-column>
+        <el-table-column
+          prop="category"
+          :formatter="formateCategory"
+          label="订单分类"
+          width="80"
+          align="center"
+        ></el-table-column>
         <el-table-column label="乘客" align="center" width="200">
           <template slot-scope="scope">
             <i v-if="scope.row.passengers"></i>
             <span style="margin-left: 10px">{{ formatPassengers(scope.row.passengers)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="voyageType" label="航程类型" width="80" align="center"></el-table-column>
+
+        <el-table-column
+          prop="voyageType"
+          :formatter="formateVoyageType"
+          label="航程类型"
+          width="80"
+          align="center"
+        ></el-table-column>
         <el-table-column label="航班号" width="80" align="center">
           <template slot-scope="scope">
             <i v-if="scope.row.flights"></i>
@@ -94,6 +120,12 @@
 
 <script>
 import orderSearch from "./Search.vue";
+import {
+  formateStatus,
+  formateCategory,
+  formateOrderType,
+  formateVoyageType
+} from "@/utils/status.js";
 
 export default {
   name: "orderList",
@@ -109,6 +141,10 @@ export default {
     };
   },
   methods: {
+    formateStatus,
+    formateCategory,
+    formateOrderType,
+    formateVoyageType,
     handleSizeChange: function(size) {
       this.pageSize = size;
       this.searchParams.pageSize = this.pageSize;

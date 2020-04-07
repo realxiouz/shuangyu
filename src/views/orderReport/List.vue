@@ -28,8 +28,27 @@
           width="100"
           align="center"
         ></el-table-column>
-        <el-table-column prop="statusName" label="订单状态" width="100" align="center"></el-table-column>
-        <el-table-column prop="categoryName" label="订单类型" width="80" align="center"></el-table-column>
+        <el-table-column
+          prop="status"
+          :formatter="formateStatus"
+          label="订单状态"
+          width="100"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="category"
+          :formatter="formateCategory"
+          label="订单分类"
+          width="80"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          :formatter="formateOrderType"
+          prop="orderType"
+          label="订单类型"
+          width="80"
+          align="center"
+        ></el-table-column>
         <el-table-column label="订单日期" width="100" align="center">
           <template slot-scope="scope">
             <span>{{ formatDate(scope.row.createTime,'YYYY-MM-DD') }}</span>
@@ -124,6 +143,8 @@
 </template>
 <script>
 import orderReportSearch from "./Search.vue";
+import { formateStatus, formateCategory ,formateOrderType} from "@/utils/status.js";
+
 
 export default {
   name: "orderReportList",
@@ -139,6 +160,9 @@ export default {
     };
   },
   methods: {
+    formateStatus,
+    formateCategory,
+    formateOrderType,
     handleSizeChange: function(size) {
       this.pageSize = size;
       this.searchParams.pageSize = this.pageSize;
