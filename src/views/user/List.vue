@@ -60,7 +60,7 @@
         title="用户信息"
         center
         :visible.sync="dialogVisible"
-        width="35%"
+        width="33%"
         :close-on-click-modal="false"
       >
         <userForm
@@ -245,7 +245,6 @@ export default {
     /*添加保存用户*/
     handleSave(formData) {
       this.dialogVisible = false;
-
       let url = "";
       if (this.userId) {
         url = "user/updateOne";

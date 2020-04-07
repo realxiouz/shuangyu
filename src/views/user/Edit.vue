@@ -26,12 +26,33 @@
         <el-input v-model="formData.email" @blur="isUsedForEmail"></el-input>
         <span v-if="isExistsForEmail" style="color: crimson">*该信息已被注册</span>
       </el-form-item>
-      <el-form-item label="邮箱验证码" prop="emailCode">
-        <el-input placeholder="请输入邮箱验证码" v-model="formData.emailCode" />
-        <el-row style="text-align:right">
-          <el-button size="mini" type="text">获取</el-button>
+      <el-form-item label="验证码" prop="emailCode">
+        <el-row :gutter="20">
+          <el-col style="padding-left:0;padding-right:0;" :span="20">
+            <el-input placeholder="请输入邮箱验证码" v-model="formData.emailCode" />
+          </el-col>
+          <el-col :span="2">
+            <el-button size="mini" type="primary">获取</el-button>
+          </el-col>
         </el-row>
       </el-form-item>
+      <el-form-item label="角色:">
+        <el-select
+          style="width: 100%;"
+          clearable
+          multiple
+          v-model="formData.roles"
+          placeholder="请选择"
+        >
+          <el-option
+            v-for="item in transData"
+            :key="item.roleName"
+            :label="item.roleName"
+            :value="item.roleId"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+
       <el-form-item label="是否超级管理员">
         <el-switch v-model="formData.super" :active-value="true" :inactive-value="false"></el-switch>
       </el-form-item>
@@ -42,15 +63,6 @@
         <el-input type="textarea" v-model="formData.comment"></el-input>
       </el-form-item>
     </el-form>
-    <div style="text-align: center">
-      <el-transfer
-        v-model="formData.roles"
-        :data="transData"
-        :props="transferProps"
-        :titles="['未分配角色列表', '已分配角色列表']"
-        style="margin-top: 20px;text-align: left; display: inline-block"
-      ></el-transfer>
-    </div>
     <div style="margin-top: 25px;text-align: right;">
       <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
       <el-button size="mini" type="primary" @click="handleConfirm">确 定</el-button>
@@ -83,10 +95,6 @@ export default {
       /*用于校验所填写的信息是否已经被使用*/
       isExistsForPhone: false,
       isExistsForEmail: false,
-      transferProps: {
-        key: "roleId",
-        label: "roleName"
-      },
       formRules: {
         emailCode: [
           { required: true, message: "请输入邮箱验证码", trigger: "blur" }
@@ -114,9 +122,9 @@ export default {
       };
     },
     handleConfirm() {
-      // if ("number" != typeof this.formData.birthDate) {
-      //   this.formData.birthDate = this.formData.birthDate.getTime();
-      // }
+      if ("number" != typeof this.formData.birthDate) {
+        this.formData.birthDate = this.formData.birthDate.getTime();
+      }
       this.$refs.form.validate(valid => {
         if (valid) {
           this.$emit("onSave", this.formData);
