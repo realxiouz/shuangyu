@@ -1,7 +1,7 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <order-report-search @onSearch="handleSearch"></order-report-search>
+      <order-report-total-search @onSearch="handleSearch"></order-report-total-search>
     </div>
     <div class="contentBox">
       <el-table
@@ -25,13 +25,6 @@
           :show-overflow-tooltip="true"
           label="政策代码"
           width="100"
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          :formatter="formateOrderType"
-          prop="orderType"
-          label="订单类型"
-          width="80"
           align="center"
         ></el-table-column>
         <el-table-column
@@ -146,15 +139,11 @@
   </div>
 </template>
 <script>
-import orderReportSearch from "./Search.vue";
-import {
-  formateStatus,
-  formateCategory,
-  formateOrderType
-} from "@/utils/status.js";
+import orderReportTotalSearch from "./Search.vue";
+import { formateStatus, formateCategory } from "@/utils/status.js";
 
 export default {
-  name: "orderReportList",
+  name: "orderReportTotal",
   data() {
     return {
       loading: true,
@@ -167,10 +156,12 @@ export default {
       count: []
     };
   },
+  components: {
+    orderReportTotalSearch
+  },
   methods: {
     formateStatus,
     formateCategory,
-    formateOrderType,
     handleSizeChange: function(size) {
       this.pageSize = size;
       this.searchParams.pageSize = this.pageSize;
@@ -190,7 +181,7 @@ export default {
     },
     loadData(params) {
       this.$store
-        .dispatch("orderReport/getList", {
+        .dispatch("orderReportTotal/getList", {
           filters: params
         })
         .then(data => {
@@ -206,7 +197,7 @@ export default {
     },
     loadTotal(params) {
       this.$store
-        .dispatch("orderReport/getTotal", {
+        .dispatch("orderReportTotal/getTotal", {
           filters: params
         })
         .then(data => {
@@ -448,9 +439,7 @@ export default {
       return "￥" + this.$numeral(amount).format("0.00");
     }
   },
-  components: {
-    orderReportSearch
-  },
+
   computed: {
     formatDate() {
       return function(dateStr, format) {

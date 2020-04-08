@@ -192,7 +192,6 @@ export default {
           this.$store
             .dispatch("user/resetPassword", { userId: row.userId })
             .then(data => {
-              console.log(data);
               this.loadData();
               this.$message({
                 type: "success",
@@ -245,7 +244,6 @@ export default {
     /*添加保存用户*/
     handleSave(formData) {
       this.dialogVisible = false;
-
       let url = "";
       if (this.userId) {
         url = "user/updateOne";
@@ -258,7 +256,7 @@ export default {
           this.loadData();
           this.$message({
             type: "success",
-            message: "修改成功!"
+            message: "操作成功!"
           });
         })
         .catch(error => {
@@ -332,16 +330,4 @@ export default {
 };
 </script>
 <style>
-/* .searchBox {
-  padding: 15px;
-  background-color: #fff;
-}
-.contentBox {
-  padding: 15px;
-  margin-top: 15px;
-  background-color: #fff;
-}
-.bigBox {
-  background-color: #f0f2f5;
-} */
 </style>

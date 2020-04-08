@@ -7,6 +7,13 @@ Vue.use(Router);
 export default new Router({
   routes: [
     {
+      title: '首页',
+      path: '/',
+      name: 'index',
+      component: Layout,
+      redirect: '/home',
+    },
+    {
       title: '登录',
       path: '/login',
       name: 'login',
@@ -203,6 +210,13 @@ export default new Router({
           component: () => import('@/views/orderTask/List'),
           meta: { title: '订单任务', icon: 'home' }
         },
+        {
+          title: '订单总报表',
+          path: '/order/reportTotal/list',
+          name: 'orderReportTotal',
+          component: () => import('@/views/orderReportTotal/List'),
+          meta: { title: '订单任务', icon: 'home' }
+        },
       ]
     },
     {
@@ -248,6 +262,13 @@ export default new Router({
           name: 'fare',
           component: () => import('@/views/fare/List'),
           meta: { title: '票价信息', icon: 'home' }
+        },
+        {
+          title: '票号信息',
+          path: '/ticket/list',
+          name: 'ticket',
+          component: () => import('@/views/ticket/List'),
+          meta: { title: '票号信息', icon: 'home' }
         }
       ]
     },
@@ -422,6 +443,13 @@ export default new Router({
           name: 'fundAccount',
           component: () => import('@/views/fundAccount/List'),
           meta: { title: '资金账号管理', icon: 'home' }
+        },
+        {
+          title: '订单管理',
+          path: '/finance/order/list',
+          name: 'financeOrder',
+          component: () => import('@/views/financeOrder/List'),
+          meta: { title: '订单管理', icon: 'home' }
         }
       ]
     },

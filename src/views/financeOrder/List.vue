@@ -1,27 +1,32 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <order-search @onSearch="handleSearch"></order-search>
+      <order-report-search @onSearch="handleSearch"></order-report-search>
     </div>
     <div class="contentBox">
       <el-table
         :data="tableData"
         size="mini"
         highlight-current-row
-        max-height="650"
         style="width: 100%;margin-bottom:15px"
         v-loading="loading"
-        fit
         show-summary
         :summary-method="getSummaries"
+        fit
       >
         <el-table-column label="序号" type="index" width="50" align="center">
           <template slot-scope="scope">
             <span>{{(currentPage - 1) * pageSize + scope.$index + 1}}</span>
           </template>
         </el-table-column>
-
-        <el-table-column prop="orderNo" label="订单号" width="180" align="center"></el-table-column>
+        <el-table-column prop="orderNo" label="订单号" align="center" width="160"></el-table-column>
+        <el-table-column
+          prop="policyCode"
+          :show-overflow-tooltip="true"
+          label="政策代码"
+          width="100"
+          align="center"
+        ></el-table-column>
         <el-table-column
           :formatter="formateOrderType"
           prop="orderType"
@@ -40,124 +45,88 @@
           prop="status"
           :formatter="formateStatus"
           label="订单状态"
-          width="80"
-          align="center"
-        ></el-table-column>
-        <el-table-column prop="ticketNos" label="票号" width="180" align="center">
-          <template slot-scope="scope">
-            <span>{{formatTicketNo(scope.row.ticketNos)}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="rootOrderNo"
-          :show-overflow-tooltip="true"
-          label="销售出票单号"
           width="100"
           align="center"
         ></el-table-column>
-        <el-table-column
-          prop="linkOrderNo"
-          :show-overflow-tooltip="true"
-          label="业务订单编号"
-          width="100"
-          align="center"
-        ></el-table-column>
-        <el-table-column label="乘客" align="center" width="200">
-          <template slot-scope="scope">
-            <i v-if="scope.row.passengers"></i>
-            <span>{{ formatPassengers(scope.row.passengers)}}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column
-          :show-overflow-tooltip="true"
-          prop="sourceOrderNo"
-          label="原订单"
-          align="center"
-        ></el-table-column>
-        <el-table-column prop="pid" label="pid" align="center"></el-table-column>
-        <el-table-column
-          prop="path"
-          label="path"
-          :show-overflow-tooltip="true"
-          width="100"
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          prop="policyCode"
-          :show-overflow-tooltip="true"
-          label="政策代码"
-          align="center"
-        ></el-table-column>
-
         <el-table-column label="订单日期" width="100" align="center">
           <template slot-scope="scope">
             <span>{{ formatDate(scope.row.createTime,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="交易时间" width="100" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatDate(scope.row.transactionTime,'YYYY-MM-DD') }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="业务完结时间" width="100" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatDate(scope.row.finishTime,'YYYY-MM-DD') }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="fundAccount" label="资金账号" width="100" align="center"></el-table-column>
-        <el-table-column prop="accountId" label="平台账号" width="100" align="center"></el-table-column>
-        <el-table-column label="最晚出票时限" width="100" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatDate(scope.row.deadlineTicketTime,'YYYY-MM-DD') }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="最晚退票时限" width="100" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatDate(scope.row.deadlineReturnTime,'YYYY-MM-DD') }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="最晚退票时限" width="100" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatDate(scope.row.deadlineChangeTime,'YYYY-MM-DD') }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="voyageType"
-          :formatter="formateVoyageType"
-          label="航程类型"
-          align="center"
-        ></el-table-column>
-        <el-table-column label="航班号" align="center">
+        <el-table-column label="航班号" width="80" align="center">
           <template slot-scope="scope">
             <span>{{ formatFlightNo(scope.row.flights)}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="航班日期" width="90" align="center">
+        <el-table-column label="航班日期" width="100" align="center">
           <template slot-scope="scope">
             <span>{{ formatFlightDate(scope.row.flights)}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="起飞-到达" width="180" align="center">
+        <el-table-column label="起飞 -- 到达" width="100" align="center">
           <template slot-scope="scope">
             <span>{{ formatFlight(scope.row.flights)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="pnr" label="PNR" width="150" align="center"></el-table-column>
-        <el-table-column fixed="right" label="操作" align="center" width="150">
+        <el-table-column prop="pnr" label="PNR" width="80" align="center"></el-table-column>
+        <el-table-column label="乘客" align="center" width="100">
           <template slot-scope="scope">
-            <el-button @click="handleOrderDetail(scope.row)" type="primary" size="mini">查看</el-button>
-            <el-button type="danger" size="mini" @click="handleRemove(scope.row.orderNo)">删除</el-button>
+            <span>{{ formatPassengers(scope.row.passengers)}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="交易金额" prop="transactionAmount" width="150" align="center">
+        <el-table-column prop="transactionAmount" label="交易金额" width="150" align="center">
           <template slot-scope="scope">
             <span>{{ formatAmount(scope.row.transactionAmount)}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="总价" prop="amount" width="150" align="center">
+        <el-table-column prop="amount" label="总价" width="150" align="center">
           <template slot-scope="scope">
             <span>{{ formatAmount(scope.row.amount)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="receivable" label="应收" width="80" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatAmount(scope.row.receivable)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="receipt" label="实收" width="80" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatAmount(scope.row.receipt)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="payable" label="应付" width="80" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatAmount(scope.row.payable)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="payment" label="实付" width="80" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatAmount(scope.row.payment)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="systemProfit" label="系统利润" width="80" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatAmount(scope.row.systemProfit)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="shouldProfit" label="业务利润" width="80" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatAmount(scope.row.shouldProfit)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="profit" label="财务利润" width="80" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatAmount(scope.row.profit)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column fixed="right" label="操作" align="center" width="150">
+          <template slot-scope="scope">
+            <el-button @click="handleUpdate(scope.row.deptId)" type="primary" size="mini">编辑</el-button>
+            <el-button
+              @click.native.prevent="handleRemove(scope.row.deptId)"
+              type="danger"
+              size="mini"
+            >删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -176,35 +145,33 @@
     </div>
   </div>
 </template>
-
 <script>
-import orderSearch from "./Search.vue";
+import orderReportSearch from "./Search.vue";
 import {
   formateStatus,
   formateCategory,
-  formateOrderType,
-  formateVoyageType
+  formateOrderType
 } from "@/utils/status.js";
 
 export default {
-  name: "orderList",
+  name: "orderReportList",
   data() {
     return {
+      loading: true,
       currentPage: 1,
       pageSize: 10,
       total: 0,
-      loading: true,
       dialogVisible: false,
       tableData: [],
       searchParams: {},
       count: []
+
     };
   },
   methods: {
     formateStatus,
     formateCategory,
     formateOrderType,
-    formateVoyageType,
     handleSizeChange: function(size) {
       this.pageSize = size;
       this.searchParams.pageSize = this.pageSize;
@@ -224,7 +191,7 @@ export default {
     },
     loadData(params) {
       this.$store
-        .dispatch("order/getList", {
+        .dispatch("orderReport/getList", {
           filters: params
         })
         .then(data => {
@@ -240,7 +207,7 @@ export default {
     },
     loadTotal(params) {
       this.$store
-        .dispatch("order/getTotal", {
+        .dispatch("orderReport/getTotal", {
           filters: params
         })
         .then(data => {
@@ -280,6 +247,35 @@ export default {
               "￥" +
               this.$numeral(this.count.transactionAmount).format("0,0.00");
             break;
+          case "receivable":
+            sums[index] =
+              "￥" + this.$numeral(this.count.receivable).format("0,0.00");
+            break;
+
+          case "receipt":
+            sums[index] =
+              "￥" + this.$numeral(this.count.receipt).format("0,0.00");
+            break;
+          case "payable":
+            sums[index] =
+              "￥" + this.$numeral(this.count.payable).format("0,0.00");
+            break;
+          case "payment":
+            sums[index] =
+              "￥" + this.$numeral(this.count.payment).format("0,0.00");
+            break;
+          case "systemProfit":
+            sums[index] =
+              "￥" + this.$numeral(this.count.systemProfit).format("0,0.00");
+            break;
+          case "shouldProfit":
+            sums[index] =
+              "￥" + this.$numeral(this.count.shouldProfit).format("0,0.00");
+            break;
+          case "profit":
+            sums[index] =
+              "￥" + this.$numeral(this.count.profit).format("0,0.00");
+            break;
           default:
             sums[index] = "";
             break;
@@ -287,11 +283,13 @@ export default {
       });
       return sums;
     },
+    handleAdd() {
+      this.dialogVisible = true;
+    },
     handleSearch(params) {
       if (!params) {
         params = {};
         this.searchParams = params;
-        this.loadCount(this.searchParams);
         this.loadData(this.searchParams);
         this.loadTotal(this.searchParams);
       } else {
@@ -330,126 +328,81 @@ export default {
         if (params.voyageType) {
           newParams.voyageType = params.voyageType;
         }
-        if (params.rootOrderNo) {
-          newParams.rootOrderNo = params.rootOrderNo;
-        }
-        if (params.fundAccount) {
-          newParams.fundAccount = params.fundAccount;
-        }
-        if (params.accountId) {
-          newParams.accountId = params.accountId;
-        }
-        if (params.pid) {
-          newParams.pid = params.pid;
-        }
-        if (params.sourceOrderNo) {
-          newParams.sourceOrderNo = params.sourceOrderNo;
-        }
-        if (params.path) {
-          newParams.path = params.path;
-        }
-        if (params.linkOrderNo) {
-          newParams.linkOrderNo = params.linkOrderNo;
-        }
         if (params.createTime) {
           newParams.startCreateTime = params.createTime[0];
           newParams.endCreateTime = params.createTime[1];
         }
-        if (params.finishTime) {
-          newParams.startFinishTime = params.finishTime[0];
-          newParams.endFinishTime = params.finishTime[1];
+
+        if (params.startAmount) {
+          newParams.startAmount = params.startAmount;
         }
-        if (params.DdeadlineChangeTime) {
-          newParams.startTransactionTime = params.transactionTime[0];
-          newParams.endTransactionTime = params.transactionTime[0];
+        if (params.endAmount) {
+          newParams.endAmount = params.endAmount;
         }
-        if (params.deadlineTicketTime) {
-          newParams.startDeadlineTicketTime = params.deadlineTicketTime[0];
-          newParams.endDeadlineTicketTime = params.deadlineTicketTime[0];
+
+        if (params.startReceivable) {
+          newParams.startReceivable = params.startReceivable;
         }
-        if (params.deadlineReturnTime) {
-          newParams.startDeadlineReturnTime = params.deadlineReturnTime[0];
-          newParams.endDeadlineReturnTime = params.deadlineReturnTime[0];
+        if (params.endReceivable) {
+          newParams.endReceivable = params.endReceivable;
         }
-        if (params.deadlineChangeTime) {
-          newParams.startDeadlineChangeTime = params.deadlineChangeTime[0];
-          newParams.endDeadlineChangeTime = params.deadlineChangeTime[0];
+        if (params.startReceipt) {
+          newParams.startReceipt = params.startReceipt;
         }
-        if (params.emptyData.length > 0) {
-          params.emptyData.forEach(item => {
-            newParams[item] = "";
-          });
+        if (params.endReceipt) {
+          newParams.endReceipt = params.endReceipt;
+        }
+
+        if (params.endReceipt) {
+          newParams.endReceipt = params.endReceipt;
+        }
+        if (params.endReceipt) {
+          newParams.endReceipt = params.endReceipt;
+        }
+
+        if (params.startPayable) {
+          newParams.startPayable = params.startPayable;
+        }
+        if (params.endPayable) {
+          newParams.endPayable = params.endPayable;
+        }
+
+        if (params.startPayment) {
+          newParams.startPayment = params.startPayment;
+        }
+        if (params.endPayment) {
+          newParams.endPayment = params.endPayment;
+        }
+        if (params.startSystemProfit) {
+          newParams.startSystemProfit = params.startSystemProfit;
+        }
+        if (params.endSystemProfit) {
+          newParams.endSystemProfit = params.endSystemProfit;
+        }
+
+        if (params.startShouldProfit) {
+          newParams.startShouldProfit = params.startShouldProfit;
+        }
+        if (params.endShouldProfit) {
+          newParams.endShouldProfit = params.endShouldProfit;
         }
         this.searchParams = newParams;
         this.loadData(this.searchParams);
         this.loadTotal(this.searchParams);
-        this.$message({
-          type: "success",
-          message: "查询成功！"
-        });
       }
-    },
-    handleRemove(orderNo) {
-      this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.$store
-            .dispatch("order/removeOne", { orderNo: orderNo })
-            .then(() => {
-              if (1 === this.tableData.length) {
-                this.prevClick();
-              } else {
-                this.loadData(this.searchParams);
-              }
-              this.loadTotal();
-            })
-            .catch(error => {
-              console.log(error);
-            });
-        })
-        .catch(err => {
-          console.error(err);
-        });
     },
     handleCancel() {
       this.dialogVisible = false;
     },
     handleSave() {},
-    handleAdd() {
-      this.dialogVisible = true;
-    },
-    handleOrderDetail(row) {
-      this.$router.push({
-        path: "/order/detail",
-        query: {
-          orderNo: row.orderNo
-        }
-      });
-    },
+    /*初始化用工列表中的生日日期格式*/
     initDate(dateStr, format) {
-      if (dateStr > 0) {
+      if (null != dateStr) {
         let date = new Date(dateStr);
         return this.$moment(date).format(format);
       } else {
         return "";
       }
-    },
-    formatFlight(data) {
-      if (!data || data.length == 0) {
-        return "";
-      }
-      return (
-        data[0].dpt +
-        " " +
-        data[0].dptTime +
-        " - " +
-        data[0].arr +
-        " " +
-        data[0].arrTime
-      );
     },
     formatFlightDate(data) {
       if (!data || data.length == 0) {
@@ -463,18 +416,20 @@ export default {
       }
       return data[0].flightCode;
     },
-    formatTicketNo(data) {
-      if (data != "" && data.length > 0) {
-        let str = "";
-        data.forEach((item, index) => {
-          if (item) {
-            str += item + " / ";
-          }
-        });
-        return str.substring(0, str.length - 2);
-      } else {
-        return (data = "");
+    formatFlight(data) {
+      if (!data || data.length == 0) {
+        return "";
       }
+      // let dptTime = data[0].dptTime.match(/.*(.{5})/)[1];
+      return (
+        data[0].dpt +
+        " " +
+        data[0].dptTime +
+        " - " +
+        data[0].arr +
+        " " +
+        data[0].arrTime
+      );
     },
     formatPassengers(data) {
       if (!data || data.length == 0) {
@@ -494,6 +449,9 @@ export default {
       return "￥" + this.$numeral(amount).format("0.00");
     }
   },
+  components: {
+    orderReportSearch
+  },
   computed: {
     formatDate() {
       return function(dateStr, format) {
@@ -501,13 +459,11 @@ export default {
       };
     }
   },
-  components: {
-    orderSearch
-  },
   created() {
     this.loadData(this.searchParams);
     this.loadTotal();
     this.loadCount();
+
   }
 };
 </script>

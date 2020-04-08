@@ -19,30 +19,9 @@
             <span>{{(currentPage - 1) * pageSize + scope.$index + 1}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="orderNo" label="订单号" align="center" width="160"></el-table-column>
+        <el-table-column prop="orderNo" label="订单号" align="center"></el-table-column>
         <el-table-column
-          prop="policyCode"
-          :show-overflow-tooltip="true"
-          label="政策代码"
-          width="100"
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          :formatter="formateOrderType"
-          prop="orderType"
-          label="订单类型"
-          width="80"
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          prop="category"
-          :formatter="formateCategory"
-          label="订单分类"
-          width="80"
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          prop="status"
+          prop="orderStatus"
           :formatter="formateStatus"
           label="订单状态"
           width="100"
@@ -53,12 +32,16 @@
             <span>{{ formatDate(scope.row.createTime,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
+        <el-table-column prop="ticketNo" label="票号" align="center"></el-table-column>
+        <el-table-column prop="status" label="票号状态" width="100" align="center"></el-table-column>
+        <el-table-column prop="name" label="姓名" width="80" align="center"></el-table-column>
+        <el-table-column prop="pnr" label="PNR" width="80" align="center"></el-table-column>
         <el-table-column label="航班号" width="80" align="center">
           <template slot-scope="scope">
             <span>{{ formatFlightNo(scope.row.flights)}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="航班日期" width="100" align="center">
+        <el-table-column label="出发日期" width="100" align="center">
           <template slot-scope="scope">
             <span>{{ formatFlightDate(scope.row.flights)}}</span>
           </template>
@@ -68,55 +51,14 @@
             <span>{{ formatFlight(scope.row.flights)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="pnr" label="PNR" width="80" align="center"></el-table-column>
-        <el-table-column label="乘客" align="center" width="100">
-          <template slot-scope="scope">
-            <span>{{ formatPassengers(scope.row.passengers)}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="交易金额" prop="transactionAmount" width="150" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatAmount(scope.row.transactionAmount)}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="amount" label="总价" width="150" align="center">
+        <el-table-column prop="amount" label="金额" width="150" align="center">
           <template slot-scope="scope">
             <span>{{ formatAmount(scope.row.amount)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="receivable" label="应收" width="80" align="center">
+        <el-table-column prop="orderAmount" label="订单金额" width="150" align="center">
           <template slot-scope="scope">
-            <span>{{ formatAmount(scope.row.receivable)}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="receipt" label="实收" width="80" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatAmount(scope.row.receipt)}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="payable" label="应付" width="80" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatAmount(scope.row.payable)}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="payment" label="实付" width="80" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatAmount(scope.row.payment)}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="systemProfit" label="系统利润" width="80" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatAmount(scope.row.systemProfit)}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="shouldProfit" label="业务利润" width="80" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatAmount(scope.row.shouldProfit)}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="profit" label="财务利润" width="80" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatAmount(scope.row.profit)}}</span>
+            <span>{{ formatAmount(scope.row.orderAmount)}}</span>
           </template>
         </el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="150">
@@ -165,6 +107,7 @@ export default {
       tableData: [],
       searchParams: {},
       count: []
+
     };
   },
   methods: {
@@ -190,7 +133,7 @@ export default {
     },
     loadData(params) {
       this.$store
-        .dispatch("orderReport/getList", {
+        .dispatch("ticket/getList", {
           filters: params
         })
         .then(data => {
@@ -206,19 +149,21 @@ export default {
     },
     loadTotal(params) {
       this.$store
-        .dispatch("orderReport/getTotal", {
+        .dispatch("ticket/getTotal", {
           filters: params
         })
         .then(data => {
+          this.length = false;
           this.total = data;
         })
         .catch(error => {
+          this.length = false;
           console.log(error);
         });
     },
     loadCount(params) {
       this.$store
-        .dispatch("order/getCount", {
+        .dispatch("ticket/getCount", {
           filters: params
         })
         .then(data => {
@@ -241,39 +186,10 @@ export default {
             sums[index] =
               "￥" + this.$numeral(this.count.amount).format("0,0.00");
             break;
-          case "transactionAmount":
+          case "orderAmount":
             sums[index] =
               "￥" +
-              this.$numeral(this.count.transactionAmount).format("0,0.00");
-            break;
-          case "receivable":
-            sums[index] =
-              "￥" + this.$numeral(this.count.receivable).format("0,0.00");
-            break;
-
-          case "receipt":
-            sums[index] =
-              "￥" + this.$numeral(this.count.receipt).format("0,0.00");
-            break;
-          case "payable":
-            sums[index] =
-              "￥" + this.$numeral(this.count.payable).format("0,0.00");
-            break;
-          case "payment":
-            sums[index] =
-              "￥" + this.$numeral(this.count.payment).format("0,0.00");
-            break;
-          case "systemProfit":
-            sums[index] =
-              "￥" + this.$numeral(this.count.systemProfit).format("0,0.00");
-            break;
-          case "shouldProfit":
-            sums[index] =
-              "￥" + this.$numeral(this.count.shouldProfit).format("0,0.00");
-            break;
-          case "profit":
-            sums[index] =
-              "￥" + this.$numeral(this.count.profit).format("0,0.00");
+              this.$numeral(this.count.orderAmount).format("0,0.00");
             break;
           default:
             sums[index] = "";
@@ -338,52 +254,11 @@ export default {
         if (params.endAmount) {
           newParams.endAmount = params.endAmount;
         }
-
-        if (params.startReceivable) {
-          newParams.startReceivable = params.startReceivable;
+        if (params.startOrderAmount) {
+          newParams.startOrderAmount = params.startOrderAmount;
         }
-        if (params.endReceivable) {
-          newParams.endReceivable = params.endReceivable;
-        }
-        if (params.startReceipt) {
-          newParams.startReceipt = params.startReceipt;
-        }
-        if (params.endReceipt) {
-          newParams.endReceipt = params.endReceipt;
-        }
-
-        if (params.endReceipt) {
-          newParams.endReceipt = params.endReceipt;
-        }
-        if (params.endReceipt) {
-          newParams.endReceipt = params.endReceipt;
-        }
-
-        if (params.startPayable) {
-          newParams.startPayable = params.startPayable;
-        }
-        if (params.endPayable) {
-          newParams.endPayable = params.endPayable;
-        }
-
-        if (params.startPayment) {
-          newParams.startPayment = params.startPayment;
-        }
-        if (params.endPayment) {
-          newParams.endPayment = params.endPayment;
-        }
-        if (params.startSystemProfit) {
-          newParams.startSystemProfit = params.startSystemProfit;
-        }
-        if (params.endSystemProfit) {
-          newParams.endSystemProfit = params.endSystemProfit;
-        }
-
-        if (params.startShouldProfit) {
-          newParams.startShouldProfit = params.startShouldProfit;
-        }
-        if (params.endShouldProfit) {
-          newParams.endShouldProfit = params.endShouldProfit;
+        if (params.endOrderAmount) {
+          newParams.endOrderAmount = params.endOrderAmount;
         }
         this.searchParams = newParams;
         this.loadData(this.searchParams);
@@ -396,7 +271,7 @@ export default {
     handleSave() {},
     /*初始化用工列表中的生日日期格式*/
     initDate(dateStr, format) {
-      if (null != dateStr) {
+      if (dateStr > 0) {
         let date = new Date(dateStr);
         return this.$moment(date).format(format);
       } else {
@@ -419,7 +294,6 @@ export default {
       if (!data || data.length == 0) {
         return "";
       }
-      // let dptTime = data[0].dptTime.match(/.*(.{5})/)[1];
       return (
         data[0].dpt +
         " " +

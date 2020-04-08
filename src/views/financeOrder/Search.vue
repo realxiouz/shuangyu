@@ -36,9 +36,9 @@
             <el-col>
               <el-date-picker
                 start-placeholder="开始日期"
+                :unlink-panels="true"
                 end-placeholder="结束日期"
                 type="daterange"
-                :unlink-panels="true"
                 placeholder="选择日期"
                 v-model="formData.flightDate"
                 style="width: 100%;"

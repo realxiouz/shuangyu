@@ -242,11 +242,11 @@ export default {
       };
 
       let _flightInfo2 = {
-        arr: "SHA",
-        dpt: "KMG",
-        date: "2020-04-06",
+       arr: "PVG",
+        dpt: "YCU",
+        date: "2020-04-12",
         ex_track: "djjj",
-        flightNum: "HO1122"
+        flightNum: "MU5192"
       };
       this.getFlightPrice(_flightInfo2);
       if (this.expands.includes(row.exTrack)) {
@@ -265,11 +265,11 @@ export default {
         flightNum: this.flightData[0].flightCode
       };
       let _flightInfo2 = {
-        arr: "SHA",
-        dpt: "KMG",
-        date: "2020-04-06",
+        arr: "PVG",
+        dpt: "YCU",
+        date: "2020-04-12",
         ex_track: "djjj",
-        flightNum: "HO1122"
+        flightNum: "MU5192"
       };
       this.getFlightPrice(_flightInfo2);
     },
@@ -298,6 +298,7 @@ export default {
           this.loading = false;
         })
         .catch(error => {
+          this.loading = false;
           console.log(error);
         });
     },

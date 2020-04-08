@@ -21,7 +21,16 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="乘机人姓名:">
+          <el-form-item label="原订单:">
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.sourceOrderNo"
+              style="width: 100%"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="乘机人姓名:">
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.name"
@@ -56,20 +65,7 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="出发日期:">
-            <el-col>
-              <el-date-picker
-                type="date"
-                placeholder="选择日期"
-                v-model="formData.flightDate"
-                style="width: 100%;"
-                format="yyyy-MM-dd"
-                value-format="yyyy-MM-dd"
-              ></el-date-picker>
-            </el-col>
-          </el-form-item>
-        </el-col>
+
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="舱位:">
             <el-input
@@ -120,7 +116,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="PID:">
+          <el-form-item v-show="more" label="pid:">
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.pid"
@@ -133,15 +129,6 @@
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.path"
-              style="width: 100%"
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="level:">
-            <el-input
-              @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.level"
               style="width: 100%"
             ></el-input>
           </el-form-item>
@@ -165,12 +152,15 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="订单日期:">
+          <el-form-item v-show="more" label="出发日期:">
             <el-col>
               <el-date-picker
-                type="date"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                type="daterange"
                 placeholder="选择日期"
-                v-model="formData.createTime"
+                :unlink-panels="true"
+                v-model="formData.flightDate"
                 style="width: 100%;"
                 format="yyyy-MM-dd"
                 value-format="yyyy-MM-dd"
@@ -179,12 +169,15 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="业务完结时间:">
+          <el-form-item v-show="more" label="订单创建日期:">
             <el-col>
               <el-date-picker
-                type="date"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                type="daterange"
+                :unlink-panels="true"
                 placeholder="选择日期"
-                v-model="formData.finishTime"
+                v-model="formData.createTime"
                 style="width: 100%;"
                 format="yyyy-MM-dd"
                 value-format="yyyy-MM-dd"
@@ -196,14 +189,105 @@
           <el-form-item v-show="more" label="交易时间:">
             <el-col>
               <el-date-picker
-                type="date"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                type="daterange"
                 placeholder="选择日期"
+                :unlink-panels="true"
                 v-model="formData.transactionTime"
                 style="width: 100%;"
                 format="yyyy-MM-dd"
                 value-format="yyyy-MM-dd"
               ></el-date-picker>
             </el-col>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="业务完结时间:">
+            <el-col>
+              <el-date-picker
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                type="daterange"
+                :unlink-panels="true"
+                placeholder="选择日期"
+                v-model="formData.finishTime"
+                style="width: 100%;"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+              ></el-date-picker>
+            </el-col>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="最晚出票时限:">
+            <el-col>
+              <el-date-picker
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                type="daterange"
+                :unlink-panels="true"
+                placeholder="选择日期"
+                v-model="formData.deadlineTicketTime"
+                style="width: 100%;"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+              ></el-date-picker>
+            </el-col>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="最晚退票时限:">
+            <el-col>
+              <el-date-picker
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                type="daterange"
+                :unlink-panels="true"
+                placeholder="选择日期"
+                v-model="formData.deadlineReturnTime"
+                style="width: 100%;"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+              ></el-date-picker>
+            </el-col>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="最晚改签时限:">
+            <el-col>
+              <el-date-picker
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                type="daterange"
+                :unlink-panels="true"
+                placeholder="选择日期"
+                v-model="formData.deadlineChangeTime"
+                style="width: 100%;"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+              ></el-date-picker>
+            </el-col>
+          </el-form-item>
+        </el-col>
+
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="异常查询:">
+            <el-select
+              style="width: 100%;"
+              clearable
+              multiple
+              collapse-tags
+              v-model="formData.emptyData"
+              placeholder="请选择"
+            >
+              <el-option
+                v-for="item in emptyData"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="18" :md="14" :lg="10" :xl="6">
@@ -251,17 +335,40 @@ export default {
         orderNo: "", //订单号
         name: "", //乘机人姓名
         cardNo: "", //乘机人证件号
-        fundAccount: "",
-        accountId: "",
-        pid: "",
-        path: "",
-        level: "",
         rootOrderNo: "",
         linkOrderNo: "",
+        sourceOrderNo: "",
         createTime: "",
         finishTime: "",
         transactionTime: ""
-      }
+      },
+      // pid,path,level,rootOrderNo,linkOrderNo
+      emptyData: [
+        {
+          value: "pid",
+          label: "pid"
+        },
+        {
+          value: "path",
+          label: "path"
+        },
+        {
+          value: "rootOrderNo",
+          label: "rootOrderNo"
+        },
+        {
+          value: "linkOrderNo",
+          label: "linkOrderNo"
+        },
+        {
+          value: "fundAccount",
+          label: "fundAccount"
+        },
+        {
+          value: "accountId",
+          label: "accountId"
+        }
+      ]
     };
   },
   computed: {

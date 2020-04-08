@@ -195,8 +195,8 @@
               <el-date-picker
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
-                type="daterange"
                 :unlink-panels="true"
+                type="daterange"
                 placeholder="选择日期"
                 v-model="formData.createTime"
                 style="width: 100%;"
