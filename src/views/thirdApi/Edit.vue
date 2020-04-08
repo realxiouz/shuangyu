@@ -11,11 +11,44 @@
       <el-form-item label="方法:">
         <el-input v-model="formData.method"></el-input>
       </el-form-item>
+      <el-form-item label="参数">
+        <div style="width: 100%; height: 100px; border: #DCDFE6 solid 1px; border-radius: 4px">
+          <el-tag
+            :key="idx"
+            v-for="(tag,idx) in paramList"
+            closable
+            @close="handleClose(idx)">
+            {{tag}}
+          </el-tag>
+          <el-button class="button-new-tag" size="small" @click="addParams">+ New Tag</el-button>
+        </div>
+      </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer" style="text-align:right;">
       <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
       <el-button size="mini" type="primary" @click="handleSave">确 定</el-button>
     </div>
+
+    <el-dialog title="API参数" :visible.sync="paramDialogVisible" width="30%">
+      <el-form :model="paramFormData" class="demo-form-inline">
+        <el-form-item label="参数名称">
+          <el-input v-model="paramFormData.name" placeholder="参数名称.."></el-input>
+        </el-form-item>
+        <el-form-item label="参数值">
+          <el-input v-model="paramFormData.value" placeholder="参数值.."></el-input>
+        </el-form-item>
+        <el-form-item label="是否只读">
+          <el-select v-model="paramFormData.readonly">
+            <el-option label="是" :value=true></el-option>
+            <el-option label="否" :value=false></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+          <el-button @click="handleCancel">取 消</el-button>
+          <el-button type="primary" @click="handleConfirm">确 定</el-button>
+        </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -32,10 +65,38 @@ export default {
   name: "apiEdit",
   data() {
     return {
-      formData: defaultData()
+      formData: defaultData(),
+        paramFormData: {},
+        paramList: ["test"]
     };
   },
   methods: {
+      defaultParamForm(){
+          return {
+              //标签
+              label: '',
+              //名称
+              name: '',
+              //值
+              value: '',
+              //分组
+              group: '',
+              //标签
+              comment: '',
+              //输入框类型
+              inputType: '',
+              //数据类型
+              dataType: '',
+              //是否只读
+              readonly: false,
+              //禁用
+              disabled: false,
+              //是否必须
+              required: true,
+              //数据
+              data: ''
+          };
+      },
     handleSave() {
       this.$refs["form"].validate(valid => {
         if (valid) {
@@ -57,7 +118,22 @@ export default {
       } else {
         this.formData = defaultData();
       }
-    }
+    },
+      clearForm(){
+          this.paramFormData = this.defaultParamForm();
+      },
+      addParams(){
+          this.paramDialogVisible = true;
+      },
+      handleCancel(){
+          this.paramDialogVisible = false;
+      },
+      handleConfirm(){
+
+      },
+      handleClose(idx){
+          this.paramList.splice(idx, 1);
+      }
   },
   created() {
     if (this.apiId) {
@@ -69,6 +145,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-</style>

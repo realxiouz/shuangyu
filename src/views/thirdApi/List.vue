@@ -13,7 +13,7 @@
         :data="tableData"
         style="width: 100%;margin-bottom: 15px;"
       >
-        <el-table-column prop="thirdId" label="第三方平台" width="300" align="center"></el-table-column>
+        <el-table-column prop="third.thirdName" label="第三方平台" width="300" align="center"></el-table-column>
         <el-table-column prop="url" label="url" width="300" align="center"></el-table-column>
         <el-table-column prop="method" label="方法名称" align="center"></el-table-column>
         <el-table-column label="是否启用" align="center" width="100">
@@ -33,24 +33,71 @@
         </el-table-column>
       </el-table>
       <el-pagination
-        @size-change="handleSizeChange"
         @prev-click="prevClick"
         @next-click="nextClick"
         background
-        layout="total,sizes,prev,next"
+        layout="total,prev,next"
         prev-text="上一页"
         next-text="下一页"
         :page-size="pageSize"
         :total="total"
       ></el-pagination>
-      <el-dialog title="第三方Api信息" center :visible.sync="dialogVisible" width="33%">
-        <api-edit
-          ref="apiFrom"
-          v-if="dialogVisible"
-          :api-id="apiId"
-          @onCancel="handleCancel"
-          @onSave="handleSave"
-        ></api-edit>
+      <el-dialog title="第三方Api信息" center :visible.sync="dialogVisible" width="33%" :close-on-click-modal="false">
+        <el-form ref="formData" :model="formData" label-width="100px" size="mini">
+          <input type="hidden" v-model="formData.apiId" />
+          <el-form-item label="第三方平台:">
+            <el-select v-model="formData.thirdId" placeholder="请选择平台.." style="width: 100%">
+              <el-option
+                v-for="item in thirdList"
+                :key="item.thirdId"
+                :label="item.thirdName"
+                :value="item.thirdId">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="URL:">
+            <el-input v-model="formData.url"></el-input>
+          </el-form-item>
+          <el-form-item label="方法:">
+            <el-input v-model="formData.method"></el-input>
+          </el-form-item>
+          <el-form-item label="参数">
+            <div style="width: 100%; height: 100px; border: #DCDFE6 solid 1px; border-radius: 4px">
+              <el-tag closable :disable-transitions="false"
+                v-for="(tag,idx) in paramList"
+                :key="idx"
+                @close="handleClose(idx)">
+                {{tag.name+": "+tag.value}}
+              </el-tag>
+              <el-button class="button-new-tag" size="small" @click="addParams">+ 添加参数</el-button>
+            </div>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer" style="text-align:right;">
+          <el-button size="mini" @click="handleCancel">取 消</el-button>
+          <el-button size="mini" type="primary" @click="handleSave">确 定</el-button>
+        </div>
+      </el-dialog>
+
+      <el-dialog title="API参数" :visible.sync="paramDialogVisible" width="20%" :close-on-click-modal="false">
+        <el-form :model="paramFormData" label-width="100px" size="mini">
+          <el-form-item label="参数名称">
+            <el-input v-model="paramFormData.name" placeholder="参数名称.."></el-input>
+          </el-form-item>
+          <el-form-item label="参数值">
+            <el-input v-model="paramFormData.value" placeholder="参数值.."></el-input>
+          </el-form-item>
+          <el-form-item label="是否只读">
+            <el-select v-model="paramFormData.readonly" style="width: 100%">
+              <el-option label="是" :value=true></el-option>
+              <el-option label="否" :value=false></el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button size="mini" @click="paramDialogCancel">取 消</el-button>
+          <el-button size="mini" type="primary" @click="handleConfirm">确 定</el-button>
+        </span>
       </el-dialog>
     </div>
   </div>
@@ -58,7 +105,15 @@
 
 <script>
 import apiSearch from "./Search.vue";
-import apiEdit from "./Edit.vue";
+
+function defaultData() {
+    return {
+        apiId: "",
+        thirdId: "",
+        url: "",
+        method: ""
+    };
+}
 
 export default {
   name: "thirdApiList",
@@ -71,10 +126,41 @@ export default {
       total: 0,
       dialogVisible: false,
       tableData: [],
-      apiId: ""
+      apiId: "",
+        paramDialogVisible: false,
+        formData: defaultData(),
+        paramFormData: {},
+        paramList: [],
+        thirdList: []
     };
   },
   methods: {
+      defaultParamForm(){
+          return {
+              //标签
+              label: '',
+              //名称
+              name: '',
+              //值
+              value: '',
+              //分组
+              group: '',
+              //标签
+              comment: '',
+              //输入框类型
+              inputType: '',
+              //数据类型
+              dataType: '',
+              //是否只读
+              readonly: false,
+              //禁用
+              disabled: false,
+              //是否必须
+              required: true,
+              //数据
+              data: ''
+          };
+      },
     prevClick() {
       this.pageFlag = "prev";
       this.lastId = this.tableData[0].apiId;
@@ -120,7 +206,19 @@ export default {
           console.log(error);
         });
     },
+      //加载平台信息
+      loadThirdParty(){
+          this.$store.dispatch("third/getList", { filters: {} })
+              .then(data => {
+                  this.thirdList = data;
+              }).catch(error => {
+              console.log(error);
+          });
+      },
     handleAdd() {
+          this.formData = defaultData();
+          this.paramList = [];
+        this.loadThirdParty();
       this.dialogVisible = true;
       this.apiId = "";
     },
@@ -155,13 +253,16 @@ export default {
           console.error(err);
         });
     },
-    handleSizeChange(pageSize) {
-      this.pageSize = pageSize;
-      this.loadData();
-    },
-    handleSave(params) {
+    handleSave() {
+          this.formData.params = this.paramList;
+          let url = '';
+          if ('' != this.formData.apiId){
+              url  = "thirdApiService/updateOne";
+          }else{
+              url  = "thirdApiService/addApi";
+          }
       this.$store
-        .dispatch("thirdApiService/addApi", params)
+        .dispatch(url, this.formData)
         .then(() => {
           this.handleSearch();
         })
@@ -171,11 +272,13 @@ export default {
       this.dialogVisible = false;
     },
     handleUpdate(id) {
-      this.apiId = id;
+          this.paramList = [];
+        this.loadThirdParty();
+            this.handleGetOne(id);
       this.dialogVisible = true;
     },
     handleCancel() {
-      this.dialogVisible = false;
+              this.dialogVisible = false;
     },
     handleSearch(params) {
       if (!params) {
@@ -183,17 +286,74 @@ export default {
       }
       this.loadData(params);
       this.loadTotal(params);
-    }
+    },
+      handleGetOne(id) {
+          if (id) {
+              this.$store
+                  .dispatch("thirdApiService/getOne",  id)
+                  .then(data => {
+                      this.formData = data;
+                      this.dialogVisible = true;
+                      Object.assign(this.paramList,data.params);
+                  })
+                  .catch(error => {
+                      console.log(error);
+                  });
+          } else {
+              this.paramList = [];
+              this.formData = defaultData();
+          }
+      },
+      clearForm(){
+          this.paramFormData = this.defaultParamForm();
+      },
+      addParams(){
+        this.clearForm();
+          this.paramDialogVisible = true;
+      },
+      paramDialogCancel(){
+          this.paramDialogVisible = false;
+      },
+      handleConfirm(){
+          let exits = true;
+          for(let i = 0; i < this.paramList.length; i++){
+              if (this.paramList[i].name === this.paramFormData.name){
+                  exits = false;
+                  break;
+              }
+          }
+          if (exits){
+              this.paramList.push(this.paramFormData);
+          }
+          this.paramDialogVisible = false;
+      },
+      handleClose(idx){
+          this.paramList.splice(idx, 1);
+      }
   },
   created() {
     this.handleSearch();
   },
   components: {
-    apiEdit,
     apiSearch
   }
 };
 </script>
 
-<style scoped>
+<style>
+  .el-tag {
+    margin: 5px 0 2px 3px;
+  }
+  .button-new-tag {
+    margin: 5px 0 2px 3px;
+    height: 32px;
+    line-height: 30px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .input-new-tag {
+    width: 90px;
+    margin-left: 10px;
+    vertical-align: bottom;
+  }
 </style>

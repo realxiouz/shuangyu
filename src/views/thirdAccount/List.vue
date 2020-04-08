@@ -7,18 +7,13 @@
       <el-row style="margin-bottom:15px;margin-left:20px">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
-      <el-table
-        size="mini"
-        v-loading="loading"
-        highlight-current-row
-        :data="tableData"
-        style="width: 100%;margin-bottom: 15px;"
-        fit
-      >
-        <el-table-column prop="username" label="账号" width="200" align="center"></el-table-column>
-        <el-table-column prop="loginUrl" label="登录地址" align="center"></el-table-column>
+      <el-table size="mini" v-loading="loading" :data="tableData" style="width: 100%;margin-bottom: 15px;" fit>
+        <el-table-column prop="third.thirdName" label="平台" width="220" align="center"></el-table-column>
+        <el-table-column prop="username" label="账号" width="220" align="center"></el-table-column>
+        <el-table-column prop="loginUrl" label="登录地址" width="300" align="center"></el-table-column>
+        <el-table-column prop="fundAccount.fundAccount" label="资金账号" width="300" align="center"></el-table-column>
         <el-table-column prop="contactPerson" label="联系人" width="200" align="center"></el-table-column>
-        <el-table-column prop="contactPhone" label="联系电话" width="300" align="center"></el-table-column>
+        <el-table-column prop="contactPhone" label="联系电话" width="240" align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="180">
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
@@ -70,7 +65,7 @@ export default {
       curNode: {},
       update: false,
       pageFlag: "next",
-      pageSize: 10,
+      pageSize: 3,
       lastId: "blank",
       total: 0
     };
@@ -167,7 +162,7 @@ export default {
     handleDelete(row) {
       this.open(
         this.delete,
-        row.accoutId,
+        row.accountId,
         "此操作将删除该第三方平台账号信息, 是否继续?"
       );
     },
@@ -176,6 +171,7 @@ export default {
       this.$store
         .dispatch("thirdAccount/removeOne", { thirdAccountId: thirdAccountId })
         .then(() => {
+            this.lastId = "blank";
           if (1 === this.tableData.length) {
             this.handlePrevClick();
           } else {
@@ -189,13 +185,13 @@ export default {
     /*前翻页*/
     handlePrevClick() {
       this.pageFlag = "prev";
-      this.lastId = this.tableData[0].thirdAccountId;
+      this.lastId = this.tableData[0].accountId;
       this.loadData();
     },
     /*翻后页*/
     handleNextClick() {
       this.pageFlag = "next";
-      this.lastId = this.tableData[this.tableData.length - 1].thirdAccountId;
+      this.lastId = this.tableData[this.tableData.length - 1].accountId;
       this.loadData();
     },
     open(func, data, message) {
