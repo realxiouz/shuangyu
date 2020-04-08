@@ -39,6 +39,15 @@ export function getOne(id) {
   });
 }
 
+//统计
+export function getCount(params) {
+  return request({
+    url: `/order/count`,
+    method: 'get',
+    params: params
+  });
+}
+
 export function getOrderDetail(orderNo) {
   return request({
     url: `/order/ticket/${orderNo}`,
@@ -49,7 +58,7 @@ export function getOrderDetail(orderNo) {
 // 查最低报价
 export function getOrderMinPrice(data) {
   return request({
-    url: `/open/minimum/price`,
+    url: `/qunar/open/minimum/price`,
     method: 'post',
     data
   });
@@ -58,7 +67,7 @@ export function getOrderMinPrice(data) {
 // 查航班
 export function getOrderFlight(data) {
   return request({
-    url: `/open/get/flight`,
+    url: `/qunar/open/get/flight`,
     method: 'post',
     data
   });
@@ -66,7 +75,7 @@ export function getOrderFlight(data) {
 // 报价搜素
 export function getFlightPrice(data) {
   return request({
-    url: `/open/get/price`,
+    url: `/qunar/open/get/price`,
     method: 'post',
     data
   });
@@ -76,7 +85,7 @@ export function getFlightPrice(data) {
 
 export function placeAnOrder(data) {
   return request({
-    url: `/open/place/an/order`,
+    url: `/qunar/open/place/an/order`,
     method: 'post',
     data
   });
@@ -85,7 +94,7 @@ export function placeAnOrder(data) {
 // 蜗牛支付
 export function openPay(params) {
   return request({
-    url: `/open/pay`,
+    url: `/qunar/open/pay`,
     method: 'get',
     params: params
   });

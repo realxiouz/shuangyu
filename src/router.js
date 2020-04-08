@@ -7,6 +7,13 @@ Vue.use(Router);
 export default new Router({
   routes: [
     {
+      title: '首页',
+      path: '/',
+      name: 'index',
+      component: Layout,
+      redirect: '/home',
+    },
+    {
       title: '登录',
       path: '/login',
       name: 'login',

@@ -1,5 +1,5 @@
-import {getList, getOne, removeOne, save,getTotal,getOrderDetail,getOrderMinPrice,getOrderFlight,getFlightPrice,placeAnOrder,openPay} from "@/api/order";
-import {getToken} from "@/utils/auth";
+import { getList, getOne, removeOne, save, getCount, getTotal, getOrderDetail, getOrderMinPrice, getOrderFlight, getFlightPrice, placeAnOrder, openPay } from "@/api/order";
+import { getToken } from "@/utils/auth";
 
 
 const state = {
@@ -21,7 +21,7 @@ const mutations = {
 };
 
 const actions = {
-  save({commit}, params) {
+  save({ commit }, params) {
     return new Promise((resolve, reject) => {
       save(params)
         .then(response => {
@@ -33,12 +33,12 @@ const actions = {
         });
     });
   },
-  getList({commit}, params) {
-    const {filters} = params;
+  getList({ commit }, params) {
+    const { filters } = params;
     return new Promise((resolve, reject) => {
       getList(filters)
         .then(response => {
-          const {data} = response;
+          const { data } = response;
           resolve(data);
         })
         .catch(error => {
@@ -46,12 +46,12 @@ const actions = {
         });
     });
   },
-  removeOne({commit}, params) {
-    const {orderNo} = params;
+  removeOne({ commit }, params) {
+    const { orderNo } = params;
     return new Promise((resolve, reject) => {
       removeOne(orderNo)
         .then(response => {
-          const {data} = response;
+          const { data } = response;
           resolve(data);
         })
         .catch(error => {
@@ -60,12 +60,12 @@ const actions = {
     });
   },
 
-  getTotal({commit}, params) {
-    const {filters} = params;
+  getTotal({ commit }, params) {
+    const { filters } = params;
     return new Promise((resolve, reject) => {
       getTotal(filters)
         .then(response => {
-          const {data} = response;
+          const { data } = response;
           resolve(data);
         })
         .catch(error => {
@@ -73,11 +73,24 @@ const actions = {
         });
     });
   },
-  getOne({commit}, data) {
+  getCount({ commit }, params) {
+    const { filters } = params;
+    return new Promise((resolve, reject) => {
+      getCount(filters)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getOne({ commit }, data) {
     return new Promise((resolve, reject) => {
       getOne(data)
         .then(response => {
-          const {data} = response;
+          const { data } = response;
           resolve(data);
         })
         .catch(error => {
@@ -85,11 +98,11 @@ const actions = {
         });
     });
   },
-  getOrderDetail({commit}, data) {
+  getOrderDetail({ commit }, data) {
     return new Promise((resolve, reject) => {
       getOrderDetail(data)
         .then(response => {
-          const {data} = response;
+          const { data } = response;
           resolve(data);
         })
         .catch(error => {
@@ -97,7 +110,7 @@ const actions = {
         });
     });
   },
-  getOrderMinPrice({commit}, params) {
+  getOrderMinPrice({ commit }, params) {
     return new Promise((resolve, reject) => {
       getOrderMinPrice(params)
         .then(response => {
@@ -109,7 +122,7 @@ const actions = {
         });
     });
   },
-  getOrderFlight({commit}, params) {
+  getOrderFlight({ commit }, params) {
     return new Promise((resolve, reject) => {
       getOrderFlight(params)
         .then(response => {
@@ -121,7 +134,7 @@ const actions = {
         });
     });
   },
-  getFlightPrice({commit}, params) {
+  getFlightPrice({ commit }, params) {
     return new Promise((resolve, reject) => {
       getFlightPrice(params)
         .then(response => {
@@ -134,7 +147,7 @@ const actions = {
     });
   },
   // 蜗牛下单
-  placeAnOrder({commit}, params) {
+  placeAnOrder({ commit }, params) {
     return new Promise((resolve, reject) => {
       placeAnOrder(params)
         .then(response => {
@@ -147,7 +160,7 @@ const actions = {
     });
   },
   // 蜗牛支付
-  openPay({commit}, params) {
+  openPay({ commit }, params) {
     return new Promise((resolve, reject) => {
       openPay(params)
         .then(response => {

@@ -8,10 +8,11 @@
         :data="tableData"
         size="mini"
         highlight-current-row
-        max-height="650"
         style="width: 100%;margin-bottom:15px"
         v-loading="loading"
         fit
+        show-summary
+        :summary-method="getSummaries"
       >
         <el-table-column label="序号" type="index" width="50" align="center">
           <template slot-scope="scope">
@@ -54,7 +55,7 @@
           width="100"
           align="center"
         ></el-table-column>
-        
+
         <el-table-column
           prop="policyCode"
           :show-overflow-tooltip="true"
@@ -145,13 +146,13 @@
           </template>
         </el-table-column>
         <el-table-column prop="pnr" label="PNR" width="150" align="center"></el-table-column>
-        <el-table-column label="交易金额" width="100" align="center">
+        <el-table-column label="交易金额" prop="transactionAmount" width="100" align="center">
           <template slot-scope="scope">
             <span>{{ formatAmount(scope.row.transactionAmount)}}</span>
           </template>
         </el-table-column>
 
-        <el-table-column label="总价" width="100" align="center">
+        <el-table-column label="总价" prop="amount" width="100" align="center">
           <template slot-scope="scope">
             <span>{{ formatAmount(scope.row.amount)}}</span>
           </template>
@@ -198,7 +199,8 @@ export default {
       loading: true,
       dialogVisible: false,
       tableData: [],
-      searchParams: {}
+      searchParams: {},
+      count: ""
     };
   },
   methods: {
@@ -251,10 +253,45 @@ export default {
           console.log(error);
         });
     },
+    loadCount(params) {
+      this.$store
+        .dispatch("order/getCount", {
+          filters: params
+        })
+        .then(data => {
+          this.count = data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    getSummaries(params) {
+      const { columns, data } = params;
+      const sums = [];
+      columns.forEach((item, index) => {
+        if (index === 0) {
+          sums[index] = "合计";
+          return;
+        }
+        switch ( item.property !== "" && item.property) {
+          case "amount":
+            sums[index] = "￥" + this.$numeral(this.count.amount).format("0,0.00");
+            break;
+          case "transactionAmount":
+            sums[index] = "￥" + this.$numeral(this.count.transactionAmount).format("0,0.00");
+            break;
+          default:
+            sums[index]= "";
+            break;
+        }
+      });
+      return sums;
+    },
     handleSearch(params) {
       if (!params) {
         params = {};
         this.searchParams = params;
+        this.loadCount(this.searchParams);
         this.loadData(this.searchParams);
         this.loadTotal(this.searchParams);
       } else {
@@ -469,6 +506,7 @@ export default {
   created() {
     this.loadData(this.searchParams);
     this.loadTotal();
+    this.loadCount();
   }
 };
 </script>
