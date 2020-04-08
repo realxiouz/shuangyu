@@ -55,7 +55,7 @@ export function getApiUrlList() {
 
 export function getThirdPartyList() {
   return request({
-    url: `/third/party/list`,
+    url: `/third/list`,
     method: "get"
   });
 }

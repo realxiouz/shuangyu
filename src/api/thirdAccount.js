@@ -17,7 +17,6 @@ export function updateOne(data) {
 }
 
 export function removeOne(thirdAccountId) {
-  debugger
   return request({
     url: `/third/account/remove/one/${thirdAccountId}`,
     method: 'delete'

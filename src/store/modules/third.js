@@ -1,4 +1,4 @@
-import {getList, getOne, getPageList, getTotal, removeOne, save} from "@/api/thirdParty";
+import {getList, getOne, getPageList, getTotal, removeOne, save} from "@/api/third";
 import {getToken} from "@/utils/auth";
 
 

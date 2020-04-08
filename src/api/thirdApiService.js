@@ -47,15 +47,16 @@ export function removeOne(paramId) {
 }
 
 // 修改第三方API信息
-export function updateOne() {
+export function updateOne(data) {
   return request({
     url: `/third/api/update/one`,
-    method: "post"
+    method: "post",
+    data
   });
 }
 
 // 获取第三方api信息
-export function getOne(paramId) {
+  export function getOne(paramId) {
   return request({
     url: `/third/api/one/${paramId}`,
     method: `get`
