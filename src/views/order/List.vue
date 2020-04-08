@@ -22,6 +22,27 @@
         </el-table-column>
 
         <el-table-column prop="orderNo" label="订单号" width="180" align="center"></el-table-column>
+        <el-table-column
+          :formatter="formateOrderType"
+          prop="orderType"
+          label="订单类型"
+          width="80"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="category"
+          :formatter="formateCategory"
+          label="订单分类"
+          width="80"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="status"
+          :formatter="formateStatus"
+          label="订单状态"
+          width="80"
+          align="center"
+        ></el-table-column>
         <el-table-column prop="ticketNos" label="票号" width="180" align="center">
           <template slot-scope="scope">
             <span>{{formatTicketNo(scope.row.ticketNos)}}</span>
@@ -47,16 +68,7 @@
             <span>{{ formatPassengers(scope.row.passengers)}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="交易金额" prop="transactionAmount" width="150" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatAmount(scope.row.transactionAmount)}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="总价" prop="amount" width="150" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatAmount(scope.row.amount)}}</span>
-          </template>
-        </el-table-column>
+
         <el-table-column
           :show-overflow-tooltip="true"
           prop="sourceOrderNo"
@@ -77,27 +89,7 @@
           label="政策代码"
           align="center"
         ></el-table-column>
-        <el-table-column
-          :formatter="formateOrderType"
-          prop="orderType"
-          label="订单类型"
-          width="80"
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          prop="category"
-          :formatter="formateCategory"
-          label="订单分类"
-          width="80"
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          prop="status"
-          :formatter="formateStatus"
-          label="订单状态"
-          width="80"
-          align="center"
-        ></el-table-column>
+
         <el-table-column label="订单日期" width="100" align="center">
           <template slot-scope="scope">
             <span>{{ formatDate(scope.row.createTime,'YYYY-MM-DD') }}</span>
@@ -156,6 +148,16 @@
           <template slot-scope="scope">
             <el-button @click="handleOrderDetail(scope.row)" type="primary" size="mini">查看</el-button>
             <el-button type="danger" size="mini" @click="handleRemove(scope.row.orderNo)">删除</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column label="交易金额" prop="transactionAmount" width="150" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatAmount(scope.row.transactionAmount)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="总价" prop="amount" width="150" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatAmount(scope.row.amount)}}</span>
           </template>
         </el-table-column>
       </el-table>
@@ -275,7 +277,8 @@ export default {
             break;
           case "transactionAmount":
             sums[index] =
-              "￥" + this.$numeral(this.count.transactionAmount).format("0,0.00");
+              "￥" +
+              this.$numeral(this.count.transactionAmount).format("0,0.00");
             break;
           default:
             sums[index] = "";

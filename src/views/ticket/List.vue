@@ -17,9 +17,7 @@
             <span>{{(currentPage - 1) * pageSize + scope.$index + 1}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="orderNo" label="订单号" align="center" ></el-table-column>
-        <el-table-column prop="ticketNo" label="票号" align="center"></el-table-column>
-        <el-table-column prop="status" label="票号状态" width="100" align="center"></el-table-column>
+        <el-table-column prop="orderNo" label="订单号" align="center"></el-table-column>
         <el-table-column
           prop="orderStatus"
           :formatter="formateStatus"
@@ -27,25 +25,15 @@
           width="100"
           align="center"
         ></el-table-column>
-        <el-table-column prop="amount" label="金额" width="80" align="center">
-          <template slot-scope="scope">
-            <i v-if="scope.row.amount"></i>
-            <span>{{ formatAmount(scope.row.amount)}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="orderAmount" label="订单金额" width="100" align="center">
-          <template slot-scope="scope">
-            <i v-if="scope.row.orderAmount"></i>
-            <span>{{ formatAmount(scope.row.orderAmount)}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="name" label="乘客" width="80" align="center"></el-table-column>
-
         <el-table-column label="订单日期" width="100" align="center">
           <template slot-scope="scope">
             <span>{{ formatDate(scope.row.createTime,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
+        <el-table-column prop="ticketNo" label="票号" align="center"></el-table-column>
+        <el-table-column prop="status" label="票号状态" width="100" align="center"></el-table-column>
+        <el-table-column prop="name" label="姓名" width="80" align="center"></el-table-column>
+        <el-table-column prop="pnr" label="PNR" width="80" align="center"></el-table-column>
         <el-table-column label="航班号" width="80" align="center">
           <template slot-scope="scope">
             <span>{{ formatFlightNo(scope.row.flights)}}</span>
@@ -61,7 +49,18 @@
             <span>{{ formatFlight(scope.row.flights)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="pnr" label="PNR" width="80" align="center"></el-table-column>
+        <el-table-column prop="amount" label="金额" width="80" align="center">
+          <template slot-scope="scope">
+            <i v-if="scope.row.amount"></i>
+            <span>{{ formatAmount(scope.row.amount)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="orderAmount" label="订单金额" width="100" align="center">
+          <template slot-scope="scope">
+            <i v-if="scope.row.orderAmount"></i>
+            <span>{{ formatAmount(scope.row.orderAmount)}}</span>
+          </template>
+        </el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="150">
           <template slot-scope="scope">
             <el-button @click="handleUpdate(scope.row.deptId)" type="primary" size="mini">编辑</el-button>
