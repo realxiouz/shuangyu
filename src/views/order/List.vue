@@ -19,6 +19,11 @@
         </el-table-column>
 
         <el-table-column prop="orderNo" label="订单号" width="180" align="center"></el-table-column>
+        <el-table-column prop="pid" label="pid" width="180" align="center"></el-table-column>
+        <el-table-column prop="path" label="path" width="180" align="center"></el-table-column>
+        <el-table-column prop="rootOrderNo" label="销售出票单号" width="180" align="center"></el-table-column>
+        <el-table-column prop="linkOrderNo" label="业务订单编号" width="180" align="center"></el-table-column>
+
         <el-table-column
           :show-overflow-tooltip="true"
           prop="sourceOrderNo"
@@ -63,6 +68,15 @@
         <el-table-column label="订单日期" width="100" align="center">
           <template slot-scope="scope">
             <span>{{ formatDate(scope.row.createTime,'YYYY-MM-DD') }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="交易时间" width="100" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatDate(scope.row.transactionTime,'YYYY-MM-DD') }}</span>
+          </template>
+        </el-table-column><el-table-column label="业务完结时间" width="100" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatDate(scope.row.finishTime,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="fundAccount" label="资金账号" width="100" align="center"></el-table-column>
