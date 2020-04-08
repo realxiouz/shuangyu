@@ -20,8 +20,13 @@
             <span>{{(currentPage - 1) * pageSize + scope.$index + 1}}</span>
           </template>
         </el-table-column>
-
         <el-table-column prop="orderNo" label="订单号" width="175" align="center"></el-table-column>
+        <el-table-column
+          prop="policyCode"
+          :show-overflow-tooltip="true"
+          label="政策代码"
+          align="center"
+        ></el-table-column>
         <el-table-column
           :formatter="formateOrderType"
           prop="orderType"
@@ -43,11 +48,13 @@
           width="80"
           align="center"
         ></el-table-column>
-        <el-table-column prop="ticketNos" label="票号" width="150" align="center">
+        <el-table-column label="订单日期" width="100" align="center">
           <template slot-scope="scope">
-            <span>{{formatTicketNo(scope.row.ticketNos)}}</span>
+            <span>{{ formatDate(scope.row.createTime,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
+        <el-table-column prop="fundAccount" label="资金账号" width="100" align="center"></el-table-column>
+        <el-table-column prop="accountId" label="平台账号" width="100" align="center"></el-table-column>
         <el-table-column
           prop="rootOrderNo"
           :show-overflow-tooltip="true"
@@ -62,13 +69,6 @@
           width="100"
           align="center"
         ></el-table-column>
-        <el-table-column label="乘客" align="center" width="200">
-          <template slot-scope="scope">
-            <i v-if="scope.row.passengers"></i>
-            <span>{{ formatPassengers(scope.row.passengers)}}</span>
-          </template>
-        </el-table-column>
-
         <el-table-column
           :show-overflow-tooltip="true"
           prop="sourceOrderNo"
@@ -83,18 +83,7 @@
           width="100"
           align="center"
         ></el-table-column>
-        <el-table-column
-          prop="policyCode"
-          :show-overflow-tooltip="true"
-          label="政策代码"
-          align="center"
-        ></el-table-column>
 
-        <el-table-column label="订单日期" width="100" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatDate(scope.row.createTime,'YYYY-MM-DD') }}</span>
-          </template>
-        </el-table-column>
         <el-table-column label="交易时间" width="100" align="center">
           <template slot-scope="scope">
             <span>{{ formatDate(scope.row.transactionTime,'YYYY-MM-DD') }}</span>
@@ -105,8 +94,6 @@
             <span>{{ formatDate(scope.row.finishTime,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="fundAccount" label="资金账号" width="100" align="center"></el-table-column>
-        <el-table-column prop="accountId" label="平台账号" width="100" align="center"></el-table-column>
         <el-table-column label="最晚出票时限" width="100" align="center">
           <template slot-scope="scope">
             <span>{{ formatDate(scope.row.deadlineTicketTime,'YYYY-MM-DD') }}</span>
@@ -122,12 +109,9 @@
             <span>{{ formatDate(scope.row.deadlineChangeTime,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
-        <el-table-column
-          prop="voyageType"
-          :formatter="formateVoyageType"
-          label="航程类型"
-          align="center"
-        ></el-table-column>
+
+        <el-table-column prop="pnr" label="PNR" width="150" align="center"></el-table-column>
+
         <el-table-column label="航班号" align="center">
           <template slot-scope="scope">
             <span>{{ formatFlightNo(scope.row.flights)}}</span>
@@ -143,13 +127,19 @@
             <span>{{ formatFlight(scope.row.flights)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="pnr" label="PNR" width="150" align="center"></el-table-column>
-        <el-table-column fixed="right" label="操作" align="center" width="150">
+
+        <el-table-column label="乘客" align="center" width="200">
           <template slot-scope="scope">
-            <el-button @click="handleOrderDetail(scope.row)" type="primary" size="mini">查看</el-button>
-            <el-button type="danger" size="mini" @click="handleRemove(scope.row.orderNo)">删除</el-button>
+            <i v-if="scope.row.passengers"></i>
+            <span>{{ formatPassengers(scope.row.passengers)}}</span>
           </template>
         </el-table-column>
+        <el-table-column prop="ticketNos" label="票号" width="150" align="center">
+          <template slot-scope="scope">
+            <span>{{formatTicketNo(scope.row.ticketNos)}}</span>
+          </template>
+        </el-table-column>
+
         <el-table-column label="交易金额" prop="transactionAmount" width="150" align="center">
           <template slot-scope="scope">
             <span>{{ formatAmount(scope.row.transactionAmount)}}</span>
@@ -158,6 +148,12 @@
         <el-table-column label="总价" prop="amount" width="150" align="center">
           <template slot-scope="scope">
             <span>{{ formatAmount(scope.row.amount)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column fixed="right" label="操作" align="center" width="150">
+          <template slot-scope="scope">
+            <el-button @click="handleOrderDetail(scope.row)" type="primary" size="mini">查看</el-button>
+            <el-button type="danger" size="mini" @click="handleRemove(scope.row.orderNo)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

@@ -53,6 +53,8 @@
             <span>{{ formatDate(scope.row.createTime,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
+        
+        <el-table-column prop="pnr" label="PNR" width="80" align="center"></el-table-column>
         <el-table-column label="航班号" width="80" align="center">
           <template slot-scope="scope">
             <span>{{ formatFlightNo(scope.row.flights)}}</span>
@@ -68,7 +70,6 @@
             <span>{{ formatFlight(scope.row.flights)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="pnr" label="PNR" width="80" align="center"></el-table-column>
         <el-table-column label="乘客" align="center" width="100">
           <template slot-scope="scope">
             <span>{{ formatPassengers(scope.row.passengers)}}</span>

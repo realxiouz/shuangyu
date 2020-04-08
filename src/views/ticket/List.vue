@@ -32,9 +32,7 @@
             <span>{{ formatDate(scope.row.createTime,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="ticketNo" label="票号" align="center"></el-table-column>
-        <el-table-column prop="status" label="票号状态" width="100" align="center"></el-table-column>
-        <el-table-column prop="name" label="姓名" width="80" align="center"></el-table-column>
+
         <el-table-column prop="pnr" label="PNR" width="80" align="center"></el-table-column>
         <el-table-column label="航班号" width="80" align="center">
           <template slot-scope="scope">
@@ -51,6 +49,9 @@
             <span>{{ formatFlight(scope.row.flights)}}</span>
           </template>
         </el-table-column>
+        <el-table-column prop="name" label="姓名" width="80" align="center"></el-table-column>
+        <el-table-column prop="ticketNo" label="票号" align="center"></el-table-column>
+        <el-table-column prop="status" label="票号状态" width="100" align="center"></el-table-column>
         <el-table-column prop="amount" label="金额" width="150" align="center">
           <template slot-scope="scope">
             <span>{{ formatAmount(scope.row.amount)}}</span>
@@ -107,7 +108,6 @@ export default {
       tableData: [],
       searchParams: {},
       count: []
-
     };
   },
   methods: {
@@ -188,8 +188,7 @@ export default {
             break;
           case "orderAmount":
             sums[index] =
-              "￥" +
-              this.$numeral(this.count.orderAmount).format("0,0.00");
+              "￥" + this.$numeral(this.count.orderAmount).format("0,0.00");
             break;
           default:
             sums[index] = "";
