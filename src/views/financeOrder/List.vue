@@ -1,12 +1,9 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <order-search @onSearch="handleSearch"></order-search>
+      <order-report-search @onSearch="handleSearch"></order-report-search>
     </div>
     <div class="contentBox">
-      <!-- <el-row style="margin-bottom:15px;margin-left:40px">
-        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
-      </el-row>-->
       <el-table
         :data="tableData"
         size="mini"
@@ -20,15 +17,15 @@
             <span>{{(currentPage - 1) * pageSize + scope.$index + 1}}</span>
           </template>
         </el-table-column>
-
-        <el-table-column prop="orderNo" label="订单号" width="180" align="center"></el-table-column>
+        <el-table-column prop="orderNo" label="订单号" align="center" width="160"></el-table-column>
         <el-table-column
           prop="policyCode"
           :show-overflow-tooltip="true"
           label="政策代码"
+          width="100"
           align="center"
         ></el-table-column>
-        <el-table-column
+         <el-table-column
           :formatter="formateOrderType"
           prop="orderType"
           label="订单类型"
@@ -46,65 +43,88 @@
           prop="status"
           :formatter="formateStatus"
           label="订单状态"
-          width="80"
+          width="100"
           align="center"
         ></el-table-column>
         <el-table-column label="订单日期" width="100" align="center">
           <template slot-scope="scope">
-            <i v-if="scope.row.createTime"></i>
-            <span >{{ formatDate(scope.row.createTime,'YYYY-MM-DD') }}</span>
+            <span>{{ formatDate(scope.row.createTime,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
-
-        <el-table-column label="乘客" align="center" width="200">
-          <template slot-scope="scope">
-            <i v-if="scope.row.passengers"></i>
-            <span >{{ formatPassengers(scope.row.passengers)}}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column
-          prop="voyageType"
-          :formatter="formateVoyageType"
-          label="航程类型"
-          width="80"
-          align="center"
-        ></el-table-column>
         <el-table-column label="航班号" width="80" align="center">
           <template slot-scope="scope">
-            <i v-if="scope.row.flights"></i>
-            <span >{{ formatFlightNo(scope.row.flights)}}</span>
+            <span>{{ formatFlightNo(scope.row.flights)}}</span>
           </template>
         </el-table-column>
         <el-table-column label="航班日期" width="100" align="center">
           <template slot-scope="scope">
-            <i v-if="scope.row.flights"></i>
-            <span style="margin-left: 10px">{{ formatFlightDate(scope.row.flights)}}</span>
+            <span>{{ formatFlightDate(scope.row.flights)}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="起飞-到达" width="180" align="center">
+        <el-table-column label="起飞 -- 到达" width="100" align="center">
           <template slot-scope="scope">
-            <i v-if="scope.row.flights"></i>
-            <span style="margin-left: 10px">{{ formatFlight(scope.row.flights)}}</span>
+            <span>{{ formatFlight(scope.row.flights)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="pnr" label="PNR" width="150" align="center"></el-table-column>
-        <el-table-column label="交易金额" width="100" align="center">
+        <el-table-column prop="pnr" label="PNR" width="80" align="center"></el-table-column>
+        <el-table-column label="乘客" align="center" width="100">
           <template slot-scope="scope">
-            <i v-if="scope.row.transactionAmount"></i>
-            <span >{{ formatAmount(scope.row.transactionAmount)}}</span>
+            <span>{{ formatPassengers(scope.row.passengers)}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="总价" width="100" align="center">
+        <el-table-column label="交易金额" width="80" align="center">
           <template slot-scope="scope">
-            <i v-if="scope.row.amount"></i>
-            <span >{{ formatAmount(scope.row.amount)}}</span>
+            <span>{{ formatAmount(scope.row.transactionAmount)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="总价" width="80" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatAmount(scope.row.amount)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="receivable" label="应收" width="80" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatAmount(scope.row.receivable)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="receipt" label="实收" width="80" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatAmount(scope.row.receipt)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="payable" label="应付" width="80" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatAmount(scope.row.payable)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="payment" label="实付" width="80" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatAmount(scope.row.payment)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="systemProfit" label="系统利润" width="80" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatAmount(scope.row.systemProfit)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="shouldProfit" label="业务利润" width="80" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatAmount(scope.row.shouldProfit)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="profit" label="财务利润" width="80" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatAmount(scope.row.profit)}}</span>
           </template>
         </el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="150">
           <template slot-scope="scope">
-            <el-button @click="handleOrderDetail(scope.row)" type="primary" size="mini">查看</el-button>
-            <el-button type="danger" size="mini" @click="handleRemove(scope.row.orderNo)">删除</el-button>
+            <el-button @click="handleUpdate(scope.row.deptId)" type="primary" size="mini">编辑</el-button>
+            <el-button
+              @click.native.prevent="handleRemove(scope.row.deptId)"
+              type="danger"
+              size="mini"
+            >删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -123,24 +143,19 @@
     </div>
   </div>
 </template>
-
 <script>
-import orderSearch from "./Search.vue";
-import {
-  formateStatus,
-  formateCategory,
-  formateOrderType,
-  formateVoyageType
-} from "@/utils/status.js";
+import orderReportSearch from "./Search.vue";
+import { formateStatus, formateCategory ,formateOrderType} from "@/utils/status.js";
+
 
 export default {
-  name: "orderList",
+  name: "orderReportList",
   data() {
     return {
+      loading: true,
       currentPage: 1,
       pageSize: 10,
       total: 0,
-      loading: true,
       dialogVisible: false,
       tableData: [],
       searchParams: {}
@@ -150,7 +165,6 @@ export default {
     formateStatus,
     formateCategory,
     formateOrderType,
-    formateVoyageType,
     handleSizeChange: function(size) {
       this.pageSize = size;
       this.searchParams.pageSize = this.pageSize;
@@ -170,7 +184,7 @@ export default {
     },
     loadData(params) {
       this.$store
-        .dispatch("order/getList", {
+        .dispatch("orderReport/getList", {
           filters: params
         })
         .then(data => {
@@ -186,7 +200,7 @@ export default {
     },
     loadTotal(params) {
       this.$store
-        .dispatch("order/getTotal", {
+        .dispatch("orderReport/getTotal", {
           filters: params
         })
         .then(data => {
@@ -195,6 +209,9 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+    handleAdd() {
+      this.dialogVisible = true;
     },
     handleSearch(params) {
       if (!params) {
@@ -238,102 +255,73 @@ export default {
         if (params.voyageType) {
           newParams.voyageType = params.voyageType;
         }
-        if (params.rootOrderNo) {
-          newParams.rootOrderNo = params.rootOrderNo;
-        }
-        if (params.fundAccount) {
-          newParams.fundAccount = params.fundAccount;
-        }
-        if (params.accountId) {
-          newParams.accountId = params.accountId;
-        }
-        if (params.pid) {
-          newParams.pid = params.pid;
-        }
-        if (params.path) {
-          newParams.path = params.path;
-        }
-        if (params.linkOrderNo) {
-          newParams.linkOrderNo = params.linkOrderNo;
-        }
         if (params.createTime) {
           newParams.startCreateTime = params.createTime[0];
           newParams.endCreateTime = params.createTime[1];
         }
-        if (params.finishTime) {
-          newParams.startFinishTime = params.finishTime[0];
-          newParams.endFinishTime = params.finishTime[1];
+
+        if (params.startAmount) {
+          newParams.startAmount = params.startAmount;
         }
-        if (params.DdeadlineChangeTime) {
-          newParams.startTransactionTime = params.transactionTime[0];
-          newParams.endTransactionTime = params.transactionTime[0];
+        if (params.endAmount) {
+          newParams.endAmount = params.endAmount;
         }
-        if (params.deadlineTicketTime) {
-          newParams.startDeadlineTicketTime = params.deadlineTicketTime[0];
-          newParams.endDeadlineTicketTime = params.deadlineTicketTime[0];
+
+        if (params.startReceivable) {
+          newParams.startReceivable = params.startReceivable;
         }
-        if (params.deadlineReturnTime) {
-          newParams.startDeadlineReturnTime = params.deadlineReturnTime[0];
-          newParams.endDeadlineReturnTime = params.deadlineReturnTime[0];
+        if (params.endReceivable) {
+          newParams.endReceivable = params.endReceivable;
         }
-        if (params.deadlineChangeTime) {
-          newParams.startDeadlineChangeTime = params.deadlineChangeTime[0];
-          newParams.endDeadlineChangeTime = params.deadlineChangeTime[0];
+        if (params.startReceipt) {
+          newParams.startReceipt = params.startReceipt;
         }
-        if (params.emptyData.length > 0) {
-          params.emptyData.forEach(item => {
-            newParams[item] = "";
-          });
+        if (params.endReceipt) {
+          newParams.endReceipt = params.endReceipt;
+        }
+
+        if (params.endReceipt) {
+          newParams.endReceipt = params.endReceipt;
+        }
+        if (params.endReceipt) {
+          newParams.endReceipt = params.endReceipt;
+        }
+
+        if (params.startPayable) {
+          newParams.startPayable = params.startPayable;
+        }
+        if (params.endPayable) {
+          newParams.endPayable = params.endPayable;
+        }
+
+        if (params.startPayment) {
+          newParams.startPayment = params.startPayment;
+        }
+        if (params.endPayment) {
+          newParams.endPayment = params.endPayment;
+        }
+        if (params.startSystemProfit) {
+          newParams.startSystemProfit = params.startSystemProfit;
+        }
+        if (params.endSystemProfit) {
+          newParams.endSystemProfit = params.endSystemProfit;
+        }
+
+        if (params.startShouldProfit) {
+          newParams.startShouldProfit = params.startShouldProfit;
+        }
+        if (params.endShouldProfit) {
+          newParams.endShouldProfit = params.endShouldProfit;
         }
         this.searchParams = newParams;
         this.loadData(this.searchParams);
         this.loadTotal(this.searchParams);
-        this.$message({
-          type: "success",
-          message: "查询成功！"
-        });
       }
-    },
-    handleRemove(orderNo) {
-      this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.$store
-            .dispatch("order/removeOne", { orderNo: orderNo })
-            .then(() => {
-              if (1 === this.tableData.length) {
-                this.prevClick();
-              } else {
-                this.loadData(this.searchParams);
-              }
-              this.loadTotal();
-            })
-            .catch(error => {
-              console.log(error);
-            });
-        })
-        .catch(err => {
-          console.error(err);
-        });
     },
     handleCancel() {
       this.dialogVisible = false;
     },
     handleSave() {},
-    handleAdd() {
-      this.dialogVisible = true;
-    },
-    handleOrderDetail(row) {
-      this.$router.push({
-        path: "/order/detail",
-        query: {
-          orderNo: row.orderNo
-        }
-      });
-    },
     /*初始化用工列表中的生日日期格式*/
     initDate(dateStr, format) {
       if (null != dateStr) {
@@ -342,6 +330,18 @@ export default {
       } else {
         return "";
       }
+    },
+    formatFlightDate(data) {
+      if (!data || data.length == 0) {
+        return "";
+      }
+      return this.initDate(data[0].flightDate, "YYYY-MM-DD");
+    },
+    formatFlightNo(data) {
+      if (!data || data.length == 0) {
+        return "";
+      }
+      return data[0].flightCode;
     },
     formatFlight(data) {
       if (!data || data.length == 0) {
@@ -357,18 +357,6 @@ export default {
         " " +
         data[0].arrTime
       );
-    },
-    formatFlightDate(data) {
-      if (!data || data.length == 0) {
-        return "";
-      }
-      return this.initDate(data[0].flightDate, "YYYY-MM-DD");
-    },
-    formatFlightNo(data) {
-      if (!data || data.length == 0) {
-        return "";
-      }
-      return data[0].flightCode;
     },
     formatPassengers(data) {
       if (!data || data.length == 0) {
@@ -388,15 +376,15 @@ export default {
       return "￥" + this.$numeral(amount).format("0.00");
     }
   },
+  components: {
+    orderReportSearch
+  },
   computed: {
     formatDate() {
       return function(dateStr, format) {
         return this.initDate(dateStr, format);
       };
     }
-  },
-  components: {
-    orderSearch
   },
   created() {
     this.loadData(this.searchParams);

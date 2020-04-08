@@ -8,7 +8,6 @@
         :data="tableData"
         size="mini"
         highlight-current-row
-        max-height="650"
         style="width: 100%;margin-bottom:15px"
         v-loading="loading"
         fit

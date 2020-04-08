@@ -6,7 +6,6 @@
     <div class="contentBox">
       <el-table
         :data="tableData"
-        max-height="650"
         size="mini"
         highlight-current-row
         style="width: 100%;margin-bottom:15px"
