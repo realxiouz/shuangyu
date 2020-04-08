@@ -20,14 +20,11 @@
         </el-table-column>
 
         <el-table-column prop="orderNo" label="订单号" width="180" align="center"></el-table-column>
-        <el-table-column prop="pid" label="pid" align="center"></el-table-column>
-        <el-table-column
-          prop="path"
-          label="path"
-          :show-overflow-tooltip="true"
-          width="100"
-          align="center"
-        ></el-table-column>
+        <el-table-column prop="ticketNos" label="票号" width="180" align="center">
+          <template slot-scope="scope">
+            <span>{{formatTicketNo(scope.row.ticketNos)}}</span>
+          </template>
+        </el-table-column>
         <el-table-column
           prop="rootOrderNo"
           :show-overflow-tooltip="true"
@@ -49,11 +46,15 @@
           label="原订单"
           align="center"
         ></el-table-column>
-        <el-table-column prop="ticketNos" label="票号" width="180" align="center">
-          <template slot-scope="scope">
-            <span>{{formatTicketNo(scope.row.ticketNos)}}</span>
-          </template>
-        </el-table-column>
+        <el-table-column prop="pid" label="pid" align="center"></el-table-column>
+        <el-table-column
+          prop="path"
+          label="path"
+          :show-overflow-tooltip="true"
+          width="100"
+          align="center"
+        ></el-table-column>
+        
         <el-table-column
           prop="policyCode"
           :show-overflow-tooltip="true"
@@ -130,33 +131,28 @@
         ></el-table-column>
         <el-table-column label="航班号" width="80" align="center">
           <template slot-scope="scope">
-            <i v-if="scope.row.flights"></i>
             <span>{{ formatFlightNo(scope.row.flights)}}</span>
           </template>
         </el-table-column>
         <el-table-column label="航班日期" width="100" align="center">
           <template slot-scope="scope">
-            <i v-if="scope.row.flights"></i>
             <span>{{ formatFlightDate(scope.row.flights)}}</span>
           </template>
         </el-table-column>
         <el-table-column label="起飞-到达" width="180" align="center">
           <template slot-scope="scope">
-            <i v-if="scope.row.flights"></i>
             <span>{{ formatFlight(scope.row.flights)}}</span>
           </template>
         </el-table-column>
         <el-table-column prop="pnr" label="PNR" width="150" align="center"></el-table-column>
         <el-table-column label="交易金额" width="100" align="center">
           <template slot-scope="scope">
-            <i v-if="scope.row.transactionAmount"></i>
             <span>{{ formatAmount(scope.row.transactionAmount)}}</span>
           </template>
         </el-table-column>
 
         <el-table-column label="总价" width="100" align="center">
           <template slot-scope="scope">
-            <i v-if="scope.row.amount"></i>
             <span>{{ formatAmount(scope.row.amount)}}</span>
           </template>
         </el-table-column>
