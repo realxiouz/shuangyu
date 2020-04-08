@@ -7,7 +7,6 @@
       <el-table
         :data="tableData"
         size="mini"
-        max-height="650"
         highlight-current-row
         style="width: 100%;margin-bottom:15px"
         v-loading="loading"
@@ -18,8 +17,8 @@
             <span>{{(currentPage - 1) * pageSize + scope.$index + 1}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="orderNo" label="订单号" align="center" width="160"></el-table-column>
-        <el-table-column prop="ticketNo" label="票号" align="center" width="160"></el-table-column>
+        <el-table-column prop="orderNo" label="订单号" align="center" ></el-table-column>
+        <el-table-column prop="ticketNo" label="票号" align="center"></el-table-column>
         <el-table-column prop="status" label="票号状态" width="100" align="center"></el-table-column>
         <el-table-column
           prop="orderStatus"
@@ -40,7 +39,7 @@
             <span>{{ formatAmount(scope.row.orderAmount)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="name" label="姓名" width="80" align="center"></el-table-column>
+        <el-table-column prop="name" label="乘客" width="80" align="center"></el-table-column>
 
         <el-table-column label="订单日期" width="100" align="center">
           <template slot-scope="scope">
@@ -63,11 +62,6 @@
           </template>
         </el-table-column>
         <el-table-column prop="pnr" label="PNR" width="80" align="center"></el-table-column>
-        <el-table-column label="乘客" align="center" width="100">
-          <template slot-scope="scope">
-            <span>{{ formatPassengers(scope.row.passengers)}}</span>
-          </template>
-        </el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="150">
           <template slot-scope="scope">
             <el-button @click="handleUpdate(scope.row.deptId)" type="primary" size="mini">编辑</el-button>

@@ -8,6 +8,7 @@
         :data="tableData"
         size="mini"
         highlight-current-row
+        max-height="650"
         style="width: 100%;margin-bottom:15px"
         v-loading="loading"
         fit
@@ -40,7 +41,22 @@
           width="100"
           align="center"
         ></el-table-column>
-
+        <el-table-column label="乘客" align="center" width="200">
+          <template slot-scope="scope">
+            <i v-if="scope.row.passengers"></i>
+            <span>{{ formatPassengers(scope.row.passengers)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="交易金额" prop="transactionAmount" width="150" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatAmount(scope.row.transactionAmount)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="总价" prop="amount" width="150" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatAmount(scope.row.amount)}}</span>
+          </template>
+        </el-table-column>
         <el-table-column
           :show-overflow-tooltip="true"
           prop="sourceOrderNo"
@@ -55,7 +71,6 @@
           width="100"
           align="center"
         ></el-table-column>
-
         <el-table-column
           prop="policyCode"
           :show-overflow-tooltip="true"
@@ -115,27 +130,18 @@
             <span>{{ formatDate(scope.row.deadlineChangeTime,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
-
-        <el-table-column label="乘客" align="center" width="200">
-          <template slot-scope="scope">
-            <i v-if="scope.row.passengers"></i>
-            <span>{{ formatPassengers(scope.row.passengers)}}</span>
-          </template>
-        </el-table-column>
-
         <el-table-column
           prop="voyageType"
           :formatter="formateVoyageType"
           label="航程类型"
-          width="80"
           align="center"
         ></el-table-column>
-        <el-table-column label="航班号" width="80" align="center">
+        <el-table-column label="航班号" align="center">
           <template slot-scope="scope">
             <span>{{ formatFlightNo(scope.row.flights)}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="航班日期" width="100" align="center">
+        <el-table-column label="航班日期" width="90" align="center">
           <template slot-scope="scope">
             <span>{{ formatFlightDate(scope.row.flights)}}</span>
           </template>
@@ -146,17 +152,6 @@
           </template>
         </el-table-column>
         <el-table-column prop="pnr" label="PNR" width="150" align="center"></el-table-column>
-        <el-table-column label="交易金额" prop="transactionAmount" width="100" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatAmount(scope.row.transactionAmount)}}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column label="总价" prop="amount" width="100" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatAmount(scope.row.amount)}}</span>
-          </template>
-        </el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="150">
           <template slot-scope="scope">
             <el-button @click="handleOrderDetail(scope.row)" type="primary" size="mini">查看</el-button>
@@ -200,7 +195,7 @@ export default {
       dialogVisible: false,
       tableData: [],
       searchParams: {},
-      count: ""
+      count: []
     };
   },
   methods: {
@@ -270,18 +265,20 @@ export default {
       const sums = [];
       columns.forEach((item, index) => {
         if (index === 0) {
-          sums[index] = "合计";
+          sums[index] = "统计";
           return;
         }
-        switch ( item.property !== "" && item.property) {
+        switch (item.property !== "" && item.property) {
           case "amount":
-            sums[index] = "￥" + this.$numeral(this.count.amount).format("0,0.00");
+            sums[index] =
+              "￥" + this.$numeral(this.count.amount).format("0,0.00");
             break;
           case "transactionAmount":
-            sums[index] = "￥" + this.$numeral(this.count.transactionAmount).format("0,0.00");
+            sums[index] =
+              "￥" + this.$numeral(this.count.transactionAmount).format("0,0.00");
             break;
           default:
-            sums[index]= "";
+            sums[index] = "";
             break;
         }
       });
@@ -441,7 +438,6 @@ export default {
       if (!data || data.length == 0) {
         return "";
       }
-      // let dptTime = data[0].dptTime.match(/.*(.{5})/)[1];
       return (
         data[0].dpt +
         " " +
@@ -465,14 +461,16 @@ export default {
       return data[0].flightCode;
     },
     formatTicketNo(data) {
-      if (data.length > 0) {
+      if (data != "" && data.length > 0) {
         let str = "";
         data.forEach((item, index) => {
-          str += item + " / ";
+          if (item) {
+            str += item + " / ";
+          }
         });
         return str.substring(0, str.length - 2);
       } else {
-        return data;
+        return (data = "");
       }
     },
     formatPassengers(data) {
