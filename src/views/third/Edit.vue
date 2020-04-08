@@ -34,7 +34,7 @@ export default {
     loadData() {
       if ("" != this.thirdId) {
         this.$store
-          .dispatch("thirdParty/getOne", { thirdId: this.thirdId })
+          .dispatch("third/getOne", { thirdId: this.thirdId })
           .then(data => {
             this.formData = data;
           })

@@ -21,19 +21,19 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="orderNo" label="订单号" width="180" align="center"></el-table-column>
+        <el-table-column prop="orderNo" label="订单号" width="175" align="center"></el-table-column>
         <el-table-column
           :formatter="formateOrderType"
           prop="orderType"
           label="订单类型"
-          width="80"
+          width="70"
           align="center"
         ></el-table-column>
         <el-table-column
           prop="category"
           :formatter="formateCategory"
           label="订单分类"
-          width="80"
+          width="70"
           align="center"
         ></el-table-column>
         <el-table-column
@@ -43,7 +43,7 @@
           width="80"
           align="center"
         ></el-table-column>
-        <el-table-column prop="ticketNos" label="票号" width="180" align="center">
+        <el-table-column prop="ticketNos" label="票号" width="150" align="center">
           <template slot-scope="scope">
             <span>{{formatTicketNo(scope.row.ticketNos)}}</span>
           </template>
