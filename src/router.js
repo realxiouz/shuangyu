@@ -255,6 +255,13 @@ export default new Router({
           name: 'fare',
           component: () => import('@/views/fare/List'),
           meta: { title: '票价信息', icon: 'home' }
+        },
+        {
+          title: '票号信息',
+          path: '/ticket/list',
+          name: 'ticket',
+          component: () => import('@/views/ticket/List'),
+          meta: { title: '票号信息', icon: 'home' }
         }
       ]
     },

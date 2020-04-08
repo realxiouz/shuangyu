@@ -8,6 +8,7 @@
         :data="tableData"
         size="mini"
         highlight-current-row
+        max-height="650"
         style="width: 100%;margin-bottom:15px"
         v-loading="loading"
         fit
@@ -19,10 +20,28 @@
         </el-table-column>
 
         <el-table-column prop="orderNo" label="订单号" width="180" align="center"></el-table-column>
-        <el-table-column prop="pid" label="pid" width="180" align="center"></el-table-column>
-        <el-table-column prop="path" label="path" width="180" align="center"></el-table-column>
-        <el-table-column prop="rootOrderNo" label="销售出票单号" width="180" align="center"></el-table-column>
-        <el-table-column prop="linkOrderNo" label="业务订单编号" width="180" align="center"></el-table-column>
+        <el-table-column prop="pid" label="pid" align="center"></el-table-column>
+        <el-table-column
+          prop="path"
+          label="path"
+          :show-overflow-tooltip="true"
+          width="100"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="rootOrderNo"
+          :show-overflow-tooltip="true"
+          label="销售出票单号"
+          width="100"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="linkOrderNo"
+          :show-overflow-tooltip="true"
+          label="业务订单编号"
+          width="100"
+          align="center"
+        ></el-table-column>
 
         <el-table-column
           :show-overflow-tooltip="true"
@@ -32,11 +51,8 @@
         ></el-table-column>
         <el-table-column prop="ticketNos" label="票号" width="180" align="center">
           <template slot-scope="scope">
-            <span>
-              {{formatTicketNo(scope.row.ticketNos)}}
-            </span>
+            <span>{{formatTicketNo(scope.row.ticketNos)}}</span>
           </template>
-
         </el-table-column>
         <el-table-column
           prop="policyCode"
@@ -74,7 +90,8 @@
           <template slot-scope="scope">
             <span>{{ formatDate(scope.row.transactionTime,'YYYY-MM-DD') }}</span>
           </template>
-        </el-table-column><el-table-column label="业务完结时间" width="100" align="center">
+        </el-table-column>
+        <el-table-column label="业务完结时间" width="100" align="center">
           <template slot-scope="scope">
             <span>{{ formatDate(scope.row.finishTime,'YYYY-MM-DD') }}</span>
           </template>
@@ -418,7 +435,7 @@ export default {
       if (data.length > 0) {
         let str = "";
         data.forEach((item, index) => {
-          str += item + " / "
+          str += item + " / ";
         });
         return str.substring(0, str.length - 2);
       } else {

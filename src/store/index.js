@@ -36,6 +36,7 @@ import dict from "./modules/dict";
 import fundAccount from "./modules/fundAccount";
 import orderTask from "./modules/orderTask"
 import orderReportTotal from "./modules/orderReportTotal"
+import ticket from "./modules/ticket"
 import { getLoginInfo } from "@/api/staff";
 
 Vue.use(Vuex);
@@ -76,7 +77,8 @@ export default new Vuex.Store({
     dict,
     orderTask,
     fundAccount,
-    orderReportTotal
+    orderReportTotal,
+    ticket
   },
   state: {
     loginInfo: {}

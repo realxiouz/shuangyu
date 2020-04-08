@@ -4,13 +4,11 @@
       <order-report-search @onSearch="handleSearch"></order-report-search>
     </div>
     <div class="contentBox">
-      <!-- <el-row style="margin-bottom:15px;margin-left:50px">
-        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
-      </el-row>-->
       <el-table
         :data="tableData"
         size="mini"
         highlight-current-row
+        max-height="650"
         style="width: 100%;margin-bottom:15px"
         v-loading="loading"
         fit

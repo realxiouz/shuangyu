@@ -1,13 +1,13 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <order-report-total-search @onSearch="handleSearch"></order-report-total-search>
+      <order-report-search @onSearch="handleSearch"></order-report-search>
     </div>
     <div class="contentBox">
       <el-table
         :data="tableData"
-        max-height="650"
         size="mini"
+        max-height="650"
         highlight-current-row
         style="width: 100%;margin-bottom:15px"
         v-loading="loading"
@@ -19,27 +19,29 @@
           </template>
         </el-table-column>
         <el-table-column prop="orderNo" label="订单号" align="center" width="160"></el-table-column>
+        <el-table-column prop="ticketNo" label="票号" align="center" width="160"></el-table-column>
+        <el-table-column prop="status" label="票号状态" width="100" align="center"></el-table-column>
         <el-table-column
-          prop="policyCode"
-          :show-overflow-tooltip="true"
-          label="政策代码"
-          width="100"
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          prop="category"
-          :formatter="formateCategory"
-          label="订单分类"
-          width="80"
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          prop="status"
+          prop="orderStatus"
           :formatter="formateStatus"
           label="订单状态"
           width="100"
           align="center"
         ></el-table-column>
+        <el-table-column prop="amount" label="金额" width="80" align="center">
+          <template slot-scope="scope">
+            <i v-if="scope.row.amount"></i>
+            <span>{{ formatAmount(scope.row.amount)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="orderAmount" label="订单金额" width="100" align="center">
+          <template slot-scope="scope">
+            <i v-if="scope.row.orderAmount"></i>
+            <span>{{ formatAmount(scope.row.orderAmount)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="name" label="姓名" width="80" align="center"></el-table-column>
+
         <el-table-column label="订单日期" width="100" align="center">
           <template slot-scope="scope">
             <span>{{ formatDate(scope.row.createTime,'YYYY-MM-DD') }}</span>
@@ -50,7 +52,7 @@
             <span>{{ formatFlightNo(scope.row.flights)}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="航班日期" width="100" align="center">
+        <el-table-column label="出发日期" width="100" align="center">
           <template slot-scope="scope">
             <span>{{ formatFlightDate(scope.row.flights)}}</span>
           </template>
@@ -64,46 +66,6 @@
         <el-table-column label="乘客" align="center" width="100">
           <template slot-scope="scope">
             <span>{{ formatPassengers(scope.row.passengers)}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="总价" width="80" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatAmount(scope.row.amount)}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="receivable" label="应收" width="80" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatAmount(scope.row.receivable)}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="receipt" label="实收" width="80" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatAmount(scope.row.receipt)}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="payable" label="应付" width="80" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatAmount(scope.row.payable)}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="payment" label="实付" width="80" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatAmount(scope.row.payment)}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="systemProfit" label="系统利润" width="80" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatAmount(scope.row.systemProfit)}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="shouldProfit" label="业务利润" width="80" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatAmount(scope.row.shouldProfit)}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="profit" label="财务利润" width="80" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatAmount(scope.row.profit)}}</span>
           </template>
         </el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="150">
@@ -133,11 +95,15 @@
   </div>
 </template>
 <script>
-import orderReportTotalSearch from "./Search.vue";
-import { formateStatus, formateCategory } from "@/utils/status.js";
+import orderReportSearch from "./Search.vue";
+import {
+  formateStatus,
+  formateCategory,
+  formateOrderType
+} from "@/utils/status.js";
 
 export default {
-  name: "orderReportTotal",
+  name: "orderReportList",
   data() {
     return {
       loading: true,
@@ -149,13 +115,10 @@ export default {
       searchParams: {}
     };
   },
-  components: {
-    orderReportTotalSearch
-  },
   methods: {
-    
     formateStatus,
     formateCategory,
+    formateOrderType,
     handleSizeChange: function(size) {
       this.pageSize = size;
       this.searchParams.pageSize = this.pageSize;
@@ -175,7 +138,7 @@ export default {
     },
     loadData(params) {
       this.$store
-        .dispatch("orderReportTotal/getList", {
+        .dispatch("ticket/getList", {
           filters: params
         })
         .then(data => {
@@ -191,13 +154,15 @@ export default {
     },
     loadTotal(params) {
       this.$store
-        .dispatch("orderReportTotal/getTotal", {
+        .dispatch("ticket/getTotal", {
           filters: params
         })
         .then(data => {
+          this.length = false;
           this.total = data;
         })
         .catch(error => {
+          this.length = false;
           console.log(error);
         });
     },
@@ -257,52 +222,11 @@ export default {
         if (params.endAmount) {
           newParams.endAmount = params.endAmount;
         }
-
-        if (params.startReceivable) {
-          newParams.startReceivable = params.startReceivable;
+        if (params.startOrderAmount) {
+          newParams.startOrderAmount = params.startOrderAmount;
         }
-        if (params.endReceivable) {
-          newParams.endReceivable = params.endReceivable;
-        }
-        if (params.startReceipt) {
-          newParams.startReceipt = params.startReceipt;
-        }
-        if (params.endReceipt) {
-          newParams.endReceipt = params.endReceipt;
-        }
-
-        if (params.endReceipt) {
-          newParams.endReceipt = params.endReceipt;
-        }
-        if (params.endReceipt) {
-          newParams.endReceipt = params.endReceipt;
-        }
-
-        if (params.startPayable) {
-          newParams.startPayable = params.startPayable;
-        }
-        if (params.endPayable) {
-          newParams.endPayable = params.endPayable;
-        }
-
-        if (params.startPayment) {
-          newParams.startPayment = params.startPayment;
-        }
-        if (params.endPayment) {
-          newParams.endPayment = params.endPayment;
-        }
-        if (params.startSystemProfit) {
-          newParams.startSystemProfit = params.startSystemProfit;
-        }
-        if (params.endSystemProfit) {
-          newParams.endSystemProfit = params.endSystemProfit;
-        }
-
-        if (params.startShouldProfit) {
-          newParams.startShouldProfit = params.startShouldProfit;
-        }
-        if (params.endShouldProfit) {
-          newParams.endShouldProfit = params.endShouldProfit;
+        if (params.endOrderAmount) {
+          newParams.endOrderAmount = params.endOrderAmount;
         }
         this.searchParams = newParams;
         this.loadData(this.searchParams);
@@ -315,7 +239,7 @@ export default {
     handleSave() {},
     /*初始化用工列表中的生日日期格式*/
     initDate(dateStr, format) {
-      if (null != dateStr) {
+      if (dateStr > 0) {
         let date = new Date(dateStr);
         return this.$moment(date).format(format);
       } else {
@@ -338,7 +262,6 @@ export default {
       if (!data || data.length == 0) {
         return "";
       }
-      // let dptTime = data[0].dptTime.match(/.*(.{5})/)[1];
       return (
         data[0].dpt +
         " " +
@@ -367,7 +290,9 @@ export default {
       return "￥" + this.$numeral(amount).format("0.00");
     }
   },
-
+  components: {
+    orderReportSearch
+  },
   computed: {
     formatDate() {
       return function(dateStr, format) {
