@@ -182,6 +182,7 @@ export default {
       this.$store
         .dispatch("fundAccount/removeOne", { fundAccountId: fundAccountId })
         .then(() => {
+            this.lastId = "blank";
           if (1 === this.tableData.length) {
             this.handlePrevClick();
           } else {

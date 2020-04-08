@@ -192,6 +192,7 @@ export default {
       this.$store
         .dispatch("dict/removeOne", { dictId: dictId })
         .then(() => {
+            this.lastId = "blank";
           if (1 === this.tableData.length) {
             this.handlePrevClick();
           } else {

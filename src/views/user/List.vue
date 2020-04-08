@@ -222,6 +222,7 @@ export default {
       this.$store
         .dispatch("user/removeOne", { userId: userId })
         .then(() => {
+            this.lastId = "blank";
           if (1 === this.tableData.length) {
             this.handlePrevClick();
           } else {

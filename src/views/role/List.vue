@@ -80,6 +80,7 @@ export default {
       this.$store
         .dispatch("role/removeOne", { roleID: roleID })
         .then(() => {
+            this.lastId = "0";
           if (1 === this.tableData.length) {
             this.prevClick();
           } else {

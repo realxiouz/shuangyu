@@ -176,6 +176,7 @@ export default {
       this.$store
         .dispatch("airport/removeOne", { airportCode: airportCode })
         .then(() => {
+            this.lastId = "blank";
           if (1 === this.tableData.length) {
             this.handlePrevClick();
           } else {

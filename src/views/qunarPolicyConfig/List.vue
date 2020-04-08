@@ -193,6 +193,7 @@ export default {
       this.$store
         .dispatch("qunarPolicyConfig/removeOne", { domain: domain })
         .then(() => {
+            this.lastId = "blank";
           if (1 === this.tableData.length) {
             this.handlePrevClick();
           } else {
@@ -247,7 +248,7 @@ export default {
     },
     loadPartyData() {
       this.$store
-        .dispatch("thirdParty/getList", { filters: {} })
+        .dispatch("third/getList", { filters: {} })
         .then(data => {
           this.partyList = data;
         })
