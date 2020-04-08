@@ -429,6 +429,13 @@ export default new Router({
           name: 'fundAccount',
           component: () => import('@/views/fundAccount/List'),
           meta: { title: '资金账号管理', icon: 'home' }
+        },
+        {
+          title: '订单管理',
+          path: '/finance/order/list',
+          name: 'financeOrder',
+          component: () => import('@/views/financeOrder/List'),
+          meta: { title: '订单管理', icon: 'home' }
         }
       ]
     },
