@@ -10,6 +10,8 @@
         highlight-current-row
         style="width: 100%;margin-bottom:15px"
         v-loading="loading"
+        show-summary
+        :summary-method="getSummaries"
         fit
       >
         <el-table-column label="序号" type="index" width="50" align="center">
@@ -49,15 +51,13 @@
             <span>{{ formatFlight(scope.row.flights)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="amount" label="金额" width="80" align="center">
+        <el-table-column prop="amount" label="金额" width="150" align="center">
           <template slot-scope="scope">
-            <i v-if="scope.row.amount"></i>
             <span>{{ formatAmount(scope.row.amount)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="orderAmount" label="订单金额" width="100" align="center">
+        <el-table-column prop="orderAmount" label="订单金额" width="150" align="center">
           <template slot-scope="scope">
-            <i v-if="scope.row.orderAmount"></i>
             <span>{{ formatAmount(scope.row.orderAmount)}}</span>
           </template>
         </el-table-column>
@@ -105,7 +105,9 @@ export default {
       total: 0,
       dialogVisible: false,
       tableData: [],
-      searchParams: {}
+      searchParams: {},
+      count: []
+
     };
   },
   methods: {
@@ -158,6 +160,43 @@ export default {
           this.length = false;
           console.log(error);
         });
+    },
+    loadCount(params) {
+      this.$store
+        .dispatch("ticket/getCount", {
+          filters: params
+        })
+        .then(data => {
+          this.count = data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    getSummaries(params) {
+      const { columns, data } = params;
+      const sums = [];
+      columns.forEach((item, index) => {
+        if (index === 0) {
+          sums[index] = "统计";
+          return;
+        }
+        switch (item.property !== "" && item.property) {
+          case "amount":
+            sums[index] =
+              "￥" + this.$numeral(this.count.amount).format("0,0.00");
+            break;
+          case "orderAmount":
+            sums[index] =
+              "￥" +
+              this.$numeral(this.count.orderAmount).format("0,0.00");
+            break;
+          default:
+            sums[index] = "";
+            break;
+        }
+      });
+      return sums;
     },
     handleAdd() {
       this.dialogVisible = true;
@@ -296,6 +335,7 @@ export default {
   created() {
     this.loadData(this.searchParams);
     this.loadTotal();
+    this.loadCount();
   }
 };
 </script>

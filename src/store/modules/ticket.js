@@ -1,4 +1,4 @@
-import { getList, getTotal } from "@/api/ticket";
+import { getList, getTotal,getCount} from "@/api/ticket";
 import { getToken } from "@/utils/auth";
 
 
@@ -39,6 +39,19 @@ const actions = {
         const { filters } = params;
         return new Promise((resolve, reject) => {
             getTotal(filters)
+                .then(response => {
+                    const { data } = response;
+                    resolve(data);
+                })
+                .catch(error => {
+                    reject(error);
+                });
+        });
+    },
+    getCount({ commit }, params) {
+        const { filters } = params;
+        return new Promise((resolve, reject) => {
+            getCount(filters)
                 .then(response => {
                     const { data } = response;
                     resolve(data);

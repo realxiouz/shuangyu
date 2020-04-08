@@ -10,6 +10,8 @@
         highlight-current-row
         style="width: 100%;margin-bottom:15px"
         v-loading="loading"
+        show-summary
+        :summary-method="getSummaries"
         fit
       >
         <el-table-column label="序号" type="index" width="50" align="center">
@@ -25,7 +27,7 @@
           width="100"
           align="center"
         ></el-table-column>
-         <el-table-column
+        <el-table-column
           :formatter="formateOrderType"
           prop="orderType"
           label="订单类型"
@@ -72,12 +74,12 @@
             <span>{{ formatPassengers(scope.row.passengers)}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="交易金额" width="80" align="center">
+        <el-table-column prop="transactionAmount" label="交易金额" width="150" align="center">
           <template slot-scope="scope">
             <span>{{ formatAmount(scope.row.transactionAmount)}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="总价" width="80" align="center">
+        <el-table-column prop="amount" label="总价" width="150" align="center">
           <template slot-scope="scope">
             <span>{{ formatAmount(scope.row.amount)}}</span>
           </template>
@@ -145,8 +147,11 @@
 </template>
 <script>
 import orderReportSearch from "./Search.vue";
-import { formateStatus, formateCategory ,formateOrderType} from "@/utils/status.js";
-
+import {
+  formateStatus,
+  formateCategory,
+  formateOrderType
+} from "@/utils/status.js";
 
 export default {
   name: "orderReportList",
@@ -158,7 +163,9 @@ export default {
       total: 0,
       dialogVisible: false,
       tableData: [],
-      searchParams: {}
+      searchParams: {},
+      count: []
+
     };
   },
   methods: {
@@ -209,6 +216,72 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+    loadCount(params) {
+      this.$store
+        .dispatch("order/getCount", {
+          filters: params
+        })
+        .then(data => {
+          this.count = data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    getSummaries(params) {
+      const { columns, data } = params;
+      const sums = [];
+      columns.forEach((item, index) => {
+        if (index === 0) {
+          sums[index] = "统计";
+          return;
+        }
+        switch (item.property !== "" && item.property) {
+          case "amount":
+            sums[index] =
+              "￥" + this.$numeral(this.count.amount).format("0,0.00");
+            break;
+          case "transactionAmount":
+            sums[index] =
+              "￥" +
+              this.$numeral(this.count.transactionAmount).format("0,0.00");
+            break;
+          case "receivable":
+            sums[index] =
+              "￥" + this.$numeral(this.count.receivable).format("0,0.00");
+            break;
+
+          case "receipt":
+            sums[index] =
+              "￥" + this.$numeral(this.count.receipt).format("0,0.00");
+            break;
+          case "payable":
+            sums[index] =
+              "￥" + this.$numeral(this.count.payable).format("0,0.00");
+            break;
+          case "payment":
+            sums[index] =
+              "￥" + this.$numeral(this.count.payment).format("0,0.00");
+            break;
+          case "systemProfit":
+            sums[index] =
+              "￥" + this.$numeral(this.count.systemProfit).format("0,0.00");
+            break;
+          case "shouldProfit":
+            sums[index] =
+              "￥" + this.$numeral(this.count.shouldProfit).format("0,0.00");
+            break;
+          case "profit":
+            sums[index] =
+              "￥" + this.$numeral(this.count.profit).format("0,0.00");
+            break;
+          default:
+            sums[index] = "";
+            break;
+        }
+      });
+      return sums;
     },
     handleAdd() {
       this.dialogVisible = true;
@@ -389,6 +462,8 @@ export default {
   created() {
     this.loadData(this.searchParams);
     this.loadTotal();
+    this.loadCount();
+
   }
 };
 </script>
