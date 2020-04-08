@@ -326,15 +326,15 @@ export default new Router({
       path: '/thirdApi',
       namr: 'thirdApi',
       component: Layout,
-      redirect: '/third/party/list',
+      redirect: '/third/list',
       meta: { title: '第三方Api管理', icon: 'home' },
 
       children: [
         {
           title: '第三方平台',
-          path: '/third/party/list',
-          name: 'thirdParty',
-          component: () => import('@/views/thirdParty/List'),
+          path: '/third/list',
+          name: 'third',
+          component: () => import('@/views/third/List'),
           meta: { title: '第三方平台', icon: 'home' }
         },
         {
