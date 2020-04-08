@@ -15,3 +15,12 @@ export function getTotal(params) {
       params: params
     });
   }
+
+  
+export function getCount(params) {
+  return request({
+    url: `/order/total/report/count`,
+    method: 'get',
+    params: params
+  });
+}

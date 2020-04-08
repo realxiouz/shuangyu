@@ -218,7 +218,7 @@ export default {
     },
     loadCount(params) {
       this.$store
-        .dispatch("order/getCount", {
+        .dispatch("orderReport/getCount", {
           filters: params
         })
         .then(data => {

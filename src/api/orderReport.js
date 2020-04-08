@@ -31,6 +31,14 @@ export function getTotal(params) {
     params: params
   });
 }
+export function getCount(params) {
+  return request({
+    url: `/order/report/count`,
+    method: 'get',
+    params: params
+  });
+}
+
 
 export function getOne(id) {
   return request({
