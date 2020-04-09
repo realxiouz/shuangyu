@@ -27,13 +27,13 @@
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="交易金额:">
-              <span>￥{{this.$numeral(tableData.transactionAmount).format('0.00')}}</span>
+            <el-form-item label="交易编号:">
+              <span>{{tableData.transactionNo}}</span>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="交易编号:">
-              <span>{{tableData.transactionNo}}</span>
+            <el-form-item label="交易时间:">
+              <span>{{formatDate(tableData.transactionTime,'YYYY-MM-DD HH:mm:ss')}}</span>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -47,13 +47,8 @@
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="交易时间:">
-              <span>{{formatDate(tableData.transactionTime,'YYYY-MM-DD HH:mm:ss')}}</span>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="最晚出票时限:">
-              <span>{{formatDate(tableData.deadlineTicketTime,'YYYY-MM-DD HH:mm:ss')}}</span>
+            <el-form-item label="交易金额:">
+              <span>￥{{this.$numeral(tableData.transactionAmount).format('0.00')}}</span>
             </el-form-item>
           </el-col>
         </el-form>
@@ -117,12 +112,16 @@
       </el-table>
       <!-- <el-row style="margin-top:20px">
         <el-button type="primary" @click="goTicket" size="mini">出票</el-button>
-      </el-row> -->
+      </el-row>-->
     </el-card>
   </div>
 </template>
 <script>
-import { formateOrderType, formateCategory,formateStatus } from "@/utils/status.js";
+import {
+  formateOrderType,
+  formateCategory,
+  formateStatus
+} from "@/utils/status.js";
 export default {
   name: "orderDetail",
   data() {
