@@ -13,19 +13,17 @@
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="订单类型:">
-              <span v-if="tableData.orderType==10">出票</span>
-              <span v-if="tableData.orderType==20">退票</span>
-              <span v-if="tableData.orderType==30">改签</span>
+              <span>{{formateOrderType(tableData)}}</span>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="订单状态:">
-              <span>{{tableData.statusName}}</span>
+              <span>{{formateStatus(tableData)}}</span>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="航程类型:">
-              <span>{{tableData.voyageTypeName}}</span>
+            <el-form-item label="订单分类:">
+              <span>{{formateCategory(tableData)}}</span>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -136,6 +134,7 @@
   </div>
 </template>
 <script>
+import { formateOrderType, formateCategory,formateStatus } from "@/utils/status.js";
 export default {
   name: "orderDetail",
   data() {
@@ -149,6 +148,9 @@ export default {
     };
   },
   methods: {
+    formateOrderType,
+    formateStatus,
+    formateCategory,
     /*初始化用工列表中的生日日期格式*/
     initDate(dateStr, format) {
       if (null != dateStr) {
@@ -179,10 +181,6 @@ export default {
     },
     goTicket() {
       if (this.passengersInfo.length < 1) {
-        // this.$message({
-        //   message: "请选择要出票的乘客!",
-        //   type: "warning"
-        // });
         this.$notify({
           title: "提示",
           message: "至少选择一名要出票的乘客",
@@ -200,8 +198,7 @@ export default {
         });
       }
     },
-    getOrderDetail() {
-      const orderNo = this.$route.query.orderNo;
+    getOrderDetail(orderNo) {
       this.$store
         .dispatch("order/getOrderDetail", orderNo)
         .then(data => {
@@ -221,7 +218,7 @@ export default {
     }
   },
   created() {
-    this.getOrderDetail();
+    this.getOrderDetail(this.orderNo);
   },
   computed: {
     formatDate() {
@@ -242,6 +239,5 @@ export default {
 .contentBox {
   padding-top: 0px !important;
   padding-bottom: 0px !important;
-
 }
 </style>
