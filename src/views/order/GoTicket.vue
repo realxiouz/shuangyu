@@ -3,7 +3,7 @@
     <el-card class="contentBox">
       <div slot="header">
         <span>出票信息</span>
-        <el-button type="danger" size="mini">锁单</el-button>
+        <el-button type="danger" style="margin-left:20px;" size="mini">锁单</el-button>
         <el-button type="primary" size="mini">解锁订单</el-button>
         <el-button type="primary" size="mini">调用出票中</el-button>
       </div>
@@ -43,12 +43,11 @@
         </el-form>
       </el-row>
     </el-card>
-
     <el-card class="contentBox">
       <div slot="header">
         <span>乘客信息</span>
       </div>
-      <el-table :data="PassengerData" size="mini" highlight-current-row style="width: 100%;" fit>
+      <el-table :data="passengerData" size="mini" highlight-current-row style="width: 100%;" fit>
         <el-table-column prop="name" label="姓名" width="100" align="center"></el-table-column>
         <el-table-column prop="gender" label="性别" width="100" align="center"></el-table-column>
         <el-table-column label="出生年月" width="110" align="center">
@@ -58,7 +57,7 @@
         </el-table-column>
         <el-table-column prop="ageType" label="乘机人类型" width="100" align="center">
           <template slot-scope="scope">
-            <span>{{ formatAgeType(scope.row.ageType) }}</span>
+            <span>{{ formatAgeType(scope.row) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="cardType" label="乘机人证件类型" width="250" align="center"></el-table-column>
@@ -70,11 +69,18 @@
         </el-table-column>
       </el-table>
     </el-card>
+
     <el-card class="contentBox">
       <div slot="header" class="clearfix">
         <span>航班信息</span>
       </div>
-      <el-table :data="flightData" size="mini" highlight-current-row style="width: 100%;" fit>
+      <el-table
+        :data="orderData.flights"
+        size="mini"
+        highlight-current-row
+        style="width: 100%;"
+        fit
+      >
         <el-table-column prop="dptAirport" label="出发机场" width="160" align="center"></el-table-column>
         <el-table-column prop="arrAirport" label="到达机场" width="160" align="center"></el-table-column>
         <el-table-column prop="airlineCode" label="航司" width="50" align="center"></el-table-column>
@@ -96,21 +102,17 @@
     </el-card>
 
     <el-card class="contentBox" v-if="flightShow">
-      <div slot="header">
-        <span>渠道信息</span>
-      </div>
+      <div>渠道信息</div>
       <el-table
-        :data="newFlightData1"
+        :data="flightData"
+        v-loading="loading"
         size="mini"
         highlight-current-row
         style="width: 100%;"
         @row-click="clickRowHandle"
         :expand-row-keys="expands"
         :row-key="getRowKeys"
-        @expand-change="expandChange"
-        lazy
         fit
-        v-loading="loading"
       >
         <el-table-column label="渠道" width="150" align="center">蜗牛</el-table-column>
         <el-table-column prop="dpt" label="起始地" align="center"></el-table-column>
@@ -129,8 +131,13 @@
         <el-table-column prop="shareFlag" label="是否共享" width="100" align="center"></el-table-column>
         <el-table-column prop="flightNum" label="航班号" align="center"></el-table-column>
         <el-table-column width="80" label="预定" align="center" type="expand">
-          <template v-if="flightPrice.length>0">
-            <el-row type="flex" justify="center" v-for="(item,index) in flightPrice" :key="index">
+          <template slot-scope="props">
+            <el-row
+              type="flex"
+              justify="center"
+              v-for="(item,index) in props.row.sortPrices"
+              :key="index"
+            >
               <el-col style="text-align:center;line-height:38px;">
                 <span>舱位：{{ item.cabin }}</span>
               </el-col>
@@ -145,7 +152,7 @@
                   <el-button
                     type="primary"
                     style="margin-top:10px;"
-                    @click="handlePay(item)"
+                    @click="predetermineOrder(item)"
                     size="mini"
                   >预定</el-button>
                 </span>
@@ -155,18 +162,6 @@
         </el-table-column>
       </el-table>
     </el-card>
-    <div>
-      <el-dialog title="支付" center :visible.sync="showPay" width="30%">
-        <el-row type="flex" class="row-bg" justify="center" align="center">
-          <span style="margin-right:20px;line-height:28px;">金额：￥0.00</span>
-          <el-button type="primary" size="mini">去付款</el-button>
-        </el-row>
-        <span slot="footer" class="dialog-footer">
-          <el-button size="mini" @click="handleCancel">取 消</el-button>
-          <el-button size="mini" type="primary" @click="handleSave">确 定</el-button>
-        </span>
-      </el-dialog>
-    </div>
   </div>
 </template>
 
@@ -174,34 +169,44 @@
 import {
   formateOrderType,
   formateCategory,
-  formateStatus
+  formateStatus,
+  formatAgeType
 } from "@/utils/status.js";
 
 export default {
   name: "goTicket",
   data() {
     return {
-      showPay: false,
-      flightShow: false,
-      purchaseShow: true,
-      loading: true,
-      flightData: [],
-      flightPrice: [],
-      newFlightData: [],
-      newFlightData1: [],
-      expands: [],
-      PassengerData: [],
-      orderData: {},
       orderNo: this.$route.query.orderNo,
-      PassengerData: JSON.parse(this.$route.query.passengersInfo),
-      getRowKeys(row) {
-        return row.exTrack;
+      flightShow: false,
+      orderData: {},
+      flightData: [],
+      loading: true,
+      expands: [],
+      passengerData: JSON.parse(this.$route.query.passengersInfo),
+      flightInfo: {
+        arr: "",
+        dpt: "",
+        dptDay: "",
+        dptTime: "",
+        flightCode: ""
       }
     };
+  },
+  created() {
+    this.getOrderDetail();
+  },
+  computed: {
+    formatDate() {
+      return function(dateStr, format) {
+        return this.initDate(dateStr, format);
+      };
+    }
   },
   methods: {
     formateOrderType,
     formateStatus,
+    formatAgeType,
     formateCategory,
     getOrderDetail() {
       this.$store
@@ -209,33 +214,23 @@ export default {
         .then(data => {
           if (data) {
             this.orderData = data;
-            if (data.flights) {
-              this.flightData = data.flights;
-            }
           }
         })
         .catch(error => {
           console.log(error);
         });
     },
-    handlePay(item) {
-      this.showPay = true;
-      console.log(item);
-    },
-    handleCancel() {
-      this.showPay = false;
-    },
-    handleSave() {
-      this.showPay = true;
-    },
     searchFlight() {
       this.flightShow = true;
-      let flightInfo = {
-        arr: this.flightData[0].arr,
-        dpt: this.flightData[0].dpt,
-        dptDay: this.formatDate(this.flightData[0].flightDate, "YYYY-MM-DD"),
-        dptTime: this.flightData[0].dptTime.substr(-5, 5),
-        flightCode: this.flightData[0].flightCode
+      this.flightInfo = {
+        arr: this.orderData.flights[0].arr,
+        dpt: this.orderData.flights[0].dpt,
+        dptDay: this.formatDate(
+          this.orderData.flights[0].flightDate,
+          "YYYY-MM-DD"
+        ),
+        dptTime: this.orderData.flights[0].dptTime.substr(-5, 5),
+        flightCode: this.orderData.flights[0].flightCode
       };
 
       let flightInfo2 = {
@@ -245,92 +240,80 @@ export default {
         dptTime: "13:10",
         flightCode: "MU5192"
       };
+      this.flightInfo = flightInfo2;
       this.getOrderFlight(flightInfo2);
-      this.getOrderMinPrice(flightInfo2);
     },
-    clickRowHandle(row) {
-      let dptDay = this.formatDate(this.flightData[0].flightDate, "YYYY-MM-DD");
-      let _flightInfo = {
-        arr: this.flightData[0].arr,
-        dpt: this.flightData[0].dpt,
-        date: dptDay,
-        ex_track: row.exTrack,
-        flightNum: this.flightData[0].flightCode
-      };
+    predetermineOrder(row){
+      console.log(row)
 
-      let _flightInfo2 = {
-        arr: "PVG",
-        dpt: "YCU",
-        date: "2020-04-12",
-        ex_track: "djjj",
-        flightNum: "MU5192"
-      };
-      this.getFlightPrice(_flightInfo2);
-      if (this.expands.includes(row.exTrack)) {
-        this.expands = this.expands.filter(val => val !== row.exTrack);
-      } else {
-        this.expands.push(row.exTrack);
-      }
-    },
-    expandChange(row, expandedRows) {
-      let dptDay = this.formatDate(this.flightData[0].flightDate, "YYYY-MM-DD");
-      let _flightInfo = {
-        arr: this.flightData[0].arr,
-        dpt: this.flightData[0].dpt,
-        date: dptDay,
-        ex_track: row.exTrack,
-        flightNum: this.flightData[0].flightCode
-      };
-      let _flightInfo2 = {
-        arr: "PVG",
-        dpt: "YCU",
-        date: "2020-04-12",
-        ex_track: "djjj",
-        flightNum: "MU5192"
-      };
-      this.getFlightPrice(_flightInfo2);
     },
     getOrderFlight(flightInfo) {
       this.$store
         .dispatch("order/getOrderFlight", flightInfo)
         .then(data => {
           if (data) {
-            this.newFlightData = data;
+            this.$store
+              .dispatch("order/getOrderMinPrice", flightInfo)
+              .then(res => {
+                if (res) {
+                  data.forEach(item => {
+                    item.minPrice = res.sortPrices[0].price;
+                    let flightPrice = {
+                      arr: this.orderData.flights[0].arr,
+                      dpt: this.orderData.flights[0].dpt,
+                      date: this.formatDate(
+                        this.orderData.flights[0].flightDate,
+                        "YYYY-MM-DD"
+                      ),
+                      ex_track: item.exTrack,
+                      flightNum: this.orderData.flights[0].flightCode
+                    };
+                    let flightPrice2 = {
+                      arr: "PVG",
+                      dpt: "YCU",
+                      date: "2020-04-12",
+                      ex_track: item.exTrack,
+                      flightNum: "MU5192"
+                    };
+                    this.getFlightPrice(flightPrice2);
+                  });
+                }
+                this.flightData = data;
+                this.loading = false;
+              })
+              .catch(error => {
+                this.loading = false;
+                console.log(error);
+              });
           }
         })
         .catch(error => {
           console.log(error);
         });
     },
-    getOrderMinPrice(flightInfo) {
+    getFlightPrice(flightPrice) {
       this.$store
-        .dispatch("order/getOrderMinPrice", flightInfo)
+        .dispatch("order/getFlightPrice", flightPrice)
         .then(data => {
           if (data) {
-            this.newFlightData.forEach(item => {
-              item.minPrice = data.sortPrices[0].price;
+            this.flightData.forEach(item => {
+              item.sortPrices = data.sortPrices;
             });
-            this.newFlightData1 = this.newFlightData;
           }
-          this.loading = false;
         })
         .catch(error => {
-          this.loading = false;
           console.log(error);
         });
     },
-    getFlightPrice(flightInfo) {
-      this.$store
-        .dispatch("order/getFlightPrice", flightInfo)
-        .then(data => {
-          if (data) {
-            console.log(data, "getFlightPrice");
-            this.flightPrice = [...data.sortPrices];
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
+    getRowKeys(row) {
+      return row.exTrack;
+    },
+    clickRowHandle(row) {
+      if (this.expands.includes(row.exTrack)) {
+        this.expands = this.expands.filter(val => val !== row.exTrack);
+      } else {
+        this.expands.push(row.exTrack);
+      }
     },
     /*初始化用工列表中的生日日期格式*/
     initDate(dateStr, format) {
@@ -341,39 +324,17 @@ export default {
         return "";
       }
     },
-    formatAgeType(ageType) {
-      if (ageType == 0) {
-        return (ageType = "成人");
-      } else if (ageType == 1) {
-        return (ageType = "儿童");
-      } else {
-        return (ageType = "婴儿");
-      }
-    },
-    formatAmount1(amount) {
+    formatAmount(amount) {
       if (!amount) {
         return "￥0.00";
       }
       return "￥" + this.$numeral(amount).format("0.00");
     }
-  },
-  computed: {
-    formatDate() {
-      return function(dateStr, format) {
-        return this.initDate(dateStr, format);
-      };
-    },
-    formatAmount() {
-      return function(amount) {
-        return this.formatAmount1(amount);
-      };
-    }
-  },
-  created() {
-    this.getOrderDetail();
   }
 };
 </script>
+
+
 
 <style scoped>
 .contentBox {
