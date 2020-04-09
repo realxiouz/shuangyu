@@ -206,62 +206,23 @@ export default {
         this.searchParams = params;
         this.loadData(this.searchParams);
         this.loadTotal(this.searchParams);
+        this.loadCount(this.searchParams);
       } else {
         const newParams = {};
-        if (params.name) {
-          newParams.name = params.name;
-        }
-        if (params.cardNo) {
-          newParams.cardNo = params.cardNo;
-        }
-        if (params.orderNo) {
-          newParams.orderNo = params.orderNo;
-        }
-        if (params.ticketNo) {
-          newParams.ticketNo = params.ticketNo;
-        }
-        if (params.pnr) {
-          newParams.pnr = params.pnr;
-        }
-        if (params.status) {
-          newParams.status = params.status;
-        }
-        if (params.flightDate) {
-          newParams.startFlightDate = params.flightDate[0];
-          newParams.endFlightDate = params.flightDate[1];
-        }
-        if (params.cabin) {
-          newParams.cabin = params.cabin;
-        }
-        if (params.flightCode) {
-          newParams.flightCode = params.flightCode;
-        }
-        if (params.orderType) {
-          newParams.orderType = params.orderType;
-        }
-        if (params.voyageType) {
-          newParams.voyageType = params.voyageType;
-        }
-        if (params.createTime) {
-          newParams.startCreateTime = params.createTime[0];
-          newParams.endCreateTime = params.createTime[1];
-        }
-
-        if (params.startAmount) {
-          newParams.startAmount = params.startAmount;
-        }
-        if (params.endAmount) {
-          newParams.endAmount = params.endAmount;
-        }
-        if (params.startOrderAmount) {
-          newParams.startOrderAmount = params.startOrderAmount;
-        }
-        if (params.endOrderAmount) {
-          newParams.endOrderAmount = params.endOrderAmount;
+        for (let key in params) {
+          if (params[key] && _.isArray(params[key])) {
+            let start = "start" + key.charAt(0).toUpperCase() + key.slice(1);
+            let end = "end" + key.charAt(0).toUpperCase() + key.slice(1);
+            newParams[start] = params[key][0];
+            newParams[end] = params[key][1];
+          } else if (params[key]) {
+            newParams[key] = params[key];
+          }
         }
         this.searchParams = newParams;
         this.loadData(this.searchParams);
         this.loadTotal(this.searchParams);
+        this.loadCount(this.searchParams);
       }
     },
     handleCancel() {
