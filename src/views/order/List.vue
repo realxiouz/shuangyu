@@ -376,6 +376,9 @@ export default {
             newParams[item] = "";
           });
         }
+        if (params.category) {
+          newParams.category = params.category;
+        }
         this.searchParams = newParams;
         this.loadData(this.searchParams);
         this.loadTotal(this.searchParams);

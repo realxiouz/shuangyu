@@ -299,6 +299,14 @@
             </el-radio-group>
           </el-form-item>
         </el-col>
+        <el-col :xs="24" :sm="18" :md="14" :lg="10" :xl="6">
+          <el-form-item v-show="more" label="订单分类:">
+            <el-radio-group v-model="formData.category" style="width: 100%">
+              <el-radio label="0">销售单</el-radio>
+              <el-radio label="1">采购单</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-col>
       </el-form>
     </el-col>
     <el-col :xs="8" :sm="6" :md="6" :lg="4" :xl="4" class="search-tools">
