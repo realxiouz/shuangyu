@@ -22,6 +22,15 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="销售出票单号:">
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.rootOrderNo"
+              style="width: 100%"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="乘机人证件号:">
             <el-input v-model="formData.cardNo" style="width: 100%"></el-input>
           </el-form-item>
@@ -131,7 +140,11 @@
           <el-form-item v-show="more" label="系统利润:">
             <el-row type="flex" justify="space-between">
               <el-col :span="11">
-                <el-input v-model="formData.startSystemProfit" placeholder="初始值" style="width: 100%"></el-input>
+                <el-input
+                  v-model="formData.startSystemProfit"
+                  placeholder="初始值"
+                  style="width: 100%"
+                ></el-input>
               </el-col>
               <el-col :span="1">-</el-col>
               <el-col :span="11">
@@ -144,7 +157,11 @@
           <el-form-item v-show="more" label="业务利润:">
             <el-row type="flex" justify="space-between">
               <el-col :span="11">
-                <el-input v-model="formData.startShouldProfit" placeholder="初始值" style="width: 100%"></el-input>
+                <el-input
+                  v-model="formData.startShouldProfit"
+                  placeholder="初始值"
+                  style="width: 100%"
+                ></el-input>
               </el-col>
               <el-col :span="1">-</el-col>
               <el-col :span="11">
@@ -166,7 +183,7 @@
             </el-row>
           </el-form-item>
         </el-col>
-       
+
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="订单类型:">
             <el-select clearable v-model="formData.orderType" placeholder="全部" style="width: 100%">
@@ -194,15 +211,6 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :xs="24" :sm="18" :md="14" :lg="10" :xl="6">
-          <el-form-item v-show="more" label="航程类型:">
-            <el-radio-group v-model="formData.voyageType" style="width: 100%">
-              <el-radio label="0">单程</el-radio>
-              <el-radio label="1">往返</el-radio>
-              <el-radio label="2">连程</el-radio>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="订单日期:">
             <el-col>
@@ -218,6 +226,15 @@
                 value-format="yyyy-MM-dd"
               ></el-date-picker>
             </el-col>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="18" :md="14" :lg="10" :xl="6">
+          <el-form-item v-show="more" label="航程类型:">
+            <el-radio-group v-model="formData.voyageType" style="width: 100%">
+              <el-radio label="0">单程</el-radio>
+              <el-radio label="1">往返</el-radio>
+              <el-radio label="2">连程</el-radio>
+            </el-radio-group>
           </el-form-item>
         </el-col>
       </el-form>
@@ -255,7 +272,8 @@ export default {
         orderNo: "", //订单号
         name: "", //乘机人姓名
         cardNo: "", //乘机人证件号
-        createTime: ""
+        createTime: "",
+        rootOrderNo: ""
       }
     };
   },

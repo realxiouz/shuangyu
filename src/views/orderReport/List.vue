@@ -69,6 +69,7 @@
             <span>{{ formatPassengers(scope.row.passengers)}}</span>
           </template>
         </el-table-column>
+        <el-table-column label="销售出票单号" prop="rootOrderNo" width="150" align="center"></el-table-column>
         <el-table-column label="交易金额" prop="transactionAmount" width="150" align="center">
           <template slot-scope="scope">
             <span>{{ formatAmount(scope.row.transactionAmount)}}</span>
