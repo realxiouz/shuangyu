@@ -276,6 +276,7 @@ export default {
       if (!params) {
         params = {};
         this.searchParams = params;
+        this.loadCount(this.searchParams);
         this.loadData(this.searchParams);
         this.loadTotal(this.searchParams);
       } else {
@@ -293,6 +294,8 @@ export default {
         this.searchParams = newParams;
         this.loadData(this.searchParams);
         this.loadTotal(this.searchParams);
+        this.loadCount(this.searchParams);
+
       }
     },
     handleCancel() {

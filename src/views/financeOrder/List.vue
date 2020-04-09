@@ -284,6 +284,7 @@ export default {
         params = {};
         this.searchParams = params;
         this.loadData(this.searchParams);
+        this.loadCount(this.searchParams);
         this.loadTotal(this.searchParams);
       } else {
         const newParams = {};
@@ -299,6 +300,7 @@ export default {
         }
         this.searchParams = newParams;
         this.loadData(this.searchParams);
+        this.loadCount(this.searchParams);
         this.loadTotal(this.searchParams);
       }
     },

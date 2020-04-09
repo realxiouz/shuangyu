@@ -265,6 +265,7 @@ export default {
         this.loadCount(this.searchParams);
         this.loadData(this.searchParams);
         this.loadTotal(this.searchParams);
+        
       } else {
         const newParams = {};
         for (let key in params) {
@@ -284,6 +285,7 @@ export default {
           }
         }
         this.searchParams = newParams;
+        this.loadCount(this.searchParams);
         this.loadData(this.searchParams);
         this.loadTotal(this.searchParams);
         this.$message({
