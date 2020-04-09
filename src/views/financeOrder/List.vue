@@ -22,7 +22,6 @@
         <el-table-column prop="orderNo" label="订单号" align="center" width="160"></el-table-column>
         <el-table-column
           prop="policyCode"
-          :show-overflow-tooltip="true"
           label="政策代码"
           width="100"
           align="center"

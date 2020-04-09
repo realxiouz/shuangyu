@@ -2,10 +2,13 @@
   <div class="bigBox">
     <el-card class="contentBox">
       <div slot="header">
-        <span>订单详情</span>
+        <span>出票信息</span>
+        <el-button type="danger" size="mini">锁单</el-button>
+        <el-button type="primary" size="mini">解锁订单</el-button>
+        <el-button type="primary" size="mini">调用出票中</el-button>
       </div>
       <el-row :gutter="20">
-        <el-form :model="orderData" label-width="130px" size="mini">
+        <el-form :model="orderData" label-width="80px" size="mini">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="订单编号:">
               <span>{{orderData.orderNo}}</span>
@@ -17,13 +20,24 @@
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="交易金额:">
-              <span>￥{{this.$numeral(orderData.transactionAmount).format('0.00')}}</span>
+            <el-form-item label="订单状态:">
+              <span>{{formateStatus(orderData)}}</span>
+            </el-form-item>
+          </el-col>
+
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="订单时间:">
+              <span>{{orderData.createTime}}</span>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="金额:">
+            <el-form-item label="应付金额:">
               <span>￥{{this.$numeral(orderData.amount).format('0.00')}}</span>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="政策代码:">
+              <span>{{orderData.policyCode}}</span>
             </el-form-item>
           </el-col>
         </el-form>
