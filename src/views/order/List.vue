@@ -57,20 +57,17 @@
         <el-table-column prop="accountId" label="平台账号" width="100" align="center"></el-table-column>
         <el-table-column
           prop="rootOrderNo"
-          :show-overflow-tooltip="true"
           label="销售出票单号"
           width="100"
           align="center"
         ></el-table-column>
         <el-table-column
           prop="linkOrderNo"
-          :show-overflow-tooltip="true"
           label="业务订单编号"
           width="100"
           align="center"
         ></el-table-column>
         <el-table-column
-          :show-overflow-tooltip="true"
           prop="sourceOrderNo"
           label="原订单"
           align="center"
@@ -79,7 +76,6 @@
         <el-table-column
           prop="path"
           label="path"
-          :show-overflow-tooltip="true"
           width="100"
           align="center"
         ></el-table-column>
@@ -134,7 +130,7 @@
             <span>{{ formatPassengers(scope.row.passengers)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="ticketNos" label="票号" width="150" align="center">
+        <el-table-column prop="ticketNos" label="票号" width="120" align="center">
           <template slot-scope="scope">
             <span>{{formatTicketNo(scope.row.ticketNos)}}</span>
           </template>
