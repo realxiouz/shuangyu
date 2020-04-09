@@ -23,7 +23,7 @@
         <el-table-column
           prop="policyCode"
           label="政策代码"
-          width="100"
+          width="150"
           align="center"
         ></el-table-column>
         <el-table-column
