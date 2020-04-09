@@ -2,7 +2,7 @@
   <div class="bigBox">
     <el-card class="contentBox">
       <div slot="header" class="clearfix">
-        <span>订单详情</span>
+        <span>改签订单详情</span>
       </div>
       <el-row :gutter="20">
         <el-form :model="tableData" label-width="130px" size="mini">
@@ -115,9 +115,9 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-row style="margin-top:20px">
+      <!-- <el-row style="margin-top:20px">
         <el-button type="primary" @click="goTicket" size="mini">出票</el-button>
-      </el-row>
+      </el-row> -->
     </el-card>
   </div>
 </template>
