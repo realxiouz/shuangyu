@@ -292,92 +292,21 @@ export default {
         this.loadTotal(this.searchParams);
       } else {
         const newParams = {};
-        if (params.name) {
-          newParams.name = params.name;
-        }
-        if (params.cardNo) {
-          newParams.cardNo = params.cardNo;
-        }
-        if (params.orderNo) {
-          newParams.orderNo = params.orderNo;
-        }
-        if (params.ticketNo) {
-          newParams.ticketNo = params.ticketNo;
-        }
-        if (params.pnr) {
-          newParams.pnr = params.pnr;
-        }
-        if (params.status) {
-          newParams.status = params.status;
-        }
-        if (params.flightDate) {
-          newParams.startFlightDate = params.flightDate[0];
-          newParams.endFlightDate = params.flightDate[1];
-        }
-        if (params.cabin) {
-          newParams.cabin = params.cabin;
-        }
-        if (params.flightCode) {
-          newParams.flightCode = params.flightCode;
-        }
-        if (params.orderType) {
-          newParams.orderType = params.orderType;
-        }
-        if (params.voyageType) {
-          newParams.voyageType = params.voyageType;
-        }
-        if (params.rootOrderNo) {
-          newParams.rootOrderNo = params.rootOrderNo;
-        }
-        if (params.fundAccount) {
-          newParams.fundAccount = params.fundAccount;
-        }
-        if (params.accountId) {
-          newParams.accountId = params.accountId;
-        }
-        if (params.pid) {
-          newParams.pid = params.pid;
-        }
-        if (params.sourceOrderNo) {
-          newParams.sourceOrderNo = params.sourceOrderNo;
-        }
-        if (params.path) {
-          newParams.path = params.path;
-        }
-        if (params.linkOrderNo) {
-          newParams.linkOrderNo = params.linkOrderNo;
-        }
-        if (params.createTime) {
-          newParams.startCreateTime = params.createTime[0];
-          newParams.endCreateTime = params.createTime[1];
-        }
-        if (params.finishTime) {
-          newParams.startFinishTime = params.finishTime[0];
-          newParams.endFinishTime = params.finishTime[1];
-        }
-        if (params.DdeadlineChangeTime) {
-          newParams.startTransactionTime = params.transactionTime[0];
-          newParams.endTransactionTime = params.transactionTime[0];
-        }
-        if (params.deadlineTicketTime) {
-          newParams.startDeadlineTicketTime = params.deadlineTicketTime[0];
-          newParams.endDeadlineTicketTime = params.deadlineTicketTime[0];
-        }
-        if (params.deadlineReturnTime) {
-          newParams.startDeadlineReturnTime = params.deadlineReturnTime[0];
-          newParams.endDeadlineReturnTime = params.deadlineReturnTime[0];
-        }
-        if (params.deadlineChangeTime) {
-          newParams.startDeadlineChangeTime = params.deadlineChangeTime[0];
-          newParams.endDeadlineChangeTime = params.deadlineChangeTime[0];
-        }
-        if (params.emptyData.length > 0) {
-          params.emptyData.forEach(item => {
-            newParams[item] = "";
-          });
-        }
-        if (params.category) {
-          newParams.category = params.category;
+        for (let key in params) {
+          if (params[key] && _.isArray(params[key])) {
+            if (key === "emptyData") {
+              params[key].forEach(item => {
+                newParams[item] = "";
+              });
+            } else {
+              let start = "start" + key.charAt(0).toUpperCase() + key.slice(1);
+              let end = "end" + key.charAt(0).toUpperCase() + key.slice(1);
+              newParams[start] = params[key][0];
+              newParams[end] = params[key][1];
+            }
+          } else if (params[key]) {
+            newParams[key] = params[key];
+          }
         }
         this.searchParams = newParams;
         this.loadData(this.searchParams);
