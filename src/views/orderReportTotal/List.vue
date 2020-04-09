@@ -377,6 +377,9 @@ export default {
         if (params.endShouldProfit) {
           newParams.endShouldProfit = params.endShouldProfit;
         }
+        if (params.category) {
+          newParams.category = params.category;
+        }
         this.searchParams = newParams;
         this.loadData(this.searchParams);
         this.loadTotal(this.searchParams);

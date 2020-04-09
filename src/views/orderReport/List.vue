@@ -53,7 +53,7 @@
             <span>{{ formatDate(scope.row.createTime,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
-        
+
         <el-table-column prop="pnr" label="PNR" width="80" align="center"></el-table-column>
         <el-table-column label="航班号" width="80" align="center">
           <template slot-scope="scope">
@@ -385,6 +385,9 @@ export default {
         }
         if (params.endShouldProfit) {
           newParams.endShouldProfit = params.endShouldProfit;
+        }
+        if (params.category) {
+          newParams.category = params.category;
         }
         this.searchParams = newParams;
         this.loadData(this.searchParams);
