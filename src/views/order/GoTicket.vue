@@ -13,9 +13,7 @@
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="订单类型:">
-              <span v-if="orderData.orderType==10">出票</span>
-              <span v-if="orderData.orderType==20">退票</span>
-              <span v-if="orderData.orderType==30">改签</span>
+              <span>{{formateOrderType(orderData)}}</span>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -74,9 +72,7 @@
             <span>{{ formatDate(scope.row.flightDate,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
-        <!-- <el-table-column prop="dptTime" label="起飞时间" width="150" align="center"></el-table-column> -->
         <el-table-column prop="arrTime" label="到达时间" width="100" align="center"></el-table-column>
-        <!-- <el-table-column prop="distance" label="航程" width="50" align="center"></el-table-column> -->
         <el-table-column prop="refundRule" label="退票规则" align="center"></el-table-column>
         <el-table-column prop="changeRule" label="改签规则" align="center"></el-table-column>
       </el-table>
@@ -118,8 +114,6 @@
         <el-table-column prop="flightNum" label="主飞航班" align="center"></el-table-column>
         <el-table-column prop="shareFlag" label="是否共享" width="100" align="center"></el-table-column>
         <el-table-column prop="flightNum" label="航班号" align="center"></el-table-column>
-        <!-- <el-table-column prop="refundRule" label="退票规则" align="center"></el-table-column> -->
-        <!-- <el-table-column prop="changeRule" label="改签规则" align="center"></el-table-column> -->
         <el-table-column width="80" label="预定" align="center" type="expand">
           <template v-if="flightPrice.length>0">
             <el-row type="flex" justify="center" v-for="(item,index) in flightPrice" :key="index">
@@ -163,6 +157,12 @@
 </template>
 
 <script>
+import {
+  formateOrderType,
+  formateCategory,
+  formateStatus
+} from "@/utils/status.js";
+
 export default {
   name: "goTicket",
   data() {
@@ -186,6 +186,9 @@ export default {
     };
   },
   methods: {
+    formateOrderType,
+    formateStatus,
+    formateCategory,
     getOrderDetail() {
       this.$store
         .dispatch("order/getOrderDetail", this.orderNo)
@@ -242,7 +245,7 @@ export default {
       };
 
       let _flightInfo2 = {
-       arr: "PVG",
+        arr: "PVG",
         dpt: "YCU",
         date: "2020-04-12",
         ex_track: "djjj",

@@ -119,18 +119,6 @@
         <el-button type="primary" @click="goTicket" size="mini">出票</el-button>
       </el-row>
     </el-card>
-
-    <!-- <div class="contentBox" v-if="purchaseShow">
-      <el-row>
-        <h3>采购信息:</h3>
-      </el-row>
-      <el-table>
-        <el-table-column prop label="采购信息" align="center"></el-table-column>
-        <el-table-column prop label="采购信息" align="center"></el-table-column>
-        <el-table-column prop label="采购信息" align="center"></el-table-column>
-        <el-table-column prop label="采购信息" align="center"></el-table-column>
-      </el-table>
-    </div>-->
   </div>
 </template>
 <script>
