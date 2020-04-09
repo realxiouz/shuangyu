@@ -295,7 +295,10 @@ export default {
         this.loadData(this.searchParams);
         this.loadTotal(this.searchParams);
         this.loadCount(this.searchParams);
-
+        this.$message({
+          type: "success",
+          message: "查询成功！"
+        });
       }
     },
     handleCancel() {

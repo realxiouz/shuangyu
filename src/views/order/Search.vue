@@ -8,6 +8,7 @@
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.orderNo"
               style="width: 100%"
+              clearable
             ></el-input>
           </el-form-item>
         </el-col>
@@ -17,6 +18,7 @@
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.ticketNo"
               style="width: 100%"
+              clearable
             ></el-input>
           </el-form-item>
         </el-col>
@@ -26,6 +28,7 @@
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.sourceOrderNo"
               style="width: 100%"
+              clearable
             ></el-input>
           </el-form-item>
         </el-col>
@@ -35,6 +38,7 @@
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.name"
               style="width: 100%"
+              clearable
             ></el-input>
           </el-form-item>
         </el-col>
@@ -43,6 +47,7 @@
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.cardNo"
+              clearable
               style="width: 100%"
             ></el-input>
           </el-form-item>
@@ -51,6 +56,7 @@
           <el-form-item v-show="more" label="PNR:">
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
+              clearable
               v-model="formData.pnr"
               style="width: 100%"
             ></el-input>
@@ -71,6 +77,7 @@
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.cabin"
+              clearable
               style="width: 100%"
             ></el-input>
           </el-form-item>
@@ -80,6 +87,7 @@
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.flightCode"
+              clearable
               style="width: 100%"
             ></el-input>
           </el-form-item>
@@ -102,6 +110,7 @@
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.fundAccount"
+              clearable
               style="width: 100%"
             ></el-input>
           </el-form-item>
@@ -111,6 +120,7 @@
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.accountId"
+              clearable
               style="width: 100%"
             ></el-input>
           </el-form-item>
@@ -120,6 +130,7 @@
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.pid"
+              clearable
               style="width: 100%"
             ></el-input>
           </el-form-item>
@@ -129,6 +140,7 @@
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.path"
+              clearable
               style="width: 100%"
             ></el-input>
           </el-form-item>
@@ -137,6 +149,7 @@
           <el-form-item v-show="more" label="销售出票单号:">
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
+              clearable
               v-model="formData.rootOrderNo"
               style="width: 100%"
             ></el-input>
@@ -146,6 +159,7 @@
           <el-form-item v-show="more" label="业务订单编号:">
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
+              clearable
               v-model="formData.linkOrderNo"
               style="width: 100%"
             ></el-input>
