@@ -190,7 +190,7 @@
               placeholder="请选择"
             >
               <el-option label="销售单" value="0"></el-option>
-              <el-option label="出票单" value="1"></el-option>
+              <el-option label="采购单" value="1"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
