@@ -66,7 +66,7 @@ export default {
       update: false,
         deleteForSearch: false,
       pageFlag: "next",
-      pageSize: 3,
+      pageSize: 10,
       lastId: "blank",
       total: 0
     };
