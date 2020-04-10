@@ -35,6 +35,41 @@ export function formateStatus(row) {
         return "蜗牛订单号错误";
     }
 }
+export function formateOederStatus(row) {
+    if (row.orderStatus === 1) {
+        return "下单成功";
+    } else if (row.orderStatus === 2) {
+        return "支付成功等待出票";
+    } else if (row.orderStatus === 3) {
+        return "出票中";
+    } else if (row.orderStatus === 4) {
+        return "出票完成";
+    } else if (row.orderStatus === 5) {
+        return "订单取消";
+    } else if (row.orderStatus === 10) {
+        return "未出票申请退款";
+    } else if (row.orderStatus === 11) {
+        return "退票申请中";
+    } else if (row.orderStatus == 12) {
+        return "退票完成等待退款";
+    } else if (row.orderStatus == 13) {
+        return "退款完成";
+    } else if (row.orderStatus == 19) {
+        return "退款驳回";
+    } else if (row.orderStatus == 20) {
+        return "退票申请中";
+    } else if (row.orderStatus == 21) {
+        return "改签完成";
+    } else if (row.orderStatus == 29) {
+        return "改签驳回";
+    } else if (row.orderStatus == 40) {
+        return "等待座位确认";
+    } else if (row.orderStatus == 41) {
+        return "订座成功等待价格确认";
+    } else if (row.orderStatus == 50) {
+        return "蜗牛订单号错误";
+    }
+}
 
 // 格式化订单分类
 export function formateCategory(row) {

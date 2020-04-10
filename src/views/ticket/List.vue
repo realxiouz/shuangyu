@@ -19,21 +19,14 @@
             <span>{{(currentPage - 1) * pageSize + scope.$index + 1}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="orderNo" label="订单号" align="center"></el-table-column>
+        <el-table-column prop="orderNo" label="订单号" align="center" width="180"></el-table-column>
         <el-table-column
           prop="orderStatus"
-          :formatter="formateStatus"
+          :formatter="formateOederStatus"
           label="订单状态"
           width="100"
           align="center"
         ></el-table-column>
-        <el-table-column label="订单日期" width="100" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatDate(scope.row.createTime,'YYYY-MM-DD') }}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column prop="pnr" label="PNR" width="80" align="center"></el-table-column>
         <el-table-column label="航班号" width="80" align="center">
           <template slot-scope="scope">
             <span>{{ formatFlightNo(scope.row.flights)}}</span>
@@ -91,7 +84,7 @@
 <script>
 import orderReportSearch from "./Search.vue";
 import {
-  formateStatus,
+  formateOederStatus,
   formateCategory,
   formateOrderType
 } from "@/utils/status.js";
@@ -111,7 +104,7 @@ export default {
     };
   },
   methods: {
-    formateStatus,
+    formateOederStatus,
     formateCategory,
     formateOrderType,
     handleSizeChange: function(size) {
