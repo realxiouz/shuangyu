@@ -411,7 +411,7 @@ export default {
     handleSave() {},
     /*初始化用工列表中的生日日期格式*/
     initDate(dateStr, format) {
-      if (null != dateStr) {
+      if (dateStr > 0) {
         let date = new Date(dateStr);
         return this.$moment(date).format(format);
       } else {
