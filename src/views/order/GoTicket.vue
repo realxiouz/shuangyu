@@ -27,7 +27,8 @@
 
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="订单时间:">
-              <span>{{orderData.createTime}}</span>
+              
+              <span>{{formatDate(orderData.createTime,'YYYY-MM-DD')}}</span>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -112,24 +113,31 @@
         @row-click="clickRowHandle"
         :expand-row-keys="expands"
         :row-key="getRowKeys"
+        border
         fit
       >
-        <el-table-column label="渠道" width="150" align="center">蜗牛</el-table-column>
-        <el-table-column prop="dpt" label="起始地" align="center"></el-table-column>
-        <el-table-column prop="arr" label="目的地" align="center"></el-table-column>
-        <el-table-column prop="minPrice" label="最低价" align="center">
+        <el-table-column label="渠道" width="100" align="center">蜗牛</el-table-column>
+        <el-table-column prop="dpt" width="80" label="起始地" align="center"></el-table-column>
+        <el-table-column prop="arr" width="80" label="目的地" align="center"></el-table-column>
+        <el-table-column prop="minPrice" width="80" label="最低价" align="center">
           <template slot-scope="scope">
             <span>{{formatAmount(scope.row.minPrice)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="airlineCode" label="航司" width="100" align="center">
+        <el-table-column prop="airlineCode" label="航司" width="80" align="center">
           <template slot-scope="scope">
             <span>{{scope.row.flightQuotePrices.arrAirport}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="flightNum" label="主飞航班" align="center"></el-table-column>
-        <el-table-column prop="shareFlag" label="是否共享" width="100" align="center"></el-table-column>
-        <el-table-column prop="flightNum" label="航班号" align="center"></el-table-column>
+        <el-table-column prop="flightNum" label="主飞航班" width="100" align="center"></el-table-column>
+        <el-table-column prop="shareFlag" label="是否共享" width="80" align="center"></el-table-column>
+        <el-table-column prop="flightNum" label="航班号" width="80" align="center"></el-table-column>
+        <el-table-column label="退改规则" align="center">
+          <template slot-scope="scope">
+            <div>退票规则：{{scope.row.returnText}}</div>
+            <div>改签规则：{{scope.row.changeText}}</div>
+          </template>
+        </el-table-column>
         <el-table-column width="80" label="预定" align="center" type="expand">
           <template slot-scope="props">
             <el-row
@@ -236,16 +244,15 @@ export default {
       let flightInfo2 = {
         arr: "PVG",
         dpt: "YCU",
-        dptDay: "2020-04-12",
+        dptDay: "2020-04-14",
         dptTime: "13:10",
         flightCode: "MU5192"
       };
       this.flightInfo = flightInfo2;
       this.getOrderFlight(flightInfo2);
     },
-    predetermineOrder(row){
-      console.log(row)
-
+    predetermineOrder(row) {
+      console.log(row);
     },
     getOrderFlight(flightInfo) {
       this.$store
@@ -258,6 +265,8 @@ export default {
                 if (res) {
                   data.forEach(item => {
                     item.minPrice = res.sortPrices[0].price;
+                    item.returnText = res.sortPrices[0].returnText;
+                    item.changeText = res.sortPrices[0].changeText;
                     let flightPrice = {
                       arr: this.orderData.flights[0].arr,
                       dpt: this.orderData.flights[0].dpt,
@@ -271,7 +280,7 @@ export default {
                     let flightPrice2 = {
                       arr: "PVG",
                       dpt: "YCU",
-                      date: "2020-04-12",
+                      date: "2020-04-14",
                       ex_track: item.exTrack,
                       flightNum: "MU5192"
                     };
@@ -317,7 +326,7 @@ export default {
     },
     /*初始化用工列表中的生日日期格式*/
     initDate(dateStr, format) {
-      if (dateStr>0) {
+      if (dateStr > 0) {
         let date = new Date(dateStr);
         return this.$moment(date).format(format);
       } else {
