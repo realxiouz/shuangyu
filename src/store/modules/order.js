@@ -1,4 +1,4 @@
-import { getList, getOne, removeOne, save, getCount, getTotal, getOrderDetail, getOrderMinPrice, getOrderFlight, getFlightPrice, placeAnOrder, openPay } from "@/api/order";
+import { getList, getOne, removeOne, save,getTimeCount, getCount, getTotal, getOrderDetail, getOrderMinPrice, getOrderFlight, getFlightPrice, placeAnOrder, openPay } from "@/api/order";
 import { getToken } from "@/utils/auth";
 
 
@@ -77,6 +77,19 @@ const actions = {
     const { filters } = params;
     return new Promise((resolve, reject) => {
       getCount(filters)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getTimeCount({ commit }, params) {
+    const { filters } = params;
+    return new Promise((resolve, reject) => {
+      getTimeCount(filters)
         .then(response => {
           const { data } = response;
           resolve(data);

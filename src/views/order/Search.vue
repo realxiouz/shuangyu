@@ -377,10 +377,10 @@ export default {
           value: "pid",
           label: "pid"
         },
-        //  {
-        //   value: "ticketNo",
-        //   label: "ticketNo"
-        // },
+         {
+          value: "ticketNo",
+          label: "ticketNo"
+        },
         {
           value: "path",
           label: "path"

@@ -9,7 +9,7 @@ export default new Router({
     {
       title: '首页',
       path: '/',
-      name: 'index',
+      name: '/',
       component: Layout,
       redirect: '/home',
     },
@@ -153,6 +153,13 @@ export default new Router({
           name: 'order',
           component: () => import('@/views/order/List'),
           meta: { title: '订单信息', icon: 'home' }
+        },
+        {
+          title: '订单统计',
+          path: '/order/time/list',
+          name: 'orderTime',
+          component: () => import('@/views/orderTime/List'),
+          meta: { title: '订单统计', icon: 'home' }
         },
         {
           title: '订单报表',
