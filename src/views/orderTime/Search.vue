@@ -38,8 +38,22 @@
         </el-col>
 
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="年月日:">
-            <el-input v-model="formData.dateRange" style="width: 100%" clearable></el-input>
+          <el-form-item label="条件:">
+            <el-radio-group v-model="formData.dateRange" style="width: 100%">
+              <el-select
+              style="width: 100%;"
+              clearable
+              v-model="formData.dateRange"
+              placeholder="请选择"
+            >
+              <el-option
+                v-for="item in dateRangeValue"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+            </el-radio-group>
           </el-form-item>
         </el-col>
       </el-form>
@@ -69,7 +83,27 @@ export default {
         transactionTime: "",
         dateRange: "",
         finishTime: ""
-      }
+      },
+      dateRangeValue: [
+        {
+          value: "year",
+          label: "按年查询"
+        },
+        {
+          value: "month",
+          label: "按月查询"
+        },
+        {
+          value: "week",
+          label: "按周查询"
+        },
+        {
+          value: "day",
+          label: "按天查询"
+        },
+        
+      ]
+
     };
   },
   computed: {
