@@ -197,7 +197,7 @@
                 this.searchForm = searchForm;
                 this.deleteValue = true;
                 this.$store
-                    .dispatch("flight/getTotal", { filter:  this.searchForm })
+                    .dispatch("flight/getTotal", { filter:  searchForm })
                     .then(data => {
                         this.total = data.data;
                     })
@@ -209,7 +209,7 @@
                         pageFlag: this.pageFlag,
                         pageSize: this.pageSize,
                         lastId: this.lastId,
-                        filter:  this.searchForm
+                        filter:  searchForm
                     })
                     .then(data => {
                         this.tableData = data.data;

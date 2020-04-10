@@ -117,7 +117,7 @@ export default {
         this.searchForm = searchForm;
         this.deleteForSearch = true;
       this.$store
-        .dispatch("fare/getTotal", { filter: this.searchForm })
+        .dispatch("fare/getTotal", { filter: searchForm })
         .then(data => {
           this.total = data.data;
         })
@@ -129,7 +129,7 @@ export default {
           pageFlag: this.pageFlag,
           pageSize: this.pageSize,
           lastId: this.lastId,
-          filter: this.searchForm
+          filter: searchForm
         })
         .then(data => {
           this.tableData = data.data;
