@@ -26,7 +26,7 @@
               <span>{{formateCategory(tableData)}}</span>
             </el-form-item>
           </el-col>
-           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="最晚出票时限:">
               <span>{{formatDate(tableData.deadlineTicketTime,'YYYY-MM-DD HH:mm:ss')}}</span>
             </el-form-item>
@@ -56,8 +56,6 @@
               <span>￥{{this.$numeral(tableData.transactionAmount).format('0.00')}}</span>
             </el-form-item>
           </el-col>
-          
-         
         </el-form>
       </el-row>
     </el-card>
@@ -79,7 +77,12 @@
         </el-table-column>
         <el-table-column prop="dptTime" label="起飞时间" width="150" align="center"></el-table-column>
         <el-table-column prop="arrTime" label="到达时间" width="100" align="center"></el-table-column>
-        <el-table-column prop="distance" label="航程" width="50" align="center"></el-table-column>
+        <el-table-column
+          prop="distance"
+          label="航程"
+          width="50"
+          align="center"
+        ></el-table-column>
         <el-table-column prop="refundRule" label="退票规则" align="center"></el-table-column>
         <el-table-column prop="changeRule" label="改签规则" align="center"></el-table-column>
       </el-table>
@@ -104,11 +107,14 @@
             <span>{{ formatDate(scope.row.birthday,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="ageType" label="乘机人类型" width="250" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatAgeType(scope.row.ageType) }}</span>
-          </template>
-        </el-table-column>
+
+        <el-table-column
+          prop="ageType"
+          :formatter="formatAgeType"
+          label="乘机人类型"
+          width="250"
+          align="center"
+        ></el-table-column>
         <el-table-column prop="cardType" label="乘机人证件类型" width="250" align="center"></el-table-column>
         <el-table-column prop="cardNo" label="乘机人证件号" width="300" align="center"></el-table-column>
         <el-table-column label="票面价" align="center">
@@ -124,7 +130,12 @@
   </div>
 </template>
 <script>
-import { formateOrderType, formateCategory,formateStatus } from "@/utils/status.js";
+import {
+  formateOrderType,
+  formateCategory,
+  formateStatus,
+  formatAgeType
+} from "@/utils/status.js";
 export default {
   name: "orderDetail",
   data() {
@@ -141,24 +152,17 @@ export default {
     formateOrderType,
     formateStatus,
     formateCategory,
+    formatAgeType,
     /*初始化用工列表中的生日日期格式*/
     initDate(dateStr, format) {
-      if (dateStr>0) {
+      if (dateStr > 0) {
         let date = new Date(dateStr);
         return this.$moment(date).format(format);
       } else {
         return "";
       }
     },
-    formatAgeType(ageType) {
-      if (ageType == 0) {
-        return (ageType = "成人");
-      } else if (ageType == 1) {
-        return (ageType = "儿童");
-      } else {
-        return (ageType = "婴儿");
-      }
-    },
+
     formatAmount1(amount) {
       if (!amount) {
         return "￥0.00";
