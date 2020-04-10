@@ -115,7 +115,7 @@
           width="250"
           align="center"
         ></el-table-column>
-        <el-table-column prop="cardType" label="乘机人证件类型" width="250" align="center"></el-table-column>
+        <el-table-column prop="cardType" :formatter="formatCardType" label="乘机人证件类型" width="250" align="center"></el-table-column>
         <el-table-column prop="cardNo" label="乘机人证件号" width="300" align="center"></el-table-column>
         <el-table-column label="票面价" align="center">
           <template slot-scope="scope">
@@ -134,7 +134,8 @@ import {
   formateOrderType,
   formateCategory,
   formateStatus,
-  formatAgeType
+  formatAgeType,
+  formatCardType
 } from "@/utils/status.js";
 export default {
   name: "orderDetail",
@@ -153,6 +154,7 @@ export default {
     formateStatus,
     formateCategory,
     formatAgeType,
+    formatCardType,
     /*初始化用工列表中的生日日期格式*/
     initDate(dateStr, format) {
       if (dateStr > 0) {
