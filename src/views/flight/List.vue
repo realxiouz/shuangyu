@@ -156,6 +156,7 @@
                 curNode: {},
                 update: false,
                 deleteValue: false,
+                searchForm: {},
                 pageFlag: "next",
                 pageSize: 10,
                 lastId: "0",
@@ -193,9 +194,10 @@
             },
             /*输入条件时可进行条件查询*/
             search(searchForm) {
+                this.searchForm = searchForm;
                 this.deleteValue = true;
                 this.$store
-                    .dispatch("flight/getTotal", { filter: searchForm })
+                    .dispatch("flight/getTotal", { filter:  this.searchForm })
                     .then(data => {
                         this.total = data.data;
                     })
@@ -207,7 +209,7 @@
                         pageFlag: this.pageFlag,
                         pageSize: this.pageSize,
                         lastId: this.lastId,
-                        filter: searchForm
+                        filter:  this.searchForm
                     })
                     .then(data => {
                         this.tableData = data.data;
@@ -276,13 +278,13 @@
             handlePrevClick() {
                 this.pageFlag = "prev";
                 this.lastId = this.tableData[0].flightId;
-                this.loadData();
+                this.search(this.searchForm);
             },
             /*翻后页*/
             handleNextClick() {
                 this.pageFlag = "next";
                 this.lastId = this.tableData[this.tableData.length - 1].flightId;
-                this.loadData();
+                this.search(this.searchForm);
             },
             open(func, data, message) {
                 this.$confirm(message, "提示", {

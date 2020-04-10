@@ -76,6 +76,7 @@ export default {
       tableData: [],
       /*记录当前进行操作的节点*/
       curNode: {},
+        searchForm: {},
       pageFlag: "next",
       pageSize: 10,
       lastId: "blank",
@@ -113,9 +114,10 @@ export default {
     },
     /*输入条件时可进行条件查询*/
     search(searchForm) {
+        this.searchForm = searchForm;
         this.deleteForSearch = true;
       this.$store
-        .dispatch("fare/getTotal", { filter: searchForm })
+        .dispatch("fare/getTotal", { filter: this.searchForm })
         .then(data => {
           this.total = data.data;
         })
@@ -127,7 +129,7 @@ export default {
           pageFlag: this.pageFlag,
           pageSize: this.pageSize,
           lastId: this.lastId,
-          filter: searchForm
+          filter: this.searchForm
         })
         .then(data => {
           this.tableData = data.data;
@@ -194,13 +196,13 @@ export default {
     handlePrevClick() {
       this.pageFlag = "prev";
       this.lastId = this.tableData[0].fareId;
-      this.loadData();
+      this.search(this.searchForm);
     },
     /*翻后页*/
     handleNextClick() {
       this.pageFlag = "next";
       this.lastId = this.tableData[this.tableData.length - 1].fareId;
-      this.loadData();
+        this.search(this.searchForm);
     },
     open(func, data, message) {
       this.$confirm(message, "提示", {
