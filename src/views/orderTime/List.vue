@@ -13,7 +13,7 @@
         fit
       >
         <el-table-column prop="date" label="交易时间" width="100" align="center"></el-table-column>
-        <el-table-column prop="amount" label="金额"  align="center">
+        <el-table-column prop="amount" label="金额" align="center">
           <template slot-scope="scope">
             <span>{{ formatAmount(scope.row.amount)}}</span>
           </template>
@@ -29,6 +29,18 @@
           </template>
         </el-table-column>
       </el-table>
+      <el-pagination
+        @size-change="handleSizeChange"
+        @prev-click="prevClick"
+        @next-click="nextClick"
+        :current-page="currentPage"
+        background
+        layout="total,sizes,prev,next"
+        prev-text="上一页"
+        next-text="下一页"
+        :page-size="pageSize"
+        :total="total"
+      ></el-pagination>
     </div>
   </div>
 </template>
@@ -39,6 +51,9 @@ export default {
   name: "orderTime",
   data() {
     return {
+      currentPage: 1,
+      pageSize: 10,
+      total: 0,
       loading: false,
       countData: [],
       searchParams: {}
@@ -48,6 +63,23 @@ export default {
     orderTimeSearch
   },
   methods: {
+    handleSizeChange(size) {
+      this.pageSize = size;
+      this.searchParams.pageSize = this.pageSize;
+      this.loadData(this.searchParams);
+    },
+    prevClick(page) {
+      this.currentPage = page;
+      this.searchParams.pageSize = this.pageSize;
+      this.searchParams.currentPage = this.currentPage;
+      this.loadData(this.searchParams);
+    },
+    nextClick(page) {
+      this.currentPage = page;
+      this.searchParams.pageSize = this.pageSize;
+      this.searchParams.currentPage = this.currentPage;
+      this.loadData(this.searchParams);
+    },
     loadData(params) {
       this.loading = true;
       this.$store
@@ -55,13 +87,13 @@ export default {
           filters: params
         })
         .then(data => {
-          console.log(data);
-          this.countData = data;
+          if (data) {
+            this.countData = data;
+          }
           this.loading = false;
         })
         .catch(error => {
           this.loading = false;
-
           console.log(error);
         });
     },
@@ -69,9 +101,7 @@ export default {
       if (!params) {
         params = {};
         this.searchParams = params;
-        this.loadCount(this.searchParams);
         this.loadData(this.searchParams);
-        this.loadTotal(this.searchParams);
       } else {
         const newParams = {};
         for (let key in params) {
