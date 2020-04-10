@@ -51,7 +51,6 @@
               <span>￥{{this.$numeral(tableData.amount).format('0.00')}}</span>
             </el-form-item>
           </el-col>
-          
         </el-form>
       </el-row>
     </el-card>
@@ -113,12 +112,16 @@
       </el-table>
       <!-- <el-row style="margin-top:20px">
         <el-button type="primary" @click="goTicket" size="mini">出票</el-button>
-      </el-row> -->
+      </el-row>-->
     </el-card>
   </div>
 </template>
 <script>
-import { formateOrderType, formateCategory,formateStatus } from "@/utils/status.js";
+import {
+  formateOrderType,
+  formateCategory,
+  formateStatus
+} from "@/utils/status.js";
 export default {
   name: "orderDetail",
   data() {
@@ -137,7 +140,7 @@ export default {
     formateCategory,
     /*初始化用工列表中的生日日期格式*/
     initDate(dateStr, format) {
-      if (null != dateStr) {
+      if (dateStr > 0) {
         let date = new Date(dateStr);
         return this.$moment(date).format(format);
       } else {
