@@ -51,7 +51,7 @@
         @next-click="handleNextClick"
       ></el-pagination>
 
-      <el-dialog title="票价信息" center :visible.sync="dialogVisible" width="30%">
+      <el-dialog title="票价信息" center :visible.sync="dialogVisible" :close-on-click-modal="false" width="30%">
         <fare-edit
           v-if="dialogVisible"
           :curNode="curNode"
