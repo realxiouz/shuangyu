@@ -296,6 +296,13 @@ export default new Router({
           name: 'flight',
           component: () => import('@/views/flight/List'),
           meta: { title: '航班信息', icon: 'home' }
+        },
+        {
+          title: '净票价信息',
+          path: '/fare/net/list',
+          name: 'netFare',
+          component: () => import('@/views/netFare/List'),
+          meta: { title: '净票价信息', icon: 'home' }
         }
       ]
     },

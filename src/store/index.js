@@ -38,6 +38,7 @@ import orderTask from "./modules/orderTask"
 import orderReportTotal from "./modules/orderReportTotal"
 import ticket from "./modules/ticket"
 import flight from "./modules/flight";
+import netFare from "./modules/netFare";
 import { getLoginInfo } from "@/api/staff";
 
 Vue.use(Vuex);
@@ -80,7 +81,8 @@ export default new Vuex.Store({
     fundAccount,
     orderReportTotal,
     ticket,
-    flight
+    flight,
+    netFare
   },
   state: {
     loginInfo: {}
