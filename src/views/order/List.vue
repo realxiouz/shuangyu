@@ -383,17 +383,17 @@ export default {
       }
       return data[0].flightCode;
     },
-    formatTicketNo(data) {
-      if (data != "" && data.length > 0) {
+    formatTicketNo(ticketNo) {
+      if (ticketNo && ticketNo.length > 0) {
         let str = "";
-        data.forEach((item, index) => {
+        ticketNo.forEach((item, index) => {
           if (item) {
             str += item + " / ";
           }
         });
         return str.substring(0, str.length - 2);
       } else {
-        return (data = "");
+        return (ticketNo = "");
       }
     },
     formatPassengers(data) {

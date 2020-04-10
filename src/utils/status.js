@@ -122,3 +122,26 @@ export function formatAgeType(row) {
         return "婴儿"
     }
 }
+
+// 	格式化乘机人证件类型:
+
+export function formatCardType(row) {
+    if (row.cardType === "NI") {
+        return "身份证";
+    } else if (row.cardType === "PP") {
+        return "护照";
+    }else if (row.cardType === "ID") {
+        return "其他";
+    }else if (row.cardType === "HX") {
+        return "回乡证";
+    }else if (row.cardType === "TB") {
+        return "台胞证";
+    }else if (row.cardType === "GA") {
+        return "港澳通行证";
+    }else if (row.cardType === "HY") {
+        return "国际海员证";
+    }else{
+        return row.cardType
+    }
+}
+

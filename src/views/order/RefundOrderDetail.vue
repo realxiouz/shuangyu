@@ -12,6 +12,11 @@
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="票号:">
+              <span>{{formatTicketNo(tableData.ticketNos)}}</span>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="订单类型:">
               <span>{{formateOrderType(tableData)}}</span>
             </el-form-item>
@@ -27,28 +32,13 @@
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="交易金额:">
-              <span>￥{{this.$numeral(tableData.transactionAmount).format('0.00')}}</span>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="交易时间:">
-              <span>{{formatDate(tableData.transactionTime,'YYYY-MM-DD HH:mm:ss')}}</span>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="交易编号:">
-              <span>{{tableData.transactionNo}}</span>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="业务编号:">
-              <span>{{tableData.businessNo}}</span>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="金额:">
               <span>￥{{this.$numeral(tableData.amount).format('0.00')}}</span>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="退票原因:">
+              <span></span>
             </el-form-item>
           </el-col>
         </el-form>
@@ -63,7 +53,6 @@
         <el-table-column prop="arrAirport" label="到达机场" width="160" align="center"></el-table-column>
         <el-table-column prop="airlineCode" label="航司" width="50" align="center"></el-table-column>
         <el-table-column prop="flightCode" label="航班号" width="100" align="center"></el-table-column>
-
         <el-table-column prop="cabin" label="舱位" width="160" align="center"></el-table-column>
         <el-table-column label="出发日期" width="110" align="center">
           <template slot-scope="scope">
@@ -89,7 +78,6 @@
         @selection-change="handleSelectionChange"
         fit
       >
-        <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column prop="name" label="姓名" width="100" align="center"></el-table-column>
         <el-table-column prop="gender" label="性别" width="100" align="center"></el-table-column>
         <el-table-column label="出生年月" width="110" align="center">
@@ -97,12 +85,20 @@
             <span>{{ formatDate(scope.row.birthday,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="ageType" label="乘机人类型" width="250" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatAgeType(scope.row.ageType) }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="cardType" label="乘机人证件类型" width="250" align="center"></el-table-column>
+        <el-table-column
+          :formatter="formatAgeType"
+          prop="ageType"
+          label="乘机人类型"
+          width="250"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          :formatter="formatCardType"
+          prop="cardType"
+          label="乘机人证件类型"
+          width="250"
+          align="center"
+        ></el-table-column>
         <el-table-column prop="cardNo" label="乘机人证件号" width="300" align="center"></el-table-column>
         <el-table-column label="票面价" align="center">
           <template slot-scope="scope">
@@ -110,9 +106,6 @@
           </template>
         </el-table-column>
       </el-table>
-      <!-- <el-row style="margin-top:20px">
-        <el-button type="primary" @click="goTicket" size="mini">出票</el-button>
-      </el-row>-->
     </el-card>
   </div>
 </template>
@@ -120,13 +113,14 @@
 import {
   formateOrderType,
   formateCategory,
-  formateStatus
+  formateStatus,
+  formatAgeType,
+  formatCardType
 } from "@/utils/status.js";
 export default {
   name: "orderDetail",
   data() {
     return {
-      purchaseShow: this.$route.query.purchaseShow,
       flightData: [],
       PassengerData: [],
       tableData: {},
@@ -138,6 +132,8 @@ export default {
     formateOrderType,
     formateStatus,
     formateCategory,
+    formatAgeType,
+    formatCardType,
     /*初始化用工列表中的生日日期格式*/
     initDate(dateStr, format) {
       if (dateStr > 0) {
@@ -145,15 +141,6 @@ export default {
         return this.$moment(date).format(format);
       } else {
         return "";
-      }
-    },
-    formatAgeType(ageType) {
-      if (ageType == 0) {
-        return (ageType = "成人");
-      } else if (ageType == 1) {
-        return (ageType = "儿童");
-      } else {
-        return (ageType = "婴儿");
       }
     },
     formatAmount1(amount) {
@@ -165,25 +152,6 @@ export default {
     handleSelectionChange(passengersInfo) {
       // console.log(passengersInfo);
       this.passengersInfo = passengersInfo;
-    },
-    goTicket() {
-      if (this.passengersInfo.length < 1) {
-        this.$notify({
-          title: "提示",
-          message: "至少选择一名要出票的乘客",
-          type: "warning",
-          duration: 4500
-        });
-        return;
-      } else {
-        this.$router.push({
-          path: "/order/detail/go/ticket",
-          query: {
-            orderNo: this.orderNo,
-            passengersInfo: JSON.stringify(this.passengersInfo)
-          }
-        });
-      }
     },
     getOrderDetail(orderNo) {
       this.$store
@@ -202,7 +170,20 @@ export default {
         .catch(error => {
           console.log(error);
         });
-    }
+    },
+    formatTicketNo(ticketNo) {
+      if (ticketNo && ticketNo.length > 0) {
+        let str = "";
+        ticketNo.forEach((item, index) => {
+          if (item) {
+            str += item + " / ";
+          }
+        });
+        return str.substring(0, str.length - 2);
+      } else {
+        return (ticketNo = "");
+      }
+    },
   },
   created() {
     this.getOrderDetail(this.orderNo);
