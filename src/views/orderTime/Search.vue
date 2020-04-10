@@ -64,7 +64,7 @@
           </el-form-item>
         </el-col> -->
         <el-col :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
-          <el-form-item  label="业务完成时间:">
+          <el-form-item  label="业务完结时间:">
             <el-row type="flex" justify="space-between">
               <el-col :span="11">
                 <el-date-picker
