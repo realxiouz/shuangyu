@@ -113,7 +113,6 @@
         @row-click="clickRowHandle"
         :expand-row-keys="expands"
         :row-key="getRowKeys"
-        border
         fit
       >
         <el-table-column label="渠道" width="100" align="center">蜗牛</el-table-column>
