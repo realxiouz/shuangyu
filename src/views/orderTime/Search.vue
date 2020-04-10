@@ -2,7 +2,7 @@
   <el-row type="flex" class="row-bg" justify="space-between" align="bottom">
     <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
       <el-form :model="formData" label-width="110px" size="mini">
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+        <!-- <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="交易时间:">
             <el-col>
               <el-date-picker
@@ -18,8 +18,35 @@
               ></el-date-picker>
             </el-col>
           </el-form-item>
+        </el-col> -->
+        <el-col :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
+          <el-form-item  label="交易时间:">
+            <el-row type="flex" justify="space-between">
+              <el-col :span="11">
+                <el-date-picker
+                  type="date"
+                  placeholder="选择初始日期"
+                  v-model="formData.startTransactionTime"
+                  style="width: 100%;"
+                  format="yyyy-MM-dd"
+                  value-format="yyyy-MM-dd"
+                ></el-date-picker>
+              </el-col>
+              <el-col :span="1">-</el-col>
+              <el-col :span="11">
+                <el-date-picker
+                  type="date"
+                  placeholder="选择结束日期"
+                  v-model="formData.endTransactionTime"
+                  style="width: 100%;"
+                  format="yyyy-MM-dd"
+                  value-format="yyyy-MM-dd"
+                ></el-date-picker>
+              </el-col>
+            </el-row>
+          </el-form-item>
         </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+        <!-- <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="交易完成时间:">
             <el-col>
               <el-date-picker
@@ -35,24 +62,51 @@
               ></el-date-picker>
             </el-col>
           </el-form-item>
+        </el-col> -->
+        <el-col :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
+          <el-form-item  label="交易完成时间:">
+            <el-row type="flex" justify="space-between">
+              <el-col :span="11">
+                <el-date-picker
+                  type="date"
+                  placeholder="选择初始日期"
+                  v-model="formData.startFinishTime"
+                  style="width: 100%;"
+                  format="yyyy-MM-dd"
+                  value-format="yyyy-MM-dd"
+                ></el-date-picker>
+              </el-col>
+              <el-col :span="1">-</el-col>
+              <el-col :span="11">
+                <el-date-picker
+                  type="date"
+                  placeholder="选择结束日期"
+                  v-model="formData.endFinishTime"
+                  style="width: 100%;"
+                  format="yyyy-MM-dd"
+                  value-format="yyyy-MM-dd"
+                ></el-date-picker>
+              </el-col>
+            </el-row>
+          </el-form-item>
         </el-col>
 
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="条件:">
             <el-radio-group v-model="formData.dateRange" style="width: 100%">
               <el-select
-              style="width: 100%;"
-              clearable
-              v-model="formData.dateRange"
-              placeholder="请选择"
-            >
-              <el-option
-                v-for="item in dateRangeValue"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              ></el-option>
-            </el-select>
+                style="width: 100%;"
+                clearable
+                v-model="formData.dateRange"
+                placeholder="请选择"
+              >
+                <el-option
+                  v-for="item in dateRangeValue"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                ></el-option>
+              </el-select>
             </el-radio-group>
           </el-form-item>
         </el-col>
@@ -100,10 +154,8 @@ export default {
         {
           value: "day",
           label: "按天查询"
-        },
-        
+        }
       ]
-
     };
   },
   computed: {
