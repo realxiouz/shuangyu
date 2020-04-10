@@ -23,11 +23,7 @@
             <span>{{ formatAmount(scope.row.transactionAmount)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="count" label="统计" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatAmount(scope.row.count)}}</span>
-          </template>
-        </el-table-column>
+        <el-table-column prop="count" label="数量" align="center"></el-table-column>
       </el-table>
       <el-pagination
         @size-change="handleSizeChange"
