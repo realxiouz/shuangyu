@@ -53,7 +53,6 @@
         <el-table-column prop="arrAirport" label="到达机场" width="160" align="center"></el-table-column>
         <el-table-column prop="airlineCode" label="航司" width="50" align="center"></el-table-column>
         <el-table-column prop="flightCode" label="航班号" width="100" align="center"></el-table-column>
-
         <el-table-column prop="cabin" label="舱位" width="160" align="center"></el-table-column>
         <el-table-column label="出发日期" width="110" align="center">
           <template slot-scope="scope">
@@ -122,7 +121,6 @@ export default {
   name: "orderDetail",
   data() {
     return {
-      purchaseShow: this.$route.query.purchaseShow,
       flightData: [],
       PassengerData: [],
       tableData: {},
@@ -173,17 +171,17 @@ export default {
           console.log(error);
         });
     },
-    formatTicketNo(data) {
-      if (data != "" && data.length > 0) {
+    formatTicketNo(ticketNo) {
+      if (ticketNo && ticketNo.length > 0) {
         let str = "";
-        data.forEach((item, index) => {
+        ticketNo.forEach((item, index) => {
           if (item) {
             str += item + " / ";
           }
         });
         return str.substring(0, str.length - 2);
       } else {
-        return (data = "");
+        return (ticketNo = "");
       }
     },
   },
