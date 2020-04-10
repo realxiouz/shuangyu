@@ -297,7 +297,7 @@
               placeholder="请选择"
             >
               <el-option
-                v-for="item in emptyData"
+                v-for="item in emptyDataValue"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
@@ -369,14 +369,18 @@ export default {
         sourceOrderNo: "",
         createTime: "",
         finishTime: "",
-        transactionTime: ""
+        transactionTime: "",
+        emptyData:''
       },
-      // pid,path,level,rootOrderNo,linkOrderNo
-      emptyData: [
+      emptyDataValue: [
         {
           value: "pid",
           label: "pid"
         },
+        //  {
+        //   value: "ticketNo",
+        //   label: "ticketNo"
+        // },
         {
           value: "path",
           label: "path"
@@ -397,6 +401,7 @@ export default {
           value: "accountId",
           label: "accountId"
         }
+        
       ]
     };
   },
