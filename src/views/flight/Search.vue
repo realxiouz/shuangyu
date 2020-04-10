@@ -102,20 +102,31 @@
                 this.more = !this.more;
             },
             handleSearch() {
-                if (this.formData.airlineCode) {
+                if (this.formData.airlineCode && '' !==this.formData.airlineCode) {
                     this.formData.airlineCode = this.formData.airlineCode.toUpperCase();
+                }else {
+                    this.formData.airlineCode = null;
                 }
-                if (this.formData.flightCode) {
+                if (this.formData.flightCode && '' !==this.formData.flightCode) {
                     this.formData.flightCode = this.formData.flightCode.toUpperCase();
+                }else {
+                    this.formData.flightCode = null;
                 }
-                if (this.formData.dpt) {
+                if (this.formData.dpt && '' !==this.formData.dpt) {
                     this.formData.dpt = this.formData.dpt.toUpperCase();
+                }else {
+                    this.formData.dpt = null;
                 }
-                if (this.formData.dptAirport) {
+                if (this.formData.dptAirport && '' !==this.formData.dptAirport) {
                     this.formData.dptAirport = this.formData.dptAirport.toUpperCase();
+                }else {
+                    this.formData.dptAirport = null;
                 }
-                if (this.formData.dptTime)
+                if (this.formData.dptTime && '' !==this.formData.dptTime)
                   this.formData.dptTime = this.formData.dptTime.replace(":","");
+                else
+                    this.formData.dptTime = null;
+
                 this.$emit("onSearch", this.formData);
             }
         }
