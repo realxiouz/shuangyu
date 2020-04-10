@@ -1,7 +1,7 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <third-party-search @onSearch="handleSearch"></third-party-search>
+      <third-search @onSearch="handleSearch"></third-search>
     </div>
     <div class="contentBox">
       <el-row style="margin-bottom:15px; margin-left:40px;">
@@ -14,6 +14,14 @@
         style="width: 100%;margin-bottom: 15px;"
       >
         <el-table-column prop="thirdName" label="平台名称" align="center"></el-table-column>
+        <el-table-column prop="contactPerson" label="联系人" align="center"></el-table-column>
+        <el-table-column prop="contactPhone" label="联系电话" align="center"></el-table-column>
+        <el-table-column prop="contactEmail" label="联系邮箱" align="center"></el-table-column>
+        <el-table-column label="平台类别" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatCategory(scope.row.category) }}</span>
+          </template>
+        </el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
             <el-button @click="handleUpdate(scope.row)" type="primary" size="mini">编辑</el-button>
@@ -42,21 +50,21 @@
         :visible.sync="dialogVisible"
         width="30%"
       >
-        <third-party-edit
+        <third-edit
           v-if="dialogVisible"
-          ref="thirdpartyForm"
+          ref="thirdForm"
           :third-id="thirdId"
           @onSave="handleSave"
           @onCancel="handleCancel"
-        ></third-party-edit>
+        ></third-edit>
       </el-dialog>
     </div>
   </div>
 </template>
 
 <script>
-import thirdPartyEdit from "./Edit.vue";
-import thirdPartySearch from "./Search.vue";
+import thirdEdit from "./Edit.vue";
+import thirdSearch from "./Search.vue";
 
 export default {
   name: "List",
@@ -74,6 +82,7 @@ export default {
   },
   methods: {
     handleSearch(formData) {
+        this.deleteForSearch = true;
       if (!formData || !formData.thirdName) {
         formData = {};
       }
@@ -85,8 +94,8 @@ export default {
           filters: formData
         })
         .then(data => {
-          if (data) {
-            this.tableData = data;
+            if (data) {
+              this.tableData = data;
           }
           this.loading = false;
         })
@@ -175,15 +184,29 @@ export default {
       this.pageFlag = "next";
       this.lastId = this.tableData[this.tableData.length - 1].thirdId;
       this.handleSearch();
-    }
+    },
+      initCategory(category){
+        switch (category) {
+            case 0: return '平台';
+            case 1: return '单位';
+            case 2: return '个人';
+        }
+      }
   },
   created() {
     this.handleSearch();
     this.loadTotal();
   },
+    computed: {
+        formatCategory() {
+            return function(category) {
+                return this.initCategory(category);
+            };
+        },
+    },
   components: {
-    thirdPartyEdit,
-    thirdPartySearch
+      thirdEdit,
+      thirdSearch
   }
 };
 </script>

@@ -1,8 +1,24 @@
 <template>
   <div>
     <el-form ref="formData" :rules="formRules" :model="formData" size="mini" label-width="120px">
-      <el-form-item label="第三方平台名称" prop="thirdName">
-        <el-input v-model="formData.thirdName" placeholder="请输入平台名称"></el-input>
+      <el-form-item label="平台名称">
+        <el-input v-model="formData.thirdName" placeholder="请输入平台名称.."></el-input>
+      </el-form-item>
+      <el-form-item label="联系人">
+        <el-input v-model="formData.contactPerson" placeholder="请输入联系人.."></el-input>
+      </el-form-item>
+      <el-form-item label="联系电话">
+      <el-input v-model="formData.contactPhone" placeholder="请输入联系电话.."></el-input>
+      </el-form-item>
+      <el-form-item label="联系邮箱">
+      <el-input v-model="formData.contactEmail" placeholder="请输入联系邮箱.."></el-input>
+      </el-form-item>
+      <el-form-item label="平台类别">
+        <el-select v-model="formData.category" placeholder="请选择平台类别.." style="width: 100%">
+          <el-option label="平台" :value=0></el-option>
+          <el-option label="单位" :value=1></el-option>
+          <el-option label="个人" :value=2></el-option>
+        </el-select>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer" style="text-align:right;">
@@ -15,11 +31,15 @@
 <script>
 function defaultData() {
   return {
-    thirdName: ""
+    thirdName: "",
+      contactPerson: '',
+      contactPhone: '',
+      contactEmail: '',
+      category: 0
   };
 }
 export default {
-  name: "thirdPartyEdit",
+  name: "thirdEdit",
   data() {
     return {
       formData: defaultData(),
@@ -45,11 +65,7 @@ export default {
       }
     },
     handleSave() {
-      this.$refs["formData"].validate(valid => {
-        if (valid) {
           this.$emit("onSave", this.formData);
-        }
-      });
     }
   },
   created() {

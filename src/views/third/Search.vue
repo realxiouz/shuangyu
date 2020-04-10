@@ -27,7 +27,7 @@
 
 <script>
 export default {
-  name: "thirdPartySearch",
+  name: "thirdSearch",
   data() {
     return {
       more: false,
