@@ -12,7 +12,7 @@
         v-loading="loading"
         fit
       >
-        <el-table-column prop="date" label="交易时间" width="100" align="center"></el-table-column>
+        <el-table-column prop="date" label="时间" width="100" align="center"></el-table-column>
         <el-table-column prop="amount" label="金额" align="center">
           <template slot-scope="scope">
             <span>{{ formatAmount(scope.row.amount)}}</span>
@@ -85,6 +85,9 @@ export default {
         .then(data => {
           if (data) {
             this.countData = data;
+            if (data[0].total) {
+              this.total = data[0].total;
+            }
           }
           this.loading = false;
         })
