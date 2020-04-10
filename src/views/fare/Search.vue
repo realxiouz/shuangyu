@@ -98,20 +98,30 @@ export default {
     },
 
     handleSearch() {
-      if (this.formData.segment) {
+      if (this.formData.segment && '' != this.formData.segment) {
         this.formData.segment = this.formData.segment.toUpperCase();
+      }else{
+          this.formData.segment = null;
       }
-      if (this.formData.dpt) {
+      if (this.formData.dpt && '' != this.formData.dpt) {
         this.formData.dpt = this.formData.dpt.toUpperCase();
+      }else{
+          this.formData.dpt = null;
       }
-      if (this.formData.arr) {
+      if (this.formData.arr && '' != this.formData.arr) {
         this.formData.arr = this.formData.arr.toUpperCase();
+      }else{
+          this.formData.arr = null;
       }
-      if (this.formData.airlineCode) {
+      if (this.formData.airlineCode && '' != this.formData.airlineCode) {
         this.formData.airlineCode = this.formData.airlineCode.toUpperCase();
+      }else{
+          this.formData.airlineCode = null;
       }
-      if (this.formData.cabin) {
+      if (this.formData.cabin && '' != this.formData.cabin) {
         this.formData.cabin = this.formData.cabin.toUpperCase();
+      }else{
+          this.formData.cabin = null;
       }
       this.$emit("onSearch", this.formData);
     }
