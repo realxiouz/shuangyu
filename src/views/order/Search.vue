@@ -372,16 +372,15 @@ export default {
         transactionTime: "",
         emptyData:''
       },
-      // pid,path,level,rootOrderNo,linkOrderNo
       emptyDataValue: [
         {
           value: "pid",
           label: "pid"
         },
-         {
-          value: "ticketNo",
-          label: "ticketNo"
-        },
+        //  {
+        //   value: "ticketNo",
+        //   label: "ticketNo"
+        // },
         {
           value: "path",
           label: "path"
