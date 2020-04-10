@@ -204,10 +204,16 @@ export default {
         const newParams = {};
         for (let key in params) {
           if (params[key] && _.isArray(params[key])) {
-            let start = "start" + key.charAt(0).toUpperCase() + key.slice(1);
-            let end = "end" + key.charAt(0).toUpperCase() + key.slice(1);
-            newParams[start] = params[key][0];
-            newParams[end] = params[key][1];
+            if (key === "emptyData") {
+              params[key].forEach(item => {
+                newParams[item] = "";
+              });
+            } else {
+              let start = "start" + key.charAt(0).toUpperCase() + key.slice(1);
+              let end = "end" + key.charAt(0).toUpperCase() + key.slice(1);
+              newParams[start] = params[key][0];
+              newParams[end] = params[key][1];
+            }
           } else if (params[key]) {
             newParams[key] = params[key];
           }

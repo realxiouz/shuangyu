@@ -59,7 +59,12 @@
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="订单状态:">
-            <el-select clearable v-model="formData.orderStatus" placeholder="全部" style="width: 100%">
+            <el-select
+              clearable
+              v-model="formData.orderStatus"
+              placeholder="全部"
+              style="width: 100%"
+            >
               <el-option label="下单成功" value="1"></el-option>
               <el-option label="支付成功等待出票" value="2"></el-option>
               <el-option label="出票中" value="3"></el-option>
@@ -76,7 +81,25 @@
               <el-option label="等待座位确认" value="40"></el-option>
               <el-option label="订座成功等待价格确认" value="41"></el-option>
               <el-option label="蜗牛订单号错误" value="50"></el-option>
-
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="异常查询:">
+            <el-select
+              style="width: 100%;"
+              clearable
+              multiple
+              collapse-tags
+              v-model="formData.emptyData"
+              placeholder="请选择"
+            >
+              <el-option
+                v-for="item in emptyDataValue"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
             </el-select>
           </el-form-item>
         </el-col>
@@ -111,9 +134,16 @@ export default {
         ticketNo: "", //票号
         orderNo: "", //订单号
         name: "", //乘机人姓名
-        cardNo: "" ,//乘机人证件号
-        orderStatus:""
-      }
+        cardNo: "", //乘机人证件号
+        orderStatus: "",
+        emptyData:""
+      },
+      emptyDataValue: [
+        {
+          value: "ticketNo",
+          label: "ticketNo"
+        }
+      ]
     };
   },
   computed: {
