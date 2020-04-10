@@ -18,7 +18,7 @@
         <el-input type="text" v-model="formData.dptAirport" onkeyup="this.value=this.value.toUpperCase()" maxlength="3" placeholder="出发机场"></el-input>
       </el-form-item>
       <el-form-item label="出发航楼站">
-        <el-input type="text" v-model="formData.dptTerminal" placeholder="出发航楼站"></el-input>
+        <el-input type="text" v-model="formData.dptTerminal" onkeyup="this.value=this.value.toUpperCase()" placeholder="出发航楼站"></el-input>
       </el-form-item>
       <el-form-item label="到达地三字码">
         <el-input type="text" v-model="formData.arr" onkeyup="this.value=this.value.toUpperCase()" maxlength="3" placeholder="到达地三字码"></el-input>
@@ -27,7 +27,7 @@
         <el-input type="text" v-model="formData.arrAirport" onkeyup="this.value=this.value.toUpperCase()" maxlength="3" placeholder="到达机场"></el-input>
       </el-form-item>
       <el-form-item label="到达航楼站">
-        <el-input type="text" v-model="formData.arrTerminal" placeholder="到达航楼站"></el-input>
+        <el-input type="text" v-model="formData.arrTerminal" onkeyup="this.value=this.value.toUpperCase()" placeholder="到达航楼站"></el-input>
       </el-form-item>
       <el-form-item label="起飞时间">
         <el-time-select
@@ -68,10 +68,10 @@
         <el-input type="text" v-model="formData.childFuelTax" placeholder="儿童燃油费"></el-input>
       </el-form-item>
       <el-form-item label="机型">
-        <el-input type="text" v-model="formData.planeType" placeholder="机型"></el-input>
+        <el-input type="text" v-model="formData.planeType" onkeyup="this.value=this.value.toUpperCase()" placeholder="机型"></el-input>
       </el-form-item>
       <el-form-item label="机型全称">
-        <el-input type="text" v-model="formData.flightTypeFullName" placeholder="机型全称"></el-input>
+        <el-input type="text" v-model="formData.flightTypeFullName" onkeyup="this.value=this.value.toUpperCase()" placeholder="机型全称"></el-input>
       </el-form-item>
       <el-form-item label="共享标记">
         <el-select v-model="formData.shareFlag" placeholder="是否共享标记" style="width: 100%;">
@@ -255,12 +255,6 @@
             },
             clearForm() {
                 this.formData = this.defaultFormData();
-            },
-            toUpperCase(event) {
-                /*this.formData.airportCode = this.formData.airportCode.toUpperCase();*/
-                console.log(this.formData.airportCode);
-                console.log(event);
-                return "2333";
             },
             tagClose(idx){
                 this.tags.splice(idx, 1);
