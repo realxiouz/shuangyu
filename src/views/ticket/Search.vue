@@ -30,7 +30,7 @@
           <el-form-item v-show="more" label="PNR:">
             <el-input v-model="formData.pnr" style="width: 100%"></el-input>
           </el-form-item>
-        </el-col> -->
+        </el-col>-->
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="出发日期:">
             <el-col>
@@ -104,7 +104,7 @@
               ></el-date-picker>
             </el-col>
           </el-form-item>
-        </el-col> -->
+        </el-col>-->
         <!-- <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="订单类型:">
             <el-select clearable v-model="formData.orderType" placeholder="全部" style="width: 100%">
@@ -117,7 +117,7 @@
               <el-option label="退改" value="23"></el-option>
             </el-select>
           </el-form-item>
-        </el-col> -->
+        </el-col>-->
         <el-col :xs="24" :sm="18" :md="14" :lg="10" :xl="6">
           <el-form-item v-show="more" label="航程类型:">
             <el-radio-group v-model="formData.voyageType" style="width: 100%">
