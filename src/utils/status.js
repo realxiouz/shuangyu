@@ -1,6 +1,6 @@
 // 格式化订单状态
 
-export function formateStatus(row, column) {
+export function formateStatus(row) {
     if (row.status === 1) {
         return "下单成功";
     } else if (row.status === 2) {
@@ -37,12 +37,12 @@ export function formateStatus(row, column) {
 }
 
 // 格式化订单分类
-export function formateCategory(row, column) {
+export function formateCategory(row) {
     return row.category === 0 ? "销售单" : "采购单";
 }
 
 // 格式化订单类型
-export function formateOrderType(row, column) {
+export function formateOrderType(row) {
     if (row.orderType === 10) {
         return "出票";
     } else if (row.orderType === 20) {
@@ -57,22 +57,33 @@ export function formateOrderType(row, column) {
         return "改签";
     } else if (row.orderType === 31) {
         return "二次改签";
-    } else{
+    } else {
         return row.orderType
     }
 }
 
 // 格式化航程类型
 
-// (0, ""), (1, ""),(2, "");
-export function formateVoyageType(row, column) {
+export function formateVoyageType(row) {
     if (row.voyageType === 0) {
         return "单程";
     } else if (row.voyageType === 1) {
         return "往返";
     } else if (row.voyageType === 2) {
         return "连程";
-    } else{
+    } else {
         return ""
+    }
+}
+
+// 格式化乘客类型
+
+export function formatAgeType(row) {
+    if (row.ageType === 0) {
+        return "成人";
+    } else if (row.ageType === 1) {
+        return "儿童";
+    } else {
+        return "婴儿"
     }
 }

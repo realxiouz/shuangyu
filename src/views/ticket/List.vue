@@ -32,9 +32,7 @@
             <span>{{ formatDate(scope.row.createTime,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="ticketNo" label="票号" align="center"></el-table-column>
-        <el-table-column prop="status" label="票号状态" width="100" align="center"></el-table-column>
-        <el-table-column prop="name" label="姓名" width="80" align="center"></el-table-column>
+
         <el-table-column prop="pnr" label="PNR" width="80" align="center"></el-table-column>
         <el-table-column label="航班号" width="80" align="center">
           <template slot-scope="scope">
@@ -51,6 +49,9 @@
             <span>{{ formatFlight(scope.row.flights)}}</span>
           </template>
         </el-table-column>
+        <el-table-column prop="name" label="姓名" width="80" align="center"></el-table-column>
+        <el-table-column prop="ticketNo" label="票号" align="center"></el-table-column>
+        <el-table-column prop="status" label="票号状态" width="100" align="center"></el-table-column>
         <el-table-column prop="amount" label="金额" width="150" align="center">
           <template slot-scope="scope">
             <span>{{ formatAmount(scope.row.amount)}}</span>
@@ -107,7 +108,6 @@ export default {
       tableData: [],
       searchParams: {},
       count: []
-
     };
   },
   methods: {
@@ -188,8 +188,7 @@ export default {
             break;
           case "orderAmount":
             sums[index] =
-              "￥" +
-              this.$numeral(this.count.orderAmount).format("0,0.00");
+              "￥" + this.$numeral(this.count.orderAmount).format("0,0.00");
             break;
           default:
             sums[index] = "";
@@ -207,62 +206,23 @@ export default {
         this.searchParams = params;
         this.loadData(this.searchParams);
         this.loadTotal(this.searchParams);
+        this.loadCount(this.searchParams);
       } else {
         const newParams = {};
-        if (params.name) {
-          newParams.name = params.name;
-        }
-        if (params.cardNo) {
-          newParams.cardNo = params.cardNo;
-        }
-        if (params.orderNo) {
-          newParams.orderNo = params.orderNo;
-        }
-        if (params.ticketNo) {
-          newParams.ticketNo = params.ticketNo;
-        }
-        if (params.pnr) {
-          newParams.pnr = params.pnr;
-        }
-        if (params.status) {
-          newParams.status = params.status;
-        }
-        if (params.flightDate) {
-          newParams.startFlightDate = params.flightDate[0];
-          newParams.endFlightDate = params.flightDate[1];
-        }
-        if (params.cabin) {
-          newParams.cabin = params.cabin;
-        }
-        if (params.flightCode) {
-          newParams.flightCode = params.flightCode;
-        }
-        if (params.orderType) {
-          newParams.orderType = params.orderType;
-        }
-        if (params.voyageType) {
-          newParams.voyageType = params.voyageType;
-        }
-        if (params.createTime) {
-          newParams.startCreateTime = params.createTime[0];
-          newParams.endCreateTime = params.createTime[1];
-        }
-
-        if (params.startAmount) {
-          newParams.startAmount = params.startAmount;
-        }
-        if (params.endAmount) {
-          newParams.endAmount = params.endAmount;
-        }
-        if (params.startOrderAmount) {
-          newParams.startOrderAmount = params.startOrderAmount;
-        }
-        if (params.endOrderAmount) {
-          newParams.endOrderAmount = params.endOrderAmount;
+        for (let key in params) {
+          if (params[key] && _.isArray(params[key])) {
+            let start = "start" + key.charAt(0).toUpperCase() + key.slice(1);
+            let end = "end" + key.charAt(0).toUpperCase() + key.slice(1);
+            newParams[start] = params[key][0];
+            newParams[end] = params[key][1];
+          } else if (params[key]) {
+            newParams[key] = params[key];
+          }
         }
         this.searchParams = newParams;
         this.loadData(this.searchParams);
         this.loadTotal(this.searchParams);
+        this.loadCount(this.searchParams);
       }
     },
     handleCancel() {

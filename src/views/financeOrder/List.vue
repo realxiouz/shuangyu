@@ -20,13 +20,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="orderNo" label="订单号" align="center" width="160"></el-table-column>
-        <el-table-column
-          prop="policyCode"
-          :show-overflow-tooltip="true"
-          label="政策代码"
-          width="100"
-          align="center"
-        ></el-table-column>
+        <el-table-column prop="policyCode" label="政策代码" width="150" align="center"></el-table-column>
         <el-table-column
           :formatter="formateOrderType"
           prop="orderType"
@@ -165,7 +159,6 @@ export default {
       tableData: [],
       searchParams: {},
       count: []
-
     };
   },
   methods: {
@@ -219,7 +212,7 @@ export default {
     },
     loadCount(params) {
       this.$store
-        .dispatch("order/getCount", {
+        .dispatch("orderReport/getCount", {
           filters: params
         })
         .then(data => {
@@ -291,104 +284,28 @@ export default {
         params = {};
         this.searchParams = params;
         this.loadData(this.searchParams);
+        this.loadCount(this.searchParams);
         this.loadTotal(this.searchParams);
       } else {
         const newParams = {};
-        if (params.name) {
-          newParams.name = params.name;
-        }
-        if (params.cardNo) {
-          newParams.cardNo = params.cardNo;
-        }
-        if (params.orderNo) {
-          newParams.orderNo = params.orderNo;
-        }
-        if (params.ticketNo) {
-          newParams.ticketNo = params.ticketNo;
-        }
-        if (params.pnr) {
-          newParams.pnr = params.pnr;
-        }
-        if (params.status) {
-          newParams.status = params.status;
-        }
-        if (params.flightDate) {
-          newParams.startFlightDate = params.flightDate[0];
-          newParams.endFlightDate = params.flightDate[1];
-        }
-        if (params.cabin) {
-          newParams.cabin = params.cabin;
-        }
-        if (params.flightCode) {
-          newParams.flightCode = params.flightCode;
-        }
-        if (params.orderType) {
-          newParams.orderType = params.orderType;
-        }
-        if (params.voyageType) {
-          newParams.voyageType = params.voyageType;
-        }
-        if (params.createTime) {
-          newParams.startCreateTime = params.createTime[0];
-          newParams.endCreateTime = params.createTime[1];
-        }
-
-        if (params.startAmount) {
-          newParams.startAmount = params.startAmount;
-        }
-        if (params.endAmount) {
-          newParams.endAmount = params.endAmount;
-        }
-
-        if (params.startReceivable) {
-          newParams.startReceivable = params.startReceivable;
-        }
-        if (params.endReceivable) {
-          newParams.endReceivable = params.endReceivable;
-        }
-        if (params.startReceipt) {
-          newParams.startReceipt = params.startReceipt;
-        }
-        if (params.endReceipt) {
-          newParams.endReceipt = params.endReceipt;
-        }
-
-        if (params.endReceipt) {
-          newParams.endReceipt = params.endReceipt;
-        }
-        if (params.endReceipt) {
-          newParams.endReceipt = params.endReceipt;
-        }
-
-        if (params.startPayable) {
-          newParams.startPayable = params.startPayable;
-        }
-        if (params.endPayable) {
-          newParams.endPayable = params.endPayable;
-        }
-
-        if (params.startPayment) {
-          newParams.startPayment = params.startPayment;
-        }
-        if (params.endPayment) {
-          newParams.endPayment = params.endPayment;
-        }
-        if (params.startSystemProfit) {
-          newParams.startSystemProfit = params.startSystemProfit;
-        }
-        if (params.endSystemProfit) {
-          newParams.endSystemProfit = params.endSystemProfit;
-        }
-
-        if (params.startShouldProfit) {
-          newParams.startShouldProfit = params.startShouldProfit;
-        }
-        if (params.endShouldProfit) {
-          newParams.endShouldProfit = params.endShouldProfit;
+        for (let key in params) {
+          if (params[key] && _.isArray(params[key])) {
+            let start = "start" + key.charAt(0).toUpperCase() + key.slice(1);
+            let end = "end" + key.charAt(0).toUpperCase() + key.slice(1);
+            newParams[start] = params[key][0];
+            newParams[end] = params[key][1];
+          } else if (params[key]) {
+            newParams[key] = params[key];
+          }
         }
         this.searchParams = newParams;
         this.loadData(this.searchParams);
+        this.loadCount(this.searchParams);
         this.loadTotal(this.searchParams);
+        this.$message({
+          type: "success",
+          message: "查询成功！"
+        });
       }
     },
     handleCancel() {
@@ -463,7 +380,6 @@ export default {
     this.loadData(this.searchParams);
     this.loadTotal();
     this.loadCount();
-
   }
 };
 </script>

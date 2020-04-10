@@ -26,11 +26,11 @@
             <el-input v-model="formData.cardNo" style="width: 100%"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+        <!-- <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="PNR:">
             <el-input v-model="formData.pnr" style="width: 100%"></el-input>
           </el-form-item>
-        </el-col>
+        </el-col> -->
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="出发日期:">
             <el-col>
@@ -62,7 +62,7 @@
             ></el-input>
           </el-form-item>
         </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+        <!-- <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="金额:">
             <el-row type="flex" justify="space-between">
               <el-col :span="11">
@@ -104,7 +104,7 @@
               ></el-date-picker>
             </el-col>
           </el-form-item>
-        </el-col>
+        </el-col> -->
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="订单类型:">
             <el-select clearable v-model="formData.orderType" placeholder="全部" style="width: 100%">

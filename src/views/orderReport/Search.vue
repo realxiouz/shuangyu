@@ -7,28 +7,39 @@
             <el-input
               v-model="formData.orderNo"
               @keyup.enter.native="$emit('onSearch', formData)"
+              clearable
               style="width: 100%"
             ></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="票号:">
-            <el-input v-model="formData.ticketNo" style="width: 100%"></el-input>
+            <el-input v-model="formData.ticketNo" clearable style="width: 100%"></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="乘机人姓名:">
-            <el-input v-model="formData.name" style="width: 100%"></el-input>
+            <el-input v-model="formData.name" clearable style="width: 100%"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="销售出票单号:">
+            <el-input
+              clearable
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.rootOrderNo"
+              style="width: 100%"
+            ></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="乘机人证件号:">
-            <el-input v-model="formData.cardNo" style="width: 100%"></el-input>
+            <el-input clearable v-model="formData.cardNo" style="width: 100%"></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="PNR:">
-            <el-input v-model="formData.pnr" style="width: 100%"></el-input>
+            <el-input clearable v-model="formData.pnr" style="width: 100%"></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -50,12 +61,13 @@
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="舱位:">
-            <el-input v-model="formData.cabin" style="width: 100%"></el-input>
+            <el-input clearable v-model="formData.cabin" style="width: 100%"></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="航班号:">
             <el-input
+              clearable
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.flightCode"
               style="width: 100%"
@@ -66,11 +78,21 @@
           <el-form-item v-show="more" label="总价:">
             <el-row type="flex" justify="space-between">
               <el-col :span="11">
-                <el-input v-model="formData.startAmount" placeholder="初始值" style="width: 100%"></el-input>
+                <el-input
+                  clearable
+                  v-model="formData.startAmount"
+                  placeholder="初始值"
+                  style="width: 100%"
+                ></el-input>
               </el-col>
               <el-col :span="1">-</el-col>
               <el-col :span="11">
-                <el-input v-model="formData.endAmount" placeholder="结束值" style="width: 100%"></el-input>
+                <el-input
+                  clearable
+                  v-model="formData.endAmount"
+                  placeholder="结束值"
+                  style="width: 100%"
+                ></el-input>
               </el-col>
             </el-row>
           </el-form-item>
@@ -79,11 +101,21 @@
           <el-form-item v-show="more" label="应收:">
             <el-row type="flex" justify="space-between">
               <el-col :span="11">
-                <el-input v-model="formData.startReceivable" placeholder="初始值" style="width: 100%"></el-input>
+                <el-input
+                  clearable
+                  v-model="formData.startReceivable"
+                  placeholder="初始值"
+                  style="width: 100%"
+                ></el-input>
               </el-col>
               <el-col :span="1">-</el-col>
               <el-col :span="11">
-                <el-input v-model="formData.endReceivable" placeholder="结束值" style="width: 100%"></el-input>
+                <el-input
+                  clearable
+                  v-model="formData.endReceivable"
+                  placeholder="结束值"
+                  style="width: 100%"
+                ></el-input>
               </el-col>
             </el-row>
           </el-form-item>
@@ -92,11 +124,21 @@
           <el-form-item v-show="more" label="实收:">
             <el-row type="flex" justify="space-between">
               <el-col :span="11">
-                <el-input v-model="formData.startReceipt" placeholder="初始值" style="width: 100%"></el-input>
+                <el-input
+                  clearable
+                  v-model="formData.startReceipt"
+                  placeholder="初始值"
+                  style="width: 100%"
+                ></el-input>
               </el-col>
               <el-col :span="1">-</el-col>
               <el-col :span="11">
-                <el-input v-model="formData.endReceipt" placeholder="结束值" style="width: 100%"></el-input>
+                <el-input
+                  clearable
+                  v-model="formData.endReceipt"
+                  placeholder="结束值"
+                  style="width: 100%"
+                ></el-input>
               </el-col>
             </el-row>
           </el-form-item>
@@ -105,11 +147,21 @@
           <el-form-item v-show="more" label="应付:">
             <el-row type="flex" justify="space-between">
               <el-col :span="11">
-                <el-input v-model="formData.startPayable" placeholder="初始值" style="width: 100%"></el-input>
+                <el-input
+                  clearable
+                  v-model="formData.startPayable"
+                  placeholder="初始值"
+                  style="width: 100%"
+                ></el-input>
               </el-col>
               <el-col :span="1">-</el-col>
               <el-col :span="11">
-                <el-input v-model="formData.endPayable" placeholder="结束值" style="width: 100%"></el-input>
+                <el-input
+                  clearable
+                  v-model="formData.endPayable"
+                  placeholder="结束值"
+                  style="width: 100%"
+                ></el-input>
               </el-col>
             </el-row>
           </el-form-item>
@@ -118,11 +170,21 @@
           <el-form-item v-show="more" label="实付:">
             <el-row type="flex" justify="space-between">
               <el-col :span="11">
-                <el-input v-model="formData.startPayment" placeholder="初始值" style="width: 100%"></el-input>
+                <el-input
+                  clearable
+                  v-model="formData.startPayment"
+                  placeholder="初始值"
+                  style="width: 100%"
+                ></el-input>
               </el-col>
               <el-col :span="1">-</el-col>
               <el-col :span="11">
-                <el-input v-model="formData.endPayment" placeholder="结束值" style="width: 100%"></el-input>
+                <el-input
+                  clearable
+                  v-model="formData.endPayment"
+                  placeholder="结束值"
+                  style="width: 100%"
+                ></el-input>
               </el-col>
             </el-row>
           </el-form-item>
@@ -131,11 +193,21 @@
           <el-form-item v-show="more" label="系统利润:">
             <el-row type="flex" justify="space-between">
               <el-col :span="11">
-                <el-input v-model="formData.startSystemProfit" placeholder="初始值" style="width: 100%"></el-input>
+                <el-input
+                  clearable
+                  v-model="formData.startSystemProfit"
+                  placeholder="初始值"
+                  style="width: 100%"
+                ></el-input>
               </el-col>
               <el-col :span="1">-</el-col>
               <el-col :span="11">
-                <el-input v-model="formData.endSystemProfit" placeholder="结束值" style="width: 100%"></el-input>
+                <el-input
+                  clearable
+                  v-model="formData.endSystemProfit"
+                  placeholder="结束值"
+                  style="width: 100%"
+                ></el-input>
               </el-col>
             </el-row>
           </el-form-item>
@@ -144,11 +216,21 @@
           <el-form-item v-show="more" label="业务利润:">
             <el-row type="flex" justify="space-between">
               <el-col :span="11">
-                <el-input v-model="formData.startShouldProfit" placeholder="初始值" style="width: 100%"></el-input>
+                <el-input
+                  clearable
+                  v-model="formData.startShouldProfit"
+                  placeholder="初始值"
+                  style="width: 100%"
+                ></el-input>
               </el-col>
               <el-col :span="1">-</el-col>
               <el-col :span="11">
-                <el-input v-model="formData.endShouldProfit" placeholder="结束值" style="width: 100%"></el-input>
+                <el-input
+                  clearable
+                  v-model="formData.endShouldProfit"
+                  placeholder="结束值"
+                  style="width: 100%"
+                ></el-input>
               </el-col>
             </el-row>
           </el-form-item>
@@ -157,16 +239,26 @@
           <el-form-item v-show="more" label="财务利润:">
             <el-row type="flex" justify="space-between">
               <el-col :span="11">
-                <el-input v-model="formData.startProfit" placeholder="初始值" style="width: 100%"></el-input>
+                <el-input
+                  clearable
+                  v-model="formData.startProfit"
+                  placeholder="初始值"
+                  style="width: 100%"
+                ></el-input>
               </el-col>
               <el-col :span="1">-</el-col>
               <el-col :span="11">
-                <el-input v-model="formData.endProfit" placeholder="结束值" style="width: 100%"></el-input>
+                <el-input
+                  clearable
+                  v-model="formData.endProfit"
+                  placeholder="结束值"
+                  style="width: 100%"
+                ></el-input>
               </el-col>
             </el-row>
           </el-form-item>
         </el-col>
-       
+
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="订单类型:">
             <el-select clearable v-model="formData.orderType" placeholder="全部" style="width: 100%">
@@ -180,13 +272,18 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :xs="24" :sm="18" :md="14" :lg="10" :xl="6">
-          <el-form-item v-show="more" label="航程类型:">
-            <el-radio-group v-model="formData.voyageType" style="width: 100%">
-              <el-radio label="0">单程</el-radio>
-              <el-radio label="1">往返</el-radio>
-              <el-radio label="2">连程</el-radio>
-            </el-radio-group>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="订单分类:">
+            <el-select
+              style="width: 100%;"
+              clearable
+              collapse-tags
+              v-model="formData.category"
+              placeholder="请选择"
+            >
+              <el-option label="销售单" value="0"></el-option>
+              <el-option label="采购单" value="1"></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -204,6 +301,15 @@
                 value-format="yyyy-MM-dd"
               ></el-date-picker>
             </el-col>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="18" :md="14" :lg="10" :xl="6">
+          <el-form-item v-show="more" label="航程类型:">
+            <el-radio-group v-model="formData.voyageType" style="width: 100%">
+              <el-radio label="0">单程</el-radio>
+              <el-radio label="1">往返</el-radio>
+              <el-radio label="2">连程</el-radio>
+            </el-radio-group>
           </el-form-item>
         </el-col>
       </el-form>
@@ -241,7 +347,8 @@ export default {
         orderNo: "", //订单号
         name: "", //乘机人姓名
         cardNo: "", //乘机人证件号
-        createTime: ""
+        createTime: "",
+        rootOrderNo: ""
       }
     };
   },

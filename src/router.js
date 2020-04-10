@@ -169,6 +169,19 @@ export default new Router({
           meta: { title: '订单详情', icon: 'home' }
         },
         {
+          title: '改签订单详情',
+          path: '/order/chang/detail',
+          name: 'ChangOrderDetail',
+          component: () => import('@/views/order/ChangOrderDetail'),
+          meta: { title: '改签订单详情', icon: 'home' }
+        },{
+          title: '退票订单详情',
+          path: '/order/refund/detail',
+          name: 'RefundOrderDetail',
+          component: () => import('@/views/order/RefundOrderDetail'),
+          meta: { title: '退票订单详情', icon: 'home' }
+        },
+        {
           title: '出票',
           path: '/order/detail/go/ticket',
           name: 'goTicket',

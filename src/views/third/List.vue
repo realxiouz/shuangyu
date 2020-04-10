@@ -78,7 +78,7 @@ export default {
         formData = {};
       }
       this.$store
-        .dispatch("thirdParty/getPageList", {
+        .dispatch("third/getPageList", {
           pageFlag: this.pageFlag,
           pageSize: 10,
           lastId: this.lastId,
@@ -101,7 +101,7 @@ export default {
         formData = {};
       }
       this.$store
-        .dispatch("thirdParty/getTotal", { filters: formData })
+        .dispatch("third/getTotal", { filters: formData })
         .then(data => {
           this.total = data;
         })
@@ -121,7 +121,7 @@ export default {
       })
         .then(() => {
           this.$store
-            .dispatch("thirdParty/removeOne", { thirdId: row.thirdId })
+            .dispatch("third/removeOne", { thirdId: row.thirdId })
             .then(res => {
               if (res) {
                 rows.splice(index, 1);
@@ -149,7 +149,7 @@ export default {
     },
     handleSave(formData) {
       this.$store
-        .dispatch("thirdParty/save", formData)
+        .dispatch("third/save", formData)
         .then(res => {
           console.log(res);
           if (res.code === 0) {

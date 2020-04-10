@@ -2,7 +2,7 @@
   <div class="bigBox">
     <el-card class="contentBox">
       <div slot="header" class="clearfix">
-        <span>订单详情</span>
+        <span>改签订单详情</span>
       </div>
       <el-row :gutter="20">
         <el-form :model="tableData" label-width="130px" size="mini">
@@ -24,11 +24,6 @@
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="订单分类:">
               <span>{{formateCategory(tableData)}}</span>
-            </el-form-item>
-          </el-col>
-           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="最晚出票时限:">
-              <span>{{formatDate(tableData.deadlineTicketTime,'YYYY-MM-DD HH:mm:ss')}}</span>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -56,8 +51,6 @@
               <span>￥{{this.$numeral(tableData.transactionAmount).format('0.00')}}</span>
             </el-form-item>
           </el-col>
-          
-         
         </el-form>
       </el-row>
     </el-card>
@@ -117,14 +110,18 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-row style="margin-top:20px">
+      <!-- <el-row style="margin-top:20px">
         <el-button type="primary" @click="goTicket" size="mini">出票</el-button>
-      </el-row>
+      </el-row>-->
     </el-card>
   </div>
 </template>
 <script>
-import { formateOrderType, formateCategory,formateStatus } from "@/utils/status.js";
+import {
+  formateOrderType,
+  formateCategory,
+  formateStatus
+} from "@/utils/status.js";
 export default {
   name: "orderDetail",
   data() {

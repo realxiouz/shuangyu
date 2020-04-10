@@ -20,20 +20,20 @@
             <span>{{(currentPage - 1) * pageSize + scope.$index + 1}}</span>
           </template>
         </el-table-column>
-
-        <el-table-column prop="orderNo" label="订单号" width="180" align="center"></el-table-column>
+        <el-table-column prop="orderNo" label="订单号" width="175" align="center"></el-table-column>
+        <el-table-column prop="policyCode" label="政策代码" align="center" width="180"></el-table-column>
         <el-table-column
           :formatter="formateOrderType"
           prop="orderType"
           label="订单类型"
-          width="80"
+          width="70"
           align="center"
         ></el-table-column>
         <el-table-column
           prop="category"
           :formatter="formateCategory"
           label="订单分类"
-          width="80"
+          width="70"
           align="center"
         ></el-table-column>
         <el-table-column
@@ -43,58 +43,19 @@
           width="80"
           align="center"
         ></el-table-column>
-        <el-table-column prop="ticketNos" label="票号" width="180" align="center">
-          <template slot-scope="scope">
-            <span>{{formatTicketNo(scope.row.ticketNos)}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="rootOrderNo"
-          :show-overflow-tooltip="true"
-          label="销售出票单号"
-          width="100"
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          prop="linkOrderNo"
-          :show-overflow-tooltip="true"
-          label="业务订单编号"
-          width="100"
-          align="center"
-        ></el-table-column>
-        <el-table-column label="乘客" align="center" width="200">
-          <template slot-scope="scope">
-            <i v-if="scope.row.passengers"></i>
-            <span>{{ formatPassengers(scope.row.passengers)}}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column
-          :show-overflow-tooltip="true"
-          prop="sourceOrderNo"
-          label="原订单"
-          align="center"
-        ></el-table-column>
-        <el-table-column prop="pid" label="pid" align="center"></el-table-column>
-        <el-table-column
-          prop="path"
-          label="path"
-          :show-overflow-tooltip="true"
-          width="100"
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          prop="policyCode"
-          :show-overflow-tooltip="true"
-          label="政策代码"
-          align="center"
-        ></el-table-column>
-
         <el-table-column label="订单日期" width="100" align="center">
           <template slot-scope="scope">
             <span>{{ formatDate(scope.row.createTime,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
+        <el-table-column prop="fundAccount" label="资金账号" width="100" align="center"></el-table-column>
+        <el-table-column prop="accountId" label="平台账号" width="100" align="center"></el-table-column>
+        <el-table-column prop="rootOrderNo" label="销售出票单号" width="100" align="center"></el-table-column>
+        <el-table-column prop="linkOrderNo" label="业务订单编号" width="100" align="center"></el-table-column>
+        <el-table-column prop="sourceOrderNo" label="原订单" align="center"></el-table-column>
+        <el-table-column prop="pid" label="pid" align="center"></el-table-column>
+        <el-table-column prop="path" label="path" width="100" align="center"></el-table-column>
+
         <el-table-column label="交易时间" width="100" align="center">
           <template slot-scope="scope">
             <span>{{ formatDate(scope.row.transactionTime,'YYYY-MM-DD') }}</span>
@@ -105,8 +66,6 @@
             <span>{{ formatDate(scope.row.finishTime,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="fundAccount" label="资金账号" width="100" align="center"></el-table-column>
-        <el-table-column prop="accountId" label="平台账号" width="100" align="center"></el-table-column>
         <el-table-column label="最晚出票时限" width="100" align="center">
           <template slot-scope="scope">
             <span>{{ formatDate(scope.row.deadlineTicketTime,'YYYY-MM-DD') }}</span>
@@ -122,12 +81,9 @@
             <span>{{ formatDate(scope.row.deadlineChangeTime,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
-        <el-table-column
-          prop="voyageType"
-          :formatter="formateVoyageType"
-          label="航程类型"
-          align="center"
-        ></el-table-column>
+
+        <el-table-column prop="pnr" label="PNR" width="150" align="center"></el-table-column>
+
         <el-table-column label="航班号" align="center">
           <template slot-scope="scope">
             <span>{{ formatFlightNo(scope.row.flights)}}</span>
@@ -143,13 +99,19 @@
             <span>{{ formatFlight(scope.row.flights)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="pnr" label="PNR" width="150" align="center"></el-table-column>
-        <el-table-column fixed="right" label="操作" align="center" width="150">
+
+        <el-table-column label="乘客" align="center" width="200">
           <template slot-scope="scope">
-            <el-button @click="handleOrderDetail(scope.row)" type="primary" size="mini">查看</el-button>
-            <el-button type="danger" size="mini" @click="handleRemove(scope.row.orderNo)">删除</el-button>
+            <i v-if="scope.row.passengers"></i>
+            <span>{{ formatPassengers(scope.row.passengers)}}</span>
           </template>
         </el-table-column>
+        <el-table-column prop="ticketNos" label="票号" width="120" align="center">
+          <template slot-scope="scope">
+            <span>{{formatTicketNo(scope.row.ticketNos)}}</span>
+          </template>
+        </el-table-column>
+
         <el-table-column label="交易金额" prop="transactionAmount" width="150" align="center">
           <template slot-scope="scope">
             <span>{{ formatAmount(scope.row.transactionAmount)}}</span>
@@ -158,6 +120,12 @@
         <el-table-column label="总价" prop="amount" width="150" align="center">
           <template slot-scope="scope">
             <span>{{ formatAmount(scope.row.amount)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column fixed="right" label="操作" align="center" width="150">
+          <template slot-scope="scope">
+            <el-button @click="handleOrderDetail(scope.row)" type="primary" size="mini">查看</el-button>
+            <el-button type="danger" size="mini" @click="handleRemove(scope.row.orderNo)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -199,6 +167,9 @@ export default {
       searchParams: {},
       count: []
     };
+  },
+  components: {
+    orderSearch
   },
   methods: {
     formateStatus,
@@ -294,93 +265,27 @@ export default {
         this.loadCount(this.searchParams);
         this.loadData(this.searchParams);
         this.loadTotal(this.searchParams);
+        
       } else {
         const newParams = {};
-        if (params.name) {
-          newParams.name = params.name;
-        }
-        if (params.cardNo) {
-          newParams.cardNo = params.cardNo;
-        }
-        if (params.orderNo) {
-          newParams.orderNo = params.orderNo;
-        }
-        if (params.ticketNo) {
-          newParams.ticketNo = params.ticketNo;
-        }
-        if (params.pnr) {
-          newParams.pnr = params.pnr;
-        }
-        if (params.status) {
-          newParams.status = params.status;
-        }
-        if (params.flightDate) {
-          newParams.startFlightDate = params.flightDate[0];
-          newParams.endFlightDate = params.flightDate[1];
-        }
-        if (params.cabin) {
-          newParams.cabin = params.cabin;
-        }
-        if (params.flightCode) {
-          newParams.flightCode = params.flightCode;
-        }
-        if (params.orderType) {
-          newParams.orderType = params.orderType;
-        }
-        if (params.voyageType) {
-          newParams.voyageType = params.voyageType;
-        }
-        if (params.rootOrderNo) {
-          newParams.rootOrderNo = params.rootOrderNo;
-        }
-        if (params.fundAccount) {
-          newParams.fundAccount = params.fundAccount;
-        }
-        if (params.accountId) {
-          newParams.accountId = params.accountId;
-        }
-        if (params.pid) {
-          newParams.pid = params.pid;
-        }
-        if (params.sourceOrderNo) {
-          newParams.sourceOrderNo = params.sourceOrderNo;
-        }
-        if (params.path) {
-          newParams.path = params.path;
-        }
-        if (params.linkOrderNo) {
-          newParams.linkOrderNo = params.linkOrderNo;
-        }
-        if (params.createTime) {
-          newParams.startCreateTime = params.createTime[0];
-          newParams.endCreateTime = params.createTime[1];
-        }
-        if (params.finishTime) {
-          newParams.startFinishTime = params.finishTime[0];
-          newParams.endFinishTime = params.finishTime[1];
-        }
-        if (params.DdeadlineChangeTime) {
-          newParams.startTransactionTime = params.transactionTime[0];
-          newParams.endTransactionTime = params.transactionTime[0];
-        }
-        if (params.deadlineTicketTime) {
-          newParams.startDeadlineTicketTime = params.deadlineTicketTime[0];
-          newParams.endDeadlineTicketTime = params.deadlineTicketTime[0];
-        }
-        if (params.deadlineReturnTime) {
-          newParams.startDeadlineReturnTime = params.deadlineReturnTime[0];
-          newParams.endDeadlineReturnTime = params.deadlineReturnTime[0];
-        }
-        if (params.deadlineChangeTime) {
-          newParams.startDeadlineChangeTime = params.deadlineChangeTime[0];
-          newParams.endDeadlineChangeTime = params.deadlineChangeTime[0];
-        }
-        if (params.emptyData.length > 0) {
-          params.emptyData.forEach(item => {
-            newParams[item] = "";
-          });
+        for (let key in params) {
+          if (params[key] && _.isArray(params[key])) {
+            if (key === "emptyData") {
+              params[key].forEach(item => {
+                newParams[item] = "";
+              });
+            } else {
+              let start = "start" + key.charAt(0).toUpperCase() + key.slice(1);
+              let end = "end" + key.charAt(0).toUpperCase() + key.slice(1);
+              newParams[start] = params[key][0];
+              newParams[end] = params[key][1];
+            }
+          } else if (params[key]) {
+            newParams[key] = params[key];
+          }
         }
         this.searchParams = newParams;
+        this.loadCount(this.searchParams);
         this.loadData(this.searchParams);
         this.loadTotal(this.searchParams);
         this.$message({
@@ -422,8 +327,23 @@ export default {
       this.dialogVisible = true;
     },
     handleOrderDetail(row) {
+      let path = "";
+      if (row.orderType == 10) {
+        path = "/order/detail";
+      } else if (
+        row.orderType == 20 ||
+        row.orderType == 21 ||
+        row.orderType == 22 ||
+        row.orderType == 23
+      ) {
+        path = "/order/refund/detail";
+      } else if (row.orderType == 30 || row.orderType == 31) {
+        path = "/order/chang/detail";
+      } else {
+        path = "/order/detail";
+      }
       this.$router.push({
-        path: "/order/detail",
+        path: path,
         query: {
           orderNo: row.orderNo
         }
@@ -501,9 +421,7 @@ export default {
       };
     }
   },
-  components: {
-    orderSearch
-  },
+
   created() {
     this.loadData(this.searchParams);
     this.loadTotal();
