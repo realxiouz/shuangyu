@@ -282,6 +282,13 @@ export default new Router({
           name: 'ticket',
           component: () => import('@/views/ticket/List'),
           meta: { title: '票号信息', icon: 'home' }
+        },
+        {
+          title: '航班信息',
+          path: '/flight/list',
+          name: 'flight',
+          component: () => import('@/views/flight/List'),
+          meta: { title: '航班信息', icon: 'home' }
         }
       ]
     },
