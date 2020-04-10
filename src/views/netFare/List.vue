@@ -70,6 +70,7 @@
                 curNode: {},
                 update: false,
                 deleteForSearch: false,
+                searchForm: {},
                 pageFlag: "next",
                 pageSize: 10,
                 lastId: "blank",
@@ -107,6 +108,7 @@
             },
             /*输入条件时可进行条件查询*/
             handleSearch(searchForm) {
+                this.searchForm = searchForm;
                 this.deleteForSearch = true;
                 this.$store
                     .dispatch("netFare/getTotal", { filter: searchForm})
@@ -194,13 +196,13 @@
             handlePrevClick() {
                 this.pageFlag = "prev";
                 this.lastId = this.tableData[0].flightCode;
-                this.loadData();
+                this.handleSearch(this.searchForm);
             },
             /*翻后页*/
             handleNextClick() {
                 this.pageFlag = "next";
                 this.lastId = this.tableData[this.tableData.length - 1].flightCode;
-                this.loadData();
+                this.handleSearch(this.searchForm);
             },
             open(func, data, message) {
                 this.$confirm(message, "提示", {
