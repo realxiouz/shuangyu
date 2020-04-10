@@ -72,6 +72,7 @@ export default {
     return {
       loading: true,
       dialogVisible: false,
+        deleteForSearch: false,
       tableData: [],
       /*记录当前进行操作的节点*/
       curNode: {},
@@ -112,6 +113,7 @@ export default {
     },
     /*输入条件时可进行条件查询*/
     search(searchForm) {
+        this.deleteForSearch = true;
       this.$store
         .dispatch("fare/getTotal", { filter: searchForm })
         .then(data => {
@@ -177,11 +179,12 @@ export default {
         .dispatch("fare/removeOne", { fareID: fareID })
         .then(() => {
             this.lastId = "blank";
-          if (1 === this.tableData.length) {
+          if (1 === this.tableData.length && !this.deleteForSearch) {
             this.handlePrevClick();
           } else {
             this.loadData();
           }
+          this.deleteForSearch = false;
         })
         .catch(error => {
           console.log(error);

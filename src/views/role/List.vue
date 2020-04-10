@@ -59,6 +59,7 @@ export default {
       roleId: null,
       dialogVisible: false,
       loading: true,
+        deleteForSearch: false,
       pageFlag: "next",
       pageSize: 5,
       lastId: "0",
@@ -81,11 +82,12 @@ export default {
         .dispatch("role/removeOne", { roleID: roleID })
         .then(() => {
             this.lastId = "0";
-          if (1 === this.tableData.length) {
+          if (1 === this.tableData.length && !this.deleteForSearch) {
             this.prevClick();
           } else {
             this.loadData();
           }
+          this.deleteForSearch = false;
         })
         .catch(error => {
           console.log(error);

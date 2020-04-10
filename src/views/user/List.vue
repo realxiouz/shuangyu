@@ -85,6 +85,7 @@ export default {
   data() {
     return {
       dialogVisible: false,
+        deleteForSearch: false,
       /*进行编辑当前用户ID*/
       userId: "",
       /*重置用户密码时记录当前用户节点信息*/
@@ -127,6 +128,7 @@ export default {
     },
     /*根据关键字查询用户列表*/
     handleSearch(params) {
+        this.deleteForSearch = true;
       this.$store
         .dispatch("user/getTotal", {
           filter: params.keyword ? { nickName: params.keyword } : {}
@@ -223,11 +225,12 @@ export default {
         .dispatch("user/removeOne", { userId: userId })
         .then(() => {
             this.lastId = "blank";
-          if (1 === this.tableData.length) {
+          if (1 === this.tableData.length && !this.deleteForSearch) {
             this.handlePrevClick();
           } else {
             this.loadData();
           }
+          this.deleteForSearch = false;
         })
         .catch(error => {
           console.log(error);

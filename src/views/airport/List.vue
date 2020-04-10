@@ -61,6 +61,7 @@ export default {
       loading: true,
       dialogVisible: false,
       update: false,
+        deleteForSearch: false,
       curNode: {},
       tableData: [],
       lastId: "blank",
@@ -98,6 +99,7 @@ export default {
         });
     },
     search(searchForm) {
+        this.deleteForSearch = false;
         if (searchForm.airportName || searchForm.airportCode) {
         let url = "";
         let params = {};
@@ -177,11 +179,12 @@ export default {
         .dispatch("airport/removeOne", { airportCode: airportCode })
         .then(() => {
             this.lastId = "blank";
-          if (1 === this.tableData.length) {
+          if (1 === this.tableData.length && !this.deleteForSearch) {
             this.handlePrevClick();
           } else {
             this.loadData();
           }
+          this.deleteForSearch = false;
         })
         .catch(error => {
           console.log(error);

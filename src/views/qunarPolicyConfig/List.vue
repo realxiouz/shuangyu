@@ -82,6 +82,7 @@ export default {
       /*记录当前进行操作的节点*/
       curNode: {},
       update: false,
+        deleteForSearch: false,
       pageFlag: "next",
       pageSize: 10,
       lastId: "blank",
@@ -120,6 +121,7 @@ export default {
     },
     /*输入条件时可进行条件查询*/
     search(params) {
+        this.deleteForSearch = true;
       this.$store
         .dispatch("qunarPolicyConfig/getTotal", {
           //   filter: keyword ? { username: keyword } : {}
@@ -194,11 +196,12 @@ export default {
         .dispatch("qunarPolicyConfig/removeOne", { domain: domain })
         .then(() => {
             this.lastId = "blank";
-          if (1 === this.tableData.length) {
+          if (1 === this.tableData.length && !this.deleteForSearch) {
             this.handlePrevClick();
           } else {
             this.loadData();
           }
+          this.deleteForSearch = false;
         })
         .catch(error => {
           console.log(error);

@@ -71,6 +71,7 @@ export default {
       loading: true,
       dialogVisible: false,
       update: false,
+        deleteForSearch: false,
       curNode: {},
       tableData: [],
       lastId: "blank",
@@ -106,6 +107,7 @@ export default {
         });
     },
     handleSearch(params) {
+        this.deleteForSearch = true;
       this.$store
         .dispatch("fundAccount/getTotal", {
           filter: params.keyword ? { fundAccount: params.keyword } : {}
@@ -183,11 +185,12 @@ export default {
         .dispatch("fundAccount/removeOne", { fundAccountId: fundAccountId })
         .then(() => {
             this.lastId = "blank";
-          if (1 === this.tableData.length) {
+          if (1 === this.tableData.length && !this.deleteForSearch) {
             this.handlePrevClick();
           } else {
             this.loadData();
           }
+          this.deleteForSearch = false;
         })
         .catch(error => {
           console.log(error);

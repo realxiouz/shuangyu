@@ -128,6 +128,7 @@ export default {
       tableData: [],
       apiId: "",
         paramDialogVisible: false,
+        deleteForSearch: false,
         formData: defaultData(),
         paramFormData: {},
         paramList: [],
@@ -241,11 +242,12 @@ export default {
           this.$store
             .dispatch("thirdApiService/removeOne", { apiId: id })
             .then(() => {
-              if (1 === this.tableData.length) {
+              if (1 === this.tableData.length && !this.deleteForSearch) {
                 this.prevClick();
               } else {
                 this.loadData();
               }
+              this.deleteForSearch = false;
               rows.splice(index, 1);
             });
         })
@@ -281,6 +283,7 @@ export default {
               this.dialogVisible = false;
     },
     handleSearch(params) {
+          this.deleteForSearch = true;
       if (!params) {
         params = {};
       }

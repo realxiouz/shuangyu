@@ -64,6 +64,7 @@ export default {
       /*记录当前进行操作的节点*/
       curNode: {},
       update: false,
+        deleteForSearch: false,
       pageFlag: "next",
       pageSize: 3,
       lastId: "blank",
@@ -101,6 +102,7 @@ export default {
     },
     /*输入条件时可进行条件查询*/
     handleSearch(params) {
+        this.deleteForSearch = true;
       this.$store
         .dispatch("thirdAccount/getTotal", { filter: params ? params : {} })
         .then(data => {
@@ -172,11 +174,12 @@ export default {
         .dispatch("thirdAccount/removeOne", { thirdAccountId: thirdAccountId })
         .then(() => {
             this.lastId = "blank";
-          if (1 === this.tableData.length) {
+          if (1 === this.tableData.length && !this.deleteForSearch) {
             this.handlePrevClick();
           } else {
             this.loadData();
           }
+          this.deleteForSearch = false;
         })
         .catch(error => {
           console.log(error);
