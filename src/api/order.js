@@ -40,6 +40,15 @@ export function getOne(id) {
 }
 
 //统计
+export function getTimeCount(params) {
+  return request({
+    url: `/order/time/count`,
+    method: 'get',
+    params: params
+  });
+}
+
+//订单时间统计
 export function getCount(params) {
   return request({
     url: `/order/count`,
@@ -47,6 +56,7 @@ export function getCount(params) {
     params: params
   });
 }
+
 
 export function getOrderDetail(orderNo) {
   return request({
