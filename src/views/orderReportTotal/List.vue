@@ -199,7 +199,7 @@ export default {
           filters: params
         })
         .then(data => {
-          if (data) {
+          if (data >=0 ) {
             this.total = data;
           }
         })

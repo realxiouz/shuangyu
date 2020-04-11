@@ -111,7 +111,7 @@ export default {
       this.$store
         .dispatch("api/getTotal", { filters: params })
         .then(data => {
-          if (data) {
+          if (data >= 0) {
             this.total = data;
           }
         })
@@ -168,12 +168,12 @@ export default {
         .dispatch("api/save", params)
         .then(() => {
           this.loadData();
-          if (this.apiId !="") {
+          if (this.apiId != "") {
             this.$message({
               type: "success",
               message: "修改成功！"
             });
-          }else{
+          } else {
             this.$message({
               type: "success",
               message: "添加成功！"
