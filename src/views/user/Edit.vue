@@ -3,10 +3,10 @@
     <el-form ref="form" size="mini" :model="formData" label-width="110px" :rules="formRules">
       <input type="hidden" v-model="formData.userId" />
       <el-form-item label="昵称">
-        <el-input placeholder="请输入您的昵称"  v-model="formData.nickName"></el-input>
+        <el-input placeholder="请输入您的昵称" v-model="formData.nickName"></el-input>
       </el-form-item>
       <el-form-item label="姓名">
-        <el-input placeholder="请输入您的姓名"  v-model="formData.fullName"></el-input>
+        <el-input placeholder="请输入您的姓名" v-model="formData.fullName"></el-input>
       </el-form-item>
       <el-form-item label="性别">
         <el-select v-model="formData.gender" placeholder="请选择性别" style="width:100%">
@@ -23,16 +23,25 @@
         ></el-date-picker>
       </el-form-item>
       <el-form-item label="邮箱" prop="email">
-        <el-input placeholder="请输入您的邮箱"  v-model="formData.email" @blur="isUsedForEmail"></el-input>
+        <el-input placeholder="请输入您的邮箱" v-model="formData.email" @blur="isUsedForEmail"></el-input>
         <span v-if="isExistsForEmail" style="color: crimson">*该信息已被注册</span>
       </el-form-item>
-      <el-form-item label="验证码" prop="emailCode">
+      <el-form-item label="验证码" prop="verificationCode">
         <el-row :gutter="20">
-          <el-col style="padding-left:0;padding-right:0;" :span="20">
-            <el-input placeholder="请输入验证码" v-model="formData.emailCode" />
+          <el-col style="padding-left:0;padding-right:0;" :span="17">
+            <el-input placeholder="请输入验证码" v-model="formData.verificationCode" />
           </el-col>
           <el-col :span="2">
-            <el-button size="mini" type="primary">获取</el-button>
+            <el-button
+              size="mini"
+              :disabled="showCount"
+              @click="getVerificationCode(formData.email)"
+              type="primary"
+            >
+              <span v-show="!showCount">获取</span>
+              <span v-show="showCount">{{countDown}}s后</span>
+              <span v-show="showCount">重新获取</span>
+            </el-button>
           </el-col>
         </el-row>
       </el-form-item>
@@ -96,14 +105,18 @@ export default {
       isExistsForPhone: false,
       isExistsForEmail: false,
       formRules: {
-        emailCode: [
+        verificationCode: [
           { required: true, message: "请输入邮箱验证码", trigger: "blur" }
         ],
         email: [
           { required: true, message: "请输入邮箱", trigger: "blur" },
           { validator: validateEmail, trigger: "blur" }
         ]
-      }
+      },
+      showCount: false,
+      countDown: "",
+      timer: "",
+      TIME_COUNT: 20
     };
   },
   methods: {
@@ -118,16 +131,24 @@ export default {
         emailCode: "",
         email: "",
         super: false,
-        enable: true
+        enable: true,
+        verificationCode: ""
       };
     },
     handleConfirm() {
-      if (this.formData.birthDate && "number" != typeof this.formData.birthDate) {
+      if (
+        this.formData.birthDate &&
+        "number" != typeof this.formData.birthDate
+      ) {
         this.formData.birthDate = this.formData.birthDate.getTime();
       }
       this.$refs.form.validate(valid => {
         if (valid) {
-          this.$emit("onSave", this.formData);
+          let addData = {
+            user: this.formData,
+            verificationCode: this.formData.verificationCode
+          };
+          this.$emit("onSave", addData);
         }
       });
     },
@@ -184,6 +205,41 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+    //获取邮箱验证码
+    getVerificationCode(email) {
+      if (!this.isExistsForEmail) {
+        if (email) {
+          this.$store
+            .dispatch("user/getVerificationCode", { targetEmail: email })
+            .then(data => {
+              console.log(data);
+              this.timer = null;
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        } else {
+          this.$message({
+            type: "warning",
+            message: "请输入您的邮箱！"
+          });
+          this.timer = true;
+        }
+      }
+      if (!this.timer) {
+        this.countDown = this.TIME_COUNT;
+        this.showCount = true;
+        this.timer = setInterval(() => {
+          if (this.countDown > 0 && this.countDown <= this.TIME_COUNT) {
+            this.countDown--;
+          } else {
+            this.showCount = false;
+            clearInterval(this.timer); // 清除定时器
+            this.timer = null;
+          }
+        }, 1000);
+      }
     }
   },
   created() {

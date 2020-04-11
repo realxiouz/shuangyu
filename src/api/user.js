@@ -92,9 +92,9 @@ export function isExist(filed) {
   });
 }
 
-export function getVerificationCode(email) {
+export function getVerificationCode(targetEmail) {
   return request({
-    url: `admin/user/get/verification/code/${email}`,
+    url: `admin/user/get/verification/code/${targetEmail}`,
     method: 'get'
   });
 }
