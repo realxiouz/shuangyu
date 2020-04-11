@@ -194,6 +194,8 @@ export default {
       this.loadData(this.searchParams);
     },
     loadData(params) {
+      this.loadTotal(params);
+      this.loadCount(params);
       this.$store
         .dispatch("order/getList", {
           filters: params
@@ -262,10 +264,7 @@ export default {
       if (!params) {
         params = {};
         this.searchParams = params;
-        this.loadCount(this.searchParams);
         this.loadData(this.searchParams);
-        this.loadTotal(this.searchParams);
-        
       } else {
         const newParams = {};
         for (let key in params) {
@@ -285,9 +284,7 @@ export default {
           }
         }
         this.searchParams = newParams;
-        this.loadCount(this.searchParams);
         this.loadData(this.searchParams);
-        this.loadTotal(this.searchParams);
         this.$message({
           type: "success",
           message: "查询成功！"
@@ -309,7 +306,6 @@ export default {
               } else {
                 this.loadData(this.searchParams);
               }
-              this.loadTotal();
             })
             .catch(error => {
               console.log(error);
@@ -424,8 +420,6 @@ export default {
 
   created() {
     this.loadData(this.searchParams);
-    this.loadTotal();
-    this.loadCount();
   }
 };
 </script>

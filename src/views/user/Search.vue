@@ -5,7 +5,7 @@
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="用户昵称:">
             <el-input
-              v-model="formData.keyword"
+              v-model="formData.nickName"
               @keyup.enter.native="$emit('onSearch', formData)"
               placeholder="请输入用户昵称搜索..."
             ></el-input>
@@ -36,7 +36,7 @@ export default {
     return {
       more: false,
       formData: {
-        keyword: ""
+        nickName: ""
       }
     };
   },

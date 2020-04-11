@@ -85,7 +85,7 @@ export default {
   data() {
     return {
       dialogVisible: false,
-        deleteForSearch: false,
+      deleteForSearch: false,
       /*进行编辑当前用户ID*/
       userId: "",
       /*重置用户密码时记录当前用户节点信息*/
@@ -98,22 +98,19 @@ export default {
       loading: true
     };
   },
+  components: {
+    userForm,
+    userSearch
+  },
   methods: {
-    loadData() {
-      this.$store
-        .dispatch("user/getTotal", { filter: {} })
-        .then(data => {
-          this.total = data.data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
+    loadData(params) {
+      this.loadTotal(params);
       this.$store
         .dispatch("user/getPageList", {
           pageFlag: this.pageFlag,
           pageSize: this.pageSize,
           lastId: this.lastId,
-          filter: {}
+          filter: params
         })
         .then(data => {
           if (data) {
@@ -126,29 +123,36 @@ export default {
           console.log(error);
         });
     },
+    loadTotal(params) {
+      this.$store
+        .dispatch("user/getTotal", { filter: params })
+        .then(data => {
+          if (data) {
+            this.total = data.data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     /*根据关键字查询用户列表*/
     handleSearch(params) {
-        this.deleteForSearch = true;
-      this.$store
-        .dispatch("user/getTotal", {
-          filter: params.keyword ? { nickName: params.keyword } : {}
-        })
-        .then(data => {
-          this.total = data.data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-      this.$store
-        .dispatch("user/getList", {
-          filter: params.keyword ? { nickName: params.keyword } : {}
-        })
-        .then(data => {
-          this.tableData = data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      this.deleteForSearch = true;
+      console.log(params);
+
+      const newParams = {};
+      if (params) {
+        for (let key in params) {
+          if (params[key]) {
+            newParams[key] = params[key];
+          }
+        }
+      }
+      this.loadData(newParams);
+      this.$message({
+        type: "success",
+        message: "查询成功！"
+      });
     },
     /*添加用户按钮*/
     handleAdd() {
@@ -162,7 +166,6 @@ export default {
       this.$store
         .dispatch("user/updateOne", row)
         .then(data => {
-          console.log(data);
           this.loadData();
         })
         .catch(error => {
@@ -176,7 +179,6 @@ export default {
       this.$store
         .dispatch("user/updateOne", row)
         .then(data => {
-          console.log(data);
           this.loadData();
         })
         .catch(error => {
@@ -224,7 +226,7 @@ export default {
       this.$store
         .dispatch("user/removeOne", { userId: userId })
         .then(() => {
-            this.lastId = "blank";
+          this.lastId = "blank";
           if (1 === this.tableData.length && !this.deleteForSearch) {
             this.handlePrevClick();
           } else {
@@ -279,9 +281,6 @@ export default {
       this.lastId = this.tableData[this.tableData.length - 1].userId;
       this.loadData();
     },
-    handleIconClick() {
-      this.inputType = this.inputType === "password" ? "" : "password";
-    },
     open(func, data, message) {
       this.$confirm(message, "提示", {
         confirmButtonText: "确定",
@@ -304,7 +303,7 @@ export default {
     },
     /*初始化用工列表中的生日日期格式*/
     initDate(dateStr, format) {
-      if (null != dateStr) {
+      if (dateStr > 0) {
         let date = new Date(dateStr);
         return this.$moment(date).format(format);
       } else {
@@ -324,12 +323,8 @@ export default {
       };
     }
   },
-  mounted() {
+  created() {
     this.loadData();
-  },
-  components: {
-    userForm,
-    userSearch
   }
 };
 </script>
