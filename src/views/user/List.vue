@@ -57,7 +57,7 @@
         @next-click="handleNextClick"
       ></el-pagination>
       <el-dialog
-        title="用户信息"
+        :title="userId!=''?'编辑用户信息':'添加新用户'"
         center
         :visible.sync="dialogVisible"
         width="33%"
@@ -78,7 +78,6 @@
 <script>
 import userForm from "./Edit";
 import userSearch from "./Search";
-// import  userSelectRoles from
 
 export default {
   name: "userList",
@@ -138,8 +137,6 @@ export default {
     /*根据关键字查询用户列表*/
     handleSearch(params) {
       this.deleteForSearch = true;
-      console.log(params);
-
       const newParams = {};
       if (params) {
         for (let key in params) {
@@ -175,7 +172,6 @@ export default {
     /*修改是否启用状态*/
     enableSwitch(row) {
       row.enable = row.enable ? false : true;
-
       this.$store
         .dispatch("user/updateOne", row)
         .then(data => {
@@ -196,7 +192,7 @@ export default {
           this.$store
             .dispatch("user/resetPassword", { userId: row.userId })
             .then(data => {
-              this.loadData();
+              this.loadData(params);
               this.$message({
                 type: "success",
                 message: "新密码已通过邮件发送给用户!"
