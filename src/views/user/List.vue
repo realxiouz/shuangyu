@@ -57,7 +57,7 @@
         @next-click="handleNextClick"
       ></el-pagination>
       <el-dialog
-        :title="userId!=''?'编辑用户信息':'添加新用户'"
+        :title="userId?'编辑用户信息':'添加新用户'"
         center
         :visible.sync="dialogVisible"
         width="33%"

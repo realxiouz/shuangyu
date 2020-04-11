@@ -41,13 +41,7 @@
         :page-size="pageSize"
         :total="total"
       ></el-pagination>
-      <el-dialog
-        title="应用"
-        :before-close="handleClose"
-        center
-        :visible.sync="dialogVisible"
-        width="30%"
-      >
+      <el-dialog :title="appId?'编辑应用':'添加新应用'" center :visible.sync="dialogVisible" width="30%">
         <app-edit
           v-if="dialogVisible"
           :app-id="appId"
@@ -95,8 +89,8 @@ export default {
         .dispatch("app/getTotal", {
           filters: searchForm
         })
-        .then(response => {
-          this.total = response.data;
+        .then(data => {
+          this.total = data;
         })
         .catch(error => {
           console.log(error);
@@ -116,6 +110,7 @@ export default {
         .then(data => {
           if (data) {
             this.tableData = data;
+            this.loadTotal(searchForm);
           }
           this.loading = false;
         })
@@ -132,13 +127,6 @@ export default {
         .catch(error => {
           console.log(error);
         });
-    },
-    handleClose() {
-      this.$confirm("确认关闭对话框？")
-        .then(() => {
-          this.dialogVisible = false;
-        })
-        .catch(() => {});
     },
     handleCancel() {
       this.dialogVisible = false;
@@ -175,7 +163,18 @@ export default {
       this.$store
         .dispatch("app/save", formData)
         .then(() => {
-          this.handleSearch();
+          this.loadData();
+          if (this.appId != "") {
+            this.$message({
+              type: "success",
+              message: "修改成功！"
+            });
+          } else {
+            this.$message({
+              type: "success",
+              message: "添加成功！"
+            });
+          }
         })
         .catch(error => {
           console.log(error);
@@ -187,15 +186,23 @@ export default {
       this.loadData();
     },
     handleSearch(params) {
-      if (!params) {
-        params = {};
+      const newParams = {};
+      if (params) {
+        for (let key in params) {
+          if (params[key]) {
+            newParams[key] = params[key];
+          }
+        }
       }
-      this.loadData(params);
-      this.loadTotal(params);
+      this.loadData(newParams);
+      this.$message({
+        type: "success",
+        message: "查询成功！"
+      });
     }
   },
   created() {
-    this.handleSearch();
+    this.loadData();
   },
   components: {
     appSearch,
