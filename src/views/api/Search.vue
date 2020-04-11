@@ -5,6 +5,7 @@
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="api名称:">
             <el-input
+              clearable
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.apiName"
               placeholder="请输入api名称搜索..."
