@@ -12,7 +12,10 @@
         v-loading="loading"
         fit
       >
-        <el-table-column prop="date" label="时间" width="100" align="center"></el-table-column>
+        <el-table-column prop="orderType" label="订单类型" width="150" align="center"></el-table-column>
+        <el-table-column prop="category" label="订单分类" width="100" align="center"></el-table-column>
+        <el-table-column prop="accountId" label="平台账号" width="200" align="center"></el-table-column>
+        <el-table-column prop="date" label="交易时间" width="100" align="center"></el-table-column>
         <el-table-column prop="amount" label="金额" align="center">
           <template slot-scope="scope">
             <span>{{ formatAmount(scope.row.amount)}}</span>
