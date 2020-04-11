@@ -1,4 +1,4 @@
-import { signIn, signOut, addOne, removeOne, updateOne, getOne, getList, getTotal, getPageList ,activate, isExist, resetPassword} from "@/api/user";
+import { signIn, signOut, addOne, removeOne, updateOne, getOne, getList, getTotal, getPageList ,activate, isExist, resetPassword,getVerificationCode} from "@/api/user";
 import { getToken, setToken, removeToken } from "@/utils/auth";
 
 const state = {
@@ -81,7 +81,8 @@ const actions = {
 
   addOne({ commit }, params) {
     return new Promise((resolve, reject) => {
-      addOne(params)
+      const {verificationCode,user} = params
+      addOne(user, verificationCode)
         .then(response => {
           resolve(response);
         })
@@ -191,6 +192,18 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {userId} = params;
       resetPassword(userId)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getVerificationCode({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      const {email} = params;
+      getVerificationCode(email)
         .then(response => {
           resolve(response);
         })

@@ -15,9 +15,9 @@ export function signOut() {
   });
 }
 
-export function addOne(data) {
+export function addOne(data, vcode) {
   return request({
-    url: '/user/add/one',
+    url: `/user/add/one/${vcode}`,
     method: 'post',
     data
   });
@@ -88,6 +88,13 @@ export function resetPassword(userID) {
 export function isExist(filed) {
   return request({
     url: `/admin/user/exists/${filed}`,
+    method: 'get'
+  });
+}
+
+export function getVerificationCode(email) {
+  return request({
+    url: `admin/user/get/verification/code/${email}`,
     method: 'get'
   });
 }
