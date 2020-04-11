@@ -183,8 +183,8 @@ export default {
         .then(data => {
           if (data) {
             this.tableData = data;
-            loadTotal(params);
-            loadCount(params);
+            this.loadTotal(params);
+            this.loadCount(params);
           }
           this.loading = false;
         })
