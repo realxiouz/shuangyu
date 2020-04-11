@@ -179,7 +179,7 @@ export default {
           filed: this.formData.email
         })
         .then(data => {
-          this.isExistsForEmail = data;
+          this.isExistsForEmail = data.data;
         })
         .catch(error => {
           console.log(error);
