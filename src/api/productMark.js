@@ -31,10 +31,12 @@ export function getPageList(pageFlag, pageSize, lastId, searchForm) {
   });
 }
 
-export function getTotal() {
+export function getTotal(params) {
   return request({
     url: '/product/mark/total',
-    method: "get"
+    method: "get",
+    params: params
+
   });
 }
 
