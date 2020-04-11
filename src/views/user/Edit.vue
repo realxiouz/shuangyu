@@ -90,8 +90,10 @@ export default {
     var validateEmail = (rule, value, callback) => {
       var reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
       if (!reg.test(value)) {
-        callback(new Error("邮箱输入格式错误！"));
+        this.isEmail = false;
+        callback(new Error("您输入的邮箱格式错误！"));
       } else {
+        this.isEmail = true;
         callback();
       }
     };
@@ -114,6 +116,7 @@ export default {
         ]
       },
       showCount: false,
+      isEmail: false,
       countDown: "",
       timer: "",
       TIME_COUNT: 20
@@ -208,37 +211,45 @@ export default {
     },
     //获取邮箱验证码
     getVerificationCode(email) {
-      if (!this.isExistsForEmail) {
-        if (email) {
-          this.$store
-            .dispatch("user/getVerificationCode", { targetEmail: email })
-            .then(data => {
-              console.log(data);
-              this.timer = null;
-            })
-            .catch(error => {
-              console.log(error);
-            });
-        } else {
-          this.$message({
-            type: "warning",
-            message: "请输入您的邮箱！"
-          });
-          this.timer = true;
-        }
-      }
-      if (!this.timer) {
-        this.countDown = this.TIME_COUNT;
-        this.showCount = true;
-        this.timer = setInterval(() => {
-          if (this.countDown > 0 && this.countDown <= this.TIME_COUNT) {
-            this.countDown--;
+      if (this.isEmail) {
+        if (!this.isExistsForEmail) {
+          if (email) {
+            this.$store
+              .dispatch("user/getVerificationCode", { targetEmail: email })
+              .then(data => {
+                console.log(data);
+                this.timer = null;
+              })
+              .catch(error => {
+                console.log(error);
+              });
           } else {
-            this.showCount = false;
-            clearInterval(this.timer); // 清除定时器
-            this.timer = null;
+            this.$message({
+              type: "warning",
+              message: "请输入您的邮箱！"
+            });
+            this.timer = true;
           }
-        }, 1000);
+        }
+        if (!this.timer) {
+          this.countDown = this.TIME_COUNT;
+          this.showCount = true;
+          this.timer = setInterval(() => {
+            if (this.countDown > 0 && this.countDown <= this.TIME_COUNT) {
+              this.countDown--;
+            } else {
+              this.showCount = false;
+              clearInterval(this.timer); // 清除定时器
+              this.timer = null;
+            }
+          }, 1000);
+        }
+      } else {
+        this.$message({
+          type: "warning",
+          message: "您输入的邮箱格式错误！"
+        });
+        return;
       }
     }
   },
