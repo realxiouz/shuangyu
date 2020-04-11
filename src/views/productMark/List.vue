@@ -74,17 +74,18 @@ export default {
     };
   },
   methods: {
-    loadData() {
+    loadData(params) {
       this.$store
         .dispatch("productMark/getPageList", {
           pageFlag: this.pageFlag,
           pageSize: this.pageSize,
           lastId: this.lastId,
-          filter: {}
+          filter: params
         })
         .then(data => {
           if (data) {
             this.tableData = data;
+            this.loadTotal(params)
           }
           this.loading = false;
         })
@@ -92,9 +93,9 @@ export default {
           console.log(error);
         });
     },
-    loadTotal() {
+    loadTotal(params) {
       this.$store
-        .dispatch("productMark/getTotal")
+        .dispatch("productMark/getTotal",{ filter: params })
         .then(data => {
           this.total = data;
         })
@@ -109,16 +110,19 @@ export default {
       this.markId = "";
     },
     handleSearch(params) {
-      this.$store
-        .dispatch("productMark/getList", { firmId: params.firmId })
-        .then(data => {
-          this.tableData = data;
-          this.loading = false;
-        })
-        .catch(error => {
-          this.loading = false;
-          console.log(error);
-        });
+      const newParams = {};
+      if (params) {
+        for (let key in params) {
+          if (params[key]) {
+            newParams[key] = params[key];
+          }
+        }
+      }
+      this.loadData(newParams);
+      this.$message({
+        type: "success",
+        message: "查询成功！"
+      });
     },
     handleSave(formData) {
       this.$store
@@ -196,9 +200,8 @@ export default {
         });
     }
   },
-  mounted() {
+  created() {
     this.loadData();
-    this.loadTotal();
   },
   components: {
     productMarkEdit,

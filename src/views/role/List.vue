@@ -36,7 +36,7 @@
         :page-size="pageSize"
         :total="total"
       ></el-pagination>
-      <el-dialog title="角色信息" center :visible.sync="dialogVisible" width="30%">
+      <el-dialog :title="roleId?'编辑角色信息':'添加新角色'" center :visible.sync="dialogVisible" width="30%">
         <role-edit
           v-if="dialogVisible"
           :roleId="roleId"
@@ -53,13 +53,13 @@ import roleEdit from "./Edit.vue";
 import roleSearch from "./Search.vue";
 
 export default {
-  name: "List",
+  name: "roleList",
   data() {
     return {
-      roleId: null,
+      roleId: "",
       dialogVisible: false,
       loading: true,
-        deleteForSearch: false,
+      deleteForSearch: false,
       pageFlag: "next",
       pageSize: 5,
       lastId: "0",
@@ -81,7 +81,7 @@ export default {
       this.$store
         .dispatch("role/removeOne", { roleID: roleID })
         .then(() => {
-            this.lastId = "0";
+          this.lastId = "0";
           if (1 === this.tableData.length && !this.deleteForSearch) {
             this.prevClick();
           } else {
@@ -99,7 +99,6 @@ export default {
     },
     changeSwitch(row) {
       row.enable = row.enable ? true : false;
-
       this.$store
         .dispatch("role/save", { role: row })
         .then(() => {
@@ -123,26 +122,18 @@ export default {
       this.roleId = "";
       this.dialogVisible = true;
     },
-    loadData() {
-      this.$store
-        .dispatch("role/getTotal", {})
-        .then(data => {
-          this.total = data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-
+    loadData(params) {
       this.$store
         .dispatch("role/getPageList", {
           pageFlag: this.pageFlag,
           pageSize: this.pageSize,
           lastId: this.lastId,
-          filter: {}
+          filter: params
         })
         .then(data => {
           if (data) {
             this.tableData = data;
+            this.loadTotal(params);
           }
           this.loading = false;
         })
@@ -151,15 +142,34 @@ export default {
           console.log(error);
         });
     },
+    loadTotal(params) {
+      this.$store
+        .dispatch("role/getTotal", { filter: params })
+        .then(data => {
+          if (data >= 0) {
+            this.total = data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     handleSave(formData) {
       this.$store
         .dispatch("role/save", { role: formData })
         .then(() => {
           this.loadData();
-          this.$message({
-            type:"success",
-            message:"操作成功！"
-          })
+          if (this.roleId != "") {
+            this.$message({
+              type: "success",
+              message: "修改成功！"
+            });
+          } else {
+            this.$message({
+              type: "success",
+              message: "添加成功！"
+            });
+          }
         })
         .catch(error => {
           console.log(error);
@@ -170,31 +180,17 @@ export default {
     handleCancel: function() {
       this.dialogVisible = false;
     },
-    handleSearch(formData) {
-      this.$store
-        .dispatch("role/getTotal", {
-          filter: formData ? { roleName: formData.keyword } : {}
-        })
-        .then(data => {
-          this.total = data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-
-      this.$store
-        .dispatch("role/getPageList", {
-          pageFlag: this.pageFlag,
-          pageSize: this.pageSize,
-          lastId: this.lastId,
-          filter: formData ? { roleName: formData.keyword } : {}
-        })
-        .then(data => {
-          this.tableData = data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
+    handleSearch(params) {
+      this.deleteForSearch = true;
+      const newParams = {};
+      if (params) {
+        for (let key in params) {
+          if (params[key]) {
+            newParams[key] = params[key];
+          }
+        }
+      }
+      this.loadData(newParams);
       this.$message({
         type: "success",
         message: "查询成功!"

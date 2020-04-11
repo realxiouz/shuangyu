@@ -12,6 +12,9 @@
         v-loading="loading"
         fit
       >
+        <el-table-column prop="orderType" label="订单类型" width="150" align="center"></el-table-column>
+        <el-table-column prop="category" label="订单分类" width="100" align="center"></el-table-column>
+        <el-table-column prop="accountId" label="平台账号" width="200" align="center"></el-table-column>
         <el-table-column prop="date" label="交易时间" width="100" align="center"></el-table-column>
         <el-table-column prop="amount" label="金额" align="center">
           <template slot-scope="scope">
@@ -23,11 +26,7 @@
             <span>{{ formatAmount(scope.row.transactionAmount)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="count" label="统计" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatAmount(scope.row.count)}}</span>
-          </template>
-        </el-table-column>
+        <el-table-column prop="count" label="数量" align="center"></el-table-column>
       </el-table>
       <el-pagination
         @size-change="handleSizeChange"
@@ -89,6 +88,9 @@ export default {
         .then(data => {
           if (data) {
             this.countData = data;
+            if (data[0].total) {
+              this.total = data[0].total;
+            }
           }
           this.loading = false;
         })

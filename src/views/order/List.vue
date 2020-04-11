@@ -201,6 +201,8 @@ export default {
         .then(data => {
           if (data) {
             this.tableData = data;
+            this.loadTotal(params);
+            this.loadCount(params);
           }
           this.loading = false;
         })
@@ -215,7 +217,9 @@ export default {
           filters: params
         })
         .then(data => {
-          this.total = data;
+          if (data >= 0) {
+            this.total = data;
+          }
         })
         .catch(error => {
           console.log(error);
@@ -227,7 +231,9 @@ export default {
           filters: params
         })
         .then(data => {
-          this.count = data;
+          if (data) {
+            this.count = data;
+          }
         })
         .catch(error => {
           console.log(error);
@@ -262,10 +268,7 @@ export default {
       if (!params) {
         params = {};
         this.searchParams = params;
-        this.loadCount(this.searchParams);
         this.loadData(this.searchParams);
-        this.loadTotal(this.searchParams);
-        
       } else {
         const newParams = {};
         for (let key in params) {
@@ -285,9 +288,7 @@ export default {
           }
         }
         this.searchParams = newParams;
-        this.loadCount(this.searchParams);
         this.loadData(this.searchParams);
-        this.loadTotal(this.searchParams);
         this.$message({
           type: "success",
           message: "查询成功！"
@@ -309,7 +310,6 @@ export default {
               } else {
                 this.loadData(this.searchParams);
               }
-              this.loadTotal();
             })
             .catch(error => {
               console.log(error);
@@ -424,8 +424,6 @@ export default {
 
   created() {
     this.loadData(this.searchParams);
-    this.loadTotal();
-    this.loadCount();
   }
 };
 </script>

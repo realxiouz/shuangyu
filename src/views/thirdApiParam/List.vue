@@ -32,8 +32,7 @@
       </el-table-column>
     </el-table>
     <el-dialog
-      title="接口信息"
-      :before-close="handleClose"
+      :title="isEdit?'编辑接口信息':'添加接口信息'"
       center
       :visible.sync="dialogVisible"
       width="30%"
@@ -60,7 +59,8 @@ export default {
       dialogVisible: false,
       paramId: null,
       tableData: [],
-      parentNode: {}
+      parentNode: {},
+      isEdit:false,
     };
   },
   methods: {
@@ -97,6 +97,7 @@ export default {
       return ret;
     },
     handleAdd() {
+      this.isEdit=false;
       //判断添加的导航是否是顶级导航
       this.rootNav = true;
       this.dialogVisible = true;
@@ -122,26 +123,20 @@ export default {
 
       this.dialogVisible = false;
     },
-    handleClose() {
-      this.$confirm("确认关闭接口信息对话框？")
-        .then(() => {
-          this.dialogVisible = false;
-        })
-        .catch(_ => {});
-    },
     handleCancel() {
       this.dialogVisible = false;
     },
     handleAddChild(row) {
+      this.isEdit=false;
       this.rootNav = false;
       this.dialogVisible = true;
-
       this.paramId = "";
       this.parentNode = {};
       this.parentNode.paramId = row.paramId;
       this.parentNode.level = row.level;
     },
     handleEdit(row) {
+      this.isEdit=true;
       this.dialogVisible = true;
       this.paramId = row.paramId;
     },

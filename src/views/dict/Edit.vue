@@ -40,7 +40,7 @@
     ></el-pagination>
 
     <el-dialog
-      title="第三方平台账号信息"
+      :title="isEdit?'编辑第三方平台账号信息':'添加第三方平台账号信息'"
       :visible.sync="dialogVisible"
       width="30%"
       :close-on-click-modal="false"
@@ -82,6 +82,7 @@ export default {
     return {
       dialogVisible: false,
       loading: false,
+      isEdit:false,
       tableData: [],
       formData: {},
       categoryList: [],
@@ -148,6 +149,7 @@ export default {
     },
     /*添加记录*/
     handleAdd() {
+      this.isEdit=false;
       this.dialogVisible = true;
       this.clearForm();
 
@@ -180,6 +182,7 @@ export default {
     },
     /*点击记录进行编辑*/
     handleEdit(row) {
+      this.isEdit=true;
       this.dialogVisible = true;
       this.formData = row;
     },

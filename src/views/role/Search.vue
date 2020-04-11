@@ -3,10 +3,11 @@
     <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
       <el-form :model="formData" label-width="110px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="订单号:">
+          <el-form-item label="角色名称:">
             <el-input
+              clearable
               @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.keyword"
+              v-model="formData.roleName"
               placeholder="请输入角色名称搜素..."
             ></el-input>
           </el-form-item>
@@ -36,7 +37,7 @@ export default {
     return {
       more: false,
       formData: {
-        keyword: ""
+        roleName: ""
       }
     };
   },
