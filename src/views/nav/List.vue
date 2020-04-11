@@ -23,16 +23,12 @@
         </el-tree>
       </el-col>
       <el-col :xs="13" :sm="14" :md="15" :lg="16" :xl="16">
-        <nav-edit
-          ref="search"
-          :apiVisible="apiVisible"
-          :curNode="curNode"
-        ></nav-edit>
+        <nav-edit ref="search" :apiVisible="apiVisible" :curNode="curNode"></nav-edit>
       </el-col>
     </el-row>
     <!-- 表单对话框 -->
     <el-dialog
-      title="导航菜单信息"
+      :title="addFlag?'添加导航菜单':'编辑导航菜单信息'"
       :visible.sync="dialogVisible"
       width="30%"
       center
@@ -126,7 +122,8 @@ export default {
         icon: "",
         title: "",
         sort: "",
-        remark: ""
+        remark: "",
+        addFlag: true
       };
     },
     /*加载导航树*/
@@ -146,37 +143,35 @@ export default {
     },
     /*点击添加顶级企业信息*/
     rootAdd() {
+      this.addFlag = true;
       this.formData = this.defaultFormData();
-
       //判断添加的导航是否是顶级导航
       this.rootNav = true;
       this.dialogVisible = true;
     },
     /*点击添加节点企业信息*/
     nodeAdd(idx, node) {
+      this.addFlag = true;
       this.formData = this.defaultFormData();
-
       //添加的导航菜单不是顶级菜单
       this.formData.pid = node.navId;
       this.formData.level = node.level + 1;
       this.curLine = [];
-
       this.rootNav = false;
       this.dialogVisible = true;
     },
     /*对导航节点进行存储*/
     handleSave() {
       this.dialogVisible = false;
-
       if (this.formData.navId != "") {
         this.$store
           .dispatch("nav/updateOne", { nav: this.formData })
           .then(() => {
             this.loadData();
             this.$message({
-              type:"success",
-              message:"修改成功！"
-            })
+              type: "success",
+              message: "修改成功！"
+            });
           })
           .catch(error => {
             console.log(error);
@@ -187,16 +182,15 @@ export default {
           this.formData.pid = null;
           this.formData.level = 0;
         }
-
         this.$store
           .dispatch("nav/addOne", { nav: this.formData })
           .then(data => {
             this.curLine.push(data.data);
             this.loadData();
-             this.$message({
-              type:"success",
-              message:"添加成功！"
-            })
+            this.$message({
+              type: "success",
+              message: "添加成功！"
+            });
           })
           .catch(error => {
             console.log(error);
@@ -241,9 +235,9 @@ export default {
       this.apiVisible = false;
     },
     handleEdit(data, node) {
+      this.addFlag = false;
       this.formData = node;
       this.dialogVisible = true;
-
       this.curLine = [];
       if (null != node.pid) {
         this.curLine.push(node.pid);
@@ -275,7 +269,7 @@ export default {
         });
     }
   },
-  mounted() {
+  created() {
     this.loadData();
   },
   components: {
