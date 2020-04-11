@@ -255,10 +255,17 @@ export default {
         .dispatch(url, formData)
         .then(data => {
           this.loadData();
-          this.$message({
-            type: "success",
-            message: "操作成功!"
-          });
+          if (this.userId != "") {
+            this.$message({
+              type: "success",
+              message: "修改成功！"
+            });
+          } else {
+            this.$message({
+              type: "success",
+              message: "添加成功！"
+            });
+          }
         })
         .catch(error => {
           console.log(error);

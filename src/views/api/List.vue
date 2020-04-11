@@ -46,7 +46,7 @@
       ></el-pagination>
       <el-dialog
         center
-        title="Api信息"
+        :title="apiId!=''?'编辑Api信息':'添加Api'"
         :visible.sync="dialogVisible"
         width="30%"
         :close-on-click-modal="false"
@@ -88,9 +88,6 @@ export default {
     },
 
     loadData(params) {
-      if (!params || !params.apiName) {
-        params = {};
-      }
       this.$store
         .dispatch("api/getPageList", {
           pageFlag: this.pageFlag,
@@ -101,6 +98,7 @@ export default {
         .then(data => {
           if (data) {
             this.tableData = data;
+            this.loadTotal(params);
           }
           this.loading = false;
         })
@@ -109,14 +107,13 @@ export default {
           console.log(error);
         });
     },
-    loadTotal: function(params) {
-      if (!params || !params.apiName) {
-        params = {};
-      }
+    loadTotal(params) {
       this.$store
         .dispatch("api/getTotal", { filters: params })
-        .then(response => {
-          this.total = response.data;
+        .then(data => {
+          if (data) {
+            this.total = data;
+          }
         })
         .catch(error => {
           console.log(error);
@@ -130,7 +127,9 @@ export default {
       row.enable = row.enable ? true : false;
       this.$store
         .dispatch("api/updateOne", row)
-        .then(() => {})
+        .then(() => {
+          this.loadData();
+        })
         .catch(error => {
           console.log(error);
         });
@@ -168,11 +167,18 @@ export default {
       this.$store
         .dispatch("api/save", params)
         .then(() => {
-          this.handleSearch();
-          this.$message({
-            type: "success",
-            message: "操作成功！"
-          });
+          this.loadData();
+          if (this.apiId !="") {
+            this.$message({
+              type: "success",
+              message: "修改成功！"
+            });
+          }else{
+            this.$message({
+              type: "success",
+              message: "添加成功！"
+            });
+          }
         })
         .catch(error => {
           console.log(error);
@@ -186,17 +192,24 @@ export default {
     handleCancel() {
       this.dialogVisible = false;
     },
-
     handleSearch(params) {
-      if (!params) {
-        params = {};
+      const newParams = {};
+      if (params) {
+        for (let key in params) {
+          if (params[key]) {
+            newParams[key] = params[key];
+          }
+        }
       }
-      this.loadData(params);
-      this.loadTotal(params);
+      this.loadData(newParams);
+      this.$message({
+        type: "success",
+        message: "查询成功！"
+      });
     }
   },
   created() {
-    this.handleSearch();
+    this.loadData();
   },
   components: {
     apiEdit,
