@@ -103,7 +103,6 @@ export default {
   },
   methods: {
     loadData(params) {
-      this.loadTotal(params);
       this.$store
         .dispatch("user/getPageList", {
           pageFlag: this.pageFlag,
@@ -114,6 +113,7 @@ export default {
         .then(data => {
           if (data) {
             this.tableData = data.data;
+            this.loadTotal(params);
           }
           this.loading = false;
         })
@@ -159,7 +159,6 @@ export default {
     /*修改是否超级管理员状态*/
     superSwitch(row) {
       row.super = row.super ? false : true;
-
       this.$store
         .dispatch("user/updateOne", row)
         .then(data => {

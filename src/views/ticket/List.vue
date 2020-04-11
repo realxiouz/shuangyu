@@ -132,6 +132,8 @@ export default {
         .then(data => {
           if (data) {
             this.tableData = data;
+            this.loadTotal(params);
+            this.loadCount(params);
           }
           this.loading = false;
         })
@@ -146,11 +148,11 @@ export default {
           filters: params
         })
         .then(data => {
-          this.length = false;
-          this.total = data;
+          if (data) {
+            this.total = data;
+          }
         })
         .catch(error => {
-          this.length = false;
           console.log(error);
         });
     },
@@ -160,7 +162,9 @@ export default {
           filters: params
         })
         .then(data => {
-          this.count = data;
+          if (data) {
+            this.count = data;
+          }
         })
         .catch(error => {
           console.log(error);
@@ -198,8 +202,6 @@ export default {
         params = {};
         this.searchParams = params;
         this.loadData(this.searchParams);
-        this.loadTotal(this.searchParams);
-        this.loadCount(this.searchParams);
       } else {
         const newParams = {};
         for (let key in params) {
@@ -220,8 +222,6 @@ export default {
         }
         this.searchParams = newParams;
         this.loadData(this.searchParams);
-        this.loadTotal(this.searchParams);
-        this.loadCount(this.searchParams);
       }
     },
     handleCancel() {
@@ -293,8 +293,6 @@ export default {
   },
   created() {
     this.loadData(this.searchParams);
-    this.loadTotal();
-    this.loadCount();
   }
 };
 </script>
