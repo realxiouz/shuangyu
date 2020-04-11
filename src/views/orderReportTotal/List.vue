@@ -183,6 +183,8 @@ export default {
         .then(data => {
           if (data) {
             this.tableData = data;
+            loadTotal(params);
+            loadCount(params);
           }
           this.loading = false;
         })
@@ -197,7 +199,9 @@ export default {
           filters: params
         })
         .then(data => {
-          this.total = data;
+          if (data) {
+            this.total = data;
+          }
         })
         .catch(error => {
           console.log(error);
@@ -209,7 +213,9 @@ export default {
           filters: params
         })
         .then(data => {
-          this.count = data;
+          if (data) {
+            this.count = data;
+          }
         })
         .catch(error => {
           console.log(error);
@@ -276,9 +282,7 @@ export default {
       if (!params) {
         params = {};
         this.searchParams = params;
-        this.loadCount(this.searchParams);
         this.loadData(this.searchParams);
-        this.loadTotal(this.searchParams);
       } else {
         const newParams = {};
         for (let key in params) {
@@ -293,8 +297,6 @@ export default {
         }
         this.searchParams = newParams;
         this.loadData(this.searchParams);
-        this.loadTotal(this.searchParams);
-        this.loadCount(this.searchParams);
         this.$message({
           type: "success",
           message: "查询成功！"
@@ -330,7 +332,6 @@ export default {
       if (!data || data.length == 0) {
         return "";
       }
-      // let dptTime = data[0].dptTime.match(/.*(.{5})/)[1];
       return (
         data[0].dpt +
         " " +
@@ -369,8 +370,6 @@ export default {
   },
   created() {
     this.loadData(this.searchParams);
-    this.loadTotal();
-    this.loadCount();
   }
 };
 </script>

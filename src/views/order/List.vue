@@ -194,8 +194,6 @@ export default {
       this.loadData(this.searchParams);
     },
     loadData(params) {
-      this.loadTotal(params);
-      this.loadCount(params);
       this.$store
         .dispatch("order/getList", {
           filters: params
@@ -203,6 +201,8 @@ export default {
         .then(data => {
           if (data) {
             this.tableData = data;
+            this.loadTotal(params);
+            this.loadCount(params);
           }
           this.loading = false;
         })
@@ -217,7 +217,9 @@ export default {
           filters: params
         })
         .then(data => {
-          this.total = data;
+          if (data) {
+            this.total = data;
+          }
         })
         .catch(error => {
           console.log(error);
@@ -229,7 +231,9 @@ export default {
           filters: params
         })
         .then(data => {
-          this.count = data;
+          if (data) {
+            this.count = data;
+          }
         })
         .catch(error => {
           console.log(error);
