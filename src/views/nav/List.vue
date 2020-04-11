@@ -78,6 +78,7 @@ import navEdit from "./Edit";
 export default {
   data() {
     return {
+      addFlag: true,
       treeLoading: true,
       dialogVisible: false,
       /*是否选择导航节点，没有选择则不可编辑*/
@@ -123,7 +124,7 @@ export default {
         title: "",
         sort: "",
         remark: "",
-        addFlag: true
+        
       };
     },
     /*加载导航树*/

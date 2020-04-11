@@ -27,7 +27,13 @@
         <dict-edit :dictVisible="dictVisible" :curNode="curNode" />
       </el-col>
     </el-row>
-    <el-dialog title="添加类别" :visible.sync="dialogVisible" width="24%" :close-on-click-modal="false">
+    <el-dialog
+      :title="addFlag?'添加类别':'编辑类别信息'"
+      :visible.sync="dialogVisible"
+      width="33%"
+      center
+      :close-on-click-modal="false"
+    >
       <el-form :model="formData" label-width="90px" size="mini">
         <input type="hidden" v-model="formData.categoryId" />
         <el-form-item label="类别编码">
@@ -62,6 +68,7 @@ import dictEdit from "./Edit";
 export default {
   data() {
     return {
+      addFlag: true,
       loading: true,
       dialogVisible: false,
       /*是否选择类别节点，没有选择则不可编辑*/
@@ -114,6 +121,7 @@ export default {
     },
     /*点击添加顶级企业信息*/
     rootAdd() {
+      this.addFlag = true;
       this.formData = this.defaultFormData();
       this.formData.pid = null;
       this.formData.level = 0;
@@ -125,6 +133,7 @@ export default {
     },
     /*点击添加节点企业信息*/
     nodeAdd(idx, node) {
+      this.addFlag = true;
       this.formData = this.defaultFormData();
       this.formData.pid = node.categoryId;
       this.formData.level = node.level + 1;
@@ -201,7 +210,7 @@ export default {
       }
     },
     handleEdit(data, node) {
-      console.log(node);
+      this.addFlag = false;
       this.formData = node;
       this.dialogVisible = true;
       this.update = true;
