@@ -88,7 +88,7 @@ export default {
   comments: { selectRoles },
   data() {
     var validateEmail = (rule, value, callback) => {
-      var reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+      var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
       if (!reg.test(value)) {
         this.isEmail = false;
         callback(new Error("您输入的邮箱格式错误！"));

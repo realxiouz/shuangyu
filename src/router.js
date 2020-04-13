@@ -479,6 +479,13 @@ export default new Router({
           meta: { title: '资金账号管理', icon: 'home' }
         },
         {
+          title: '科目管理',
+          path: '/finance/accounting/subjects',
+          name: 'accountingSubjects',
+          component: () => import('@/views/accountingSubjects/List'),
+          meta: { title: '科目管理', icon: 'home' }
+        },
+        {
           title: '订单管理',
           path: '/finance/order/list',
           name: 'financeOrder',
