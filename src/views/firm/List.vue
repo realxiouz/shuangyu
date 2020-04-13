@@ -14,7 +14,7 @@
         row-key="firmId"
         :tree-props="tableProps"
       >
-        <el-table-column prop="firmName" label="企业名称" align="center" sortable width="100"></el-table-column>
+        <el-table-column prop="firmName" label="企业名称" align="center" sortable width="180"></el-table-column>
         <el-table-column prop="firmCode" label="企业代码" align="center" sortable width="100"></el-table-column>
         <el-table-column prop="location" label="机构所在地" align="center"></el-table-column>
         <el-table-column prop="linkPerson" label="联系人" align="center" width="100"></el-table-column>
@@ -61,9 +61,9 @@ export default {
   },
   methods: {
     /*加载企业列表*/
-    loadData() {
+    loadData(params) {
       this.$store
-        .dispatch("firm/getList", { filter: {} })
+        .dispatch("firm/getList", { filter: params })
         .then(data => {
           if (data) {
             this.tableData = data;
@@ -77,14 +77,19 @@ export default {
     },
     /*根据关键字进行企业搜索*/
     handleSearch(params) {
-      this.$store
-        .dispatch("firm/getList", { params })
-        .then(data => {
-          this.tableData = data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      const newParams = {};
+      if (params) {
+        for (let key in params) {
+          if (params[key]) {
+            newParams[key] = params[key];
+          }
+        }
+      }
+      this.loadData(newParams);
+      this.$message({
+        type: "success",
+        message: "查询成功！"
+      });
     },
     handleAdd() {
       this.rootNav = true;
