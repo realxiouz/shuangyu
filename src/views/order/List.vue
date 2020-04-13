@@ -328,20 +328,7 @@ export default {
     },
     handleOrderDetail(row) {
       let path = "";
-      if (row.orderType == 10) {
-        path = "/order/detail";
-      } else if (
-        row.orderType == 20 ||
-        row.orderType == 21 ||
-        row.orderType == 22 ||
-        row.orderType == 23
-      ) {
-        path = "/order/refund/detail";
-      } else if (row.orderType == 30 || row.orderType == 31) {
-        path = "/order/chang/detail";
-      } else {
-        path = "/order/detail";
-      }
+      path = "/order/detail";
       this.$router.push({
         path: path,
         query: {
