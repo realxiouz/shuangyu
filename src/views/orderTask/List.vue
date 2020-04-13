@@ -1,7 +1,7 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <order-task-search  @onSearch="handleSearch"></order-task-search>
+      <order-task-search @onSearch="handleSearch"></order-task-search>
     </div>
     <div class="contentBox">
       <el-table
@@ -104,15 +104,17 @@ export default {
       this.createTime = this.tableData[this.tableData.length - 1].createTime;
       this.loadData();
     },
-    loadData() {
+    loadData(params) {
       this.$store
         .dispatch("orderTask/getPageList", {
           pageSize: this.pageSize,
           createTime: this.createTime,
-          taskId: this.taskId
+          taskId: this.taskId,
+          searchForm: params
         })
         .then(data => {
           if (data) {
+            this.loadTotal(params);
             this.tableData = data;
           }
           this.loading = false;
@@ -136,7 +138,7 @@ export default {
     },
     /*初始化用工列表中的生日日期格式*/
     initDate(dateStr, format) {
-      if (null != dateStr && dateStr != 0) {
+      if (dateStr && dateStr > 0) {
         let date = new Date(dateStr);
         return this.$moment(date).format(format);
       } else {
@@ -178,14 +180,24 @@ export default {
         return "";
       }
     },
-    handleSearch(params){
-      console.log(params)
-
+    handleSearch(params) {
+      const newParams = {};
+      if (params) {
+        for (let key in params) {
+          if (params[key]) {
+            newParams[key] = params[key];
+          }
+        }
+      }
+      this.loadData(newParams);
+      this.$message({
+        type: "success",
+        message: "查询成功！"
+      });
     }
   },
   created() {
     this.loadData();
-    this.loadTotal();
   },
   computed: {
     formatDate() {
