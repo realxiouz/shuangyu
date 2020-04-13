@@ -36,7 +36,7 @@
         :page-size="pageSize"
         :total="total"
       ></el-pagination>
-      <el-dialog title="航段" center :visible.sync="dialogVisible" width="30%">
+      <el-dialog :title="segment?'编辑航段信息':'添加航段'" center :visible.sync="dialogVisible" width="30%">
         <segment-edit
           v-if="dialogVisible"
           :segment="segment"
@@ -66,22 +66,26 @@ export default {
       currentPage: 0
     };
   },
+  components: {
+    segmentEdit,
+    segmentSearch
+  },
   methods: {
     handleAdd() {
       this.segment = "";
       this.dialogVisible = true;
     },
-    loadData() {
+    loadData(params) {
       this.$store
         .dispatch("flightSegment/getPageList", {
           pageSize: this.pageSize,
           lastId: this.lastId,
           pageFlag: this.pageFlag,
-          searchForm: this.searchForm
+          searchForm: params
         })
         .then(data => {
           if (data) {
-            this.loadTotal(this.searchForm);
+            this.loadTotal(params);
             this.tableData = data;
           }
           this.loading = false;
@@ -91,9 +95,9 @@ export default {
           console.log(error);
         });
     },
-    loadTotal() {
+    loadTotal(params) {
       this.$store
-        .dispatch("flightSegment/getTotal", this.searchForm)
+        .dispatch("flightSegment/getTotal", params)
         .then(data => {
           this.total = data;
         })
@@ -153,17 +157,23 @@ export default {
       this.loadData();
     },
     handleSearch(params) {
-      this.searchForm = params;
-      this.lastId = "0";
-      this.loadData();
+      const newParams = {};
+      if (params) {
+        for (let key in params) {
+          if (params[key]) {
+            newParams[key] = params[key];
+          }
+        }
+      }
+      this.loadData(newParams);
+      this.$message({
+        type: "success",
+        message: "查询成功！"
+      });
     }
   },
-  mounted() {
+  created() {
     this.loadData();
-  },
-  components: {
-    segmentEdit,
-    segmentSearch
   }
 };
 </script>
