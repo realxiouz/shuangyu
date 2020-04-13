@@ -2,18 +2,31 @@
   <div>
     <el-form :model="formData" label-width="110px" size="mini">
       <input type="hidden" v-model="formData.fundAccountId" />
-      <el-form-item label="资金账号">
-        <el-input v-model="formData.fundAccount" placeholder="请输入资金账号.."></el-input>
+      <el-form-item label="科目编码：">
+        <el-input v-model="formData.fundAccount" placeholder="请输入科目编码..."></el-input>
       </el-form-item>
-      <el-form-item label="账号平台">
-        <el-input v-model="formData.platform" placeholder="请输入资金账号平台.."></el-input>
+      <el-form-item label="科目名称：">
+        <el-input v-model="formData.platform" placeholder="请输入科目名称..."></el-input>
       </el-form-item>
-      <el-form-item label="初始余额">
-        <el-input v-model="formData.initBalance" placeholder="请输入初始余额.."></el-input>
+      <el-form-item label="类别：">
+        <el-input v-model="formData.fundAccount" placeholder="请输入类别..."></el-input>
       </el-form-item>
-      <el-form-item label="余额">
-        <el-input v-model="formData.balance" placeholder="请输入余额.."></el-input>
+      <el-form-item label="余额方向：">
+        <el-input v-model="formData.platform" placeholder="请输入余额方向.."></el-input>
       </el-form-item>
+      <el-form-item label="数量核算：">
+        <el-input v-model="formData.fundAccount" placeholder="请输入数量核算..."></el-input>
+      </el-form-item>
+      <el-form-item label="辅助核算：">
+        <el-input v-model="formData.platform" placeholder="请输入辅助核算..."></el-input>
+      </el-form-item>
+      <el-form-item label="外币核算：">
+        <el-input v-model="formData.fundAccount" placeholder="请输入外币核算..."></el-input>
+      </el-form-item>
+      <el-form-item label="期末调汇：">
+        <el-input v-model="formData.platform" placeholder="请输入期末调汇..."></el-input>
+      </el-form-item>
+      
     </el-form>
     <div style="text-align:right;">
       <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
