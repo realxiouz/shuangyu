@@ -1,10 +1,15 @@
 <template>
   <el-row type="flex" justify="space-between" align="bottom">
     <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
-      <el-form label-width="80px" size="mini">
+      <el-form label-width="110px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="账号：">
-            <el-input v-model="formData.flightCode" placeholder="请输入航班号.." @input="toUpperCase"></el-input>
+          <el-form-item label="航班号:">
+            <el-input
+              clearable
+              v-model="formData.flightCode"
+              placeholder="请输入航班号.."
+              @input="toUpperCase"
+            ></el-input>
           </el-form-item>
         </el-col>
       </el-form>
@@ -26,37 +31,39 @@
 </template>
 
 <script>
-    export default {
-        data() {
-            return {
-                more: false,
-                formData: {}
-            };
-        },
-        computed: {
-            switchIcon() {
-                if (!this.more) {
-                    return "el-icon-arrow-down el-icon--right";
-                } else {
-                    return "el-icon-arrow-up el-icon--right";
-                }
-            }
-        },
-        methods: {
-            handleMore() {
-                this.more = !this.more;
-            },
-            handleSearch(){
-                if (this.formData.flightCode && '' != this.formData.flightCode){
-                    this.formData.flightCode = this.formData.flightCode.toUpperCase();
-                }else{
-                    this.formData.flightCode = null;
-                }
-                this.$emit('onSearch', this.formData);
-            },
-            toUpperCase() {
-                this.formData.flightCode = this.formData.flightCode.toUpperCase();
-            }
-        }
+export default {
+  data() {
+    return {
+      more: false,
+      formData: {
+        flightCode:''
+      }
     };
+  },
+  computed: {
+    switchIcon() {
+      if (!this.more) {
+        return "el-icon-arrow-down el-icon--right";
+      } else {
+        return "el-icon-arrow-up el-icon--right";
+      }
+    }
+  },
+  methods: {
+    handleMore() {
+      this.more = !this.more;
+    },
+    handleSearch() {
+      if (this.formData.flightCode && "" != this.formData.flightCode) {
+        this.formData.flightCode = this.formData.flightCode.toUpperCase();
+      } else {
+        this.formData.flightCode = null;
+      }
+      this.$emit("onSearch", this.formData);
+    },
+    toUpperCase() {
+      this.formData.flightCode = this.formData.flightCode.toUpperCase();
+    }
+  }
+};
 </script>
