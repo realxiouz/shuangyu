@@ -5,8 +5,9 @@
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="资金账号">
             <el-input
+              clearable
               @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.keyword"
+              v-model="formData.fundAccount"
               placeholder="请输入资金账号.."
               size
             ></el-input>
@@ -37,7 +38,7 @@ export default {
     return {
       more: false,
       formData: {
-        keyword: null
+        fundAccount: null
       }
     };
   },

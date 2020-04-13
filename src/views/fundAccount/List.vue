@@ -16,14 +16,14 @@
         <el-table-column prop="platform" label="资金账号平台" align="center"></el-table-column>
         <el-table-column prop="fundAccount" label="资金账号" align="center"></el-table-column>
         <el-table-column prop="initBalance" label="初始余额" align="center">
-            <template slot-scope="scope">
-                <span>{{formatAmount(scope.row.initBalance)}}</span>
-            </template>
+          <template slot-scope="scope">
+            <span>{{formatAmount(scope.row.initBalance)}}</span>
+          </template>
         </el-table-column>
         <el-table-column prop="balance" label="余额" align="center">
-            <template slot-scope="scope">
-                <span>{{formatAmount(scope.row.balance)}}</span>
-            </template>
+          <template slot-scope="scope">
+            <span>{{formatAmount(scope.row.balance)}}</span>
+          </template>
         </el-table-column>
         <el-table-column label="操作" align="center" width="180">
           <template slot-scope="scope">
@@ -44,7 +44,7 @@
       ></el-pagination>
 
       <el-dialog
-        title="资金账号信息"
+        :title="update?'编辑资金账号信息':'添加资金账号'"
         center
         :visible.sync="dialogVisible"
         :close-on-click-modal="false"
@@ -71,7 +71,7 @@ export default {
       loading: true,
       dialogVisible: false,
       update: false,
-        deleteForSearch: false,
+      deleteForSearch: false,
       curNode: {},
       tableData: [],
       lastId: "blank",
@@ -80,24 +80,21 @@ export default {
       total: 0
     };
   },
+  components: {
+    fundAccountEdit,
+    fundAccountSearch
+  },
   methods: {
-    loadData() {
-      this.$store
-        .dispatch("fundAccount/getTotal", { filter: {} })
-        .then(data => {
-          this.total = data.data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
+    loadData(params) {
       this.$store
         .dispatch("fundAccount/getPageList", {
           pageFlag: this.pageFlag,
           pageSize: this.pageSize,
           lastId: this.lastId,
-          filter: {}
+          filter: params
         })
         .then(data => {
+          this.loadTotal(params);
           this.tableData = data.data;
           this.loading = false;
         })
@@ -106,31 +103,30 @@ export default {
           console.log(error);
         });
     },
-    handleSearch(params) {
-        this.deleteForSearch = true;
+    loadTotal(params) {
       this.$store
-        .dispatch("fundAccount/getTotal", {
-          filter: params.keyword ? { fundAccount: params.keyword } : {}
-        })
+        .dispatch("fundAccount/getTotal", { filter: params })
         .then(data => {
           this.total = data.data;
         })
         .catch(error => {
           console.log(error);
         });
-      this.$store
-        .dispatch("fundAccount/getPageList", {
-          pageFlag: this.pageFlag,
-          pageSize: this.pageSize,
-          lastId: this.lastId,
-          filter: params.keyword ? { fundAccount: params.keyword } : {}
-        })
-        .then(data => {
-          this.tableData = data.data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
+    },
+    handleSearch(params) {
+      const newParams = {};
+      if (params) {
+        for (let key in params) {
+          if (params[key]) {
+            newParams[key] = params[key];
+          }
+        }
+      }
+      this.loadData(newParams);
+      this.$message({
+        type: "success",
+        message: "查询成功！"
+      });
     },
     handleAdd() {
       this.dialogVisible = true;
@@ -184,7 +180,7 @@ export default {
       this.$store
         .dispatch("fundAccount/removeOne", { fundAccountId: fundAccountId })
         .then(() => {
-            this.lastId = "blank";
+          this.lastId = "blank";
           if (1 === this.tableData.length && !this.deleteForSearch) {
             this.handlePrevClick();
           } else {
@@ -224,12 +220,8 @@ export default {
       return this.$numeral(amount).format("0.00");
     }
   },
-  mounted() {
+  created() {
     this.loadData();
-  },
-  components: {
-    fundAccountEdit,
-    fundAccountSearch
   }
 };
 </script>
