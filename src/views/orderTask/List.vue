@@ -1,11 +1,11 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <span style="font-size:12px;">你好 {{this.$store.state.loginInfo.fullName}}！</span>
+      <!-- <span style="font-size:12px;">你好 {{this.$store.state.loginInfo.fullName}}！</span> -->
       <span>
         <el-button type size="mini">
           待处理
-          <el-badge :value="12" :max="99"></el-badge>
+          <el-badge :value="counts?counts.totalCount:'0'" :max="99"></el-badge>
         </el-button>
       </span>
 
@@ -129,7 +129,6 @@ import orderTaskSearch from "./Search.vue";
 
 export default {
   name: "orderTask",
-
   data() {
     return {
       loading: true,
@@ -139,7 +138,8 @@ export default {
       createTime: 0,
       taskId: "blank",
       total: 0,
-      searchParams: {}
+      searchParams: {},
+      counts: []
     };
   },
   components: {
@@ -151,29 +151,22 @@ export default {
       this.searchParams.pageSize = this.pageSize;
       this.loadData(this.searchParams);
     },
-    prevClick() {
-      if (parseInt(this.total / this.pageSize) == 1) {
-        this.taskId = "blank";
-        this.createTime = 0;
-        this.loadData();
-      } else {
-        this.taskId = this.tableData[0].taskId;
-        this.createTime = this.tableData[0].createTime;
-        this.loadData();
-      }
+    prevClick(page) {
+      this.currentPage = page;
+      this.searchParams.pageSize = this.pageSize;
+      this.searchParams.currentPage = this.currentPage;
+      this.loadData(this.searchParams);
     },
-    nextClick() {
-      this.taskId = this.tableData[this.tableData.length - 1].taskId;
-      this.createTime = this.tableData[this.tableData.length - 1].createTime;
-      this.loadData();
+    nextClick(page) {
+      this.currentPage = page;
+      this.searchParams.pageSize = this.pageSize;
+      this.searchParams.currentPage = this.currentPage;
+      this.loadData(this.searchParams);
     },
     loadData(params) {
       this.$store
         .dispatch("orderTask/getPageList", {
-          pageSize: this.pageSize,
-          createTime: this.createTime,
-          taskId: this.taskId,
-          searchForm: params
+          filters: params
         })
         .then(data => {
           if (data) {
@@ -194,6 +187,23 @@ export default {
         })
         .then(data => {
           this.total = data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    loadPendingTotal() {
+      this.$store
+        .dispatch("orderTask/getPendingTotal", {
+          filters: {}
+        })
+        .then(data => {
+          if (data) {
+            this.counts = data;
+            this.counts.taskTypes.forEach((item)=>{
+
+            })
+          }
         })
         .catch(error => {
           console.log(error);
@@ -255,6 +265,7 @@ export default {
   },
   created() {
     this.loadData();
+    this.loadPendingTotal();
   },
   computed: {
     formatDate() {
