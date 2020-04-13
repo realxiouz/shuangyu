@@ -474,9 +474,9 @@ export default new Router({
         },
         {
           title: '科目管理',
-          path: '/finance/accounting/subjects',
-          name: 'accountingSubjects',
-          component: () => import('@/views/accountingSubjects/List'),
+          path: '/finance/account/subject',
+          name: 'accountSubject',
+          component: () => import('@/views/accountSubject/List'),
           meta: { title: '科目管理', icon: 'home' }
         },
         {
