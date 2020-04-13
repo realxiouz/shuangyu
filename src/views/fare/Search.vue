@@ -5,6 +5,7 @@
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="航段:">
             <el-input
+              clearable
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.segment"
               placeholder="航段"
@@ -14,6 +15,7 @@
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="出发地三字码:">
             <el-input
+              clearable
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.dpt"
               placeholder="出发地三字码"
@@ -23,6 +25,7 @@
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="目的地三字码:">
             <el-input
+              clearable
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.arr"
               placeholder="目的地三字码"
@@ -32,6 +35,7 @@
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="航司二字码:">
             <el-input
+              clearable
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.airlineCode"
               placeholder="航司二字码"
@@ -41,6 +45,7 @@
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="航司舱位:">
             <el-input
+              clearable
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.cabin"
               placeholder="航司舱位"
@@ -98,30 +103,30 @@ export default {
     },
 
     handleSearch() {
-      if (this.formData.segment && '' != this.formData.segment) {
+      if (this.formData.segment && "" != this.formData.segment) {
         this.formData.segment = this.formData.segment.toUpperCase();
-      }else{
-          this.formData.segment = null;
+      } else {
+        this.formData.segment = null;
       }
-      if (this.formData.dpt && '' != this.formData.dpt) {
+      if (this.formData.dpt && "" != this.formData.dpt) {
         this.formData.dpt = this.formData.dpt.toUpperCase();
-      }else{
-          this.formData.dpt = null;
+      } else {
+        this.formData.dpt = null;
       }
-      if (this.formData.arr && '' != this.formData.arr) {
+      if (this.formData.arr && "" != this.formData.arr) {
         this.formData.arr = this.formData.arr.toUpperCase();
-      }else{
-          this.formData.arr = null;
+      } else {
+        this.formData.arr = null;
       }
-      if (this.formData.airlineCode && '' != this.formData.airlineCode) {
+      if (this.formData.airlineCode && "" != this.formData.airlineCode) {
         this.formData.airlineCode = this.formData.airlineCode.toUpperCase();
-      }else{
-          this.formData.airlineCode = null;
+      } else {
+        this.formData.airlineCode = null;
       }
-      if (this.formData.cabin && '' != this.formData.cabin) {
+      if (this.formData.cabin && "" != this.formData.cabin) {
         this.formData.cabin = this.formData.cabin.toUpperCase();
-      }else{
-          this.formData.cabin = null;
+      } else {
+        this.formData.cabin = null;
       }
       this.$emit("onSearch", this.formData);
     }

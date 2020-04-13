@@ -51,7 +51,13 @@
         @next-click="handleNextClick"
       ></el-pagination>
 
-      <el-dialog title="票价信息" center :visible.sync="dialogVisible" :close-on-click-modal="false" width="30%">
+      <el-dialog
+        title="票价信息"
+        center
+        :visible.sync="dialogVisible"
+        :close-on-click-modal="false"
+        width="30%"
+      >
         <fare-edit
           v-if="dialogVisible"
           :curNode="curNode"
@@ -72,11 +78,11 @@ export default {
     return {
       loading: true,
       dialogVisible: false,
-        deleteForSearch: false,
+      deleteForSearch: false,
       tableData: [],
       /*记录当前进行操作的节点*/
       curNode: {},
-        searchForm: {},
+      searchForm: {},
       pageFlag: "next",
       pageSize: 10,
       lastId: "blank",
@@ -85,24 +91,17 @@ export default {
   },
   methods: {
     /*加载数据列表*/
-    loadData() {
-      this.$store
-        .dispatch("fare/getTotal", { filter: {} })
-        .then(data => {
-          this.total = data.data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
+    loadData(params) {
       this.$store
         .dispatch("fare/getPageList", {
           pageFlag: this.pageFlag,
           pageSize: this.pageSize,
           lastId: this.lastId,
-          filter: {}
+          filter: params
         })
         .then(data => {
           if (data) {
+            this.loadTotal(params);
             this.tableData = data.data;
           }
           this.loading = false;
@@ -112,31 +111,32 @@ export default {
           console.log(error);
         });
     },
-    /*输入条件时可进行条件查询*/
-    search(searchForm) {
-        this.searchForm = searchForm;
-        this.deleteForSearch = true;
+    loadTotal(params) {
       this.$store
-        .dispatch("fare/getTotal", { filter: searchForm })
+        .dispatch("fare/getTotal", { filter: params })
         .then(data => {
           this.total = data.data;
         })
         .catch(error => {
           console.log(error);
         });
-      this.$store
-        .dispatch("fare/getPageList", {
-          pageFlag: this.pageFlag,
-          pageSize: this.pageSize,
-          lastId: this.lastId,
-          filter: searchForm
-        })
-        .then(data => {
-          this.tableData = data.data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
+    },
+    /*输入条件时可进行条件查询*/
+    search(params) {
+      this.deleteForSearch = true;
+      const newParams = {};
+      if (params) {
+        for (let key in params) {
+          if (params[key]) {
+            newParams[key] = params[key];
+          }
+        }
+      }
+      this.loadData(newParams);
+      this.$message({
+        type: "success",
+        message: "查询成功！"
+      });
     },
     /*添加记录*/
     handleAdd() {
@@ -147,7 +147,6 @@ export default {
     /*添加记录时完成数据填写或编辑记录时，点击对数据进行保存*/
     handleSave(formData) {
       this.dialogVisible = false;
-
       let url = "";
       if ("" != formData.fareId) {
         url = "fare/updateOne";
@@ -180,7 +179,7 @@ export default {
       this.$store
         .dispatch("fare/removeOne", { fareID: fareID })
         .then(() => {
-            this.lastId = "blank";
+          this.lastId = "blank";
           if (1 === this.tableData.length && !this.deleteForSearch) {
             this.handlePrevClick();
           } else {
@@ -196,13 +195,13 @@ export default {
     handlePrevClick() {
       this.pageFlag = "prev";
       this.lastId = this.tableData[0].fareId;
-      this.search(this.searchForm);
+      this.loadData()
     },
     /*翻后页*/
     handleNextClick() {
       this.pageFlag = "next";
       this.lastId = this.tableData[this.tableData.length - 1].fareId;
-        this.search(this.searchForm);
+      this.loadData()
     },
     open(func, data, message) {
       this.$confirm(message, "提示", {
