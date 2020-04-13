@@ -77,12 +77,7 @@
         </el-table-column>
         <el-table-column prop="dptTime" label="起飞时间" width="150" align="center"></el-table-column>
         <el-table-column prop="arrTime" label="到达时间" width="100" align="center"></el-table-column>
-        <el-table-column
-          prop="distance"
-          label="航程"
-          width="50"
-          align="center"
-        ></el-table-column>
+        <el-table-column prop="distance" label="航程" width="50" align="center"></el-table-column>
         <el-table-column prop="refundRule" label="退票规则" align="center"></el-table-column>
         <el-table-column prop="changeRule" label="改签规则" align="center"></el-table-column>
       </el-table>
@@ -115,7 +110,13 @@
           width="250"
           align="center"
         ></el-table-column>
-        <el-table-column prop="cardType" :formatter="formatCardType" label="乘机人证件类型" width="250" align="center"></el-table-column>
+        <el-table-column
+          prop="cardType"
+          :formatter="formatCardType"
+          label="乘机人证件类型"
+          width="250"
+          align="center"
+        ></el-table-column>
         <el-table-column prop="cardNo" label="乘机人证件号" width="300" align="center"></el-table-column>
         <el-table-column label="票面价" align="center">
           <template slot-scope="scope">
@@ -124,12 +125,33 @@
         </el-table-column>
       </el-table>
       <el-row style="margin-top:20px">
-        <el-button type="primary" @click="goTicket" size="mini">出票</el-button>
+        <el-button type="primary" @click="goTicket" size="mini">系统出票</el-button>
+        <el-button type="primary" @click="handleTicket" size="mini">手工出票</el-button>
       </el-row>
     </el-card>
+
+    <el-card class="contentBox">
+      <div slot="header" class="clearfix">
+        <span>采购订单信息</span>
+      </div>
+      <el-table></el-table>
+    </el-card>
+
+    <div>
+      <el-dialog
+        title="手工出票"
+        center
+        :visible.sync="handleTicketShow"
+        width="33%"
+        :close-on-click-modal="false"
+      >
+        <handle-ticket></handle-ticket>
+      </el-dialog>
+    </div>
   </div>
 </template>
 <script>
+import handleTicket from "./handleTicket";
 import {
   formateOrderType,
   formateCategory,
@@ -141,7 +163,7 @@ export default {
   name: "orderDetail",
   data() {
     return {
-      purchaseShow: this.$route.query.purchaseShow,
+      handleTicketShow: false,
       flightData: [],
       PassengerData: [],
       tableData: {},
@@ -192,6 +214,19 @@ export default {
             passengersInfo: JSON.stringify(this.passengersInfo)
           }
         });
+      }
+    },
+    handleTicket() {
+      if (this.passengersInfo.length < 1) {
+        this.$notify({
+          title: "提示",
+          message: "至少选择一名要出票的乘客",
+          type: "warning",
+          duration: 4500
+        });
+        return;
+      } else {
+        this.handleTicketShow = true;
       }
     },
     getOrderDetail(orderNo) {
