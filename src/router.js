@@ -231,11 +231,18 @@ export default new Router({
           meta: { title: '订单任务', icon: 'home' }
         },
         {
+          title: '总订单任务',
+          path: '/order/task/total/list',
+          name: 'orderTaskTotal',
+          component: () => import('@/views/orderTaskTotal/List'),
+          meta: { title: '总订单任务', icon: 'home' }
+        },
+        {
           title: '订单总报表',
           path: '/order/reportTotal/list',
           name: 'orderReportTotal',
           component: () => import('@/views/orderReportTotal/List'),
-          meta: { title: '订单任务', icon: 'home' }
+          meta: { title: '订单总报表', icon: 'home' }
         },
       ]
     },

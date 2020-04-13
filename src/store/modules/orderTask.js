@@ -41,8 +41,9 @@ const actions = {
         });
     },
     getTotal({ commit }, params) {
+        const { filters } = params;
         return new Promise((resolve, reject) => {
-            getTotal(params)
+            getTotal(filters)
                 .then(response => {
                     const { data } = response;
                     resolve(data);
