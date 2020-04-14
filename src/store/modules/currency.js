@@ -1,4 +1,4 @@
-import {addOne,updateOne,removeOne,getOne,getList,getTotal,getPageList} from '@/api/fundAccount';
+import {addOne,updateOne,removeOne,getOne,getList,getTotal,getPageList} from '@/api/currency';
 
 const actions = {
   addOne({commit}, params) {
@@ -25,8 +25,8 @@ const actions = {
   },
   removeOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {accountId} = params;
-      removeOne(accountId)
+      const {code} = params;
+      removeOne(code)
         .then(response => {
           resolve(response);
         })
@@ -37,8 +37,8 @@ const actions = {
   },
   getOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {accountId} = params;
-      getOne(accountId)
+      const {code} = params;
+      getOne(code)
         .then(response => {
           resolve(response);
         })

@@ -1,37 +1,32 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <fund-account-search @onSearch="loadData"></fund-account-search>
+      <currency-search @onSearch="loadData"></currency-search>
     </div>
     <div class="contentBox">
       <el-row style="margin-bottom:15px;margin-left:22px;">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table size="mini" v-loading="loading" :data="tableData" style="width: 100%;margin-bottom:15px;">
-        <el-table-column prop="accountCode" label="账号编码" align="center"></el-table-column>
-        <el-table-column prop="accountName" label="账号名称" align="center"></el-table-column>
-        <el-table-column prop="bankAccount" label="银行账号" align="center"></el-table-column>
-        <el-table-column label="币种" align="center">
+        <el-table-column prop="code" label="币种" align="center"></el-table-column>
+        <el-table-column prop="name" label="币种名称" align="center"></el-table-column>
+        <el-table-column prop="symbol" label="货币符号" align="center"></el-table-column>
+        <el-table-column label="日期" align="center">
           <template slot-scope="scope">
-            <span>{{ scope.row.currency.name }}</span>
+            <span> {{formatDate(scope.row.date,"YYYY-MM-DD")}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="类别" align="center">
+        <el-table-column prop="rate" label="当前比率" align="center">
           <template slot-scope="scope">
             <span>{{initCategory(scope.row.category)}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="初始余额" align="center">
+        <el-table-column label="是否有效" align="center">
           <template slot-scope="scope">
-            <span>{{scope.row.currency.symbol + " " }}{{ formatAmount(scope.row.initBalance)}}</span>
+            <el-switch v-model="scope.row.active">
+            </el-switch>
           </template>
         </el-table-column>
-        <el-table-column label="余额" align="center">
-          <template slot-scope="scope">
-            <span>{{scope.row.currency.symbol + " " }}{{ formatAmount(scope.row.balance)}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="subjectName" label="科目" align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="180">
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
@@ -57,21 +52,21 @@
         :close-on-click-modal="false"
         width="24%"
       >
-        <fund-account-edit
+        <currency-edit
           v-if="dialogVisible"
           :cur-node="curNode"
           :update="update"
           @onSave="handleSave"
           @onCancel="handleCancel"
-        ></fund-account-edit>
+        ></currency-edit>
       </el-dialog>
     </div>
   </div>
 </template>
 
 <script>
-    import fundAccountSearch from "./Search.vue";
-    import fundAccountEdit from "./Edit.vue";
+    import currencySearch from "./Search.vue";
+    import currencyEdit from "./Edit.vue";
 
     export default {
         data() {
@@ -91,14 +86,14 @@
         methods: {
             loadData(searchForm) {
                 this.searchForm = searchForm;
-                this.$store.dispatch("fundAccount/getTotal", {filter: searchForm})
+                this.$store.dispatch("currency/getTotal", {filter: searchForm})
                     .then(data => {
                         this.total = data.data;
                     })
                     .catch(error => {
                         console.log(error);
                     });
-                this.$store.dispatch("fundAccount/getPageList", {pageFlag: this.pageFlag, pageSize: this.pageSize, lastId: this.lastId,filter: searchForm})
+                this.$store.dispatch("currency/getPageList", {pageFlag: this.pageFlag, pageSize: this.pageSize, lastId: this.lastId,filter: searchForm})
                     .then(data => {
                         this.tableData = data.data;
                         this.loading = false;
@@ -116,20 +111,46 @@
             handleSave(formData) {
                 this.dialogVisible = false;
 
-                let url = "";
                 if (this.update) {
-                    url = "fundAccount/updateOne";
+                    this.$store
+                        .dispatch("currency/updateOne", formData)
+                        .then(() => {
+                            this.loadData({});
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
                 } else {
-                    url = "fundAccount/addOne";
+                    this.$store
+                        .dispatch("currency/addOne", formData)
+                        .then(() => {
+                            this.loadData({});
+                        })
+                        .catch(error => {
+                            if (501 === error.code){
+                                this.$confirm("该币种编码已存在，是否覆盖?", "提示", {
+                                    confirmButtonText: "确定",
+                                    cancelButtonText: "取消",
+                                    type: "warning"
+                                })
+                                    .then(() => {
+                                        this.$store.dispatch("currency/updateOne", formData)
+                                            .then(() => {
+                                                this.loadData({});
+                                            })
+                                            .catch(error => {
+                                                console.log(error);
+                                            });
+                                    })
+                                    .catch(() => {
+                                        this.$message({
+                                            type: "info",
+                                            message: "已取消覆盖!"
+                                        });
+                                    });
+                            }
+                        });
                 }
-                this.$store
-                    .dispatch(url, formData)
-                    .then(() => {
-                        this.loadData({});
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
             },
             handleCancel() {
                 this.dialogVisible = false;
@@ -141,24 +162,24 @@
             },
             handlePrevClick() {
                 this.pageFlag = "prev";
-                this.lastId = this.tableData[0].accountId;
+                this.lastId = this.tableData[0].code;
                 this.loadData(this.searchForm);
             },
             handleNextClick() {
                 this.pageFlag = "next";
-                this.lastId = this.tableData[this.tableData.length - 1].accountId;
+                this.lastId = this.tableData[this.tableData.length - 1].code;
                 this.loadData(this.searchForm);
             },
             handleDelete(row) {
                 this.open(
                     this.delete,
-                    row.accountId,
+                    row.code,
                     "此操作将删除该资金账号信息, 是否继续?"
                 );
             },
-            delete(accountId) {
+            delete(code) {
                 this.$store
-                    .dispatch("fundAccount/removeOne", {accountId: accountId})
+                    .dispatch("currency/removeOne", {code: code})
                     .then(() => {
                         this.lastId = "blank";
                         if (1 === this.tableData.length) {
@@ -197,11 +218,13 @@
                 }
                 return this.$numeral(amount).format("0.00");
             },
-            initCategory(category){
-                if (0 === category){
-                    return '现金';
-                }else{
-                    return '银行存款';
+            /*初始化用工列表中的生日日期格式*/
+            formatDate(dateStr, format) {
+                if (null != dateStr) {
+                    const date = new Date(dateStr);
+                    return this.$moment(date).format(format);
+                } else {
+                    return "";
                 }
             }
         },
@@ -209,8 +232,8 @@
             this.loadData(this.searchForm);
         },
         components: {
-            fundAccountEdit,
-            fundAccountSearch
+            currencySearch,
+            currencyEdit
         }
     };
 </script>

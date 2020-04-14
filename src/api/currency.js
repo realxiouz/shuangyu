@@ -2,7 +2,7 @@ import request from '@/utils/request';
 
 export function addOne(data) {
   return request({
-    url: '/finance/account/add/one',
+    url: '/finance/currency/add/one',
     method: 'post',
     data
   });
@@ -10,29 +10,29 @@ export function addOne(data) {
 
 export function updateOne(data) {
   return request({
-    url: '/finance/account/update/one',
+    url: '/finance/currency/update/one',
     method: 'post',
     data
   });
 }
 
-export function removeOne(accountId) {
+export function removeOne(code) {
   return request({
-    url: `/finance/account/remove/one/${accountId}`,
+    url: `/finance/currency/remove/one/${code}`,
     method: 'delete'
   });
 }
 
-export function getOne(accountId) {
+export function getOne(code) {
   return request({
-    url: `/finance/account/one/${accountId}`,
+    url: `/finance/currency/one/${code}`,
     method: 'get'
   });
 }
 
 export function getList(filter) {
   return request({
-    url: `/finance/account/list`,
+    url: `/finance/currency/list`,
     method: 'get',
     params: filter
   });
@@ -40,7 +40,7 @@ export function getList(filter) {
 
 export function getTotal(filter) {
   return request({
-    url: '/finance/account/total',
+    url: '/finance/currency/total',
     method: 'get',
     params: filter
   });
@@ -48,7 +48,7 @@ export function getTotal(filter) {
 
 export function getPageList(pageFlag, pageSize, lastId, filter) {
   return request({
-    url: `/finance/account/page/list/${pageFlag}/${pageSize}/${lastId}`,
+    url: `/finance/currency/page/list/${pageFlag}/${pageSize}/${lastId}`,
     method: 'get',
     params: filter
   });

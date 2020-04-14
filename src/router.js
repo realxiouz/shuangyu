@@ -492,6 +492,13 @@ export default new Router({
           name: 'accountSubject',
           component: () => import('@/views/accountSubject/List'),
           meta: { title: '科目管理', icon: 'home' }
+        },
+        {
+          title: '货币管理',
+          path: '/finance/currency/list',
+          name: 'currency',
+          component: () => import('@/views/currency/List'),
+          meta: { title: '货币管理', icon: 'home' }
         }
       ]
     },
