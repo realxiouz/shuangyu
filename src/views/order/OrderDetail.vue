@@ -87,7 +87,7 @@
         <span>乘客信息</span>
       </div>
       <el-table
-        :data="PassengerData"
+        :data="passengerData"
         size="mini"
         highlight-current-row
         style="width: 100%;"
@@ -145,7 +145,12 @@
         width="33%"
         :close-on-click-modal="false"
       >
-        <handle-ticket></handle-ticket>
+        <handle-ticket
+          @onCancel="handleCancel"
+          @onSaveTicket="handleSaveTicket"
+          @onSave="handleSave"
+          :passengerData="passengersInfo"
+        ></handle-ticket>
       </el-dialog>
     </div>
   </div>
@@ -165,11 +170,14 @@ export default {
     return {
       handleTicketShow: false,
       flightData: [],
-      PassengerData: [],
+      passengerData: [],
       tableData: {},
       passengersInfo: [],
       orderNo: this.$route.query.orderNo
     };
+  },
+  components: {
+    handleTicket
   },
   methods: {
     formateOrderType,
@@ -177,7 +185,7 @@ export default {
     formateCategory,
     formatAgeType,
     formatCardType,
-    /*初始化用工列表中的生日日期格式*/
+
     initDate(dateStr, format) {
       if (dateStr > 0) {
         let date = new Date(dateStr);
@@ -186,7 +194,15 @@ export default {
         return "";
       }
     },
-
+    handleCancel() {
+      this.handleTicketShow = false;
+    },
+    handleSaveTicket() {
+      this.handleTicketShow = false;
+    },
+    handleSave() {
+      this.handleTicketShow = false;
+    },
     formatAmount1(amount) {
       if (!amount) {
         return "￥0.00";
@@ -194,7 +210,6 @@ export default {
       return "￥" + this.$numeral(amount).format("0.00");
     },
     handleSelectionChange(passengersInfo) {
-      // console.log(passengersInfo);
       this.passengersInfo = passengersInfo;
     },
     goTicket() {
@@ -236,7 +251,7 @@ export default {
           if (data) {
             this.tableData = data;
             if (data.passengers) {
-              this.PassengerData = data.passengers;
+              this.passengerData = data.passengers;
             }
             if (data.flights) {
               this.flightData = data.flights;
