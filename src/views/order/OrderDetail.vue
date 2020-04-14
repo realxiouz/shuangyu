@@ -2,9 +2,31 @@
   <div class="bigBox">
     <el-card class="contentBox">
       <div slot="header" class="clearfix">
-        <span>订单详情</span>
+        <el-row :gutter="5">
+          <el-col :span="3">
+            <span>订单详情</span>
+          </el-col>
+          <el-col :span="7">
+            <span>
+              <el-button type="danger" size="mini">处理完成提交验证</el-button>
+              <el-button type="primary" size="mini">任务取消</el-button>
+              <el-button type="warning" size="mini">返回</el-button>
+            </span>
+          </el-col>
+          <el-col :span="14">
+            <el-input placeholder="请输入内容">
+              <template slot="prepend">备注:</template>
+              <el-button slot="append" icon="el-icon-search">保存备注</el-button>
+            </el-input>
+          </el-col>
+        </el-row>
       </div>
       <el-row :gutter="20">
+        <div>
+          <el-button type="danger" size="mini">锁单</el-button>
+          <el-button type="primary" size="mini">解锁订单</el-button>
+          <el-button type="warning" size="mini">调用出票中</el-button>
+        </div>
         <el-form :model="tableData" label-width="130px" size="mini">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="订单编号:">
@@ -128,6 +150,12 @@
         <el-button type="primary" @click="goTicket" size="mini">系统出票</el-button>
         <el-button type="primary" @click="handleTicket" size="mini">手工出票</el-button>
       </el-row>
+    </el-card>
+    <el-card class="contentBox">
+      <div slot="header" class="clearfix">
+        <span>改签</span>
+      </div>
+      <el-button type="primary" size="mini">刷新</el-button>
     </el-card>
 
     <el-card class="contentBox">
