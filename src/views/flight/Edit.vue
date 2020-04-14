@@ -264,7 +264,7 @@
         created() {
             this.clearForm();
             if (this.update){
-                this.formData = this.curNode;
+                Object.assign(this.formData,this.curNode);
                 if (this.curNode.stopAirportCode)
                   this.tags = this.formData.stopAirportCode.concat();
             }

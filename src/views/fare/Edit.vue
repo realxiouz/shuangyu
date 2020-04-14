@@ -84,7 +84,7 @@ export default {
     initFormData() {
       this.clearForm();
       if ("" != this.curNode.fareId) {
-        this.formData = this.curNode;
+          Object.assign(this.formData,this.curNode);
       }
     }
   },

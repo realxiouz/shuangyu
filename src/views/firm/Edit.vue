@@ -113,7 +113,7 @@
                 this.hasStep = true;
                 this.initChecked();
                 if (this.curNode.firmName) {
-                    this.formData = this.curNode;
+                    Object.assign(this.formData,this.curNode);
                     Object.assign(this.updateTempData, this.curNode);
                 } else {
                     this.clearForm();
