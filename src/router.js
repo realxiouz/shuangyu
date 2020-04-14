@@ -316,6 +316,20 @@ export default new Router({
           meta: { title: '企业管理', icon: 'home' }
         },
         {
+          title: '供应商管理',
+          path: '/supplier/list',
+          name: 'supplierList',
+          component: () => import('@/views/supplier/List'),
+          meta: { title: '供应商管理', icon: 'home' }
+        },
+        {
+          title: '客户管理',
+          path: '/customer/list',
+          name: 'customerList',
+          component: () => import('@/views/customer/List'),
+          meta: { title: '客户管理', icon: 'home' }
+        },
+        {
           title: '部门管理',
           path: '/dept/list',
           name: 'dept',
@@ -478,13 +492,6 @@ export default new Router({
           name: 'accountSubject',
           component: () => import('@/views/accountSubject/List'),
           meta: { title: '科目管理', icon: 'home' }
-        },
-        {
-          title: '订单管理',
-          path: '/finance/order/list',
-          name: 'financeOrder',
-          component: () => import('@/views/financeOrder/List'),
-          meta: { title: '订单管理', icon: 'home' }
         }
       ]
     },
