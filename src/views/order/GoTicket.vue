@@ -3,9 +3,6 @@
     <el-card class="contentBox">
       <div slot="header">
         <span>出票信息</span>
-        <el-button type="danger" style="margin-left:20px;" size="mini">锁单</el-button>
-        <el-button type="primary" size="mini">解锁订单</el-button>
-        <el-button type="primary" size="mini">调用出票中</el-button>
       </div>
       <el-row :gutter="20">
         <el-form :model="orderData" label-width="80px" size="mini">

@@ -2,7 +2,7 @@
   <div class="bigBox">
     <el-card class="contentBox">
       <div slot="header" class="clearfix">
-        <el-row >
+        <el-row>
           <el-col :xs="6" :sm="5" :md="4" :lg="2" :xl="2" style="margin-top:7px;">
             <span>订单详情</span>
           </el-col>
@@ -13,7 +13,7 @@
               <el-button type="warning" @click="goBack" size="mini">返回</el-button>
             </span>
           </el-col>
-          <el-col :xs="24" :sm="24" :md="10" :lg="15" :xl="17" >
+          <el-col :xs="24" :sm="24" :md="10" :lg="15" :xl="17">
             <el-input placeholder="输入备注信息" class="input-with-select">
               <template slot="prepend">备注:</template>
               <el-button type="primary" size="mini" slot="append">保存备注</el-button>
@@ -169,7 +169,42 @@
       <div slot="header" class="clearfix">
         <span>采购订单信息</span>
       </div>
-      <el-table></el-table>
+      <el-table
+        size="mini"
+        :data="orderTree"
+        highlight-current-row
+        fit
+        default-expand-all
+        :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+      >
+        <el-table-column prop="orderNo" align="center" label="订单号"></el-table-column>
+        <el-table-column prop="sourceOrderNo" align="center" label="原订单"></el-table-column>
+        <el-table-column
+          prop="status"
+          :formatter="formateStatus"
+          label="订单状态"
+          width="80"
+          align="center"
+        ></el-table-column>
+        <el-table-column prop="orderSource" align="center" label="渠道"></el-table-column>
+        <el-table-column label="乘客" align="center" width="200">
+          <template slot-scope="scope">
+            <i v-if="scope.row.passengers"></i>
+            <span>{{ formatPassengers(scope.row.passengers)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="createTime" align="center" label="订单时间">
+          <template slot-scope="scope">
+            <span>{{ formatDate(scope.row.createTime,'YYYY-MM-DD') }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="amount" align="center" label="金额">
+          <template slot-scope="scope">
+            <span>{{ formatAmount(scope.row.amount)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="address" align="center" fixed="right" label="操作"></el-table-column>
+      </el-table>
     </el-card>
 
     <div>
@@ -209,6 +244,7 @@ export default {
       passengerData: [],
       tableData: {},
       passengersInfo: [],
+      orderTree: [],
       orderNo: this.$route.query.orderNo
     };
   },
@@ -291,6 +327,10 @@ export default {
         .then(data => {
           if (data) {
             this.tableData = data;
+            let params = {};
+            params.rootOrderNo = data.rootOrderNo;
+            params.category = data.category;
+            this.getOrderTree(params);
             if (data.passengers) {
               this.passengerData = data.passengers;
             }
@@ -302,6 +342,36 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+    getOrderTree(params) {
+      this.$store
+        .dispatch("order/getOrderTree", params)
+        .then(data => {
+          if (data) {
+            this.orderTree = data;
+            console.log(data);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    formatPassengers(data) {
+      if (!data || data.length == 0) {
+        return "";
+      }
+      let str = "";
+      data.forEach(item => {
+        str += item.name + " / ";
+      });
+
+      return str.substring(0, str.length - 2);
+    },
+    formatAmount(amount) {
+      if (!amount) {
+        return "￥0.00";
+      }
+      return "￥" + this.$numeral(amount).format("0.00");
     }
   },
   created() {
@@ -311,11 +381,6 @@ export default {
     formatDate() {
       return function(dateStr, format) {
         return this.initDate(dateStr, format);
-      };
-    },
-    formatAmount() {
-      return function(amount) {
-        return this.formatAmount1(amount);
       };
     }
   }
