@@ -21,7 +21,8 @@
         <el-table-column prop="code" label="科目编码" align="center"></el-table-column>
         <el-table-column prop="name" label="科目名称" align="center"></el-table-column>
         <el-table-column prop="category" label="类别" align="center" :formatter="subjectCategory"></el-table-column>
-        <el-table-column prop="balanceDirection" label="余额方向" align="center" :formatter="formatBalanceDirection"></el-table-column>
+        <el-table-column prop="balanceDirection" label="余额方向" align="center"
+                         :formatter="formatBalanceDirection"></el-table-column>
         <el-table-column fixed="right" label="操作" width="280">
           <template slot-scope="scope">
             <el-button @click="handleAddChild(scope.row.subjectId)" type="success" size="mini">添加子级</el-button>
@@ -48,7 +49,7 @@
         :total="total"
       ></el-pagination>
       <el-dialog
-        title="部门信息"
+        title="会计科目"
         center
         :visible.sync="dialogVisible"
         width="30%"
@@ -88,7 +89,7 @@
             };
         },
         methods: {
-           formatBalanceDirection(row) {
+            formatBalanceDirection(row) {
                 return row.category === 0 ? "借" : "贷";
             },
             subjectCategory,
