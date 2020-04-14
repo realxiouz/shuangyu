@@ -184,7 +184,7 @@ export default {
     handleEdit(row) {
       this.isEdit=true;
       this.dialogVisible = true;
-      this.formData = row;
+        Object.assign(this.formData,row);
     },
     /*对字典信息进行删除*/
     handleDelete(row) {
