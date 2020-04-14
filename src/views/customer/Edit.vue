@@ -86,12 +86,10 @@ export default {
         location: "",
         districtCode: "",
         distinct: null,
-        contactPerson: "",
+        fullName: "",
         phone: "",
         email: "",
         deleteFlag: true,
-        ddAppKey: "",
-        ddAppSecret: "",
         domain: "",
         type: 0,
         roles: []

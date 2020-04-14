@@ -13,7 +13,7 @@
         <el-input type="text" placeholder="请输入域名" v-model="formData.domain"></el-input>
       </el-form-item>
       <el-form-item label="联系人">
-        <el-input type="text" placeholder="请输入联系人" v-model="formData.contactPerson"></el-input>
+        <el-input type="text" placeholder="请输入联系人" v-model="formData.fullName"></el-input>
       </el-form-item>
       <el-form-item label="联系电话">
         <el-input type="text" v-model="formData.phone" placeholder="请输入联系电话" @blur="isUsedForPhone"></el-input>
@@ -86,12 +86,10 @@ export default {
         location: "",
         districtCode: "",
         distinct: null,
-        contactPerson: "",
+        fullName: "",
         phone: "",
         email: "",
         deleteFlag: true,
-        ddAppKey: "",
-        ddAppSecret: "",
         domain: "",
         type: 0,
         roles: []
