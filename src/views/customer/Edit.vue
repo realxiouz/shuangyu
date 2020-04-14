@@ -3,11 +3,11 @@
     <el-form size="mini" label-width="120px" v-show="hasStep">
       <!--   企业ID  -->
       <input type="hidden" v-model="formData.firmId" />
-      <el-form-item label="企业名称">
-        <el-input type="text" placeholder="请输入企业名称" v-model="formData.firmName"></el-input>
+      <el-form-item label="客户名称">
+        <el-input type="text" placeholder="请输入客户名称" v-model="formData.firmName"></el-input>
       </el-form-item>
-      <el-form-item label="企业代码">
-        <el-input type="text" placeholder="请输入企业代码" v-model="formData.firmCode"></el-input>
+      <el-form-item label="客户代码">
+        <el-input type="text" placeholder="请输入客户代码" v-model="formData.firmCode"></el-input>
       </el-form-item>
       <el-form-item label="域名">
         <el-input type="text" placeholder="请输入域名" v-model="formData.domain"></el-input>
