@@ -31,11 +31,6 @@
       <el-form-item label="行政区">
         <el-input type="text" placeholder="请输入行政区" v-model.number="formData.distinct"></el-input>
       </el-form-item>
-      <el-form-item label="类别">
-        <el-select v-model="formData.type" placeholder="请输入类别" style="width: 100%">
-          <el-option label="类别一" :value="0"></el-option>
-        </el-select>
-      </el-form-item>
     </el-form>
     <div style="text-align: center">
       <el-transfer
@@ -90,7 +85,7 @@ export default {
         email: "",
         deleteFlag: true,
         domain: "",
-        type: 0,
+        type: 1,
         roles: []
       };
     },
@@ -141,6 +136,7 @@ export default {
       if (this.isExistsForPhone || this.isExistsForEmail) {
         return;
       } else {
+          this.formData.type = 1;
         this.$emit("onSave", this.formData);
       }
     },
