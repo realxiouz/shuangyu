@@ -5,9 +5,8 @@
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="资金账号">
             <el-input
-              clearable
               @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.fundAccount"
+              v-model="formData.bankAccount"
               placeholder="请输入资金账号.."
               size
             ></el-input>
@@ -22,7 +21,7 @@
         class="filter-item"
         type="primary"
         size="mini"
-        @click="$emit('onSearch', formData)"
+        @click="handleConfirm"
       >查询</el-button>
       <el-button type="text" size="mini" @click="handleMore">
         更多
@@ -38,7 +37,7 @@ export default {
     return {
       more: false,
       formData: {
-        fundAccount: null
+          bankAccount: null
       }
     };
   },
@@ -54,7 +53,12 @@ export default {
   methods: {
     handleMore() {
       this.more = !this.more;
-    }
+    },
+      handleConfirm(){
+          if(!this.formData.bankAccount || '' === this.formData.bankAccount)
+              this.formData.bankAccount = null;
+          this.$emit("onSearch",this.formData)
+      }
   }
 };
 </script>

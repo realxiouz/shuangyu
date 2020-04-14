@@ -16,16 +16,16 @@ export function updateOne(data) {
   });
 }
 
-export function removeOne(fundAccountId) {
+export function removeOne(accountId) {
   return request({
-    url: `/finance/account/remove/one/${fundAccountId}`,
+    url: `/finance/account/remove/one/${accountId}`,
     method: 'delete'
   });
 }
 
-export function getOne(fundAccountId) {
+export function getOne(accountId) {
   return request({
-    url: `/finance/account/one/${fundAccountId}`,
+    url: `/finance/account/one/${accountId}`,
     method: 'get'
   });
 }
