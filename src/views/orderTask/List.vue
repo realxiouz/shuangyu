@@ -70,21 +70,21 @@
         size="mini"
         v-loading="loading"
       >
-        <el-table-column prop="taskNo" label="任务编号" align="center"></el-table-column>
-        <el-table-column prop="sourceOrderNo" label="订单来源单号" align="center"></el-table-column>
-        <el-table-column prop="taskName" label="任务名称" align="center"></el-table-column>
-        <el-table-column prop="fullName" label="员工姓名" align="center"></el-table-column>
+        <el-table-column prop="taskNo" label="任务编号" width="110" align="center"></el-table-column>
+        <el-table-column prop="taskName" label="任务名称" width="80" align="center"></el-table-column>
         <el-table-column prop="taskType" label="任务类型" align="center">
           <template slot-scope="scope">
             <span>{{ formatTaskType(scope.row.taskType)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="ruleType" label="规则类型" align="center">
+        <el-table-column prop="sourceOrderNo" label="订单来源单号" width="170" align="center"></el-table-column>
+        <el-table-column prop="fullName" label="员工姓名" width="100" align="center"></el-table-column>
+        <el-table-column prop="ruleType" width="80" label="规则类型" align="center">
           <template slot-scope="scope">
             <span>{{ formatTaskType(scope.row.taskType)==0?"系统":"手工"}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="profit" label="利润" align="center">
+        <el-table-column prop="profit" label="利润" width="80" align="center">
           <template slot-scope="scope">
             <span>{{ formatAmount(scope.row.profit)}}</span>
           </template>
@@ -100,11 +100,13 @@
             <span>{{ formatDate(scope.row.endTime,'YYYY-MM-DD HH:mm:ss') }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="duration" label="持续时长" align="center"></el-table-column>
+        <el-table-column prop="duration" label="持续时长" width="80" align="center"></el-table-column>
         <el-table-column prop="remark" label="备注" align="center"></el-table-column>
 
         <el-table-column label="操作" align="center" width="80">
-          <el-button type="primary" size="mini">处理</el-button>
+          <template slot-scope="scope">
+            <el-button type="primary" @click="goToDetail(scope.row)" size="mini">处理</el-button>
+          </template>
         </el-table-column>
       </el-table>
       <el-pagination
@@ -261,7 +263,16 @@ export default {
       let params = {};
       params.taskType = taskType;
       this.loadData(params);
-      // console.log(params);
+    },
+    goToDetail(row) {
+      let path = "";
+      path = "/order/detail";
+      this.$router.push({
+        path: path,
+        query: {
+          orderNo: row.orderNo
+        }
+      });
     },
     handleSearch(params) {
       let newParams = {};
