@@ -243,7 +243,7 @@ export default {
       let flightInfo2 = {
         arr: "PVG",
         dpt: "YCU",
-        dptDay: "2020-04-14",
+        dptDay: "2020-04-20",
         dptTime: "13:10",
         flightCode: "MU5192"
       };
@@ -279,7 +279,7 @@ export default {
                     let flightPrice2 = {
                       arr: "PVG",
                       dpt: "YCU",
-                      date: "2020-04-14",
+                      date: "2020-04-20",
                       ex_track: item.exTrack,
                       flightNum: "MU5192"
                     };

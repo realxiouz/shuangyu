@@ -2,19 +2,19 @@
   <div class="bigBox">
     <el-card class="contentBox">
       <div slot="header" class="clearfix">
-        <el-row :gutter="5">
-          <el-col :span="3" style="margin-top:7px;">
-            <span >订单详情</span>
+        <el-row >
+          <el-col :xs="6" :sm="5" :md="4" :lg="2" :xl="2" style="margin-top:7px;">
+            <span>订单详情</span>
           </el-col>
-          <el-col :span="7">
+          <el-col :xs="18" :sm="16" :md="11" :lg="5" :xl="5">
             <span>
               <el-button type="danger" size="mini">处理完成提交验证</el-button>
               <el-button type="primary" size="mini">任务取消</el-button>
-              <el-button type="warning" size="mini">返回</el-button>
+              <el-button type="warning" @click="goBack" size="mini">返回</el-button>
             </span>
           </el-col>
-          <el-col :span="14">
-            <el-input placeholder="输入备注" class="input-with-select">
+          <el-col :xs="24" :sm="24" :md="10" :lg="15" :xl="17" >
+            <el-input placeholder="输入备注信息" class="input-with-select">
               <template slot="prepend">备注:</template>
               <el-button type="primary" size="mini" slot="append">保存备注</el-button>
             </el-input>
@@ -86,11 +86,10 @@
         <span>航班信息</span>
       </div>
       <el-table :data="flightData" size="mini" highlight-current-row style="width: 100%;" fit>
-        <el-table-column prop="dptAirport" label="出发机场" width="160" align="center"></el-table-column>
-        <el-table-column prop="arrAirport" label="到达机场" width="160" align="center"></el-table-column>
+        <el-table-column prop="dpt" label="出发机场" width="160" align="center"></el-table-column>
+        <el-table-column prop="arr" label="到达机场" width="160" align="center"></el-table-column>
         <el-table-column prop="airlineCode" label="航司" width="50" align="center"></el-table-column>
         <el-table-column prop="flightCode" label="航班号" width="100" align="center"></el-table-column>
-
         <el-table-column prop="cabin" label="舱位" width="160" align="center"></el-table-column>
         <el-table-column label="出发日期" width="110" align="center">
           <template slot-scope="scope">
@@ -105,9 +104,9 @@
       </el-table>
       <div style="margin-top:15px;">
         <span style="font-weight:700;font-size:15px;">退改说明：</span>
-        <div style=" margin-top:10px;font-size:14px; line-height:1.5;" >
-          {{this.tableData.refundChangeRule}}
-        </div>
+        <div
+          style=" margin-top:10px;font-size:14px; line-height:1.5;"
+        >{{this.tableData.refundChangeRule}}</div>
       </div>
     </el-card>
     <el-card class="contentBox">
@@ -160,6 +159,8 @@
     <el-card class="contentBox">
       <div slot="header" class="clearfix">
         <span>改签</span>
+        <span>出票</span>
+        <span>消息</span>
       </div>
       <el-button type="primary" size="mini">刷新</el-button>
     </el-card>
@@ -184,6 +185,7 @@
           @onSaveTicket="handleSaveTicket"
           @onSave="handleSave"
           :passengerData="passengersInfo"
+          :flightData="flightData"
         ></handle-ticket>
       </el-dialog>
     </div>
@@ -219,7 +221,9 @@ export default {
     formateCategory,
     formatAgeType,
     formatCardType,
-
+    goBack() {
+      this.$router.go(-1);
+    },
     initDate(dateStr, format) {
       if (dateStr > 0) {
         let date = new Date(dateStr);
@@ -231,10 +235,13 @@ export default {
     handleCancel() {
       this.handleTicketShow = false;
     },
-    handleSaveTicket() {
+    handleSaveTicket(params) {
+      console.log(params);
       this.handleTicketShow = false;
     },
-    handleSave() {
+    handleSave(params) {
+      console.log(params);
+
       this.handleTicketShow = false;
     },
     formatAmount1(amount) {
@@ -316,7 +323,6 @@ export default {
 </script>
 
 <style scoped>
-
 .contentBox {
   padding-top: 0px !important;
   padding-bottom: 0px !important;
