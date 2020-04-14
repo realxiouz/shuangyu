@@ -1,61 +1,60 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <span style="font-size:12px;">你好 {{this.$store.state.loginInfo.fullName}}！</span>
       <span>
-        <el-button type size="mini">
+        <el-button @click="geAllData()" type size="mini">
           待处理
-          <el-badge :value="12" :max="99"></el-badge>
+          <el-badge :value="totalCount?totalCount:'0'" :max="99"></el-badge>
         </el-button>
       </span>
 
       <div style="margin-top:10px;">
         <span>
-          <el-button type size="mini">
+          <el-button @click="getOtherData(1)" type size="mini">
             出票
-            <el-badge :value="12"></el-badge>
+            <el-badge :value="taskTypeCounts.taskType1?taskTypeCounts.taskType1:'0'" :max="99"></el-badge>
           </el-button>
         </span>
         <span>
-          <el-button type size="mini">
+          <el-button @click="getOtherData(2)" type size="mini">
             退票
-            <el-badge :value="12"></el-badge>
+            <el-badge :value="taskTypeCounts.taskType2?taskTypeCounts.taskType2:'0'" :max="99"></el-badge>
           </el-button>
         </span>
         <span>
-          <el-button type size="mini">
+          <el-button @click="getOtherData(3)" type size="mini">
             改签
-            <el-badge :value="12"></el-badge>
+            <el-badge :value="taskTypeCounts.taskType3?taskTypeCounts.taskType3:'0'" :max="99"></el-badge>
           </el-button>
         </span>
         <span>
-          <el-button type size="mini">
+          <el-button @click="getOtherData(4)" type size="mini">
             未出票申请退款
-            <el-badge :value="12"></el-badge>
+            <el-badge :value="taskTypeCounts.taskType4?taskTypeCounts.taskType4:'0'" :max="99"></el-badge>
           </el-button>
         </span>
         <span>
-          <el-button type size="mini">
+          <el-button @click="getOtherData(5)" type size="mini">
             消息
-            <el-badge :value="12"></el-badge>
+            <el-badge :value="taskTypeCounts.taskType5?taskTypeCounts.taskType5:'0'" :max="99"></el-badge>
           </el-button>
         </span>
         <span>
-          <el-button type size="mini">
-            消息
-            <el-badge :value="12"></el-badge>
+          <el-button @click="getOtherData(6)" type size="mini">
+            质检
+            <el-badge :value="taskTypeCounts.taskType6?taskTypeCounts.taskType6:'0'" :max="99"></el-badge>
           </el-button>
         </span>
         <span>
-          <el-button type size="mini">
+          <el-button @click="getOtherData(11)" type size="mini">
             补订单
-            <el-badge :value="12"></el-badge>
+            <el-badge :value="taskTypeCounts.taskType11?taskTypeCounts.taskType11:'0'" :max="99"></el-badge>
           </el-button>
         </span>
         <span>
-          <el-button type size="mini">
+          <el-button @click="getOtherData(12)" type size="mini">
             填写订单号
-            <el-badge :value="12"></el-badge>
+            <el-badge :value="taskTypeCounts.taskType12?taskTypeCounts.taskType12:'0'" :max="99"></el-badge>
           </el-button>
         </span>
       </div>
@@ -128,8 +127,7 @@
 import orderTaskSearch from "./Search.vue";
 
 export default {
-  name: "orderTask",
-
+  name: "orderTaskTotal",
   data() {
     return {
       loading: true,
@@ -139,7 +137,9 @@ export default {
       createTime: 0,
       taskId: "blank",
       total: 0,
-      searchParams: {}
+      searchParams: {},
+      totalCount: 0,
+      taskTypeCounts: {}
     };
   },
   components: {
@@ -151,29 +151,22 @@ export default {
       this.searchParams.pageSize = this.pageSize;
       this.loadData(this.searchParams);
     },
-    prevClick() {
-      if (parseInt(this.total / this.pageSize) == 1) {
-        this.taskId = "blank";
-        this.createTime = 0;
-        this.loadData();
-      } else {
-        this.taskId = this.tableData[0].taskId;
-        this.createTime = this.tableData[0].createTime;
-        this.loadData();
-      }
+    prevClick(page) {
+      this.currentPage = page;
+      this.searchParams.pageSize = this.pageSize;
+      this.searchParams.currentPage = this.currentPage;
+      this.loadData(this.searchParams);
     },
-    nextClick() {
-      this.taskId = this.tableData[this.tableData.length - 1].taskId;
-      this.createTime = this.tableData[this.tableData.length - 1].createTime;
-      this.loadData();
+    nextClick(page) {
+      this.currentPage = page;
+      this.searchParams.pageSize = this.pageSize;
+      this.searchParams.currentPage = this.currentPage;
+      this.loadData(this.searchParams);
     },
     loadData(params) {
       this.$store
-        .dispatch("orderTask/getPageList", {
-          pageSize: this.pageSize,
-          createTime: this.createTime,
-          taskId: this.taskId,
-          searchForm: params
+        .dispatch("orderTaskTotal/getPageList", {
+          filters: params
         })
         .then(data => {
           if (data) {
@@ -189,11 +182,33 @@ export default {
     },
     loadTotal(params) {
       this.$store
-        .dispatch("orderTask/getTotal", {
+        .dispatch("orderTaskTotal/getTotal", {
           filters: params
         })
         .then(data => {
           this.total = data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    loadPendingTotal() {
+      this.$store
+        .dispatch("orderTaskTotal/getPendingTotal", {
+          filters: {}
+        })
+        .then(data => {
+          if (data) {
+            let temp = [];
+            data.taskTypes.forEach(item => {
+              for (let key in item) {
+                if (key == "taskType") {
+                  this.taskTypeCounts[key + item[key]] = item.count;
+                }
+              }
+            });
+            this.totalCount = data.totalCount;
+          }
         })
         .catch(error => {
           console.log(error);
@@ -237,8 +252,19 @@ export default {
         return "";
       }
     },
+    geAllData() {
+      let newParams = {};
+      newParams.taskStatus = 1;
+      this.loadData(newParams);
+    },
+    getOtherData(taskType) {
+      let params = {};
+      params.taskType = taskType;
+      this.loadData(params);
+      // console.log(params);
+    },
     handleSearch(params) {
-      const newParams = {};
+      let newParams = {};
       if (params) {
         for (let key in params) {
           if (params[key]) {
@@ -255,6 +281,7 @@ export default {
   },
   created() {
     this.loadData();
+    this.loadPendingTotal();
   },
   computed: {
     formatDate() {
