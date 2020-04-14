@@ -16,14 +16,10 @@
             <span> {{formatDate(scope.row.date,"YYYY-MM-DD")}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="rate" label="当前比率" align="center">
-          <template slot-scope="scope">
-            <span>{{initCategory(scope.row.category)}}</span>
-          </template>
-        </el-table-column>
+        <el-table-column prop="rate" label="当前比率" align="center"></el-table-column>
         <el-table-column label="是否有效" align="center">
           <template slot-scope="scope">
-            <el-switch v-model="scope.row.active">
+            <el-switch v-model="scope.row.active" disabled>
             </el-switch>
           </template>
         </el-table-column>
@@ -226,7 +222,7 @@
                 } else {
                     return "";
                 }
-            }
+            },
         },
         mounted() {
             this.loadData(this.searchForm);

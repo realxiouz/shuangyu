@@ -21,7 +21,7 @@
         <el-input v-model="formData.rate" placeholder="当前比率.."></el-input>
       </el-form-item>
       <el-form-item label="是否有效">
-        <el-switch v-model="formData.isActive" @click="handleSwitch"></el-switch>
+        <el-switch v-model="formData.active" @click="handleSwitch"></el-switch>
       </el-form-item>
     </el-form>
     <div style="text-align:right;">
@@ -54,7 +54,7 @@
                     //当前比率
                     rate: 1,
                     //有效
-                    isActive: true
+                    active: true
                 };
             },
             /*清除表单*/
@@ -62,7 +62,7 @@
                 this.formData = this.defaultFormData();
             },
             handleSwitch(){
-                this.formData.isActive = this.formData.isActive ? false : true;
+                this.formData.active = this.formData.active ? false : true;
             },
             /*对提交的数据进行类型格式*/
             handleConfirm() {
@@ -74,7 +74,7 @@
             initFormData() {
                 this.clearForm();
                 if (this.update) {
-                    this.formData = this.curNode;
+                    Object.assign(this.formData,this.curNode);
                 }
             }
         },
