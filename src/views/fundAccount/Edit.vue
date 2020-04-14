@@ -18,8 +18,13 @@
         </el-select>
       </el-form-item>
       <el-form-item label="币种">
-        <el-select v-model="formData.currency" style="width: 100%;">
-          <el-option label="人民币" :value="0"></el-option>
+        <el-select v-model="formData.currency" style="width: 100%;" placeholder="请选择币种..">
+          <el-option
+            v-for="(item,idx) in currencyList"
+            :key="idx"
+            :label="item.name"
+            :value="item.code">
+          </el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="初始余额">
@@ -29,8 +34,13 @@
         <el-input v-model="formData.balance" placeholder="请输入余额.."></el-input>
       </el-form-item>
       <el-form-item label="科目名称">
-        <el-select v-model="formData.subjectName" style="width: 100%;">
-          <el-option label="现金" :value="0"></el-option>
+        <el-select v-model="subject" style="width: 100%;" placeholder="请选择科目..">
+          <el-option
+            v-for="(item,idx) in subjectList"
+            :key="idx"
+            :label="item.name"
+            :value="item">
+          </el-option>
         </el-select>
       </el-form-item>
     </el-form>
@@ -46,7 +56,10 @@
         props: ["curNode", "update"],
         data() {
             return {
-                formData: {}
+                formData: {},
+                currencyList: [],
+                subjectList: [],
+                subject: null
             };
         },
         methods: {
@@ -63,7 +76,7 @@
                     //类别(0:现金，1:银行存款)
                     category: 1,
                     //币种
-                    currency: '',
+                    currencyCode: '',
                     //科目id
                     subjectId: '',
                     //科目编码
@@ -76,16 +89,41 @@
                     balance: 0
                 };
             },
+            loadCurrency(){
+                this.$store.dispatch("currency/getList", {filter: {}})
+                    .then(data => {
+                        this.currencyList = data.data;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            loadSubject(){
+                this.$store.dispatch("accountSubject/getList", {filters: {}})
+                    .then(data => {
+                        this.subjectList = data;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
             /*清除表单*/
             clearForm() {
                 this.formData = this.defaultFormData();
             },
             /*对提交的数据进行类型格式*/
             handleConfirm() {
+                if (this.subject){
+                    this.formData.subjectId =  this.subject.subjectId;
+                    this.formData.subjectCode =  this.subject.subjectCode;
+                    this.formData.subjectName =  this.subject.subjectName;
+                }
                 this.$emit("onSave", this.formData);
             },
             initFormData() {
                 this.clearForm();
+                this.loadCurrency();
+                this.loadSubject();
                 if (this.update) {
                     Object.assign(this.formData,this.curNode);
                 }
