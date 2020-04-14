@@ -8,7 +8,7 @@
         <el-input v-model.number="formData.name"></el-input>
       </el-form-item>
       <el-form-item label="科目类别:" prop="category">
-        <el-select clearable v-model="formData.category" placeholder="全部" style="width: 100%">
+        <el-select clearable v-model="formData.category" placeholder="请选择科目类别" style="width: 100%">
           <el-option label="资产类" value="0"></el-option>
           <el-option label="负债类" value="1"></el-option>
           <el-option label="权益类" value="2"></el-option>
@@ -44,7 +44,7 @@
             code: "",
             name: "",
             category: "",
-            balanceDirection: 0,
+            balanceDirection: "",
             quantityFinancing: false,
             auxiliaryFinancing: false,
             cnurrencyFinancing: false
@@ -88,7 +88,7 @@
             handleGetOne(id) {
                 if (id) {
                     this.$store
-                        .dispatch("accountSubject/getOne", {deptId: id})
+                        .dispatch("accountSubject/getOne", {subjectId: id})
                         .then(data => {
                             this.formData = data;
                         })

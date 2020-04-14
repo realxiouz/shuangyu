@@ -25,7 +25,7 @@
         <el-table-column fixed="right" label="操作" width="280">
           <template slot-scope="scope">
             <el-button @click="handleAddChild(scope.row.subjectId)" type="success" size="mini">添加子级</el-button>
-            <span v-show="'0' != scope.row.level" style="margin-left: 10px;">
+            <span  style="margin-left: 10px;">
               <el-button @click="handleUpdate(scope.row.subjectId)" type="primary" size="mini">编辑</el-button>
               <el-button
                 @click.native.prevent="handleRemove(scope.row.subjectId)"
@@ -153,6 +153,7 @@ export default {
       });
     },
     handleUpdate(subjectId) {
+        console.log(subjectId);
       this.editSubjectId = subjectId;
       this.pid = "";
       this.dialogVisible = true;
