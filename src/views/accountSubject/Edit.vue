@@ -4,8 +4,32 @@
       <el-form-item label="科目编码:" prop="code">
         <el-input v-model="formData.code"></el-input>
       </el-form-item>
-      <el-form-item label="科目名称:"  prop="name">
+      <el-form-item label="科目名称:" prop="name">
         <el-input v-model.number="formData.name"></el-input>
+      </el-form-item>
+      <el-form-item label="科目类别:" prop="category">
+        <el-select clearable v-model="formData.category" placeholder="全部" style="width: 100%">
+          <el-option label="资产类" value="0"></el-option>
+          <el-option label="负债类" value="1"></el-option>
+          <el-option label="权益类" value="2"></el-option>
+          <el-option label="成本类" value="3"></el-option>
+          <el-option label="损益类" value="4"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="余额方向:" prop="balanceDirection">
+        <el-radio-group v-model="formData.balanceDirection" style="width: 100%">
+          <el-radio label="0">借</el-radio>
+          <el-radio label="1">贷</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label>
+        <el-checkbox v-model="formData.quantityFinancing">数量核算</el-checkbox>
+      </el-form-item>
+      <el-form-item label>
+        <el-checkbox v-model="formData.auxiliaryFinancing">辅助核算</el-checkbox>
+      </el-form-item>
+      <el-form-item label>
+        <el-checkbox v-model="formData.cnurrencyFinancing">外币核算</el-checkbox>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer" style="text-align:right;">
@@ -19,7 +43,13 @@ function defaultData() {
   return {
     code: "",
     ddId: "",
-    ddParentIdId: ""
+    ddParentIdId: "",
+    name: "",
+    category: "",
+    balanceDirection: "",
+    quantityFinancing: "",
+    auxiliaryFinancing: "",
+    cnurrencyFinancing: ""
   };
 }
 export default {
@@ -38,7 +68,7 @@ export default {
             message: "长度在 1到 20 个字符"
           }
         ],
-          name: [
+        name: [
           { required: true, message: "请输入域名", trigger: "blur" },
           {
             min: 1,
@@ -100,7 +130,7 @@ export default {
     }
   },
   props: {
-      editSubjectId: String,
+    editSubjectId: String,
     pid: String
   }
 };
