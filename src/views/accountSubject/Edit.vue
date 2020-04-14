@@ -9,17 +9,18 @@
       </el-form-item>
       <el-form-item label="科目类别:" prop="category">
         <el-select clearable v-model="formData.category" placeholder="请选择科目类别" style="width: 100%">
-          <el-option label="资产类" value="0"></el-option>
-          <el-option label="负债类" value="1"></el-option>
-          <el-option label="权益类" value="2"></el-option>
-          <el-option label="成本类" value="3"></el-option>
-          <el-option label="损益类" value="4"></el-option>
+          <el-option label="资产类" :value="0"></el-option>
+          <el-option label="负债类" :value="1"></el-option>
+          <el-option label="权益类" :value="2"></el-option>
+          <el-option label="成本类" :value="3"></el-option>
+          <el-option label="损益类" :value="4"></el-option>
         </el-select>
       </el-form-item>
+
       <el-form-item label="余额方向:" prop="balanceDirection">
-        <el-radio-group v-model="formData.balanceDirection" style="width: 100%">
-          <el-radio label="0">借</el-radio>
-          <el-radio label="1">贷</el-radio>
+        <el-radio-group v-model="formData.balanceDirection">
+          <el-radio :label="0">借</el-radio>
+          <el-radio :label="1">贷</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label>
@@ -44,7 +45,7 @@
             code: "",
             name: "",
             category: "",
-            balanceDirection: "",
+            balanceDirection: 0,
             quantityFinancing: false,
             auxiliaryFinancing: false,
             cnurrencyFinancing: false
