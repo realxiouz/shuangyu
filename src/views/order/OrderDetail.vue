@@ -3,8 +3,8 @@
     <el-card class="contentBox">
       <div slot="header" class="clearfix">
         <el-row :gutter="5">
-          <el-col :span="3">
-            <span>订单详情</span>
+          <el-col :span="3" style="margin-top:7px;">
+            <span >订单详情</span>
           </el-col>
           <el-col :span="7">
             <span>
@@ -14,15 +14,15 @@
             </span>
           </el-col>
           <el-col :span="14">
-            <el-input placeholder="请输入内容">
+            <el-input placeholder="输入备注" class="input-with-select">
               <template slot="prepend">备注:</template>
-              <el-button slot="append" icon="el-icon-search">保存备注</el-button>
+              <el-button type="primary" size="mini" slot="append">保存备注</el-button>
             </el-input>
           </el-col>
         </el-row>
       </div>
       <el-row :gutter="20">
-        <div>
+        <div style="margin-bottom:15px;">
           <el-button type="danger" size="mini">锁单</el-button>
           <el-button type="primary" size="mini">解锁订单</el-button>
           <el-button type="warning" size="mini">调用出票中</el-button>
@@ -103,6 +103,12 @@
         <el-table-column prop="refundRule" label="退票规则" align="center"></el-table-column>
         <el-table-column prop="changeRule" label="改签规则" align="center"></el-table-column>
       </el-table>
+      <div style="margin-top:15px;">
+        <span style="font-weight:700;font-size:15px;">退改说明：</span>
+        <div style=" margin-top:10px;font-size:14px; line-height:1.5;" >
+          {{this.tableData.refundChangeRule}}
+        </div>
+      </div>
     </el-card>
     <el-card class="contentBox">
       <div slot="header" class="clearfix">
@@ -310,6 +316,7 @@ export default {
 </script>
 
 <style scoped>
+
 .contentBox {
   padding-top: 0px !important;
   padding-bottom: 0px !important;

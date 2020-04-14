@@ -70,3 +70,14 @@ div:focus {
   .bigBox {
     background-color: #f0f2f5;
   }
+
+.input-with-select .el-input-group__prepend{
+  background-color: #fff;
+}
+.input-with-select .el-input-group__append {
+  background-color: #409EFF;
+  color: #fff;
+}
+.input-with-select .el-input__inner{
+  height: 30px;
+}
