@@ -62,6 +62,13 @@ export default {
   methods: {
     /*加载供应商列表*/
     loadData(params) {
+        if(params){
+            params.type = 1;
+        }else {
+            let newParams = {};
+            newParams.type = 1;
+            params = newParams;
+        }
       this.$store
         .dispatch("firm/getList", { filter: params })
         .then(data => {

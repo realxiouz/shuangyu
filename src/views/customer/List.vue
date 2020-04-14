@@ -35,167 +35,175 @@
         width="33%"
         :close-on-click-modal="false"
       >
-        <firm-edit :curNode="curNode" @onSave="handleSave" @onCancel="handleCancel" />
+        <firm-edit :curNode="curNode" @onSave="handleSave" @onCancel="handleCancel"/>
       </el-dialog>
     </div>
   </div>
 </template>
 
 <script>
-import firmEdit from "./Edit";
-import firmSearch from "./Search";
+    import firmEdit from "./Edit";
+    import firmSearch from "./Search";
 
-export default {
-  data() {
-    return {
-      loading: true,
-      dialogVisible: false,
-      rootNav: false,
-      tableData: [],
-      curNode: {},
-      tableProps: {
-        hasChildren: "xxx",
-        children: "children"
-      }
+    export default {
+        data() {
+            return {
+                loading: true,
+                dialogVisible: false,
+                rootNav: false,
+                tableData: [],
+                curNode: {},
+                tableProps: {
+                    hasChildren: "xxx",
+                    children: "children"
+                }
+            };
+        },
+        methods: {
+            /*加载客户列表*/
+            loadData(params) {
+                if (params) {
+                    params.type = 2;
+                } else {
+                    let newParams = {};
+                    newParams.type = 2;
+                    params = newParams;
+                }
+                this.$store
+                    .dispatch("firm/getList", {filter: params})
+                    .then(data => {
+                        if (data) {
+                            this.tableData = data;
+                        }
+                        this.loading = false;
+                    })
+                    .catch(error => {
+                        this.loading = false;
+                        console.log(error);
+                    });
+            },
+            /*根据关键字进行客户搜索*/
+            handleSearch(params) {
+                const newParams = {};
+                if (params) {
+                    for (let key in params) {
+                        if (params[key]) {
+                            newParams[key] = params[key];
+                        }
+                    }
+                }
+                this.loadData(newParams);
+                this.$message({
+                    type: "success",
+                    message: "查询成功！"
+                });
+            },
+            handleAdd() {
+                this.rootNav = true;
+                this.dialogVisible = true;
+
+                this.curNode = {};
+            },
+            /*客户的添加、编辑保存*/
+            handleSave(formData) {
+                this.dialogVisible = false;
+
+                if (formData.firmId != "") {
+                    this.$store
+                        .dispatch("firm/updateOne", {firm: formData})
+                        .then(() => {
+                            this.loadData();
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                } else {
+                    if (this.rootNav) {
+                        //如果添加的顶级客户信息，对某些属性进行初始化
+                        formData.level = 0;
+                    } else {
+                        formData.pid = this.curNode.firmId;
+                        formData.level = this.curNode.level + 1;
+                    }
+
+                    this.$store
+                        .dispatch("firm/addOne", {firm: formData})
+                        .then(() => {
+                            this.$message({
+                                type: "success",
+                                message:
+                                    "客户账号已添加成功!超级管理员账号为企业联系人手机号或邮箱，密码已通过邮件发送给联系人"
+                            });
+                            this.loadData();
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                }
+            },
+            handleCancel() {
+                this.dialogVisible = false;
+            },
+            /*点击添加企业子节点按钮*/
+            handleAppend(idx, row) {
+                this.rootNav = false;
+                this.dialogVisible = true;
+
+                this.curNode = {};
+                this.curNode.firmId = row.firmId;
+                this.curNode.level = row.level;
+            },
+            /*点击编辑*/
+            handleEdit(index, row) {
+                this.curNode = row;
+                this.dialogVisible = true;
+            },
+            /*点击删除*/
+            handleDelete(index, row) {
+                this.open(
+                    this.remove,
+                    row.firmId,
+                    "此操作将删除该客户信息及子客户信息, 是否继续?"
+                );
+            },
+            /*删除企业数据*/
+            remove(params) {
+                this.$store
+                    .dispatch("firm/removeOne", {firmID: params})
+                    .then(() => {
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            open(func, data, message) {
+                this.$confirm(message, "提示", {
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消",
+                    type: "warning"
+                })
+                    .then(() => {
+                        func(data);
+                        this.loadData();
+                        this.$message({
+                            type: "success",
+                            message: "删除成功!"
+                        });
+                    })
+                    .catch(() => {
+                        this.$message({
+                            type: "info",
+                            message: "已取消删除"
+                        });
+                    });
+            }
+        },
+        mounted() {
+            this.loadData();
+        },
+        components: {
+            firmEdit,
+            firmSearch
+        }
     };
-  },
-  methods: {
-    /*加载客户列表*/
-    loadData(params) {
-      this.$store
-        .dispatch("firm/getList", { filter: params })
-        .then(data => {
-          if (data) {
-            this.tableData = data;
-          }
-          this.loading = false;
-        })
-        .catch(error => {
-          this.loading = false;
-          console.log(error);
-        });
-    },
-    /*根据关键字进行客户搜索*/
-    handleSearch(params) {
-      const newParams = {};
-      if (params) {
-        for (let key in params) {
-          if (params[key]) {
-            newParams[key] = params[key];
-          }
-        }
-      }
-      this.loadData(newParams);
-      this.$message({
-        type: "success",
-        message: "查询成功！"
-      });
-    },
-    handleAdd() {
-      this.rootNav = true;
-      this.dialogVisible = true;
-
-      this.curNode = {};
-    },
-    /*客户的添加、编辑保存*/
-    handleSave(formData) {
-      this.dialogVisible = false;
-
-      if (formData.firmId != "") {
-        this.$store
-          .dispatch("firm/updateOne", { firm: formData })
-          .then(() => {
-            this.loadData();
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      } else {
-        if (this.rootNav) {
-          //如果添加的顶级客户信息，对某些属性进行初始化
-          formData.level = 0;
-        } else {
-          formData.pid = this.curNode.firmId;
-          formData.level = this.curNode.level + 1;
-        }
-
-        this.$store
-          .dispatch("firm/addOne", { firm: formData })
-          .then(() => {
-            this.$message({
-              type: "success",
-              message:
-                "客户账号已添加成功!超级管理员账号为企业联系人手机号或邮箱，密码已通过邮件发送给联系人"
-            });
-            this.loadData();
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      }
-    },
-    handleCancel() {
-      this.dialogVisible = false;
-    },
-    /*点击添加企业子节点按钮*/
-    handleAppend(idx, row) {
-      this.rootNav = false;
-      this.dialogVisible = true;
-
-      this.curNode = {};
-      this.curNode.firmId = row.firmId;
-      this.curNode.level = row.level;
-    },
-    /*点击编辑*/
-    handleEdit(index, row) {
-      this.curNode = row;
-      this.dialogVisible = true;
-    },
-    /*点击删除*/
-    handleDelete(index, row) {
-      this.open(
-        this.remove,
-        row.firmId,
-        "此操作将删除该客户信息及子客户信息, 是否继续?"
-      );
-    },
-    /*删除企业数据*/
-    remove(params) {
-      this.$store
-        .dispatch("firm/removeOne", { firmID: params })
-        .then(() => {})
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    open(func, data, message) {
-      this.$confirm(message, "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          func(data);
-          this.loadData();
-          this.$message({
-            type: "success",
-            message: "删除成功!"
-          });
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除"
-          });
-        });
-    }
-  },
-  mounted() {
-    this.loadData();
-  },
-  components: {
-    firmEdit,
-    firmSearch
-  }
-};
 </script>
