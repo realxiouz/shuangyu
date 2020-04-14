@@ -75,22 +75,6 @@ export default {
             max: 20,
             message: "长度在 1到 20 个字符"
           }
-        ],
-        ddId: [
-          { required: true, message: "请输入钉钉ID", trigger: "blur" },
-          {
-            type: "number",
-            message: "钉钉ID必须为数字",
-            trigger: "blur"
-          }
-        ],
-        ddParentIdId: [
-          { required: true, message: "请输入钉钉父节点", trigger: "blur" },
-          {
-            type: "number",
-            message: "钉钉父节点必须为数字",
-            trigger: "blur"
-          }
         ]
       }
     };

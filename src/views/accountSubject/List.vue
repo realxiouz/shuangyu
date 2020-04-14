@@ -89,12 +89,12 @@ export default {
   methods: {
     prevClick() {
       this.pageFlag = "prev";
-      this.lastId = this.tableData[0].deptId;
+      this.lastId = this.tableData[0].subjectId;
       this.loadData();
     },
     nextClick() {
       this.pageFlag = "next";
-      this.lastId = this.tableData[this.tableData.length - 1].deptId;
+      this.lastId = this.tableData[this.tableData.length - 1].subjectId;
       this.loadData();
     },
     loadData(params) {
@@ -106,7 +106,7 @@ export default {
           if (data) {
             this.tableData = data;
             this.expandRowKeys = [];
-            this.expandRowKeys.push(data[0].deptId);
+            this.expandRowKeys.push(data[0].subjectId);
             this.loadTotal(params);
           }
           this.loading = false;
@@ -127,8 +127,8 @@ export default {
           console.log(error);
         });
     },
-    handleAddChild(deptId) {
-      this.pid = deptId;
+    handleAddChild(subjectId) {
+      this.pid = subjectId;
       this.editSubjectId = "";
       this.dialogVisible = true;
     },
@@ -152,8 +152,8 @@ export default {
         message: "查询成功！"
       });
     },
-    handleUpdate(deptId) {
-      this.editSubjectId = deptId;
+    handleUpdate(subjectId) {
+      this.editSubjectId = subjectId;
       this.pid = "";
       this.dialogVisible = true;
     },
@@ -168,7 +168,7 @@ export default {
         type: "warning"
       })
         .then(() => {
-          this.$store.dispatch("accountSubject/removeOne", { deptId: id }).then(() => {
+          this.$store.dispatch("accountSubject/removeOne", { subjectId: id }).then(() => {
             if (1 === this.tableData.length) {
               this.prevClick();
             } else {
