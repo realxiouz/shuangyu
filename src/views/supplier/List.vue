@@ -16,7 +16,6 @@
       >
         <el-table-column prop="firmName" label="供应商名称" align="center" sortable width="180"></el-table-column>
         <el-table-column prop="firmCode" label="供应商代码" align="center" sortable width="100"></el-table-column>
-        <el-table-column prop="location" label="机构所在地" align="center"></el-table-column>
         <el-table-column prop="linkPerson" label="联系人" align="center" width="100"></el-table-column>
         <el-table-column prop="remark" label="备注" align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="250">
