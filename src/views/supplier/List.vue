@@ -29,7 +29,7 @@
       </el-table>
       <!-- 表单对话框 -->
       <el-dialog
-        title="添加企业"
+        title="添加供应商"
         center
         :visible.sync="dialogVisible"
         width="33%"
