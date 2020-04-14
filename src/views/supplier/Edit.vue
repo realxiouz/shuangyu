@@ -22,9 +22,6 @@
         <el-input type="text" v-model="formData.email" placeholder="请输入联系电子邮箱" @blur="isUsedForEmail"></el-input>
         <span v-if="isExistsForEmail" style="color: crimson">*该信息已被注册</span>
       </el-form-item>
-      <el-form-item label="机构所在地">
-        <el-input type="text" placeholder="请输入机构所在地" v-model="formData.location"></el-input>
-      </el-form-item>
     </el-form>
     <div style="text-align: center">
       <el-transfer
@@ -71,7 +68,6 @@ export default {
         firmId: "",
         firmName: "",
         firmCode: "",
-        location: "",
         fullName: "",
         phone: "",
         email: "",
