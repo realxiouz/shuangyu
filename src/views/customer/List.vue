@@ -14,8 +14,8 @@
         row-key="firmId"
         :tree-props="tableProps"
       >
-        <el-table-column prop="firmName" label="企业名称" align="center" sortable width="180"></el-table-column>
-        <el-table-column prop="firmCode" label="企业代码" align="center" sortable width="100"></el-table-column>
+        <el-table-column prop="firmName" label="客户名称" align="center" sortable width="180"></el-table-column>
+        <el-table-column prop="firmCode" label="客户代码" align="center" sortable width="100"></el-table-column>
         <el-table-column prop="location" label="机构所在地" align="center"></el-table-column>
         <el-table-column prop="linkPerson" label="联系人" align="center" width="100"></el-table-column>
         <el-table-column prop="remark" label="备注" align="center"></el-table-column>
@@ -29,7 +29,7 @@
       </el-table>
       <!-- 表单对话框 -->
       <el-dialog
-        title="添加企业"
+        title="添加客户"
         center
         :visible.sync="dialogVisible"
         width="33%"
@@ -60,13 +60,13 @@
             };
         },
         methods: {
-            /*加载企业列表*/
+            /*加载客户列表*/
             loadData(params) {
-                if(params){
-                    params.type = 0;
-                }else {
+                if (params) {
+                    params.type = 2;
+                } else {
                     let newParams = {};
-                    newParams.type = 0;
+                    newParams.type = 2;
                     params = newParams;
                 }
                 this.$store
@@ -82,7 +82,7 @@
                         console.log(error);
                     });
             },
-            /*根据关键字进行企业搜索*/
+            /*根据关键字进行客户搜索*/
             handleSearch(params) {
                 const newParams = {};
                 if (params) {
@@ -104,7 +104,7 @@
 
                 this.curNode = {};
             },
-            /*企业的添加、编辑保存*/
+            /*客户的添加、编辑保存*/
             handleSave(formData) {
                 this.dialogVisible = false;
 
@@ -119,7 +119,7 @@
                         });
                 } else {
                     if (this.rootNav) {
-                        //如果添加的顶级企业信息，对某些属性进行初始化
+                        //如果添加的顶级客户信息，对某些属性进行初始化
                         formData.level = 0;
                     } else {
                         formData.pid = this.curNode.firmId;
@@ -132,7 +132,7 @@
                             this.$message({
                                 type: "success",
                                 message:
-                                    "企业账号已添加成功!超级管理员账号为企业联系人手机号或邮箱，密码已通过邮件发送给联系人"
+                                    "客户账号已添加成功!超级管理员账号为企业联系人手机号或邮箱，密码已通过邮件发送给联系人"
                             });
                             this.loadData();
                         })
@@ -163,7 +163,7 @@
                 this.open(
                     this.remove,
                     row.firmId,
-                    "此操作将删除该企业信息及子企业信息, 是否继续?"
+                    "此操作将删除该客户信息及子客户信息, 是否继续?"
                 );
             },
             /*删除企业数据*/

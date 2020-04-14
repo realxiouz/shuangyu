@@ -61,7 +61,7 @@ export default {
       loading: true,
       dialogVisible: false,
       update: false,
-        deleteForSearch: false,
+      deleteForSearch: false,
       curNode: {},
       tableData: [],
       lastId: "blank",
@@ -71,24 +71,17 @@ export default {
     };
   },
   methods: {
-    loadData() {
-      this.$store
-        .dispatch("airport/getTotal", { filter: {} })
-        .then(data => {
-          this.total = data.data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
+    loadData(params) {
       this.$store
         .dispatch("airport/getPageList", {
           pageFlag: this.pageFlag,
           pageSize: this.pageSize,
           lastId: this.lastId,
-          filter: {}
+          filter: params
         })
         .then(data => {
           if (data) {
+            this.loadTotal(params)
             this.tableData = data.data;
           }
           this.loading = false;
@@ -98,9 +91,19 @@ export default {
           console.log(error);
         });
     },
+    loadTotal(params) {
+      this.$store
+        .dispatch("airport/getTotal", { filter: params })
+        .then(data => {
+          this.total = data.data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     search(searchForm) {
-        this.deleteForSearch = false;
-        if (searchForm.airportName || searchForm.airportCode) {
+      this.deleteForSearch = false;
+      if (searchForm.airportName || searchForm.airportCode) {
         let url = "";
         let params = {};
         if (searchForm.airportName) {
@@ -178,7 +181,7 @@ export default {
       this.$store
         .dispatch("airport/removeOne", { airportCode: airportCode })
         .then(() => {
-            this.lastId = "blank";
+          this.lastId = "blank";
           if (1 === this.tableData.length && !this.deleteForSearch) {
             this.handlePrevClick();
           } else {
@@ -228,7 +231,7 @@ export default {
       }
     }
   },
-  mounted() {
+  created() {
     this.loadData();
   },
   computed: {

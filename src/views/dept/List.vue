@@ -27,11 +27,11 @@
             <el-button @click="handleAddChild(scope.row.deptId)" type="success" size="mini">添加子级</el-button>
             <span v-show="'0' != scope.row.level" style="margin-left: 10px;">
               <el-button @click="handleUpdate(scope.row.deptId)" type="primary" size="mini">编辑</el-button>
-            <el-button
-              @click.native.prevent="handleRemove(scope.row.deptId)"
-              type="danger"
-              size="mini"
-            >删除</el-button>
+              <el-button
+                @click.native.prevent="handleRemove(scope.row.deptId)"
+                type="danger"
+                size="mini"
+              >删除</el-button>
             </span>
           </template>
         </el-table-column>
@@ -56,7 +56,7 @@
       >
         <dept-edit
           v-if="dialogVisible"
-          :edit-dept-id="editDeptId"
+          :editDeptId="editDeptId"
           :pid="pid"
           @onSave="handleSave"
           @onCancel="handleCancel"
@@ -83,7 +83,7 @@ export default {
       pid: "",
       total: 0,
       tableData: [],
-        expandRowKeys: []
+      expandRowKeys: []
     };
   },
   methods: {
@@ -97,30 +97,31 @@ export default {
       this.lastId = this.tableData[this.tableData.length - 1].deptId;
       this.loadData();
     },
-    loadData() {
+    loadData(params) {
       this.$store
         .dispatch("dept/getList", {
-          filters: {}
+          filters: params
         })
         .then(data => {
-            if (data) {
+          if (data) {
             this.tableData = data;
-                this.expandRowKeys = [];
+            this.expandRowKeys = [];
             this.expandRowKeys.push(data[0].deptId);
-            }
+            this.loadTotal(params);
+          }
           this.loading = false;
         })
         .catch(error => {
           console.log(error);
         });
     },
-    loadTotal() {
+    loadTotal(params) {
       this.$store
         .dispatch("dept/getTotal", {
-          filters: {}
+          filters: params
         })
-        .then(response => {
-          this.total = response.data;
+        .then(data => {
+          this.total = data;
         })
         .catch(error => {
           console.log(error);
@@ -137,11 +138,19 @@ export default {
       this.dialogVisible = true;
     },
     handleSearch(params) {
-      if (!params) {
-        params = {};
+      const newParams = {};
+      if (params) {
+        for (let key in params) {
+          if (params[key]) {
+            newParams[key] = params[key];
+          }
+        }
       }
-      this.loadData(params);
-      this.loadTotal(params);
+      this.loadData(newParams);
+      this.$message({
+        type: "success",
+        message: "查询成功！"
+      });
     },
     handleUpdate(deptId) {
       this.editDeptId = deptId;
@@ -178,7 +187,7 @@ export default {
       this.$store
         .dispatch("dept/save", formData)
         .then(() => {
-          this.handleSearch();
+          this.loadData();
         })
         .catch(error => {
           console.log(error);
@@ -187,7 +196,7 @@ export default {
     }
   },
   created() {
-    this.handleSearch();
+    this.loadData();
   },
   components: {
     deptSearch,

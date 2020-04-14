@@ -1,7 +1,7 @@
 <template>
   <el-row type="flex" class="row-bg" justify="space-between" align="bottom">
     <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
-      <el-form :model="formData" label-width="110px" size="mini">
+      <el-form ref="form" :model="formData" :rules="formRules" label-width="110px" size="mini">
         <!-- <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="交易时间:">
             <el-col>
@@ -20,7 +20,7 @@
           </el-form-item>
         </el-col>-->
         <el-col :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
-          <el-form-item label="交易时间:">
+          <el-form-item prop="startTransactionTime" label="交易时间:">
             <el-row type="flex" justify="space-between">
               <el-col :span="11">
                 <el-date-picker
@@ -64,7 +64,7 @@
           </el-form-item>
         </el-col>-->
         <el-col :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
-          <el-form-item label="业务完结时间:">
+          <el-form-item prop="startFinishTime" label="业务完结时间:">
             <el-row type="flex" justify="space-between">
               <el-col :span="11">
                 <el-date-picker
@@ -140,7 +140,7 @@
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="平台账号:">
             <el-input
-              @keyup.enter.native="$emit('onSearch', formData)"
+              @keyup.enter.native="handleSearch"
               v-model="formData.accountId"
               clearable
               style="width: 100%"
@@ -154,7 +154,7 @@
         type="primary"
         icon="el-icon-search"
         size="mini"
-        @click="$emit('onSearch', formData)"
+        @click="handleSearch"
       >查询</el-button>
       <el-button type="text" size="mini" @click="handleMore">
         更多
@@ -168,12 +168,32 @@
 export default {
   name: "orderReportSearch",
   data() {
+    var validateTransactionTime = (rule, value, callback) => {
+      if (value > this.formData.endTransactionTime) {
+        callback(new Error("开始日期不能大于结束日期!"));
+      } else {
+        callback();
+      }
+    };
+    var validateFinishTime = (rule, value, callback) => {
+      if (value > this.formData.endFinishTime) {
+        callback(new Error("开始日期不能大于结束日期!"));
+      } else {
+        callback();
+      }
+    };
     return {
       more: false,
       formData: {
         transactionTime: "",
         dateRange: "",
         finishTime: ""
+      },
+      formRules: {
+        startTransactionTime: [
+          { validator: validateTransactionTime, trigger: "blur" }
+        ],
+        startFinishTime: [{ validator: validateFinishTime, trigger: "blur" }]
       },
       dateRangeValue: [
         {
@@ -190,7 +210,7 @@ export default {
         },
         {
           value: "day",
-          label: "按天查询"
+          label: "按日查询"
         }
       ]
     };
@@ -207,6 +227,15 @@ export default {
   methods: {
     handleMore() {
       this.more = !this.more;
+    },
+    handleSearch(){
+      this.$refs.form.validate((valid)=>{
+        if(valid){
+          this.$emit('onSearch', this.formData)
+        }
+
+      })
+
     }
   }
 };

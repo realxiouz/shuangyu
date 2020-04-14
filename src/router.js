@@ -176,19 +176,6 @@ export default new Router({
           meta: { title: '订单详情', icon: 'home' }
         },
         {
-          title: '改签订单详情',
-          path: '/order/chang/detail',
-          name: 'ChangOrderDetail',
-          component: () => import('@/views/order/ChangOrderDetail'),
-          meta: { title: '改签订单详情', icon: 'home' }
-        },{
-          title: '退票订单详情',
-          path: '/order/refund/detail',
-          name: 'RefundOrderDetail',
-          component: () => import('@/views/order/RefundOrderDetail'),
-          meta: { title: '退票订单详情', icon: 'home' }
-        },
-        {
           title: '出票',
           path: '/order/detail/go/ticket',
           name: 'goTicket',
@@ -231,11 +218,18 @@ export default new Router({
           meta: { title: '订单任务', icon: 'home' }
         },
         {
+          title: '总订单任务',
+          path: '/order/task/total/list',
+          name: 'orderTaskTotal',
+          component: () => import('@/views/orderTaskTotal/List'),
+          meta: { title: '总订单任务', icon: 'home' }
+        },
+        {
           title: '订单总报表',
           path: '/order/reportTotal/list',
           name: 'orderReportTotal',
           component: () => import('@/views/orderReportTotal/List'),
-          meta: { title: '订单任务', icon: 'home' }
+          meta: { title: '订单总报表', icon: 'home' }
         },
       ]
     },
@@ -320,6 +314,20 @@ export default new Router({
           name: 'firmList',
           component: () => import('@/views/firm/List'),
           meta: { title: '企业管理', icon: 'home' }
+        },
+        {
+          title: '供应商管理',
+          path: '/supplier/list',
+          name: 'supplierList',
+          component: () => import('@/views/supplier/List'),
+          meta: { title: '供应商管理', icon: 'home' }
+        },
+        {
+          title: '客户管理',
+          path: '/customer/list',
+          name: 'customerList',
+          component: () => import('@/views/customer/List'),
+          meta: { title: '客户管理', icon: 'home' }
         },
         {
           title: '部门管理',
@@ -479,11 +487,11 @@ export default new Router({
           meta: { title: '资金账号管理', icon: 'home' }
         },
         {
-          title: '订单管理',
-          path: '/finance/order/list',
-          name: 'financeOrder',
-          component: () => import('@/views/financeOrder/List'),
-          meta: { title: '订单管理', icon: 'home' }
+          title: '科目管理',
+          path: '/finance/account/subject',
+          name: 'accountSubject',
+          component: () => import('@/views/accountSubject/List'),
+          meta: { title: '科目管理', icon: 'home' }
         },
         {
           title: '货币管理',

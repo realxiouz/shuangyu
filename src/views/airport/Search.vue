@@ -5,6 +5,7 @@
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="机场三字码查询:">
             <el-input
+              clearable
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.airportCode"
               placeholder="请输入机场三字码.."
@@ -14,6 +15,7 @@
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="机场名称查询:">
             <el-input
+              clearable
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.airportName"
               placeholder="请输入机场名称.."

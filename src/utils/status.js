@@ -145,3 +145,18 @@ export function formatCardType(row) {
     }
 }
 
+export function subjectCategory(row) {
+  if (row.category === 0) {
+    return "资产类";
+  } else if (row.category === 1) {
+    return "负债类";
+  }  else if (row.category === 2) {
+    return "权益类";
+  }  else if (row.category === 3) {
+    return "成本类";
+  }  else if (row.category === 4) {
+    return "损益类";
+  } else {
+    return row.category
+  }
+}

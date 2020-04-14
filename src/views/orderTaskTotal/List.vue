@@ -129,7 +129,7 @@
 import orderTaskSearch from "./Search.vue";
 
 export default {
-  name: "orderTask",
+  name: "orderTaskTotal",
   data() {
     return {
       loading: true,
@@ -167,7 +167,7 @@ export default {
     },
     loadData(params) {
       this.$store
-        .dispatch("orderTask/getPageList", {
+        .dispatch("orderTaskTotal/getPageList", {
           filters: params
         })
         .then(data => {
@@ -184,7 +184,7 @@ export default {
     },
     loadTotal(params) {
       this.$store
-        .dispatch("orderTask/getTotal", {
+        .dispatch("orderTaskTotal/getTotal", {
           filters: params
         })
         .then(data => {
@@ -196,7 +196,7 @@ export default {
     },
     loadPendingTotal() {
       this.$store
-        .dispatch("orderTask/getPendingTotal", {
+        .dispatch("orderTaskTotal/getPendingTotal", {
           filters: {}
         })
         .then(data => {
@@ -263,8 +263,9 @@ export default {
       let params = {};
       params.taskType = taskType;
       this.loadData(params);
+      // console.log(params);
     },
-    goToDetail(row) {
+     goToDetail(row) {
       let path = "";
       path = "/order/detail";
       this.$router.push({

@@ -118,14 +118,20 @@ export default {
       this.loadData();
     },
     handleSearch(params) {
-      this.searchForm = params;
-      this.lastId = "0";
-      this.loadData();
+      const newParams = {};
+      if (params) {
+        for (let key in params) {
+          if (params[key]) {
+            newParams[key] = params[key];
+          }
+        }
+      }
+      this.searchForm = newParams;
+      this.loadData(this.searchForm);
       this.$message({
-        type:'success',
-        message:'查询成功！'
-      })
-
+        type: "success",
+        message: "查询成功！"
+      });
     },
     handleCancel() {
       this.dialogVisible = false;

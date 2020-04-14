@@ -4,34 +4,22 @@
       <el-form label-width="110px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="航司">
-            <el-input
-              v-model="formData.airlineCode"
-              placeholder="航司"
-            ></el-input>
+            <el-input clearable v-model="formData.airlineCode" placeholder="航司"></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="航班号">
-            <el-input
-              v-model="formData.flightCode"
-              placeholder="航班号"
-            ></el-input>
+            <el-input clearable v-model="formData.flightCode" placeholder="航班号"></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="出发地三字码">
-            <el-input
-              v-model="formData.dpt"
-              placeholder="出发地三字码"
-            ></el-input>
+            <el-input clearable v-model="formData.dpt" placeholder="出发地三字码"></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="出发机场三字码">
-            <el-input
-              v-model="formData.dptAirport"
-              placeholder="出发机场三字码"
-            ></el-input>
+            <el-input clearable v-model="formData.dptAirport" placeholder="出发机场三字码"></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -43,8 +31,8 @@
               step: '00:05',
               end: '23:55'}"
               placeholder="起飞时间"
-              style="width: 100%;">
-            </el-time-select>
+              style="width: 100%;"
+            ></el-time-select>
           </el-form-item>
         </el-col>
       </el-form>
@@ -66,69 +54,68 @@
 </template>
 
 <script>
-    export default {
-        name: "userSearch",
-        data() {
-            return {
-                more: false,
-                formData: {}
-            };
-        },
-        computed: {
-            switchIcon() {
-                if (!this.more) {
-                    return "el-icon-arrow-down el-icon--right";
-                } else {
-                    return "el-icon-arrow-up el-icon--right";
-                }
-            }
-        },
-        methods: {
-            defaultSearchFormData() {
-                return {
-                    //航司二字码
-                    airlineCode: null,
-                    //航班号
-                    flightCode: null,
-                    //出发地三字码
-                    dpt: null,
-                    //出发机场三字码
-                    dptAirport: null,
-                    //起飞时间
-                    dptTime: null
-                };
-            },
-            handleMore() {
-                this.more = !this.more;
-            },
-            handleSearch() {
-                if (this.formData.airlineCode && '' !==this.formData.airlineCode) {
-                    this.formData.airlineCode = this.formData.airlineCode.toUpperCase();
-                }else {
-                    this.formData.airlineCode = null;
-                }
-                if (this.formData.flightCode && '' !==this.formData.flightCode) {
-                    this.formData.flightCode = this.formData.flightCode.toUpperCase();
-                }else {
-                    this.formData.flightCode = null;
-                }
-                if (this.formData.dpt && '' !==this.formData.dpt) {
-                    this.formData.dpt = this.formData.dpt.toUpperCase();
-                }else {
-                    this.formData.dpt = null;
-                }
-                if (this.formData.dptAirport && '' !==this.formData.dptAirport) {
-                    this.formData.dptAirport = this.formData.dptAirport.toUpperCase();
-                }else {
-                    this.formData.dptAirport = null;
-                }
-                if (this.formData.dptTime && '' !==this.formData.dptTime)
-                  this.formData.dptTime = this.formData.dptTime.replace(":","");
-                else
-                    this.formData.dptTime = null;
-
-                this.$emit("onSearch", this.formData);
-            }
-        }
+export default {
+  name: "userSearch",
+  data() {
+    return {
+      more: false,
+      formData: {}
     };
+  },
+  computed: {
+    switchIcon() {
+      if (!this.more) {
+        return "el-icon-arrow-down el-icon--right";
+      } else {
+        return "el-icon-arrow-up el-icon--right";
+      }
+    }
+  },
+  methods: {
+    defaultSearchFormData() {
+      return {
+        //航司二字码
+        airlineCode: null,
+        //航班号
+        flightCode: null,
+        //出发地三字码
+        dpt: null,
+        //出发机场三字码
+        dptAirport: null,
+        //起飞时间
+        dptTime: null
+      };
+    },
+    handleMore() {
+      this.more = !this.more;
+    },
+    handleSearch() {
+      if (this.formData.airlineCode && "" !== this.formData.airlineCode) {
+        this.formData.airlineCode = this.formData.airlineCode.toUpperCase();
+      } else {
+        this.formData.airlineCode = null;
+      }
+      if (this.formData.flightCode && "" !== this.formData.flightCode) {
+        this.formData.flightCode = this.formData.flightCode.toUpperCase();
+      } else {
+        this.formData.flightCode = null;
+      }
+      if (this.formData.dpt && "" !== this.formData.dpt) {
+        this.formData.dpt = this.formData.dpt.toUpperCase();
+      } else {
+        this.formData.dpt = null;
+      }
+      if (this.formData.dptAirport && "" !== this.formData.dptAirport) {
+        this.formData.dptAirport = this.formData.dptAirport.toUpperCase();
+      } else {
+        this.formData.dptAirport = null;
+      }
+      if (this.formData.dptTime && "" !== this.formData.dptTime)
+        this.formData.dptTime = this.formData.dptTime.replace(":", "");
+      else this.formData.dptTime = null;
+
+      this.$emit("onSearch", this.formData);
+    }
+  }
+};
 </script>

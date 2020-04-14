@@ -1,4 +1,4 @@
-import { getPageList, getTotal, getPendingTotal } from '@/api/orderTask';
+import { getPageList, getTotal, getPendingTotal } from '@/api/orderTaskTotal';
 import { getToken } from '@/utils/auth';
 
 const state = {
