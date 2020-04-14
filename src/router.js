@@ -484,6 +484,13 @@ export default new Router({
           name: 'financeOrder',
           component: () => import('@/views/financeOrder/List'),
           meta: { title: '订单管理', icon: 'home' }
+        },
+        {
+          title: '货币管理',
+          path: '/finance/currency/list',
+          name: 'currency',
+          component: () => import('@/views/currency/List'),
+          meta: { title: '货币管理', icon: 'home' }
         }
       ]
     },
