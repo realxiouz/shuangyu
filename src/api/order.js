@@ -109,3 +109,11 @@ export function openPay(params) {
     params: params
   });
 }
+
+// 获取采购订单信息
+export function getOrderTree(params) {
+  return request({
+    url: `/order/get/tree/${params.rootOrderNo}/${params.category}`,
+    method: 'get',
+  });
+}

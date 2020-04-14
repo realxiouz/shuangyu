@@ -1,4 +1,4 @@
-import { getList, getOne, removeOne, save,getTimeCount, getCount, getTotal, getOrderDetail, getOrderMinPrice, getOrderFlight, getFlightPrice, placeAnOrder, openPay } from "@/api/order";
+import { getOrderTree, getList, getOne, removeOne, save, getTimeCount, getCount, getTotal, getOrderDetail, getOrderMinPrice, getOrderFlight, getFlightPrice, placeAnOrder, openPay } from "@/api/order";
 import { getToken } from "@/utils/auth";
 
 
@@ -176,6 +176,19 @@ const actions = {
   openPay({ commit }, params) {
     return new Promise((resolve, reject) => {
       openPay(params)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+
+  getOrderTree({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      getOrderTree(params)
         .then(response => {
           const { data } = response;
           resolve(data);
