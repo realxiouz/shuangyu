@@ -172,7 +172,7 @@ export default {
             if (1 === this.tableData.length) {
               this.prevClick();
             } else {
-              this.loadData("{}");
+              this.loadData();
             }
           });
         })
