@@ -39,83 +39,85 @@
   </div>
 </template>
 <script>
-function defaultData() {
-  return {
-    code: "",
-    ddId: "",
-    ddParentIdId: "",
-    name: "",
-    category: "",
-    balanceDirection: "",
-    quantityFinancing: "",
-    auxiliaryFinancing: "",
-    cnurrencyFinancing: ""
-  };
-}
-export default {
-  name: "accountSubjectEdit",
-  data() {
-    return {
-      formData: defaultData(),
-      firmList: [],
-      newDialogVisible: false,
-      rules: {
-        code: [
-          { required: true, message: "请输入部门名称", trigger: "blur" },
-          {
-            min: 1,
-            max: 20,
-            message: "长度在 1到 20 个字符"
-          }
-        ],
-        name: [
-          { required: true, message: "请输入域名", trigger: "blur" },
-          {
-            min: 1,
-            max: 20,
-            message: "长度在 1到 20 个字符"
-          }
-        ]
-      }
-    };
-  },
-  methods: {
-    handleChange(value) {
-      this.formData.roles = value;
-    },
-    handleGetOne(id) {
-      if (id) {
-        this.$store
-          .dispatch("accountSubject/getOne", { deptId: id })
-          .then(data => {
-            this.formData = data;
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      } else {
-        this.formData = defaultData();
-      }
-    },
-    handleSave() {
-      this.$refs["form"].validate(valid => {
-        if (valid) {
-          this.$emit("onSave", this.formData);
+    function defaultData() {
+        return {
+            code: "",
+            name: "",
+            category: "",
+            balanceDirection: 0,
+            quantityFinancing: false,
+            auxiliaryFinancing: false,
+            cnurrencyFinancing: false
+        };
+    }
+
+    export default {
+        name: "accountSubjectEdit",
+        data() {
+            return {
+                formData: defaultData(),
+                firmList: [],
+                newDialogVisible: false,
+                rules: {
+                    code: [
+                        {required: true, message: "请输入科目编码", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到 20 个字符"
+                        }
+                    ],
+                    name: [
+                        {required: true, message: "请输入科目名称", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到 20 个字符"
+                        }
+                    ],
+                    category: [
+                        {required: true, message: "请选择科目类别", trigger: "blur"}
+                    ]
+                }
+            };
+        },
+        methods: {
+            handleChange(value) {
+                this.formData.roles = value;
+            },
+            handleGetOne(id) {
+                if (id) {
+                    this.$store
+                        .dispatch("accountSubject/getOne", {deptId: id})
+                        .then(data => {
+                            this.formData = data;
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                } else {
+                    this.formData = defaultData();
+                }
+            },
+            handleSave() {
+                this.$refs["form"].validate(valid => {
+                    if (valid) {
+                        this.$emit("onSave", this.formData);
+                    }
+                });
+            }
+        },
+        created() {
+            if (this.editSubjectId) {
+                this.handleGetOne(this.editSubjectId);
+            }
+            if (this.pid) {
+                this.formData.pid = this.pid;
+            }
+        },
+        props: {
+            editSubjectId: String,
+            pid: String
         }
-      });
-    }
-  },
-  created() {
-    if (this.editSubjectId) {
-      this.handleGetOne(this.editSubjectId);
-    }
-    if (this.pid) {
-      this.formData.pid = this.pid;
-    }
-  },
-  props: {
-    editSubjectId: String,
-    pid: String
-  }
-};
+    };
 </script>
