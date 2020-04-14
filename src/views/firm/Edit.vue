@@ -26,12 +26,6 @@
       <el-form-item label="机构所在地">
         <el-input type="text" placeholder="请输入机构所在地" v-model="formData.location"></el-input>
       </el-form-item>
-      <el-form-item label="行政区代码">
-        <el-input type="text" placeholder="请输入行政区代码" v-model="formData.districtCode"></el-input>
-      </el-form-item>
-      <el-form-item label="行政区">
-        <el-input type="text" placeholder="请输入行政区" v-model.number="formData.distinct"></el-input>
-      </el-form-item>
     </el-form>
     <div style="text-align: center">
       <el-transfer
@@ -79,8 +73,6 @@
                     firmName: "",
                     firmCode: "",
                     location: "",
-                    districtCode: "",
-                    distinct: null,
                     fullName: "",
                     phone: "",
                     email: "",
