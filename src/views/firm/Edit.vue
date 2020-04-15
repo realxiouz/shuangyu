@@ -1,7 +1,6 @@
 <template>
   <div>
-    <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
-      <!--   企业ID  -->
+    <el-form ref="form" :rules="formRules" :model="formData" label-width="110px" size="mini">
       <el-form-item label="企业名称" prop="firmName">
         <el-input type="text" placeholder="请输入企业名称" v-model="formData.firmName"></el-input>
       </el-form-item>
@@ -75,7 +74,7 @@
                     domain: "",
                     type: 0,
                     roles: [],
-                    rules: {
+                    formRules: {
                         firmName: [
                             {required: true, message: "请输入企业名称", trigger: "blur"},
                             {
