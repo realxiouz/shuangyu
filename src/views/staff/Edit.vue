@@ -41,17 +41,7 @@
       </el-table-column>
     </el-table>
     <!-- 员工查询弹窗 -->
-    <el-dialog title="添加员工" width="37%" :visible.sync="dialogVisible" :close-on-click-modal="false">
-      <el-form :inline="true" size="mini" label-width>
-        <el-form-item>
-          <el-input v-model="keyword" style="width:300px;" placeholder="请输入昵称进行查询..">
-            <i class="el-icon-edit el-input__icon" slot="suffix" @click="handleIconClick"></i>
-          </el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" size="mini" icon="el-icon-search" @click="searchUser"></el-button>
-        </el-form-item>
-      </el-form>
+    <el-dialog title="关联用户" width="37%" :visible.sync="dialogVisible" :close-on-click-modal="false">
       <el-table
         highlight-current-row
         size="mini"
@@ -66,6 +56,7 @@
             <span>{{ initGender(scope.row.gender) }}</span>
           </template>
         </el-table-column>
+        <el-table-column prop="phone" label="电话" align="center"></el-table-column>
         <el-table-column prop="email" label="邮箱" align="center"></el-table-column>
       </el-table>
       <span slot="footer" class="dialog-footer">
@@ -218,19 +209,20 @@ export default {
       this.isExistsForEmail = false;
     },
     /*进行用户查询*/
-    searchUser() {
+    searchUser(rowData) {
       this.clearUsersTable();
       this.$store
-        .dispatch("staff/getPrepareUserList", {
-          firmId: this.curNode.firmId,
-          deptId: this.curNode.deptId,
-          filter: this.keyword ? { nickName: this.keyword, enable: true } : {}
-        })
+        // .dispatch("staff/associateUser", {filter: {phone: rowData.phone, email: rowData.email}})
+        .dispatch("staff/associateUser", {filter: {email: rowData.email}})
         .then(data => {
-          this.userTable = data.data;
+          this.userTable.push(data.data);
         })
         .catch(error => {
-          console.log(error);
+            console.log(error);
+            /*this.$alert(error.message, '提示', {
+                confirmButtonText: '确定',
+                type: "warning"
+            });*/
         });
     },
     /*加载所有的角色信息*/
@@ -287,7 +279,7 @@ export default {
           Object.assign(this.updateTempData,data.data);
         })
         .catch(error => {
-          console.log(error);
+            console.log(error);
         });
 
       this.hasStep = true;
@@ -346,7 +338,6 @@ export default {
     },
       handleAssociate(idx, row){
         this.clearFormData();
-          this.searchUser();
           /*根据对应的员工ID查询对应的用工对象*/
           this.$store
               .dispatch("staff/getOne", {
@@ -357,6 +348,7 @@ export default {
                   if (!data.data.roles) {
                       data.data.roles = [];
                   }
+                  this.searchUser(data.data);
                   this.formData = data.data;
                   this.dialogVisible = true;
               })

@@ -8,7 +8,7 @@ import {
   getList,
   getTotal,
   getPageList,
-  getPrepareUserList,
+  associateUser,
   getMany,
   isExist
 } from "@/api/staff";
@@ -140,10 +140,10 @@ const actions = {
     });
   },
   /*filter为对用户进行查询所需的条件*/
-  getPrepareUserList({commit}, params) {
+  associateUser({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {firmId, deptId, filter} = params;
-      getPrepareUserList(firmId, deptId, filter)
+      const {filter} = params;
+      associateUser(filter)
         .then(response => {
           resolve(response);
         })

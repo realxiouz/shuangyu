@@ -56,6 +56,7 @@ export default {
           if (data) {
               this.treeData = data;
               this.defaultExpandedKeys.push(data[0].deptId);
+              this.curNode = data[0];
           }
           this.loading = false;
         })

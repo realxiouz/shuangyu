@@ -78,9 +78,9 @@ export function getPageList(pageFlag, pageSize, lastId, filter) {
 }
 
 /*filter为对用户进行查询所需的条件*/
-export function getPrepareUserList(firmId, deptId, filter) {
+export function associateUser(filter) {
   return request({
-    url: `/staff/list/${firmId}/${deptId}`,
+    url: `/staff/associate/user`,
     method: "get",
     params: filter
   });
