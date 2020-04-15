@@ -58,6 +58,51 @@
                 transferProps: {
                     key: "roleId",
                     label: "roleName"
+                },
+                formRules: {
+                    firmName: [
+                        {required: true, message: "请输入企业名称", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到 20 个字符"
+                        }
+                    ],
+                    firmCode: [
+                        {required: true, message: "请输入企业代码", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到 20 个字符"
+                        }
+                    ],
+                    domain: [
+                        {required: true, message: "请输入域名", trigger: "blur"}
+                    ],
+                    fullName: [
+                        {required: true, message: "请输入联系人", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到 20 个字符"
+                        }
+                    ],
+                    phone: [
+                        {required: true, message: "请输入联系人", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到 20 个字符"
+                        }
+                    ],
+                    email: [
+                        {required: true, message: "请输入联系邮箱", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到 20 个字符"
+                        }
+                    ],
                 }
             };
         },
@@ -73,52 +118,8 @@
                     deleteFlag: true,
                     domain: "",
                     type: 0,
-                    roles: [],
-                    formRules: {
-                        firmName: [
-                            {required: true, message: "请输入企业名称", trigger: "blur"},
-                            {
-                                min: 1,
-                                max: 20,
-                                message: "长度在 1到 20 个字符"
-                            }
-                        ],
-                        firmCode: [
-                            {required: true, message: "请输入企业代码", trigger: "blur"},
-                            {
-                                min: 1,
-                                max: 20,
-                                message: "长度在 1到 20 个字符"
-                            }
-                        ],
-                        domain: [
-                            {required: true, message: "请输入域名", trigger: "blur"}
-                        ],
-                        fullName: [
-                            {required: true, message: "请输入联系人", trigger: "blur"},
-                            {
-                                min: 1,
-                                max: 20,
-                                message: "长度在 1到 20 个字符"
-                            }
-                        ],
-                        phone: [
-                            {required: true, message: "请输入联系人", trigger: "blur"},
-                            {
-                                min: 1,
-                                max: 20,
-                                message: "长度在 1到 20 个字符"
-                            }
-                        ],
-                        email: [
-                            {required: true, message: "请输入联系邮箱", trigger: "blur"},
-                            {
-                                min: 1,
-                                max: 20,
-                                message: "长度在 1到 20 个字符"
-                            }
-                        ],
-                    }
+                    roles: []
+
                 };
             },
             /*加载所有的角色信息*/
