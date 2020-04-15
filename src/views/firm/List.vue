@@ -61,15 +61,8 @@
         methods: {
             /*加载企业列表*/
             loadData(params) {
-                if(params){
-                    params.type = 0;
-                }else {
-                    let newParams = {};
-                    newParams.type = 0;
-                    params = newParams;
-                }
                 this.$store
-                    .dispatch("firm/getList", {filter: params})
+                    .dispatch("firm/getList", {filters: params})
                     .then(data => {
                         if (data) {
                             this.tableData = data;

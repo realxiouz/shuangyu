@@ -69,7 +69,7 @@ export default {
             params = newParams;
         }
       this.$store
-        .dispatch("firm/getList", { filter: params })
+        .dispatch("firm/getDealerCustomerList", { filters: params })
         .then(data => {
           if (data) {
             this.tableData = data;

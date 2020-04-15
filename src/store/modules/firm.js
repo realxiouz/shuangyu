@@ -1,11 +1,24 @@
-import {addOne, removeOne, updateOne, getPageList, getTotal, getList} from '@/api/firm';
+import {addOne, removeOne, updateOne, getPageList, getTotal, getList,getDealerCustomerList} from '@/api/firm';
 
 
 const actions = {
   getList({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const {filter} = params;
-      getList(filter)
+      const {filters} = params;
+      getList(filters)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getDealerCustomerList({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      const {filters} = params;
+      getDealerCustomerList(filters)
         .then(response => {
           const { data } = response;
           resolve(data);
