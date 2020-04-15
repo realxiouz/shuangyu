@@ -173,9 +173,9 @@
         size="mini"
         :data="orderTree"
         highlight-current-row
+        row-key="orderNo"
         fit
-        default-expand-all
-        :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+        :tree-props="{children: 'children', hasChildren: '*****'}"
       >
         <el-table-column prop="orderNo" align="center" label="订单号"></el-table-column>
         <el-table-column prop="sourceOrderNo" align="center" label="原订单"></el-table-column>
