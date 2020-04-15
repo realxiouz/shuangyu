@@ -14,13 +14,15 @@
         row-key="firmId"
         :tree-props="tableProps"
       >
-        <el-table-column prop="firmName" label="客户名称" align="center" sortable width="180"></el-table-column>
-        <el-table-column prop="firmCode" label="客户代码" align="center" sortable width="100"></el-table-column>
-        <el-table-column prop="linkPerson" label="联系人" align="center" width="100"></el-table-column>
+        <el-table-column prop="firmName" label="客户名称" align="center" sortable width="200"></el-table-column>
+        <el-table-column prop="firmCode" label="客户代码" align="center" sortable width="200"></el-table-column>
+        <el-table-column prop="fullName" label="联系人" align="center" width="180"></el-table-column>
+        <el-table-column prop="phone" label="联系人电话" align="center" width="180"></el-table-column>
+        <el-table-column prop="email" label="邮箱" align="center" width="180"></el-table-column>
+        <el-table-column prop="address" label="地址" align="center" width="180"></el-table-column>
         <el-table-column prop="remark" label="备注" align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="250">
           <template slot-scope="scope">
-            <el-button type="primary" size="mini" @click="handleAppend(scope.$index, scope.row)">添加</el-button>
             <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
             <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
           </template>
@@ -69,7 +71,7 @@
                     params = newParams;
                 }
                 this.$store
-                    .dispatch("firm/getList", {filter: params})
+                    .dispatch("firm/getDealerCustomerList", {filters: params})
                     .then(data => {
                         if (data) {
                             this.tableData = data;
@@ -131,7 +133,7 @@
                             this.$message({
                                 type: "success",
                                 message:
-                                    "客户账号已添加成功!超级管理员账号为企业联系人手机号或邮箱，密码已通过邮件发送给联系人"
+                                    "客户账号已添加成功!"
                             });
                             this.loadData();
                         })
@@ -142,15 +144,6 @@
             },
             handleCancel() {
                 this.dialogVisible = false;
-            },
-            /*点击添加企业子节点按钮*/
-            handleAppend(idx, row) {
-                this.rootNav = false;
-                this.dialogVisible = true;
-
-                this.curNode = {};
-                this.curNode.firmId = row.firmId;
-                this.curNode.level = row.level;
             },
             /*点击编辑*/
             handleEdit(index, row) {

@@ -117,3 +117,29 @@ export function getOrderTree(params) {
     method: 'get',
   });
 }
+
+// TTS锁单
+export function lockOrder(orderNo) {
+  return request({
+    url: `/qunar/fuwu/lock?orderNo=${orderNo}`,
+    method: 'get',
+  });
+}
+
+// TTS解锁单
+export function unLockOrder(orderNo) {
+  return request({
+    url: `/qunar/fuwu/unlock?orderNo=${orderNo}`,
+    method: 'get',
+  });
+}
+
+
+// 退票查询接口
+
+export function refundSearch(purchaseOrderNo ) {
+  return request({
+    url: `/qunar/open/refund/search?purchaseOrderNo=${purchaseOrderNo }`,
+    method: 'get',
+  });
+}

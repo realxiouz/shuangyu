@@ -1,27 +1,26 @@
 <template>
   <div>
-    <el-form size="mini" label-width="120px" v-show="hasStep">
-      <!--   企业ID  -->
-      <input type="hidden" v-model="formData.firmId"/>
-      <el-form-item label="企业名称">
+    <el-form ref="form" :rules="formRules" :model="formData" label-width="110px" size="mini">
+      <el-form-item label="企业名称" prop="firmName">
         <el-input type="text" placeholder="请输入企业名称" v-model="formData.firmName"></el-input>
       </el-form-item>
-      <el-form-item label="企业代码">
+      <el-form-item label="企业代码" prop="firmCode">
         <el-input type="text" placeholder="请输入企业代码" v-model="formData.firmCode"></el-input>
       </el-form-item>
-      <el-form-item label="域名">
+      <el-form-item label="域名" prop="domain">
         <el-input type="text" placeholder="请输入域名" v-model="formData.domain"></el-input>
       </el-form-item>
-      <el-form-item label="联系人">
+      <el-form-item label="联系人" prop="fullName">
         <el-input type="text" placeholder="请输入联系人" v-model="formData.fullName"></el-input>
       </el-form-item>
-      <el-form-item label="联系电话">
-        <el-input type="text" v-model="formData.phone" placeholder="请输入联系电话" @blur="isUsedForPhone"></el-input>
-        <span v-if="isExistsForPhone" style="color: crimson">*该信息已被注册</span>
+      <el-form-item label="联系电话" prop="phone">
+        <el-input type="text" v-model="formData.phone" placeholder="请输入联系电话"></el-input>
       </el-form-item>
-      <el-form-item label="电子邮箱">
-        <el-input type="text" v-model="formData.email" placeholder="请输入联系电子邮箱" @blur="isUsedForEmail"></el-input>
-        <span v-if="isExistsForEmail" style="color: crimson">*该信息已被注册</span>
+      <el-form-item label="电子邮箱" prop="email">
+        <el-input type="text" v-model="formData.email" placeholder="请输入联系电子邮箱"></el-input>
+      </el-form-item>
+      <el-form-item label="地址" prop="address">
+        <el-input type="text" placeholder="请输入联系地址" v-model="formData.address"></el-input>
       </el-form-item>
     </el-form>
     <div style="text-align: center">
@@ -54,12 +53,54 @@
                 formData: {},
                 hasStep: true,
                 updateTempData: {},
-                /*用于校验所填写的信息是否已经被使用*/
-                isExistsForPhone: false,
-                isExistsForEmail: false,
                 transferProps: {
                     key: "roleId",
                     label: "roleName"
+                },
+                formRules: {
+                    firmName: [
+                        {required: true, message: "请输入企业名称", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到 20 个字符"
+                        }
+                    ],
+                    firmCode: [
+                        {required: true, message: "请输入企业代码", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到 20 个字符"
+                        }
+                    ],
+                    domain: [
+                        {required: true, message: "请输入域名", trigger: "blur"}
+                    ],
+                    fullName: [
+                        {required: true, message: "请输入联系人", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到 20 个字符"
+                        }
+                    ],
+                    phone: [
+                        {required: true, message: "请输入联系人电话", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到 20 个字符"
+                        }
+                    ],
+                    email: [
+                        {required: true, message: "请输入联系邮箱", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到 20 个字符"
+                        }
+                    ],
                 }
             };
         },
@@ -72,10 +113,12 @@
                     fullName: "",
                     phone: "",
                     email: "",
+                    address: "",
                     deleteFlag: true,
                     domain: "",
                     type: 0,
                     roles: []
+
                 };
             },
             /*加载所有的角色信息*/
@@ -107,7 +150,6 @@
             /*初始化表单*/
             initFormData() {
                 this.hasStep = true;
-                this.initChecked();
                 if (this.curNode.firmName) {
                     Object.assign(this.formData, this.curNode);
                     Object.assign(this.updateTempData, this.curNode);
@@ -116,51 +158,13 @@
                 }
                 this.loadRoles();
             },
-            //重置校验
-            initChecked() {
-                this.isExistsForPhone = false;
-                this.isExistsForEmail = false;
-            },
             handleSave() {
-                if (this.isExistsForPhone || this.isExistsForEmail) {
-                    return;
-                } else {
-                    this.formData.type = 0;
-                    this.$emit("onSave", this.formData);
-                }
-            },
-            /*校验所填写的信息是否已经被使用*/
-            isUsedForPhone() {
-                if (!this.formData.phone || "" == this.formData.phone || this.formData.phone === this.updateTempData.phone) {
-                    return;
-                }
-                this.$store
-                    .dispatch("staff/isExist", {
-                        filedValue: this.formData.phone,
-                        deptId: null
-                    })
-                    .then(data => {
-                        this.isExistsForPhone = data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            isUsedForEmail() {
-                if (!this.formData.email || "" == this.formData.email || this.formData.email === this.updateTempData.email) {
-                    return;
-                }
-                this.$store
-                    .dispatch("staff/isExist", {
-                        filedValue: this.formData.email,
-                        deptId: null
-                    })
-                    .then(data => {
-                        this.isExistsForEmail = data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
+                this.$refs["form"].validate(valid => {
+                    if (valid) {
+                        this.formData.type = 0;
+                        this.$emit("onSave", this.formData);
+                    }
+                });
             }
         },
         watch: {

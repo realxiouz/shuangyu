@@ -16,7 +16,10 @@
       >
         <el-table-column prop="firmName" label="企业名称" align="center" sortable width="180"></el-table-column>
         <el-table-column prop="firmCode" label="企业代码" align="center" sortable width="100"></el-table-column>
-        <el-table-column prop="linkPerson" label="联系人" align="center" width="100"></el-table-column>
+        <el-table-column prop="fullName" label="联系人" align="center" width="180"></el-table-column>
+        <el-table-column prop="phone" label="联系人电话" align="center" width="180"></el-table-column>
+        <el-table-column prop="email" label="邮箱" align="center" width="180"></el-table-column>
+        <el-table-column prop="address" label="地址" align="center" width="180"></el-table-column>
         <el-table-column prop="remark" label="备注" align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="250">
           <template slot-scope="scope">
@@ -61,15 +64,8 @@
         methods: {
             /*加载企业列表*/
             loadData(params) {
-                if(params){
-                    params.type = 0;
-                }else {
-                    let newParams = {};
-                    newParams.type = 0;
-                    params = newParams;
-                }
                 this.$store
-                    .dispatch("firm/getList", {filter: params})
+                    .dispatch("firm/getList", {filters: params})
                     .then(data => {
                         if (data) {
                             this.tableData = data;

@@ -148,7 +148,7 @@
     </el-form>
 
     <div style="margin-top: 25px;text-align: right;">
-      <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
+      <el-button size="mini" @click="$emit('handleTicketCancel')">取 消</el-button>
       <el-button size="mini" type="primary" @click="handleSaveTicket">保存并贴票</el-button>
       <el-button size="mini" type="primary" @click="handleSave">保存</el-button>
     </div>
@@ -156,7 +156,6 @@
 </template>
 
 <script>
-import handleTicket from "./handleTicket";
 import { formatAgeType, formatCardType } from "@/utils/status.js";
 export default {
   name: "handleTicket",
