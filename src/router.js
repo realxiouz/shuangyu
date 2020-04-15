@@ -499,6 +499,13 @@ export default new Router({
           name: 'currency',
           component: () => import('@/views/currency/List'),
           meta: { title: '货币管理', icon: 'home' }
+        },
+        {
+          title: '仓库管理',
+          path: '/finance/warehouse/list',
+          name: 'warehouse',
+          component: () => import('@/views/warehouse/List'),
+          meta: { title: '仓库管理', icon: 'home' }
         }
       ]
     },
