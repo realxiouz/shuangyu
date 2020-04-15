@@ -14,12 +14,10 @@
         <el-input type="text" placeholder="请输入联系人" v-model="formData.fullName"></el-input>
       </el-form-item>
       <el-form-item label="联系电话" prop="phone">
-        <el-input type="text" v-model="formData.phone" placeholder="请输入联系电话" @blur="isUsedForPhone"></el-input>
-        <span v-if="isExistsForPhone" style="color: crimson">*该信息已被注册</span>
+        <el-input type="text" v-model="formData.phone" placeholder="请输入联系电话"></el-input>
       </el-form-item>
       <el-form-item label="电子邮箱" prop="email">
-        <el-input type="text" v-model="formData.email" placeholder="请输入联系电子邮箱" @blur="isUsedForEmail"></el-input>
-        <span v-if="isExistsForEmail" style="color: crimson">*该信息已被注册</span>
+        <el-input type="text" v-model="formData.email" placeholder="请输入联系电子邮箱"></el-input>
       </el-form-item>
       <el-form-item label="地址" prop="address">
         <el-input type="text" placeholder="请输入联系地址" v-model="formData.address"></el-input>
@@ -55,9 +53,6 @@
                 formData: {},
                 hasStep: true,
                 updateTempData: {},
-                /*用于校验所填写的信息是否已经被使用*/
-                isExistsForPhone: false,
-                isExistsForEmail: false,
                 transferProps: {
                     key: "roleId",
                     label: "roleName"
@@ -154,7 +149,6 @@
             /*初始化表单*/
             initFormData() {
                 this.hasStep = true;
-                this.initChecked();
                 if (this.curNode.firmName) {
                     this.formData = this.curNode;
                     Object.assign(this.updateTempData, this.curNode);
@@ -163,56 +157,14 @@
                 }
                 this.loadRoles();
             },
-            //重置校验
-            initChecked() {
-                this.isExistsForPhone = false;
-                this.isExistsForEmail = false;
-            },
             handleSave() {
                 this.$refs["form"].validate(valid => {
                     if (valid) {
-                        if (this.isExistsForPhone || this.isExistsForEmail) {
-                            return;
-                        } else {
-                            this.formData.type = 1;
-                            this.$emit("onSave", this.formData);
-                        }
+                        this.formData.type = 1;
+                        this.$emit("onSave", this.formData);
                     }
                 });
             },
-            /*校验所填写的信息是否已经被使用*/
-            isUsedForPhone() {
-                if (!this.formData.phone || "" == this.formData.phone || this.formData.phone === this.updateTempData.phone) {
-                    return;
-                }
-                this.$store
-                    .dispatch("staff/isExist", {
-                        filedValue: this.formData.phone,
-                        deptId: null
-                    })
-                    .then(data => {
-                        this.isExistsForPhone = data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            isUsedForEmail() {
-                if (!this.formData.email || "" == this.formData.email || this.formData.email === this.updateTempData.email) {
-                    return;
-                }
-                this.$store
-                    .dispatch("staff/isExist", {
-                        filedValue: this.formData.email,
-                        deptId: null
-                    })
-                    .then(data => {
-                        this.isExistsForEmail = data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            }
         },
         watch: {
             curNode() {
