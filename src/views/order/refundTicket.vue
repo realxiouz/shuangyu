@@ -54,9 +54,7 @@
           </el-table-column>
           <el-table-column label="价格" align="center">
             <template slot-scope="scope">
-              <span
-                v-if="scope.row"
-              >{{formatAmount(scope.row.refundSearchResult.tgqReasons[0].refundPassengerPriceInfoList[0].basePassengerPriceInfo.ticketPrice)}}</span>
+              <span>{{formatAmount(scope.row.refundSearchResult.tgqReasons[0].refundPassengerPriceInfoList[0].basePassengerPriceInfo.ticketPrice)}}</span>
             </template>
           </el-table-column>
           <el-table-column prop="ticketNum" label="票号" align="center"></el-table-column>
@@ -65,15 +63,14 @@
 
       <el-form-item label="销售退改说明:">
         <span>{{this.refundChangeRule?this.refundChangeRule:""}}</span>
-        <span>{{this.refundData[0].refundSearchResult.reason?this.refundData[0].refundSearchResult.reasonP:''}}</span>
         <div>
-          <span>1111</span>
+          <span v-if="this.showFlight">（销售航班信息：{{this.showFlight}}）</span>
+          <span v-if="this.reason" style="color:red;">{{this.reason}}</span>
         </div>
       </el-form-item>
       <el-form-item label="蜗牛退改说明:">
-        <span
-          v-html="refundData[0].refundSearchResult.refundRuleInfo.tgqText?refundData[0].refundSearchResult.refundRuleInfo.tgqText:''"
-        ></span>
+        <span v-if="this.tgqText" v-html="this.tgqText"></span>
+        <span v-else>暂无数据</span>
       </el-form-item>
     </el-form>
     <div style="margin-top: 25px;text-align: right;">
@@ -93,6 +90,10 @@ export default {
     return {
       tgqReasons: "",
       refundData: [],
+      tgqText: "",
+      showFlight: "",
+      reason: "",
+      flightInfo: "",
       formData: {
         refundFeeInfo: ""
       }
@@ -115,8 +116,32 @@ export default {
         .then(data => {
           if (data) {
             this.refundData = data.result;
-            if (data.result.length) {
-              this.tgqReasons = data.result[0].refundSearchResult.tgqReasons;
+            if (data.result.length > 0) {
+              if (data.result[0].refundSearchResult.tgqReasons) {
+                this.tgqReasons = data.result[0].refundSearchResult.tgqReasons;
+              }
+              if (data.result[0].refundSearchResult.reason) {
+                this.reason = data.result[0].refundSearchResult.reason;
+              }
+              if (data.result[0].refundSearchResult.refundRuleInfo) {
+                this.tgqText =
+                  data.result[0].refundSearchResult.refundRuleInfo.tgqText;
+              }
+              if (data.result[0].refundSearchResult.flightSegmentList) {
+                this.flightInfo =
+                  data.result[0].refundSearchResult.flightSegmentList[0];
+
+                this.showFlight =
+                  this.flightInfo.dptAirport +
+                  "-" +
+                  this.flightInfo.arrAirport +
+                  "--" +
+                  this.flightInfo.flightNo +
+                  "-" +
+                  this.flightInfo.dptDate +
+                  " " +
+                  this.flightInfo.dptTime;
+              }
             }
             console.log(data);
           }
@@ -134,7 +159,7 @@ export default {
   },
   computed: {},
   created() {
-    this.refundSearch("fma200415125908106");
+    this.refundSearch(this.purchaseOrderNo);
   }
 };
 </script>
