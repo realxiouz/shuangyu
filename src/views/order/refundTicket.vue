@@ -62,7 +62,7 @@
       </el-form-item>
 
       <el-form-item label="销售退改说明:">
-        <span>{{this.refundChangeRule?this.refundChangeRule:""}}</span>
+        <span v-if="this.showFlight">{{this.refundChangeRule}}</span>
         <div>
           <span v-if="this.showFlight">（销售航班信息：{{this.showFlight}}）</span>
           <span v-if="this.reason" style="color:red;">{{this.reason}}</span>
