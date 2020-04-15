@@ -172,7 +172,7 @@
                         if (this.isExistsForPhone || this.isExistsForEmail) {
                             return;
                         } else {
-                            this.formData.type = 1;
+                            this.formData.type = 2;
                             this.$emit("onSave", this.formData);
                         }
                     }
