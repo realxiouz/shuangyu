@@ -16,7 +16,10 @@
       >
         <el-table-column prop="firmName" label="供应商名称" align="center" sortable width="200"></el-table-column>
         <el-table-column prop="firmCode" label="供应商代码" align="center" sortable width="200"></el-table-column>
-        <el-table-column prop="linkPerson" label="联系人" align="center" width="200"></el-table-column>
+        <el-table-column prop="fullName" label="联系人" align="center" width="180"></el-table-column>
+        <el-table-column prop="phone" label="联系人电话" align="center" width="180"></el-table-column>
+        <el-table-column prop="email" label="邮箱" align="center" width="180"></el-table-column>
+        <el-table-column prop="address" label="地址" align="center" width="180"></el-table-column>
         <el-table-column prop="remark" label="备注" align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="250">
           <template slot-scope="scope">
