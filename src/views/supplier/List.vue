@@ -14,13 +14,12 @@
         row-key="firmId"
         :tree-props="tableProps"
       >
-        <el-table-column prop="firmName" label="供应商名称" align="center" sortable width="180"></el-table-column>
-        <el-table-column prop="firmCode" label="供应商代码" align="center" sortable width="100"></el-table-column>
-        <el-table-column prop="linkPerson" label="联系人" align="center" width="100"></el-table-column>
+        <el-table-column prop="firmName" label="供应商名称" align="center" sortable width="200"></el-table-column>
+        <el-table-column prop="firmCode" label="供应商代码" align="center" sortable width="200"></el-table-column>
+        <el-table-column prop="linkPerson" label="联系人" align="center" width="200"></el-table-column>
         <el-table-column prop="remark" label="备注" align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="250">
           <template slot-scope="scope">
-            <el-button type="primary" size="mini" @click="handleAppend(scope.$index, scope.row)">添加</el-button>
             <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
             <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
           </template>
@@ -142,15 +141,6 @@ export default {
     },
     handleCancel() {
       this.dialogVisible = false;
-    },
-    /*点击添加供应商子节点按钮*/
-    handleAppend(idx, row) {
-      this.rootNav = false;
-      this.dialogVisible = true;
-
-      this.curNode = {};
-      this.curNode.firmId = row.firmId;
-      this.curNode.level = row.level;
     },
     /*点击编辑*/
     handleEdit(index, row) {
