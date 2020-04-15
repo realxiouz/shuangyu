@@ -1,4 +1,4 @@
-import { unLockOrder,lockOrder,getOrderTree, getList, getOne, removeOne, save, getTimeCount, getCount, getTotal, getOrderDetail, getOrderMinPrice, getOrderFlight, getFlightPrice, placeAnOrder, openPay } from "@/api/order";
+import { refundSearch, unLockOrder, lockOrder, getOrderTree, getList, getOne, removeOne, save, getTimeCount, getCount, getTotal, getOrderDetail, getOrderMinPrice, getOrderFlight, getFlightPrice, placeAnOrder, openPay } from "@/api/order";
 import { getToken } from "@/utils/auth";
 
 
@@ -198,9 +198,9 @@ const actions = {
         });
     });
   },
-  
+
   lockOrder({ commit }, params) {
-    const  orderNo  = params;
+    const orderNo = params;
     return new Promise((resolve, reject) => {
       lockOrder(orderNo)
         .then(response => {
@@ -212,11 +212,26 @@ const actions = {
         });
     });
   },
-  
+
   unLockOrder({ commit }, params) {
-    const  orderNo  = params;
+    const orderNo = params;
     return new Promise((resolve, reject) => {
       unLockOrder(orderNo)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  
+// 退票查询接口
+  refundSearch({ commit }, params) {
+    const purchaseOrderNo = params;
+    return new Promise((resolve, reject) => {
+      refundSearch(purchaseOrderNo)
         .then(response => {
           const { data } = response;
           resolve(data);

@@ -209,8 +209,13 @@
         </el-table-column>
         <el-table-column prop="address" align="center" fixed="right" width="290" label="操作">
           <template slot-scope="scope">
-            <el-button type="primary" @click="refundTicket(scope.row)" size="mini">退票</el-button>
-            <el-button type="primary" size="mini">改签</el-button>
+            <el-button
+              type="primary"
+              v-show="scope.row.orderSource=='QUNAR_OPEN'"
+              @click="refundTicket(scope.row)"
+              size="mini"
+            >退票</el-button>
+            <el-button type="primary" v-show="scope.row.orderSource=='QUNAR_OPEN'" size="mini">改签</el-button>
             <el-button type="primary" size="mini">补退</el-button>
             <el-button type="primary" size="mini">补改</el-button>
           </template>
@@ -227,7 +232,7 @@
         :close-on-click-modal="false"
       >
         <handle-ticket
-          @onCancel="handleCancel"
+          @onCancel="handleTicketCancel"
           @onSaveTicket="handleSaveTicket"
           @onSave="handleSave"
           :passengerData="passengersInfo"
@@ -235,10 +240,27 @@
         ></handle-ticket>
       </el-dialog>
     </div>
+    <div>
+      <el-dialog
+        title="蜗牛退票申请"
+        center
+        :visible.sync="refundTicketShow"
+        width="33%"
+        :close-on-click-modal="false"
+      >
+        <refund-ticket
+          @onCancel="refundTicketCancel"
+          :refundData="refundData"
+          :tgqReasons="tgqReasons"
+        ></refund-ticket>
+      </el-dialog>
+    </div>
   </div>
 </template>
 <script>
 import handleTicket from "./handleTicket";
+import refundTicket from "./refundTicket";
+
 import {
   formateOrderType,
   formateCategory,
@@ -251,17 +273,21 @@ export default {
   data() {
     return {
       handleTicketShow: false,
+      refundTicketShow: false,
       flightData: [],
       passengerData: [],
       tableData: {},
       passengersInfo: [],
       orderTree: [],
-      sourceOrderNo:'',
+      sourceOrderNo: "",
+      refundData: "",
+      tgqReasons:"",
       orderNo: this.$route.query.orderNo
     };
   },
   components: {
-    handleTicket
+    handleTicket,
+    refundTicket
   },
   methods: {
     formateOrderType,
@@ -280,8 +306,11 @@ export default {
         return "";
       }
     },
-    handleCancel() {
+    handleTicketCancel() {
       this.handleTicketShow = false;
+    },
+    refundTicketCancel() {
+      this.refundTicketShow = false;
     },
     handleSaveTicket(params) {
       this.handleTicketShow = false;
@@ -337,7 +366,7 @@ export default {
           if (data) {
             this.tableData = data;
             let params = {};
-            this.sourceOrderNo=data.sourceOrderNo
+            this.sourceOrderNo = data.sourceOrderNo;
             params.rootOrderNo = data.rootOrderNo;
             params.category = 1;
             this.getOrderTree(params);
@@ -359,7 +388,6 @@ export default {
         .then(data => {
           if (data) {
             this.orderTree = data;
-            console.log(data);
           }
         })
         .catch(error => {
@@ -390,8 +418,26 @@ export default {
           console.log(error);
         });
     },
-    refundTicket(){
+    refundTicket(row) {
+      let purchaseOrderNo = row.sourceOrderNo;
+      let _x = "fma200415125908106";
+      this.refundSearch(_x);
+      this.refundTicketShow = true;
+    },
+    refundSearch(purchaseOrderNo) {
+      this.$store
+        .dispatch("order/refundSearch", purchaseOrderNo)
+        .then(data => {
+          if (data) {
+            this.refundData = data.result;
+            this.tgqReasons=data.result[0].refundSearchResult.tgqReasons;
+            console.log(this.refundData);
 
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
     formatPassengers(data) {
       if (!data || data.length == 0) {

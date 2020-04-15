@@ -133,3 +133,13 @@ export function unLockOrder(orderNo) {
     method: 'get',
   });
 }
+
+
+// 退票查询接口
+
+export function refundSearch(purchaseOrderNo ) {
+  return request({
+    url: `/qunar/open/refund/search?purchaseOrderNo=${purchaseOrderNo }`,
+    method: 'get',
+  });
+}
