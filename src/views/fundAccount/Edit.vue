@@ -2,20 +2,23 @@
   <div>
     <el-form :model="formData" label-width="110px" size="mini">
       <input type="hidden" v-model="formData.accountId"/>
-      <el-form-item label="账号编码">
-        <el-input v-model="formData.accountCode" placeholder="请输入账号编码.."></el-input>
-      </el-form-item>
-      <el-form-item label="账号名称">
-        <el-input v-model="formData.accountName" placeholder="示例：中国工商银行昆明官渡支行"></el-input>
-      </el-form-item>
-      <el-form-item label="银行账号">
-        <el-input v-model="formData.bankAccount" placeholder="请输入完整的银行账号"></el-input>
-      </el-form-item>
-      <el-form-item label="类别">
+      <el-form-item label="账号类别">
         <el-select v-model="formData.category" style="width: 100%;">
           <el-option label="现金" :value="0"></el-option>
           <el-option label="银行存款" :value="1"></el-option>
         </el-select>
+      </el-form-item>
+      <el-form-item label="账号编码">
+        <el-input v-model="formData.accountCode" placeholder="请输入账号编码.."></el-input>
+      </el-form-item>
+      <el-form-item v-if="0 === formData.category" label="资金账号">
+        <el-input v-model="formData.accountCode" placeholder="请输入账号编码.."></el-input>
+      </el-form-item>
+      <el-form-item v-if="1 === formData.category" label="账号名称">
+        <el-input v-model="formData.accountName" placeholder="示例：中国工商银行昆明官渡支行"></el-input>
+      </el-form-item>
+      <el-form-item v-if="1 === formData.category" label="银行账号">
+        <el-input v-model="formData.bankAccount" placeholder="请输入完整的银行账号"></el-input>
       </el-form-item>
       <el-form-item label="币种">
         <el-select v-model="formData.currency" style="width: 100%;" placeholder="请选择币种..">
