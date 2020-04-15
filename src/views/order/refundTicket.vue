@@ -34,33 +34,29 @@
       </el-row>
       <el-form-item v-model="formData.refundData" label-width="auto">
         <label class="el-form-item__label" style="color:#606266; width:110px;">乘车人:</label>
-        <el-table
-          size="mini"
-          :data="refundData?refundData:[]"
-          highlight-current-row
-          style="width: 100%;"
-          fit
-        >
+        <el-table size="mini" :data="refundData" highlight-current-row fit style="width: 100%;">
           <el-table-column type="selection" width="55"></el-table-column>
-          <el-table-column prop="name" label="姓名" align="center">
-            <template slot-scope="scope">
-              <span>{{scope.row.refundSearchResult.tgqReasons[0].refundPassengerPriceInfoList[0].basePassengerPriceInfo.passengerName}}</span>
-            </template>
-          </el-table-column>
+          <el-table-column prop="name" label="姓名" align="center"></el-table-column>
           <el-table-column prop="cardType" :formatter="formatCardType" label="证件类型" align="center"></el-table-column>
           <el-table-column prop="cardNum" label="证件号" align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.refundSearchResult.tgqReasons[0].refundPassengerPriceInfoList[0].basePassengerPriceInfo.cardNum}}</span>
+              <span
+                v-if="scope.row"
+              >{{scope.row.refundSearchResult.tgqReasons[0].refundPassengerPriceInfoList[0].basePassengerPriceInfo.cardNum}}</span>
             </template>
           </el-table-column>
           <el-table-column prop="ageType" label="乘机人类型" align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.refundSearchResult.tgqReasons[0].refundPassengerPriceInfoList[0].basePassengerPriceInfo.passengerTypeStr}}</span>
+              <span
+                v-if="scope.row"
+              >{{scope.row.refundSearchResult.tgqReasons[0].refundPassengerPriceInfoList[0].basePassengerPriceInfo.passengerTypeStr}}</span>
             </template>
           </el-table-column>
           <el-table-column label="价格" align="center">
             <template slot-scope="scope">
-              <span>{{formatAmount(scope.row.refundSearchResult.tgqReasons[0].refundPassengerPriceInfoList[0].basePassengerPriceInfo.ticketPrice)}}</span>
+              <span
+                v-if="scope.row"
+              >{{formatAmount(scope.row.refundSearchResult.tgqReasons[0].refundPassengerPriceInfoList[0].basePassengerPriceInfo.ticketPrice)}}</span>
             </template>
           </el-table-column>
           <el-table-column prop="ticketNum" label="票号" align="center"></el-table-column>
@@ -68,10 +64,16 @@
       </el-form-item>
 
       <el-form-item label="销售退改说明:">
-        <span>{{}}</span>
+        <span>{{this.refundChangeRule?this.refundChangeRule:""}}</span>
+        <span>{{this.refundData[0].refundSearchResult.reason?this.refundData[0].refundSearchResult.reasonP:''}}</span>
+        <div>
+          <span>1111</span>
+        </div>
       </el-form-item>
       <el-form-item label="蜗牛退改说明:">
-        <span v-html="refundData[0].refundSearchResult.refundRuleInfo.tgqText"></span>
+        <span
+          v-html="refundData[0].refundSearchResult.refundRuleInfo.tgqText?refundData[0].refundSearchResult.refundRuleInfo.tgqText:''"
+        ></span>
       </el-form-item>
     </el-form>
     <div style="margin-top: 25px;text-align: right;">
@@ -86,12 +88,12 @@ import { formatCardType } from "@/utils/status.js";
 
 export default {
   name: "handleTicket",
-  props: ["refundData", "tgqReasons"],
+  props: ["purchaseOrderNo", "refundChangeRule"],
   data() {
     return {
+      tgqReasons: "",
+      refundData: [],
       formData: {
-        refundData: "",
-        tgqReasons: "",
         refundFeeInfo: ""
       }
     };
@@ -107,6 +109,22 @@ export default {
         }
       });
     },
+    refundSearch(purchaseOrderNo) {
+      this.$store
+        .dispatch("order/refundSearch", purchaseOrderNo)
+        .then(data => {
+          if (data) {
+            this.refundData = data.result;
+            if (data.result.length) {
+              this.tgqReasons = data.result[0].refundSearchResult.tgqReasons;
+            }
+            console.log(data);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     formatAmount(amount) {
       if (!amount) {
         return "￥0.00";
@@ -114,6 +132,9 @@ export default {
       return "￥" + this.$numeral(amount).format("0.00");
     }
   },
-  computed: {}
+  computed: {},
+  created() {
+    this.refundSearch("fma200415125908106");
+  }
 };
 </script>

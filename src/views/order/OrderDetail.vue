@@ -106,7 +106,7 @@
         <span style="font-weight:700;font-size:15px;">退改说明：</span>
         <div
           style=" margin-top:10px;font-size:14px; line-height:1.5;"
-        >{{this.tableData.refundChangeRule}}</div>
+        >{{this.refundChangeRule}}</div>
       </div>
     </el-card>
     <el-card class="contentBox">
@@ -245,13 +245,13 @@
         title="蜗牛退票申请"
         center
         :visible.sync="refundTicketShow"
-        width="33%"
+        width="40%"
         :close-on-click-modal="false"
       >
         <refund-ticket
           @onCancel="refundTicketCancel"
-          :refundData="refundData"
-          :tgqReasons="tgqReasons"
+          :purchaseOrderNo="purchaseOrderNo"
+          :refundChangeRule="refundChangeRule"
         ></refund-ticket>
       </el-dialog>
     </div>
@@ -281,7 +281,8 @@ export default {
       orderTree: [],
       sourceOrderNo: "",
       refundData: "",
-      tgqReasons:"",
+      purchaseOrderNo:"",
+      refundChangeRule:'',
       orderNo: this.$route.query.orderNo
     };
   },
@@ -366,6 +367,7 @@ export default {
           if (data) {
             this.tableData = data;
             let params = {};
+            this.refundChangeRule=data.refundChangeRule
             this.sourceOrderNo = data.sourceOrderNo;
             params.rootOrderNo = data.rootOrderNo;
             params.category = 1;
@@ -419,26 +421,10 @@ export default {
         });
     },
     refundTicket(row) {
-      let purchaseOrderNo = row.sourceOrderNo;
-      let _x = "fma200415125908106";
-      this.refundSearch(_x);
+      this.purchaseOrderNo = row.sourceOrderNo;
       this.refundTicketShow = true;
     },
-    refundSearch(purchaseOrderNo) {
-      this.$store
-        .dispatch("order/refundSearch", purchaseOrderNo)
-        .then(data => {
-          if (data) {
-            this.refundData = data.result;
-            this.tgqReasons=data.result[0].refundSearchResult.tgqReasons;
-            console.log(this.refundData);
-
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
+    
     formatPassengers(data) {
       if (!data || data.length == 0) {
         return "";
