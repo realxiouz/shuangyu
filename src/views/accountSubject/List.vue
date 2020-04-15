@@ -113,7 +113,7 @@ export default {
           filters: params
         })
         .then(data => {
-          if (data.length > 0) {
+          if (data && data.length > 0) {
             this.tableData = data;
             this.expandRowKeys = [];
             this.expandRowKeys.push(data[0].subjectId);
