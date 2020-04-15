@@ -21,6 +21,9 @@
         <el-input type="text" v-model="formData.email" placeholder="请输入联系电子邮箱" @blur="isUsedForEmail"></el-input>
         <span v-if="isExistsForEmail" style="color: crimson">*该信息已被注册</span>
       </el-form-item>
+      <el-form-item label="地址" prop="address">
+        <el-input type="text" placeholder="请输入联系地址" v-model="formData.address"></el-input>
+      </el-form-item>
     </el-form>
     <div style="text-align: center">
       <el-transfer
@@ -88,7 +91,7 @@
                         }
                     ],
                     phone: [
-                        {required: true, message: "请输入联系人", trigger: "blur"},
+                        {required: true, message: "请输入联系人电话", trigger: "blur"},
                         {
                             min: 1,
                             max: 20,
@@ -115,6 +118,7 @@
                     fullName: "",
                     phone: "",
                     email: "",
+                    address: "",
                     deleteFlag: true,
                     domain: "",
                     type: 0,

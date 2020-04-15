@@ -133,7 +133,7 @@ export default {
             this.$message({
               type: "success",
               message:
-                "供应商账号已添加成功!超级管理员账号为企业联系人手机号或邮箱，密码已通过邮件发送给联系人"
+                "供应商账号已添加成功!"
             });
             this.loadData();
           })
