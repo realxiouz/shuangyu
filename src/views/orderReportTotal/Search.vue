@@ -309,7 +309,7 @@ export default {
       more: false,
       formData: {
         voyageType: "", //航程类型
-        orderType: "", //订单来源
+        orderType: 0, //订单来源
         flightCode: "", //航班号
         flightDate: "", //出发日期
         cabin: "", //舱位
