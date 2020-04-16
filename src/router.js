@@ -416,11 +416,11 @@ export default new Router({
           meta: {title: 'TTS编辑', icon: 'home'}
         },
         {
-          title: '第三方标签',
+          title: '政策标签',
           path: '/policy/flag/list',
           name: 'flag',
           component: () => import('@/views/policyFlag/List'),
-          meta: { title: '第三方标签', icon: 'home' }
+          meta: { title: '政策标签', icon: 'home' }
         },
         {
           title: '第三方标签参数',
