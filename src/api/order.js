@@ -136,10 +136,20 @@ export function unLockOrder(orderNo) {
 
 
 // 退票查询接口
-
 export function refundSearch(purchaseOrderNo ) {
   return request({
     url: `/qunar/open/refund/search?purchaseOrderNo=${purchaseOrderNo }`,
     method: 'get',
+  });
+}
+
+
+// 退票申请接口
+export function refundApply(data) {
+  return request({
+    url: `/qunar/open/refund/apply`,
+    method: 'post',
+    data:data
+    
   });
 }

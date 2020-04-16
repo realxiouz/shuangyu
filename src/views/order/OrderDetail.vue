@@ -104,9 +104,7 @@
       </el-table>
       <div style="margin-top:15px;">
         <span style="font-weight:700;font-size:15px;">退改说明：</span>
-        <div
-          style=" margin-top:10px;font-size:14px; line-height:1.5;"
-        >{{this.refundChangeRule}}</div>
+        <div style=" margin-top:10px;font-size:14px; line-height:1.5;">{{this.refundChangeRule}}</div>
       </div>
     </el-card>
     <el-card class="contentBox">
@@ -215,7 +213,12 @@
               @click="refundTicket(scope.row)"
               size="mini"
             >退票</el-button>
-            <el-button type="primary" v-show="scope.row.orderSource=='QUNAR_OPEN'" size="mini">改签</el-button>
+            <el-button
+              type="primary"
+              v-show="scope.row.orderSource=='QUNAR_OPEN'"
+              @click="changeTicket(scope.row)"
+              size="mini"
+            >改签</el-button>
             <el-button type="primary" size="mini">补退</el-button>
             <el-button type="primary" size="mini">补改</el-button>
           </template>
@@ -245,14 +248,26 @@
         title="蜗牛退票申请"
         center
         :visible.sync="refundTicketShow"
-        width="40%"
+        width="50%"
         :close-on-click-modal="false"
       >
         <refund-ticket
-          @onCancel="refundTicketCancel"
+          @onCancelRefund="refundTicketCancel"
+          @onSaveRefund="handleSaveRefund"
           :purchaseOrderNo="purchaseOrderNo"
           :refundChangeRule="refundChangeRule"
         ></refund-ticket>
+      </el-dialog>
+    </div>
+    <div>
+      <el-dialog
+        title="蜗牛改签申请"
+        center
+        :visible.sync="changeTicketShow"
+        width="50%"
+        :close-on-click-modal="false"
+      >
+        <change-ticket @onCancelChange="changeTicketCancel" @onSavechange="handleSaveChange"></change-ticket>
       </el-dialog>
     </div>
   </div>
@@ -260,6 +275,7 @@
 <script>
 import handleTicket from "./handleTicket";
 import refundTicket from "./refundTicket";
+import changeTicket from "./changeTicket";
 
 import {
   formateOrderType,
@@ -274,6 +290,7 @@ export default {
     return {
       handleTicketShow: false,
       refundTicketShow: false,
+      changeTicketShow: false,
       flightData: [],
       passengerData: [],
       tableData: {},
@@ -281,14 +298,15 @@ export default {
       orderTree: [],
       sourceOrderNo: "",
       refundData: "",
-      purchaseOrderNo:"",
-      refundChangeRule:'',
+      purchaseOrderNo: "",
+      refundChangeRule: "",
       orderNo: this.$route.query.orderNo
     };
   },
   components: {
     handleTicket,
-    refundTicket
+    refundTicket,
+    changeTicket
   },
   methods: {
     formateOrderType,
@@ -313,11 +331,46 @@ export default {
     refundTicketCancel() {
       this.refundTicketShow = false;
     },
+    changeTicketCancel() {
+      this.changeTicketShow = false;
+    },
     handleSaveTicket(params) {
       this.handleTicketShow = false;
     },
     handleSave(params) {
       this.handleTicketShow = false;
+    },
+    handleSaveRefund(params) {
+      let newParams = {};
+      console.log(params);
+      if (params) {
+        newParams.appKey = params.appKey;
+        newParams.passengerIds = params.passengerIds;
+        newParams.refundCause = params.refundCause;
+        newParams.refundCauseId = params.refundCauseId;
+      }
+
+      newParams.orderNo = this.purchaseOrderNo;
+      if (this.$route.query.taskId) {
+        newParams.orderTaskId = this.$route.query.taskId;
+      }
+      this.$store
+        .dispatch("order/refundApply", newParams)
+        .then(data => {
+          if (data) {
+            console.log(data);
+            this.$message({
+              type: "success",
+              message: "退票成功！"
+            });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+      this.refundTicketShow = false;
+
+      console.log(newParams);
     },
     formatAmount1(amount) {
       if (!amount) {
@@ -367,7 +420,7 @@ export default {
           if (data) {
             this.tableData = data;
             let params = {};
-            this.refundChangeRule=data.refundChangeRule
+            this.refundChangeRule = data.refundChangeRule;
             this.sourceOrderNo = data.sourceOrderNo;
             params.rootOrderNo = data.rootOrderNo;
             params.category = 1;
@@ -424,7 +477,12 @@ export default {
       this.purchaseOrderNo = row.sourceOrderNo;
       this.refundTicketShow = true;
     },
-    
+    changeTicket(row) {
+      this.purchaseOrderNo = row.sourceOrderNo;
+      this.changeTicketShow = true;
+    },
+
+
     formatPassengers(data) {
       if (!data || data.length == 0) {
         return "";
