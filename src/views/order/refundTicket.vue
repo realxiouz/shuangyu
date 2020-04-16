@@ -124,6 +124,7 @@ export default {
   },
   methods: {
     formatCardType,
+    // 表格复选框选中处理
     handleSelectionChange(rows) {
       let str = "";
       rows.forEach(row => {
@@ -132,6 +133,7 @@ export default {
       str = str.substring(0, str.length - 1);
       this.formData.passengerIds = str;
     },
+    // 默认选中表格复选框
     toggleSelection(rows) {
       if (rows) {
         rows.forEach(row => {
@@ -143,9 +145,11 @@ export default {
         this.$refs.multipleTable.clearSelection();
       }
     },
+    // 退票申请
     handleSave() {
       this.$emit("onSaveRefund", this.formData);
     },
+    // 判断是否可以退票
     selectable(row, index) {
       if (row.refundSearchResult.canRefund) {
         return true;
@@ -153,6 +157,7 @@ export default {
         return false;
       }
     },
+    // 表格复选框
     selectTgqReasons(value) {
       let code = value;
       this.tgqReasons.forEach(item => {
@@ -162,6 +167,7 @@ export default {
         }
       });
     },
+    // 退票查询
     refundSearchData(purchaseOrderNo) {
       this.$store
         .dispatch("order/refundSearch", purchaseOrderNo)

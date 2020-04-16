@@ -319,34 +319,31 @@ export default {
     formateCategory,
     formatAgeType,
     formatCardType,
-    getMessage() {},
     goBack() {
       this.$router.go(-1);
     },
-    initDate(dateStr, format) {
-      if (dateStr > 0) {
-        let date = new Date(dateStr);
-        return this.$moment(date).format(format);
-      } else {
-        return "";
-      }
-    },
+  
+    // 手工出票弹框返回
     handleTicketCancel() {
       this.handleTicketShow = false;
     },
+    // 退票弹框返回
     refundTicketCancel() {
       this.refundTicketShow = false;
     },
+    // 改签弹框返回
     changeTicketCancel() {
       this.changeTicketShow = false;
     },
+    // 手工出票保存并贴票
     handleSaveTicket(params) {
       this.handleTicketShow = false;
     },
+    // 手工出票保存
     handleSave(params) {
       this.handleTicketShow = false;
     },
-
+    // 退票申请
     handleSaveRefund(params) {
       let newParams = {};
       console.log(params);
@@ -377,6 +374,7 @@ export default {
         });
       this.refundTicketShow = false;
     },
+    // 改签申请
     handleSaveChange() {
       this.changeTicketShow = false;
     },
@@ -389,6 +387,7 @@ export default {
     handleSelectionChange(passengersInfo) {
       this.passengersInfo = passengersInfo;
     },
+    // 系统出票
     goTicket() {
       if (this.passengersInfo.length < 1) {
         this.$notify({
@@ -408,6 +407,7 @@ export default {
         });
       }
     },
+    // 手工出票
     handleTicket() {
       if (this.passengersInfo.length < 1) {
         this.$notify({
@@ -421,6 +421,7 @@ export default {
         this.handleTicketShow = true;
       }
     },
+    // 获取详情信息
     getOrderDetail(orderNo) {
       this.$store
         .dispatch("order/getOrderDetail", orderNo)
@@ -445,6 +446,7 @@ export default {
           console.log(error);
         });
     },
+    // 获取采购订单信息
     getOrderTree(params) {
       this.$store
         .dispatch("order/getOrderTree", params)
@@ -457,6 +459,7 @@ export default {
           console.log(error);
         });
     },
+    // tts锁单
     lockOrder() {
       this.$store
         .dispatch("order/lockOrder", this.sourceOrderNo)
@@ -469,6 +472,7 @@ export default {
           console.log(error);
         });
     },
+    // tts解锁单
     unLockOrder() {
       this.$store
         .dispatch("order/unLockOrder", this.sourceOrderNo)
@@ -481,6 +485,7 @@ export default {
           console.log(error);
         });
     },
+    // 调用出票中
     useGoTicket() {
       this.$store
         .dispatch("order/useGoTicket", this.$route.query.taskId)
@@ -493,9 +498,12 @@ export default {
           console.log(error);
         });
     },
+    // 消息
     getMessage() {
       this.getChangeHtml();
     },
+
+    // 获取销售改签信息
     getChangeHtml() {
       this.$store
         .dispatch("order/useGoTicket", this.purchaseOrderNo)
@@ -508,16 +516,27 @@ export default {
           console.log(error);
         });
     },
+    // 退票
     refundTicket(row) {
       this.purchaseOrderNo = row.sourceOrderNo;
       this.refundTicketShow = true;
     },
+    // 改签
     changeTicket(row) {
       this.purchaseOrderNo = row.sourceOrderNo;
       this.changeTicketShow = true;
       this.changeData = row;
     },
-
+      // 格式化日期
+    initDate(dateStr, format) {
+      if (dateStr > 0) {
+        let date = new Date(dateStr);
+        return this.$moment(date).format(format);
+      } else {
+        return "";
+      }
+    },
+    //格式化乘客信息
     formatPassengers(data) {
       if (!data || data.length == 0) {
         return "";
@@ -529,12 +548,14 @@ export default {
 
       return str.substring(0, str.length - 2);
     },
+    // 格式化航班信息
     formatFlightNo(data) {
       if (!data || data.length == 0) {
         return "";
       }
       return data[0].flightCode;
     },
+    // 格式化票号信息
     formatTicketNo(ticketNo) {
       if (ticketNo && ticketNo.length > 0) {
         let str = "";
@@ -548,6 +569,7 @@ export default {
         return (ticketNo = "");
       }
     },
+    // 格式化数字
     formatAmount(amount) {
       if (!amount) {
         return "￥0.00";

@@ -176,9 +176,11 @@ export default {
   methods: {
     formatAgeType,
     formatCardType,
+    // 保存并贴票
     handleSaveTicket() {
       this.$emit("onSaveTicket", this.formData);
     },
+    // 保存
     handleSave() {
       this.$emit("onSave", this.formData);
     },
