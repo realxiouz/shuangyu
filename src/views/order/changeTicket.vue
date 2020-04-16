@@ -136,6 +136,7 @@ export default {
   methods: {
     formatCardType,
     formatAgeType,
+    // 改签查询
     changeSearchData(params) {
       this.$store
         .dispatch("order/changeSearch", params)
@@ -162,6 +163,7 @@ export default {
           console.log(error);
         });
     },
+    // 格式化日期
     initDate(dateStr, format) {
       if (dateStr > 0) {
         let date = new Date(dateStr);
@@ -170,6 +172,7 @@ export default {
         return "";
       }
     },
+    // 格式化乘客
     formatPassengers(data) {
       if (!data || data.length == 0) {
         return "";
@@ -181,12 +184,14 @@ export default {
 
       return str.substring(0, str.length - 2);
     },
+    // 格式化航班日期
     formatFlightDate(data) {
       if (!data || data.length == 0) {
         return "";
       }
       return this.initDate(data[0].flightDate, "YYYY-MM-DD");
     },
+    // 格式化金额
     formatAmount(amount) {
       if (!amount) {
         return "￥0.00";

@@ -151,6 +151,13 @@ export function refundSearch(purchaseOrderNo) {
   });
 }
 
+// 获取销售退票信息
+export function getRefundHtml(purchaseOrderNo) {
+  return request({
+    url: `/qunar/fuwu/get/refund/html?purchaseOrderNo=${purchaseOrderNo}`,
+    method: 'get',
+  });
+}
 
 // 退票申请接口
 export function refundApply(data) {
@@ -162,9 +169,7 @@ export function refundApply(data) {
   });
 }
 
-
 // 改签查询接口
-
 export function changeSearch(params) {
   return request({
     url: `/qunar/open/change/search/${params.purchaseOrderNo}/${params.changeDptDate}`,
