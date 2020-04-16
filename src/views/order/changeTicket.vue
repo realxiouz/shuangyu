@@ -111,7 +111,7 @@
     </el-form>
     <div style="margin-top: 25px;text-align: right;">
       <el-button size="mini" @click="$emit('onCancelChange')">取 消</el-button>
-      <el-button size="mini" type="primary">确定</el-button>
+      <el-button size="mini" @click="handleSave" type="primary">确定</el-button>
     </div>
   </div>
 </template>
@@ -162,6 +162,10 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+    // 改签申请
+    handleSave() {
+      this.$emit("onSavechange",this.formData)
     },
     // 格式化日期
     initDate(dateStr, format) {

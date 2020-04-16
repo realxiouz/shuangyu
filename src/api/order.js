@@ -152,9 +152,9 @@ export function refundSearch(purchaseOrderNo) {
 }
 
 // 获取销售退票信息
-export function getRefundHtml(purchaseOrderNo) {
+export function getRefundHtml(orderNo) {
   return request({
-    url: `/qunar/fuwu/get/refund/html?purchaseOrderNo=${purchaseOrderNo}`,
+    url: `/qunar/fuwu/get/refund/html?orderNo=${orderNo}`,
     method: 'get',
   });
 }
@@ -178,9 +178,9 @@ export function changeSearch(params) {
 }
 
 // 获取销售改签信息
-export function getChangeHtml(purchaseOrderNo) {
+export function getChangeHtml(orderNo) {
   return request({
-    url: `/qunar/fuwu/get/change/html?purchaseOrderNo=${purchaseOrderNo}`,
+    url: `/qunar/fuwu/get/change/html?orderNo=${orderNo}`,
     method: 'get',
   });
 }

@@ -161,6 +161,9 @@
         <span>消息</span>
       </div>
       <el-button type="primary" size="mini" @click="getMessage">刷新</el-button>
+      <div>
+        <span v-if="this.changeHtml" v-html="this.changeHtml"></span>
+      </div>
     </el-card>
 
     <el-card class="contentBox">
@@ -295,6 +298,7 @@ export default {
       handleTicketShow: false,
       refundTicketShow: false,
       changeTicketShow: false,
+      changeHtml:"",
       flightData: [],
       passengerData: [],
       tableData: {},
@@ -319,10 +323,11 @@ export default {
     formateCategory,
     formatAgeType,
     formatCardType,
+    // 返回
     goBack() {
       this.$router.go(-1);
     },
-  
+
     // 手工出票弹框返回
     handleTicketCancel() {
       this.handleTicketShow = false;
@@ -446,7 +451,7 @@ export default {
           console.log(error);
         });
     },
-    // 获取采购订单信息
+    // 获取采购单信息
     getOrderTree(params) {
       this.$store
         .dispatch("order/getOrderTree", params)
@@ -506,9 +511,10 @@ export default {
     // 获取销售改签信息
     getChangeHtml() {
       this.$store
-        .dispatch("order/useGoTicket", this.purchaseOrderNo)
+        .dispatch("order/getChangeHtml","sen200407105017520001" )//this.sourceOrderNo
         .then(data => {
           if (data) {
+            this.changeHtml = data;
             console.log(data);
           }
         })
@@ -527,7 +533,7 @@ export default {
       this.changeTicketShow = true;
       this.changeData = row;
     },
-      // 格式化日期
+    // 格式化日期
     initDate(dateStr, format) {
       if (dateStr > 0) {
         let date = new Date(dateStr);

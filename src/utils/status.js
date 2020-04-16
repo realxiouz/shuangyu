@@ -130,33 +130,53 @@ export function formatCardType(row) {
         return "身份证";
     } else if (row.cardType === "PP") {
         return "护照";
-    }else if (row.cardType === "ID") {
+    } else if (row.cardType === "ID") {
         return "其他";
-    }else if (row.cardType === "HX") {
+    } else if (row.cardType === "HX") {
         return "回乡证";
-    }else if (row.cardType === "TB") {
+    } else if (row.cardType === "TB") {
         return "台胞证";
-    }else if (row.cardType === "GA") {
+    } else if (row.cardType === "GA") {
         return "港澳通行证";
-    }else if (row.cardType === "HY") {
+    } else if (row.cardType === "HY") {
         return "国际海员证";
-    }else{
+    } else {
         return row.cardType
     }
 }
 
 export function subjectCategory(row) {
-  if (row.category === 0) {
-    return "资产类";
-  } else if (row.category === 1) {
-    return "负债类";
-  }  else if (row.category === 2) {
-    return "权益类";
-  }  else if (row.category === 3) {
-    return "成本类";
-  }  else if (row.category === 4) {
-    return "损益类";
-  } else {
-    return row.category
-  }
+    if (row.category === 0) {
+        return "资产类";
+    } else if (row.category === 1) {
+        return "负债类";
+    } else if (row.category === 2) {
+        return "权益类";
+    } else if (row.category === 3) {
+        return "成本类";
+    } else if (row.category === 4) {
+        return "损益类";
+    } else {
+        return row.category
+    }
 }
+
+//格式化订单任务
+export function formatTaskStatus(row) {
+    if (row.taskStatus === 0) {
+        return "生成未派单";
+    } else if (row.taskStatus === 1) {
+        return "派单未处理";
+    } else if (row.taskStatus === 2) {
+        return "提交";
+    } else if (row.taskStatus === 3) {
+        return "转单";
+    } else if (row.taskStatus === 4) {
+        return "完成";
+    } else if (row.taskStatus === 9) {
+        return "取消";
+    } else {
+        return row.taskStatus
+    }
+}
+

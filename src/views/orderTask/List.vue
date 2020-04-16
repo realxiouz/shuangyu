@@ -89,7 +89,7 @@
             <span>{{ formatAmount(scope.row.profit)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="taskStatus" label="任务状态" align="center"></el-table-column>
+        <el-table-column prop="taskStatus" :formatter="formatTaskStatus" label="任务状态" align="center"></el-table-column>
         <el-table-column prop="startTime" label="开始时间" align="center">
           <template slot-scope="scope">
             <span>{{ formatDate(scope.row.startTime,'YYYY-MM-DD HH:mm:ss') }}</span>
@@ -127,6 +127,8 @@
 
 <script>
 import orderTaskSearch from "./Search.vue";
+import { formatTaskStatus } from "@/utils/status.js";
+
 
 export default {
   name: "orderTask",
@@ -148,6 +150,7 @@ export default {
     orderTaskSearch
   },
   methods: {
+    formatTaskStatus,
     handleSizeChange(size) {
       this.pageSize = size;
       this.searchParams.pageSize = this.pageSize;
