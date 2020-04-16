@@ -271,7 +271,8 @@ export default {
       this.$router.push({
         path: path,
         query: {
-          orderNo: row.orderNo
+          orderNo: row.orderNo,
+          taskId: row.taskId
         }
       });
     },

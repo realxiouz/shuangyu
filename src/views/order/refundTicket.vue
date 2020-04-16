@@ -1,10 +1,16 @@
 <template>
   <div>
-    <el-form :model="formData" label-width="110px" size="mini" style="margin-top:15px;">
-      <el-form-item label="退票原因:">
+    <el-form
+      :rules="formRules"
+      :model="formData"
+      label-width="110px"
+      size="mini"
+      style="margin-top:15px;"
+    >
+      <el-form-item label="退票原因:" prop="refundCauseId">
         <el-select
           clearable
-          v-model="formData.tgqReasons"
+          v-model="formData.refundCauseId"
           @change="selectTgqReasons"
           placeholder="请选择退票原因"
           style="width: 100%"
@@ -18,7 +24,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="退票备注:">
-        <el-input></el-input>
+        <el-input placeholder="请输入退票备注..." v-model="formData.refundCause"></el-input>
       </el-form-item>
       <el-row>
         <el-col :span="12">
@@ -34,8 +40,16 @@
       </el-row>
       <el-form-item v-model="formData.refundData" label-width="auto">
         <label class="el-form-item__label" style="color:#606266; width:110px;">乘车人:</label>
-        <el-table size="mini" :data="refundData" highlight-current-row fit style="width: 100%;">
-          <el-table-column type="selection" width="55"></el-table-column>
+        <el-table
+          ref="multipleTable"
+          size="mini"
+          :data="refundData"
+          highlight-current-row
+          @selection-change="handleSelectionChange"
+          fit
+          style="width: 100%;"
+        >
+          <el-table-column type="selection" :selectable="selectable" width="55"></el-table-column>
           <el-table-column prop="name" label="姓名" align="center"></el-table-column>
           <el-table-column prop="cardType" :formatter="formatCardType" label="证件类型" align="center"></el-table-column>
           <el-table-column prop="cardNum" label="证件号" align="center">
@@ -74,8 +88,8 @@
       </el-form-item>
     </el-form>
     <div style="margin-top: 25px;text-align: right;">
-      <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
-      <el-button size="mini" type="primary">确定</el-button>
+      <el-button size="mini" @click="$emit('onCancelRefund')">取 消</el-button>
+      <el-button size="mini" @click="handleSave" type="primary">确定</el-button>
     </div>
   </div>
 </template>
@@ -95,12 +109,50 @@ export default {
       reason: "",
       flightInfo: "",
       formData: {
-        refundFeeInfo: ""
+        refundCauseId: "",
+        refundFeeInfo: "",
+        refundCause: "",
+        passengerIds: "",
+        appKey: ""
+      },
+      formRules: {
+        refundCauseId: [
+          { required: true, message: "请选择退票原因", trigger: "change" }
+        ]
       }
     };
   },
   methods: {
     formatCardType,
+    handleSelectionChange(rows) {
+      let str = "";
+      rows.forEach(row => {
+        str += row.id + ",";
+      });
+      str = str.substring(0, str.length - 1);
+      this.formData.passengerIds = str;
+    },
+    toggleSelection(rows) {
+      if (rows) {
+        rows.forEach(row => {
+          if (row.refundSearchResult.canRefund) {
+            this.$refs.multipleTable.toggleRowSelection(row, true);
+          }
+        });
+      } else {
+        this.$refs.multipleTable.clearSelection();
+      }
+    },
+    handleSave() {
+      this.$emit("onSaveRefund", this.formData);
+    },
+    selectable(row, index) {
+      if (row.refundSearchResult.canRefund) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     selectTgqReasons(value) {
       let code = value;
       this.tgqReasons.forEach(item => {
@@ -110,11 +162,12 @@ export default {
         }
       });
     },
-    refundSearch(purchaseOrderNo) {
+    refundSearchData(purchaseOrderNo) {
       this.$store
         .dispatch("order/refundSearch", purchaseOrderNo)
         .then(data => {
           if (data) {
+            this.formData.appKey = data.appKey;
             this.refundData = data.result;
             if (data.result.length > 0) {
               if (data.result[0].refundSearchResult.tgqReasons) {
@@ -159,7 +212,11 @@ export default {
   },
   computed: {},
   created() {
-    this.refundSearch(this.purchaseOrderNo);
+    this.refundSearchData(this.purchaseOrderNo);
+    // this.refundSearchData("fma200415125908106");
+  },
+  updated() {
+    this.toggleSelection(this.refundData);
   }
 };
 </script>

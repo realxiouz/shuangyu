@@ -113,7 +113,7 @@ export function openPay(params) {
 // 获取采购订单信息
 export function getOrderTree(params) {
   return request({
-    url: `/order/get/tree/${params.rootOrderNo}/${params.category}`,
+    url: `qunar/open/order/get/tree/${params.rootOrderNo}/${params.category}`,
     method: 'get',
   });
 }
@@ -136,10 +136,40 @@ export function unLockOrder(orderNo) {
 
 
 // 退票查询接口
-
 export function refundSearch(purchaseOrderNo ) {
   return request({
     url: `/qunar/open/refund/search?purchaseOrderNo=${purchaseOrderNo }`,
     method: 'get',
+  });
+}
+
+
+// 退票申请接口
+export function refundApply(data) {
+  return request({
+    url: `/qunar/open/refund/apply`,
+    method: 'post',
+    data:data
+    
+  });
+}
+
+
+// 改签查询接口
+
+export function changeSearch(params ) {
+  return request({
+    url: `/qunar/open/change/search/${params.purchaseOrderNo}/${params.changeDptDate}`,
+    method: 'get',
+  });
+}
+
+// 改签申请接口
+export function changeApply(data) {
+  return request({
+    url: `/qunar/open/change/apply`,
+    method: 'post',
+    data:data
+    
   });
 }
