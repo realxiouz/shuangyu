@@ -157,7 +157,7 @@ export default {
         return false;
       }
     },
-    // 表格复选框
+    // 退票原因选中处理
     selectTgqReasons(value) {
       let code = value;
       this.tgqReasons.forEach(item => {

@@ -25,6 +25,9 @@
           </el-form-item>
         </el-col>
       </el-row>
+      <el-form-item label="改签原因:">
+        <el-input></el-input>
+      </el-form-item>
       <el-form-item label="退改说明:">
         <span v-if="this.tgqText" v-html="this.tgqText"></span>
         <span v-else>暂无数据</span>
@@ -34,8 +37,8 @@
         <el-select
           clearable
           v-model="formData.changeCauseId"
-          @change="selectTgqReasons"
           placeholder="请选择退票原因"
+          @change="selectTgqReasons"
           style="width: 100%"
         >
           <el-option
@@ -82,30 +85,50 @@
           <el-table-column prop="ticketNo" label="票号" align="center"></el-table-column>
         </el-table>
       </el-form-item>
-      <el-form-item v-model="formData.refundData" label-width="auto">
+      <el-form-item v-model="formData.changeFlightSegmentList" label-width="auto">
         <label class="el-form-item__label" style="color:#606266; width:110px;">航班信息：</label>
-        <el-table ref="multipleTable" size="mini" highlight-current-row fit style="width: 100%;">
+        <el-table
+          :data="formData.changeFlightSegmentList"
+          ref="multipleTable"
+          size="mini"
+          highlight-current-row
+          fit
+          style="width: 100%;"
+        >
           <el-table-column type="selection" width="55"></el-table-column>
-          <el-table-column prop="name" width="60" label="航班号" align="center"></el-table-column>
-          <el-table-column prop="cardType" width="60" label="出发地" align="center"></el-table-column>
-          <el-table-column prop="cardNum" width="60" label="目的地" align="center">
+          <el-table-column prop="actFlightNo" width="70" label="航班号" align="center"></el-table-column>
+          <el-table-column prop="dptAirportCode" width="60" label="出发地" align="center"></el-table-column>
+          <el-table-column prop="arrAirportCode" width="60" label="目的地" align="center"></el-table-column>
+          <el-table-column prop="changeDate" label="起飞日期" align="center"></el-table-column>
+          <el-table-column prop="startTime" label="起飞时间" align="center"></el-table-column>
+          <el-table-column prop="endTime" label="到达时间" align="center"></el-table-column>
+          <el-table-column prop="cabin" label="舱位" width="70" align="center"></el-table-column>
+          <el-table-column prop="cabinStatus" label="数显" width="70" align="center"></el-table-column>
+          <el-table-column prop="gqFee" label="手续费" width="70" align="center">
             <template slot-scope="scope">
-              <span v-if="scope.row"></span>
+              <span>{{formatAmount(scope.row.gqFee)}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="ageType" label="起飞时间" align="center">
+          <el-table-column prop="upgradeFee" label="升舱费" width="60" align="center">
             <template slot-scope="scope">
-              <span v-if="scope.row"></span>
+              <span>{{formatAmount(scope.row.upgradeFee)}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="到达时间" align="center"></el-table-column>
-          <el-table-column prop label="舱位" width="50" align="center"></el-table-column>
-          <el-table-column prop label="数显" width="60" align="center"></el-table-column>
-          <el-table-column prop label="手续费" width="60" align="center"></el-table-column>
-          <el-table-column prop label="升舱费" width="60" align="center"></el-table-column>
-          <el-table-column prop label="总金额" width="80" align="center"></el-table-column>
-          <el-table-column prop label="儿童改签费" align="center"></el-table-column>
-          <el-table-column prop label="儿童升舱费" align="center"></el-table-column>
+          <el-table-column prop="allFee" label="总金额" width="80" align="center">
+            <template slot-scope="scope">
+              <span>{{formatAmount(scope.row.allFee)}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="childGqFee" label="儿童改签费" align="center">
+            <template slot-scope="scope">
+              <span>{{formatAmount(scope.row.childGqFee)}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="childUpgradeFee" label="儿童升舱费" align="center">
+            <template slot-scope="scope">
+              <span>{{formatAmount(scope.row.childUpgradeFee)}}</span>
+            </template>
+          </el-table-column>
         </el-table>
       </el-form-item>
     </el-form>
@@ -129,7 +152,8 @@ export default {
       reason: "",
       tgqText: "",
       formData: {
-        appKey: ""
+        appKey: "",
+        changeFlightSegmentList: []
       }
     };
   },
@@ -165,7 +189,18 @@ export default {
     },
     // 改签申请
     handleSave() {
-      this.$emit("onSavechange",this.formData)
+      this.$emit("onSavechange", this.formData);
+    },
+    // 改签原因选中处理
+    selectTgqReasons(value) {
+      let code = value;
+      console.log(this.tgqReasons);
+      this.tgqReasons.forEach(item => {
+        if (item.code === code) {
+          console.log(item);
+          this.formData.changeFlightSegmentList = item.changeFlightSegmentList;
+        }
+      });
     },
     // 格式化日期
     initDate(dateStr, format) {

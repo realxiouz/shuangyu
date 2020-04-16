@@ -298,7 +298,7 @@ export default {
       handleTicketShow: false,
       refundTicketShow: false,
       changeTicketShow: false,
-      changeHtml:"",
+      changeHtml: "",
       flightData: [],
       passengerData: [],
       tableData: {},
@@ -351,7 +351,6 @@ export default {
     // 退票申请
     handleSaveRefund(params) {
       let newParams = {};
-      console.log(params);
       if (params) {
         newParams.appKey = params.appKey;
         newParams.passengerIds = params.passengerIds;
@@ -412,6 +411,7 @@ export default {
         });
       }
     },
+
     // 手工出票
     handleTicket() {
       if (this.passengersInfo.length < 1) {
@@ -511,11 +511,13 @@ export default {
     // 获取销售改签信息
     getChangeHtml() {
       this.$store
-        .dispatch("order/getChangeHtml","sen200407105017520001" )//this.sourceOrderNo
+        .dispatch("order/getChangeHtml", "sen200407105017520001") //this.sourceOrderNo
         .then(data => {
           if (data) {
             this.changeHtml = data;
-            console.log(data);
+            // console.log(data);
+            // let x = document.querySelector(".select");
+            // console.log("1111", x);
           }
         })
         .catch(error => {
@@ -586,6 +588,11 @@ export default {
   created() {
     this.getOrderDetail(this.orderNo);
   },
+  mounted() {},
+  // updated() {
+  //   let x = document.querySelector(".select");
+  //   console.log("55555", x);
+  // },
   computed: {
     formatDate() {
       return function(dateStr, format) {
