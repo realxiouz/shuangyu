@@ -275,33 +275,6 @@
             </el-col>
           </el-form-item>
         </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="订单类型:">
-            <el-select clearable v-model="formData.orderType" placeholder="全部" style="width: 100%">
-              <el-option label="出票完成" value="10"></el-option>
-              <el-option label="改签完成" value="30"></el-option>
-              <el-option label="二次改签" value="31"></el-option>
-              <el-option label="退票完成" value="20"></el-option>
-              <el-option label="二次退票" value="21"></el-option>
-              <el-option label="退差" value="22"></el-option>
-              <el-option label="退改" value="23"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="订单分类:">
-            <el-select
-              style="width: 100%;"
-              clearable
-              collapse-tags
-              v-model="formData.category"
-              placeholder="请选择"
-            >
-              <el-option label="销售单" value="0"></el-option>
-              <el-option label="采购单" value="1"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
         <el-col :xs="24" :sm="18" :md="14" :lg="10" :xl="6">
           <el-form-item v-show="more" label="航程类型:">
             <el-radio-group v-model="formData.voyageType" style="width: 100%">
