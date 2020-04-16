@@ -3,7 +3,7 @@
     <el-form :model="formData" label-width="110px" size="mini">
       <input type="hidden" v-model="formData.accountId"/>
       <el-form-item label="平台:">
-        <el-select v-model="formData.thirdId" placeholder="请选择平台.." style="width: 100%">
+        <el-select v-model="formData.thirdId" placeholder="请选择平台.." @change="handleThirdSelect" style="width: 100%">
           <el-option
               v-for="item in thirdList"
               :key="item.thirdId"
@@ -11,6 +11,9 @@
               :value="item.thirdId">
           </el-option>
         </el-select>
+      </el-form-item>
+      <el-form-item label="域名">
+        <el-input v-model="formData.domain" disabled></el-input>
       </el-form-item>
       <el-form-item label="账号:">
         <el-input v-model="formData.username"></el-input>
@@ -26,16 +29,6 @@
       </el-form-item>
       <el-form-item label="登录地址:">
         <el-input v-model="formData.loginUrl"></el-input>
-      </el-form-item>
-      <el-form-item label="资金账号">
-        <el-select v-model="formData.fundAccountId" placeholder="请选择资金账号.." style="width: 100%">
-          <el-option
-            v-for="item in fundAccountList"
-            :key="item.fundAccountId"
-            :label="item.fundAccount + '(' +item.platform + ')'"
-            :value="item.fundAccountId">
-          </el-option>
-        </el-select>
       </el-form-item>
       <el-form-item label="token:">
         <el-input v-model="formData.token"></el-input>
@@ -58,7 +51,6 @@
             return {
                 formData: {},
                 thirdList: [],
-                fundAccountList: []
             };
         },
         methods: {
@@ -72,23 +64,15 @@
                     password: '',
                     loginUrl: '',
                     token: '',
-                    secretKey: ''
+                    secretKey: '',
+                    domain: ''
                 };
             },
             //加载平台信息
             loadThirdParty(){
-                this.$store.dispatch("third/getList", { filters: {} })
+                this.$store.dispatch("firm/getList", { filters: {pid: this.$store.state.loginInfo.firm.firmId} })
                     .then(data => {
                         this.thirdList = data;
-                    }).catch(error => {
-                    console.log(error);
-                });
-            },
-            //加载资金账号信息
-            loadFundAccount(){
-                this.$store.dispatch("fundAccount/getList", { filter: {} })
-                    .then(data => {
-                        this.fundAccountList = data.data;
                     }).catch(error => {
                     console.log(error);
                 });
@@ -97,24 +81,27 @@
             clearForm() {
                 this.formData = this.defaultFormData();
                 this.thirdList = [];
-                this.fundAccountList = [];
             },
             /*对提交的数据进行类型格式*/
             handleConfirm(){
                 this.$emit('onSave',this.formData);
             },
+            handleThirdSelect(thirdID){
+                this.thirdList.forEach( item => {
+                    if (thirdID === item.thirdId){
+                        this.formData.domain = item.domain;
+                    }
+                })
+            },
             initFormData(){
                 this.clearForm();
                 this.loadThirdParty();
-                this.loadFundAccount();
                 if (this.update){
                     Object.assign(this.formData,this.curNode);
                 }
             }
         },
         created() {
-            this.loadThirdParty();
-            this.loadFundAccount();
             this.initFormData();
         }
     };

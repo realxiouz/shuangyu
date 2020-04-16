@@ -13,7 +13,8 @@
         :data="tableData"
         style="width: 100%;margin-bottom: 15px;"
       >
-        <el-table-column prop="third.thirdName" label="第三方平台" width="300" align="center"></el-table-column>
+        <el-table-column prop="third.firmName" label="第三方平台" width="300" align="center"></el-table-column>
+        <el-table-column prop="domain" label="域名" width="300" align="center"></el-table-column>
         <el-table-column prop="url" label="url" width="300" align="center"></el-table-column>
         <el-table-column prop="method" label="方法名称" align="center"></el-table-column>
         <el-table-column label="是否启用" align="center" width="100">
@@ -46,7 +47,7 @@
         <el-form ref="formData" :model="formData" label-width="100px" size="mini">
           <input type="hidden" v-model="formData.apiId" />
           <el-form-item label="第三方平台:">
-            <el-select v-model="formData.thirdId" placeholder="请选择平台.." style="width: 100%">
+            <el-select v-model="formData.thirdId" placeholder="请选择平台.." @change="handleThirdSelect" style="width: 100%">
               <el-option
                 v-for="item in thirdList"
                 :key="item.thirdId"
@@ -54,6 +55,9 @@
                 :value="item.thirdId">
               </el-option>
             </el-select>
+          </el-form-item>
+          <el-form-item label="域名">
+            <el-input v-model="formData.domain" disabled></el-input>
           </el-form-item>
           <el-form-item label="URL:">
             <el-input v-model="formData.url"></el-input>
@@ -66,7 +70,8 @@
               <el-tag closable :disable-transitions="false"
                 v-for="(tag,idx) in paramList"
                 :key="idx"
-                @close="handleClose(idx)">
+                @close="handleClose(idx)"
+                @click="handleTagClick(idx)">
                 {{tag.name+": "+tag.value}}
               </el-tag>
               <el-button class="button-new-tag" size="small" @click="addParams">+ 添加参数</el-button>
@@ -111,7 +116,8 @@ function defaultData() {
         apiId: "",
         thirdId: "",
         url: "",
-        method: ""
+        method: "",
+        domain: ''
     };
 }
 
@@ -209,7 +215,7 @@ export default {
     },
       //加载平台信息
       loadThirdParty(){
-          this.$store.dispatch("third/getList", { filters: {} })
+          this.$store.dispatch("firm/getList", { filters: {pid: this.$store.state.loginInfo.firm.firmId} })
               .then(data => {
                   this.thirdList = data;
               }).catch(error => {
@@ -332,7 +338,19 @@ export default {
       },
       handleClose(idx){
           this.paramList.splice(idx, 1);
-      }
+      },
+      handleTagClick(idx){
+          this.clearForm();
+          Object.assign(this.paramFormData, this.paramList[idx]);
+          this.paramDialogVisible = true;
+      },
+      handleThirdSelect(thirdID){
+          this.thirdList.forEach( item => {
+              if (thirdID === item.thirdId){
+                  this.formData.domain = item.domain;
+              }
+          })
+      },
   },
   created() {
     this.handleSearch();

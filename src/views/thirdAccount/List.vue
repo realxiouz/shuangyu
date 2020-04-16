@@ -8,13 +8,13 @@
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table size="mini" v-loading="loading" :data="tableData" style="width: 100%;margin-bottom: 15px;" fit>
-        <el-table-column prop="third.thirdName" label="平台" width="220" align="center"></el-table-column>
+        <el-table-column prop="third.firmName" label="平台" width="220" align="center"></el-table-column>
+        <el-table-column prop="domain" label="域名" width="220" align="center"></el-table-column>
         <el-table-column prop="username" label="账号" width="220" align="center"></el-table-column>
         <el-table-column prop="loginUrl" label="登录地址" width="300" align="center"></el-table-column>
-        <el-table-column prop="fundAccount.fundAccount" label="资金账号" width="300" align="center"></el-table-column>
         <el-table-column prop="contactPerson" label="联系人" width="200" align="center"></el-table-column>
         <el-table-column prop="contactPhone" label="联系电话" width="240" align="center"></el-table-column>
-        <el-table-column label="操作" align="center" width="180">
+        <el-table-column label="操作" align="center">
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
             <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
