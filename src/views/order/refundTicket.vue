@@ -162,7 +162,7 @@ export default {
         }
       });
     },
-    refundSearch(purchaseOrderNo) {
+    refundSearchData(purchaseOrderNo) {
       this.$store
         .dispatch("order/refundSearch", purchaseOrderNo)
         .then(data => {
@@ -212,8 +212,8 @@ export default {
   },
   computed: {},
   created() {
-    // this.refundSearch(this.purchaseOrderNo);
-    this.refundSearch("fma200415125908106");
+    this.refundSearchData(this.purchaseOrderNo);
+    // this.refundSearchData("fma200415125908106");
   },
   updated() {
     this.toggleSelection(this.refundData);

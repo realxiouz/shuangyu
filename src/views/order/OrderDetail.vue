@@ -267,7 +267,11 @@
         width="50%"
         :close-on-click-modal="false"
       >
-        <change-ticket @onCancelChange="changeTicketCancel" @onSavechange="handleSaveChange"></change-ticket>
+        <change-ticket
+          :changeData="changeData"
+          @onCancelChange="changeTicketCancel"
+          @onSavechange="handleSaveChange"
+        ></change-ticket>
       </el-dialog>
     </div>
   </div>
@@ -300,6 +304,7 @@ export default {
       refundData: "",
       purchaseOrderNo: "",
       refundChangeRule: "",
+      changeData:"",
       orderNo: this.$route.query.orderNo
     };
   },
@@ -369,8 +374,9 @@ export default {
           console.log(error);
         });
       this.refundTicketShow = false;
-
-      console.log(newParams);
+    },
+    handleSaveChange() {
+      this.changeTicketShow = false;
     },
     formatAmount1(amount) {
       if (!amount) {
@@ -480,8 +486,8 @@ export default {
     changeTicket(row) {
       this.purchaseOrderNo = row.sourceOrderNo;
       this.changeTicketShow = true;
+      this.changeData=row
     },
-
 
     formatPassengers(data) {
       if (!data || data.length == 0) {
