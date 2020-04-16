@@ -25,13 +25,40 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-form-item label="改签原因:">
-        <span>改签原因</span>
-      </el-form-item>
-
       <el-form-item label="退改说明:">
-        <span>退改说明</span>
+        <span v-if="this.tgqText" v-html="this.tgqText"></span>
+        <span v-else>暂无数据</span>
+        <span v-if="this.reason" style="color:red;">{{this.reason}}</span>
       </el-form-item>
+      <el-form-item label="改签原因:">
+        <el-select
+          clearable
+          v-model="formData.changeCauseId"
+          @change="selectTgqReasons"
+          placeholder="请选择退票原因"
+          style="width: 100%"
+        >
+          <el-option
+            v-for="item in tgqReasons"
+            :key="item.code"
+            :label="item.msg"
+            :value="item.code"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="改签备注:">
+            <el-input></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="改签费:">
+            <el-input></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
       <el-form-item v-model="formData.refundData" label-width="auto">
         <label class="el-form-item__label" style="color:#606266; width:110px;">乘车人:</label>
         <el-table
@@ -71,9 +98,7 @@
               <span v-if="scope.row"></span>
             </template>
           </el-table-column>
-          <el-table-column label="到达时间" align="center">
-            
-          </el-table-column>
+          <el-table-column label="到达时间" align="center"></el-table-column>
           <el-table-column prop label="舱位" width="50" align="center"></el-table-column>
           <el-table-column prop label="数显" width="60" align="center"></el-table-column>
           <el-table-column prop label="手续费" width="60" align="center"></el-table-column>
@@ -92,7 +117,7 @@
 </template>
 
 <script>
-import { formatAgeType,formatCardType } from "@/utils/status.js";
+import { formatAgeType, formatCardType } from "@/utils/status.js";
 
 export default {
   name: "changeTicket",
@@ -100,6 +125,9 @@ export default {
   data() {
     return {
       changeDataResult: [],
+      tgqReasons: "",
+      reason: "",
+      tgqText: "",
       formData: {
         appKey: ""
       }
@@ -115,6 +143,18 @@ export default {
           if (data) {
             this.formData.appKey = data.appKey;
             this.changeDataResult = data.result;
+            if (data.result.length > 0) {
+              if (data.result[0].changeSearchResult.tgqReasons) {
+                this.tgqReasons = data.result[0].changeSearchResult.tgqReasons;
+              }
+              if (data.result[0].changeSearchResult.changeRuleInfo) {
+                this.tgqText =
+                  data.result[0].changeSearchResult.changeRuleInfo.tgqText;
+              }
+              if (data.result[0].changeSearchResult.reason) {
+                this.reason = data.result[0].changeSearchResult.reason;
+              }
+            }
             console.log(data);
           }
         })
@@ -164,7 +204,7 @@ export default {
       changeDptDate: "2020-04-29"
     };
     this.changeSearchData(_params);
-    console.log(this.changeData)
+    console.log(this.changeData);
   }
 };
 </script>

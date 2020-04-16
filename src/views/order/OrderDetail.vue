@@ -25,7 +25,7 @@
         <div style="margin-bottom:15px;">
           <el-button type="danger" @click="lockOrder" size="mini">锁单</el-button>
           <el-button type="primary" @click="unLockOrder" size="mini">解锁订单</el-button>
-          <el-button type="warning" size="mini">调用出票中</el-button>
+          <el-button type="warning" @click="useGoTicket" size="mini">调用出票中</el-button>
         </div>
         <el-form :model="tableData" label-width="130px" size="mini">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -160,7 +160,7 @@
         <span>出票</span>
         <span>消息</span>
       </div>
-      <el-button type="primary" size="mini">刷新</el-button>
+      <el-button type="primary" size="mini" @click="getMessage">刷新</el-button>
     </el-card>
 
     <el-card class="contentBox">
@@ -304,7 +304,7 @@ export default {
       refundData: "",
       purchaseOrderNo: "",
       refundChangeRule: "",
-      changeData:"",
+      changeData: "",
       orderNo: this.$route.query.orderNo
     };
   },
@@ -319,6 +319,7 @@ export default {
     formateCategory,
     formatAgeType,
     formatCardType,
+    getMessage() {},
     goBack() {
       this.$router.go(-1);
     },
@@ -345,6 +346,7 @@ export default {
     handleSave(params) {
       this.handleTicketShow = false;
     },
+
     handleSaveRefund(params) {
       let newParams = {};
       console.log(params);
@@ -479,6 +481,33 @@ export default {
           console.log(error);
         });
     },
+    useGoTicket() {
+      this.$store
+        .dispatch("order/useGoTicket", this.$route.query.taskId)
+        .then(data => {
+          if (data) {
+            console.log(data);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    getMessage() {
+      this.getChangeHtml();
+    },
+    getChangeHtml() {
+      this.$store
+        .dispatch("order/useGoTicket", this.purchaseOrderNo)
+        .then(data => {
+          if (data) {
+            console.log(data);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     refundTicket(row) {
       this.purchaseOrderNo = row.sourceOrderNo;
       this.refundTicketShow = true;
@@ -486,7 +515,7 @@ export default {
     changeTicket(row) {
       this.purchaseOrderNo = row.sourceOrderNo;
       this.changeTicketShow = true;
-      this.changeData=row
+      this.changeData = row;
     },
 
     formatPassengers(data) {

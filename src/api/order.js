@@ -134,11 +134,19 @@ export function unLockOrder(orderNo) {
   });
 }
 
+// 调用出票中
+export function useGoTicket(orderTaskId) {
+  return request({
+    url: `/qunar/fuwu/go/ticket?orderTaskId=${orderTaskId}`,
+    method: 'get',
+  });
+}
+
 
 // 退票查询接口
-export function refundSearch(purchaseOrderNo ) {
+export function refundSearch(purchaseOrderNo) {
   return request({
-    url: `/qunar/open/refund/search?purchaseOrderNo=${purchaseOrderNo }`,
+    url: `/qunar/open/refund/search?purchaseOrderNo=${purchaseOrderNo}`,
     method: 'get',
   });
 }
@@ -149,17 +157,25 @@ export function refundApply(data) {
   return request({
     url: `/qunar/open/refund/apply`,
     method: 'post',
-    data:data
-    
+    data: data
+
   });
 }
 
 
 // 改签查询接口
 
-export function changeSearch(params ) {
+export function changeSearch(params) {
   return request({
     url: `/qunar/open/change/search/${params.purchaseOrderNo}/${params.changeDptDate}`,
+    method: 'get',
+  });
+}
+
+// 获取销售改签信息
+export function getChangeHtml(purchaseOrderNo) {
+  return request({
+    url: `/qunar/fuwu/get/change/html?purchaseOrderNo=${purchaseOrderNo}`,
     method: 'get',
   });
 }
@@ -169,7 +185,7 @@ export function changeApply(data) {
   return request({
     url: `/qunar/open/change/apply`,
     method: 'post',
-    data:data
-    
+    data: data
+
   });
 }

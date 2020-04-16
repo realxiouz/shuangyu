@@ -1,4 +1,4 @@
-import { changeSearch,changeApply,refundApply, refundSearch, unLockOrder, lockOrder, getOrderTree, getList, getOne, removeOne, save, getTimeCount, getCount, getTotal, getOrderDetail, getOrderMinPrice, getOrderFlight, getFlightPrice, placeAnOrder, openPay } from "@/api/order";
+import { useGoTicket,getChangeHtml, changeSearch, changeApply, refundApply, refundSearch, unLockOrder, lockOrder, getOrderTree, getList, getOne, removeOne, save, getTimeCount, getCount, getTotal, getOrderDetail, getOrderMinPrice, getOrderFlight, getFlightPrice, placeAnOrder, openPay } from "@/api/order";
 import { getToken } from "@/utils/auth";
 
 
@@ -227,6 +227,20 @@ const actions = {
     });
   },
 
+  useGoTicket({ commit }, params) {
+    const orderTaskId = params;
+    return new Promise((resolve, reject) => {
+      useGoTicket(orderTaskId)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  
   // 退票查询接口
   refundSearch({ commit }, params) {
     const purchaseOrderNo = params;
@@ -256,7 +270,7 @@ const actions = {
     });
   },
 
-// 改签查询接口
+  // 改签查询接口
   changeSearch({ commit }, params) {
     return new Promise((resolve, reject) => {
       changeSearch(params)
@@ -269,8 +283,23 @@ const actions = {
         });
     });
   },
+ 
+  // 获取销售改签信息
+  getChangeHtml({ commit }, params) {
+    const purchaseOrderNo = params;
+    return new Promise((resolve, reject) => {
+      getChangeHtml(purchaseOrderNo)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
 
-// 改签申请接口
+  // 改签申请接口
   changeApply({ commit }, params) {
     return new Promise((resolve, reject) => {
       changeApply(params)
