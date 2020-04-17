@@ -1,118 +1,189 @@
 <template>
   <div class="app-container">
     <el-form ref="form" :rules="rules" :model="formData" label-width="80px" size="mini">
-      <el-form-item label="平台" prop="thirdId">
-        <el-select v-model="formData.thirdId" style="width:100%"  filterable placeholder="请选择平台" @change="handleChange">
-          <el-option
-            v-for="item in partyList"
-            :key="item.thirdId"
-            :label="item.thirdName"
-            :value="item.thirdId"
-          ></el-option>
-        </el-select>
-      </el-form-item>
-      <el-table :data="formData.params" size="mini" fit highlight-current-row style="width: 100%">
-        <el-table-column prop="label" label="参数标签" align="center"></el-table-column>
-        <el-table-column prop="name" label="参数名称" align="center"></el-table-column>
-        <el-table-column prop="value" label="参数值" align="center">
-          <template slot-scope="{row}">
-            <input class="edit-input" size="small" v-model="row.value" />
-          </template>
-        </el-table-column>
-        <el-table-column prop="group" label="参数分组" align="center">
-          <template slot-scope="{row}">
-            <input class="edit-input" size="small" v-model="row.group" />
-          </template>
-        </el-table-column>
-      </el-table>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="客户:" prop="label">
+            <el-input v-model="formData.thirdId"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="域名:" prop="domain">
+            <el-input v-model="formData.domain"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row
+        v-for="(ruleItem, index) in formData.params"
+        :key="formData.params[index].key"
+        id="rule-item"
+        :gutter="10"
+      >
+        <el-col :span="5">
+          <el-form-item class="rule-item" label-width="10px" style="width:60%">
+            <el-input
+              class="rule-item-input"
+              v-model="formData.params[index].label"
+              placeholder="参数标签"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item class="rule-item" label-width="10px" style="width:60%">
+            <el-input
+              class="rule-item-input"
+              v-model="formData.params[index].name"
+              placeholder="参数名称"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item class="rule-item" label-width="10px" style="width:60%">
+            <el-input
+              class="rule-item-input"
+              v-model="formData.params[index].value"
+              placeholder="参数值"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item class="rule-item" label-width="10px" style="width:60%">
+            <el-input
+              class="rule-item-input"
+              v-model="formData.params[index].group"
+              placeholder="参数分组"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+        <el-form-item class="rule-item" label-width="10px" style="width:60%">
+          <el-input
+            class="rule-item-input"
+            v-model="formData.params[index].comment"
+            placeholder="注解"
+          ></el-input>
+        </el-form-item>
+      </el-col>
+        <el-col :span="6">
+          <el-form-item class="rule-item" label-width="10px" style="width:60%">
+            <el-input
+              class="rule-item-input"
+              v-model="formData.params[index].inputType"
+              placeholder="输入框类型"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="2" >
+          <el-form-item label-width="10px" style="width:100%">
+            <el-button
+              v-if="index!=0"
+              type="danger"
+              icon="el-icon-remove-outline"
+              @click="deleteRuleItem(index)"
+            ></el-button>
+            <el-button
+              v-if="index==0"
+              type="primary"
+              icon="el-icon-circle-plus-outline"
+              @click="addRuleItem()"
+            ></el-button>
+          </el-form-item>
+        </el-col>
+      </el-row>
     </el-form>
     <div slot="footer" class="dialog-footer" style="margin-top:10px;text-align: right;">
-      <el-button size="mini"  @click="$emit('onCancel')">取 消</el-button>
-      <el-button  size="mini" type="primary" @click="handleSave">确 定</el-button>
+      <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
+      <el-button size="mini" type="primary" @click="handleSave">确 定</el-button>
     </div>
   </div>
 </template>
 <script>
-function defaultData() {
-  return {
-    thirdId: "",
-    flag: "",
-    params: []
-  };
-}
-export default {
-  name: "flagEdit",
-  data() {
-    return {
-      formData: defaultData(),
-      partyList: [],
-      rules: {
-        thirdId: [{ required: true, message: "请选择平台", trigger: "blur" }],
-        flag: [{ required: true, message: "请输入标签名称", trigger: "blur" }]
-      }
-    };
-  },
-  methods: {
-    handleChange(thirdId) {
-      this.paramList(thirdId);
-    },
-    paramList(thirdId) {
-      let searchForm = {};
-      searchForm.thirdId = thirdId;
-      this.$store
-        .dispatch("policyFlagParam/getList", {
-          filters: searchForm
-        })
-        .then(data => {
-          this.formData.params = data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    handleSave() {
-      this.$refs["form"].validate(valid => {
-        if (valid) {
-          this.$emit("onSave", this.formData);
+    function defaultData() {
+        return {
+            thirdId: "",
+            flag: "",
+            params: [{}]
+        };
+    }
+
+    export default {
+        name: "flagEdit",
+        data() {
+            return {
+                formData: defaultData(),
+                rules: {
+                    thirdId: [{required: true, message: "请选择平台", trigger: "blur"}],
+                    flag: [{required: true, message: "请输入标签名称", trigger: "blur"}]
+                }
+            };
+        },
+        methods: {
+            deleteRuleItem(index) {
+                this.formData.params.splice(index, 1);
+            },
+            addRuleItem() {
+                this.formData.params.push({});
+            },
+            handleChange(thirdId) {
+                this.paramList(thirdId);
+            },
+            paramList(thirdId) {
+                let searchForm = {};
+                searchForm.thirdId = thirdId;
+                this.$store
+                    .dispatch("policyFlagParam/getList", {
+                        filters: searchForm
+                    })
+                    .then(data => {
+                        this.formData.params = data;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            handleSave() {
+                this.$refs["form"].validate(valid => {
+                    if (valid) {
+                        this.$emit("onSave", this.formData);
+                    }
+                });
+            },
+            handleGetOne(id) {
+                if (id) {
+                    this.$store
+                        .dispatch("policyFlag/getOne", {flagId: id})
+                        .then(data => {
+                            this.formData = data;
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                    this.dialogVisible = true;
+                } else {
+                    this.formData = defaultData();
+                }
+            },
+        },
+        created() {
+            if (this.flagId) {
+                this.handleGetOne(this.flagId);
+            }
+        },
+        props: {
+            flagId: String
         }
-      });
-    },
-    handleGetOne(id) {
-      if (id) {
-        this.$store
-          .dispatch("policyFlag/getOne", { flagId: id })
-          .then(data => {
-            this.formData = data;
-          })
-          .catch(error => {
-            console.log(error);
-          });
-        this.dialogVisible = true;
-      } else {
-        this.formData = defaultData();
-      }
-    },
-    thirdPartyList() {
-      this.$store
-        .dispatch("thirdParty/getList", {
-          filters: {}
-        })
-        .then(data => {
-          this.partyList = data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    }
-  },
-  created() {
-    if (this.flagId) {
-      this.handleGetOne(this.flagId);
-    }
-    this.thirdPartyList();
-  },
-  props: {
-    flagId: String
-  }
-};
+    };
 </script>
+<style>
+  #rule-item .el-form-item__content {
+    width: 100%;
+  }
+
+  .rule-item {
+    width: 20%;
+  }
+
+  .rule-item-input {
+    width: 100%;
+  }
+</style>

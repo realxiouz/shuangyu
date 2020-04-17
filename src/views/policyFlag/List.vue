@@ -29,7 +29,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-dialog title="第三方标签" :visible.sync="dialogVisible" width="30%" center :close-on-click-modal="false">
+      <el-dialog title="第三方标签" :visible.sync="dialogVisible" width="50%" center :close-on-click-modal="false">
         <policy-flag-edit
           v-if="dialogVisible"
           :flag-id="flagId"
