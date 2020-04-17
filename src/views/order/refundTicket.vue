@@ -202,7 +202,6 @@ export default {
                   this.flightInfo.dptTime;
               }
             }
-            console.log(data);
           }
         })
         .catch(error => {

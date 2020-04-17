@@ -381,7 +381,7 @@ export default {
             console.log(data);
             this.$message({
               type: "success",
-              message: "退票成功！"
+              message: "退票申请成功！"
             });
           }
         })
@@ -396,13 +396,42 @@ export default {
       if (params) {
         newParams.appKey = params.appKey;
         newParams.passengerIds = params.passengerIds;
-        newParams.changeCause = params.changeCause;
         newParams.changeCauseId = params.changeCauseId;
+        newParams.totalAmount = params.totalAmount;
+        newParams.applyRemarks = params.applyRemarks;
+      }
+      if (params.flightData) {
+        newParams.uniqKey = params.flightData[0].uniqKey;
+        newParams.gqFee = params.flightData[0].gqFee;
+        newParams.upgradeFee = params.flightData[0].upgradeFee;
+        newParams.childUseFee = params.flightData[0].childUseFee;
+        newParams.flightNo = params.flightData[0].flightNo;
+        newParams.cabinCode = params.flightData[0].cabinCode;
+        newParams.childExtraPrice = params.flightData[0].childExtraPrice;
+        newParams.startDate = params.flightData[0].startDate;
+        newParams.startTime = params.flightData[0].startTime;
+        newParams.endTime = params.flightData[0].endTime;
       }
       newParams.orderNo = this.purchaseOrderNo;
-
+      if (this.$route.query.taskId) {
+        newParams.orderTaskId = this.$route.query.taskId;
+      }
+      this.$store
+        .dispatch("order/changeApply", newParams)
+        .then(data => {
+          if (data) {
+            console.log(data);
+            this.$message({
+              type: "success",
+              message: "改签申请成功！"
+            });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
       this.changeTicketShow = false;
-      console.log(newParams, "改签申请");
+      // console.log(newParams, "改签申请");
     },
     formatAmount1(amount) {
       if (!amount) {
@@ -461,6 +490,8 @@ export default {
             params.rootOrderNo = data.rootOrderNo;
             params.category = 1;
             this.getOrderTree(params);
+            this.getMessage(this.sourceOrderNo);
+
             if (data.passengers) {
               this.passengerData = data.passengers;
             }
@@ -526,14 +557,14 @@ export default {
         });
     },
     // 消息
-    getMessage() {
-      this.getChangeHtml();
+    getMessage(sourceOrderNo) {
+      this.getChangeHtml(sourceOrderNo);
     },
 
     // 获取销售改签信息
-    getChangeHtml() {
+    getChangeHtml(sourceOrderNo) {
       this.$store
-        .dispatch("order/getChangeHtml", "sen200407105017520001") //this.sourceOrderNo
+        .dispatch("order/getChangeHtml", sourceOrderNo)
         .then(data => {
           if (data) {
             this.changeHtml = data;
@@ -606,8 +637,8 @@ export default {
     }
   },
   created() {
-    this.getOrderDetail(this.orderNo);
-    this.getMessage();
+    // this.getOrderDetail(this.orderNo);
+    this.getOrderDetail("abc20011020042325000130");
   },
   updated() {
     if (this.changeHtml) {
@@ -633,23 +664,11 @@ export default {
         "flightNum"
       )[0].value;
       this.changeDataTop.cabin = document.getElementsByName("cabin")[0].value;
-
       this.tableData.passengers.forEach(item => {
-        if (this.changeHtml.indexOf(item.name) == -1) {
+        if (this.changeHtml.indexOf(item.name) != -1) {
           this.changeDataTop.passagers.push(item);
         }
       });
-      var arr = [];
-      var obj = {};
-      for (var i = 0; i < this.changeDataTop.passagers.length; i++) {
-        if (!obj[this.changeDataTop.passagers[i].key]) {
-          arr.push(this.changeDataTop.passagers[i]);
-          obj[this.changeDataTop.passagers[i].key] = true;
-        }
-      }
-      this.changeDataTop.passagers = arr;
-
-      console.log("55555", this.changeDataTop);
     }
   },
   computed: {

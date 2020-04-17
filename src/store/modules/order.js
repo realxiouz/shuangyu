@@ -282,9 +282,9 @@ const actions = {
 
   // 获取销售退票信息
   getRefundHtml({ commit }, params) {
-    const purchaseOrderNo = params;
+    const orderNo = params;
     return new Promise((resolve, reject) => {
-      getRefundHtml(purchaseOrderNo)
+      getRefundHtml(orderNo)
         .then(response => {
           const { data } = response;
           resolve(data);
