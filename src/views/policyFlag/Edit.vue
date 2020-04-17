@@ -28,7 +28,7 @@
             ></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="5">
           <el-form-item class="rule-item" label-width="10px" style="width:60%">
             <el-input
               class="rule-item-input"
@@ -37,7 +37,7 @@
             ></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="5">
           <el-form-item class="rule-item" label-width="10px" style="width:60%">
             <el-input
               class="rule-item-input"
@@ -46,7 +46,7 @@
             ></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="5">
           <el-form-item class="rule-item" label-width="10px" style="width:60%">
             <el-input
               class="rule-item-input"
@@ -55,7 +55,7 @@
             ></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="5">
         <el-form-item class="rule-item" label-width="10px" style="width:60%">
           <el-input
             class="rule-item-input"
@@ -64,13 +64,37 @@
           ></el-input>
         </el-form-item>
       </el-col>
-        <el-col :span="6">
+        <el-col :span="5">
           <el-form-item class="rule-item" label-width="10px" style="width:60%">
             <el-input
               class="rule-item-input"
               v-model="formData.params[index].inputType"
               placeholder="输入框类型"
             ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="5">
+          <el-form-item class="rule-item" label-width="10px" style="width:60%">
+            <el-input
+              class="rule-item-input"
+              v-model="formData.params[index].data"
+              placeholder="数据"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="2">
+          <el-form-item class="rule-item" label-width="10px" style="width:60%">
+            <el-checkbox v-model="formData.params[index].readonly">是否只读</el-checkbox>
+          </el-form-item>
+        </el-col>
+        <el-col :span="2">
+          <el-form-item class="rule-item" label-width="10px" style="width:60%">
+            <el-checkbox v-model="formData.params[index].required">是否必须</el-checkbox>
+          </el-form-item>
+        </el-col>
+        <el-col :span="2">
+          <el-form-item class="rule-item" label-width="10px" style="width:60%">
+            <el-checkbox v-model="formData.params[index].disabled">禁用</el-checkbox>
           </el-form-item>
         </el-col>
         <el-col :span="2" >
@@ -142,6 +166,7 @@
                     });
             },
             handleSave() {
+                console.log(this.formData)
                 this.$refs["form"].validate(valid => {
                     if (valid) {
                         this.$emit("onSave", this.formData);
