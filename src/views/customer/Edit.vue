@@ -109,18 +109,6 @@
                     type: 0
                 };
             },
-            /*加载所有的角色信息*/
-            loadRoles() {
-                this.clearRoles();
-                this.$store
-                    .dispatch("role/getAll", {})
-                    .then(data => {
-                        this.transData = data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
             /*清除穿梭框内的数据*/
             clearRoles() {
                 this.transData = [];
@@ -137,7 +125,6 @@
                 } else {
                     this.clearForm();
                 }
-                this.loadRoles();
             },
             handleSave() {
                 this.$refs["form"].validate(valid => {
