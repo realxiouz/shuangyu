@@ -208,8 +208,9 @@
             <span>{{formatTicketNo(scope.row.ticketNos)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="address" align="center" fixed="right" width="290" label="操作">
+        <el-table-column prop="address" align="center" fixed="right" width="360" label="操作">
           <template slot-scope="scope">
+            <el-button type="primary" v-show="scope.row.processCategory=='1'" size="mini">删除</el-button>
             <el-button
               type="primary"
               v-show="scope.row.orderSource=='QUNAR_OPEN'"
@@ -272,6 +273,7 @@
       >
         <change-ticket
           :changeData="changeData"
+          :changeDataTop="changeDataTop"
           @onCancelChange="changeTicketCancel"
           @onSavechange="handleSaveChange"
         ></change-ticket>
@@ -309,7 +311,17 @@ export default {
       purchaseOrderNo: "",
       refundChangeRule: "",
       changeData: "",
-      orderNo: this.$route.query.orderNo
+      orderNo: this.$route.query.orderNo,
+      changeDataTop: {
+        reason: "",
+        flight: "",
+        flightDate: "",
+        passagers: [],
+        airDivision: "",
+        arrivalTime: "",
+        flightNum: "",
+        departureTime: ""
+      }
     };
   },
   components: {
@@ -379,8 +391,18 @@ export default {
       this.refundTicketShow = false;
     },
     // 改签申请
-    handleSaveChange() {
+    handleSaveChange(params) {
+      let newParams = {};
+      if (params) {
+        newParams.appKey = params.appKey;
+        newParams.passengerIds = params.passengerIds;
+        newParams.changeCause = params.changeCause;
+        newParams.changeCauseId = params.changeCauseId;
+      }
+      newParams.orderNo = this.purchaseOrderNo;
+
       this.changeTicketShow = false;
+      console.log(newParams, "改签申请");
     },
     formatAmount1(amount) {
       if (!amount) {
@@ -516,8 +538,6 @@ export default {
           if (data) {
             this.changeHtml = data;
             // console.log(data);
-            // let x = document.querySelector(".select");
-            // console.log("1111", x);
           }
         })
         .catch(error => {
@@ -587,12 +607,51 @@ export default {
   },
   created() {
     this.getOrderDetail(this.orderNo);
+    this.getMessage();
   },
-  mounted() {},
-  // updated() {
-  //   let x = document.querySelector(".select");
-  //   console.log("55555", x);
-  // },
+  updated() {
+    if (this.changeHtml) {
+      this.changeDataTop.reason = document.querySelectorAll(
+        ".select"
+      )[0].innerText;
+      this.changeDataTop.flight = document.querySelectorAll(
+        ".pr01"
+      )[1].innerText;
+      this.changeDataTop.flightDate = document.getElementsByName(
+        "departureDay"
+      )[0].value;
+      this.changeDataTop.departureTime = document.getElementsByName(
+        "departureTime"
+      )[0].value;
+      this.changeDataTop.arrivalTime = document.getElementsByName(
+        "arrivalTime"
+      )[0].value;
+      this.changeDataTop.airDivision = document.getElementsByName(
+        "airDivision"
+      )[0].value;
+      this.changeDataTop.flightNum = document.getElementsByName(
+        "flightNum"
+      )[0].value;
+      this.changeDataTop.cabin = document.getElementsByName("cabin")[0].value;
+
+      this.tableData.passengers.forEach(item => {
+        if (this.changeHtml.indexOf(item.name) == -1) {
+          this.changeDataTop.passagers.push(item);
+        }
+      });
+      var arr = [];
+      var obj = {};
+      for (var i = 0; i < this.changeDataTop.passagers.length; i++) {
+        if (!obj[this.changeDataTop.passagers[i].key]) {
+          arr.push(this.changeDataTop.passagers[i]);
+          obj[this.changeDataTop.passagers[i].key] = true;
+        }
+      }
+      this.changeDataTop.passagers = arr;
+
+      console.log("55555", this.changeDataTop);
+    }
+  },
   computed: {
     formatDate() {
       return function(dateStr, format) {

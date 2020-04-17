@@ -4,58 +4,60 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="乘客:">
-            <span>{{formatPassengers(changeData.passengers)}}</span>
+            <span>{{formatPassengers(changeDataTop.passagers)}}</span>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="航班:">
-            <span>{{changeData.flights[0].flightCode}}</span>
+            <span>{{changeDataTop.airDivision+changeDataTop.flightNum}}</span>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="起飞日期:">
-            <span>{{formatFlightDate(changeData.flights)}}</span>
+            <span>{{changeDataTop.flightDate}}</span>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="舱位:">
-            <span>{{changeData.flights[0].cabin}}</span>
+            <span>{{changeDataTop.cabin}}</span>
           </el-form-item>
         </el-col>
       </el-row>
       <el-form-item label="改签原因:">
-        <el-input></el-input>
+        <span>{{changeDataTop.reason}}</span>
       </el-form-item>
       <el-form-item label="退改说明:">
         <span v-if="this.tgqText" v-html="this.tgqText"></span>
-        <span v-else>暂无数据</span>
         <span v-if="this.reason" style="color:red;">{{this.reason}}</span>
-      </el-form-item>
-      <el-form-item label="改签原因:">
-        <el-select
-          clearable
-          v-model="formData.changeCauseId"
-          placeholder="请选择退票原因"
-          @change="selectTgqReasons"
-          style="width: 100%"
-        >
-          <el-option
-            v-for="item in tgqReasons"
-            :key="item.code"
-            :label="item.msg"
-            :value="item.code"
-          ></el-option>
-        </el-select>
+        <span v-if="!this.tgqText && !this.reason">暂无数据</span>
       </el-form-item>
       <el-row>
-        <el-col :span="12">
+        <el-col :span="8">
+          <el-form-item label="改签原因:">
+            <el-select
+              clearable
+              v-model="formData.changeCauseId"
+              placeholder="请选择退票原因"
+              @change="selectTgqReasons"
+              style="width: 100%"
+            >
+              <el-option
+                v-for="item in tgqReasons"
+                :key="item.code"
+                :label="item.msg"
+                :value="item.code"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
           <el-form-item label="改签备注:">
             <el-input></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="8">
           <el-form-item label="改签费:">
             <el-input></el-input>
           </el-form-item>
@@ -65,7 +67,7 @@
       <el-form-item v-model="formData.refundData" label-width="auto">
         <label class="el-form-item__label" style="color:#606266; width:110px;">乘车人:</label>
         <el-table
-          :data="changeData.orderDetailList"
+          :data="orderDetailList"
           highlight-current-row
           ref="multipleTable"
           size="mini"
@@ -144,13 +146,14 @@ import { formatAgeType, formatCardType } from "@/utils/status.js";
 
 export default {
   name: "changeTicket",
-  props: ["changeData"],
+  props: ["changeData", "changeDataTop"],
   data() {
     return {
       changeDataResult: [],
       tgqReasons: "",
       reason: "",
       tgqText: "",
+      orderDetailList: "",
       formData: {
         appKey: "",
         changeFlightSegmentList: []
@@ -180,7 +183,6 @@ export default {
                 this.reason = data.result[0].changeSearchResult.reason;
               }
             }
-            console.log(data);
           }
         })
         .catch(error => {
@@ -194,13 +196,23 @@ export default {
     // 改签原因选中处理
     selectTgqReasons(value) {
       let code = value;
-      console.log(this.tgqReasons);
+      let flightNo = "SC4804";
+      let actFlightNo = "";
       this.tgqReasons.forEach(item => {
         if (item.code === code) {
-          console.log(item);
           this.formData.changeFlightSegmentList = item.changeFlightSegmentList;
         }
       });
+      let arr = [];
+      this.formData.changeFlightSegmentList.forEach(item => {
+        if (item.actFlightNo == flightNo) {
+          actFlightNo = item.actFlightNo;
+          if (item.actFlightNo == actFlightNo) {
+            arr.push(item);
+          }
+        }
+      });
+      this.formData.changeFlightSegmentList = arr;
     },
     // 格式化日期
     initDate(dateStr, format) {
@@ -239,6 +251,7 @@ export default {
     }
   },
   computed: {},
+  mounted() {},
   created() {
     let params = {};
     params.purchaseOrderNo = this.changeData.sourceOrderNo;
@@ -248,7 +261,15 @@ export default {
       changeDptDate: "2020-04-29"
     };
     this.changeSearchData(_params);
-    console.log(this.changeData);
+    let arr = [];
+    for (let i = 0; i < this.changeDataTop.passagers.length; i++) {
+      this.changeData.orderDetailList.forEach(item => {
+        if (this.changeDataTop.passagers[i].cardNo.indexOf(item.cardNo) != -1) {
+          arr.push(item);
+        }
+      });
+    }
+    this.orderDetailList = arr;
   }
 };
 </script>
