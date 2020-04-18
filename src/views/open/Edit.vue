@@ -39,7 +39,7 @@ function defaultData() {
   };
 }
 export default {
-  name: "thirdEdit",
+  name: "openEdit",
   data() {
     return {
       formData: defaultData(),
@@ -54,7 +54,7 @@ export default {
     loadData() {
       if ("" != this.thirdId) {
         this.$store
-          .dispatch("third/getOne", { thirdId: this.thirdId })
+          .dispatch("open/getOne", { thirdId: this.thirdId })
           .then(data => {
             this.formData = data;
           })
