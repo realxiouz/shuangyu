@@ -1,14 +1,14 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <third-account-search @onSearch="handleSearch" />
+      <open-account-search @onSearch="handleSearch" />
     </div>
     <div class="contentBox">
       <el-row style="margin-bottom:15px;margin-left:20px">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table size="mini" v-loading="loading" :data="tableData" style="width: 100%;margin-bottom: 15px;" fit>
-        <el-table-column prop="third.firmName" label="平台" width="220" align="center"></el-table-column>
+        <el-table-column prop="openName" label="平台" width="220" align="center"></el-table-column>
         <el-table-column prop="domain" label="域名" width="220" align="center"></el-table-column>
         <el-table-column prop="username" label="账号" width="220" align="center"></el-table-column>
         <el-table-column prop="loginUrl" label="登录地址" width="300" align="center"></el-table-column>
@@ -39,21 +39,21 @@
         :close-on-click-modal="false"
         center
       >
-        <third-account-edit
+        <open-account-edit
           v-if="dialogVisible"
           :curNode="curNode"
           :update="update"
           @onSave="handleSave"
           @onCancel="handleCancel"
-        ></third-account-edit>
+        ></open-account-edit>
       </el-dialog>
     </div>
   </div>
 </template>
 
 <script>
-import thirdAccountSearch from "./Search";
-import thirdAccountEdit from "./Edit";
+import openAccountSearch from "./Search";
+import openAccountEdit from "./Edit";
 
 export default {
   data() {
@@ -169,9 +169,9 @@ export default {
       );
     },
     /*根据用户ID删除用户*/
-    delete(thirdAccountId) {
+    delete(openAccountId) {
       this.$store
-        .dispatch("openAccount/removeOne", { thirdAccountId: thirdAccountId })
+        .dispatch("openAccount/removeOne", { openAccountId: openAccountId })
         .then(() => {
             this.lastId = "blank";
           if (1 === this.tableData.length && !this.deleteForSearch) {
@@ -222,8 +222,8 @@ export default {
     this.loadData();
   },
   components: {
-    thirdAccountSearch,
-    thirdAccountEdit
+    openAccountSearch,
+    openAccountEdit
   }
 };
 </script>

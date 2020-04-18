@@ -3,12 +3,12 @@
     <el-form :model="formData" label-width="110px" size="mini">
       <input type="hidden" v-model="formData.accountId"/>
       <el-form-item label="平台:">
-        <el-select v-model="formData.thirdId" placeholder="请选择平台.." @change="handleThirdSelect" style="width: 100%">
+        <el-select v-model="formData.openId" placeholder="请选择平台.." @change="handleThirdSelect" style="width: 100%">
           <el-option
               v-for="item in thirdList"
-              :key="item.thirdId"
-              :label="item.thirdName"
-              :value="item.thirdId">
+              :key="item.openId"
+              :label="item.openName"
+              :value="item.openId">
           </el-option>
         </el-select>
       </el-form-item>
@@ -58,7 +58,7 @@
             defaultFormData() {
                 return {
                     accountId: '',
-                    thirdId: null,
+                    openId: null,
                     fundAccountId: null,
                     username: '',
                     password: '',
@@ -86,9 +86,9 @@
             handleConfirm(){
                 this.$emit('onSave',this.formData);
             },
-            handleThirdSelect(thirdID){
+            handleThirdSelect(openId){
                 this.thirdList.forEach( item => {
-                    if (thirdID === item.thirdId){
+                    if (openId === item.openId){
                         this.formData.domain = item.domain;
                     }
                 })
