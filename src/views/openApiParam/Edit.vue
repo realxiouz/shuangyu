@@ -92,7 +92,7 @@
       },
       initSelectData: function () {
         this.$store
-          .dispatch("openApiParam/getThirdPartyList")
+          .dispatch("openApiParam/getOpenPartyList")
           .then(data => {
             this.openPartyList = data;
           })

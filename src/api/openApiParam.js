@@ -53,7 +53,7 @@ export function getApiUrlList() {
   });
 }
 
-export function getThirdPartyList() {
+export function getOpenPartyList() {
   return request({
     url: `/third/list`,
     method: "get"

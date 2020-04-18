@@ -66,7 +66,7 @@ export default {
   methods: {
     loadData() {
       this.$store
-        .dispatch("thirdApiParam/getTotal")
+        .dispatch("openApiParam/getTotal")
         .then(data => {
           this.total = data;
         })
@@ -75,7 +75,7 @@ export default {
         });
 
       this.$store
-        .dispatch("thirdApiParam/getList")
+        .dispatch("openApiParam/getList")
         .then(data => {
           if (data) {
             this.tableData = data;
@@ -113,7 +113,7 @@ export default {
         formData.level = this.parentNode.level + 1;
       }
       this.$store
-        .dispatch("thirdApiParam/save", formData)
+        .dispatch("openApiParam/save", formData)
         .then(() => {
           this.loadData();
         })

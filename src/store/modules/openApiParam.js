@@ -1,4 +1,4 @@
-import {save, removeOne, getPageList, getTotal, getOne, getApiUrlList,getThirdPartyList,getList} from "@/api/openApiParam";
+import {save, removeOne, getPageList, getTotal, getOne, getApiUrlList,getOpenPartyList,getList} from "@/api/openApiParam";
 import {getToken} from "@/utils/auth";
 
 
@@ -95,9 +95,9 @@ const actions = {
         });
     });
   },
-  getThirdPartyList({commit}, params) {
+  getOpenPartyList({commit}, params) {
     return new Promise((resolve, reject) => {
-      getThirdPartyList(params)
+      getOpenPartyList(params)
         .then(response => {
           const {data} = response;
           resolve(data);
