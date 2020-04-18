@@ -374,9 +374,9 @@ export default new Router({
       children: [
         {
           title: '第三方平台',
-          path: '/third/list',
-          name: 'third',
-          component: () => import('@/views/third/List'),
+          path: '/open/list',
+          name: 'open',
+          component: () => import('@/views/open/List'),
           meta: {title: '第三方平台', icon: 'home'}
         },
         {
