@@ -52,9 +52,9 @@ export default {
   },
   methods: {
     loadData() {
-      if ("" != this.thirdId) {
+      if ("" != this.openId) {
         this.$store
-          .dispatch("open/getOne", { thirdId: this.thirdId })
+          .dispatch("open/getOne", { openId: this.openId })
           .then(data => {
             this.formData = data;
           })
@@ -72,7 +72,7 @@ export default {
     this.loadData();
   },
   props: {
-    thirdId: String
+    openId: String
   }
 };
 </script>

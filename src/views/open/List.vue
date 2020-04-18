@@ -1,7 +1,7 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <third-search @onSearch="handleSearch"></third-search>
+      <open-search @onSearch="handleSearch"></open-search>
     </div>
     <div class="contentBox">
       <el-row style="margin-bottom:15px; margin-left:40px;">
@@ -29,7 +29,8 @@
               @click="handRemove(scope.row,scope.$index,tableData)"
               type="danger"
               size="mini"
-            >删除</el-button>
+            >删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -50,163 +51,166 @@
         :visible.sync="dialogVisible"
         width="30%"
       >
-        <third-edit
+        <open-edit
           v-if="dialogVisible"
           ref="thirdForm"
-          :third-id="thirdId"
+          :open-id="openId"
           @onSave="handleSave"
           @onCancel="handleCancel"
-        ></third-edit>
+        ></open-edit>
       </el-dialog>
     </div>
   </div>
 </template>
 
 <script>
-import thirdEdit from "./Edit.vue";
-import thirdSearch from "./Search.vue";
+    import openEdit from "./Edit.vue";
+    import openSearch from "./Search.vue";
 
-export default {
-  name: "List",
-  data() {
-    return {
-      loading: true,
-      thirdId: null,
-      dialogVisible: false,
-      pageFlag: "next",
-      pageSize: 10,
-      lastId: "blank",
-      total: 0,
-      tableData: []
-    };
-  },
-  methods: {
-    handleSearch(formData) {
-        this.deleteForSearch = true;
-      if (!formData || !formData.thirdName) {
-        formData = {};
-      }
-      this.$store
-        .dispatch("open/getPageList", {
-          pageFlag: this.pageFlag,
-          pageSize: 10,
-          lastId: this.lastId,
-          filters: formData
-        })
-        .then(data => {
-            if (data) {
-              this.tableData = data;
-          }
-          this.loading = false;
-        })
-        .catch(error => {
-          this.loading = false;
-          console.log(error);
-        });
-      this.loadTotal(formData);
-    },
-    loadTotal(formData) {
-      if (!formData || !formData.thirdName) {
-        formData = {};
-      }
-      this.$store
-        .dispatch("open/getTotal", { filters: formData })
-        .then(data => {
-          this.total = data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    handleAdd() {
-      this.dialogVisible = true;
-      this.thirdId = "";
-    },
-    handRemove(row, index, rows) {
-      this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.$store
-            .dispatch("open/removeOne", { thirdId: row.thirdId })
-            .then(res => {
-              if (res) {
-                rows.splice(index, 1);
-                this.total--;
-                this.$message({
-                  type: "success",
-                  message: "删除成功！"
-                });
-              }
-            })
-            .catch(error => {
-              console.log(error);
-            });
-        })
-        .catch(err => {
-          console.error(err);
-        });
-    },
-    handleUpdate(row) {
-      this.dialogVisible = true;
-      this.thirdId = row.thirdId;
-    },
-    handleCancel() {
-      this.dialogVisible = false;
-    },
-    handleSave(formData) {
-      this.$store
-        .dispatch("open/save", formData)
-        .then(res => {
-          console.log(res);
-          if (res.code === 0) {
-            this.handleSearch();
-            this.loadTotal();
-            this.$message({
-              type: "success",
-              message: "添加成功"
-            });
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-      this.dialogVisible = false;
-    },
-    prevClick() {
-      this.pageFlag = "prev";
-      this.lastId = this.tableData[0].thirdId;
-      this.handleSearch();
-    },
-    nextClick() {
-      this.pageFlag = "next";
-      this.lastId = this.tableData[this.tableData.length - 1].thirdId;
-      this.handleSearch();
-    },
-      initCategory(category){
-        switch (category) {
-            case 0: return '平台';
-            case 1: return '单位';
-            case 2: return '个人';
-        }
-      }
-  },
-  created() {
-    this.handleSearch();
-    this.loadTotal();
-  },
-    computed: {
-        formatCategory() {
-            return function(category) {
-                return this.initCategory(category);
+    export default {
+        name: "List",
+        data() {
+            return {
+                loading: true,
+                openId: null,
+                dialogVisible: false,
+                pageFlag: "next",
+                pageSize: 10,
+                lastId: "blank",
+                total: 0,
+                tableData: []
             };
         },
-    },
-  components: {
-      thirdEdit,
-      thirdSearch
-  }
-};
+        methods: {
+            handleSearch(formData) {
+                this.deleteForSearch = true;
+                if (!formData || !formData.thirdName) {
+                    formData = {};
+                }
+                this.$store
+                    .dispatch("open/getPageList", {
+                        pageFlag: this.pageFlag,
+                        pageSize: 10,
+                        lastId: this.lastId,
+                        filters: formData
+                    })
+                    .then(data => {
+                        if (data) {
+                            this.tableData = data;
+                        }
+                        this.loading = false;
+                    })
+                    .catch(error => {
+                        this.loading = false;
+                        console.log(error);
+                    });
+                this.loadTotal(formData);
+            },
+            loadTotal(formData) {
+                if (!formData || !formData.thirdName) {
+                    formData = {};
+                }
+                this.$store
+                    .dispatch("open/getTotal", {filters: formData})
+                    .then(data => {
+                        this.total = data;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            handleAdd() {
+                this.dialogVisible = true;
+                this.openId = "";
+            },
+            handRemove(row, index, rows) {
+                this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消",
+                    type: "warning"
+                })
+                    .then(() => {
+                        this.$store
+                            .dispatch("open/removeOne", {openId: row.openId})
+                            .then(res => {
+                                if (res) {
+                                    rows.splice(index, 1);
+                                    this.total--;
+                                    this.$message({
+                                        type: "success",
+                                        message: "删除成功！"
+                                    });
+                                }
+                            })
+                            .catch(error => {
+                                console.log(error);
+                            });
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    });
+            },
+            handleUpdate(row) {
+                this.dialogVisible = true;
+                this.openId = row.openId;
+            },
+            handleCancel() {
+                this.dialogVisible = false;
+            },
+            handleSave(formData) {
+                this.$store
+                    .dispatch("open/save", formData)
+                    .then(res => {
+                        console.log(res);
+                        if (res.code === 0) {
+                            this.handleSearch();
+                            this.loadTotal();
+                            this.$message({
+                                type: "success",
+                                message: "添加成功"
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+                this.dialogVisible = false;
+            },
+            prevClick() {
+                this.pageFlag = "prev";
+                this.lastId = this.tableData[0].openId;
+                this.handleSearch();
+            },
+            nextClick() {
+                this.pageFlag = "next";
+                this.lastId = this.tableData[this.tableData.length - 1].openId;
+                this.handleSearch();
+            },
+            initCategory(category) {
+                switch (category) {
+                    case 0:
+                        return '平台';
+                    case 1:
+                        return '单位';
+                    case 2:
+                        return '个人';
+                }
+            }
+        },
+        created() {
+            this.handleSearch();
+            this.loadTotal();
+        },
+        computed: {
+            formatCategory() {
+                return function (category) {
+                    return this.initCategory(category);
+                };
+            },
+        },
+        components: {
+            openEdit,
+            openSearch
+        }
+    };
 </script>
