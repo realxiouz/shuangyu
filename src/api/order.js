@@ -203,3 +203,24 @@ export function changeApply(data) {
 
   });
 }
+
+
+// 非蜗牛补单
+export function purchaseOrder(data) {
+  return request({
+    url: `/qunar/open/save/purchase/order`,
+    method: 'get',
+    data: data
+
+  });
+}
+
+// 蜗牛补单
+export function woniuOrder(data) {
+  return request({
+    url: `/qunar/open/save/woniu/order`,
+    method: 'get',
+    data: data
+
+  });
+}

@@ -22,7 +22,9 @@ import {
   getFlightPrice,
   placeAnOrder,
   openPay,
-  getMessageDetail
+  getMessageDetail,
+  purchaseOrder,
+  woniuOrder
 } from "@/api/order";
 import { getToken } from "@/utils/auth";
 
@@ -265,21 +267,21 @@ const actions = {
         });
     });
   },
-  
-// 获取消息明细
-getMessageDetail({ commit }, params) {
-  const orderNo = params;
-  return new Promise((resolve, reject) => {
-    getMessageDetail(orderNo)
-      .then(response => {
-        const { data } = response;
-        resolve(data);
-      })
-      .catch(error => {
-        reject(error);
-      });
-  });
-},
+
+  // 获取消息明细
+  getMessageDetail({ commit }, params) {
+    const orderNo = params;
+    return new Promise((resolve, reject) => {
+      getMessageDetail(orderNo)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
 
   // 退票查询接口
   refundSearch({ commit }, params) {
@@ -357,6 +359,32 @@ getMessageDetail({ commit }, params) {
   changeApply({ commit }, params) {
     return new Promise((resolve, reject) => {
       changeApply(params)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  // 非蜗牛补单
+  purchaseOrder({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      purchaseOrder(params)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  // 蜗牛补单
+  woniuOrder({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      woniuOrder(params)
         .then(response => {
           const { data } = response;
           resolve(data);

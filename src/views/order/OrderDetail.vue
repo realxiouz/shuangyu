@@ -367,7 +367,58 @@ export default {
     // 手工出票保存
     handleSave(params) {
       this.handleTicketShow = false;
+      let newParams = {};
+
+      if (params) {
+        newParams.accountId = params.accountId;
+        newParams.amount = this.tableData.amount;
+        newParams.thirdId = this.tableData.thirdId;
+        newParams.flights = params.flightData;
+        newParams.fundAccount = params.fundAccount;
+        newParams.orderSource = params.orderSource;
+        newParams.orderType = this.tableData.orderType;
+        newParams.passengers = params.passengers;
+        newParams.pid = "";
+        newParams.remark = params.remark;
+        newParams.rootOrderNo = this.tableData.rootOrderNo;
+        newParams.sourceOrderNo = this.tableData.sourceOrderNo;
+        newParams.status = params.status;
+        newParams.transactionAmount = params.transactionAmount;
+        newParams.createTime = params.createTime;
+        newParams.ticketNoFlag = params.ticketNoFlag;
+      }
+      console.log(newParams, "手工出票");
+      if (params.passengers[0].orderSource == "QUNAR_OPEN") {
+        this.woniuOrder();
+      } else {
+        this.purchaseOrder(newParams);
+      }
     },
+    purchaseOrder(params) {
+      this.$store
+        .dispatch("order/purchaseOrder", params)
+        .then(data => {
+          if (data) {
+            console.log(data);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    woniuOrder(params) {
+      this.$store
+        .dispatch("order/woniuOrder", params)
+        .then(data => {
+          if (data) {
+            console.log(data);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+
     // 退票申请
     handleSaveRefund(params) {
       let newParams = {};
@@ -438,7 +489,6 @@ export default {
           console.log(error);
         });
       this.changeTicketShow = false;
-      // console.log(newParams, "改签申请");
     },
     formatAmount1(amount) {
       if (!amount) {
@@ -447,7 +497,15 @@ export default {
       return "￥" + this.$numeral(amount).format("0.00");
     },
     handleSelectionChange(passengersInfo) {
-      this.passengersInfo = passengersInfo;
+      let arr = [];
+      for (let i = 0; i < passengersInfo.length; i++) {
+        this.tableData.orderDetailList.forEach(item => {
+          if (item.cardNo == passengersInfo[i].cardNo) {
+            arr.push(item);
+          }
+        });
+      }
+      this.passengersInfo = arr;
     },
     // 系统出票
     goTicket() {
@@ -497,6 +555,7 @@ export default {
             params.rootOrderNo = data.rootOrderNo;
             params.category = 1;
             this.getOrderTree(params);
+
             this.getMessage(this.sourceOrderNo);
             this.getMessageHtml(data.orderType, this.sourceOrderNo);
             if (data.passengers) {
@@ -600,7 +659,6 @@ export default {
         .then(data => {
           if (data) {
             this.changeHtml = data;
-            // console.log(data);
           }
         })
         .catch(error => {
@@ -614,7 +672,6 @@ export default {
         .then(data => {
           if (data) {
             this.refundHtml = data;
-            // console.log(data);
           }
         })
         .catch(error => {
@@ -684,7 +741,7 @@ export default {
   },
   created() {
     // this.getOrderDetail(this.orderNo);
-    this.getOrderDetail("abc20031417120045000110");
+    this.getOrderDetail("abc20011020042325000130");
   },
   updated() {
     if (this.changeHtml) {
@@ -734,6 +791,7 @@ export default {
 }
 </style>
 <style>
+/* 退票html样式 */
 #js_mod_rt ul {
   margin: 0;
   padding: 0;
@@ -767,6 +825,13 @@ export default {
   display: none;
 }
 #js_btns_rt .g-btn:not(:first-child) {
+  display: none;
+}
+/* 改签html样式 */
+.mod-public-case .hd {
+  display: none;
+}
+.m-payinfo {
   display: none;
 }
 </style>
