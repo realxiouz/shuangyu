@@ -76,8 +76,7 @@
         props: ["initUserId"],
         data() {
             const validateMobile = (rule, value, callback) => {
-                const mobile_mode = /^1[34578]\d{9}$/;
-
+                let mobile_mode = /^1[34578]\d{9}$/;
                 if (!value) {
                     callback(new Error("请输入手机号"));
                 } else if (!mobile_mode.test(value)) {
@@ -101,9 +100,6 @@
                     phone: [
                         {required: true, validator: validateMobile, trigger: "blur"}
                     ]
-                    // phone: [
-                    //   { required: true, message: '请输入手机号码', trigger: 'blur' }
-                    // ]
                 }
             };
         },
