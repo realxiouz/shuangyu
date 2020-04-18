@@ -3,7 +3,7 @@ import request from "@/utils/request";
 //添加第三方Api
 export function addApi(data) {
   return request({
-    url: "/third/api/add/one",
+    url: "/open/api/add/one",
     method: "post",
     data
   });
@@ -13,7 +13,7 @@ export function addApi(data) {
 // 获取第三方api列表
 export function getList(filter) {
   return request({
-    url: "/third/api/list",
+    url: "/open/api/list",
     method: "get",
     params: filter
   });
@@ -22,7 +22,7 @@ export function getList(filter) {
 //获取分页列表
 export function getPageList(pageFlag, pageSize, lastId, searchForm) {
   return request({
-    url: `/third/api/page/list/${pageFlag}/${pageSize}/${lastId}`,
+    url: `/open/api/page/list/${pageFlag}/${pageSize}/${lastId}`,
     method: "get",
     params: searchForm
   });
@@ -32,7 +32,7 @@ export function getPageList(pageFlag, pageSize, lastId, searchForm) {
 // 获取第三方api总数
 export function getTotal() {
   return request({
-    url: `/third/api/total`,
+    url: `/open/api/total`,
     method: "get"
   });
 }
@@ -41,7 +41,7 @@ export function getTotal() {
 // 删除第三方API信息
 export function removeOne(paramId) {
   return request({
-    url: `/third/api/remove/one/${paramId}`,
+    url: `/open/api/remove/one/${paramId}`,
     method: "delete"
   });
 }
@@ -49,16 +49,16 @@ export function removeOne(paramId) {
 // 修改第三方API信息
 export function updateOne(data) {
   return request({
-    url: `/third/api/update/one`,
+    url: `/open/api/update/one`,
     method: "post",
     data
   });
 }
 
 // 获取第三方api信息
-  export function getOne(paramId) {
+export function getOne(paramId) {
   return request({
-    url: `/third/api/one/${paramId}`,
+    url: `/open/api/one/${paramId}`,
     method: `get`
   });
 }

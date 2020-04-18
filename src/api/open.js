@@ -10,14 +10,14 @@ export function save(data) {
 
 export function removeOne(id) {
   return request({
-    url: `/third/remove/one/${id}`,
+    url: `/open/remove/one/${id}`,
     method: "delete"
   });
 }
 
 export function getOne(id) {
   return request({
-    url: `/third/${id}`,
+    url: `/open/${id}`,
     method: `get`
   });
 }
@@ -25,7 +25,7 @@ export function getOne(id) {
 
 export function getPageList(pageFlag, pageSize, lastId, params) {
   return request({
-    url: `/third/page/list/${pageFlag}/${pageSize}/${lastId}`,
+    url: `/open/page/list/${pageFlag}/${pageSize}/${lastId}`,
     method: "get",
     params: params
   });
@@ -33,7 +33,7 @@ export function getPageList(pageFlag, pageSize, lastId, params) {
 
 export function getList(params) {
   return request({
-    url: `/third/list/`,
+    url: `/open/list/`,
     method: "get",
     params: params
   });
@@ -41,8 +41,8 @@ export function getList(params) {
 
 export function getTotal(params) {
   return request({
-    url: `/third/get/total`,
+    url: `/open/get/total`,
     method: "get",
-    params:params
+    params: params
   });
 }
