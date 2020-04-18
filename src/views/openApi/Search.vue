@@ -27,7 +27,7 @@
 
 <script>
 export default {
-  name: "thirdapiSearch",
+  name: "openApiSearch",
   data() {
     return {
       more: false,

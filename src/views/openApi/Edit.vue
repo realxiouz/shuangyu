@@ -107,7 +107,7 @@ export default {
     handleGetOne(id) {
       if (id) {
         this.$store
-          .dispatch("thirdApiService/getOne", { apiId: id })
+          .dispatch("openApiService/getOne", { apiId: id })
           .then(data => {
             this.formData = data;
             this.dialogVisible = true;

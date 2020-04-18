@@ -122,7 +122,7 @@ function defaultData() {
 }
 
 export default {
-  name: "thirdApiList",
+  name: "openApiList",
   data() {
     return {
       loading: true,
@@ -183,7 +183,7 @@ export default {
         params = {};
       }
       this.$store
-        .dispatch("thirdApiService/getPageList", {
+        .dispatch("openApiService/getPageList", {
           pageFlag: this.pageFlag,
           pageSize: this.pageSize,
           lastId: 'blank',
@@ -205,7 +205,7 @@ export default {
         params = {};
       }
       this.$store
-        .dispatch("thirdApiService/getTotal", { filters: params })
+        .dispatch("openApiService/getTotal", { filters: params })
         .then(response => {
           this.total = response.data;
         })
@@ -232,7 +232,7 @@ export default {
     handleSwitch(row) {
       row.enable = row.enable ? true : false;
       this.$store
-        .dispatch("thirdApiService/updateOne", row)
+        .dispatch("openApiService/updateOne", row)
         .then(() => {})
         .catch(error => {
           console.log(error);
@@ -246,7 +246,7 @@ export default {
       })
         .then(() => {
           this.$store
-            .dispatch("thirdApiService/removeOne", { apiId: id })
+            .dispatch("openApiService/removeOne", { apiId: id })
             .then(() => {
               if (1 === this.tableData.length && !this.deleteForSearch) {
                 this.prevClick();
@@ -265,9 +265,9 @@ export default {
           this.formData.params = this.paramList;
           let url = '';
           if ('' != this.formData.apiId){
-              url  = "thirdApiService/updateOne";
+              url  = "openApiService/updateOne";
           }else{
-              url  = "thirdApiService/addApi";
+              url  = "openApiService/addApi";
           }
       this.$store
         .dispatch(url, this.formData)
@@ -299,7 +299,7 @@ export default {
       handleGetOne(id) {
           if (id) {
               this.$store
-                  .dispatch("thirdApiService/getOne",  id)
+                  .dispatch("openApiService/getOne",  id)
                   .then(data => {
                       this.formData = data;
                       this.dialogVisible = true;

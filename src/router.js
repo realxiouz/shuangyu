@@ -381,9 +381,9 @@ export default new Router({
         },
         {
           title: '第三方Api',
-          path: '/thirdApi/list',
-          name: 'thirdApi',
-          component: () => import('@/views/thirdApi/List'),
+          path: '/openApi/list',
+          name: 'openApi',
+          component: () => import('@/views/openApi/List'),
           meta: {title: '第三方Api', icon: 'home'}
         },
         {
@@ -431,9 +431,9 @@ export default new Router({
         },
         {
           title: '第三方平台账号',
-          path: '/third/account/list',
+          path: '/open/account/list',
           name: 'account',
-          component: () => import('@/views/thirdAccount/List'),
+          component: () => import('@/views/openAccount/List'),
           meta: {title: '第三方平台账号', icon: 'home'}
         }
 
