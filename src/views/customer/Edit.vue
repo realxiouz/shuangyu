@@ -39,12 +39,21 @@
         props: ["curNode"],
         data() {
             const validateMobile = (rule, value, callback) => {
-                const mobile_mode=/^1[34578]\d{9}$/;
-
+                let mobile_mode = /^1[34578]\d{9}$/;
                 if (!value) {
                     callback(new Error("请输入手机号"));
                 } else if (!mobile_mode.test(value)) {
                     callback(new Error("手机号码格式不正确"));
+                } else {
+                    callback();
+                }
+            };
+            const validateEmail = (rule, value, callback) => {
+                let email_mode = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+                if (!value) {
+                    callback(new Error("请输入邮箱号"));
+                } else if (!email_mode.test(value)) {
+                    callback(new Error("您输入的邮箱格式错误！"));
                 } else {
                     callback();
                 }
@@ -81,7 +90,7 @@
                         }
                     ],
                     phone: [
-                        {required: true,  trigger: "blur", validator: validateMobile},
+                        {required: true, trigger: "blur", validator: validateMobile},
                         {
                             min: 1,
                             max: 20,
@@ -89,7 +98,7 @@
                         }
                     ],
                     email: [
-                        {required: true, message: "请输入联系邮箱", trigger: "blur"},
+                        {required: true, validator: validateEmail, trigger: "blur"},
                         {
                             min: 1,
                             max: 20,
