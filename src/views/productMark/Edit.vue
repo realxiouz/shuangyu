@@ -1,114 +1,109 @@
 <template>
   <div>
-    <el-form :rules="formRules" ref="formData" :model="formData" size="mini" label-width="80px">
-      <el-form-item label="企业" prop="firmId">
-        <el-select v-model="formData.firmId"  style="width:100%" placeholder="请选择">
+    <el-form :model="formData" label-width="110px" size="mini">
+      <el-form-item label="产品标签">
+        <el-input v-model="formData.markId" placeholder="请输入产品标签.." :disabled="update"></el-input>
+      </el-form-item>
+      <el-form-item label="供应商">
+        <el-select v-model="formData.openId" placeholder="请选择供应商.." @change="handleSelect" style="width: 100%">
           <el-option
-            v-for="item in firmList"
+            v-for="item in providerList"
             :key="item.firmId"
             :label="item.firmName"
             :value="item.firmId">
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="域名" prop="domain">
-        <el-input v-model="formData.domain" placeholder="请输入域名"></el-input>
+      <el-form-item label="域名">
+        <el-input v-model="formData.domain" disabled placeholder="供应商域名.."></el-input>
       </el-form-item>
-      <template>
-        <el-transfer
-          :titles="['全部标签', '已选标签']"
-          filter-placeholder="第三方标签"
-          v-model="formData.flags"
-          @change="handleChange"
-          :props="{ key: 'flagId',label: 'flag' }"
-          :data="allFlags">
-        </el-transfer>
-      </template>
+      <el-form-item label="政策标签">
+        <el-select v-model="formData.policyFlags" placeholder="请选择政策标签.." clearable multiple style="width: 100%">
+          <el-option
+            v-for="item in policyFlagList"
+            :key="item.flagId"
+            :label="item.flagId"
+            :value="item.flagId">
+          </el-option>
+        </el-select>
+      </el-form-item>
     </el-form>
-    <div slot="footer" class="dialog-footer" style="margin-top:15px;text-align:right;">
+    <div style="text-align:right;">
       <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
-      <el-button size="mini" type="primary" @click="handleSave">确 定</el-button>
+      <el-button type="primary" size="mini" @click="handleConfirm">确 定</el-button>
     </div>
   </div>
 </template>
 
 <script>
-  function defaultData() {
-    return {
-      firmId: "",
-      domain: "",
-      flags: []
-    }
-  };
-  export default {
-    name: "paramEdit",
-    props: ["markId"],
-    data() {
-      return {
-        formData: defaultData(),
-        firmList: [],
-        allFlags: [],
-        formRules: {
-          firmId: [
-            {required: true, message: "请选择企业", trigger: "blur"}
-          ],
-          domain: [
-            {required: true, message: "请输入域名", trigger: "blur"}
-          ]
+    export default {
+        props: ["curNode", "update"],
+        data() {
+            return {
+                formData: {},
+                providerList: [],
+                policyFlagList: []
+            };
+        },
+        methods: {
+            /*表单默认加载数据*/
+            defaultFormData() {
+                return {
+                    //产品标签
+                    markId: "",
+                    //供应商
+                    openId: "",
+                    //供应商名称
+                    openName: "",
+                    //供应商域名
+                    domain: "",
+                    //政策标签
+                    policyFlags: []
+                };
+            },
+            loadProviders(){
+                this.$store.dispatch("firm/getList", { filters: {pid: this.$store.state.loginInfo.firm.firmId, type: 1} })
+                    .then(data => {
+                        this.providerList = data;
+                    }).catch(error => {
+                    console.log(error);
+                });
+            },
+            loadPolicyFlags(){
+                this.$store.dispatch("policyFlag/getList", {filters: {}})
+                    .then(data => {
+                        this.policyFlagList = data;
+                    }).catch(error => {
+                    console.log(error);
+                });
+            },
+            /*清除表单*/
+            clearForm() {
+                this.formData = this.defaultFormData();
+            },
+            handleSelect(openId){
+                this.providerList.forEach( item => {
+                    if (openId === item.openId){
+                        this.formData.openName = item.openName;
+                        this.formData.domain = item.domain;
+                    }
+                })
+            },
+            /*对提交的数据进行类型格式*/
+            handleConfirm() {
+                this.$emit("onSave", this.formData);
+            },
+            initFormData() {
+                this.clearForm();
+                this.loadProviders();
+                this.loadPolicyFlags();
+                if (this.update) {
+                    Object.assign(this.formData,this.curNode);
+                }
+            }
+        },
+        created() {
+            this.initFormData();
         }
-      };
-    },
-    methods: {
-      loadFirms() {
-        this.$store
-          .dispatch("productMark/getFirmList"
-          )
-          .then(data => {
-            this.firmList = data;
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      },
-      loadFlags() {
-        this.$store
-          .dispatch("productMark/getFlagList")
-          .then(data => {
-            this.allFlags = data;
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      },
-      getOne(markId) {
-        this.$store
-          .dispatch("productMark/getOne", markId)
-          .then(data => {
-            this.formData = data;
-          })
-          .catch(error => {
-            console.log(error);
-          });
-        this.dialogVisible = true;
-      },
-      handleSave() {
-        this.$refs['formData'].validate((valid) => {
-          if (valid) {
-            this.$emit('onSave', this.formData);
-          }
-        });
-      },
-    handleChange(value) {
-      this.formData.flags = value;
-    }
-    },
-    created() {
-      this.loadFirms();
-      this.loadFlags();
-      if ('' != this.markId && this.markId != null) {
-        this.getOne(this.markId);
-      }
-    }
-  }
-  ;
+    };
 </script>

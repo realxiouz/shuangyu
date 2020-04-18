@@ -1,8 +1,16 @@
 import request from "@/utils/request";
 
-export function save(data) {
+export function addOne(data) {
   return request({
-    url: "/product/mark/save",
+    url: "/third/product/mark/add/one",
+    method: "post",
+    data
+  });
+}
+
+export function updateOne(data) {
+  return request({
+    url: "/third/product/mark/update/one",
     method: "post",
     data
   });

@@ -1,4 +1,4 @@
-import {save, removeOne, getPageList, getTotal, getOne, getFirmList, getFlagList, getList,getListByFlagIds} from "@/api/productMark";
+import {addOne, updateOne, removeOne, getPageList, getTotal, getOne, getFirmList, getFlagList, getList,getListByFlagIds} from "@/api/productMark";
 import {getToken} from "@/utils/auth";
 
 
@@ -21,9 +21,21 @@ const mutations = {
 };
 
 const actions = {
-  save({commit}, params) {
+  addOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      save(params)
+      addOne(params)
+        .then(response => {
+          //const { data } = response;
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  updateOne({commit}, params) {
+    return new Promise((resolve, reject) => {
+      updateOne(params)
         .then(response => {
           //const { data } = response;
           resolve(response);
