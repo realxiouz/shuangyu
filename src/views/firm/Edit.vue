@@ -35,6 +35,17 @@
         /*当前进行操作的企业节点*/
         props: ["curNode"],
         data() {
+            const validateMobile = (rule, value, callback) => {
+                const mobile_mode=/^1[34578]\d{9}$/;
+
+                if (!value) {
+                    callback(new Error("请输入手机号"));
+                } else if (!mobile_mode.test(value)) {
+                    callback(new Error("手机号码格式不正确"));
+                } else {
+                    callback();
+                }
+            };
             return {
                 /*所有的可操作的角色信息*/
                 transData: [],
@@ -69,7 +80,7 @@
                         }
                     ],
                     phone: [
-                        {required: true, message: "请输入联系人电话", trigger: "blur"},
+                        {required: true,  validator: validateMobile, trigger: "blur"},
                         {
                             min: 1,
                             max: 20,
