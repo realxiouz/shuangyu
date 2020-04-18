@@ -109,7 +109,7 @@ export default {
         })
         .then(data => {
           if (data) {
-            this.tableData = data.data;
+            this.tableData =data;
           }
             this.loading = false;
 
@@ -251,7 +251,7 @@ export default {
     },
     loadPartyData() {
       this.$store
-        .dispatch("third/getList", { filters: {} })
+        .dispatch("open/getList", { filters: {} })
         .then(data => {
           this.partyList = data;
         })

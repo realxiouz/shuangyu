@@ -246,7 +246,7 @@ export default {
     },
     loadPartyData() {
       this.$store
-        .dispatch("third/getList", { filters: {} })
+        .dispatch("open/getList", { filters: {} })
         .then(data => {
           this.partyList = data;
         })
