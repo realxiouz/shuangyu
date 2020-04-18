@@ -13,7 +13,7 @@
         :data="tableData"
         style="width: 100%;margin-bottom: 15px;"
       >
-        <el-table-column prop="thirdName" label="平台名称" align="center"></el-table-column>
+        <el-table-column prop="openName" label="平台名称" align="center"></el-table-column>
         <el-table-column prop="contactPerson" label="联系人" align="center"></el-table-column>
         <el-table-column prop="contactPhone" label="联系电话" align="center"></el-table-column>
         <el-table-column prop="contactEmail" label="联系邮箱" align="center"></el-table-column>
@@ -84,7 +84,7 @@
         methods: {
             handleSearch(formData) {
                 this.deleteForSearch = true;
-                if (!formData || !formData.thirdName) {
+                if (!formData || !formData.openName) {
                     formData = {};
                 }
                 this.$store
@@ -107,7 +107,7 @@
                 this.loadTotal(formData);
             },
             loadTotal(formData) {
-                if (!formData || !formData.thirdName) {
+                if (!formData || !formData.openName) {
                     formData = {};
                 }
                 this.$store

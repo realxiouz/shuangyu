@@ -4,7 +4,7 @@
       <el-form :model="formData" label-width="110px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="平台名称:">
-            <el-input v-model="formData.thirdName" placeholder="请输入平台名称查询"></el-input>
+            <el-input v-model="formData.openName" placeholder="请输入平台名称查询"></el-input>
           </el-form-item>
         </el-col>
       </el-form>
@@ -32,7 +32,7 @@ export default {
     return {
       more: false,
       formData: {
-        thirdName: ""
+          openName: ""
       }
     };
   },
