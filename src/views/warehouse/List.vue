@@ -35,7 +35,8 @@
         width="30%"
         :close-on-click-modal="false"
       >
-        <warehouse-edit v-if="dialogVisible" :curNode="curNode" :update="update" @onSave="handleSave" @onCancel="handleCancel"/>
+        <warehouse-edit v-if="dialogVisible" :curNode="curNode" :update="update" @onSave="handleSave"
+                        @onCancel="handleCancel"/>
       </el-dialog>
     </div>
   </div>
@@ -68,18 +69,20 @@
                 this.$store
                     .dispatch("warehouse/getList", {filter: {}})
                     .then(data => {
-                        this.tableData = data.data;
+                        if (data && data.data) {
+                            this.tableData = data.data;
+                        }
                         this.loading = false;
                     })
                     .catch(error => {
-                        this.loading = false;
+
                         console.log(error);
                     });
             },
-            handleSearch(searchForm){
-                if (!searchForm.code && !searchForm.name){
+            handleSearch(searchForm) {
+                if (!searchForm.code && !searchForm.name) {
                     this.loadData({});
-                }else{
+                } else {
                     this.$store
                         .dispatch("warehouse/getOne", searchForm)
                         .then(data => {
