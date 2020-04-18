@@ -75,7 +75,7 @@ export default {
     /*加载数据列表*/
     loadData() {
       this.$store
-        .dispatch("thirdAccount/getTotal", { filter: {} })
+        .dispatch("openAccount/getTotal", { filter: {} })
         .then(data => {
           this.total = data.data;
         })
@@ -83,7 +83,7 @@ export default {
           console.log(error);
         });
       this.$store
-        .dispatch("thirdAccount/getPageList", {
+        .dispatch("openAccount/getPageList", {
           pageFlag: this.pageFlag,
           pageSize: this.pageSize,
           lastId: this.lastId,
@@ -104,7 +104,7 @@ export default {
     handleSearch(params) {
         this.deleteForSearch = true;
       this.$store
-        .dispatch("thirdAccount/getTotal", { filter: params ? params : {} })
+        .dispatch("openAccount/getTotal", { filter: params ? params : {} })
         .then(data => {
           this.total = data.data;
         })
@@ -112,7 +112,7 @@ export default {
           console.log(error);
         });
       this.$store
-        .dispatch("thirdAccount/getPageList", {
+        .dispatch("openAccount/getPageList", {
           pageFlag: this.pageFlag,
           pageSize: this.pageSize,
           lastId: this.lastId,
@@ -138,9 +138,9 @@ export default {
 
       let url = "";
       if (this.update) {
-        url = "thirdAccount/updateOne";
+        url = "openAccount/updateOne";
       } else {
-        url = "thirdAccount/addOne";
+        url = "openAccount/addOne";
       }
       this.$store
         .dispatch(url, formData)
@@ -171,7 +171,7 @@ export default {
     /*根据用户ID删除用户*/
     delete(thirdAccountId) {
       this.$store
-        .dispatch("thirdAccount/removeOne", { thirdAccountId: thirdAccountId })
+        .dispatch("openAccount/removeOne", { thirdAccountId: thirdAccountId })
         .then(() => {
             this.lastId = "blank";
           if (1 === this.tableData.length && !this.deleteForSearch) {
