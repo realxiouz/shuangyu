@@ -36,14 +36,8 @@
         props: ["curNode"],
         data() {
             return {
-                /*所有的可操作的角色信息*/
-                transData: [],
                 formData: {},
                 updateTempData: {},
-                transferProps: {
-                    key: "roleId",
-                    label: "roleName"
-                },
                 rules: {
                     firmName: [
                         {required: true, message: "请输入供应商名称", trigger: "blur"},
@@ -105,10 +99,6 @@
                     domain: "",
                     type: 1
                 };
-            },
-            /*清除穿梭框内的数据*/
-            clearRoles() {
-                this.transData = [];
             },
             clearForm() {
                 this.formData = this.defaultFormData();
