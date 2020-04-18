@@ -23,20 +23,8 @@
         <el-input type="text" placeholder="请输入联系地址" v-model="formData.address"></el-input>
       </el-form-item>
     </el-form>
-    <div style="text-align: center">
-      <el-transfer
-        style="text-align: left; display: inline-block"
-        v-model="formData.roles"
-        :data="transData"
-        :props="transferProps"
-        v-show="!hasStep"
-        :titles="['未分配列表', '已分配列表']"
-      />
-    </div>
     <div slot="footer" class="dialog-footer" style="margin-top:10px;text-align:right">
       <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
-      <el-button v-show="hasStep" size="mini" type="primary" @click="nextStep">下一步</el-button>
-      <el-button v-show="!hasStep" size="mini" type="primary" @click="prevStep">上一步</el-button>
       <el-button v-show="!hasStep" size="mini" type="primary" @click="handleSave">确 定</el-button>
     </div>
   </div>
@@ -51,12 +39,7 @@
                 /*所有的可操作的角色信息*/
                 transData: [],
                 formData: {},
-                hasStep: true,
                 updateTempData: {},
-                transferProps: {
-                    key: "roleId",
-                    label: "roleName"
-                },
                 formRules: {
                     firmName: [
                         {required: true, message: "请输入企业名称", trigger: "blur"},
@@ -121,42 +104,18 @@
 
                 };
             },
-            /*加载所有的角色信息*/
-            loadRoles() {
-                this.clearRoles();
-                this.$store
-                    .dispatch("role/getAll", {})
-                    .then(data => {
-                        this.transData = data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            nextStep() {
-                this.hasStep = false;
-            },
-            prevStep() {
-                this.hasStep = true;
-            },
-            /*清除穿梭框内的数据*/
-            clearRoles() {
-                this.transData = [];
-            },
             clearForm() {
                 this.formData = this.defaultFormData();
                 this.updateTempData = {};
             },
             /*初始化表单*/
             initFormData() {
-                this.hasStep = true;
                 if (this.curNode.firmName) {
                     Object.assign(this.formData, this.curNode);
                     Object.assign(this.updateTempData, this.curNode);
                 } else {
                     this.clearForm();
                 }
-                this.loadRoles();
             },
             handleSave() {
                 this.$refs["form"].validate(valid => {
