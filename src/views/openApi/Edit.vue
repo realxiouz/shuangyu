@@ -3,7 +3,7 @@
     <el-form ref="formData" :model="formData" label-width="100px" size="mini">
       <input type="hidden" v-model="formData.apiId" />
       <el-form-item label="第三方平台:">
-        <el-input v-model="formData.thirdId"></el-input>
+        <el-input v-model="formData.openId"></el-input>
       </el-form-item>
       <el-form-item label="URL:">
         <el-input v-model="formData.url"></el-input>
@@ -56,7 +56,7 @@
 function defaultData() {
   return {
     apiId: "",
-    thirdId: "",
+    openId: "",
     url: "",
     method: ""
   };

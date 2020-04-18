@@ -47,12 +47,12 @@
         <el-form ref="formData" :model="formData" label-width="100px" size="mini">
           <input type="hidden" v-model="formData.apiId" />
           <el-form-item label="第三方平台:">
-            <el-select v-model="formData.thirdId" placeholder="请选择平台.." @change="handleThirdSelect" style="width: 100%">
+            <el-select v-model="formData.openId" placeholder="请选择平台.." @change="handleThirdSelect" style="width: 100%">
               <el-option
-                v-for="item in thirdList"
-                :key="item.thirdId"
-                :label="item.thirdName"
-                :value="item.thirdId">
+                v-for="item in openList"
+                :key="item.openId"
+                :label="item.openName"
+                :value="item.openId">
               </el-option>
             </el-select>
           </el-form-item>
@@ -114,7 +114,7 @@ import apiSearch from "./Search.vue";
 function defaultData() {
     return {
         apiId: "",
-        thirdId: "",
+        openId: "",
         url: "",
         method: "",
         domain: ''
@@ -138,7 +138,7 @@ export default {
         formData: defaultData(),
         paramFormData: {},
         paramList: [],
-        thirdList: []
+        openList: []
     };
   },
   methods: {
@@ -217,7 +217,7 @@ export default {
       loadThirdParty(){
           this.$store.dispatch("firm/getList", { filters: {pid: this.$store.state.loginInfo.firm.firmId} })
               .then(data => {
-                  this.thirdList = data;
+                  this.openList = data;
               }).catch(error => {
               console.log(error);
           });
@@ -344,9 +344,9 @@ export default {
           Object.assign(this.paramFormData, this.paramList[idx]);
           this.paramDialogVisible = true;
       },
-      handleThirdSelect(thirdID){
-          this.thirdList.forEach( item => {
-              if (thirdID === item.thirdId){
+      handleThirdSelect(openId){
+          this.openList.forEach( item => {
+              if (openId === item.openId){
                   this.formData.domain = item.domain;
               }
           })
