@@ -138,7 +138,7 @@ export default {
       if (rows) {
         rows.forEach(row => {
           if (row.refundSearchResult.canRefund) {
-            this.$refs.multipleTable.toggleRowSelection(row, true);
+            this.$refs.multipleTable.toggleRowSelection(row, false);
           }
         });
       } else {
@@ -217,8 +217,8 @@ export default {
   },
   computed: {},
   created() {
-    // this.refundSearchData(this.purchaseOrderNo);
-    this.refundSearchData("fma200415125908106");
+    this.refundSearchData(this.purchaseOrderNo);
+    // this.refundSearchData("fma200415125908106");
   },
   updated() {
     this.toggleSelection(this.refundData);

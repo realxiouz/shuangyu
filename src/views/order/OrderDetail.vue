@@ -156,13 +156,20 @@
     </el-card>
     <el-card class="contentBox">
       <div slot="header" class="clearfix">
-        <span>改签</span>
-        <span>出票</span>
         <span>消息</span>
       </div>
       <el-button type="primary" size="mini" @click="getMessage">刷新</el-button>
+    </el-card>
+    <el-card class="contentBox">
+      <div slot="header" class="clearfix">
+        <span v-if="this.tableData.orderType=='30'|| this.tableData.orderType=='31'">改签</span>
+        <span v-else>退票</span>
+      </div>
       <div>
         <span v-if="this.changeHtml" v-html="this.changeHtml"></span>
+      </div>
+      <div>
+        <span v-if="this.refundHtml" v-html="this.refundHtml"></span>
       </div>
     </el-card>
 
@@ -301,6 +308,7 @@ export default {
       refundTicketShow: false,
       changeTicketShow: false,
       changeHtml: "",
+      refundHtml: "",
       flightData: [],
       passengerData: [],
       tableData: {},
@@ -378,7 +386,6 @@ export default {
         .dispatch("order/refundApply", newParams)
         .then(data => {
           if (data) {
-            console.log(data);
             this.$message({
               type: "success",
               message: "退票申请成功！"
@@ -491,7 +498,7 @@ export default {
             params.category = 1;
             this.getOrderTree(params);
             this.getMessage(this.sourceOrderNo);
-
+            this.getMessageHtml(data.orderType, this.sourceOrderNo);
             if (data.passengers) {
               this.passengerData = data.passengers;
             }
@@ -556,9 +563,34 @@ export default {
           console.log(error);
         });
     },
-    // 消息
     getMessage(sourceOrderNo) {
-      this.getChangeHtml(sourceOrderNo);
+      this.$store
+        .dispatch("order/getMessageDetail", sourceOrderNo)
+        .then(data => {
+          if (data) {
+            // console.log(data);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+
+    // 消息
+    getMessageHtml(orderType, sourceOrderNo) {
+      if (
+        orderType == 10 ||
+        orderType == 20 ||
+        orderType == 21 ||
+        orderType == 22 ||
+        orderType == 23
+      ) {
+        this.getRefundHtml(sourceOrderNo);
+      } else if (orderType == 30 || orderType == 31) {
+        this.getChangeHtml(sourceOrderNo);
+      } else {
+        this.getChangeHtml(sourceOrderNo);
+      }
     },
 
     // 获取销售改签信息
@@ -568,6 +600,20 @@ export default {
         .then(data => {
           if (data) {
             this.changeHtml = data;
+            // console.log(data);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    // 获取退票改签信息
+    getRefundHtml(sourceOrderNo) {
+      this.$store
+        .dispatch("order/getRefundHtml", sourceOrderNo)
+        .then(data => {
+          if (data) {
+            this.refundHtml = data;
             // console.log(data);
           }
         })
@@ -638,7 +684,7 @@ export default {
   },
   created() {
     // this.getOrderDetail(this.orderNo);
-    this.getOrderDetail("abc20011020042325000130");
+    this.getOrderDetail("abc20031417120045000110");
   },
   updated() {
     if (this.changeHtml) {
@@ -685,5 +731,42 @@ export default {
 .contentBox {
   padding-top: 0px !important;
   padding-bottom: 0px !important;
+}
+</style>
+<style>
+#js_mod_rt ul {
+  margin: 0;
+  padding: 0;
+}
+#js_mod_rt .bd #js_form_rt .js_box_content .lable-title {
+  float: left;
+}
+#js_mod_rt .bd #js_form_rt .js_box_content .ticket-cell #js_passanger_rt {
+  border: 1px solid #409eff;
+}
+#js_mod_rwc ul {
+  margin: 0;
+  padding: 0;
+}
+#js_mod_rt li {
+  width: 100%;
+  list-style: none;
+  margin-top: 15px;
+}
+#js_mod_rwc li {
+  width: 100%;
+  list-style: none;
+}
+#js_mod_rt .hd {
+  display: none;
+}
+#js_form_rt .title-box {
+  display: none;
+}
+#js_mod_rwc .hd {
+  display: none;
+}
+#js_btns_rt .g-btn:not(:first-child) {
+  display: none;
 }
 </style>
