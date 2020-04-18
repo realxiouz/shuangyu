@@ -71,7 +71,7 @@ export default {
   methods: {
     loadData() {
       this.$store
-        .dispatch("thirdApiParam/getTotal")
+        .dispatch("openApiParam/getTotal")
         .then(data => {
           this.total = data;
         })
@@ -80,7 +80,7 @@ export default {
         });
 
       this.$store
-        .dispatch("thirdApiParam/getList")
+        .dispatch("openApiParam/getList")
         .then(data => {
           if (data) {
             this.tableData = data;
@@ -119,7 +119,7 @@ export default {
         formData.level = this.parentNode.level + 1;
       }
       this.$store
-        .dispatch("thirdApiParam/save", formData)
+        .dispatch("openApiParam/save", formData)
         .then(() => {
           this.loadData();
         })
@@ -151,7 +151,7 @@ export default {
     changeSwitch(row) {
       row.enable = row.enable ? true : false;
       this.$store
-        .dispatch("thirdApiParam/save", row)
+        .dispatch("openApiParam/save", row)
         .then(data => {
           console.log(data);
           this.loadData();
@@ -171,7 +171,7 @@ export default {
     /*根据用户ID删除用户*/
     delete(paramId) {
       this.$store
-        .dispatch("thirdApiParam/removeOne", paramId)
+        .dispatch("openApiParam/removeOne", paramId)
         .then(() => {
           this.loadData();
         })

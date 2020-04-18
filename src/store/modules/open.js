@@ -34,9 +34,9 @@ const actions = {
     });
   },
   removeOne({commit}, params) {
-    const {thirdId} = params;
+    const {openId} = params;
     return new Promise((resolve, reject) => {
-      removeOne(thirdId)
+      removeOne(openId)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -87,9 +87,9 @@ const actions = {
     });
   },
   getOne({commit}, params) {
-    const {thirdId} = params;
+    const {openId} = params;
     return new Promise((resolve, reject) => {
-      getOne(thirdId)
+      getOne(openId)
         .then(response => {
           const {data} = response;
           resolve(data);

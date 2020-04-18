@@ -1,10 +1,10 @@
 <template>
   <el-row type="flex" justify="space-between" align="bottom">
     <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
-      <el-form :model="formData" label-width="80px" size="mini">
+      <el-form :model="formData" label-width="110px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="api名称:">
-            <el-input v-model="formData.apiName" placeholder="请输入api名称搜素..."></el-input>
+          <el-form-item label="平台名称:">
+            <el-input v-model="formData.openName" placeholder="请输入平台名称查询"></el-input>
           </el-form-item>
         </el-col>
       </el-form>
@@ -27,13 +27,12 @@
 
 <script>
 export default {
-  name: "thirdapiSearch",
+  name: "thirdSearch",
   data() {
     return {
       more: false,
-
       formData: {
-        apiName: ""
+          openName: ""
       }
     };
   },

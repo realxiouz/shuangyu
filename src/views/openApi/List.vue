@@ -47,12 +47,12 @@
         <el-form ref="formData" :model="formData" label-width="100px" size="mini">
           <input type="hidden" v-model="formData.apiId" />
           <el-form-item label="第三方平台:">
-            <el-select v-model="formData.thirdId" placeholder="请选择平台.." @change="handleThirdSelect" style="width: 100%">
+            <el-select v-model="formData.openId" placeholder="请选择平台.." @change="handleThirdSelect" style="width: 100%">
               <el-option
-                v-for="item in thirdList"
-                :key="item.thirdId"
-                :label="item.thirdName"
-                :value="item.thirdId">
+                v-for="item in openList"
+                :key="item.openId"
+                :label="item.openName"
+                :value="item.openId">
               </el-option>
             </el-select>
           </el-form-item>
@@ -114,7 +114,7 @@ import apiSearch from "./Search.vue";
 function defaultData() {
     return {
         apiId: "",
-        thirdId: "",
+        openId: "",
         url: "",
         method: "",
         domain: ''
@@ -122,7 +122,7 @@ function defaultData() {
 }
 
 export default {
-  name: "thirdApiList",
+  name: "openApiList",
   data() {
     return {
       loading: true,
@@ -138,7 +138,7 @@ export default {
         formData: defaultData(),
         paramFormData: {},
         paramList: [],
-        thirdList: []
+        openList: []
     };
   },
   methods: {
@@ -183,7 +183,7 @@ export default {
         params = {};
       }
       this.$store
-        .dispatch("thirdApiService/getPageList", {
+        .dispatch("openApiService/getPageList", {
           pageFlag: this.pageFlag,
           pageSize: this.pageSize,
           lastId: 'blank',
@@ -205,7 +205,7 @@ export default {
         params = {};
       }
       this.$store
-        .dispatch("thirdApiService/getTotal", { filters: params })
+        .dispatch("openApiService/getTotal", { filters: params })
         .then(response => {
           this.total = response.data;
         })
@@ -217,7 +217,7 @@ export default {
       loadThirdParty(){
           this.$store.dispatch("firm/getList", { filters: {pid: this.$store.state.loginInfo.firm.firmId} })
               .then(data => {
-                  this.thirdList = data;
+                  this.openList = data;
               }).catch(error => {
               console.log(error);
           });
@@ -232,7 +232,7 @@ export default {
     handleSwitch(row) {
       row.enable = row.enable ? true : false;
       this.$store
-        .dispatch("thirdApiService/updateOne", row)
+        .dispatch("openApiService/updateOne", row)
         .then(() => {})
         .catch(error => {
           console.log(error);
@@ -246,7 +246,7 @@ export default {
       })
         .then(() => {
           this.$store
-            .dispatch("thirdApiService/removeOne", { apiId: id })
+            .dispatch("openApiService/removeOne", { apiId: id })
             .then(() => {
               if (1 === this.tableData.length && !this.deleteForSearch) {
                 this.prevClick();
@@ -265,9 +265,9 @@ export default {
           this.formData.params = this.paramList;
           let url = '';
           if ('' != this.formData.apiId){
-              url  = "thirdApiService/updateOne";
+              url  = "openApiService/updateOne";
           }else{
-              url  = "thirdApiService/addApi";
+              url  = "openApiService/addApi";
           }
       this.$store
         .dispatch(url, this.formData)
@@ -299,7 +299,7 @@ export default {
       handleGetOne(id) {
           if (id) {
               this.$store
-                  .dispatch("thirdApiService/getOne",  id)
+                  .dispatch("openApiService/getOne",  id)
                   .then(data => {
                       this.formData = data;
                       this.dialogVisible = true;
@@ -344,9 +344,9 @@ export default {
           Object.assign(this.paramFormData, this.paramList[idx]);
           this.paramDialogVisible = true;
       },
-      handleThirdSelect(thirdID){
-          this.thirdList.forEach( item => {
-              if (thirdID === item.thirdId){
+      handleThirdSelect(openId){
+          this.openList.forEach( item => {
+              if (openId === item.openId){
                   this.formData.domain = item.domain;
               }
           })

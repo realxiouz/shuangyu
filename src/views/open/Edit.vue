@@ -2,7 +2,7 @@
   <div>
     <el-form ref="formData" :rules="formRules" :model="formData" size="mini" label-width="120px">
       <el-form-item label="平台名称">
-        <el-input v-model="formData.thirdName" placeholder="请输入平台名称.."></el-input>
+        <el-input v-model="formData.openName" placeholder="请输入平台名称.."></el-input>
       </el-form-item>
       <el-form-item label="联系人">
         <el-input v-model="formData.contactPerson" placeholder="请输入联系人.."></el-input>
@@ -31,7 +31,7 @@
 <script>
 function defaultData() {
   return {
-    thirdName: "",
+    openName: "",
       contactPerson: '',
       contactPhone: '',
       contactEmail: '',
@@ -39,12 +39,12 @@ function defaultData() {
   };
 }
 export default {
-  name: "thirdEdit",
+  name: "openEdit",
   data() {
     return {
       formData: defaultData(),
       formRules: {
-        thirdName: [
+        openName: [
           { required: true, message: "请输入平台名称", trigger: "blur" }
         ]
       }
@@ -52,9 +52,9 @@ export default {
   },
   methods: {
     loadData() {
-      if ("" != this.thirdId) {
+      if ("" != this.openId) {
         this.$store
-          .dispatch("third/getOne", { thirdId: this.thirdId })
+          .dispatch("open/getOne", { openId: this.openId })
           .then(data => {
             this.formData = data;
           })
@@ -72,7 +72,7 @@ export default {
     this.loadData();
   },
   props: {
-    thirdId: String
+    openId: String
   }
 };
 </script>
