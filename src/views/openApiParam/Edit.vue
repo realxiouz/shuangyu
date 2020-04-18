@@ -6,8 +6,8 @@
           <el-option
             v-for="(item,idx) in openList"
             :key="idx"
-            :label="item.firmName"
-            :value="item.firmId">
+            :label="item.openName"
+            :value="item.openId">
           </el-option>
         </el-select>
       </el-form-item>
@@ -112,7 +112,7 @@
       },
         selectOpen(openId){
           this.openList.forEach( item => {
-              if (openId === item.firmId){
+              if (openId === item.openId){
                   //当前所选择的open平台
                   this.selectedOpen = true;
                   this.formData.domain = item.domain;
