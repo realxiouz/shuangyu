@@ -364,12 +364,12 @@ export default new Router({
       ]
     },
     {
-      title: '第三方Api管理',
-      path: '/thirdApi',
-      namr: 'thirdApi',
+      title: '开放平台管理',
+      path: '/open',
+      namr: 'open',
       component: Layout,
-      redirect: '/third/list',
-      meta: {title: '第三方Api管理', icon: 'home'},
+      redirect: '/open/list',
+      meta: {title: '开放平台管理', icon: 'home'},
 
       children: [
         {
