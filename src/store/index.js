@@ -22,7 +22,7 @@ import orderRule from "./modules/orderRule";
 import thirdApiParam from "./modules/thirdApiParam";
 import productMark from "./modules/productMark";
 import fare from "./modules/fare";
-import thirdApiService from "./modules/thirdApiService";
+import openApiService from "./modules/openApiService";
 import openAccount from "./modules/openAccount";
 import tgqProduct from "./modules/tgqProduct";
 import pnrjyOrder from "./modules/pnrjyOrder";
@@ -70,7 +70,7 @@ export default new Vuex.Store({
     thirdApiParam,
     productMark,
     fare,
-    thirdApiService,
+    openApiService,
     openAccount,
     tgqProduct,
     pnrjyOrder,

@@ -1,4 +1,4 @@
-import { addApi, getApiList,getPageList,getTotal,removeOne,updateOne,getOne} from "@/api/thirdApiService";
+import { addApi, getApiList,getPageList,getTotal,removeOne,updateOne,getOne} from "@/api/openApiService";
 import { getToken } from "@/utils/auth";
 
 
