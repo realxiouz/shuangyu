@@ -14,7 +14,7 @@
         size="mini"
       >
         <el-table-column prop="flagId" label="标签id" align="center"></el-table-column>
-        <el-table-column prop="thirdId" label="客户" align="center"></el-table-column>
+        <el-table-column prop="openName" label="客户" align="center"></el-table-column>
         <el-table-column prop="domain" label="客户域名" align="center"></el-table-column>
         <el-table-column prop="remark" label="备注" align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="180">

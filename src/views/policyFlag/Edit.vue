@@ -1,18 +1,19 @@
 <template>
   <div class="app-container">
     <el-form ref="form" :rules="rules" :model="formData" label-width="80px" size="mini">
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="客户:" prop="label">
-            <el-input v-model="formData.thirdId"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="域名:" prop="domain">
-            <el-input v-model="formData.domain"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
+      <el-form-item label="客户">
+        <el-select v-model="formData.openId" placeholder="请选择" style="width:30%" @change="selectOpen">
+          <el-option
+            v-for="(item,idx) in openList"
+            :key="idx"
+            :label="item.openName"
+            :value="item.openId">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="域名">
+        <el-input v-model="formData.domain" placeholder="平台域名" disabled style="width:30%"></el-input>
+      </el-form-item>
       <el-row
         v-for="(ruleItem, index) in formData.params"
         :key="formData.params[index].key"
@@ -124,9 +125,12 @@
 <script>
     function defaultData() {
         return {
-            thirdId: "",
+            openId: "",
+            openName: '',
+            domain: '',
             flag: "",
-            params: [{}]
+            params: [{}],
+            openList: []
         };
     }
 
@@ -135,6 +139,7 @@
         data() {
             return {
                 formData: defaultData(),
+                openList: [],
                 rules: {
                     thirdId: [{required: true, message: "请选择平台", trigger: "blur"}],
                     flag: [{required: true, message: "请输入标签名称", trigger: "blur"}]
@@ -188,8 +193,28 @@
                     this.formData = defaultData();
                 }
             },
+            selectOpen(openId){
+                this.openList.forEach( item => {
+                    if (openId === item.openId){
+                        //当前所选择的open平台
+                        this.formData.domain = item.domain;
+                        this.formData.openName = item.openName;
+                    }
+                })
+            },
+            loadOpenList(){
+                this.$store
+                    .dispatch("open/getList", {filters: {}})
+                    .then(data => {
+                        this.openList = data;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            }
         },
         created() {
+            this.loadOpenList();
             if (this.flagId) {
                 this.handleGetOne(this.flagId);
             }

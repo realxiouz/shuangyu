@@ -11,6 +11,9 @@
           </el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="平台域名">
+        <el-input v-model="formData.domain" placeholder="平台域名" disabled></el-input>
+      </el-form-item>
       <el-form-item label="API">
         <el-select v-model="formData.apiId" placeholder="请选择" style="width:100%" @change="selectApi" :disabled="!selectedOpen">
           <el-option
