@@ -23,7 +23,7 @@ import thirdApiParam from "./modules/thirdApiParam";
 import productMark from "./modules/productMark";
 import fare from "./modules/fare";
 import thirdApiService from "./modules/thirdApiService";
-import thirdAccount from "./modules/thirdAccount";
+import openAccount from "./modules/openAccount";
 import tgqProduct from "./modules/tgqProduct";
 import pnrjyOrder from "./modules/pnrjyOrder";
 import qunarOrderConfig from "./modules/qunarOrderConfig";
@@ -71,7 +71,7 @@ export default new Vuex.Store({
     productMark,
     fare,
     thirdApiService,
-    thirdAccount,
+    openAccount,
     tgqProduct,
     pnrjyOrder,
     qunarOrderConfig,
