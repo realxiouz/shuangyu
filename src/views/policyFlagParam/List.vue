@@ -13,7 +13,7 @@
         style="width: 100%;margin-bottom: 20px;"
         size="mini"
       >
-        <el-table-column prop="thirdName" label="平台" align="center"></el-table-column>
+        <el-table-column prop="openName" label="平台" align="center"></el-table-column>
         <el-table-column prop="label" label="参数标签" align="center"></el-table-column>
         <el-table-column prop="name" label="参数名称" align="center"></el-table-column>
         <el-table-column prop="remark" label="备注" align="center"></el-table-column>

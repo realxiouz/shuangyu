@@ -1,15 +1,18 @@
 <template>
   <div>
     <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
-      <el-form-item label="平台:" prop="thirdId">
-        <el-select v-model="formData.thirdId" style="width:100%;" filterable placeholder="请选择平台">
+      <el-form-item label="平台:">
+        <el-select v-model="formData.openId" placeholder="请选择" style="width:100%" @change="selectOpen">
           <el-option
-            v-for="item in partyList"
-            :key="item.thirdId"
-            :label="item.thirdName"
-            :value="item.thirdId">
+            v-for="(item,idx) in openList"
+            :key="idx"
+            :label="item.openName"
+            :value="item.openId">
           </el-option>
         </el-select>
+      </el-form-item>
+      <el-form-item label="域名">
+        <el-input v-model="formData.domain" placeholder="平台域名" disabled></el-input>
       </el-form-item>
       <el-form-item label="参数标签:" prop="label">
         <el-input v-model="formData.label"></el-input>
@@ -30,7 +33,9 @@
 <script>
     function defaultData() {
         return {
-            thirdId: "",
+            openId: "",
+            openName: '',
+            domain: '',
             label: "",
             name: "",
             remark:""
@@ -41,7 +46,7 @@
         data() {
             return {
                 formData: defaultData(),
-                partyList: [],
+                openList: [],
                 rules: {
                     thirdId: [
                         {required: true, message: "请选择平台", trigger: "blur"}
@@ -77,13 +82,20 @@
                     this.formData = defaultData();
                 }
             },
-            thirdPartyList() {
+            selectOpen(openId){
+                this.openList.forEach( item => {
+                    if (openId === item.openId){
+                        //当前所选择的open平台
+                        this.formData.domain = item.domain;
+                        this.formData.openName = item.openName;
+                    }
+                })
+            },
+            loadOpenList(){
                 this.$store
-                    .dispatch("thirdParty/getList", {
-                        filters: {}
-                    })
+                    .dispatch("open/getList", {filters: {}})
                     .then(data => {
-                        this.partyList = data;
+                        this.openList = data;
                     })
                     .catch(error => {
                         console.log(error);
@@ -94,7 +106,7 @@
             if (this.paramId) {
                 this.handleGetOne(this.paramId);
             }
-            this.thirdPartyList();
+            this.loadOpenList();
         },
         props: {
             paramId: String,
