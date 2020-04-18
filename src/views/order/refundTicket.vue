@@ -138,7 +138,7 @@ export default {
       if (rows) {
         rows.forEach(row => {
           if (row.refundSearchResult.canRefund) {
-            this.$refs.multipleTable.toggleRowSelection(row, true);
+            this.$refs.multipleTable.toggleRowSelection(row, false);
           }
         });
       } else {
@@ -157,7 +157,7 @@ export default {
         return false;
       }
     },
-    // 表格复选框
+    // 退票原因选中处理
     selectTgqReasons(value) {
       let code = value;
       this.tgqReasons.forEach(item => {
@@ -202,7 +202,6 @@ export default {
                   this.flightInfo.dptTime;
               }
             }
-            console.log(data);
           }
         })
         .catch(error => {

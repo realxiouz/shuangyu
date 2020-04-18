@@ -21,7 +21,8 @@ import {
   getOrderFlight,
   getFlightPrice,
   placeAnOrder,
-  openPay
+  openPay,
+  getMessageDetail
 } from "@/api/order";
 import { getToken } from "@/utils/auth";
 
@@ -264,6 +265,21 @@ const actions = {
         });
     });
   },
+  
+// 获取消息明细
+getMessageDetail({ commit }, params) {
+  const orderNo = params;
+  return new Promise((resolve, reject) => {
+    getMessageDetail(orderNo)
+      .then(response => {
+        const { data } = response;
+        resolve(data);
+      })
+      .catch(error => {
+        reject(error);
+      });
+  });
+},
 
   // 退票查询接口
   refundSearch({ commit }, params) {
@@ -282,9 +298,9 @@ const actions = {
 
   // 获取销售退票信息
   getRefundHtml({ commit }, params) {
-    const purchaseOrderNo = params;
+    const orderNo = params;
     return new Promise((resolve, reject) => {
-      getRefundHtml(purchaseOrderNo)
+      getRefundHtml(orderNo)
         .then(response => {
           const { data } = response;
           resolve(data);

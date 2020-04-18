@@ -143,6 +143,15 @@ export function useGoTicket(orderTaskId) {
 }
 
 
+// 获取消息明细
+export function getMessageDetail(orderNo) {
+  return request({
+    url: `/qunar/fuwu/order/massage/detail?orderNo=${orderNo}`,
+    method: 'get',
+  });
+}
+
+
 // 退票查询接口
 export function refundSearch(purchaseOrderNo) {
   return request({

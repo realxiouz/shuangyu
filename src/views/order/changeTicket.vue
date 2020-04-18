@@ -4,57 +4,62 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="乘客:">
-            <span>{{formatPassengers(changeData.passengers)}}</span>
+            <span>{{formatPassengers(orderDetailList)}}</span>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="航班:">
-            <span>{{changeData.flights[0].flightCode}}</span>
+            <span>{{changeDataTop.airDivision+changeDataTop.flightNum}}</span>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="起飞日期:">
-            <span>{{formatFlightDate(changeData.flights)}}</span>
+            <span>{{changeDataTop.flightDate}}</span>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="舱位:">
-            <span>{{changeData.flights[0].cabin}}</span>
+            <span>{{changeDataTop.cabin}}</span>
           </el-form-item>
         </el-col>
       </el-row>
+      <el-form-item label="改签原因:">
+        <span>{{changeDataTop.reason}}</span>
+      </el-form-item>
       <el-form-item label="退改说明:">
         <span v-if="this.tgqText" v-html="this.tgqText"></span>
-        <span v-else>暂无数据</span>
         <span v-if="this.reason" style="color:red;">{{this.reason}}</span>
-      </el-form-item>
-      <el-form-item label="改签原因:">
-        <el-select
-          clearable
-          v-model="formData.changeCauseId"
-          @change="selectTgqReasons"
-          placeholder="请选择退票原因"
-          style="width: 100%"
-        >
-          <el-option
-            v-for="item in tgqReasons"
-            :key="item.code"
-            :label="item.msg"
-            :value="item.code"
-          ></el-option>
-        </el-select>
+        <span v-if="!this.tgqText && !this.reason">暂无数据</span>
       </el-form-item>
       <el-row>
-        <el-col :span="12">
-          <el-form-item label="改签备注:">
-            <el-input></el-input>
+        <el-col :span="8">
+          <el-form-item label="改签原因:">
+            <el-select
+              clearable
+              v-model="formData.changeCauseId"
+              placeholder="请选择退票原因"
+              @change="selectTgqReasons"
+              style="width: 100%"
+            >
+              <el-option
+                v-for="item in tgqReasons"
+                :key="item.code"
+                :label="item.msg"
+                :value="item.code"
+              ></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="8">
+          <el-form-item label="改签备注:">
+            <el-input v-model="formData.applyRemarks"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
           <el-form-item label="改签费:">
-            <el-input></el-input>
+            <el-input v-model="formData.totalAmount"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -62,14 +67,15 @@
       <el-form-item v-model="formData.refundData" label-width="auto">
         <label class="el-form-item__label" style="color:#606266; width:110px;">乘车人:</label>
         <el-table
-          :data="changeData.orderDetailList"
+          :data="passagersChange"
           highlight-current-row
-          ref="multipleTable"
+          ref="changePassage"
+          @selection-change="handlePassagersChange"
           size="mini"
           fit
           style="width: 100%;"
         >
-          <el-table-column type="selection" width="55"></el-table-column>
+          <el-table-column :selectable="selectable" type="selection" width="55"></el-table-column>
           <el-table-column prop="name" label="姓名" align="center"></el-table-column>
           <el-table-column prop="cardType" :formatter="formatCardType" label="证件类型" align="center"></el-table-column>
           <el-table-column prop="cardNo" label="证件号" align="center"></el-table-column>
@@ -82,30 +88,50 @@
           <el-table-column prop="ticketNo" label="票号" align="center"></el-table-column>
         </el-table>
       </el-form-item>
-      <el-form-item v-model="formData.refundData" label-width="auto">
+      <el-form-item v-model="formData.flightData" label-width="auto">
         <label class="el-form-item__label" style="color:#606266; width:110px;">航班信息：</label>
-        <el-table ref="multipleTable" size="mini" highlight-current-row fit style="width: 100%;">
+        <el-table
+          :data="formData.changeFlightSegmentList"
+          ref="changeFlight"
+          size="mini"
+          highlight-current-row
+          fit
+          style="width: 100%;"
+        >
           <el-table-column type="selection" width="55"></el-table-column>
-          <el-table-column prop="name" width="60" label="航班号" align="center"></el-table-column>
-          <el-table-column prop="cardType" width="60" label="出发地" align="center"></el-table-column>
-          <el-table-column prop="cardNum" width="60" label="目的地" align="center">
+          <el-table-column prop="actFlightNo" width="70" label="航班号" align="center"></el-table-column>
+          <el-table-column prop="dptAirportCode" width="60" label="出发地" align="center"></el-table-column>
+          <el-table-column prop="arrAirportCode" width="60" label="目的地" align="center"></el-table-column>
+          <el-table-column prop="changeDate" label="起飞日期" align="center"></el-table-column>
+          <el-table-column prop="startTime" label="起飞时间" align="center"></el-table-column>
+          <el-table-column prop="endTime" label="到达时间" align="center"></el-table-column>
+          <el-table-column prop="cabin" label="舱位" width="70" align="center"></el-table-column>
+          <el-table-column prop="cabinStatus" label="数显" width="70" align="center"></el-table-column>
+          <el-table-column prop="gqFee" label="手续费" width="70" align="center">
             <template slot-scope="scope">
-              <span v-if="scope.row"></span>
+              <span>{{formatAmount(scope.row.gqFee)}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="ageType" label="起飞时间" align="center">
+          <el-table-column prop="upgradeFee" label="升舱费" width="60" align="center">
             <template slot-scope="scope">
-              <span v-if="scope.row"></span>
+              <span>{{formatAmount(scope.row.upgradeFee)}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="到达时间" align="center"></el-table-column>
-          <el-table-column prop label="舱位" width="50" align="center"></el-table-column>
-          <el-table-column prop label="数显" width="60" align="center"></el-table-column>
-          <el-table-column prop label="手续费" width="60" align="center"></el-table-column>
-          <el-table-column prop label="升舱费" width="60" align="center"></el-table-column>
-          <el-table-column prop label="总金额" width="80" align="center"></el-table-column>
-          <el-table-column prop label="儿童改签费" align="center"></el-table-column>
-          <el-table-column prop label="儿童升舱费" align="center"></el-table-column>
+          <el-table-column prop="allFee" label="总金额" width="80" align="center">
+            <template slot-scope="scope">
+              <span>{{formatAmount(scope.row.allFee)}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="childGqFee" label="儿童改签费" align="center">
+            <template slot-scope="scope">
+              <span>{{formatAmount(scope.row.childGqFee)}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="childUpgradeFee" label="儿童升舱费" align="center">
+            <template slot-scope="scope">
+              <span>{{formatAmount(scope.row.childUpgradeFee)}}</span>
+            </template>
+          </el-table-column>
         </el-table>
       </el-form-item>
     </el-form>
@@ -121,21 +147,65 @@ import { formatAgeType, formatCardType } from "@/utils/status.js";
 
 export default {
   name: "changeTicket",
-  props: ["changeData"],
+  props: ["changeData", "changeDataTop"],
   data() {
     return {
       changeDataResult: [],
       tgqReasons: "",
       reason: "",
       tgqText: "",
+      orderDetailList: "",
+      passagersChange: [],
       formData: {
-        appKey: ""
+        appKey: "",
+        changeFlightSegmentList: [],
+        passengerIds: "",
+        flightData: "",
+        changePassagers: "",
+        applyRemarks: "",
+        totalAmount: ""
       }
     };
   },
   methods: {
     formatCardType,
     formatAgeType,
+    // 乘客默认选中表格复选框
+    toggleSelection(rows) {
+      if (rows) {
+        rows.forEach(row => {
+          if (row.canChange) {
+            this.$refs.changePassage.toggleRowSelection(row, false);
+          }
+        });
+      } else {
+        this.$refs.changePassage.clearSelection();
+      }
+    },
+    // 判断乘客是否可以改签
+    selectable(row, index) {
+      if (row.canChange) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+
+    // 乘客表格复选框选中处理
+    handlePassagersChange(rows) {
+      let str = "";
+      rows.forEach(row => {
+        str += row.id + ",";
+      });
+      str = str.substring(0, str.length - 1);
+      this.formData.passengerIds = str;
+      this.formData.changePassagers = rows;
+      // console.log(str,"str")
+    },
+    // 航班表格选择复选框选中处理
+    handleFlightChange(rows) {
+      this.flightData = rows;
+    },
     // 改签查询
     changeSearchData(params) {
       this.$store
@@ -144,6 +214,20 @@ export default {
           if (data) {
             this.formData.appKey = data.appKey;
             this.changeDataResult = data.result;
+            if (this.orderDetailList) {
+              for (let i = 0; i < this.orderDetailList.length; i++) {
+                data.result.forEach(item => {
+                  if (this.orderDetailList[i].name.indexOf(item.name) != -1) {
+                    this.orderDetailList[i]["id"] = item.id;
+                    this.orderDetailList[i]["canChange"] =
+                      item.changeSearchResult.canChange;
+                  }
+                });
+              }
+
+              this.passagersChange = this.orderDetailList;
+              // console.log(this.passagersChange, "data");
+            }
             if (data.result.length > 0) {
               if (data.result[0].changeSearchResult.tgqReasons) {
                 this.tgqReasons = data.result[0].changeSearchResult.tgqReasons;
@@ -156,7 +240,6 @@ export default {
                 this.reason = data.result[0].changeSearchResult.reason;
               }
             }
-            console.log(data);
           }
         })
         .catch(error => {
@@ -165,8 +248,95 @@ export default {
     },
     // 改签申请
     handleSave() {
-      this.$emit("onSavechange",this.formData)
+      if (this.formData.changePassagers.length < 1) {
+        this.$notify({
+          title: "提示",
+          message: "请选择需要改签的乘客",
+          type: "warning",
+          duration: 4500
+        });
+        return;
+      }
+      if (this.formData.changeFlightSegmentList.length < 1) {
+        this.$notify({
+          title: "提示",
+          message: "请选择需要改签的航班",
+          type: "warning",
+          duration: 4500
+        });
+        return;
+      }
+      if (this.formData.changeFlightSegmentList.length > 1) {
+        this.$notify({
+          title: "提示",
+          message: "改签航班只能选择一个",
+          type: "warning",
+          duration: 4500
+        });
+        return;
+      }
+      let adultCount = 0;
+      let childCount = 0;
+
+      this.formData.changePassagers.forEach(item => {
+        if (item.ageType == "0") {
+          adultCount += 1;
+        } else if (item.ageType == "1") {
+          childCount += 1;
+        }
+      });
+      let adultFee = 0;
+      if (adultCount > 0) {
+        adultFee =
+          Number(this.changeFlightSegmentList[0].gpFee) * adultCount +
+          Number(this.changeFlightSegmentList[0].upgradeFee) * adultCount;
+      }
+      let childFee = 0;
+      if (childCount > 0) {
+        childFee =
+          Number(this.changeFlightSegmentList[0].childGqFee) * childCount +
+          Number(this.changeFlightSegmentList[0].childUpgradeFee) * childCount;
+      }
+      let totalCount = adultCount + childCount;
+
+      if (totalCount != this.formData.totalAmount) {
+        this.$notify({
+          title: "提示",
+          message: "改签费计算错误",
+          type: "warning",
+          duration: 4500
+        });
+        return;
+      }
+      this.$emit("onSavechange", this.formData);
     },
+    // 改签原因选中处理
+    selectTgqReasons(value) {
+      let code = value;
+      let flightNo = //"SC4804";
+        this.changeDataTop.airDivision + this.changeDataTop.flightNum;
+      let actFlightNo = "";
+      this.tgqReasons.forEach(item => {
+        if (item.code === code) {
+          if (item.changeFlightSegmentList) {
+            this.formData.changeFlightSegmentList =
+              item.changeFlightSegmentList;
+          }
+        }
+      });
+      let arr = [];
+      this.formData.changeFlightSegmentList.forEach(item => {
+        if (item.actFlightNo == flightNo) {
+          actFlightNo = item.actFlightNo;
+          if (item.actFlightNo == actFlightNo) {
+            arr.push(item);
+          }
+        }
+      });
+      console.log(this.formData.changeFlightSegmentList);
+      this.formData.changeFlightSegmentList = arr;
+    },
+
     // 格式化日期
     initDate(dateStr, format) {
       if (dateStr > 0) {
@@ -204,6 +374,9 @@ export default {
     }
   },
   computed: {},
+  updated() {
+    this.toggleSelection(this.passagersChange);
+  },
   created() {
     let params = {};
     params.purchaseOrderNo = this.changeData.sourceOrderNo;
@@ -212,8 +385,16 @@ export default {
       purchaseOrderNo: "ted200416125445810",
       changeDptDate: "2020-04-29"
     };
-    this.changeSearchData(_params);
-    console.log(this.changeData);
+    this.changeSearchData(params);
+    let arr = [];
+    for (let i = 0; i < this.changeDataTop.passagers.length; i++) {
+      this.changeData.orderDetailList.forEach(item => {
+        if (this.changeDataTop.passagers[i].cardNo.indexOf(item.cardNo) != -1) {
+          arr.push(item);
+        }
+      });
+    }
+    this.orderDetailList = arr;
   }
 };
 </script>

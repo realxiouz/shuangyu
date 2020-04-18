@@ -16,30 +16,19 @@
         <el-input type="text" placeholder="请输入联系人" v-model="formData.fullName"></el-input>
       </el-form-item>
       <el-form-item label="联系电话" prop="phone">
-        <el-input type="text" v-model="formData.phone" placeholder="请输入联系电话" ></el-input>
+        <el-input type="text" v-model="formData.phone" placeholder="请输入联系电话"></el-input>
       </el-form-item>
       <el-form-item label="电子邮箱" prop="email">
-        <el-input type="text" v-model="formData.email" placeholder="请输入联系电子邮箱" ></el-input>
+        <el-input type="text" v-model="formData.email" placeholder="请输入联系电子邮箱"></el-input>
       </el-form-item>
       <el-form-item label="地址" prop="address">
         <el-input type="text" placeholder="请输入联系地址" v-model="formData.address"></el-input>
       </el-form-item>
     </el-form>
-    <div style="text-align: center">
-      <el-transfer
-        style="text-align: left; display: inline-block"
-        v-model="formData.roles"
-        :data="transData"
-        :props="transferProps"
-        v-show="!hasStep"
-        :titles="['未分配列表', '已分配列表']"
-      />
-    </div>
+
     <div slot="footer" class="dialog-footer" style="margin-top:10px;text-align:right">
       <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
-      <el-button v-show="hasStep" size="mini" type="primary" @click="nextStep">下一步</el-button>
-      <el-button v-show="!hasStep" size="mini" type="primary" @click="prevStep">上一步</el-button>
-      <el-button v-show="!hasStep" size="mini" type="primary" @click="handleSave">确 定</el-button>
+      <el-button size="mini" type="primary" @click="handleSave">确 定</el-button>
     </div>
   </div>
 </template>
@@ -49,16 +38,29 @@
         /*当前进行操作的企业节点*/
         props: ["curNode"],
         data() {
+            const validateMobile = (rule, value, callback) => {
+                let mobile_mode = /^1[34578]\d{9}$/;
+                if (!value) {
+                    callback(new Error("请输入手机号"));
+                } else if (!mobile_mode.test(value)) {
+                    callback(new Error("您输入的手机号码格式不正确"));
+                } else {
+                    callback();
+                }
+            };
+            const validateEmail = (rule, value, callback) => {
+                let email_mode = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+                if (!value) {
+                    callback(new Error("请输入邮箱号"));
+                } else if (!email_mode.test(value)) {
+                    callback(new Error("您输入的邮箱格式错误！"));
+                } else {
+                    callback();
+                }
+            };
             return {
-                /*所有的可操作的角色信息*/
-                transData: [],
                 formData: {},
-                hasStep: true,
                 updateTempData: {},
-                transferProps: {
-                    key: "roleId",
-                    label: "roleName"
-                },
                 rules: {
                     firmName: [
                         {required: true, message: "请输入客户名称", trigger: "blur"},
@@ -88,7 +90,7 @@
                         }
                     ],
                     phone: [
-                        {required: true, message: "请输入联系人电话", trigger: "blur"},
+                        {required: true, trigger: "blur", validator: validateMobile},
                         {
                             min: 1,
                             max: 20,
@@ -96,7 +98,7 @@
                         }
                     ],
                     email: [
-                        {required: true, message: "请输入联系邮箱", trigger: "blur"},
+                        {required: true, validator: validateEmail, trigger: "blur"},
                         {
                             min: 1,
                             max: 20,
@@ -118,31 +120,8 @@
                     address: "",
                     deleteFlag: true,
                     domain: "",
-                    type: 0,
-                    roles: []
+                    type: 0
                 };
-            },
-            /*加载所有的角色信息*/
-            loadRoles() {
-                this.clearRoles();
-                this.$store
-                    .dispatch("role/getAll", {})
-                    .then(data => {
-                        this.transData = data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            nextStep() {
-                this.hasStep = false;
-            },
-            prevStep() {
-                this.hasStep = true;
-            },
-            /*清除穿梭框内的数据*/
-            clearRoles() {
-                this.transData = [];
             },
             clearForm() {
                 this.formData = this.defaultFormData();
@@ -150,14 +129,12 @@
             },
             /*初始化表单*/
             initFormData() {
-                this.hasStep = true;
                 if (this.curNode.firmName) {
                     this.formData = this.curNode;
                     Object.assign(this.updateTempData, this.curNode);
                 } else {
                     this.clearForm();
                 }
-                this.loadRoles();
             },
             handleSave() {
                 this.$refs["form"].validate(valid => {

@@ -1,5 +1,5 @@
-import {getList, getOne, getPageList, getTotal, removeOne, save} from "@/api/third";
-import {getToken} from "@/utils/auth";
+import { addApi, getApiList,getPageList,getTotal,removeOne,updateOne,getOne} from "@/api/openApiService";
+import { getToken } from "@/utils/auth";
 
 
 const state = {
@@ -21,9 +21,9 @@ const mutations = {
 };
 
 const actions = {
-  save({commit}, params) {
+  addApi({ commit }, params) {
     return new Promise((resolve, reject) => {
-      save(params)
+      addApi(params)
         .then(response => {
           //const { data } = response;
           resolve(response);
@@ -33,8 +33,44 @@ const actions = {
         });
     });
   },
-  removeOne({commit}, params) {
-    const {thirdId} = params;
+  getApiList({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      getApiList(params)
+        .then(response => {
+          const { data } = response;
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getPageList({commit}, params){
+    const {pageFlag, pageSize, lastId, thirdName} = params;
+    return new Promise((resolve, reject) => {
+      getPageList(pageFlag, pageSize, lastId, thirdName)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getTotal({commit}, params) {
+    return new Promise((resolve, reject) => {
+      getTotal(params)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  removeOne({commit}, thirdId) {
     return new Promise((resolve, reject) => {
       removeOne(thirdId)
         .then(response => {
@@ -46,37 +82,9 @@ const actions = {
         });
     });
   },
-
-  getPageList({commit}, params) {
-    const {pageFlag, pageSize, lastId, filters} = params;
+  updateOne({commit}, params){
     return new Promise((resolve, reject) => {
-      getPageList(pageFlag, pageSize, lastId, filters)
-        .then(response => {
-          const {data} = response;
-          resolve(data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  getList({commit}, params) {
-    const {filters} = params;
-    return new Promise((resolve, reject) => {
-      getList(filters)
-        .then(response => {
-          const {data} = response;
-          resolve(data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  getTotal({commit}, params) {
-    const {filters} = params;
-    return new Promise((resolve, reject) => {
-      getTotal(filters)
+      updateOne(params)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -87,9 +95,8 @@ const actions = {
     });
   },
   getOne({commit}, params) {
-    const {thirdId} = params;
     return new Promise((resolve, reject) => {
-      getOne(thirdId)
+      getOne(params)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -98,7 +105,8 @@ const actions = {
           reject(error);
         });
     });
-  }
+  },
+
 };
 
 export default {

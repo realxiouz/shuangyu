@@ -56,75 +56,82 @@
 </template>
 
 <script>
-  function defaultData() {
-    return {
-      nickName: "",
-      fullName: "",
-      gender: "男",
-      birthDate: "",
-      phone: "",
-      email: "",
-      idCardNo: "",
-      super: false,
-      enable: true,
-      headImgUrl: "",
-      comment: ""
+    function defaultData() {
+        return {
+            nickName: "",
+            fullName: "",
+            gender: "男",
+            birthDate: "",
+            phone: "",
+            email: "",
+            idCardNo: "",
+            super: false,
+            enable: true,
+            headImgUrl: "",
+            comment: ""
+        };
     };
-  };
-  export default {
-    name: "userEdit",
-    props: ["initUserId"],
-    data() {
-      return {
-        formData: defaultData(),
-        formRules: {
-          nickName: [
-            { required: true, message: "请输入昵称", trigger: "blur" }
-          ],
-          fullName: [
-            { required: true, message: "请输入姓名", trigger: "blur" }
-          ],
-          idCardNo: [
-            { required: true, message: "请输入身份证号码", trigger: "blur" }
-          ],
-          phone: [
-            { required: true, message: "请输入手机号码", trigger: "blur" }
-          ]
-          // phone: [
-          //   { required: true, message: '请输入手机号码', trigger: 'blur' }
-          // ]
+    export default {
+        name: "userEdit",
+        props: ["initUserId"],
+        data() {
+            const validateMobile = (rule, value, callback) => {
+                let mobile_mode = /^1[34578]\d{9}$/;
+                if (!value) {
+                    callback(new Error("请输入手机号"));
+                } else if (!mobile_mode.test(value)) {
+                    callback(new Error("您输入的手机号码格式不正确"));
+                } else {
+                    callback();
+                }
+            };
+            return {
+                formData: defaultData(),
+                formRules: {
+                    nickName: [
+                        {required: true, message: "请输入昵称", trigger: "blur"}
+                    ],
+                    fullName: [
+                        {required: true, message: "请输入姓名", trigger: "blur"}
+                    ],
+                    idCardNo: [
+                        {required: true, message: "请输入身份证号码", trigger: "blur"}
+                    ],
+                    phone: [
+                        {required: true, validator: validateMobile, trigger: "blur"}
+                    ]
+                }
+            };
+        },
+        computed: {
+            userId: function () {
+                return this.initUserId;
+            }
+        },
+        watch: {
+            userId: function (newValue, oldValue) {
+                console.log(newValue);
+            }
+        },
+        methods: {
+            resetForm() {
+                this.formData = defaultData();
+                console.log(defaultData());
+            },
+            loadForm() {
+                console.log("loadForm");
+            },
+            handleSave() {
+                const params = this.formData;
+                this.$emit("onSave");
+            }
+        },
+        mounted() {
+            if (this.initUserId) {
+                //load
+            }
         }
-      };
-    },
-    computed: {
-      userId: function() {
-        return this.initUserId;
-      }
-    },
-    watch: {
-      userId: function(newValue, oldValue) {
-        console.log(newValue);
-      }
-    },
-    methods: {
-      resetForm() {
-        this.formData = defaultData();
-        console.log(defaultData());
-      },
-      loadForm() {
-        console.log("loadForm");
-      },
-      handleSave() {
-        const params = this.formData;
-        this.$emit("onSave");
-      }
-    },
-    mounted() {
-      if (this.initUserId) {
-        //load
-      }
-    }
-  };
+    };
 </script>
 
 <style scoped>

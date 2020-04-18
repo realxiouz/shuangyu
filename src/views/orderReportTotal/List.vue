@@ -20,21 +20,6 @@
           </template>
         </el-table-column>
         <el-table-column prop="orderNo" label="订单号" align="center" width="160"></el-table-column>
-        <el-table-column prop="policyCode" label="政策代码" width="150" align="center"></el-table-column>
-        <el-table-column
-          prop="category"
-          :formatter="formateCategory"
-          label="订单分类"
-          width="80"
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          prop="status"
-          :formatter="formateStatus"
-          label="订单状态"
-          width="100"
-          align="center"
-        ></el-table-column>
         <el-table-column label="订单日期" width="100" align="center">
           <template slot-scope="scope">
             <span>{{ formatDate(scope.row.createTime,'YYYY-MM-DD') }}</span>
@@ -62,7 +47,6 @@
             <span>{{ formatPassengers(scope.row.passengers)}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="销售出票单号" prop="rootOrderNo" width="150" align="center"></el-table-column>
         <el-table-column label="交易金额" prop="transactionAmount" width="150" align="center">
           <template slot-scope="scope">
             <span>{{ formatAmount(scope.row.transactionAmount)}}</span>

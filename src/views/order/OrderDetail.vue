@@ -156,13 +156,20 @@
     </el-card>
     <el-card class="contentBox">
       <div slot="header" class="clearfix">
-        <span>改签</span>
-        <span>出票</span>
         <span>消息</span>
       </div>
       <el-button type="primary" size="mini" @click="getMessage">刷新</el-button>
+    </el-card>
+    <el-card class="contentBox">
+      <div slot="header" class="clearfix">
+        <span v-if="this.tableData.orderType=='30'|| this.tableData.orderType=='31'">改签</span>
+        <span v-else>退票</span>
+      </div>
       <div>
         <span v-if="this.changeHtml" v-html="this.changeHtml"></span>
+      </div>
+      <div>
+        <span v-if="this.refundHtml" v-html="this.refundHtml"></span>
       </div>
     </el-card>
 
@@ -208,8 +215,9 @@
             <span>{{formatTicketNo(scope.row.ticketNos)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="address" align="center" fixed="right" width="290" label="操作">
+        <el-table-column prop="address" align="center" fixed="right" width="360" label="操作">
           <template slot-scope="scope">
+            <el-button type="primary" v-show="scope.row.processCategory=='1'" size="mini">删除</el-button>
             <el-button
               type="primary"
               v-show="scope.row.orderSource=='QUNAR_OPEN'"
@@ -272,6 +280,7 @@
       >
         <change-ticket
           :changeData="changeData"
+          :changeDataTop="changeDataTop"
           @onCancelChange="changeTicketCancel"
           @onSavechange="handleSaveChange"
         ></change-ticket>
@@ -298,7 +307,8 @@ export default {
       handleTicketShow: false,
       refundTicketShow: false,
       changeTicketShow: false,
-      changeHtml:"",
+      changeHtml: "",
+      refundHtml: "",
       flightData: [],
       passengerData: [],
       tableData: {},
@@ -309,7 +319,17 @@ export default {
       purchaseOrderNo: "",
       refundChangeRule: "",
       changeData: "",
-      orderNo: this.$route.query.orderNo
+      orderNo: this.$route.query.orderNo,
+      changeDataTop: {
+        reason: "",
+        flight: "",
+        flightDate: "",
+        passagers: [],
+        airDivision: "",
+        arrivalTime: "",
+        flightNum: "",
+        departureTime: ""
+      }
     };
   },
   components: {
@@ -351,7 +371,6 @@ export default {
     // 退票申请
     handleSaveRefund(params) {
       let newParams = {};
-      console.log(params);
       if (params) {
         newParams.appKey = params.appKey;
         newParams.passengerIds = params.passengerIds;
@@ -367,10 +386,9 @@ export default {
         .dispatch("order/refundApply", newParams)
         .then(data => {
           if (data) {
-            console.log(data);
             this.$message({
               type: "success",
-              message: "退票成功！"
+              message: "退票申请成功！"
             });
           }
         })
@@ -380,8 +398,47 @@ export default {
       this.refundTicketShow = false;
     },
     // 改签申请
-    handleSaveChange() {
+    handleSaveChange(params) {
+      let newParams = {};
+      if (params) {
+        newParams.appKey = params.appKey;
+        newParams.passengerIds = params.passengerIds;
+        newParams.changeCauseId = params.changeCauseId;
+        newParams.totalAmount = params.totalAmount;
+        newParams.applyRemarks = params.applyRemarks;
+      }
+      if (params.flightData) {
+        newParams.uniqKey = params.flightData[0].uniqKey;
+        newParams.gqFee = params.flightData[0].gqFee;
+        newParams.upgradeFee = params.flightData[0].upgradeFee;
+        newParams.childUseFee = params.flightData[0].childUseFee;
+        newParams.flightNo = params.flightData[0].flightNo;
+        newParams.cabinCode = params.flightData[0].cabinCode;
+        newParams.childExtraPrice = params.flightData[0].childExtraPrice;
+        newParams.startDate = params.flightData[0].startDate;
+        newParams.startTime = params.flightData[0].startTime;
+        newParams.endTime = params.flightData[0].endTime;
+      }
+      newParams.orderNo = this.purchaseOrderNo;
+      if (this.$route.query.taskId) {
+        newParams.orderTaskId = this.$route.query.taskId;
+      }
+      this.$store
+        .dispatch("order/changeApply", newParams)
+        .then(data => {
+          if (data) {
+            console.log(data);
+            this.$message({
+              type: "success",
+              message: "改签申请成功！"
+            });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
       this.changeTicketShow = false;
+      // console.log(newParams, "改签申请");
     },
     formatAmount1(amount) {
       if (!amount) {
@@ -412,6 +469,7 @@ export default {
         });
       }
     },
+
     // 手工出票
     handleTicket() {
       if (this.passengersInfo.length < 1) {
@@ -439,6 +497,8 @@ export default {
             params.rootOrderNo = data.rootOrderNo;
             params.category = 1;
             this.getOrderTree(params);
+            this.getMessage(this.sourceOrderNo);
+            this.getMessageHtml(data.orderType, this.sourceOrderNo);
             if (data.passengers) {
               this.passengerData = data.passengers;
             }
@@ -503,19 +563,58 @@ export default {
           console.log(error);
         });
     },
+    getMessage(sourceOrderNo) {
+      this.$store
+        .dispatch("order/getMessageDetail", sourceOrderNo)
+        .then(data => {
+          if (data) {
+            // console.log(data);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+
     // 消息
-    getMessage() {
-      this.getChangeHtml();
+    getMessageHtml(orderType, sourceOrderNo) {
+      if (
+        orderType == 10 ||
+        orderType == 20 ||
+        orderType == 21 ||
+        orderType == 22 ||
+        orderType == 23
+      ) {
+        this.getRefundHtml(sourceOrderNo);
+      } else if (orderType == 30 || orderType == 31) {
+        this.getChangeHtml(sourceOrderNo);
+      } else {
+        this.getChangeHtml(sourceOrderNo);
+      }
     },
 
     // 获取销售改签信息
-    getChangeHtml() {
+    getChangeHtml(sourceOrderNo) {
       this.$store
-        .dispatch("order/getChangeHtml","sen200407105017520001" )//this.sourceOrderNo
+        .dispatch("order/getChangeHtml", sourceOrderNo)
         .then(data => {
           if (data) {
             this.changeHtml = data;
-            console.log(data);
+            // console.log(data);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    // 获取退票改签信息
+    getRefundHtml(sourceOrderNo) {
+      this.$store
+        .dispatch("order/getRefundHtml", sourceOrderNo)
+        .then(data => {
+          if (data) {
+            this.refundHtml = data;
+            // console.log(data);
           }
         })
         .catch(error => {
@@ -584,7 +683,39 @@ export default {
     }
   },
   created() {
-    this.getOrderDetail(this.orderNo);
+    // this.getOrderDetail(this.orderNo);
+    this.getOrderDetail("abc20031417120045000110");
+  },
+  updated() {
+    if (this.changeHtml) {
+      this.changeDataTop.reason = document.querySelectorAll(
+        ".select"
+      )[0].innerText;
+      this.changeDataTop.flight = document.querySelectorAll(
+        ".pr01"
+      )[1].innerText;
+      this.changeDataTop.flightDate = document.getElementsByName(
+        "departureDay"
+      )[0].value;
+      this.changeDataTop.departureTime = document.getElementsByName(
+        "departureTime"
+      )[0].value;
+      this.changeDataTop.arrivalTime = document.getElementsByName(
+        "arrivalTime"
+      )[0].value;
+      this.changeDataTop.airDivision = document.getElementsByName(
+        "airDivision"
+      )[0].value;
+      this.changeDataTop.flightNum = document.getElementsByName(
+        "flightNum"
+      )[0].value;
+      this.changeDataTop.cabin = document.getElementsByName("cabin")[0].value;
+      this.tableData.passengers.forEach(item => {
+        if (this.changeHtml.indexOf(item.name) != -1) {
+          this.changeDataTop.passagers.push(item);
+        }
+      });
+    }
   },
   computed: {
     formatDate() {
@@ -600,5 +731,42 @@ export default {
 .contentBox {
   padding-top: 0px !important;
   padding-bottom: 0px !important;
+}
+</style>
+<style>
+#js_mod_rt ul {
+  margin: 0;
+  padding: 0;
+}
+#js_mod_rt .bd #js_form_rt .js_box_content .lable-title {
+  float: left;
+}
+#js_mod_rt .bd #js_form_rt .js_box_content .ticket-cell #js_passanger_rt {
+  border: 1px solid #409eff;
+}
+#js_mod_rwc ul {
+  margin: 0;
+  padding: 0;
+}
+#js_mod_rt li {
+  width: 100%;
+  list-style: none;
+  margin-top: 15px;
+}
+#js_mod_rwc li {
+  width: 100%;
+  list-style: none;
+}
+#js_mod_rt .hd {
+  display: none;
+}
+#js_form_rt .title-box {
+  display: none;
+}
+#js_mod_rwc .hd {
+  display: none;
+}
+#js_btns_rt .g-btn:not(:first-child) {
+  display: none;
 }
 </style>

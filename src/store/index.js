@@ -15,15 +15,15 @@ import api from "./modules/api";
 import order from "./modules/order";
 import orderReport from "./modules/orderReport";
 import staff from "./modules/staff";
-import third from "./modules/third";
+import open from "./modules/open";
 import policyFlag from "./modules/policyFlag";
 import policyFlagParam from "./modules/policyFlagParam";
 import orderRule from "./modules/orderRule";
-import thirdApiParam from "./modules/thirdApiParam";
+import openApiParam from "./modules/openApiParam";
 import productMark from "./modules/productMark";
 import fare from "./modules/fare";
-import thirdApiService from "./modules/thirdApiService";
-import thirdAccount from "./modules/thirdAccount";
+import openApiService from "./modules/openApiService";
+import openAccount from "./modules/openAccount";
 import tgqProduct from "./modules/tgqProduct";
 import pnrjyOrder from "./modules/pnrjyOrder";
 import qunarOrderConfig from "./modules/qunarOrderConfig";
@@ -43,7 +43,7 @@ import accountSubject from "./modules/accountSubject";
 import orderTaskTotal from "./modules/orderTaskTotal";
 import currency from "./modules/currency";
 import warehouse from "./modules/warehouse";
-import { getLoginInfo } from "@/api/staff";
+import {getLoginInfo} from "@/api/staff";
 
 Vue.use(Vuex);
 export default new Vuex.Store({
@@ -63,15 +63,15 @@ export default new Vuex.Store({
     order,
     orderReport,
     staff,
-    third,
+    open,
     policyFlag,
     policyFlagParam,
     orderRule,
-    thirdApiParam,
+    openApiParam,
     productMark,
     fare,
-    thirdApiService,
-    thirdAccount,
+    openApiService,
+    openAccount,
     tgqProduct,
     pnrjyOrder,
     qunarOrderConfig,
@@ -104,12 +104,12 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    getLoginInfo({ commit }, params) {
+    getLoginInfo({commit}, params) {
       return new Promise((resolve, reject) => {
-        const { firmId } = params;
+        const {firmId} = params;
         getLoginInfo(firmId)
           .then(response => {
-            const { data } = response;
+            const {data} = response;
             commit("SET_LOGIN_INFO", data);
             resolve(data);
           })

@@ -1,4 +1,4 @@
-import {addOne,updateOne,removeOne,getOne,getList,getTotal,getPageList} from '@/api/thirdAccount';
+import {addOne, getList, getOne, getPageList, getTotal, removeOne, updateOne} from '@/api/openAccount';
 
 const actions = {
   addOne({commit}, params) {
