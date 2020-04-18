@@ -1,4 +1,4 @@
-import { addApi, getApiList,getPageList,getTotal,removeOne,updateOne,getOne} from "@/api/openApiService";
+import { addApi, getList,getPageList,getTotal,removeOne,updateOne,getOne} from "@/api/openApiService";
 import { getToken } from "@/utils/auth";
 
 
@@ -33,9 +33,10 @@ const actions = {
         });
     });
   },
-  getApiList({ commit }, params) {
+  getList({ commit }, params) {
     return new Promise((resolve, reject) => {
-      getApiList(params)
+      const {filter} = params;
+      getList(filter)
         .then(response => {
           const { data } = response;
           resolve(response);

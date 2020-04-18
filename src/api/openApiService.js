@@ -11,11 +11,11 @@ export function addApi(data) {
 
 
 // 获取第三方api列表
-export function getApiList(data) {
+export function getList(filter) {
   return request({
     url: "/third/api/list",
     method: "get",
-    data
+    params: filter
   });
 }
 

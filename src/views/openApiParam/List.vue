@@ -10,11 +10,13 @@
       v-loading="loading"
       :tree-props="{ hasChildren: 'xxx',children: 'children'}"
     >
-      <el-table-column prop="thirdName" label="第三方平台" align="center" width="150"></el-table-column>
-      <el-table-column prop="apiUrl" label="接口url" align="center" width="220"></el-table-column>
-      <el-table-column prop="label" label="接口标签" align="center"></el-table-column>
-      <el-table-column prop="name" label="接口名称" align="center"></el-table-column>
+      <el-table-column prop="openName" label="开放平台名称" align="center" width="150"></el-table-column>
+      <el-table-column prop="url" label="API链接url" align="center" width="220"></el-table-column>
+      <el-table-column prop="method" label="API方法名称" align="center" width="220"></el-table-column>
+      <el-table-column prop="label" label="参数标签" align="center"></el-table-column>
+      <el-table-column prop="name" label="参数名称" align="center"></el-table-column>
       <el-table-column prop="defaultValue" label="默认值" align="center" width="150"></el-table-column>
+      <el-table-column prop="group" label="参数分组" align="center" width="150"></el-table-column>
       <el-table-column
         prop="required"
         label="是否必须"
@@ -39,7 +41,8 @@
     >
       <param-edit
         v-if="dialogVisible"
-        :paramId="paramId"
+        :curNod="curNode"
+        :update="update"
         @onSave="handleSave"
         @onCancel="handleCancel"
       ></param-edit>
@@ -61,6 +64,8 @@ export default {
       tableData: [],
       parentNode: {},
       isEdit:false,
+        curNode: {},
+        update: false
     };
   },
   methods: {
@@ -101,6 +106,7 @@ export default {
       //判断添加的导航是否是顶级导航
       this.rootNav = true;
       this.dialogVisible = true;
+      this.update = false;
 
       this.paramId = "";
     },
@@ -139,6 +145,8 @@ export default {
       this.isEdit=true;
       this.dialogVisible = true;
       this.paramId = row.paramId;
+      this.curNode = row;
+      this.update = true;
     },
     changeSwitch(row) {
       row.enable = row.enable ? true : false;

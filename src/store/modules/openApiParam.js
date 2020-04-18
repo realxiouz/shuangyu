@@ -33,9 +33,9 @@ const actions = {
         });
     });
   },
-  removeOne({commit}, thirdId) {
+  removeOne({commit}, openId) {
     return new Promise((resolve, reject) => {
-      removeOne(thirdId)
+      removeOne(openId)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -47,9 +47,9 @@ const actions = {
   },
 
   getPageList({commit}, params) {
-    const {pageFlag, pageSize, lastId, thirdName} = params;
+    const {pageFlag, pageSize, lastId, filter} = params;
     return new Promise((resolve, reject) => {
-      getPageList(pageFlag, pageSize, lastId, thirdName)
+      getPageList(pageFlag, pageSize, lastId, filter)
         .then(response => {
           const {data} = response;
           resolve(data);

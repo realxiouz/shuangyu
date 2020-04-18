@@ -110,9 +110,9 @@ export default new Router({
         },
         {
           title: '政策接口参数管理',
-          path: '/thirdApiParam/list',
-          name: 'thirdApiParam',
-          component: () => import('@/views/thirdApiParam/List'),
+          path: '/openApiParam/list',
+          name: 'openApiParam',
+          component: () => import('@/views/openApiParam/List'),
           meta: {title: '政策接口参数管理', icon: 'home'},
         },
         {
