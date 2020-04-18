@@ -1,13 +1,13 @@
 <template>
   <div>
     <el-form ref="formData" :model="formData" label-width="110px" size="mini">
-      <el-form-item label="第三方平台:" prop="thirdId">
-        <el-select v-model="formData.thirdId" placeholder="请选择" style="width:100%">
+      <el-form-item label="第三方平台:" prop="openId">
+        <el-select v-model="formData.openId" placeholder="请选择" style="width:100%">
           <el-option
-            v-for="(item,idx) in thirdPartyList"
+            v-for="(item,idx) in openPartyList"
             :key="idx"
-            :label="item.thirdName"
-            :value="item.thirdId">
+            :label="item.openName"
+            :value="item.openId">
           </el-option>
         </el-select>
       </el-form-item>
@@ -55,10 +55,10 @@
     data() {
       return {
         formData: {},
-        thirdPartyList: [],
+        openPartyList: [],
         apiList: [],
         /*formRules: {
-          thirdId: [
+          openId: [
             {required: true, message: "请选择第三方平台", trigger: "blur"}
           ],
           apiId: [
@@ -79,7 +79,7 @@
     methods: {
       defaultFormData() {
         return {
-          thirdId: '',
+          openId: '',
           apiId: '',
           label: '',
           name: '',
@@ -92,15 +92,15 @@
       },
       initSelectData: function () {
         this.$store
-          .dispatch("thirdApiParam/getThirdPartyList")
+          .dispatch("openApiParam/getThirdPartyList")
           .then(data => {
-            this.thirdPartyList = data;
+            this.openPartyList = data;
           })
           .catch(error => {
             console.log(error);
           });
         this.$store
-          .dispatch("thirdApiParam/getApiUrlList")
+          .dispatch("openApiParam/getApiUrlList")
           .then(data => {
             this.apiList = data;
           })
@@ -110,7 +110,7 @@
       },
       getOne(paramId) {
         this.$store
-          .dispatch("thirdApiParam/getOne", paramId)
+          .dispatch("openApiParam/getOne", paramId)
           .then(data => {
             this.formData = data;
           })

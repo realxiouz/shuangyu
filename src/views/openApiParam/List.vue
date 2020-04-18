@@ -10,7 +10,7 @@
       v-loading="loading"
       :tree-props="{ hasChildren: 'xxx',children: 'children'}"
     >
-      <el-table-column prop="thirdName" label="第三方平台" align="center" width="150"></el-table-column>
+      <el-table-column prop="openName" label="第三方平台" align="center" width="150"></el-table-column>
       <el-table-column prop="apiUrl" label="接口url" align="center" width="220"></el-table-column>
       <el-table-column prop="label" label="接口标签" align="center"></el-table-column>
       <el-table-column prop="name" label="接口名称" align="center"></el-table-column>
@@ -143,7 +143,7 @@ export default {
     changeSwitch(row) {
       row.enable = row.enable ? true : false;
       this.$store
-        .dispatch("thirdApiParam/save", row)
+        .dispatch("openApiParam/save", row)
         .then(data => {
           console.log(data);
           this.loadData();
@@ -163,7 +163,7 @@ export default {
     /*根据用户ID删除用户*/
     delete(paramId) {
       this.$store
-        .dispatch("thirdApiParam/removeOne", paramId)
+        .dispatch("openApiParam/removeOne", paramId)
         .then(() => {
           this.loadData();
         })
