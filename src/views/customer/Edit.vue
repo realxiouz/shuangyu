@@ -90,20 +90,10 @@
                         }
                     ],
                     phone: [
-                        {required: true, trigger: "blur", validator: validateMobile},
-                        {
-                            min: 1,
-                            max: 20,
-                            message: "长度在 1到 11 个字符"
-                        }
+                        {required: true, trigger: "blur", validator: validateMobile}
                     ],
                     email: [
-                        {required: true, validator: validateEmail, trigger: "blur"},
-                        {
-                            min: 1,
-                            max: 20,
-                            message: "长度在 1到 20 个字符"
-                        }
+                        {required: true, validator: validateEmail, trigger: "blur"}
                     ],
                 }
             };

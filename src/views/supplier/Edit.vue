@@ -87,20 +87,10 @@
                         }
                     ],
                     phone: [
-                        {required: true, validator: validateMobile, trigger: "blur"},
-                        {
-                            min: 1,
-                            max: 20,
-                            message: "长度在 1到 20 个字符"
-                        }
+                        {required: true, validator: validateMobile, trigger: "blur"}
                     ],
                     email: [
-                        {required: true, validator: validateEmail, trigger: "blur"},
-                        {
-                            min: 1,
-                            max: 20,
-                            message: "长度在 1到 20 个字符"
-                        }
+                        {required: true, validator: validateEmail, trigger: "blur"}
                     ],
                 }
             };

@@ -2,7 +2,7 @@ import request from "@/utils/request";
 
 export function save(data) {
   return request({
-    url: "/third/save",
+    url: "/open/save",
     method: "post",
     data
   });

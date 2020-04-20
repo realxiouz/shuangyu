@@ -5,7 +5,7 @@
       <el-form-item label="平台:">
         <el-select v-model="formData.openId" placeholder="请选择平台.." @change="handleThirdSelect" style="width: 100%">
           <el-option
-              v-for="item in thirdList"
+              v-for="item in openList"
               :key="item.openId"
               :label="item.openName"
               :value="item.openId">
@@ -50,7 +50,7 @@
         data() {
             return {
                 formData: {},
-                thirdList: [],
+                openList: [],
             };
         },
         methods: {
@@ -69,10 +69,10 @@
                 };
             },
             //加载平台信息
-            loadThirdParty(){
+            loadOpenParty(){
                 this.$store.dispatch("firm/getList", { filters: {pid: this.$store.state.loginInfo.firm.firmId} })
                     .then(data => {
-                        this.thirdList = data;
+                        this.openList = data;
                     }).catch(error => {
                     console.log(error);
                 });
@@ -80,14 +80,14 @@
             /*清除表单*/
             clearForm() {
                 this.formData = this.defaultFormData();
-                this.thirdList = [];
+                this.openList = [];
             },
             /*对提交的数据进行类型格式*/
             handleConfirm(){
                 this.$emit('onSave',this.formData);
             },
             handleThirdSelect(openId){
-                this.thirdList.forEach( item => {
+                this.openList.forEach( item => {
                     if (openId === item.openId){
                         this.formData.domain = item.domain;
                     }
@@ -95,7 +95,7 @@
             },
             initFormData(){
                 this.clearForm();
-                this.loadThirdParty();
+                this.loadOpenParty();
                 if (this.update){
                     Object.assign(this.formData,this.curNode);
                 }
