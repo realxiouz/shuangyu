@@ -45,7 +45,7 @@
         @next-click="nextClick"
       ></el-pagination>
       <el-dialog
-        title="用户信息"
+        title="平台信息"
         :close-on-click-modal="false"
         center
         :visible.sync="dialogVisible"
