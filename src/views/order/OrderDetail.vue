@@ -362,6 +362,35 @@ export default {
     },
     // 手工出票保存并贴票
     handleSaveTicket(params) {
+      let newParams = {};
+      if (params) {
+        newParams.accountId = params.accountId;
+        newParams.amount = this.tableData.amount;
+        newParams.thirdId = this.tableData.thirdId;
+        newParams.flights = [
+          {
+            cabin: params.cabin,
+            dptTime: params.dptTime,
+            arr: params.arr,
+            flightCode: params.flightCode,
+            flightDate: params.flightDate,
+            dpt: params.dpt
+          }
+        ];
+        newParams.fundAccount = params.fundAccount;
+        newParams.orderSource = params.orderSource;
+        newParams.orderType = this.tableData.orderType;
+        newParams.passengers = params.passengers;
+        newParams.pid = "";
+        newParams.remark = params.remark;
+        newParams.rootOrderNo = this.tableData.rootOrderNo;
+        newParams.sourceOrderNo = this.tableData.sourceOrderNo;
+        newParams.status = params.status;
+        newParams.transactionAmount = params.transactionAmount;
+        newParams.createTime = params.createTime;
+        newParams.ticketNoFlag = params.ticketNoFlag;
+      }
+      this.purchaseOrder(newParams);
       this.handleTicketShow = false;
     },
     // 手工出票保存
@@ -373,15 +402,16 @@ export default {
         newParams.accountId = params.accountId;
         newParams.amount = this.tableData.amount;
         newParams.thirdId = this.tableData.thirdId;
-        newParams.flights = [{
-          cabin:params.cabin,
-          dptTime:params.dptTime,
-          arr:params.arr,
-          flightCode:params.flightCode,
-          flightDate:params.flightDate,
-          dpt:params.dpt,
-
-        }];
+        newParams.flights = [
+          {
+            cabin: params.cabin,
+            dptTime: params.dptTime,
+            arr: params.arr,
+            flightCode: params.flightCode,
+            flightDate: params.flightDate,
+            dpt: params.dpt
+          }
+        ];
         newParams.fundAccount = params.fundAccount;
         newParams.orderSource = params.orderSource;
         newParams.orderType = this.tableData.orderType;
