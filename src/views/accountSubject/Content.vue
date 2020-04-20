@@ -190,7 +190,7 @@
                 this.dialogVisible = false;
             },
             handleSave(formData) {
-                Object.assign( formData.category,this.category);
+                formData.category = this.category;
                 this.$store
                     .dispatch("accountSubject/save", formData)
                     .then(() => {
