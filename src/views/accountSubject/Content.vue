@@ -16,7 +16,6 @@
         style="width: 100%;margin-bottom:15px"
         size="mini"
         fit
-        :expand-row-keys="expandRowKeys"
         :tree-props="{children: 'children', hasChildren: 'test'}"
       >
         <el-table-column prop="code" label="科目编码" align="center"></el-table-column>
@@ -87,7 +86,7 @@
         },
         methods: {
             formatBalanceDirection(row) {
-                return row.category === 0 ? "借" : "贷";
+                return row.balanceDirection === 0 ? "借" : "贷";
             },
             subjectCategory,
             prevClick() {
