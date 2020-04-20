@@ -12,9 +12,6 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="域名">
-        <el-input v-model="formData.domain" disabled></el-input>
-      </el-form-item>
       <el-form-item label="账号:">
         <el-input v-model="formData.username"></el-input>
       </el-form-item>
@@ -64,8 +61,7 @@
                     password: '',
                     loginUrl: '',
                     token: '',
-                    secretKey: '',
-                    domain: ''
+                    secretKey: ''
                 };
             },
             //加载平台信息
@@ -85,13 +81,6 @@
             /*对提交的数据进行类型格式*/
             handleConfirm() {
                 this.$emit('onSave', this.formData);
-            },
-            handleThirdSelect(openId) {
-                this.openList.forEach(item => {
-                    if (openId === item.openId) {
-                        this.formData.domain = item.domain;
-                    }
-                })
             },
             initFormData() {
                 this.clearForm();

@@ -373,18 +373,18 @@ export default new Router({
 
       children: [
         {
-          title: '第三方平台',
+          title: 'Open平台',
           path: '/open/list',
           name: 'open',
           component: () => import('@/views/open/List'),
-          meta: {title: '第三方平台', icon: 'home'}
+          meta: {title: 'Open平台', icon: 'home'}
         },
         {
-          title: '第三方Api',
+          title: 'OpenApi',
           path: '/openApi/list',
           name: 'openApi',
           component: () => import('@/views/openApi/List'),
-          meta: {title: '第三方Api', icon: 'home'}
+          meta: {title: 'OpenApi', icon: 'home'}
         },
         {
           title: 'TGQ调度',
@@ -427,14 +427,14 @@ export default new Router({
           path: '/policy/flag/param/list',
           name: 'param',
           component: () => import('@/views/policyFlagParam/List'),
-          meta: {title: '第三方标签参数', icon: 'home'}
+          meta: {title: 'Open标签参数', icon: 'home'}
         },
         {
-          title: '第三方平台账号',
+          title: 'Open平台账号',
           path: '/open/account/list',
           name: 'account',
           component: () => import('@/views/openAccount/List'),
-          meta: {title: '第三方平台账号', icon: 'home'}
+          meta: {title: 'Open平台账号', icon: 'home'}
         }
 
       ]

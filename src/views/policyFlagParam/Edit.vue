@@ -11,9 +11,6 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="域名">
-        <el-input v-model="formData.domain" placeholder="平台域名" disabled></el-input>
-      </el-form-item>
       <el-form-item label="参数标签:" prop="label">
         <el-input v-model="formData.label"></el-input>
       </el-form-item>
@@ -35,7 +32,6 @@
         return {
             openId: "",
             openName: '',
-            domain: '',
             label: "",
             name: "",
             remark:""
@@ -86,7 +82,6 @@
                 this.openList.forEach( item => {
                     if (openId === item.openId){
                         //当前所选择的open平台
-                        this.formData.domain = item.domain;
                         this.formData.openName = item.openName;
                     }
                 })

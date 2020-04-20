@@ -13,8 +13,7 @@
         :data="tableData"
         style="width: 100%;margin-bottom: 15px;"
       >
-        <el-table-column prop="third.firmName" label="第三方平台" width="300" align="center"></el-table-column>
-        <el-table-column prop="domain" label="域名" width="300" align="center"></el-table-column>
+        <el-table-column prop="third.firmName" label="Open平台" width="300" align="center"></el-table-column>
         <el-table-column prop="url" label="url" width="300" align="center"></el-table-column>
         <el-table-column prop="method" label="方法名称" align="center"></el-table-column>
         <el-table-column label="是否启用" align="center" width="100">
@@ -44,10 +43,10 @@
         :page-size="pageSize"
         :total="total"
       ></el-pagination>
-      <el-dialog title="第三方Api信息" center :visible.sync="dialogVisible" width="33%" :close-on-click-modal="false">
+      <el-dialog title="OpenApi信息" center :visible.sync="dialogVisible" width="33%" :close-on-click-modal="false">
         <el-form ref="formData" :model="formData" label-width="100px" size="mini">
           <input type="hidden" v-model="formData.apiId"/>
-          <el-form-item label="第三方平台:">
+          <el-form-item label="Open平台:">
             <el-select v-model="formData.openId" placeholder="请选择平台.." @change="handleThirdSelect" style="width: 100%">
               <el-option
                 v-for="item in openList"
@@ -56,9 +55,6 @@
                 :value="item.openId">
               </el-option>
             </el-select>
-          </el-form-item>
-          <el-form-item label="域名">
-            <el-input v-model="formData.domain" disabled></el-input>
           </el-form-item>
           <el-form-item label="URL:">
             <el-input v-model="formData.url"></el-input>
@@ -117,8 +113,7 @@
             apiId: "",
             openId: "",
             url: "",
-            method: "",
-            domain: ''
+            method: ""
         };
     }
 
@@ -345,14 +340,7 @@
                 this.clearForm();
                 Object.assign(this.paramFormData, this.paramList[idx]);
                 this.paramDialogVisible = true;
-            },
-            handleThirdSelect(openId) {
-                this.openList.forEach(item => {
-                    if (openId === item.openId) {
-                        this.formData.domain = item.domain;
-                    }
-                })
-            },
+            }
         },
         created() {
             this.handleSearch();

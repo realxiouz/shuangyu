@@ -9,7 +9,6 @@
       </el-row>
       <el-table size="mini" v-loading="loading" :data="tableData" style="width: 100%;margin-bottom: 15px;" fit>
         <el-table-column prop="openName" label="平台" width="220" align="center"></el-table-column>
-        <el-table-column prop="domain" label="域名" width="220" align="center"></el-table-column>
         <el-table-column prop="username" label="账号" width="220" align="center"></el-table-column>
         <el-table-column prop="loginUrl" label="登录地址" width="300" align="center"></el-table-column>
         <el-table-column prop="contactPerson" label="联系人" width="200" align="center"></el-table-column>
@@ -33,7 +32,7 @@
       ></el-pagination>
 
       <el-dialog
-        title="第三方平台账号信息"
+        title="Open平台账号信息"
         :visible.sync="dialogVisible"
         width="30%"
         :close-on-click-modal="false"
@@ -165,7 +164,7 @@ export default {
       this.open(
         this.delete,
         row.accountId,
-        "此操作将删除该第三方平台账号信息, 是否继续?"
+        "此操作将删除该Open平台账号信息, 是否继续?"
       );
     },
     /*根据用户ID删除用户*/

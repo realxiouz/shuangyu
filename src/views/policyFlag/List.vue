@@ -15,7 +15,6 @@
       >
         <el-table-column prop="flagId" label="标签id" align="center"></el-table-column>
         <el-table-column prop="openName" label="客户" align="center"></el-table-column>
-        <el-table-column prop="domain" label="客户域名" align="center"></el-table-column>
         <el-table-column prop="remark" label="备注" align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="180">
           <template slot-scope="scope">
@@ -29,7 +28,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-dialog title="第三方标签" :visible.sync="dialogVisible" width="50%" center :close-on-click-modal="false">
+      <el-dialog title="Open标签" :visible.sync="dialogVisible" width="50%" center :close-on-click-modal="false">
         <policy-flag-edit
           v-if="dialogVisible"
           :flag-id="flagId"
