@@ -3,12 +3,20 @@
     <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
       <el-form :model="formData" label-width="110px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="科目名称:">
+          <el-form-item label="科目编码">
             <el-input
               clearable
-              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.code"
+              placeholder="请输入科目编码.."
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="科目名称">
+            <el-input
+              clearable
               v-model="formData.name"
-              placeholder="请输入科目名称搜索..."
+              placeholder="请输入科目名称.."
             ></el-input>
           </el-form-item>
         </el-col>
@@ -20,7 +28,7 @@
         class="filter-item"
         type="primary"
         size="mini"
-        @click="$emit('onSearch', formData)"
+        @click="handleConfirm"
       >查询</el-button>
       <el-button type="text" size="mini" @click="handleMore">
         更多
@@ -31,31 +39,37 @@
 </template>
 
 <script>
-export default {
-  name: "accountSubjectSearch",
-  data() {
-    return {
-      more: false,
-      formData: {
-        name: ""
-      }
+    export default {
+        data() {
+            return {
+                more: false,
+                formData: {
+                    code: null,
+                    name: null
+                }
+            };
+        },
+
+        computed: {
+            switchIcon() {
+                if (!this.more) {
+                    return "el-icon-arrow-down el-icon--right";
+                } else {
+                    return "el-icon-arrow-up el-icon--right";
+                }
+            }
+        },
+        methods: {
+            handleMore() {
+                this.more = !this.more;
+            },
+            handleConfirm(){
+                if(!this.formData.code || '' === this.formData.code)
+                    this.formData.code = null;
+                if(!this.formData.name || '' === this.formData.name)
+                    this.formData.name = null;
+                this.$emit("onSearch",this.formData)
+            }
+        }
     };
-  },
-  computed: {
-    switchIcon() {
-      if (!this.more) {
-        return "el-icon-arrow-down el-icon--right";
-      } else {
-        return "el-icon-arrow-up el-icon--right";
-      }
-    }
-  },
-  methods: {
-    handleMore() {
-      this.more = !this.more;
-    }
-  }
-};
 </script>
-
-

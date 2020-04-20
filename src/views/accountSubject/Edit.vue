@@ -8,7 +8,7 @@
         <el-input v-model.number="formData.name"></el-input>
       </el-form-item>
       <el-form-item label="科目类别:" prop="category">
-        <el-select clearable v-model="formData.category" placeholder="请选择科目类别" style="width: 100%">
+        <el-select v-model="formData.category" placeholder="请选择科目类别" disabled style="width: 100%">
           <el-option label="资产类" :value="0"></el-option>
           <el-option label="负债类" :value="1"></el-option>
           <el-option label="权益类" :value="2"></el-option>
@@ -16,15 +16,22 @@
           <el-option label="损益类" :value="4"></el-option>
         </el-select>
       </el-form-item>
-
+      <el-form-item label="是否有效:">
+        <el-switch v-model="formData.enable" @change="handleSwitch"></el-switch>
+      </el-form-item>
       <el-form-item label="余额方向:" prop="balanceDirection">
         <el-radio-group v-model="formData.balanceDirection">
           <el-radio :label="0">借</el-radio>
           <el-radio :label="1">贷</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label>
+      <el-form-item>
         <el-checkbox v-model="formData.quantityFinancing">数量核算</el-checkbox>
+        <span style="margin-left: 40px">
+          <el-checkbox v-model="formData.addable" style="margin-right: 10px">可新增</el-checkbox>
+          <el-checkbox v-model="formData.editable" style="margin: 0 10px 0 0">可修改</el-checkbox>
+          <el-checkbox v-model="formData.deletable" disabled style="margin: 0 10px 0 0">可删除</el-checkbox>
+        </span>
       </el-form-item>
       <el-form-item label>
         <el-checkbox v-model="formData.auxiliaryFinancing">辅助核算</el-checkbox>
@@ -44,16 +51,21 @@
         return {
             code: "",
             name: "",
-            category: "",
+            category: 0,
             balanceDirection: 0,
             quantityFinancing: false,
             auxiliaryFinancing: false,
-            cnurrencyFinancing: false
+            cnurrencyFinancing: false,
+            enable: true,
+            addable: true,
+            editable: true,
+            deletable: true
         };
     }
 
     export default {
         name: "accountSubjectEdit",
+        props: ['editSubjectId', 'pid', 'category'],
         data() {
             return {
                 formData: defaultData(),
@@ -75,9 +87,6 @@
                             max: 20,
                             message: "长度在 1到 20 个字符"
                         }
-                    ],
-                    category: [
-                        {required: true, message: "请选择科目类别", trigger: "blur"}
                     ]
                 }
             };
@@ -103,9 +112,13 @@
             handleSave() {
                 this.$refs["form"].validate(valid => {
                     if (valid) {
+                        this.formData.category = this.category;
                         this.$emit("onSave", this.formData);
                     }
                 });
+            },
+            handleSwitch(){
+                this.enable = !this.enable;
             }
         },
         created() {
@@ -115,10 +128,7 @@
             if (this.pid) {
                 this.formData.pid = this.pid;
             }
-        },
-        props: {
-            editSubjectId: String,
-            pid: String
+            this.formData.category = this.category;
         }
     };
 </script>
