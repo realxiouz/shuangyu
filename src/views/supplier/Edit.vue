@@ -1,6 +1,16 @@
 <template>
   <div>
     <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
+      <el-form-item label="平台:">
+        <el-select v-model="formData.openId" placeholder="请选择平台.." style="width: 100%">
+          <el-option
+            v-for="item in openList"
+            :key="item.openId"
+            :label="item.openName"
+            :value="item.openId">
+          </el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item label="供应商名称" prop="firmName">
         <el-input type="text" placeholder="请输入供应商名称" v-model="formData.firmName"></el-input>
       </el-form-item>
@@ -58,6 +68,7 @@
             return {
                 formData: {},
                 updateTempData: {},
+                openList: [],
                 rules: {
                     firmName: [
                         {required: true, message: "请输入供应商名称", trigger: "blur"},
@@ -110,9 +121,19 @@
                     type: 1
                 };
             },
+            //加载平台信息
+            loadOpenParty() {
+                this.$store.dispatch("open/getList", {filters: {}})
+                    .then(data => {
+                        this.openList = data;
+                    }).catch(error => {
+                    console.log(error);
+                });
+            },
             clearForm() {
                 this.formData = this.defaultFormData();
                 this.updateTempData = {};
+                this.openList = [];
             },
             /*初始化表单*/
             initFormData() {
@@ -139,6 +160,7 @@
         },
         created() {
             this.initFormData();
+            this.loadOpenParty();
         }
     };
 </script>
