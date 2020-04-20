@@ -20,7 +20,7 @@
     methods: {
       initSelectData: function () {
         this.$store
-          .dispatch("policyInterfaceParam/getThirdPartyList")
+          .dispatch("policyInterfaceParam/getOpenPartyList")
           .then(data => {
             this.thirdPartys = data;
           })
