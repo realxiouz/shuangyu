@@ -12,6 +12,7 @@
         :data="tableData"
         row-key="subjectId"
         highlight-current-row
+        default-expand-all
         style="width: 100%;margin-bottom:15px"
         size="mini"
         fit
@@ -193,7 +194,7 @@
                 this.$store
                     .dispatch("accountSubject/save", formData)
                     .then(() => {
-                        this.loadData();
+                        this.loadData({category: this.category});
                     })
                     .catch(error => {
                         console.log(error);
