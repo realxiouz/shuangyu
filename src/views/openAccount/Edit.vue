@@ -5,10 +5,10 @@
       <el-form-item label="平台:">
         <el-select v-model="formData.openId" placeholder="请选择平台.." @change="handleThirdSelect" style="width: 100%">
           <el-option
-              v-for="item in openList"
-              :key="item.openId"
-              :label="item.openName"
-              :value="item.openId">
+            v-for="item in openList"
+            :key="item.openId"
+            :label="item.openName"
+            :value="item.openId">
           </el-option>
         </el-select>
       </el-form-item>
@@ -69,8 +69,8 @@
                 };
             },
             //加载平台信息
-            loadOpenParty(){
-                this.$store.dispatch("firm/getList", { filters: {pid: this.$store.state.loginInfo.firm.firmId} })
+            loadOpenParty() {
+                this.$store.dispatch("open/getList", {filters: {}})
                     .then(data => {
                         this.openList = data;
                     }).catch(error => {
@@ -83,21 +83,21 @@
                 this.openList = [];
             },
             /*对提交的数据进行类型格式*/
-            handleConfirm(){
-                this.$emit('onSave',this.formData);
+            handleConfirm() {
+                this.$emit('onSave', this.formData);
             },
-            handleThirdSelect(openId){
-                this.openList.forEach( item => {
-                    if (openId === item.openId){
+            handleThirdSelect(openId) {
+                this.openList.forEach(item => {
+                    if (openId === item.openId) {
                         this.formData.domain = item.domain;
                     }
                 })
             },
-            initFormData(){
+            initFormData() {
                 this.clearForm();
                 this.loadOpenParty();
-                if (this.update){
-                    Object.assign(this.formData,this.curNode);
+                if (this.update) {
+                    Object.assign(this.formData, this.curNode);
                 }
             }
         },
