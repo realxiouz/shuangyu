@@ -45,17 +45,6 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination
-        @size-change="handleSizeChange"
-        @prev-click="prevClick"
-        @next-click="nextClick"
-        background
-        layout="total,prev,next"
-        prev-text="上一页"
-        next-text="下一页"
-        :page-size="pageSize"
-        :total="total"
-      ></el-pagination>
       <el-dialog
         title="会计科目"
         center
@@ -88,13 +77,9 @@
             return {
                 loading: true,
                 searchForm: {},
-                lastId: "0",
-                pageFlag: "next",
-                pageSize: 10,
                 dialogVisible: false,
                 editSubjectId: "",
                 pid: "",
-                total: 0,
                 tableData: [],
                 expandRowKeys: [],
             };
