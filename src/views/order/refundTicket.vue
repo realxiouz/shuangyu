@@ -88,7 +88,7 @@
       </el-form-item>
     </el-form>
     <div style="margin-top: 25px;text-align: right;">
-      <el-button size="mini" @click="$emit('onCancelRefund')">取 消</el-button>
+      <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
       <el-button size="mini" @click="handleSave" type="primary">确定</el-button>
     </div>
   </div>

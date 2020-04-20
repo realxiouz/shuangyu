@@ -230,8 +230,8 @@
               @click="changeTicket(scope.row)"
               size="mini"
             >改签</el-button>
-            <el-button type="primary" size="mini">补退</el-button>
-            <el-button type="primary" size="mini">补改</el-button>
+            <el-button type="primary" @click="fillOutRefund(scope.row)" size="mini">补退</el-button>
+            <el-button type="primary" @click="fillOutChange(scope.row)" size="mini">补改</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -246,7 +246,7 @@
         :close-on-click-modal="false"
       >
         <handle-ticket
-          @onCancel="handleTicketCancel"
+          @onCancel="onCancel"
           @onSaveTicket="handleSaveTicket"
           @onSave="handleSave"
           :passengerData="passengersInfo"
@@ -263,7 +263,7 @@
         :close-on-click-modal="false"
       >
         <refund-ticket
-          @onCancelRefund="refundTicketCancel"
+          @onCancel="onCancel"
           @onSaveRefund="handleSaveRefund"
           :purchaseOrderNo="purchaseOrderNo"
           :refundChangeRule="refundChangeRule"
@@ -281,9 +281,39 @@
         <change-ticket
           :changeData="changeData"
           :changeDataTop="changeDataTop"
-          @onCancelChange="changeTicketCancel"
+          @onCancel="onCancel"
           @onSavechange="handleSaveChange"
         ></change-ticket>
+      </el-dialog>
+    </div>
+    <div>
+      <el-dialog
+        title="补退"
+        center
+        :visible.sync="fillOutRefundShow"
+        width="50%"
+        :close-on-click-modal="false"
+      >
+        <fillOut-refund
+          :fillOutRefundData="fillOutRefundData"
+          @onCancel="onCancel"
+          @onSave="handleSavePurchase"
+        ></fillOut-refund>
+      </el-dialog>
+    </div>
+    <div>
+      <el-dialog
+        title="补改"
+        center
+        :visible.sync="fillOutChangeShow"
+        width="50%"
+        :close-on-click-modal="false"
+      >
+        <fillOut-change
+          :fillOutChangeData="fillOutChangeData"
+          @onCancel="onCancel"
+          @onSave="handleSavePurchase"
+        ></fillOut-change>
       </el-dialog>
     </div>
   </div>
@@ -292,6 +322,8 @@
 import handleTicket from "./handleTicket";
 import refundTicket from "./refundTicket";
 import changeTicket from "./changeTicket";
+import fillOutChange from "./fillOutChange";
+import fillOutRefund from "./fillOutRefund";
 
 import {
   formateOrderType,
@@ -307,6 +339,10 @@ export default {
       handleTicketShow: false,
       refundTicketShow: false,
       changeTicketShow: false,
+      fillOutChangeShow: false,
+      fillOutRefundShow: false,
+      fillOutRefundData: "",
+      fillOutChangeData: "",
       changeHtml: "",
       refundHtml: "",
       flightData: [],
@@ -335,7 +371,9 @@ export default {
   components: {
     handleTicket,
     refundTicket,
-    changeTicket
+    changeTicket,
+    fillOutChange,
+    fillOutRefund
   },
   methods: {
     formateOrderType,
@@ -349,16 +387,12 @@ export default {
     },
 
     // 手工出票弹框返回
-    handleTicketCancel() {
+    onCancel() {
       this.handleTicketShow = false;
-    },
-    // 退票弹框返回
-    refundTicketCancel() {
-      this.refundTicketShow = false;
-    },
-    // 改签弹框返回
-    changeTicketCancel() {
+      this.fillOutRefundShow = false;
+      this.fillOutChangeShow = false;
       this.changeTicketShow = false;
+      this.refundTicketShow = false;
     },
     // 手工出票保存并贴票
     handleSaveTicket(params) {
@@ -393,7 +427,51 @@ export default {
       this.purchaseOrder(newParams);
       this.handleTicketShow = false;
     },
+    // 补退保存
+    handleSavePurchase(params) {
+      let newParams = {};
+      if (params) {
+        newParams.accountId = params.accountId;
+        newParams.amount = params.amount;
+        newParams.thirdId = params.thirdId;
+        newParams.flights = [
+          {
+            cabin: params.cabin,
+            dptTime: params.dptTime,
+            arr: params.arr,
+            flightCode: params.flightCode,
+            flightDate: params.flightDate,
+            dpt: params.dpt
+          }
+        ];
+        newParams.fundAccount = params.fundAccount;
+        newParams.orderSource = params.orderSource;
+        newParams.orderType = params.orderType;
+        newParams.passengers = params.orderDetailList;
+        newParams.pid = params.pid;
+        newParams.remark = params.remark;
+        newParams.rootOrderNo = params.rootOrderNo;
+        newParams.sourceOrderNo = params.sourceOrderNo;
+        newParams.status = params.status;
+        newParams.transactionAmount = params.transactionAmount;
+        newParams.createTime = params.createTime;
+      }
+      if (params.orderSource == "QUNAR_OPEN") {
+        let woniuParams = {};
+        woniuParams.sourceOrderNo = params.sourceOrderNo;
+        woniuParams.orderTaskId = this.$route.query.taskId;
+        woniuParams.fundAccount = params.fundAccountId;
+        woniuParams.userNameType = params.accountId;
+        woniuParams.amount = params.amount;
+        woniuParams.purchaseOrderType = params.purchaseOrderType;
+        this.woniuOrder(woniuParams);
+      } else {
+        this.purchaseOrder(newParams);
+      }
+      this.fillOutRefundShow = false;
+    },
     // 手工出票保存
+
     handleSave(params) {
       this.handleTicketShow = false;
       let newParams = {};
@@ -423,12 +501,10 @@ export default {
         newParams.status = params.status;
         newParams.transactionAmount = params.transactionAmount;
         newParams.createTime = params.createTime;
-        newParams.ticketNoFlag = params.ticketNoFlag;
+        if (params.ticketNoFlag) {
+          newParams.ticketNoFlag = params.ticketNoFlag;
+        }
       }
-      console.log(params, "params");
-
-      console.log(newParams, "手工出票");
-
       if (params.orderSource == "QUNAR_OPEN") {
         let woniuParams = {};
         woniuParams.sourceOrderNo = params.sourceOrderNo;
@@ -436,14 +512,13 @@ export default {
         woniuParams.fundAccount = params.fundAccount;
         woniuParams.userNameType = params.userNameType;
         woniuParams.amount = params.amount;
-        woniuParams.purchaseOrderType = params.status;
-        console.log(woniuParams, "woniuParams");
-
+        woniuParams.purchaseOrderType = params.purchaseOrderType;
         this.woniuOrder(woniuParams);
       } else {
         this.purchaseOrder(newParams);
       }
     },
+    // 非蜗牛补单
     purchaseOrder(params) {
       this.$store
         .dispatch("order/purchaseOrder", params)
@@ -456,6 +531,7 @@ export default {
           console.log(error);
         });
     },
+    // 蜗牛补单
     woniuOrder(params) {
       this.$store
         .dispatch("order/woniuOrder", params)
@@ -685,7 +761,7 @@ export default {
         });
     },
 
-    // 消息
+    // 获取html
     getMessageHtml(orderType, sourceOrderNo) {
       if (
         orderType == 10 ||
@@ -739,6 +815,18 @@ export default {
       this.changeTicketShow = true;
       this.changeData = row;
     },
+    // 补退弹框
+    fillOutRefund(row) {
+      this.fillOutRefundData = row;
+
+      this.fillOutRefundShow = true;
+    },
+    // 补改弹框
+    fillOutChange(row) {
+      this.fillOutChangeData = row;
+      this.fillOutChangeShow = true;
+    },
+
     // 格式化日期
     initDate(dateStr, format) {
       if (dateStr > 0) {
