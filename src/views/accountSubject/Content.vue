@@ -10,12 +10,13 @@
       <el-table
         v-loading="loading"
         :data="tableData"
-        row-key="subjectId"
+        row-key="code"
         highlight-current-row
         default-expand-all
         style="width: 100%;margin-bottom:15px"
         size="mini"
         fit
+        :indent="40"
         :tree-props="{children: 'children', hasChildren: 'test'}"
       >
         <el-table-column prop="code" label="科目编码" align="center"></el-table-column>
