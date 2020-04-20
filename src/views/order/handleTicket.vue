@@ -1,7 +1,6 @@
 <template>
   <div>
     <el-table :data="passengerData" size="mini" highlight-current-row style="width: 100%;" fit>
-      <!-- <el-table-column type="selection" width="55"></el-table-column> -->
       <el-table-column prop="name" label="姓名" width="80" align="center"></el-table-column>
       <el-table-column prop="gender" label="性别" width="50" align="center"></el-table-column>
       <el-table-column
@@ -69,13 +68,31 @@
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="原单号:">
-            <el-input v-model="formData.sourceOrderNo"></el-input>
+          <el-form-item label="渠道:">
+            <el-select
+              clearable
+              filterable
+              @change="selectSource"
+              placeholder="请选择渠道"
+              v-model="formData.orderSource"
+              style="width: 100%"
+            >
+              <el-option label="蜗牛" value="QUNAR_OPEN"></el-option>
+              <el-option label="BSP" value="bsp"></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
+          <el-form-item label="原单号:">
+            <el-input :disabled="this.sourceFlag" v-model="formData.sourceOrderNo"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12">
           <el-form-item label="订单日期:">
             <el-date-picker
+              :disabled="this.sourceFlag"
               type="datetime"
               placeholder="选择日期"
               v-model="formData.createTime"
@@ -84,23 +101,10 @@
             ></el-date-picker>
           </el-form-item>
         </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="支付金额:">
-            <el-input v-model="formData.transactionAmount"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="利润金额:">
-            <el-input v-model="formData.profit"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
         <el-col :span="12">
           <el-form-item label="订单状态:">
             <el-select
+              :disabled="this.sourceFlag"
               v-model="formData.status"
               clearable
               placeholder="请选择订单状态"
@@ -115,30 +119,29 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
-          <el-form-item label="渠道:">
-            <el-select
-              clearable
-              filterable
-              placeholder="请选择渠道"
-              v-model="formData.orderSource"
-              style="width: 100%"
-            >
-              <el-option label="蜗牛" value="open"></el-option>
-              <el-option label="BSP" value="bsp"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
+          <el-form-item label="支付金额:">
+            <el-input :disabled="this.sourceFlag" v-model="formData.transactionAmount"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="利润金额:">
+            <el-input :disabled="this.sourceFlag" v-model="formData.profit"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+      <el-row>
+        <el-col :span="12">
           <el-form-item label="使用账号:">
-            <el-input v-model="formData.fundAccount"></el-input>
+            <el-input :disabled="this.sourceFlag" v-model="formData.fundAccount"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="备注:">
-            <el-input v-model="formData.remark"></el-input>
+            <el-input :disabled="this.sourceFlag" v-model="formData.remark"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -178,6 +181,14 @@
             </el-select>
           </el-form-item>
         </el-col>
+        <el-col :span="12">
+          <el-form-item v-show="this.sourceFlag" label="蜗牛账号:">
+            <el-select v-model="formData.userNameType" filterable clearable placeholder="请选择蜗牛账号" style="width: 100%">
+              <el-option label="15025130712" value="1"></el-option>
+              <el-option label="13700600184" value="2"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
       </el-row>
     </el-form>
 
@@ -208,15 +219,16 @@ export default {
       arrTime: this.flightData[0].arrTime,
       flightDate: this.flightData[0].flightDate,
       cabin: this.flightData[0].cabin,
+      sourceFlag: false,
       accountData: [],
       formData: {
         status: "",
         remark: "",
-        amount: "",
         orderSource: "",
         fundAccount: "",
         createTime: "",
-        ticketNoFlag: "0"
+        ticketNoFlag: "0",
+        userNameType:""
       },
       statusData: [
         {
@@ -293,6 +305,15 @@ export default {
     handleSaveTicket() {
       this.formData.ticketNoFlag = "1";
       this.$emit("onSaveTicket", this.formData);
+    },
+    // 判断选中渠道是否是蜗牛
+    selectSource(value) {
+      // console.log(value);
+      if (value == "QUNAR_OPEN") {
+        this.sourceFlag = true;
+      } else {
+        this.sourceFlag = false;
+      }
     },
     // 获取资金账号
     getFinance() {

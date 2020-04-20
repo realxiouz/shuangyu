@@ -387,9 +387,21 @@ export default {
         newParams.createTime = params.createTime;
         newParams.ticketNoFlag = params.ticketNoFlag;
       }
+      console.log(params, "params");
+
       console.log(newParams, "手工出票");
-      if (params.passengers[0].orderSource == "QUNAR_OPEN") {
-        this.woniuOrder();
+
+      if (params.orderSource == "QUNAR_OPEN") {
+        let woniuParams = {};
+        woniuParams.sourceOrderNo = this.orderTree[0].sourceOrderNo;
+        woniuParams.orderTaskId = this.$route.query.taskId;
+        woniuParams.fundAccount = params.fundAccount;
+        woniuParams.userNameType = params.userNameType;
+        woniuParams.amount = this.tableData.amount;
+        woniuParams.purchaseOrderType = this.tableData.orderType;
+      console.log(woniuParams, "woniuParams");
+
+        this.woniuOrder(woniuParams);
       } else {
         this.purchaseOrder(newParams);
       }
