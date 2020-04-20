@@ -160,6 +160,7 @@
         },
         created() {
             this.initFormData();
+            this.loadOpenParty();
         }
     };
 </script>
