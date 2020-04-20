@@ -373,7 +373,15 @@ export default {
         newParams.accountId = params.accountId;
         newParams.amount = this.tableData.amount;
         newParams.thirdId = this.tableData.thirdId;
-        newParams.flights = params.flightData;
+        newParams.flights = [{
+          cabin:params.cabin,
+          dptTime:params.dptTime,
+          arr:params.arr,
+          flightCode:params.flightCode,
+          flightDate:params.flightDate,
+          dpt:params.dpt,
+
+        }];
         newParams.fundAccount = params.fundAccount;
         newParams.orderSource = params.orderSource;
         newParams.orderType = this.tableData.orderType;
@@ -393,13 +401,13 @@ export default {
 
       if (params.orderSource == "QUNAR_OPEN") {
         let woniuParams = {};
-        woniuParams.sourceOrderNo = this.orderTree[0].sourceOrderNo;
+        woniuParams.sourceOrderNo = params.sourceOrderNo;
         woniuParams.orderTaskId = this.$route.query.taskId;
         woniuParams.fundAccount = params.fundAccount;
         woniuParams.userNameType = params.userNameType;
-        woniuParams.amount = this.tableData.amount;
-        woniuParams.purchaseOrderType = this.tableData.orderType;
-      console.log(woniuParams, "woniuParams");
+        woniuParams.amount = params.amount;
+        woniuParams.purchaseOrderType = params.status;
+        console.log(woniuParams, "woniuParams");
 
         this.woniuOrder(woniuParams);
       } else {
