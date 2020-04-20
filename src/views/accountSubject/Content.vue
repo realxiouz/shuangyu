@@ -211,3 +211,10 @@
         }
     };
 </script>
+
+<style>
+  .contentBox {
+    margin-top: -10px;
+    padding-top: 0;
+  }
+</style>
