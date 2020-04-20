@@ -3,7 +3,7 @@
     <el-form :model="formData" label-width="110px" size="mini">
       <input type="hidden" v-model="formData.accountId"/>
       <el-form-item label="平台:">
-        <el-select v-model="formData.openId" placeholder="请选择平台.." @change="handleThirdSelect" style="width: 100%">
+        <el-select v-model="formData.openId" placeholder="请选择平台.." @change="handleSelect" style="width: 100%">
           <el-option
             v-for="item in openList"
             :key="item.openId"
@@ -77,6 +77,13 @@
             clearForm() {
                 this.formData = this.defaultFormData();
                 this.openList = [];
+            },
+            handleSelect(openId){
+                this.openList.forEach( item => {
+                    if (openId === item.openId){
+                        this.formData.openName = item.openName;
+                    }
+                })
             },
             /*对提交的数据进行类型格式*/
             handleConfirm() {

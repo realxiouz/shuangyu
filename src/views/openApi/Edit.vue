@@ -3,7 +3,14 @@
     <el-form ref="formData" :model="formData" label-width="100px" size="mini">
       <input type="hidden" v-model="formData.apiId" />
       <el-form-item label="Open平台:">
-        <el-input v-model="formData.openId"></el-input>
+        <el-select v-model="formData.openId" placeholder="请选择平台.." @change="handleSelect" style="width: 100%">
+          <el-option
+            v-for="item in openList"
+            :key="item.openId"
+            :label="item.openName"
+            :value="item.openId">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="URL:">
         <el-input v-model="formData.url"></el-input>
@@ -67,7 +74,8 @@ export default {
     return {
       formData: defaultData(),
         paramFormData: {},
-        paramList: ["test"]
+        paramList: [],
+        openList: []
     };
   },
   methods: {
@@ -133,12 +141,29 @@ export default {
       },
       handleClose(idx){
           this.paramList.splice(idx, 1);
+      },
+      //加载平台信息
+      loadOpenParty() {
+          this.$store.dispatch("open/getList", {filters: {}})
+              .then(data => {
+                  this.openList = data;
+              }).catch(error => {
+              console.log(error);
+          });
+      },
+      handleSelect(openId){
+          this.openList.forEach( item => {
+              if (openId === item.openId){
+                  this.formData.openName = item.openName;
+              }
+          })
       }
   },
   created() {
     if (this.apiId) {
       this.handleGetOne(this.apiId);
     }
+      this.loadOpenParty();
   },
   props: {
     apiId: String
