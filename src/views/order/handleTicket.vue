@@ -36,16 +36,31 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="订单状态:">
+          <el-form-item v-show="!this.sourceFlag" label="订单状态:">
             <el-select
               v-model="formData.status"
               clearable
               placeholder="请选择订单状态"
-              @change="selectStatusData"
               style="width: 100%"
             >
               <el-option
                 v-for="item in statusData"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item v-show="this.sourceFlag" label="蜗牛单类型:">
+            <el-select
+              v-model="formData.purchaseOrderType"
+              clearable
+              placeholder="请选择蜗牛单类型"
+              @change="selectStatusData"
+              style="width: 100%"
+            >
+              <el-option
+                v-for="item in purchaseOrderTypeStatus"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
@@ -103,7 +118,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item  v-show="this.sourceFlag" label="蜗牛账号:">
+          <el-form-item v-show="this.sourceFlag" label="蜗牛账号:">
             <el-select
               v-model="formData.userNameType"
               filterable
@@ -177,7 +192,7 @@
       </el-row>
       <el-row>
         <el-col v-show="!this.sourceFlag" :span="12">
-          <el-form-item label="仓位代码:">
+          <el-form-item label="舱位代码:">
             <el-input clearable v-model="formData.cabin"></el-input>
           </el-form-item>
         </el-col>
@@ -250,71 +265,86 @@ export default {
         createTime: "",
         ticketNoFlag: "0",
         userNameType: "",
-        amount: ""
+        amount: "",
+        purchaseOrderType: ""
       },
+       purchaseOrderTypeStatus: [
+        {
+          value: 1,
+          label: "出票"
+        },
+        {
+          value: 2,
+          label: "退票"
+        },
+        {
+          value: 3,
+          label: "改签"
+        }
+      ],
       statusData: [
         {
-          value: "1",
+          value: 1,
           label: "下单成功"
         },
         {
-          value: "2",
+          value: 2,
           label: "下支付成功等待出票单成功"
         },
         {
-          value: "3",
+          value: 3,
           label: "出票中"
         },
         {
-          value: "4",
+          value: 4,
           label: "出票完成"
         },
         {
-          value: "5",
+          value: 5,
           label: "订单取消"
         },
         {
-          value: "10",
+          value: 10,
           label: "未出票申请退款"
         },
         {
-          value: "11",
+          value: 11,
           label: "退票申请中"
         },
         {
-          value: "12",
+          value: 12,
           label: "退票完成等待退款"
         },
         {
-          value: "13",
+          value: 13,
           label: "退款完成"
         },
         {
-          value: "19",
+          value: 19,
           label: "退款驳回"
         },
         {
-          value: "20",
+          value: 20,
           label: "退票申请中"
         },
         {
-          value: "21",
+          value: 21,
           label: "改签完成"
         },
         {
-          value: "29",
+          value: 29,
           label: "改签驳回"
         },
         {
-          value: "40",
+          value: 40,
           label: "等待座位确认"
         },
         {
-          value: "41",
+          value: 41,
           label: "订座成功等待价格确认"
         },
         {
-          value: "50",
+          value: 50,
           label: "蜗牛订单号错误"
         }
       ]
@@ -339,15 +369,7 @@ export default {
     },
     // 订单状态判断是否退票显示应收
     selectStatusData(value) {
-      console.log(value, "selectStatusData");
-      if (
-        value == 10 ||
-        value == 11 ||
-        value == 12 ||
-        value == 13 ||
-        value == 19 ||
-        value == 20
-      ) {
+      if (value == 2) {
         this.selectStatusDataFlag = true;
       } else {
         this.selectStatusDataFlag = false;

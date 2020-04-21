@@ -13,13 +13,13 @@
       <el-form-item label="联系邮箱" prop="contactEmail">
         <el-input v-model="formData.contactEmail" placeholder="请输入联系邮箱.."></el-input>
       </el-form-item>
-      <el-form-item label="平台类别" prop="category">
-        <el-select v-model="formData.category" placeholder="请选择平台类别.." style="width: 100%">
-          <el-option label="平台" :value=0></el-option>
-          <el-option label="单位" :value=1></el-option>
-          <el-option label="个人" :value=2></el-option>
-        </el-select>
-      </el-form-item>
+<!--      <el-form-item label="平台类别" prop="category">-->
+<!--        <el-select v-model="formData.category" placeholder="请选择平台类别.." style="width: 100%">-->
+<!--          <el-option label="平台" :value=0></el-option>-->
+<!--          <el-option label="单位" :value=1></el-option>-->
+<!--          <el-option label="个人" :value=2></el-option>-->
+<!--        </el-select>-->
+<!--      </el-form-item>-->
     </el-form>
     <div slot="footer" class="dialog-footer" style="text-align:right;">
       <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
