@@ -149,8 +149,9 @@ http://123.123.123.1:9000</span>
         <el-table-column prop="remark" label="备注" width="200" align="center"></el-table-column>
         <el-table-column prop="airlineCode" label="操作" width="200" align="center">
           <template slot-scope="scope">
+            <el-button @click="policyEdit(scope.row.domain)" type="primary" size="mini">编辑</el-button>
             <el-button
-              @click.native.prevent="handleRemove()"
+              @click.native.prevent="policyRemove(scope.row.domain,scope.$index,policyData)"
               type="danger"
               size="mini"
             >删除
@@ -210,13 +211,60 @@ http://123.123.123.1:9000</span>
             };
         },
         methods: {
+            loadNotify(domain) {
+                if (!domain) {
+                    domain = this.notifyData.domain;
+                }
+                this.$store
+                    .dispatch("qunarOrderNotifyConfig/getOne", {domain: domain})
+                    .then(data => {
+                        if (data) {
+                            this.notifyData = data.data;
+                        }
+                        this.loading = false;
+                    })
+                    .catch(error => {
+                        this.loading = false;
+                        console.log(error);
+                    });
+            },
+            loadOrder(domain) {
+                if (!domain) {
+                    domain = this.orderData.domain;
+                }
+                this.$store
+                    .dispatch("qunarOrderConfig/getOne", {domain: domain})
+                    .then(data => {
+                        if (data) {
+                            this.orderData = data.data;
+                        }
+                        this.loading = false;
+                    })
+                    .catch(error => {
+                        this.loading = false;
+                        console.log(error);
+                    });
+            },
+            loadPolicy(domain) {
+                this.$store
+                    .dispatch("qunarPolicyConfig/getList", {filters: {"domain": domain}})
+                    .then(data => {
+                        if (data) {
+                            this.policyData = data.data;
+                        }
+                        this.loading = false;
+                    })
+                    .catch(error => {
+                        this.loading = false;
+                        console.log(error);
+                    });
+            },
             saveNotify() {
                 this.$refs['notifyForm'].validate((valid) => {
                     if (valid) {
                         this.$store
                             .dispatch("qunarOrderNotifyConfig/save", this.notifyData)
                             .then(() => {
-                                this.loadData();
                             })
                             .catch(error => {
                                 console.log(error);
@@ -247,7 +295,6 @@ http://123.123.123.1:9000</span>
                             console.error(err);
                         });
                 }
-
             },
             saveOrder() {
                 this.$refs['orderForm'].validate((valid) => {
@@ -303,6 +350,36 @@ http://123.123.123.1:9000</span>
                         console.log(error);
                     });
             },
+            policyEdit(domain) {
+                this.domain = domain;
+                this.dialogVisible = true;
+            },
+            policyRemove(domain, index, rows) {
+                this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消",
+                    type: "warning"
+                })
+                    .then(() => {
+                        this.$store.dispatch("qunarPolicyConfig/removeOne", {domain: domain})
+                            .then(() => {
+                                rows.splice(index, 1);
+                            });
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    });
+            },
+        },
+        created() {
+            let domain = this.$route.query.domain;
+            if (domain) {
+                this.notifyData.domain = domain;
+                this.orderData.domain = domain;
+                this.loadNotify(domain);
+                this.loadOrder(domain);
+                this.loadPolicy(domain);
+            }
         },
         components: {
             policyConfigEdit,
