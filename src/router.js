@@ -342,6 +342,13 @@ export default new Router({
           name: 'staff',
           component: () => import('@/views/staff/List'),
           meta: {title: '员工管理', icon: 'home'}
+        },
+        {
+          title: '客户去哪儿接口管理',
+          path: '/qunar/config',
+          name: 'config',
+          component: () => import('@/views/customer/qunarConfig'),
+          meta: {title: '客户去哪儿接口管理', icon: 'home'}
         }
       ]
     },
