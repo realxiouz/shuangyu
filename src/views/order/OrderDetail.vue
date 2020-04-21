@@ -159,6 +159,9 @@
         <span>消息</span>
       </div>
       <el-button type="primary" size="mini" @click="getMessage">刷新</el-button>
+      <div>
+        <span v-if="this.messageData" v-html="this.messageData"></span>
+      </div>
     </el-card>
     <el-card class="contentBox">
       <div slot="header" class="clearfix">
@@ -345,6 +348,7 @@ export default {
       fillOutChangeData: "",
       changeHtml: "",
       refundHtml: "",
+      messageData: "",
       flightData: [],
       passengerData: [],
       tableData: {},
@@ -604,7 +608,6 @@ export default {
         .dispatch("order/changeApply", newParams)
         .then(data => {
           if (data) {
-            console.log(data);
             this.$message({
               type: "success",
               message: "改签申请成功！"
@@ -682,7 +685,7 @@ export default {
             params.category = 1;
             this.getOrderTree(params);
 
-            this.getMessage(this.sourceOrderNo);
+            this.getMessage();
             this.getMessageHtml(data.orderType, this.sourceOrderNo);
             if (data.passengers) {
               this.passengerData = data.passengers;
@@ -748,12 +751,13 @@ export default {
           console.log(error);
         });
     },
-    getMessage(sourceOrderNo) {
+    getMessage() {
       this.$store
-        .dispatch("order/getMessageDetail", sourceOrderNo)
+        .dispatch("order/getMessageDetail", this.sourceOrderNo) //sen200418223136123001
         .then(data => {
           if (data) {
-            // console.log(data);
+            console.log(data);
+            this.messageData = data;
           }
         })
         .catch(error => {
@@ -878,8 +882,8 @@ export default {
     }
   },
   created() {
-    // this.getOrderDetail(this.orderNo);
-    this.getOrderDetail("abc20011020042325000130");
+    this.getOrderDetail(this.orderNo);
+    // this.getOrderDetail("abc20031417120045000110");
   },
   updated() {
     if (this.changeHtml) {
@@ -910,6 +914,18 @@ export default {
           this.changeDataTop.passagers.push(item);
         }
       });
+
+      // refundConfirm.onclick = function() {
+      //   displayDate();
+      // };
+    }
+    if (this.refundHtml) {
+      let refundConfirm = document.querySelector('[data-action="btn_confirm"]');
+
+      refundConfirm.onclick = function() {
+        console.log("refundConfirm");
+      };
+      console.log(refundConfirm);
     }
   },
   computed: {
@@ -929,6 +945,20 @@ export default {
 }
 </style>
 <style>
+/* 消息html */
+.public-title {
+  display: none;
+}
+.info {
+  display: none;
+}
+.dispose {
+  margin-top: 10px;
+  border: 1px solid #409eff;
+}
+.dispose .j_fileUpload_toggle {
+  display: none;
+}
 /* 退票html样式 */
 #js_mod_rt ul {
   margin: 0;
