@@ -370,8 +370,10 @@ const actions = {
   },
   // 非蜗牛补单
   purchaseOrder({ commit }, params) {
+    const { map } = params;
+
     return new Promise((resolve, reject) => {
-      purchaseOrder(params)
+      purchaseOrder(map)
         .then(response => {
           const { data } = response;
           resolve(data);

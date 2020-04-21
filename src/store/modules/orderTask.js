@@ -1,4 +1,4 @@
-import { getPageList, getTotal, getPendingTotal } from '@/api/orderTask';
+import { taskSubmit, taskCancel, getPageList, getTotal, getPendingTotal } from '@/api/orderTask';
 import { getToken } from '@/utils/auth';
 
 const state = {
@@ -59,6 +59,36 @@ const actions = {
                 });
         });
     },
+    // 任务提交
+    taskSubmit({ commit }, params) {
+        const { filters } = params;
+        return new Promise((resolve, reject) => {
+            taskSubmit(filters)
+                .then(response => {
+                    const { data } = response;
+                    resolve(data);
+                })
+                .catch(error => {
+                    reject(error);
+                });
+        });
+    },
+
+    // 任务取消
+    taskCancel({ commit }, params) {
+        const { filters } = params;
+        return new Promise((resolve, reject) => {
+            taskCancel(filters)
+                .then(response => {
+                    const { data } = response;
+                    resolve(data);
+                })
+                .catch(error => {
+                    reject(error);
+                });
+        });
+    },
+
 };
 
 export default {

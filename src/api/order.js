@@ -210,7 +210,7 @@ export function purchaseOrder(data) {
   return request({
     url: `/qunar/open/save/purchase/order`,
     method: 'get',
-    data: data
+    params: data
 
   });
 }
@@ -220,7 +220,7 @@ export function woniuOrder(data) {
   return request({
     url: `/qunar/open/save/woniu/order`,
     method: 'get',
-    data: data
+    params: data
 
   });
 }

@@ -24,3 +24,23 @@ export function getPendingTotal(params) {
     params: params
   });
 }
+
+
+// 任务提交
+export function taskSubmit(params) {
+  return request({
+    url: '/order/task/submit',
+    method: 'get',
+    params: params
+  });
+}
+
+
+// 任务取消
+export function taskCancel(params) {
+  return request({
+    url: '/order/task/cancel',
+    method: 'get',
+    params: params
+  });
+}
