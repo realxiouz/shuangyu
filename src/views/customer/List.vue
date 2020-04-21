@@ -25,8 +25,8 @@
           <template slot-scope="scope">
             <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
             <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-            <span v-show="scope.row.openId && '' != scope.row.openId">
-              <el-button type="info" size="mini" @click="handleSupplement(scope.$index, scope.row)">完善平台</el-button>
+            <span>
+              <el-button type="info" size="mini" @click="handleSupplement(scope.row)">完善平台</el-button>
             </span>
           </template>
         </el-table-column>
@@ -104,6 +104,17 @@
                     "此操作将删除该客户信息及子客户信息, 是否继续?"
                 );
             },
+            handleSupplement(row) {
+                let path = "";
+                path = "/qunar/config";
+                this.$router.push({
+                    path: path,
+                    query: {
+                        domain: row.domain,
+                        openId: row.openId,
+                    }
+                });
+            },
             /*删除企业数据*/
             remove(params) {
                 this.$store
@@ -136,11 +147,11 @@
                     });
             },
             /*跳转到供应商编辑页面，addRoot用于判断添加的是否是根节点，firmId用于编辑记录时进行查找。*/
-            skipDetail(firmId){
+            skipDetail(firmId) {
                 this.$router.push({path: '/customer/edit', query: {firmId: firmId}});
             }
         },
-        mounted() {
+        created() {
             this.loadData();
         },
         components: {
