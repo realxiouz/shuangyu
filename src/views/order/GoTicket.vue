@@ -78,8 +78,8 @@
         style="width: 100%;"
         fit
       >
-        <el-table-column prop="dptAirport" label="出发机场" width="160" align="center"></el-table-column>
-        <el-table-column prop="arrAirport" label="到达机场" width="160" align="center"></el-table-column>
+        <el-table-column prop="dpt" label="出发机场" width="160" align="center"></el-table-column>
+        <el-table-column prop="arr" label="到达机场" width="160" align="center"></el-table-column>
         <el-table-column prop="airlineCode" label="航司" width="50" align="center"></el-table-column>
         <el-table-column prop="flightCode" label="航班号" width="100" align="center"></el-table-column>
 
@@ -106,9 +106,6 @@
         size="mini"
         highlight-current-row
         style="width: 100%;"
-        @row-click="clickRowHandle"
-        :expand-row-keys="expands"
-        :row-key="getRowKeys"
         fit
       >
         <el-table-column label="渠道" width="100" align="center">蜗牛</el-table-column>
@@ -235,15 +232,6 @@ export default {
         dptTime: this.orderData.flights[0].dptTime.substr(-5, 5),
         flightCode: this.orderData.flights[0].flightCode
       };
-
-      // let flightInfo2 = {
-      //   arr: "PVG",
-      //   dpt: "YCU",
-      //   dptDay: "2020-05-01",
-      //   dptTime: "13:10",
-      //   flightCode: "MU5192"
-      // };
-      // this.flightInfo = flightInfo2;
       this.getOrderFlight(this.flightInfo);
     },
     predetermineOrder(row) {
@@ -272,13 +260,6 @@ export default {
                       ex_track: item.exTrack,
                       flightNum: this.orderData.flights[0].flightCode
                     };
-                    // let flightPrice2 = {
-                    //   arr: "PVG",
-                    //   dpt: "YCU",
-                    //   date: "2020-05-01",
-                    //   ex_track: item.exTrack,
-                    //   flightNum: "MU5192"
-                    // };
                     this.getFlightPrice(flightPrice);
                   });
                 }
@@ -309,16 +290,17 @@ export default {
           console.log(error);
         });
     },
-    getRowKeys(row) {
-      return row.exTrack;
-    },
-    clickRowHandle(row) {
-      if (this.expands.includes(row.exTrack)) {
-        this.expands = this.expands.filter(val => val !== row.exTrack);
-      } else {
-        this.expands.push(row.exTrack);
-      }
-    },
+    // getRowKeys(row) {
+    //   return row.exTrack;
+    // },
+    // clickRowHandle(row, column, event) {
+    //   console.log(row, column, event)
+    //   if (this.expands.includes(row.exTrack)) {
+    //     this.expands = this.expands.filter(val => val !== row.exTrack);
+    //   } else {
+    //     this.expands.push(row.exTrack);
+    //   }
+    // },
     /*初始化用工列表中的生日日期格式*/
     initDate(dateStr, format) {
       if (dateStr > 0) {
