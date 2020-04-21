@@ -198,9 +198,7 @@ export default {
     },
     /*点击添加按钮*/
     addStaff() {
-      this.clearUsersTable();
       this.handleIconClick();
-      this.searchUser();
       this.clearFormData();
       this.hasStep = true;
       this.permissionDialogVisible = true;
@@ -215,7 +213,7 @@ export default {
         // .dispatch("staff/associateUser", {filter: {phone: rowData.phone, email: rowData.email}})
         .dispatch("staff/associateUser", {filter: {email: rowData.email}})
         .then(data => {
-          this.userTable.push(data.data);
+             this.userTable.push(data.data);
         })
         .catch(error => {
             console.log(error);
