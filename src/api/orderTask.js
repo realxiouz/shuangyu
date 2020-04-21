@@ -44,3 +44,13 @@ export function taskCancel(params) {
     params: params
   });
 }
+
+
+// 任务备注
+export function taskRemark(params) {
+  return request({
+    url: '/order/task/remark',
+    method: 'get',
+    params: params
+  });
+}

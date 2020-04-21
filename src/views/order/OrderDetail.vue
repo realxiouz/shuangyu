@@ -8,15 +8,15 @@
           </el-col>
           <el-col :xs="18" :sm="16" :md="11" :lg="5" :xl="5">
             <span>
-              <el-button type="danger" size="mini">处理完成提交验证</el-button>
-              <el-button type="primary" size="mini">任务取消</el-button>
+              <el-button type="danger" @click="taskSubmit" size="mini">处理完成提交验证</el-button>
+              <el-button type="primary" @click="taskCancel" size="mini">任务取消</el-button>
               <el-button type="warning" @click="goBack" size="mini">返回</el-button>
             </span>
           </el-col>
           <el-col :xs="24" :sm="24" :md="10" :lg="15" :xl="17">
-            <el-input placeholder="输入备注信息" class="input-with-select">
+            <el-input v-model="taskRemarkData" placeholder="输入备注信息" class="input-with-select">
               <template slot="prepend">备注:</template>
-              <el-button type="primary" size="mini" slot="append">保存备注</el-button>
+              <el-button type="primary" @click="taskRemark" size="mini" slot="append">保存备注</el-button>
             </el-input>
           </el-col>
         </el-row>
@@ -333,12 +333,13 @@ import changeTicket from "./changeTicket";
 import fillOutChange from "./fillOutChange";
 import fillOutRefund from "./fillOutRefund";
 
+
 import {
   formateOrderType,
   formateCategory,
   formateStatus,
   formatAgeType,
-  formatCardType
+  formatCardType,
 } from "@/utils/status.js";
 export default {
   name: "orderDetail",
@@ -363,6 +364,7 @@ export default {
       refundData: "",
       purchaseOrderNo: "",
       refundChangeRule: "",
+      taskRemarkData: "",
       changeData: "",
       orderNo: this.$route.query.orderNo,
       changeDataTop: {
@@ -422,7 +424,7 @@ export default {
         ];
         newParams.fundAccount = params.fundAccount;
         newParams.orderSource = params.orderSource;
-        newParams.orderType = this.tableData.orderType;
+        newParams.orderType = params.orderType;
         newParams.passengers = params.passengers;
         newParams.pid = "";
         newParams.remark = params.remark;
@@ -711,6 +713,84 @@ export default {
         .then(data => {
           if (data) {
             this.orderTree = data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+
+    // 任务提交
+    taskSubmit() {
+      let params = {};
+      params.orderTaskId = this.$route.query.taskId;
+      params.remark = this.taskRemarkData;
+      this.$store
+        .dispatch("orderTask/taskSubmit", params)
+        .then(data => {
+          if (data) {
+            this.$message({
+              type: "success",
+              message: "改签申请成功！"
+            });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+
+    // 任务取消
+    taskCancel() {
+      if (!this.taskRemarkData) {
+        this.$notify({
+          title: "提示",
+          message: "请填写取消任务的备注信息",
+          type: "warning",
+          duration: 4500
+        });
+        return;
+      }
+      let params = {};
+      params.orderTaskId = this.$route.query.taskId;
+      params.remark = this.taskRemarkData;
+      this.$store
+        .dispatch("orderTask/taskCancel", params)
+        .then(data => {
+          if (data) {
+            this.$message({
+              type: "success",
+              message: "取消成功"
+            });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+
+    // 任务备注
+    taskRemark() {
+      if (!this.taskRemarkData) {
+        this.$notify({
+          title: "提示",
+          message: "请填写备注信息",
+          type: "warning",
+          duration: 4500
+        });
+        return;
+      }
+      let params = {};
+      params.orderTaskId = this.$route.query.taskId;
+      params.remark = this.taskRemarkData;
+      this.$store
+        .dispatch("orderTask/taskRemark", params)
+        .then(data => {
+          if (data) {
+            this.$message({
+              type: "success",
+              message: "保存成功"
+            });
           }
         })
         .catch(error => {
