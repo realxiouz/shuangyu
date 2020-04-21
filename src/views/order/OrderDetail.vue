@@ -8,15 +8,15 @@
           </el-col>
           <el-col :xs="18" :sm="16" :md="11" :lg="5" :xl="5">
             <span>
-              <el-button type="danger" size="mini">处理完成提交验证</el-button>
-              <el-button type="primary" size="mini">任务取消</el-button>
+              <el-button type="danger" @click="taskSubmit" size="mini">处理完成提交验证</el-button>
+              <el-button type="primary" @click="taskCancel" size="mini">任务取消</el-button>
               <el-button type="warning" @click="goBack" size="mini">返回</el-button>
             </span>
           </el-col>
           <el-col :xs="24" :sm="24" :md="10" :lg="15" :xl="17">
-            <el-input placeholder="输入备注信息" class="input-with-select">
+            <el-input v-model="taskRemarkData" placeholder="输入备注信息" class="input-with-select">
               <template slot="prepend">备注:</template>
-              <el-button type="primary" size="mini" slot="append">保存备注</el-button>
+              <el-button type="primary" @click="taskRemark" size="mini" slot="append">保存备注</el-button>
             </el-input>
           </el-col>
         </el-row>
@@ -225,7 +225,12 @@
         </el-table-column>
         <el-table-column prop="address" align="center" fixed="right" width="360" label="操作">
           <template slot-scope="scope">
-            <el-button type="primary" v-show="scope.row.processCategory=='1'" size="mini">删除</el-button>
+            <el-button
+              type="primary"
+              @click="orderTreeRemove(scope.row)"
+              v-show="scope.row.processCategory=='1'"
+              size="mini"
+            >删除</el-button>
             <el-button
               type="primary"
               v-show="scope.row.orderSource=='QUNAR_OPEN'"
@@ -363,6 +368,7 @@ export default {
       refundData: "",
       purchaseOrderNo: "",
       refundChangeRule: "",
+      taskRemarkData: "",
       changeData: "",
       orderNo: this.$route.query.orderNo,
       changeDataTop: {
@@ -422,7 +428,7 @@ export default {
         ];
         newParams.fundAccount = params.fundAccount;
         newParams.orderSource = params.orderSource;
-        newParams.orderType = this.tableData.orderType;
+        newParams.orderType = params.orderType;
         newParams.passengers = params.passengers;
         newParams.pid = "";
         newParams.remark = params.remark;
@@ -717,6 +723,84 @@ export default {
           console.log(error);
         });
     },
+
+    // 任务提交
+    taskSubmit() {
+      let params = {};
+      params.orderTaskId = this.$route.query.taskId;
+      params.remark = this.taskRemarkData;
+      this.$store
+        .dispatch("orderTask/taskSubmit", params)
+        .then(data => {
+          if (data) {
+            this.$message({
+              type: "success",
+              message: "改签申请成功！"
+            });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+
+    // 任务取消
+    taskCancel() {
+      if (!this.taskRemarkData) {
+        this.$notify({
+          title: "提示",
+          message: "请填写取消任务的备注信息",
+          type: "warning",
+          duration: 4500
+        });
+        return;
+      }
+      let params = {};
+      params.orderTaskId = this.$route.query.taskId;
+      params.remark = this.taskRemarkData;
+      this.$store
+        .dispatch("orderTask/taskCancel", params)
+        .then(data => {
+          if (data) {
+            this.$message({
+              type: "success",
+              message: "取消成功"
+            });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+
+    // 任务备注
+    taskRemark() {
+      if (!this.taskRemarkData) {
+        this.$notify({
+          title: "提示",
+          message: "请填写备注信息",
+          type: "warning",
+          duration: 4500
+        });
+        return;
+      }
+      let params = {};
+      params.orderTaskId = this.$route.query.taskId;
+      params.remark = this.taskRemarkData;
+      this.$store
+        .dispatch("orderTask/taskRemark", params)
+        .then(data => {
+          if (data) {
+            this.$message({
+              type: "success",
+              message: "保存成功"
+            });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     // tts锁单
     lockOrder() {
       this.$store
@@ -811,6 +895,51 @@ export default {
         })
         .catch(error => {
           console.log(error);
+        });
+    },
+    // 删除
+    orderTreeRemove(row) {
+      this.open(
+        this.delete,
+        row.orderNo,
+        "此操作将删除该用户的所有信息, 是否继续?"
+      );
+    },
+    // 删除
+    delete(orderNo) {
+      this.$store
+        .dispatch("order/removeOne", { orderNo: orderNo })
+        .then(data => {
+          if (data) {
+            this.$message({
+              type: "success",
+              message: "删除成功!"
+            });
+          } else {
+            this.$message({
+              type: "info",
+              message: "删除失败!"
+            });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    open(func, data, message) {
+      this.$confirm(message, "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          func(data);
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
         });
     },
     // 退票

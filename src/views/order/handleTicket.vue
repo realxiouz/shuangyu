@@ -76,6 +76,28 @@
       </el-row>
       <el-row>
         <el-col :span="12">
+          <el-form-item v-show="!this.sourceFlag" label="订单类型:">
+            <el-select
+              v-model="formData.orderType"
+              clearable
+              placeholder="订单类型"
+              style="width: 100%"
+            >
+              <el-option
+                v-for="item in orderType"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item v-show="!this.sourceFlag" label="备注:">
+            <el-input clearable v-model="formData.remark"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
           <el-form-item v-show="!this.sourceFlag" label="支付金额:">
             <el-input clearable v-model="formData.transactionAmount"></el-input>
           </el-form-item>
@@ -92,13 +114,6 @@
             <el-input clearable v-model="formData.fundAccount"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
-          <el-form-item v-show="!this.sourceFlag" label="备注:">
-            <el-input clearable v-model="formData.remark"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
         <el-col :span="12">
           <el-form-item label="资金账号:">
             <el-select
@@ -241,7 +256,7 @@
 </template>
 
 <script>
-import { formatAgeType, formatCardType } from "@/utils/status.js";
+import { formatAgeType, formatCardType, orderType } from "@/utils/status.js";
 export default {
   name: "handleTicket",
   props: ["passengerData", "flightData"],
@@ -250,6 +265,7 @@ export default {
       sourceFlag: false,
       selectStatusDataFlag: false,
       accountData: [],
+      orderType: orderType,
       formData: {
         arr: this.flightData[0].arr,
         dpt: this.flightData[0].dpt,
@@ -268,7 +284,7 @@ export default {
         amount: "",
         purchaseOrderType: ""
       },
-       purchaseOrderTypeStatus: [
+      purchaseOrderTypeStatus: [
         {
           value: 1,
           label: "出票"

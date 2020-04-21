@@ -179,4 +179,38 @@ export function formatTaskStatus(row) {
         return row.taskStatus
     }
 }
-
+//订单类型
+export const orderType = [
+    {
+        value: 10,
+        label: "出票"
+    },
+    {
+        value: 20,
+        label: "退票"
+    },
+    {
+        value: 21,
+        label: "二次退票"
+    },
+    {
+        value: 22,
+        label: "退差"
+    },
+    {
+        value: 23,
+        label: "退改"
+    },
+    {
+        value: 30,
+        label: "改签"
+    },
+    {
+        value: 31,
+        label: "二次改签"
+    },
+    {
+        value: 32,
+        label: "改签驳回"
+    }
+]
