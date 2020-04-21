@@ -530,6 +530,7 @@ export default {
         woniuParams.purchaseOrderType = params.purchaseOrderType;
         this.woniuOrder(woniuParams);
       } else {
+        console.log(newParams, "llll");
         this.purchaseOrder(newParams);
       }
     },
