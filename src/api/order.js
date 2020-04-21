@@ -209,8 +209,8 @@ export function changeApply(data) {
 export function purchaseOrder(data) {
   return request({
     url: `/qunar/open/save/purchase/order`,
-    method: 'get',
-    params: data
+    method: 'post',
+    data: data
 
   });
 }
@@ -219,8 +219,8 @@ export function purchaseOrder(data) {
 export function woniuOrder(data) {
   return request({
     url: `/qunar/open/save/woniu/order`,
-    method: 'get',
-    params: data
+    method: 'post',
+    data: data
 
   });
 }

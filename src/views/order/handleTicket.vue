@@ -256,7 +256,13 @@
 </template>
 
 <script>
-import { formatAgeType, formatCardType, orderType } from "@/utils/status.js";
+import {
+  formatAgeType,
+  formatCardType,
+  orderType,
+  statusData,
+  purchaseOrderTypeStatus
+} from "@/utils/status.js";
 export default {
   name: "handleTicket",
   props: ["passengerData", "flightData"],
@@ -284,86 +290,8 @@ export default {
         amount: "",
         purchaseOrderType: ""
       },
-      purchaseOrderTypeStatus: [
-        {
-          value: 1,
-          label: "出票"
-        },
-        {
-          value: 2,
-          label: "退票"
-        },
-        {
-          value: 3,
-          label: "改签"
-        }
-      ],
-      statusData: [
-        {
-          value: 1,
-          label: "下单成功"
-        },
-        {
-          value: 2,
-          label: "下支付成功等待出票单成功"
-        },
-        {
-          value: 3,
-          label: "出票中"
-        },
-        {
-          value: 4,
-          label: "出票完成"
-        },
-        {
-          value: 5,
-          label: "订单取消"
-        },
-        {
-          value: 10,
-          label: "未出票申请退款"
-        },
-        {
-          value: 11,
-          label: "退票申请中"
-        },
-        {
-          value: 12,
-          label: "退票完成等待退款"
-        },
-        {
-          value: 13,
-          label: "退款完成"
-        },
-        {
-          value: 19,
-          label: "退款驳回"
-        },
-        {
-          value: 20,
-          label: "退票申请中"
-        },
-        {
-          value: 21,
-          label: "改签完成"
-        },
-        {
-          value: 29,
-          label: "改签驳回"
-        },
-        {
-          value: 40,
-          label: "等待座位确认"
-        },
-        {
-          value: 41,
-          label: "订座成功等待价格确认"
-        },
-        {
-          value: 50,
-          label: "蜗牛订单号错误"
-        }
-      ]
+      purchaseOrderTypeStatus: purchaseOrderTypeStatus,
+      statusData: statusData
     };
   },
   methods: {
