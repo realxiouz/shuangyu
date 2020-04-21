@@ -323,11 +323,22 @@ export default new Router({
           meta: {title: '供应商管理', icon: 'home'}
         },
         {
+          path: '/supplier/add',
+          component: () => import('@/views/supplier/Add'),
+          meta: {title: '添加供应商'}
+        },
+        {
           title: '客户管理',
           path: '/customer/list',
           name: 'customerList',
           component: () => import('@/views/customer/List'),
           meta: {title: '客户管理', icon: 'home'}
+        },
+        {
+          title: '添加客户',
+          path: '/customer/edit',
+          component: () => import('@/views/customer/Edit'),
+          meta: {title: '添加客户'}
         },
         {
           title: '部门管理',

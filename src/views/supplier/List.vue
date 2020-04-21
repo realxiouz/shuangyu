@@ -14,44 +14,34 @@
         row-key="firmId"
         :tree-props="tableProps"
       >
-        <el-table-column prop="firmName" label="供应商名称" align="center" sortable width="200"></el-table-column>
-        <el-table-column prop="firmCode" label="供应商代码" align="center" sortable width="200"></el-table-column>
+        <el-table-column prop="firmName" label="供应商名称" align="center" width="200"></el-table-column>
+        <el-table-column prop="firmCode" label="供应商代码" align="center" width="200"></el-table-column>
         <el-table-column prop="fullName" label="联系人" align="center" width="180"></el-table-column>
         <el-table-column prop="phone" label="联系人电话" align="center" width="180"></el-table-column>
         <el-table-column prop="email" label="邮箱" align="center" width="180"></el-table-column>
         <el-table-column prop="address" label="地址" align="center" width="180"></el-table-column>
         <el-table-column prop="remark" label="备注" align="center"></el-table-column>
-        <el-table-column label="操作" align="center" width="250">
+        <el-table-column label="操作" fixed="right">
           <template slot-scope="scope">
             <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
             <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            <span v-show="scope.row.openId && '' != scope.row.openId">
+              <el-button type="info" size="mini" @click="handleSupplement(scope.$index, scope.row)">完善平台</el-button>
+            </span>
           </template>
         </el-table-column>
       </el-table>
-      <!-- 表单对话框 -->
-      <el-dialog
-        title="添加供应商"
-        center
-        :visible.sync="dialogVisible"
-        width="33%"
-        :close-on-click-modal="false"
-      >
-        <firm-edit :curNode="curNode" @onSave="handleSave" @onCancel="handleCancel" />
-      </el-dialog>
     </div>
   </div>
 </template>
 
 <script>
-import firmEdit from "./Edit";
 import firmSearch from "./Search";
 
 export default {
   data() {
     return {
       loading: true,
-      dialogVisible: false,
-      rootNav: false,
       tableData: [],
       curNode: {},
       tableProps: {
@@ -100,57 +90,11 @@ export default {
       });
     },
     handleAdd() {
-      this.rootNav = true;
-      this.dialogVisible = true;
-
-      this.curNode = {};
+        this.skipDetail();
     },
-    /*供应商的添加、编辑保存*/
-    handleSave(formData) {
-      this.dialogVisible = false;
-
-      if (formData.firmId != "") {
-        this.$store
-          .dispatch("firm/updateOne", { firm: formData })
-          .then(() => {
-            this.loadData();
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      } else {
-        if (this.rootNav) {
-          //如果添加的顶级企业信息，对某些属性进行初始化
-          formData.level = 0;
-        } else {
-          formData.pid = this.curNode.firmId;
-          formData.level = this.curNode.level + 1;
-        }
-
-        this.$store
-          .dispatch("firm/addOne", { firm: formData })
-          .then(() => {
-            this.$message({
-              type: "success",
-              message:
-                "供应商账号已添加成功!"
-            });
-            this.loadData();
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      }
-    },
-    handleCancel() {
-      this.dialogVisible = false;
-    },
-    /*点击编辑*/
     handleEdit(index, row) {
-      this.curNode = row;
-      this.dialogVisible = true;
+        this.skipDetail(row.firmId);
     },
-    /*点击删除*/
     handleDelete(index, row) {
       this.open(
         this.remove,
@@ -158,7 +102,6 @@ export default {
         "此操作将删除该供应商信息及子供应商信息, 是否继续?"
       );
     },
-    /*删除企业数据*/
     remove(params) {
       this.$store
         .dispatch("firm/removeOne", { firmID: params })
@@ -187,13 +130,16 @@ export default {
             message: "已取消删除"
           });
         });
-    }
+    },
+      /*跳转到供应商编辑页面，addRoot用于判断添加的是否是根节点，firmId用于编辑记录时进行查找。*/
+      skipDetail(firmId){
+          this.$router.push({path: '/supplier/add', query: {firmId: firmId}});
+      }
   },
   mounted() {
     this.loadData();
   },
   components: {
-    firmEdit,
     firmSearch
   }
 };

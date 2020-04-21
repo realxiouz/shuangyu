@@ -5,7 +5,7 @@
     </div>
     <div id="head">
       <div id="title">
-        <span>客户</span>
+        <span>供应商</span>
         <span style="float: right; margin-right: 10%">
           <el-button type="primary" @click="addSupplierClick" size="mini" style="margin-right: -20px">保 存</el-button>
         </span>
@@ -54,9 +54,9 @@
               <el-form-item label="Open平台">
                 <el-select v-model="formData.openId" placeholder="请选择平台">
                   <el-option v-for="(item,idx) in openList"
-                             :key="idx"
-                             :label="item.openName"
-                             :value="item.openId">
+                    :key="idx"
+                    :label="item.openName"
+                    :value="item.openId">
                   </el-option>
                 </el-select>
               </el-form-item>
@@ -92,7 +92,7 @@
 </template>
 
 <script>
-    import otherContact from './Contact';
+  import otherContact from './Contact';
 
     export default {
         data() {
@@ -179,7 +179,7 @@
                     //地址
                     address: '',
                     //类型（0：企业，1：供应商，2：客户）
-                    type: 2,
+                    type: 1,
                     //标签
                     tags: [],
                     //重要性
