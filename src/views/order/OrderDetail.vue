@@ -846,7 +846,6 @@ export default {
         .dispatch("order/getMessageDetail", this.sourceOrderNo) //sen200418223136123001
         .then(data => {
           if (data) {
-            console.log(data);
             this.messageData = data;
           }
         })

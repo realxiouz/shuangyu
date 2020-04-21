@@ -257,7 +257,7 @@ export default {
         });
         return;
       }
-      if (this.formData.changeFlightSegmentList.length < 1) {
+      if (this.formData.changeFlightSegmentList.length < 0) {
         this.$notify({
           title: "提示",
           message: "请选择需要改签的航班",
@@ -288,14 +288,14 @@ export default {
       let adultFee = 0;
       if (adultCount > 0) {
         adultFee =
-          Number(this.changeFlightSegmentList[0].gpFee) * adultCount +
-          Number(this.changeFlightSegmentList[0].upgradeFee) * adultCount;
+          Number(this.formData.changeFlightSegmentList[0].gqFee) * adultCount +
+          Number(this.formData.changeFlightSegmentList[0].upgradeFee) * adultCount;
       }
       let childFee = 0;
       if (childCount > 0) {
         childFee =
-          Number(this.changeFlightSegmentList[0].childGqFee) * childCount +
-          Number(this.changeFlightSegmentList[0].childUpgradeFee) * childCount;
+          Number(this.formData.changeFlightSegmentList[0].childGqFee) * childCount +
+          Number(this.formData.changeFlightSegmentList[0].childUpgradeFee) * childCount;
       }
       let totalCount = adultCount + childCount;
 
@@ -308,6 +308,7 @@ export default {
         });
         return;
       }
+      console.log(this.formData,"foemData")
       this.$emit("onSavechange", this.formData);
     },
     // 改签原因选中处理

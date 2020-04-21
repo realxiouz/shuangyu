@@ -24,7 +24,6 @@
 
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="订单时间:">
-              
               <span>{{formatDate(orderData.createTime,'YYYY-MM-DD')}}</span>
             </el-form-item>
           </el-col>
@@ -237,15 +236,15 @@ export default {
         flightCode: this.orderData.flights[0].flightCode
       };
 
-      let flightInfo2 = {
-        arr: "PVG",
-        dpt: "YCU",
-        dptDay: "2020-04-20",
-        dptTime: "13:10",
-        flightCode: "MU5192"
-      };
-      this.flightInfo = flightInfo2;
-      this.getOrderFlight(flightInfo2);
+      // let flightInfo2 = {
+      //   arr: "PVG",
+      //   dpt: "YCU",
+      //   dptDay: "2020-05-01",
+      //   dptTime: "13:10",
+      //   flightCode: "MU5192"
+      // };
+      // this.flightInfo = flightInfo2;
+      this.getOrderFlight(this.flightInfo);
     },
     predetermineOrder(row) {
       console.log(row);
@@ -273,14 +272,14 @@ export default {
                       ex_track: item.exTrack,
                       flightNum: this.orderData.flights[0].flightCode
                     };
-                    let flightPrice2 = {
-                      arr: "PVG",
-                      dpt: "YCU",
-                      date: "2020-04-20",
-                      ex_track: item.exTrack,
-                      flightNum: "MU5192"
-                    };
-                    this.getFlightPrice(flightPrice2);
+                    // let flightPrice2 = {
+                    //   arr: "PVG",
+                    //   dpt: "YCU",
+                    //   date: "2020-05-01",
+                    //   ex_track: item.exTrack,
+                    //   flightNum: "MU5192"
+                    // };
+                    this.getFlightPrice(flightPrice);
                   });
                 }
                 this.flightData = data;
