@@ -179,7 +179,7 @@ export function formatTaskStatus(row) {
         return row.taskStatus
     }
 }
-// 10      23  30  
+//订单类型
 export const orderType = [
     {
         value: 10,

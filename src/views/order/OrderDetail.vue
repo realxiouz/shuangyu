@@ -225,7 +225,12 @@
         </el-table-column>
         <el-table-column prop="address" align="center" fixed="right" width="360" label="操作">
           <template slot-scope="scope">
-            <el-button type="primary" v-show="scope.row.processCategory=='1'" size="mini">删除</el-button>
+            <el-button
+              type="primary"
+              @click="orderTreeRemove(scope.row)"
+              v-show="scope.row.processCategory=='1'"
+              size="mini"
+            >删除</el-button>
             <el-button
               type="primary"
               v-show="scope.row.orderSource=='QUNAR_OPEN'"
@@ -333,13 +338,12 @@ import changeTicket from "./changeTicket";
 import fillOutChange from "./fillOutChange";
 import fillOutRefund from "./fillOutRefund";
 
-
 import {
   formateOrderType,
   formateCategory,
   formateStatus,
   formatAgeType,
-  formatCardType,
+  formatCardType
 } from "@/utils/status.js";
 export default {
   name: "orderDetail",
@@ -891,6 +895,51 @@ export default {
         })
         .catch(error => {
           console.log(error);
+        });
+    },
+    // 删除
+    orderTreeRemove(row) {
+      this.open(
+        this.delete,
+        row.orderNo,
+        "此操作将删除该用户的所有信息, 是否继续?"
+      );
+    },
+    // 删除
+    delete(orderNo) {
+      this.$store
+        .dispatch("order/removeOne", { orderNo: orderNo })
+        .then(data => {
+          if (data) {
+            this.$message({
+              type: "success",
+              message: "删除成功!"
+            });
+          } else {
+            this.$message({
+              type: "info",
+              message: "删除失败!"
+            });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    open(func, data, message) {
+      this.$confirm(message, "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          func(data);
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
         });
     },
     // 退票
