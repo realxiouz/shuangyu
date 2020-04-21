@@ -226,7 +226,6 @@ export default {
               }
 
               this.passagersChange = this.orderDetailList;
-              // console.log(this.passagersChange, "data");
             }
             if (data.result.length > 0) {
               if (data.result[0].changeSearchResult.tgqReasons) {
@@ -248,6 +247,7 @@ export default {
     },
     // 改签申请
     handleSave() {
+      console.log(this.formData,"foemData")
       if (this.formData.changePassagers.length < 1) {
         this.$notify({
           title: "提示",
@@ -257,7 +257,7 @@ export default {
         });
         return;
       }
-      if (this.formData.changeFlightSegmentList.length < 0) {
+      if (this.formData.changeFlightSegmentList.length == 0) {
         this.$notify({
           title: "提示",
           message: "请选择需要改签的航班",
@@ -308,7 +308,6 @@ export default {
         });
         return;
       }
-      console.log(this.formData,"foemData")
       this.$emit("onSavechange", this.formData);
     },
     // 改签原因选中处理
@@ -334,7 +333,6 @@ export default {
           }
         }
       });
-      console.log(this.formData.changeFlightSegmentList);
       this.formData.changeFlightSegmentList = arr;
     },
 
