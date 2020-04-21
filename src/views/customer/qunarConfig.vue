@@ -4,10 +4,10 @@
       <div slot="header">
         <span>去哪儿订单通知接口</span>
       </div>
-      <el-form :model="notifyData" label-width="130px" size="mini">
+      <el-form ref="notifyForm" :rules="notifyRules" :model="notifyData" label-width="130px" size="mini">
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="域名:">
+            <el-form-item label="域名:" prop="domain">
               <el-input v-model="notifyData.domain" disabled></el-input>
             </el-form-item>
           </el-col>
@@ -17,7 +17,7 @@
         </el-row>
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="安全码:">
+            <el-form-item label="安全码:" prop="securityCode">
               <el-input v-model="notifyData.securityCode"></el-input>
             </el-form-item>
           </el-col>
@@ -27,7 +27,7 @@
         </el-row>
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="消息通知地址:">
+            <el-form-item label="消息通知地址:" prop="url">
               <el-input
                 type="textarea"
                 :rows="3"
@@ -49,13 +49,13 @@ http://123.123.123.1:9000</span>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item>
               <el-button
-                @click="handleRemove()"
+                @click="saveNotify(notifyData)"
                 type="primary"
                 size="mini"
               >保存
               </el-button>
               <el-button
-                @click="handleRemove()"
+                @click="removeNotify(notifyData)"
                 type="danger"
                 size="mini"
               >删除
@@ -69,10 +69,10 @@ http://123.123.123.1:9000</span>
       <div slot="header">
         <span>去哪儿订单接口账号</span>
       </div>
-      <el-form :model="orderData" label-width="130px" size="mini">
+      <el-form ref="orderForm" :rules="orderRules" :model="orderData" label-width="130px" size="mini">
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="域名:">
+            <el-form-item label="域名:" prop="domain">
               <el-input v-model="orderData.domain" disabled></el-input>
             </el-form-item>
           </el-col>
@@ -82,7 +82,7 @@ http://123.123.123.1:9000</span>
         </el-row>
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="用户名:">
+            <el-form-item label="用户名:" prop="user">
               <el-input v-model="orderData.user"></el-input>
             </el-form-item>
           </el-col>
@@ -92,7 +92,7 @@ http://123.123.123.1:9000</span>
         </el-row>
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="密码:">
+            <el-form-item label="密码:" prop="pass">
               <el-input v-model="orderData.pass"></el-input>
             </el-form-item>
           </el-col>
@@ -102,7 +102,7 @@ http://123.123.123.1:9000</span>
         </el-row>
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="IP:">
+            <el-form-item label="IP:" prop="ips">
               <el-input
                 type="textarea"
                 :rows="3"
@@ -118,13 +118,13 @@ http://123.123.123.1:9000</span>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item>
               <el-button
-                @click="handleRemove()"
+                @click="saveOrder(orderData)"
                 type="primary"
                 size="mini"
               >保存
               </el-button>
               <el-button
-                @click="handleRemove()"
+                @click="removeOrder(orderData)"
                 type="danger"
                 size="mini"
               >删除
@@ -140,7 +140,7 @@ http://123.123.123.1:9000</span>
         <span>去哪儿政策导入接口</span>
       </div>
       <el-row style="margin-bottom:15px; margin-left:25px;">
-        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+        <el-button icon="el-icon-plus" type="primary" size="mini" @click="policyAdd">添加</el-button>
       </el-row>
       <el-table :data="policyData" size="mini" style="width: 100%;">
         <el-table-column prop="user" label="用户名称" width="200" align="center"></el-table-column>
@@ -166,10 +166,128 @@ http://123.123.123.1:9000</span>
         name: "config",
         data() {
             return {
-                notifyData: [],
-                orderData: [],
-                policyData: []
+                notifyData: {},
+                orderData: {},
+                policyData: [],
+                notifyRules: {
+                    domain: [
+                        {required: true, message: "域名不能为空", trigger: "blur"}
+                    ],
+                    securityCode: [
+                        {required: true, message: "请输入安全码", trigger: "blur"}
+                    ],
+                    url: [
+                        {required: true, message: "请输入url", trigger: "blur"}
+                    ],
+                },
+                orderRules: {
+                    domain: [
+                        {required: true, message: "域名不能为空", trigger: "blur"}
+                    ],
+                    user: [
+                        {required: true, message: "请输入用户名", trigger: "blur"}
+                    ],
+                    pass: [
+                        {required: true, message: "请输入密码", trigger: "blur"}
+                    ],
+                    ips: [
+                        {required: true, message: "请输入ip地址", trigger: "blur"}
+                    ],
+                }
             };
+        },
+        methods: {
+            saveNotify() {
+                this.$refs['notifyForm'].validate((valid) => {
+                    if (valid) {
+                        let url = "";
+                        if (this.update) {
+                            url = "qunarOrderNotifyConfig/updateOne";
+                        } else {
+                            url = "qunarOrderNotifyConfig/addOne";
+                        }
+                        this.$store
+                            .dispatch(url, this.notifyData)
+                            .then(() => {
+                                this.loadData();
+                            })
+                            .catch(error => {
+                                console.log(error);
+                            });
+                    }
+                })
+
+            },
+            removeNotify() {
+                if (this.notifyData && this.notifyData.domain) {
+                    this.$confirm("此操作将删除改记录, 是否继续?", "提示", {
+                        confirmButtonText: "确定",
+                        cancelButtonText: "取消",
+                        type: "warning"
+                    })
+                        .then(() => {
+                            this.$store
+                                .dispatch("qunarOrderNotifyConfig/removeOne", {domain: this.notifyData.domain})
+                                .then(() => {
+                                    this.notifyData = [];
+                                    this.$message({
+                                        type: "success",
+                                        message: "删除成功！"
+                                    });
+                                });
+                        })
+                        .catch(err => {
+                            console.error(err);
+                        });
+                }
+
+            },
+            saveOrder(data) {
+                console.log(data);
+                this.$refs['orderForm'].validate((valid) => {
+                    if (valid) {
+                        let url = "";
+                        if (this.orderData) {
+                            url = "qunarOrderConfig/updateOne";
+                        } else {
+                            url = "qunarOrderConfig/addOne";
+                        }
+                        this.$store
+                            .dispatch(url, this.orderData)
+                            .then(() => {
+                            })
+                            .catch(error => {
+                                console.log(error);
+                            });
+                    }
+                })
+            },
+            removeOrder() {
+                if (this.orderData && this.orderData.domain) {
+                    this.$confirm("此操作将删除改记录, 是否继续?", "提示", {
+                        confirmButtonText: "确定",
+                        cancelButtonText: "取消",
+                        type: "warning"
+                    })
+                        .then(() => {
+                            this.$store
+                                .dispatch("qunarOrderConfig/removeOne", {domain: this.orderData.domain})
+                                .then(() => {
+                                    this.orderData = [];
+                                    this.$message({
+                                        type: "success",
+                                        message: "删除成功！"
+                                    });
+                                });
+                        })
+                        .catch(err => {
+                            console.error(err);
+                        });
+                }
+
+            },
+            policyAdd() {
+            }
         }
     };
 </script>

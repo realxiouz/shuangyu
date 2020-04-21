@@ -184,7 +184,7 @@ export default {
       this.open(
         this.delete,
         row.domain,
-        "此操作将删除该第三方平台账号信息, 是否继续?"
+        "此操作将删除该信息, 是否继续?"
       );
     },
     /*根据用户ID删除用户*/
