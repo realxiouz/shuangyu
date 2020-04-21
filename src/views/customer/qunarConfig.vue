@@ -49,13 +49,13 @@ http://123.123.123.1:9000</span>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item>
               <el-button
-                @click="saveNotify(notifyData)"
+                @click="saveNotify()"
                 type="primary"
                 size="mini"
               >保存
               </el-button>
               <el-button
-                @click="removeNotify(notifyData)"
+                @click="removeNotify()"
                 type="danger"
                 size="mini"
               >删除
@@ -118,13 +118,13 @@ http://123.123.123.1:9000</span>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item>
               <el-button
-                @click="saveOrder(orderData)"
+                @click="saveOrder()"
                 type="primary"
                 size="mini"
               >保存
               </el-button>
               <el-button
-                @click="removeOrder(orderData)"
+                @click="removeOrder()"
                 type="danger"
                 size="mini"
               >删除
@@ -158,10 +158,21 @@ http://123.123.123.1:9000</span>
           </template>
         </el-table-column>
       </el-table>
+      <el-dialog
+        center
+        :visible.sync="dialogVisible"
+        width="30%"
+        :close-on-click-modal="false"
+      >
+        <policy-config-edit v-if="dialogVisible" :domain="domain" @onCancel="handleCancel"
+                            @onSave="handleSave"></policy-config-edit>
+      </el-dialog>
     </el-card>
   </div>
 </template>
 <script>
+    import policyConfigEdit from "./components/qunarPolicyConfigEdit.vue";
+
     export default {
         name: "config",
         data() {
@@ -169,6 +180,8 @@ http://123.123.123.1:9000</span>
                 notifyData: {},
                 orderData: {},
                 policyData: [],
+                dialogVisible: false,
+                domain: '',
                 notifyRules: {
                     domain: [
                         {required: true, message: "域名不能为空", trigger: "blur"}
@@ -200,14 +213,8 @@ http://123.123.123.1:9000</span>
             saveNotify() {
                 this.$refs['notifyForm'].validate((valid) => {
                     if (valid) {
-                        let url = "";
-                        if (this.update) {
-                            url = "qunarOrderNotifyConfig/updateOne";
-                        } else {
-                            url = "qunarOrderNotifyConfig/addOne";
-                        }
                         this.$store
-                            .dispatch(url, this.notifyData)
+                            .dispatch("qunarOrderNotifyConfig/save", this.notifyData)
                             .then(() => {
                                 this.loadData();
                             })
@@ -242,18 +249,11 @@ http://123.123.123.1:9000</span>
                 }
 
             },
-            saveOrder(data) {
-                console.log(data);
+            saveOrder() {
                 this.$refs['orderForm'].validate((valid) => {
                     if (valid) {
-                        let url = "";
-                        if (this.orderData) {
-                            url = "qunarOrderConfig/updateOne";
-                        } else {
-                            url = "qunarOrderConfig/addOne";
-                        }
                         this.$store
-                            .dispatch(url, this.orderData)
+                            .dispatch("qunarOrderConfig/save", this.orderData)
                             .then(() => {
                             })
                             .catch(error => {
@@ -284,10 +284,28 @@ http://123.123.123.1:9000</span>
                             console.error(err);
                         });
                 }
-
             },
             policyAdd() {
-            }
+                this.dialogVisible = true;
+                this.domain = "";
+            },
+            handleCancel() {
+                this.dialogVisible = false;
+            },
+            handleSave(params) {
+                this.dialogVisible = false;
+                this.$store
+                    .dispatch("qunarPolicyConfig/save", params)
+                    .then(() => {
+                        this.loadData();
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+        },
+        components: {
+            policyConfigEdit,
         }
     };
 </script>

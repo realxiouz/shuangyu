@@ -1,6 +1,17 @@
-import {addOne,updateOne,removeOne,getOne,getList,getTotal,getPageList} from '@/api/qunarPolicyConfig';
+import {save,addOne,updateOne,removeOne,getOne,getList,getTotal,getPageList} from '@/api/qunarPolicyConfig';
 
 const actions = {
+  save({commit}, params) {
+    return new Promise((resolve, reject) => {
+      save(params)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
   addOne({commit}, params) {
     return new Promise((resolve, reject) => {
       addOne(params)

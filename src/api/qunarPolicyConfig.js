@@ -1,5 +1,13 @@
 import request from '@/utils/request';
 
+export function save(data) {
+  return request({
+    url: '/qunar/policy/config/save',
+    method: 'post',
+    data
+  });
+}
+
 export function addOne(data) {
   return request({
     url: '/qunar/policy/config/add/one',

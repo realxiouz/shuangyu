@@ -1,5 +1,13 @@
 import request from '@/utils/request';
 
+export function save(data) {
+  return request({
+    url: '/qunar/order/notify/config/save',
+    method: 'post',
+    data
+  });
+}
+
 export function addOne(data) {
   return request({
     url: '/qunar/order/notify/config/add/one',
