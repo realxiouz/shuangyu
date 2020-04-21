@@ -39,6 +39,11 @@
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="原单号:">
+              <span>{{tableData.sourceOrderNo}}</span>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="订单状态:">
               <span>{{formateStatus(tableData)}}</span>
             </el-form-item>
