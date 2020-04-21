@@ -182,7 +182,7 @@ export default {
       this.open(
         this.delete,
         row.domain,
-        "此操作将删除该第三方平台账号信息, 是否继续?"
+        "此操作将删除该第信息, 是否继续?"
       );
     },
     /*根据订单域名删除用户*/
