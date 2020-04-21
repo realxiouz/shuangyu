@@ -1,4 +1,4 @@
-import {addOne, removeOne, updateOne, getPageList, getTotal, getList,getDealerCustomerList} from '@/api/firm';
+import {addOne, removeOne, updateOne, getOne, getPageList, getTotal, getList,getDealerCustomerList} from '@/api/firm';
 
 
 const actions = {
@@ -85,7 +85,21 @@ const actions = {
       const {firm} = params;
       addOne(firm)
         .then(response => {
-          resolve(response);
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getOne({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {firmId} = params;
+      getOne(firmId)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
         })
         .catch(error => {
           reject(error);

@@ -31,6 +31,13 @@ export function removeOne(firmID) {
   });
 }
 
+export function getOne(firmId) {
+  return request({
+    url: `/firm/get/one/${firmId}`,
+    method: `get`
+  });
+}
+
 export function getTotal(filter) {
   return request({
     url: `/firm/get/total`,
