@@ -166,7 +166,7 @@ http://123.123.123.1:9000</span>
         :close-on-click-modal="false"
       >
         <policy-config-edit v-if="dialogVisible" :domain="domain" @onCancel="handleCancel"
-                            @onSave="handleSave"></policy-config-edit>
+                            @onSave="policySave"></policy-config-edit>
       </el-dialog>
     </el-card>
   </div>
@@ -183,6 +183,7 @@ http://123.123.123.1:9000</span>
                 policyData: [],
                 dialogVisible: false,
                 domain: '',
+                openId: '',
                 notifyRules: {
                     domain: [
                         {required: true, message: "域名不能为空", trigger: "blur"}
@@ -351,8 +352,11 @@ http://123.123.123.1:9000</span>
             handleCancel() {
                 this.dialogVisible = false;
             },
-            handleSave(params) {
+            policySave(params) {
                 this.dialogVisible = false;
+                if (params) {
+                    params.openId = this.openId;
+                }
                 this.$store
                     .dispatch("qunarPolicyConfig/save", params)
                     .then(data => {
@@ -389,13 +393,18 @@ http://123.123.123.1:9000</span>
             },
         },
         created() {
-            let domain = this.$route.query.domain;
-            if (domain) {
-                this.notifyData.domain = domain;
-                this.orderData.domain = domain;
-                this.loadNotify(domain);
-                this.loadOrder(domain);
-                this.loadPolicy(domain);
+            this.domain = this.$route.query.domain;
+            this.openId = this.$route.query.openId;
+            if (this.openId) {
+                this.notifyData.openId = this.openId;
+                this.orderData.openId = this.openId;
+            }
+            if (this.domain) {
+                this.notifyData.domain = this.domain;
+                this.orderData.domain = this.domain;
+                this.loadNotify(this.domain);
+                this.loadOrder(this.domain);
+                this.loadPolicy(this.domain);
             }
         },
         components: {
