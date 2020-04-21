@@ -264,7 +264,13 @@ http://123.123.123.1:9000</span>
                     if (valid) {
                         this.$store
                             .dispatch("qunarOrderNotifyConfig/save", this.notifyData)
-                            .then(() => {
+                            .then(data => {
+                                if (data) {
+                                    this.$message({
+                                        type: "success",
+                                        message: "保存成功！"
+                                    });
+                                }
                             })
                             .catch(error => {
                                 console.log(error);
@@ -301,7 +307,13 @@ http://123.123.123.1:9000</span>
                     if (valid) {
                         this.$store
                             .dispatch("qunarOrderConfig/save", this.orderData)
-                            .then(() => {
+                            .then(data => {
+                                if (data) {
+                                    this.$message({
+                                        type: "success",
+                                        message: "保存成功！"
+                                    });
+                                }
                             })
                             .catch(error => {
                                 console.log(error);
@@ -343,8 +355,13 @@ http://123.123.123.1:9000</span>
                 this.dialogVisible = false;
                 this.$store
                     .dispatch("qunarPolicyConfig/save", params)
-                    .then(() => {
-                        this.loadData();
+                    .then(data => {
+                        if (data) {
+                            this.$message({
+                                type: "success",
+                                message: "保存成功！"
+                            });
+                        }
                     })
                     .catch(error => {
                         console.log(error);
