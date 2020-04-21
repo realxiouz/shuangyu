@@ -337,7 +337,6 @@ import refundTicket from "./refundTicket";
 import changeTicket from "./changeTicket";
 import fillOutChange from "./fillOutChange";
 import fillOutRefund from "./fillOutRefund";
-
 import {
   formateOrderType,
   formateCategory,
@@ -442,7 +441,7 @@ export default {
       this.purchaseOrder(newParams);
       this.handleTicketShow = false;
     },
-    // 补退保存
+    // 补退 补改 保存
     handleSavePurchase(params) {
       let newParams = {};
       if (params) {
@@ -484,6 +483,7 @@ export default {
         this.purchaseOrder(newParams);
       }
       this.fillOutRefundShow = false;
+      this.fillOutChangeShow = false;
     },
     // 手工出票保存
 
