@@ -199,7 +199,7 @@
         <div>
           <span>金额：{{payData.allPrice }}</span>
           <div>
-            <span>支付方式</span>
+            <span>支付方式:</span>
             <el-select clearable v-model="payData.bankCode" placeholder="请选择支付方式">
               <el-option label="支付宝" value="ALIPAY"></el-option>
               <el-option label="汇付" value="PNRPAY"></el-option>
@@ -308,13 +308,15 @@ export default {
       newParams.domain = item.domain;
       newParams.client = item.domain;
       newParams.passengers = [];
-      let obj = {};
       this.passengerData.forEach(item => {
-        obj.name = item.name;
-        obj.ageType = item.ageType;
-        obj.cardType = item.cardType;
-        obj.cardNo = item.cardNo;
-        obj.price = item.viewPrice;
+        let obj = {
+          name: item.name,
+          ageType: item.ageType,
+          cardType: item.cardType,
+          cardNo: item.cardNo,
+          price: item.viewPrice
+        };
+
         newParams.passengers.push(obj);
       });
 
@@ -393,7 +395,7 @@ export default {
               }
             });
           }
-          console.log(this.flightData, "111111");
+          // console.log(this.flightData, "111111");
         })
         .catch(error => {
           console.log(error);
