@@ -393,8 +393,6 @@ http://123.123.123.1:9000</span>
             },
         },
         created() {
-            console.log(this.$route.query.domain)
-            console.log(this.$route.query.openId)
             this.domain = this.$route.query.domain;
             this.openId = this.$route.query.openId;
             if (this.openId) {

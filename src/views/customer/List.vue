@@ -111,7 +111,7 @@
                     path: path,
                     query: {
                         domain: row.domain,
-                        openId: row.openId,
+                        openId: row.openId
                     }
                 });
             },
