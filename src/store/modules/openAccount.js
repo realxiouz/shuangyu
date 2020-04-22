@@ -1,9 +1,20 @@
-import {addOne, getList, getOne, getPageList, getTotal, removeOne, updateOne} from '@/api/openAccount';
+import {addOne, addMany, getList, getOne, getPageList, getTotal, removeOne, updateOne} from '@/api/openAccount';
 
 const actions = {
   addOne({commit}, params) {
     return new Promise((resolve, reject) => {
       addOne(params)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  addMany({commit}, params) {
+    return new Promise((resolve, reject) => {
+      addMany(params)
         .then(response => {
           resolve(response);
         })

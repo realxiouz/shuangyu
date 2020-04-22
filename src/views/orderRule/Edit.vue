@@ -215,8 +215,7 @@
               <el-button
                 @click.native.prevent="handleRemove(scope.$index, scope.row)"
                 type="danger"
-                size="mini"
-              >删除
+                size="mini">删除
               </el-button>
               <el-button type="primary" size="mini" @click="selectStaff">继续添加</el-button>
             </template>

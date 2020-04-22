@@ -51,18 +51,6 @@
           </div>
           <div class="form">
             <el-form :model="formData" label-position="left" label-width="110px" size="mini">
-              <el-form-item label="Open平台">
-                <el-select v-model="formData.openId" placeholder="请选择平台">
-                  <el-option v-for="(item,idx) in openList"
-                    :key="idx"
-                    :label="item.openName"
-                    :value="item.openId">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="重要性">
-                <el-rate v-model="formData.degree" :colors="['#99A9BF', '#F7BA2A', '#FF9900']"/>
-              </el-form-item>
               <el-form-item label="标签">
                 <el-select style="width: 100%;" clearable multiple v-model="formData.tags" placeholder="请选择">
                   <el-option
@@ -71,8 +59,21 @@
                   </el-option>
                 </el-select>
               </el-form-item>
+              <el-form-item label="重要性">
+                <el-rate v-model="formData.degree" :colors="['#99A9BF', '#F7BA2A', '#FF9900']"/>
+              </el-form-item>
               <el-form-item label="备注">
                 <el-input type="textarea" v-model="formData.remark"></el-input>
+              </el-form-item>
+              <el-form-item label="Open平台">
+                <el-select v-model="formData.openId" placeholder="请选择平台" :disabled="formData.openId && update" @change="selectedOpen">
+                  <el-option :value=null>&nbsp;- -</el-option>
+                  <el-option v-for="(item,idx) in openList"
+                             :key="idx"
+                             :label="item.openName"
+                             :value="item.openId">
+                  </el-option>
+                </el-select>
               </el-form-item>
             </el-form>
           </div>
@@ -80,11 +81,13 @@
       </div>
     </div>
     <div id="tabs">
-      <el-tabs type="border-card">
+      <el-tabs type="border-card" ref="tabs">
         <el-tab-pane label="联系人">
           <other-contact :contacts="contacts"/>
         </el-tab-pane>
-        <el-tab-pane label="配置管理">配置管理</el-tab-pane>
+          <el-tab-pane label="账号配置" :disabled="!formData.openId">
+            <account :accounts="accounts"/>
+          </el-tab-pane>
         <el-tab-pane label="其他信息">其他信息</el-tab-pane>
       </el-tabs>
     </div>
@@ -93,6 +96,7 @@
 
 <script>
   import otherContact from './Contact';
+  import account from './Account';
 
     export default {
         data() {
@@ -122,6 +126,7 @@
                 tagList: [],
                 contacts: [],
                 update: false,
+                accounts: [],
                 rules: {
                     firmName: [
                         {required: true, message: "请输入供应商名称", trigger: "blur"},
@@ -195,10 +200,19 @@
                     console.log(error);
                 });
             },
+            loadAccounts(firmId){
+                this.$store.dispatch("openAccount/getList", {filters: {firmId: firmId}})
+                    .then(data => {
+                        this.accounts = data.data;
+                    }).catch(error => {
+                    console.log(error);
+                });
+            },
             loadSupplier(firmId){
                 this.$store.dispatch("firm/getOne", {firmId: firmId})
                     .then(data => {
                         this.formData = data;
+                        this.loadAccounts(firmId);
                     }).catch(error => {
                     console.log(error);
                 });
@@ -207,11 +221,15 @@
                 this.formData = this.defaultFormData();
                 this.openList = [];
             },
+            selectedOpen(){
+              if (this.update){
+                  this.update = false;
+              }
+            },
             initFormData(firmId) {
                 this.clearForm();
                 this.loadOpen();
                 if (firmId){
-                    console.log(firmId);
                     this.loadSupplier(firmId);
                     this.update = true;
                 }
@@ -226,15 +244,29 @@
                 this.$store
                     .dispatch(url, {firm: this.formData})
                     .then(data => {
-                        console.log(data);
+                        const _data = data.data;
+                        //将联系人列表添加到员工表中
                         let staffList =[];
                         this.contacts.forEach(item => {
-                            item.firmId = data;
+                            item.firmId = _data;
                             item.depts = [];
-                            item.depts.push(data);
+                            item.depts.push(_data);
                             staffList.push(item);
                         })
                         this.$store.dispatch("staff/addMany", staffList)
+                            .then(() => {
+                                console.log("success-1");
+                            }).catch(error => {
+                            console.log(error);
+                        });
+
+                        //将账号列表添加到OpenAccount表中。
+                        let accountList =[];
+                        this.accounts.forEach(item => {
+                            item.firmId = _data;
+                            accountList.push(item);
+                        })
+                        this.$store.dispatch("openAccount/addMany", accountList)
                             .then(() => {
                                 this.goBack();
                             }).catch(error => {
@@ -259,7 +291,8 @@
             this.initFormData(this.$route.query.firmId);
         },
         components: {
-            otherContact
+            otherContact,
+            account
         }
     };
 </script>

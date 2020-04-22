@@ -1,32 +1,41 @@
 <template>
-  <div>
-
+  <div id="main">
+    <div id="form">
+      <el-main>
+        <div class="formTitle">添加联系人</div>
+        <el-row>
+          <el-form :rules="rules" :model="contact" :inline="true" label-position="left" label-width="60px" size="mini">
+            <el-row>
+              <el-form-item label="姓名" prop="fullName">
+                <el-input type="text" v-model="contact.fullName" placeholder="请输入姓名.."></el-input>
+              </el-form-item>
+              <el-form-item label="电话" prop="phone">
+                <el-input type="text" v-model="contact.phone" placeholder="请输入电话.."></el-input>
+              </el-form-item>
+              <el-form-item label="邮箱" prop="email">
+                <el-input type="text" v-model="contact.email" placeholder="请输入邮箱.."></el-input>
+              </el-form-item>
+            </el-row>
+            <el-row>
+              <el-form-item id="addButton">
+                <el-button type="primary" size="mini" @click="addContactClick">添加</el-button>
+              </el-form-item>
+            </el-row>
+          </el-form>
+        </el-row>
+      </el-main>
+    </div>
     <div id="table">
       <el-table :data="contacts" style="width: 100%">
-        <template slot="empty"></template>
-        <el-table-column prop="fullName" label="姓名" align="center"></el-table-column>
-        <el-table-column prop="phone" label="电话" align="center"></el-table-column>
-        <el-table-column prop="email" label="邮箱" align="center"></el-table-column>
+        <el-table-column prop="fullName" label="姓名" align="center" width="160"></el-table-column>
+        <el-table-column prop="phone" label="电话" align="center" width="160"></el-table-column>
+        <el-table-column prop="email" label="邮箱" align="center" width="160"></el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
             <el-button type="danger" size="mini" @click="handleRemove(scope.$index)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
-      <div id="form">
-        <el-form :rules="rules" :model="contact" :inline="true" size="mini">
-          <el-form-item lable prop="fullName">
-            <el-input type="text" v-model="contact.fullName" placeholder="请输入姓名.."></el-input>
-          </el-form-item>
-          <el-form-item lable prop="phone">
-            <el-input type="text" v-model="contact.phone" placeholder="请输入电话.."></el-input>
-          </el-form-item>
-          <el-form-item prop="email">
-            <el-input type="text" v-model="contact.email" placeholder="请输入邮箱.."></el-input>
-          </el-form-item>
-        </el-form>
-        <el-button type="primary" size="mini" @click="addContactClick">添加</el-button>
-      </div>
     </div>
   </div>
 </template>
@@ -104,31 +113,41 @@
 </script>
 
 <style>
-  #table {
-    width: 34%;
-    height: 250px;
-    margin-left: 10px;
+  #main {
+    overflow: hidden;
   }
 
   #form {
-    margin-top: 20px;
-    padding-left: 5px;
-    display: flex;
+    width: 36%;
+    padding-left: 2%;
+    margin-top: 12px;
+    float: left;
   }
-
-  #form .el-input__inner {
+  #form .el-main {
     padding: 0;
   }
 
-  #form input {
-    flex: 1;
+  #form .formTitle {
+    height: 20px;
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+
+  #form form {
+    margin-top: 20px;
   }
 
   #form button {
     height: 80%
   }
 
-  .el-table__empty-block {
-    display: none;
+  #table {
+    margin-left: 10px;
+    display: inline-block;
+  }
+
+  #form #addButton {
+    margin-right: 17%;
+    float: right;
   }
 </style>
