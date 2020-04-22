@@ -204,7 +204,7 @@ export default {
     },
     // 航班表格选择复选框选中处理
     handleFlightChange(rows) {
-      this.flightData = rows;
+      this.formData.flightData = rows;
     },
     // 改签查询
     changeSearchData(params) {
@@ -257,7 +257,7 @@ export default {
         });
         return;
       }
-      if (this.formData.changeFlightSegmentList.length == 0) {
+      if (this.formData.flightData.length == 0) {
         this.$notify({
           title: "提示",
           message: "请选择需要改签的航班",
@@ -266,7 +266,7 @@ export default {
         });
         return;
       }
-      if (this.formData.changeFlightSegmentList.length > 1) {
+      if (this.formData.flightData.length > 1) {
         this.$notify({
           title: "提示",
           message: "改签航班只能选择一个",
@@ -288,16 +288,16 @@ export default {
       let adultFee = 0;
       if (adultCount > 0) {
         adultFee =
-          Number(this.formData.changeFlightSegmentList[0].gqFee) * adultCount +
-          Number(this.formData.changeFlightSegmentList[0].upgradeFee) *
+          Number(this.formData.flightData[0].gqFee) * adultCount +
+          Number(this.formData.flightData[0].upgradeFee) *
             adultCount;
       }
       let childFee = 0;
       if (childCount > 0) {
         childFee =
-          Number(this.formData.changeFlightSegmentList[0].childGqFee) *
+          Number(this.formData.flightData[0].childGqFee) *
             childCount +
-          Number(this.formData.changeFlightSegmentList[0].childUpgradeFee) *
+          Number(this.formData.flightData[0].childUpgradeFee) *
             childCount;
       }
       let totalCount = adultCount + childCount;
@@ -311,6 +311,7 @@ export default {
         });
         return;
       }
+      // console.log(totalCount)
       this.$emit("onSavechange", this.formData);
     },
     // 改签原因选中处理
