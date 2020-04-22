@@ -114,6 +114,7 @@
         size="mini"
         highlight-current-row
         @row-click="clickRowHandle"
+        @expand-change="expandChange"
         style="width: 100%;"
         ref="refTable"
         fit
@@ -197,7 +198,6 @@
       >
         <div>
           <span>金额：{{payData.allPrice }}</span>
-
           <div>
             <span>支付方式</span>
             <el-select clearable v-model="payData.bankCode" placeholder="请选择支付方式">
@@ -307,13 +307,15 @@ export default {
       newParams.flightNum = row.offerPrice.flightNum;
       newParams.domain = item.domain;
       newParams.client = item.domain;
-      newParams.passengers = {};
+      newParams.passengers = [];
+      let obj = {};
       this.passengerData.forEach(item => {
-        newParams.passengers.name = item.name;
-        newParams.passengers.ageType = item.ageType;
-        newParams.passengers.cardType = item.cardType;
-        newParams.passengers.cardNo = item.cardNo;
-        newParams.passengers.price = item.viewPrice;
+        obj.name = item.name;
+        obj.ageType = item.ageType;
+        obj.cardType = item.cardType;
+        obj.cardNo = item.cardNo;
+        obj.price = item.viewPrice;
+        newParams.passengers.push(obj);
       });
 
       newParams.ticketPrice = item.vppr;
@@ -331,12 +333,12 @@ export default {
       newParams.to = row.offerPrice.to;
       newParams.startTime = row.offerPrice.startTime;
       newParams.dptTime = row.offerPrice.dptTime;
-      // console.log(newParams, "newParams");
+      console.log(newParams, "newParams");
       this.$store
         .dispatch("order/placeAnOrder", newParams)
         .then(data => {
           if (data) {
-            // console.log(data, "111111");
+            console.log(data, "111111");
             this.payShow = true;
             this.$message({
               type: "success",
@@ -399,7 +401,7 @@ export default {
     },
     //点击表格行展开展开行
     clickRowHandle(row, index, e) {
-      console.log(row, "click");
+      // console.log(row, "click");
       let flightPrice = {
         arr: row.arr,
         dpt: row.dpt,
@@ -409,6 +411,17 @@ export default {
       };
       this.getFlightPrice(flightPrice);
       this.$refs.refTable.toggleRowExpansion(row);
+    },
+    expandChange(row) {
+      // console.log(row,"wwwww")
+      let flightPrice = {
+        arr: row.arr,
+        dpt: row.dpt,
+        date: row.flightDate,
+        ex_track: row.exTrack,
+        flightNum: row.flightNum
+      };
+      this.getFlightPrice(flightPrice);
     },
     /*初始化用工列表中的生日日期格式*/
     initDate(dateStr, format) {
