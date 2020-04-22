@@ -277,6 +277,9 @@ export default {
       newParams.domain = item.domain;
       newParams.client = item.client;
       newParams.passengers = this.passengerData;
+      
+
+
       newParams.ticketPrice = item.vppr;
       newParams.barePrice = item.barePrice;
       newParams.basePrice = item.basePrice;
@@ -292,6 +295,7 @@ export default {
       newParams.to = row.offerPrice.to;
       newParams.startTime = row.offerPrice.startTime;
       newParams.dptTime = row.offerPrice.dptTime;
+      console.log(newParams,"newParams")
     },
     // 查询航班
     getOrderFlight(flightInfo) {
@@ -320,7 +324,6 @@ export default {
         })
         .catch(error => {
           this.loading = false;
-
           console.log(error);
         });
     },

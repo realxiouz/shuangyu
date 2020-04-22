@@ -22,7 +22,7 @@ export function formateStatus(row) {
     } else if (row.status == 19) {
         return "退款驳回";
     } else if (row.status == 20) {
-        return "退票申请中";
+        return "改签申请中";
     } else if (row.status == 21) {
         return "改签完成";
     } else if (row.status == 29) {
@@ -57,7 +57,7 @@ export function formateOederStatus(row) {
     } else if (row.orderStatus == 19) {
         return "退款驳回";
     } else if (row.orderStatus == 20) {
-        return "退票申请中";
+        return "改签申请中";
     } else if (row.orderStatus == 21) {
         return "改签完成";
     } else if (row.orderStatus == 29) {
