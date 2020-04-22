@@ -601,16 +601,62 @@ export default {
         newParams.applyRemarks = params.applyRemarks;
       }
       if (params.flightData) {
-        newParams.uniqKey = params.flightData[0].uniqKey;
-        newParams.gqFee = params.flightData[0].gqFee;
-        newParams.upgradeFee = params.flightData[0].upgradeFee;
-        newParams.childUseFee = params.flightData[0].childUseFee;
-        newParams.flightNo = params.flightData[0].flightNo;
-        newParams.cabinCode = params.flightData[0].cabinCode;
-        newParams.childExtraPrice = params.flightData[0].childExtraPrice;
-        newParams.startDate = params.flightData[0].startDate;
-        newParams.startTime = params.flightData[0].startTime;
-        newParams.endTime = params.flightData[0].endTime;
+        if (params.flightData[0].uniqKey) {
+          newParams.uniqKey = params.flightData[0].uniqKey;
+        } else {
+          newParams.uniqKey = "";
+        }
+
+        if (params.flightData[0].gqFee) {
+          newParams.gqFee = params.flightData[0].gqFee;
+        } else {
+          newParams.gqFee = "";
+        }
+        if (params.flightData[0].childUseFee) {
+          newParams.childUseFee = params.flightData[0].childUseFee;
+        } else {
+          newParams.childUseFee = "";
+        }
+        if (params.flightData[0].flightNo) {
+          newParams.flightNo = params.flightData[0].flightNo;
+        } else {
+          newParams.flightNo = "";
+        }
+        if (params.flightData[0].cabinCode) {
+          newParams.cabinCode = params.flightData[0].cabinCode;
+        } else {
+          newParams.cabinCode = "";
+        }
+        if (params.flightData[0].childExtraPrice) {
+          newParams.childExtraPrice = params.flightData[0].childExtraPrice;
+        } else {
+          newParams.childExtraPrice = "";
+        }
+        if (params.flightData[0].startDate) {
+          newParams.startDate = params.flightData[0].startDate;
+        } else {
+          newParams.startDate = "";
+        }
+        if (params.flightData[0].startTime) {
+          newParams.startTime = params.flightData[0].startTime;
+        } else {
+          newParams.startTime = "";
+        }
+        if (params.flightData[0].endTime) {
+          newParams.endTime = params.flightData[0].endTime;
+        } else {
+          newParams.endTime = "";
+        }
+
+        // newParams.gqFee = params.flightData[0].gqFee;
+        // newParams.upgradeFee = params.flightData[0].upgradeFee;
+        // newParams.childUseFee = params.flightData[0].childUseFee;
+        // newParams.flightNo = params.flightData[0].flightNo;
+        // newParams.cabinCode = params.flightData[0].cabinCode;
+        // newParams.childExtraPrice = params.flightData[0].childExtraPrice;
+        // newParams.startDate = params.flightData[0].changeDate;
+        // newParams.startTime = params.flightData[0].startTime;
+        // newParams.endTime = params.flightData[0].endTime;
       }
       newParams.orderNo = this.purchaseOrderNo;
       if (this.$route.query.taskId) {
