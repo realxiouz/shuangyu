@@ -27,6 +27,7 @@
   </div>
 </template>
 
+
 <script>
     export default {
         data() {
@@ -98,8 +99,12 @@
             if (this.user && this.firmId) {
                 this.handleGetOne(this.user, this.firmId);
             }
+            if (this.domain) {
+                this.formData.domain = this.domain;
+            }
         },
         props: {
+            domain: String,
             firmId: String,
             user: String,
         }
