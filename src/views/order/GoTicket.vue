@@ -197,10 +197,17 @@
         :close-on-click-modal="false"
       >
         <div>
-          <span>金额：{{payData.allPrice }}</span>
-          <div>
-            <span>支付方式:</span>
-            <el-select clearable v-model="payData.bankCode" placeholder="请选择支付方式">
+          <el-row style="margin-bottom: 25px;text-align: center;">
+            <span>金额：{{payData.allPrice }}</span>
+          </el-row>
+          <div style="text-align: center;">
+            <span>支付方式：</span>
+            <el-select
+              style="height:20px;"
+              clearable
+              v-model="payData.bankCode"
+              placeholder="请选择支付方式"
+            >
               <el-option label="支付宝" value="ALIPAY"></el-option>
               <el-option label="汇付" value="PNRPAY"></el-option>
             </el-select>
@@ -339,12 +346,18 @@ export default {
       this.$store
         .dispatch("order/placeAnOrder", newParams)
         .then(data => {
-          if (data) {
+          if (data.code == 0) {
             console.log(data, "111111");
             this.payShow = true;
             this.$message({
               type: "success",
               message: "预定成功！"
+            });
+          }else{
+            this.payShow = false;
+            this.$message({
+              type: "warning",
+              message: data.msg
             });
           }
         })
