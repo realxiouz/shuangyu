@@ -97,7 +97,7 @@
             <span>{{ formatDate(scope.row.flightDate,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="arrTime" label="到达时间" width="100" align="center"></el-table-column>
+        <el-table-column prop="dptTime" label="出发时间" width="100" align="center"></el-table-column>
         <el-table-column prop="refundRule" label="退票规则" align="center"></el-table-column>
         <el-table-column prop="changeRule" label="改签规则" align="center"></el-table-column>
       </el-table>
@@ -135,9 +135,9 @@
           </template>
         </el-table-column>-->
         <el-table-column prop="codeShare" label="是否共享" width="80" align="center"></el-table-column>
-        <el-table-column prop="airlineCode" label="航司" width="80" align="center">
+        <el-table-column prop="carrier" label="航司" width="80" align="center">
           <template slot-scope="scope">
-            <span>{{scope.row.flightQuotePrices.arrAirport}}</span>
+            <span>{{scope.row.flightQuotePrices.carrier}}</span>
           </template>
         </el-table-column>
         <el-table-column prop="flightNum" label="主飞航班" align="center"></el-table-column>
