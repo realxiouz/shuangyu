@@ -247,7 +247,7 @@ export default {
     },
     // 改签申请
     handleSave() {
-      console.log(this.formData,"foemData")
+      console.log(this.formData, "foemData");
       if (this.formData.changePassagers.length < 1) {
         this.$notify({
           title: "提示",
@@ -289,13 +289,16 @@ export default {
       if (adultCount > 0) {
         adultFee =
           Number(this.formData.changeFlightSegmentList[0].gqFee) * adultCount +
-          Number(this.formData.changeFlightSegmentList[0].upgradeFee) * adultCount;
+          Number(this.formData.changeFlightSegmentList[0].upgradeFee) *
+            adultCount;
       }
       let childFee = 0;
       if (childCount > 0) {
         childFee =
-          Number(this.formData.changeFlightSegmentList[0].childGqFee) * childCount +
-          Number(this.formData.changeFlightSegmentList[0].childUpgradeFee) * childCount;
+          Number(this.formData.changeFlightSegmentList[0].childGqFee) *
+            childCount +
+          Number(this.formData.changeFlightSegmentList[0].childUpgradeFee) *
+            childCount;
       }
       let totalCount = adultCount + childCount;
 
@@ -313,7 +316,7 @@ export default {
     // 改签原因选中处理
     selectTgqReasons(value) {
       let code = value;
-      let flightNo = //"SC4804";
+      let flightNo =
         this.changeDataTop.airDivision + this.changeDataTop.flightNum;
       let actFlightNo = "";
       this.tgqReasons.forEach(item => {
@@ -379,11 +382,7 @@ export default {
   created() {
     let params = {};
     params.purchaseOrderNo = this.changeData.sourceOrderNo;
-    params.changeDptDate = this.formatFlightDate(this.changeData.flights);
-    let _params = {
-      purchaseOrderNo: "ted200416125445810",
-      changeDptDate: "2020-04-29"
-    };
+    params.changeDptDate = this.changeDataTop.flightDate
     this.changeSearchData(params);
     let arr = [];
     for (let i = 0; i < this.changeDataTop.passagers.length; i++) {
