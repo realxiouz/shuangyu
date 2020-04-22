@@ -219,7 +219,7 @@ http://123.123.123.1:9000</span>
                 this.$store
                     .dispatch("qunarOrderNotifyConfig/getOne", {domain: domain})
                     .then(data => {
-                        if (data) {
+                        if (data && data.domain) {
                             this.notifyData = data.data;
                         }
                         this.loading = false;
@@ -236,7 +236,7 @@ http://123.123.123.1:9000</span>
                 this.$store
                     .dispatch("qunarOrderConfig/getOne", {domain: domain})
                     .then(data => {
-                        if (data) {
+                        if (data && data.domain) {
                             this.orderData = data.data;
                         }
                         this.loading = false;
