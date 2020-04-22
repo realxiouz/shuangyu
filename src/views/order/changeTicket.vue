@@ -95,6 +95,7 @@
           ref="changeFlight"
           size="mini"
           highlight-current-row
+          @selection-change="handleFlightChange"
           fit
           style="width: 100%;"
         >
@@ -204,6 +205,7 @@ export default {
     },
     // 航班表格选择复选框选中处理
     handleFlightChange(rows) {
+      console.log(rows)
       this.formData.flightData = rows;
     },
     // 改签查询
@@ -289,16 +291,13 @@ export default {
       if (adultCount > 0) {
         adultFee =
           Number(this.formData.flightData[0].gqFee) * adultCount +
-          Number(this.formData.flightData[0].upgradeFee) *
-            adultCount;
+          Number(this.formData.flightData[0].upgradeFee) * adultCount;
       }
       let childFee = 0;
       if (childCount > 0) {
         childFee =
-          Number(this.formData.flightData[0].childGqFee) *
-            childCount +
-          Number(this.formData.flightData[0].childUpgradeFee) *
-            childCount;
+          Number(this.formData.flightData[0].childGqFee) * childCount +
+          Number(this.formData.flightData[0].childUpgradeFee) * childCount;
       }
       let totalCount = adultCount + childCount;
 
@@ -383,7 +382,7 @@ export default {
   created() {
     let params = {};
     params.purchaseOrderNo = this.changeData.sourceOrderNo;
-    params.changeDptDate = this.changeDataTop.flightDate
+    params.changeDptDate = this.changeDataTop.flightDate;
     this.changeSearchData(params);
     let arr = [];
     for (let i = 0; i < this.changeDataTop.passagers.length; i++) {
