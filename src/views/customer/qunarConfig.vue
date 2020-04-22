@@ -151,7 +151,7 @@ http://123.123.123.1:9000</span>
           <template slot-scope="scope">
             <el-button @click="policyEdit(scope.row)" type="primary" size="mini">编辑</el-button>
             <el-button
-              @click.native.prevent="policyRemove(scope.row)"
+              @click="policyRemove(scope.row.user,scope.$index,policyData)"
               type="danger"
               size="mini"
             >删除
