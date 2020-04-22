@@ -79,10 +79,10 @@
             initFormData() {
                 this.clearForm();
             },
-            handleGetOne(user) {
-                if (user) {
+            handleGetOne(user, firmId) {
+                if (user && firmId) {
                     this.$store
-                        .dispatch("qunarPolicyConfig/getOne", {user: user})
+                        .dispatch("qunarPolicyConfig/getOne", {user: user, firmId: firmId})
                         .then(data => {
                             this.formData = data;
                             this.dialogVisible = true;
@@ -95,17 +95,12 @@
             },
         },
         created() {
-            if (this.user) {
-                this.handleGetOne(this.user);
-                this.formData.domain = this.domain;
-            }
-            if (this.openId) {
-                this.formData.openId = this.openId;
+            if (this.user && this.firmId) {
+                this.handleGetOne(this.user, this.firmId);
             }
         },
         props: {
-            domain: String,
-            openId: String,
+            firmId: String,
             user: String,
         }
     };

@@ -39,8 +39,8 @@ const actions = {
   },
   removeOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {domain} = params;
-      removeOne(domain)
+      const {user, firmId} = params;
+      removeOne(user, firmId)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -52,8 +52,8 @@ const actions = {
   },
   getOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {user} = params;
-      getOne(user)
+      const {user, firmId} = params;
+      getOne(user, firmId)
         .then(response => {
           const {data} = response;
           resolve(data);
