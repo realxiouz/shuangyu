@@ -303,7 +303,7 @@ export default {
     this.loadPendingTotal();
     window.setInterval(() => {
       setTimeout(this.loadPendingTotal, 0);
-    }, 5000);
+    }, 10000);
   },
   computed: {
     formatDate() {
