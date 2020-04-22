@@ -91,8 +91,7 @@ export function getFlightPrice(data) {
   });
 }
 
-// place an order下单
-
+// 蜗牛下单
 export function placeAnOrder(data) {
   return request({
     url: `/qunar/open/place/an/order`,
