@@ -2,7 +2,7 @@
   <div>
     <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
       <el-form-item label="代理商域名" prop="domain">
-        <el-input v-model="formData.domain"></el-input>
+        <el-input v-model="formData.domain" disabled></el-input>
       </el-form-item>
       <el-form-item label="用户名" prop="user">
         <el-input v-model="formData.user"></el-input>
@@ -79,10 +79,10 @@
             initFormData() {
                 this.clearForm();
             },
-            handleGetOne(domain) {
-                if (domain) {
+            handleGetOne(user) {
+                if (user) {
                     this.$store
-                        .dispatch("api/getOne", {domain: domain})
+                        .dispatch("api/getOne", {user: user})
                         .then(data => {
                             this.formData = data;
                             this.dialogVisible = true;
@@ -95,8 +95,8 @@
             },
         },
         created() {
-            if (this.domain) {
-                this.handleGetOne(this.domain);
+            if (this.user) {
+                this.handleGetOne(this.user);
                 this.formData.domain = this.domain;
             }
             if (this.openId) {
@@ -106,6 +106,7 @@
         props: {
             domain: String,
             openId: String,
+            user: String,
         }
     };
 </script>

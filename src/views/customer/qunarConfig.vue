@@ -149,9 +149,9 @@ http://123.123.123.1:9000</span>
         <el-table-column prop="remark" label="备注" width="200" align="center"></el-table-column>
         <el-table-column prop="airlineCode" label="操作" width="200" align="center">
           <template slot-scope="scope">
-            <el-button @click="policyEdit(scope.row.domain)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="policyEdit(scope.row)" type="primary" size="mini">编辑</el-button>
             <el-button
-              @click.native.prevent="policyRemove(scope.row.domain,scope.$index,policyData)"
+              @click.native.prevent="policyRemove(scope.row)"
               type="danger"
               size="mini"
             >删除
@@ -165,7 +165,8 @@ http://123.123.123.1:9000</span>
         width="30%"
         :close-on-click-modal="false"
       >
-        <policy-config-edit v-if="dialogVisible" :domain="domain" :open-id="openId" @onCancel="handleCancel"
+        <policy-config-edit v-if="dialogVisible" :domain="domain" :open-id="openId" :user="user"
+                            @onCancel="handleCancel"
                             @onSave="policySave"></policy-config-edit>
       </el-dialog>
     </el-card>
@@ -184,6 +185,7 @@ http://123.123.123.1:9000</span>
                 dialogVisible: false,
                 domain: '',
                 openId: '',
+                user: '',
                 notifyRules: {
                     domain: [
                         {required: true, message: "域名不能为空", trigger: "blur"}
@@ -374,8 +376,8 @@ http://123.123.123.1:9000</span>
                         console.log(error);
                     });
             },
-            policyEdit(domain) {
-                this.domain = domain;
+            policyEdit(row) {
+                this.user = row.user;
                 this.dialogVisible = true;
             },
             policyRemove(domain, index, rows) {
