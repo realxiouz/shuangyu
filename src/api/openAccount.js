@@ -8,6 +8,15 @@ export function addOne(data) {
   });
 }
 
+export function addMany(data) {
+  debugger
+  return request({
+    url: '/open/account/add/many',
+    method: 'post',
+    data
+  });
+}
+
 export function updateOne(data) {
   return request({
     url: '/open/account/update/one',

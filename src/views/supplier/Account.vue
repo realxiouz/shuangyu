@@ -1,0 +1,124 @@
+<template>
+  <div id="main">
+    <div id="form">
+      <el-main>
+        <div class="formTitle">添加账号</div>
+        <el-form :model="account" :inline="true" label-position="left" label-width="80px" size="mini">
+          <el-row>
+            <el-form-item label="账号">
+              <el-input v-model="account.username" placeholder="请输入账号"></el-input>
+            </el-form-item>
+            <el-form-item label="密码">
+              <el-input v-model="account.password" placeholder="请输入密码"></el-input>
+            </el-form-item>
+            <el-form-item label="登录地址">
+              <el-input v-model="account.loginUrl" placeholder="请输入登录地址"></el-input>
+            </el-form-item>
+            <el-form-item label="token">
+              <el-input v-model="account.token" placeholder="请输入token"></el-input>
+            </el-form-item>
+            <el-form-item label="secretKey">
+              <el-input v-model="account.secretKey" placeholder="请输入secretKey"></el-input>
+            </el-form-item>
+          </el-row>
+          <el-row>
+            <el-form-item id="addButton">
+              <el-button type="primary" size="mini" @click="addAccountClick">添加</el-button>
+            </el-form-item>
+          </el-row>
+        </el-form>
+      </el-main>
+    </div>
+    <div id="table">
+      <el-table :data="accounts" style="width: 100%">
+        <el-table-column prop="username" label="用户名" align="center"  width="140"></el-table-column>
+        <el-table-column prop="password" label="密码" align="center" width="140"></el-table-column>
+        <el-table-column prop="loginUrl" label="登录URL" align="center" width="140"></el-table-column>
+        <el-table-column prop="token" label="token" align="center" width="140"></el-table-column>
+        <el-table-column prop="secretKey" label="secretKey" align="center" width="140"></el-table-column>
+        <el-table-column label="操作" align="center">
+          <template slot-scope="scope">
+            <el-button type="danger" size="mini" @click="handleRemove(scope.$index)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+  </div>
+</template>
+
+<script>
+    export default {
+        props: ["accounts"],
+        data() {
+            return {
+                account: {}
+            }
+        },
+        methods: {
+            defaultAccountForm() {
+                return {
+                    //openId
+                    openId: null,
+                    //用户名
+                    username: '',
+                    //密码
+                    password: '',
+                    //登录URL
+                    loginUrl: '',
+                    token: '',
+                    secretKey: ''
+                }
+            },
+            addAccountClick() {
+                this.accounts.push(this.account);
+                this.clearForm();
+            },
+            clearForm() {
+                this.account = this.defaultAccountForm();
+            },
+            handleRemove(idx) {
+                this.accounts.splice(idx, 1);
+            }
+        },
+    }
+</script>
+
+<style>
+  #main {
+    overflow: hidden;
+  }
+
+  #form {
+    width: 36%;
+    padding-left: 2%;
+    margin-top: 12px;
+    float: left;
+  }
+  #form .el-main {
+    padding: 0;
+  }
+
+  #form .formTitle {
+    height: 20px;
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+
+  #form form {
+    margin-top: 20px;
+  }
+
+  #form button {
+    height: 80%
+  }
+
+  #table {
+    margin-left: 10px;
+    display: inline-block;
+  }
+
+  #form #addButton {
+    margin-right: 17%;
+    float: right;
+  }
+</style>
