@@ -278,39 +278,39 @@ export default {
       let adultCount = 0;
       let childCount = 0;
 
-      this.formData.changePassagers.forEach(item => {
-        if (item.ageType == "0") {
-          adultCount += 1;
-        } else if (item.ageType == "1") {
-          childCount += 1;
-        }
-      });
-      let adultFee = 0;
-      if (adultCount > 0) {
-        adultFee =
-          Number(this.formData.changeFlightSegmentList[0].gqFee) * adultCount +
-          Number(this.formData.changeFlightSegmentList[0].upgradeFee) *
-            adultCount;
-      }
-      let childFee = 0;
-      if (childCount > 0) {
-        childFee =
-          Number(this.formData.changeFlightSegmentList[0].childGqFee) *
-            childCount +
-          Number(this.formData.changeFlightSegmentList[0].childUpgradeFee) *
-            childCount;
-      }
-      let totalCount = adultCount + childCount;
+      // this.formData.changePassagers.forEach(item => {
+      //   if (item.ageType == "0") {
+      //     adultCount += 1;
+      //   } else if (item.ageType == "1") {
+      //     childCount += 1;
+      //   }
+      // });
+      // let adultFee = 0;
+      // if (adultCount > 0) {
+      //   adultFee =
+      //     Number(this.formData.changeFlightSegmentList[0].gqFee) * adultCount +
+      //     Number(this.formData.changeFlightSegmentList[0].upgradeFee) *
+      //       adultCount;
+      // }
+      // let childFee = 0;
+      // if (childCount > 0) {
+      //   childFee =
+      //     Number(this.formData.changeFlightSegmentList[0].childGqFee) *
+      //       childCount +
+      //     Number(this.formData.changeFlightSegmentList[0].childUpgradeFee) *
+      //       childCount;
+      // }
+      // let totalCount = adultCount + childCount;
 
-      if (totalCount != this.formData.totalAmount) {
-        this.$notify({
-          title: "提示",
-          message: "改签费计算错误",
-          type: "warning",
-          duration: 4500
-        });
-        return;
-      }
+      // if (totalCount != this.formData.totalAmount) {
+      //   this.$notify({
+      //     title: "提示",
+      //     message: "改签费计算错误",
+      //     type: "warning",
+      //     duration: 4500
+      //   });
+      //   return;
+      // }
       this.$emit("onSavechange", this.formData);
     },
     // 改签原因选中处理
