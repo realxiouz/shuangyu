@@ -56,6 +56,7 @@
             defaultFormData() {
                 return {
                     domain: '',
+                    openId: '',
                     user: '',
                     pass: '',
                     ip: '',
@@ -96,10 +97,15 @@
         created() {
             if (this.domain) {
                 this.handleGetOne(this.domain);
+                this.formData.domain = this.domain;
+            }
+            if (this.openId) {
+                this.formData.openId = this.openId;
             }
         },
         props: {
             domain: String,
+            openId: String,
         }
     };
 </script>

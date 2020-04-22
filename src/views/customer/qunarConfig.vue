@@ -165,7 +165,7 @@ http://123.123.123.1:9000</span>
         width="30%"
         :close-on-click-modal="false"
       >
-        <policy-config-edit v-if="dialogVisible" :domain="domain" @onCancel="handleCancel"
+        <policy-config-edit v-if="dialogVisible" :domain="domain" :open-id="openId" @onCancel="handleCancel"
                             @onSave="policySave"></policy-config-edit>
       </el-dialog>
     </el-card>
