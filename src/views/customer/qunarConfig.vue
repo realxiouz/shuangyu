@@ -219,8 +219,10 @@ http://123.123.123.1:9000</span>
                 this.$store
                     .dispatch("qunarOrderNotifyConfig/getOne", {domain: domain})
                     .then(data => {
-                        if (data) {
+                        if (data && data.domain) {
                             this.notifyData = data;
+                        } else {
+                            this.notifyData.domain = this.domain;
                         }
                         this.loading = false;
                     })
@@ -236,8 +238,10 @@ http://123.123.123.1:9000</span>
                 this.$store
                     .dispatch("qunarOrderConfig/getOne", {domain: domain})
                     .then(data => {
-                        if (data) {
-                            this.orderData = data.data;
+                        if (data && data.domain) {
+                            this.orderData = data;
+                        } else {
+                            this.orderData.domain = this.domain;
                         }
                         this.loading = false;
                     })
@@ -251,7 +255,7 @@ http://123.123.123.1:9000</span>
                     .dispatch("qunarPolicyConfig/getList", {filters: {"domain": domain}})
                     .then(data => {
                         if (data) {
-                            this.policyData = data.data;
+                            this.policyData = data;
                         }
                         this.loading = false;
                     })
@@ -347,7 +351,6 @@ http://123.123.123.1:9000</span>
             },
             policyAdd() {
                 this.dialogVisible = true;
-                this.domain = "";
             },
             handleCancel() {
                 this.dialogVisible = false;
@@ -400,8 +403,6 @@ http://123.123.123.1:9000</span>
                 this.orderData.openId = this.openId;
             }
             if (this.domain) {
-                this.notifyData.domain = this.domain;
-                this.orderData.domain = this.domain;
                 this.loadNotify(this.domain);
                 this.loadOrder(this.domain);
                 this.loadPolicy(this.domain);
