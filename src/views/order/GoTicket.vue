@@ -52,12 +52,20 @@
             <span>{{ formatDate(scope.row.birthday,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="ageType" label="乘机人类型" width="100" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatAgeType(scope.row) }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="cardType" label="乘机人证件类型" width="250" align="center"></el-table-column>
+        <el-table-column
+          prop="ageType"
+          :formatter="formatAgeType"
+          label="乘机人类型"
+          width="100"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="cardType"
+          :formatter="formatCardType"
+          label="乘机人证件类型"
+          width="250"
+          align="center"
+        ></el-table-column>
         <el-table-column prop="cardNo" label="乘机人证件号" align="center"></el-table-column>
         <el-table-column label="票面价" align="center">
           <template slot-scope="scope">
@@ -105,59 +113,76 @@
         v-loading="loading"
         size="mini"
         highlight-current-row
+        @row-click="clickRowHandle"
         style="width: 100%;"
+        ref="refTable"
         fit
       >
         <el-table-column label="渠道" width="100" align="center">蜗牛</el-table-column>
-        <el-table-column prop="dpt" width="80" label="起始地" align="center"></el-table-column>
-        <el-table-column prop="arr" width="80" label="目的地" align="center"></el-table-column>
-        <el-table-column prop="minPrice" width="80" label="最低价" align="center">
+        <el-table-column prop="exTrack" label="报价类型" width="100" align="center"></el-table-column>
+        <el-table-column prop="dptTime" label="出发时间" width="100" align="center"></el-table-column>
+        <el-table-column prop="arrTime" label="到达时间" width="100" align="center"></el-table-column>
+
+        <el-table-column prop="dpt" width="150" label="出发机场三字码" align="center"></el-table-column>
+        <el-table-column prop="dptAirport" label="出发地" align="center"></el-table-column>
+        <el-table-column prop="arr" width="150" label="到达机场三字码" align="center"></el-table-column>
+        <el-table-column prop="arrAirport" label="起始地" align="center"></el-table-column>
+
+        <!-- <el-table-column prop="minPrice" width="80" label="最低价" align="center">
           <template slot-scope="scope">
             <span>{{formatAmount(scope.row.minPrice)}}</span>
           </template>
-        </el-table-column>
+        </el-table-column>-->
+        <el-table-column prop="codeShare" label="是否共享" width="80" align="center"></el-table-column>
         <el-table-column prop="airlineCode" label="航司" width="80" align="center">
           <template slot-scope="scope">
             <span>{{scope.row.flightQuotePrices.arrAirport}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="flightNum" label="主飞航班" width="100" align="center"></el-table-column>
-        <el-table-column prop="shareFlag" label="是否共享" width="80" align="center"></el-table-column>
-        <el-table-column prop="flightNum" label="航班号" width="80" align="center"></el-table-column>
-        <el-table-column label="退改规则" align="center">
+        <el-table-column prop="flightNum" label="主飞航班" align="center"></el-table-column>
+        <el-table-column prop="flightNum" label="航班号" align="center"></el-table-column>
+        <el-table-column prop="barePrice" label="销售价" width="80" align="center">
+          <template slot-scope="scope">
+            <span>{{formatAmount(scope.row.barePrice)}}</span>
+          </template>
+        </el-table-column>
+        <!-- <el-table-column label="退改规则" align="center">
           <template slot-scope="scope">
             <div>退票规则：{{scope.row.returnText}}</div>
             <div>改签规则：{{scope.row.changeText}}</div>
           </template>
-        </el-table-column>
+        </el-table-column>-->
         <el-table-column width="80" label="预定" align="center" type="expand">
           <template slot-scope="props">
-            <el-row
-              type="flex"
-              justify="center"
-              v-for="(item,index) in props.row.sortPrices"
-              :key="index"
-            >
-              <el-col style="text-align:center;line-height:38px;">
-                <span>舱位：{{ item.cabin }}</span>
-              </el-col>
-              <el-col style="text-align:center;line-height:38px;">
-                <span>票面价：{{ formatAmount(item.barePrice) }}</span>
-              </el-col>
-              <el-col style="text-align:center;line-height:38px;">
-                <span>售价：{{ formatAmount(item.price) }}</span>
-              </el-col>
-              <el-col style="text-align:right;line-height:38px;">
-                <span>
-                  <el-button
-                    type="primary"
-                    style="margin-top:10px;"
-                    @click="predetermineOrder(item)"
-                    size="mini"
-                  >预定</el-button>
-                </span>
-              </el-col>
-            </el-row>
+            <div v-if="props.row.offerPrice">
+              <el-row
+                type="flex"
+                justify="center"
+                v-for="(item,index) in props.row.offerPrice.sortPrices"
+                :key="index"
+              >
+                <el-col style="text-align:center;line-height:38px;">
+                  <span>舱位：{{ item.cabin }}</span>
+                </el-col>
+                <el-col style="text-align:center;line-height:38px;">
+                  <span>票面价：{{ formatAmount(item.barePrice) }}</span>
+                </el-col>
+                <el-col style="text-align:center;line-height:38px;">
+                  <span>售价：{{ formatAmount(item.price) }}</span>
+                </el-col>
+                <el-col style="text-align:right;line-height:38px;">
+                  <span>
+                    <el-button
+                      type="primary"
+                      style="margin-top:10px;"
+                      @click="predetermineOrder(props.row,item)"
+                      size="mini"
+                    >预定</el-button>
+                  </span>
+                </el-col>
+              </el-row>
+            </div>
+            <div v-else style="text-align: center;">航班报价搜素中...</div>
           </template>
         </el-table-column>
       </el-table>
@@ -170,7 +195,8 @@ import {
   formateOrderType,
   formateCategory,
   formateStatus,
-  formatAgeType
+  formatAgeType,
+  formatCardType
 } from "@/utils/status.js";
 
 export default {
@@ -193,6 +219,13 @@ export default {
       }
     };
   },
+  // watch: {
+  //   flightData(val, newVal) {
+  //     return (val = newVal);
+  //     console.log(val, "val");
+  //     console.log(newVal, "newVal");
+  //   }
+  // },
   created() {
     this.getOrderDetail();
   },
@@ -208,6 +241,7 @@ export default {
     formateStatus,
     formatAgeType,
     formateCategory,
+    formatCardType,
     getOrderDetail() {
       this.$store
         .dispatch("order/getOrderDetail", this.orderNo)
@@ -234,73 +268,94 @@ export default {
       };
       this.getOrderFlight(this.flightInfo);
     },
-    predetermineOrder(row) {
-      console.log(row);
+    predetermineOrder(row, item) {
+      console.log(row, "row");
+      console.log(item, "item");
+
+      let newParams = {};
+      newParams.flightNum = row.offerPrice.flightNum;
+      newParams.domain = item.domain;
+      newParams.client = item.client;
+      newParams.passengers = this.passengerData;
+      newParams.ticketPrice = item.vppr;
+      newParams.barePrice = item.barePrice;
+      newParams.basePrice = item.basePrice;
+      newParams.price = item.price;
+      newParams.businessExt = item.businessExt;
+      newParams.tag = item.prtag;
+      newParams.cabin = item.cabin;
+      newParams.policyType = item.policyType;
+      newParams.policyId = item.policyId;
+      newParams.wrapperId = item.wrapperId;
+      newParams.carrier = row.offerPrice.carrier;
+      newParams.from = row.offerPrice.from;
+      newParams.to = row.offerPrice.to;
+      newParams.startTime = row.offerPrice.startTime;
+      newParams.dptTime = row.offerPrice.dptTime;
     },
+    // 查询航班
     getOrderFlight(flightInfo) {
       this.$store
         .dispatch("order/getOrderFlight", flightInfo)
         .then(data => {
           if (data) {
-            this.$store
-              .dispatch("order/getOrderMinPrice", flightInfo)
-              .then(res => {
-                if (res) {
-                  data.forEach(item => {
-                    item.minPrice = res.sortPrices[0].price;
-                    item.returnText = res.sortPrices[0].returnText;
-                    item.changeText = res.sortPrices[0].changeText;
-                    let flightPrice = {
-                      arr: this.orderData.flights[0].arr,
-                      dpt: this.orderData.flights[0].dpt,
-                      date: this.formatDate(
-                        this.orderData.flights[0].flightDate,
-                        "YYYY-MM-DD"
-                      ),
-                      ex_track: item.exTrack,
-                      flightNum: this.orderData.flights[0].flightCode
-                    };
-                    this.getFlightPrice(flightPrice);
-                  });
-                }
-                this.flightData = data;
-                this.loading = false;
-              })
-              .catch(error => {
-                this.loading = false;
-                console.log(error);
-              });
+            // this.$store
+            //   .dispatch("order/getOrderMinPrice", flightInfo)
+            //   .then(res => {
+            //     if (res) {
+            //       data.forEach(item => {
+            //         item.minPrice = res.sortPrices[0].price;
+            //         item.returnText = res.sortPrices[0].returnText;
+            //         item.changeText = res.sortPrices[0].changeText;
+            //       });
+            //     }
+            this.flightData = data;
+            this.loading = false;
+            //   })
+            //   .catch(error => {
+            //     this.loading = false;
+            //     console.log(error);
+            //   });
           }
         })
         .catch(error => {
+          this.loading = false;
+
           console.log(error);
         });
     },
+    // 蜗牛搜素报价
     getFlightPrice(flightPrice) {
+      let temp = [];
       this.$store
         .dispatch("order/getFlightPrice", flightPrice)
         .then(data => {
           if (data) {
-            this.flightData.forEach(item => {
-              item.sortPrices = data.sortPrices;
+            this.flightData.forEach((item, index) => {
+              if (item.flightNum == flightPrice.flightNum) {
+                this.$set((item["offerPrice"] = data));
+              }
             });
           }
+          console.log(this.flightData, "111111");
         })
         .catch(error => {
           console.log(error);
         });
     },
-    // getRowKeys(row) {
-    //   return row.exTrack;
-    // },
-    // clickRowHandle(row, column, event) {
-    //   console.log(row, column, event)
-    //   if (this.expands.includes(row.exTrack)) {
-    //     this.expands = this.expands.filter(val => val !== row.exTrack);
-    //   } else {
-    //     this.expands.push(row.exTrack);
-    //   }
-    // },
+    //点击表格行展开展开行
+    clickRowHandle(row, index, e) {
+      console.log(row, "click");
+      let flightPrice = {
+        arr: row.arr,
+        dpt: row.dpt,
+        date: row.flightDate,
+        ex_track: row.exTrack,
+        flightNum: row.flightNum
+      };
+      this.getFlightPrice(flightPrice);
+      this.$refs.refTable.toggleRowExpansion(row);
+    },
     /*初始化用工列表中的生日日期格式*/
     initDate(dateStr, format) {
       if (dateStr > 0) {
