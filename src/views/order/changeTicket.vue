@@ -164,7 +164,7 @@ export default {
         flightData: "",
         changePassagers: "",
         applyRemarks: "",
-        totalAmount: ""
+        totalAmount: 0
       }
     };
   },
@@ -205,7 +205,6 @@ export default {
     },
     // 航班表格选择复选框选中处理
     handleFlightChange(rows) {
-      console.log(rows)
       this.formData.flightData = rows;
     },
     // 改签查询
@@ -299,8 +298,7 @@ export default {
           Number(this.formData.flightData[0].childGqFee) * childCount +
           Number(this.formData.flightData[0].childUpgradeFee) * childCount;
       }
-      let totalCount = adultCount + childCount;
-
+      let totalCount = adultFee + childFee;
       if (totalCount != this.formData.totalAmount) {
         this.$notify({
           title: "提示",
@@ -310,7 +308,6 @@ export default {
         });
         return;
       }
-      // console.log(totalCount)
       this.$emit("onSavechange", this.formData);
     },
     // 改签原因选中处理
