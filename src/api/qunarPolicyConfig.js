@@ -31,9 +31,9 @@ export function removeOne(domain) {
   });
 }
 
-export function getOne(domain) {
+export function getOne(user) {
   return request({
-    url: `/qunar/policy/config/one/${domain}`,
+    url: `/qunar/policy/config/one/${user}`,
     method: 'get'
   });
 }

@@ -52,8 +52,8 @@ const actions = {
   },
   getOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {domain} = params;
-      getOne(domain)
+      const {user} = params;
+      getOne(user)
         .then(response => {
           const {data} = response;
           resolve(data);

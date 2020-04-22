@@ -306,6 +306,7 @@
               <el-option label="二次退票" value="21"></el-option>
               <el-option label="退差" value="22"></el-option>
               <el-option label="退改" value="23"></el-option>
+              <el-option label="未出票申请退款" value="40"></el-option>
             </el-select>
           </el-form-item>
         </el-col>

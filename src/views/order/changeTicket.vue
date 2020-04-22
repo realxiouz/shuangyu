@@ -95,6 +95,7 @@
           ref="changeFlight"
           size="mini"
           highlight-current-row
+          @selection-change="handleFlightChange"
           fit
           style="width: 100%;"
         >
@@ -163,7 +164,7 @@ export default {
         flightData: "",
         changePassagers: "",
         applyRemarks: "",
-        totalAmount: ""
+        totalAmount: 0
       }
     };
   },
@@ -204,7 +205,7 @@ export default {
     },
     // 航班表格选择复选框选中处理
     handleFlightChange(rows) {
-      this.flightData = rows;
+      this.formData.flightData = rows;
     },
     // 改签查询
     changeSearchData(params) {
@@ -257,7 +258,7 @@ export default {
         });
         return;
       }
-      if (this.formData.changeFlightSegmentList.length == 0) {
+      if (this.formData.flightData.length == 0) {
         this.$notify({
           title: "提示",
           message: "请选择需要改签的航班",
@@ -266,7 +267,7 @@ export default {
         });
         return;
       }
-      if (this.formData.changeFlightSegmentList.length > 1) {
+      if (this.formData.flightData.length > 1) {
         this.$notify({
           title: "提示",
           message: "改签航班只能选择一个",
@@ -278,39 +279,35 @@ export default {
       let adultCount = 0;
       let childCount = 0;
 
-      // this.formData.changePassagers.forEach(item => {
-      //   if (item.ageType == "0") {
-      //     adultCount += 1;
-      //   } else if (item.ageType == "1") {
-      //     childCount += 1;
-      //   }
-      // });
-      // let adultFee = 0;
-      // if (adultCount > 0) {
-      //   adultFee =
-      //     Number(this.formData.changeFlightSegmentList[0].gqFee) * adultCount +
-      //     Number(this.formData.changeFlightSegmentList[0].upgradeFee) *
-      //       adultCount;
-      // }
-      // let childFee = 0;
-      // if (childCount > 0) {
-      //   childFee =
-      //     Number(this.formData.changeFlightSegmentList[0].childGqFee) *
-      //       childCount +
-      //     Number(this.formData.changeFlightSegmentList[0].childUpgradeFee) *
-      //       childCount;
-      // }
-      // let totalCount = adultCount + childCount;
-
-      // if (totalCount != this.formData.totalAmount) {
-      //   this.$notify({
-      //     title: "提示",
-      //     message: "改签费计算错误",
-      //     type: "warning",
-      //     duration: 4500
-      //   });
-      //   return;
-      // }
+      this.formData.changePassagers.forEach(item => {
+        if (item.ageType == "0") {
+          adultCount += 1;
+        } else if (item.ageType == "1") {
+          childCount += 1;
+        }
+      });
+      let adultFee = 0;
+      if (adultCount > 0) {
+        adultFee =
+          Number(this.formData.flightData[0].gqFee) * adultCount +
+          Number(this.formData.flightData[0].upgradeFee) * adultCount;
+      }
+      let childFee = 0;
+      if (childCount > 0) {
+        childFee =
+          Number(this.formData.flightData[0].childGqFee) * childCount +
+          Number(this.formData.flightData[0].childUpgradeFee) * childCount;
+      }
+      let totalCount = adultFee + childFee;
+      if (totalCount != this.formData.totalAmount) {
+        this.$notify({
+          title: "提示",
+          message: "改签费计算错误",
+          type: "warning",
+          duration: 4500
+        });
+        return;
+      }
       this.$emit("onSavechange", this.formData);
     },
     // 改签原因选中处理
@@ -382,7 +379,7 @@ export default {
   created() {
     let params = {};
     params.purchaseOrderNo = this.changeData.sourceOrderNo;
-    params.changeDptDate = this.changeDataTop.flightDate
+    params.changeDptDate = this.changeDataTop.flightDate;
     this.changeSearchData(params);
     let arr = [];
     for (let i = 0; i < this.changeDataTop.passagers.length; i++) {
