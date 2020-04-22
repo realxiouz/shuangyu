@@ -78,8 +78,8 @@ const actions = {
   },
   getList({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {filter} = params;
-      getList(filter)
+      const {filters} = params;
+      getList(filters)
         .then(response => {
           const {data} = response;
           resolve(data);
