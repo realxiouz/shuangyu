@@ -367,6 +367,7 @@ http://123.123.123.1:9000</span>
                     .dispatch("qunarPolicyConfig/save", params)
                     .then(data => {
                         if (data) {
+                            this.loadPolicy(this.domain, this.firmId);
                             this.$message({
                                 type: "success",
                                 message: "保存成功！"
