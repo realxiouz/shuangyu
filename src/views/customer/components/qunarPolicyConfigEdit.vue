@@ -82,7 +82,7 @@
             handleGetOne(user) {
                 if (user) {
                     this.$store
-                        .dispatch("api/getOne", {user: user})
+                        .dispatch("qunarPolicyConfig/getOne", {user: user})
                         .then(data => {
                             this.formData = data;
                             this.dialogVisible = true;
