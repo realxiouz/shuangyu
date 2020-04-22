@@ -7,13 +7,6 @@
       <el-form ref="form" :rules="rules" :model="formData" label-width="130px" size="mini">
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="域名:" prop="domain">
-              <el-input v-model="formData.domain" disabled></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="key:" prop="key">
               <el-input v-model="formData.key"></el-input>
             </el-form-item>
@@ -57,9 +50,6 @@
                 domain: '',
                 openId: '',
                 rules: {
-                    domain: [
-                        {required: true, message: "域名不能为空", trigger: "blur"}
-                    ],
                     key: [
                         {required: true, message: "请输入key", trigger: "blur"}
                     ],
@@ -70,17 +60,15 @@
             }
         },
         methods: {
-            loadData(domain) {
-                if (!domain) {
-                    domain = this.formData.domain;
+            loadData(firmId) {
+                if (!firmId) {
+                    firmId = this.formData.firmId;
                 }
                 this.$store
-                    .dispatch("qunarOrderNotifyConfig/getOne", {domain: domain})
+                    .dispatch("woniuConfig/getOne", {firmId: firmId})
                     .then(data => {
                         if (data && data.domain) {
                             this.formData = data;
-                        } else {
-                            this.formData.domain = this.domain;
                         }
                         this.loading = false;
                     })
@@ -133,13 +121,14 @@
             }
         },
         created() {
-            this.domain = this.$route.query.domain;
+            this.firmId = this.$route.query.firmId;
             this.openId = this.$route.query.openId;
             if (this.openId) {
                 this.formData.openId = this.openId;
             }
-            if (this.domain) {
-                this.loadData(this.domain);
+            if (this.firmId) {
+                this.formData.firmId = this.firmId;
+                this.loadData(this.firmId);
             }
         }
     }

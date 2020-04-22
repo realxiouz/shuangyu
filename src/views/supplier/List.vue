@@ -117,7 +117,7 @@
                 this.$router.push({
                     path: path,
                     query: {
-                        domain: row.domain,
+                        firmId: row.firmId,
                         openId: row.openId
                     }
                 });

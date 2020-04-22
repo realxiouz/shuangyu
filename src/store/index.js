@@ -43,6 +43,7 @@ import accountSubject from "./modules/accountSubject";
 import orderTaskTotal from "./modules/orderTaskTotal";
 import currency from "./modules/currency";
 import warehouse from "./modules/warehouse";
+import woniuConfig from "./modules/woniuConfig";
 import {getLoginInfo} from "@/api/staff";
 
 Vue.use(Vuex);
@@ -90,6 +91,7 @@ export default new Vuex.Store({
     accountSubject,
     orderTaskTotal,
     currency,
+    woniuConfig,
     warehouse
   },
   state: {
