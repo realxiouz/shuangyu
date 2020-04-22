@@ -23,11 +23,11 @@
         <el-table-column prop="remark" label="备注" align="center"></el-table-column>
         <el-table-column label="操作" fixed="right">
           <template slot-scope="scope">
+            <!--            <span v-show="scope.row.openId && '' != scope.row.openId">-->
+            <el-button type="info" size="mini" @click="handleSupplement(scope.row)">配置管理</el-button>
+            <!--            </span>-->
             <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
             <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-            <span v-show="scope.row.openId && '' != scope.row.openId">
-              <el-button type="info" size="mini" @click="handleSupplement(scope.$index, scope.row)">完善平台</el-button>
-            </span>
           </template>
         </el-table-column>
       </el-table>
@@ -36,111 +36,123 @@
 </template>
 
 <script>
-import firmSearch from "./Search";
+    import firmSearch from "./Search";
 
-export default {
-  data() {
-    return {
-      loading: true,
-      tableData: [],
-      curNode: {},
-      tableProps: {
-        hasChildren: "xxx",
-        children: "children"
-      }
+    export default {
+        data() {
+            return {
+                loading: true,
+                tableData: [],
+                curNode: {},
+                tableProps: {
+                    hasChildren: "xxx",
+                    children: "children"
+                }
+            };
+        },
+        methods: {
+            /*加载供应商列表*/
+            loadData(params) {
+                if (params) {
+                    params.type = 1;
+                } else {
+                    let newParams = {};
+                    newParams.type = 1;
+                    params = newParams;
+                }
+                this.$store
+                    .dispatch("firm/getDealerCustomerList", {filters: params})
+                    .then(data => {
+                        if (data) {
+                            this.tableData = data;
+                        }
+                        this.loading = false;
+                    })
+                    .catch(error => {
+                        this.loading = false;
+                        console.log(error);
+                    });
+            },
+            /*根据关键字进行供应商搜索*/
+            handleSearch(params) {
+                const newParams = {};
+                if (params) {
+                    for (let key in params) {
+                        if (params[key]) {
+                            newParams[key] = params[key];
+                        }
+                    }
+                }
+                this.loadData(newParams);
+                this.$message({
+                    type: "success",
+                    message: "查询成功！"
+                });
+            },
+            handleAdd() {
+                this.skipDetail();
+            },
+            handleEdit(index, row) {
+                this.skipDetail(row.firmId);
+            },
+            handleDelete(index, row) {
+                this.open(
+                    this.remove,
+                    row.firmId,
+                    "此操作将删除该供应商信息及子供应商信息, 是否继续?"
+                );
+            },
+            remove(params) {
+                this.$store
+                    .dispatch("firm/removeOne", {firmID: params})
+                    .then(() => {
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            handleSupplement(row) {
+                let path = "";
+                path = "/woniu/config";
+                this.$router.push({
+                    path: path,
+                    query: {
+                        domain: row.domain,
+                        openId: row.openId
+                    }
+                });
+            },
+            open(func, data, message) {
+                this.$confirm(message, "提示", {
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消",
+                    type: "warning"
+                })
+                    .then(() => {
+                        func(data);
+                        this.loadData();
+                        this.$message({
+                            type: "success",
+                            message: "删除成功!"
+                        });
+                    })
+                    .catch(() => {
+                        this.$message({
+                            type: "info",
+                            message: "已取消删除"
+                        });
+                    });
+            },
+            /*跳转到供应商编辑页面，addRoot用于判断添加的是否是根节点，firmId用于编辑记录时进行查找。*/
+            skipDetail(firmId) {
+                this.$router.push({path: '/supplier/add', query: {firmId: firmId}});
+            }
+        },
+        mounted() {
+            this.loadData();
+        },
+        components: {
+            firmSearch
+        }
     };
-  },
-  methods: {
-    /*加载供应商列表*/
-    loadData(params) {
-        if(params){
-            params.type = 1;
-        }else {
-            let newParams = {};
-            newParams.type = 1;
-            params = newParams;
-        }
-      this.$store
-        .dispatch("firm/getDealerCustomerList", { filters: params })
-        .then(data => {
-          if (data) {
-            this.tableData = data;
-          }
-          this.loading = false;
-        })
-        .catch(error => {
-          this.loading = false;
-          console.log(error);
-        });
-    },
-    /*根据关键字进行供应商搜索*/
-    handleSearch(params) {
-      const newParams = {};
-      if (params) {
-        for (let key in params) {
-          if (params[key]) {
-            newParams[key] = params[key];
-          }
-        }
-      }
-      this.loadData(newParams);
-      this.$message({
-        type: "success",
-        message: "查询成功！"
-      });
-    },
-    handleAdd() {
-        this.skipDetail();
-    },
-    handleEdit(index, row) {
-        this.skipDetail(row.firmId);
-    },
-    handleDelete(index, row) {
-      this.open(
-        this.remove,
-        row.firmId,
-        "此操作将删除该供应商信息及子供应商信息, 是否继续?"
-      );
-    },
-    remove(params) {
-      this.$store
-        .dispatch("firm/removeOne", { firmID: params })
-        .then(() => {})
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    open(func, data, message) {
-      this.$confirm(message, "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          func(data);
-          this.loadData();
-          this.$message({
-            type: "success",
-            message: "删除成功!"
-          });
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除"
-          });
-        });
-    },
-      /*跳转到供应商编辑页面，addRoot用于判断添加的是否是根节点，firmId用于编辑记录时进行查找。*/
-      skipDetail(firmId){
-          this.$router.push({path: '/supplier/add', query: {firmId: firmId}});
-      }
-  },
-  mounted() {
-    this.loadData();
-  },
-  components: {
-    firmSearch
-  }
-};
 </script>

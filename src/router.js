@@ -360,6 +360,13 @@ export default new Router({
           name: 'config',
           component: () => import('@/views/customer/qunarConfig'),
           meta: {title: '客户去哪儿接口管理', icon: 'home'}
+        },
+        {
+          title: '供应商蜗牛接口管理',
+          path: '/woniu/config',
+          name: 'config',
+          component: () => import('@/views/supplier/WoniuConfig'),
+          meta: {title: '客户去哪儿接口管理', icon: 'home'}
         }
       ]
     },
