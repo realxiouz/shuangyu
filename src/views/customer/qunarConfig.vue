@@ -284,7 +284,6 @@ http://123.123.123.1:9000</span>
                             });
                     }
                 })
-
             },
             removeNotify() {
                 if (this.notifyData && this.notifyData.domain) {
