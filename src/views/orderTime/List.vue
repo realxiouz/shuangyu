@@ -119,7 +119,7 @@
                     if (params.orderType == 30 && params.category == 0) {
                         let orderTypes = "[30, 31, 32]";
                         newParams.orderTypes = orderTypes;
-                        newParams.orderType = null;
+                        delete newParams.orderType;
                     }
                     this.searchParams = newParams;
                     this.loadData(this.searchParams);
