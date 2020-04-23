@@ -97,7 +97,7 @@
             <span>{{ formatDate(scope.row.flightDate,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="arrTime" label="到达时间" width="100" align="center"></el-table-column>
+        <el-table-column prop="dptTime" label="出发时间" width="100" align="center"></el-table-column>
         <el-table-column prop="refundRule" label="退票规则" align="center"></el-table-column>
         <el-table-column prop="changeRule" label="改签规则" align="center"></el-table-column>
       </el-table>
@@ -114,6 +114,7 @@
         size="mini"
         highlight-current-row
         @row-click="clickRowHandle"
+        @expand-change="expandChange"
         style="width: 100%;"
         ref="refTable"
         fit
@@ -134,9 +135,9 @@
           </template>
         </el-table-column>-->
         <el-table-column prop="codeShare" label="是否共享" width="80" align="center"></el-table-column>
-        <el-table-column prop="airlineCode" label="航司" width="80" align="center">
+        <el-table-column prop="carrier" label="航司" width="80" align="center">
           <template slot-scope="scope">
-            <span>{{scope.row.flightQuotePrices.arrAirport}}</span>
+            <span>{{scope.row.flightQuotePrices.carrier}}</span>
           </template>
         </el-table-column>
         <el-table-column prop="flightNum" label="主飞航班" align="center"></el-table-column>
@@ -187,6 +188,37 @@
         </el-table-column>
       </el-table>
     </el-card>
+    <div>
+      <el-dialog
+        title="支付"
+        center
+        :visible.sync="payShow"
+        width="40%"
+        :close-on-click-modal="false"
+      >
+        <div>
+          <el-row style="margin-bottom: 25px;text-align: center;">
+            <span>金额：{{payData.allPrice }}</span>
+          </el-row>
+          <div style="text-align: center;">
+            <span>支付方式：</span>
+            <el-select
+              style="height:20px;"
+              clearable
+              v-model="payData.bankCode"
+              placeholder="请选择支付方式"
+            >
+              <el-option label="支付宝" value="ALIPAY"></el-option>
+              <el-option label="汇付" value="PNRPAY"></el-option>
+            </el-select>
+          </div>
+        </div>
+        <div style="margin-top: 25px;text-align: right;">
+          <el-button size="mini" @click="onCancel">取 消</el-button>
+          <el-button size="mini" @click="confirmPay" type="primary">确定</el-button>
+        </div>
+      </el-dialog>
+    </div>
   </div>
 </template>
 
@@ -205,6 +237,7 @@ export default {
     return {
       orderNo: this.$route.query.orderNo,
       flightShow: false,
+      payShow: false,
       orderData: {},
       flightData: [],
       loading: true,
@@ -216,16 +249,18 @@ export default {
         dptDay: "",
         dptTime: "",
         flightCode: ""
+      },
+      //支付数据
+      payData: {
+        allPrice: "",
+        bankCode: "",
+        cabin: "",
+        params: "",
+        payOrderNo: "",
+        sellOrderNo: ""
       }
     };
   },
-  // watch: {
-  //   flightData(val, newVal) {
-  //     return (val = newVal);
-  //     console.log(val, "val");
-  //     console.log(newVal, "newVal");
-  //   }
-  // },
   created() {
     this.getOrderDetail();
   },
@@ -242,6 +277,12 @@ export default {
     formatAgeType,
     formateCategory,
     formatCardType,
+    onCancel() {
+      this.payShow = false;
+    },
+    confirmPay() {
+      this.payShow = false;
+    },
     getOrderDetail() {
       this.$store
         .dispatch("order/getOrderDetail", this.orderNo)
@@ -269,16 +310,22 @@ export default {
       this.getOrderFlight(this.flightInfo);
     },
     predetermineOrder(row, item) {
-      console.log(row, "row");
-      console.log(item, "item");
-
       let newParams = {};
       newParams.flightNum = row.offerPrice.flightNum;
       newParams.domain = item.domain;
-      newParams.client = item.client;
-      newParams.passengers = this.passengerData;
-      
+      newParams.client = item.domain;
+      newParams.passengers = [];
+      this.passengerData.forEach(item => {
+        let obj = {
+          name: item.name,
+          ageType: item.ageType,
+          cardType: item.cardType,
+          cardNo: item.cardNo,
+          price: item.viewPrice
+        };
 
+        newParams.passengers.push(obj);
+      });
 
       newParams.ticketPrice = item.vppr;
       newParams.barePrice = item.barePrice;
@@ -295,7 +342,28 @@ export default {
       newParams.to = row.offerPrice.to;
       newParams.startTime = row.offerPrice.startTime;
       newParams.dptTime = row.offerPrice.dptTime;
-      console.log(newParams,"newParams")
+      console.log(newParams, "newParams");
+      this.$store
+        .dispatch("order/placeAnOrder", newParams)
+        .then(data => {
+          if (data.code == 0) {
+            console.log(data, "111111");
+            this.payShow = true;
+            this.$message({
+              type: "success",
+              message: "预定成功！"
+            });
+          }else{
+            this.payShow = false;
+            this.$message({
+              type: "warning",
+              message: data.msg
+            });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
     // 查询航班
     getOrderFlight(flightInfo) {
@@ -340,7 +408,7 @@ export default {
               }
             });
           }
-          console.log(this.flightData, "111111");
+          // console.log(this.flightData, "111111");
         })
         .catch(error => {
           console.log(error);
@@ -348,7 +416,7 @@ export default {
     },
     //点击表格行展开展开行
     clickRowHandle(row, index, e) {
-      console.log(row, "click");
+      // console.log(row, "click");
       let flightPrice = {
         arr: row.arr,
         dpt: row.dpt,
@@ -358,6 +426,17 @@ export default {
       };
       this.getFlightPrice(flightPrice);
       this.$refs.refTable.toggleRowExpansion(row);
+    },
+    expandChange(row) {
+      // console.log(row,"wwwww")
+      let flightPrice = {
+        arr: row.arr,
+        dpt: row.dpt,
+        date: row.flightDate,
+        ex_track: row.exTrack,
+        flightNum: row.flightNum
+      };
+      this.getFlightPrice(flightPrice);
     },
     /*初始化用工列表中的生日日期格式*/
     initDate(dateStr, format) {

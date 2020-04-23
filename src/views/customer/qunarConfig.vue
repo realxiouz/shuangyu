@@ -93,7 +93,7 @@ http://123.123.123.1:9000</span>
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="密码:" prop="pass">
-              <el-input v-model="orderData.pass"></el-input>
+              <el-input v-model="orderData.pass" show-password></el-input>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -151,7 +151,7 @@ http://123.123.123.1:9000</span>
           <template slot-scope="scope">
             <el-button @click="policyEdit(scope.row)" type="primary" size="mini">编辑</el-button>
             <el-button
-              @click="policyRemove(scope.row.user,scope.$index,policyData)"
+              @click="policyRemove(scope.row,scope.$index,policyData)"
               type="danger"
               size="mini"
             >删除
@@ -165,7 +165,7 @@ http://123.123.123.1:9000</span>
         width="30%"
         :close-on-click-modal="false"
       >
-        <policy-config-edit v-if="dialogVisible" :domain="domain" :open-id="openId" :user="user"
+        <policy-config-edit v-if="dialogVisible" :user="user" :firmId="firmId" :domain="domain"
                             @onCancel="handleCancel"
                             @onSave="policySave"></policy-config-edit>
       </el-dialog>
@@ -252,9 +252,9 @@ http://123.123.123.1:9000</span>
                         console.log(error);
                     });
             },
-            loadPolicy(domain) {
+            loadPolicy(domain, firmId) {
                 this.$store
-                    .dispatch("qunarPolicyConfig/getList", {filters: {"domain": domain}})
+                    .dispatch("qunarPolicyConfig/getList", {filters: {"domain": domain, "firmId": firmId}})
                     .then(data => {
                         if (data) {
                             this.policyData = data;
@@ -360,11 +360,14 @@ http://123.123.123.1:9000</span>
                 this.dialogVisible = false;
                 if (params) {
                     params.openId = this.openId;
+                    params.domain = this.domain;
+                    params.firmId = this.firmId;
                 }
                 this.$store
                     .dispatch("qunarPolicyConfig/save", params)
                     .then(data => {
                         if (data) {
+                            this.loadPolicy(this.domain, this.firmId);
                             this.$message({
                                 type: "success",
                                 message: "保存成功！"
@@ -377,16 +380,17 @@ http://123.123.123.1:9000</span>
             },
             policyEdit(row) {
                 this.user = row.user;
+                this.firmId = row.firmId;
                 this.dialogVisible = true;
             },
-            policyRemove(domain, index, rows) {
+            policyRemove(row, index, rows) {
                 this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
                     confirmButtonText: "确定",
                     cancelButtonText: "取消",
                     type: "warning"
                 })
                     .then(() => {
-                        this.$store.dispatch("qunarPolicyConfig/removeOne", {domain: domain})
+                        this.$store.dispatch("qunarPolicyConfig/removeOne", {user: row.user, firmId: row.firmId})
                             .then(() => {
                                 rows.splice(index, 1);
                             });
@@ -399,6 +403,11 @@ http://123.123.123.1:9000</span>
         created() {
             this.domain = this.$route.query.domain;
             this.openId = this.$route.query.openId;
+            this.firmId = this.$route.query.firmId;
+            if (this.firmId) {
+                this.notifyData.firmId = this.firmId;
+                this.orderData.firmId = this.firmId;
+            }
             if (this.openId) {
                 this.notifyData.openId = this.openId;
                 this.orderData.openId = this.openId;
@@ -406,8 +415,9 @@ http://123.123.123.1:9000</span>
             if (this.domain) {
                 this.loadNotify(this.domain);
                 this.loadOrder(this.domain);
-                this.loadPolicy(this.domain);
+                this.loadPolicy(this.domain, this.firmId);
             }
+
         },
         components: {
             policyConfigEdit,

@@ -39,6 +39,7 @@
     import firmSearch from "./Search";
 
     export default {
+        name:"woniuConfig",
         data() {
             return {
                 loading: true,
@@ -106,6 +107,7 @@
                 this.$store
                     .dispatch("firm/removeOne", {firmID: params})
                     .then(() => {
+                        this.loadData();
                     })
                     .catch(error => {
                         console.log(error);
@@ -117,7 +119,7 @@
                 this.$router.push({
                     path: path,
                     query: {
-                        domain: row.domain,
+                        firmId: row.firmId,
                         openId: row.openId
                     }
                 });

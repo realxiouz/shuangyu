@@ -357,14 +357,14 @@ export default new Router({
         {
           title: '客户去哪儿接口管理',
           path: '/qunar/config',
-          name: 'config',
+          name: 'qunarOrderConfig',
           component: () => import('@/views/customer/qunarConfig'),
           meta: {title: '客户去哪儿接口管理', icon: 'home'}
         },
         {
           title: '供应商蜗牛接口管理',
           path: '/woniu/config',
-          name: 'config',
+          name: 'woniuConfig',
           component: () => import('@/views/supplier/WoniuConfig'),
           meta: {title: '客户去哪儿接口管理', icon: 'home'}
         }

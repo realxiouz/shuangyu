@@ -24,16 +24,16 @@ export function updateOne(data) {
   });
 }
 
-export function removeOne(domain) {
+export function removeOne(user, firmId) {
   return request({
-    url: `/qunar/policy/config/remove/one/${domain}`,
+    url: `/qunar/policy/config/remove/one/${user}/${firmId}`,
     method: 'delete'
   });
 }
 
-export function getOne(user) {
+export function getOne(user, firmId) {
   return request({
-    url: `/qunar/policy/config/one/${user}`,
+    url: `/qunar/policy/config/one/${user}/${firmId}`,
     method: 'get'
   });
 }

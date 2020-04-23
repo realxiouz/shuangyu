@@ -70,6 +70,7 @@
     import qunarOrderConfigEdit from "./Edit";
 
     export default {
+        name:"qunarOrderConfig",
         data() {
             return {
                 loading: true,

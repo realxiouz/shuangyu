@@ -1,4 +1,4 @@
-import {addOne, getList, getOne, getPageList, getTotal, removeOne, save, updateOne} from '@/api/qunarPolicyConfig';
+import {addOne, getList, getOne, removeOne, save, updateOne} from '@/api/woniuConfig';
 
 const actions = {
   save({commit}, params) {
@@ -39,8 +39,8 @@ const actions = {
   },
   removeOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {user, firmId} = params;
-      removeOne(user, firmId)
+      const {firmId} = params;
+      removeOne(firmId)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -52,21 +52,8 @@ const actions = {
   },
   getOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {user, firmId} = params;
-      getOne(user, firmId)
-        .then(response => {
-          const {data} = response;
-          resolve(data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  getTotal({commit}, params) {
-    return new Promise((resolve, reject) => {
-      const {filter} = params;
-      getTotal(filter)
+      const {firmId} = params;
+      getOne(firmId)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -78,21 +65,8 @@ const actions = {
   },
   getList({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {filters} = params;
-      getList(filters)
-        .then(response => {
-          const {data} = response;
-          resolve(data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  getPageList({commit}, params) {
-    return new Promise((resolve, reject) => {
-      const {pageFlag, pageSize, lastId, filter} = params;
-      getPageList(pageFlag, pageSize, lastId, filter)
+      const {filter} = params;
+      getList(filter)
         .then(response => {
           const {data} = response;
           resolve(data);

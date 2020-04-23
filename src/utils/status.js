@@ -70,6 +70,73 @@ export function formateOederStatus(row) {
         return "蜗牛订单号错误";
     }
 }
+export const statusData = [
+    {
+        value: 1,
+        label: "下单成功"
+    },
+    {
+        value: 2,
+        label: "下支付成功等待出票单成功"
+    },
+    {
+        value: 3,
+        label: "出票中"
+    },
+    {
+        value: 4,
+        label: "出票完成"
+    },
+    {
+        value: 5,
+        label: "订单取消"
+    },
+    {
+        value: 10,
+        label: "未出票申请退款"
+    },
+    {
+        value: 11,
+        label: "退票申请中"
+    },
+    {
+        value: 12,
+        label: "退票完成等待退款"
+    },
+    {
+        value: 13,
+        label: "退款完成"
+    },
+    {
+        value: 19,
+        label: "退款驳回"
+    },
+    {
+        value: 20,
+        label: "改签申请中"
+    },
+    {
+        value: 21,
+        label: "改签完成"
+    },
+    {
+        value: 29,
+        label: "改签驳回"
+    },
+    {
+        value: 40,
+        label: "等待座位确认"
+    },
+    {
+        value: 41,
+        label: "订座成功等待价格确认"
+    },
+    {
+        value: 50,
+        label: "蜗牛订单号错误"
+    }
+]
+
 
 // 格式化订单分类
 export function formateCategory(row) {
@@ -96,6 +163,41 @@ export function formateOrderType(row) {
         return row.orderType
     }
 }
+//订单类型
+export const orderType = [
+    {
+        value: 10,
+        label: "出票"
+    },
+    {
+        value: 20,
+        label: "退票"
+    },
+    {
+        value: 21,
+        label: "二次退票"
+    },
+    {
+        value: 22,
+        label: "退差"
+    },
+    {
+        value: 23,
+        label: "退改"
+    },
+    {
+        value: 30,
+        label: "改签"
+    },
+    {
+        value: 31,
+        label: "二次改签"
+    },
+    {
+        value: 32,
+        label: "改签驳回"
+    }
+]
 
 // 格式化航程类型
 
@@ -179,105 +281,60 @@ export function formatTaskStatus(row) {
         return row.taskStatus
     }
 }
-//订单类型
-export const orderType = [
-    {
-        value: 10,
-        label: "出票"
-    },
-    {
-        value: 20,
-        label: "退票"
-    },
-    {
-        value: 21,
-        label: "二次退票"
-    },
-    {
-        value: 22,
-        label: "退差"
-    },
-    {
-        value: 23,
-        label: "退改"
-    },
-    {
-        value: 30,
-        label: "改签"
-    },
-    {
-        value: 31,
-        label: "二次改签"
-    },
-    {
-        value: 32,
-        label: "改签驳回"
+//格式化订单任务类型
+export function formatTaskType(row) {
+    if (row.taskType == 1) {
+        return "出票（支付成功等待出票）";
+    } else if (row.taskType == 2) {
+        return "退票（申请退票）";
+    } else if (row.taskType == 3) {
+        return "改签（申请改签）";
+    } else if (row.taskType == 4) {
+        return "未出票申请退款（未出票申请退款）";
+    } else if (row.taskType == 5) {
+        return "消息";
+    } else if (row.taskType == 6) {
+        return "质检";
+    } else if (row.taskType == 11) {
+        return "补订单";
+    } else if (row.taskType == 12) {
+        return "填写订单号";
+    } else {
+        return "";
     }
-]
-export const statusData = [
+}
+export const taskTypeValue = [
     {
         value: 1,
-        label: "下单成功"
+        label: "出票（支付成功等待出票）"
     },
     {
         value: 2,
-        label: "下支付成功等待出票单成功"
+        label: "退票（申请退票）"
     },
     {
         value: 3,
-        label: "出票中"
+        label: "改签（申请改签）"
     },
     {
         value: 4,
-        label: "出票完成"
+        label: "未出票申请退款（未出票申请退款）"
     },
     {
         value: 5,
-        label: "订单取消"
+        label: "消息"
     },
     {
-        value: 10,
-        label: "未出票申请退款"
+        value: 6,
+        label: "质检"
     },
     {
         value: 11,
-        label: "退票申请中"
+        label: "补订单"
     },
     {
         value: 12,
-        label: "退票完成等待退款"
-    },
-    {
-        value: 13,
-        label: "退款完成"
-    },
-    {
-        value: 19,
-        label: "退款驳回"
-    },
-    {
-        value: 20,
-        label: "退票申请中"
-    },
-    {
-        value: 21,
-        label: "改签完成"
-    },
-    {
-        value: 29,
-        label: "改签驳回"
-    },
-    {
-        value: 40,
-        label: "等待座位确认"
-    },
-    {
-        value: 41,
-        label: "订座成功等待价格确认"
-    },
-    {
-        value: 50,
-        label: "蜗牛订单号错误"
+        label: "填写订单号"
     }
 ]
 
@@ -295,3 +352,4 @@ export const purchaseOrderTypeStatus = [
         label: "改签"
     }
 ]
+
