@@ -203,7 +203,7 @@
                 });
             },
             loadContacts(firmId){
-                this.$store.dispatch("staff/getList", {filter: {firmId: firmId}})
+                this.$store.dispatch("staff/getListByFirmId", {firmId: firmId, filter: {}})
                     .then(data => {
                         this.contacts = data.data;
                     }).catch(error => {
@@ -211,7 +211,7 @@
                 });
             },
             loadAccounts(firmId){
-                this.$store.dispatch("openAccount/getList", {filters: {firmId: firmId}})
+                this.$store.dispatch("openAccount/getList", {filter: {firmId: firmId}})
                     .then(data => {
                         this.accounts = data.data;
                     }).catch(error => {
@@ -271,8 +271,8 @@
                 })
                 this.$store
                     .dispatch(url, {firm: this.formData, contacts: this.contacts, accounts: accountList})
-                    .then(data => {
-                        console.log(data);
+                    .then(() => {
+                       this.goBack();
                     })
                     .catch(error => {
                         console.log(error);
