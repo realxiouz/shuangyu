@@ -39,6 +39,7 @@
     import firmSearch from "./Search";
 
     export default {
+        name:"woniuConfig",
         data() {
             return {
                 loading: true,
