@@ -46,11 +46,12 @@
         </el-row>
       </el-form>
       <div style="text-align: center">
-        <el-button size="mini" v-if="formData.status ==1" type="primary" @click="handleOffline">下 线</el-button>
-        <el-button size="mini" v-else type="danger" @click="handleOnline">上 线</el-button>
+        <el-button size="mini" v-if="setOfflineFlag()" type="primary" @click="handleOffline">下 线</el-button>
+        <el-button size="mini" v-if="this.formData.status==0" type="danger" @click="handleOnline">上 线</el-button>
         <el-button size="mini" v-if="formData.status ==1" type="primary" @click="handleEditFlags">修改标签</el-button>
+        <el-button size="mini" v-if="formData.monitorFlag ==1" type="primary" @click="setMonitor">转让班长</el-button>
       </div>
-      <el-dialog  center title="标签信息" width="30%" :visible.sync="dialogVisible" :close-on-click-modal="false">
+      <el-dialog center title="标签信息" width="30%" :visible.sync="dialogVisible" :close-on-click-modal="false">
         <el-form size="mini" ref="form" :model="formData" label-width="45px">
           <el-form-item label="标签:" prop="onlineFlags">
             <el-select v-model="formData.onlineFlags" multiple placeholder="请选择">
@@ -66,6 +67,22 @@
         <span slot="footer" class="dialog-footer">
           <el-button size="mini" @click="handleClose">取 消</el-button>
           <el-button type="primary" size="mini" @click="handleSave">保 存</el-button>
+        </span>
+      </el-dialog>
+      <el-dialog center title="在线人员信息" width="30%" :visible.sync="dialogVisibleFlag" :close-on-click-modal="false">
+        <el-table
+          ref="singleTable"
+          :data="staffList"
+          highlight-current-row
+          @current-change="handleCurrentChange"
+          style="width: 100%"
+        >
+          <el-table-column prop="fullName" label="姓名" align="center"></el-table-column>
+          <el-table-column prop="phone" label="手机号" align="center"></el-table-column>
+        </el-table>
+        <span slot="footer" class="dialog-footer">
+          <el-button size="mini" @click="setMonitorClose">取 消</el-button>
+          <el-button type="primary" size="mini" @click="setMonitorSave">保 存</el-button>
         </span>
       </el-dialog>
     </el-main>
@@ -84,32 +101,44 @@
           onlineTime: 0,
           offlineTime: 0,
         },
-        editFlagFlag:false,
+        editFlagFlag: false,
         dialogVisible: false,
+        dialogVisibleFlag: false,
+        offlineFlag:false,
+        staffList: [],
         selectFlags: [],
+        orderStaff: {},
         ownFlags: [
-          { label: "出票", value: 1 },
-          { label: "退票", value: 2 },
-          { label: "改签", value: 3 },
-          { label: "未出票申请退款", value: 4 },
-          { label: "消息", value: 5 },
-          { label: "质检", value: 6 },
-          { label: "补单", value: 11 },
-          { label: "填写单号", value: 12 }
+          {label: "出票", value: 1},
+          {label: "退票", value: 2},
+          {label: "改签", value: 3},
+          {label: "未出票申请退款", value: 4},
+          {label: "消息", value: 5},
+          {label: "质检", value: 6},
+          {label: "补单", value: 11},
+          {label: "填写单号", value: 12}
         ]
       };
     },
     mounted() {
-        this.loadData();
+      this.loadData();
     },
     methods: {
+      setOfflineFlag() {
+        if (this.formData.status == 1 && this.formData.monitorFlag == 0) {
+          return true;
+        } else {
+          return false;
+        }
+
+      },
       loadData() {
         this.$store
           .dispatch("orderStaff/getList", {
-            searchForm: {online:"1"}
+            searchForm: {online: "1"}
           })
           .then(data => {
-            if (data.length>0){
+            if (data.length > 0) {
               this.formData = data[0];
               this.selectFlags = [];
               if (this.formData.ownFlags && this.formData.ownFlags != null && this.formData.ownFlags.length > 0) {
@@ -127,6 +156,61 @@
           .catch(error => {
             console.log(error);
           });
+      },
+      setMonitor() {
+        this.dialogVisibleFlag = true;
+        this.orderStaff = {};
+        this.$store
+          .dispatch("orderStaff/getOnlineList", {
+            searchForm: {status: 1}
+          })
+          .then(data => {
+            if (data.length > 0) {
+              this.staffList = data;
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      handleCurrentChange(val) {
+        // this.staffs = [];
+        this.orderStaff = {};
+        this.orderStaff = val;
+        console.log(this.orderStaff);
+      },
+      handleClose() {
+        this.dialogVisible = false;
+        this.editFlagFlag = false;
+      },
+      handleSave() {
+        if (this.formData.onlineFlags.length < 1) {
+          this.$message.error('您必须选择至少一个标签');
+          return;
+        }
+        this.dialogVisible = false;
+        if (this.editFlagFlag) {
+          this.editFlagFlag = false;
+          this.$store
+            .dispatch("orderStaff/updateStaffOnline", {onlineFlags: JSON.stringify(this.formData.onlineFlags)})
+            .then(() => {
+              this.loadData();
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        } else {
+          this.editFlagFlag = false;
+          this.$store
+            .dispatch("orderStaff/staffOnline", {onlineFlags: JSON.stringify(this.formData.onlineFlags)})
+            .then(() => {
+              this.loadData();
+              this.editFlagFlag = false;
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        }
       },
       handleOnline() {
         this.dialogVisible = true;
@@ -146,38 +230,39 @@
             console.log(error);
           });
       },
-      handleClose() {
-        this.dialogVisible = false;
-        this.editFlagFlag = false;
+      setMonitorClose() {
+        this.dialogVisibleFlag = false;
       },
-      handleSave() {
-        if(this.formData.onlineFlags.length<1){
-          this.$message.error('您必须选择至少一个标签');
+      setMonitorSave() {
+        if (this.orderStaff.staffId) {
+          this.$store
+            .dispatch("orderStaff/setMonitor", {
+              staffId: this.orderStaff.staffId
+            })
+            .then(data => {
+              if (data) {
+                this.loadData();
+              }
+              this.loading = false;
+            })
+            .catch(error => {
+              this.loading = false;
+              console.log(error);
+            });
+        } else {
+          this.$message.error('您必须选择员工');
           return;
         }
-        this.dialogVisible = false;
-        if (this.editFlagFlag){
-          this.editFlagFlag = false;
-          this.$store
-            .dispatch("orderStaff/updateStaffOnline", {onlineFlags: JSON.stringify(this.formData.onlineFlags)})
-            .then(() => {
-              this.loadData();
-            })
-            .catch(error => {
-              console.log(error);
-            });
-        }else {
-          this.editFlagFlag = false;
-          this.$store
-            .dispatch("orderStaff/staffOnline", {onlineFlags: JSON.stringify(this.formData.onlineFlags)})
-            .then(() => {
-              this.loadData();
-              this.editFlagFlag = false;
-            })
-            .catch(error => {
-              console.log(error);
-            });
-        }
+        this.dialogVisibleFlag = false;
+        this.$store
+          .dispatch("orderStaff/setMonitor", {onlineFlags: JSON.stringify(this.formData.onlineFlags)})
+          .then(() => {
+            this.loadData();
+          })
+          .catch(error => {
+            console.log(error);
+          });
+
       },
       initDate(dateStr, format) {
         if (dateStr && null != dateStr) {

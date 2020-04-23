@@ -23,9 +23,24 @@ export function getPageList(params) {
   });
 }
 
+export function setMonitor(staffId) {
+  return request({
+    url:  `/order/staff/set/monitor/${staffId}`,
+    method: 'get',
+  });
+}
+
 export function getList(params) {
   return request({
     url: '/order/staff/list',
+    method: 'get',
+    params: params.searchForm
+  });
+}
+
+export function getOnlineList(params) {
+  return request({
+    url: '/order/staff/online/list',
     method: 'get',
     params: params.searchForm
   });

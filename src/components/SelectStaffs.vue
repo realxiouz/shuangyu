@@ -28,7 +28,6 @@
     </el-table>
     <div style="margin-top: 20px;text-align:right">
       <el-button size="mini" @click="$emit('onStaffCancel')">取 消</el-button>
-
       <el-button size="mini" type="primary" @click="$emit('onSelectStaff',staffs)">确定</el-button>
     </div>
   </div>

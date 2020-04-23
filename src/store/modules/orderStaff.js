@@ -6,7 +6,9 @@ import {
   removeOne,
   getTotal,
   staffOnline,
-  updateStaffOnline
+  updateStaffOnline,
+  setMonitor,
+  getOnlineList
 } from '@/api/orderStaff';
 import {getToken} from '@/utils/auth';
 
@@ -74,6 +76,19 @@ const actions = {
         });
     });
   },
+  setMonitor({commit}, params) {
+    const { staffId } = params;
+    return new Promise((resolve, reject) => {
+      setMonitor(staffId)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
   getList({commit}, params) {
     var data = params.searchForm;
     var searchForm = {};
@@ -85,6 +100,26 @@ const actions = {
     params.searchForm = searchForm;
     return new Promise((resolve, reject) => {
       getList(params)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getOnlineList({commit}, params) {
+    var data = params.searchForm;
+    var searchForm = {};
+    for (var attr in data) {
+      if (data[attr] != null && data[attr] != undefined && data[attr] != '') {
+        searchForm[attr] = data[attr];
+      }
+    }
+    params.searchForm = searchForm;
+    return new Promise((resolve, reject) => {
+      getOnlineList(params)
         .then(response => {
           const {data} = response;
           resolve(data);
