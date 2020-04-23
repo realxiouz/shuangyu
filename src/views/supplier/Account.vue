@@ -48,7 +48,7 @@
 
 <script>
     export default {
-        props: ["accounts"],
+        props: ["accounts", "alterAble"],
         data() {
             return {
                 account: {}
@@ -70,7 +70,9 @@
                 }
             },
             addAccountClick() {
-                this.accounts.push(this.account);
+                if (this.alterAble){
+                    this.accounts.push(this.account);
+                }
                 this.clearForm();
             },
             clearForm() {

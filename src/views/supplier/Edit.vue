@@ -1,49 +1,104 @@
 <template>
   <div>
-    <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
-      <el-form-item label="平台:">
-        <el-select v-model="formData.openId" placeholder="请选择平台.." style="width: 100%">
-          <el-option
-            v-for="item in openList"
-            :key="item.openId"
-            :label="item.openName"
-            :value="item.openId">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="供应商名称" prop="firmName">
-        <el-input type="text" placeholder="请输入供应商名称" v-model="formData.firmName"></el-input>
-      </el-form-item>
-      <el-form-item label="供应商代码" prop="firmCode">
-        <el-input type="text" placeholder="请输入供应商代码" v-model="formData.firmCode"></el-input>
-      </el-form-item>
-      <el-form-item label="域名" prop="domain">
-        <el-input type="text" placeholder="请输入域名" v-model="formData.domain"></el-input>
-      </el-form-item>
-      <el-form-item label="联系人" prop="fullName">
-        <el-input type="text" placeholder="请输入联系人" v-model="formData.fullName"></el-input>
-      </el-form-item>
-      <el-form-item label="联系电话" prop="phone">
-        <el-input type="text" v-model="formData.phone" placeholder="请输入联系电话"></el-input>
-      </el-form-item>
-      <el-form-item label="电子邮箱" prop="email">
-        <el-input type="text" v-model="formData.email" placeholder="请输入联系电子邮箱"></el-input>
-      </el-form-item>
-      <el-form-item label="地址" prop="address">
-        <el-input type="text" placeholder="请输入联系地址" v-model="formData.address"></el-input>
-      </el-form-item>
-    </el-form>
-    <div slot="footer" class="dialog-footer" style="margin-top:10px;text-align:right">
-      <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
-      <el-button size="mini" type="primary" @click="handleSave">确 定</el-button>
+    <div id="goBack" @click="goBack">
+      <el-page-header></el-page-header>
+    </div>
+    <div id="head">
+      <div id="title">
+        <span>供应商</span>
+        <span style="float: right; margin-right: 10%">
+          <el-button type="primary" @click="addSupplierClick" size="mini" style="margin-right: -20px">保 存</el-button>
+        </span>
+      </div>
+    </div>
+    <div id="content">
+      <div id="leftContent">
+        <el-main>
+          <div class="header">
+            <span>基本信息</span>
+          </div>
+          <div class="form">
+            <el-form :rules="rules" :model="formData" label-position="left" label-width="130px" size="mini">
+              <el-form-item label="名称" prop="firmName">
+                <el-input type="text" placeholder="请输入供应商名称" v-model="formData.firmName"></el-input>
+              </el-form-item>
+              <el-form-item label="编码" prop="firmCode">
+                <el-input type="text" placeholder="请输入供应商代码" v-model="formData.firmCode"></el-input>
+              </el-form-item>
+              <el-form-item label="域名" prop="domain">
+                <el-input type="text" placeholder="请输入域名" v-model="formData.domain"></el-input>
+              </el-form-item>
+              <el-form-item label="主要联系人" prop="fullName">
+                <el-input type="text" placeholder="请输入联系人" v-model="formData.fullName"></el-input>
+              </el-form-item>
+              <el-form-item label="联系人电话" prop="phone">
+                <el-input type="text" v-model="formData.phone" placeholder="请输入联系人电话"></el-input>
+              </el-form-item>
+              <el-form-item label="电子邮箱" prop="email">
+                <el-input type="text" v-model="formData.email" placeholder="请输入联系人电子邮箱"></el-input>
+              </el-form-item>
+              <el-form-item label="地址" prop="address">
+                <el-input type="text" placeholder="请输入地址" v-model="formData.address"></el-input>
+              </el-form-item>
+            </el-form>
+          </div>
+        </el-main>
+      </div>
+      <div id="rightContent">
+        <el-main>
+          <div class="header">
+            <span>管理信息</span>
+          </div>
+          <div class="form">
+            <el-form :model="formData" label-position="left" label-width="110px" size="mini">
+              <el-form-item label="标签">
+                <el-select style="width: 100%;" clearable multiple v-model="formData.tags" placeholder="请选择">
+                  <el-option
+                    v-for="(item,idx) in tagList"
+                    :key="idx">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="重要性">
+                <el-rate v-model="formData.degree" :colors="['#99A9BF', '#F7BA2A', '#FF9900']"/>
+              </el-form-item>
+              <el-form-item label="备注">
+                <el-input type="textarea" v-model="formData.remark"></el-input>
+              </el-form-item>
+              <el-form-item label="Open平台">
+                <el-select v-model="formData.openId" placeholder="请选择平台" @change="selectedOpen">
+                  <el-option :value=null>&nbsp;- -</el-option>
+                  <el-option v-for="(item,idx) in openList"
+                             :key="idx"
+                             :label="item.openName"
+                             :value="item.openId">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-form>
+          </div>
+        </el-main>
+      </div>
+    </div>
+    <div id="tabs">
+      <el-tabs type="border-card" ref="tabs">
+        <el-tab-pane label="联系人">
+          <other-contact :contacts="contacts"/>
+        </el-tab-pane>
+        <el-tab-pane label="账号配置" :disabled="!formData.openId">
+          <account :accounts="accounts" :alterAble="alterAble"/>
+        </el-tab-pane>
+        <el-tab-pane label="其他信息">其他信息</el-tab-pane>
+      </el-tabs>
     </div>
   </div>
 </template>
 
 <script>
+    import otherContact from './Contact';
+    import account from './Account';
+
     export default {
-        /*当前进行操作的企业节点*/
-        props: ["curNode"],
         data() {
             const validateMobile = (rule, value, callback) => {
                 let mobile_mode = /^1[34578]\d{9}$/;
@@ -67,8 +122,14 @@
             };
             return {
                 formData: {},
-                updateTempData: {},
                 openList: [],
+                tagList: [],
+                contacts: [],
+                accounts: [],
+                update: false,
+                alterAble: false,
+                open: {},
+                activeTab: 'second',
                 rules: {
                     firmName: [
                         {required: true, message: "请输入供应商名称", trigger: "blur"},
@@ -102,27 +163,39 @@
                     ],
                     email: [
                         {required: true, validator: validateEmail, trigger: "blur"}
-                    ],
+                    ]
                 }
             };
         },
         methods: {
             defaultFormData() {
                 return {
-                    firmId: "",
-                    firmName: "",
-                    firmCode: "",
-                    fullName: "",
-                    phone: "",
-                    email: "",
-                    address: "",
-                    deleteFlag: true,
-                    domain: "",
-                    type: 1
+                    //企业代码
+                    firmCode: '',
+                    //企业名称
+                    firmName: '',
+                    //域名
+                    domain: '',
+                    //开放平台
+                    openId: null,
+                    //联系人
+                    fullName: '',
+                    //联系电话
+                    phone: '',
+                    //电子邮箱
+                    email: '',
+                    //地址
+                    address: '',
+                    //类型（0：企业，1：供应商，2：客户）
+                    type: 1,
+                    //标签
+                    tags: [],
+                    //重要性
+                    degree: 5
                 };
             },
             //加载平台信息
-            loadOpenParty() {
+            loadOpen() {
                 this.$store.dispatch("open/getList", {filters: {}})
                     .then(data => {
                         this.openList = data;
@@ -130,37 +203,161 @@
                     console.log(error);
                 });
             },
-            clearForm() {
-                this.formData = this.defaultFormData();
-                this.updateTempData = {};
-                this.openList = [];
-            },
-            /*初始化表单*/
-            initFormData() {
-                if (this.curNode.firmName) {
-                    this.formData = this.curNode;
-                    Object.assign(this.updateTempData, this.curNode);
-                } else {
-                    this.clearForm();
-                }
-            },
-            handleSave() {
-                this.$refs["form"].validate(valid => {
-                    if (valid) {
-                        this.formData.type = 1;
-                        this.$emit("onSave", this.formData);
-                    }
+            loadContacts(firmId){
+                this.$store.dispatch("staff/getListByFirmId", {firmId: firmId, filter: {}})
+                    .then(data => {
+                        this.contacts = data.data;
+                    }).catch(error => {
+                    console.log(error);
                 });
             },
-        },
-        watch: {
-            curNode() {
-                this.initFormData();
+            loadAccounts(firmId, openId){
+                this.$store.dispatch("openAccount/getList", {filter: {firmId: firmId, openId: openId}})
+                    .then(data => {
+                        this.accounts = data.data;
+                    }).catch(error => {
+                    console.log(error);
+                });
+            },
+            loadSupplier(firmId){
+                this.$store.dispatch("firm/getOne", {firmId: firmId})
+                    .then(data => {
+                        this.formData = data;
+                        this.loadAccounts(firmId, data.openId);
+                        this.loadContacts(firmId);
+                    }).catch(error => {
+                    console.log(error);
+                });
+            },
+            selectedOpen(openId){
+                if (this.update && openId){
+                    //只有在编辑客户和选择了Open平台的时候触发
+                    this.loadAccounts(this.formData.firmId, openId);
+                    this.alterAble = true;
+                }
+                if (!this.formData.openId){
+                    this.accounts = [];
+                    this.alterAble = false;
+                }
+            },
+            clearForm() {
+                this.formData = this.defaultFormData();
+                this.openList = [];
+            },
+            initFormData(firmId) {
+                this.clearForm();
+                this.loadOpen();
+                if (firmId){
+                    this.update = true;
+                    this.loadSupplier(firmId);
+                }
+            },
+            addSupplierClick(){
+                //判断添加还是更新
+                let url = '';
+                if (this.update) {
+                    url = 'firm/updateSorC';
+                } else {
+                    url = 'firm/addSorC';
+                }
+                //需要将联系人添加为员工数据，账号信息添加为Open账号信息
+                //需要补充Open账号中的数据
+                let accountList =[];
+                this.openList.forEach( item => {
+                    const _openId = this.formData.openId;
+                    //_openId可能为空
+                    if (_openId && _openId == item.openId){
+                        this.open = item;
+                    }
+                })
+                this.accounts.forEach(item => {
+                    item.openId = this.open.openId;
+                    item.openName = this.open.openName;
+                    accountList.push(item);
+                })
+                this.$store
+                    .dispatch(url, {firm: this.formData, contacts: this.contacts, accounts: accountList})
+                    .then(() => {
+                        this.goBack();
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            //跳转回列表页面
+            goBack() {
+                if (this.$router.history.length <= 1) {
+                    this.$router.push({path: '/home'});
+                    return false;
+                } else {
+                    this.$router.go(-1);
+                }
             }
         },
         created() {
-            this.initFormData();
-            this.loadOpenParty();
+            this.initFormData(this.$route.query.firmId);
+        },
+        components: {
+            otherContact,
+            account
         }
     };
 </script>
+
+<style>
+  #head {
+    height: 80px;
+  }
+
+  #head #title {
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 80px;
+    margin-left: 30px;
+  }
+
+  #content {
+    overflow: hidden;
+  }
+
+  #leftContent {
+    width: 45%;
+    float: left;
+    border-right: solid 2px #99a9bf;
+  }
+
+  #leftContent .el-main {
+    padding-left: 30px;
+  }
+
+  .header {
+    font-size: 20px;
+    margin-bottom: 18px;
+  }
+
+  .form .el-form {
+    width: 74%;
+  }
+
+  .form .el-form  .el-select {
+    width: 100%;
+  }
+
+  #rightContent {
+    width: 50%;
+    display: inline-block;
+  }
+
+  #tabs {
+    margin-top: 10px;
+  }
+
+  #tabs .el-tabs {
+    border: none;
+  }
+
+  #goBack {
+    padding-left: 10px;
+    padding-top: 10px;
+  }
+</style>

@@ -66,7 +66,7 @@
                 <el-input type="textarea" v-model="formData.remark"></el-input>
               </el-form-item>
               <el-form-item label="Open平台">
-                <el-select v-model="formData.openId" placeholder="请选择平台" :disabled="formData.openId && update" @change="selectedOpen">
+                <el-select v-model="formData.openId" placeholder="请选择平台" @change="selectedOpen">
                   <el-option :value=null>&nbsp;- -</el-option>
                   <el-option v-for="(item,idx) in openList"
                              :key="idx"
@@ -125,8 +125,9 @@
                 openList: [],
                 tagList: [],
                 contacts: [],
-                update: false,
                 accounts: [],
+                update: false,
+                alterAble: false,
                 rules: {
                     firmName: [
                         {required: true, message: "请输入供应商名称", trigger: "blur"},
@@ -208,8 +209,8 @@
                     console.log(error);
                 });
             },
-            loadAccounts(firmId){
-                this.$store.dispatch("openAccount/getList", {filter: {firmId: firmId}})
+            loadAccounts(firmId, openId){
+                this.$store.dispatch("openAccount/getList", {filter: {firmId: firmId, openId: openId}})
                     .then(data => {
                         this.accounts = data.data;
                     }).catch(error => {
@@ -220,28 +221,33 @@
                 this.$store.dispatch("firm/getOne", {firmId: firmId})
                     .then(data => {
                         this.formData = data;
-                        this.loadAccounts(firmId);
+                        this.loadAccounts(firmId, data.openId);
                         this.loadContacts(firmId);
                     }).catch(error => {
                     console.log(error);
                 });
             },
+            selectedOpen(openId){
+                if (this.update && openId){
+                    //只有在编辑客户和选择了Open平台的时候触发
+                    this.loadAccounts(this.formData.firmId, openId);
+                    this.alterAble = true;
+                }
+                if (!this.formData.openId){
+                    this.accounts = [];
+                    this.alterAble = false;
+                }
+            },
             clearForm() {
                 this.formData = this.defaultFormData();
                 this.openList = [];
-            },
-            selectedOpen(){
-                //当时在对供应商进行编辑却没有选择Open平台时，此操作使得可以继续选择Open平台
-                if (this.update){
-                    this.update = false;
-                }
             },
             initFormData(firmId) {
                 this.clearForm();
                 this.loadOpen();
                 if (firmId){
-                    this.loadSupplier(firmId);
                     this.update = true;
+                    this.loadSupplier(firmId);
                 }
             },
             addSupplierClick(){
