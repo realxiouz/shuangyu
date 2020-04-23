@@ -147,7 +147,8 @@ export default {
       total: 0,
       searchParams: {},
       totalCount: 0,
-      taskTypeCounts: {}
+      taskTypeCounts: {},
+      timer: null
     };
   },
   components: {
@@ -301,7 +302,7 @@ export default {
   created() {
     this.loadData();
     this.loadPendingTotal();
-    window.setInterval(() => {
+    this.timer = setInterval(() => {
       setTimeout(this.loadPendingTotal, 0);
     }, 10000);
   },
@@ -310,6 +311,12 @@ export default {
       return function(dateStr, format) {
         return this.initDate(dateStr, format);
       };
+    }
+  },
+  beforeDestroy() {
+    if (this.timer) {
+      //如果定时器还在运行 或者直接关闭，不用判断
+      clearInterval(this.timer); //关闭
     }
   }
 };

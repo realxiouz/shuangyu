@@ -295,3 +295,38 @@ export const purchaseOrderTypeStatus = [
         label: "改签"
     }
 ]
+
+export const taskTypeValue = [
+    {
+        value: "1",
+        label: "出票（支付成功等待出票）"
+    },
+    {
+        value: "2",
+        label: "退票（申请退票）"
+    },
+    {
+        value: "3",
+        label: "改签（申请改签）"
+    },
+    {
+        value: "4",
+        label: "未出票申请退款（未出票申请退款）"
+    },
+    {
+        value: "5",
+        label: "消息"
+    },
+    {
+        value: "6",
+        label: "质检"
+    },
+    {
+        value: "11",
+        label: "补订单"
+    },
+    {
+        value: "12",
+        label: "填写订单号"
+    }
+]

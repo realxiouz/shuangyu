@@ -11,7 +11,7 @@
               placeholder="请输入任务编号搜索..."
             ></el-input>
           </el-form-item>
-        </el-col> -->
+        </el-col>-->
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="任务名称:">
             <el-input
@@ -89,6 +89,7 @@
 </template>
 
 <script>
+import { taskTypeValue } from "@/utils/status.js";
 export default {
   name: "userSearch",
   data() {
@@ -100,40 +101,7 @@ export default {
         startTime: "",
         endTime: ""
       },
-      taskTypeValue: [
-        {
-          value: "1",
-          label: "出票（支付成功等待出票）"
-        },
-        {
-          value: "2",
-          label: "退票（申请退票）"
-        },
-        {
-          value: "3",
-          label: "改签（申请改签）"
-        },
-        {
-          value: "4",
-          label: "未出票申请退款（未出票申请退款）"
-        },
-        {
-          value: "5",
-          label: "消息"
-        },
-        {
-          value: "6",
-          label: "质检"
-        },
-        {
-          value: "11",
-          label: "补订单"
-        },
-        {
-          value: "12",
-          label: "填写订单号"
-        }
-      ]
+      taskTypeValue: taskTypeValue
     };
   },
   computed: {
