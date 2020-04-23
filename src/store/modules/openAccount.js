@@ -36,8 +36,8 @@ const actions = {
   },
   removeOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {thirdAccountId} = params;
-      removeOne(thirdAccountId)
+      const {openAccountId} = params;
+      removeOne(openAccountId)
         .then(response => {
           resolve(response);
         })
