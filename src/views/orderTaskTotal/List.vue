@@ -142,6 +142,8 @@ export default {
       taskId: "blank",
       total: 0,
       searchParams: {},
+      otherDataSearch: {},
+      allDataSearch: {},
       totalCount: 0,
       taskTypeCounts: {},
       timer: null
@@ -153,22 +155,39 @@ export default {
   methods: {
     formatTaskStatus,
     formatTaskType,
-    handleSizeChange(size) {
+     handleSizeChange(size) {
       this.pageSize = size;
       this.searchParams.pageSize = this.pageSize;
-      this.loadData(this.searchParams);
+      let obj = {
+        ...this.searchParams,
+        ...this.allDataSearch,
+        ...this.otherDataSearch
+      };
+      this.searchParams = obj;
+      this.loadData(obj);
     },
     prevClick(page) {
       this.currentPage = page;
       this.searchParams.pageSize = this.pageSize;
       this.searchParams.currentPage = this.currentPage;
-      this.loadData(this.searchParams);
+      let obj = {
+        ...this.searchParams,
+        ...this.allDataSearch,
+        ...this.otherDataSearch
+      };
+      this.loadData(obj);
     },
     nextClick(page) {
       this.currentPage = page;
       this.searchParams.pageSize = this.pageSize;
       this.searchParams.currentPage = this.currentPage;
-      this.loadData(this.searchParams);
+      let obj = {
+        ...this.searchParams,
+        ...this.allDataSearch,
+        ...this.otherDataSearch
+      };
+      this.searchParams = obj;
+      this.loadData(obj);
     },
     loadData(params) {
       this.$store
@@ -239,13 +258,14 @@ export default {
     geAllData() {
       let newParams = {};
       newParams.taskStatus = 1;
+      this.allDataSearch = newParams;
       this.loadData(newParams);
     },
     getOtherData(taskType) {
       let params = {};
       params.taskType = taskType;
+      this.otherDataSearch = params;
       this.loadData(params);
-      // console.log(params);
     },
     goToDetail(row) {
       let path = "";

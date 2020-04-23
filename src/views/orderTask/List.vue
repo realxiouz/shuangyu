@@ -142,6 +142,8 @@ export default {
       taskId: "blank",
       total: 0,
       searchParams: {},
+      otherDataSearch: {},
+      allDataSearch: {},
       totalCount: 0,
       taskTypeCounts: {},
       timer: null
@@ -156,19 +158,36 @@ export default {
     handleSizeChange(size) {
       this.pageSize = size;
       this.searchParams.pageSize = this.pageSize;
-      this.loadData(this.searchParams);
+      let obj = {
+        ...this.searchParams,
+        ...this.allDataSearch,
+        ...this.otherDataSearch
+      };
+      this.searchParams = obj;
+      this.loadData(obj);
     },
     prevClick(page) {
       this.currentPage = page;
       this.searchParams.pageSize = this.pageSize;
       this.searchParams.currentPage = this.currentPage;
-      this.loadData(this.searchParams);
+      let obj = {
+        ...this.searchParams,
+        ...this.allDataSearch,
+        ...this.otherDataSearch
+      };
+      this.loadData(obj);
     },
     nextClick(page) {
       this.currentPage = page;
       this.searchParams.pageSize = this.pageSize;
       this.searchParams.currentPage = this.currentPage;
-      this.loadData(this.searchParams);
+      let obj = {
+        ...this.searchParams,
+        ...this.allDataSearch,
+        ...this.otherDataSearch
+      };
+      this.searchParams = obj;
+      this.loadData(obj);
     },
     loadData(params) {
       this.$store
@@ -240,15 +259,17 @@ export default {
     geAllData() {
       let newParams = {};
       newParams.taskStatus = 1;
+      this.allDataSearch = newParams;
       this.loadData(newParams);
     },
     // 根据顶部得到按钮得到数据（出票，退票，改签。。。。）
     getOtherData(taskType) {
       let params = {};
       params.taskType = taskType;
+      this.otherDataSearch = params;
       this.loadData(params);
     },
-    // 调到详情页
+    // 调转详情页
     goToDetail(row) {
       let path = "";
       path = "/order/detail";
@@ -256,7 +277,7 @@ export default {
         path: path,
         query: {
           orderNo: row.orderNo,
-          rootOrderNo:row.rootOrderNo,
+          rootOrderNo: row.rootOrderNo,
           taskId: row.taskId
         }
       });
