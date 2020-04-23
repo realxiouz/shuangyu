@@ -22,9 +22,9 @@
         <el-table-column prop="remark" label="备注" align="center"></el-table-column>
         <el-table-column label="操作" fixed="right">
           <template slot-scope="scope">
-<!--            <span v-show="scope.row.openId && '' != scope.row.openId">-->
+            <span v-show="scope.row.openId && '' != scope.row.openId">
               <el-button type="info" size="mini" @click="handleSupplement(scope.row)">配置管理</el-button>
-<!--            </span>-->
+            </span>
             <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
             <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
           </template>
