@@ -67,7 +67,7 @@
                 this.$store
                     .dispatch("woniuConfig/getOne", {firmId: firmId})
                     .then(data => {
-                        if (data && data.domain) {
+                        if (data && data.firmId) {
                             this.formData = data;
                         }
                         this.loading = false;
