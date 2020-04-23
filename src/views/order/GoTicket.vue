@@ -353,7 +353,7 @@ export default {
               type: "success",
               message: "预定成功！"
             });
-          }else{
+          } else {
             this.payShow = false;
             this.$message({
               type: "warning",
@@ -407,6 +407,7 @@ export default {
                 this.$set((item["offerPrice"] = data));
               }
             });
+            this.flightData = [...this.flightData];
           }
           // console.log(this.flightData, "111111");
         })
@@ -416,7 +417,6 @@ export default {
     },
     //点击表格行展开展开行
     clickRowHandle(row, index, e) {
-      // console.log(row, "click");
       let flightPrice = {
         arr: row.arr,
         dpt: row.dpt,
@@ -424,11 +424,13 @@ export default {
         ex_track: row.exTrack,
         flightNum: row.flightNum
       };
-      this.getFlightPrice(flightPrice);
+      if (!row.offerPrice) {
+        this.getFlightPrice(flightPrice);
+      }
+
       this.$refs.refTable.toggleRowExpansion(row);
     },
     expandChange(row) {
-      // console.log(row,"wwwww")
       let flightPrice = {
         arr: row.arr,
         dpt: row.dpt,
@@ -436,7 +438,9 @@ export default {
         ex_track: row.exTrack,
         flightNum: row.flightNum
       };
-      this.getFlightPrice(flightPrice);
+      if (!row.offerPrice) {
+        this.getFlightPrice(flightPrice);
+      }
     },
     /*初始化用工列表中的生日日期格式*/
     initDate(dateStr, format) {
