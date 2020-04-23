@@ -90,7 +90,15 @@
                 return {
                     fullName: null,
                     phone: null,
-                    email: null
+                    email: null,
+                    staffId: '',
+                    userId: '',
+                    firmId: '',
+                    gender: 0,
+                    birthDate: 0,
+                    idCardNo: '',
+                    depts: [],
+                    roles: []
                 }
             },
             addContactClick(){

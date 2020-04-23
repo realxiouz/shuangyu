@@ -97,6 +97,7 @@
 <script>
   import otherContact from './Contact';
   import account from './Account';
+  import firm from "../../store/modules/firm";
 
     export default {
         data() {
@@ -127,6 +128,7 @@
                 contacts: [],
                 update: false,
                 accounts: [],
+                open: {},
                 rules: {
                     firmName: [
                         {required: true, message: "请输入供应商名称", trigger: "blur"},
@@ -200,6 +202,14 @@
                     console.log(error);
                 });
             },
+            loadContacts(firmId){
+                this.$store.dispatch("staff/getList", {filter: {firmId: firmId}})
+                    .then(data => {
+                        this.contacts = data.data;
+                    }).catch(error => {
+                    console.log(error);
+                });
+            },
             loadAccounts(firmId){
                 this.$store.dispatch("openAccount/getList", {filters: {firmId: firmId}})
                     .then(data => {
@@ -213,6 +223,7 @@
                     .then(data => {
                         this.formData = data;
                         this.loadAccounts(firmId);
+                        this.loadContacts(firmId);
                     }).catch(error => {
                     console.log(error);
                 });
@@ -222,6 +233,7 @@
                 this.openList = [];
             },
             selectedOpen(){
+                //当时在对供应商进行编辑却没有选择Open平台时，此操作使得可以继续选择Open平台
               if (this.update){
                   this.update = false;
               }
@@ -235,43 +247,32 @@
                 }
             },
             addSupplierClick(){
+                //判断添加还是更新
                 let url = '';
                 if (this.update) {
-                    url = 'firm/updateOne';
+                    url = 'firm/updateSorC';
                 } else {
-                    url = 'firm/addOne';
+                    url = 'firm/addSorC';
                 }
+                //需要将联系人添加为员工数据，账号信息添加为Open账号信息
+                //需要补充Open账号中的数据
+                let accountList =[];
+                this.openList.forEach( item => {
+                    const _openId = this.formData.openId;
+                    //_openId可能为空
+                    if (_openId && _openId == item.openId){
+                        this.open = item;
+                    }
+                })
+                this.accounts.forEach(item => {
+                    item.openId = this.open.openId;
+                    item.openName = this.open.openName;
+                    accountList.push(item);
+                })
                 this.$store
-                    .dispatch(url, {firm: this.formData})
+                    .dispatch(url, {firm: this.formData, contacts: this.contacts, accounts: accountList})
                     .then(data => {
-                        const _data = data.data;
-                        //将联系人列表添加到员工表中
-                        let staffList =[];
-                        this.contacts.forEach(item => {
-                            item.firmId = _data;
-                            item.depts = [];
-                            item.depts.push(_data);
-                            staffList.push(item);
-                        })
-                        this.$store.dispatch("staff/addMany", staffList)
-                            .then(() => {
-                                console.log("success-1");
-                            }).catch(error => {
-                            console.log(error);
-                        });
-
-                        //将账号列表添加到OpenAccount表中。
-                        let accountList =[];
-                        this.accounts.forEach(item => {
-                            item.firmId = _data;
-                            accountList.push(item);
-                        })
-                        this.$store.dispatch("openAccount/addMany", accountList)
-                            .then(() => {
-                                this.goBack();
-                            }).catch(error => {
-                            console.log(error);
-                        });
+                        console.log(data);
                     })
                     .catch(error => {
                         console.log(error);
