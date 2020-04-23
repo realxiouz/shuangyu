@@ -107,6 +107,7 @@
                 this.$store
                     .dispatch("firm/removeOne", {firmID: params})
                     .then(() => {
+                        this.loadData();
                     })
                     .catch(error => {
                         console.log(error);
