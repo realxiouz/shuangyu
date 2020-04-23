@@ -72,16 +72,12 @@
       >
         <el-table-column prop="taskNo" label="任务编号" width="110" align="center"></el-table-column>
         <el-table-column prop="taskName" label="任务名称" width="80" align="center"></el-table-column>
-        <el-table-column prop="taskType" label="任务类型" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatTaskType(scope.row.taskType)}}</span>
-          </template>
-        </el-table-column>
+        <el-table-column prop="taskType" :formatter="formatTaskType" label="任务类型" align="center"></el-table-column>
         <el-table-column prop="sourceOrderNo" label="订单来源单号" width="170" align="center"></el-table-column>
         <el-table-column prop="fullName" label="员工姓名" width="100" align="center"></el-table-column>
         <el-table-column prop="ruleType" width="80" label="规则类型" align="center">
           <template slot-scope="scope">
-            <span>{{ formatTaskType(scope.row.taskType)==0?"系统":"手工"}}</span>
+            <span>{{ scope.row.ruleType==0?"系统":"手工"}}</span>
           </template>
         </el-table-column>
         <el-table-column prop="profit" label="利润" width="80" align="center">
@@ -132,7 +128,7 @@
 
 <script>
 import orderTaskSearch from "./Search.vue";
-import { formatTaskStatus } from "@/utils/status.js";
+import { formatTaskType, formatTaskStatus } from "@/utils/status.js";
 
 export default {
   name: "orderTask",
@@ -156,6 +152,7 @@ export default {
   },
   methods: {
     formatTaskStatus,
+    formatTaskType,
     handleSizeChange(size) {
       this.pageSize = size;
       this.searchParams.pageSize = this.pageSize;
@@ -239,39 +236,19 @@ export default {
       }
       return "￥" + this.$numeral(amount).format("0.00");
     },
-    formatTaskType(taskType) {
-      if (!taskType) {
-        return "";
-      } else if (taskType == 1) {
-        return "出票（支付成功等待出票）";
-      } else if (taskType == 2) {
-        return "退票（申请退票）";
-      } else if (taskType == 3) {
-        return "改签（申请改签）";
-      } else if (taskType == 4) {
-        return "未出票申请退款（未出票申请退款）";
-      } else if (taskType == 5) {
-        return "消息";
-      } else if (taskType == 6) {
-        return "质检";
-      } else if (taskType == 11) {
-        return "补订单";
-      } else if (taskType == 12) {
-        return "填写订单号";
-      } else {
-        return "";
-      }
-    },
+    // 获得待处理总的数据
     geAllData() {
       let newParams = {};
       newParams.taskStatus = 1;
       this.loadData(newParams);
     },
+    // 根据顶部得到按钮得到数据（出票，退票，改签。。。。）
     getOtherData(taskType) {
       let params = {};
       params.taskType = taskType;
       this.loadData(params);
     },
+    // 调到详情页
     goToDetail(row) {
       let path = "";
       path = "/order/detail";
@@ -313,6 +290,7 @@ export default {
       };
     }
   },
+  // 离开页面销毁定时器
   beforeDestroy() {
     if (this.timer) {
       //如果定时器还在运行 或者直接关闭，不用判断

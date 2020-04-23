@@ -179,6 +179,30 @@ export function formatTaskStatus(row) {
         return row.taskStatus
     }
 }
+//格式化订单任务类型
+export function formatTaskType(row) {
+    if (row.taskType == 1) {
+        return "出票（支付成功等待出票）";
+    } else if (row.taskType == 2) {
+        return "退票（申请退票）";
+    } else if (row.taskType == 3) {
+        return "改签（申请改签）";
+    } else if (row.taskType == 4) {
+        return "未出票申请退款（未出票申请退款）";
+    } else if (row.taskType == 5) {
+        return "消息";
+    } else if (row.taskType == 6) {
+        return "质检";
+    } else if (row.taskType == 11) {
+        return "补订单";
+    } else if (row.taskType == 12) {
+        return "填写订单号";
+    } else {
+        return "";
+    }
+}
+
+
 //订单类型
 export const orderType = [
     {
@@ -298,35 +322,35 @@ export const purchaseOrderTypeStatus = [
 
 export const taskTypeValue = [
     {
-        value: "1",
+        value: 1,
         label: "出票（支付成功等待出票）"
     },
     {
-        value: "2",
+        value: 2,
         label: "退票（申请退票）"
     },
     {
-        value: "3",
+        value: 3,
         label: "改签（申请改签）"
     },
     {
-        value: "4",
+        value: 4,
         label: "未出票申请退款（未出票申请退款）"
     },
     {
-        value: "5",
+        value: 5,
         label: "消息"
     },
     {
-        value: "6",
+        value: 6,
         label: "质检"
     },
     {
-        value: "11",
+        value: 11,
         label: "补订单"
     },
     {
-        value: "12",
+        value: 12,
         label: "填写订单号"
     }
 ]
