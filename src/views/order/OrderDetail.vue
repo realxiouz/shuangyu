@@ -647,16 +647,6 @@ export default {
         } else {
           newParams.endTime = "";
         }
-
-        // newParams.gqFee = params.flightData[0].gqFee;
-        // newParams.upgradeFee = params.flightData[0].upgradeFee;
-        // newParams.childUseFee = params.flightData[0].childUseFee;
-        // newParams.flightNo = params.flightData[0].flightNo;
-        // newParams.cabinCode = params.flightData[0].cabinCode;
-        // newParams.childExtraPrice = params.flightData[0].childExtraPrice;
-        // newParams.startDate = params.flightData[0].changeDate;
-        // newParams.startTime = params.flightData[0].startTime;
-        // newParams.endTime = params.flightData[0].endTime;
       }
       newParams.orderNo = this.purchaseOrderNo;
       if (this.$route.query.taskId) {
@@ -889,7 +879,7 @@ export default {
     },
     getMessage() {
       this.$store
-        .dispatch("order/getMessageDetail", this.sourceOrderNo) //sen200418223136123001
+        .dispatch("order/getMessageDetail", this.sourceOrderNo)
         .then(data => {
           if (data) {
             this.messageData = data;
@@ -917,7 +907,7 @@ export default {
       }
     },
 
-    // 获取销售改签信息
+    // 获取销售改签信息Html
     getChangeHtml(sourceOrderNo) {
       this.$store
         .dispatch("order/getChangeHtml", sourceOrderNo)
@@ -930,7 +920,7 @@ export default {
           console.log(error);
         });
     },
-    // 获取退票改签信息
+    // 获取退票改签信息Html
     getRefundHtml(sourceOrderNo) {
       this.$store
         .dispatch("order/getRefundHtml", sourceOrderNo)
@@ -1063,7 +1053,6 @@ export default {
   },
   created() {
     this.getOrderDetail(this.orderNo);
-    // this.getOrderDetail("abc20031417120045000110");
   },
   updated() {
     if (this.changeHtml) {
@@ -1094,20 +1083,31 @@ export default {
           this.changeDataTop.passagers.push(item);
         }
       });
-
-      // refundConfirm.onclick = function() {
-      //   displayDate();
-      // };
     }
     if (this.refundHtml) {
       let refundConfirm = document.querySelector('[data-action="btn_confirm"]');
 
-      refundConfirm.onclick = function() {
-        console.log("refundConfirm");
-      };
-      console.log(refundConfirm);
+      if (refundConfirm) {
+        refundConfirm.onclick = function() {
+          console.log("refundConfirm");
+          let params={
+            orderNo:"",
+            ticketNos:"",
+            ticketreturnstutas:"",
+            remark:""
+
+          }
+          let refundRemark = document.querySelectorAll("#js_rticket_remark")[0]
+            .value;
+          // let data = document.querySelector("#js_form_rt").formJson();
+          //console.log(data, "data");
+
+          console.log(refundRemark, "refundRemark");
+        };
+      }
     }
   },
+  mounted() {},
   computed: {
     formatDate() {
       return function(dateStr, format) {
