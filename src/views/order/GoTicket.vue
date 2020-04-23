@@ -277,12 +277,15 @@ export default {
     formatAgeType,
     formateCategory,
     formatCardType,
+    // 取消支付弹框
     onCancel() {
       this.payShow = false;
     },
+    // 显示支付弹框
     confirmPay() {
       this.payShow = false;
     },
+    // 获得详情
     getOrderDetail() {
       this.$store
         .dispatch("order/getOrderDetail", this.orderNo)
@@ -295,6 +298,7 @@ export default {
           console.log(error);
         });
     },
+    // 搜素航班
     searchFlight() {
       this.flightShow = true;
       this.flightInfo = {
@@ -309,6 +313,7 @@ export default {
       };
       this.getOrderFlight(this.flightInfo);
     },
+    // （预定）下单
     predetermineOrder(row, item) {
       let newParams = {};
       newParams.flightNum = row.offerPrice.flightNum;
@@ -326,7 +331,6 @@ export default {
 
         newParams.passengers.push(obj);
       });
-
       newParams.ticketPrice = item.vppr;
       newParams.barePrice = item.barePrice;
       newParams.basePrice = item.basePrice;
@@ -365,7 +369,7 @@ export default {
           console.log(error);
         });
     },
-    // 查询航班
+    // 查询航班信息
     getOrderFlight(flightInfo) {
       this.$store
         .dispatch("order/getOrderFlight", flightInfo)
@@ -427,9 +431,9 @@ export default {
       if (!row.offerPrice) {
         this.getFlightPrice(flightPrice);
       }
-
       this.$refs.refTable.toggleRowExpansion(row);
     },
+    // 点击按钮展开展开行
     expandChange(row) {
       let flightPrice = {
         arr: row.arr,
@@ -460,9 +464,6 @@ export default {
   }
 };
 </script>
-
-
-
 <style scoped>
 .contentBox {
   padding-top: 0px !important;
