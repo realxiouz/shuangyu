@@ -53,6 +53,14 @@ export function getList(filter) {
   });
 }
 
+export function getListByFirmId(firmId, filter) {
+  return request({
+    url: `/staff/list/${firmId}`,
+    method: "get",
+    params: filter
+  });
+}
+
 export function getTotal(filter) {
   return request({
     url: "/staff/total",

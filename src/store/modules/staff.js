@@ -6,6 +6,7 @@ import {
   getOne,
   getOneByFidAndUid,
   getList,
+  getListByFirmId,
   getTotal,
   getPageList,
   associateUser,
@@ -119,6 +120,18 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {filter} = params;
       getList(filter)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getListByFirmId({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {firmId, filter} = params;
+      getListByFirmId(firmId, filter)
         .then(response => {
           resolve(response);
         })
