@@ -373,6 +373,7 @@ export default {
       purchaseOrderNo: "",
       refundChangeRule: "",
       taskRemarkData: "",
+      timer: null,
       changeData: "",
       orderNo: this.$route.query.orderNo,
       changeDataTop: {
@@ -400,6 +401,29 @@ export default {
     formateCategory,
     formatAgeType,
     formatCardType,
+    // 获取详情信息
+    getOrderDetail(orderNo) {
+      this.$store
+        .dispatch("order/getOrderDetail", orderNo)
+        .then(data => {
+          if (data) {
+            this.tableData = data;
+            this.refundChangeRule = data.refundChangeRule;
+            this.sourceOrderNo = data.sourceOrderNo;
+            this.getMessage();
+            this.getMessageHtml(data.orderType, this.sourceOrderNo);
+            if (data.passengers) {
+              this.passengerData = data.passengers;
+            }
+            if (data.flights) {
+              this.flightData = data.flights;
+            }
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     // 返回
     goBack() {
       this.$router.go(-1);
@@ -724,34 +748,7 @@ export default {
         this.handleTicketShow = true;
       }
     },
-    // 获取详情信息
-    getOrderDetail(orderNo) {
-      this.$store
-        .dispatch("order/getOrderDetail", orderNo)
-        .then(data => {
-          if (data) {
-            this.tableData = data;
-            let params = {};
-            this.refundChangeRule = data.refundChangeRule;
-            this.sourceOrderNo = data.sourceOrderNo;
-            params.rootOrderNo = data.rootOrderNo;
-            params.category = 1;
-            this.getOrderTree(params);
 
-            this.getMessage();
-            this.getMessageHtml(data.orderType, this.sourceOrderNo);
-            if (data.passengers) {
-              this.passengerData = data.passengers;
-            }
-            if (data.flights) {
-              this.flightData = data.flights;
-            }
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
     // 获取采购单信息
     getOrderTree(params) {
       this.$store
@@ -1058,6 +1055,20 @@ export default {
   },
   created() {
     this.getOrderDetail(this.orderNo);
+    let params = {};
+    params.rootOrderNo = this.$route.query.rootOrderNo;
+    params.category = 1;
+    this.getOrderTree(params);
+    this.timer = setInterval(() => {
+      setTimeout(this.getOrderTree(params), 0);
+    }, 5000);
+  },
+  // 离开页面销毁定时器
+  beforeDestroy() {
+    if (this.timer) {
+      //如果定时器还在运行 或者直接关闭，不用判断
+      clearInterval(this.timer); //关闭
+    }
   },
   updated() {
     if (this.changeHtml) {
