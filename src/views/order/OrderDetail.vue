@@ -696,6 +696,40 @@ export default {
         });
       this.changeTicketShow = false;
     },
+    // 确认退票信息
+    affirmRefundTicket(params) {
+      this.$store
+        .dispatch("order/affirmRefund", params)
+        .then(data => {
+          if (data.code == 0) {
+            console.log(data);
+            this.$message({
+              type: "success",
+              message: "确认退票成功！"
+            });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    // 拒绝退款
+    refundCheckRefuseReason(params) {
+      this.$store
+        .dispatch("order/refundCheckRefuseReason", params)
+        .then(data => {
+          if (data.code == 0) {
+            console.log(data);
+            this.$message({
+              type: "success",
+              message: "拒绝退款成功！"
+            });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     formatAmount1(amount) {
       if (!amount) {
         return "￥0.00";
@@ -981,12 +1015,12 @@ export default {
           });
         });
     },
-    // 退票
+    // 退票弹框
     refundTicket(row) {
       this.purchaseOrderNo = row.sourceOrderNo;
       this.refundTicketShow = true;
     },
-    // 改签
+    // 改签弹框
     changeTicket(row) {
       this.purchaseOrderNo = row.sourceOrderNo;
       this.changeTicketShow = true;
@@ -1104,22 +1138,42 @@ export default {
     }
     if (this.refundHtml) {
       let refundConfirm = document.querySelector('[data-action="btn_confirm"]');
+      let refundReject = document.querySelector('[data-action="btn_reject"]');
 
       if (refundConfirm) {
+        // 退款确认按钮事件
+        var that = this;
         refundConfirm.onclick = function() {
-          console.log("refundConfirm");
-          let params = {
-            orderNo: "",
-            ticketNos: "",
-            ticketreturnstutas: "",
-            remark: ""
-          };
           let refundRemark = document.querySelectorAll("#js_rticket_remark")[0]
             .value;
-          // let data = document.querySelector("#js_form_rt").formJson();
-          //console.log(data, "data");
-
-          console.log(refundRemark, "refundRemark");
+          let orderNo = document.querySelectorAll("#js_form_rt #orderNo")[0]
+            .value;
+          let ticketreturnstutas = document.querySelectorAll(
+            "#J_RefundStatus"
+          )[0].value;
+          let form = document.querySelectorAll(
+            "#js_form_rt #js_passanger_rt tbody tr td input[type='hidden']"
+          );
+          let str = "";
+          Array.from(form).forEach(item => {
+            str += item.value + "|";
+          });
+          let ticketNos = str.substring(0, str.length - 1);
+          let params = {
+            orderNo: orderNo,
+            ticketNos: ticketNos,
+            ticketreturnstutas: ticketreturnstutas,
+            remark: refundRemark
+          };
+          that.affirmRefundTicket(params);
+        };
+      }
+      if (refundReject) {
+        // let from = document.getElementById("js_from_reject")
+        // console.log(from, "js_from_reject");
+        var that = this;
+        refundReject.onclick = function() {
+          console.log("拒绝退款");
         };
       }
     }
@@ -1156,20 +1210,40 @@ export default {
   display: none;
 }
 /* 退票html样式 */
+#js_mod_rt label {
+  font-weight: 500;
+}
+#js_mod_rwc label {
+  font-weight: 500;
+}
+#js_reject_content {
+  display: none;
+}
 #js_mod_rt ul {
   margin: 0;
   padding: 0;
+  margin-bottom: 10px;
 }
+
 #js_mod_rt .bd #js_form_rt .js_box_content .lable-title {
   float: left;
 }
 #js_mod_rt .bd #js_form_rt .js_box_content .ticket-cell #js_passanger_rt {
-  border: 1px solid #409eff;
+  border: 1px solid #0092dc;
+  margin: 10px;
+  padding: 10px;
 }
 #js_mod_rwc ul {
   margin: 0;
   padding: 0;
 }
+#js_form_rm li {
+  line-height: 22px;
+}
+#js_form_rm li .lable-title {
+  float: left;
+}
+
 #js_mod_rt li {
   width: 100%;
   list-style: none;
@@ -1189,6 +1263,9 @@ export default {
   display: none;
 }
 #js_btns_rt .g-btn:not(:first-child) {
+  display: none;
+}
+#js_btns_rm .g-btn:not(#js_btn_reject) {
   display: none;
 }
 /* 改签html样式 */

@@ -177,6 +177,28 @@ export function refundApply(data) {
   });
 }
 
+// 确认退票信息
+export function affirmRefund(params) {
+  return request({
+    url: `/qunar/fuwu/affirm/refund`,
+    method: 'get',
+    params: params
+
+  });
+}
+
+
+// 拒绝退款
+export function refundCheckRefuseReason(params) {
+  return request({
+    url: `/qunar/fuwu/refund/check/refuse/reason`,
+    method: 'get',
+    params: params
+
+  });
+}
+
+
 // 改签查询接口
 export function changeSearch(params) {
   return request({
@@ -203,6 +225,15 @@ export function changeApply(data) {
   });
 }
 
+// 确认改签
+export function processingChange(params) {
+  return request({
+    url: `/qunar/fuwu/processing/change`,
+    method: 'get',
+    params: params
+
+  });
+}
 
 // 非蜗牛补单
 export function purchaseOrder(data) {
