@@ -44,95 +44,100 @@
   </div>
 </template>
 <script>
-import orderTimeSearch from "./Search.vue";
+    import orderTimeSearch from "./Search.vue";
 
-export default {
-  name: "orderTime",
-  data() {
-    return {
-      currentPage: 1,
-      pageSize: 10,
-      total: 0,
-      loading: false,
-      countData: [],
-      searchParams: {}
-    };
-  },
-  components: {
-    orderTimeSearch
-  },
-  methods: {
-    handleSizeChange(size) {
-      this.pageSize = size;
-      this.searchParams.pageSize = this.pageSize;
-      this.loadData(this.searchParams);
-    },
-    prevClick(page) {
-      this.currentPage = page;
-      this.searchParams.pageSize = this.pageSize;
-      this.searchParams.currentPage = this.currentPage;
-      this.loadData(this.searchParams);
-    },
-    nextClick(page) {
-      this.currentPage = page;
-      this.searchParams.pageSize = this.pageSize;
-      this.searchParams.currentPage = this.currentPage;
-      this.loadData(this.searchParams);
-    },
-    loadData(params) {
-      this.loading = true;
-      this.$store
-        .dispatch("order/getTimeCount", {
-          filters: params
-        })
-        .then(data => {
-          if (data) {
-            this.countData = data;
-            if (data[0].total) {
-              this.total = data[0].total;
+    export default {
+        name: "orderTime",
+        data() {
+            return {
+                currentPage: 1,
+                pageSize: 10,
+                total: 0,
+                loading: false,
+                countData: [],
+                searchParams: {}
+            };
+        },
+        components: {
+            orderTimeSearch
+        },
+        methods: {
+            handleSizeChange(size) {
+                this.pageSize = size;
+                this.searchParams.pageSize = this.pageSize;
+                this.loadData(this.searchParams);
+            },
+            prevClick(page) {
+                this.currentPage = page;
+                this.searchParams.pageSize = this.pageSize;
+                this.searchParams.currentPage = this.currentPage;
+                this.loadData(this.searchParams);
+            },
+            nextClick(page) {
+                this.currentPage = page;
+                this.searchParams.pageSize = this.pageSize;
+                this.searchParams.currentPage = this.currentPage;
+                this.loadData(this.searchParams);
+            },
+            loadData(params) {
+                this.loading = true;
+                this.$store
+                    .dispatch("order/getTimeCount", {
+                        filters: params
+                    })
+                    .then(data => {
+                        if (data) {
+                            this.countData = data;
+                            if (data[0].total) {
+                                this.total = data[0].total;
+                            }
+                        }
+                        this.loading = false;
+                    })
+                    .catch(error => {
+                        this.loading = false;
+                        console.log(error);
+                    });
+            },
+            handleSearch(params) {
+                if (!params) {
+                    params = {};
+                    this.searchParams = params;
+                    this.loadData(this.searchParams);
+                } else {
+                    const newParams = {};
+                    for (let key in params) {
+                        if (params[key] && _.isArray(params[key])) {
+                            let start = "start" + key.charAt(0).toUpperCase() + key.slice(1);
+                            let end = "end" + key.charAt(0).toUpperCase() + key.slice(1);
+                            newParams[start] = params[key][0];
+                            newParams[end] = params[key][1];
+                        } else if (params[key]) {
+                            newParams[key] = params[key];
+                        }
+                    }
+                    if (params.orderType == 30 && params.category == 0) {
+                        let orderTypes = "[30, 31, 32]";
+                        newParams.orderTypes = orderTypes;
+                        delete newParams.orderType;
+                    }
+                    this.searchParams = newParams;
+                    this.loadData(this.searchParams);
+                    this.$message({
+                        type: "success",
+                        message: "查询成功！"
+                    });
+                }
+            },
+            formatAmount(amount) {
+                if (!amount) {
+                    return "￥0.00";
+                }
+                return "￥" + this.$numeral(amount).format("0.00");
             }
-          }
-          this.loading = false;
-        })
-        .catch(error => {
-          this.loading = false;
-          console.log(error);
-        });
-    },
-    handleSearch(params) {
-      if (!params) {
-        params = {};
-        this.searchParams = params;
-        this.loadData(this.searchParams);
-      } else {
-        const newParams = {};
-        for (let key in params) {
-          if (params[key] && _.isArray(params[key])) {
-            let start = "start" + key.charAt(0).toUpperCase() + key.slice(1);
-            let end = "end" + key.charAt(0).toUpperCase() + key.slice(1);
-            newParams[start] = params[key][0];
-            newParams[end] = params[key][1];
-          } else if (params[key]) {
-            newParams[key] = params[key];
-          }
+        },
+        created() {
+            // this.loadData(this.searchParams);
         }
-        this.searchParams = newParams;
-        this.loadData(this.searchParams);
-        this.$message({
-          type: "success",
-          message: "查询成功！"
-        });
-      }
-    },
-    formatAmount(amount) {
-      if (!amount) {
-        return "￥0.00";
-      }
-      return "￥" + this.$numeral(amount).format("0.00");
-    }
-  },
-  created() {
-    // this.loadData(this.searchParams);
-  }
-};
+    };
 </script>

@@ -24,7 +24,10 @@ import {
   openPay,
   getMessageDetail,
   purchaseOrder,
-  woniuOrder
+  woniuOrder,
+  affirmRefund,
+  refundCheckRefuseReason,
+  processingChange
 } from "@/api/order";
 import { getToken } from "@/utils/auth";
 
@@ -325,6 +328,32 @@ const actions = {
         });
     });
   },
+  // 确认退票信息
+  affirmRefund({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      affirmRefund(params)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  // 拒绝退款
+  refundCheckRefuseReason({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      refundCheckRefuseReason(params)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
 
   // 改签查询接口
   changeSearch({ commit }, params) {
@@ -359,6 +388,19 @@ const actions = {
   changeApply({ commit }, params) {
     return new Promise((resolve, reject) => {
       changeApply(params)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  // 确认改签
+  processingChange({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      processingChange(params)
         .then(response => {
           const { data } = response;
           resolve(data);
