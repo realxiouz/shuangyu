@@ -16,6 +16,22 @@ export function addOne(data) {
   });
 }
 
+export function addSorC(data) {
+  return request({
+    url: `/firm/sc/add/one`,
+    method: `post`,
+    data
+  });
+}
+
+export function updateSorC(data) {
+  return request({
+    url: `/firm/sc/update/one`,
+    method: `post`,
+    data
+  });
+}
+
 export function updateOne(data) {
   return request({
     url: `/firm/update/one`,

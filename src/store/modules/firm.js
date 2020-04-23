@@ -1,4 +1,4 @@
-import {addOne, removeOne, updateOne, getOne, getPageList, getTotal, getList,getDealerCustomerList} from '@/api/firm';
+import {addOne, addSorC, updateSorC, removeOne, updateOne, getOne, getPageList, getTotal, getList,getDealerCustomerList} from '@/api/firm';
 
 
 const actions = {
@@ -87,6 +87,28 @@ const actions = {
         .then(response => {
           const {data} = response;
           resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  addSorC({commit}, params) {
+    return new Promise((resolve, reject) => {
+      addSorC(params)
+        .then(response => {
+          resolve(response.data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  updateSorC({commit}, params) {
+    return new Promise((resolve, reject) => {
+      updateSorC(params)
+        .then(response => {
+          resolve(response.data);
         })
         .catch(error => {
           reject(error);
