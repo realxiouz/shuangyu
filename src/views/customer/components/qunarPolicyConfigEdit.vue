@@ -8,7 +8,7 @@
         <el-input v-model="formData.user"></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="pass">
-        <el-input v-model="formData.pass"></el-input>
+        <el-input v-model="formData.pass" show-password></el-input>
       </el-form-item>
       <el-form-item label="IP" prop="ip">
         <el-input v-model="formData.ip"></el-input>
