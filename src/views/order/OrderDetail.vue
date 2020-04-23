@@ -1056,7 +1056,9 @@ export default {
   created() {
     this.getOrderDetail(this.orderNo);
     let params = {};
-    params.rootOrderNo = this.$route.query.rootOrderNo;
+    if (this.$route.query.rootOrderNo) {
+      params.rootOrderNo = this.$route.query.rootOrderNo;
+    }
     params.category = 1;
     this.getOrderTree(params);
     this.timer = setInterval(() => {
