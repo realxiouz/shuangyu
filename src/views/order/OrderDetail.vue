@@ -155,7 +155,12 @@
         </el-table-column>
       </el-table>
       <el-row style="margin-top:20px">
-        <el-button type="primary" @click="goTicket" size="mini">系统出票</el-button>
+        <el-button
+          v-if="this.tableData.orderType==10"
+          type="primary"
+          @click="goTicket"
+          size="mini"
+        >系统出票</el-button>
         <el-button type="primary" @click="handleTicket" size="mini">手工出票</el-button>
       </el-row>
     </el-card>
@@ -485,8 +490,8 @@ export default {
       this.fillOutRefundShow = false;
       this.fillOutChangeShow = false;
     },
-    // 手工出票保存
 
+    // 手工出票保存
     handleSave(params) {
       this.handleTicketShow = false;
       let newParams = {};
@@ -561,7 +566,7 @@ export default {
         });
     },
 
-    // 退票申请
+    // 退票确定申请
     handleSaveRefund(params) {
       let newParams = {};
       if (params) {
@@ -590,7 +595,7 @@ export default {
         });
       this.refundTicketShow = false;
     },
-    // 改签申请
+    // 改签确定申请
     handleSaveChange(params) {
       let newParams = {};
       if (params) {
@@ -673,6 +678,7 @@ export default {
       }
       return "￥" + this.$numeral(amount).format("0.00");
     },
+    // 乘客复选框选中处理
     handleSelectionChange(passengersInfo) {
       let arr = [];
       for (let i = 0; i < passengersInfo.length; i++) {
@@ -684,7 +690,7 @@ export default {
       }
       this.passengersInfo = arr;
     },
-    // 系统出票
+    // 系统出票跳转
     goTicket() {
       if (this.passengersInfo.length < 1) {
         this.$notify({
@@ -704,8 +710,7 @@ export default {
         });
       }
     },
-
-    // 手工出票
+    // 手工出票弹框
     handleTicket() {
       if (this.passengersInfo.length < 1) {
         this.$notify({
@@ -809,7 +814,6 @@ export default {
           console.log(error);
         });
     },
-
     // 任务备注
     taskRemark() {
       if (!this.taskRemarkData) {
@@ -877,6 +881,7 @@ export default {
           console.log(error);
         });
     },
+    // 消息刷新
     getMessage() {
       this.$store
         .dispatch("order/getMessageDetail", this.sourceOrderNo)
@@ -962,6 +967,7 @@ export default {
           console.log(error);
         });
     },
+    // 删除提示
     open(func, data, message) {
       this.$confirm(message, "提示", {
         confirmButtonText: "确定",
@@ -992,7 +998,6 @@ export default {
     // 补退弹框
     fillOutRefund(row) {
       this.fillOutRefundData = row;
-
       this.fillOutRefundShow = true;
     },
     // 补改弹框
@@ -1090,13 +1095,12 @@ export default {
       if (refundConfirm) {
         refundConfirm.onclick = function() {
           console.log("refundConfirm");
-          let params={
-            orderNo:"",
-            ticketNos:"",
-            ticketreturnstutas:"",
-            remark:""
-
-          }
+          let params = {
+            orderNo: "",
+            ticketNos: "",
+            ticketreturnstutas: "",
+            remark: ""
+          };
           let refundRemark = document.querySelectorAll("#js_rticket_remark")[0]
             .value;
           // let data = document.querySelector("#js_form_rt").formJson();
@@ -1107,7 +1111,6 @@ export default {
       }
     }
   },
-  mounted() {},
   computed: {
     formatDate() {
       return function(dateStr, format) {
