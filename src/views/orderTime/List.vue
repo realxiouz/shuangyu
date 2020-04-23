@@ -117,7 +117,7 @@
                         }
                     }
                     if (params.orderType == 30 && params.category == 0) {
-                        params.orderTypes = [30, 31, 32];
+                        newParams.orderTypes = [30, 31, 32];
                     }
                     this.searchParams = newParams;
                     this.loadData(this.searchParams);
