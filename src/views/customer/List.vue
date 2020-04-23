@@ -12,7 +12,6 @@
         size="mini"
         :data="tableData"
         row-key="firmId"
-        :tree-props="tableProps"
       >
         <el-table-column prop="firmName" label="客户名称" align="center" sortable width="200"></el-table-column>
         <el-table-column prop="firmCode" label="客户代码" align="center" sortable width="200"></el-table-column>
@@ -42,12 +41,7 @@
         data() {
             return {
                 loading: true,
-                tableData: [],
-                curNode: {},
-                tableProps: {
-                    hasChildren: "xxx",
-                    children: "children"
-                }
+                tableData: []
             };
         },
         methods: {
