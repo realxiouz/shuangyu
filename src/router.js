@@ -323,8 +323,8 @@ export default new Router({
           meta: {title: '供应商管理', icon: 'home'}
         },
         {
-          path: '/supplier/add',
-          component: () => import('@/views/supplier/Add'),
+          path: '/supplier/edit',
+          component: () => import('@/views/supplier/Edit'),
           meta: {title: '添加供应商'}
         },
         {
