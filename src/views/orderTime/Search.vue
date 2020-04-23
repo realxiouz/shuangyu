@@ -130,6 +130,7 @@
               <el-option label="出票完成" value="10"></el-option>
               <el-option label="改签完成" value="30"></el-option>
               <el-option label="二次改签" value="31"></el-option>
+              <el-option label="三次改签" value="32"></el-option>
               <el-option label="退票完成" value="20"></el-option>
               <el-option label="二次退票" value="21"></el-option>
               <el-option label="退差" value="22"></el-option>
