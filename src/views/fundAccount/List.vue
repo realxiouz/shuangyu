@@ -32,9 +32,10 @@
           </template>
         </el-table-column>
         <el-table-column prop="subjectName" label="科目" align="center"></el-table-column>
-        <el-table-column label="操作" align="center" width="180">
+        <el-table-column label="操作" align="center" width="250">
           <template slot-scope="scope">
-            <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
+            <el-button type="success" size="mini" @click="handleAddChild(scope.row.accountId)">添加</el-button>
+            <el-button @click="handleEdit(scope.row.accountId)" type="primary" size="mini">编辑</el-button>
             <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
           </template>
         </el-table-column>
@@ -48,10 +49,10 @@
       >
         <fund-account-edit
           v-if="dialogVisible"
-          :cur-node="curNode"
-          :update="update"
           @onSave="handleSave"
           @onCancel="handleCancel"
+          :edit-account-id="editAccountId"
+          :pid="pid"
         ></fund-account-edit>
       </el-dialog>
     </div>
@@ -67,9 +68,9 @@
             return {
                 loading: true,
                 dialogVisible: false,
-                update: false,
                 searchForm: {},
-                curNode: {},
+                editAccountId: '',
+                pid: '',
                 tableData: [],
                 lastId: "blank",
                 pageFlag: "next",
@@ -82,7 +83,7 @@
                 this.searchForm = searchForm;
                 this.$store.dispatch("fundAccount/getTreeList", {filter: searchForm})
                     .then(data => {
-                        this.tableData = data.data;
+                        this.tableData = data;
                         this.loading = false;
                     })
                     .catch(error => {
@@ -91,21 +92,14 @@
                     });
             },
             handleAdd() {
+                this.editAccountId = "";
+                this.pid = "";
                 this.dialogVisible = true;
-                this.curNode = {};
-                this.update = false;
             },
             handleSave(formData) {
                 this.dialogVisible = false;
-
-                let url = "";
-                if (this.update) {
-                    url = "fundAccount/updateOne";
-                } else {
-                    url = "fundAccount/addOne";
-                }
                 this.$store
-                    .dispatch(url, formData)
+                    .dispatch("fundAccount/save", formData)
                     .then(() => {
                         this.loadData({});
                     })
@@ -116,10 +110,15 @@
             handleCancel() {
                 this.dialogVisible = false;
             },
-            handleEdit(row) {
+            handleAddChild(accountId) {
+                this.editAccountId = "";
                 this.dialogVisible = true;
-                this.curNode = row;
-                this.update = true;
+                this.pid = accountId;
+            },
+            handleEdit(accountId) {
+                this.editAccountId = accountId;
+                this.pid = "";
+                this.dialogVisible = true;
             },
             handlePrevClick() {
                 this.pageFlag = "prev";

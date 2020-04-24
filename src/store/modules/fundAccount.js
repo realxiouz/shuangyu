@@ -1,11 +1,34 @@
-import {addOne,updateOne,removeOne,getOne,getList,getTotal,getPageList,getTreeList} from '@/api/fundAccount';
+import {
+  addOne,
+  getList,
+  getOne,
+  getPageList,
+  getTotal,
+  getTreeList,
+  removeOne,
+  save,
+  updateOne
+} from '@/api/fundAccount';
 
 const actions = {
+  save({commit}, params) {
+    return new Promise((resolve, reject) => {
+      save(params)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
   addOne({commit}, params) {
     return new Promise((resolve, reject) => {
       addOne(params)
         .then(response => {
-          resolve(response);
+          const {data} = response;
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -16,7 +39,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       updateOne(params)
         .then(response => {
-          resolve(response);
+          const {data} = response;
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -28,7 +52,8 @@ const actions = {
       const {accountId} = params;
       removeOne(accountId)
         .then(response => {
-          resolve(response);
+          const {data} = response;
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -40,7 +65,8 @@ const actions = {
       const {accountId} = params;
       getOne(accountId)
         .then(response => {
-          resolve(response);
+          const {data} = response;
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -52,7 +78,8 @@ const actions = {
       const {filter} = params;
       getTotal(filter)
         .then(response => {
-          resolve(response);
+          const {data} = response;
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -64,7 +91,8 @@ const actions = {
       const {filter} = params;
       getList(filter)
         .then(response => {
-          resolve(response);
+          const {data} = response;
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -76,7 +104,8 @@ const actions = {
       const {filter} = params;
       getTreeList(filter)
         .then(response => {
-          resolve(response);
+          const {data} = response;
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -88,7 +117,8 @@ const actions = {
       const {pageFlag, pageSize, lastId, filter} = params;
       getPageList(pageFlag, pageSize, lastId, filter)
         .then(response => {
-          resolve(response);
+          const {data} = response;
+          resolve(data);
         })
         .catch(error => {
           reject(error);

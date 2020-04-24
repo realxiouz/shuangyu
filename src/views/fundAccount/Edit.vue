@@ -56,7 +56,7 @@
 
 <script>
     export default {
-        props: ["curNode", "update"],
+        props: ['editAccountId', 'pid'],
         data() {
             return {
                 formData: {},
@@ -92,16 +92,16 @@
                     balance: 0
                 };
             },
-            loadCurrency(){
+            loadCurrency() {
                 this.$store.dispatch("currency/getList", {filter: {}})
                     .then(data => {
-                        this.currencyList = data.data;
+                        this.currencyList = data;
                     })
                     .catch(error => {
                         console.log(error);
                     });
             },
-            loadSubject(){
+            loadSubject() {
                 this.$store.dispatch("accountSubject/getList", {filters: {}})
                     .then(data => {
                         this.subjectList = data;
@@ -116,24 +116,41 @@
             },
             /*对提交的数据进行类型格式*/
             handleConfirm() {
-                if (this.subject){
-                    this.formData.subjectId =  this.subject.subjectId;
-                    this.formData.subjectCode =  this.subject.subjectCode;
-                    this.formData.subjectName =  this.subject.subjectName;
+                if (this.subject) {
+                    this.formData.subjectId = this.subject.subjectId;
+                    this.formData.subjectCode = this.subject.subjectCode;
+                    this.formData.subjectName = this.subject.subjectName;
                 }
                 this.$emit("onSave", this.formData);
             },
+            handleGetOne(id) {
+                if (id) {
+                    this.$store
+                        .dispatch("fundAccount/getOne", {accountId: id})
+                        .then(data => {
+                            this.formData = data;
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                } else {
+                    this.formData = this.defaultFormData();
+                }
+            },
             initFormData() {
                 this.clearForm();
-                this.loadCurrency();
-                this.loadSubject();
-                if (this.update) {
-                    Object.assign(this.formData,this.curNode);
-                }
+
             }
         },
         created() {
-            this.initFormData();
+            if (this.editAccountId) {
+                this.handleGetOne(this.editAccountId);
+            }
+            if (this.pid) {
+                this.formData.pid = this.pid;
+            }
+            this.loadCurrency();
+            this.loadSubject();
         }
     };
 </script>
