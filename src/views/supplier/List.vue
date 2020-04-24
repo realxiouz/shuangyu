@@ -11,7 +11,7 @@
         v-loading="loading"
         size="mini"
         :data="tableData"
-        row-key="firmId"
+        row-key="firm.firmId"
       >
         <el-table-column prop="firm.firmName" label="供应商名称" align="center" width="200"></el-table-column>
         <el-table-column prop="firm.firmCode" label="供应商代码" align="center" width="200"></el-table-column>
@@ -23,7 +23,7 @@
         <el-table-column label="操作" fixed="right">
           <template slot-scope="scope">
                         <span v-show="scope.row.firm.openId && '' != scope.row.firm.openId">
-            <el-button type="info" size="mini" @click="handleSupplement(scope.row)">配置管理</el-button>
+            <el-button type="info" size="mini" @click="handleSupplement(scope.row.firm)">配置管理</el-button>
                         </span>
             <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
             <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
@@ -49,10 +49,10 @@
             /*加载供应商列表*/
             loadData(params) {
                 if (params) {
-                    params.type = 0;
+                    params.type = JSON.stringify([0])
                 } else {
                     let newParams = {};
-                    newParams.type = 0;
+                    newParams.type = JSON.stringify([0])
                     params = newParams;
                 }
                 this.$store
@@ -140,8 +140,8 @@
                     });
             },
             /*跳转到供应商编辑页面，addRoot用于判断添加的是否是根节点，firmId用于编辑记录时进行查找。*/
-            skipDetail(firmId) {
-                this.$router.push({path: '/supplier/edit', query: {firmId: firmId}});
+            skipDetail(otherId) {
+                this.$router.push({path: '/supplier/edit', query: {otherId: otherId}});
             }
         },
         mounted() {

@@ -18,7 +18,7 @@
             <span>基本信息</span>
           </div>
           <div class="form">
-            <el-form :rules="rules" :model="firmForm" label-position="left" label-width="130px" size="mini">
+            <el-form  :model="firmForm" label-position="left" label-width="130px" size="mini">
               <el-form-item label="类型" prop="type">
                 <el-select v-model="firmForm.type" placeholder="请选择平台">
                   <el-option label="企业" :value=1></el-option>
@@ -312,7 +312,7 @@
             }
         },
         created() {
-            this.initFormData(this.$route.query.firmId);
+            this.initFormData(this.$route.query.otherId);
         },
         components: {
             otherContact,
