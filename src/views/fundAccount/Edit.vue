@@ -21,7 +21,7 @@
         <el-input v-model="formData.bankAccount" placeholder="请输入完整的银行账号"></el-input>
       </el-form-item>
       <el-form-item label="币种">
-        <el-select v-model="formData.currency" style="width: 100%;" placeholder="请选择币种..">
+        <el-select v-model="formData.currencyCode" style="width: 100%;" placeholder="请选择币种..">
           <el-option
             v-for="(item,idx) in currencyList"
             :key="idx"
@@ -37,12 +37,12 @@
         <el-input v-model="formData.balance" placeholder="请输入余额.."></el-input>
       </el-form-item>
       <el-form-item label="科目名称">
-        <el-select v-model="subject" style="width: 100%;" placeholder="请选择科目.." @select="seletedSubject">
+        <el-select v-model="formData.subjectCode" style="width: 100%;" placeholder="请选择科目.." @change="selectChange">
           <el-option
             v-for="(item,idx) in subjectList"
             :key="idx"
             :label="item.name"
-            :value="item">
+            :value="item.code">
           </el-option>
         </el-select>
       </el-form-item>
@@ -56,13 +56,12 @@
 
 <script>
     export default {
-        props: ["curNode", "update"],
+        props: ['editAccountId', 'pid'],
         data() {
             return {
                 formData: {},
                 currencyList: [],
-                subjectList: [],
-                subject: null
+                subjectList: []
             };
         },
         methods: {
@@ -92,16 +91,16 @@
                     balance: 0
                 };
             },
-            loadCurrency(){
+            loadCurrency() {
                 this.$store.dispatch("currency/getList", {filter: {}})
                     .then(data => {
-                        this.currencyList = data.data;
+                        this.currencyList = data;
                     })
                     .catch(error => {
                         console.log(error);
                     });
             },
-            loadSubject(){
+            loadSubject() {
                 this.$store.dispatch("accountSubject/getList", {filters: {}})
                     .then(data => {
                         this.subjectList = data;
@@ -114,29 +113,45 @@
             clearForm() {
                 this.formData = this.defaultFormData();
             },
-            seletedSubject(item){
-              this.subject = item;
+            selectChange(code) {
+                let obj = {};
+                obj = this.subjectList.find((item) => {
+                    return item.code === code;
+                });
+                this.formData.subjectName = obj.name;
             },
             /*对提交的数据进行类型格式*/
             handleConfirm() {
-                if (this.subject){
-                    this.formData.subjectId =  this.subject.subjectId;
-                    this.formData.subjectCode =  this.subject.subjectCode;
-                    this.formData.subjectName =  this.subject.subjectName;
-                }
                 this.$emit("onSave", this.formData);
+            },
+            handleGetOne(id) {
+                if (id) {
+                    this.$store
+                        .dispatch("fundAccount/getOne", {accountId: id})
+                        .then(data => {
+                            this.formData = data;
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                } else {
+                    this.formData = this.defaultFormData();
+                }
             },
             initFormData() {
                 this.clearForm();
-                this.loadCurrency();
-                this.loadSubject();
-                if (this.update) {
-                    Object.assign(this.formData,this.curNode);
-                }
+
             }
         },
         created() {
-            this.initFormData();
+            if (this.editAccountId) {
+                this.handleGetOne(this.editAccountId);
+            }
+            if (this.pid) {
+                this.formData.pid = this.pid;
+            }
+            this.loadCurrency();
+            this.loadSubject();
         }
     };
 </script>
