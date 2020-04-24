@@ -1,13 +1,13 @@
-import {addOne, addSorC, updateSorC, removeOne, updateOne, getOne, getPageList, getTotal, getList,getDealerCustomerList} from '@/api/firm';
+import {addOne, addSorC, getList, getOne, getPageList, getTotal, removeOne, updateOne, updateSorC} from '@/api/firm';
 
 
 const actions = {
-  getList({ commit }, params) {
+  getList({commit}, params) {
     return new Promise((resolve, reject) => {
       const {filters} = params;
       getList(filters)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -15,20 +15,7 @@ const actions = {
         });
     });
   },
-  getDealerCustomerList({ commit }, params) {
-    return new Promise((resolve, reject) => {
-      const {filters} = params;
-      getDealerCustomerList(filters)
-        .then(response => {
-          const { data } = response;
-          resolve(data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  getPageList({ commit }, params) {
+  getPageList({commit}, params) {
     return new Promise((resolve, reject) => {
       const {pageFlag, pageSize, lastId, filter} = params;
       getPageList(pageFlag, pageSize, lastId, filter)
@@ -41,7 +28,7 @@ const actions = {
         });
     });
   },
-  getTotal({ commit }, params) {
+  getTotal({commit}, params) {
     return new Promise((resolve, reject) => {
       const {filter} = params;
       getTotal(filter)

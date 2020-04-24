@@ -69,11 +69,3 @@ export function getList(filter) {
     params: filter
   });
 }
-
-export function getDealerCustomerList(filter) {
-  return request({
-    url: `/firm/dealer/customer/list`,
-    method: `get`,
-    params: filter
-  });
-}
