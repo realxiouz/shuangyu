@@ -45,17 +45,17 @@
             };
         },
         methods: {
-            /*加载客户列表*/
+            /*加载客户列表1：企业客户，2：个人客户*/
             loadData(params) {
                 if (params) {
-                    params.type = 2;
+                    params.type = [1, 2];
                 } else {
                     let newParams = {};
-                    newParams.type = 2;
+                    newParams.types = JSON.stringify([1, 2])
                     params = newParams;
                 }
                 this.$store
-                    .dispatch("firm/getDealerCustomerList", {filters: params})
+                    .dispatch("firmOther/getList", {filters: params})
                     .then(data => {
                         if (data) {
                             this.tableData = data;
