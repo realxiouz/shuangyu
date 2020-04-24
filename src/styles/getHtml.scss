@@ -1,0 +1,119 @@
+/* 消息html */
+#messageHtml {
+    .public-title {
+        display: none;
+    }
+    .info {
+        display: none;
+    }
+    .dispose {
+        margin-top: 10px;
+        border: 1px solid #409eff;
+        .j_fileUpload_toggle {
+            display: none;
+        }
+    }
+}
+
+/* 拒绝退款弹框样式 */
+#refundTts {
+    .refuse-cause-btn {
+        text-align: right;
+    }
+    .refuse-cause-cont ul {
+        li {
+            line-height: 22px;
+            list-style: none;
+        }
+        #js_refuse_refund_reason {
+            list-style: none;
+        }
+
+        #js_refuse_refund_reason {
+            width: 100%;
+            height: 30px;
+            line-height: 30px;
+            margin-bottom: 15px;
+        }
+        #js_rj_remark{
+            width: 100%;
+        }
+    }
+}
+/* 退票html样式 */
+#refundHtmlOrderDetail {
+    #js_mod_rt {
+        label {
+            font-weight: 500;
+        }
+        .hd {
+            display: none;
+        }
+        ul {
+            margin: 0;
+            padding: 0;
+            margin-bottom: 10px;
+            li {
+                width: 100%;
+                list-style: none;
+                margin-top: 15px;
+            }
+        }
+        .bd #js_form_rt {
+            .title-box {
+                display: none;
+            }
+            .js_box_content {
+                .lable-title {
+                    float: left;
+                }
+                .ticket-cell #js_passanger_rt {
+                    border: 1px solid #0092dc;
+                    margin: 10px;
+                    padding: 10px;
+                }
+            }
+            #js_btns_rt .g-btn:not(:first-child) {
+                display: none;
+            }
+        }
+    }
+    #js_mod_rwc {
+        label {
+            font-weight: 500;
+        }
+        ul {
+            margin: 0;
+            padding: 0;
+            li {
+                width: 100%;
+                list-style: none;
+            }
+        }
+        #js_form_rm li {
+            line-height: 22px;
+            .lable-title {
+                float: left;
+            }
+        }
+        .hd {
+            display: none;
+        }
+        #js_btns_rm .g-btn:not(#js_btn_reject) {
+            display: none;
+        }
+    }
+    #js_reject_content {
+        display: none;
+    }
+}
+
+/* 改签html样式 */
+#changeHtmlOrderDetail {
+    .mod-public-case .hd {
+        display: none;
+    }
+    .m-payinfo {
+        display: none;
+    }
+}

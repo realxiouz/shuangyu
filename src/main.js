@@ -5,6 +5,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 import locale from 'element-ui/lib/locale/lang/zh-CN';
 import 'element-ui/lib/theme-chalk/display.css';
 import '@/styles/default.scss';
+import "@/styles/getHtml.scss";
 import App from './App';
 import router from './router';
 import store from './store';

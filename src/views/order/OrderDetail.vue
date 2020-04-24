@@ -169,7 +169,7 @@
         <span>消息</span>
       </div>
       <el-button type="primary" size="mini" @click="getMessage">刷新</el-button>
-      <div>
+      <div id="messageHtml">
         <span v-if="this.messageData" v-html="this.messageData"></span>
       </div>
     </el-card>
@@ -178,10 +178,10 @@
         <span v-if="this.tableData.orderType=='30'|| this.tableData.orderType=='31'">改签</span>
         <span v-else>退票</span>
       </div>
-      <div>
+      <div id="changeHtmlOrderDetail">
         <span v-if="this.changeHtml" v-html="this.changeHtml"></span>
       </div>
-      <div>
+      <div id="refundHtmlOrderDetail">
         <span v-if="this.refundHtml" v-html="this.refundHtml"></span>
       </div>
     </el-card>
@@ -334,6 +334,17 @@
         ></fillOut-change>
       </el-dialog>
     </div>
+    <div>
+      <el-dialog
+        title="拒绝退款"
+        center
+        :visible.sync="newFromDialogShow"
+        width="33%"
+        :close-on-click-modal="false"
+      >
+        <div id="refundTts" v-html="this.newFromDialog"></div>
+      </el-dialog>
+    </div>
   </div>
 </template>
 <script>
@@ -358,6 +369,8 @@ export default {
       changeTicketShow: false,
       fillOutChangeShow: false,
       fillOutRefundShow: false,
+      newFromDialogShow: false,
+      newFromDialog: "",
       fillOutRefundData: "",
       fillOutChangeData: "",
       changeHtml: "",
@@ -730,6 +743,12 @@ export default {
           console.log(error);
         });
     },
+    // 拒绝退款返回
+    // btnRejectCancel(){
+    //   let refundConfirm = document.querySelector('[data-action="btn_reject_cancel"]');
+
+    // },
+
     formatAmount1(amount) {
       if (!amount) {
         return "￥0.00";
@@ -1107,6 +1126,7 @@ export default {
     }
   },
   updated() {
+    // 获取改签html里的信息
     if (this.changeHtml) {
       this.changeDataTop.reason = document.querySelectorAll(
         ".select"
@@ -1137,22 +1157,24 @@ export default {
       });
     }
     if (this.refundHtml) {
-      let refundConfirm = document.querySelector('[data-action="btn_confirm"]');
-      let refundReject = document.querySelector('[data-action="btn_reject"]');
-
+      let refundConfirm = document.querySelector(
+        '#refundHtmlOrderDetail [data-action="btn_confirm"]'
+      );
       if (refundConfirm) {
         // 退款确认按钮事件
         var that = this;
         refundConfirm.onclick = function() {
-          let refundRemark = document.querySelectorAll("#js_rticket_remark")[0]
-            .value;
-          let orderNo = document.querySelectorAll("#js_form_rt #orderNo")[0]
-            .value;
+          let refundRemark = document.querySelectorAll(
+            "#refundHtmlOrderDetail #js_rticket_remark"
+          )[0].value;
+          let orderNo = document.querySelectorAll(
+            "#refundHtmlOrderDetail #js_form_rt #orderNo"
+          )[0].value;
           let ticketreturnstutas = document.querySelectorAll(
-            "#J_RefundStatus"
+            "#refundHtmlOrderDetail #J_RefundStatus"
           )[0].value;
           let form = document.querySelectorAll(
-            "#js_form_rt #js_passanger_rt tbody tr td input[type='hidden']"
+            "#refundHtmlOrderDetail #js_form_rt #js_passanger_rt tbody tr td input[type='hidden']"
           );
           let str = "";
           Array.from(form).forEach(item => {
@@ -1168,12 +1190,57 @@ export default {
           that.affirmRefundTicket(params);
         };
       }
+      // 拒绝退款按钮
+      let refundReject = document.querySelector(
+        '#refundHtmlOrderDetail [data-action="btn_reject"]'
+      );
       if (refundReject) {
-        // let from = document.getElementById("js_from_reject")
-        // console.log(from, "js_from_reject");
         var that = this;
         refundReject.onclick = function() {
-          console.log("拒绝退款");
+          let from = document.getElementById("js_from_reject");
+          that.newFromDialog = from.innerHTML;
+          that.newFromDialogShow = true;
+        };
+      }
+      // 拒绝退款弹框取消
+      let btnRejectCancel = document.querySelector(
+        "#refundTts [data-action='btn_reject_cancel']"
+      );
+      if (btnRejectCancel) {
+        btnRejectCancel.onclick = function() {
+          that.newFromDialogShow = false;
+        };
+      }
+      //拒绝退款弹框确定
+      let btnRejectAffirm = document.querySelector(
+        "#refundTts [data-action='btn_reject_enter']"
+      );
+      if (btnRejectAffirm) {
+        btnRejectAffirm.onclick = function() {
+          let refuseRefundReason = document.querySelector(
+            "#refundTts #js_refuse_refund_reason"
+          ).value;
+          let refuseRemark = document.querySelector("#refundTts #js_rj_remark")
+            .value;
+
+          let _orderNo = document.querySelector(
+            "#refundTts .refuse-cause-cont input[type='hidden']"
+          ).value;
+          let params = {
+            orderNo: _orderNo,
+            refuseRefundReason: refuseRefundReason,
+            remark: refuseRemark
+          };
+
+          if (refuseRefundReason == 0) {
+            that.$message({
+              type: "info",
+              message: "请选择未及时退款原因"
+            });
+            return;
+          }
+          that.refundCheckRefuseReason(params);
+          that.newFromDialogShow = false;
         };
       }
     }
@@ -1192,87 +1259,5 @@ export default {
 .contentBox {
   padding-top: 0px !important;
   padding-bottom: 0px !important;
-}
-</style>
-<style>
-/* 消息html */
-.public-title {
-  display: none;
-}
-.info {
-  display: none;
-}
-.dispose {
-  margin-top: 10px;
-  border: 1px solid #409eff;
-}
-.dispose .j_fileUpload_toggle {
-  display: none;
-}
-/* 退票html样式 */
-#js_mod_rt label {
-  font-weight: 500;
-}
-#js_mod_rwc label {
-  font-weight: 500;
-}
-#js_reject_content {
-  display: none;
-}
-#js_mod_rt ul {
-  margin: 0;
-  padding: 0;
-  margin-bottom: 10px;
-}
-
-#js_mod_rt .bd #js_form_rt .js_box_content .lable-title {
-  float: left;
-}
-#js_mod_rt .bd #js_form_rt .js_box_content .ticket-cell #js_passanger_rt {
-  border: 1px solid #0092dc;
-  margin: 10px;
-  padding: 10px;
-}
-#js_mod_rwc ul {
-  margin: 0;
-  padding: 0;
-}
-#js_form_rm li {
-  line-height: 22px;
-}
-#js_form_rm li .lable-title {
-  float: left;
-}
-
-#js_mod_rt li {
-  width: 100%;
-  list-style: none;
-  margin-top: 15px;
-}
-#js_mod_rwc li {
-  width: 100%;
-  list-style: none;
-}
-#js_mod_rt .hd {
-  display: none;
-}
-#js_form_rt .title-box {
-  display: none;
-}
-#js_mod_rwc .hd {
-  display: none;
-}
-#js_btns_rt .g-btn:not(:first-child) {
-  display: none;
-}
-#js_btns_rm .g-btn:not(#js_btn_reject) {
-  display: none;
-}
-/* 改签html样式 */
-.mod-public-case .hd {
-  display: none;
-}
-.m-payinfo {
-  display: none;
 }
 </style>
