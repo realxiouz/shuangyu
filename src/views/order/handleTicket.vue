@@ -246,7 +246,7 @@
       <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
       <el-button
         size="mini"
-        v-if="this.passengerData[0].orderSource=='QUNAR_OPEN'"
+        v-if="this.sourceFlag"
         type="primary"
         @click="handleSaveTicket"
       >保存并贴票</el-button>
