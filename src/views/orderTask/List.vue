@@ -275,7 +275,6 @@ export default {
         this.btnTransfer = true;
       }
       this.selectTask = row;
-      console.log(row);
     },
     // 批量转单弹框
     batchTaskTransfer() {
