@@ -3,6 +3,16 @@
     <el-form :model="formData" label-width="110px" size="mini" style="margin-top:15px;">
       <el-row>
         <el-col :span="12">
+          <el-form-item v-show="this.isWoniu">
+            <el-radio-group @change="radioChange" v-model="formData.radio" style="width:100%">
+              <el-radio label="1">导单</el-radio>
+              <el-radio label="2">补单</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12">
           <el-form-item label="渠道:">
             <el-select
               clearable
@@ -19,24 +29,23 @@
         </el-col>
 
         <el-col :span="12">
-          <el-form-item label="原单号:">
+          <el-form-item label="单号:">
             <el-input clearable v-model="formData.sourceOrderNo"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
-      <div v-if="this.isWoniu">
+      <div v-if="this.isWoniu && this.isWoniuTicket">
         <el-row>
           <el-col :span="12">
-            <el-form-item label="蜗牛单类型:">
+            <el-form-item label="订单状态:">
               <el-select
-                v-model="formData.purchaseOrderType"
+                v-model="formData.status"
                 clearable
-                placeholder="请选择蜗牛单类型"
-                @change="selectStatusData"
+                placeholder="请选择订单状态"
                 style="width: 100%"
               >
                 <el-option
-                  v-for="item in purchaseOrderTypeStatus"
+                  v-for="item in statusData"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
@@ -45,7 +54,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="this.selectStatusDataFlag?'应收:':'应付:'">
+            <el-form-item label="金额:">
               <el-input clearable v-model="formData.amount"></el-input>
             </el-form-item>
           </el-col>
@@ -72,7 +81,7 @@
           <el-col :span="12">
             <el-form-item label="蜗牛账号:">
               <el-select
-                v-model="formData.accountId"
+                v-model="formData.userNameType"
                 filterable
                 clearable
                 placeholder="请选择蜗牛账号"
@@ -142,7 +151,6 @@
               <el-input clearable v-model="formData.profit"></el-input>
             </el-form-item>
           </el-col>
-
           <el-col :span="12">
             <el-form-item label="使用账号:">
               <el-input clearable v-model="formData.fundAccount"></el-input>
@@ -153,7 +161,6 @@
               <el-input clearable v-model="formData.remark"></el-input>
             </el-form-item>
           </el-col>
-
           <el-col :span="12">
             <el-form-item label="资金账号:">
               <el-select
@@ -172,7 +179,6 @@
               </el-select>
             </el-form-item>
           </el-col>
-
           <el-col :span="12">
             <el-form-item label="出发地:">
               <el-input clearable v-model="formData.dpt"></el-input>
@@ -279,8 +285,7 @@ import {
   formatAgeType,
   formatCardType,
   orderType,
-  statusData,
-  purchaseOrderTypeStatus
+  statusData
 } from "@/utils/status.js";
 
 export default {
@@ -290,6 +295,7 @@ export default {
     return {
       selectStatusDataFlag: false,
       isWoniu: false,
+      isWoniuTicket: true,
       orderType: orderType,
       formData: {
         ...this.fillOutRefundData,
@@ -299,27 +305,33 @@ export default {
         dptTime: this.fillOutRefundData.flights[0].dptTime,
         arrTime: this.fillOutRefundData.flights[0].arrTime,
         flightDate: this.fillOutRefundData.flights[0].flightDate,
-        cabin: this.fillOutRefundData.flights[0].cabin
+        cabin: this.fillOutRefundData.flights[0].cabin,
+        radio: "1",
+        fundAccountId:"",
+        userNameType:"",
+        accountId:""
+
       },
+
       accountData: [],
-      purchaseOrderTypeStatus: purchaseOrderTypeStatus,
       statusData: statusData
     };
   },
   methods: {
     formatAgeType,
     formatCardType,
-    // 订单状态判断是否退票显示应收
-    selectStatusData(value) {
-      if (value == 2) {
-        this.selectStatusDataFlag = true;
+    //判断是蜗牛导单还是出票
+    radioChange(value) {
+      if (value == "2") {
+        this.radio = "2";
+        this.isWoniuTicket = false;
       } else {
-        this.selectStatusDataFlag = false;
+        this.radio = "1";
+        this.isWoniuTicket = true;
       }
     },
     // 判断选中渠道是否是蜗牛
     selectSource(value) {
-      console.log(value);
       if (value == "QUNAR_OPEN") {
         this.isWoniu = true;
       } else {
@@ -334,7 +346,6 @@ export default {
         })
         .then(data => {
           this.accountData = data.data;
-          // console.log(data);
         })
         .catch(error => {
           console.log(error);

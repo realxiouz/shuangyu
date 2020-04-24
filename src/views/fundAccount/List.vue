@@ -7,49 +7,45 @@
       <el-row style="margin-bottom:15px;margin-left:22px;">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
-      <el-table size="mini" v-loading="loading" :data="tableData" style="width: 100%;margin-bottom:15px;">
+      <el-table
+        v-loading="loading"
+        size="mini"
+        :data="tableData"
+        row-key="accountId"
+        :tree-props="{children: 'children', hasChildren: 'XXX'}"
+      >
         <el-table-column prop="accountCode" label="账号编码" align="center"></el-table-column>
         <el-table-column prop="accountName" label="账号名称" align="center"></el-table-column>
         <el-table-column prop="bankAccount" label="银行账号" align="center"></el-table-column>
-        <el-table-column label="币种" align="center">
-          <template slot-scope="scope">
-            <span>{{ scope.row.currency.name }}</span>
-          </template>
-        </el-table-column>
+<!--        <el-table-column label="币种" align="center">-->
+<!--          <template slot-scope="scope">-->
+<!--            <span>{{ scope.row.currency.name }}</span>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
         <el-table-column label="类别" align="center">
           <template slot-scope="scope">
             <span>{{initCategory(scope.row.category)}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="初始余额" align="center">
-          <template slot-scope="scope">
-            <span>{{scope.row.currency.symbol + " " }}{{ formatAmount(scope.row.initBalance)}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="余额" align="center">
-          <template slot-scope="scope">
-            <span>{{scope.row.currency.symbol + " " }}{{ formatAmount(scope.row.balance)}}</span>
-          </template>
-        </el-table-column>
+<!--        <el-table-column label="初始余额" align="center">-->
+<!--          <template slot-scope="scope">-->
+<!--            <span>{{scope.row.currency.symbol + " " }}{{ formatAmount(scope.row.initBalance)}}</span>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
+<!--        <el-table-column label="余额" align="center">-->
+<!--          <template slot-scope="scope">-->
+<!--            <span>{{scope.row.currency.symbol + " " }}{{ formatAmount(scope.row.balance)}}</span>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
         <el-table-column prop="subjectName" label="科目" align="center"></el-table-column>
-        <el-table-column label="操作" align="center" width="180">
+        <el-table-column label="操作" align="center" width="250">
           <template slot-scope="scope">
-            <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
+            <el-button type="success" size="mini" @click="handleAddChild(scope.row.accountId)">添加</el-button>
+            <el-button @click="handleEdit(scope.row.accountId)" type="primary" size="mini">编辑</el-button>
             <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination
-        @prev-click="handlePrevClick"
-        @next-click="handleNextClick"
-        background
-        layout="total,prev,next"
-        prev-text="上一页"
-        next-text="下一页"
-        :page-size="pageSize"
-        :total="total"
-      ></el-pagination>
-
       <el-dialog
         title="资金账号信息"
         center
@@ -59,10 +55,10 @@
       >
         <fund-account-edit
           v-if="dialogVisible"
-          :cur-node="curNode"
-          :update="update"
           @onSave="handleSave"
           @onCancel="handleCancel"
+          :edit-account-id="editAccountId"
+          :pid="pid"
         ></fund-account-edit>
       </el-dialog>
     </div>
@@ -78,29 +74,18 @@
             return {
                 loading: true,
                 dialogVisible: false,
-                update: false,
                 searchForm: {},
-                curNode: {},
-                tableData: [],
-                lastId: "blank",
-                pageFlag: "next",
-                pageSize: 10,
-                total: 0
+                editAccountId: '',
+                pid: '',
+                tableData: []
             };
         },
         methods: {
             loadData(searchForm) {
                 this.searchForm = searchForm;
-                this.$store.dispatch("fundAccount/getTotal", {filter: searchForm})
+                this.$store.dispatch("fundAccount/getTreeList", {filter: searchForm})
                     .then(data => {
-                        this.total = data.data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-                this.$store.dispatch("fundAccount/getPageList", {pageFlag: this.pageFlag, pageSize: this.pageSize, lastId: this.lastId,filter: searchForm})
-                    .then(data => {
-                        this.tableData = data.data;
+                        this.tableData = data;
                         this.loading = false;
                     })
                     .catch(error => {
@@ -109,21 +94,14 @@
                     });
             },
             handleAdd() {
+                this.editAccountId = "";
+                this.pid = "";
                 this.dialogVisible = true;
-                this.curNode = {};
-                this.update = false;
             },
             handleSave(formData) {
                 this.dialogVisible = false;
-
-                let url = "";
-                if (this.update) {
-                    url = "fundAccount/updateOne";
-                } else {
-                    url = "fundAccount/addOne";
-                }
                 this.$store
-                    .dispatch(url, formData)
+                    .dispatch("fundAccount/save", formData)
                     .then(() => {
                         this.loadData({});
                     })
@@ -134,10 +112,15 @@
             handleCancel() {
                 this.dialogVisible = false;
             },
-            handleEdit(row) {
+            handleAddChild(accountId) {
+                this.editAccountId = "";
                 this.dialogVisible = true;
-                this.curNode = row;
-                this.update = true;
+                this.pid = accountId;
+            },
+            handleEdit(accountId) {
+                this.editAccountId = accountId;
+                this.pid = "";
+                this.dialogVisible = true;
             },
             handlePrevClick() {
                 this.pageFlag = "prev";
@@ -197,10 +180,10 @@
                 }
                 return this.$numeral(amount).format("0.00");
             },
-            initCategory(category){
-                if (0 === category){
+            initCategory(category) {
+                if (0 === category) {
                     return '现金';
-                }else{
+                } else {
                     return '银行存款';
                 }
             }

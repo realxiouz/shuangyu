@@ -54,3 +54,13 @@ export function taskRemark(params) {
     params: params
   });
 }
+// 
+
+// 批量转任务
+export function taskTransfer(data) {
+  return request({
+    url: '/order/task/transfer',
+    method: 'post',
+    data:data
+  });
+}

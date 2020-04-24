@@ -1,4 +1,4 @@
-import { taskRemark, taskSubmit, taskCancel, getPageList, getTotal, getPendingTotal } from '@/api/orderTask';
+import { taskTransfer,taskRemark, taskSubmit, taskCancel, getPageList, getTotal, getPendingTotal } from '@/api/orderTask';
 import { getToken } from '@/utils/auth';
 
 const state = {
@@ -90,7 +90,7 @@ const actions = {
     // 任务备注
     taskRemark({ commit }, params) {
         return new Promise((resolve, reject) => {
-            taskCancel(params)
+            taskRemark(params)
                 .then(response => {
                     const { data } = response;
                     resolve(data);
@@ -100,6 +100,20 @@ const actions = {
                 });
         });
     },
+    // 批量转单
+    taskTransfer({ commit }, params) {
+        return new Promise((resolve, reject) => {
+            taskTransfer(params)
+                .then(response => {
+                    const { data } = response;
+                    resolve(data);
+                })
+                .catch(error => {
+                    reject(error);
+                });
+        });
+    },
+
 
 };
 

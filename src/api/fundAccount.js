@@ -1,5 +1,13 @@
 import request from '@/utils/request';
 
+export function save(data) {
+  return request({
+    url: '/finance/account/save/one',
+    method: 'post',
+    data
+  });
+}
+
 export function addOne(data) {
   return request({
     url: '/finance/account/add/one',
@@ -33,6 +41,13 @@ export function getOne(accountId) {
 export function getList(filter) {
   return request({
     url: `/finance/account/list`,
+    method: 'get',
+    params: filter
+  });
+}
+export function getTreeList(filter) {
+  return request({
+    url: `/finance/account/tree/list`,
     method: 'get',
     params: filter
   });
