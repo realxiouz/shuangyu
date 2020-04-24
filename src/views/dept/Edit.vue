@@ -71,7 +71,7 @@ export default {
   methods: {
     loadFirms() {
       this.$store
-        .dispatch("firm/getList", {
+        .dispatch("firm/getTreeList", {
           filters: {}
         })
         .then(data => {

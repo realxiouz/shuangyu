@@ -241,7 +241,7 @@
             },
             loadFirmData() {
                 this.$store
-                    .dispatch("firm/getList", {filter: {}})
+                    .dispatch("firm/getTreeList", {filter: {}})
                     .then(data => {
                         this.firmList = data;
                     })

@@ -172,7 +172,9 @@ export default {
         idCardNo: "",
         deptID: "",
         domain: "",
-        roles: []
+        roles: [],
+          //类型（0：员工，1：联系人）
+          type: 0
       };
     },
     /*获取该部门下的员工列表*/
@@ -182,7 +184,7 @@ export default {
         .dispatch("staff/getList", {
           filter: params
             ? params
-            : { firmId: this.curNode.firmId, deptId: this.curNode.deptId }
+            : { firmId: this.curNode.firmId, deptId: this.curNode.deptId ,type: 0}
         })
         .then(data => {
           if (data) {
