@@ -84,14 +84,14 @@
                 this.searchForm = searchForm;
                 this.$store.dispatch("currency/getTotal", {filter: searchForm})
                     .then(data => {
-                        this.total = data.data;
+                        this.total = data;
                     })
                     .catch(error => {
                         console.log(error);
                     });
                 this.$store.dispatch("currency/getPageList", {pageFlag: this.pageFlag, pageSize: this.pageSize, lastId: this.lastId,filter: searchForm})
                     .then(data => {
-                        this.tableData = data.data;
+                        this.tableData = data;
                         this.loading = false;
                     })
                     .catch(error => {
