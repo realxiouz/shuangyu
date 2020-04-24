@@ -1,13 +1,13 @@
-import {addOne, addSorC, getList, getOne, getPageList, getTotal, removeOne, updateOne, updateSorC} from '@/api/firm';
+import {addOne, addSorC, updateSorC, removeOne, updateOne, getOne, getPageList, getTotal, getList, getTreeList, getDealerCustomerList} from '@/api/firm';
 
 
 const actions = {
-  getList({commit}, params) {
+  getList({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const {filters} = params;
-      getList(filters)
+      const {filter} = params;
+      getList(filter)
         .then(response => {
-          const {data} = response;
+          const { data } = response;
           resolve(data);
         })
         .catch(error => {
@@ -15,7 +15,33 @@ const actions = {
         });
     });
   },
-  getPageList({commit}, params) {
+  getTreeList({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      const {filters} = params;
+      getTreeList(filters)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getDealerCustomerList({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      const {filters} = params;
+      getDealerCustomerList(filters)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getPageList({ commit }, params) {
     return new Promise((resolve, reject) => {
       const {pageFlag, pageSize, lastId, filter} = params;
       getPageList(pageFlag, pageSize, lastId, filter)
@@ -28,7 +54,7 @@ const actions = {
         });
     });
   },
-  getTotal({commit}, params) {
+  getTotal({ commit }, params) {
     return new Promise((resolve, reject) => {
       const {filter} = params;
       getTotal(filter)
@@ -74,28 +100,6 @@ const actions = {
         .then(response => {
           const {data} = response;
           resolve(data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  addSorC({commit}, params) {
-    return new Promise((resolve, reject) => {
-      addSorC(params)
-        .then(response => {
-          resolve(response.data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  updateSorC({commit}, params) {
-    return new Promise((resolve, reject) => {
-      updateSorC(params)
-        .then(response => {
-          resolve(response.data);
         })
         .catch(error => {
           reject(error);
