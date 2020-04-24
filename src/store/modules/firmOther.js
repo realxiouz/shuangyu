@@ -1,7 +1,19 @@
-import {getList, removeOne} from '@/api/firmOther';
+import {getOne, getList, removeOne} from '@/api/firmOther';
 
 
 const actions = {
+  getOne({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {otherId} = params;
+      getOne(otherId)
+        .then(response => {
+          resolve(response.data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
   getList({commit}, params) {
     return new Promise((resolve, reject) => {
       const {filter} = params;
@@ -15,7 +27,6 @@ const actions = {
         });
     });
   },
-
   removeOne({commit}, params) {
     return new Promise((resolve, reject) => {
       const {firmId} = params;

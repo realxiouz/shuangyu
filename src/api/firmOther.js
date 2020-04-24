@@ -8,9 +8,9 @@ export function removeOne(firmID) {
   });
 }
 
-export function getOne(firmId) {
+export function getOne(otherId) {
   return request({
-    url: `/firm/other/get/one/${firmId}`,
+    url: `/firm/other/get/one/${otherId}`,
     method: `get`
   });
 }
