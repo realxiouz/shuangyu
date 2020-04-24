@@ -235,6 +235,15 @@ export function processingChange(params) {
   });
 }
 
+// 重填票号
+export function autoRewriteTicket(data) {
+  return request({
+    url: `/qunar/fuwu/auto/rewrite/ticket/no`,
+    method: 'post',
+    data: data
+
+  });
+}
 // 非蜗牛补单
 export function purchaseOrder(data) {
   return request({

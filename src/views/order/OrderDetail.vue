@@ -975,6 +975,19 @@ export default {
           console.log(error);
         });
     },
+    // 重填票号
+    autoRewriteTicket(params) {
+      this.$store
+        .dispatch("order/autoRewriteTicket", params)
+        .then(data => {
+          if (data) {
+            this.changeHtml = data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     // 获取退票改签信息Html
     getRefundHtml(sourceOrderNo) {
       this.$store
@@ -1155,6 +1168,24 @@ export default {
           this.changeDataTop.passagers.push(item);
         }
       });
+
+      let btnRewriteTicket = document.querySelector(
+        "#changeHtmlOrderDetail .back-form .back-form-info .g-clear .mrl10"
+      );
+      // 重贴票号按钮事件
+      var that = this;
+
+      if (btnRewriteTicket) {
+        btnRewriteTicket.onclick = function() {
+          let params = {
+            orderNo: that.sourceOrderNo,
+            passengerName: "",
+            ticketNo: ""
+          };
+          // that.autoRewriteTicket(params);
+          console.log("ssssss");
+        };
+      }
     }
     if (this.refundHtml) {
       let refundConfirm = document.querySelector(
