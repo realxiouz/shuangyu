@@ -4,8 +4,8 @@ import {getList, removeOne} from '@/api/firmOther';
 const actions = {
   getList({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {filters} = params;
-      getList(filters)
+      const {filter} = params;
+      getList(filter)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -18,8 +18,8 @@ const actions = {
 
   removeOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {firmID} = params;
-      removeOne(firmID)
+      const {firmId} = params;
+      removeOne(firmId)
         .then(response => {
           // const { data } = response;
           resolve(response);

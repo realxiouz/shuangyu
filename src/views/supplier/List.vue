@@ -23,10 +23,10 @@
         <el-table-column label="操作" fixed="right">
           <template slot-scope="scope">
                         <span v-show="scope.row.firm.openId && '' != scope.row.firm.openId">
-            <el-button type="info" size="mini" @click="handleSupplement(scope.row.firm)">配置管理</el-button>
+            <el-button type="info" size="mini" @click="handleSupplement(scope.row)">配置管理</el-button>
                         </span>
-            <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row.firm)">编辑</el-button>
-            <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row.firm)">删除</el-button>
+            <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+            <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -56,7 +56,7 @@
                     params = newParams;
                 }
                 this.$store
-                    .dispatch("firmOther/getList", {filters: params})
+                    .dispatch("firmOther/getList", {filter: params})
                     .then(data => {
                         if (data) {
                             this.tableData = data;
@@ -88,18 +88,18 @@
                 this.skipDetail();
             },
             handleEdit(index, row) {
-                this.skipDetail(row.firmId);
+                this.skipDetail(row.otherId);
             },
             handleDelete(index, row) {
                 this.open(
                     this.remove,
-                    row.firmId,
-                    "此操作将删除该供应商信息及子供应商信息, 是否继续?"
+                    row.otherId,
+                    "此操作将删除该供应商信息, 是否继续?"
                 );
             },
             remove(params) {
                 this.$store
-                    .dispatch("firm/removeOne", {firmID: params})
+                    .dispatch("firmOther/removeOne", {firmId: params})
                     .then(() => {
                         this.loadData();
                     })
@@ -113,8 +113,8 @@
                 this.$router.push({
                     path: path,
                     query: {
-                        firmId: row.firmId,
-                        openId: row.openId
+                        firmId: row.otherId,
+                        openId: row.firmId.openId
                     }
                 });
             },
