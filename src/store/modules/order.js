@@ -27,7 +27,8 @@ import {
   woniuOrder,
   affirmRefund,
   refundCheckRefuseReason,
-  processingChange
+  processingChange,
+  autoRewriteTicket
 } from "@/api/order";
 import { getToken } from "@/utils/auth";
 
@@ -401,6 +402,19 @@ const actions = {
   processingChange({ commit }, params) {
     return new Promise((resolve, reject) => {
       processingChange(params)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  // 重填票号
+  autoRewriteTicket({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      autoRewriteTicket(params)
         .then(response => {
           const { data } = response;
           resolve(data);

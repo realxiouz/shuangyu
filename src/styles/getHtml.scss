@@ -35,7 +35,7 @@
             line-height: 30px;
             margin-bottom: 15px;
         }
-        #js_rj_remark{
+        #js_rj_remark {
             width: 100%;
         }
     }
@@ -115,5 +115,22 @@
     }
     .m-payinfo {
         display: none;
+    }
+    .back-form .back-form-info .g-clear .mrl10 {
+        border: 1px solid #ccc;
+        padding: 4px;
+        border-radius: 5px;
+        color: #fff;
+        background-color: #409eff;
+        border-color: #409eff;
+        font-size: 12px;
+        text-align: center;
+        line-height: 1.15;
+        text-indent: 0px;
+        text-shadow: none;
+        text-align: center;
+    }
+    .back-form .back-form-info .g-clear .labinfo02 .red {
+        color: red;
     }
 }
