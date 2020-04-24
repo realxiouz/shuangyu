@@ -13,20 +13,20 @@
         :data="tableData"
         row-key="firmId"
       >
-        <el-table-column prop="firmName" label="客户名称" align="center" sortable width="200"></el-table-column>
-        <el-table-column prop="firmCode" label="客户代码" align="center" sortable width="200"></el-table-column>
-        <el-table-column prop="fullName" label="联系人" align="center" width="180"></el-table-column>
-        <el-table-column prop="phone" label="联系人电话" align="center" width="180"></el-table-column>
-        <el-table-column prop="email" label="邮箱" align="center" width="180"></el-table-column>
-        <el-table-column prop="address" label="地址" align="center" width="180"></el-table-column>
-        <el-table-column prop="remark" label="备注" align="center"></el-table-column>
+        <el-table-column prop="firm.firmName" label="客户名称" align="center" sortable width="200"></el-table-column>
+        <el-table-column prop="firm.firmCode" label="客户代码" align="center" sortable width="200"></el-table-column>
+        <el-table-column prop="firm.fullName" label="联系人" align="center" width="180"></el-table-column>
+        <el-table-column prop="firm.phone" label="联系人电话" align="center" width="180"></el-table-column>
+        <el-table-column prop="firm.email" label="邮箱" align="center" width="180"></el-table-column>
+        <el-table-column prop="firm.address" label="地址" align="center" width="180"></el-table-column>
+        <el-table-column prop="firm.remark" label="备注" align="center"></el-table-column>
         <el-table-column label="操作" fixed="right">
           <template slot-scope="scope">
-            <span v-show="scope.row.openId && '' != scope.row.openId">
-              <el-button type="info" size="mini" @click="handleSupplement(scope.row)">配置管理</el-button>
+            <span v-show="scope.row.firm.openId && '' != scope.row.firm.openId">
+              <el-button type="info" size="mini" @click="handleSupplement(scope.row.firm)">配置管理</el-button>
             </span>
-            <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-            <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row.firm)">编辑</el-button>
+            <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row.firm)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
