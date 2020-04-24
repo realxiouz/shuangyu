@@ -7,30 +7,36 @@
       <el-row style="margin-bottom:15px;margin-left:22px;">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
-      <el-table size="mini" v-loading="loading" :data="tableData" style="width: 100%;margin-bottom:15px;">
+      <el-table
+        v-loading="loading"
+        size="mini"
+        :data="tableData"
+        row-key="accountId"
+        :tree-props="{children: 'children', hasChildren: 'XXX'}"
+      >
         <el-table-column prop="accountCode" label="账号编码" align="center"></el-table-column>
         <el-table-column prop="accountName" label="账号名称" align="center"></el-table-column>
         <el-table-column prop="bankAccount" label="银行账号" align="center"></el-table-column>
-        <el-table-column label="币种" align="center">
-          <template slot-scope="scope">
-            <span>{{ scope.row.currency.name }}</span>
-          </template>
-        </el-table-column>
+<!--        <el-table-column label="币种" align="center">-->
+<!--          <template slot-scope="scope">-->
+<!--            <span>{{ scope.row.currency.name }}</span>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
         <el-table-column label="类别" align="center">
           <template slot-scope="scope">
             <span>{{initCategory(scope.row.category)}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="初始余额" align="center">
-          <template slot-scope="scope">
-            <span>{{scope.row.currency.symbol + " " }}{{ formatAmount(scope.row.initBalance)}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="余额" align="center">
-          <template slot-scope="scope">
-            <span>{{scope.row.currency.symbol + " " }}{{ formatAmount(scope.row.balance)}}</span>
-          </template>
-        </el-table-column>
+<!--        <el-table-column label="初始余额" align="center">-->
+<!--          <template slot-scope="scope">-->
+<!--            <span>{{scope.row.currency.symbol + " " }}{{ formatAmount(scope.row.initBalance)}}</span>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
+<!--        <el-table-column label="余额" align="center">-->
+<!--          <template slot-scope="scope">-->
+<!--            <span>{{scope.row.currency.symbol + " " }}{{ formatAmount(scope.row.balance)}}</span>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
         <el-table-column prop="subjectName" label="科目" align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="250">
           <template slot-scope="scope">
@@ -71,11 +77,7 @@
                 searchForm: {},
                 editAccountId: '',
                 pid: '',
-                tableData: [],
-                lastId: "blank",
-                pageFlag: "next",
-                pageSize: 10,
-                total: 0
+                tableData: []
             };
         },
         methods: {
