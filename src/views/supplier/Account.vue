@@ -30,7 +30,8 @@
       </el-main>
     </div>
     <div id="table">
-      <el-table :data="accounts" style="width: 100%">
+      <el-table :data="accounts" @selection-change="handleSelectionChange" style="width: 100%">
+        <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column prop="username" label="用户名" align="center"  width="140"></el-table-column>
         <el-table-column prop="password" label="密码" align="center" width="140"></el-table-column>
         <el-table-column prop="loginUrl" label="登录URL" align="center" width="140"></el-table-column>
@@ -38,10 +39,13 @@
         <el-table-column prop="secretKey" label="secretKey" align="center" width="140"></el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
-            <el-button type="danger" size="mini" @click="handleRemove(scope.$index)">删除</el-button>
+            <el-button type="danger" size="mini" @click="handleRemove(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
+      <div id="removeButton">
+        <el-button type="primary" size="mini" @click="removeSelected">删除</el-button>
+      </div>
     </div>
   </div>
 </template>
@@ -51,7 +55,8 @@
         props: ["accounts", "alterAble"],
         data() {
             return {
-                account: {}
+                account: {},
+                selectedAccount: []
             }
         },
         methods: {
@@ -60,26 +65,60 @@
                     //openId
                     openId: null,
                     //用户名
-                    username: '',
+                    username: null,
                     //密码
-                    password: '',
+                    password: null,
                     //登录URL
-                    loginUrl: '',
-                    token: '',
-                    secretKey: ''
+                    loginUrl: null,
+                    token: null,
+                    secretKey: null
                 }
             },
             addAccountClick() {
                 if (this.alterAble){
-                    this.accounts.push(this.account);
+                    //选择了Open平台后才允许添加数据
+                    let _account = this.account;
+                    if (_account.username && _account.password && _account.loginUrl){
+                        //当用户名、密码及登录地址不为空时才能添加数据
+                        this.accounts.push(this.account);
+                        this.clearForm();
+                    }else {
+                        //提示用户继续将数据填写完整
+                        this.$message({
+                            type: "warning",
+                            message: "请将数据填写完整！"
+                        });
+                        return;
+                    }
+                }else {
+                    //用户不可以添加数据
+                    this.$message({
+                        type: "warning",
+                        message: "!!!"
+                    });
+                    this.clearForm();
                 }
-                this.clearForm();
             },
             clearForm() {
                 this.account = this.defaultAccountForm();
             },
-            handleRemove(idx) {
+            handleSelectionChange(selection){
+                this.selectedAccount = selection;
+            },
+            handleRemove(idx, row) {
+                let _accountId = row.accountId;
+                if (_accountId && '' != _accountId){
+                    this.$store.dispatch("openAccount/removeOne", {openAccountId: _accountId})
+                        .catch(error => {
+                          console.log(error);
+                    });
+                }
                 this.accounts.splice(idx, 1);
+            },
+            removeSelected(){
+                this.selectedAccount.forEach( item => {
+                    this.handleRemove(this.accounts.indexOf(item), item);
+                })
             }
         },
     }
@@ -121,6 +160,15 @@
 
   #form #addButton {
     margin-right: 17%;
+    float: right;
+  }
+
+  #removeButton {
+    margin-top: 30px;
+  }
+
+  #removeButton button {
+    margin-right: 10px;
     float: right;
   }
 </style>

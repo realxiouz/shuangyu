@@ -18,27 +18,33 @@
             <span>基本信息</span>
           </div>
           <div class="form">
-            <el-form :rules="rules" :model="formData" label-position="left" label-width="130px" size="mini">
+            <el-form :rules="rules" :model="firmForm" label-position="left" label-width="130px" size="mini">
+              <el-form-item label="类型" prop="type">
+                <el-select v-model="firmForm.type" placeholder="请选择平台">
+                  <el-option label="企业" :value=1></el-option>
+                  <el-option label="个人" :value=2></el-option>
+                </el-select>
+              </el-form-item>
               <el-form-item label="名称" prop="firmName">
-                <el-input type="text" placeholder="请输入供应商名称" v-model="formData.firmName"></el-input>
+                <el-input type="text" placeholder="请输入供应商名称" v-model="firmForm.firmName"></el-input>
               </el-form-item>
               <el-form-item label="编码" prop="firmCode">
-                <el-input type="text" placeholder="请输入供应商代码" v-model="formData.firmCode"></el-input>
+                <el-input type="text" placeholder="请输入供应商代码" v-model="firmForm.firmCode"></el-input>
               </el-form-item>
               <el-form-item label="域名" prop="domain">
-                <el-input type="text" placeholder="请输入域名" v-model="formData.domain"></el-input>
+                <el-input type="text" placeholder="请输入域名" v-model="firmForm.domain"></el-input>
               </el-form-item>
               <el-form-item label="主要联系人" prop="fullName">
-                <el-input type="text" placeholder="请输入联系人" v-model="formData.fullName"></el-input>
+                <el-input type="text" placeholder="请输入联系人" v-model="firmForm.fullName"></el-input>
               </el-form-item>
               <el-form-item label="联系人电话" prop="phone">
-                <el-input type="text" v-model="formData.phone" placeholder="请输入联系人电话"></el-input>
+                <el-input type="text" v-model="firmForm.phone" placeholder="请输入联系人电话"></el-input>
               </el-form-item>
               <el-form-item label="电子邮箱" prop="email">
-                <el-input type="text" v-model="formData.email" placeholder="请输入联系人电子邮箱"></el-input>
+                <el-input type="text" v-model="firmForm.email" placeholder="请输入联系人电子邮箱"></el-input>
               </el-form-item>
               <el-form-item label="地址" prop="address">
-                <el-input type="text" placeholder="请输入地址" v-model="formData.address"></el-input>
+                <el-input type="text" placeholder="请输入地址" v-model="firmForm.address"></el-input>
               </el-form-item>
             </el-form>
           </div>
@@ -50,23 +56,19 @@
             <span>管理信息</span>
           </div>
           <div class="form">
-            <el-form :model="formData" label-position="left" label-width="110px" size="mini">
+            <el-form :model="firmOtherForm" label-position="left" label-width="110px" size="mini">
               <el-form-item label="标签">
-                <el-select style="width: 100%;" clearable multiple v-model="formData.tags" placeholder="请选择">
-                  <el-option
-                    v-for="(item,idx) in tagList"
-                    :key="idx">
-                  </el-option>
+                <el-select v-model="firmForm.tags" placeholder="请选择标签">
                 </el-select>
               </el-form-item>
               <el-form-item label="重要性">
-                <el-rate v-model="formData.degree" :colors="['#99A9BF', '#F7BA2A', '#FF9900']"/>
+                <el-rate v-model="firmOtherForm.degree" :colors="['#99A9BF', '#F7BA2A', '#FF9900']"/>
               </el-form-item>
               <el-form-item label="备注">
-                <el-input type="textarea" v-model="formData.remark"></el-input>
+                <el-input type="textarea" v-model="firmOtherForm.remark"></el-input>
               </el-form-item>
               <el-form-item label="Open平台">
-                <el-select v-model="formData.openId" placeholder="请选择平台" @change="selectedOpen">
+                <el-select v-model="firmForm.openId" placeholder="请选择平台" @change="selectedOpen">
                   <el-option :value=null>&nbsp;- -</el-option>
                   <el-option v-for="(item,idx) in openList"
                              :key="idx"
@@ -85,7 +87,7 @@
         <el-tab-pane label="联系人">
           <other-contact :contacts="contacts"/>
         </el-tab-pane>
-        <el-tab-pane label="账号配置" :disabled="!formData.openId">
+        <el-tab-pane label="账号配置" :disabled="!firmForm.openId">
           <account :accounts="accounts" :alterAble="alterAble"/>
         </el-tab-pane>
         <el-tab-pane label="其他信息">其他信息</el-tab-pane>
@@ -121,7 +123,8 @@
                 }
             };
             return {
-                formData: {},
+                firmForm: {},
+                firmOtherForm: {},
                 openList: [],
                 tagList: [],
                 contacts: [],
@@ -168,7 +171,7 @@
             };
         },
         methods: {
-            defaultFormData() {
+            defaultFirmFormData() {
                 return {
                     //企业代码
                     firmCode: '',
@@ -186,10 +189,20 @@
                     email: '',
                     //地址
                     address: '',
-                    //类型（0：企业，1：供应商，2：客户）
+                    //类型（1：企业，2：个人）
                     type: 1,
                     //标签
-                    tags: [],
+                    tags: []
+                };
+            },
+            defaultOtherFormData(){
+                return {
+                    //类型（0：供应商，1：企业客户，2：个人客户）
+                    type: 0,
+                    //类别编码
+                    categoryCode: '',
+                    //类别名称
+                    categoryName: '',
                     //重要性
                     degree: 5
                 };
@@ -211,37 +224,35 @@
                     console.log(error);
                 });
             },
-            loadAccounts(firmId, openId){
-                this.$store.dispatch("openAccount/getList", {filter: {firmId: firmId, openId: openId}})
+            loadAccounts(firmId){
+                this.$store.dispatch("openAccount/getList", {filter: {firmId: firmId}})
                     .then(data => {
                         this.accounts = data.data;
                     }).catch(error => {
                     console.log(error);
                 });
             },
-            loadSupplier(firmId){
-                this.$store.dispatch("firm/getOne", {firmId: firmId})
+            loadSupplier(otherId){
+                this.$store.dispatch("firmOther/getOne", {otherId: otherId})
                     .then(data => {
-                        this.formData = data;
-                        this.loadAccounts(firmId, data.openId);
-                        this.loadContacts(firmId);
+                        this.firmOtherForm = data;
+                        this.firmForm = data.firm;
+                        this.loadAccounts(otherId);
+                        this.loadContacts(otherId);
                     }).catch(error => {
                     console.log(error);
                 });
             },
-            selectedOpen(openId){
-                if (this.update && openId){
-                    //只有在编辑客户和选择了Open平台的时候触发
-                    this.loadAccounts(this.formData.firmId, openId);
-                    this.alterAble = true;
-                }
-                if (!this.formData.openId){
-                    this.accounts = [];
+            selectedOpen(){
+                if (!this.firmForm.openId){
                     this.alterAble = false;
+                } else {
+                    this.alterAble = true;
                 }
             },
             clearForm() {
-                this.formData = this.defaultFormData();
+                this.firmForm = this.defaultFirmFormData();
+                this.firmOtherForm = this.defaultOtherFormData();
                 this.openList = [];
             },
             initFormData(firmId) {
@@ -249,6 +260,7 @@
                 this.loadOpen();
                 if (firmId){
                     this.update = true;
+                    this.alterAble = true;
                     this.loadSupplier(firmId);
                 }
             },
@@ -256,27 +268,32 @@
                 //判断添加还是更新
                 let url = '';
                 if (this.update) {
-                    url = 'firm/updateSorC';
+                    url = 'firmOther/updateOne';
                 } else {
-                    url = 'firm/addSorC';
+                    url = 'firmOther/addOne';
                 }
                 //需要将联系人添加为员工数据，账号信息添加为Open账号信息
-                //需要补充Open账号中的数据
                 let accountList =[];
-                this.openList.forEach( item => {
-                    const _openId = this.formData.openId;
-                    //_openId可能为空
-                    if (_openId && _openId == item.openId){
-                        this.open = item;
-                    }
-                })
-                this.accounts.forEach(item => {
-                    item.openId = this.open.openId;
-                    item.openName = this.open.openName;
-                    accountList.push(item);
-                })
+                //只有选择了Open平台才能添加账号数据
+                //否则调用接口时将传递空的账号列表
+                if (this.firmForm.openId){
+                    //需要补充Open账号中的数据
+                    this.openList.forEach( item => {
+                        const _openId = this.firmForm.openId;
+                        //_openId可能为空
+                        if (_openId && _openId == item.openId){
+                            this.open = item;
+                        }
+                    })
+                    this.accounts.forEach(item => {
+                        item.openId = this.open.openId;
+                        item.openName = this.open.openName;
+                        accountList.push(item);
+                    })
+                }
+                //接口通过map接收数据
                 this.$store
-                    .dispatch(url, {firm: this.formData, contacts: this.contacts, accounts: accountList})
+                    .dispatch(url, {firm: this.firmForm, firmOther: this.firmOtherForm, contacts: this.contacts, accounts: accountList})
                     .then(() => {
                         this.goBack();
                     })

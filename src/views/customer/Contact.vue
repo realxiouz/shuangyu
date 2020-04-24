@@ -32,7 +32,7 @@
         <el-table-column prop="email" label="邮箱" align="center" width="160"></el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
-            <el-button type="danger" size="mini" @click="handleRemove(scope.$index)">删除</el-button>
+            <el-button type="danger" size="mini" @click="handleRemove(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -90,7 +90,9 @@
                 return {
                     fullName: null,
                     phone: null,
-                    email: null
+                    email: null,
+                    //类型（0：员工，1：联系人）
+                    type: 1
                 }
             },
             addContactClick(){
@@ -100,12 +102,18 @@
                 }
                 this.contacts.push(this.contact);
                 this.clearContactForm();
-
             },
             clearContactForm(){
                 this.contact = this.defaultContactForm();
             },
-            handleRemove(idx){
+            handleRemove(idx, row){
+                let _contactId = row.staffId;
+                if (_contactId && '' != _contactId){
+                    this.$store.dispatch("staff/removeOne", {staffId: _contactId, deptId: row.firmId})
+                        .catch(error => {
+                            console.log(error);
+                        });
+                }
                 this.contacts.splice(idx,1);
             }
         },
