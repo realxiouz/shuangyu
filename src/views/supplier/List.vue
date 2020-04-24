@@ -49,14 +49,14 @@
             /*加载供应商列表*/
             loadData(params) {
                 if (params) {
-                    params.type = 1;
+                    params.type = 0;
                 } else {
                     let newParams = {};
-                    newParams.type = 1;
+                    newParams.type = 0;
                     params = newParams;
                 }
                 this.$store
-                    .dispatch("firm/getDealerCustomerList", {filters: params})
+                    .dispatch("firmOther/getList", {filters: params})
                     .then(data => {
                         if (data) {
                             this.tableData = data;
