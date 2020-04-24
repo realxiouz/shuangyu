@@ -39,17 +39,6 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination
-        @prev-click="handlePrevClick"
-        @next-click="handleNextClick"
-        background
-        layout="total,prev,next"
-        prev-text="上一页"
-        next-text="下一页"
-        :page-size="pageSize"
-        :total="total"
-      ></el-pagination>
-
       <el-dialog
         title="资金账号信息"
         center
@@ -91,14 +80,7 @@
         methods: {
             loadData(searchForm) {
                 this.searchForm = searchForm;
-                this.$store.dispatch("fundAccount/getTotal", {filter: searchForm})
-                    .then(data => {
-                        this.total = data.data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-                this.$store.dispatch("fundAccount/getPageList", {pageFlag: this.pageFlag, pageSize: this.pageSize, lastId: this.lastId,filter: searchForm})
+                this.$store.dispatch("fundAccount/getTreeList", {filter: searchForm})
                     .then(data => {
                         this.tableData = data.data;
                         this.loading = false;
@@ -197,10 +179,10 @@
                 }
                 return this.$numeral(amount).format("0.00");
             },
-            initCategory(category){
-                if (0 === category){
+            initCategory(category) {
+                if (0 === category) {
                     return '现金';
-                }else{
+                } else {
                     return '银行存款';
                 }
             }

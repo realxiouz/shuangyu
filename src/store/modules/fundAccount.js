@@ -1,4 +1,4 @@
-import {addOne,updateOne,removeOne,getOne,getList,getTotal,getPageList} from '@/api/fundAccount';
+import {addOne,updateOne,removeOne,getOne,getList,getTotal,getPageList,getTreeList} from '@/api/fundAccount';
 
 const actions = {
   addOne({commit}, params) {
@@ -63,6 +63,18 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {filter} = params;
       getList(filter)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getTreeList({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {filter} = params;
+      getTreeList(filter)
         .then(response => {
           resolve(response);
         })

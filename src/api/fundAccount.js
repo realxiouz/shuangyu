@@ -37,6 +37,13 @@ export function getList(filter) {
     params: filter
   });
 }
+export function getTreeList(filter) {
+  return request({
+    url: `/finance/account/tree/list`,
+    method: 'get',
+    params: filter
+  });
+}
 
 export function getTotal(filter) {
   return request({
