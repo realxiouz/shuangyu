@@ -37,7 +37,7 @@
         <el-input v-model="formData.balance" placeholder="请输入余额.."></el-input>
       </el-form-item>
       <el-form-item label="科目名称">
-        <el-select v-model="subject" style="width: 100%;" placeholder="请选择科目..">
+        <el-select v-model="subject" style="width: 100%;" placeholder="请选择科目.." @select="seletedSubject">
           <el-option
             v-for="(item,idx) in subjectList"
             :key="idx"
@@ -113,6 +113,9 @@
             /*清除表单*/
             clearForm() {
                 this.formData = this.defaultFormData();
+            },
+            seletedSubject(item){
+              this.subject = item;
             },
             /*对提交的数据进行类型格式*/
             handleConfirm() {
