@@ -17,26 +17,18 @@
         <el-table-column prop="accountCode" label="账号编码" align="center"></el-table-column>
         <el-table-column prop="accountName" label="账号名称" align="center"></el-table-column>
         <el-table-column prop="bankAccount" label="银行账号" align="center"></el-table-column>
-<!--        <el-table-column label="币种" align="center">-->
-<!--          <template slot-scope="scope">-->
-<!--            <span>{{ scope.row.currency.name }}</span>-->
-<!--          </template>-->
-<!--        </el-table-column>-->
+        <!--        <el-table-column label="币种" align="center">-->
+        <!--          <template slot-scope="scope">-->
+        <!--            <span>{{ scope.row.currency.name }}</span>-->
+        <!--          </template>-->
+        <!--        </el-table-column>-->
         <el-table-column label="类别" align="center">
           <template slot-scope="scope">
             <span>{{initCategory(scope.row.category)}}</span>
           </template>
         </el-table-column>
-<!--        <el-table-column label="初始余额" align="center">-->
-<!--          <template slot-scope="scope">-->
-<!--            <span>{{scope.row.currency.symbol + " " }}{{ formatAmount(scope.row.initBalance)}}</span>-->
-<!--          </template>-->
-<!--        </el-table-column>-->
-<!--        <el-table-column label="余额" align="center">-->
-<!--          <template slot-scope="scope">-->
-<!--            <span>{{scope.row.currency.symbol + " " }}{{ formatAmount(scope.row.balance)}}</span>-->
-<!--          </template>-->
-<!--        </el-table-column>-->
+        <el-table-column prop="initBalance" label="初始余额" align="center"></el-table-column>
+        <el-table-column prop="balance" label="余额" align="center"></el-table-column>
         <el-table-column prop="subjectName" label="科目" align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="250">
           <template slot-scope="scope">
