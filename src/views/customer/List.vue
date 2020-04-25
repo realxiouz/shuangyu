@@ -142,8 +142,8 @@
                     });
             },
             /*跳转到供应商编辑页面，addRoot用于判断添加的是否是根节点，firmId用于编辑记录时进行查找。*/
-            skipDetail(firmId) {
-                this.$router.push({path: '/customer/edit', query: {firmId: firmId}});
+            skipDetail(otherId) {
+                this.$router.push({path: '/customer/edit', query: {otherId: otherId}});
             }
         },
         created() {

@@ -5,7 +5,7 @@
     </div>
     <div id="head">
       <div id="title">
-        <span>供应商</span>
+        <span>客户</span>
         <span style="float: right; margin-right: 10%">
           <el-button type="primary" @click="addSupplierClick" size="mini" style="margin-right: -20px">保 存</el-button>
         </span>
@@ -20,7 +20,7 @@
           <div class="form">
             <el-form :rules="rules" :model="firmForm" label-position="left" label-width="130px" size="mini">
               <el-form-item label="类型" prop="type">
-                <el-select v-model="firmForm.type" placeholder="请选择平台">
+                <el-select v-model="firmForm.type" placeholder="请选择平台" @change="selectedCustomerType">
                   <el-option label="企业" :value=1></el-option>
                   <el-option label="个人" :value=2></el-option>
                 </el-select>
@@ -247,6 +247,9 @@
                     }).catch(error => {
                     console.log(error);
                 });
+            },
+            selectedCustomerType(item){
+                this.firmOtherForm.type = item;
             },
             selectedOpen(){
                 if (!this.firmForm.openId){

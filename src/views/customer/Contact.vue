@@ -117,6 +117,9 @@
                 this.contacts.splice(idx,1);
             }
         },
+        created() {
+            this.clearContactForm();
+        }
     }
 </script>
 

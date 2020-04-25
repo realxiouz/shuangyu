@@ -1,16 +1,32 @@
 import request from '@/utils/request';
 
 
-export function removeOne(firmID) {
+export function addOne(data) {
   return request({
-    url: `/firm/other/remove/one/${firmID}`,
+    url: `/firm/other/add/one`,
+    method: `post`,
+    data
+  });
+}
+
+export function updateOne(data) {
+  return request({
+    url: `/firm/other/update/one`,
+    method: `post`,
+    data
+  });
+}
+
+export function removeOne(otherId) {
+  return request({
+    url: `/firm/other/remove/one/${otherId}`,
     method: `delete`,
   });
 }
 
 export function getOne(otherId) {
   return request({
-    url: `/firm/other/get/one/${otherId}`,
+    url: `/firm/other/one/${otherId}`,
     method: `get`
   });
 }

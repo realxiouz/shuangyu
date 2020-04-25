@@ -1,7 +1,29 @@
-import {getOne, getList, removeOne} from '@/api/firmOther';
+import {addOne, updateOne, getOne, getList, removeOne} from '@/api/firmOther';
 
 
 const actions = {
+  addOne({commit}, params) {
+    return new Promise((resolve, reject) => {
+      addOne(params)
+        .then(response => {
+          resolve(response.data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  updateOne({commit}, params) {
+    return new Promise((resolve, reject) => {
+      updateOne(params)
+        .then(response => {
+          resolve(response.data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
   getOne({commit}, params) {
     return new Promise((resolve, reject) => {
       const {otherId} = params;

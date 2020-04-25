@@ -1,4 +1,4 @@
-import {addOne, addSorC, updateSorC, removeOne, updateOne, getOne, getPageList, getTotal, getList, getTreeList, getDealerCustomerList} from '@/api/firm';
+import {addOne, removeOne, updateOne, getOne, getPageList, getTotal, getList, getTreeList, getDealerCustomerList} from '@/api/firm';
 
 
 const actions = {
