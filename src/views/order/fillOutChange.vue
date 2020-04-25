@@ -340,7 +340,7 @@ export default {
           filter: {}
         })
         .then(data => {
-          this.accountData = data.data;
+          this.accountData = data;
         })
         .catch(error => {
           console.log(error);
