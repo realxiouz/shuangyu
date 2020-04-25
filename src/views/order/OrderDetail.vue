@@ -462,7 +462,7 @@ export default {
         woniuParams.orderTaskId = this.$route.query.taskId;
         woniuParams.fundAccount = params.fundAccountId;
         woniuParams.userNameType = params.userNameType;
-        woniuParams.orderType = params.status;
+        woniuParams.orderType = params.orderType;
         woniuParams.amount = params.amount;
         woniuParams.ticketNoFlag = params.ticketNoFlag;
         this.woniuOrder(woniuParams);
@@ -490,7 +490,6 @@ export default {
           newParams.remark = params.remark;
           newParams.rootOrderNo = this.tableData.rootOrderNo;
           newParams.sourceOrderNo = this.tableData.sourceOrderNo;
-          newParams.status = params.status;
           newParams.transactionAmount = params.transactionAmount;
           newParams.createTime = params.createTime;
           newParams.ticketNoFlag = params.ticketNoFlag;
@@ -507,7 +506,7 @@ export default {
         woniuParams.orderTaskId = this.$route.query.taskId;
         woniuParams.fundAccount = params.fundAccountId;
         woniuParams.userNameType = params.userNameType;
-        woniuParams.orderType = params.status;
+        woniuParams.orderType = params.orderType;
         woniuParams.amount = params.amount;
         this.woniuOrder(woniuParams);
       } else {
@@ -534,7 +533,6 @@ export default {
           newParams.remark = params.remark;
           newParams.rootOrderNo = params.rootOrderNo;
           newParams.sourceOrderNo = params.sourceOrderNo;
-          newParams.status = params.status;
           newParams.transactionAmount = params.transactionAmount;
           newParams.createTime = params.createTime;
         }
@@ -552,7 +550,7 @@ export default {
         woniuParams.orderTaskId = this.$route.query.taskId;
         woniuParams.fundAccount = params.fundAccountId;
         woniuParams.userNameType = params.userNameType;
-        woniuParams.orderType = params.status;
+        woniuParams.orderType = params.orderType;
         woniuParams.amount = params.amount;
         this.woniuOrder(woniuParams);
       } else {
@@ -579,7 +577,6 @@ export default {
           newParams.remark = params.remark;
           newParams.rootOrderNo = this.tableData.rootOrderNo;
           newParams.sourceOrderNo = this.tableData.sourceOrderNo;
-          newParams.status = params.status;
           newParams.transactionAmount = params.transactionAmount;
           newParams.createTime = params.createTime;
           if (params.ticketNoFlag) {
