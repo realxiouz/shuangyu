@@ -19,7 +19,7 @@
         <el-table-column prop="firm.phone" label="联系人电话" align="center" width="180"></el-table-column>
         <el-table-column prop="firm.email" label="邮箱" align="center" width="180"></el-table-column>
         <el-table-column prop="firm.address" label="地址" align="center" width="180"></el-table-column>
-        <el-table-column prop="firm.remark" label="备注" align="center"></el-table-column>
+        <el-table-column prop="remark" label="备注" align="center"></el-table-column>
         <el-table-column label="操作" fixed="right">
           <template slot-scope="scope">
             <span v-show="scope.row.firm.openId && '' != scope.row.firm.openId">
@@ -106,7 +106,7 @@
                     query: {
                         domain: row.firm.domain,
                         openId: row.firm.openId,
-                        firmId: row.otherId,
+                        firmId: row.firm.firmId,
                     }
                 });
             },

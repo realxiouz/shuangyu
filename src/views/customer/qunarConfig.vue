@@ -1,5 +1,8 @@
 <template>
   <div class="bigBox">
+    <div id="goBack" @click="goBack">
+      <el-page-header></el-page-header>
+    </div>
     <el-card class="contentBox">
       <div slot="header">
         <span>去哪儿订单通知接口</span>
@@ -18,7 +21,7 @@
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="安全码:" prop="securityCode">
-              <el-input v-model="notifyData.securityCode"></el-input>
+              <el-input v-model="notifyData.securityCode" @blur="disabledNotify"></el-input>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -33,6 +36,7 @@
                 :rows="3"
                 placeholder="请输入消息通知地址"
                 v-model="notifyData.url"
+                @blur="disabledNotify"
               ></el-input>
             </el-form-item>
           </el-col>
@@ -52,6 +56,7 @@ http://123.123.123.1:9000</span>
                 @click="saveNotify()"
                 type="primary"
                 size="mini"
+                :disabled="isDisable"
               >保存
               </el-button>
               <el-button
@@ -83,7 +88,7 @@ http://123.123.123.1:9000</span>
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="用户名:" prop="user">
-              <el-input v-model="orderData.user"></el-input>
+              <el-input v-model="orderData.user" @blur="disabledOrder"></el-input>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -93,7 +98,7 @@ http://123.123.123.1:9000</span>
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="密码:" prop="pass">
-              <el-input v-model="orderData.pass" show-password></el-input>
+              <el-input v-model="orderData.pass" show-password @blur="disabledOrder"></el-input>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -107,6 +112,7 @@ http://123.123.123.1:9000</span>
                 type="textarea"
                 :rows="3"
                 v-model="orderData.ips"
+                @blur="disabledOrder"
               ></el-input>
             </el-form-item>
           </el-col>
@@ -121,6 +127,7 @@ http://123.123.123.1:9000</span>
                 @click="saveOrder()"
                 type="primary"
                 size="mini"
+                :disabled="isOrderDisable"
               >保存
               </el-button>
               <el-button
@@ -186,6 +193,8 @@ http://123.123.123.1:9000</span>
                 domain: '',
                 openId: '',
                 user: '',
+                isDisable: false,
+                isOrderDisable: false,
                 notifyRules: {
                     domain: [
                         {required: true, message: "域名不能为空", trigger: "blur"}
@@ -223,6 +232,7 @@ http://123.123.123.1:9000</span>
                     .then(data => {
                         if (data && data.domain) {
                             this.notifyData = data;
+                            this.isDisable = true;
                         } else {
                             this.notifyData.domain = this.domain;
                         }
@@ -242,6 +252,7 @@ http://123.123.123.1:9000</span>
                     .then(data => {
                         if (data && data.domain) {
                             this.orderData = data;
+                            this.isOrderDisable = true;
                         } else {
                             this.orderData.domain = this.domain;
                         }
@@ -273,6 +284,7 @@ http://123.123.123.1:9000</span>
                             .dispatch("qunarOrderNotifyConfig/save", this.notifyData)
                             .then(data => {
                                 if (data) {
+                                    this.isDisable = true;
                                     this.$message({
                                         type: "success",
                                         message: "保存成功！"
@@ -308,6 +320,12 @@ http://123.123.123.1:9000</span>
                         });
                 }
             },
+            disabledNotify() {
+                this.isDisable = false;
+            },
+            disabledOrder() {
+                this.isOrderDisable = false;
+            },
             saveOrder() {
                 this.$refs['orderForm'].validate((valid) => {
                     if (valid) {
@@ -315,6 +333,7 @@ http://123.123.123.1:9000</span>
                             .dispatch("qunarOrderConfig/save", this.orderData)
                             .then(data => {
                                 if (data) {
+                                    this.isOrderDisable = true;
                                     this.$message({
                                         type: "success",
                                         message: "保存成功！"
@@ -399,6 +418,15 @@ http://123.123.123.1:9000</span>
                         console.error(err);
                     });
             },
+            //跳转回列表页面
+            goBack() {
+                if (this.$router.history.length <= 1) {
+                    this.$router.push({path: '/home'});
+                    return false;
+                } else {
+                    this.$router.go(-1);
+                }
+            }
         },
         created() {
             this.domain = this.$route.query.domain;
@@ -424,3 +452,9 @@ http://123.123.123.1:9000</span>
         }
     };
 </script>
+<style>
+  #goBack {
+    padding-left: 10px;
+    padding-top: 10px;
+  }
+</style>

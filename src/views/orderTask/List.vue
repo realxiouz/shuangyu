@@ -114,7 +114,6 @@
         </el-table-column>
         <el-table-column prop="duration" label="持续时长" width="80" align="center"></el-table-column>
         <el-table-column prop="remark" label="备注" align="center"></el-table-column>
-
         <el-table-column label="操作" fixed="right" align="center" width="80">
           <template slot-scope="scope">
             <el-button type="primary" @click="goToDetail(scope.row)" size="mini">处理</el-button>
@@ -141,8 +140,10 @@
         :visible.sync="taskStaffDialog"
         width="33%"
         :close-on-click-modal="false"
+        :destroy-on-close="true"
+        @open="openTaskStaffDialog"
       >
-        <task-select-staff @onCancel="onCancel" @onSave="handleConfirm"></task-select-staff>
+        <task-select-staff :staffList="staffList" @onCancel="onCancel" @onSave="handleConfirm"></task-select-staff>
       </el-dialog>
     </div>
   </div>
@@ -172,6 +173,7 @@ export default {
       totalCount: 0,
       taskTypeCounts: {},
       selectTask: [],
+      staffList: [],
       timer: null
     };
   },
@@ -232,6 +234,19 @@ export default {
           this.loading = false;
           console.log(error);
         });
+    },
+    //弹框打开获取派单员工数据
+    openTaskStaffDialog() {
+      this.$store
+        .dispatch("orderStaff/getOnlineList", { filter: {} })
+        .then(data => {
+          this.staffList = data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+
+      console.log("ddddd");
     },
     loadTotal(params) {
       this.$store
@@ -346,7 +361,8 @@ export default {
         query: {
           orderNo: row.orderNo,
           rootOrderNo: row.rootOrderNo,
-          taskId: row.taskId
+          taskId: row.taskId,
+          taskType: row.taskType
         }
       });
     },

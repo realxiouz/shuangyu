@@ -1,5 +1,8 @@
 <template>
   <div class="bigBox">
+    <div id="goBack" @click="goBack">
+      <el-page-header></el-page-header>
+    </div>
     <el-card class="contentBox">
       <div slot="header">
         <span>蜗牛配置管理</span>
@@ -8,14 +11,14 @@
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="key:" prop="key">
-              <el-input v-model="formData.key"></el-input>
+              <el-input v-model="formData.key" @blur="disabledSave"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="token:" prop="token">
-              <el-input v-model="formData.token"></el-input>
+              <el-input v-model="formData.token" @blur="disabledSave"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -26,6 +29,7 @@
                 @click="save()"
                 type="primary"
                 size="mini"
+                :disabled="isDisable"
               >保存
               </el-button>
               <el-button
@@ -49,6 +53,7 @@
                 formData: {},
                 domain: '',
                 openId: '',
+                isDisable: false,
                 rules: {
                     key: [
                         {required: true, message: "请输入key", trigger: "blur"}
@@ -84,6 +89,7 @@
                             .dispatch("woniuConfig/save", this.formData)
                             .then(data => {
                                 if (data) {
+                                    this.isDisable = true;
                                     this.$message({
                                         type: "success",
                                         message: "保存成功！"
@@ -118,6 +124,18 @@
                             console.error(err);
                         });
                 }
+            },
+            //跳转回列表页面
+            goBack() {
+                if (this.$router.history.length <= 1) {
+                    this.$router.push({path: '/home'});
+                    return false;
+                } else {
+                    this.$router.go(-1);
+                }
+            },
+            disabledSave() {
+                this.isDisable = false;
             }
         },
         created() {
