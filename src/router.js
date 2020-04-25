@@ -538,6 +538,13 @@ export default new Router({
           name: 'warehouse',
           component: () => import('@/views/warehouse/List'),
           meta: {title: '仓库管理', icon: 'home'}
+        },
+        {
+          title: '交易记录',
+          path: '/finance/trade/list',
+          name: 'trade',
+          component: () => import('@/views/trade/List'),
+          meta: {title: '交易记录', icon: 'home'}
         }
       ]
     },
