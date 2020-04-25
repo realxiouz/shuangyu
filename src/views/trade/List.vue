@@ -19,17 +19,27 @@
         <el-table-column prop="transPayRate" label="标价币种兑换支付币种汇率" align="center"></el-table-column>
         <el-table-column prop="buyerPayAmount" label="买家实付金额" align="center"></el-table-column>
         <el-table-column prop="pointAmount" label="积分支付的金额" align="center"></el-table-column>
+        <el-table-column prop="invoiceAmount" label="发票金额" align="center"></el-table-column>
+        <el-table-column prop="sendPayDate" label="本次交易打款给卖家的时间" align="center"></el-table-column>
+        <el-table-column label="本次交易打款给卖家的时间" align="center">
+          <template slot-scope="scope">
+            <span> {{formatDate(scope.row.sendPayDate,"YYYY-MM-DD HH：mm：ss")}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="receiptAmount" label="实收金额" align="center"></el-table-column>
+        <el-table-column prop="storeId" label="商户门店编号" align="center"></el-table-column>
+        <el-table-column prop="terminalId" label="商户机具终端编号" align="center"></el-table-column>
       </el-table>
-        <el-pagination
-          @prev-click="handlePrevClick"
-          @next-click="handleNextClick"
-          background
-          layout="total,prev,next"
-          prev-text="上一页"
-          next-text="下一页"
-          :page-size="pageSize"
-          :total="total"
-        ></el-pagination>
+      <el-pagination
+        @prev-click="handlePrevClick"
+        @next-click="handleNextClick"
+        background
+        layout="total,prev,next"
+        prev-text="上一页"
+        next-text="下一页"
+        :page-size="pageSize"
+        :total="total"
+      ></el-pagination>
     </div>
   </div>
 </template>
@@ -75,7 +85,15 @@
                         this.loading = false;
                     });
             },
-
+            /*初始化用工列表中的生日日期格式*/
+            formatDate(dateStr, format) {
+                if (null != dateStr) {
+                    const date = new Date(dateStr);
+                    return this.$moment(date).format(format);
+                } else {
+                    return "";
+                }
+            },
             handleCancel() {
                 this.dialogVisible = false;
             },
