@@ -141,9 +141,13 @@
         width="33%"
         :close-on-click-modal="false"
         :destroy-on-close="true"
-        @open="openTaskStaffDialog"
       >
-        <task-select-staff :staffList="staffList" @onCancel="onCancel" @onSave="handleConfirm"></task-select-staff>
+        <task-select-staff
+          v-if="taskStaffDialog"
+          :staffList="staffList"
+          @onCancel="onCancel"
+          @onSave="handleConfirm"
+        ></task-select-staff>
       </el-dialog>
     </div>
   </div>
@@ -234,19 +238,6 @@ export default {
           this.loading = false;
           console.log(error);
         });
-    },
-    //弹框打开获取派单员工数据
-    openTaskStaffDialog() {
-      this.$store
-        .dispatch("orderStaff/getOnlineList", { filter: {} })
-        .then(data => {
-          this.staffList = data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-
-      console.log("ddddd");
     },
     loadTotal(params) {
       this.$store
