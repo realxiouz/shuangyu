@@ -164,8 +164,14 @@
             initCategory(category) {
                 if (0 === category) {
                     return '现金';
-                } else {
+                } else if (1 === category) {
                     return '银行存款';
+                } else if (2 === category) {
+                    return '积分';
+                } else if (3 === category) {
+                    return '优惠券';
+                } else {
+                    return '无';
                 }
             }
         },

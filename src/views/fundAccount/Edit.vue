@@ -6,6 +6,8 @@
         <el-select v-model="formData.category" style="width: 100%;">
           <el-option label="现金" :value="0"></el-option>
           <el-option label="银行存款" :value="1"></el-option>
+          <el-option label="积分" :value="2"></el-option>
+          <el-option label="优惠券" :value="3"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="账号编码">
