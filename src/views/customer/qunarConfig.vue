@@ -232,6 +232,7 @@ http://123.123.123.1:9000</span>
                     .then(data => {
                         if (data && data.domain) {
                             this.notifyData = data;
+                            this.isDisable =true;
                         } else {
                             this.notifyData.domain = this.domain;
                         }
@@ -251,6 +252,7 @@ http://123.123.123.1:9000</span>
                     .then(data => {
                         if (data && data.domain) {
                             this.orderData = data;
+                            this.isOrderDisable =true;
                         } else {
                             this.orderData.domain = this.domain;
                         }
