@@ -91,7 +91,7 @@ export default {
       curNode: {},
       pageFlag: "next",
       pageSize: 10,
-      lastId: "blank",
+      lastId: "0",
       total: 0,
       tableData: [],
       loading: true
