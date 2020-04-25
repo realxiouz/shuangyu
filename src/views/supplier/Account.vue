@@ -40,7 +40,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <div id="removeButton">
+      <div id="removeButton" v-show="permitRemoveBtn">
         <el-button type="primary" size="mini" @click="removeSelected">删除</el-button>
       </div>
     </div>
@@ -53,6 +53,7 @@
         data() {
             return {
                 account: {},
+                permitRemoveBtn: false,
                 selectedAccount: []
             }
         },
@@ -100,7 +101,12 @@
                 this.account = this.defaultAccountForm();
             },
             handleSelectionChange(selection){
-                this.selectedAccount = selection;
+                if (0 != selection.length){
+                    this.permitRemoveBtn = true;
+                    this.selectedAccount = selection;
+                }else {
+                    this.permitRemoveBtn = false;
+                }
             },
             handleRemove(idx, row) {
                 let _accountId = row.accountId;

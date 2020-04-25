@@ -48,10 +48,10 @@
             /*加载客户列表1：企业客户，2：个人客户*/
             loadData(params) {
                 if (params) {
-                    params.type = JSON.stringify([1, 2])
+                    params.types = JSON.stringify([1, 2])
                 } else {
                     let newParams = {};
-                    newParams.type = JSON.stringify([1, 2])
+                    newParams.types = JSON.stringify([1, 2])
                     params = newParams;
                 }
                 this.$store

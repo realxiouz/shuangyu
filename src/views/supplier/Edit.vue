@@ -320,7 +320,6 @@
             }
         },
         created() {
-            console.log(this.$route.query);
             this.initFormData(this.$route.query.otherId);
         },
         components: {

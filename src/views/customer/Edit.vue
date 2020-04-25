@@ -200,7 +200,7 @@
             defaultOtherFormData() {
                 return {
                     //类型（0：供应商，1：企业客户，2：个人客户）
-                    type: 0,
+                    type: 1,
                     //类别编码
                     categoryCode: '',
                     //类别名称

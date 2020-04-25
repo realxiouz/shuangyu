@@ -49,10 +49,10 @@
             /*加载供应商列表*/
             loadData(params) {
                 if (params) {
-                    params.type = JSON.stringify([0])
+                    params.types = JSON.stringify([0])
                 } else {
                     let newParams = {};
-                    newParams.type = JSON.stringify([0])
+                    newParams.types = JSON.stringify([0])
                     params = newParams;
                 }
                 this.$store
