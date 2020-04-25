@@ -6,9 +6,6 @@
     <div id="head">
       <div id="title">
         <span>供应商</span>
-        <span style="float: right; margin-right: 10%">
-          <el-button type="primary" @click="addSupplierClick" size="mini" style="margin-right: -20px">保 存</el-button>
-        </span>
       </div>
     </div>
     <div id="content">
@@ -92,6 +89,9 @@
         </el-tab-pane>
         <el-tab-pane label="其他信息">其他信息</el-tab-pane>
       </el-tabs>
+    </div>
+    <div id="footer">
+      <el-button class="saveButton" type="primary" @click="addSupplierClick" size="mini">保 存</el-button>
     </div>
   </div>
 </template>
@@ -385,5 +385,17 @@
   #goBack {
     padding-left: 10px;
     padding-top: 10px;
+  }
+
+  #footer {
+    height: 60px;
+    padding-top: 20px;
+    overflow: hidden;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.12), 0 0 6px 0 rgba(0,0,0,.04);
+  }
+
+  #footer .saveButton {
+    float: right;
+    margin-right: 10%
   }
 </style>

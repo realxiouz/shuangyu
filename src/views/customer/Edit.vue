@@ -6,9 +6,6 @@
     <div id="head">
       <div id="title">
         <span>客户</span>
-        <span style="float: right; margin-right: 10%">
-          <el-button type="primary" @click="addSupplierClick" size="mini" style="margin-right: -20px">保 存</el-button>
-        </span>
       </div>
     </div>
     <div id="content">
@@ -92,6 +89,11 @@
         </el-tab-pane>
         <el-tab-pane label="其他信息">其他信息</el-tab-pane>
       </el-tabs>
+    </div>
+    <div id="footer">
+      <div class="saveButton">
+        <el-button type="primary" @click="addSupplierClick" size="mini">保 存</el-button>
+      </div>
     </div>
   </div>
 </template>
@@ -195,7 +197,7 @@
                     tags: []
                 };
             },
-            defaultOtherFormData(){
+            defaultOtherFormData() {
                 return {
                     //类型（0：供应商，1：企业客户，2：个人客户）
                     type: 0,
@@ -216,7 +218,7 @@
                     console.log(error);
                 });
             },
-            loadContacts(firmId){
+            loadContacts(firmId) {
                 this.$store.dispatch("staff/getListByFirmId", {firmId: firmId, filter: {type: 1}})
                     .then(data => {
                         this.contacts = data.data;
@@ -224,7 +226,7 @@
                     console.log(error);
                 });
             },
-            loadAccounts(firmId){
+            loadAccounts(firmId) {
                 this.$store.dispatch("openAccount/getList", {filter: {firmId: firmId}})
                     .then(data => {
                         this.accounts = data.data;
@@ -232,7 +234,7 @@
                     console.log(error);
                 });
             },
-            loadOther(otherId){
+            loadOther(otherId) {
                 this.$store.dispatch("firmOther/getOne", {otherId: otherId})
                     .then(data => {
                         this.firmOtherForm = data;
@@ -240,7 +242,7 @@
                     console.log(error);
                 });
             },
-            loadSupplier(otherId){
+            loadSupplier(otherId) {
                 this.$store.dispatch("firm/getOne", {firmId: otherId})
                     .then(data => {
                         this.firmForm = data;
@@ -248,11 +250,11 @@
                     console.log(error);
                 });
             },
-            selectedCustomerType(item){
+            selectedCustomerType(item) {
                 this.firmOtherForm.type = item;
             },
-            selectedOpen(){
-                if (!this.firmForm.openId){
+            selectedOpen() {
+                if (!this.firmForm.openId) {
                     this.alterAble = false;
                 } else {
                     this.alterAble = true;
@@ -266,7 +268,7 @@
             initFormData(otherId) {
                 this.clearForm();
                 this.loadOpen();
-                if (otherId){
+                if (otherId) {
                     this.update = true;
                     this.alterAble = true;
                     this.loadSupplier(otherId);
@@ -275,7 +277,7 @@
                     this.loadContacts(otherId);
                 }
             },
-            addSupplierClick(){
+            addSupplierClick() {
                 //判断添加还是更新
                 let url = '';
                 if (this.update) {
@@ -284,15 +286,15 @@
                     url = 'firmOther/addOne';
                 }
                 //需要将联系人添加为员工数据，账号信息添加为Open账号信息
-                let accountList =[];
+                let accountList = [];
                 //只有选择了Open平台才能添加账号数据
                 //否则调用接口时将传递空的账号列表
-                if (this.firmForm.openId){
+                if (this.firmForm.openId) {
                     //需要补充Open账号中的数据
-                    this.openList.forEach( item => {
+                    this.openList.forEach(item => {
                         const _openId = this.firmForm.openId;
                         //_openId可能为空
-                        if (_openId && _openId == item.openId){
+                        if (_openId && _openId == item.openId) {
                             this.open = item;
                         }
                     })
@@ -304,7 +306,12 @@
                 }
                 //接口通过map接收数据
                 this.$store
-                    .dispatch(url, {firm: this.firmForm, firmOther: this.firmOtherForm, contacts: this.contacts, accounts: accountList})
+                    .dispatch(url, {
+                        firm: this.firmForm,
+                        firmOther: this.firmOtherForm,
+                        contacts: this.contacts,
+                        accounts: accountList
+                    })
                     .then(() => {
                         this.goBack();
                     })
@@ -367,7 +374,7 @@
     width: 74%;
   }
 
-  .form .el-form  .el-select {
+  .form .el-form .el-select {
     width: 100%;
   }
 
@@ -384,8 +391,24 @@
     border: none;
   }
 
+  #tabs .el-tabs--border-card{
+    box-shadow: 0 0 0 0 rgba(0,0,0,.12), 0 0 2px 0 rgba(0,0,0,.04);
+  }
+
   #goBack {
     padding-left: 10px;
     padding-top: 10px;
+  }
+
+  #footer {
+    height: 60px;
+    padding-top: 20px;
+    overflow: hidden;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.12), 0 0 6px 0 rgba(0,0,0,.04);
+  }
+
+  #footer .saveButton {
+    float: right;
+    margin-right: 10%
   }
 </style>
