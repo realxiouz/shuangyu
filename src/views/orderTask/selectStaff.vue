@@ -21,11 +21,11 @@
 <script>
 export default {
   name: "taskSelectStaff",
-  props: ["staffList"],
   data() {
     return {
       staffs: [],
       total: 0,
+      staffList: [],
       staffId: ""
     };
   },
@@ -54,7 +54,20 @@ export default {
     },
     handleCurrentChange(row) {
       this.staffId = row.staffId;
+    },
+    loadData() {
+      this.$store
+        .dispatch("orderStaff/getOnlineList", { filter: {} })
+        .then(data => {
+          this.staffList = data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
+  },
+  created() {
+    this.loadData();
   }
 };
 </script>
