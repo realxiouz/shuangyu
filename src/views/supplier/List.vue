@@ -23,7 +23,7 @@
         <el-table-column label="操作" fixed="right">
           <template slot-scope="scope">
                         <span v-show="scope.row.firm.openId && '' != scope.row.firm.openId">
-            <el-button type="info" size="mini" @click="handleSupplement(scope.row.firm)">配置管理</el-button>
+            <el-button type="info" size="mini" @click="handleSupplement(scope.row)">配置管理</el-button>
                         </span>
             <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
             <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
@@ -113,7 +113,7 @@
                 this.$router.push({
                     path: path,
                     query: {
-                        firmId: row.otherId,
+                        firmId: row.firm.firmId,
                         openId: row.firmId.openId
                     }
                 });
