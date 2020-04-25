@@ -452,35 +452,47 @@ export default {
     },
     // 手工出票保存并贴票
     handleSaveTicket(params) {
-      let newParams = {};
-      if (params) {
-        newParams.accountId = params.accountId;
-        newParams.amount = this.tableData.amount;
-        newParams.thirdId = this.tableData.thirdId;
-        newParams.flights = [
-          {
-            cabin: params.cabin,
-            dptTime: params.dptTime,
-            arr: params.arr,
-            flightCode: params.flightCode,
-            flightDate: params.flightDate,
-            dpt: params.dpt
-          }
-        ];
-        newParams.fundAccount = params.fundAccount;
-        newParams.orderSource = params.orderSource;
-        newParams.orderType = params.orderType;
-        newParams.passengers = params.passengers;
-        newParams.pid = "";
-        newParams.remark = params.remark;
-        newParams.rootOrderNo = this.tableData.rootOrderNo;
-        newParams.sourceOrderNo = this.tableData.sourceOrderNo;
-        newParams.status = params.status;
-        newParams.transactionAmount = params.transactionAmount;
-        newParams.createTime = params.createTime;
-        newParams.ticketNoFlag = params.ticketNoFlag;
+      if (params.radio == 1 && params.orderSource == "QUNAR_OPEN") {
+        let woniuParams = {};
+        woniuParams.sourceOrderNo = params.sourceOrderNo;
+        woniuParams.orderTaskId = this.$route.query.taskId;
+        woniuParams.fundAccount = params.fundAccountId;
+        woniuParams.userNameType = params.userNameType;
+        woniuParams.orderType = params.status;
+        woniuParams.amount = params.amount;
+        woniuParams.ticketNoFlag = params.ticketNoFlag;
+        this.woniuOrder(woniuParams);
+      } else {
+        let newParams = {};
+        if (params) {
+          newParams.accountId = params.accountId;
+          newParams.amount = this.tableData.amount;
+          newParams.thirdId = this.tableData.thirdId;
+          newParams.flights = [
+            {
+              cabin: params.cabin,
+              dptTime: params.dptTime,
+              arr: params.arr,
+              flightCode: params.flightCode,
+              flightDate: params.flightDate,
+              dpt: params.dpt
+            }
+          ];
+          newParams.fundAccount = params.fundAccount;
+          newParams.orderSource = params.orderSource;
+          newParams.orderType = params.orderType;
+          newParams.passengers = params.passengers;
+          newParams.pid = "";
+          newParams.remark = params.remark;
+          newParams.rootOrderNo = this.tableData.rootOrderNo;
+          newParams.sourceOrderNo = this.tableData.sourceOrderNo;
+          newParams.status = params.status;
+          newParams.transactionAmount = params.transactionAmount;
+          newParams.createTime = params.createTime;
+          newParams.ticketNoFlag = params.ticketNoFlag;
+        }
+        this.purchaseOrder(newParams);
       }
-      this.purchaseOrder(newParams);
       this.handleTicketShow = false;
     },
     // 补退 补改 保存
@@ -497,7 +509,6 @@ export default {
       } else {
         if (params) {
           let newParams = {};
-
           newParams.accountId = params.accountId;
           newParams.amount = params.amount;
           newParams.thirdId = params.thirdId;
