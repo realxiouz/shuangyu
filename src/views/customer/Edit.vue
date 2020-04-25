@@ -217,7 +217,7 @@
                 });
             },
             loadContacts(firmId){
-                this.$store.dispatch("staff/getListByFirmId", {firmId: firmId, filter: {}})
+                this.$store.dispatch("staff/getListByFirmId", {firmId: firmId, filter: {type: 1}})
                     .then(data => {
                         this.contacts = data.data;
                     }).catch(error => {
