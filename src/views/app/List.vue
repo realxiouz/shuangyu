@@ -196,6 +196,9 @@
                         }
                     }
                 }
+                if (Object.keys(newParams).length == 0) {
+                    this.lastId = 0;
+                }
                 this.loadData(newParams);
                 this.$message({
                     type: "success",
