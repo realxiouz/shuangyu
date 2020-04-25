@@ -136,7 +136,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="使用账号:">
-              <el-input clearable v-model="formData.fundAccount"></el-input>
+              <el-input clearable v-model="formData.accountId"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -147,7 +147,7 @@
           <el-col :span="12">
             <el-form-item label="资金账号:">
               <el-select
-                v-model="formData.accountId"
+                v-model="formData.fundAccount"
                 filterable
                 clearable
                 placeholder="请选择资金账号"
@@ -243,6 +243,11 @@
             label="乘机人证件类型"
             align="center"
           ></el-table-column>
+          <el-table-column prop="amount" label="价格" align="center">
+            <template slot-scope="scope">
+              <el-input clearable v-model="scope.row.amount"></el-input>
+            </template>
+          </el-table-column>
           <el-table-column prop="cardNo" label="乘机人证件号" align="center">
             <template slot-scope="scope">
               <el-input clearable v-model="scope.row.cardNo"></el-input>
@@ -280,8 +285,19 @@ export default {
       isWoniu: false,
       isWoniuTicket: true,
       orderType: orderType,
-      formData: {
-        ...this.fillOutRefundData,
+      formData: {},
+
+      accountData: [],
+      statusData: statusData
+    };
+  },
+  methods: {
+    formatAgeType,
+    formatCardType,
+    // 默认数据
+    defaultFormData() {
+      return {
+        orderDetailList: this.fillOutRefundData.orderDetailList,
         arr: this.fillOutRefundData.flights[0].arr,
         dpt: this.fillOutRefundData.flights[0].dpt,
         flightCode: this.fillOutRefundData.flights[0].flightCode,
@@ -293,15 +309,11 @@ export default {
         fundAccountId: "",
         userNameType: "",
         accountId: ""
-      },
-
-      accountData: [],
-      statusData: statusData
-    };
-  },
-  methods: {
-    formatAgeType,
-    formatCardType,
+      };
+    },
+    clearForm() {
+      this.formData = this.defaultFormData();
+    },
     //判断是蜗牛导单还是出票
     radioChange(value) {
       if (value == "2") {
@@ -340,6 +352,7 @@ export default {
     }
   },
   created() {
+    this.clearForm();
     this.getFinance();
     if (this.fillOutRefundData.orderSource == "QUNAR_OPEN") {
       this.isWoniu = true;

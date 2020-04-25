@@ -134,8 +134,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="使用账号:">
-              <el-input clearable v-model="formData.fundAccount"></el-input>
+            <el-form-item label="平台账号:">
+              <el-input clearable v-model="formData.accountId"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -146,7 +146,7 @@
           <el-col :span="12">
             <el-form-item label="资金账号:">
               <el-select
-                v-model="formData.accountId"
+                v-model="formData.fundAccount"
                 filterable
                 clearable
                 placeholder="请选择资金账号"
@@ -235,6 +235,11 @@
             label="乘机人证件类型"
             align="center"
           ></el-table-column>
+          <el-table-column prop="amount" label="价格" align="center">
+            <template slot-scope="scope">
+              <el-input clearable v-model="scope.row.amount"></el-input>
+            </template>
+          </el-table-column>
           <el-table-column prop="cardNo" label="乘机人证件号" align="center">
             <template slot-scope="scope">
               <el-input clearable v-model="scope.row.cardNo"></el-input>
@@ -250,7 +255,7 @@
     </el-form>
     <div style="margin-top: 25px;text-align: right;">
       <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
-      <el-button size="mini" v-if="this.isWoniu" type="primary" @click="handleSaveTicket">保存并贴票</el-button>
+      <el-button size="mini" v-if="!this.isWoniu" type="primary" @click="handleSaveTicket">保存并贴票</el-button>
       <el-button size="mini" type="primary" @click="handleSave">保存</el-button>
     </div>
   </div>
@@ -287,8 +292,9 @@ export default {
         ticketNoFlag: "0",
         userNameType: "",
         amount: "",
-        accountId:"",
-        radio: "1"
+        accountId: "",
+        radio: "1",
+        profit: ""
       },
       statusData: statusData
     };
@@ -337,6 +343,21 @@ export default {
     handleSave() {
       this.formData.flightData = this.flightData;
       this.formData.passengers = this.passengerData;
+      let amountTotal = 0;
+      this.formData.passengers.forEach(item => {
+        amountTotal += Number(item.amount);
+      });
+      let _profit = 0;
+      _profit = amountTotal + Number(this.formData.transactionAmount);
+      if (_profit != this.formData.profit) {
+        this.$notify({
+          title: "提示",
+          message: "利润金额计算错误，请重新计算！",
+          type: "warning",
+          duration: 4500
+        });
+        return;
+      }
       this.$emit("onSave", this.formData);
     },
     // 日期格式化
@@ -358,6 +379,7 @@ export default {
   },
   created() {
     this.getFinance();
+    console.log(this.passengerData);
   }
 };
 </script>

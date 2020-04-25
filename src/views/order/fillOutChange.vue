@@ -134,8 +134,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="使用账号:">
-              <el-input clearable v-model="formData.fundAccount"></el-input>
+            <el-form-item label="平台账号:">
+              <el-input clearable v-model="formData.accountId"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -146,7 +146,7 @@
           <el-col :span="12">
             <el-form-item label="资金账号:">
               <el-select
-                v-model="formData.accountId"
+                v-model="formData.fundAccount"
                 filterable
                 clearable
                 placeholder="请选择资金账号"
@@ -219,6 +219,7 @@
             </el-form-item>
           </el-col>
         </el-row>
+
         <el-table
           :data="formData.orderDetailList"
           size="mini"
@@ -241,6 +242,11 @@
             label="乘机人证件类型"
             align="center"
           ></el-table-column>
+          <el-table-column prop="amount" label="价格" align="center">
+            <template slot-scope="scope">
+              <el-input clearable v-model="scope.row.amount"></el-input>
+            </template>
+          </el-table-column>
           <el-table-column prop="cardNo" label="乘机人证件号" align="center">
             <template slot-scope="scope">
               <el-input clearable v-model="scope.row.cardNo"></el-input>
@@ -254,6 +260,7 @@
         </el-table>
       </div>
     </el-form>
+
     <div style="margin-top: 25px;text-align:right;">
       <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
       <el-button size="mini" type="primary" @click="handleSave">保存</el-button>
@@ -278,19 +285,7 @@ export default {
       isWoniu: false,
       orderType: orderType,
       isWoniuTicket: true,
-      formData: {
-        ...this.fillOutChangeData,
-        arr: this.fillOutChangeData.flights[0].arr,
-        dpt: this.fillOutChangeData.flights[0].dpt,
-        flightCode: this.fillOutChangeData.flights[0].flightCode,
-        dptTime: this.fillOutChangeData.flights[0].dptTime,
-        arrTime: this.fillOutChangeData.flights[0].arrTime,
-        flightDate: this.fillOutChangeData.flights[0].flightDate,
-        cabin: this.fillOutChangeData.flights[0].cabin,
-        radio: "1",
-        userNameType: "",
-        accountId: ""
-      },
+      formData: {},
       accountData: [],
       statusData: statusData
     };
@@ -298,6 +293,25 @@ export default {
   methods: {
     formatAgeType,
     formatCardType,
+    // 默认数据
+    defaultFormData() {
+      return {
+        orderDetailList: this.fillOutChangeData.orderDetailList,
+        arr: "",
+        dpt: "",
+        flightCode: "",
+        dptTime: "",
+        arrTime: "",
+        flightDate: "",
+        cabin: "",
+        radio: "1",
+        userNameType: "",
+        accountId: ""
+      };
+    },
+    clearForm() {
+      this.formData = this.defaultFormData();
+    },
     //判断是蜗牛导单还是出票
     radioChange(value) {
       if (value == "2") {
@@ -336,7 +350,7 @@ export default {
     }
   },
   created() {
-    this.getFinance();
+    this.clearForm();
     if (this.fillOutChangeData.orderSource == "QUNAR_OPEN") {
       this.isWoniu = true;
     }

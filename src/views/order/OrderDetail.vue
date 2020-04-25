@@ -171,14 +171,14 @@
       <el-button type="primary" size="mini" @click="getMessage">刷新</el-button>
       <div style="margin-top:15px;" id="messageHtml">
         <span v-if="this.messageData" v-html="this.messageData"></span>
-        <span  v-else>暂无数据</span>
+        <span v-else>暂无数据</span>
       </div>
     </el-card>
     <el-card class="contentBox">
       <div slot="header" class="clearfix">
         <span v-if="this.tableData.orderType=='30'|| this.tableData.orderType=='31'">改签</span>
-        <span v-else-if="this.tableData.orderType=='10'">退票</span>
-        <span v-else>出票</span>
+        <span v-else-if="this.tableData.orderType=='10'">出票</span>
+        <span v-else>退票</span>
       </div>
       <div id="changeHtmlOrderDetail">
         <span v-if="this.changeHtml" v-html="this.changeHtml"></span>
@@ -208,8 +208,7 @@
         <el-table-column prop="orderSource" align="center" label="渠道"></el-table-column>
         <el-table-column label="姓名" align="center" width="200">
           <template slot-scope="scope">
-            <i v-if="scope.row.passengers"></i>
-            <span>{{ formatPassengers(scope.row.passengers)}}</span>
+            <span>{{ formatPassengers(scope.row.orderDetailList)}}</span>
           </template>
         </el-table-column>
         <el-table-column prop="createTime" align="center" label="订单时间">
@@ -252,6 +251,12 @@
               @click="changeTicket(scope.row)"
               size="mini"
             >改签</el-button>
+            <el-button
+              type="primary"
+              v-show="scope.row.orderSource=='QUNAR_OPEN'&&this.taskType=='4'"
+              @click="intercept(scope.row)"
+              size="mini"
+            >拦截</el-button>
             <el-button type="primary" @click="fillOutRefund(scope.row)" size="mini">补退</el-button>
             <el-button type="primary" @click="fillOutChange(scope.row)" size="mini">补改</el-button>
           </template>
@@ -268,6 +273,7 @@
         :close-on-click-modal="false"
       >
         <handle-ticket
+          v-if="handleTicketShow"
           @onCancel="onCancel"
           @onSaveTicket="handleSaveTicket"
           @onSave="handleSave"
@@ -285,6 +291,7 @@
         :close-on-click-modal="false"
       >
         <refund-ticket
+          v-if="refundTicketShow"
           @onCancel="onCancel"
           @onSaveRefund="handleSaveRefund"
           :purchaseOrderNo="purchaseOrderNo"
@@ -301,6 +308,7 @@
         :close-on-click-modal="false"
       >
         <change-ticket
+          v-if="changeTicketShow"
           :changeData="changeData"
           :changeDataTop="changeDataTop"
           @onCancel="onCancel"
@@ -317,6 +325,7 @@
         :close-on-click-modal="false"
       >
         <fillOut-refund
+          v-if="fillOutRefundShow"
           :fillOutRefundData="fillOutRefundData"
           @onCancel="onCancel"
           @onSave="handleSavePurchase"
@@ -332,6 +341,7 @@
         :close-on-click-modal="false"
       >
         <fillOut-change
+          v-if="fillOutChangeShow"
           :fillOutChangeData="fillOutChangeData"
           @onCancel="onCancel"
           @onSave="handleSavePurchase"
@@ -376,7 +386,7 @@ export default {
       newFromDialogShow: false,
       newFromDialog: "",
       fillOutRefundData: "",
-      fillOutChangeData: "",
+      fillOutChangeData: {},
       changeHtml: "",
       refundHtml: "",
       messageData: "",
@@ -393,6 +403,7 @@ export default {
       timer: null,
       changeData: "",
       orderNo: this.$route.query.orderNo,
+      taskType: this.$route.query.taskType,
       changeDataTop: {
         reason: "",
         flight: "",
@@ -454,48 +465,60 @@ export default {
       this.changeTicketShow = false;
       this.refundTicketShow = false;
     },
+    // 退票弹框
+    refundTicket(row) {
+      this.purchaseOrderNo = row.sourceOrderNo;
+      this.refundTicketShow = true;
+    },
+    // 改签弹框
+    changeTicket(row) {
+      this.purchaseOrderNo = row.sourceOrderNo;
+      this.changeData = Object.assign({}, row);
+
+      this.changeTicketShow = true;
+    },
+    // 补退弹框
+    fillOutRefund(row) {
+      this.fillOutRefundData = Object.assign({}, row);
+      this.fillOutRefundShow = true;
+    },
+    // 补改弹框
+    fillOutChange(row) {
+      this.fillOutChangeData = Object.assign({}, row);
+      this.fillOutChangeShow = true;
+    },
+    // 拦截
+    intercept() {},
     // 手工出票保存并贴票
     handleSaveTicket(params) {
-      if (params.radio == 1 && params.orderSource == "QUNAR_OPEN") {
-        let woniuParams = {};
-        woniuParams.sourceOrderNo = params.sourceOrderNo;
-        woniuParams.orderTaskId = this.$route.query.taskId;
-        woniuParams.fundAccount = params.fundAccountId;
-        woniuParams.userNameType = params.userNameType;
-        woniuParams.orderType = params.orderType;
-        woniuParams.amount = params.amount;
-        woniuParams.ticketNoFlag = params.ticketNoFlag;
-        this.woniuOrder(woniuParams);
-      } else {
-        let newParams = {};
-        if (params) {
-          newParams.accountId = params.accountId;
-          newParams.amount = this.tableData.amount;
-          newParams.thirdId = this.tableData.thirdId;
-          newParams.flights = [
-            {
-              cabin: params.cabin,
-              dptTime: params.dptTime,
-              arr: params.arr,
-              flightCode: params.flightCode,
-              flightDate: params.flightDate,
-              dpt: params.dpt
-            }
-          ];
-          newParams.fundAccount = params.fundAccount;
-          newParams.orderSource = params.orderSource;
-          newParams.orderType = params.orderType;
-          newParams.passengers = params.passengers;
-          newParams.pid = "";
-          newParams.remark = params.remark;
-          newParams.rootOrderNo = this.tableData.rootOrderNo;
-          newParams.sourceOrderNo = this.tableData.sourceOrderNo;
-          newParams.transactionAmount = params.transactionAmount;
-          newParams.createTime = params.createTime;
-          newParams.ticketNoFlag = params.ticketNoFlag;
-        }
-        this.purchaseOrder(newParams);
+      let newParams = {};
+      if (params) {
+        newParams.accountId = params.accountId;
+        newParams.amount = this.tableData.amount;
+        newParams.thirdId = this.tableData.thirdId;
+        newParams.flights = [
+          {
+            cabin: params.cabin,
+            dptTime: params.dptTime,
+            arr: params.arr,
+            flightCode: params.flightCode,
+            flightDate: params.flightDate,
+            dpt: params.dpt
+          }
+        ];
+        newParams.fundAccount = params.fundAccount;
+        newParams.orderSource = params.orderSource;
+        newParams.orderType = params.orderType;
+        newParams.passengers = params.passengers;
+        newParams.pid = "";
+        newParams.remark = params.remark;
+        newParams.rootOrderNo = this.tableData.rootOrderNo;
+        newParams.sourceOrderNo = this.tableData.sourceOrderNo;
+        newParams.transactionAmount = params.transactionAmount;
+        newParams.createTime = params.createTime;
+        newParams.ticketNoFlag = params.ticketNoFlag;
       }
+      this.purchaseOrder(newParams);
       this.handleTicketShow = false;
     },
     // 补退 补改 保存
@@ -510,8 +533,8 @@ export default {
         woniuParams.amount = params.amount;
         this.woniuOrder(woniuParams);
       } else {
+        let newParams = {};
         if (params) {
-          let newParams = {};
           newParams.accountId = params.accountId;
           newParams.amount = params.amount;
           newParams.thirdId = params.thirdId;
@@ -623,7 +646,6 @@ export default {
         newParams.refundCause = params.refundCause;
         newParams.refundCauseId = params.refundCauseId;
       }
-
       newParams.orderNo = this.purchaseOrderNo;
       if (this.$route.query.taskId) {
         newParams.orderTaskId = this.$route.query.taskId;
@@ -1046,27 +1068,6 @@ export default {
           });
         });
     },
-    // 退票弹框
-    refundTicket(row) {
-      this.purchaseOrderNo = row.sourceOrderNo;
-      this.refundTicketShow = true;
-    },
-    // 改签弹框
-    changeTicket(row) {
-      this.purchaseOrderNo = row.sourceOrderNo;
-      this.changeTicketShow = true;
-      this.changeData = row;
-    },
-    // 补退弹框
-    fillOutRefund(row) {
-      this.fillOutRefundData = row;
-      this.fillOutRefundShow = true;
-    },
-    // 补改弹框
-    fillOutChange(row) {
-      this.fillOutChangeData = row;
-      this.fillOutChangeShow = true;
-    },
 
     // 格式化日期
     initDate(dateStr, format) {
@@ -1123,12 +1124,17 @@ export default {
     let params = {};
     if (this.$route.query.rootOrderNo) {
       params.rootOrderNo = this.$route.query.rootOrderNo;
+      params.category = 1;
+      this.getOrderTree(params);
+      this.timer = setInterval(() => {
+        setTimeout(this.getOrderTree(params), 0);
+      }, 5000);
+    } else {
+      if (this.timer) {
+        //如果定时器还在运行 或者直接关闭，不用判断
+        clearInterval(this.timer); //关闭
+      }
     }
-    params.category = 1;
-    this.getOrderTree(params);
-    this.timer = setInterval(() => {
-      setTimeout(this.getOrderTree(params), 0);
-    }, 5000);
   },
   // 离开页面销毁定时器
   beforeDestroy() {
