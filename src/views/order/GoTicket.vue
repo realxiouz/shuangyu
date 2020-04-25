@@ -250,6 +250,7 @@ export default {
         dptTime: "",
         flightCode: ""
       },
+      predetermineOrderData: "",
       //支付数据
       payData: {
         allPrice: "",
@@ -283,6 +284,14 @@ export default {
     },
     // 显示支付弹框
     confirmPay() {
+      let params = {
+        allPrice: this.payData.noPayAmount,
+        bankCode: this.payData.bankCode,
+        cabin: this.predetermineOrderData.cabin,
+        payOrderNo: this.payData.orderNo,
+        sellOrderNo: this.orderData.sourceOrderNo
+      };
+      this.openPay(params);
       this.payShow = false;
     },
     // 获得详情
@@ -315,6 +324,7 @@ export default {
     },
     // （预定）下单
     predetermineOrder(row, item) {
+      this.predetermineOrderData = item;
       let newParams = {};
       newParams.flightNum = row.offerPrice.flightNum;
       newParams.domain = item.domain;
@@ -328,7 +338,6 @@ export default {
           cardNo: item.cardNo,
           price: item.viewPrice
         };
-
         newParams.passengers.push(obj);
       });
       newParams.ticketPrice = item.vppr;
@@ -346,12 +355,13 @@ export default {
       newParams.to = row.offerPrice.to;
       newParams.startTime = row.offerPrice.startTime;
       newParams.dptTime = row.offerPrice.dptTime;
-      console.log(newParams, "newParams");
+      // console.log(newParams, "newParams");
       this.$store
         .dispatch("order/placeAnOrder", newParams)
         .then(data => {
           if (data.code == 0) {
-            console.log(data, "111111");
+            // console.log(data, "111111");
+            this.payData = data;
             this.payShow = true;
             this.$message({
               type: "success",
@@ -359,6 +369,26 @@ export default {
             });
           } else {
             this.payShow = false;
+            this.$message({
+              type: "warning",
+              message: data.msg
+            });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    openPay(params) {
+      this.$store
+        .dispatch("order/openPay", params)
+        .then(data => {
+          if (data.code == 0) {
+            this.$message({
+              type: "success",
+              message: "支付成功！"
+            });
+          } else {
             this.$message({
               type: "warning",
               message: data.msg
