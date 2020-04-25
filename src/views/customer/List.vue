@@ -106,7 +106,7 @@
                     query: {
                         domain: row.firm.domain,
                         openId: row.firm.openId,
-                        firmId: row.otherId,
+                        firmId: row.firm.firmId,
                     }
                 });
             },
