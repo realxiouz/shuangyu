@@ -26,7 +26,8 @@
               @click.native.prevent="handleRemove(scope.row.appId,scope.$index,tableData)"
               type="danger"
               size="mini"
-            >删除</el-button>
+            >删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -53,161 +54,162 @@
   </div>
 </template>
 <script>
-import appSearch from "./Search";
-import appEdit from "./Edit";
+    import appSearch from "./Search";
+    import appEdit from "./Edit";
 
-export default {
-  name: "appList",
-  data() {
-    return {
-      lastId: "0",
-      pageFlag: "next",
-      pageSize: 10,
-      dialogVisible: false,
-      loading: true,
-      tableData: [],
-      appId: "",
-      total: 0
-    };
-  },
-  methods: {
-    prevClick() {
-      this.pageFlag = "prev";
-      this.lastId = this.tableData[0].appId;
-      this.loadData();
-    },
-    nextClick() {
-      this.pageFlag = "next";
-      this.lastId = this.tableData[this.tableData.length - 1].appId;
-      this.loadData();
-    },
-    loadTotal(searchForm) {
-      if (!searchForm || !searchForm.appName) {
-        searchForm = {};
-      }
-      this.$store
-        .dispatch("app/getTotal", {
-          filters: searchForm
-        })
-        .then(data => {
-          this.total = data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    loadData(searchForm) {
-      if (!searchForm || !searchForm.appName) {
-        searchForm = {};
-      }
-      this.$store
-        .dispatch("app/getPageList", {
-          pageFlag: this.pageFlag,
-          pageSize: this.pageSize,
-          lastId: this.lastId,
-          filter: searchForm
-        })
-        .then(data => {
-          if (data) {
-            this.tableData = data;
-            this.loadTotal(searchForm);
-          }
-          this.loading = false;
-        })
-        .catch(error => {
-          this.loading = false;
-          console.log(error);
-        });
-    },
-    handleSwitch(row) {
-      row.enable = row.enable ? true : false;
-      this.$store
-        .dispatch("app/updateOne", row)
-        .then(() => {})
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    handleCancel() {
-      this.dialogVisible = false;
-    },
-    handleAdd(params) {
-      this.dialogVisible = true;
-      this.appId = "";
-    },
-    handleUpdate(id) {
-      this.appId = id;
-      this.dialogVisible = true;
-    },
-    handleRemove(id, index, rows) {
-      this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.$store.dispatch("app/removeOne", { appId: id }).then(() => {
-            if (1 === this.tableData.length) {
-              this.prevClick();
-            } else {
-              this.loadData();
+    export default {
+        name: "appList",
+        data() {
+            return {
+                lastId: "0",
+                pageFlag: "next",
+                pageSize: 10,
+                dialogVisible: false,
+                loading: true,
+                tableData: [],
+                appId: "",
+                total: 0
+            };
+        },
+        methods: {
+            prevClick() {
+                this.pageFlag = "prev";
+                this.lastId = this.tableData[0].appId;
+                this.loadData();
+            },
+            nextClick() {
+                this.pageFlag = "next";
+                this.lastId = this.tableData[this.tableData.length - 1].appId;
+                this.loadData();
+            },
+            loadTotal(searchForm) {
+                if (!searchForm || !searchForm.appName) {
+                    searchForm = {};
+                }
+                this.$store
+                    .dispatch("app/getTotal", {
+                        filters: searchForm
+                    })
+                    .then(data => {
+                        this.total = data;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            loadData(searchForm) {
+                if (!searchForm || !searchForm.appName) {
+                    searchForm = {};
+                }
+                this.$store
+                    .dispatch("app/getPageList", {
+                        pageFlag: this.pageFlag,
+                        pageSize: this.pageSize,
+                        lastId: this.lastId,
+                        filter: searchForm
+                    })
+                    .then(data => {
+                        if (data) {
+                            this.tableData = data;
+                            this.loadTotal(searchForm);
+                        }
+                        this.loading = false;
+                    })
+                    .catch(error => {
+                        this.loading = false;
+                        console.log(error);
+                    });
+            },
+            handleSwitch(row) {
+                row.enable = row.enable ? true : false;
+                this.$store
+                    .dispatch("app/updateOne", row)
+                    .then(() => {
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            handleCancel() {
+                this.dialogVisible = false;
+            },
+            handleAdd() {
+                this.dialogVisible = true;
+                this.appId = "";
+            },
+            handleUpdate(id) {
+                this.appId = id;
+                this.dialogVisible = true;
+            },
+            handleRemove(id, index, rows) {
+                this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消",
+                    type: "warning"
+                })
+                    .then(() => {
+                        this.$store.dispatch("app/removeOne", {appId: id}).then(() => {
+                            if (1 === this.tableData.length) {
+                                this.prevClick();
+                            } else {
+                                this.loadData();
+                            }
+                            rows.splice(index, 1);
+                        });
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    });
+            },
+            handleSave(formData) {
+                this.$store
+                    .dispatch("app/save", formData)
+                    .then(() => {
+                        this.loadData();
+                        if (this.appId != "") {
+                            this.$message({
+                                type: "success",
+                                message: "修改成功！"
+                            });
+                        } else {
+                            this.$message({
+                                type: "success",
+                                message: "添加成功！"
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+                this.dialogVisible = false;
+            },
+            handleSizeChange(pageSize) {
+                this.pageSize = pageSize;
+                this.loadData();
+            },
+            handleSearch(params) {
+                const newParams = {};
+                if (params) {
+                    for (let key in params) {
+                        if (params[key]) {
+                            newParams[key] = params[key];
+                        }
+                    }
+                }
+                this.loadData(newParams);
+                this.$message({
+                    type: "success",
+                    message: "查询成功！"
+                });
             }
-            rows.splice(index, 1);
-          });
-        })
-        .catch(err => {
-          console.error(err);
-        });
-    },
-    handleSave(formData) {
-      this.$store
-        .dispatch("app/save", formData)
-        .then(() => {
-          this.loadData();
-          if (this.appId != "") {
-            this.$message({
-              type: "success",
-              message: "修改成功！"
-            });
-          } else {
-            this.$message({
-              type: "success",
-              message: "添加成功！"
-            });
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-      this.dialogVisible = false;
-    },
-    handleSizeChange(pageSize) {
-      this.pageSize = pageSize;
-      this.loadData();
-    },
-    handleSearch(params) {
-      const newParams = {};
-      if (params) {
-        for (let key in params) {
-          if (params[key]) {
-            newParams[key] = params[key];
-          }
+        },
+        created() {
+            this.loadData();
+        },
+        components: {
+            appSearch,
+            appEdit
         }
-      }
-      this.loadData(newParams);
-      this.$message({
-        type: "success",
-        message: "查询成功！"
-      });
-    }
-  },
-  created() {
-    this.loadData();
-  },
-  components: {
-    appSearch,
-    appEdit
-  }
-};
+    };
 </script>
 
