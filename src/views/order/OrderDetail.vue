@@ -1172,7 +1172,6 @@ export default {
       );
       // 重贴票号按钮事件
       var that = this;
-
       if (btnRewriteTicket) {
         btnRewriteTicket.onclick = function() {
           let params = {
@@ -1181,7 +1180,7 @@ export default {
             ticketNo: ""
           };
           // that.autoRewriteTicket(params);
-          console.log("ssssss");
+          console.log("重贴票号按钮事件");
         };
       }
     }
