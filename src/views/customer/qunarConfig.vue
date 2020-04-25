@@ -232,7 +232,7 @@ http://123.123.123.1:9000</span>
                     .then(data => {
                         if (data && data.domain) {
                             this.notifyData = data;
-                            this.isDisable =true;
+                            this.isDisable = true;
                         } else {
                             this.notifyData.domain = this.domain;
                         }
@@ -252,7 +252,7 @@ http://123.123.123.1:9000</span>
                     .then(data => {
                         if (data && data.domain) {
                             this.orderData = data;
-                            this.isOrderDisable =true;
+                            this.isOrderDisable = true;
                         } else {
                             this.orderData.domain = this.domain;
                         }
@@ -278,13 +278,13 @@ http://123.123.123.1:9000</span>
                     });
             },
             saveNotify() {
-                this.isDisable = true;
                 this.$refs['notifyForm'].validate((valid) => {
                     if (valid) {
                         this.$store
                             .dispatch("qunarOrderNotifyConfig/save", this.notifyData)
                             .then(data => {
                                 if (data) {
+                                    this.isDisable = true;
                                     this.$message({
                                         type: "success",
                                         message: "保存成功！"
@@ -327,13 +327,13 @@ http://123.123.123.1:9000</span>
                 this.isOrderDisable = false;
             },
             saveOrder() {
-                this.isOrderDisable = true;
                 this.$refs['orderForm'].validate((valid) => {
                     if (valid) {
                         this.$store
                             .dispatch("qunarOrderConfig/save", this.orderData)
                             .then(data => {
                                 if (data) {
+                                    this.isOrderDisable = true;
                                     this.$message({
                                         type: "success",
                                         message: "保存成功！"
