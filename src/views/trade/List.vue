@@ -53,14 +53,14 @@
         methods: {
             loadData(searchForm) {
                 this.searchForm = searchForm;
-                this.$store.dispatch("currency/getTotal", {filter: searchForm})
+                this.$store.dispatch("trade/getTotal", {filter: searchForm})
                     .then(data => {
                         this.total = data;
                     })
                     .catch(error => {
                         console.log(error);
                     });
-                this.$store.dispatch("currency/getPageList", {
+                this.$store.dispatch("trade/getPageList", {
                     pageFlag: this.pageFlag,
                     pageSize: this.pageSize,
                     lastId: this.lastId,

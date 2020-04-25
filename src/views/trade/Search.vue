@@ -3,18 +3,18 @@
     <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
       <el-form label-width="110px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="币种编码">
-              <el-input
-                v-model="formData.code"
-                placeholder="币种编码.."
-              ></el-input>
-            </el-form-item>
+          <el-form-item label="交易编号">
+            <el-input
+              v-model="formData.tradeNo"
+              placeholder="交易编号.."
+            ></el-input>
+          </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="币种名称">
+          <el-form-item label="商家订单号">
             <el-input
-              v-model="formData.name"
-              placeholder="币种名称.."
+              v-model="formData.outTradeNo"
+              placeholder="商家订单号.."
             ></el-input>
           </el-form-item>
         </el-col>
@@ -28,7 +28,8 @@
         type="primary"
         size="mini"
         @click="handleConfirm"
-      >查询</el-button>
+      >查询
+      </el-button>
       <el-button type="text" size="mini" @click="handleMore">
         更多
         <i :class="switchIcon"></i>
@@ -43,8 +44,8 @@
             return {
                 more: false,
                 formData: {
-                    code: null,
-                    name: null
+                    tradeNo: null,
+                    outTradeNo: null
                 }
             };
         },
@@ -61,12 +62,12 @@
             handleMore() {
                 this.more = !this.more;
             },
-            handleConfirm(){
-                if(!this.formData.code || '' === this.formData.code)
-                    this.formData.code = null;
-                if(!this.formData.name || '' === this.formData.name)
-                    this.formData.name = null;
-                this.$emit("onSearch",this.formData)
+            handleConfirm() {
+                if (!this.formData.tradeNo || '' === this.formData.tradeNo)
+                    this.formData.tradeNo = null;
+                if (!this.formData.outTradeNo || '' === this.formData.outTradeNo)
+                    this.formData.outTradeNo = null;
+                this.$emit("onSearch", this.formData)
             }
         }
     };
