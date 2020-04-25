@@ -4,7 +4,7 @@
       <el-main>
         <div class="formTitle">添加联系人</div>
         <el-row>
-          <el-form  :model="contact" :inline="true" label-position="left" label-width="60px" size="mini">
+          <el-form :rules="rules" :model="contact" :inline="true" label-position="left" label-width="60px" size="mini">
             <el-row>
               <el-form-item label="姓名" prop="fullName">
                 <el-input type="text" v-model="contact.fullName" placeholder="请输入姓名.."></el-input>

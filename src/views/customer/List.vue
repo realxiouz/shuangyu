@@ -11,7 +11,7 @@
         v-loading="loading"
         size="mini"
         :data="tableData"
-        row-key="firmId"
+        row-key="firm.firmId"
       >
         <el-table-column prop="firm.firmName" label="客户名称" align="center" sortable width="200"></el-table-column>
         <el-table-column prop="firm.firmCode" label="客户代码" align="center" sortable width="200"></el-table-column>
@@ -48,10 +48,10 @@
             /*加载客户列表1：企业客户，2：个人客户*/
             loadData(params) {
                 if (params) {
-                    params.types = JSON.stringify([1, 2])
+                    params.type = JSON.stringify([1, 2])
                 } else {
                     let newParams = {};
-                    newParams.types = JSON.stringify([1, 2])
+                    newParams.type = JSON.stringify([1, 2])
                     params = newParams;
                 }
                 this.$store

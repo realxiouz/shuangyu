@@ -5,7 +5,7 @@
     </div>
     <div id="head">
       <div id="title">
-        <span>客户</span>
+        <span>供应商</span>
         <span style="float: right; margin-right: 10%">
           <el-button type="primary" @click="addSupplierClick" size="mini" style="margin-right: -20px">保 存</el-button>
         </span>
@@ -20,16 +20,16 @@
           <div class="form">
             <el-form :rules="rules" :model="firmForm" label-position="left" label-width="130px" size="mini">
               <el-form-item label="类型" prop="type">
-                <el-select v-model="firmForm.type" placeholder="请选择平台" @change="selectedType">
+                <el-select v-model="firmForm.type" placeholder="请选择平台">
                   <el-option label="企业" :value=1></el-option>
                   <el-option label="个人" :value=2></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item label="名称" prop="firmName">
-                <el-input type="text" placeholder="请输入客户名称" v-model="firmForm.firmName"></el-input>
+                <el-input type="text" placeholder="请输入供应商名称" v-model="firmForm.firmName"></el-input>
               </el-form-item>
               <el-form-item label="编码" prop="firmCode">
-                <el-input type="text" placeholder="请输入客户代码" v-model="firmForm.firmCode"></el-input>
+                <el-input type="text" placeholder="请输入供应商代码" v-model="firmForm.firmCode"></el-input>
               </el-form-item>
               <el-form-item label="域名" prop="domain">
                 <el-input type="text" placeholder="请输入域名" v-model="firmForm.domain"></el-input>
@@ -135,7 +135,7 @@
                 activeTab: 'second',
                 rules: {
                     firmName: [
-                        {required: true, message: "请输入客户名称", trigger: "blur"},
+                        {required: true, message: "请输入供应商名称", trigger: "blur"},
                         {
                             min: 1,
                             max: 20,
@@ -143,7 +143,7 @@
                         }
                     ],
                     firmCode: [
-                        {required: true, message: "请输入客户代码", trigger: "blur"},
+                        {required: true, message: "请输入供应商代码", trigger: "blur"},
                         {
                             min: 1,
                             max: 20,
@@ -198,7 +198,7 @@
             defaultOtherFormData(){
                 return {
                     //类型（0：供应商，1：企业客户，2：个人客户）
-                    type: null,
+                    type: 0,
                     //类别编码
                     categoryCode: '',
                     //类别名称
@@ -232,19 +232,21 @@
                     console.log(error);
                 });
             },
-            loadSupplier(otherId){
+            loadOther(otherId){
                 this.$store.dispatch("firmOther/getOne", {otherId: otherId})
                     .then(data => {
                         this.firmOtherForm = data;
-                        this.firmForm = data.firm;
-                        this.loadAccounts(otherId);
-                        this.loadContacts(otherId);
                     }).catch(error => {
                     console.log(error);
                 });
             },
-            selectedType(type){
-                this.firmOtherForm.type = type;
+            loadSupplier(otherId){
+                this.$store.dispatch("firm/getOne", {firmId: otherId})
+                    .then(data => {
+                        this.firmForm = data;
+                    }).catch(error => {
+                    console.log(error);
+                });
             },
             selectedOpen(){
                 if (!this.firmForm.openId){
@@ -258,13 +260,16 @@
                 this.firmOtherForm = this.defaultOtherFormData();
                 this.openList = [];
             },
-            initFormData(firmId) {
+            initFormData(otherId) {
                 this.clearForm();
                 this.loadOpen();
-                if (firmId){
+                if (otherId){
                     this.update = true;
                     this.alterAble = true;
-                    this.loadSupplier(firmId);
+                    this.loadSupplier(otherId);
+                    this.loadOther(otherId);
+                    this.loadAccounts(otherId);
+                    this.loadContacts(otherId);
                 }
             },
             addSupplierClick(){
@@ -315,7 +320,7 @@
             }
         },
         created() {
-            this.initFormData(this.$route.query.firmId);
+            this.initFormData(this.$route.query.otherId);
         },
         components: {
             otherContact,

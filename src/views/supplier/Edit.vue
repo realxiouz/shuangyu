@@ -18,7 +18,7 @@
             <span>基本信息</span>
           </div>
           <div class="form">
-            <el-form  :model="firmForm" label-position="left" label-width="130px" size="mini">
+            <el-form :rules="rules" :model="firmForm" label-position="left" label-width="130px" size="mini">
               <el-form-item label="类型" prop="type">
                 <el-select v-model="firmForm.type" placeholder="请选择平台">
                   <el-option label="企业" :value=1></el-option>
@@ -232,13 +232,18 @@
                     console.log(error);
                 });
             },
-            loadSupplier(otherId){
+            loadOther(otherId){
                 this.$store.dispatch("firmOther/getOne", {otherId: otherId})
                     .then(data => {
                         this.firmOtherForm = data;
-                        this.firmForm = data.firm;
-                        this.loadAccounts(otherId);
-                        this.loadContacts(otherId);
+                    }).catch(error => {
+                    console.log(error);
+                });
+            },
+            loadSupplier(otherId){
+                this.$store.dispatch("firm/getOne", {firmId: otherId})
+                    .then(data => {
+                        this.firmForm = data;
                     }).catch(error => {
                     console.log(error);
                 });
@@ -255,13 +260,16 @@
                 this.firmOtherForm = this.defaultOtherFormData();
                 this.openList = [];
             },
-            initFormData(firmId) {
+            initFormData(otherId) {
                 this.clearForm();
                 this.loadOpen();
-                if (firmId){
+                if (otherId){
                     this.update = true;
                     this.alterAble = true;
-                    this.loadSupplier(firmId);
+                    this.loadSupplier(otherId);
+                    this.loadOther(otherId);
+                    this.loadAccounts(otherId);
+                    this.loadContacts(otherId);
                 }
             },
             addSupplierClick(){
