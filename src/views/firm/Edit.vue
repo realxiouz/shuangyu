@@ -25,7 +25,7 @@
     </el-form>
     <div slot="footer" class="dialog-footer" style="margin-top:10px;text-align:right">
       <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
-      <el-button v-show="!hasStep" size="mini" type="primary" @click="handleSave">确 定</el-button>
+      <el-button size="mini" type="primary" @click="handleSave">确 定</el-button>
     </div>
   </div>
 </template>
@@ -120,11 +120,10 @@
             },
             /*初始化表单*/
             initFormData() {
+                this.clearForm();
                 if (this.curNode.firmName) {
                     Object.assign(this.formData, this.curNode);
                     Object.assign(this.updateTempData, this.curNode);
-                } else {
-                    this.clearForm();
                 }
             },
             handleSave() {
