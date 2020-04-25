@@ -2,7 +2,10 @@
   <div id="main">
     <div id="form">
       <el-main>
-        <div class="formTitle">添加联系人</div>
+        <div class="formTitle">
+          添加联系人
+          <el-button id="addButton" type="primary" size="mini" @click="addContactClick">添加</el-button>
+        </div>
         <el-row>
           <el-form :rules="rules" :model="contact" :inline="true" label-position="left" label-width="60px" size="mini">
             <el-row>
@@ -14,11 +17,6 @@
               </el-form-item>
               <el-form-item label="邮箱" prop="email">
                 <el-input type="text" v-model="contact.email" placeholder="请输入邮箱.."></el-input>
-              </el-form-item>
-            </el-row>
-            <el-row>
-              <el-form-item id="addButton">
-                <el-button type="primary" size="mini" @click="addContactClick">添加</el-button>
               </el-form-item>
             </el-row>
           </el-form>
@@ -139,9 +137,8 @@
   }
 
   #form .formTitle {
-    height: 20px;
+    height: 30px;
     font-size: 20px;
-    margin-bottom: 8px;
   }
 
   #form form {

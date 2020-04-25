@@ -2,7 +2,10 @@
   <div id="main">
     <div id="form">
       <el-main>
-        <div class="formTitle">添加账号</div>
+        <div class="formTitle">
+          添加账号
+          <el-button id="addButton" type="primary" size="mini" @click="addAccountClick">添加</el-button>
+        </div>
         <el-form :model="account" :inline="true" label-position="left" label-width="80px" size="mini">
           <el-row>
             <el-form-item label="账号">
@@ -19,11 +22,6 @@
             </el-form-item>
             <el-form-item label="secretKey">
               <el-input v-model="account.secretKey" placeholder="请输入secretKey"></el-input>
-            </el-form-item>
-          </el-row>
-          <el-row>
-            <el-form-item id="addButton">
-              <el-button type="primary" size="mini" @click="addAccountClick">添加</el-button>
             </el-form-item>
           </el-row>
         </el-form>
@@ -140,9 +138,8 @@
   }
 
   #form .formTitle {
-    height: 20px;
+    height: 30px;
     font-size: 20px;
-    margin-bottom: 8px;
   }
 
   #form form {
