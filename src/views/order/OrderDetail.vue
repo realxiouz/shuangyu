@@ -488,7 +488,25 @@ export default {
       this.fillOutChangeShow = true;
     },
     // 拦截
-    intercept() {},
+    intercept(row) {
+      let params = {};
+      let arr = [];
+      row.orderDetailList.forEach(item => {
+        arr.push(item.name);
+      });
+      params.orderNo = row.sourceOrderNo;
+      params.passengerNames = arr;
+      this.$store
+        .dispatch("order/interceptOrder", params)
+        .then(data => {
+          if (data) {
+            console.log(data);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     // 手工出票保存并贴票
     handleSaveTicket(params) {
       let newParams = {};

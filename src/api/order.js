@@ -100,6 +100,15 @@ export function placeAnOrder(data) {
   });
 }
 
+// 拦截蜗牛出票
+export function interceptOrder(data) {
+  return request({
+    url: `/qunar/open/intercept/order`,
+    method: 'post',
+    data
+  });
+}
+
 // 蜗牛支付
 export function openPay(params) {
   return request({

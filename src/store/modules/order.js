@@ -28,7 +28,8 @@ import {
   affirmRefund,
   refundCheckRefuseReason,
   processingChange,
-  autoRewriteTicket
+  autoRewriteTicket,
+  interceptOrder
 } from "@/api/order";
 import { getToken } from "@/utils/auth";
 
@@ -216,7 +217,19 @@ const actions = {
         });
     });
   },
-
+  // 拦截蜗牛出票
+  interceptOrder({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      interceptOrder(params)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
   getOrderTree({ commit }, params) {
     return new Promise((resolve, reject) => {
       getOrderTree(params)

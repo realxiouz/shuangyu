@@ -135,7 +135,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="使用账号:">
+            <el-form-item label="平台账号:">
               <el-input clearable v-model="formData.accountId"></el-input>
             </el-form-item>
           </el-col>
