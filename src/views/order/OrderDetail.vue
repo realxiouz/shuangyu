@@ -169,20 +169,24 @@
         <span>消息</span>
       </div>
       <el-button type="primary" size="mini" @click="getMessage">刷新</el-button>
-      <div id="messageHtml">
+      <div style="margin-top:15px;" id="messageHtml">
         <span v-if="this.messageData" v-html="this.messageData"></span>
+        <span  v-else>暂无数据</span>
       </div>
     </el-card>
     <el-card class="contentBox">
       <div slot="header" class="clearfix">
         <span v-if="this.tableData.orderType=='30'|| this.tableData.orderType=='31'">改签</span>
-        <span v-else>退票</span>
+        <span v-else-if="this.tableData.orderType=='10'">退票</span>
+        <span v-else>出票</span>
       </div>
       <div id="changeHtmlOrderDetail">
         <span v-if="this.changeHtml" v-html="this.changeHtml"></span>
+        <span v-else>暂无数据</span>
       </div>
       <div id="refundHtmlOrderDetail">
         <span v-if="this.refundHtml" v-html="this.refundHtml"></span>
+        <span v-else>暂无数据</span>
       </div>
     </el-card>
 
@@ -1172,7 +1176,6 @@ export default {
       );
       // 重贴票号按钮事件
       var that = this;
-
       if (btnRewriteTicket) {
         btnRewriteTicket.onclick = function() {
           let params = {
@@ -1181,7 +1184,7 @@ export default {
             ticketNo: ""
           };
           // that.autoRewriteTicket(params);
-          console.log("ssssss");
+          console.log("重贴票号按钮事件");
         };
       }
     }

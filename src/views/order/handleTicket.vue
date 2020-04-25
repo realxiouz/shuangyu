@@ -345,7 +345,6 @@ export default {
         })
         .then(data => {
           this.accountData = data;
-          console.log(this.accountData,"22")
         })
         .catch(error => {
           console.log(error);
