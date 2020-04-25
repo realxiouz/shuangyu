@@ -17,11 +17,6 @@
         <el-table-column prop="accountCode" label="账号编码" align="center"></el-table-column>
         <el-table-column prop="accountName" label="账号名称" align="center"></el-table-column>
         <el-table-column prop="bankAccount" label="银行账号" align="center"></el-table-column>
-        <!--        <el-table-column label="币种" align="center">-->
-        <!--          <template slot-scope="scope">-->
-        <!--            <span>{{ scope.row.currency.name }}</span>-->
-        <!--          </template>-->
-        <!--        </el-table-column>-->
         <el-table-column label="类别" align="center">
           <template slot-scope="scope">
             <span>{{initCategory(scope.row.category)}}</span>
@@ -165,12 +160,6 @@
                             message: "已取消删除"
                         });
                     });
-            },
-            formatAmount(amount) {
-                if (!amount) {
-                    return "0.00";
-                }
-                return this.$numeral(amount).format("0.00");
             },
             initCategory(category) {
                 if (0 === category) {
