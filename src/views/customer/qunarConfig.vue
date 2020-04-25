@@ -21,7 +21,7 @@
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="安全码:" prop="securityCode">
-              <el-input v-model="notifyData.securityCode"></el-input>
+              <el-input v-model="notifyData.securityCode" @blur="disabledNotify"></el-input>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -36,6 +36,7 @@
                 :rows="3"
                 placeholder="请输入消息通知地址"
                 v-model="notifyData.url"
+                @blur="disabledNotify"
               ></el-input>
             </el-form-item>
           </el-col>
@@ -55,6 +56,7 @@ http://123.123.123.1:9000</span>
                 @click="saveNotify()"
                 type="primary"
                 size="mini"
+                :disabled="isDisable"
               >保存
               </el-button>
               <el-button
@@ -86,7 +88,7 @@ http://123.123.123.1:9000</span>
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="用户名:" prop="user">
-              <el-input v-model="orderData.user"></el-input>
+              <el-input v-model="orderData.user" @blur="disabledOrder"></el-input>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -96,7 +98,7 @@ http://123.123.123.1:9000</span>
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="密码:" prop="pass">
-              <el-input v-model="orderData.pass" show-password></el-input>
+              <el-input v-model="orderData.pass" show-password @blur="disabledOrder"></el-input>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -110,6 +112,7 @@ http://123.123.123.1:9000</span>
                 type="textarea"
                 :rows="3"
                 v-model="orderData.ips"
+                @blur="disabledOrder"
               ></el-input>
             </el-form-item>
           </el-col>
@@ -124,6 +127,7 @@ http://123.123.123.1:9000</span>
                 @click="saveOrder()"
                 type="primary"
                 size="mini"
+                :disabled="isOrderDisable"
               >保存
               </el-button>
               <el-button
@@ -189,6 +193,8 @@ http://123.123.123.1:9000</span>
                 domain: '',
                 openId: '',
                 user: '',
+                isDisable: false,
+                isOrderDisable: false,
                 notifyRules: {
                     domain: [
                         {required: true, message: "域名不能为空", trigger: "blur"}
@@ -270,6 +276,7 @@ http://123.123.123.1:9000</span>
                     });
             },
             saveNotify() {
+                this.isDisable = true;
                 this.$refs['notifyForm'].validate((valid) => {
                     if (valid) {
                         this.$store
@@ -311,7 +318,14 @@ http://123.123.123.1:9000</span>
                         });
                 }
             },
+            disabledNotify() {
+                this.isDisable = false;
+            },
+            disabledOrder() {
+                this.isOrderDisable = false;
+            },
             saveOrder() {
+                this.isOrderDisable = true;
                 this.$refs['orderForm'].validate((valid) => {
                     if (valid) {
                         this.$store
