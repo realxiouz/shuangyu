@@ -43,6 +43,7 @@ import netFare from "./modules/netFare";
 import accountSubject from "./modules/accountSubject";
 import orderTaskTotal from "./modules/orderTaskTotal";
 import currency from "./modules/currency";
+import trade from "./modules/trade";
 import warehouse from "./modules/warehouse";
 import woniuConfig from "./modules/woniuConfig";
 import {getLoginInfo} from "@/api/staff";
@@ -93,6 +94,7 @@ export default new Vuex.Store({
     accountSubject,
     orderTaskTotal,
     currency,
+    trade,
     woniuConfig,
     warehouse
   },
