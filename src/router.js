@@ -218,6 +218,13 @@ export default new Router({
           meta: {title: '订单任务', icon: 'home'}
         },
         {
+          title: '待处理订单任务',
+          path: '/order/pending/task/list',
+          name: 'pendingOrderTask',
+          component: () => import('@/views/pendingOrderTask/List'),
+          meta: {title: '待处理订单任务', icon: 'home'}
+        },
+        {
           title: '总订单任务',
           path: '/order/task/total/list',
           name: 'orderTaskTotal',

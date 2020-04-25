@@ -37,15 +37,15 @@
       <div v-if="this.isWoniu && this.isWoniuTicket">
         <el-row>
           <el-col :span="12">
-            <el-form-item label="订单状态:">
+            <el-form-item label="订单类型:">
               <el-select
-                v-model="formData.status"
+                v-model="formData.orderType"
                 clearable
-                placeholder="请选择订单状态"
+                placeholder="订单类型"
                 style="width: 100%"
               >
                 <el-option
-                  v-for="item in statusData"
+                  v-for="item in orderType"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
@@ -105,23 +105,6 @@
                 style="width: 100%;"
                 value-format="timestamp"
               ></el-date-picker>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="订单状态:">
-              <el-select
-                v-model="formData.status"
-                clearable
-                placeholder="请选择订单状态"
-                style="width: 100%"
-              >
-                <el-option
-                  v-for="item in statusData"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                ></el-option>
-              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -307,10 +290,9 @@ export default {
         flightDate: this.fillOutRefundData.flights[0].flightDate,
         cabin: this.fillOutRefundData.flights[0].cabin,
         radio: "1",
-        fundAccountId:"",
-        userNameType:"",
-        accountId:""
-
+        fundAccountId: "",
+        userNameType: "",
+        accountId: ""
       },
 
       accountData: [],
