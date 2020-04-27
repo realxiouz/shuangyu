@@ -530,6 +530,7 @@ export default {
         newParams.passengers = params.passengers;
         newParams.pid = "";
         newParams.remark = params.remark;
+        newParams.orderTaskId = this.$route.query.taskId;
         newParams.rootOrderNo = this.tableData.rootOrderNo;
         newParams.sourceOrderNo = this.tableData.sourceOrderNo;
         newParams.transactionAmount = params.transactionAmount;
