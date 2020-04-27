@@ -238,6 +238,13 @@ export default new Router({
           component: () => import('@/views/orderReportTotal/List'),
           meta: {title: '订单总报表', icon: 'home'}
         },
+        {
+          title: '导单',
+          path: '/order/export/order',
+          name: 'exportOrder',
+          component: () => import('@/views/order/ExportOrder'),
+          meta: {title: '导单', icon: 'home'}
+        },
       ]
     },
     {

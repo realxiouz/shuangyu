@@ -573,6 +573,7 @@ export default {
           newParams.pid = params.pid;
           newParams.remark = params.remark;
           newParams.rootOrderNo = params.rootOrderNo;
+          newParams.orderTaskId = this.$route.query.taskId;
           newParams.sourceOrderNo = params.sourceOrderNo;
           newParams.transactionAmount = params.transactionAmount;
           newParams.createTime = params.createTime;
@@ -615,6 +616,7 @@ export default {
           newParams.orderType = this.tableData.orderType;
           newParams.passengers = params.passengers;
           newParams.pid = "";
+          newParams.orderTaskId = this.$route.query.taskId;
           newParams.remark = params.remark;
           newParams.rootOrderNo = this.tableData.rootOrderNo;
           newParams.sourceOrderNo = this.tableData.sourceOrderNo;
@@ -1240,7 +1242,9 @@ export default {
             ticketreturnstutas: ticketreturnstutas,
             remark: refundRemark
           };
-          that.affirmRefundTicket(params);
+          console.log(params);
+
+          // that.affirmRefundTicket(params);
         };
       }
       // 拒绝退款按钮
