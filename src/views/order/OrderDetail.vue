@@ -609,8 +609,8 @@ export default {
         }
         this.purchaseOrder(newParams);
       }
-      this.fillOutRefundShow = false;
-      this.fillOutChangeShow = false;
+      // this.fillOutRefundShow = false;
+      // this.fillOutChangeShow = false;
     },
 
     // 手工出票保存
@@ -657,18 +657,34 @@ export default {
         }
         this.purchaseOrder(newParams);
       }
-      this.handleTicketShow = false;
     },
     // 非蜗牛补单
     purchaseOrder(params) {
       this.$store
         .dispatch("order/purchaseOrder", params)
         .then(data => {
-          if (data) {
-            console.log(data);
+          if (data.code == 0) {
+            this.$message({
+              type: "success",
+              message: "操作成功"
+            });
+            this.handleTicketShow = false;
+            this.fillOutRefundShow = false;
+            this.fillOutChangeShow = false;
+          } else {
+            this.handleTicketShow = true;
+            this.fillOutRefundShow = true;
+            this.fillOutChangeShow = true;
+            this.$message({
+              type: "success",
+              message: data.msg
+            });
           }
         })
         .catch(error => {
+          this.handleTicketShow = true;
+          this.fillOutRefundShow = true;
+          this.fillOutChangeShow = true;
           console.log(error);
         });
     },
@@ -677,11 +693,28 @@ export default {
       this.$store
         .dispatch("order/woniuOrder", params)
         .then(data => {
-          if (data) {
-            console.log(data);
+          if (data.code == 0) {
+            this.$message({
+              type: "success",
+              message: "操作成功"
+            });
+            this.handleTicketShow = false;
+            this.fillOutRefundShow = false;
+            this.fillOutChangeShow = false;
+          } else {
+            this.handleTicketShow = true;
+            this.fillOutRefundShow = true;
+            this.fillOutChangeShow = true;
+            this.$message({
+              type: "success",
+              message: data.msg
+            });
           }
         })
         .catch(error => {
+          this.handleTicketShow = true;
+          this.fillOutRefundShow = true;
+          this.fillOutChangeShow = true;
           console.log(error);
         });
     },
@@ -756,8 +789,8 @@ export default {
         } else {
           newParams.childExtraPrice = "";
         }
-        if (params.flightData[0].startDate) {
-          newParams.startDate = params.flightData[0].startDate;
+        if (params.flightData[0].changeDate) {
+          newParams.startDate = params.flightData[0].changeDate;
         } else {
           newParams.startDate = "";
         }

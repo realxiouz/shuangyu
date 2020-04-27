@@ -457,8 +457,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       purchaseOrder(params)
         .then(response => {
-          const { data } = response;
-          resolve(data);
+          // const { data } = response;
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -470,8 +470,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       woniuOrder(params)
         .then(response => {
-          const { data } = response;
-          resolve(data);
+          // const { data } = response;
+          resolve(response);
         })
         .catch(error => {
           reject(error);
