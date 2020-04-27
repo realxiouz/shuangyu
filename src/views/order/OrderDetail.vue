@@ -753,7 +753,7 @@ export default {
       if (params) {
         newParams.appKey = params.appKey;
         newParams.passengerIds = params.passengerIds;
-        newParams.changeCauseId = params.changeCauseId;
+        newParams.changeCauseId = String(params.changeCauseId);
         newParams.totalAmount = params.totalAmount;
         newParams.applyRemarks = params.applyRemarks;
       }
@@ -763,7 +763,11 @@ export default {
         } else {
           newParams.uniqKey = "";
         }
-
+        if (params.flightData[0].upgradeFee) {
+          newParams.upgradeFee = params.flightData[0].upgradeFee;
+        } else {
+          newParams.upgradeFee = "";
+        }
         if (params.flightData[0].gqFee) {
           newParams.gqFee = params.flightData[0].gqFee;
         } else {

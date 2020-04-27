@@ -16,12 +16,6 @@
           </div>
           <div class="form">
             <el-form :rules="rules" :model="firmForm" label-position="left" label-width="130px" size="mini">
-              <el-form-item label="类型" prop="type">
-                <el-select v-model="firmForm.type" placeholder="请选择平台">
-                  <el-option label="企业" :value=1></el-option>
-                  <el-option label="个人" :value=2></el-option>
-                </el-select>
-              </el-form-item>
               <el-form-item label="名称" prop="firmName">
                 <el-input type="text" placeholder="请输入供应商名称" v-model="firmForm.firmName"></el-input>
               </el-form-item>
@@ -102,26 +96,6 @@
 
     export default {
         data() {
-            const validateMobile = (rule, value, callback) => {
-                let mobile_mode = /^1[34578]\d{9}$/;
-                if (!value) {
-                    callback(new Error("请输入手机号"));
-                } else if (!mobile_mode.test(value)) {
-                    callback(new Error("您输入的手机号码格式不正确"));
-                } else {
-                    callback();
-                }
-            };
-            const validateEmail = (rule, value, callback) => {
-                let email_mode = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
-                if (!value) {
-                    callback(new Error("请输入邮箱号"));
-                } else if (!email_mode.test(value)) {
-                    callback(new Error("您输入的邮箱格式错误！"));
-                } else {
-                    callback();
-                }
-            };
             return {
                 firmForm: {},
                 firmOtherForm: {},
@@ -150,23 +124,6 @@
                             message: "长度在 1到 20 个字符"
                         }
                     ],
-                    domain: [
-                        {required: true, message: "请输入域名", trigger: "blur"}
-                    ],
-                    fullName: [
-                        {required: true, message: "请输入联系人", trigger: "blur"},
-                        {
-                            min: 1,
-                            max: 20,
-                            message: "长度在 1到 20 个字符"
-                        }
-                    ],
-                    phone: [
-                        {required: true, validator: validateMobile, trigger: "blur"}
-                    ],
-                    email: [
-                        {required: true, validator: validateEmail, trigger: "blur"}
-                    ]
                 }
             };
         },
