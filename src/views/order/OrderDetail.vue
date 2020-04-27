@@ -373,13 +373,14 @@
         :close-on-click-modal="false"
       >
         <div v-if="rewriteTicketShow">
-          <div>
-            重新填的票号：
-            <el-input placeholder="请输入重新填的票号" v-model="rewriteTicketData" clearable></el-input>
-          </div>
+          <el-form label-width="100px" class="demo-ruleForm">
+            <el-form-item label="重新填的票号：">
+              <el-input placeholder="请输入重新填的票号" v-model="rewriteTicketData.ticketNo" clearable></el-input>
+            </el-form-item>
+          </el-form>
           <div style="margin-top: 25px;text-align: right;">
             <el-button size="mini" @click="onCancel">取 消</el-button>
-            <el-button size="mini" type="primary">确定</el-button>
+            <el-button size="mini" @click="rewriteTicketSave" type="primary">确定</el-button>
           </div>
         </div>
       </el-dialog>
@@ -410,7 +411,14 @@ export default {
       fillOutRefundShow: false,
       newFromDialogShow: false,
       rewriteTicketShow: false,
-      rewriteTicketData: "",
+      rewriteTicketData: {
+        orderNo: "",
+        passengerId: "",
+        ticketNo: "",
+        groupCheckOut: "",
+        groupCheckIn: "",
+        lastProductId: ""
+      },
       newFromDialog: "",
       fillOutRefundData: "",
       fillOutChangeData: {},
@@ -456,6 +464,7 @@ export default {
     formateCategory,
     formatAgeType,
     formatCardType,
+
     // 获取详情信息
     getOrderDetail(orderNo) {
       this.$store
@@ -718,7 +727,6 @@ export default {
           console.log(error);
         });
     },
-
     // 退票确定申请
     handleSaveRefund(params) {
       let newParams = {};
@@ -1088,12 +1096,20 @@ export default {
         .dispatch("order/rewriteTicket", params)
         .then(data => {
           if (data) {
-            // this.changeHtml = data;
+            this.$message({
+              type: "success",
+              message: "操作成功!"
+            });
+            that.rewriteTicketShow = true;
           }
         })
         .catch(error => {
           console.log(error);
         });
+    },
+    rewriteTicketSave() {
+      this.rewriteTicketData.orderNo = this.sourceOrderNo;
+      this.rewriteTicket(this.rewriteTicketData)
     },
     // 获取退票改签信息Html
     getRefundHtml(sourceOrderNo) {
@@ -1260,22 +1276,29 @@ export default {
         }
       });
 
-      let btnRewriteTicket = document.querySelector(
-        "#changeHtmlOrderDetail .back-form .back-form-info .g-clear .mrl10"
+      let btnRewriteTickets = document.querySelectorAll(
+        "#changeHtmlOrderDetail .back-form .back-form-info .g-clear .mrl10 .j-reset-ticket"
       );
       // 重贴票号按钮事件
       var that = this;
-      if (btnRewriteTicket) {
-        btnRewriteTicket.onclick = function() {
-          that.rewriteTicketShow = true;
-          let params = {
-            orderNo: that.sourceOrderNo,
-            passengerId: "",
-            ticketNo: that.rewriteTicketData
+      if (btnRewriteTickets) {
+        Array.from(btnRewriteTickets).forEach(item => {
+          item.onclick = function() {
+            that.rewriteTicketData.passengerId = item.getAttribute(
+              "data-passenger-id"
+            );
+            that.rewriteTicketData.groupCheckOut = item.getAttribute(
+              "data-group-check-out"
+            );
+            that.rewriteTicketData.groupCheckIn = item.getAttribute(
+              "data-group-check-in"
+            );
+            that.rewriteTicketData.lastProductId = item.getAttribute(
+              "data-last-product-id"
+            );
+            that.rewriteTicketShow = true;
           };
-          // that.rewriteTicket(params);
-          console.log("重贴票号按钮事件");
-        };
+        });
       }
     }
     if (this.refundHtml) {

@@ -79,7 +79,6 @@
         </el-table-column>
       </el-table>
     </el-card>
-
     <el-card class="contentBox">
       <div slot="header" class="clearfix">
         <span>航班信息</span>
@@ -95,7 +94,6 @@
         <el-table-column prop="arr" label="到达机场" width="160" align="center"></el-table-column>
         <el-table-column prop="airlineCode" label="航司" width="50" align="center"></el-table-column>
         <el-table-column prop="flightCode" label="航班号" width="100" align="center"></el-table-column>
-
         <el-table-column prop="cabin" label="舱位" width="160" align="center"></el-table-column>
         <el-table-column label="出发日期" width="110" align="center">
           <template slot-scope="scope">
@@ -110,7 +108,6 @@
         <el-button type="primary" @click="searchFlight" size="mini">搜索航班</el-button>
       </el-row>
     </el-card>
-
     <el-card class="contentBox" v-if="flightShow">
       <div>供应商信息</div>
       <el-table
@@ -128,12 +125,10 @@
         <el-table-column prop="exTrack" label="报价类型" width="100" align="center"></el-table-column>
         <el-table-column prop="dptTime" label="出发时间" width="100" align="center"></el-table-column>
         <el-table-column prop="arrTime" label="到达时间" width="100" align="center"></el-table-column>
-
         <el-table-column prop="dpt" width="150" label="出发机场三字码" align="center"></el-table-column>
         <el-table-column prop="dptAirport" label="出发地" align="center"></el-table-column>
         <el-table-column prop="arr" width="150" label="到达机场三字码" align="center"></el-table-column>
         <el-table-column prop="arrAirport" label="起始地" align="center"></el-table-column>
-
         <!-- <el-table-column prop="minPrice" width="80" label="最低价" align="center">
           <template slot-scope="scope">
             <span>{{formatAmount(scope.row.minPrice)}}</span>
@@ -203,7 +198,10 @@
       >
         <div>
           <el-row style="margin-bottom: 25px;text-align: center;">
-            <span>金额：{{payData.allPrice }}</span>
+            <span>支付金额：{{payData.noPayAmount }}</span>
+          </el-row>
+          <el-row style="margin-bottom: 25px;text-align: center;">
+            <span>盈亏值：</span>
           </el-row>
           <div style="text-align: center;">
             <span>支付方式：</span>

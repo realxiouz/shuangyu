@@ -144,7 +144,6 @@
       >
         <task-select-staff
           v-if="taskStaffDialog"
-          :staffList="staffList"
           @onCancel="onCancel"
           @onSave="handleConfirm"
         ></task-select-staff>
@@ -177,7 +176,6 @@ export default {
       totalCount: 0,
       taskTypeCounts: {},
       selectTask: [],
-      staffList: [],
       timer: null
     };
   },

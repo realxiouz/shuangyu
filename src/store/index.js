@@ -46,7 +46,8 @@ import currency from "./modules/currency";
 import trade from "./modules/trade";
 import warehouse from "./modules/warehouse";
 import woniuConfig from "./modules/woniuConfig";
-import {getLoginInfo} from "@/api/staff";
+import qunarOrderController from "./modules/qunarOrderController";
+import { getLoginInfo } from "@/api/staff";
 
 Vue.use(Vuex);
 export default new Vuex.Store({
@@ -96,7 +97,8 @@ export default new Vuex.Store({
     currency,
     trade,
     woniuConfig,
-    warehouse
+    warehouse,
+    qunarOrderController
   },
   state: {
     loginInfo: {}
@@ -110,12 +112,12 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    getLoginInfo({commit}, params) {
+    getLoginInfo({ commit }, params) {
       return new Promise((resolve, reject) => {
-        const {firmId} = params;
+        const { firmId } = params;
         getLoginInfo(firmId)
           .then(response => {
-            const {data} = response;
+            const { data } = response;
             commit("SET_LOGIN_INFO", data);
             resolve(data);
           })
