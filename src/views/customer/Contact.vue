@@ -7,7 +7,7 @@
           <el-button id="addButton" type="primary" size="mini" @click="addContactClick">添加</el-button>
         </div>
         <el-row>
-          <el-form :rules="rules" :model="contact" :inline="true" label-position="left" label-width="60px" size="mini">
+          <el-form :model="contact" :inline="true" label-position="left" label-width="60px" size="mini">
             <el-row>
               <el-form-item label="姓名" prop="fullName">
                 <el-input type="text" v-model="contact.fullName" placeholder="请输入姓名.."></el-input>
@@ -42,45 +42,8 @@
     export default {
         props: ["contacts"],
         data() {
-            const validateMobile = (rule, value, callback) => {
-                let mobile_mode = /^1[34578]\d{9}$/;
-                if (!value) {
-                    callback(new Error("请输入手机号"));
-                } else if (!mobile_mode.test(value)) {
-                    callback(new Error("您输入的手机号码格式不正确"));
-                } else {
-                    callback();
-                }
-            };
-            const validateEmail = (rule, value, callback) => {
-                let email_mode = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
-                if (!value) {
-                    callback(new Error("请输入邮箱号"));
-                } else if (!email_mode.test(value)) {
-                    callback(new Error("您输入的邮箱格式错误！"));
-                } else {
-                    callback();
-                }
-            };
             return {
-                contact: {},
-                rules: {
-                    fullName: [
-                        {required: true, message: "请输入联系人", trigger: "blur"},
-                        {
-                            min: 1,
-                            max: 20,
-                            message: "长度在 1到 20 个字符"
-                        }
-                    ],
-                    phone: [
-                        {required: true, validator: validateMobile, trigger: "blur"}
-                    ],
-                    email: [
-                        {required: true, validator: validateEmail, trigger: "blur"}
-                    ]
-                }
-
+                contact: {}
             }
         },
         methods: {
