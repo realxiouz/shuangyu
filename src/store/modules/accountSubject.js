@@ -1,4 +1,4 @@
-import {getList, getOne, getPageList, getTotal, removeOne, save} from "@/api/accountSubject";
+import {getList, getOne, getPageList, getTotal, removeOne, save, getSelectingList} from "@/api/accountSubject";
 import {getToken} from "@/utils/auth";
 
 
@@ -93,6 +93,18 @@ const actions = {
         .then(response => {
           const {data} = response;
           resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getSelectingList({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {filter} = params;
+      getSelectingList(filter)
+        .then(response => {
+          resolve(response.data);
         })
         .catch(error => {
           reject(error);

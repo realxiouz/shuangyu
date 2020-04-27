@@ -46,3 +46,10 @@ export function getOne(id) {
   });
 }
 
+export function getSelectingList(filter) {
+  return request({
+    url: `/subject/list/selecting`,
+    method: 'get',
+    params: filter
+  });
+}
