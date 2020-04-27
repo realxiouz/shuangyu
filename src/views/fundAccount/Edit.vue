@@ -40,6 +40,7 @@
       </el-form-item>
       <el-form-item label="科目名称">
           <el-cascader
+            style="width: 100%;"
             placeholder="可通过科目名称搜索.."
             :options="subjectList"
             :props="{ label: 'name', value: 'code' }"
@@ -103,7 +104,7 @@
             loadSubject() {
                 this.$store.dispatch("accountSubject/getSelectingList", {filter: {}})
                     .then(data => {
-                        this.subjectList = JSON.parse(data);
+                        this.subjectList = this.getTreeData(JSON.parse(data));
                         console.log(this.subjectList);
                     })
                     .catch(error => {
@@ -139,10 +140,24 @@
                     this.formData = this.defaultFormData();
                 }
             },
+            getTreeData(data) {
+                // 循环遍历json数据
+                for (var i = 0; i < data.length; i++) {
+
+                    if (data[i].children.length < 1) {
+                        // children若为空数组，则将children设为undefined
+                        data[i].children = undefined;
+                    } else {
+                        // children若不为空数组，则继续 递归调用 本方法
+                        this.getTreeData(data[i].children);
+                    }
+                }
+                return data;
+            },
             initFormData() {
                 this.clearForm();
 
-            }
+            },
         },
         created() {
             if (this.editAccountId) {
@@ -156,3 +171,8 @@
         }
     };
 </script>
+<style>
+  .el-cascader-menu {
+    height: 300px;
+  }
+</style>
