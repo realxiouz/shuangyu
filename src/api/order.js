@@ -100,6 +100,16 @@ export function placeAnOrder(data) {
   });
 }
 
+// 检查是否已经下单
+export function checkOrder(data) {
+  return request({
+    url: `/qunar/open/check/order`,
+    method: 'post',
+    data
+  });
+}
+
+
 // 拦截蜗牛出票
 export function interceptOrder(data) {
   return request({

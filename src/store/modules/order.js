@@ -21,6 +21,7 @@ import {
   getOrderFlight,
   getFlightPrice,
   placeAnOrder,
+  checkOrder,
   openPay,
   getMessageDetail,
   purchaseOrder,
@@ -195,6 +196,19 @@ const actions = {
   placeAnOrder({ commit }, params) {
     return new Promise((resolve, reject) => {
       placeAnOrder(params)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  // 检查是否已经下单
+  checkOrder({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      checkOrder(params)
         .then(response => {
           const { data } = response;
           resolve(data);

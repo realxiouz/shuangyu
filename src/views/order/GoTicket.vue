@@ -355,24 +355,62 @@ export default {
       newParams.to = row.offerPrice.to;
       newParams.startTime = row.offerPrice.startTime;
       newParams.dptTime = row.offerPrice.dptTime;
-      // console.log(newParams, "newParams");
+
       this.$store
-        .dispatch("order/placeAnOrder", newParams)
+        .dispatch("order/checkOrder", newParams)
         .then(data => {
-          if (data.code == 0) {
-            // console.log(data, "111111");
-            this.payData = data;
-            this.payShow = true;
-            this.$message({
-              type: "success",
-              message: "预定成功！"
-            });
+          if (data == true) {
+            this.$confirm("此用户已经下过单了，是否继续下单?", "提示", {
+              confirmButtonText: "继续下单",
+              cancelButtonText: "取消",
+              type: "warning"
+            })
+              .then(() => {
+                this.$store
+                  .dispatch("order/placeAnOrder", newParams)
+                  .then(data => {
+                    if (data.code == 0) {
+                      this.payData = data;
+                      this.payShow = true;
+                      this.$message({
+                        type: "success",
+                        message: "预定成功！"
+                      });
+                    } else {
+                      this.payShow = false;
+                      this.$message({
+                        type: "warning",
+                        message: data.msg
+                      });
+                    }
+                  })
+                  .catch(error => {
+                    console.log(error);
+                  });
+              })
+              .catch(() => {});
           } else {
-            this.payShow = false;
-            this.$message({
-              type: "warning",
-              message: data.msg
-            });
+            this.$store
+              .dispatch("order/placeAnOrder", newParams)
+              .then(data => {
+                if (data.code == 0) {
+                  this.payData = data;
+                  this.payShow = true;
+                  this.$message({
+                    type: "success",
+                    message: "预定成功！"
+                  });
+                } else {
+                  this.payShow = false;
+                  this.$message({
+                    type: "warning",
+                    message: data.msg
+                  });
+                }
+              })
+              .catch(error => {
+                console.log(error);
+              });
           }
         })
         .catch(error => {

@@ -12,6 +12,15 @@
         .j_fileUpload_toggle {
             display: none;
         }
+        .g-table {
+            td {
+                padding: 5px;
+                text-align: center;
+            }
+            tr:nth-child(even) {
+                background: #ccc;
+            }
+        }
     }
 }
 
