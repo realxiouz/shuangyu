@@ -153,6 +153,11 @@
             <span>{{formatAmount(scope.row.viewPrice)}}</span>
           </template>
         </el-table-column>
+        <el-table-column label="价格" align="center">
+          <template slot-scope="scope">
+            <span>{{formatAmount(scope.row.amount)}}</span>
+          </template>
+        </el-table-column>
       </el-table>
       <el-row style="margin-top:20px">
         <el-button
@@ -1217,7 +1222,7 @@ export default {
         '#refundHtmlOrderDetail [data-action="btn_confirm"]'
       );
       if (refundConfirm) {
-        // 退款确认按钮事件
+        // 退票确认按钮事件
         var that = this;
         refundConfirm.onclick = function() {
           let refundRemark = document.querySelectorAll(
@@ -1226,9 +1231,6 @@ export default {
           let orderNo = document.querySelectorAll(
             "#refundHtmlOrderDetail #js_form_rt #orderNo"
           )[0].value;
-          let ticketreturnstutas = document.querySelectorAll(
-            "#refundHtmlOrderDetail #J_RefundStatus"
-          )[0].value;
           let form = document.querySelectorAll(
             "#refundHtmlOrderDetail #js_form_rt #js_passanger_rt tbody tr td input[type='hidden']"
           );
@@ -1236,16 +1238,32 @@ export default {
           Array.from(form).forEach(item => {
             str += item.value + "|";
           });
+          var container = document.querySelector("#js_form_rt");
+          for (let i = 0; i < Array.from(form).length; i++) {
+            let name = "rt" + i;
+            let _status = container.querySelectorAll(
+              "input[name=" + name + "]"
+            );
+            var ticketreturnstutas = "";
+            Array.from(_status).forEach(item => {
+              if (item.checked) {
+                ticketreturnstutas += item.value + "|";
+              }
+            });
+          }
+
           let ticketNos = str.substring(0, str.length - 1);
+          let _ticketreturnstutas = ticketreturnstutas.substring(
+            0,
+            ticketreturnstutas.length - 1
+          );
           let params = {
             orderNo: orderNo,
             ticketNos: ticketNos,
-            ticketreturnstutas: ticketreturnstutas,
+            ticketreturnstutas: _ticketreturnstutas,
             remark: refundRemark
           };
-          console.log(params);
-
-          // that.affirmRefundTicket(params);
+          that.affirmRefundTicket(params);
         };
       }
       // 拒绝退款按钮
