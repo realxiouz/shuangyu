@@ -67,6 +67,11 @@
           align="center"
         ></el-table-column>
         <el-table-column prop="cardNo" label="乘机人证件号" align="center"></el-table-column>
+        <el-table-column label="价格" align="center">
+          <template slot-scope="scope">
+            <span>{{formatAmount(scope.row.amount)}}</span>
+          </template>
+        </el-table-column>
         <el-table-column label="票面价" align="center">
           <template slot-scope="scope">
             <span>{{formatAmount(scope.row.viewPrice)}}</span>

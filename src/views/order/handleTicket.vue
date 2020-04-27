@@ -358,22 +358,24 @@ export default {
     },
     // 保存
     handleSave() {
-      this.formData.flightData = this.flightData;
-      this.formData.passengers = this.passengerData;
-      let amountTotal = 0;
-      this.formData.passengers.forEach(item => {
-        amountTotal += Number(item.amount);
-      });
-      let _profit = 0;
-      _profit = amountTotal + Number(this.formData.transactionAmount);
-      if (_profit != this.formData.profit) {
-        this.$notify({
-          title: "提示",
-          message: "利润金额计算错误，请重新计算！",
-          type: "warning",
-          duration: 4500
+      if (this.formData.radio != "1") {
+        this.formData.flightData = this.flightData;
+        this.formData.passengers = this.passengerData;
+        let amountTotal = 0;
+        this.formData.passengers.forEach(item => {
+          amountTotal += Number(item.amount);
         });
-        return;
+        let _profit = 0;
+        _profit = amountTotal + Number(this.formData.transactionAmount);
+        if (_profit != this.formData.profit) {
+          this.$notify({
+            title: "提示",
+            message: "利润金额计算错误，请重新计算！",
+            type: "warning",
+            duration: 4500
+          });
+          return;
+        }
       }
       this.$emit("onSave", this.formData);
     },

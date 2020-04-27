@@ -153,6 +153,11 @@
             <span>{{formatAmount(scope.row.viewPrice)}}</span>
           </template>
         </el-table-column>
+        <el-table-column label="价格" align="center">
+          <template slot-scope="scope">
+            <span>{{formatAmount(scope.row.amount)}}</span>
+          </template>
+        </el-table-column>
       </el-table>
       <el-row style="margin-top:20px">
         <el-button
@@ -359,6 +364,26 @@
         <div id="refundTts" v-html="this.newFromDialog"></div>
       </el-dialog>
     </div>
+    <div>
+      <el-dialog
+        title="重贴票号"
+        center
+        :visible.sync="rewriteTicketShow"
+        width="33%"
+        :close-on-click-modal="false"
+      >
+        <div v-if="rewriteTicketShow">
+          <div>
+            重新填的票号：
+            <el-input placeholder="请输入重新填的票号" v-model="rewriteTicketData" clearable></el-input>
+          </div>
+          <div style="margin-top: 25px;text-align: right;">
+            <el-button size="mini" @click="onCancel">取 消</el-button>
+            <el-button size="mini" type="primary">确定</el-button>
+          </div>
+        </div>
+      </el-dialog>
+    </div>
   </div>
 </template>
 <script>
@@ -384,6 +409,8 @@ export default {
       fillOutChangeShow: false,
       fillOutRefundShow: false,
       newFromDialogShow: false,
+      rewriteTicketShow: false,
+      rewriteTicketData: "",
       newFromDialog: "",
       fillOutRefundData: "",
       fillOutChangeData: {},
@@ -464,6 +491,7 @@ export default {
       this.fillOutChangeShow = false;
       this.changeTicketShow = false;
       this.refundTicketShow = false;
+      this.rewriteTicketShow = false;
     },
     // 退票弹框
     refundTicket(row) {
@@ -1018,9 +1046,9 @@ export default {
         });
     },
     // 重填票号
-    autoRewriteTicket(params) {
+    rewriteTicket(params) {
       this.$store
-        .dispatch("order/autoRewriteTicket", params)
+        .dispatch("order/rewriteTicket", params)
         .then(data => {
           if (data) {
             // this.changeHtml = data;
@@ -1202,12 +1230,13 @@ export default {
       var that = this;
       if (btnRewriteTicket) {
         btnRewriteTicket.onclick = function() {
+          that.rewriteTicketShow = true;
           let params = {
             orderNo: that.sourceOrderNo,
-            passengerName: "",
-            ticketNo: ""
+            passengerId: "",
+            ticketNo: that.rewriteTicketData
           };
-          // that.autoRewriteTicket(params);
+          // that.rewriteTicket(params);
           console.log("重贴票号按钮事件");
         };
       }
@@ -1217,7 +1246,7 @@ export default {
         '#refundHtmlOrderDetail [data-action="btn_confirm"]'
       );
       if (refundConfirm) {
-        // 退款确认按钮事件
+        // 退票确认按钮事件
         var that = this;
         refundConfirm.onclick = function() {
           let refundRemark = document.querySelectorAll(
@@ -1226,9 +1255,6 @@ export default {
           let orderNo = document.querySelectorAll(
             "#refundHtmlOrderDetail #js_form_rt #orderNo"
           )[0].value;
-          let ticketreturnstutas = document.querySelectorAll(
-            "#refundHtmlOrderDetail #J_RefundStatus"
-          )[0].value;
           let form = document.querySelectorAll(
             "#refundHtmlOrderDetail #js_form_rt #js_passanger_rt tbody tr td input[type='hidden']"
           );
@@ -1236,16 +1262,32 @@ export default {
           Array.from(form).forEach(item => {
             str += item.value + "|";
           });
+          var container = document.querySelector("#js_form_rt");
+          for (let i = 0; i < Array.from(form).length; i++) {
+            let name = "rt" + i;
+            let _status = container.querySelectorAll(
+              "input[name=" + name + "]"
+            );
+            var ticketreturnstutas = "";
+            Array.from(_status).forEach(item => {
+              if (item.checked) {
+                ticketreturnstutas += item.value + "|";
+              }
+            });
+          }
+
           let ticketNos = str.substring(0, str.length - 1);
+          let _ticketreturnstutas = ticketreturnstutas.substring(
+            0,
+            ticketreturnstutas.length - 1
+          );
           let params = {
             orderNo: orderNo,
             ticketNos: ticketNos,
-            ticketreturnstutas: ticketreturnstutas,
+            ticketreturnstutas: _ticketreturnstutas,
             remark: refundRemark
           };
-          console.log(params);
-
-          // that.affirmRefundTicket(params);
+          that.affirmRefundTicket(params);
         };
       }
       // 拒绝退款按钮
@@ -1293,7 +1335,7 @@ export default {
           if (refuseRefundReason == 0) {
             that.$message({
               type: "info",
-              message: "请选择未及时退款原因"
+              message: "请选择未及时退款的原因"
             });
             return;
           }

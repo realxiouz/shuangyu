@@ -30,6 +30,7 @@ import {
   refundCheckRefuseReason,
   processingChange,
   autoRewriteTicket,
+  rewriteTicket,
   interceptOrder
 } from "@/api/order";
 import { getToken } from "@/utils/auth";
@@ -439,9 +440,9 @@ const actions = {
     });
   },
   // 重填票号
-  autoRewriteTicket({ commit }, params) {
+  rewriteTicket({ commit }, params) {
     return new Promise((resolve, reject) => {
-      autoRewriteTicket(params)
+      rewriteTicket(params)
         .then(response => {
           const { data } = response;
           resolve(data);
