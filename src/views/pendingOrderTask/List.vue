@@ -142,7 +142,7 @@
         width="33%"
         :close-on-click-modal="false"
       >
-        <task-select-staff @onCancel="onCancel" @onSave="handleConfirm"></task-select-staff>
+        <task-select-staff v-if="taskStaffDialog" @onCancel="onCancel" @onSave="handleConfirm"></task-select-staff>
       </el-dialog>
     </div>
   </div>
