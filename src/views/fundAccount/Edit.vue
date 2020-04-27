@@ -39,13 +39,16 @@
         <el-input v-model="formData.balance" placeholder="请输入余额.."></el-input>
       </el-form-item>
       <el-form-item label="科目名称">
-          <el-cascader
-            style="width: 100%;"
-            placeholder="可通过科目名称搜索.."
-            :options="subjectList"
-            :props="{ label: 'name', value: 'code' }"
-            filterable>
-          </el-cascader>
+        <el-cascader
+          v-model="formData.subjectCode"
+          style="width: 100%;"
+          placeholder="可通过科目名称搜索.."
+          :options="subjectList"
+          :props="{ label: 'name', value: 'code' }"
+          filterable
+          @change="handleSubject"
+        >
+        </el-cascader>
       </el-form-item>
     </el-form>
     <div style="text-align:right;">
@@ -102,10 +105,9 @@
                     });
             },
             loadSubject() {
-                this.$store.dispatch("accountSubject/getSelectingList", {filter: {}})
+                this.$store.dispatch("accountSubject/getList", {filter: {}})
                     .then(data => {
-                        this.subjectList = this.getTreeData(JSON.parse(data));
-                        console.log(this.subjectList);
+                        this.subjectList = this.getTreeData(data);
                     })
                     .catch(error => {
                         console.log(error);
@@ -114,13 +116,6 @@
             /*清除表单*/
             clearForm() {
                 this.formData = this.defaultFormData();
-            },
-            selectChange(code) {
-                let obj = {};
-                obj = this.subjectList.find((item) => {
-                    return item.code === code;
-                });
-                this.formData.subjectName = obj.name;
             },
             /*对提交的数据进行类型格式*/
             handleConfirm() {
@@ -153,6 +148,13 @@
                     }
                 }
                 return data;
+            },
+            handleSubject(subject) {
+                if (subject) {
+                    const code = subject[subject.length - 1];
+                    this.formData.subjectId = code;
+                    this.formData.subjectCode = code;
+                }
             },
             initFormData() {
                 this.clearForm();
