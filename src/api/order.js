@@ -254,10 +254,20 @@ export function processingChange(params) {
   });
 }
 
-// 重填票号
+// 自动重填票号
 export function autoRewriteTicket(data) {
   return request({
     url: `/qunar/fuwu/auto/rewrite/ticket/no`,
+    method: 'post',
+    data: data
+
+  });
+}
+
+// 重填票号
+export function rewriteTicket(data) {
+  return request({
+    url: `/qunar/fuwu/rewrite/ticket/no`,
     method: 'post',
     data: data
 

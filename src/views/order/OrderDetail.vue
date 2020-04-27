@@ -364,6 +364,26 @@
         <div id="refundTts" v-html="this.newFromDialog"></div>
       </el-dialog>
     </div>
+    <div>
+      <el-dialog
+        title="重贴票号"
+        center
+        :visible.sync="rewriteTicketShow"
+        width="33%"
+        :close-on-click-modal="false"
+      >
+        <div v-if="rewriteTicketShow">
+          <div>
+            重新填的票号：
+            <el-input placeholder="请输入重新填的票号" v-model="rewriteTicketData" clearable></el-input>
+          </div>
+          <div style="margin-top: 25px;text-align: right;">
+            <el-button size="mini" @click="onCancel">取 消</el-button>
+            <el-button size="mini" type="primary">确定</el-button>
+          </div>
+        </div>
+      </el-dialog>
+    </div>
   </div>
 </template>
 <script>
@@ -389,6 +409,8 @@ export default {
       fillOutChangeShow: false,
       fillOutRefundShow: false,
       newFromDialogShow: false,
+      rewriteTicketShow: false,
+      rewriteTicketData: "",
       newFromDialog: "",
       fillOutRefundData: "",
       fillOutChangeData: {},
@@ -469,6 +491,7 @@ export default {
       this.fillOutChangeShow = false;
       this.changeTicketShow = false;
       this.refundTicketShow = false;
+      this.rewriteTicketShow = false;
     },
     // 退票弹框
     refundTicket(row) {
@@ -1023,9 +1046,9 @@ export default {
         });
     },
     // 重填票号
-    autoRewriteTicket(params) {
+    rewriteTicket(params) {
       this.$store
-        .dispatch("order/autoRewriteTicket", params)
+        .dispatch("order/rewriteTicket", params)
         .then(data => {
           if (data) {
             // this.changeHtml = data;
@@ -1207,12 +1230,13 @@ export default {
       var that = this;
       if (btnRewriteTicket) {
         btnRewriteTicket.onclick = function() {
+          that.rewriteTicketShow = true;
           let params = {
             orderNo: that.sourceOrderNo,
-            passengerName: "",
-            ticketNo: ""
+            passengerId: "",
+            ticketNo: that.rewriteTicketData
           };
-          // that.autoRewriteTicket(params);
+          // that.rewriteTicket(params);
           console.log("重贴票号按钮事件");
         };
       }
@@ -1311,7 +1335,7 @@ export default {
           if (refuseRefundReason == 0) {
             that.$message({
               type: "info",
-              message: "请选择未及时退款原因"
+              message: "请选择未及时退款的原因"
             });
             return;
           }
