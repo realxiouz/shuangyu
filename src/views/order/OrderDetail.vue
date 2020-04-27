@@ -253,7 +253,7 @@
             >改签</el-button>
             <el-button
               type="primary"
-              v-show="scope.row.orderSource=='QUNAR_OPEN'&&this.taskType=='4'"
+              v-show="scope.row.orderSource=='QUNAR_OPEN' && taskType=='4'"
               @click="intercept(scope.row)"
               size="mini"
             >拦截</el-button>
@@ -1020,7 +1020,7 @@ export default {
         .dispatch("order/autoRewriteTicket", params)
         .then(data => {
           if (data) {
-            this.changeHtml = data;
+            // this.changeHtml = data;
           }
         })
         .catch(error => {
