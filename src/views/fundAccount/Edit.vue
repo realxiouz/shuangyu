@@ -39,14 +39,12 @@
         <el-input v-model="formData.balance" placeholder="请输入余额.."></el-input>
       </el-form-item>
       <el-form-item label="科目名称">
-        <el-select v-model="formData.subjectCode" style="width: 100%;" placeholder="请选择科目.." @change="selectChange">
-          <el-option
-            v-for="(item,idx) in subjectList"
-            :key="idx"
-            :label="item.name"
-            :value="item.code">
-          </el-option>
-        </el-select>
+          <el-cascader
+            placeholder="可通过科目名称搜索.."
+            :options="subjectList"
+            :props="{ label: 'name', value: 'code' }"
+            filterable>
+          </el-cascader>
       </el-form-item>
     </el-form>
     <div style="text-align:right;">
@@ -103,9 +101,10 @@
                     });
             },
             loadSubject() {
-                this.$store.dispatch("accountSubject/getList", {filters: {}})
+                this.$store.dispatch("accountSubject/getSelectingList", {filter: {}})
                     .then(data => {
-                        this.subjectList = data;
+                        this.subjectList = JSON.parse(data);
+                        console.log(this.subjectList);
                     })
                     .catch(error => {
                         console.log(error);
