@@ -379,7 +379,6 @@ export default {
   },
   created() {
     this.getFinance();
-    console.log(this.passengerData);
   }
 };
 </script>
