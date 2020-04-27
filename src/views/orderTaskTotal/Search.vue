@@ -11,7 +11,7 @@
               placeholder="请输入任务编号搜索..."
             ></el-input>
           </el-form-item>
-        </el-col> -->
+        </el-col>-->
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="任务名称:">
             <el-input
@@ -37,6 +37,23 @@
             <el-select style="width: 100%;" clearable v-model="formData.taskType" placeholder="请选择">
               <el-option
                 v-for="item in taskTypeValue"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="任务状态:">
+            <el-select
+              style="width: 100%;"
+              clearable
+              v-model="formData.taskStatus"
+              placeholder="请选择"
+            >
+              <el-option
+                v-for="item in taskStatusValue"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
@@ -89,8 +106,7 @@
 </template>
 
 <script>
-import { taskTypeValue } from "@/utils/status.js";
-
+import { taskTypeValue, taskStatusValue } from "@/utils/status.js";
 export default {
   name: "userSearch",
   data() {
@@ -99,10 +115,13 @@ export default {
       formData: {
         taskNo: "",
         taskName: "",
+        taskType: "",
+        taskStatus: "",
         startTime: "",
         endTime: ""
       },
-      taskTypeValue: taskTypeValue
+      taskTypeValue: taskTypeValue,
+      taskStatusValue: taskStatusValue
     };
   },
   computed: {

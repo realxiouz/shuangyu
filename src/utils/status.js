@@ -248,15 +248,15 @@ export function formatCardType(row) {
 }
 
 export function subjectCategory(row) {
-    if (row.category === 0) {
+    if (row.category == "0") {
         return "资产类";
-    } else if (row.category === 1) {
+    } else if (row.category == "1") {
         return "负债类";
-    } else if (row.category === 2) {
+    } else if (row.category == "2") {
         return "权益类";
-    } else if (row.category === 3) {
+    } else if (row.category == "3") {
         return "成本类";
-    } else if (row.category === 4) {
+    } else if (row.category == "4") {
         return "损益类";
     } else {
         return row.category
@@ -265,22 +265,46 @@ export function subjectCategory(row) {
 
 //格式化订单任务
 export function formatTaskStatus(row) {
-    if (row.taskStatus === 0) {
+    if (row.taskStatus == "0") {
         return "生成未派单";
-    } else if (row.taskStatus === 1) {
+    } else if (row.taskStatus == "1") {
         return "派单未处理";
-    } else if (row.taskStatus === 2) {
+    } else if (row.taskStatus == "2") {
         return "提交";
-    } else if (row.taskStatus === 3) {
+    } else if (row.taskStatus == "3") {
         return "转单";
-    } else if (row.taskStatus === 4) {
+    } else if (row.taskStatus == "4") {
         return "完成";
-    } else if (row.taskStatus === 9) {
+    } else if (row.taskStatus == "9") {
         return "取消";
     } else {
         return row.taskStatus
     }
 }
+export const taskStatusValue = [
+    {
+        value: "0",
+        label: "生成未派单"
+    },
+    {
+        value: "1",
+        label: "派单未处理"
+    }, {
+        value: "2",
+        label: "提交"
+    },
+    {
+        value: "3",
+        label: "转单"
+    }, {
+        value: "4",
+        label: "完成"
+    },
+    {
+        value: "9",
+        label: "取消"
+    },
+]
 //格式化订单任务类型
 export function formatTaskType(row) {
     if (row.taskType == 1) {
