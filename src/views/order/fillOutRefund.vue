@@ -13,12 +13,12 @@
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="渠道:">
+          <el-form-item label="供应商:">
             <el-select
               clearable
               filterable
               @change="selectSource"
-              placeholder="请选择渠道"
+              placeholder="请选择供应商"
               v-model="formData.orderSource"
               style="width: 100%"
             >

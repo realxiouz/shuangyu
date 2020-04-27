@@ -205,7 +205,7 @@
         <el-table-column prop="orderNo" align="center" label="订单号" width="180"></el-table-column>
         <el-table-column prop="sourceOrderNo" align="center" width="180" label="原订单"></el-table-column>
         <el-table-column prop="status" :formatter="formateStatus" label="订单状态" width="80"></el-table-column>
-        <el-table-column prop="orderSource" align="center" label="渠道"></el-table-column>
+        <el-table-column prop="orderSource" align="center" label="供应商"></el-table-column>
         <el-table-column label="姓名" align="center" width="200">
           <template slot-scope="scope">
             <span>{{ formatPassengers(scope.row.orderDetailList)}}</span>

@@ -107,7 +107,7 @@
     </el-card>
 
     <el-card class="contentBox" v-if="flightShow">
-      <div>渠道信息</div>
+      <div>供应商信息</div>
       <el-table
         :data="flightData"
         v-loading="loading"
@@ -119,7 +119,7 @@
         ref="refTable"
         fit
       >
-        <el-table-column label="渠道" width="100" align="center">蜗牛</el-table-column>
+        <el-table-column label="供应商" width="100" align="center">蜗牛</el-table-column>
         <el-table-column prop="exTrack" label="报价类型" width="100" align="center"></el-table-column>
         <el-table-column prop="dptTime" label="出发时间" width="100" align="center"></el-table-column>
         <el-table-column prop="arrTime" label="到达时间" width="100" align="center"></el-table-column>
