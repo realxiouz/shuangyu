@@ -556,6 +556,30 @@ export default new Router({
       ]
     },
     {
+      title: '商品信息',
+      path: '/product',
+      name: 'productList',
+      component: Layout,
+      redirect: '/product/list',
+      meta: {title: '商品信息', icon: 'home'},
+      children: [
+        {
+          title: '商品管理',
+          path: '/product/list',
+          name: 'product',
+          component: () => import('@/views/product/List'),
+          meta: {title: '商品管理', icon: 'home'}
+        },
+        {
+          title: '商品属性管理',
+          path: '/property/list',
+          name: 'property',
+          component: () => import('@/views/productProperty/List'),
+          meta: {title: '商品管理', icon: 'home'}
+        }
+      ]
+    },
+    {
       path: "*",
       redirect: "/404",
       hidden: true
