@@ -34,7 +34,7 @@ export function getTotal(params) {
 
 export function getTreeList(params) {
   return request({
-    url: `/subject/getTreeList/list`,
+    url: `/subject/tree/list`,
     method: "get",
     params: params
   });
