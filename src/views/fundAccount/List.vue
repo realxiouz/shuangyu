@@ -46,7 +46,7 @@
         center
         :visible.sync="dialogVisible"
         :close-on-click-modal="false"
-        width="50%"
+        width="30%"
       >
         <fund-account-edit
           v-if="dialogVisible"
