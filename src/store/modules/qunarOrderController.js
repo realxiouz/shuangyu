@@ -5,8 +5,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       orderNonexist(params)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
