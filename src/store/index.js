@@ -49,6 +49,7 @@ import woniuConfig from "./modules/woniuConfig";
 import qunarOrderController from "./modules/qunarOrderController";
 import product from "./modules/product";
 import productProperty from "./modules/productProperty";
+import brand from "./modules/brand";
 import { getLoginInfo } from "@/api/staff";
 
 Vue.use(Vuex);
@@ -102,7 +103,8 @@ export default new Vuex.Store({
     warehouse,
     qunarOrderController,
     product,
-    productProperty
+    productProperty,
+    brand
   },
   state: {
     loginInfo: {}
