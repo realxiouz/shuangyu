@@ -54,35 +54,41 @@
                 dialogVisible: false,
                 searchForm: {},
                 tableData: [],
-                lastId: "blank",
-                pageFlag: "next",
+                currentPage: 1,
                 pageSize: 10,
-                total: 0
+                total: 0,
             };
         },
         methods: {
-            loadData(searchForm) {
-                this.searchForm = searchForm;
-                this.$store.dispatch("trade/getTotal", {filter: searchForm})
+            loadData(params) {
+                this.$store
+                    .dispatch("trade/getList", {
+                        filters: params
+                    })
                     .then(data => {
-                        this.total = data;
+                        if (data) {
+                            this.tableData = data;
+                            this.loadTotal(params);
+                        }
+                        this.loading = false;
                     })
                     .catch(error => {
+                        this.loading = false;
                         console.log(error);
                     });
-                this.$store.dispatch("trade/getPageList", {
-                    pageFlag: this.pageFlag,
-                    pageSize: this.pageSize,
-                    lastId: this.lastId,
-                    filter: searchForm
-                })
+            },
+            loadTotal(params) {
+                this.$store
+                    .dispatch("trade/getTotal", {
+                        filters: params
+                    })
                     .then(data => {
-                        this.tableData = data;
-                        this.loading = false;
+                        if (data >= 0) {
+                            this.total = data;
+                        }
                     })
                     .catch(error => {
                         console.log(error);
-                        this.loading = false;
                     });
             },
             /*初始化用工列表中的生日日期格式*/
@@ -97,15 +103,17 @@
             handleCancel() {
                 this.dialogVisible = false;
             },
-            handlePrevClick() {
-                this.pageFlag = "prev";
-                this.lastId = this.tableData[0].tradeId;
-                this.loadData(this.searchForm);
+            handlePrevClick(page) {
+                this.currentPage = page;
+                this.searchParams.pageSize = this.pageSize;
+                this.searchParams.currentPage = this.currentPage;
+                this.loadData(this.searchParams);
             },
-            handleNextClick() {
-                this.pageFlag = "next";
-                this.lastId = this.tableData[this.tableData.length - 1].tradeId;
-                this.loadData(this.searchForm);
+            handleNextClick(page) {
+                this.currentPage = page;
+                this.searchParams.pageSize = this.pageSize;
+                this.searchParams.currentPage = this.currentPage;
+                this.loadData(this.searchParams);
             }
 
         },
