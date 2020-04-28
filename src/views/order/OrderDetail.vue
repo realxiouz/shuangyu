@@ -510,7 +510,7 @@ export default {
     // 改签弹框
     changeTicket(row) {
       this.purchaseOrderNo = row.sourceOrderNo;
-      this.changeData = Object.assign({}, row);
+      this.changeData = row;
 
       this.changeTicketShow = true;
     },
@@ -1109,7 +1109,7 @@ export default {
     },
     rewriteTicketSave() {
       this.rewriteTicketData.orderNo = this.sourceOrderNo;
-      this.rewriteTicket(this.rewriteTicketData)
+      this.rewriteTicket(this.rewriteTicketData);
     },
     // 获取退票改签信息Html
     getRefundHtml(sourceOrderNo) {
@@ -1270,11 +1270,13 @@ export default {
         "flightNum"
       )[0].value;
       this.changeDataTop.cabin = document.getElementsByName("cabin")[0].value;
+      let _arr = [];
       this.tableData.passengers.forEach(item => {
         if (this.changeHtml.indexOf(item.name) != -1) {
-          this.changeDataTop.passagers.push(item);
+          _arr.push(item);
         }
       });
+      this.changeDataTop.passagers = _arr;
 
       let btnRewriteTickets = document.querySelectorAll(
         "#changeHtmlOrderDetail .back-form .back-form-info .g-clear .mrl10 .j-reset-ticket"

@@ -324,16 +324,16 @@ export default {
           }
         }
       });
-      let arr = [];
+      var _arr = [];
       this.formData.changeFlightSegmentList.forEach(item => {
         if (item.actFlightNo == flightNo) {
           actFlightNo = item.actFlightNo;
           if (item.actFlightNo == actFlightNo) {
-            arr.push(item);
+            _arr.push(item);
           }
         }
       });
-      this.formData.changeFlightSegmentList = arr;
+      this.formData.changeFlightSegmentList = _arr;
     },
 
     // 格式化日期
@@ -372,7 +372,6 @@ export default {
       return "￥" + this.$numeral(amount).format("0.00");
     }
   },
-  computed: {},
   updated() {
     this.toggleSelection(this.passagersChange);
   },
