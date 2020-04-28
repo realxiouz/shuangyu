@@ -105,7 +105,7 @@
                     });
             },
             loadSubject() {
-                this.$store.dispatch("accountSubject/getList", {filter: {}})
+                this.$store.dispatch("accountSubject/getTreeList", {filter: {}})
                     .then(data => {
                         this.subjectList = this.getTreeData(data);
                     })

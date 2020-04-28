@@ -102,7 +102,7 @@
             },
             loadData(params) {
                 this.$store
-                    .dispatch("accountSubject/getList", {
+                    .dispatch("accountSubject/getTreeList", {
                         filters: params
                     })
                     .then(data => {
