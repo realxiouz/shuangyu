@@ -55,21 +55,63 @@
         <el-button size="mini" type="primary" @click="handleSave">确 定</el-button>
       </div>
     </el-card>
+    <el-card class="contentBox">
+      <div slot="header">
+        <span>属性值配置</span>
+      </div>
+      <el-row style="margin-bottom:15px;margin-left:40px">
+        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+      </el-row>
+      <el-table
+        v-loading="loading"
+        :data="valueData"
+        style="width: 100%;margin-bottom: 15px;"
+        size="mini"
+      >
+        <el-table-column prop="propertyCode" label="编码" align="center"></el-table-column>
+        <el-table-column prop="propertyValue" label="值" align="center"></el-table-column>
+        <el-table-column fixed="right" label="操作" align="center" width="350">
+          <template slot-scope="scope">
+            <el-button @click="handleUpdate(scope.row.propertyCode)" type="primary" size="mini">编辑</el-button>
+            <el-button
+              @click.native.prevent="handleRemove(scope.row.propertyCode,scope.$index,tableData)"
+              type="danger"
+              size="mini"
+            >删除
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+        @size-change="handleSizeChange"
+        @prev-click="prevClick"
+        @next-click="nextClick"
+        background
+        layout="total,sizes,prev,next"
+        prev-text="上一页"
+        next-text="下一页"
+        :page-size="pageSize"
+        :total="total"
+      ></el-pagination>
+    </el-card>
   </div>
 </template>
 <script>
     function defaultData() {
         return {
-            appId: "",
-            appName: "",
-            enable: true
+            propertyName: "",
+            isSellProperty: false,
+            isEnumProperty: false,
+            required: false,
+            isMultiple: false
         }
     };
     export default {
-        name: 'appEdit',
+        name: 'edit',
         data() {
             return {
                 formData: defaultData(),
+                valueData:[],
                 rules: {
                     categoryName: [
                         {required: true, message: "请输入商品类目", trigger: "blur"},
