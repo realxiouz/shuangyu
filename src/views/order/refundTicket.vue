@@ -43,7 +43,7 @@
         <el-table
           ref="multipleTable"
           size="mini"
-          :data="refundData"
+          :data="passagersRefund"
           highlight-current-row
           @selection-change="handleSelectionChange"
           fit
@@ -52,26 +52,14 @@
           <el-table-column type="selection" :selectable="selectable" width="55"></el-table-column>
           <el-table-column prop="name" label="姓名" align="center"></el-table-column>
           <el-table-column prop="cardType" :formatter="formatCardType" label="证件类型" align="center"></el-table-column>
-          <el-table-column prop="cardNum" label="证件号" align="center">
+          <el-table-column prop="cardNo" label="证件号" align="center"></el-table-column>
+          <el-table-column prop="ageType" :formatter="formatAgeType" label="乘机人类型" align="center"></el-table-column>
+          <el-table-column label="价格" prop="amount" align="center">
             <template slot-scope="scope">
-              <span
-                v-if="scope.row"
-              >{{scope.row.refundSearchResult.tgqReasons[0].refundPassengerPriceInfoList[0].basePassengerPriceInfo.cardNum}}</span>
+              <span>{{formatAmount(scope.row.amount)}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="ageType" label="乘机人类型" align="center">
-            <template slot-scope="scope">
-              <span
-                v-if="scope.row"
-              >{{scope.row.refundSearchResult.tgqReasons[0].refundPassengerPriceInfoList[0].basePassengerPriceInfo.passengerTypeStr}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="价格" align="center">
-            <template slot-scope="scope">
-              <span>{{formatAmount(scope.row.refundSearchResult.tgqReasons[0].refundPassengerPriceInfoList[0].basePassengerPriceInfo.ticketPrice)}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column prop="ticketNum" label="票号" align="center"></el-table-column>
+          <el-table-column prop="ticketNo" label="票号" align="center"></el-table-column>
         </el-table>
       </el-form-item>
 
@@ -80,6 +68,14 @@
         <div>
           <span v-if="this.showFlight">（销售航班信息：{{this.showFlight}}）</span>
           <span v-if="this.reason" style="color:red;">{{this.reason}}</span>
+        </div>
+        <div v-if="this.getRefundHtmlData">
+          <el-row>
+            <span>退票原因：{{this.getRefundHtmlData.reason}}</span>
+          </el-row>
+          <el-row>
+            <span>实退金额{{this.getRefundHtmlData.refundAmount}}</span>
+          </el-row>
         </div>
       </el-form-item>
       <el-form-item label="蜗牛退改说明:">
@@ -95,19 +91,25 @@
 </template>
 
 <script>
-import { formatCardType } from "@/utils/status.js";
+import { formatCardType, formatAgeType } from "@/utils/status.js";
 
 export default {
-  name: "handleTicket",
-  props: ["purchaseOrderNo", "refundChangeRule"],
+  name: "refundTicket",
+  props: [
+    "refundChangeRule",
+    "refundpassengers",
+    "refundData",
+    "getRefundHtmlData"
+  ],
   data() {
     return {
       tgqReasons: "",
-      refundData: [],
       tgqText: "",
       showFlight: "",
       reason: "",
       flightInfo: "",
+      orderDetailList: [],
+      passagersRefund: [],
       formData: {
         refundCauseId: "",
         refundFeeInfo: "",
@@ -124,6 +126,8 @@ export default {
   },
   methods: {
     formatCardType,
+    formatAgeType,
+    formatCardType,
     // 表格复选框选中处理
     handleSelectionChange(rows) {
       let str = "";
@@ -132,40 +136,15 @@ export default {
       });
       str = str.substring(0, str.length - 1);
       this.formData.passengerIds = str;
+      console.log(str);
     },
-    // 默认选中表格复选框
-    toggleSelection(rows) {
-      if (rows) {
-        rows.forEach(row => {
-          if (row.refundSearchResult.canRefund) {
-            this.$refs.multipleTable.toggleRowSelection(row, false);
-          }
-        });
-      } else {
-        this.$refs.multipleTable.clearSelection();
-      }
-    },
-    // 退票申请
-    handleSave() {
-      this.$emit("onSaveRefund", this.formData);
-    },
-    // 判断是否可以退票
+    // 判断乘客是否可以可以退票
     selectable(row, index) {
-      if (row.refundSearchResult.canRefund) {
+      if (row.canRefund) {
         return true;
       } else {
         return false;
       }
-    },
-    // 退票原因选中处理
-    selectTgqReasons(value) {
-      let code = value;
-      this.tgqReasons.forEach(item => {
-        if (item.code === code) {
-          this.formData.refundFeeInfo =
-            item.refundPassengerPriceInfoList[0].refundFeeInfo;
-        }
-      });
     },
     // 退票查询
     refundSearchData(purchaseOrderNo) {
@@ -174,7 +153,19 @@ export default {
         .then(data => {
           if (data) {
             this.formData.appKey = data.appKey;
-            this.refundData = data.result;
+            console.log(data, "data");
+            if (this.orderDetailList) {
+              for (let i = 0; i < this.orderDetailList.length; i++) {
+                data.result.forEach(item => {
+                  if (this.orderDetailList[i].name.indexOf(item.name) != -1) {
+                    this.orderDetailList[i]["id"] = item.id;
+                    this.orderDetailList[i]["canRefund"] =
+                      item.refundSearchResult.canRefund;
+                  }
+                });
+              }
+              this.passagersRefund = this.orderDetailList;
+            }
             if (data.result.length > 0) {
               if (data.result[0].refundSearchResult.tgqReasons) {
                 this.tgqReasons = data.result[0].refundSearchResult.tgqReasons;
@@ -208,6 +199,20 @@ export default {
           console.log(error);
         });
     },
+    // 退票原因选中处理
+    selectTgqReasons(value) {
+      let code = value;
+      this.tgqReasons.forEach(item => {
+        if (item.code === code) {
+          this.formData.refundFeeInfo =
+            item.refundPassengerPriceInfoList[0].refundFeeInfo;
+        }
+      });
+    },
+    handleSave() {
+      this.$emit("onSaveRefund", this.formData);
+    },
+
     formatAmount(amount) {
       if (!amount) {
         return "￥0.00";
@@ -216,11 +221,18 @@ export default {
     }
   },
   created() {
-    this.refundSearchData(this.purchaseOrderNo);
-    // this.refundSearchData("fma200415125908106");
-  },
-  updated() {
-    this.toggleSelection(this.refundData);
+    console.log(this.refundData, "refundData");
+    console.log(this.refundpassengers, "refundpassengers");
+    let arr = [];
+    for (let i = 0; i < this.refundpassengers.length; i++) {
+      this.refundData.orderDetailList.forEach(item => {
+        if (this.refundpassengers[i].cardNo.indexOf(item.cardNo) != -1) {
+          arr.push(item);
+        }
+      });
+    }
+    this.orderDetailList = arr;
+    this.refundSearchData(this.refundData.sourceOrderNo);
   }
 };
 </script>

@@ -298,8 +298,10 @@
           v-if="refundTicketShow"
           @onCancel="onCancel"
           @onSaveRefund="handleSaveRefund"
-          :purchaseOrderNo="purchaseOrderNo"
           :refundChangeRule="refundChangeRule"
+          :refundpassengers="refundpassengers"
+          :refundData="refundData"
+          :getRefundHtmlData="getRefundHtmlData"
         ></refund-ticket>
       </el-dialog>
     </div>
@@ -374,7 +376,7 @@
         <div v-if="rewriteTicketShow">
           <el-form label-width="100px" class="demo-ruleForm">
             <el-form-item label="重新填的票号：">
-              <el-input placeholder="请输入重新填的票号" v-model="rewriteTicketData.ticketNo" clearable></el-input>
+              <el-input placeholder="请输入重新填的票号" v-model="ticketNoData" clearable></el-input>
             </el-form-item>
           </el-form>
           <div style="margin-top: 25px;text-align: right;">
@@ -410,6 +412,7 @@ export default {
       fillOutRefundShow: false,
       newFromDialogShow: false,
       rewriteTicketShow: false,
+      ticketNoData: "",
       rewriteTicketData: {
         orderNo: "",
         passengerId: "",
@@ -421,6 +424,7 @@ export default {
       newFromDialog: "",
       fillOutRefundData: "",
       fillOutChangeData: {},
+      getRefundHtmlData: {},
       changeHtml: "",
       refundHtml: "",
       messageData: "",
@@ -433,6 +437,7 @@ export default {
       refundData: "",
       purchaseOrderNo: "",
       refundChangeRule: "",
+      refundpassengers: "",
       taskRemarkData: "",
       timer: null,
       changeData: "",
@@ -473,6 +478,15 @@ export default {
             this.tableData = data;
             this.refundChangeRule = data.refundChangeRule;
             this.sourceOrderNo = data.sourceOrderNo;
+            let params = {};
+            params.rootOrderNo = data.rootOrderNo;
+            params.category = 1;
+            if (data.rootOrderNo) {
+              this.getOrderTree(params);
+              this.timer = setInterval(() => {
+                setTimeout(this.getOrderTree(params), 0);
+              }, 5000);
+            }
             this.getMessage();
             this.getMessageHtml(data.orderType, this.sourceOrderNo);
             if (data.passengers) {
@@ -504,6 +518,7 @@ export default {
     // 退票弹框
     refundTicket(row) {
       this.purchaseOrderNo = row.sourceOrderNo;
+      this.refundData = row;
       this.refundTicketShow = true;
     },
     // 改签弹框
@@ -1070,7 +1085,7 @@ export default {
         this.getRefundHtml(sourceOrderNo);
       } else if (orderType == 30 || orderType == 31) {
         this.getChangeHtml(sourceOrderNo);
-      } 
+      }
     },
 
     // 获取销售改签信息Html
@@ -1080,6 +1095,13 @@ export default {
         .then(data => {
           if (data) {
             this.changeHtml = data;
+            let _arr = [];
+            this.tableData.passengers.forEach(item => {
+              if (this.changeHtml.indexOf(item.name) != -1) {
+                _arr.push(item);
+              }
+            });
+            this.changeDataTop.passagers = _arr;
           }
         })
         .catch(error => {
@@ -1105,6 +1127,7 @@ export default {
     },
     rewriteTicketSave() {
       this.rewriteTicketData.orderNo = this.sourceOrderNo;
+      this.rewriteTicketData.ticketNo = "+" + this.ticketNoData;
       this.rewriteTicket(this.rewriteTicketData);
     },
     // 获取退票改签信息Html
@@ -1114,6 +1137,14 @@ export default {
         .then(data => {
           if (data) {
             this.refundHtml = data;
+            let temp = [];
+            this.tableData.passengers.forEach(item => {
+              if (this.refundHtml.indexOf(item.name) != -1) {
+                temp.push(item);
+              }
+            });
+            this.refundpassengers = temp;
+            console.log(this.refundpassengers, "refundpassengers");
           }
         })
         .catch(error => {
@@ -1219,20 +1250,6 @@ export default {
   },
   created() {
     this.getOrderDetail(this.orderNo);
-    let params = {};
-    if (this.$route.query.rootOrderNo) {
-      params.rootOrderNo = this.$route.query.rootOrderNo;
-      params.category = 1;
-      this.getOrderTree(params);
-      this.timer = setInterval(() => {
-        setTimeout(this.getOrderTree(params), 0);
-      }, 5000);
-    } else {
-      if (this.timer) {
-        //如果定时器还在运行 或者直接关闭，不用判断
-        clearInterval(this.timer); //关闭
-      }
-    }
   },
   // 离开页面销毁定时器
   beforeDestroy() {
@@ -1266,13 +1283,6 @@ export default {
         "flightNum"
       )[0].value;
       this.changeDataTop.cabin = document.getElementsByName("cabin")[0].value;
-      let _arr = [];
-      this.tableData.passengers.forEach(item => {
-        if (this.changeHtml.indexOf(item.name) != -1) {
-          _arr.push(item);
-        }
-      });
-      this.changeDataTop.passagers = _arr;
 
       let btnRewriteTickets = document.querySelectorAll(
         "#changeHtmlOrderDetail .back-form .back-form-info .g-clear .mrl10 .j-reset-ticket"
@@ -1299,7 +1309,14 @@ export default {
         });
       }
     }
+    // 退票Html操作
     if (this.refundHtml) {
+      this.getRefundHtmlData.reason = document.querySelector(
+        "#refundHtmlOrderDetail #js_form_rm .js_box_content .refund-ticket-info-row .refund-ticket-info-coll .ticket-cell"
+      ).innerText;
+      this.getRefundHtmlData.refundAmount = document.querySelector(
+        "#refundHtmlOrderDetail #js_form_rm #js_should_refund_fee"
+      ).innerText;
       let refundConfirm = document.querySelector(
         '#refundHtmlOrderDetail [data-action="btn_confirm"]'
       );
@@ -1326,23 +1343,23 @@ export default {
             let _status = container.querySelectorAll(
               "input[name=" + name + "]"
             );
-            var ticketreturnstutas = "";
+            var ticketreturnstatus = "";
             Array.from(_status).forEach(item => {
               if (item.checked) {
-                ticketreturnstutas += item.value + "|";
+                ticketreturnstatus += item.value + "|";
               }
             });
           }
 
           let ticketNos = str.substring(0, str.length - 1);
-          let _ticketreturnstutas = ticketreturnstutas.substring(
+          let _ticketreturnstatus = ticketreturnstatus.substring(
             0,
-            ticketreturnstutas.length - 1
+            ticketreturnstatus.length - 1
           );
           let params = {
             orderNo: orderNo,
             ticketNos: ticketNos,
-            ticketreturnstutas: _ticketreturnstutas,
+            ticketreturnstatus: _ticketreturnstatus,
             remark: refundRemark
           };
           that.affirmRefundTicket(params);
@@ -1360,7 +1377,7 @@ export default {
           that.newFromDialogShow = true;
         };
       }
-      // 拒绝退款弹框取消
+      // 拒绝退款弹 框取消
       let btnRejectCancel = document.querySelector(
         "#refundTts [data-action='btn_reject_cancel']"
       );
