@@ -3,27 +3,32 @@
     <el-form :model="formData" label-width="110px" size="mini">
       <input type="hidden" v-model="formData.accountId"/>
       <el-form-item label="账号类别">
-        <el-select v-model="formData.category" style="width: 100%;">
+        <el-select v-model="formData.category" style="width: 100%;" @change="selectedCategory">
           <el-option label="现金" :value="0"></el-option>
           <el-option label="银行存款" :value="1"></el-option>
           <el-option label="积分" :value="2"></el-option>
           <el-option label="优惠券" :value="3"></el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="供应商">
+        <el-select v-model="formData.otherId" style="width: 100%;" placeholder="请选择供应商..">
+        <el-option label="现金" :value="0"></el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item label="账号编码">
         <el-input v-model="formData.accountCode" placeholder="请输入账号编码.."></el-input>
       </el-form-item>
-      <el-form-item v-if="0 === formData.category" label="资金账号">
-        <el-input v-model="formData.accountCode" placeholder="请输入账号编码.."></el-input>
+      <el-form-item v-if="!bankAccountShowAble" label="账号名称">
+        <el-input v-model="formData.accountName" placeholder="请输入账号名称.."></el-input>
       </el-form-item>
-      <el-form-item v-if="1 === formData.category" label="账号名称">
+      <el-form-item v-if="bankAccountShowAble" label="账号名称">
         <el-input v-model="formData.accountName" placeholder="示例：中国工商银行昆明官渡支行"></el-input>
       </el-form-item>
-      <el-form-item v-if="1 === formData.category" label="银行账号">
+      <el-form-item v-if="bankAccountShowAble" label="银行账号">
         <el-input v-model="formData.bankAccount" placeholder="请输入完整的银行账号"></el-input>
       </el-form-item>
       <el-form-item label="币种">
-        <el-select v-model="formData.currencyCode" style="width: 100%;" placeholder="请选择币种..">
+        <el-select v-model="formData.currency" style="width: 100%;" placeholder="请选择币种..">
           <el-option
             v-for="(item,idx) in currencyList"
             :key="idx"
@@ -32,8 +37,30 @@
           </el-option>
         </el-select>
       </el-form-item>
+      <el-form-item v-if="2 === formData.category" label="积分有效期">
+        <el-date-picker
+          v-model="formData.expire"
+          type="date"
+          placeholder="选择日期">
+        </el-date-picker>
+        <span style="color: #ff8aac;margin-left: 4px">有效期至选择日期零点(00:00:00)</span>
+      </el-form-item>
+      <el-form-item v-if="3 === formData.category" label="优惠券有效期">
+        <el-date-picker
+          v-model="formData.expire"
+          type="date"
+          placeholder="选择日期">
+        </el-date-picker>
+        <span style="color: #ff8aac;margin-left: 4px">有效期至选择日期零点(00:00:00)</span>
+      </el-form-item>
+      <el-form-item v-if="pointRateShowAble" label="积分兑换比例">
+        <el-input v-model="formData.pointRate" placeholder="请输入积分兑换比例.."></el-input>
+      </el-form-item>
+      <el-form-item v-if="amountShowAble" label="金额">
+        <el-input v-model="formData.amount" placeholder="请输入积分兑换比例.."></el-input>
+      </el-form-item>
       <el-form-item label="初始余额">
-        <el-input v-model="formData.initBalance" placeholder="请输入余额.."></el-input>
+        <el-input v-model="formData.initBalance" placeholder="请输入初始余额.."></el-input>
       </el-form-item>
       <el-form-item label="余额">
         <el-input v-model="formData.balance" placeholder="请输入余额.."></el-input>
@@ -65,7 +92,15 @@
             return {
                 formData: {},
                 currencyList: [],
-                subjectList: []
+                subjectList: [],
+                //是否显示银行账号
+                bankAccountShowAble: false,
+                //是否显示积分/优惠券有效期
+                expireShowAble: false,
+                //是否显示积分兑换比例
+                pointRateShowAble: false,
+                //是否显示金额
+                amountShowAble: false
             };
         },
         methods: {
@@ -78,21 +113,29 @@
                     //账号名称
                     accountName: "",
                     //银行账号
-                    bankAccount: '',
-                    //类别(0:现金，1:银行存款)
-                    category: 1,
+                    bankAccount: null,
+                    //初始余额
+                    initBalance: 0,
+                    //余额
+                    balance: 0,
+                    //类别(0:现金，1:银行存款，2:积分，3：优惠券)
+                    category: 0,
+                    //供应商
+                    otherId: '',
+                    //积分/优惠券有效期
+                    expire: null,
+                    //积分兑换比例
+                    pointRate: null,
                     //币种
-                    currencyCode: '',
+                    currency: '',
+                    //金额
+                    amount: null,
                     //科目id
                     subjectId: '',
                     //科目编码
                     subjectCode: '',
                     //科目名称
-                    subjectName: '',
-                    //初始余额
-                    initBalance: 0,
-                    //余额
-                    balance: 0
+                    subjectName: ''
                 };
             },
             loadCurrency() {
@@ -117,8 +160,46 @@
             clearForm() {
                 this.formData = this.defaultFormData();
             },
+            selectedCategory(category) {
+                //显示权限控制
+                switch (category) {
+                    case 0:
+                        this.bankAccountShowAble = false;
+                        this.expireShowAble = false;
+                        this.pointRateShowAble = false;
+                        this.amountShowAble = false;
+                        break;
+                    case 1:
+                        this.bankAccountShowAble = true;
+                        this.expireShowAble = false;
+                        this.pointRateShowAble = false;
+                        this.amountShowAble = false;
+                        break;
+                    case 2:
+                        this.bankAccountShowAble = false;
+                        this.expireShowAble = true;
+                        this.pointRateShowAble = true;
+                        this.amountShowAble = true;
+                        break;
+                    case 3:
+                        this.bankAccountShowAble = false;
+                        this.expireShowAble = true;
+                        this.pointRateShowAble = false;
+                        this.amountShowAble = false;
+                        break;
+                    default:
+                        this.bankAccountShowAble = false;
+                        this.expireShowAble = false;
+                        this.pointRateShowAble = false;
+                        this.amountShowAble = false;
+                        break;
+                }
+            },
             /*对提交的数据进行类型格式*/
             handleConfirm() {
+                if (this.formData.expire){
+                    this.formData.expire = this.formData.expire.getTime();
+                }
                 this.$emit("onSave", this.formData);
             },
             handleGetOne(id) {
@@ -162,6 +243,7 @@
             },
         },
         created() {
+            this.clearForm();
             if (this.editAccountId) {
                 this.handleGetOne(this.editAccountId);
             }

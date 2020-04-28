@@ -24,6 +24,14 @@
         </el-table-column>
         <el-table-column prop="initBalance" label="初始余额" align="center"></el-table-column>
         <el-table-column prop="balance" label="余额" align="center"></el-table-column>
+        <el-table-column label="积分/优惠券有效期" align="center">
+          <template slot-scope="prop">
+            <i v-if="prop.row.expire" class="el-icon-time"></i>
+            <span style="margin-left: 10px">{{ formatDate(prop.row.expire,'YYYY-MM-DD') }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="pointRate" label="积分兑换比例" align="center"></el-table-column>
+        <el-table-column prop="amount" label="金额" align="center"></el-table-column>
         <el-table-column prop="subjectName" label="科目" align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="250">
           <template slot-scope="scope">
@@ -172,6 +180,15 @@
                     return '优惠券';
                 } else {
                     return '无';
+                }
+            },
+            /*初始化用工列表中的生日日期格式*/
+            formatDate(dateStr, format) {
+                if (dateStr > 0) {
+                    let date = new Date(dateStr);
+                    return this.$moment(date).format(format);
+                } else {
+                    return "";
                 }
             }
         },
