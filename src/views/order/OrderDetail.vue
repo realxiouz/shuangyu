@@ -179,10 +179,9 @@
         <span v-else>暂无数据</span>
       </div>
     </el-card>
-    <el-card class="contentBox">
+    <el-card class="contentBox" v-if="this.tableData.orderType !='10'">
       <div slot="header" class="clearfix">
         <span v-if="this.tableData.orderType=='30'|| this.tableData.orderType=='31'">改签</span>
-        <span v-else-if="this.tableData.orderType=='10'">出票</span>
         <span v-else>退票</span>
       </div>
       <div id="changeHtmlOrderDetail">
@@ -1063,7 +1062,6 @@ export default {
     // 获取html
     getMessageHtml(orderType, sourceOrderNo) {
       if (
-        orderType == 10 ||
         orderType == 20 ||
         orderType == 21 ||
         orderType == 22 ||
@@ -1072,9 +1070,7 @@ export default {
         this.getRefundHtml(sourceOrderNo);
       } else if (orderType == 30 || orderType == 31) {
         this.getChangeHtml(sourceOrderNo);
-      } else {
-        this.getChangeHtml(sourceOrderNo);
-      }
+      } 
     },
 
     // 获取销售改签信息Html

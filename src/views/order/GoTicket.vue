@@ -2,7 +2,8 @@
   <div class="bigBox">
     <el-card class="contentBox">
       <div slot="header">
-        <span>出票信息</span>
+        <span style="margin-right:15px;">出票信息</span>
+        <el-button type="primary" @click="goBack" size="mini">返回</el-button>
       </div>
       <el-row :gutter="20">
         <el-form :model="orderData" label-width="80px" size="mini">
@@ -285,6 +286,10 @@ export default {
     onCancel() {
       this.payShow = false;
     },
+    // 返回
+    goBack() {
+      this.$router.go(-1);
+    },
     // 显示支付弹框
     confirmPay() {
       let params = {
@@ -429,6 +434,7 @@ export default {
               type: "success",
               message: "支付成功！"
             });
+            this.$router.go(-1);
           } else {
             this.$message({
               type: "warning",

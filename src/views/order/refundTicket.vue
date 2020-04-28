@@ -215,7 +215,6 @@ export default {
       return "￥" + this.$numeral(amount).format("0.00");
     }
   },
-  computed: {},
   created() {
     this.refundSearchData(this.purchaseOrderNo);
     // this.refundSearchData("fma200415125908106");

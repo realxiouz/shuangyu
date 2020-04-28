@@ -32,9 +32,9 @@ export function getTotal(params) {
   });
 }
 
-export function getList(params) {
+export function getTreeList(params) {
   return request({
-    url: `/subject/list`,
+    url: `/subject/tree/list`,
     method: "get",
     params: params
   });

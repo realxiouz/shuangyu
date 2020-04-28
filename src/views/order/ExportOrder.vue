@@ -143,7 +143,12 @@ export default {
       this.$store
         .dispatch("qunarOrderController/orderNonexist", params)
         .then(data => {
-          if (data) {
+          if (data.code == 0) {
+            this.$message({
+              type: "success",
+              message: data.data
+            });
+          } else {
             this.$message({
               type: "warning",
               message: data.msg
