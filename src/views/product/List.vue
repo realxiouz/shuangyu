@@ -1,7 +1,7 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <app-search @onSearch="handleSearch"></app-search>
+      <search @onSearch="handleSearch"></search>
     </div>
     <div class="contentBox">
       <el-row style="margin-bottom:15px;margin-left:40px">
@@ -29,9 +29,9 @@
         <el-table-column prop="isSku" label="isSku" align="center"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="350">
           <template slot-scope="scope">
-            <el-button @click="handleUpdate(scope.row.appId)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="handleUpdate(scope.row.productId)" type="primary" size="mini">编辑</el-button>
             <el-button
-              @click.native.prevent="handleRemove(scope.row.appId,scope.$index,tableData)"
+              @click.native.prevent="handleRemove(scope.row.productId,scope.$index,tableData)"
               type="danger"
               size="mini"
             >删除
@@ -50,23 +50,23 @@
         :page-size="pageSize"
         :total="total"
       ></el-pagination>
-      <el-dialog :title="appId?'编辑应用':'添加新应用'" center :visible.sync="dialogVisible" width="30%">
-        <app-edit
+      <el-dialog center :visible.sync="dialogVisible" width="30%">
+        <edit
           v-if="dialogVisible"
-          :app-id="appId"
+          :app-id="productId"
           @onSave="handleSave"
           @onCancel="handleCancel"
-        ></app-edit>
+        ></edit>
       </el-dialog>
     </div>
   </div>
 </template>
 <script>
-    import appSearch from "./Search";
-    import appEdit from "./Edit";
+    import search from "./Search";
+    import edit from "./Edit";
 
     export default {
-        name: "appList",
+        name: "list",
         data() {
             return {
                 lastId: "0",
@@ -75,19 +75,19 @@
                 dialogVisible: false,
                 loading: true,
                 tableData: [],
-                appId: "",
+                productId: "",
                 total: 0
             };
         },
         methods: {
             prevClick() {
                 this.pageFlag = "prev";
-                this.lastId = this.tableData[0].appId;
+                this.lastId = this.tableData[0].productId;
                 this.loadData();
             },
             nextClick() {
                 this.pageFlag = "next";
-                this.lastId = this.tableData[this.tableData.length - 1].appId;
+                this.lastId = this.tableData[this.tableData.length - 1].productId;
                 this.loadData();
             },
             loadTotal(searchForm) {
@@ -95,7 +95,7 @@
                     searchForm = {};
                 }
                 this.$store
-                    .dispatch("app/getTotal", {
+                    .dispatch("product/getTotal", {
                         filters: searchForm
                     })
                     .then(data => {
@@ -110,7 +110,7 @@
                     searchForm = {};
                 }
                 this.$store
-                    .dispatch("app/getPageList", {
+                    .dispatch("product/getPageList", {
                         pageFlag: this.pageFlag,
                         pageSize: this.pageSize,
                         lastId: this.lastId,
@@ -128,25 +128,15 @@
                         console.log(error);
                     });
             },
-            handleSwitch(row) {
-                row.enable = row.enable ? true : false;
-                this.$store
-                    .dispatch("app/updateOne", row)
-                    .then(() => {
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
             handleCancel() {
                 this.dialogVisible = false;
             },
             handleAdd() {
                 this.dialogVisible = true;
-                this.appId = "";
+                this.productId = "";
             },
             handleUpdate(id) {
-                this.appId = id;
+                this.productId = id;
                 this.dialogVisible = true;
             },
             handleRemove(id, index, rows) {
@@ -156,7 +146,7 @@
                     type: "warning"
                 })
                     .then(() => {
-                        this.$store.dispatch("app/removeOne", {appId: id}).then(() => {
+                        this.$store.dispatch("product/removeOne", {productId: id}).then(() => {
                             if (1 === this.tableData.length) {
                                 this.prevClick();
                             } else {
@@ -171,10 +161,10 @@
             },
             handleSave(formData) {
                 this.$store
-                    .dispatch("app/save", formData)
+                    .dispatch("product/save", formData)
                     .then(() => {
                         this.loadData();
-                        if (this.appId != "") {
+                        if (this.productId != "") {
                             this.$message({
                                 type: "success",
                                 message: "修改成功！"
@@ -218,8 +208,8 @@
             this.loadData();
         },
         components: {
-            appSearch,
-            appEdit
+            search,
+            edit
         }
     };
 </script>
