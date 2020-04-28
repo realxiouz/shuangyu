@@ -33,8 +33,8 @@
           style="width: 100%;margin-bottom: 15px;"
           size="mini"
         >
-          <el-table-column prop="propertyName" label="属性名称" align="center"></el-table-column>
           <el-table-column prop="categoryName" label="商品类目" align="center"></el-table-column>
+          <el-table-column prop="propertyName" label="属性名称" align="center"></el-table-column>
           <el-table-column prop="isSellProperty" label="是否销售属性" align="center"></el-table-column>
           <el-table-column prop="isEnumProperty" label="是否枚举属性" align="center"></el-table-column>
           <el-table-column prop="required" label="是否必填" align="center"></el-table-column>
