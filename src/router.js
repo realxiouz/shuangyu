@@ -583,6 +583,13 @@ export default new Router({
           name: 'property',
           component: () => import('@/views/productProperty/List'),
           meta: {title: '商品属性管理', icon: 'home'}
+        },
+        {
+          title: '添加商品属性',
+          path: '/property/config',
+          name: 'config',
+          component: () => import('@/views/productProperty/Edit'),
+          meta: {title: '商品属性管理', icon: 'home'}
         }
       ]
     },
