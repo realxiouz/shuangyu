@@ -355,11 +355,11 @@ export default new Router({
           meta: {title: '员工管理', icon: 'home'}
         },
         {
-          title: '字典管理',
+          title: '类别管理',
           path: '/dict/list',
           name: 'dict',
           component: () => import('@/views/dict/List'),
-          meta: {title: '字典管理', icon: 'home'}
+          meta: {title: '类别管理', icon: 'home'}
         },
         {
           title: '应用管理',
@@ -552,13 +552,6 @@ export default new Router({
           name: 'trade',
           component: () => import('@/views/trade/List'),
           meta: {title: '交易记录', icon: 'home'}
-        },
-        {
-          title: '品牌信息',
-          path: '/brand/list',
-          name: 'brand',
-          component: () => import('@/views/brand/List'),
-          meta: {title: '品牌信息', icon: 'home'}
         }
       ]
     },
@@ -590,6 +583,13 @@ export default new Router({
           name: 'config',
           component: () => import('@/views/productProperty/Edit'),
           meta: {title: '商品属性管理', icon: 'home'}
+        },
+        {
+          title: '品牌信息',
+          path: '/brand/list',
+          name: 'brand',
+          component: () => import('@/views/brand/List'),
+          meta: {title: '品牌信息', icon: 'home'}
         }
       ]
     },
