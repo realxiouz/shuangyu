@@ -552,6 +552,13 @@ export default new Router({
           name: 'trade',
           component: () => import('@/views/trade/List'),
           meta: {title: '交易记录', icon: 'home'}
+        },
+        {
+          title: '品牌信息',
+          path: '/brand/list',
+          name: 'brand',
+          component: () => import('@/views/brand/List'),
+          meta: {title: '品牌信息', icon: 'home'}
         }
       ]
     },
