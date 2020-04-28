@@ -81,13 +81,6 @@ export default new Router({
           meta: {title: '用户管理', icon: 'home'}
         },
         {
-          title: '应用管理',
-          path: '/app',
-          naem: 'app',
-          component: () => import('@/views/app/List'),
-          meta: {title: '应用管理', icon: 'home'}
-        },
-        {
           title: '导航菜单管理',
           path: '/nav/list',
           name: 'nav',
@@ -121,13 +114,6 @@ export default new Router({
           name: 'productMark',
           component: () => import('@/views/productMark/List'),
           meta: {title: '产品标签管理', icon: 'home'},
-        },
-        {
-          title: '字典管理',
-          path: '/dict/list',
-          name: 'dict',
-          component: () => import('@/views/dict/List'),
-          meta: {title: '字典管理', icon: 'home'}
         }
       ]
     },
@@ -369,6 +355,20 @@ export default new Router({
           meta: {title: '员工管理', icon: 'home'}
         },
         {
+          title: '字典管理',
+          path: '/dict/list',
+          name: 'dict',
+          component: () => import('@/views/dict/List'),
+          meta: {title: '字典管理', icon: 'home'}
+        },
+        {
+          title: '应用管理',
+          path: '/app/list',
+          naem: 'app',
+          component: () => import('@/views/app/List'),
+          meta: {title: '应用管理', icon: 'home'}
+        },
+        {
           title: '客户去哪儿接口管理',
           path: '/qunar/config',
           name: 'qunarOrderConfig',
@@ -412,18 +412,18 @@ export default new Router({
 
       children: [
         {
-          title: 'Open平台',
+          title: '开放平台',
           path: '/open/list',
           name: 'open',
           component: () => import('@/views/open/List'),
-          meta: {title: 'Open平台', icon: 'home'}
+          meta: {title: '开放平台', icon: 'home'}
         },
         {
-          title: 'OpenApi',
+          title: '开放平台API',
           path: '/openApi/list',
           name: 'openApi',
           component: () => import('@/views/openApi/List'),
-          meta: {title: 'OpenApi', icon: 'home'}
+          meta: {title: '开放平台API', icon: 'home'}
         },
         {
           title: 'TGQ调度',
@@ -469,11 +469,11 @@ export default new Router({
           meta: {title: 'Open标签参数', icon: 'home'}
         },
         {
-          title: 'Open平台账号',
+          title: '开放平台账号',
           path: '/open/account/list',
           name: 'account',
           component: () => import('@/views/openAccount/List'),
-          meta: {title: 'Open平台账号', icon: 'home'}
+          meta: {title: '开放平台账号', icon: 'home'}
         }
 
       ]
