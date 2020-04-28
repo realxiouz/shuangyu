@@ -14,7 +14,7 @@
           @node-click="handleNodeClick"
         >
           <span class="tree-node" slot-scope="{ node, data }">
-            <span>{{ node.data.name }}</span>
+            <span>{{ node.data.categoryName }}</span>
             <span>
               <el-button type="text" size="mini" @click="nodeAdd(node, data)">添加</el-button>
               <el-button type="text" size="mini" @click="handleEdit(node, data)">修改</el-button>
@@ -45,7 +45,7 @@
           ></el-input>
         </el-form-item>
         <el-form-item label="类别名称">
-          <el-input type="text" v-model="formData.name"></el-input>
+          <el-input type="text" v-model="formData.categoryName"></el-input>
         </el-form-item>
         <el-form-item label="排序">
           <el-input type="text" v-model="formData.sort"></el-input>
@@ -97,7 +97,7 @@ export default {
         categoryId: "",
         categoryCode: "",
         categoryType: 0,
-        name: "",
+          categoryName: "",
         icon: "",
         title: "",
         sort: "",
