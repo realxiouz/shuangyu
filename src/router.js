@@ -575,7 +575,7 @@ export default new Router({
           path: '/property/list',
           name: 'property',
           component: () => import('@/views/productProperty/List'),
-          meta: {title: '商品管理', icon: 'home'}
+          meta: {title: '商品属性管理', icon: 'home'}
         }
       ]
     },
