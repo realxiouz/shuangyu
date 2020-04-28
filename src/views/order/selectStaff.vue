@@ -26,13 +26,14 @@ export default {
       staffs: [],
       total: 0,
       staffList: [],
+      staffData:"",
       staffId: ""
     };
   },
 
   methods: {
     handleConfirm() {
-      if (this.staffId == "") {
+      if (this.staffData == "") {
         this.$notify({
           title: "提示",
           message: "请选择需要派遣的员工",
@@ -41,19 +42,10 @@ export default {
         });
         return;
       }
-      if (this.staffId == this.$store.state.loginInfo.staffId) {
-        this.$notify({
-          title: "提示",
-          message: "不可以自己给自己派遣，请选择其他员工。",
-          type: "warning",
-          duration: 4500
-        });
-        return;
-      }
-      this.$emit("onSave", this.staffId);
+      this.$emit("onSave", this.staffData);
     },
     handleCurrentChange(row) {
-      this.staffId = row.staffId;
+      this.staffData = row;
     },
     loadData() {
       this.$store
