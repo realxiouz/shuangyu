@@ -3,12 +3,12 @@
     <div id="form">
       <el-main>
         <div class="formTitle">
-          添加账号
+          添加平台账号
           <el-button id="addButton" type="primary" size="mini" @click="addAccountClick">添加</el-button></div>
         <el-form :model="account" :inline="true" label-position="left" label-width="80px" size="mini">
           <el-row>
-            <el-form-item label="账号">
-              <el-input v-model="account.username" placeholder="请输入账号"></el-input>
+            <el-form-item label="平台账号">
+              <el-input v-model="account.username" placeholder="请输入平台账号"></el-input>
             </el-form-item>
             <el-form-item label="密码">
               <el-input v-model="account.password" placeholder="请输入密码"></el-input>
