@@ -379,7 +379,6 @@ export default {
     let params = {};
     params.purchaseOrderNo = this.changeData.sourceOrderNo;
     params.changeDptDate = this.changeDataTop.flightDate;
-    this.changeSearchData(params);
     let arr = [];
     for (let i = 0; i < this.changeDataTop.passagers.length; i++) {
       this.changeData.orderDetailList.forEach(item => {
@@ -389,6 +388,7 @@ export default {
       });
     }
     this.orderDetailList = arr;
+    this.changeSearchData(params);
   }
 };
 </script>

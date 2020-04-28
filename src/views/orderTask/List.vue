@@ -349,7 +349,6 @@ export default {
         path: path,
         query: {
           orderNo: row.orderNo,
-          rootOrderNo: row.rootOrderNo,
           taskId: row.taskId,
           taskType: row.taskType
         }
