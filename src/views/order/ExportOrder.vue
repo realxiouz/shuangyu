@@ -29,7 +29,12 @@
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="类型:" prop="orderType">
-            <el-select v-model="formData.historyOrCurrent" clearable placeholder="请选择">
+            <el-select
+              style="width: 100%"
+              v-model="formData.historyOrCurrent"
+              clearable
+              placeholder="请选择"
+            >
               <el-option label="实时" :value="'0'"></el-option>
               <el-option label="历史" :value="'1'"></el-option>
             </el-select>
@@ -38,6 +43,7 @@
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item>
             <el-button type="primary" @click="showStaffDialog" size="mini">选择派遣人</el-button>
+            <span v-if="staffData">已选择的派遣人：{{staffData.fullName}}</span>
           </el-form-item>
         </el-col>
       </el-row>
@@ -72,6 +78,7 @@ export default {
         sourceOrderNo: "",
         staffId: ""
       },
+      staffData: {},
       orderType: orderType,
       staffDialog: false,
       staffId: ""
@@ -87,8 +94,10 @@ export default {
     showStaffDialog() {
       this.staffDialog = true;
     },
-    handleConfirm(id) {
-      this.staffId = id;
+    handleConfirm(params) {
+      console.log(params);
+      this.staffData = params;
+      this.staffId = params.staffId;
       this.staffDialog = false;
     },
     exportOrder() {
