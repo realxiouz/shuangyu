@@ -78,7 +78,7 @@
         <el-tab-pane label="联系人">
           <other-contact :contacts="contacts"/>
         </el-tab-pane>
-        <el-tab-pane label="账号配置" :disabled="!firmForm.openId">
+        <el-tab-pane label="账号配置">
           <account :accounts="accounts" :alterAble="alterAble"/>
         </el-tab-pane>
         <el-tab-pane label="其他信息">其他信息</el-tab-pane>
