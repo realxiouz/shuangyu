@@ -25,7 +25,7 @@
           <search @onSearch="handleSearch"></search>
         </div>
         <el-row type="flex" justify="space-between" style="margin-bottom:20px;" align="bottom">
-          <el-button type="primary" size="mini" @click="handleAdd">添加</el-button>
+          <el-button type="primary" size="mini" @click="handleAdd" :disabled="dialogVisible">添加</el-button>
         </el-row>
         <el-table
           v-loading="loading"
@@ -62,14 +62,6 @@
           :page-size="pageSize"
           :total="total"
         ></el-pagination>
-        <el-dialog center :visible.sync="dialogVisible" width="30%">
-          <edit
-            v-if="dialogVisible"
-            :app-id="propertyId"
-            @onSave="handleSave"
-            @onCancel="handleCancel"
-          ></edit>
-        </el-dialog>
       </el-col>
     </el-row>
   </div>
@@ -77,7 +69,6 @@
 
 <script>
     import search from "./Search";
-    import edit from "./Edit";
 
     export default {
         data() {
@@ -94,7 +85,7 @@
                 lastId: "0",
                 pageFlag: "next",
                 pageSize: 10,
-                dialogVisible: false,
+                dialogVisible: true,
                 propertyId: "",
                 total: 0
             };
@@ -117,11 +108,11 @@
             },
             /*点击部门树时调用*/
             handleNodeClick(data) {
+                this.dialogVisible = false;
                 this.curNode = data;
                 let searchForm = {};
                 searchForm.categoryCode = data.categoryCode;
                 this.loadData(searchForm);
-                console.log(this.curNode)
             },
             prevClick() {
                 this.pageFlag = "prev";
@@ -171,21 +162,27 @@
                         console.log(error);
                     });
             },
-            handleCancel() {
-                this.dialogVisible = false;
-            },
             handleAdd() {
                 let path = "";
                 path = "/property/config";
                 this.$router.push({
-                    path: path
+                    path: path,
+                    query: {
+                        categoryCode: this.curNode.categoryCode,
+                        categoryName: this.curNode.categoryName,
+                        path: this.curNode.path
+                    }
                 });
-                this.dialogVisible = true;
-                this.propertyId = "";
             },
             handleUpdate(id) {
-                this.propertyId = id;
-                this.dialogVisible = true;
+                let path = "";
+                path = "/property/config";
+                this.$router.push({
+                    path: path,
+                    query: {
+                        propertyId: id
+                    }
+                });
             },
             handleRemove(id, index, rows) {
                 this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
@@ -207,28 +204,27 @@
                         console.error(err);
                     });
             },
-            handleSave(formData) {
-                this.$store
-                    .dispatch("productProperty/save", formData)
-                    .then(() => {
-                        this.loadData();
-                        if (this.propertyId != "") {
-                            this.$message({
-                                type: "success",
-                                message: "修改成功！"
-                            });
-                        } else {
-                            this.$message({
-                                type: "success",
-                                message: "添加成功！"
-                            });
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-                this.dialogVisible = false;
-            },
+            // handleSave(formData) {
+            //     this.$store
+            //         .dispatch("productProperty/save", formData)
+            //         .then(() => {
+            //             this.loadData();
+            //             if (this.propertyId != "") {
+            //                 this.$message({
+            //                     type: "success",
+            //                     message: "修改成功！"
+            //                 });
+            //             } else {
+            //                 this.$message({
+            //                     type: "success",
+            //                     message: "添加成功！"
+            //                 });
+            //             }
+            //         })
+            //         .catch(error => {
+            //             console.log(error);
+            //         });
+            // },
             handleSizeChange(pageSize) {
                 this.pageSize = pageSize;
                 this.loadData();
@@ -257,8 +253,7 @@
             this.loadData();
         },
         components: {
-            search,
-            edit
+            search
         }
     };
 </script>

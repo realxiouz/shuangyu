@@ -23,7 +23,7 @@
         }
     };
     export default {
-        name: 'edit',
+        name: 'appEdit',
         data() {
             return {
                 formData: defaultData(),
