@@ -198,24 +198,25 @@
         :close-on-click-modal="false"
       >
         <div>
-          <el-row style="margin-bottom: 25px;text-align: center;">
-            <span>支付金额：{{payData.noPayAmount }}</span>
-          </el-row>
-          <el-row style="margin-bottom: 25px;text-align: center;">
-            <span>盈亏值：</span>
-          </el-row>
-          <div style="text-align: center;">
-            <span>支付方式：</span>
-            <el-select
-              style="height:20px;"
-              clearable
-              v-model="payData.bankCode"
-              placeholder="请选择支付方式"
-            >
-              <el-option label="支付宝" value="ALIPAY"></el-option>
-              <el-option label="汇付" value="PNRPAY"></el-option>
-            </el-select>
-          </div>
+          <el-form size="mini" label-width="110px" class="demo-ruleForm">
+            <el-form-item label="支付金额：">
+              <span>{{payData.noPayAmount }}</span>
+            </el-form-item>
+            <el-form-item label="盈亏值：">
+              <el-input v-model="profitAndLossValue" clearable></el-input>
+            </el-form-item>
+            <el-form-item label="支付方式：">
+              <el-select
+                style="width:100%;"
+                clearable
+                v-model="payData.bankCode"
+                placeholder="请选择支付方式"
+              >
+                <el-option label="支付宝" value="ALIPAY"></el-option>
+                <el-option label="汇付" value="PNRPAY"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-form>
         </div>
         <div style="margin-top: 25px;text-align: right;">
           <el-button size="mini" @click="onCancel">取 消</el-button>
@@ -246,6 +247,7 @@ export default {
       flightData: [],
       loading: true,
       expands: [],
+      profitAndLossValue: "", //盈亏值
       passengerData: JSON.parse(this.$route.query.passengersInfo),
       flightInfo: {
         arr: "",
@@ -257,10 +259,9 @@ export default {
       predetermineOrderData: "",
       //支付数据
       payData: {
-        allPrice: "",
+        allPrice: 0,
         bankCode: "",
         cabin: "",
-        params: "",
         payOrderNo: "",
         sellOrderNo: ""
       }
@@ -299,6 +300,19 @@ export default {
         payOrderNo: this.payData.orderNo,
         sellOrderNo: this.orderData.sourceOrderNo
       };
+      let amountTotal = 0;
+      this.passengerData.forEach(item => {
+        amountTotal += Number(item.amount);
+      });
+      let _profitAndLossValue = 0;
+      _profitAndLossValue = Number(params.allPrice) - amountTotal;
+      if (_profitAndLossValue != this.profitAndLossValue) {
+        this.$message({
+          type: "warning",
+          message: "盈亏值计算错误！"
+        });
+        return;
+      }
       this.openPay(params);
       this.payShow = false;
     },
@@ -363,6 +377,7 @@ export default {
       newParams.to = row.offerPrice.to;
       newParams.startTime = row.offerPrice.startTime;
       newParams.dptTime = row.offerPrice.dptTime;
+      this.payShow = true;
 
       this.$store
         .dispatch("order/checkOrder", newParams)

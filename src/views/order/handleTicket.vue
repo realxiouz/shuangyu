@@ -255,7 +255,12 @@
     </el-form>
     <div style="margin-top: 25px;text-align: right;">
       <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
-      <el-button size="mini" v-if="!this.isWoniu" type="primary" @click="handleSaveTicket">保存并贴票</el-button>
+      <el-button
+        size="mini"
+        v-if="!isWoniuTicket"
+        type="primary"
+        @click="handleSaveTicket"
+      >保存并贴票</el-button>
       <el-button size="mini" type="primary" @click="handleSave">保存</el-button>
     </div>
   </div>

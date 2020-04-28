@@ -124,13 +124,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="支付金额:">
+            <el-form-item label="金额:">
               <el-input clearable v-model="formData.transactionAmount"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="利润金额:">
-              <el-input clearable v-model="formData.profit"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">

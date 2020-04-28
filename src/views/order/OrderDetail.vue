@@ -166,7 +166,7 @@
           @click="goTicket"
           size="mini"
         >系统出票</el-button>
-        <el-button type="primary" @click="handleTicket" size="mini">手工出票</el-button>
+        <el-button type="primary" v-if="taskType!=2" @click="handleTicket" size="mini">手工出票</el-button>
       </el-row>
     </el-card>
     <el-card class="contentBox">
@@ -186,11 +186,12 @@
       </div>
       <div id="changeHtmlOrderDetail">
         <span v-if="this.changeHtml" v-html="this.changeHtml"></span>
-        <span v-else>暂无数据</span>
       </div>
       <div id="refundHtmlOrderDetail">
         <span v-if="this.refundHtml" v-html="this.refundHtml"></span>
-        <span v-else>暂无数据</span>
+      </div>
+      <div>
+        <span v-if="this.changeHtml&& this.refundHtml">暂无数据</span>
       </div>
     </el-card>
 
