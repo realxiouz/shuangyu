@@ -217,11 +217,13 @@
 
         <el-table
           :data="formData.orderDetailList"
+          @selection-change="handleSelectionChange"
           size="mini"
           highlight-current-row
           style="width: 100%;"
           fit
         >
+          <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column prop="name" label="姓名" width="80" align="center"></el-table-column>
           <el-table-column prop="gender" label="性别" width="50" align="center"></el-table-column>
           <el-table-column
@@ -282,7 +284,8 @@ export default {
       isWoniuTicket: true,
       formData: {},
       accountData: [],
-      statusData: statusData
+      statusData: statusData,
+      selectOrderDetailList: []
     };
   },
   methods: {
@@ -325,6 +328,9 @@ export default {
         this.isWoniu = false;
       }
     },
+    handleSelectionChange(row) {
+      this.selectOrderDetailList = row;
+    },
     // 获取资金账号
     getFinance() {
       this.$store
@@ -341,6 +347,7 @@ export default {
     },
     // 保存
     handleSave() {
+      this.formData.orderDetailList = this.selectOrderDetailList;
       this.$emit("onSave", this.formData);
     }
   },

@@ -184,6 +184,8 @@
         <span v-if="this.tableData.orderType=='30'|| this.tableData.orderType=='31'">改签</span>
         <span v-else>退票</span>
       </div>
+      <el-button type="primary" style="margin-bottom:15px;" size="mini" @click="refreshHtml">刷新</el-button>
+
       <div id="changeHtmlOrderDetail">
         <span v-if="this.changeHtml" v-html="this.changeHtml"></span>
       </div>
@@ -433,6 +435,7 @@ export default {
       passengerData: [],
       tableData: {},
       passengersInfo: [],
+      _orderType: "",
       orderTree: [],
       sourceOrderNo: "",
       refundData: "",
@@ -489,6 +492,7 @@ export default {
               }, 5000);
             }
             this.getMessage();
+            this._orderType = data.orderType;
             this.getMessageHtml(data.orderType, this.sourceOrderNo);
             if (data.passengers) {
               this.passengerData = data.passengers;
@@ -633,8 +637,8 @@ export default {
         }
         this.purchaseOrder(newParams);
       }
-      // this.fillOutRefundShow = false;
-      // this.fillOutChangeShow = false;
+      this.fillOutRefundShow = false;
+      this.fillOutChangeShow = false;
     },
 
     // 手工出票保存
@@ -692,13 +696,7 @@ export default {
               type: "success",
               message: "操作成功"
             });
-            this.handleTicketShow = false;
-            this.fillOutRefundShow = false;
-            this.fillOutChangeShow = false;
           } else {
-            this.handleTicketShow = true;
-            this.fillOutRefundShow = true;
-            this.fillOutChangeShow = true;
             this.$message({
               type: "success",
               message: data.msg
@@ -706,9 +704,6 @@ export default {
           }
         })
         .catch(error => {
-          this.handleTicketShow = true;
-          this.fillOutRefundShow = true;
-          this.fillOutChangeShow = true;
           console.log(error);
         });
     },
@@ -722,13 +717,7 @@ export default {
               type: "success",
               message: "操作成功"
             });
-            this.handleTicketShow = false;
-            this.fillOutRefundShow = false;
-            this.fillOutChangeShow = false;
           } else {
-            this.handleTicketShow = true;
-            this.fillOutRefundShow = true;
-            this.fillOutChangeShow = true;
             this.$message({
               type: "success",
               message: data.msg
@@ -736,9 +725,6 @@ export default {
           }
         })
         .catch(error => {
-          this.handleTicketShow = true;
-          this.fillOutRefundShow = true;
-          this.fillOutChangeShow = true;
           console.log(error);
         });
     },
@@ -1074,7 +1060,10 @@ export default {
           console.log(error);
         });
     },
-
+    // html刷新
+    refreshHtml() {
+      this.getMessageHtml(this._orderType, this.sourceOrderNo);
+    },
     // 获取html
     getMessageHtml(orderType, sourceOrderNo) {
       if (
