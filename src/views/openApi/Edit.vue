@@ -2,7 +2,7 @@
   <div>
     <el-form ref="formData" :model="formData" label-width="100px" size="mini">
       <input type="hidden" v-model="formData.apiId" />
-      <el-form-item label="Open平台:">
+      <el-form-item label="开放平台:">
         <el-select v-model="formData.openId" placeholder="请选择平台.." @change="handleSelect" style="width: 100%">
           <el-option
             v-for="item in openList"

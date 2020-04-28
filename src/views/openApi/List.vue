@@ -13,7 +13,7 @@
         :data="tableData"
         style="width: 100%;margin-bottom: 15px;"
       >
-        <el-table-column prop="third.firmName" label="Open平台" width="300" align="center"></el-table-column>
+        <el-table-column prop="third.firmName" label="开放平台" width="300" align="center"></el-table-column>
         <el-table-column prop="url" label="url" width="300" align="center"></el-table-column>
         <el-table-column prop="method" label="方法名称" align="center"></el-table-column>
         <el-table-column label="是否启用" align="center" width="100">

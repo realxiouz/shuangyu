@@ -32,7 +32,7 @@
       ></el-pagination>
 
       <el-dialog
-        title="Open平台账号信息"
+        title="开放平台账号信息"
         :visible.sync="dialogVisible"
         width="30%"
         :close-on-click-modal="false"

@@ -58,7 +58,7 @@
               <el-form-item label="备注">
                 <el-input type="textarea" v-model="firmOtherForm.remark"></el-input>
               </el-form-item>
-              <el-form-item label="Open平台">
+              <el-form-item label="开放平台">
                 <el-select v-model="firmForm.openId" placeholder="请选择平台" @change="selectedOpen">
                   <el-option :value=null>&nbsp;- -</el-option>
                   <el-option v-for="(item,idx) in openList"
