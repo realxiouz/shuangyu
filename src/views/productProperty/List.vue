@@ -231,16 +231,16 @@
             },
             formatProperty(row) {
                 if (row.isSellProperty) {
-                    return row.isSellProperty === true ? "是" : "否";
+                    return row.isSellProperty == true ? "是" : "否";
                 }
                 if (row.isEnumProperty) {
-                    return row.isEnumProperty === true ? "是" : "否";
+                    return row.isEnumProperty == true ? "是" : "否";
                 }
                 if (row.required) {
-                    return row.required === true ? "是" : "否";
+                    return row.required == true ? "是" : "否";
                 }
                 if (row.isMultiple) {
-                    return row.isMultiple === true ? "是" : "否";
+                    return row.isMultiple == true ? "是" : "否";
                 }
 
             },
