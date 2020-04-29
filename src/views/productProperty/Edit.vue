@@ -13,6 +13,17 @@
             <el-form-item label="商品类目" prop="categoryName">
               <el-input v-model="formData.categoryName" disabled></el-input>
             </el-form-item>
+<!--            <el-form-item label="商品类目">-->
+<!--              <el-cascader-->
+<!--                v-model="formData.categoryCode"-->
+<!--                style="width: 100%;"-->
+<!--                :options="categoryList"-->
+<!--                :props="{ label: 'categoryName', value: 'categoryCode' }"-->
+<!--                filterable-->
+<!--                @change="handleCategory"-->
+<!--              >-->
+<!--              </el-cascader>-->
+<!--            </el-form-item>-->
           </el-col>
         </el-row>
         <el-row :gutter="10">
@@ -24,29 +35,29 @@
         </el-row>
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="是否销售属性" prop="isSellProperty">
-              <el-checkbox v-model="formData.isSellProperty"></el-checkbox>
+            <el-form-item label="是否销售属性" prop="sellProperty">
+              <el-switch v-model="formData.sellProperty" :active-value=true :inactive-value=false></el-switch>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="是否枚举属性" prop="isEnumProperty">
-              <el-checkbox v-model="formData.isEnumProperty"></el-checkbox>
+            <el-form-item label="是否枚举属性" prop="enumProperty">
+              <el-switch v-model="formData.enumProperty" :active-value=true :inactive-value=false></el-switch>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="是否必填" prop="required">
-              <el-checkbox v-model="formData.required"></el-checkbox>
+            <el-form-item label="是否必填">
+              <el-switch v-model="formData.required" :active-value=true :inactive-value=false></el-switch>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="是否多选" prop="isMultiple">
-              <el-checkbox v-model="formData.isMultiple"></el-checkbox>
+            <el-form-item label="是否多选" prop="multiple">
+              <el-switch v-model="formData.multiple" :active-value=true :inactive-value=false></el-switch>
             </el-form-item>
           </el-col>
         </el-row>
@@ -90,10 +101,10 @@
         return {
             categoryName: "",
             propertyName: "",
-            isSellProperty: false,
-            isEnumProperty: false,
+            sellProperty: false,
+            enumProperty: false,
             required: false,
-            isMultiple: false,
+            multiple: false,
             values: []
         }
     };
@@ -104,6 +115,8 @@
                 formData: defaultData(),
                 dialogVisible: false,
                 formValue: {},
+                propertyId: '',
+                categoryList: [],
                 rules: {
                     categoryName: [
                         {required: true, message: "请输入商品类目", trigger: "blur"},
@@ -131,7 +144,6 @@
                             .dispatch("productProperty/save", this.formData)
                             .then(() => {
                                 this.loadData();
-                                this.goBack();
                                 if (this.propertyId != "") {
                                     this.$message({
                                         type: "success",
@@ -149,14 +161,14 @@
                             });
                     }
                 });
+                this.goBack();
             },
             handleGetOne(id) {
                 if (id) {
                     this.$store
-                        .dispatch("app/getOne", {propertyId: id})
+                        .dispatch("productProperty/getOne", {propertyId: id})
                         .then(data => {
                             this.formData = data;
-                            this.dialogVisible = true;
                         }).catch(error => {
                         console.log(error);
                     });
@@ -181,18 +193,57 @@
                 this.formData.values.push(this.formValue);
                 this.dialogVisible = false;
                 this.formValue = {};
-            }
+            },
+            loadTreeData() {
+                this.$store
+                    .dispatch("category/getTreeList", {filter: {categoryType: 9}})
+                    .then(data => {
+                        if (data) {
+                            this.categoryList = this.getTreeData(data.data);
+                        }
+                        this.loading = false;
+                    })
+                    .catch(error => {
+                        this.loading = false;
+                        console.log(error);
+                    });
+            },
+            getTreeData(data) {
+                // 循环遍历json数据
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].children.length < 1) {
+                        // children若为空数组，则将children设为undefined
+                        data[i].children = undefined;
+                    } else {
+                        // children若不为空数组，则继续 递归调用 本方法
+                        this.getTreeData(data[i].children);
+                    }
+                }
+                return data;
+            },
+            handleCategory(category) {
+                if (category) {
+                    let code = category[category.length - 1];
+                    this.formData.categoryCode = code;
+                }
+            },
         },
         created() {
+            console.log(this.$route.query);
             if (this.$route.query.propertyId) {
-                this.handleGetOne(this.propertyId);
+                this.propertyId = this.$route.query.propertyId;
+                this.handleGetOne(this.$route.query.propertyId);
+            }
+            if (this.$route.query.categoryCode) {
+                this.formData.categoryCode = this.$route.query.categoryCode;
             }
             if (this.$route.query.categoryName) {
                 this.formData.categoryName = this.$route.query.categoryName;
             }
-        },
-        props: {
-            propertyId: String,
+            if(this.$route.query.path){
+                this.formData.path = this.$route.query.path;
+            }
+            this.loadTreeData();
         }
     }
 </script>

@@ -35,13 +35,26 @@
         >
           <el-table-column prop="categoryName" label="商品类目" align="center"></el-table-column>
           <el-table-column prop="propertyName" label="属性名称" align="center"></el-table-column>
-          <el-table-column prop="isSellProperty" label="是否销售属性" align="center"
-                           :formatter="formatProperty"></el-table-column>
-          <el-table-column prop="isEnumProperty" label="是否枚举属性" align="center"
-                           :formatter="formatProperty"></el-table-column>
-          <el-table-column prop="required" label="是否必填" align="center"
-                           :formatter="formatProperty"></el-table-column>
-          <el-table-column prop="isMultiple" label="是否多选" align="center" :formatter="formatProperty"></el-table-column>
+          <el-table-column prop="sellProperty" label="是否销售属性" align="center">
+            <template slot-scope="scope">
+              <el-switch v-model="scope.row.sellProperty" disabled></el-switch>
+            </template>
+          </el-table-column>
+          <el-table-column prop="enumProperty" label="是否枚举属性" align="center">
+            <template slot-scope="scope">
+              <el-switch v-model="scope.row.enumProperty" disabled></el-switch>
+            </template>
+          </el-table-column>
+          <el-table-column prop="required" label="是否必填" align="center">
+            <template slot-scope="scope">
+              <el-switch v-model="scope.row.required" disabled></el-switch>
+            </template>
+          </el-table-column>
+          <el-table-column prop="multiple" label="是否多选" align="center">
+            <template slot-scope="scope">
+              <el-switch v-model="scope.row.multiple" disabled></el-switch>
+            </template>
+          </el-table-column>
           <el-table-column fixed="right" label="操作" align="center" width="350">
             <template slot-scope="scope">
               <el-button @click="handleUpdate(scope.row.propertyId)" type="primary" size="mini">编辑</el-button>
@@ -228,21 +241,6 @@
                     type: "success",
                     message: "查询成功！"
                 });
-            },
-            formatProperty(row) {
-                if (row.isSellProperty) {
-                    return row.isSellProperty == true ? "是" : "否";
-                }
-                if (row.isEnumProperty) {
-                    return row.isEnumProperty == true ? "是" : "否";
-                }
-                if (row.required) {
-                    return row.required == true ? "是" : "否";
-                }
-                if (row.isMultiple) {
-                    return row.isMultiple == true ? "是" : "否";
-                }
-
             },
         },
         created() {
