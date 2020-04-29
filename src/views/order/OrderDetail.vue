@@ -473,7 +473,7 @@
         passengerData: [],
         tableData: {},
         passengersInfo: [],
-        _orderType: "",
+        sellOrderType: "",
         orderTree: [],
         sourceOrderNo: "",
         refundData: "",
@@ -527,7 +527,7 @@
                 this.getOrderTree();
               }
               this.getMessage();
-              this._orderType = data.orderType;
+              this.sellOrderType = data.orderType;
               this.getMessageHtml();
               if (data.passengers) {
                 this.passengerData = data.passengers;
@@ -1154,13 +1154,13 @@
       // 获取html
       getMessageHtml() {
         if (
-          this._orderType == 20 ||
-          this._orderType == 21 ||
-          this._orderType == 22 ||
-          this._orderType == 23
+          this.sellOrderType == 20 ||
+          this.sellOrderType == 21 ||
+          this.sellOrderType == 22 ||
+          this.sellOrderType == 23
         ) {
           this.getRefundHtml();
-        } else if (this._orderType == 30 || this._orderType == 31) {
+        } else if (this.sellOrderType == 30 || this.sellOrderType == 31) {
           this.getChangeHtml();
         }
       },
