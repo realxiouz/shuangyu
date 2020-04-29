@@ -25,7 +25,8 @@
         <!--          <search @onSearch="handleSearch"></search>-->
         <!--        </div>-->
         <el-row type="flex" justify="space-between" style="margin-bottom:20px;" align="bottom">
-          <el-button  icon="el-icon-plus" type="primary" size="mini" @click="handleAdd" :disabled="dialogVisible">添加属性</el-button>
+          <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd" :disabled="dialogVisible">添加属性
+          </el-button>
         </el-row>
         <el-table
           v-loading="loading"
@@ -34,6 +35,8 @@
           size="mini"
         >
           <el-table-column prop="categoryName" label="商品类目" align="center"></el-table-column>
+          <el-table-column prop="propertyTitle" label="属性标题" align="center"></el-table-column>
+          <el-table-column prop="propertyCode" label="属性编码" align="center"></el-table-column>
           <el-table-column prop="propertyName" label="属性名称" align="center"></el-table-column>
           <el-table-column prop="sellProperty" label="是否销售属性" align="center">
             <template slot-scope="scope">
