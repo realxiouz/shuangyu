@@ -684,6 +684,7 @@ export default {
           }
         }
         this.purchaseOrder(newParams);
+        this.handleTicketShow = false;
       }
     },
     // 非蜗牛补单
