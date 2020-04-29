@@ -196,7 +196,6 @@
         <span v-if="this.changeHtml&& this.refundHtml">暂无数据</span>
       </div>
     </el-card>
-
     <el-card class="contentBox">
       <div slot="header" class="clearfix">
         <span>采购订单信息</span>
@@ -270,7 +269,6 @@
         </el-table-column>
       </el-table>
     </el-card>
-
     <div>
       <el-dialog
         title="手工出票"
