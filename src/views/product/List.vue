@@ -5,7 +5,7 @@
     </div>
     <div class="contentBox">
       <el-row style="margin-bottom:15px;margin-left:40px">
-        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加商品</el-button>
       </el-row>
       <el-table
         v-loading="loading"
@@ -69,7 +69,7 @@
         name: "list",
         data() {
             return {
-                lastId: "0",
+                lastId: "blank",
                 pageFlag: "next",
                 pageSize: 10,
                 dialogVisible: false,
