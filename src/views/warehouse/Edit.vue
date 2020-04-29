@@ -2,10 +2,10 @@
   <div>
     <el-form :model="formData" label-width="110px" size="mini">
       <el-form-item label="仓库编码">
-        <el-input v-model="formData.code" onkeyup="this.value=this.value.toUpperCase()" :disabled="update" placeholder="请输入仓库编码.."></el-input>
+        <el-input v-model="formData.warehouseCode" onkeyup="this.value=this.value.toUpperCase()" :disabled="update" placeholder="请输入仓库编码.."></el-input>
       </el-form-item>
       <el-form-item label="仓库名称">
-        <el-input v-model="formData.name" placeholder="请输入仓库名称.."></el-input>
+        <el-input v-model="formData.warehouseName" placeholder="请输入仓库名称.."></el-input>
       </el-form-item>
       <el-form-item label="地址">
         <el-input v-model="formData.address" placeholder="请输入地址.."></el-input>
@@ -50,9 +50,9 @@
             defaultFormData() {
                 return {
                     //仓库编码
-                    code: '',
+                    warehouseCode: '',
                     //仓库名称
-                    name: '',
+                    warehouseName: '',
                     //地址
                     address: '',
                     //联系电话
@@ -69,8 +69,8 @@
             },
             /*对提交的数据进行类型格式*/
             handleConfirm() {
-                if (this.formData.code && !'' != this.formData.code)
-                    this.formData.code  = this.formData.code.toUpperCase();
+                if (this.formData.warehouseCode && !'' != this.formData.warehouseCode)
+                    this.formData.warehouseCode  = this.formData.warehouseCode.toUpperCase();
                 this.$emit("onSave", this.formData);
             },
             initFormData() {

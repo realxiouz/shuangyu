@@ -6,7 +6,7 @@
           <el-form-item label="仓库编码">
             <el-input
               clearable
-              v-model="formData.code"
+              v-model="formData.warehouseCode"
               placeholder="请输入仓库编码.."
             ></el-input>
           </el-form-item>
@@ -15,7 +15,7 @@
           <el-form-item label="仓库名称">
             <el-input
               clearable
-              v-model="formData.name"
+              v-model="formData.warehouseName"
               placeholder="请输入仓库名称.."
             ></el-input>
           </el-form-item>
@@ -23,13 +23,8 @@
       </el-form>
     </el-col>
     <el-col :xs="8" :sm="6" :md="6" :lg="4" :xl="4" class="search-tools">
-      <el-button
-        icon="el-icon-search"
-        class="filter-item"
-        type="primary"
-        size="mini"
-        @click="handleConfirm"
-      >查询</el-button>
+      <el-button icon="el-icon-search" class="filter-item" type="primary" size="mini" @click="handleConfirm">查询</el-button>
+      <el-button icon="el-icon-refresh" class="filter-item" type="primary" size="mini" @click="handleClear">清空</el-button>
       <el-button type="text" size="mini" @click="handleMore">
         更多
         <i :class="switchIcon"></i>
@@ -43,10 +38,7 @@
         data() {
             return {
                 more: false,
-                formData: {
-                    code: null,
-                    name: null
-                }
+                formData: {}
             };
         },
 
@@ -60,15 +52,29 @@
             }
         },
         methods: {
+            initSearchForm(){
+                return {
+                    warehouseCode: null,
+                    warehouseName: null
+                };
+            },
             handleMore() {
                 this.more = !this.more;
             },
+            handleClear(){
+                this.formData = this.initSearchForm();
+            },
+            //trim(),没有值时赋值为null;
             handleConfirm(){
-                if(!this.formData.code || '' === this.formData.code)
-                    this.formData.code = null;
-                if(!this.formData.name || '' === this.formData.name)
-                    this.formData.name = null;
-                this.$emit("onSearch",this.formData)
+                let _formData = Object.assign({}, this.formData);
+                for (let key in _formData){
+                    if(_formData[key] && '' != _formData[key]){
+                        _formData[key] = _formData[key].trim();
+                    } else {
+                        _formData[key] = null;
+                    }
+                }
+                this.$emit("onSearch",_formData)
             }
         }
     };
