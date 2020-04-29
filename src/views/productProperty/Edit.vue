@@ -71,7 +71,9 @@
           <el-table-column prop="propertyValue" label="值" align="center"></el-table-column>
           <el-table-column fixed="right" label="操作" align="center" width="350">
             <template slot-scope="scope">
-              <el-button type="danger" size="mini" @click="valueRemove(scope.$index, scope.row)">删除</el-button>
+              <el-button type="danger" size="mini"
+                         @click="valueRemove(scope.row.propertyCode,scope.$index,formData.values)">删除
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -178,8 +180,18 @@
                     this.formData = defaultData();
                 }
             },
-            valueRemove(idx) {
-                this.values.splice(idx, 1);
+            valueRemove(id, index, rows) {
+                this.$confirm("此操作将删除该条记录, 是否继续?", "提示", {
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消",
+                    type: "warning"
+                })
+                    .then(() => {
+                        rows.splice(index, 1);
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    });
             },
             handleAdd() {
                 this.dialogVisible = true;
