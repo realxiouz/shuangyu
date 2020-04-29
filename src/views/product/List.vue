@@ -132,12 +132,21 @@
                 this.dialogVisible = false;
             },
             handleAdd() {
-                this.dialogVisible = true;
-                this.productId = "";
+                let path = "";
+                path = "/product/config";
+                this.$router.push({
+                    path: path
+                });
             },
             handleUpdate(id) {
-                this.productId = id;
-                this.dialogVisible = true;
+                let path = "";
+                path = "/product/config";
+                this.$router.push({
+                    path: path,
+                    query: {
+                        productId: id
+                    }
+                });
             },
             handleRemove(id, index, rows) {
                 this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {

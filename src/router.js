@@ -571,6 +571,13 @@ export default new Router({
           meta: {title: '商品管理', icon: 'home'}
         },
         {
+          title: '添加商品',
+          path: '/product/config',
+          name: 'config',
+          component: () => import('@/views/product/Edit'),
+          meta: {title: '添加商品', icon: 'home'}
+        },
+        {
           title: '商品属性管理',
           path: '/property/list',
           name: 'property',
