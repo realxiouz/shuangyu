@@ -225,8 +225,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       openPay(params)
         .then(response => {
-          const { data } = response;
-          resolve(data);
+         // const { data } = response;
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -363,8 +363,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       affirmRefund(params)
         .then(response => {
-          const { data } = response;
-          resolve(data);
+          //const { data } = response;
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -376,8 +376,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       refundCheckRefuseReason(params)
         .then(response => {
-          const { data } = response;
-          resolve(data);
+          //const { data } = response;
+          resolve(response);
         })
         .catch(error => {
           reject(error);
