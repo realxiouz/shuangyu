@@ -1,4 +1,4 @@
-import {getTreeList, getOne, getPageList, getTotal, removeOne, save, getSelectingList} from "@/api/accountSubject";
+import {getList,getTreeList, getOne, getPageList, getTotal, removeOne, save, getSelectingList} from "@/api/accountSubject";
 import {getToken} from "@/utils/auth";
 
 
@@ -37,6 +37,19 @@ const actions = {
     const {filters} = params;
     return new Promise((resolve, reject) => {
       getTreeList(filters)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getList({commit}, params) {
+    const {filters} = params;
+    return new Promise((resolve, reject) => {
+      getList(filters)
         .then(response => {
           const {data} = response;
           resolve(data);
