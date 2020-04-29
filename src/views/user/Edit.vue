@@ -20,6 +20,7 @@
           placeholder="选择日期"
           v-model="formData.birthDate"
           style="width: 100%;"
+          value-format="timestamp"
         ></el-date-picker>
       </el-form-item>
       <el-form-item label="邮箱" prop="email">
@@ -139,12 +140,6 @@ export default {
       };
     },
     handleConfirm() {
-      if (
-        this.formData.birthDate &&
-        "number" != typeof this.formData.birthDate
-      ) {
-        this.formData.birthDate = this.formData.birthDate.getTime();
-      }
       this.$refs.form.validate(valid => {
         if (valid) {
           let addData = {
@@ -217,7 +212,6 @@ export default {
             this.$store
               .dispatch("user/getVerificationCode", { targetEmail: email })
               .then(data => {
-                console.log(data);
                 this.timer = null;
               })
               .catch(error => {
