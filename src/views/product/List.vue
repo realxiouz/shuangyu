@@ -5,7 +5,7 @@
     </div>
     <div class="contentBox">
       <el-row style="margin-bottom:15px;margin-left:40px">
-        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加商品</el-button>
       </el-row>
       <el-table
         v-loading="loading"
@@ -69,7 +69,7 @@
         name: "list",
         data() {
             return {
-                lastId: "0",
+                lastId: "blank",
                 pageFlag: "next",
                 pageSize: 10,
                 dialogVisible: false,
@@ -132,12 +132,21 @@
                 this.dialogVisible = false;
             },
             handleAdd() {
-                this.dialogVisible = true;
-                this.productId = "";
+                let path = "";
+                path = "/product/config";
+                this.$router.push({
+                    path: path
+                });
             },
             handleUpdate(id) {
-                this.productId = id;
-                this.dialogVisible = true;
+                let path = "";
+                path = "/product/config";
+                this.$router.push({
+                    path: path,
+                    query: {
+                        productId: id
+                    }
+                });
             },
             handleRemove(id, index, rows) {
                 this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {

@@ -25,7 +25,7 @@
         <!--          <search @onSearch="handleSearch"></search>-->
         <!--        </div>-->
         <el-row type="flex" justify="space-between" style="margin-bottom:20px;" align="bottom">
-          <el-button type="primary" size="mini" @click="handleAdd" :disabled="dialogVisible">添加</el-button>
+          <el-button  icon="el-icon-plus" type="primary" size="mini" @click="handleAdd" :disabled="dialogVisible">添加属性</el-button>
         </el-row>
         <el-table
           v-loading="loading"
