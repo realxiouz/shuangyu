@@ -50,60 +50,51 @@
             </el-form-item>
           </el-col>
         </el-row>
+          <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加属性值</el-button>
+          <el-table
+            :data="formData.values"
+            style="width: 100%;margin-bottom: 15px;"
+            size="mini"
+          >
+            <el-table-column prop="propertyCode" label="编码" align="center"></el-table-column>
+            <el-table-column prop="propertyValue" label="值" align="center"></el-table-column>
+            <el-table-column fixed="right" label="操作" align="center" width="350">
+              <template slot-scope="scope">
+                <el-button type="danger" size="mini" @click="valueRemove(scope.$index, scope.row)">删除</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        <el-dialog title="属性值" :visible.sync="dialogVisible" width="20%">
+          <el-form ref="form" :model="formValue" label-width="90px">
+            <el-form-item label="编码">
+              <el-input v-model="formValue.propertyCode"></el-input>
+            </el-form-item>
+            <el-form-item label="值">
+              <el-input v-model="formValue.propertyValue"></el-input>
+            </el-form-item>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="valueCancel">取 消</el-button>
+            <el-button type="primary" @click="valueSave">确 定</el-button>
+          </div>
+        </el-dialog>
       </el-form>
       <div slot="footer" style="text-align:right;">
         <el-button size="mini" type="primary" @click="handleSave">确 定</el-button>
       </div>
-    </el-card>
-    <el-card class="contentBox">
-      <div slot="header">
-        <span>属性值配置</span>
-      </div>
-      <el-row style="margin-bottom:15px;margin-left:40px">
-        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
-      </el-row>
-      <el-table
-        v-loading="loading"
-        :data="valueData"
-        style="width: 100%;margin-bottom: 15px;"
-        size="mini"
-      >
-        <el-table-column prop="propertyCode" label="编码" align="center"></el-table-column>
-        <el-table-column prop="propertyValue" label="值" align="center"></el-table-column>
-        <el-table-column fixed="right" label="操作" align="center" width="350">
-          <template slot-scope="scope">
-            <el-button @click="handleUpdate(scope.row.propertyCode)" type="primary" size="mini">编辑</el-button>
-            <el-button
-              @click.native.prevent="handleRemove(scope.row.propertyCode,scope.$index,tableData)"
-              type="danger"
-              size="mini"
-            >删除
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-pagination
-        @size-change="handleSizeChange"
-        @prev-click="prevClick"
-        @next-click="nextClick"
-        background
-        layout="total,sizes,prev,next"
-        prev-text="上一页"
-        next-text="下一页"
-        :page-size="pageSize"
-        :total="total"
-      ></el-pagination>
     </el-card>
   </div>
 </template>
 <script>
     function defaultData() {
         return {
+            categoryName: "",
             propertyName: "",
             isSellProperty: false,
             isEnumProperty: false,
             required: false,
-            isMultiple: false
+            isMultiple: false,
+            values: []
         }
     };
     export default {
@@ -111,7 +102,8 @@
         data() {
             return {
                 formData: defaultData(),
-                valueData:[],
+                dialogVisible: false,
+                formValue: {},
                 rules: {
                     categoryName: [
                         {required: true, message: "请输入商品类目", trigger: "blur"},
@@ -142,7 +134,7 @@
             handleGetOne(id) {
                 if (id) {
                     this.$store
-                        .dispatch("app/getOne", {appId: id})
+                        .dispatch("app/getOne", {propertyId: id})
                         .then(data => {
                             this.formData = data;
                             this.dialogVisible = true;
@@ -153,14 +145,35 @@
                     this.formData = defaultData();
                 }
             },
+            valueRemove(idx) {
+                this.values.splice(idx, 1);
+            },
+            handleAdd() {
+                this.dialogVisible = true;
+            },
+            valueCancel() {
+                this.dialogVisible = false;
+            },
+            valueSave() {
+                if (!this.formValue.propertyCode || !this.formValue.propertyValue) {
+                    this.$message("请填写完整属性信息！")
+                    return false;
+                }
+                this.formData.values.push(this.formValue);
+                this.dialogVisible = false;
+                this.formValue = {};
+            }
         },
         created() {
-            if (this.appId) {
-                this.handleGetOne(this.appId);
+            if (this.$route.query.propertyId) {
+                this.handleGetOne(this.propertyId);
+            }
+            if (this.$route.query.categoryName) {
+                this.formData.categoryName = this.$route.query.categoryName;
             }
         },
         props: {
-            appId: String,
+            propertyId: String,
         }
     }
 </script>
