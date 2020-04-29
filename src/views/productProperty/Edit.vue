@@ -131,6 +131,7 @@
                             .dispatch("productProperty/save", this.formData)
                             .then(() => {
                                 this.loadData();
+                                this.goBack();
                                 if (this.propertyId != "") {
                                     this.$message({
                                         type: "success",
