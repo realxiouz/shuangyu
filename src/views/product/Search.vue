@@ -23,6 +23,8 @@
         @click="$emit('onSearch', formData)"
       >查询
       </el-button>
+      <el-button icon="el-icon-refresh" class="filter-item" type="primary" size="mini" @click="handleClear">清空
+      </el-button>
       <el-button type="text" size="mini" @click="handleMore">
         更多
         <i :class="switchIcon"></i>
@@ -36,9 +38,7 @@
         data() {
             return {
                 more: false,
-                formData: {
-                    propertyName: ""
-                }
+                formData: {}
             };
         },
         computed: {
@@ -51,9 +51,17 @@
             }
         },
         methods: {
+            initSearchForm() {
+                return {
+                    propertyName: null
+                };
+            },
             handleMore() {
                 this.more = !this.more;
-            }
+            },
+            handleClear() {
+                this.formData = this.initSearchForm();
+            },
         }
     };
 </script>
