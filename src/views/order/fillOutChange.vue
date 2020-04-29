@@ -129,6 +129,11 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
+            <el-form-item label="利润金额:">
+              <el-input clearable v-model="formData.profit"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
             <el-form-item label="平台账号:">
               <el-input clearable v-model="formData.accountId"></el-input>
             </el-form-item>
@@ -304,7 +309,9 @@ export default {
         cabin: "",
         radio: "1",
         userNameType: "",
-        accountId: ""
+        accountId: "",
+        profit: ""
+
       };
     },
     clearForm() {
@@ -347,6 +354,25 @@ export default {
     },
     // 保存
     handleSave() {
+       // if (this.formData.radio != "1") {
+      //   this.formData.flightData = this.flightData;
+      //   this.formData.passengers = this.passengerData;
+      //   let amountTotal = 0;
+      //   this.formData.passengers.forEach(item => {
+      //     amountTotal += Number(item.amount);
+      //   });
+      //   let _profit = 0;
+      //   _profit = amountTotal + Number(this.formData.transactionAmount);
+      //   if (_profit != this.formData.profit) {
+      //     this.$notify({
+      //       title: "提示",
+      //       message: "利润金额计算错误，请重新计算！",
+      //       type: "warning",
+      //       duration: 4500
+      //     });
+      //     return;
+      //   }
+      // }
       this.formData.orderDetailList = this.selectOrderDetailList;
       this.$emit("onSave", this.formData);
     }

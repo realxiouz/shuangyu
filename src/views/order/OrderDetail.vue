@@ -304,6 +304,7 @@
           :refundChangeRule="refundChangeRule"
           :refundpassengers="refundpassengers"
           :refundData="refundData"
+          :sellAmount="sellAmount"
           :getRefundHtmlData="getRefundHtmlData"
         ></refund-ticket>
       </el-dialog>
@@ -320,6 +321,7 @@
           v-if="changeTicketShow"
           :changeData="changeData"
           :changeDataTop="changeDataTop"
+          :sellAmount="sellAmount"
           @onCancel="onCancel"
           @onSavechange="handleSaveChange"
         ></change-ticket>
@@ -439,6 +441,7 @@ export default {
       orderTree: [],
       sourceOrderNo: "",
       refundData: "",
+      sellAmount: "",
       purchaseOrderNo: "",
       refundChangeRule: "",
       refundpassengers: "",
@@ -480,6 +483,7 @@ export default {
         .then(data => {
           if (data) {
             this.tableData = data;
+            this.sellAmount = data.amount;
             this.refundChangeRule = data.refundChangeRule;
             this.sourceOrderNo = data.sourceOrderNo;
             let params = {};
@@ -530,7 +534,6 @@ export default {
     changeTicket(row) {
       this.purchaseOrderNo = row.sourceOrderNo;
       this.changeData = row;
-
       this.changeTicketShow = true;
     },
     // 补退弹框
