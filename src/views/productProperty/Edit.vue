@@ -70,7 +70,7 @@
         >
           <el-table-column prop="propertyCode" label="编码" align="center"></el-table-column>
           <el-table-column prop="propertyValue" label="值" align="center"></el-table-column>
-          <el-table-column  label="操作" align="center" width="350">
+          <el-table-column label="操作" align="center" width="350">
             <template slot-scope="scope">
               <el-button type="danger" size="mini"
                          @click="valueRemove(scope.row.propertyCode,scope.$index,formData.values)">删除
@@ -95,6 +95,7 @@
       </el-form>
     </el-card>
     <div slot="footer" style="text-align:center;">
+      <el-button size="mini" type="primary" @click="handleCancel">取消</el-button>
       <el-button size="mini" type="primary" @click="handleSave">保存</el-button>
     </div>
   </div>
@@ -141,6 +142,9 @@
                 } else {
                     this.$router.go(-1);
                 }
+            },
+            handleCancel() {
+                this.goBack();
             },
             handleSave() {
                 this.$refs['form'].validate((valid) => {
