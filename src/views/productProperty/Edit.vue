@@ -50,20 +50,20 @@
             </el-form-item>
           </el-col>
         </el-row>
-          <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加属性值</el-button>
-          <el-table
-            :data="formData.values"
-            style="width: 100%;margin-bottom: 15px;"
-            size="mini"
-          >
-            <el-table-column prop="propertyCode" label="编码" align="center"></el-table-column>
-            <el-table-column prop="propertyValue" label="值" align="center"></el-table-column>
-            <el-table-column fixed="right" label="操作" align="center" width="350">
-              <template slot-scope="scope">
-                <el-button type="danger" size="mini" @click="valueRemove(scope.$index, scope.row)">删除</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
+        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加属性值</el-button>
+        <el-table
+          :data="formData.values"
+          style="width: 100%;margin-bottom: 15px;"
+          size="mini"
+        >
+          <el-table-column prop="propertyCode" label="编码" align="center"></el-table-column>
+          <el-table-column prop="propertyValue" label="值" align="center"></el-table-column>
+          <el-table-column fixed="right" label="操作" align="center" width="350">
+            <template slot-scope="scope">
+              <el-button type="danger" size="mini" @click="valueRemove(scope.$index, scope.row)">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
         <el-dialog title="属性值" :visible.sync="dialogVisible" width="20%">
           <el-form ref="form" :model="formValue" label-width="90px">
             <el-form-item label="编码">
@@ -79,10 +79,10 @@
           </div>
         </el-dialog>
       </el-form>
-      <div slot="footer" style="text-align:right;">
-        <el-button size="mini" type="primary" @click="handleSave">确 定</el-button>
-      </div>
     </el-card>
+    <div slot="footer" style="text-align:center;">
+      <el-button size="mini" type="primary" @click="handleSave">保存</el-button>
+    </div>
   </div>
 </template>
 <script>
@@ -127,7 +127,25 @@
             handleSave() {
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
-                        this.$emit('onSave', this.formData);
+                        this.$store
+                            .dispatch("productProperty/save", this.formData)
+                            .then(() => {
+                                this.loadData();
+                                if (this.propertyId != "") {
+                                    this.$message({
+                                        type: "success",
+                                        message: "修改成功！"
+                                    });
+                                } else {
+                                    this.$message({
+                                        type: "success",
+                                        message: "添加成功！"
+                                    });
+                                }
+                            })
+                            .catch(error => {
+                                console.log(error);
+                            });
                     }
                 });
             },

@@ -21,9 +21,9 @@
         </el-tree>
       </el-col>
       <el-col :xs="13" :sm="14" :md="15" :lg="16" :xl="16">
-        <div class="searchBox">
-          <search @onSearch="handleSearch"></search>
-        </div>
+        <!--        <div class="searchBox">-->
+        <!--          <search @onSearch="handleSearch"></search>-->
+        <!--        </div>-->
         <el-row type="flex" justify="space-between" style="margin-bottom:20px;" align="bottom">
           <el-button type="primary" size="mini" @click="handleAdd" :disabled="dialogVisible">添加</el-button>
         </el-row>
@@ -82,7 +82,7 @@
                     children: "children",
                     hasChildren: "xxx"
                 },
-                lastId: "0",
+                lastId: "blank",
                 pageFlag: "next",
                 pageSize: 10,
                 dialogVisible: true,
@@ -204,27 +204,6 @@
                         console.error(err);
                     });
             },
-            // handleSave(formData) {
-            //     this.$store
-            //         .dispatch("productProperty/save", formData)
-            //         .then(() => {
-            //             this.loadData();
-            //             if (this.propertyId != "") {
-            //                 this.$message({
-            //                     type: "success",
-            //                     message: "修改成功！"
-            //                 });
-            //             } else {
-            //                 this.$message({
-            //                     type: "success",
-            //                     message: "添加成功！"
-            //                 });
-            //             }
-            //         })
-            //         .catch(error => {
-            //             console.log(error);
-            //         });
-            // },
             handleSizeChange(pageSize) {
                 this.pageSize = pageSize;
                 this.loadData();
