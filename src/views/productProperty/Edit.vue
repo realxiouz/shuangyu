@@ -148,24 +148,17 @@
                             .dispatch("productProperty/save", this.formData)
                             .then(() => {
                                 this.loadData();
-                                if (this.propertyId != "") {
-                                    this.$message({
-                                        type: "success",
-                                        message: "修改成功！"
-                                    });
-                                } else {
-                                    this.$message({
-                                        type: "success",
-                                        message: "添加成功！"
-                                    });
-                                }
                             })
                             .catch(error => {
                                 console.log(error);
                             });
+                        this.$message({
+                            type: "success",
+                            message: "保存成功！"
+                        });
+                        this.goBack();
                     }
                 });
-                this.goBack();
             },
             handleGetOne(id) {
                 if (id) {
