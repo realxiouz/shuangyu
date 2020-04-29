@@ -27,12 +27,17 @@
         <el-input placeholder="请输入退票备注..." v-model="formData.refundCause"></el-input>
       </el-form-item>
       <el-row>
-        <el-col :span="12">
+        <el-col :span="8">
+          <el-form-item prop="profit" label="利润金额:">
+            <el-input placeholder="请输入利润金额..." v-model="formData.profit"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
           <el-form-item label="蜗牛手续费:">
             <span>{{formData.refundFeeInfo.refundFee}} / 人</span>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="8">
           <el-form-item label="成人可退金额:">
             <span>{{formData.refundFeeInfo.returnRefundFee}} / 人</span>
           </el-form-item>
@@ -74,7 +79,7 @@
             <span>退票原因：{{this.getRefundHtmlData.reason}}</span>
           </el-row>
           <el-row>
-            <span>实退金额{{this.getRefundHtmlData.refundAmount}}</span>
+            <span>实退金额:{{this.getRefundHtmlData.refundAmount}}</span>
           </el-row>
         </div>
       </el-form-item>
@@ -99,7 +104,8 @@ export default {
     "refundChangeRule",
     "refundpassengers",
     "refundData",
-    "getRefundHtmlData"
+    "getRefundHtmlData",
+    "sellAmount"
   ],
   data() {
     return {
@@ -110,6 +116,7 @@ export default {
       flightInfo: "",
       orderDetailList: [],
       passagersRefund: [],
+      selectPassenger: [],
       formData: {
         refundCauseId: "",
         refundFeeInfo: "",
@@ -120,6 +127,13 @@ export default {
       formRules: {
         refundCauseId: [
           { required: true, message: "请选择退票原因", trigger: "change" }
+        ],
+        profit: [
+          {
+            required: true,
+            message: "请选择填写利润金额！",
+            trigger: "blur"
+          }
         ]
       }
     };
@@ -130,6 +144,7 @@ export default {
     formatCardType,
     // 表格复选框选中处理
     handleSelectionChange(rows) {
+      this.selectPassenger = rows;
       let str = "";
       rows.forEach(row => {
         str += row.id + ",";
@@ -210,6 +225,20 @@ export default {
       });
     },
     handleSave() {
+      let _profit = 0;
+      let count = this.selectPassenger.length;
+      _profit =
+        Number(this.formData.refundFeeInfo.returnRefundFee) * count +
+        Number(this.sellAmount);
+      if (_profit != this.formData.profit) {
+        this.$notify({
+          title: "提示",
+          message: "利润金额计算错误，请重新计算！",
+          type: "warning",
+          duration: 4500
+        });
+        return;
+      }
       this.$emit("onSaveRefund", this.formData);
     },
 
@@ -221,8 +250,6 @@ export default {
     }
   },
   created() {
-    console.log(this.refundData, "refundData");
-    console.log(this.refundpassengers, "refundpassengers");
     let arr = [];
     for (let i = 0; i < this.refundpassengers.length; i++) {
       this.refundData.orderDetailList.forEach(item => {

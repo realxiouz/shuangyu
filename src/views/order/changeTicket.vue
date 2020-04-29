@@ -1,6 +1,12 @@
 <template>
   <div>
-    <el-form :model="formData" label-width="110px" size="mini" style="margin-top:15px;">
+    <el-form
+      :rules="formRules"
+      :model="formData"
+      label-width="110px"
+      size="mini"
+      style="margin-top:15px;"
+    >
       <el-row>
         <el-col :span="12">
           <el-form-item label="乘客:">
@@ -34,8 +40,8 @@
         <span v-if="!this.tgqText && !this.reason">暂无数据</span>
       </el-form-item>
       <el-row>
-        <el-col :span="8">
-          <el-form-item label="改签原因:">
+        <el-col :span="12">
+          <el-form-item prop="changeCauseId" label="改签原因:">
             <el-select
               clearable
               v-model="formData.changeCauseId"
@@ -52,14 +58,19 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="12">
           <el-form-item label="改签备注:">
-            <el-input v-model="formData.applyRemarks"></el-input>
+            <el-input placeholder="请输入改签备注..." v-model="formData.applyRemarks"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="12">
           <el-form-item label="改签费:">
-            <el-input v-model="formData.totalAmount"></el-input>
+            <el-input placeholder="请输入改签费..." v-model="formData.totalAmount"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item prop="profit" label="利润金额:">
+            <el-input placeholder="请输入利润金额..." v-model="formData.profit"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -148,7 +159,7 @@ import { formatAgeType, formatCardType } from "@/utils/status.js";
 
 export default {
   name: "changeTicket",
-  props: ["changeData", "changeDataTop"],
+  props: ["changeData", "changeDataTop", "sellAmount"],
   data() {
     return {
       changeDataResult: [],
@@ -164,7 +175,19 @@ export default {
         flightData: "",
         changePassagers: "",
         applyRemarks: "",
-        totalAmount: 0
+        totalAmount: ""
+      },
+      formRules: {
+        changeCauseId: [
+          { required: true, message: "请选择退票原因", trigger: "change" }
+        ],
+        profit: [
+          {
+            required: true,
+            message: "请选择填写利润金额！",
+            trigger: "blur"
+          }
+        ]
       }
     };
   },
@@ -308,6 +331,18 @@ export default {
         });
         return;
       }
+      let _profit = 0;
+      _profit = Number(this.formData.totalAmount) - Number(this.sellAmount);
+      if (_profit != this.formData.profit) {
+        this.$notify({
+          title: "提示",
+          message: "利润金额计算错误，请重新计算！",
+          type: "warning",
+          duration: 4500
+        });
+        return;
+      }
+
       this.$emit("onSavechange", this.formData);
     },
     // 改签原因选中处理
@@ -389,6 +424,7 @@ export default {
     }
     this.orderDetailList = arr;
     this.changeSearchData(params);
+    console.log(this.sellAmount, "sellAmount");
   }
 };
 </script>
