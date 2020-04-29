@@ -39,6 +39,15 @@ export function getTreeList(params) {
     params: params
   });
 }
+
+export function getList(params) {
+  return request({
+    url: `/subject/list`,
+    method: "get",
+    params: params
+  });
+}
+
 export function getOne(id) {
   return request({
     url: `/subject/one/${id}`,

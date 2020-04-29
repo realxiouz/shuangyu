@@ -14,8 +14,8 @@
         row-key="code"
         :tree-props="tableProps"
       >
-        <el-table-column prop="code" label="仓库编码" align="center" width="260"></el-table-column>
-        <el-table-column prop="name" label="仓库名称" align="center" width="260"></el-table-column>
+        <el-table-column prop="warehouseCode" label="仓库编码" align="center" width="260"></el-table-column>
+        <el-table-column prop="warehouseName" label="仓库名称" align="center" width="260"></el-table-column>
         <el-table-column prop="address" label="地址" align="center" width="260"></el-table-column>
         <el-table-column prop="contact" label="联系人" align="center" width="260"></el-table-column>
         <el-table-column prop="phone" label="联系电话" align="center" width="260"></el-table-column>
@@ -64,10 +64,9 @@
         },
         methods: {
             /*加载企业列表*/
-            loadData(searchForm) {
-                this.searchForm = searchForm;
+            loadData() {
                 this.$store
-                    .dispatch("warehouse/getList", {filter: {}})
+                    .dispatch("warehouse/getTreeList", {filter: {}})
                     .then(data => {
                         if (data && data.data) {
                             this.tableData = data.data;
@@ -80,20 +79,29 @@
                     });
             },
             handleSearch(searchForm) {
-                if (!searchForm.code && !searchForm.name) {
-                    this.loadData({});
-                } else {
+                console.log(searchForm);
+                //如果搜索form中有搜索属性，则走搜索，否则刷新列表
+                let searchFlag = false;
+                for(let key in searchForm){
+                    if (searchForm[key]){
+                        searchFlag = true;
+                    }
+                }
+                if (searchFlag){
+                    //走搜索
                     this.$store
-                        .dispatch("warehouse/getOne", searchForm)
+                        .dispatch("warehouse/getList", {filter: searchForm})
                         .then(data => {
-                            this.tableData = [];
-                            this.tableData.push(data.data);
+                            this.tableData = data.data;
                             this.loading = false;
                         })
                         .catch(error => {
                             this.loading = false;
                             console.log(error);
                         });
+                } else {
+                    //刷新列表
+                    this.loadData();
                 }
             },
             //添加根节点
@@ -112,7 +120,7 @@
                     this.$store
                         .dispatch("warehouse/updateOne", formData)
                         .then(() => {
-                            this.loadData({});
+                            this.loadData();
                         })
                         .catch(error => {
                             console.log(error);
@@ -122,7 +130,7 @@
                         //如果添加的顶级企业信息，对某些属性进行初始化
                         formData.level = 0;
                     } else {
-                        formData.pid = this.curNode.code;
+                        formData.pid = this.curNode.warehouseCode;
                         formData.level = this.curNode.level + 1;
                     }
 
@@ -155,12 +163,12 @@
             },
             /*点击删除*/
             handleDelete(index, row) {
-                this.open(this.remove, row.code, "此操作将删除该仓库信息及所有子仓库信息, 是否继续?");
+                this.open(this.remove, row.warehouseCode, "此操作将删除该仓库信息及所有子仓库信息, 是否继续?");
             },
             /*删除企业数据*/
             remove(params) {
                 this.$store
-                    .dispatch("warehouse/removeOne", {code: params})
+                    .dispatch("warehouse/removeOne", {warehouseCode: params})
                     .then(() => {
                         this.loadData(this.searchForm);
                     })

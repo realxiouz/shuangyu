@@ -1,4 +1,4 @@
-import {addOne,updateOne,removeOne,getOne,getList,getTotal,getPageList} from '@/api/warehouse';
+import {addOne,updateOne,removeOne,getOne,getList,getTreeList,getTotal,getPageList} from '@/api/warehouse';
 
 const actions = {
   addOne({commit}, params) {
@@ -25,8 +25,8 @@ const actions = {
   },
   removeOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {code} = params;
-      removeOne(code)
+      const {warehouseCode} = params;
+      removeOne(warehouseCode)
         .then(response => {
           resolve(response);
         })
@@ -37,8 +37,8 @@ const actions = {
   },
   getOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {code} = params;
-      getOne(code)
+      const {warehouseCode} = params;
+      getOne(warehouseCode)
         .then(response => {
           resolve(response);
         })
@@ -63,6 +63,18 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {filter} = params;
       getList(filter)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getTreeList({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {filter} = params;
+      getTreeList(filter)
         .then(response => {
           resolve(response);
         })

@@ -16,16 +16,16 @@ export function updateOne(data) {
   });
 }
 
-export function removeOne(code) {
+export function removeOne(warehouseCode) {
   return request({
-    url: `/finance/warehouse/remove/one/${code}`,
+    url: `/finance/warehouse/remove/one/${warehouseCode}`,
     method: 'delete'
   });
 }
 
-export function getOne(code) {
+export function getOne(warehouseCode) {
   return request({
-    url: `/finance/warehouse/one/${code}`,
+    url: `/finance/warehouse/one/${warehouseCode}`,
     method: 'get'
   });
 }
@@ -33,6 +33,14 @@ export function getOne(code) {
 export function getList(filter) {
   return request({
     url: `/finance/warehouse/list`,
+    method: 'get',
+    params: filter
+  });
+}
+
+export function getTreeList(filter) {
+  return request({
+    url: `/finance/warehouse/tree/list`,
     method: 'get',
     params: filter
   });
