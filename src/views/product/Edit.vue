@@ -34,7 +34,7 @@
       <el-row :gutter="10">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="品牌编码" prop="brandCode">
-            <el-select v-model="formData.brandCode" placeholder="品牌编码" @change="selectedOpen">
+            <el-select v-model="formData.brandCode" placeholder="品牌编码">
               <el-option v-for="(item,idx) in brandList"
                          :key="idx"
                          :label="item.brandName"
@@ -142,10 +142,40 @@
         </el-col>
       </el-row>
     </el-form>
-    <div slot="footer" style="text-align:right;">
-      <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
-      <el-button size="mini" type="primary" @click="handleSave">确 定</el-button>
-    </div>
+    <el-table
+      :data="propertyData"
+      size="mini"
+      border
+    >
+      <el-table-column prop="propertyTitle" label="属性标题" align="center"></el-table-column>
+      <el-table-column prop="propertyCode" label="属性编码" align="center"></el-table-column>
+      <el-table-column prop="propertyName" label="属性名称" align="center"></el-table-column>
+      <el-table-column prop="sellProperty" label="是否销售属性" align="center">
+        <template slot-scope="scope">
+          <el-switch v-model="scope.row.sellProperty" disabled></el-switch>
+        </template>
+      </el-table-column>
+      <el-table-column prop="enumProperty" label="是否枚举属性" align="center">
+        <template slot-scope="scope">
+          <el-switch v-model="scope.row.enumProperty" disabled></el-switch>
+        </template>
+      </el-table-column>
+      <el-table-column prop="required" label="是否必填" align="center">
+        <template slot-scope="scope">
+          <el-switch v-model="scope.row.required" disabled></el-switch>
+        </template>
+      </el-table-column>
+      <el-table-column prop="multiple" label="是否多选" align="center">
+        <template slot-scope="scope">
+          <el-switch v-model="scope.row.multiple" disabled></el-switch>
+        </template>
+      </el-table-column>
+      <el-table-column fixed="right" label="操作" align="center" width="350">
+        <template slot-scope="scope">
+          <el-button @click="handleUpdate(scope.row.propertyId)" type="primary" size="mini">编辑</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
   </div>
 </template>
 <script>
@@ -157,6 +187,7 @@
                 formData: {},
                 categoryList: [],
                 brandList: [],
+                propertyData: [],
                 rules: {
                     appName: [
                         {required: true, message: "请输入应用名称", trigger: "blur"},
@@ -190,6 +221,20 @@
                 } else {
                     this.formData = defaultData();
                 }
+            },
+            loadPropertyData(searchForm) {
+                this.$store
+                    .dispatch("productProperty/getList", {
+                        filter: searchForm
+                    })
+                    .then(data => {
+                        if (data) {
+                            this.propertyData = data;
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
             },
             loadBrand() {
                 this.$store.dispatch("brand/getList", {filters: {}})
@@ -230,7 +275,11 @@
                 if (category) {
                     let code = category[category.length - 1];
                     this.formData.categoryCode = code;
+                    let param = {};
+                    param.categoryCode = code;
+                    this.loadPropertyData(param);
                 }
+
             },
             //跳转回列表页面
             goBack() {

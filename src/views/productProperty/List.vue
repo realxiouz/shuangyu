@@ -144,7 +144,7 @@
                 this.loadData();
             },
             loadTotal(searchForm) {
-                if (!searchForm || !searchForm.appName) {
+                if (!searchForm || !searchForm.propertyTitle) {
                     searchForm = {};
                 }
                 this.$store
@@ -159,7 +159,7 @@
                     });
             },
             loadData(searchForm) {
-                if (!searchForm || !searchForm.appName) {
+                if (!searchForm || !searchForm.propertyTitle) {
                     searchForm = {};
                 }
                 this.$store
