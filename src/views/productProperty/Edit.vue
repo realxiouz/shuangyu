@@ -28,7 +28,21 @@
         </el-row>
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="属性名称" prop="propertyName">
+            <el-form-item label="属性编码" prop="propertyCode">
+              <el-input v-model="formData.propertyCode"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="10">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="属性标题（中）" prop="propertyTitle">
+              <el-input v-model="formData.propertyTitle"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="10">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="属性名称(英)" prop="propertyName">
               <el-input v-model="formData.propertyName"></el-input>
             </el-form-item>
           </el-col>
@@ -106,6 +120,8 @@
             categoryCode: "",
             categoryName: "",
             categoryPath: "",
+            propertyCode: "",
+            propertyTitle: "",
             propertyName: "",
             sellProperty: false,
             enumProperty: false,
@@ -129,6 +145,12 @@
                     ],
                     propertyName: [
                         {required: true, message: "请输入属性名称", trigger: "blur"},
+                    ],
+                    propertyCode: [
+                        {required: true, message: "请输入属性编码", trigger: "blur"},
+                    ],
+                    propertyTitle: [
+                        {required: true, message: "请输入属性标题", trigger: "blur"},
                     ]
                 }
             }
