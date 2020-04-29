@@ -271,118 +271,118 @@
 </template>
 
 <script>
-import {
-  formatAgeType,
-  formatCardType,
-  orderType,
-  statusData
-} from "@/utils/status.js";
-
-export default {
-  name: "fillOutRefund",
-  props: ["fillOutRefundData"],
-  data() {
-    return {
-      selectStatusDataFlag: false,
-      isWoniu: false,
-      isWoniuTicket: true,
-      orderType: orderType,
-      formData: {},
-      selectOrderDetailList: [],
-      accountData: [],
-      statusData: statusData
-    };
-  },
-  methods: {
+  import {
     formatAgeType,
     formatCardType,
-    // 默认数据
-    defaultFormData() {
+    orderType,
+    statusData
+  } from "@/utils/status.js";
+
+  export default {
+    name: "fillOutRefund",
+    props: ["fillOutRefundData"],
+    data() {
       return {
-        orderDetailList: this.fillOutRefundData.orderDetailList,
-        arr: this.fillOutRefundData.flights[0].arr,
-        dpt: this.fillOutRefundData.flights[0].dpt,
-        flightCode: this.fillOutRefundData.flights[0].flightCode,
-        dptTime: this.fillOutRefundData.flights[0].dptTime,
-        arrTime: this.fillOutRefundData.flights[0].arrTime,
-        flightDate: this.fillOutRefundData.flights[0].flightDate,
-        cabin: this.fillOutRefundData.flights[0].cabin,
-        radio: "1",
-        fundAccountId: "",
-        userNameType: "",
-        accountId: "",
-        profit: ""
+        selectStatusDataFlag: false,
+        isWoniu: false,
+        isWoniuTicket: true,
+        orderType: orderType,
+        formData: {},
+        selectOrderDetailList: [],
+        accountData: [],
+        statusData: statusData
       };
     },
-    clearForm() {
-      this.formData = this.defaultFormData();
-    },
-    //判断是蜗牛导单还是出票
-    radioChange(value) {
-      if (value == "2") {
-        this.radio = "2";
-        this.isWoniuTicket = false;
-      } else {
-        this.radio = "1";
-        this.isWoniuTicket = true;
+    methods: {
+      formatAgeType,
+      formatCardType,
+      // 默认数据
+      defaultFormData() {
+        return {
+          orderDetailList: this.fillOutRefundData.orderDetailList,
+          arr: this.fillOutRefundData.flights[0].arr,
+          dpt: this.fillOutRefundData.flights[0].dpt,
+          flightCode: this.fillOutRefundData.flights[0].flightCode,
+          dptTime: this.fillOutRefundData.flights[0].dptTime,
+          arrTime: this.fillOutRefundData.flights[0].arrTime,
+          flightDate: this.fillOutRefundData.flights[0].flightDate,
+          cabin: this.fillOutRefundData.flights[0].cabin,
+          radio: "1",
+          fundAccountId: "",
+          userNameType: "",
+          accountId: "",
+          profit: ""
+        };
+      },
+      clearForm() {
+        this.formData = this.defaultFormData();
+      },
+      //判断是蜗牛导单还是出票
+      radioChange(value) {
+        if (value == "2") {
+          this.radio = "2";
+          this.isWoniuTicket = false;
+        } else {
+          this.radio = "1";
+          this.isWoniuTicket = true;
+        }
+      },
+      // 判断选中渠道是否是蜗牛
+      selectSource(value) {
+        if (value == "QUNAR_OPEN") {
+          this.isWoniu = true;
+        } else {
+          this.isWoniu = false;
+        }
+      },
+      handleSelectionChange(row) {
+        this.selectOrderDetailList = row;
+      },
+      // 获取资金账号
+      getFinance() {
+        this.$store
+          .dispatch("fundAccount/getList", {
+            filter: {}
+          })
+          .then(data => {
+            this.accountData = data;
+          })
+          .catch(error => {
+            console.log(error);
+            this.loading = false;
+          });
+      },
+      // 保存
+      handleSave() {
+        if (this.formData.radio != "1") {
+          this.formData.flightData = this.flightData;
+          this.formData.passengers = this.passengerData;
+          let amountTotal = 0;
+          this.formData.passengers.forEach(item => {
+            amountTotal += Number(item.amount);
+          });
+          let _profit = 0;
+          _profit = amountTotal + Number(this.formData.transactionAmount);
+          if (_profit != this.formData.profit) {
+            this.$notify({
+              title: "提示",
+              message: "利润金额计算错误，请重新计算！",
+              type: "warning",
+              duration: 4500
+            });
+            return;
+          }
+        }
+        this.formData.orderDetailList = this.selectOrderDetailList;
+        this.$emit("onSave", this.formData);
       }
     },
-    // 判断选中渠道是否是蜗牛
-    selectSource(value) {
-      if (value == "QUNAR_OPEN") {
+    created() {
+      this.clearForm();
+      this.getFinance();
+      if (this.fillOutRefundData.orderSource == "QUNAR_OPEN") {
         this.isWoniu = true;
-      } else {
-        this.isWoniu = false;
       }
-    },
-    handleSelectionChange(row) {
-      this.selectOrderDetailList = row;
-    },
-    // 获取资金账号
-    getFinance() {
-      this.$store
-        .dispatch("fundAccount/getList", {
-          filter: {}
-        })
-        .then(data => {
-          this.accountData = data;
-        })
-        .catch(error => {
-          console.log(error);
-          this.loading = false;
-        });
-    },
-    // 保存
-    handleSave() {
-      // if (this.formData.radio != "1") {
-      //   this.formData.flightData = this.flightData;
-      //   this.formData.passengers = this.passengerData;
-      //   let amountTotal = 0;
-      //   this.formData.passengers.forEach(item => {
-      //     amountTotal += Number(item.amount);
-      //   });
-      //   let _profit = 0;
-      //   _profit = amountTotal + Number(this.formData.transactionAmount);
-      //   if (_profit != this.formData.profit) {
-      //     this.$notify({
-      //       title: "提示",
-      //       message: "利润金额计算错误，请重新计算！",
-      //       type: "warning",
-      //       duration: 4500
-      //     });
-      //     return;
-      //   }
-      // }
-      this.formData.orderDetailList = this.selectOrderDetailList;
-      this.$emit("onSave", this.formData);
     }
-  },
-  created() {
-    this.clearForm();
-    this.getFinance();
-    if (this.fillOutRefundData.orderSource == "QUNAR_OPEN") {
-      this.isWoniu = true;
-    }
-  }
-};
+  };
 </script>

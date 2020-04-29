@@ -4,6 +4,7 @@ import {
   getChangeHtml,
   changeSearch,
   changeApply,
+  changePay,
   refundApply,
   refundSearch,
   unLockOrder,
@@ -349,8 +350,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       refundApply(params)
         .then(response => {
-          const { data } = response;
-          resolve(data);
+          //const { data } = response;
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -418,14 +419,29 @@ const actions = {
     return new Promise((resolve, reject) => {
       changeApply(params)
         .then(response => {
-          const { data } = response;
-          resolve(data);
+          //const { data } = response;
+          resolve(response);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
+
+  // 改签支付接口
+  changePay({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      changePay(params)
+        .then(response => {
+          //const { data } = response;
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+
   // 确认改签
   processingChange({ commit }, params) {
     return new Promise((resolve, reject) => {
@@ -444,8 +460,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       rewriteTicket(params)
         .then(response => {
-          const { data } = response;
-          resolve(data);
+          //const { data } = response;
+          resolve(response);
         })
         .catch(error => {
           reject(error);

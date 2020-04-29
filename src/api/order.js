@@ -244,6 +244,16 @@ export function changeApply(data) {
   });
 }
 
+// 改签支付接口
+export function changePay(data) {
+  return request({
+    url: `/qunar/open/change/pay`,
+    method: 'post',
+    data: data
+
+  });
+}
+
 // 确认改签
 export function processingChange(params) {
   return request({
