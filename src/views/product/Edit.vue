@@ -34,7 +34,13 @@
       <el-row :gutter="10">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="品牌编码" prop="brandCode">
-            <el-input v-model="formData.brandCode"></el-input>
+            <el-select v-model="formData.brandCode" placeholder="品牌编码" @change="selectedOpen">
+              <el-option v-for="(item,idx) in brandList"
+                         :key="idx"
+                         :label="item.brandName"
+                         :value="item.brandCode">
+              </el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -150,6 +156,7 @@
             return {
                 formData: {},
                 categoryList: [],
+                brandList: [],
                 rules: {
                     appName: [
                         {required: true, message: "请输入应用名称", trigger: "blur"},
@@ -183,6 +190,14 @@
                 } else {
                     this.formData = defaultData();
                 }
+            },
+            loadBrand() {
+                this.$store.dispatch("brand/getList", {filters: {}})
+                    .then(data => {
+                        this.brandList = data;
+                    }).catch(error => {
+                    console.log(error);
+                });
             },
             loadTreeData() {
                 this.$store
@@ -232,6 +247,7 @@
                 this.handleGetOne(this.appId);
             }
             this.loadTreeData();
+            this.loadBrand();
         }
     }
 </script>
