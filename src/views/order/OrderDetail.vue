@@ -186,7 +186,6 @@
         <span v-else>退票</span>
       </div>
       <el-button type="primary" style="margin-bottom:15px;" size="mini" @click="refreshHtml">刷新</el-button>
-
       <div id="changeHtmlOrderDetail">
         <span v-if="this.changeHtml" v-html="this.changeHtml"></span>
       </div>
@@ -526,13 +525,10 @@
               this.rootOrderNo = data.rootOrderNo;
               if (data.rootOrderNo) {
                 this.getOrderTree();
-                /* this.timer = setInterval(() => {
-                   setTimeout(this.getOrderTree(), 0);
-                 }, 10000);*/
               }
               this.getMessage();
               this._orderType = data.orderType;
-              this.getMessageHtml(data.orderType, this.sourceOrderNo);
+              this.getMessageHtml();
               if (data.passengers) {
                 this.passengerData = data.passengers;
               }
@@ -914,7 +910,6 @@
             console.log(error);
           });
       },
-
       //延时获取采购树
       timeOutGetOrderTree(second) {
         let num = 0
@@ -938,6 +933,7 @@
                 type: "success",
                 message: "确认退票成功！"
               });
+              this.getRefundHtml();
             }
           })
           .catch(error => {
@@ -955,6 +951,7 @@
                 type: "success",
                 message: "拒绝退款成功！"
               });
+              this.getRefundHtml();
             }
           })
           .catch(error => {
@@ -1007,7 +1004,6 @@
           this.handleTicketShow = true;
         }
       },
-
       // 获取采购单信息
       getOrderTree() {
         let params = {};
@@ -1024,7 +1020,6 @@
             console.log(error);
           });
       },
-
       // 任务提交
       taskSubmit() {
         let params = {};
@@ -1044,7 +1039,6 @@
             console.log(error);
           });
       },
-
       // 任务取消
       taskCancel() {
         if (!this.taskRemarkData) {
@@ -1153,27 +1147,27 @@
             console.log(error);
           });
       },
-      // html刷新
+      // 退/改html刷新
       refreshHtml() {
-        this.getMessageHtml(this._orderType, this.sourceOrderNo);
+        this.getMessageHtml();
       },
       // 获取html
-      getMessageHtml(orderType, sourceOrderNo) {
+      getMessageHtml() {
         if (
-          orderType == 20 ||
-          orderType == 21 ||
-          orderType == 22 ||
-          orderType == 23
+          this._orderType == 20 ||
+          this._orderType == 21 ||
+          this._orderType == 22 ||
+          this._orderType == 23
         ) {
-          this.getRefundHtml(sourceOrderNo);
-        } else if (orderType == 30 || orderType == 31) {
-          this.getChangeHtml(sourceOrderNo);
+          this.getRefundHtml();
+        } else if (this._orderType == 30 || this._orderType == 31) {
+          this.getChangeHtml();
         }
       },
       // 获取销售改签信息Html
-      getChangeHtml(sourceOrderNo) {
+      getChangeHtml() {
         this.$store
-          .dispatch("order/getChangeHtml", sourceOrderNo)
+          .dispatch("order/getChangeHtml", this.sourceOrderNo)
           .then(data => {
             if (data) {
               this.changeHtml = data;
@@ -1200,7 +1194,8 @@
                 type: "success",
                 message: "操作成功!"
               });
-              this.rewriteTicketShow = true;
+              this.onCancel();
+              this.getChangeHtml();
             }
           })
           .catch(error => {
@@ -1213,9 +1208,9 @@
         this.rewriteTicket(this.rewriteTicketData);
       },
       // 获取退票改签信息Html
-      getRefundHtml(sourceOrderNo) {
+      getRefundHtml() {
         this.$store
-          .dispatch("order/getRefundHtml", sourceOrderNo)
+          .dispatch("order/getRefundHtml", this.sourceOrderNo)
           .then(data => {
             if (data) {
               this.refundHtml = data;
