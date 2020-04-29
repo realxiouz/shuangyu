@@ -70,7 +70,7 @@
         >
           <el-table-column prop="propertyCode" label="编码" align="center"></el-table-column>
           <el-table-column prop="propertyValue" label="值" align="center"></el-table-column>
-          <el-table-column fixed="right" label="操作" align="center" width="350">
+          <el-table-column  label="操作" align="center" width="350">
             <template slot-scope="scope">
               <el-button type="danger" size="mini"
                          @click="valueRemove(scope.row.propertyCode,scope.$index,formData.values)">删除
