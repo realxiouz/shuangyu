@@ -186,7 +186,7 @@
                     query: {
                         categoryCode: this.curNode.categoryCode,
                         categoryName: this.curNode.categoryName,
-                        path: this.curNode.path
+                        categoryPath: this.curNode.path
                     }
                 });
             },

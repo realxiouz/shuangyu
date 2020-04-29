@@ -13,17 +13,17 @@
             <el-form-item label="商品类目" prop="categoryName">
               <el-input v-model="formData.categoryName" disabled></el-input>
             </el-form-item>
-<!--            <el-form-item label="商品类目">-->
-<!--              <el-cascader-->
-<!--                v-model="formData.categoryCode"-->
-<!--                style="width: 100%;"-->
-<!--                :options="categoryList"-->
-<!--                :props="{ label: 'categoryName', value: 'categoryCode' }"-->
-<!--                filterable-->
-<!--                @change="handleCategory"-->
-<!--              >-->
-<!--              </el-cascader>-->
-<!--            </el-form-item>-->
+            <!--            <el-form-item label="商品类目">-->
+            <!--              <el-cascader-->
+            <!--                v-model="formData.categoryCode"-->
+            <!--                style="width: 100%;"-->
+            <!--                :options="categoryList"-->
+            <!--                :props="{ label: 'categoryName', value: 'categoryCode' }"-->
+            <!--                filterable-->
+            <!--                @change="handleCategory"-->
+            <!--              >-->
+            <!--              </el-cascader>-->
+            <!--            </el-form-item>-->
           </el-col>
         </el-row>
         <el-row :gutter="10">
@@ -99,7 +99,9 @@
 <script>
     function defaultData() {
         return {
+            categoryCode: "",
             categoryName: "",
+            categoryPath: "",
             propertyName: "",
             sellProperty: false,
             enumProperty: false,
@@ -229,7 +231,6 @@
             },
         },
         created() {
-            console.log(this.$route.query);
             if (this.$route.query.propertyId) {
                 this.propertyId = this.$route.query.propertyId;
                 this.handleGetOne(this.$route.query.propertyId);
@@ -240,8 +241,8 @@
             if (this.$route.query.categoryName) {
                 this.formData.categoryName = this.$route.query.categoryName;
             }
-            if(this.$route.query.path){
-                this.formData.path = this.$route.query.path;
+            if (this.$route.query.categoryPath) {
+                this.formData.categoryPath = this.$route.query.categoryPath;
             }
             this.loadTreeData();
         }
