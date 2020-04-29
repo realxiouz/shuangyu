@@ -66,6 +66,7 @@
           :data="formData.values"
           style="width: 100%;margin-bottom: 15px;"
           size="mini"
+          border
         >
           <el-table-column prop="propertyCode" label="编码" align="center"></el-table-column>
           <el-table-column prop="propertyValue" label="值" align="center"></el-table-column>
