@@ -274,22 +274,6 @@
         </div>
       </el-collapse-item>
     </el-collapse>
-
-    <!--<el-card class="contentBox">
-      <div slot="header" class="clearfix">
-        <span>消息</span>
-      </div>
-
-    </el-card>
-    <el-card class="contentBox" v-if="this.tableData.orderType !='10'">
-
-    </el-card>
-    <el-card class="contentBox">
-      <div slot="header" class="clearfix">
-        <span>采购订单信息</span>
-      </div>
-
-    </el-card>-->
     <div>
       <el-dialog
         title="手工出票"
@@ -503,7 +487,7 @@
         purchaseOrderNo: "",
         refundChangeRule: "",
         refundpassengers: "",
-        taskRemarkData: "",
+        taskRemarkData: this.$route.query.remark,
         timer: null,
         changeData: "",
         orderNo: this.$route.query.orderNo,
