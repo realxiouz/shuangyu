@@ -1,4 +1,4 @@
-import {addOne, updateOne, getOne, getList, removeOne} from '@/api/firmMerchant';
+import {addOne, updateOne, getOne, getList, removeOne, associateUser} from '@/api/firmMerchant';
 
 
 const actions = {
@@ -56,6 +56,17 @@ const actions = {
         .then(response => {
           // const { data } = response;
           resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  associateUser({commit}, params) {
+    return new Promise((resolve, reject) => {
+      associateUser(params)
+        .then(response => {
+          resolve(response.data);
         })
         .catch(error => {
           reject(error);
