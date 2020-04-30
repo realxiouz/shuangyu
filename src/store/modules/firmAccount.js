@@ -1,12 +1,11 @@
-import {addOne, updateOne, getOne, getList, removeOne} from '@/api/firmOther';
-
+import {addOne, updateOne, removeOne, getOne, getList, getTotal, getPageList} from '@/api/firmAccount';
 
 const actions = {
   addOne({commit}, params) {
     return new Promise((resolve, reject) => {
       addOne(params)
         .then(response => {
-          resolve(response.data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -17,7 +16,19 @@ const actions = {
     return new Promise((resolve, reject) => {
       updateOne(params)
         .then(response => {
-          resolve(response.data);
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  removeOne({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {accountId} = params;
+      removeOne(accountId)
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -26,10 +37,22 @@ const actions = {
   },
   getOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {otherId} = params;
-      getOne(otherId)
+      const {accountId} = params;
+      getOne(accountId)
         .then(response => {
-          resolve(response.data);
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getTotal({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {filter} = params;
+      getTotal(filter)
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -41,20 +64,6 @@ const actions = {
       const {filter} = params;
       getList(filter)
         .then(response => {
-          const {data} = response;
-          resolve(data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  removeOne({commit}, params) {
-    return new Promise((resolve, reject) => {
-      const {firmId} = params;
-      removeOne(firmId)
-        .then(response => {
-          // const { data } = response;
           resolve(response);
         })
         .catch(error => {
@@ -62,6 +71,18 @@ const actions = {
         });
     });
   },
+  getPageList({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {pageFlag, pageSize, lastId, filter} = params;
+      getPageList(pageFlag, pageSize, lastId, filter)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
 }
 
 export default {
