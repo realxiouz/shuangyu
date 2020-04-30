@@ -1,277 +1,279 @@
 <template>
   <div class="bigBox">
     <el-card class="contentBox">
-      <div slot="header" class="clearfix">
-        <el-row>
-          <el-col :xs="6" :sm="5" :md="4" :lg="2" :xl="2" style="margin-top:7px;">
-            <span>订单详情</span>
-          </el-col>
-          <el-col :xs="18" :sm="16" :md="11" :lg="5" :xl="5">
-            <span>
-              <el-button type="danger" @click="taskSubmit" size="mini">处理完成提交验证</el-button>
-              <el-button type="primary" @click="taskCancel" size="mini">任务取消</el-button>
-              <el-button type="warning" @click="goBack" size="mini">返回</el-button>
-            </span>
-          </el-col>
-          <el-col :xs="24" :sm="24" :md="10" :lg="15" :xl="17">
-            <el-input v-model="taskRemarkData" placeholder="输入备注信息" class="input-with-select">
-              <template slot="prepend">备注:</template>
-              <el-button type="primary" @click="taskRemark" size="mini" slot="append">保存备注</el-button>
-            </el-input>
-          </el-col>
-        </el-row>
-      </div>
-      <el-row :gutter="20">
-        <div style="margin-bottom:15px;">
-          <el-button type="danger" @click="lockOrder" size="mini">锁单</el-button>
-          <el-button type="primary" @click="unLockOrder" size="mini">解锁订单</el-button>
-          <el-button type="warning" @click="useGoTicket" size="mini">调用出票中</el-button>
+      <el-row>
+        <el-col :span="5">
+          <el-button type="danger" @click="taskSubmit" size="mini">处理完成提交验证</el-button>
+          <el-button type="primary" @click="taskCancel" size="mini">任务取消</el-button>
+          <el-button type="warning" @click="goBack" size="mini">返回</el-button>
+        </el-col>
+        <el-col :span="14">
+          <el-input v-model="taskRemarkData" placeholder="输入备注信息" class="input-with-select">
+            <template slot="prepend">备注:</template>
+            <el-button type="primary" @click="taskRemark" size="mini" slot="append">修改备注</el-button>
+          </el-input>
+        </el-col>
+      </el-row>
+    </el-card>
+    <el-collapse v-model="activeNames">
+      <el-collapse-item name="1">
+        <template slot="title">
+          <span style="font-size:larger;margin-left: 15px;font-weight: bolder;">销售单信息</span>
+        </template>
+        <div style="padding: 20px">
+          <el-row :gutter="20">
+            <div style="margin-bottom:15px;">
+              <el-button type="danger" @click="lockOrder" size="mini">锁单</el-button>
+              <el-button type="primary" @click="unLockOrder" size="mini">解锁订单</el-button>
+              <el-button type="warning" @click="useGoTicket" size="mini">调用出票中</el-button>
+            </div>
+            <div></div>
+            <el-form :model="tableData" label-width="130px" size="mini">
+              <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+                <el-form-item label="订单编号:">
+                  <span>{{tableData.orderNo}}</span>
+                </el-form-item>
+              </el-col>
+              <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+                <el-form-item label="订单类型:">
+                  <span>{{formatOrderType(tableData)}}</span>
+                </el-form-item>
+              </el-col>
+              <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+                <el-form-item label="原单号:">
+                  <span>{{tableData.sourceOrderNo}}</span>
+                </el-form-item>
+              </el-col>
+              <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+                <el-form-item label="金额:">
+                  <span>￥{{this.$numeral(tableData.amount).format('0.00')}}</span>
+                </el-form-item>
+              </el-col>
+              <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+                <el-form-item label="交易金额:">
+                  <span>￥{{this.$numeral(tableData.transactionAmount).format('0.00')}}</span>
+                </el-form-item>
+              </el-col>
+              <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+                <el-form-item label="订单状态:">
+                  <span>{{formatStatus(tableData)}}</span>
+                </el-form-item>
+              </el-col>
+              <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+                <el-form-item label="订单分类:">
+                  <span>{{formatCategory(tableData)}}</span>
+                </el-form-item>
+              </el-col>
+              <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+                <el-form-item label="最晚出票时限:">
+                  <span>{{formatDate(tableData.deadlineTicketTime,'YYYY-MM-DD HH:mm:ss')}}</span>
+                </el-form-item>
+              </el-col>
+              <!--<el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="5">
+                <el-form-item label="交易编号:">
+                  <span>{{tableData.transactionNo}}</span>
+                </el-form-item>
+              </el-col>
+              <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="5">
+                <el-form-item label="交易时间:">
+                  <span>{{formatDate(tableData.transactionTime,'YYYY-MM-DD HH:mm:ss')}}</span>
+                </el-form-item>
+              </el-col>
+              <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="5">
+                <el-form-item label="业务编号:">
+                  <span>{{tableData.businessNo}}</span>
+                </el-form-item>
+              </el-col>-->
+            </el-form>
+          </el-row>
+          <el-divider content-position="left">航班信息</el-divider>
+          <el-table :data="flightData" size="mini" highlight-current-row style="width: 100%;" fit>
+            <el-table-column prop="dpt" label="出发机场" width="160" align="center"></el-table-column>
+            <el-table-column prop="arr" label="到达机场" width="160" align="center"></el-table-column>
+            <el-table-column prop="airlineCode" label="航司" width="50" align="center"></el-table-column>
+            <el-table-column prop="flightCode" label="航班号" width="100" align="center"></el-table-column>
+            <el-table-column prop="cabin" label="舱位" width="160" align="center"></el-table-column>
+            <el-table-column label="出发日期" width="110" align="center">
+              <template slot-scope="scope">
+                <span>{{ formatDate(scope.row.flightDate,'YYYY-MM-DD') }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="dptTime" label="起飞时间" width="150" align="center"></el-table-column>
+            <el-table-column prop="arrTime" label="到达时间" width="100" align="center"></el-table-column>
+            <el-table-column prop="distance" label="航程" width="50" align="center"></el-table-column>
+            <el-table-column prop="refundRule" label="退票规则" align="center"></el-table-column>
+            <el-table-column prop="changeRule" label="改签规则" align="center"></el-table-column>
+          </el-table>
+          <el-divider content-position="left">乘客信息</el-divider>
+          <el-table
+            :data="passengerData"
+            size="mini"
+            highlight-current-row
+            style="width: 100%;"
+            @selection-change="handleSelectionChange"
+            fit
+          >
+            <el-table-column type="selection" width="55"></el-table-column>
+            <el-table-column prop="name" label="姓名" width="100" align="center"></el-table-column>
+            <el-table-column prop="gender" label="性别" width="100" align="center"></el-table-column>
+            <el-table-column label="出生年月" width="110" align="center">
+              <template slot-scope="scope">
+                <span>{{ formatDate(scope.row.birthday,'YYYY-MM-DD') }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="ageType"
+              :formatter="formatAgeType"
+              label="乘机人类型"
+              width="250"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              prop="cardType"
+              :formatter="formatCardType"
+              label="乘机人证件类型"
+              width="250"
+              align="center"
+            ></el-table-column>
+            <el-table-column prop="cardNo" label="乘机人证件号" width="300" align="center"></el-table-column>
+            <el-table-column label="票面价" align="center">
+              <template slot-scope="scope">
+                <span>{{formatAmount(scope.row.viewPrice)}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="价格" align="center">
+              <template slot-scope="scope">
+                <span>{{formatAmount(scope.row.amount)}}</span>
+              </template>
+            </el-table-column>
+          </el-table>
+          <el-row style="margin-top:20px">
+            <el-button
+              v-if="this.tableData.orderType==10"
+              type="primary"
+              @click="goTicket"
+              size="mini"
+            >系统出票
+            </el-button>
+            <el-button type="primary" v-if="taskType!=2" @click="handleTicket" size="mini">手工出票</el-button>
+          </el-row>
+          <div style="margin-top:15px;">
+            <span style="font-weight:700;font-size:15px;">退改说明：</span>
+            <div style=" margin-top:10px;font-size:14px; line-height:1.5;">{{this.refundChangeRule}}</div>
+          </div>
         </div>
-        <el-form :model="tableData" label-width="130px" size="mini">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="订单编号:">
-              <span>{{tableData.orderNo}}</span>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="订单类型:">
-              <span>{{formatOrderType(tableData)}}</span>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="原单号:">
-              <span>{{tableData.sourceOrderNo}}</span>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="订单状态:">
-              <span>{{formatStatus(tableData)}}</span>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="订单分类:">
-              <span>{{formatCategory(tableData)}}</span>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="最晚出票时限:">
-              <span>{{formatDate(tableData.deadlineTicketTime,'YYYY-MM-DD HH:mm:ss')}}</span>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="交易编号:">
-              <span>{{tableData.transactionNo}}</span>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="交易时间:">
-              <span>{{formatDate(tableData.transactionTime,'YYYY-MM-DD HH:mm:ss')}}</span>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="业务编号:">
-              <span>{{tableData.businessNo}}</span>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="金额:">
-              <span>￥{{this.$numeral(tableData.amount).format('0.00')}}</span>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="交易金额:">
-              <span>￥{{this.$numeral(tableData.transactionAmount).format('0.00')}}</span>
-            </el-form-item>
-          </el-col>
-        </el-form>
-      </el-row>
-    </el-card>
-    <el-card class="contentBox">
-      <div slot="header" class="clearfix">
-        <span>航班信息</span>
-      </div>
-      <el-table :data="flightData" size="mini" highlight-current-row style="width: 100%;" fit>
-        <el-table-column prop="dpt" label="出发机场" width="160" align="center"></el-table-column>
-        <el-table-column prop="arr" label="到达机场" width="160" align="center"></el-table-column>
-        <el-table-column prop="airlineCode" label="航司" width="50" align="center"></el-table-column>
-        <el-table-column prop="flightCode" label="航班号" width="100" align="center"></el-table-column>
-        <el-table-column prop="cabin" label="舱位" width="160" align="center"></el-table-column>
-        <el-table-column label="出发日期" width="110" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatDate(scope.row.flightDate,'YYYY-MM-DD') }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="dptTime" label="起飞时间" width="150" align="center"></el-table-column>
-        <el-table-column prop="arrTime" label="到达时间" width="100" align="center"></el-table-column>
-        <el-table-column prop="distance" label="航程" width="50" align="center"></el-table-column>
-        <el-table-column prop="refundRule" label="退票规则" align="center"></el-table-column>
-        <el-table-column prop="changeRule" label="改签规则" align="center"></el-table-column>
-      </el-table>
-      <div style="margin-top:15px;">
-        <span style="font-weight:700;font-size:15px;">退改说明：</span>
-        <div style=" margin-top:10px;font-size:14px; line-height:1.5;">{{this.refundChangeRule}}</div>
-      </div>
-    </el-card>
-    <el-card class="contentBox">
-      <div slot="header" class="clearfix">
-        <span>乘客信息</span>
-      </div>
-      <el-table
-        :data="passengerData"
-        size="mini"
-        highlight-current-row
-        style="width: 100%;"
-        @selection-change="handleSelectionChange"
-        fit
-      >
-        <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column prop="name" label="姓名" width="100" align="center"></el-table-column>
-        <el-table-column prop="gender" label="性别" width="100" align="center"></el-table-column>
-        <el-table-column label="出生年月" width="110" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatDate(scope.row.birthday,'YYYY-MM-DD') }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="ageType"
-          :formatter="formatAgeType"
-          label="乘机人类型"
-          width="250"
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          prop="cardType"
-          :formatter="formatCardType"
-          label="乘机人证件类型"
-          width="250"
-          align="center"
-        ></el-table-column>
-        <el-table-column prop="cardNo" label="乘机人证件号" width="300" align="center"></el-table-column>
-        <el-table-column label="票面价" align="center">
-          <template slot-scope="scope">
-            <span>{{formatAmount(scope.row.viewPrice)}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="价格" align="center">
-          <template slot-scope="scope">
-            <span>{{formatAmount(scope.row.amount)}}</span>
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-row style="margin-top:20px">
-        <el-button
-          v-if="this.tableData.orderType==10"
-          type="primary"
-          @click="goTicket"
-          size="mini"
-        >系统出票
-        </el-button>
-        <el-button type="primary" v-if="taskType!=2" @click="handleTicket" size="mini">手工出票</el-button>
-      </el-row>
-    </el-card>
-    <el-card class="contentBox">
-      <div slot="header" class="clearfix">
-        <span>消息</span>
-      </div>
-      <el-button type="primary" size="mini" @click="getMessage">刷新</el-button>
-      <div style="margin-top:15px;" id="messageHtml">
-        <span v-if="this.messageData" v-html="this.messageData"></span>
-        <span v-else>暂无数据</span>
-      </div>
-    </el-card>
-    <el-card class="contentBox" v-if="this.tableData.orderType !='10'">
-      <div slot="header" class="clearfix">
-        <span v-if="this.tableData.orderType=='30'|| this.tableData.orderType=='31'">改签</span>
-        <span v-else>退票</span>
-      </div>
-      <el-button type="primary" style="margin-bottom:15px;" size="mini" @click="refreshHtml">刷新</el-button>
-      <div id="changeHtmlOrderDetail">
-        <span v-if="this.changeHtml" v-html="this.changeHtml"></span>
-      </div>
-      <div id="refundHtmlOrderDetail">
-        <span v-if="this.refundHtml" v-html="this.refundHtml"></span>
-      </div>
-      <div>
-        <span v-if="this.changeHtml&& this.refundHtml">暂无数据</span>
-      </div>
-    </el-card>
-    <el-card class="contentBox">
-      <div slot="header" class="clearfix">
-        <span>采购订单信息</span>
-      </div>
-      <el-table
-        size="mini"
-        :data="orderTree"
-        highlight-current-row
-        row-key="orderNo"
-        fit
-        :tree-props="{children: 'children', hasChildren: '*****'}"
-      >
-        <el-table-column prop="orderNo" align="center" label="订单号" width="180"></el-table-column>
-        <el-table-column prop="sourceOrderNo" align="center" width="180" label="原订单"></el-table-column>
-        <el-table-column prop="status" :formatter="formatStatus" label="订单状态" width="80"></el-table-column>
-        <el-table-column prop="orderSource" align="center" label="供应商"></el-table-column>
-        <el-table-column label="姓名" align="center" width="200">
-          <template slot-scope="scope">
-            <span>{{ formatPassengers(scope.row.orderDetailList)}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="createTime" align="center" label="订单时间">
-          <template slot-scope="scope">
-            <span>{{ formatDate(scope.row.createTime,'YYYY-MM-DD') }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="amount" align="center" label="金额">
-          <template slot-scope="scope">
-            <span>{{ formatAmount(scope.row.amount)}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="航班号" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatFlightNo(scope.row.flights)}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="ticketNos" label="票号" width="120" align="center">
-          <template slot-scope="scope">
-            <span>{{formatTicketNo(scope.row.ticketNos)}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="address" align="center" fixed="right" width="360" label="操作">
-          <template slot-scope="scope">
-            <el-button
-              type="primary"
-              @click="orderTreeRemove(scope.row)"
-              v-show="scope.row.processCategory=='1'"
-              size="mini"
-            >删除
-            </el-button>
-            <el-button
-              type="primary"
-              v-show="scope.row.orderSource=='QUNAR_OPEN'"
-              @click="refundTicket(scope.row)"
-              size="mini"
-            >退票
-            </el-button>
-            <el-button
-              type="primary"
-              v-show="scope.row.orderSource=='QUNAR_OPEN'"
-              @click="changeTicket(scope.row)"
-              size="mini"
-            >改签
-            </el-button>
-            <el-button
-              type="primary"
-              v-show="scope.row.orderSource=='QUNAR_OPEN' && taskType=='4'"
-              @click="intercept(scope.row)"
-              size="mini"
-            >拦截
-            </el-button>
-            <el-button type="primary" @click="fillOutRefund(scope.row)" size="mini">补退</el-button>
-            <el-button type="primary" @click="fillOutChange(scope.row)" size="mini">补改</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-    </el-card>
+      </el-collapse-item>
+      <el-collapse-item name="2">
+        <template slot="title">
+          <span style="font-size:larger;margin-left: 15px;font-weight: bolder;">销售单消息</span>
+        </template>
+        <div style="padding: 20px">
+          <el-button type="primary" size="mini" @click="getMessage">刷新</el-button>
+          <div style="margin-top:15px;" id="messageHtml">
+            <span v-if="this.messageData" v-html="this.messageData"></span>
+            <span v-else>暂无数据</span>
+          </div>
+        </div>
+      </el-collapse-item>
+      <el-collapse-item v-if="this.tableData.orderType !='10'" name="3">
+        <template slot="title">
+          <span v-if="this.tableData.orderType=='30'|| this.tableData.orderType=='31'"
+                style="font-size:larger;margin-left: 15px;font-weight: bolder;">改签</span>
+          <span v-else style="font-size:larger;margin-left: 15px;font-weight: bolder;">退票</span>
+        </template>
+        <div style="padding: 20px">
+          <el-button type="primary" style="margin-bottom:15px;" size="mini" @click="refreshHtml">刷新</el-button>
+          <div id="changeHtmlOrderDetail">
+            <span v-if="this.changeHtml" v-html="this.changeHtml"></span>
+          </div>
+          <div id="refundHtmlOrderDetail">
+            <span v-if="this.refundHtml" v-html="this.refundHtml"></span>
+          </div>
+          <div>
+            <span v-if="this.changeHtml&& this.refundHtml">暂无数据</span>
+          </div>
+        </div>
+      </el-collapse-item>
+      <el-collapse-item name="4">
+        <template slot="title">
+          <span style="font-size:larger;margin-left: 15px;font-weight: bolder;">采购单信息</span>
+        </template>
+        <div style="padding: 20px">
+          <el-table
+            size="mini"
+            :data="orderTree"
+            highlight-current-row
+            row-key="orderNo"
+            fit
+            :tree-props="{children: 'children', hasChildren: '*****'}"
+          >
+            <el-table-column prop="orderNo" align="center" label="订单号" width="180"></el-table-column>
+            <el-table-column prop="sourceOrderNo" align="center" width="180" label="原订单"></el-table-column>
+            <el-table-column prop="status" :formatter="formatStatus" label="订单状态" width="80"></el-table-column>
+            <el-table-column prop="orderSource" align="center" label="供应商"></el-table-column>
+            <el-table-column label="姓名" align="center" width="200">
+              <template slot-scope="scope">
+                <span>{{ formatPassengers(scope.row.orderDetailList)}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="createTime" align="center" label="订单时间">
+              <template slot-scope="scope">
+                <span>{{ formatDate(scope.row.createTime,'YYYY-MM-DD') }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="amount" align="center" label="金额">
+              <template slot-scope="scope">
+                <span>{{ formatAmount(scope.row.amount)}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="航班号" align="center">
+              <template slot-scope="scope">
+                <span>{{ formatFlightNo(scope.row.flights)}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="ticketNos" label="票号" width="120" align="center">
+              <template slot-scope="scope">
+                <span>{{formatTicketNo(scope.row.ticketNos)}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="address" align="center" fixed="right" width="360" label="操作">
+              <template slot-scope="scope">
+                <el-button
+                  type="primary"
+                  @click="orderTreeRemove(scope.row)"
+                  v-show="scope.row.processCategory=='1'"
+                  size="mini"
+                >删除
+                </el-button>
+                <el-button
+                  type="primary"
+                  v-show="scope.row.orderSource=='QUNAR_OPEN'"
+                  @click="refundTicket(scope.row)"
+                  size="mini"
+                >退票
+                </el-button>
+                <el-button
+                  type="primary"
+                  v-show="scope.row.orderSource=='QUNAR_OPEN'"
+                  @click="changeTicket(scope.row)"
+                  size="mini"
+                >改签
+                </el-button>
+                <el-button
+                  type="primary"
+                  v-show="scope.row.orderSource=='QUNAR_OPEN' && taskType=='4'"
+                  @click="intercept(scope.row)"
+                  size="mini"
+                >拦截
+                </el-button>
+                <el-button type="primary" @click="fillOutRefund(scope.row)" size="mini">补退</el-button>
+                <el-button type="primary" @click="fillOutChange(scope.row)" size="mini">补改</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </el-collapse-item>
+    </el-collapse>
     <div>
       <el-dialog
         title="手工出票"
@@ -485,7 +487,7 @@
         purchaseOrderNo: "",
         refundChangeRule: "",
         refundpassengers: "",
-        taskRemarkData: "",
+        taskRemarkData: this.$route.query.remark,
         timer: null,
         changeData: "",
         orderNo: this.$route.query.orderNo,
@@ -499,7 +501,8 @@
           arrivalTime: "",
           flightNum: "",
           departureTime: ""
-        }
+        },
+        activeNames: ['1','2','3','4']
       };
     },
     components: {
@@ -786,7 +789,7 @@
         this.$store
           .dispatch("order/refundApply", newParams)
           .then(data => {
-            if (data.code==0) {
+            if (data.code == 0) {
               this.$message({
                 type: "success",
                 message: "退票申请成功！"
@@ -869,7 +872,7 @@
         this.$store
           .dispatch("order/changeApply", newParams)
           .then(data => {
-            if (data.code==0) {
+            if (data.code == 0) {
               this.$message({
                 type: "success",
                 message: "改签申请成功！"
@@ -901,7 +904,7 @@
         this.$store
           .dispatch("order/changePay", params)
           .then(data => {
-            if (data.code==0) {
+            if (data.code == 0) {
               this.$message({
                 type: "success",
                 message: "改签支付成功！"
@@ -1193,7 +1196,7 @@
         this.$store
           .dispatch("order/rewriteTicket", params)
           .then(data => {
-            if (data.code==0) {
+            if (data.code == 0) {
               this.$message({
                 type: "success",
                 message: "操作成功!"

@@ -347,7 +347,8 @@ export default {
           orderNo: row.orderNo,
           rootOrderNo: row.rootOrderNo,
           taskId: row.taskId,
-          taskType: row.taskType
+          taskType: row.taskType,
+          remark:row.remark
         }
       });
     },
