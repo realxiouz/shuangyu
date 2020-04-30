@@ -8,7 +8,7 @@ import airline from "./modules/airline";
 import refundChangeRule from "./modules/refundChangeRule";
 import flightSegment from "./modules/flightSegment";
 import firm from "./modules/firm";
-import firmOther from "./modules/firmOther";
+import firmMerchant from "./modules/firmMerchant";
 import dept from "./modules/dept";
 import policy from "./modules/policy";
 import app from "./modules/app";
@@ -50,6 +50,8 @@ import qunarOrderController from "./modules/qunarOrderController";
 import product from "./modules/product";
 import productProperty from "./modules/productProperty";
 import brand from "./modules/brand";
+import firmContact from "./modules/firmContact";
+import firmAccount from "./modules/firmAccount";
 import { getLoginInfo } from "@/api/staff";
 
 Vue.use(Vuex);
@@ -61,7 +63,7 @@ export default new Vuex.Store({
     airline,
     nav,
     firm,
-    firmOther,
+    firmMerchant,
     policy,
     refundChangeRule,
     flightSegment,
@@ -104,7 +106,9 @@ export default new Vuex.Store({
     qunarOrderController,
     product,
     productProperty,
-    brand
+    brand,
+    firmContact,
+    firmAccount
   },
   state: {
     loginInfo: {}

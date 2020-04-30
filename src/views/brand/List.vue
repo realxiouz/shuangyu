@@ -40,7 +40,7 @@
         :total="total"
       ></el-pagination>
 
-      <el-dialog title="资金账号信息" center :visible.sync="dialogVisible" :close-on-click-modal="false" width="24%">
+      <el-dialog title="品牌信息" center :visible.sync="dialogVisible" :close-on-click-modal="false" width="24%">
         <brand-edit
           v-if="dialogVisible"
           :cur-node="curNode"
