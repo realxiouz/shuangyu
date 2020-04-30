@@ -61,13 +61,13 @@
               <el-rate v-model="firmMerchantForm.priority" :colors="['#99A9BF', '#F7BA2A', '#FF9900']"/>
             </el-form-item>
             <el-form-item label="税率">
-              <el-input type="text" v-model="firmMerchantForm.taxRate"></el-input>
+              <el-input type="text" v-model="firmMerchantForm.taxRate" placeholder="请输入税率.."></el-input>
             </el-form-item>
             <el-form-item label="税务登记号">
-              <el-input type="text" v-model="firmMerchantForm.taxNo"></el-input>
+              <el-input type="text" v-model="firmMerchantForm.taxNo" placeholder="请输入税务登记号.."></el-input>
             </el-form-item>
             <el-form-item label="付款方式">
-              <el-input type="text" v-model="firmMerchantForm.paymentType"></el-input>
+              <el-input type="text" v-model="firmMerchantForm.paymentType" placeholder="请输入付款方式.."></el-input>
             </el-form-item>
             <el-form-item label="资金账号类型" prop="accountType">
               <el-select v-model="firmForm.accountType" placeholder="请选择账号类型.." style="width: 50%">
@@ -79,11 +79,26 @@
                 <el-option label="易宝" :value="5"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="银行账号" v-if="1 === firmForm.accountType">
-              <el-input type="text" v-model="firmMerchantForm.bankAccount"></el-input>
+            <el-form-item label="资金账号">
+              <el-input type="text" v-model="firmMerchantForm.bankAccount" placeholder="请输入资金账号.."></el-input>
+            </el-form-item>
+            <el-form-item label="账号名称">
+              <el-input type="text" v-model="firmMerchantForm.bankName" placeholder="请输入账号名称.."></el-input>
+            </el-form-item>
+            <el-form-item label="收款人户名">
+              <el-input type="text" v-model="firmMerchantForm.accountName" placeholder="请输入收款人户名.."></el-input>
+            </el-form-item>
+            <el-form-item label="财务联系人">
+              <el-input type="text" v-model="firmMerchantForm.financeName" placeholder="请输入财务联系人.."></el-input>
+            </el-form-item>
+            <el-form-item label="联系人电话">
+              <el-input type="text" v-model="firmMerchantForm.financePhone" placeholder="请输入联系人电话.."></el-input>
+            </el-form-item>
+            <el-form-item label="联系人电子邮箱">
+              <el-input type="text" v-model="firmMerchantForm.financeEmail" placeholder="请输入联系人电子邮箱.."></el-input>
             </el-form-item>
             <el-form-item label="备注">
-              <el-input type="textarea" v-model="firmMerchantForm.remark"></el-input>
+              <el-input type="textarea" v-model="firmMerchantForm.remark" placeholder="请输入备注.."></el-input>
             </el-form-item>
             <el-form-item label="开放平台">
               <el-select v-model="firmForm.openId" placeholder="请选择平台" style="width: 50%">
@@ -209,7 +224,17 @@
                     //资金账号类型(0:现金，1:银行存款，2:支付宝，3：微信支付，4：汇付，5：易宝)
                     accountType: 0,
                     //银行账号
-                    bankAccount: ''
+                    bankAccount: '',
+                    //银行名称
+                    bankName: '',
+                    //收款人户名
+                    accountName: '',
+                    //财务联系人
+                    financeName: '',
+                    //联系人电话
+                    financePhone: '',
+                    //联系人电子邮箱
+                    financeEmail: ''
                 };
             },
             //加载平台信息

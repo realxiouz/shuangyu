@@ -9,7 +9,7 @@
         <el-table-column type="selection"></el-table-column>
         <el-table-column prop="username" label="登录账号" align="center"></el-table-column>
         <el-table-column prop="password" label="登录密码" align="center"></el-table-column>
-        <el-table-column prop="loginUrl" label="登录地址" align="center"></el-table-column>
+        <el-table-column prop="remark" label="备注" align="center"></el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
             <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
@@ -31,6 +31,9 @@
         </el-form-item>
         <el-form-item label="登录地址" prop="loginUrl">
           <el-input v-model="account.loginUrl" placeholder="请输入登录地址"></el-input>
+        </el-form-item>
+        <el-form-item label="备注">
+          <el-input type="textarea" v-model="account.remark"></el-input>
         </el-form-item>
       </el-form>
 
@@ -74,7 +77,9 @@
                     //登录密码
                     password: null,
                     //登录地址
-                    loginUrl: null
+                    loginUrl: null,
+                    //备注
+                    remark: ''
                 }
             },
             clearForm() {
