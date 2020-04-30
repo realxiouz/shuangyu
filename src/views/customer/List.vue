@@ -105,7 +105,6 @@
                 // .dispatch("staff/associateUser", {filter: {phone: rowData.phone, email: rowData.email}})
                     .dispatch("staff/associateUser", {filter: {email: rowData.email}})
                     .then(data => {
-                        console.log(data.data);
                         this.userTableData.push(data.data);
                     })
                     .catch(error => {
@@ -167,7 +166,6 @@
                     });
             },
             handleAssociate(index, row){
-                console.log(row);
                 this.$store
                     .dispatch("staff/getOne", {
                         staffId: row.otherId
