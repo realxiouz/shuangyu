@@ -179,7 +179,7 @@
       </el-row>
     </el-form>
     <div slot="footer" style="text-align:center;">
-      <el-button size="mini" @click="handleSave">取 消</el-button>
+      <el-button size="mini" @click="handleCancel">取 消</el-button>
       <el-button type="primary" size="mini" @click="handleSave">确 定</el-button>
     </div>
   </div>
@@ -223,24 +223,20 @@
                         this.$store
                             .dispatch("product/save", this.formData)
                             .then(() => {
-                                this.loadData();
-                                if (this.productId != "") {
-                                    this.$message({
-                                        type: "success",
-                                        message: "修改成功！"
-                                    });
-                                } else {
-                                    this.$message({
-                                        type: "success",
-                                        message: "添加成功！"
-                                    });
-                                }
                             })
                             .catch(error => {
                                 console.log(error);
                             });
+                        this.$message({
+                            type: "success",
+                            message: "保存成功！"
+                        });
+                        this.goBack();
                     }
                 });
+            },
+            handleCancel() {
+                this.goBack();
             },
             handleGetOne(id) {
                 this.$store

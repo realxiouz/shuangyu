@@ -174,7 +174,6 @@
                         this.$store
                             .dispatch("productProperty/save", this.formData)
                             .then(() => {
-                                this.loadData();
                             })
                             .catch(error => {
                                 console.log(error);
