@@ -36,7 +36,7 @@
                 :key="index"
                 :label="property.propertyName">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item :label="property.propertyName">
+            <el-form-item :label="property.propertyTitle">
               <el-input v-model="property.propertyName"></el-input>
             </el-form-item>
           </el-col>
@@ -52,7 +52,7 @@
                 v-if="property.enumProperty && !property.multiple">
                 <el-option v-for="(item,idx) in property.values"
                            :key="idx"
-                           :label="item.propertyCode"
+                           :label="item.propertyValueCode"
                            :value="item.propertyValue">
                 </el-option>
               </el-select>
@@ -60,7 +60,7 @@
               <el-checkbox-group
                 v-if="property.enumProperty && property.multiple"
                 v-model="formData.properties[property.propertyName]">
-                <el-checkbox v-for="item in property.values" :key="item.propertyCode"
+                <el-checkbox v-for="item in property.values" :key="item.propertyValueCode"
                              :label="item.propertyValue"></el-checkbox>
               </el-checkbox-group>
             </el-form-item>
