@@ -203,6 +203,9 @@
               <span>{{payData.noPayAmount }}</span>
             </el-form-item>
             <el-form-item label="盈亏值：">
+              <span>{{payData.noPayAmount }}</span>
+            </el-form-item>
+            <el-form-item label="盈亏值：">
               <el-input v-model="profitAndLossValue" clearable></el-input>
             </el-form-item>
             <el-form-item label="支付方式：">
@@ -247,6 +250,7 @@ export default {
       flightData: [],
       loading: true,
       expands: [],
+      systemProfitAndLossValue: "", //盈亏值
       profitAndLossValue: "", //盈亏值
       passengerData: JSON.parse(this.$route.query.passengersInfo),
       flightInfo: {
@@ -395,6 +399,12 @@ export default {
                     if (data.code == 0) {
                       this.payData = data;
                       this.payShow = true;
+                      let amountTotal = 0;
+                      this.passengerData.forEach(item => {
+                        amountTotal += Number(item.amount);
+                      });
+                      this.systemProfitAndLossValue = 0;
+                      this.systemProfitAndLossValue = Number(this.payData.allPrice) - amountTotal;
                       this.$message({
                         type: "success",
                         message: "预定成功！"
