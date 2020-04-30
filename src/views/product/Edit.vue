@@ -215,7 +215,25 @@
             handleSave() {
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
-                        // this.$emit('onSave', this.formData);
+                        this.$store
+                            .dispatch("product/save", this.formData)
+                            .then(() => {
+                                this.loadData();
+                                if (this.productId != "") {
+                                    this.$message({
+                                        type: "success",
+                                        message: "修改成功！"
+                                    });
+                                } else {
+                                    this.$message({
+                                        type: "success",
+                                        message: "添加成功！"
+                                    });
+                                }
+                            })
+                            .catch(error => {
+                                console.log(error);
+                            });
                     }
                 });
             },
