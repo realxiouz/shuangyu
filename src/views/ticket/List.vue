@@ -22,7 +22,7 @@
         <el-table-column prop="orderNo" label="订单号" align="center" width="180"></el-table-column>
         <el-table-column
           prop="orderStatus"
-          :formatter="formateOederStatus"
+          :formatter="formatOrderStatus"
           label="订单状态"
           width="100"
           align="center"
@@ -84,9 +84,9 @@
 <script>
 import orderReportSearch from "./Search.vue";
 import {
-  formateOederStatus,
-  formateCategory,
-  formateOrderType
+  formatOrderStatus,
+  formatCategory,
+  formatOrderType
 } from "@/utils/status.js";
 
 export default {
@@ -104,9 +104,9 @@ export default {
     };
   },
   methods: {
-    formateOederStatus,
-    formateCategory,
-    formateOrderType,
+    formatOrderStatus,
+    formatCategory,
+    formatOrderType,
     handleSizeChange: function(size) {
       this.pageSize = size;
       this.searchParams.pageSize = this.pageSize;

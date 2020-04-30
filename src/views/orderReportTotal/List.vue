@@ -121,7 +121,7 @@
 </template>
 <script>
     import orderReportTotalSearch from "./Search.vue";
-    import {formateCategory, formateStatus} from "@/utils/status.js";
+    import {formatCategory, formatStatus} from "@/utils/status.js";
 
     export default {
         name: "orderReportTotal",
@@ -141,8 +141,8 @@
             orderReportTotalSearch
         },
         methods: {
-            formateStatus,
-            formateCategory,
+          formatStatus,
+          formatCategory,
             handleSizeChange: function (size) {
                 this.pageSize = size;
                 this.searchParams.pageSize = this.pageSize;

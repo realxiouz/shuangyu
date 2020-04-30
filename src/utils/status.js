@@ -1,6 +1,6 @@
 // 格式化订单状态
 
-export function formateStatus(row) {
+export function formatStatus(row) {
     if (row.status === 1) {
         return "下单成功";
     } else if (row.status === 2) {
@@ -35,7 +35,7 @@ export function formateStatus(row) {
         return "蜗牛订单号错误";
     }
 }
-export function formateOederStatus(row) {
+export function formatOrderStatus(row) {
     if (row.orderStatus === 1) {
         return "下单成功";
     } else if (row.orderStatus === 2) {
@@ -136,15 +136,12 @@ export const statusData = [
         label: "蜗牛订单号错误"
     }
 ]
-
-
 // 格式化订单分类
-export function formateCategory(row) {
+export function formatCategory(row) {
     return row.category === 0 ? "销售单" : "采购单";
 }
-
 // 格式化订单类型
-export function formateOrderType(row) {
+export function formatOrderType(row) {
     if (row.orderType === 10) {
         return "出票";
     } else if (row.orderType === 20) {
@@ -198,10 +195,8 @@ export const orderType = [
         label: "改签驳回"
     }
 ]
-
 // 格式化航程类型
-
-export function formateVoyageType(row) {
+export function formatVoyageType(row) {
     if (row.voyageType === 0) {
         return "单程";
     } else if (row.voyageType === 1) {
@@ -212,9 +207,7 @@ export function formateVoyageType(row) {
         return ""
     }
 }
-
 // 格式化乘客类型
-
 export function formatAgeType(row) {
     if (row.ageType === 0) {
         return "成人";
@@ -224,9 +217,7 @@ export function formatAgeType(row) {
         return "婴儿"
     }
 }
-
 // 	格式化乘机人证件类型:
-
 export function formatCardType(row) {
     if (row.cardType === "NI") {
         return "身份证";
@@ -246,7 +237,6 @@ export function formatCardType(row) {
         return row.cardType
     }
 }
-
 export function subjectCategory(row) {
     if (row.category == "0") {
         return "资产类";
@@ -262,7 +252,6 @@ export function subjectCategory(row) {
         return row.category
     }
 }
-
 //格式化订单任务
 export function formatTaskStatus(row) {
     if (row.taskStatus == "0") {

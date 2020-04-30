@@ -346,7 +346,8 @@ export default {
         query: {
           orderNo: row.orderNo,
           rootOrderNo: row.rootOrderNo,
-          taskId: row.taskId
+          taskId: row.taskId,
+          taskType: row.taskType
         }
       });
     },

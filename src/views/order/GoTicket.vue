@@ -14,12 +14,12 @@
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="订单类型:">
-              <span>{{formateOrderType(orderData)}}</span>
+              <span>{{formatOrderType(orderData)}}</span>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="订单状态:">
-              <span>{{formateStatus(orderData)}}</span>
+              <span>{{formatStatus(orderData)}}</span>
             </el-form-item>
           </el-col>
 
@@ -232,9 +232,9 @@
 
 <script>
 import {
-  formateOrderType,
-  formateCategory,
-  formateStatus,
+  formatOrderType,
+  formatCategory,
+  formatStatus,
   formatAgeType,
   formatCardType
 } from "@/utils/status.js";
@@ -282,10 +282,10 @@ export default {
     }
   },
   methods: {
-    formateOrderType,
-    formateStatus,
+    formatOrderType,
+    formatStatus,
     formatAgeType,
-    formateCategory,
+    formatCategory,
     formatCardType,
     // 取消支付弹框
     onCancel() {
