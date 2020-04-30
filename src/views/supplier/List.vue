@@ -13,23 +13,49 @@
         :data="tableData"
         row-key="firm.firmId"
       >
-        <el-table-column prop="firm.firmName" label="供应商名称" align="center" width="200"></el-table-column>
-        <el-table-column prop="firm.firmCode" label="供应商代码" align="center" width="200"></el-table-column>
-        <el-table-column prop="firm.fullName" label="联系人" align="center" width="180"></el-table-column>
-        <el-table-column prop="firm.phone" label="联系人电话" align="center" width="180"></el-table-column>
-        <el-table-column prop="firm.email" label="邮箱" align="center" width="180"></el-table-column>
-        <el-table-column prop="firm.address" label="地址" align="center" width="180"></el-table-column>
-        <el-table-column prop="firm.remark" label="备注" align="center"></el-table-column>
+        <el-table-column prop="firm.firmName" label="供应商名称" align="center" width="170"></el-table-column>
+        <el-table-column prop="firm.firmCode" label="供应商代码" align="center" width="170"></el-table-column>
+        <el-table-column prop="firm.fullName" label="联系人" align="center" width="170"></el-table-column>
+        <el-table-column prop="firm.phone" label="联系人电话" align="center" width="170"></el-table-column>
+        <el-table-column prop="firm.email" label="邮箱" align="center" width="200"></el-table-column>
+        <el-table-column prop="firm.address" label="地址" align="center" width="200"></el-table-column>
+        <el-table-column prop="firm.remark" label="备注" align="center" width="200"></el-table-column>
         <el-table-column label="操作" fixed="right">
           <template slot-scope="scope">
-                        <span v-show="scope.row.firm.openId && '' != scope.row.firm.openId">
-            <el-button type="info" size="mini" @click="handleSupplement(scope.row)">配置管理</el-button>
-                        </span>
             <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
             <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            <el-button size="mini" :type="scope.row.staffId?'success':'info'" @click="handleAssociate(scope.$index, scope.row)">关联用户</el-button>
+            <span v-show="scope.row.firm.openId && '' != scope.row.firm.openId">
+            <el-button type="info" size="mini" @click="handleSupplement(scope.row)">配置管理</el-button>
+                        </span>
           </template>
         </el-table-column>
       </el-table>
+
+      <!-- 员工查询弹窗 -->
+      <el-dialog title="关联用户" width="37%" :visible.sync="dialogVisible" :close-on-click-modal="false">
+        <el-table
+          highlight-current-row
+          size="mini"
+          :data="userTableData"
+          style="width: 100%"
+          @row-click="handleRowClick"
+        >
+          <el-table-column prop="nickName" label="昵称" align="center" width="120"></el-table-column>
+          <el-table-column prop="fullName" label="姓名" align="center" width="120"></el-table-column>
+          <el-table-column prop="gender" label="性别" align="center" width="120">
+            <template slot-scope="scope">
+              <span>{{ initGender(scope.row.gender) }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="phone" label="电话" align="center"></el-table-column>
+          <el-table-column prop="email" label="邮箱" align="center"></el-table-column>
+        </el-table>
+        <span slot="footer" class="dialog-footer">
+        <el-button size="mini" @click="dialogVisible = false">取 消</el-button>
+        <el-button size="mini" type="primary" @click="handleSaveRelation">添 加</el-button>
+      </span>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -42,7 +68,12 @@
         data() {
             return {
                 loading: true,
+                dialogVisible: false,
                 tableData: [],
+                userTableData: [],
+                tmpStaff: {},
+                //关联用户时用于记录当前选中的用户对象
+                curRow: {}
             };
         },
         methods: {
@@ -56,7 +87,7 @@
                     params = newParams;
                 }
                 this.$store
-                    .dispatch("firmOther/getList", {filter: params})
+                    .dispatch("firmMerchant/getList", {filter: params})
                     .then(data => {
                         if (data) {
                             this.tableData = data;
@@ -65,6 +96,20 @@
                     })
                     .catch(error => {
                         this.loading = false;
+                        console.log(error);
+                    });
+            },
+            /*进行用户查询*/
+            searchUser(rowData) {
+                this.clearUserTableData();
+                this.$store
+                // .dispatch("staff/associateUser", {filter: {phone: rowData.phone, email: rowData.email}})
+                    .dispatch("staff/associateUser", {filter: {email: rowData.email}})
+                    .then(data => {
+                        console.log(data.data);
+                        this.userTableData.push(data.data);
+                    })
+                    .catch(error => {
                         console.log(error);
                     });
             },
@@ -99,7 +144,7 @@
             },
             remove(params) {
                 this.$store
-                    .dispatch("firmOther/removeOne", {firmId: params})
+                    .dispatch("firmMerchant/removeOne", {firmId: params})
                     .then(() => {
                         this.loadData();
                     })
@@ -117,6 +162,39 @@
                         openId: row.firmId.openId
                     }
                 });
+            },
+            handleAssociate(index, row){
+                console.log(row);
+                this.$store
+                    .dispatch("staff/getOne", {
+                        staffId: row.otherId
+                    })
+                    .then(data => {
+                        this.tmpStaff = data.data;
+                        this.searchUser(data.data);
+                        this.dialogVisible = true;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            //当前选中用户对象
+            handleRowClick(row){
+                this.curRow = row;
+            },
+            handleSaveRelation(){
+                this.tmpStaff.userId = this.curRow.userId;
+                this.$store
+                    .dispatch("firmMerchant/associateUser", this.tmpStaff)
+                    .then(() => {
+                        this.loadData();
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            clearUserTableData(){
+                this.userTableData = [];
             },
             open(func, data, message) {
                 this.$confirm(message, "提示", {
@@ -139,7 +217,10 @@
                         });
                     });
             },
-            /*跳转到供应商编辑页面，addRoot用于判断添加的是否是根节点，firmId用于编辑记录时进行查找。*/
+            initGender(gender) {
+                return 0 == gender ? "男" : "女";
+            },
+            /*跳转到供应商编辑页面，otherId用于编辑记录时进行查找。*/
             skipDetail(otherId) {
                 this.$router.push({path: '/supplier/edit', query: {otherId: otherId}});
             }

@@ -1,5 +1,4 @@
-import {addOne, updateOne, getOne, getList, removeOne} from '@/api/firmOther';
-
+import {addOne, updateOne, removeOne, getOne, getList, getTotal, getPageList} from '@/api/firmContact';
 
 const actions = {
   addOne({commit}, params) {
@@ -24,10 +23,34 @@ const actions = {
         });
     });
   },
+  removeOne({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {contactId} = params;
+      removeOne(contactId)
+        .then(response => {
+          resolve(response.data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
   getOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {otherId} = params;
-      getOne(otherId)
+      const {contactId} = params;
+      getOne(contactId)
+        .then(response => {
+          resolve(response.data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getTotal({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {filter} = params;
+      getTotal(filter)
         .then(response => {
           resolve(response.data);
         })
@@ -41,27 +64,25 @@ const actions = {
       const {filter} = params;
       getList(filter)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response.data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  removeOne({commit}, params) {
+  getPageList({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {firmId} = params;
-      removeOne(firmId)
+      const {pageFlag, pageSize, lastId, filter} = params;
+      getPageList(pageFlag, pageSize, lastId, filter)
         .then(response => {
-          // const { data } = response;
-          resolve(response);
+          resolve(response.data);
         })
         .catch(error => {
           reject(error);
         });
     });
-  },
+  }
 }
 
 export default {
