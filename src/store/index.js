@@ -50,6 +50,7 @@ import qunarOrderController from "./modules/qunarOrderController";
 import product from "./modules/product";
 import productProperty from "./modules/productProperty";
 import brand from "./modules/brand";
+import firmContact from "./modules/firmContact";
 import { getLoginInfo } from "@/api/staff";
 
 Vue.use(Vuex);
@@ -104,7 +105,8 @@ export default new Vuex.Store({
     qunarOrderController,
     product,
     productProperty,
-    brand
+    brand,
+    firmContact
   },
   state: {
     loginInfo: {}
