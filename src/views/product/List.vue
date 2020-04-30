@@ -50,14 +50,6 @@
         :page-size="pageSize"
         :total="total"
       ></el-pagination>
-      <el-dialog center :visible.sync="dialogVisible" width="30%">
-        <edit
-          v-if="dialogVisible"
-          :app-id="productId"
-          @onSave="handleSave"
-          @onCancel="handleCancel"
-        ></edit>
-      </el-dialog>
     </div>
   </div>
 </template>
@@ -139,6 +131,7 @@
                 });
             },
             handleUpdate(id) {
+                console.log(id);
                 let path = "";
                 path = "/product/config";
                 this.$router.push({
@@ -167,28 +160,6 @@
                     .catch(err => {
                         console.error(err);
                     });
-            },
-            handleSave(formData) {
-                this.$store
-                    .dispatch("product/save", formData)
-                    .then(() => {
-                        this.loadData();
-                        if (this.productId != "") {
-                            this.$message({
-                                type: "success",
-                                message: "修改成功！"
-                            });
-                        } else {
-                            this.$message({
-                                type: "success",
-                                message: "添加成功！"
-                            });
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-                this.dialogVisible = false;
             },
             handleSizeChange(pageSize) {
                 this.pageSize = pageSize;
