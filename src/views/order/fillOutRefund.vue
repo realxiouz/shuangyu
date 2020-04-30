@@ -374,8 +374,10 @@
       },
       // 保存
       handleSave() {
+        this.formData.orderDetailList = this.selectOrderDetailList;
+        this.formData.pid = this.fillOutRefundData.orderNo;
+        this.formData.passengers = this.selectOrderDetailList;
         if (this.formData.radio != "1" && (this.taskType==2 || this.taskType==4)) {
-          this.formData.passengers = this.selectOrderDetailList;
           let amountTotal = 0;
           if (this.selectOrderDetailList.length<1){
             this.$notify({
@@ -424,8 +426,6 @@
             return;
           }
         }
-        this.formData.orderDetailList = this.selectOrderDetailList;
-        this.formData.pid = this.fillOutRefundData.orderNo;
         this.$emit("onSave", this.formData);
       }
     },
