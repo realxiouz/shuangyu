@@ -343,12 +343,15 @@ export default {
     },
     // 调转详情页
     goToDetail(row) {
+      console.log(JSON.stringify(row))
+
       let path = "";
       path = "/order/detail";
       this.$router.push({
         path: path,
         query: {
           orderNo: row.orderNo,
+          rootOrderNo: row.rootOrderNo,
           taskId: row.taskId,
           taskType: row.taskType
         }

@@ -274,7 +274,9 @@ export default {
         path: path,
         query: {
           orderNo: row.orderNo,
-          taskId: row.taskId
+          rootOrderNo: row.rootOrderNo,
+          taskId: row.taskId,
+          taskType: row.taskType
         }
       });
     },

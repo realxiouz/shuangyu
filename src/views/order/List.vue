@@ -23,7 +23,7 @@
         <el-table-column prop="orderNo" label="订单号" width="175" align="center"></el-table-column>
         <el-table-column prop="policyCode" label="政策代码" align="center" width="180"></el-table-column>
         <el-table-column
-          :formatter="formateOrderType"
+          :formatter="formatOrderType"
           prop="orderType"
           label="订单类型"
           width="70"
@@ -31,14 +31,14 @@
         ></el-table-column>
         <el-table-column
           prop="category"
-          :formatter="formateCategory"
+          :formatter="formatCategory"
           label="订单分类"
           width="70"
           align="center"
         ></el-table-column>
         <el-table-column
           prop="status"
-          :formatter="formateStatus"
+          :formatter="formatStatus"
           label="订单状态"
           width="80"
           align="center"
@@ -147,7 +147,7 @@
 
 <script>
     import orderSearch from "./Search.vue";
-    import {formateCategory, formateOrderType, formateStatus, formateVoyageType} from "@/utils/status.js";
+    import {formatCategory, formatOrderType, formatStatus, formatVoyageType} from "@/utils/status.js";
 
     export default {
         name: "orderList",
@@ -167,10 +167,10 @@
             orderSearch
         },
         methods: {
-            formateStatus,
-            formateCategory,
-            formateOrderType,
-            formateVoyageType,
+          formatStatus,
+          formatCategory,
+          formatOrderType,
+          formatVoyageType,
             handleSizeChange: function (size) {
                 this.pageSize = size;
                 this.searchParams.pageSize = this.pageSize;
