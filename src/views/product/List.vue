@@ -131,7 +131,6 @@
                 });
             },
             handleUpdate(id) {
-                console.log(id);
                 let path = "";
                 path = "/product/config";
                 this.$router.push({

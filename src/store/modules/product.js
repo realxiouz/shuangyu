@@ -28,8 +28,8 @@ const actions = {
   },
   getOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {propertyId} = params;
-      getOne(propertyId)
+      const {productId} = params;
+      getOne(productId)
         .then(response => {
           const {data} = response;
           resolve(data);

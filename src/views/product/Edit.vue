@@ -333,6 +333,7 @@
         },
         created() {
             if (this.$route.query.productId) {
+                console.log(this.$route.query.productId)
                 this.handleGetOne(this.$route.query.productId);
             }
             this.loadTreeData();
