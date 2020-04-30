@@ -1,5 +1,4 @@
 import request from '@/utils/request';
-import de from "element-ui/src/locale/lang/de";
 
 
 export function addOne(data) {
@@ -37,6 +36,14 @@ export function getList(filter) {
     url: `/firm/merchant/list`,
     method: `get`,
     params: filter
+  });
+}
+
+export function associateUser(data) {
+  return request({
+    url: `/firm/merchant/associate`,
+    method: `put`,
+    data
   });
 }
 
