@@ -164,7 +164,6 @@
                 });
             },
             handleAssociate(index, row){
-                console.log(row);
                 this.$store
                     .dispatch("staff/getOne", {
                         staffId: row.otherId
