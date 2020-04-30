@@ -2,17 +2,7 @@
   <div>
     <el-form :model="formData" label-width="110px" size="mini" style="margin-top:15px;">
       <el-row>
-        <el-col :span="12">
-          <el-form-item v-show="this.isWoniu">
-            <el-radio-group @change="radioChange" v-model="formData.radio" style="width:100%">
-              <el-radio label="1">导单</el-radio>
-              <el-radio label="2">补单</el-radio>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
+        <el-col :span="8">
           <el-form-item label="供应商:">
             <el-select
               clearable
@@ -27,16 +17,23 @@
             </el-select>
           </el-form-item>
         </el-col>
-
-        <el-col :span="12">
+        <el-col :span="8">
           <el-form-item label="单号:">
             <el-input clearable v-model="formData.sourceOrderNo"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
+          <el-form-item v-show="this.isWoniu">
+            <el-radio-group @change="radioChange" v-model="formData.radio" style="width:100%">
+              <el-radio label="1">导单</el-radio>
+              <el-radio label="2">补单</el-radio>
+            </el-radio-group>
           </el-form-item>
         </el-col>
       </el-row>
       <div v-if="this.isWoniu && this.isWoniuTicket">
         <el-row>
-          <el-col :span="12">
+          <el-col :span="8">
             <el-form-item label="订单类型:">
               <el-select
                 v-model="formData.orderType"
@@ -53,14 +50,12 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="8">
             <el-form-item label="金额:">
               <el-input clearable v-model="formData.amount"></el-input>
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="12">
+          <el-col :span="8">
             <el-form-item label="资金账号:">
               <el-select
                 v-model="formData.fundAccountId"
@@ -78,7 +73,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="8">
             <el-form-item label="蜗牛账号:">
               <el-select
                 v-model="formData.userNameType"
@@ -96,7 +91,7 @@
       </div>
       <div v-else>
         <el-row>
-          <el-col :span="12">
+          <el-col :span="8">
             <el-form-item label="订单日期:">
               <el-date-picker
                 type="datetime"
@@ -107,7 +102,7 @@
               ></el-date-picker>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="8">
             <el-form-item label="订单类型:">
               <el-select
                 v-model="formData.orderType"
@@ -124,27 +119,22 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="8">
             <el-form-item label="金额:">
-              <el-input clearable v-model="formData.transactionAmount"></el-input>
+              <el-input clearable v-model="formData.amount"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="8">
             <el-form-item label="利润金额:">
               <el-input clearable v-model="formData.profit"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="8">
             <el-form-item label="平台账号:">
               <el-input clearable v-model="formData.accountId"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
-            <el-form-item label="备注:">
-              <el-input clearable v-model="formData.remark"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
+          <el-col :span="8">
             <el-form-item label="资金账号:">
               <el-select
                 v-model="formData.fundAccount"
@@ -162,22 +152,22 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="8">
             <el-form-item label="出发地:">
               <el-input clearable v-model="formData.dpt"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="8">
             <el-form-item label="到达城市:">
               <el-input clearable v-model="formData.arr"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="8">
             <el-form-item label="航班号:">
               <el-input clearable v-model="formData.flightCode"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="8">
             <el-form-item label="出发日期:">
               <el-date-picker
                 type="date"
@@ -188,8 +178,7 @@
               ></el-date-picker>
             </el-form-item>
           </el-col>
-
-          <el-col :span="12">
+          <el-col :span="8">
             <el-form-item label="出发时间:">
               <el-time-select
                 v-model="formData.dptTime"
@@ -202,7 +191,7 @@
               ></el-time-select>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="8">
             <el-form-item label="到达时间:">
               <el-time-select
                 v-model="formData.arrTime"
@@ -215,9 +204,14 @@
               ></el-time-select>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="8">
             <el-form-item label="舱位代码:">
               <el-input clearable v-model="formData.cabin"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="备注:">
+              <el-input clearable v-model="formData.remark"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -230,27 +224,28 @@
           fit
         >
           <el-table-column type="selection" width="55"></el-table-column>
-          <el-table-column prop="name" label="姓名" width="80" align="center"></el-table-column>
+          <el-table-column prop="name" label="姓名" width="150" align="center"></el-table-column>
           <el-table-column prop="gender" label="性别" width="50" align="center"></el-table-column>
           <el-table-column
             prop="ageType"
             :formatter="formatAgeType"
             label="乘机人类型"
             align="center"
-            width="100"
+            width="80"
           ></el-table-column>
           <el-table-column
             prop="cardType"
             :formatter="formatCardType"
             label="乘机人证件类型"
             align="center"
+            width="120"
           ></el-table-column>
-          <el-table-column prop="amount" label="价格" align="center">
+          <el-table-column prop="amount" label="价格" align="center" width="150">
             <template slot-scope="scope">
               <el-input clearable v-model="scope.row.amount"></el-input>
             </template>
           </el-table-column>
-          <el-table-column prop="cardNo" label="乘机人证件号" align="center">
+          <el-table-column prop="cardNo" label="乘机人证件号" align="center" width="220">
             <template slot-scope="scope">
               <el-input clearable v-model="scope.row.cardNo"></el-input>
             </template>
@@ -274,20 +269,35 @@
   import {
     formatAgeType,
     formatCardType,
-    orderType,
     statusData
   } from "@/utils/status.js";
 
   export default {
     name: "fillOutRefund",
-    props: ["fillOutRefundData"],
+    props: ["fillOutRefundData","sellAmount","taskType"],
     data() {
       return {
         selectStatusDataFlag: false,
         isWoniu: false,
+        orderType: [{
+          value: 20,
+          label: "退票"
+        },
+          {
+            value: 21,
+            label: "二次退票"
+          },
+          {
+            value: 22,
+            label: "退差"
+          },
+          {
+            value: 23,
+            label: "退改"
+          }],
         isWoniuTicket: true,
-        orderType: orderType,
-        formData: {},
+        formData: {
+        },
         selectOrderDetailList: [],
         accountData: [],
         statusData: statusData
@@ -298,8 +308,13 @@
       formatCardType,
       // 默认数据
       defaultFormData() {
+        var _orderDetailList = [];
+        this.fillOutRefundData.orderDetailList.forEach(item => {
+          item.amount = '';
+          _orderDetailList.push(item);
+        });
         return {
-          orderDetailList: this.fillOutRefundData.orderDetailList,
+          orderDetailList: _orderDetailList,
           arr: this.fillOutRefundData.flights[0].arr,
           dpt: this.fillOutRefundData.flights[0].dpt,
           flightCode: this.fillOutRefundData.flights[0].flightCode,
@@ -307,10 +322,10 @@
           arrTime: this.fillOutRefundData.flights[0].arrTime,
           flightDate: this.fillOutRefundData.flights[0].flightDate,
           cabin: this.fillOutRefundData.flights[0].cabin,
-          radio: "1",
           fundAccountId: "",
           userNameType: "",
           accountId: "",
+          radio: "2",
           profit: ""
         };
       },
@@ -331,6 +346,11 @@
       selectSource(value) {
         if (value == "QUNAR_OPEN") {
           this.isWoniu = true;
+          if (this.formData.radio=="1"){
+            this.isWoniuTicket = true;
+          }else {
+            this.isWoniuTicket = false;
+          }
         } else {
           this.isWoniu = false;
         }
@@ -354,15 +374,48 @@
       },
       // 保存
       handleSave() {
-        if (this.formData.radio != "1") {
-          this.formData.flightData = this.flightData;
-          this.formData.passengers = this.passengerData;
+        this.formData.orderDetailList = this.selectOrderDetailList;
+        this.formData.pid = this.fillOutRefundData.orderNo;
+        this.formData.passengers = this.selectOrderDetailList;
+        if (this.formData.radio != "1" && (this.taskType==2 || this.taskType==4)) {
           let amountTotal = 0;
+          if (this.selectOrderDetailList.length<1){
+            this.$notify({
+              title: "提示",
+              message: "请选择人！",
+              type: "warning",
+              duration: 4500
+            });
+            return;
+          }
+          var flag =false;
           this.formData.passengers.forEach(item => {
-            amountTotal += Number(item.amount);
+            if (item.amount && item.amount!=''){
+              amountTotal += Number(item.amount);
+            }else {
+              flag = true;
+            }
           });
+          if (flag){
+            this.$notify({
+              title: "提示",
+              message: "填写人的金额！",
+              type: "warning",
+              duration: 4500
+            });
+            return;
+          }
+          if (amountTotal!=this.formData.amount){
+            this.$notify({
+              title: "提示",
+              message: "金额填写错误，请重新填写！",
+              type: "warning",
+              duration: 4500
+            });
+            return;
+          }
           let _profit = 0;
-          _profit = amountTotal + Number(this.formData.transactionAmount);
+          _profit = amountTotal + Number(this.sellAmount);
           if (_profit != this.formData.profit) {
             this.$notify({
               title: "提示",
@@ -373,16 +426,12 @@
             return;
           }
         }
-        this.formData.orderDetailList = this.selectOrderDetailList;
         this.$emit("onSave", this.formData);
       }
     },
     created() {
       this.clearForm();
       this.getFinance();
-      if (this.fillOutRefundData.orderSource == "QUNAR_OPEN") {
-        this.isWoniu = true;
-      }
     }
   };
 </script>

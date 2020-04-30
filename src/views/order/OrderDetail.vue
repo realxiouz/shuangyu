@@ -35,7 +35,7 @@
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="订单类型:">
-              <span>{{formateOrderType(tableData)}}</span>
+              <span>{{formatOrderType(tableData)}}</span>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -45,12 +45,12 @@
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="订单状态:">
-              <span>{{formateStatus(tableData)}}</span>
+              <span>{{formatStatus(tableData)}}</span>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="订单分类:">
-              <span>{{formateCategory(tableData)}}</span>
+              <span>{{formatCategory(tableData)}}</span>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -132,7 +132,6 @@
             <span>{{ formatDate(scope.row.birthday,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
-
         <el-table-column
           prop="ageType"
           :formatter="formatAgeType"
@@ -210,7 +209,7 @@
       >
         <el-table-column prop="orderNo" align="center" label="订单号" width="180"></el-table-column>
         <el-table-column prop="sourceOrderNo" align="center" width="180" label="原订单"></el-table-column>
-        <el-table-column prop="status" :formatter="formateStatus" label="订单状态" width="80"></el-table-column>
+        <el-table-column prop="status" :formatter="formatStatus" label="订单状态" width="80"></el-table-column>
         <el-table-column prop="orderSource" align="center" label="供应商"></el-table-column>
         <el-table-column label="姓名" align="center" width="200">
           <template slot-scope="scope">
@@ -278,7 +277,7 @@
         title="手工出票"
         center
         :visible.sync="handleTicketShow"
-        width="50%"
+        width="55%"
         :close-on-click-modal="false"
       >
         <handle-ticket
@@ -288,6 +287,8 @@
           @onSave="handleSave"
           :passengerData="passengersInfo"
           :flightData="flightData"
+          :sell-amount="sellAmount"
+          :task-type="taskType"
         ></handle-ticket>
       </el-dialog>
     </div>
@@ -296,7 +297,7 @@
         title="蜗牛退票申请"
         center
         :visible.sync="refundTicketShow"
-        width="50%"
+        width="55%"
         :close-on-click-modal="false"
       >
         <refund-ticket
@@ -316,7 +317,7 @@
         title="蜗牛改签申请"
         center
         :visible.sync="changeTicketShow"
-        width="50%"
+        width="55%"
         :close-on-click-modal="false"
       >
         <change-ticket
@@ -334,12 +335,14 @@
         title="补退"
         center
         :visible.sync="fillOutRefundShow"
-        width="50%"
+        width="55%"
         :close-on-click-modal="false"
       >
         <fillOut-refund
           v-if="fillOutRefundShow"
           :fillOutRefundData="fillOutRefundData"
+          :sell-amount="sellAmount"
+          :task-type="taskType"
           @onCancel="onCancel"
           @onSave="handleSavePurchase"
         ></fillOut-refund>
@@ -350,12 +353,14 @@
         title="补改"
         center
         :visible.sync="fillOutChangeShow"
-        width="50%"
+        width="55%"
         :close-on-click-modal="false"
       >
         <fillOut-change
           v-if="fillOutChangeShow"
           :fillOutChangeData="fillOutChangeData"
+          :sell-amount="sellAmount"
+          :task-type="taskType"
           @onCancel="onCancel"
           @onSave="handleSavePurchase"
         ></fillOut-change>
@@ -429,9 +434,9 @@
   import fillOutChange from "./fillOutChange";
   import fillOutRefund from "./fillOutRefund";
   import {
-    formateOrderType,
-    formateCategory,
-    formateStatus,
+    formatOrderType,
+    formatCategory,
+    formatStatus,
     formatAgeType,
     formatCardType
   } from "@/utils/status.js";
@@ -505,9 +510,9 @@
       fillOutRefund
     },
     methods: {
-      formateOrderType,
-      formateStatus,
-      formateCategory,
+      formatOrderType,
+      formatStatus,
+      formatCategory,
       formatAgeType,
       formatCardType,
 
