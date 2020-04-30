@@ -31,20 +31,41 @@
           </el-form-item>
         </el-col>
       </el-row>
-
-
-      <el-row :gutter="10"
-              v-for="(item, index) in formData.propertyData"
-              :key="'gameArea' + index">
+      <el-row :gutter="10" v-for="(property, index) in formData.propertyData"
+              :key="index"
+              :label="property.propertyName">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="item.propertyName">
-            <el-input v-model="item.propertyName"></el-input>
+          <el-form-item :label="property.propertyName">
+            <el-input v-model="formData.propertyData[index].propertyName" disabled></el-input>
           </el-form-item>
-
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item :label='property.propertyName+"属性值"'>
+            <!--非枚举-->
+            <el-input v-if="!property.enumProperty && property.values.length>0"
+                      v-model="property.values[0].propertyValue" disabled></el-input>
+            <!-- 枚举单选-->
+            <el-select
+              v-if="property.enumProperty && !property.multiple"
+              v-model="formData.propertyData[index].values[index].propertyValue">
+              <el-option v-for="(item,idx) in property.values"
+                         :key="idx"
+                         :label="item.propertyCode"
+                         :value="item.propertyValue">
+              </el-option>
+            </el-select>
+            <!-- 枚举多选-->
+            <el-checkbox-group
+              v-if="property.enumProperty && property.multiple"
+              v-model="formData.propertyData[index].values"
+              @change="handleValueChange">
+              <el-checkbox v-for="value in property.values" :label="value.propertyValue" :key="value.propertyCode">
+                {{value.propertyValue}}
+              </el-checkbox>
+            </el-checkbox-group>
+          </el-form-item>
         </el-col>
       </el-row>
-
-
       <el-row :gutter="10">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="品牌编码" prop="brandCode">
@@ -156,25 +177,35 @@
         </el-col>
       </el-row>
     </el-form>
-
+    <div slot="footer" style="text-align:center;">
+      <el-button size="mini" @click="handleSave">取 消</el-button>
+      <el-button type="primary" size="mini" @click="handleSave">确 定</el-button>
+    </div>
   </div>
 </template>
 <script>
     export default {
-        name: 'appEdit',
+        name: 'edit',
         data() {
             return {
                 formData: {},
                 categoryList: [],
                 brandList: [],
-                propertyData: [],
                 rules: {
-                    appName: [
-                        {required: true, message: "请输入应用名称", trigger: "blur"},
+                    productCode: [
+                        {required: true, message: "请输入商品编码", trigger: "blur"},
                         {
                             min: 1,
-                            max: 10,
-                            message: "长度在 1到 10 个字符"
+                            max: 20,
+                            message: "长度在 1到 20 个字符"
+                        }
+                    ],
+                    productName: [
+                        {required: true, message: "请输入商品名称", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到20 个字符"
                         }
                     ]
                 }
@@ -189,18 +220,14 @@
                 });
             },
             handleGetOne(id) {
-                if (id) {
-                    this.$store
-                        .dispatch("app/getOne", {appId: id})
-                        .then(data => {
-                            this.formData = data;
-                            this.dialogVisible = true;
-                        }).catch(error => {
-                        console.log(error);
-                    });
-                } else {
-                    this.formData = defaultData();
-                }
+                this.$store
+                    .dispatch("app/getOne", {appId: id})
+                    .then(data => {
+                        this.formData = data;
+                        this.dialogVisible = true;
+                    }).catch(error => {
+                    console.log(error);
+                });
             },
             handleValueChange(val) {
                 console.log(val);
@@ -212,8 +239,7 @@
                     })
                     .then(data => {
                         if (data) {
-                            this.propertyData = data;
-                            this.formData.propertyData = data;
+                            this.formData = {...this.formData, propertyData: data}
                         }
                     })
                     .catch(error => {
@@ -263,7 +289,9 @@
                     param.categoryCode = code;
                     this.loadPropertyData(param);
                 }
-
+            },
+            handleCheckedCitiesChange(val) {
+                console.log(val);
             },
             //跳转回列表页面
             goBack() {
