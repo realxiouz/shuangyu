@@ -206,6 +206,14 @@
                         console.log(error);
                     });
             },
+          exportOrder(params) {
+            var myList = new Array();
+            for (var key in params) {
+              myList.push(key + "=" + params[key]);
+            }
+            var paramsStr = "?" + myList.join("&");
+            window.location.href = 'http://192.168.0.135:28021/qunar/flight/download' + paramsStr;
+          },
             loadTotal(params) {
                 this.$store
                     .dispatch("order/getTotal", {
@@ -263,7 +271,13 @@
                 if (!params) {
                     params = {};
                     this.searchParams = params;
-                    this.loadData(this.searchParams);
+                    if (params.exportFlag==1){
+                      debugger
+                      this.exportOrder(this.searchParams);
+                    }else {
+                      this.loadData(this.searchParams);
+                    }
+
                 } else {
                     const newParams = {};
                     for (let key in params) {
@@ -283,11 +297,17 @@
                         }
                     }
                     this.searchParams = newParams;
+                  if (params.exportFlag==1){
+                    debugger
+                    this.exportOrder(this.searchParams);
+                  }else {
                     this.loadData(this.searchParams);
                     this.$message({
-                        type: "success",
-                        message: "查询成功！"
+                      type: "success",
+                      message: "查询成功！"
                     });
+                  }
+
                 }
             },
             handleRemove(orderNo) {

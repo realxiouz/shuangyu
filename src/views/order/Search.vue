@@ -328,11 +328,13 @@
         class="filter-item"
         type="primary"
         size="mini"
-        @click="$emit('onSearch', formData)"
-      >查询</el-button>
+        @click="$emit('onSearch', formData)">查询</el-button>
+      <el-button
+        type="primary"
+        size="mini"
+        @click="handleExport">导单</el-button>
       <el-button type="text" size="mini" @click="handleMore">
-        更多
-        <i :class="switchIcon"></i>
+        更多<i :class="switchIcon"></i>
       </el-button>
     </el-col>
   </el-row>
@@ -408,6 +410,10 @@ export default {
   methods: {
     handleMore() {
       this.more = !this.more;
+    },
+    handleExport(){
+      this.formData.exportFlag = 1;
+      this.$emit('onSearch', this.formData);
     }
   }
 };
