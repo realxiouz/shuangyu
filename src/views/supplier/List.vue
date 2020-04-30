@@ -22,9 +22,9 @@
         <el-table-column prop="firm.remark" label="备注" align="center" width="200"></el-table-column>
         <el-table-column label="操作" fixed="right">
           <template slot-scope="scope">
-            <el-button size="mini" :type="scope.row.staffId?'success':'info'" @click="handleAssociate(scope.$index, scope.row)">关联用户</el-button>
             <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
             <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            <el-button size="mini" :type="scope.row.staffId?'success':'info'" @click="handleAssociate(scope.$index, scope.row)">关联用户</el-button>
             <span v-show="scope.row.firm.openId && '' != scope.row.firm.openId">
             <el-button type="info" size="mini" @click="handleSupplement(scope.row)">配置管理</el-button>
                         </span>
