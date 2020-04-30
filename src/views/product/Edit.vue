@@ -31,6 +31,20 @@
           </el-form-item>
         </el-col>
       </el-row>
+
+
+      <el-row :gutter="10"
+              v-for="(item, index) in formData.propertyData"
+              :key="'gameArea' + index">
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="item.propertyName">
+            <el-input v-model="item.propertyName"></el-input>
+          </el-form-item>
+
+        </el-col>
+      </el-row>
+
+
       <el-row :gutter="10">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="品牌编码" prop="brandCode">
@@ -142,44 +156,10 @@
         </el-col>
       </el-row>
     </el-form>
-    <el-table
-      :data="propertyData"
-      size="mini"
-      border
-    >
-      <el-table-column prop="propertyTitle" label="属性标题" align="center"></el-table-column>
-      <el-table-column prop="propertyCode" label="属性编码" align="center"></el-table-column>
-      <el-table-column prop="propertyName" label="属性名称" align="center"></el-table-column>
-      <el-table-column prop="sellProperty" label="是否销售属性" align="center">
-        <template slot-scope="scope">
-          <el-switch v-model="scope.row.sellProperty" disabled></el-switch>
-        </template>
-      </el-table-column>
-      <el-table-column prop="enumProperty" label="是否枚举属性" align="center">
-        <template slot-scope="scope">
-          <el-switch v-model="scope.row.enumProperty" disabled></el-switch>
-        </template>
-      </el-table-column>
-      <el-table-column prop="required" label="是否必填" align="center">
-        <template slot-scope="scope">
-          <el-switch v-model="scope.row.required" disabled></el-switch>
-        </template>
-      </el-table-column>
-      <el-table-column prop="multiple" label="是否多选" align="center">
-        <template slot-scope="scope">
-          <el-switch v-model="scope.row.multiple" disabled></el-switch>
-        </template>
-      </el-table-column>
-      <el-table-column fixed="right" label="操作" align="center" width="350">
-        <template slot-scope="scope">
-          <el-button @click="handleUpdate(scope.row.propertyId)" type="primary" size="mini">编辑</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+
   </div>
 </template>
 <script>
-
     export default {
         name: 'appEdit',
         data() {
@@ -222,6 +202,9 @@
                     this.formData = defaultData();
                 }
             },
+            handleValueChange(val) {
+                console.log(val);
+            },
             loadPropertyData(searchForm) {
                 this.$store
                     .dispatch("productProperty/getList", {
@@ -230,6 +213,7 @@
                     .then(data => {
                         if (data) {
                             this.propertyData = data;
+                            this.formData.propertyData = data;
                         }
                     })
                     .catch(error => {

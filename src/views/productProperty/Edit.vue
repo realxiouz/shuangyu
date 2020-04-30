@@ -82,12 +82,12 @@
           size="mini"
           border
         >
-          <el-table-column prop="propertyCode" label="编码" align="center"></el-table-column>
+          <el-table-column prop="propertyValueCode" label="编码" align="center"></el-table-column>
           <el-table-column prop="propertyValue" label="值" align="center"></el-table-column>
           <el-table-column label="操作" align="center" width="350">
             <template slot-scope="scope">
               <el-button type="danger" size="mini"
-                         @click="valueRemove(scope.row.propertyCode,scope.$index,formData.values)">删除
+                         @click="valueRemove(scope.row.propertyValueCode,scope.$index,formData.values)">删除
               </el-button>
             </template>
           </el-table-column>
@@ -95,7 +95,7 @@
         <el-dialog title="属性值" :visible.sync="dialogVisible" width="20%">
           <el-form ref="form" :model="formValue" label-width="90px">
             <el-form-item label="编码">
-              <el-input v-model="formValue.propertyCode"></el-input>
+              <el-input v-model="formValue.propertyValueCode"></el-input>
             </el-form-item>
             <el-form-item label="值">
               <el-input v-model="formValue.propertyValue"></el-input>
@@ -220,7 +220,7 @@
                 this.dialogVisible = false;
             },
             valueSave() {
-                if (!this.formValue.propertyCode || !this.formValue.propertyValue) {
+                if (!this.formValue.propertyValueCode || !this.formValue.propertyValue) {
                     this.$message("请填写完整属性信息！")
                     return false;
                 }
