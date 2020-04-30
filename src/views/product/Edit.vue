@@ -31,41 +31,43 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row :gutter="10" v-for="(property, index) in formData.propertyData"
-              :key="index"
-              :label="property.propertyName">
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item :label="property.propertyName">
-            <el-input v-model="formData.propertyData[index].propertyName" disabled></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item :label='property.propertyName+"属性值"'>
-            <!--非枚举-->
-            <el-input v-if="!property.enumProperty && property.values.length>0"
-                      v-model="property.values[0].propertyValue" disabled></el-input>
-            <!-- 枚举单选-->
-            <el-select
-              v-if="property.enumProperty && !property.multiple"
-              v-model="formData.propertyData[index].values[index].propertyValue">
-              <el-option v-for="(item,idx) in property.values"
-                         :key="idx"
-                         :label="item.propertyCode"
-                         :value="item.propertyValue">
-              </el-option>
-            </el-select>
-            <!-- 枚举多选-->
-            <el-checkbox-group
-              v-if="property.enumProperty && property.multiple"
-              v-model="formData.propertyData[index].values"
-              @change="handleValueChange">
-              <el-checkbox v-for="value in property.values" :label="value.propertyValue" :key="value.propertyCode">
-                {{value.propertyValue}}
-              </el-checkbox>
-            </el-checkbox-group>
-          </el-form-item>
-        </el-col>
-      </el-row>
+      <div v-if="showProperties">
+        <el-row :gutter="10" v-for="(property, index) in propertyData"
+                :key="index"
+                :label="property.propertyName">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item :label="property.propertyName">
+              <el-input v-model="formData.properties[property.propertyName]" disabled></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item :label='property.propertyName+"属性值"'>
+              <!--非枚举-->
+              <el-input v-if="!property.enumProperty"></el-input>
+              <!-- 枚举单选-->
+              <el-select
+                v-if="property.enumProperty && !property.multiple">
+                <el-option v-for="(item,idx) in property.values"
+                           :key="idx"
+                           :label="item.propertyCode"
+                           :value="item.propertyValue">
+                </el-option>
+              </el-select>
+              <!-- 枚举多选-->
+              <el-checkbox-group v-if="property.enumProperty && property.multiple" @change="handleValueChange">
+                <!--<el-checkbox v-for="(value,cindex) in property.values" :label="value.propertyValue" :key="cindex">
+                  {{value.propertyValue}}
+                </el-checkbox>-->
+                <el-checkbox-group
+                  v-model="formData.properties[property.propertyName]">
+                  <el-checkbox v-for="item in property.values" :key="item.propertyCode"
+                               :label="item.propertyValue"></el-checkbox>
+                </el-checkbox-group>
+              </el-checkbox-group>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </div>
       <el-row :gutter="10">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="品牌编码" prop="brandCode">
@@ -184,131 +186,144 @@
   </div>
 </template>
 <script>
-    export default {
-        name: 'edit',
-        data() {
-            return {
-                formData: {},
-                categoryList: [],
-                brandList: [],
-                rules: {
-                    productCode: [
-                        {required: true, message: "请输入商品编码", trigger: "blur"},
-                        {
-                            min: 1,
-                            max: 20,
-                            message: "长度在 1到 20 个字符"
-                        }
-                    ],
-                    productName: [
-                        {required: true, message: "请输入商品名称", trigger: "blur"},
-                        {
-                            min: 1,
-                            max: 20,
-                            message: "长度在 1到20 个字符"
-                        }
-                    ]
-                }
-            }
+  export default {
+    name: 'edit',
+    data() {
+      return {
+        formData: {
+          properties: {}
         },
-        methods: {
-            handleSave() {
-                this.$refs['form'].validate((valid) => {
-                    if (valid) {
-                        // this.$emit('onSave', this.formData);
-                    }
-                });
-            },
-            handleGetOne(id) {
-                this.$store
-                    .dispatch("app/getOne", {appId: id})
-                    .then(data => {
-                        this.formData = data;
-                        this.dialogVisible = true;
-                    }).catch(error => {
-                    console.log(error);
-                });
-            },
-            handleValueChange(val) {
-                console.log(val);
-            },
-            loadPropertyData(searchForm) {
-                this.$store
-                    .dispatch("productProperty/getList", {
-                        filter: searchForm
-                    })
-                    .then(data => {
-                        if (data) {
-                            this.formData = {...this.formData, propertyData: data}
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            loadBrand() {
-                this.$store.dispatch("brand/getList", {filters: {}})
-                    .then(data => {
-                        this.brandList = data;
-                    }).catch(error => {
-                    console.log(error);
-                });
-            },
-            loadTreeData() {
-                this.$store
-                    .dispatch("category/getTreeList", {filter: {categoryType: 9}})
-                    .then(data => {
-                        if (data) {
-                            this.categoryList = this.getTreeData(data.data);
-                        }
-                        this.loading = false;
-                    })
-                    .catch(error => {
-                        this.loading = false;
-                        console.log(error);
-                    });
-            },
-            getTreeData(data) {
-                // 循环遍历json数据
-                for (var i = 0; i < data.length; i++) {
-                    if (data[i].children.length < 1) {
-                        // children若为空数组，则将children设为undefined
-                        data[i].children = undefined;
-                    } else {
-                        // children若不为空数组，则继续 递归调用 本方法
-                        this.getTreeData(data[i].children);
-                    }
-                }
-                return data;
-            },
-            handleCategory(category) {
-                if (category) {
-                    let code = category[category.length - 1];
-                    this.formData.categoryCode = code;
-                    let param = {};
-                    param.categoryCode = code;
-                    this.loadPropertyData(param);
-                }
-            },
-            handleCheckedCitiesChange(val) {
-                console.log(val);
-            },
-            //跳转回列表页面
-            goBack() {
-                if (this.$router.history.length <= 1) {
-                    this.$router.push({path: '/home'});
-                    return false;
-                } else {
-                    this.$router.go(-1);
-                }
+        showProperties: false,
+        propertyData: {},
+        categoryList: [],
+        brandList: [],
+        rules: {
+          productCode: [
+            {required: true, message: "请输入商品编码", trigger: "blur"},
+            {
+              min: 1,
+              max: 20,
+              message: "长度在 1到 20 个字符"
             }
-        },
-        created() {
-            if (this.appId) {
-                this.handleGetOne(this.appId);
+          ],
+          productName: [
+            {required: true, message: "请输入商品名称", trigger: "blur"},
+            {
+              min: 1,
+              max: 20,
+              message: "长度在 1到20 个字符"
             }
-            this.loadTreeData();
-            this.loadBrand();
+          ]
         }
+      }
+    },
+    methods: {
+      handleSave() {
+        this.$refs['form'].validate((valid) => {
+          if (valid) {
+            // this.$emit('onSave', this.formData);
+          }
+        });
+      },
+      handleGetOne(id) {
+        this.$store
+          .dispatch("app/getOne", {appId: id})
+          .then(data => {
+            this.formData = data;
+            this.dialogVisible = true;
+          }).catch(error => {
+          console.log(error);
+        });
+      },
+      handleValueChange(val) {
+        console.log(val);
+      },
+      loadPropertyData(searchForm) {
+        this.$store
+          .dispatch("productProperty/getList", {
+            filter: searchForm
+          })
+          .then(data => {
+            if (data) {
+              this.propertyData = data;
+              for (var i = 0; i < data.length; i++) {
+                if (data[i].enumProperty && data[i].multiple) {
+                  this.$set(this.formData.properties, data[i].propertyName, []);
+                } else {
+                  this.$set(this.formData.properties, data[i].propertyName, '')
+                }
+              }
+              this.showProperties = true;
+              console.log(this.formData.properties);
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      loadBrand() {
+        this.$store.dispatch("brand/getList", {filters: {}})
+          .then(data => {
+            this.brandList = data;
+          }).catch(error => {
+          console.log(error);
+        });
+      },
+      loadTreeData() {
+        this.$store
+          .dispatch("category/getTreeList", {filter: {categoryType: 9}})
+          .then(data => {
+            if (data) {
+              this.categoryList = this.getTreeData(data.data);
+            }
+            this.loading = false;
+          })
+          .catch(error => {
+            this.loading = false;
+            console.log(error);
+          });
+      },
+      getTreeData(data) {
+        // 循环遍历json数据
+        for (var i = 0; i < data.length; i++) {
+          if (data[i].children.length < 1) {
+            // children若为空数组，则将children设为undefined
+            data[i].children = undefined;
+          } else {
+            // children若不为空数组，则继续 递归调用 本方法
+            this.getTreeData(data[i].children);
+          }
+        }
+        return data;
+      },
+      handleCategory(category) {
+        if (category) {
+          let code = category[category.length - 1];
+          this.formData.categoryCode = code;
+          let param = {};
+          param.categoryCode = code;
+          this.loadPropertyData(param);
+        }
+      },
+      handleCheckedCitiesChange(val) {
+        console.log(val);
+      },
+      //跳转回列表页面
+      goBack() {
+        if (this.$router.history.length <= 1) {
+          this.$router.push({path: '/home'});
+          return false;
+        } else {
+          this.$router.go(-1);
+        }
+      }
+    },
+    created() {
+      if (this.appId) {
+        this.handleGetOne(this.appId);
+      }
+      this.loadTreeData();
+      this.loadBrand();
     }
+  }
 </script>
