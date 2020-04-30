@@ -1,40 +1,68 @@
 <template>
-  <div id="main">
-    <div id="form">
-      <el-main>
-        <div class="formTitle">
-          添加联系人
-          <el-button id="addButton" type="primary" size="mini" @click="addContactClick">添加</el-button>
-        </div>
-        <el-row>
-          <el-form :model="contact" :inline="true" label-position="left" label-width="80px" size="mini">
-            <el-row>
-              <el-form-item label="姓名" prop="fullName">
-                <el-input type="text" v-model="contact.fullName" placeholder="请输入姓名.."></el-input>
-              </el-form-item>
-              <el-form-item label="电话" prop="phone">
-                <el-input type="text" v-model="contact.phone" placeholder="请输入电话.."></el-input>
-              </el-form-item>
-              <el-form-item label="邮箱" prop="email">
-                <el-input type="text" v-model="contact.email" placeholder="请输入邮箱.."></el-input>
-              </el-form-item>
-            </el-row>
-          </el-form>
-        </el-row>
-      </el-main>
-    </div>
-    <div id="table">
-      <el-table :data="contacts" style="width: 100%">
-        <el-table-column prop="fullName" label="姓名" align="center" width="160"></el-table-column>
-        <el-table-column prop="phone" label="电话" align="center" width="160"></el-table-column>
-        <el-table-column prop="email" label="邮箱" align="center" width="160"></el-table-column>
+  <div>
+    <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="16">
+      <div class="title">
+        添加联系人
+        <el-button type="primary" size="mini" @click="handleAdd">添加</el-button>
+      </div>
+      <el-table size="mini" :data="contacts" style="width: 100%" fit>
+        <el-table-column prop="fullName" label="姓名" align="center"></el-table-column>
+        <el-table-column prop="phone" label="联系方式" align="center"></el-table-column>
+        <el-table-column prop="email" label="邮箱" align="center"></el-table-column>
+        <el-table-column label="性别" align="center">
+          <template slot-scope="prop">
+            <span>{{initGender(prop.row.gender)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="birthDate" label="出生日期" align="center">
+          <template slot-scope="prop">
+            <i v-if="prop.row.birthDate" class="el-icon-time"></i>
+            <span style="margin-left: 10px">{{ formatDate(prop.row.birthDate,'YYYY-MM-DD') }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="idCardNo" label="身份证号" align="center"></el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
+            <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
             <el-button type="danger" size="mini" @click="handleRemove(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
-    </div>
+    </el-col>
+    <el-dialog title="编辑联系人" :visible.sync="dialogVisible" :close-on-click-modal="false" width="24%">
+      <el-form :model="contact" :rules="rules" ref="contactForm" label-position="left" label-width="80px" size="mini">
+        <el-form-item label="姓名" prop="fullName">
+          <el-input type="text" v-model="contact.fullName" placeholder="请输入姓名.."></el-input>
+        </el-form-item>
+        <el-form-item label="电话" prop="phone">
+          <el-input type="text" v-model="contact.phone" placeholder="请输入电话.."></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱" prop="email">
+          <el-input type="text" v-model="contact.email" placeholder="请输入邮箱.."></el-input>
+        </el-form-item>
+        <el-form-item label="性别" prop="gender">
+          <el-select v-model="contact.gender" placeholder="请选择性别.." style="width: 50%">
+            <el-option label="男" :value="0"></el-option>
+            <el-option label="女" :value="1"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="出生日期">
+          <el-date-picker
+            v-model="contact.birthDate"
+            type="date"
+            placeholder="选择日期">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="身份证号" prop="idCardNo">
+          <el-input type="text" v-model="contact.idCardNo" placeholder="请输入身份证号.."></el-input>
+        </el-form-item>
+      </el-form>
+
+      <span slot="footer">
+        <el-button size="mini" @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" size="mini" @click="handleConfirm">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -42,40 +70,108 @@
     export default {
         props: ["contacts"],
         data() {
+            const valOfPhone = (rule, value, callback) => {
+                const reg1 = /^(13[0-9]|14[5|7]|15[0|1|2|3|4|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/;
+                const reg2 = /\d{3}-\d{8}|\d{4}-\d{7}/;
+                if (reg1.test(value) || reg2.test(value)) {
+                    callback();
+                } else {
+                    callback(new Error("请输入正确的联系方式！"));
+                }
+            };
+
             return {
-                contact: {}
+                dialogVisible: false,
+                //是否点击的是编辑
+                update: false,
+                contact: {},
+                tmpContact: {},
+                rules: {
+                    fullName: [
+                        {required: true, message: '请输入联系人姓名', trigger: 'blur'}
+                    ],
+                    email: [
+                        {type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur'}
+                    ],
+                    phone: [
+                        {required: true, message: '请输入联系方式', trigger: 'blur'},
+                        {validator: valOfPhone, trigger: 'blur'}
+                    ]
+                }
             }
         },
         methods: {
-            defaultContactForm(){
+            defaultContactForm() {
                 return {
+                    //姓名
                     fullName: null,
+                    //手机号
                     phone: null,
+                    //电子邮箱
                     email: null,
+                    //性别
+                    gender: 0,
+                    //出生日期
+                    birthDate: 946656000000,
+                    //身份证号
+                    idCardNo: '',
                     //类型（0：员工，1：联系人）
                     type: 1
                 }
             },
-            addContactClick(){
-                if (!this.contact.fullName || !this.contact.phone ||!this.contact.email){
-                    this.$message("请填写完整联系人信息！")
-                    return false;
-                }
-                this.contacts.push(this.contact);
-                this.clearContactForm();
-            },
-            clearContactForm(){
+            clearContactForm() {
                 this.contact = this.defaultContactForm();
             },
-            handleRemove(idx, row){
+            handleAdd() {
+                this.update = false;
+                this.clearContactForm();
+                this.dialogVisible = true;
+            },
+            handleConfirm() {
+                this.$refs['contactForm'].validate((valid) => {
+                    if (valid) {
+                        //如果点击的是编辑,对原有的对象进行覆盖。
+                        if (this.update){
+                            Object.assign(this.contacts[this.contacts.indexOf(this.tmpContact)], this.contact);
+                            this.dialogVisible = false;
+                        }else {
+                            //否则新增到列表中
+                            this.contacts.push(this.contact);
+                            this.dialogVisible = false;
+                        }
+                    } else {
+                        this.$message({type: "Warning", message: "请完整填写数据！"});
+                        return false;
+                    }
+                });
+            },
+            handleEdit(idx, row) {
+                this.update = true;
+                this.contact = Object.assign({}, row);
+                this.tmpContact = row;
+                this.dialogVisible = true;
+            },
+            handleRemove(idx, row) {
                 let _contactId = row.staffId;
-                if (_contactId && '' != _contactId){
+                if (_contactId && '' != _contactId) {
                     this.$store.dispatch("staff/removeOne", {staffId: _contactId, deptId: row.firmId})
                         .catch(error => {
                             console.log(error);
                         });
                 }
-                this.contacts.splice(idx,1);
+                this.contacts.splice(idx, 1);
+            },
+            /*初始化列表中的日期格式*/
+            formatDate(dateStr, format) {
+                if (dateStr > 0) {
+                    let date = new Date(dateStr);
+                    return this.$moment(date).format(format);
+                } else {
+                    return "";
+                }
+            },
+            initGender(gender) {
+                return 0 == gender ? "男" : "女";
             }
         },
         created() {
@@ -83,42 +179,3 @@
         }
     }
 </script>
-
-<style>
-  #main {
-    overflow: hidden;
-  }
-
-  #form {
-    width: 36%;
-    padding-left: 2%;
-    margin-top: 12px;
-    float: left;
-  }
-  #form .el-main {
-    padding: 0;
-  }
-
-  #form .formTitle {
-    height: 30px;
-    font-size: 20px;
-  }
-
-  #form form {
-    margin-top: 20px;
-  }
-
-  #form button {
-    height: 80%
-  }
-
-  #table {
-    margin-left: 10px;
-    display: inline-block;
-  }
-
-  #form #addButton {
-    margin-right: 17%;
-    float: right;
-  }
-</style>
