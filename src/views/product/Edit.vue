@@ -31,41 +31,43 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row :gutter="10" v-for="(property, index) in propertyData"
-              :key="index"
-              :label="property.propertyName">
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item :label="property.propertyName">
-            <el-input v-model="formData.properties[property.propertyName]" disabled></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item :label='property.propertyName+"属性值"'>
-            <!--非枚举-->
-            <el-input v-if="!property.enumProperty"></el-input>
-            <!-- 枚举单选-->
-            <el-select
-              v-if="property.enumProperty && !property.multiple">
-              <el-option v-for="(item,idx) in property.values"
-                         :key="idx"
-                         :label="item.propertyCode"
-                         :value="item.propertyValue">
-              </el-option>
-            </el-select>
-            <!-- 枚举多选-->
-            <el-checkbox-group v-if="property.enumProperty && property.multiple" @change="handleValueChange">
-              <!--<el-checkbox v-for="(value,cindex) in property.values" :label="value.propertyValue" :key="cindex">
-                {{value.propertyValue}}
-              </el-checkbox>-->
-              <el-checkbox-group
-                v-model="formData.properties[property.propertyName]">
-                <el-checkbox v-for="item in property.values" :key="item.propertyCode"
-                             :label="item.propertyValue"></el-checkbox>
+      <div v-if="showProperties">
+        <el-row :gutter="10" v-for="(property, index) in propertyData"
+                :key="index"
+                :label="property.propertyName">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item :label="property.propertyName">
+              <el-input v-model="formData.properties[property.propertyName]" disabled></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item :label='property.propertyName+"属性值"'>
+              <!--非枚举-->
+              <el-input v-if="!property.enumProperty"></el-input>
+              <!-- 枚举单选-->
+              <el-select
+                v-if="property.enumProperty && !property.multiple">
+                <el-option v-for="(item,idx) in property.values"
+                           :key="idx"
+                           :label="item.propertyCode"
+                           :value="item.propertyValue">
+                </el-option>
+              </el-select>
+              <!-- 枚举多选-->
+              <el-checkbox-group v-if="property.enumProperty && property.multiple" @change="handleValueChange">
+                <!--<el-checkbox v-for="(value,cindex) in property.values" :label="value.propertyValue" :key="cindex">
+                  {{value.propertyValue}}
+                </el-checkbox>-->
+                <el-checkbox-group
+                  v-model="formData.properties[property.propertyName]">
+                  <el-checkbox v-for="item in property.values" :key="item.propertyCode"
+                               :label="item.propertyValue"></el-checkbox>
+                </el-checkbox-group>
               </el-checkbox-group>
-            </el-checkbox-group>
-          </el-form-item>
-        </el-col>
-      </el-row>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </div>
       <el-row :gutter="10">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="品牌编码" prop="brandCode">
@@ -191,6 +193,7 @@
         formData: {
           properties: {}
         },
+        showProperties: false,
         propertyData: {},
         categoryList: [],
         brandList: [],
@@ -243,6 +246,15 @@
           .then(data => {
             if (data) {
               this.propertyData = data;
+              for (var i = 0; i < data.length; i++) {
+                if (data[i].enumProperty && data[i].multiple) {
+                  this.$set(this.formData.properties, data[i].propertyName, []);
+                } else {
+                  this.$set(this.formData.properties, data[i].propertyName, '')
+                }
+              }
+              this.showProperties = true;
+              console.log(this.formData.properties);
             }
           })
           .catch(error => {
