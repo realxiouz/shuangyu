@@ -32,7 +32,8 @@ import {
   processingChange,
   autoRewriteTicket,
   rewriteTicket,
-  interceptOrder
+  interceptOrder,
+  exportOrder
 } from "@/api/order";
 import { getToken } from "@/utils/auth";
 
@@ -72,6 +73,19 @@ const actions = {
     const { filters } = params;
     return new Promise((resolve, reject) => {
       getList(filters)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  exportOrder({ commit }, params) {
+    const { filters } = params;
+    return new Promise((resolve, reject) => {
+      exportOrder(filters)
         .then(response => {
           const { data } = response;
           resolve(data);
