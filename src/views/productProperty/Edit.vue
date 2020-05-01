@@ -35,15 +35,8 @@
         </el-row>
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="属性标题（中）" prop="propertyTitle">
-              <el-input v-model="formData.propertyTitle"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="属性名称(英)" prop="propertyName">
-              <el-input v-model="formData.propertyName"></el-input>
+            <el-form-item label="属性标题" prop="propertyLabel">
+              <el-input v-model="formData.propertyLabel"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -121,7 +114,7 @@
             categoryName: "",
             categoryPath: "",
             propertyCode: "",
-            propertyTitle: "",
+            propertyLabel: "",
             propertyName: "",
             sellProperty: false,
             enumProperty: false,
@@ -149,7 +142,7 @@
                     propertyCode: [
                         {required: true, message: "请输入属性编码", trigger: "blur"},
                     ],
-                    propertyTitle: [
+                    propertyLabel: [
                         {required: true, message: "请输入属性标题", trigger: "blur"},
                     ]
                 }
