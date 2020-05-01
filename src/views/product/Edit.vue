@@ -39,18 +39,18 @@
             <el-select
               v-model="item.value"
               v-if="propertyData[index].enumProperty && !propertyData[index].multiple">
-              <el-option v-for="(item,idx) in propertyData[index].values"
-                         :key="idx"
-                         :label="item.code"
-                         :value="item.value">
+              <el-option v-for="item1 in propertyData[index].values"
+                         :key="item1.code"
+                         :label="item1.value"
+                         :value="item1.value">
               </el-option>
             </el-select>
             <!-- 枚举多选-->
             <el-checkbox-group
               v-if="propertyData[index].enumProperty && propertyData[index].multiple"
               v-model="item.value">
-              <el-checkbox v-for="item in propertyData[index].values" :key="item.code"
-                           :label="item.value"></el-checkbox>
+              <el-checkbox v-for="item2 in propertyData[index].values" :key="item2.code"
+                           :label="item2.value">{{item2.value}}</el-checkbox>
             </el-checkbox-group>
           </el-form-item>
         </el-col>
