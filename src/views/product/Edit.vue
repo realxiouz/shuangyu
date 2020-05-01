@@ -1,8 +1,5 @@
 <template>
   <div>
-    <div id="goBack" @click="goBack">
-      <el-page-header></el-page-header>
-    </div>
     <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
       <el-row :gutter="10">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -36,7 +33,7 @@
                 :key="index"
                 :label="property.propertyName">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item :label="property.propertyName">
+            <el-form-item :label="property.propertyTitle">
               <el-input v-model="property.propertyName"></el-input>
             </el-form-item>
           </el-col>
@@ -52,7 +49,7 @@
                 v-if="property.enumProperty && !property.multiple">
                 <el-option v-for="(item,idx) in property.values"
                            :key="idx"
-                           :label="item.propertyCode"
+                           :label="item.propertyValueCode"
                            :value="item.propertyValue">
                 </el-option>
               </el-select>
@@ -60,7 +57,7 @@
               <el-checkbox-group
                 v-if="property.enumProperty && property.multiple"
                 v-model="formData.properties[property.propertyName]">
-                <el-checkbox v-for="item in property.values" :key="item.propertyCode"
+                <el-checkbox v-for="item in property.values" :key="item.propertyValueCode"
                              :label="item.propertyValue"></el-checkbox>
               </el-checkbox-group>
             </el-form-item>
@@ -99,18 +96,6 @@
       </el-row>
       <el-row :gutter="10">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="批发价" prop="wholesalePrice">
-            <el-input v-model="formData.wholesalePrice"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="零售价" prop="retailPrice">
-            <el-input v-model="formData.retailPrice"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="10">
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="特价" prop="specialPrice">
             <el-input v-model="formData.specialPrice"></el-input>
           </el-form-item>
@@ -118,18 +103,6 @@
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="单价" prop="price">
             <el-input v-model="formData.price"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="10">
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="原价" prop="originalPrice">
-            <el-input v-model="formData.originalPrice"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="成本价" prop="costPrice">
-            <el-input v-model="formData.costPrice"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
