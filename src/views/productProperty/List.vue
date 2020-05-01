@@ -35,9 +35,8 @@
           size="mini"
         >
           <el-table-column prop="categoryName" label="商品类目" align="center"></el-table-column>
-          <el-table-column prop="propertyLabel" label="属性标题" align="center"></el-table-column>
+          <el-table-column prop="propertyLabel" label="属性名称" align="center"></el-table-column>
           <el-table-column prop="propertyCode" label="属性编码" align="center"></el-table-column>
-          <el-table-column prop="propertyName" label="属性名称" align="center"></el-table-column>
           <el-table-column prop="sellProperty" label="是否销售属性" align="center">
             <template slot-scope="scope">
               <el-switch v-model="scope.row.sellProperty" disabled></el-switch>
