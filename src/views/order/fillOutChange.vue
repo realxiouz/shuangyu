@@ -3,31 +3,56 @@
     <el-form :model="formData" ref="fillOutChangeForm" :rules="formRules" label-width="110px" size="mini" style="margin-top:15px;">
       <el-row>
         <el-col :span="8">
-          <el-form-item label="供应商:" prop="orderSource">
+          <el-form-item v-show="this.isWoniu">
+            <el-radio-group @change="radioChange" v-model="formData.radio" style="width:100%">
+              <el-radio label="1">导单</el-radio>
+              <el-radio label="2">补单</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="8">
+          <el-form-item label="供应商:" prop="merchantId">
             <el-select
               clearable
               filterable
-              @change="selectSource"
+              @change="selectSupplier"
               placeholder="请选择供应商"
-              v-model="formData.orderSource"
+              v-model="formData.merchantId"
               style="width: 100%"
             >
-              <el-option label="蜗牛" value="QUNAR_OPEN"></el-option>
-              <el-option label="BSP" value="bsp"></el-option>
+              <el-option
+                v-for="item in supplierData"
+                :key="item.merchantId"
+                :label="item.firm.firmName"
+                :value="item.merchantId"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
+          <el-form-item label="供应商账号:">
+            <el-select
+              clearable
+              filterable
+              @change="selectAccount"
+              placeholder="请选择供应商账号"
+              v-model="formData.accountId"
+              style="width: 100%"
+            >
+              <el-option
+                v-for="item in supplierAccountData"
+                :key="item.accountId"
+                :label="item.username"
+                :value="item.accountId"
+              ></el-option>
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="单号:">
             <el-input clearable v-model="formData.sourceOrderNo"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item v-show="this.isWoniu">
-            <el-radio-group @change="radioChange" v-model="formData.radio" style="width:100%">
-              <el-radio label="1">导单</el-radio>
-              <el-radio label="2">补单</el-radio>
-            </el-radio-group>
           </el-form-item>
         </el-col>
       </el-row>
@@ -56,9 +81,9 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="资金账号:" prop="fundAccountId">
+            <el-form-item label="资金账号:" prop="fundAccount">
               <el-select
-                v-model="formData.fundAccountId"
+                v-model="formData.fundAccount"
                 filterable
                 clearable
                 placeholder="请选择资金账号"
@@ -70,20 +95,6 @@
                   :label="item.accountName"
                   :value="item.accountId"
                 ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="蜗牛账号:" prop="userNameType">
-              <el-select
-                v-model="formData.userNameType"
-                filterable
-                clearable
-                placeholder="请选择蜗牛账号"
-                style="width: 100%"
-              >
-                <el-option label="15025130712" value="1"></el-option>
-                <el-option label="13700600184" value="2"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -294,18 +305,14 @@
         formData: {},
         accountData: [],
         statusData: statusData,
+        supplierData: [],
+        supplierAccountData: [],
         selectOrderDetailList: [],
         formRules: {
           orderType: [
             {required: true, message: "必填项", trigger: "change"}
           ],
-          orderSource: [
-            {required: true, message: "必填项", trigger: "change"}
-          ],
-          fundAccountId: [
-            {required: true, message: "必填项", trigger: "change"}
-          ],
-          userNameType: [
+          merchantId: [
             {required: true, message: "必填项", trigger: "change"}
           ],
           amount: [
@@ -360,8 +367,8 @@
           radio: "2",
           userNameType: "",
           accountId: "",
-          profit: ""
-
+          profit: "",
+          merchantId: ""
         };
       },
       clearForm() {
@@ -378,16 +385,20 @@
         }
       },
       // 判断选中渠道是否是蜗牛
-      selectSource(value) {
-        if (value == "QUNAR_OPEN") {
-          this.isWoniu = true;
-          if (this.formData.radio=="1"){
-            this.isWoniuTicket = true;
+      selectAccount(value) {
+        for (var i = 0; i < this.supplierAccountData.length; i++) {
+          if (this.supplierAccountData[i].accountId == value && this.isWoniu && this.isWoniuTicket) {
+            if (this.supplierAccountData[i].username=="13064220090 " || this.supplierAccountData[i].username=="15025130712"){
+              this.formData.userNameType = 1;
+            }else if (this.supplierAccountData[i].username=="13700600184"){
+              this.formData.userNameType = 2;
+            }else {
+              delete this.formData.userNameType;
+            }
+            break;
           }else {
-            this.isWoniuTicket = false;
+            delete this.formData.userNameType;
           }
-        } else {
-          this.isWoniu = false;
         }
       },
       handleSelectionChange(row) {
@@ -406,6 +417,54 @@
             console.log(error);
             this.loading = false;
           });
+      },
+      // 获取供应商
+      getSupplier() {
+        this.$store
+          .dispatch("firmMerchant/getList", {
+            filter: {merchantType: 0}
+          })
+          .then(data => {
+            this.supplierData = data;
+          })
+          .catch(error => {
+            console.log(error);
+            this.loading = false;
+          });
+      },
+      // 获取供应商账号
+      getSupplierAccount(value) {
+        this.$store
+          .dispatch("firmAccount/getList", {
+            filter: {firmId: value}
+          })
+          .then(data => {
+            this.supplierAccountData = data;
+          })
+          .catch(error => {
+            console.log(error);
+            this.loading = false;
+          });
+      },
+      // 判断选中渠道是否是蜗牛
+      selectSupplier(value) {
+        for (var i = 0; i < this.supplierData.length; i++) {
+          if (this.supplierData[i].merchantId == value) {
+            this.orderSource = this.supplierData[i].firm.firmName;
+            break;
+          }
+        }
+        if (value == "d381a4abdfa643fea6be8736dd11c1e1") {
+          this.isWoniu = true;
+          if (this.formData.radio == "1") {
+            this.isWoniuTicket = true;
+          } else {
+            this.isWoniuTicket = false;
+          }
+        } else {
+          this.isWoniu = false;
+        }
+        this.getSupplierAccount(value);
       },
       // 保存
       handleSave() {
@@ -479,9 +538,7 @@
     created() {
       this.clearForm();
       this.getFinance();
-      /*if (this.fillOutChangeData.orderSource == "QUNAR_OPEN") {
-        this.isWoniu = true;
-      }*/
+      this.getSupplier();
     }
   };
 </script>
