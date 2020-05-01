@@ -38,7 +38,7 @@
             <!-- 枚举单选-->
             <el-select
               v-model="item.value"
-              v-if="propertyData[index].enumProperty && !propertyData[index].multiple">
+              v-if="propertyData[index].enumProperty && !propertyData[index].multiple && !propertyData[index].sellProperty">
               <el-option v-for="item1 in propertyData[index].values"
                          :key="item1.code"
                          :label="item1.value"
@@ -47,10 +47,19 @@
             </el-select>
             <!-- 枚举多选-->
             <el-checkbox-group
-              v-if="propertyData[index].enumProperty && propertyData[index].multiple"
+              v-if="propertyData[index].enumProperty && propertyData[index].multiple && !propertyData[index].sellProperty"
               v-model="item.value">
               <el-checkbox v-for="item2 in propertyData[index].values" :key="item2.code"
-                           :label="item2.value">{{item2.value}}</el-checkbox>
+                           :label="item2.value">{{item2.value}}
+              </el-checkbox>
+            </el-checkbox-group>
+            <!-- 销售属性-->
+            <el-checkbox-group
+              v-if="propertyData[index].enumProperty && !propertyData[index].multiple && propertyData[index].sellProperty"
+              v-model="item.value">
+              <el-checkbox v-for="item3 in propertyData[index].values" :key="item3.code"
+                           :label="item3.value" @change="(value)=>handleSku(value,item,item3)">{{item3.value}}
+              </el-checkbox>
             </el-checkbox-group>
           </el-form-item>
         </el-col>
@@ -176,6 +185,11 @@
       }
     },
     methods: {
+      handleSku(value, item, item3) {
+        console.log(value);
+        console.log(item);
+        console.log(item3);
+      },
       handleSave() {
         this.$refs['form'].validate((valid) => {
           if (valid) {
@@ -218,11 +232,21 @@
           .then(data => {
             if (data) {
               this.propertyData = data;
+              var properties = this.formData.properties;
+              this.formData.properties = [];
               for (var i = 0; i < data.length; i++) {
-                if (data[i].enumProperty && data[i].multiple) {
-                  this.formData.properties.push({label: data[i].propertyLabel, code: data[i].propertyCode, value: []});
+                if (data[i].enumProperty && (data[i].multiple || data[i].sellProperty)) {
+                  this.formData.properties.push({
+                    label: data[i].propertyLabel,
+                    code: data[i].propertyCode,
+                    value: this.getValue(data[i].propertyCode, properties, [])
+                  });
                 } else {
-                  this.formData.properties.push({label: data[i].propertyLabel, code: data[i].propertyCode, value: ''});
+                  this.formData.properties.push({
+                    label: data[i].propertyLabel,
+                    code: data[i].propertyCode,
+                    value: this.getValue(data[i].propertyCode, properties, '')
+                  });
                 }
               }
               console.log(this.formData.properties);
@@ -231,6 +255,14 @@
           .catch(error => {
             console.log(error);
           });
+      },
+      getValue(code, properties, defaultValue) {
+        for (var i = 0; i < properties.length; i++) {
+          if (properties[i].code == code) {
+            return properties[i].value;
+          }
+        }
+        return defaultValue;
       },
       loadBrand() {
         this.$store.dispatch("brand/getList", {filters: {}})
