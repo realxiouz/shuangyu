@@ -29,7 +29,7 @@
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="属性编码" prop="propertyCode">
-              <el-input v-model="formData.propertyCode" ></el-input>
+              <el-input v-model="formData.propertyCode"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -43,14 +43,16 @@
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="是否销售属性" prop="sellProperty">
-              <el-switch v-model="formData.sellProperty" :active-value=true :inactive-value=false></el-switch>
+              <el-switch v-model="formData.sellProperty" :active-value=true :inactive-value=false
+                         @change="changeSellProperty"></el-switch>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="是否枚举属性" prop="enumProperty">
-              <el-switch v-model="formData.enumProperty" :active-value=true :inactive-value=false></el-switch>
+              <el-switch v-model="formData.enumProperty" :active-value=true :inactive-value=false
+                         @change="changeEnumProperty"></el-switch>
             </el-form-item>
           </el-col>
         </el-row>
@@ -68,23 +70,25 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加属性值</el-button>
-        <el-table
-          :data="formData.values"
-          style="width: 100%;margin-bottom: 15px;"
-          size="mini"
-          border
-        >
-          <el-table-column prop="code" label="编码" align="center"></el-table-column>
-          <el-table-column prop="value" label="值" align="center"></el-table-column>
-          <el-table-column label="操作" align="center" width="350">
-            <template slot-scope="scope">
-              <el-button type="danger" size="mini"
-                         @click="valueRemove(scope.row.code,scope.$index,formData.values)">删除
-              </el-button>
-            </template>
-          </el-table-column>
-        </el-table>
+        <div v-show="showAddValues">
+          <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加属性值</el-button>
+          <el-table
+            :data="formData.values"
+            style="width: 100%;margin-bottom: 15px;"
+            size="mini"
+            border
+          >
+            <el-table-column prop="code" label="编码" align="center"></el-table-column>
+            <el-table-column prop="value" label="值" align="center"></el-table-column>
+            <el-table-column label="操作" align="center" width="350">
+              <template slot-scope="scope">
+                <el-button type="danger" size="mini"
+                           @click="valueRemove(scope.row.code,scope.$index,formData.values)">删除
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
         <el-dialog title="属性值" :visible.sync="dialogVisible" width="20%">
           <el-form ref="form" :model="formValue" label-width="90px">
             <el-form-item label="编码">
@@ -129,6 +133,7 @@
             return {
                 formData: defaultData(),
                 dialogVisible: false,
+                showAddValues: false,
                 formValue: {},
                 propertyId: '',
                 categoryList: [],
@@ -149,6 +154,19 @@
             }
         },
         methods: {
+            changeEnumProperty(value) {
+                if (value) {
+                    this.showAddValues = true;
+                } else {
+                    this.showAddValues = false;
+                }
+            },
+            changeSellProperty(value) {
+                if (value) {
+                    this.formData.enumProperty = true;
+                    this.showAddValues = true;
+                }
+            },
             //跳转回列表页面
             goBack() {
                 if (this.$router.history.length <= 1) {
