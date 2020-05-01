@@ -270,7 +270,6 @@
   import {
     formatAgeType,
     formatCardType,
-    orderType,
     statusData
   } from "@/utils/status.js";
 
@@ -281,7 +280,16 @@
       return {
         selectStatusDataFlag: false,
         isWoniu: false,
-        orderType: orderType,
+        orderType: [
+          {
+            value: 30,
+            label: "改签"
+          },
+          {
+            value: 31,
+            label: "二次改签"
+          }
+        ],
         isWoniuTicket: true,
         formData: {},
         accountData: [],
@@ -454,6 +462,7 @@
           }
           let _profit = 0;
           _profit = Number(this.formData.amount) + Number(this.sellAmount);
+          debugger;
           if (_profit != this.formData.profit) {
             this.$notify({
               title: "提示",
@@ -469,6 +478,7 @@
     },
     created() {
       this.clearForm();
+      this.getFinance();
       /*if (this.fillOutChangeData.orderSource == "QUNAR_OPEN") {
         this.isWoniu = true;
       }*/
