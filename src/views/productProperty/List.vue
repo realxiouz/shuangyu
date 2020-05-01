@@ -144,7 +144,7 @@
                 this.loadData();
             },
             loadTotal(searchForm) {
-                if (!searchForm || !searchForm.propertyTitle) {
+                if (!searchForm || !searchForm.propertyLabel) {
                     searchForm = {};
                 }
                 this.$store
@@ -159,7 +159,7 @@
                     });
             },
             loadData(searchForm) {
-                if (!searchForm || !searchForm.propertyTitle) {
+                if (!searchForm || !searchForm.propertyLabel) {
                     searchForm = {};
                 }
                 this.$store
