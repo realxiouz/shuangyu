@@ -96,18 +96,6 @@
       </el-row>
       <el-row :gutter="10">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="批发价" prop="wholesalePrice">
-            <el-input v-model="formData.wholesalePrice"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="零售价" prop="retailPrice">
-            <el-input v-model="formData.retailPrice"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="10">
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="特价" prop="specialPrice">
             <el-input v-model="formData.specialPrice"></el-input>
           </el-form-item>
@@ -115,18 +103,6 @@
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="单价" prop="price">
             <el-input v-model="formData.price"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="10">
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="原价" prop="originalPrice">
-            <el-input v-model="formData.originalPrice"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="成本价" prop="costPrice">
-            <el-input v-model="formData.costPrice"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
