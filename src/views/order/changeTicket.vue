@@ -59,12 +59,12 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="改签备注:">
+          <el-form-item label="改签备注:" prop="applyRemarks">
             <el-input placeholder="请输入改签备注..." v-model="formData.applyRemarks"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="改签费:">
+          <el-form-item label="改签费:" prop="totalAmount">
             <el-input placeholder="请输入改签费..." v-model="formData.totalAmount"></el-input>
           </el-form-item>
         </el-col>
@@ -179,12 +179,26 @@ export default {
       },
       formRules: {
         changeCauseId: [
-          { required: true, message: "请选择退票原因", trigger: "change" }
+          { required: true, message: "请选择改签原因", trigger: "change" }
         ],
         profit: [
           {
             required: true,
             message: "请选择填写利润金额！",
+            trigger: "blur"
+          }
+        ],
+        applyRemarks: [
+          {
+            required: true,
+            message: "必填！",
+            trigger: "blur"
+          }
+        ],
+        totalAmount: [
+          {
+            required: true,
+            message: "必填！",
             trigger: "blur"
           }
         ]

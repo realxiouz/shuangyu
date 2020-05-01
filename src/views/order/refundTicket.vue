@@ -141,7 +141,6 @@ export default {
   methods: {
     formatCardType,
     formatAgeType,
-    formatCardType,
     // 表格复选框选中处理
     handleSelectionChange(rows) {
       this.selectPassenger = rows;

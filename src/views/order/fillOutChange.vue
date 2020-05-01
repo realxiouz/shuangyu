@@ -1,9 +1,9 @@
 <template>
   <div>
-    <el-form :model="formData" label-width="110px" size="mini" style="margin-top:15px;">
+    <el-form :model="formData" ref="fillOutChangeForm" :rules="formRules" label-width="110px" size="mini" style="margin-top:15px;">
       <el-row>
         <el-col :span="8">
-          <el-form-item label="供应商:">
+          <el-form-item label="供应商:" prop="orderSource">
             <el-select
               clearable
               filterable
@@ -34,7 +34,7 @@
       <div v-if="this.isWoniu && this.isWoniuTicket">
         <el-row>
           <el-col :span="8">
-            <el-form-item label="订单类型:">
+            <el-form-item label="订单类型:" prop="orderType">
               <el-select
                 v-model="formData.orderType"
                 clearable
@@ -51,12 +51,12 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="金额:">
+            <el-form-item label="金额:" prop="amount">
               <el-input clearable v-model="formData.amount"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="资金账号:">
+            <el-form-item label="资金账号:" prop="fundAccountId">
               <el-select
                 v-model="formData.fundAccountId"
                 filterable
@@ -74,7 +74,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="蜗牛账号:">
+            <el-form-item label="蜗牛账号:" prop="userNameType">
               <el-select
                 v-model="formData.userNameType"
                 filterable
@@ -92,7 +92,7 @@
       <div v-else>
         <el-row>
           <el-col :span="8">
-            <el-form-item label="订单日期:">
+            <el-form-item label="订单日期:" prop="createTime">
               <el-date-picker
                 type="datetime"
                 placeholder="选择日期"
@@ -103,7 +103,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="订单类型:">
+            <el-form-item label="订单类型:" prop="orderType">
               <el-select
                 v-model="formData.orderType"
                 clearable
@@ -120,12 +120,12 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="金额:">
-              <el-input clearable v-model="formData.transactionAmount"></el-input>
+            <el-form-item label="金额:"  prop="amount">
+              <el-input clearable v-model="formData.amount"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="利润金额:">
+            <el-form-item label="利润金额:" prop="profit">
               <el-input clearable v-model="formData.profit"></el-input>
             </el-form-item>
           </el-col>
@@ -135,12 +135,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="备注:">
-              <el-input clearable v-model="formData.remark"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="资金账号:">
+            <el-form-item label="资金账号:" prop="fundAccount">
               <el-select
                 v-model="formData.fundAccount"
                 filterable
@@ -158,22 +153,22 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="出发地:">
+            <el-form-item label="出发地:" prop="dpt">
               <el-input clearable v-model="formData.dpt"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="到达城市:">
+            <el-form-item label="到达城市:" prop="arr">
               <el-input clearable v-model="formData.arr"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="航班号:">
+            <el-form-item label="航班号:" prop="flightCode">
               <el-input clearable v-model="formData.flightCode"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="出发日期:">
+            <el-form-item label="出发日期:" prop="flightDate">
               <el-date-picker
                 type="date"
                 placeholder="选择日期"
@@ -184,7 +179,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="出发时间:">
+            <el-form-item label="出发时间:" prop="dptTime">
               <el-time-select
                 v-model="formData.dptTime"
                 :picker-options="{
@@ -212,6 +207,11 @@
           <el-col :span="8">
             <el-form-item label="舱位代码:">
               <el-input clearable v-model="formData.cabin"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="备注:">
+              <el-input clearable v-model="formData.remark"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -270,7 +270,6 @@
   import {
     formatAgeType,
     formatCardType,
-    orderType,
     statusData
   } from "@/utils/status.js";
 
@@ -281,12 +280,62 @@
       return {
         selectStatusDataFlag: false,
         isWoniu: false,
-        orderType: orderType,
+        orderType: [
+          {
+            value: 30,
+            label: "改签"
+          },
+          {
+            value: 31,
+            label: "二次改签"
+          }
+        ],
         isWoniuTicket: true,
         formData: {},
         accountData: [],
         statusData: statusData,
-        selectOrderDetailList: []
+        selectOrderDetailList: [],
+        formRules: {
+          orderType: [
+            {required: true, message: "必填项", trigger: "change"}
+          ],
+          orderSource: [
+            {required: true, message: "必填项", trigger: "change"}
+          ],
+          fundAccountId: [
+            {required: true, message: "必填项", trigger: "change"}
+          ],
+          userNameType: [
+            {required: true, message: "必填项", trigger: "change"}
+          ],
+          amount: [
+            {required: true, message: "必填项！", trigger: "blur"}
+          ],
+          createTime: [
+            {required: true, message: "必填项！", trigger: "blur"}
+          ],
+          fundAccount: [
+            {required: true, message: "必填项！", trigger: "blur"}
+          ],
+          profit: [
+            {required: true, message: "必填项！", trigger: "blur"}
+          ],
+          dpt: [
+            {required: true, message: "必填项！", trigger: "blur"}
+          ],
+          arr: [
+            {required: true, message: "必填项！", trigger: "blur"}
+          ],
+          flightCode: [
+            {required: true, message: "必填项！", trigger: "blur"}
+          ],
+          flightDate: [
+            {required: true, message: "必填项！", trigger: "blur"}
+          ],
+          dptTime: [
+            {required: true, message: "必填项！", trigger: "blur"}
+          ],
+        }
       };
     },
     methods: {
@@ -360,6 +409,16 @@
       },
       // 保存
       handleSave() {
+        var validFlag = false;
+        this.$refs["fillOutChangeForm"].validate((valid) => {
+          if (!valid) {
+            console.log('error submit!!');
+            validFlag = true;
+            return false;
+          }});
+        if (validFlag){
+          return;
+        }
         this.formData.flightData = this.flightData;
         this.formData.passengers = this.selectOrderDetailList;
         this.formData.orderDetailList = this.selectOrderDetailList;
@@ -403,6 +462,7 @@
           }
           let _profit = 0;
           _profit = Number(this.formData.amount) + Number(this.sellAmount);
+          debugger;
           if (_profit != this.formData.profit) {
             this.$notify({
               title: "提示",
@@ -418,6 +478,7 @@
     },
     created() {
       this.clearForm();
+      this.getFinance();
       /*if (this.fillOutChangeData.orderSource == "QUNAR_OPEN") {
         this.isWoniu = true;
       }*/

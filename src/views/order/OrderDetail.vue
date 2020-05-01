@@ -746,7 +746,7 @@
                 message: "操作成功"
               });
               this.onCancel();
-              this.timeOutGetOrderTree(6);
+              this.timeOutGetOrderTree();
             } else {
               this.$message({
                 type: "success",
@@ -769,7 +769,7 @@
                 message: "操作成功"
               });
               this.onCancel();
-              this.timeOutGetOrderTree(6);
+              this.timeOutGetOrderTree();
             } else {
               this.$message({
                 type: "success",
@@ -803,7 +803,7 @@
                 message: "退票申请成功！"
               });
               this.onCancel();
-              this.timeOutGetOrderTree(6);
+              this.timeOutGetOrderTree();
             }
           })
           .catch(error => {
@@ -918,7 +918,7 @@
                 message: "改签支付成功！"
               });
               this.onCancel();
-              this.timeOutGetOrderTree(6);
+              this.timeOutGetOrderTree();
             }
           })
           .catch(error => {
@@ -926,11 +926,12 @@
           });
       },
       //延时获取采购树
-      timeOutGetOrderTree(second) {
-        let num = 0
+      timeOutGetOrderTree() {
+        let num = 0;
+        var second=4;
         const timer = setInterval(() => {
           if (num < second) {
-            num++
+            num++;
           } else {
             clearInterval(timer);
             this.getOrderTree();
@@ -1279,7 +1280,7 @@
                 type: "success",
                 message: "删除成功!"
               });
-              this.timeOutGetOrderTree(6);
+              this.timeOutGetOrderTree();
             } else {
               this.$message({
                 type: "info",

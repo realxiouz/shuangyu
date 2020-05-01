@@ -38,19 +38,28 @@
             <!-- 枚举单选-->
             <el-select
               v-model="item.value"
-              v-if="propertyData[index].enumProperty && !propertyData[index].multiple">
-              <el-option v-for="(item,idx) in propertyData[index].values"
-                         :key="idx"
-                         :label="item.code"
-                         :value="item.value">
+              v-if="propertyData[index].enumProperty && !propertyData[index].multiple && !propertyData[index].sellProperty">
+              <el-option v-for="item1 in propertyData[index].values"
+                         :key="item1.code"
+                         :label="item1.value"
+                         :value="item1.value">
               </el-option>
             </el-select>
             <!-- 枚举多选-->
             <el-checkbox-group
-              v-if="propertyData[index].enumProperty && propertyData[index].multiple"
+              v-if="propertyData[index].enumProperty && propertyData[index].multiple && !propertyData[index].sellProperty"
               v-model="item.value">
-              <el-checkbox v-for="item in propertyData[index].values" :key="item.code"
-                           :label="item.value"></el-checkbox>
+              <el-checkbox v-for="item2 in propertyData[index].values" :key="item2.code"
+                           :label="item2.value">{{item2.value}}
+              </el-checkbox>
+            </el-checkbox-group>
+            <!-- 销售属性-->
+            <el-checkbox-group
+              v-if="propertyData[index].enumProperty && !propertyData[index].multiple && propertyData[index].sellProperty"
+              v-model="item.value">
+              <el-checkbox v-for="item3 in propertyData[index].values" :key="item3.code"
+                           :label="item3.value" @change="(value)=>handleSku(value,item,item3)">{{item3.value}}
+              </el-checkbox>
             </el-checkbox-group>
           </el-form-item>
         </el-col>
@@ -137,165 +146,183 @@
   </div>
 </template>
 <script>
-  export default {
-    name: 'edit',
-    data() {
-      return {
-        formData: {
-          properties: []
-        },
-        propertyData: [],
-        categoryList: [],
-        brandList: [],
-        rules: {
-          productCode: [
-            {required: true, message: "请输入商品编码", trigger: "blur"},
-            {
-              min: 1,
-              max: 20,
-              message: "长度在 1到 20 个字符"
-            }
-          ],
-          productName: [
-            {required: true, message: "请输入商品名称", trigger: "blur"},
-            {
-              min: 1,
-              max: 20,
-              message: "长度在 1到20 个字符"
-            }
-          ],
-          brandCode: [
-            {required: true, message: "请选择一个品牌", trigger: "blur"},
-            {
-              min: 1,
-              max: 20,
-              message: "长度在 1到20 个字符"
-            }
-          ]
-        }
-      }
-    },
-    methods: {
-      handleSave() {
-        this.$refs['form'].validate((valid) => {
-          if (valid) {
-            this.$store
-              .dispatch("product/save", this.formData)
-              .then(() => {
-              })
-              .catch(error => {
-                console.log(error);
-              });
-            this.$message({
-              type: "success",
-              message: "保存成功！"
-            });
-            this.goBack();
-          }
-        });
-      },
-      handleCancel() {
-        this.goBack();
-      },
-      handleGetOne(id) {
-        this.$store
-          .dispatch("product/getOne", {productId: id})
-          .then(data => {
-            this.formData = data;
-            this.dialogVisible = true;
-          }).catch(error => {
-          console.log(error);
-        });
-      },
-      handleValueChange(val) {
-        console.log(val);
-      },
-      loadPropertyData(searchForm) {
-        this.$store
-          .dispatch("productProperty/getList", {
-            filter: searchForm
-          })
-          .then(data => {
-            if (data) {
-              this.propertyData = data;
-              for (var i = 0; i < data.length; i++) {
-                if (data[i].enumProperty && data[i].multiple) {
-                  this.formData.properties.push({label: data[i].propertyLabel, code: data[i].propertyCode, value: []});
-                } else {
-                  this.formData.properties.push({label: data[i].propertyLabel, code: data[i].propertyCode, value: ''});
+    export default {
+        name: 'edit',
+        data() {
+            return {
+                formData: {
+                    properties: []
+                },
+                propertyData: [],
+                categoryList: [],
+                brandList: [],
+                rules: {
+                    productCode: [
+                        {required: true, message: "请输入商品编码", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到 20 个字符"
+                        }
+                    ],
+                    productName: [
+                        {required: true, message: "请输入商品名称", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到20 个字符"
+                        }
+                    ],
+                    brandCode: [
+                        {required: true, message: "请选择一个品牌", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到20 个字符"
+                        }
+                    ]
                 }
-              }
-              console.log(this.formData.properties);
             }
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      },
-      loadBrand() {
-        this.$store.dispatch("brand/getList", {filters: {}})
-          .then(data => {
-            this.brandList = data;
-          }).catch(error => {
-          console.log(error);
-        });
-      },
-      loadTreeData() {
-        this.$store
-          .dispatch("category/getTreeList", {filter: {categoryType: 9}})
-          .then(data => {
-            if (data) {
-              this.categoryList = this.getTreeData(data.data);
+        },
+        methods: {
+            handleSku(value, item, item3) {
+                console.log(value);
+                console.log(item);
+                console.log(item3);
+            },
+            handleSave() {
+                this.$refs['form'].validate((valid) => {
+                    if (valid) {
+                        this.$store
+                            .dispatch("product/save", this.formData)
+                            .then(() => {
+                            })
+                            .catch(error => {
+                                console.log(error);
+                            });
+                        this.$message({
+                            type: "success",
+                            message: "保存成功！"
+                        });
+                        this.goBack();
+                    }
+                });
+            },
+            handleCancel() {
+                this.goBack();
+            },
+            handleGetOne(id) {
+                this.$store
+                    .dispatch("product/getOne", {productId: id})
+                    .then(data => {
+                        this.formData = data;
+                        let param = {};
+                        param.categoryCode = this.formData.categoryCode;
+                        this.loadPropertyData(param);
+                        this.dialogVisible = true;
+                    }).catch(error => {
+                    console.log(error);
+                });
+            },
+            loadPropertyData(searchForm) {
+                this.$store
+                    .dispatch("productProperty/getList", {
+                        filter: searchForm
+                    })
+                    .then(data => {
+                        if (data) {
+                            this.propertyData = data;
+                            let properties = this.formData.properties;
+                            this.formData.properties = [];
+                            for (let i = 0, len = data.length; i < len; i++) {
+                                if (data[i].enumProperty && (data[i].multiple || data[i].sellProperty)) {
+                                    this.formData.properties.push({
+                                        label: data[i].propertyLabel,
+                                        code: data[i].propertyCode,
+                                        value: this.getValue(data[i].propertyCode, properties, [])
+                                    });
+                                } else {
+                                    this.formData.properties.push({
+                                        label: data[i].propertyLabel,
+                                        code: data[i].propertyCode,
+                                        value: this.getValue(data[i].propertyCode, properties, '')
+                                    });
+                                }
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            getValue(code, properties, defaultValue) {
+                for (let i = 0, len = properties.length; i < len; i++) {
+                    if (properties[i].code == code) {
+                        return properties[i].value;
+                    }
+                }
+                return defaultValue;
+            },
+            loadBrand() {
+                this.$store.dispatch("brand/getList", {filters: {}})
+                    .then(data => {
+                        this.brandList = data;
+                    }).catch(error => {
+                    console.log(error);
+                });
+            },
+            loadTreeData() {
+                this.$store
+                    .dispatch("category/getTreeList", {filter: {categoryType: 9}})
+                    .then(data => {
+                        if (data) {
+                            this.categoryList = this.getTreeData(data.data);
+                        }
+                        this.loading = false;
+                    })
+                    .catch(error => {
+                        this.loading = false;
+                        console.log(error);
+                    });
+            },
+            getTreeData(data) {
+                // 循环遍历json数据
+                for (let i = 0, len = data.length; i < len; i++) {
+                    if (data[i].children.length < 1) {
+                        // children若为空数组，则将children设为undefined
+                        data[i].children = undefined;
+                    } else {
+                        // children若不为空数组，则继续 递归调用 本方法
+                        this.getTreeData(data[i].children);
+                    }
+                }
+                return data;
+            },
+            handleCategory(category) {
+                if (category) {
+                    let code = category[category.length - 1];
+                    this.formData.categoryCode = code;
+                    let param = {};
+                    param.categoryCode = code;
+                    this.loadPropertyData(param);
+                }
+            },
+            //跳转回列表页面
+            goBack() {
+                if (this.$router.history.length <= 1) {
+                    this.$router.push({path: '/home'});
+                    return false;
+                } else {
+                    this.$router.go(-1);
+                }
             }
-            this.loading = false;
-          })
-          .catch(error => {
-            this.loading = false;
-            console.log(error);
-          });
-      },
-      getTreeData(data) {
-        // 循环遍历json数据
-        for (var i = 0; i < data.length; i++) {
-          if (data[i].children.length < 1) {
-            // children若为空数组，则将children设为undefined
-            data[i].children = undefined;
-          } else {
-            // children若不为空数组，则继续 递归调用 本方法
-            this.getTreeData(data[i].children);
-          }
+        },
+        created() {
+            if (this.$route.query.productId) {
+                this.handleGetOne(this.$route.query.productId);
+            }
+            this.loadTreeData();
+            this.loadBrand();
         }
-        return data;
-      },
-      handleCategory(category) {
-        if (category) {
-          let code = category[category.length - 1];
-          this.formData.categoryCode = code;
-          let param = {};
-          param.categoryCode = code;
-          this.loadPropertyData(param);
-        }
-      },
-      handleCheckedCitiesChange(val) {
-        console.log(val);
-      },
-      //跳转回列表页面
-      goBack() {
-        if (this.$router.history.length <= 1) {
-          this.$router.push({path: '/home'});
-          return false;
-        } else {
-          this.$router.go(-1);
-        }
-      }
-    },
-    created() {
-      if (this.$route.query.productId) {
-        console.log(this.$route.query.productId)
-        this.handleGetOne(this.$route.query.productId);
-      }
-      this.loadTreeData();
-      this.loadBrand();
     }
-  }
 </script>
