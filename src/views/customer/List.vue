@@ -132,13 +132,13 @@
             },
             /*点击编辑*/
             handleEdit(index, row) {
-                this.skipDetail(row.otherId);
+                this.skipDetail(row.merchantId);
             },
             /*点击删除*/
             handleDelete(index, row) {
                 this.open(
                     this.remove,
-                    row.otherId,
+                    row.merchantId,
                     "此操作将删除该客户信息及子客户信息, 是否继续?"
                 );
             },
@@ -168,7 +168,7 @@
             handleAssociate(index, row){
                 this.$store
                     .dispatch("staff/getOne", {
-                        staffId: row.otherId
+                        staffId: row.merchantId
                     })
                     .then(data => {
                         this.tmpStaff = data.data;
@@ -221,9 +221,9 @@
             initGender(gender) {
                 return 0 == gender ? "男" : "女";
             },
-            /*跳转到供应商编辑页面，otherId用于编辑记录时进行查找。*/
-            skipDetail(otherId) {
-                this.$router.push({path: '/customer/edit', query: {otherId: otherId}});
+            /*跳转到供应商编辑页面，merchantId用于编辑记录时进行查找。*/
+            skipDetail(merchantId) {
+                this.$router.push({path: '/customer/edit', query: {merchantId: merchantId}});
             }
         },
         created() {

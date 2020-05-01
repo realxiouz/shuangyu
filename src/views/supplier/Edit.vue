@@ -260,16 +260,16 @@
                     console.log(error);
                 });
             },
-            loadOther(otherId) {
-                this.$store.dispatch("firmMerchant/getOne", {otherId: otherId})
+            loadOther(merchantId) {
+                this.$store.dispatch("firmMerchant/getOne", {merchantId: merchantId})
                     .then(data => {
                         this.firmMerchantForm = data;
                     }).catch(error => {
                     console.log(error);
                 });
             },
-            loadSupplier(otherId) {
-                this.$store.dispatch("firm/getOne", {firmId: otherId})
+            loadSupplier(merchantId) {
+                this.$store.dispatch("firm/getOne", {firmId: merchantId})
                     .then(data => {
                         this.firmForm = data;
                     }).catch(error => {
@@ -281,15 +281,15 @@
                 this.firmMerchantForm = this.defaultMerchantFormData();
                 this.openList = [];
             },
-            initFormData(otherId) {
+            initFormData(merchantId) {
                 this.clearForm();
                 this.loadOpen();
-                if (otherId) {
+                if (merchantId) {
                     this.update = true;
-                    this.loadSupplier(otherId);
-                    this.loadOther(otherId);
-                    this.loadAccounts(otherId);
-                    this.loadContacts(otherId);
+                    this.loadSupplier(merchantId);
+                    this.loadOther(merchantId);
+                    this.loadAccounts(merchantId);
+                    this.loadContacts(merchantId);
                 }
             },
             addSupplierClick() {
@@ -347,7 +347,7 @@
             }
         },
         created() {
-            this.initFormData(this.$route.query.otherId);
+            this.initFormData(this.$route.query.merchantId);
         },
         components: {
             otherContact,

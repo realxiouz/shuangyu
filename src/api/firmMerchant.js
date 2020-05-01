@@ -17,16 +17,16 @@ export function updateOne(data) {
   });
 }
 
-export function removeOne(otherId) {
+export function removeOne(merchantId) {
   return request({
-    url: `/firm/merchant/remove/one/${otherId}`,
+    url: `/firm/merchant/remove/one/${merchantId}`,
     method: `delete`,
   });
 }
 
-export function getOne(otherId) {
+export function getOne(merchantId) {
   return request({
-    url: `/firm/merchant/one/${otherId}`,
+    url: `/firm/merchant/one/${merchantId}`,
     method: `get`
   });
 }
