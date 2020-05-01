@@ -96,18 +96,6 @@
       </el-row>
       <el-row :gutter="10">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="特价" prop="specialPrice">
-            <el-input v-model="formData.specialPrice"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="单价" prop="price">
-            <el-input v-model="formData.price"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="10">
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="最小订单量" prop="miniOrderQuantity">
             <el-input v-model="formData.miniOrderQuantity"></el-input>
           </el-form-item>
@@ -180,6 +168,14 @@
                     ],
                     productName: [
                         {required: true, message: "请输入商品名称", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到20 个字符"
+                        }
+                    ],
+                    brandCode: [
+                        {required: true, message: "请选择一个品牌", trigger: "blur"},
                         {
                             min: 1,
                             max: 20,
