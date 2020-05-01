@@ -364,7 +364,8 @@ export default {
         createTime: "",
         finishTime: "",
         transactionTime: "",
-        emptyData: ""
+        emptyData: "",
+        exportFlag :0
       },
       emptyDataValue: [
         {
@@ -414,6 +415,7 @@ export default {
     handleExport(){
       this.formData.exportFlag = 1;
       this.$emit('onSearch', this.formData);
+      this.formData.exportFlag = 0;
     }
   }
 };

@@ -25,11 +25,13 @@ export function getList(params) {
 }
 
 export function exportOrder(params) {
-  return request({
-    url: `/export/order`,
-    method: "get",
-    params: params
-  });
+  var myList = new Array();
+  for (var key in params) {
+    myList.push(key + "=" + params[key]);
+  }
+  var paramsStr = "?" + myList.join("&");
+  window.location.href = 'http://112.74.93.239:28020/prod-api/export/order' + paramsStr;
+  //window.location.href = 'http://192.168.0.135:28021/export/order' + paramsStr;
 }
 
 export function getTotal(params) {
