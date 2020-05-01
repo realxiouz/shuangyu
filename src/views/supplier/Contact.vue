@@ -152,9 +152,9 @@
                 this.dialogVisible = true;
             },
             handleRemove(idx, row) {
-                let _contactId = row.staffId;
+                let _contactId = row.contactId;
                 if (_contactId && '' != _contactId) {
-                    this.$store.dispatch("staff/removeOne", {staffId: _contactId, deptId: row.firmId})
+                    this.$store.dispatch("firmContact/removeOne", {contactId: _contactId})
                         .catch(error => {
                             console.log(error);
                         });

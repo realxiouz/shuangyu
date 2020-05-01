@@ -54,8 +54,6 @@
           <hr width="40%" align="left">
           <el-form :model="firmMerchantForm" label-position="left" label-width="20%" size="mini">
             <el-form-item label="标签">
-              <el-select v-model="firmForm.tags" placeholder="请选择标签" style="width: 50%">
-              </el-select>
             </el-form-item>
             <el-form-item label="重要性">
               <el-rate v-model="firmMerchantForm.priority" :colors="['#99A9BF', '#F7BA2A', '#FF9900']"/>
@@ -69,7 +67,7 @@
             <el-form-item label="付款方式">
               <el-input type="text" v-model="firmMerchantForm.paymentType" placeholder="请输入付款方式.."></el-input>
             </el-form-item>
-            <el-form-item label="资金账号类型" prop="accountType">
+            <el-form-item label="资金账号类型">
               <el-select v-model="firmForm.accountType" placeholder="请选择账号类型.." style="width: 50%">
                 <el-option label="现金" :value="0"></el-option>
                 <el-option label="银行存款" :value="1"></el-option>

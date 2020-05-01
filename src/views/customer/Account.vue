@@ -124,7 +124,7 @@
             handleRemove(idx, row) {
                 let _accountId = row.accountId;
                 if (_accountId && '' != _accountId) {
-                    this.$store.dispatch("openAccount/removeOne", {openAccountId: _accountId})
+                    this.$store.dispatch("firmAccount/removeOne", {accountId: _accountId})
                         .catch(error => {
                             console.log(error);
                         });
