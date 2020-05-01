@@ -130,11 +130,6 @@
         <el-table-column prop="dptAirport" label="出发地" align="center"></el-table-column>
         <el-table-column prop="arr" width="150" label="到达机场三字码" align="center"></el-table-column>
         <el-table-column prop="arrAirport" label="起始地" align="center"></el-table-column>
-        <!-- <el-table-column prop="minPrice" width="80" label="最低价" align="center">
-          <template slot-scope="scope">
-            <span>{{formatAmount(scope.row.minPrice)}}</span>
-          </template>
-        </el-table-column>-->
         <el-table-column prop="codeShare" label="是否共享" width="80" align="center"></el-table-column>
         <el-table-column prop="carrier" label="航司" width="80" align="center">
           <template slot-scope="scope">
@@ -148,12 +143,6 @@
             <span>{{formatAmount(scope.row.barePrice)}}</span>
           </template>
         </el-table-column>
-        <!-- <el-table-column label="退改规则" align="center">
-          <template slot-scope="scope">
-            <div>退票规则：{{scope.row.returnText}}</div>
-            <div>改签规则：{{scope.row.changeText}}</div>
-          </template>
-        </el-table-column>-->
         <el-table-column width="80" label="预定" align="center" type="expand">
           <template slot-scope="props">
             <div v-if="props.row.offerPrice">
@@ -203,7 +192,7 @@
               <span>{{payData.noPayAmount }}</span>
             </el-form-item>
             <el-form-item label="盈亏值：">
-              <span>{{payData.noPayAmount }}</span>
+              <span>{{systemProfitAndLossValue}}</span>
             </el-form-item>
             <el-form-item label="盈亏值：">
               <el-input v-model="profitAndLossValue" clearable></el-input>
@@ -381,8 +370,6 @@ export default {
       newParams.to = row.offerPrice.to;
       newParams.startTime = row.offerPrice.startTime;
       newParams.dptTime = row.offerPrice.dptTime;
-      this.payShow = true;
-
       this.$store
         .dispatch("order/checkOrder", newParams)
         .then(data => {
@@ -398,17 +385,17 @@ export default {
                   .then(data => {
                     if (data.code == 0) {
                       this.payData = data;
-                      this.payShow = true;
                       let amountTotal = 0;
                       this.passengerData.forEach(item => {
                         amountTotal += Number(item.amount);
                       });
                       this.systemProfitAndLossValue = 0;
-                      this.systemProfitAndLossValue = Number(this.payData.allPrice) - amountTotal;
+                      this.systemProfitAndLossValue = Number(this.payData.noPayAmount) - Number(amountTotal);
                       this.$message({
                         type: "success",
                         message: "预定成功！"
                       });
+                      this.payShow = true;
                     } else {
                       this.payShow = false;
                       this.$message({
@@ -428,11 +415,17 @@ export default {
               .then(data => {
                 if (data.code == 0) {
                   this.payData = data;
-                  this.payShow = true;
+                  let amountTotal = 0;
+                  this.passengerData.forEach(item => {
+                    amountTotal += Number(item.amount);
+                  });
+                  this.systemProfitAndLossValue = 0;
+                  this.systemProfitAndLossValue = Number(this.payData.noPayAmount) - Number(amountTotal);
                   this.$message({
                     type: "success",
                     message: "预定成功！"
                   });
+                  this.payShow = true;
                 } else {
                   this.payShow = false;
                   this.$message({
@@ -450,6 +443,7 @@ export default {
           console.log(error);
         });
     },
+
     openPay(params) {
       this.$store
         .dispatch("order/openPay", params)
@@ -459,6 +453,7 @@ export default {
               type: "success",
               message: "支付成功！"
             });
+            this.payShow = false;
             this.$router.go(-1);
           } else {
             this.$message({
