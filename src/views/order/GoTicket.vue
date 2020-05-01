@@ -472,23 +472,8 @@ export default {
         .dispatch("order/getOrderFlight", flightInfo)
         .then(data => {
           if (data) {
-            // this.$store
-            //   .dispatch("order/getOrderMinPrice", flightInfo)
-            //   .then(res => {
-            //     if (res) {
-            //       data.forEach(item => {
-            //         item.minPrice = res.sortPrices[0].price;
-            //         item.returnText = res.sortPrices[0].returnText;
-            //         item.changeText = res.sortPrices[0].changeText;
-            //       });
-            //     }
             this.flightData = data;
             this.loading = false;
-            //   })
-            //   .catch(error => {
-            //     this.loading = false;
-            //     console.log(error);
-            //   });
           }
         })
         .catch(error => {
@@ -498,7 +483,6 @@ export default {
     },
     // 蜗牛搜素报价
     getFlightPrice(flightPrice) {
-      let temp = [];
       this.$store
         .dispatch("order/getFlightPrice", flightPrice)
         .then(data => {
@@ -510,7 +494,6 @@ export default {
             });
             this.flightData = [...this.flightData];
           }
-          // console.log(this.flightData, "111111");
         })
         .catch(error => {
           console.log(error);
