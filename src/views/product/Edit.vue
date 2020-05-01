@@ -304,6 +304,7 @@
             }
             this.loadTreeData();
             this.loadBrand();
+            this.loadPropertyData();
         }
     }
 </script>
