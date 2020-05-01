@@ -224,9 +224,6 @@
                     console.log(error);
                 });
             },
-            handleValueChange(val) {
-                console.log(val);
-            },
             loadPropertyData(searchForm) {
                 this.$store
                     .dispatch("productProperty/getList", {
@@ -290,7 +287,7 @@
             },
             getTreeData(data) {
                 // 循环遍历json数据
-                for (var i = 0; i < data.length; i++) {
+                for (let i = 0, len = data.length; i < len; i++) {
                     if (data[i].children.length < 1) {
                         // children若为空数组，则将children设为undefined
                         data[i].children = undefined;
@@ -310,9 +307,6 @@
                     this.loadPropertyData(param);
                 }
             },
-            handleCheckedCitiesChange(val) {
-                console.log(val);
-            },
             //跳转回列表页面
             goBack() {
                 if (this.$router.history.length <= 1) {
@@ -325,7 +319,6 @@
         },
         created() {
             if (this.$route.query.productId) {
-                console.log(this.$route.query.productId)
                 this.handleGetOne(this.$route.query.productId);
             }
             this.loadTreeData();
