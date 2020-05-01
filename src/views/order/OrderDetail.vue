@@ -19,6 +19,8 @@
       <el-collapse-item name="1">
         <template slot="title">
           <span style="font-size:larger;margin-left: 15px;font-weight: bolder;">销售单信息</span>
+          <span style="font-size: 24px; margin: 0 20px">{{orderDetail_orderState}}</span>
+          <span>{{orderDetail_orderComment}}</span>
         </template>
         <div style="padding: 20px">
           <el-row :gutter="20">
@@ -65,7 +67,7 @@
                 </el-form-item>
               </el-col>
               <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-                <el-form-item label="最晚出票时限:">
+                <el-form-item class="deadlineTicketTime" label="最晚出票时限:">
                   <span>{{formatDate(tableData.deadlineTicketTime,'YYYY-MM-DD HH:mm:ss')}}</span>
                 </el-form-item>
               </el-col>
@@ -429,6 +431,7 @@
     </div>
   </div>
 </template>
+
 <script>
   import handleTicket from "./handleTicket";
   import refundTicket from "./refundTicket";
@@ -502,7 +505,11 @@
           flightNum: "",
           departureTime: ""
         },
-        activeNames: ['1','2','3','4']
+        activeNames: ['1','2','3','4'],
+          //订单详情状态
+          orderDetail_orderState: '',
+          //订单详情意见及备注
+          orderDetail_orderComment: ''
       };
     },
     components: {
@@ -542,6 +549,7 @@
               if (data.flights) {
                 this.flightData = data.flights;
               }
+               this.qunarDetailHtml();
             }
           })
           .catch(error => {
@@ -738,7 +746,7 @@
                 message: "操作成功"
               });
               this.onCancel();
-              this.timeOutGetOrderTree(6);
+              this.timeOutGetOrderTree();
             } else {
               this.$message({
                 type: "success",
@@ -761,7 +769,7 @@
                 message: "操作成功"
               });
               this.onCancel();
-              this.timeOutGetOrderTree(6);
+              this.timeOutGetOrderTree();
             } else {
               this.$message({
                 type: "success",
@@ -795,7 +803,7 @@
                 message: "退票申请成功！"
               });
               this.onCancel();
-              this.timeOutGetOrderTree(6);
+              this.timeOutGetOrderTree();
             }
           })
           .catch(error => {
@@ -910,7 +918,7 @@
                 message: "改签支付成功！"
               });
               this.onCancel();
-              this.timeOutGetOrderTree(6);
+              this.timeOutGetOrderTree();
             }
           })
           .catch(error => {
@@ -918,11 +926,12 @@
           });
       },
       //延时获取采购树
-      timeOutGetOrderTree(second) {
-        let num = 0
+      timeOutGetOrderTree() {
+        let num = 0;
+        var second=4;
         const timer = setInterval(() => {
           if (num < second) {
-            num++
+            num++;
           } else {
             clearInterval(timer);
             this.getOrderTree();
@@ -1235,6 +1244,24 @@
             console.log(error);
           });
       },
+        qunarDetailHtml() {
+            this.$store
+          .dispatch("order/qunarDetailHtml", {sourceOrderNo: this.sourceOrderNo})
+          .then(data => {
+            if (data) {
+                let el = document.createElement("div");
+                el.innerHTML = data.split("script>\n")[1];
+                this.orderDetail_orderState = el.querySelector("#j-switch-form > div.b-bkifo.g-clear > div.e-bkifo-rt > div > h1").textContent;
+                let orderComment = el.querySelector("#j-switch-orderBook > form.j-passenger > div.btn-box.j-ticket-btn > span.light > div").textContent;
+                if (orderComment){
+                    this.orderDetail_orderComment = orderComment;
+                }
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
       // 删除
       orderTreeRemove(row) {
         this.open(
@@ -1253,7 +1280,7 @@
                 type: "success",
                 message: "删除成功!"
               });
-              this.timeOutGetOrderTree(6);
+              this.timeOutGetOrderTree();
             } else {
               this.$message({
                 type: "info",
@@ -1518,5 +1545,15 @@
   .contentBox {
     padding-top: 0px !important;
     padding-bottom: 0px !important;
+  }
+</style>
+
+<style>
+  .deadlineTicketTime label{
+    color: #E6A23C;
+  }
+
+  .deadlineTicketTime {
+    color: #E6A23C;
   }
 </style>

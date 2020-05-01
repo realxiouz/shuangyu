@@ -33,7 +33,8 @@ import {
   autoRewriteTicket,
   rewriteTicket,
   interceptOrder,
-  exportOrder
+  exportOrder,
+  qunarDetailHtml
 } from "@/api/order";
 import { getToken } from "@/utils/auth";
 
@@ -508,6 +509,17 @@ const actions = {
         });
     });
   },
+  qunarDetailHtml({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      qunarDetailHtml(params.sourceOrderNo)
+        .then(response => {
+          resolve(response.data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
 };
 
 export default {

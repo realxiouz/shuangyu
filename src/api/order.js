@@ -312,3 +312,10 @@ export function woniuOrder(data) {
 
   });
 }
+
+export function qunarDetailHtml(sourceOrderNo) {
+  return request({
+    url: `qunar/fuwu/get/detail/html?orderNo=${sourceOrderNo}`,
+    method: 'get'
+  });
+}
