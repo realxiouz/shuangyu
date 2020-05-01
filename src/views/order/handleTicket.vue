@@ -1,9 +1,9 @@
 <template>
   <div>
-    <el-form :model="formData" label-width="110px" size="mini" style="margin-top:15px;">
+    <el-form :model="formData" ref="handleTicketForm" :rules="formRules" label-width="110px" size="mini" style="margin-top:15px;">
       <el-row>
         <el-col :span="8">
-          <el-form-item label="供应商:">
+          <el-form-item label="供应商:" prop="orderSource">
             <el-select
               clearable
               filterable
@@ -33,49 +33,50 @@
       </el-row>
       <div v-if="this.isWoniu && this.isWoniuTicket">
         <el-row>
-          <el-col :span="8"><el-form-item label="订单类型:">
-            <el-select
-              v-model="formData.orderType"
-              clearable
-              placeholder="订单类型"
-              style="width: 100%"
-            >
-              <el-option
-                v-for="item in orderType"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              ></el-option>
-            </el-select>
-          </el-form-item>
+          <el-col :span="8">
+            <el-form-item label="订单类型:" prop="orderType">
+              <el-select
+                v-model="formData.orderType"
+                clearable
+                placeholder="订单类型"
+                style="width: 100%"
+              >
+                <el-option
+                  v-for="item in orderType"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                ></el-option>
+              </el-select>
+            </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="金额:">
-            <el-input clearable v-model="formData.amount"></el-input>
-          </el-form-item>
+            <el-form-item label="金额:" prop="amount">
+              <el-input clearable v-model="formData.amount"></el-input>
+            </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="资金账号:">
-            <el-select
-              v-model="formData.fundAccountId"
-              filterable
-              clearable
-              placeholder="请选择资金账号"
-              style="width: 100%"
-            >
-              <el-option
-                v-for="item in accountData"
-                :key="item.accountId"
-                :label="item.accountName"
-                :value="item.accountId"
-              ></el-option>
-            </el-select>
-          </el-form-item>
+            <el-form-item label="资金账号:" prop="fundAccountId">
+              <el-select
+                v-model="formData.fundAccountId"
+                filterable
+                clearable
+                placeholder="请选择资金账号"
+                style="width: 100%"
+              >
+                <el-option
+                  v-for="item in accountData"
+                  :key="item.accountId"
+                  :label="item.accountName"
+                  :value="item.accountId"
+                ></el-option>
+              </el-select>
+            </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="8">
-            <el-form-item label="蜗牛账号:">
+            <el-form-item label="蜗牛账号:" prop="userNameType">
               <el-select
                 v-model="formData.userNameType"
                 filterable
@@ -93,7 +94,7 @@
       <div v-else>
         <el-row>
           <el-col :span="8">
-            <el-form-item label="订单日期:">
+            <el-form-item label="订单日期:" prop="createTime">
               <el-date-picker
                 type="datetime"
                 placeholder="选择日期"
@@ -104,7 +105,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="订单类型:">
+            <el-form-item label="订单类型:" prop="orderType">
               <el-select
                 v-model="formData.orderType"
                 clearable
@@ -121,12 +122,12 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="支付金额:">
+            <el-form-item label="支付金额:" prop="amount">
               <el-input clearable v-model="formData.amount"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="利润金额:">
+            <el-form-item label="利润金额:" prop="profit">
               <el-input clearable v-model="formData.profit"></el-input>
             </el-form-item>
           </el-col>
@@ -136,7 +137,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="资金账号:">
+            <el-form-item label="资金账号:" prop="fundAccount">
               <el-select
                 v-model="formData.fundAccount"
                 filterable
@@ -154,22 +155,22 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="出发地:">
+            <el-form-item label="出发地:" prop="dpt">
               <el-input clearable v-model="formData.dpt"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="到达城市:">
+            <el-form-item label="到达城市:" prop="arr">
               <el-input clearable v-model="formData.arr"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="航班号:">
+            <el-form-item label="航班号:" prop="flightCode">
               <el-input clearable v-model="formData.flightCode"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="出发日期:">
+            <el-form-item label="出发日期:" prop="flightDate">
               <el-date-picker
                 type="date"
                 placeholder="选择日期"
@@ -180,7 +181,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="出发时间:">
+            <el-form-item label="出发时间:" prop="dptTime">
               <el-time-select
                 v-model="formData.dptTime"
                 :picker-options="{
@@ -235,7 +236,7 @@
           ></el-table-column>
           <el-table-column prop="amount" label="价格" align="center" width="150">
             <template slot-scope="scope">
-              <el-input clearable v-model="scope.row.amount"></el-input>
+              <el-input clearable v-model="scope.row.amount" required="required"></el-input>
             </template>
           </el-table-column>
           <el-table-column prop="cardNo" label="乘机人证件号" align="center" width="220">
@@ -274,7 +275,7 @@
 
   export default {
     name: "handleTicket",
-    props: ["passengerData", "flightData", "sellAmount","taskType"],
+    props: ["passengerData", "flightData", "sellAmount", "taskType"],
     data() {
       return {
         isWoniu: false,
@@ -305,9 +306,50 @@
           accountId: "",
           radio: "2",
           profit: "",
-          orderType:10
+          orderType: 10
         },
-        statusData: statusData
+        statusData: statusData,
+        formRules: {
+          orderType: [
+            {required: true, message: "必填项", trigger: "change"}
+          ],
+          orderSource: [
+            {required: true, message: "必填项", trigger: "change"}
+          ],
+          fundAccountId: [
+            {required: true, message: "必填项", trigger: "change"}
+          ],
+          userNameType: [
+            {required: true, message: "必填项", trigger: "change"}
+          ],
+          amount: [
+            {required: true, message: "必填项！", trigger: "blur"}
+          ],
+          createTime: [
+            {required: true, message: "必填项！", trigger: "blur"}
+          ],
+          fundAccount: [
+            {required: true, message: "必填项！", trigger: "blur"}
+          ],
+          profit: [
+            {required: true, message: "必填项！", trigger: "blur"}
+          ],
+          dpt: [
+            {required: true, message: "必填项！", trigger: "blur"}
+          ],
+          arr: [
+            {required: true, message: "必填项！", trigger: "blur"}
+          ],
+          flightCode: [
+            {required: true, message: "必填项！", trigger: "blur"}
+          ],
+          flightDate: [
+            {required: true, message: "必填项！", trigger: "blur"}
+          ],
+          dptTime: [
+            {required: true, message: "必填项！", trigger: "blur"}
+          ],
+        }
       };
     },
     methods: {
@@ -323,13 +365,23 @@
       },
       // 保存并贴票
       handleSaveTicket() {
+        var validFlag = false;
+        this.$refs["handleTicketForm"].validate((valid) => {
+            if (!valid) {
+              console.log('error submit!!');
+              validFlag = true;
+              return false;
+            }});
+        if (validFlag){
+          return;
+        }
         this.formData.ticketNoFlag = "1";
         this.formData.flightData = this.flightData;
-        if (this.taskType==1){
+        if (this.taskType == 1) {
           let amountTotal = 0;
           var flag = false;
           this.formData.passengers.forEach(item => {
-            if (item.amount && item.amount != '' && Number(item.amount)<0) {
+            if (item.amount && item.amount != '' && Number(item.amount) < 0) {
               amountTotal += Number(item.amount);
             } else {
               flag = true;
@@ -367,10 +419,6 @@
         }
         this.$emit("onSaveTicket", this.formData);
       },
-      //钱校验
-      verifyAmount(){
-
-      },
       //判断是蜗牛导单还是出票
       radioChange(value) {
         if (value == "2") {
@@ -385,9 +433,9 @@
       selectSource(value) {
         if (value == "QUNAR_OPEN") {
           this.isWoniu = true;
-          if (this.formData.radio=="1"){
+          if (this.formData.radio == "1") {
             this.isWoniuTicket = true;
-          }else {
+          } else {
             this.isWoniuTicket = false;
           }
         } else {
@@ -410,13 +458,22 @@
       },
       // 保存
       handleSave() {
+        var validFlag = false;
+        this.$refs["handleTicketForm"].validate((valid) => {
+          if (!valid) {
+            validFlag = true;
+            return false;
+          }});
+        if (validFlag){
+          return;
+        }
         this.formData.ticketNoFlag = "0";
         this.formData.flightData = this.flightData;
-        if (this.formData.radio != "1" && this.taskType==1) {
+        if (this.formData.radio != "1" && this.taskType == 1) {
           let amountTotal = 0;
           var flag = false;
           this.formData.passengers.forEach(item => {
-            if (item.amount && item.amount != '' && Number(item.amount)<0) {
+            if (item.amount && item.amount != '' && Number(item.amount) < 0) {
               amountTotal += Number(item.amount);
             } else {
               flag = true;
