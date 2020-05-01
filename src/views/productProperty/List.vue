@@ -100,7 +100,7 @@
                     children: "children",
                     hasChildren: "xxx"
                 },
-                lastId: "blank",
+                lastId: "0",
                 pageFlag: "next",
                 pageSize: 10,
                 dialogVisible: true,
