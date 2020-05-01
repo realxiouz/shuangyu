@@ -6,7 +6,7 @@
           <el-form-item label="供应商名称：">
             <el-input
               clearable
-              @keyup.enter.native="$emit('onSearch', formData)"
+              @keyup.enter.native="handleConfirm"
               v-model="formData.firmName"
               placeholder="请输入供应商名称搜索.."
             ></el-input>
@@ -20,7 +20,7 @@
         class="filter-item"
         type="primary"
         size="mini"
-        @click="$emit('onSearch', formData)"
+        @click="handleConfirm"
       >查询</el-button>
       <el-button type="text" size="mini" @click="handleMore">
         更多
@@ -36,7 +36,7 @@ export default {
     return {
       more: false,
       formData: {
-        firmName: ""
+        firmName: null
       }
     };
   },
@@ -53,7 +53,13 @@ export default {
   methods: {
     handleMore() {
       this.more = !this.more;
-    }
+    },
+      handleConfirm(){
+        if ("" == this.formData.firmName){
+            this.formData.firmName = null;
+        }
+          this.$emit('onSearch', this.formData)
+      }
   }
 };
 </script>
