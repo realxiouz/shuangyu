@@ -69,7 +69,7 @@
         name: "list",
         data() {
             return {
-                lastId: "blank",
+                lastId: "0",
                 pageFlag: "next",
                 pageSize: 10,
                 dialogVisible: false,
