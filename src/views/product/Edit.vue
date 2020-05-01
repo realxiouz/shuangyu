@@ -31,34 +31,29 @@
       <div v-if="showProperties">
         <el-row :gutter="10" v-for="(property, index) in propertyData"
                 :key="index"
-                :label="property.propertyName">
+                :label="property.propertyLabel">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item :label="property.propertyTitle">
-              <el-input v-model="property.propertyName"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="属性值">
+            <el-form-item :label="property.propertyLabel">
               <!--非枚举-->
               <el-input v-if="!property.enumProperty"
-                        v-model="formData.properties[property.propertyName]"
+                        v-model="formData.properties[property.propertyLabel]"
               ></el-input>
               <!-- 枚举单选-->
               <el-select
-                v-model="formData.properties[property.propertyName]"
+                v-model="formData.properties[property.propertyLabel]"
                 v-if="property.enumProperty && !property.multiple">
                 <el-option v-for="(item,idx) in property.values"
                            :key="idx"
-                           :label="item.propertyValueCode"
-                           :value="item.propertyValue">
+                           :label="item.code"
+                           :value="item.value">
                 </el-option>
               </el-select>
               <!-- 枚举多选-->
               <el-checkbox-group
                 v-if="property.enumProperty && property.multiple"
-                v-model="formData.properties[property.propertyName]">
-                <el-checkbox v-for="item in property.values" :key="item.propertyValueCode"
-                             :label="item.propertyValue"></el-checkbox>
+                v-model="formData.properties[property.propertyLabel]">
+                <el-checkbox v-for="item in property.values" :key="item.code"
+                             :label="item.value"></el-checkbox>
               </el-checkbox-group>
             </el-form-item>
           </el-col>
@@ -230,9 +225,9 @@
                             this.propertyData = data;
                             for (var i = 0; i < data.length; i++) {
                                 if (data[i].enumProperty && data[i].multiple) {
-                                    this.$set(this.formData.properties, data[i].propertyName, []);
+                                    this.$set(this.formData.properties, data[i].propertyLabel, []);
                                 } else {
-                                    this.$set(this.formData.properties, data[i].propertyName, '')
+                                    this.$set(this.formData.properties, data[i].propertyLabel, '')
                                 }
                             }
                             this.showProperties = true;
