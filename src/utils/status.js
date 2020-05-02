@@ -264,6 +264,8 @@ export function formatTaskStatus(row) {
         return "转单";
     } else if (row.taskStatus == "4") {
         return "完成";
+    } else if (row.taskStatus == "5") {
+        return "任务打回重新派给另外一个人";
     } else if (row.taskStatus == "9") {
         return "取消";
     } else {
@@ -290,6 +292,10 @@ export const taskStatusValue = [
         label: "完成"
     },
     {
+        value: "5",
+        label: "任务打回重新派给另外一个人"
+    },
+    {
         value: "9",
         label: "取消"
     },
@@ -312,6 +318,14 @@ export function formatTaskType(row) {
         return "补订单";
     } else if (row.taskType == 12) {
         return "填写订单号";
+    } else if (row.taskType == 13) {
+        return "补流水";
+    } else if (row.taskType == 14) {
+        return "重复下单或支付";
+    } else if (row.taskType == 20) {
+        return "应收与扫描不匹配";
+    } else if (row.taskType == 30) {
+        return "降舱出票";
     } else {
         return "";
     }
@@ -349,20 +363,21 @@ export const taskTypeValue = [
         value: 12,
         label: "填写订单号"
     }
-]
-
-export const purchaseOrderTypeStatus = [
+    ,
     {
-        value: 1,
-        label: "出票"
+        value: 13,
+        label: "补流水"
     },
     {
-        value: 2,
-        label: "退票"
+        value: 14,
+        label: "重复下单或支付"
     },
     {
-        value: 3,
-        label: "改签"
+        value: 20,
+        label: "应收与扫描不匹配"
+    },
+    {
+        value: 30,
+        label: "降舱出票"
     }
 ]
-

@@ -231,6 +231,14 @@ export default new Router({
           component: () => import('@/views/order/ExportOrder'),
           meta: {title: '导单', icon: 'home'}
         },
+        {
+          title: '组长任务',
+          path: '/order/order/task/group/list',
+          name: 'orderTaskGroup',
+          component: () => import('@/views/orderTaskGroup/List'),
+          meta: {title: '组长任务', icon: 'home'}
+        },
+        
       ]
     },
     {

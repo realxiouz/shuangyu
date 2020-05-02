@@ -45,10 +45,10 @@
         :props="transferProps"
         :titles="titles"
       ></el-transfer>
-      <span slot="footer" class="dialog-footer">
+      <div slot="footer" class="dialog-footer" style="text-align:right">
         <el-button size="mini" @click="handleTransCancel">取 消</el-button>
         <el-button size="mini" type="primary" @click="handleTransSave">确 定</el-button>
-      </span>
+      </div>
     </el-dialog>
   </div>
 </template>
