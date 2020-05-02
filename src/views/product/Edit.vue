@@ -433,7 +433,10 @@
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
                         this.$store
-                            .dispatch("product/save", this.formData)
+                            .dispatch("product/save", {
+                                product: this.formData,
+                                skuList: this.dataList
+                            })
                             .then(() => {
                             })
                             .catch(error => {
