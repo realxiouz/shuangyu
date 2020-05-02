@@ -683,7 +683,6 @@
             newParams.rootOrderNo = params.rootOrderNo;
             newParams.orderTaskId = this.$route.query.taskId;
             newParams.sourceOrderNo = params.sourceOrderNo;
-            newParams.transactionAmount = params.transactionAmount;
             newParams.createTime = params.createTime;
           }
           this.purchaseOrder(newParams);

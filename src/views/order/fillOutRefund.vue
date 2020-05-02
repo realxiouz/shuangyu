@@ -98,20 +98,6 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <!--<el-col :span="8">
-            <el-form-item label="蜗牛账号:" prop="userNameType">
-              <el-select
-                v-model="formData.userNameType"
-                filterable
-                clearable
-                placeholder="请选择蜗牛账号"
-                style="width: 100%"
-              >
-                <el-option label="15025130712" value="1"></el-option>
-                <el-option label="13700600184" value="2"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>-->
         </el-row>
       </div>
       <div v-else>
