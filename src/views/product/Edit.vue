@@ -4,12 +4,12 @@
       <el-row :gutter="10">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="商品编码" prop="productCode">
-            <el-input v-model="formData.productCode" @change="addDataList(formData)"></el-input>
+            <el-input v-model="formData.productCode" @change="handleUpdate"></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="商品名称" prop="productName">
-            <el-input v-model="formData.productName" @change="addDataList(formData)"></el-input>
+            <el-input v-model="formData.productName" @change="handleUpdate"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -102,7 +102,7 @@
               v-if="propertyList[index].sku"
               v-model="item.value">
               <el-checkbox v-for="item4 in propertyList[index].values" :key="item4.code"
-                           :label="item4.value" @change="(value)=>handleSku(value,item,item4)">{{item4.value}}
+                           :label="item4.value" @change="handleSku">{{item4.value}}
               </el-checkbox>
             </el-checkbox-group>
           </el-form-item>
@@ -122,7 +122,7 @@
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="计量单位" prop="unit">
-            <el-input v-model="formData.unit"></el-input>
+            <el-input v-model="formData.unit" @change="handleUpdate"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -184,28 +184,19 @@
       border
       style="width: 100%">
       <el-table-column
-        prop="warehouseCode"
+        prop="productCode"
         label="编号"
         width="180">
-        <template slot-scope="scope">
-          <el-input v-model="scope.row.warehouseCode"></el-input>
-        </template>
       </el-table-column>
       <el-table-column
-        prop="warehouseName"
+        prop="productName"
         label="名称"
         width="200">
-        <template slot-scope="scope">
-          <el-input v-model="scope.row.warehouseName"></el-input>
-        </template>
       </el-table-column>
       <el-table-column
         prop="categoryName"
         label="商品分类"
         width="180">
-        <template slot-scope="scope">
-          <el-input v-model="scope.row.categoryName"></el-input>
-        </template>
       </el-table-column>
       <el-table-column
         prop="quantity"
@@ -235,9 +226,6 @@
         prop="unit"
         label="计量单位"
         width="180">
-        <template slot-scope="scope">
-          <el-input v-model="scope.row.unit"></el-input>
-        </template>
       </el-table-column>
       <el-table-column
         prop="cost"
@@ -263,209 +251,256 @@
   </div>
 </template>
 <script>
-    export default {
-        name: 'edit',
-        data() {
-            return {
-                formData: {
-                    properties: []
-                },
-                propertyList: [],
-                categoryList: [],
-                brandList: [],
-                dataList: [],
-                rules: {
-                    productCode: [
-                        {required: true, message: "请输入商品编码", trigger: "blur"},
-                        {
-                            min: 1,
-                            max: 20,
-                            message: "长度在 1到 20 个字符"
-                        }
-                    ],
-                    productName: [
-                        {required: true, message: "请输入商品名称", trigger: "blur"},
-                        {
-                            min: 1,
-                            max: 20,
-                            message: "长度在 1到20 个字符"
-                        }
-                    ],
-                    brandCode: [
-                        {required: true, message: "请选择一个品牌", trigger: "blur"},
-                        {
-                            min: 1,
-                            max: 20,
-                            message: "长度在 1到20 个字符"
-                        }
-                    ],
-                    categoryCode: [
-                        {required: true, message: "请选择商品类目", trigger: "blur"},
-                        {
-                            min: 1,
-                            max: 20,
-                            message: "长度在 1到20 个字符"
-                        }
-                    ],
-                    unit: [{required: true, message: "请输入计量单位", trigger: "blur"},
-                        {
-                            min: 1,
-                            max: 20,
-                            message: "长度在 1到20 个字符"
-                        }],
-                    miniOrderQuantity: [
-                        {required: true, message: "请输入最小订单量", trigger: "blur"},
-                        {
-                            min: 1,
-                            max: 20,
-                            message: "长度在 1到20 个字符"
-                        }
-                    ]
-                }
-            }
+  export default {
+    name: 'edit',
+    data() {
+      return {
+        formData: {
+          properties: []
         },
-        methods: {
-            addDataList(value) {
-              console.log(value);
-            },
-            handleSku(value, item, item3) {
-                console.log(value);
-                console.log(item);
-                console.log(item3);
-            },
-            handleSave() {
-                this.$refs['form'].validate((valid) => {
-                    if (valid) {
-                        this.$store
-                            .dispatch("product/save", this.formData)
-                            .then(() => {
-                            })
-                            .catch(error => {
-                                console.log(error);
-                            });
-                        this.$message({
-                            type: "success",
-                            message: "保存成功！"
-                        });
-                        this.goBack();
-                    }
-                });
-            },
-            handleCancel() {
-                this.goBack();
-            },
-            handleGetOne(id) {
-                this.$store
-                    .dispatch("product/getOne", {productId: id})
-                    .then(data => {
-                        this.formData = data;
-                        let param = {};
-                        param.categoryCode = this.formData.categoryCode;
-                        this.loadpropertyList(param);
-                        this.dialogVisible = true;
-                    }).catch(error => {
-                    console.log(error);
-                });
-            },
-            loadpropertyList(searchForm) {
-                this.$store
-                    .dispatch("productProperty/getList", {
-                        filter: searchForm
-                    })
-                    .then(data => {
-                        if (data) {
-                            this.propertyList = data;
-                            let properties = this.formData.properties;
-                            this.formData.properties = [];
-                            for (let i = 0, len = data.length; i < len; i++) {
-                                if (data[i].valueType > 6) {
-                                    this.formData.properties.push({
-                                        label: data[i].propertyLabel,
-                                        code: data[i].propertyCode,
-                                        value: this.getValue(data[i].propertyCode, properties, [])
-                                    });
-                                } else {
-                                    this.formData.properties.push({
-                                        label: data[i].propertyLabel,
-                                        code: data[i].propertyCode,
-                                        value: this.getValue(data[i].propertyCode, properties, '')
-                                    });
-                                }
-                            }
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            getValue(code, properties, defaultValue) {
-                for (let i = 0, len = properties.length; i < len; i++) {
-                    if (properties[i].code == code) {
-                        return properties[i].value;
-                    }
-                }
-                return defaultValue;
-            },
-            loadBrand() {
-                this.$store.dispatch("brand/getList", {filters: {}})
-                    .then(data => {
-                        this.brandList = data;
-                    }).catch(error => {
-                    console.log(error);
-                });
-            },
-            loadTreeData() {
-                this.$store
-                    .dispatch("category/getTreeList", {filter: {categoryType: 9}})
-                    .then(data => {
-                        if (data) {
-                            this.categoryList = this.getTreeData(data.data);
-                        }
-                        this.loading = false;
-                    })
-                    .catch(error => {
-                        this.loading = false;
-                        console.log(error);
-                    });
-            },
-            getTreeData(data) {
-                // 循环遍历json数据
-                for (let i = 0, len = data.length; i < len; i++) {
-                    if (data[i].children.length < 1) {
-                        // children若为空数组，则将children设为undefined
-                        data[i].children = undefined;
-                    } else {
-                        // children若不为空数组，则继续 递归调用 本方法
-                        this.getTreeData(data[i].children);
-                    }
-                }
-                return data;
-            },
-            handleCategory(category) {
-                if (category) {
-                    let code = category[category.length - 1];
-                    this.formData.categoryCode = code;
-                    let param = {};
-                    param.categoryCode = code;
-                    this.loadpropertyList(param);
-                }
-            },
-            //跳转回列表页面
-            goBack() {
-                if (this.$router.history.length <= 1) {
-                    this.$router.push({path: '/home'});
-                    return false;
-                } else {
-                    this.$router.go(-1);
-                }
+        propertyList: [],
+        categoryList: [],
+        brandList: [],
+        dataList: [],
+        rules: {
+          productCode: [
+            {required: true, message: "请输入商品编码", trigger: "blur"},
+            {
+              min: 1,
+              max: 20,
+              message: "长度在 1到 20 个字符"
             }
-        },
-        created() {
-            if (this.$route.query.productId) {
-                this.handleGetOne(this.$route.query.productId);
+          ],
+          productName: [
+            {required: true, message: "请输入商品名称", trigger: "blur"},
+            {
+              min: 1,
+              max: 20,
+              message: "长度在 1到20 个字符"
             }
-            this.loadTreeData();
-            this.loadBrand();
+          ],
+          brandCode: [
+            {required: true, message: "请选择一个品牌", trigger: "blur"},
+            {
+              min: 1,
+              max: 20,
+              message: "长度在 1到20 个字符"
+            }
+          ],
+          categoryCode: [
+            {required: true, message: "请选择商品类目", trigger: "blur"},
+            {
+              min: 1,
+              max: 20,
+              message: "长度在 1到20 个字符"
+            }
+          ],
+          unit: [{required: true, message: "请输入计量单位", trigger: "blur"},
+            {
+              min: 1,
+              max: 20,
+              message: "长度在 1到20 个字符"
+            }],
+          miniOrderQuantity: [
+            {required: true, message: "请输入最小订单量", trigger: "blur"},
+            {
+              min: 1,
+              max: 20,
+              message: "长度在 1到20 个字符"
+            }
+          ]
         }
+      }
+    },
+    methods: {
+      /*表单默认加载数据*/
+      defaultFormData() {
+        return {
+          properties: [],
+          productCode: "",
+          productName: "",
+          categoryName: "",
+          unit: "",
+          brandName: "",
+          specification: "",
+          description: ""
+        };
+      },
+      handleUpdate() {
+        for (var i = 0; i < this.dataList.length; i++) {
+          this.dataList[i].productCode = this.formData.productCode;
+          this.dataList[i].productName = this.formData.productName;
+          this.dataList[i].categoryName = this.formData.categoryName;
+          this.dataList[i].unit = this.formData.unit;
+        }
+      },
+      handleSku(checked) {
+        var array = [];
+        if (checked) {
+          for (var i = 0; i < this.formData.properties.length; i++) {
+            if (this.formData.properties[i].sku) {
+              var value = this.formData.properties[i].value;
+              if (value.length > 0) {
+                array.push(value);
+              }
+            }
+          }
+          console.log(this.calcDescartes(array));
+        }
+      },
+      calcDescartes(array) {
+        if (array.length < 2) return array[0] || [];
+        return [].reduce.call(array, function (col, set) {
+          var res = [];
+          col.forEach(function (c) {
+            set.forEach(function (s) {
+              var t = [].concat(Array.isArray(c) ? c : [c]);
+              t.push(s);
+              res.push(t);
+            })
+          });
+          return res;
+        });
+      },
+      handleSave() {
+        this.$refs['form'].validate((valid) => {
+          if (valid) {
+            this.$store
+              .dispatch("product/save", this.formData)
+              .then(() => {
+              })
+              .catch(error => {
+                console.log(error);
+              });
+            this.$message({
+              type: "success",
+              message: "保存成功！"
+            });
+            this.goBack();
+          }
+        });
+      },
+      handleCancel() {
+        this.goBack();
+      },
+      handleGetOne(id) {
+        this.$store
+          .dispatch("product/getOne", {productId: id})
+          .then(data => {
+            this.formData = data;
+            let param = {};
+            param.categoryCode = this.formData.categoryCode;
+            this.loadpropertyList(param);
+            this.dialogVisible = true;
+          }).catch(error => {
+          console.log(error);
+        });
+      },
+      loadpropertyList(searchForm) {
+        this.$store
+          .dispatch("productProperty/getList", {
+            filter: searchForm
+          })
+          .then(data => {
+            if (data) {
+              this.propertyList = data;
+              let properties = this.formData.properties;
+              this.formData.properties = [];
+              for (let i = 0, len = data.length; i < len; i++) {
+                if (data[i].valueType > 6) {
+                  this.formData.properties.push({
+                    label: data[i].propertyLabel,
+                    code: data[i].propertyCode,
+                    sku: data[i].sku,
+                    value: this.getValue(data[i].propertyCode, properties, [])
+                  });
+                } else {
+                  this.formData.properties.push({
+                    label: data[i].propertyLabel,
+                    code: data[i].propertyCode,
+                    sku: data[i].sku,
+                    value: this.getValue(data[i].propertyCode, properties, '')
+                  });
+                }
+              }
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      getValue(code, properties, defaultValue) {
+        for (let i = 0, len = properties.length; i < len; i++) {
+          if (properties[i].code == code) {
+            return properties[i].value;
+          }
+        }
+        return defaultValue;
+      },
+      loadBrand() {
+        this.$store.dispatch("brand/getList", {filters: {}})
+          .then(data => {
+            this.brandList = data;
+          }).catch(error => {
+          console.log(error);
+        });
+      },
+      loadTreeData() {
+        this.$store
+          .dispatch("category/getTreeList", {filter: {categoryType: 9}})
+          .then(data => {
+            if (data) {
+              this.categoryList = this.getTreeData(data.data);
+            }
+            this.loading = false;
+          })
+          .catch(error => {
+            this.loading = false;
+            console.log(error);
+          });
+      },
+      getTreeData(data) {
+        // 循环遍历json数据
+        for (let i = 0, len = data.length; i < len; i++) {
+          if (data[i].children.length < 1) {
+            // children若为空数组，则将children设为undefined
+            data[i].children = undefined;
+          } else {
+            // children若不为空数组，则继续 递归调用 本方法
+            this.getTreeData(data[i].children);
+          }
+        }
+        return data;
+      },
+      handleCategory(category) {
+        this.handleUpdate();
+        if (category) {
+          let code = category[category.length - 1];
+          this.formData.categoryCode = code;
+          let param = {};
+          param.categoryCode = code;
+          this.loadpropertyList(param);
+        }
+      },
+      //跳转回列表页面
+      goBack() {
+        if (this.$router.history.length <= 1) {
+          this.$router.push({path: '/home'});
+          return false;
+        } else {
+          this.$router.go(-1);
+        }
+      }
+    },
+    created() {
+      if (this.$route.query.productId) {
+        this.handleGetOne(this.$route.query.productId);
+      } else {
+        this.formData = this.defaultFormData();
+        this.dataList.push(this.defaultFormData());
+      }
+      this.loadTreeData();
+      this.loadBrand();
     }
+  }
 </script>
