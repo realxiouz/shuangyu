@@ -286,7 +286,7 @@ export const taskStatusValue = [
     },
     {
         value: "3",
-        label: "转单或任务打回重新派给另外一个人"
+        label: "转单"
     }, {
         value: "4",
         label: "完成"
