@@ -4,18 +4,18 @@
       <el-row :gutter="10">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="商品编码" prop="productCode">
-            <el-input v-model="formData.productCode"></el-input>
+            <el-input v-model="formData.productCode" @change="addDataList(formData)"></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="商品名称" prop="productName">
-            <el-input v-model="formData.productName"></el-input>
+            <el-input v-model="formData.productName" @change="addDataList(formData)"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="10">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="商品类目">
+          <el-form-item label="商品类目" prop="categoryCode">
             <el-cascader
               v-model="formData.categoryCode"
               style="width: 100%;"
@@ -32,33 +32,33 @@
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item :label="item.label">
             <!-- 数据类型（0文本，1开关，2数字，3日期，4日期时间，5时间，6评分，7单选，8多选，9选择器）-->
-            <el-input v-if="propertyData[index].valueType ==0"
+            <el-input v-if="propertyList[index].valueType ==0"
                       v-model="item.value"
             ></el-input>
             <!-- 开关-->
-            <el-switch v-if="propertyData[index].valueType ==1"
+            <el-switch v-if="propertyList[index].valueType ==1"
                        v-model="item.value">
             </el-switch>
             <!-- 数字-->
-            <el-input-number v-if="propertyData[index].valueType ==2"
-                             v-model="item.value" :precision="propertyData[index].precision"></el-input-number>
+            <el-input-number v-if="propertyList[index].valueType ==2"
+                             v-model="item.value" :precision="propertyList[index].precision"></el-input-number>
             <!-- 日期-->
             <el-date-picker
-              v-if="propertyData[index].valueType ==3"
+              v-if="propertyList[index].valueType ==3"
               v-model="item.value"
               type="date"
               placeholder="选择日期">
             </el-date-picker>
             <!-- 日期时间-->
             <el-date-picker
-              v-if="propertyData[index].valueType ==4"
+              v-if="propertyList[index].valueType ==4"
               v-model="item.value"
               type="datetime"
               placeholder="选择日期时间">
             </el-date-picker>
             <!-- 时间-->
             <el-time-picker
-              v-if="propertyData[index].valueType ==5"
+              v-if="propertyList[index].valueType ==5"
               arrow-control
               v-model="item.value"
               :picker-options="{
@@ -68,40 +68,40 @@
             </el-time-picker>
             <!-- 评分-->
             <el-rate
-              v-if="propertyData[index].valueType ==6"
+              v-if="propertyList[index].valueType ==6"
               v-model="item.value"></el-rate>
             <!-- 单选-->
             <el-radio-group
-              v-if="propertyData[index].valueType ==7"
+              v-if="propertyList[index].valueType ==7"
               v-model="item.value">
-              <el-radio v-for="item1 in propertyData[index].values" :key="item1.code"
+              <el-radio v-for="item1 in propertyList[index].values" :key="item1.code"
                         :label="item1.value">{{item1.value}}
               </el-radio>
 
             </el-radio-group>
-            <!-- 多选-->
+            <!-- 多选 非销售属性-->
             <el-checkbox-group
-              v-if="propertyData[index].valueType ==8"
+              v-if="propertyList[index].valueType ==8 && !propertyList[index].sku"
               v-model="item.value">
-              <el-checkbox v-for="item2 in propertyData[index].values" :key="item2.code"
+              <el-checkbox v-for="item2 in propertyList[index].values" :key="item2.code"
                            :label="item2.value">{{item2.value}}
               </el-checkbox>
             </el-checkbox-group>
             <!--选择器-->
             <el-select
               v-model="item.value"
-              v-if="propertyData[index].valueType ==9">
-              <el-option v-for="item3 in propertyData[index].values"
+              v-if="propertyList[index].valueType ==9">
+              <el-option v-for="item3 in propertyList[index].values"
                          :key="item3.code"
                          :label="item3.value"
                          :value="item3.value">
               </el-option>
             </el-select>
-            <!-- 销售属性-->
+            <!-- 多选 销售属性-->
             <el-checkbox-group
-              v-if="propertyData[index].isSku"
+              v-if="propertyList[index].sku"
               v-model="item.value">
-              <el-checkbox v-for="item4 in propertyData[index].values" :key="item4.code"
+              <el-checkbox v-for="item4 in propertyList[index].values" :key="item4.code"
                            :label="item4.value" @change="(value)=>handleSku(value,item,item4)">{{item4.value}}
               </el-checkbox>
             </el-checkbox-group>
@@ -128,6 +128,13 @@
       </el-row>
       <el-row :gutter="10">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="最小订单量" prop="miniOrderQuantity">
+            <el-input v-model="formData.miniOrderQuantity"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="10">
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="规格" prop="specification">
             <el-input v-model="formData.specification"></el-input>
           </el-form-item>
@@ -138,13 +145,7 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row :gutter="10">
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="最小订单量" prop="miniOrderQuantity">
-            <el-input v-model="formData.miniOrderQuantity"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
+
       <el-row :gutter="10">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="毛利率" prop="grossMargin">
@@ -178,6 +179,83 @@
         </el-col>
       </el-row>
     </el-form>
+    <el-table
+      :data="dataList"
+      border
+      style="width: 100%">
+      <el-table-column
+        prop="warehouseCode"
+        label="编号"
+        width="180">
+        <template slot-scope="scope">
+          <el-input v-model="scope.row.warehouseCode"></el-input>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="warehouseName"
+        label="名称"
+        width="200">
+        <template slot-scope="scope">
+          <el-input v-model="scope.row.warehouseName"></el-input>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="categoryName"
+        label="商品分类"
+        width="180">
+        <template slot-scope="scope">
+          <el-input v-model="scope.row.categoryName"></el-input>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="quantity"
+        label="数量"
+        width="180">
+        <template slot-scope="scope">
+          <el-input v-model="scope.row.quantity"></el-input>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="maxStockQuantity"
+        label="库存上限"
+        width="180">
+        <template slot-scope="scope">
+          <el-input v-model="scope.row.maxStockQuantity"></el-input>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="minStockQuantity"
+        label="库存下限"
+        width="180">
+        <template slot-scope="scope">
+          <el-input v-model="scope.row.minStockQuantity"></el-input>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="unit"
+        label="计量单位"
+        width="180">
+        <template slot-scope="scope">
+          <el-input v-model="scope.row.unit"></el-input>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="cost"
+        label="成本"
+        width="180">
+        <template slot-scope="scope">
+          <el-input v-model="scope.row.cost"></el-input>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="price"
+        label="零售价"
+        width="180">
+        <template slot-scope="scope">
+          <el-input v-model="scope.row.price"></el-input>
+        </template>
+      </el-table-column>
+    </el-table>
     <div slot="footer" style="text-align:center;">
       <el-button size="mini" @click="handleCancel">取 消</el-button>
       <el-button type="primary" size="mini" @click="handleSave">确 定</el-button>
@@ -192,9 +270,10 @@
                 formData: {
                     properties: []
                 },
-                propertyData: [],
+                propertyList: [],
                 categoryList: [],
                 brandList: [],
+                dataList: [],
                 rules: {
                     productCode: [
                         {required: true, message: "请输入商品编码", trigger: "blur"},
@@ -219,11 +298,36 @@
                             max: 20,
                             message: "长度在 1到20 个字符"
                         }
+                    ],
+                    categoryCode: [
+                        {required: true, message: "请选择商品类目", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到20 个字符"
+                        }
+                    ],
+                    unit: [{required: true, message: "请输入计量单位", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到20 个字符"
+                        }],
+                    miniOrderQuantity: [
+                        {required: true, message: "请输入最小订单量", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到20 个字符"
+                        }
                     ]
                 }
             }
         },
         methods: {
+            addDataList(value) {
+              console.log(value);
+            },
             handleSku(value, item, item3) {
                 console.log(value);
                 console.log(item);
@@ -257,24 +361,24 @@
                         this.formData = data;
                         let param = {};
                         param.categoryCode = this.formData.categoryCode;
-                        this.loadPropertyData(param);
+                        this.loadpropertyList(param);
                         this.dialogVisible = true;
                     }).catch(error => {
                     console.log(error);
                 });
             },
-            loadPropertyData(searchForm) {
+            loadpropertyList(searchForm) {
                 this.$store
                     .dispatch("productProperty/getList", {
                         filter: searchForm
                     })
                     .then(data => {
                         if (data) {
-                            this.propertyData = data;
+                            this.propertyList = data;
                             let properties = this.formData.properties;
                             this.formData.properties = [];
                             for (let i = 0, len = data.length; i < len; i++) {
-                                if (data[i].valueType == 7 || data[i].valueType == 8 || data[i].valueType == 9) {
+                                if (data[i].valueType > 6) {
                                     this.formData.properties.push({
                                         label: data[i].propertyLabel,
                                         code: data[i].propertyCode,
@@ -343,7 +447,7 @@
                     this.formData.categoryCode = code;
                     let param = {};
                     param.categoryCode = code;
-                    this.loadPropertyData(param);
+                    this.loadpropertyList(param);
                 }
             },
             //跳转回列表页面
