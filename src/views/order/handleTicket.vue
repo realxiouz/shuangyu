@@ -528,6 +528,7 @@
         if (this.formData.radio != "1" && this.taskType == 1) {
           let amountTotal = 0;
           var flag = false;
+
           this.formData.passengers.forEach(item => {
             if (item.amount && item.amount != '' && Number(item.amount) < 0) {
               amountTotal += Number(item.amount);
