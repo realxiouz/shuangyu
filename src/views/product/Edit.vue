@@ -185,26 +185,31 @@
       border
       style="width: 100%">
       <el-table-column
+        align="center"
         prop="productCode"
         label="编号"
         width="180">
       </el-table-column>
       <el-table-column
+        align="center"
         prop="productName"
         label="名称"
         width="200">
       </el-table-column>
       <el-table-column
+        align="center"
         prop="categoryName"
         label="商品分类"
         width="180">
       </el-table-column>
       <el-table-column
+        align="center"
         prop="brandName"
         label="品牌"
         width="180">
       </el-table-column>
       <el-table-column
+        align="center"
         prop="quantity"
         label="数量"
         width="200">
@@ -213,6 +218,7 @@
         </template>
       </el-table-column>
       <el-table-column
+        align="center"
         prop="maxStockQuantity"
         label="库存上限"
         width="200">
@@ -221,6 +227,7 @@
         </template>
       </el-table-column>
       <el-table-column
+        align="center"
         prop="minStockQuantity"
         label="库存下限"
         width="200">
@@ -229,11 +236,13 @@
         </template>
       </el-table-column>
       <el-table-column
+        align="center"
         prop="unit"
         label="计量单位"
         width="150">
       </el-table-column>
       <el-table-column
+        align="center"
         prop="cost"
         label="成本"
         width="200">
@@ -242,6 +251,7 @@
         </template>
       </el-table-column>
       <el-table-column
+        align="center"
         prop="price"
         label="零售价"
         width="200">
