@@ -111,12 +111,12 @@
       <el-row :gutter="10">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="品牌编码" prop="brandCode">
-            <el-select v-model="formData.brandCode" placeholder="品牌编码">
+            <el-select v-model="formData.brandCode" placeholder="品牌编码" @change="handleBrandName">
               <el-option v-for="(item,idx) in brandList"
                          :key="idx"
                          :label="item.brandName"
                          :value="item.brandCode"
-                         @change="handleUpdate">
+              >
               </el-option>
             </el-select>
           </el-form-item>
@@ -342,7 +342,15 @@
                     description: ""
                 };
             },
+            handleBrandName(id) {
+                let object = {};
+                object = this.brandList.find((item) => {
+                    return item.brandCode === id;
+                });
+                this.formData.brandName = object.brandName;
+            },
             handleUpdate() {
+                console.log(this.formData);
                 for (let i = 0, len = this.dataList.length; i < len; i++) {
                     this.dataList[i].productCode = this.formData.productCode;
                     this.dataList[i].productName = this.formData.productName;
