@@ -269,7 +269,6 @@
         </el-table>
       </div>
     </el-form>
-
     <div style="margin-top: 25px;text-align:right;">
       <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
       <el-button size="mini" type="primary" @click="handleSave">保存</el-button>
