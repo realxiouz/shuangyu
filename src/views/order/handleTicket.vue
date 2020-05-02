@@ -409,7 +409,7 @@
             return;
           }
           let _profit = 0;
-          _profit = this.formData.amount + Number(this.sellAmount);
+          _profit = Number(this.formData.amount) + Number(this.sellAmount);
           if (_profit != this.formData.profit) {
             this.$notify({
               title: "提示",
@@ -555,6 +555,7 @@
             return;
           }
           let _profit = 0;
+          debugger
           _profit = Number(this.formData.amount) + Number(this.sellAmount);
           if (_profit != Number(this.formData.profit)) {
             this.$notify({

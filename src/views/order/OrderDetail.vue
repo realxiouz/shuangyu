@@ -646,7 +646,6 @@
           newParams.ticketNoFlag = params.ticketNoFlag;
         }
         this.purchaseOrder(newParams);
-        this.handleTicketShow = false;
       },
       // 补退 补改 保存
       handleSavePurchase(params) {
@@ -688,8 +687,6 @@
           }
           this.purchaseOrder(newParams);
         }
-        this.fillOutRefundShow = false;
-        this.fillOutChangeShow = false;
       },
       // 手工出票保存
       handleSave(params) {
@@ -732,7 +729,6 @@
             }
           }
           this.purchaseOrder(newParams);
-          this.handleTicketShow = false;
         }
       },
       // 非蜗牛补单
@@ -1017,9 +1013,13 @@
           });
           return;
         } else {
+          let ticketAmount = 0;
           this.passengersInfo.forEach(item => {
-            this.ticketSellAmount += Number(item.amount);
+            console.log(item.amount)
+            ticketAmount += Number(item.amount);
           });
+          this.ticketSellAmount = ticketAmount;
+          console.log(this.ticketSellAmount)
           this.handleTicketShow = true;
         }
       },
@@ -1562,7 +1562,7 @@
 </style>
 
 <style>
-  .deadlineTicketTime label{
+  .deadlineTicketTime label {
     color: #ff4600;
   }
 
