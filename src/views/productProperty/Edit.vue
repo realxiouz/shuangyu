@@ -304,7 +304,9 @@
         },
         methods: {
             changeNum(value) {
-                this.formData.precision = value;
+                if (value > 0) {
+                    this.formData.precision = value;
+                }
             },
             valueTypeChange(value) {
                 this.valueType = value;

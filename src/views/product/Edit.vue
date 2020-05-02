@@ -31,34 +31,78 @@
       <el-row :gutter="10" v-for="(item, index) in formData.properties" :key="index">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item :label="item.label">
-            <!--非枚举-->
-            <el-input v-if="!propertyData[index].enumProperty"
+            <!-- 数据类型（0文本，1开关，2数字，3日期，4日期时间，5时间，6评分，7单选，8多选，9选择器）-->
+            <el-input v-if="propertyData[index].valueType ==0"
                       v-model="item.value"
             ></el-input>
-            <!-- 枚举单选-->
-            <el-select
+            <!-- 开关-->
+            <el-switch v-if="propertyData[index].valueType ==1"
+                       v-model="item.value">
+            </el-switch>
+            <!-- 数字-->
+            <el-input-number v-if="propertyData[index].valueType ==2"
+                             v-model="item.value" :precision="propertyData[index].precision"></el-input-number>
+            <!-- 日期-->
+            <el-date-picker
+              v-if="propertyData[index].valueType ==3"
               v-model="item.value"
-              v-if="propertyData[index].enumProperty && !propertyData[index].multiple && !propertyData[index].sellProperty">
-              <el-option v-for="item1 in propertyData[index].values"
-                         :key="item1.code"
-                         :label="item1.value"
-                         :value="item1.value">
-              </el-option>
-            </el-select>
-            <!-- 枚举多选-->
+              type="date"
+              placeholder="选择日期">
+            </el-date-picker>
+            <!-- 日期时间-->
+            <el-date-picker
+              v-if="propertyData[index].valueType ==4"
+              v-model="item.value"
+              type="datetime"
+              placeholder="选择日期时间">
+            </el-date-picker>
+            <!-- 时间-->
+            <el-time-picker
+              v-if="propertyData[index].valueType ==5"
+              arrow-control
+              v-model="item.value"
+              :picker-options="{
+      selectableRange: '00:00:00 - 23:59:00'
+    }"
+            >
+            </el-time-picker>
+            <!-- 评分-->
+            <el-rate
+              v-if="propertyData[index].valueType ==6"
+              v-model="item.value"></el-rate>
+            <!-- 单选-->
+            <el-radio-group
+              v-if="propertyData[index].valueType ==7"
+              v-model="item.value">
+              <el-radio v-for="item1 in propertyData[index].values" :key="item1.code"
+                        :label="item1.value">{{item1.value}}
+              </el-radio>
+
+            </el-radio-group>
+            <!-- 多选-->
             <el-checkbox-group
-              v-if="propertyData[index].enumProperty && propertyData[index].multiple && !propertyData[index].sellProperty"
+              v-if="propertyData[index].valueType ==8"
               v-model="item.value">
               <el-checkbox v-for="item2 in propertyData[index].values" :key="item2.code"
                            :label="item2.value">{{item2.value}}
               </el-checkbox>
             </el-checkbox-group>
+            <!--选择器-->
+            <el-select
+              v-model="item.value"
+              v-if="propertyData[index].valueType ==9">
+              <el-option v-for="item3 in propertyData[index].values"
+                         :key="item3.code"
+                         :label="item3.value"
+                         :value="item3.value">
+              </el-option>
+            </el-select>
             <!-- 销售属性-->
             <el-checkbox-group
-              v-if="propertyData[index].enumProperty && !propertyData[index].multiple && propertyData[index].sellProperty"
+              v-if="propertyData[index].isSku"
               v-model="item.value">
-              <el-checkbox v-for="item3 in propertyData[index].values" :key="item3.code"
-                           :label="item3.value" @change="(value)=>handleSku(value,item,item3)">{{item3.value}}
+              <el-checkbox v-for="item4 in propertyData[index].values" :key="item4.code"
+                           :label="item4.value" @change="(value)=>handleSku(value,item,item4)">{{item4.value}}
               </el-checkbox>
             </el-checkbox-group>
           </el-form-item>
@@ -235,7 +279,7 @@
                             let properties = this.formData.properties;
                             this.formData.properties = [];
                             for (let i = 0, len = data.length; i < len; i++) {
-                                if (data[i].enumProperty && (data[i].multiple || data[i].sellProperty)) {
+                                if (data[i].valueType == 7 || data[i].valueType == 8 || data[i].valueType == 9) {
                                     this.formData.properties.push({
                                         label: data[i].propertyLabel,
                                         code: data[i].propertyCode,
