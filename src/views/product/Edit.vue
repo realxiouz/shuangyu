@@ -79,9 +79,9 @@
               </el-radio>
 
             </el-radio-group>
-            <!-- 多选-->
+            <!-- 多选 非销售属性-->
             <el-checkbox-group
-              v-if="propertyData[index].valueType ==8"
+              v-if="propertyData[index].valueType ==8 && !propertyData[index].sku"
               v-model="item.value">
               <el-checkbox v-for="item2 in propertyData[index].values" :key="item2.code"
                            :label="item2.value">{{item2.value}}
@@ -97,9 +97,9 @@
                          :value="item3.value">
               </el-option>
             </el-select>
-            <!-- 销售属性-->
+            <!-- 多选 销售属性-->
             <el-checkbox-group
-              v-if="propertyData[index].isSku"
+              v-if="propertyData[index].sku"
               v-model="item.value">
               <el-checkbox v-for="item4 in propertyData[index].values" :key="item4.code"
                            :label="item4.value" @change="(value)=>handleSku(value,item,item4)">{{item4.value}}
@@ -224,6 +224,20 @@
             }
         },
         methods: {
+            calcDescartes(array) {
+                if (array.length < 2) return array[0] || [];
+                return [].reduce.call(array, function (col, set) {
+                    let res = [];
+                    col.forEach(function (c) {
+                        set.forEach(function (s) {
+                            let t = [].concat(Array.isArray(c) ? c : [c]);
+                            t.push(s);
+                            res.push(t);
+                        })
+                    });
+                    return res;
+                });
+            },
             handleSku(value, item, item3) {
                 console.log(value);
                 console.log(item);
@@ -274,7 +288,7 @@
                             let properties = this.formData.properties;
                             this.formData.properties = [];
                             for (let i = 0, len = data.length; i < len; i++) {
-                                if (data[i].valueType == 7 || data[i].valueType == 8 || data[i].valueType == 9) {
+                                if (data[i].valueType > 6) {
                                     this.formData.properties.push({
                                         label: data[i].propertyLabel,
                                         code: data[i].propertyCode,
