@@ -649,7 +649,7 @@
       },
       // 补退 补改 保存
       handleSavePurchase(params) {
-        if (params.radio == 1 && params.orderSource == "QUNAR_OPEN") {
+        if (params.radio == 1 && (params.orderSource == "QUNAR_OPEN" || params.merchantId == "d381a4abdfa643fea6be8736dd11c1e1")) {
           let woniuParams = {};
           woniuParams.sourceOrderNo = params.sourceOrderNo;
           woniuParams.orderTaskId = this.$route.query.taskId;
@@ -721,11 +721,7 @@
             newParams.orderSource = params.orderSource;
             newParams.orderType = params.orderType;
             newParams.passengers = params.passengers;
-            if (params.pid){
-              newParams.pid = params.pid;
-            }else {
-              newParams.pid = "";
-            }
+            newParams.pid = "";
             newParams.orderTaskId = this.$route.query.taskId;
             newParams.remark = params.remark;
             newParams.rootOrderNo = this.tableData.rootOrderNo;
