@@ -17,6 +17,7 @@
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="商品类目" prop="categoryCode">
             <el-cascader
+              ref="categoryCascader"
               v-model="formData.categoryCode"
               style="width: 100%;"
               :options="categoryList"
@@ -336,8 +337,11 @@
                     productCode: "",
                     productName: "",
                     categoryName: "",
+                    categoryCode: "",
                     unit: "",
+                    brandCode: "",
                     brandName: "",
+                    miniOrderQuantity: "",
                     specification: "",
                     description: ""
                 };
@@ -348,9 +352,9 @@
                     return item.brandCode === id;
                 });
                 this.formData.brandName = object.brandName;
+                this.handleUpdate();
             },
             handleUpdate() {
-                console.log(this.formData);
                 for (let i = 0, len = this.dataList.length; i < len; i++) {
                     this.dataList[i].productCode = this.formData.productCode;
                     this.dataList[i].productName = this.formData.productName;
@@ -498,6 +502,10 @@
                 return data;
             },
             handleCategory(category) {
+                let labelValue = this.$refs.categoryCascader.getCheckedNodes()[0].pathLabels;
+                if (labelValue.length > 0) {
+                    this.formData.categoryName = labelValue[0];
+                }
                 this.handleUpdate();
                 if (category) {
                     let code = category[category.length - 1];
