@@ -42,7 +42,7 @@
         </el-row>
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="属性类型:">
+            <el-form-item label="属性类型:" prop="valueType">
               <!-- 数据类型（0文本，1开关，2数字，3日期，4日期时间，5时间，6评分，7单选，8多选，9选择器）-->
               <el-select clearable v-model="formData.valueType" placeholder="全部" style="width: 100%"
                          @change="valueTypeChange">
@@ -69,14 +69,14 @@
         </el-row>
         <el-row :gutter="10" v-if="valueType ==0">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="示例:文本框" prop="precision">
+            <el-form-item label="示例:" prop="precision">
               <el-input v-model="test.input" placeholder="请输入内容"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="10" v-if="valueType ==1">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="示例:开关">
+            <el-form-item label="示例:">
               <el-switch
                 v-model="test.switchValue"
               >
@@ -86,14 +86,14 @@
         </el-row>
         <el-row :gutter="10" v-if="valueType ==2">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="示例:数字">
+            <el-form-item label="示例:">
               <el-input-number v-model="test.num" :min="1" :max="10" label="描述文字"></el-input-number>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="10" v-if="valueType ==3">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="示例:日期选择器">
+            <el-form-item label="示例:">
               <el-date-picker
                 v-model="test.time1"
                 type="date"
@@ -104,7 +104,7 @@
         </el-row>
         <el-row :gutter="10" v-if="valueType ==4">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="示例:日期时间选择器">
+            <el-form-item label="示例:">
               <el-date-picker
                 v-model="test.time2"
                 type="datetime"
@@ -115,7 +115,7 @@
         </el-row>
         <el-row :gutter="10" v-if="valueType ==5">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="示例:时间选择器">
+            <el-form-item label="示例:">
               <el-time-select
                 v-model="test.time3"
                 :picker-options="{
@@ -130,30 +130,32 @@
         </el-row>
         <el-row :gutter="10" v-if="valueType ==6">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="示例:评分">
+            <el-form-item label="示例:">
               <el-rate v-model="test.rateValue"></el-rate>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="10" v-if="valueType ==7">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="示例:单选框">
-              <el-radio v-model="test.radio1" label="1">单选项1</el-radio>
-              <el-radio v-model="test.radio2" label="2">单选项2</el-radio>
+            <el-form-item label="示例:">
+              <el-radio v-model="test.radio" label="1">单选项1</el-radio>
+              <el-radio v-model="test.radio" label="2">单选项2</el-radio>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="10" v-if="valueType ==8">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="示例:多选框">
+            <el-form-item label="示例:">
               <el-checkbox v-model="test.checked1">多选框1</el-checkbox>
               <el-checkbox v-model="test.checked2">多选框2</el-checkbox>
+              <el-checkbox v-model="test.checked3">多选框3</el-checkbox>
+              <el-checkbox v-model="test.checked4">多选框4</el-checkbox>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="10" v-if="valueType ==9">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="示例:选择器">
+            <el-form-item label="示例:">
               <el-select
                 style="width: 100%;"
                 clearable
@@ -169,11 +171,11 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="10">
+        <el-row :gutter="10" v-if="valueType ==8">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="是否销售属性" prop="isSku">
               <el-switch v-model="formData.isSku" :active-value=true :inactive-value=false
-                         ></el-switch>
+              ></el-switch>
             </el-form-item>
           </el-col>
         </el-row>
@@ -257,6 +259,9 @@
                     propertyLabel: [
                         {required: true, message: "请输入属性标题", trigger: "blur"},
                     ]
+                    , valueType: [
+                        {required: true, message: "请选择属性类型", trigger: "blur"},
+                    ]
                 }
             }
         },
@@ -265,7 +270,7 @@
                 this.valueType = value;
                 if (value == 7 || value == 8 || value == 9) {
                     this.showAddValues = true;
-                }else {
+                } else {
                     this.showAddValues = false;
                 }
             },
