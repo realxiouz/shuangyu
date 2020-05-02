@@ -115,6 +115,7 @@
                 this.curNode = data;
                 let searchForm = {};
                 searchForm.categoryCode = data.categoryCode;
+                this.lastId = '0';
                 this.loadData(searchForm);
             },
             prevClick() {
