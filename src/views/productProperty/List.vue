@@ -143,9 +143,6 @@
                     });
             },
             loadData(searchForm) {
-                if (!searchForm || !searchForm.propertyLabel) {
-                    searchForm = {};
-                }
                 this.$store
                     .dispatch("productProperty/getPageList", {
                         pageFlag: this.pageFlag,
