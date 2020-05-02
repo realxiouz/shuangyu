@@ -7,9 +7,9 @@
           <el-badge :value="totalCount?totalCount:'0'" :max="99"></el-badge>
         </el-button>
       </span>
-      <!-- <div>
-        <span v-for="item in taskTypeValue" :key="item.value">
-          <el-button @click="getOtherData(item.value)" type size="mini">
+      <div style="margin-top:10px;">
+        <span v-for="item in taskTypeValue" :key="item.value" style="margin-right:5px;">
+          <el-button style="margin-bottom:10px;" @click="getOtherData(item.value)" type size="mini">
             {{item.label}}
             <el-badge
               :value="taskTypeCounts['taskType'+item.value]?taskTypeCounts['taskType'+item.value]:'0'"
@@ -17,9 +17,9 @@
             ></el-badge>
           </el-button>
         </span>
-      </div>-->
+      </div>
 
-      <div style="margin-top:10px;">
+      <!-- <div style="margin-top:10px;">
         <span>
           <el-button @click="getOtherData(1)" type size="mini">
             出票
@@ -68,7 +68,7 @@
             <el-badge :value="taskTypeCounts.taskType12?taskTypeCounts.taskType12:'0'" :max="99"></el-badge>
           </el-button>
         </span>
-      </div>
+      </div>-->
     </div>
     <div class="contentBox">
       <order-task-search @onSearch="handleSearch"></order-task-search>
