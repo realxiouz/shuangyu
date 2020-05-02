@@ -405,7 +405,7 @@
             return;
           }
           let _profit = 0;
-          _profit = this.formData.amount + Number(this.sellAmount);
+          _profit = Number(this.formData.amount) + Number(this.sellAmount);
           if (_profit != this.formData.profit) {
             this.$notify({
               title: "提示",
@@ -524,6 +524,7 @@
         if (this.formData.radio != "1" && this.taskType == 1) {
           let amountTotal = 0;
           var flag = false;
+
           this.formData.passengers.forEach(item => {
             if (item.amount && item.amount != '' && Number(item.amount) < 0) {
               amountTotal += Number(item.amount);
@@ -550,6 +551,7 @@
             return;
           }
           let _profit = 0;
+          debugger
           _profit = Number(this.formData.amount) + Number(this.sellAmount);
           if (_profit != Number(this.formData.profit)) {
             this.$notify({

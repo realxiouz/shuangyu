@@ -291,7 +291,7 @@
           @onSave="handleSave"
           :passengerData="passengersInfo"
           :flightData="flightData"
-          :sell-amount="sellAmount"
+          :sell-amount="ticketSellAmount"
           :task-type="taskType"
         ></handle-ticket>
       </el-dialog>
@@ -487,6 +487,7 @@
         sourceOrderNo: "",
         refundData: "",
         sellAmount: "",
+        ticketSellAmount: "",
         purchaseOrderNo: "",
         refundChangeRule: "",
         refundpassengers: "",
@@ -505,13 +506,13 @@
           flightNum: "",
           departureTime: ""
         },
-        activeNames: ['1','2','3','4'],
-          //订单详情状态
-          orderDetail_orderState: '',
-          //订单详情意见及备注
-          orderDetail_orderComment: '',
-          //订单详情触发定时器
-          detailInfoTimer: null
+        activeNames: ['1', '2', '3', '4'],
+        //订单详情状态
+        orderDetail_orderState: '',
+        //订单详情意见及备注
+        orderDetail_orderComment: '',
+        //订单详情触发定时器
+        detailInfoTimer: null
       };
     },
     components: {
@@ -551,7 +552,7 @@
               if (data.flights) {
                 this.flightData = data.flights;
               }
-               this.triggerDetailInfoTimer();
+              this.triggerDetailInfoTimer();
             }
           })
           .catch(error => {
@@ -645,7 +646,6 @@
           newParams.ticketNoFlag = params.ticketNoFlag;
         }
         this.purchaseOrder(newParams);
-        this.handleTicketShow = false;
       },
       // 补退 补改 保存
       handleSavePurchase(params) {
@@ -687,8 +687,6 @@
           }
           this.purchaseOrder(newParams);
         }
-        this.fillOutRefundShow = false;
-        this.fillOutChangeShow = false;
       },
       // 手工出票保存
       handleSave(params) {
@@ -731,7 +729,6 @@
             }
           }
           this.purchaseOrder(newParams);
-          this.handleTicketShow = false;
         }
       },
       // 非蜗牛补单
@@ -927,7 +924,7 @@
       //延时获取采购树
       timeOutGetOrderTree() {
         let num = 0;
-        var second=4;
+        var second = 4;
         const timer = setInterval(() => {
           if (num < second) {
             num++;
@@ -1016,6 +1013,13 @@
           });
           return;
         } else {
+          let ticketAmount = 0;
+          this.passengersInfo.forEach(item => {
+            console.log(item.amount)
+            ticketAmount += Number(item.amount);
+          });
+          this.ticketSellAmount = ticketAmount;
+          console.log(this.ticketSellAmount)
           this.handleTicketShow = true;
         }
       },
@@ -1243,31 +1247,31 @@
             console.log(error);
           });
       },
-        qunarDetailHtml() {
-            this.$store
+      qunarDetailHtml() {
+        this.$store
           .dispatch("order/qunarDetailHtml", {sourceOrderNo: this.sourceOrderNo})
           .then(data => {
             if (data) {
-                let el = document.createElement("div");
-                el.innerHTML = data.split("script>\n")[1];
-                this.orderDetail_orderState = el.querySelector("#j-switch-form > div.b-bkifo.g-clear > div.e-bkifo-rt > div > h1").textContent;
-                let orderComment = el.querySelector("#j-switch-orderBook > form.j-passenger > div.btn-box.j-ticket-btn > span.light > div").textContent;
-                if (orderComment){
-                    this.orderDetail_orderComment = orderComment;
-                }
+              let el = document.createElement("div");
+              el.innerHTML = data.split("script>\n")[1];
+              this.orderDetail_orderState = el.querySelector("#j-switch-form > div.b-bkifo.g-clear > div.e-bkifo-rt > div > h1").textContent;
+              let orderComment = el.querySelector("#j-switch-orderBook > form.j-passenger > div.btn-box.j-ticket-btn > span.light > div").textContent;
+              if (orderComment) {
+                this.orderDetail_orderComment = orderComment;
+              }
             }
           })
           .catch(error => {
             console.log(error);
           });
       },
-        triggerDetailInfoTimer(){
-          //先执行一次，然后触发定时器。
-            this.qunarDetailHtml();
-            this.detailInfoTimer = setInterval(() => {
-                this.qunarDetailHtml();
-            }, 30000);
-        },
+      triggerDetailInfoTimer() {
+        //先执行一次，然后触发定时器。
+        this.qunarDetailHtml();
+        this.detailInfoTimer = setInterval(() => {
+          this.qunarDetailHtml();
+        }, 30000);
+      },
       // 删除
       orderTreeRemove(row) {
         this.open(
@@ -1374,8 +1378,8 @@
         //如果定时器还在运行 或者直接关闭，不用判断
         clearInterval(this.timer); //关闭
       }
-      if (this.detailInfoTimer){
-          clearInterval(this.detailInfoTimer);
+      if (this.detailInfoTimer) {
+        clearInterval(this.detailInfoTimer);
       }
     },
     updated() {
@@ -1558,7 +1562,7 @@
 </style>
 
 <style>
-  .deadlineTicketTime label{
+  .deadlineTicketTime label {
     color: #ff4600;
   }
 
