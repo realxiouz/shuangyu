@@ -230,7 +230,7 @@ export default {
     },
     loadPendingTotal() {
       this.$store
-        .dispatch("orderTaskTotal/getPendingTotal", {
+        .dispatch("orderTaskTotal/getTotal", {
           filters: {}
         })
         .then(data => {
@@ -243,7 +243,7 @@ export default {
         });
     },
     skipOrderDetail() {
-      this.$router.push({ path: "/order/task/total/list" });
+      this.$router.push({ path: "/order/task/list" });
     },
     triggerPendingTotalTimer() {
       //先执行一次，然后触发定时器。
