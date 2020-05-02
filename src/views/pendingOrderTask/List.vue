@@ -6,9 +6,20 @@
           待处理
           <el-badge :value="totalCount?totalCount:'0'" :max="99"></el-badge>
         </el-button>
-      </span> -->
-
+      </span>-->
       <div style="margin-top:10px;">
+        <span v-for="item in taskTypeValue" :key="item.value" style="margin-right:5px;">
+          <el-button style="margin-bottom:10px;" @click="getOtherData(item.value)" type size="mini">
+            {{item.label}}
+            <el-badge
+              :value="taskTypeCounts['taskType'+item.value]?taskTypeCounts['taskType'+item.value]:'0'"
+              :max="99"
+            ></el-badge>
+          </el-button>
+        </span>
+      </div>
+
+      <!-- <div style="margin-top:10px;">
         <span>
           <el-button @click="getOtherData(1)" type size="mini">
             出票
@@ -57,7 +68,7 @@
             <el-badge :value="taskTypeCounts.taskType12?taskTypeCounts.taskType12:'0'" :max="99"></el-badge>
           </el-button>
         </span>
-      </div>
+      </div>-->
     </div>
     <div class="contentBox">
       <order-task-search @onSearch="handleSearch"></order-task-search>
@@ -151,7 +162,11 @@
 <script>
 import orderTaskSearch from "./Search.vue";
 import taskSelectStaff from "./selectStaff";
-import { formatTaskType, formatTaskStatus } from "@/utils/status.js";
+import {
+  formatTaskType,
+  formatTaskStatus,
+  taskTypeValue
+} from "@/utils/status.js";
 
 export default {
   name: "orderTask",
@@ -172,7 +187,8 @@ export default {
       totalCount: 0,
       taskTypeCounts: {},
       selectTask: [],
-      timer: null
+      timer: null,
+      taskTypeValue: taskTypeValue
     };
   },
   components: {
@@ -348,7 +364,7 @@ export default {
           rootOrderNo: row.rootOrderNo,
           taskId: row.taskId,
           taskType: row.taskType,
-          remark:row.remark
+          remark: row.remark
         }
       });
     },
