@@ -25,7 +25,7 @@
               <i slot="prefix" class="el-input__icon el-icon-notebook-2"></i>
             </el-input>
           </el-col>
-          <el-col :span="5" style="text-align:right">
+          <el-col :span="5" style="text-align:right;">
             <el-button
               @click="getVerificationCode(loginForm.account)"
               :disabled="showCount"
@@ -33,13 +33,11 @@
               size="mini"
             >
               <span v-show="!showCount">获取验证码</span>
-              <span v-show="showCount">{{countDown}} s后</span>
-              <span v-show="showCount">重新获取</span>
+              <span v-show="showCount">{{countDown}} s</span>
             </el-button>
           </el-col>
         </el-row>
       </el-form-item>
-
       <el-form-item v-else prop="password">
         <el-col :span="24">
           <el-input placeholder="请输入密码" clearable v-model="loginForm.password" show-password>
@@ -49,11 +47,16 @@
       </el-form-item>
       <span style="text-align:left;">
         <el-button v-if="verificationShow" @click="verificationLogin" type="text" size="mini">账号密码登陆</el-button>
-        <el-button v-else @click="passwordLogin" type="text" size="mini">验证码登陆</el-button>
+        <el-button
+          v-else
+          @click="passwordLogin"
+          type="text"
+          size="mini"
+        >验证码登陆</el-button>
       </span>
     </el-form>
     <el-button
-      style="width:100%"
+      style="width:100%;margin-top:15px;"
       type="primary"
       :loading="loading"
       @click="handleLogin('ruleForm')"
