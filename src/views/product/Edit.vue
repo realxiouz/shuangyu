@@ -144,11 +144,6 @@
             <el-input v-model="formData.miniOrderQuantity"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="库存下限" prop="minStockQuantity">
-            <el-input v-model="formData.minStockQuantity"></el-input>
-          </el-form-item>
-        </el-col>
       </el-row>
       <el-row :gutter="10">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">

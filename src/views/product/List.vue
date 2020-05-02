@@ -33,7 +33,6 @@
           </template>
         </el-table-column>
         <el-table-column prop="grossMargin" label="毛利率" align="center"></el-table-column>
-        <el-table-column prop="minStockQuantity" label="库存下限" align="center"></el-table-column>
         <el-table-column prop="supplierName" label="默认供应商名称" align="center"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="350">
           <template slot-scope="scope">
