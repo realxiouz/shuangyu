@@ -60,10 +60,18 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <el-row :gutter="10" v-if="valueType ==8">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="是否销售属性" prop="isSku">
+              <el-switch v-model="formData.isSku" :active-value=true :inactive-value=false
+              ></el-switch>
+            </el-form-item>
+          </el-col>
+        </el-row>
         <el-row :gutter="10" v-if="valueType ==2">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="精度" prop="precision">
-              <el-input v-model="formData.precision"></el-input>
+              <el-input v-model="formData.precision" @change="changeNum"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -87,7 +95,7 @@
         <el-row :gutter="10" v-if="valueType ==2">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="示例:">
-              <el-input-number v-model="test.num" :min="1" :max="10" label="描述文字"></el-input-number>
+              <el-input-number v-model="test.num" :precision="formData.precision"></el-input-number>
             </el-form-item>
           </el-col>
         </el-row>
@@ -171,14 +179,6 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="10" v-if="valueType ==8">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="是否销售属性" prop="isSku">
-              <el-switch v-model="formData.isSku" :active-value=true :inactive-value=false
-              ></el-switch>
-            </el-form-item>
-          </el-col>
-        </el-row>
         <div v-show="showAddValues">
           <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加属性值</el-button>
           <el-table
@@ -229,6 +229,7 @@
             propertyCode: "",
             propertyLabel: "",
             propertyName: "",
+            precision: 0,
             isSku: false,
             valueType: '',
             values: []
@@ -266,12 +267,16 @@
             }
         },
         methods: {
+            changeNum(value) {
+                this.formData.precision = value;
+            },
             valueTypeChange(value) {
                 this.valueType = value;
                 if (value == 7 || value == 8 || value == 9) {
                     this.showAddValues = true;
                 } else {
                     this.showAddValues = false;
+                    this.formData.values = [];
                 }
             },
             //跳转回列表页面
