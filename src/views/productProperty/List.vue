@@ -39,7 +39,7 @@
           <el-table-column prop="propertyCode" label="属性编码" align="center"></el-table-column>
           <el-table-column prop="isSku" label="是否销售属性" align="center">
             <template slot-scope="scope">
-              <el-switch v-model="scope.row.isSku" disabled></el-switch>
+              <el-switch v-model="scope.row.sku" disabled></el-switch>
             </template>
           </el-table-column>
           <el-table-column fixed="right" label="操作" align="center" width="350">
@@ -130,7 +130,7 @@
             loadTotal(searchForm) {
                 this.$store
                     .dispatch("productProperty/getTotal", {
-                        filters: searchForm
+                        filter: searchForm
                     })
                     .then(data => {
                         this.total = data;

@@ -58,8 +58,8 @@
         </el-row>
         <el-row :gutter="10" v-if="valueType ==8">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="是否销售属性" prop="isSku">
-              <el-switch v-model="formData.isSku" :active-value=true :inactive-value=false
+            <el-form-item label="是否销售属性" prop="sku">
+              <el-switch v-model="formData.sku" :active-value=true :inactive-value=false
               ></el-switch>
             </el-form-item>
           </el-col>
@@ -226,7 +226,7 @@
             propertyLabel: "",
             propertyName: "",
             precision: 0,
-            isSku: false,
+            sku: false,
             valueType: '',
             values: []
         }
