@@ -115,7 +115,8 @@
               <el-option v-for="(item,idx) in brandList"
                          :key="idx"
                          :label="item.brandName"
-                         :value="item.brandCode">
+                         :value="item.brandCode"
+                         @change="handleUpdate">
               </el-option>
             </el-select>
           </el-form-item>
@@ -332,19 +333,20 @@
                 };
             },
             handleUpdate() {
-                for (var i = 0; i < this.dataList.length; i++) {
+                for (let i = 0, len = this.dataList.length; i < len; i++) {
                     this.dataList[i].productCode = this.formData.productCode;
                     this.dataList[i].productName = this.formData.productName;
                     this.dataList[i].categoryName = this.formData.categoryName;
+                    this.dataList[i].brandName = this.formData.brandName;
                     this.dataList[i].unit = this.formData.unit;
                 }
             },
             handleSku(checked) {
-                var array = [];
+                let array = [];
                 if (checked) {
-                    for (var i = 0; i < this.formData.properties.length; i++) {
+                    for (let i = 0, len = this.formData.properties.length; i < len; i++) {
                         if (this.formData.properties[i].sku) {
-                            var value = this.formData.properties[i].value;
+                            let value = this.formData.properties[i].value;
                             if (value.length > 0) {
                                 array.push(value);
                             }
@@ -356,10 +358,10 @@
             calcDescartes(array) {
                 if (array.length < 2) return array[0] || [];
                 return [].reduce.call(array, function (col, set) {
-                    var res = [];
+                    let res = [];
                     col.forEach(function (c) {
                         set.forEach(function (s) {
-                            var t = [].concat(Array.isArray(c) ? c : [c]);
+                            let t = [].concat(Array.isArray(c) ? c : [c]);
                             t.push(s);
                             res.push(t);
                         })
