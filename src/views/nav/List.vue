@@ -64,7 +64,7 @@
           <el-input type="textarea" :rows="3" placeholder="请输入备注(remark)" v-model="formData.remark"></el-input>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <div slot="footer" class="dialog-footer" style="text-align:right">
         <el-button size="mini" @click="handleCancel">取 消</el-button>
         <el-button size="mini" type="primary" @click="handleSave">确 定</el-button>
       </div>

@@ -1,64 +1,5 @@
 <template>
   <div class="bigBox">
-    <div class="searchBox">
-      <span>
-        <el-button @click="geAllData()" type size="mini">
-          待处理
-          <el-badge :value="totalCount?totalCount:'0'" :max="99"></el-badge>
-        </el-button>
-      </span>
-
-      <div style="margin-top:10px;">
-        <span>
-          <el-button @click="getOtherData(1)" type size="mini">
-            出票
-            <el-badge :value="taskTypeCounts.taskType1?taskTypeCounts.taskType1:'0'" :max="99"></el-badge>
-          </el-button>
-        </span>
-        <span>
-          <el-button @click="getOtherData(2)" type size="mini">
-            退票
-            <el-badge :value="taskTypeCounts.taskType2?taskTypeCounts.taskType2:'0'" :max="99"></el-badge>
-          </el-button>
-        </span>
-        <span>
-          <el-button @click="getOtherData(3)" type size="mini">
-            改签
-            <el-badge :value="taskTypeCounts.taskType3?taskTypeCounts.taskType3:'0'" :max="99"></el-badge>
-          </el-button>
-        </span>
-        <span>
-          <el-button @click="getOtherData(4)" type size="mini">
-            未出票申请退款
-            <el-badge :value="taskTypeCounts.taskType4?taskTypeCounts.taskType4:'0'" :max="99"></el-badge>
-          </el-button>
-        </span>
-        <span>
-          <el-button @click="getOtherData(5)" type size="mini">
-            消息
-            <el-badge :value="taskTypeCounts.taskType5?taskTypeCounts.taskType5:'0'" :max="99"></el-badge>
-          </el-button>
-        </span>
-        <span>
-          <el-button @click="getOtherData(6)" type size="mini">
-            质检
-            <el-badge :value="taskTypeCounts.taskType6?taskTypeCounts.taskType6:'0'" :max="99"></el-badge>
-          </el-button>
-        </span>
-        <span>
-          <el-button @click="getOtherData(11)" type size="mini">
-            补订单
-            <el-badge :value="taskTypeCounts.taskType11?taskTypeCounts.taskType11:'0'" :max="99"></el-badge>
-          </el-button>
-        </span>
-        <span>
-          <el-button @click="getOtherData(12)" type size="mini">
-            填写订单号
-            <el-badge :value="taskTypeCounts.taskType12?taskTypeCounts.taskType12:'0'" :max="99"></el-badge>
-          </el-button>
-        </span>
-      </div>
-    </div>
     <div class="contentBox">
       <order-task-search @onSearch="handleSearch"></order-task-search>
     </div>
@@ -131,7 +72,7 @@ import orderTaskSearch from "./Search.vue";
 import { formatTaskStatus, formatTaskType } from "@/utils/status.js";
 
 export default {
-  name: "orderTaskTotal",
+  name: "orderTaskGroup",
   data() {
     return {
       loading: true,
@@ -142,11 +83,7 @@ export default {
       taskId: "blank",
       total: 0,
       searchParams: {},
-      otherDataSearch: {},
-      allDataSearch: {},
-      totalCount: 0,
-      taskTypeCounts: {},
-      timer: null
+      totalCount: 0
     };
   },
   components: {
@@ -155,39 +92,22 @@ export default {
   methods: {
     formatTaskStatus,
     formatTaskType,
-     handleSizeChange(size) {
+    handleSizeChange(size) {
       this.pageSize = size;
       this.searchParams.pageSize = this.pageSize;
-      let obj = {
-        ...this.searchParams,
-        ...this.allDataSearch,
-        ...this.otherDataSearch
-      };
-      this.searchParams = obj;
-      this.loadData(obj);
+      this.loadData(this.searchParams);
     },
     prevClick(page) {
       this.currentPage = page;
       this.searchParams.pageSize = this.pageSize;
       this.searchParams.currentPage = this.currentPage;
-      let obj = {
-        ...this.searchParams,
-        ...this.allDataSearch,
-        ...this.otherDataSearch
-      };
-      this.loadData(obj);
+      this.loadData(this.searchParams);
     },
     nextClick(page) {
       this.currentPage = page;
       this.searchParams.pageSize = this.pageSize;
       this.searchParams.currentPage = this.currentPage;
-      let obj = {
-        ...this.searchParams,
-        ...this.allDataSearch,
-        ...this.otherDataSearch
-      };
-      this.searchParams = obj;
-      this.loadData(obj);
+      this.loadData(this.searchParams);
     },
     loadData(params) {
       this.$store
@@ -218,27 +138,6 @@ export default {
           console.log(error);
         });
     },
-    loadPendingTotal() {
-      this.$store
-        .dispatch("orderTaskTotal/getPendingTotal", {
-          filters: {}
-        })
-        .then(data => {
-          if (data) {
-            data.taskTypes.forEach(item => {
-              for (let key in item) {
-                if (key == "taskType") {
-                  this.taskTypeCounts[key + item[key]] = item.count;
-                }
-              }
-            });
-            this.totalCount = data.totalCount;
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
     /*初始化用工列表中的生日日期格式*/
     initDate(dateStr, format) {
       if (dateStr && dateStr > 0) {
@@ -254,18 +153,6 @@ export default {
       }
       return "￥" + this.$numeral(amount).format("0.00");
     },
-    geAllData() {
-      let newParams = {};
-      newParams.taskStatus = 1;
-      this.allDataSearch = newParams;
-      this.loadData(newParams);
-    },
-    getOtherData(taskType) {
-      let params = {};
-      params.taskType = taskType;
-      this.otherDataSearch = params;
-      this.loadData(params);
-    },
     goToDetail(row) {
       let path = "";
       path = "/order/detail";
@@ -277,7 +164,6 @@ export default {
           taskId: row.taskId,
           taskType: row.taskType,
           remark: row.remark
-
         }
       });
     },
@@ -299,23 +185,12 @@ export default {
   },
   created() {
     this.loadData();
-    this.loadPendingTotal();
-    this.timer = setInterval(() => {
-      setTimeout(this.loadPendingTotal, 0);
-    }, 10000);
   },
   computed: {
     formatDate() {
       return function(dateStr, format) {
         return this.initDate(dateStr, format);
       };
-    }
-  },
-  // 离开页面销毁定时器
-  beforeDestroy() {
-    if (this.timer) {
-      //如果定时器还在运行 或者直接关闭，不用判断
-      clearInterval(this.timer); //关闭
     }
   }
 };
