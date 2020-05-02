@@ -389,7 +389,12 @@ export default new Router({
           name: 'woniuConfig',
           component: () => import('@/views/supplier/WoniuConfig'),
           meta: {title: '客户去哪儿接口管理', icon: 'home'}
-        }
+        },
+        {
+          path: '/supplier/bsp/config',
+          component: () => import('@/views/supplier/BspConfig'),
+          meta: {title: 'BSP账号配置'}
+        },
       ]
     },
     {
