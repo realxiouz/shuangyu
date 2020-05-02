@@ -509,7 +509,9 @@
           //订单详情状态
           orderDetail_orderState: '',
           //订单详情意见及备注
-          orderDetail_orderComment: ''
+          orderDetail_orderComment: '',
+          //订单详情触发定时器
+          detailInfoTimer: null
       };
     },
     components: {
@@ -549,7 +551,7 @@
               if (data.flights) {
                 this.flightData = data.flights;
               }
-               this.qunarDetailHtml();
+               this.triggerDetailInfoTimer();
             }
           })
           .catch(error => {
@@ -1262,6 +1264,11 @@
             console.log(error);
           });
       },
+        triggerDetailInfoTimer(){
+            this.detailInfoTimer = setInterval(() => {
+                setTimeout(this.qunarDetailHtml, 0);
+            }, 10000);
+        },
       // 删除
       orderTreeRemove(row) {
         this.open(
@@ -1367,6 +1374,9 @@
       if (this.timer) {
         //如果定时器还在运行 或者直接关闭，不用判断
         clearInterval(this.timer); //关闭
+      }
+      if (this.detailInfoTimer){
+          clearInterval(this.detailInfoTimer);
       }
     },
     updated() {
