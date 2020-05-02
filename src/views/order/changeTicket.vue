@@ -346,6 +346,8 @@ export default {
         return;
       }
       let _profit = 0;
+      console.log("changeTotalAmount:"+this.formData.totalAmount)
+      console.log("changeSellAmount:"+this.sellAmount)
       _profit = Number(this.formData.totalAmount) - Number(this.sellAmount);
       if (_profit != this.formData.profit) {
         this.$notify({
