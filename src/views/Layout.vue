@@ -26,7 +26,7 @@
               </div>
             </el-col>
             <div class="grid-content bg-purple firmClass">
-              <span style="margin-right:15px;">
+              <span style="margin-right:15px;" v-if="this.$store.state.loginInfo.firm.firmId">
                 <el-button type="text" @click="skipOrderDetail" size="mini">
                   待处理
                   <el-badge :value="totalCount?totalCount:'0'" :max="99"></el-badge>
@@ -47,6 +47,7 @@
                 </span>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item command="logout">退出</el-dropdown-item>
+                  <el-dropdown-item command="personalEdit">修改个人信息</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
             </div>
@@ -63,7 +64,6 @@
               <router-link :to="tag.path">{{tag.name}}</router-link>
             </el-tag>
           </div>
-          <!-- <el-page-header content="添加用户"></el-page-header> -->
         </div>
       </el-header>
       <el-main>
@@ -89,6 +89,23 @@
             ></select-firms>
           </el-dialog>
         </div>
+        <div>
+          <el-dialog
+            :title="userId?'编辑用户信息':'添加新用户'"
+            center
+            :visible.sync="dialogEdit"
+            width="33%"
+            :close-on-click-modal="false"
+          >
+            <user-form
+              v-if="dialogEdit"
+              ref="form"
+              :userId="userId"
+              @onSave="handleSave"
+              @onCancel="handleCancel"
+            ></user-form>
+          </el-dialog>
+        </div>
       </el-main>
     </el-container>
   </el-container>
@@ -97,22 +114,22 @@
 <script>
 import Sidebar from "@/components/SideBar.vue";
 import SelectFirms from "@/components/SelectFirms.vue";
+import userForm from "@/views/user/Edit.vue";
+
 // @ is an alias to /src
 export default {
   name: "layout",
-  components: { Sidebar, SelectFirms },
+  components: { Sidebar, SelectFirms, userForm },
   data() {
     return {
       dialogVisible: false,
+      dialogEdit: false,
       isCollapse: false,
       isDisplay: true,
       loading: true,
+      userId: "",
       firms: [],
-      tags: [
-        // { name: "首页", closable: false, type: "", path: "/home" }
-        // { name: "用户管理", closable: true, type: "success" },
-        // { name: "添加用户", closable: true, type: "info" }
-      ],
+      tags: [],
       screenWidth: document.body.clientWidth,
       menus: [],
       //待处理任务总量
@@ -190,6 +207,9 @@ export default {
         case "logout":
           this.handleLogout();
           break;
+        case "personalEdit":
+          this.handleEdit();
+          break;
       }
     },
     handleLogout() {
@@ -199,6 +219,31 @@ export default {
           this.$router.push({ path: "/login" });
         })
         .catch(() => {});
+    },
+    handleCancel() {
+      this.dialogEdit = false;
+    },
+    handleSave(formData) {
+      this.$store
+        .dispatch("user/updateOne", formData)
+        .then(data => {
+          if (data) {
+            this.$message({
+              type: "success",
+              message: "修改成功！"
+            });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+      this.dialogEdit = false;
+    },
+    handleEdit() {
+      console.log(this.$store.state.loginInfo, "1");
+
+      this.userId = this.$store.state.loginInfo.userId;
+      this.dialogEdit = true;
     },
     getTag() {
       let tag = {
@@ -256,7 +301,9 @@ export default {
   created() {
     this.getLoginInfo(null);
     this.getTag();
-    this.triggerPendingTotalTimer();
+    if (this.$store.state.loginInfo.firm.firmId) {
+      this.triggerPendingTotalTimer();
+    }
   },
   beforeDestroy() {
     // 离开页面销毁定时器
