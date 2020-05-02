@@ -42,31 +42,138 @@
         </el-row>
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="是否销售属性" prop="sellProperty">
-              <el-switch v-model="formData.sellProperty" :active-value=true :inactive-value=false
-                         @change="changeSellProperty"></el-switch>
+            <el-form-item label="属性类型:">
+              <!-- 数据类型（0文本，1开关，2数字，3日期，4日期时间，5时间，6评分，7单选，8多选，9选择器）-->
+              <el-select clearable v-model="formData.valueType" placeholder="全部" style="width: 100%"
+                         @change="valueTypeChange">
+                <el-option label="文本" value="0"></el-option>
+                <el-option label="开关" value="1"></el-option>
+                <el-option label="数字" value="2"></el-option>
+                <el-option label="日期" value="3"></el-option>
+                <el-option label="日期时间" value="4"></el-option>
+                <el-option label="时间" value="5"></el-option>
+                <el-option label="评分" value="6"></el-option>
+                <el-option label="单选" value="7"></el-option>
+                <el-option label="多选" value="8"></el-option>
+                <el-option label="选择器" value="9"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="10" v-if="valueType ==2">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="精度" prop="precision">
+              <el-input v-model="formData.precision"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="10" v-if="valueType ==0">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="示例:文本框" prop="precision">
+              <el-input v-model="test.input" placeholder="请输入内容"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="10" v-if="valueType ==1">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="示例:开关">
+              <el-switch
+                v-model="test.switchValue"
+              >
+              </el-switch>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="10" v-if="valueType ==2">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="示例:数字">
+              <el-input-number v-model="test.num" :min="1" :max="10" label="描述文字"></el-input-number>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="10" v-if="valueType ==3">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="示例:日期选择器">
+              <el-date-picker
+                v-model="test.time1"
+                type="date"
+                placeholder="选择日期">
+              </el-date-picker>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="10" v-if="valueType ==4">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="示例:日期时间选择器">
+              <el-date-picker
+                v-model="test.time2"
+                type="datetime"
+                placeholder="选择日期时间">
+              </el-date-picker>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="10" v-if="valueType ==5">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="示例:时间选择器">
+              <el-time-select
+                v-model="test.time3"
+                :picker-options="{
+    start: '08:30',
+    step: '00:15',
+    end: '18:30'
+  }"
+                placeholder="选择时间">
+              </el-time-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="10" v-if="valueType ==6">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="示例:评分">
+              <el-rate v-model="test.rateValue"></el-rate>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="10" v-if="valueType ==7">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="示例:单选框">
+              <el-radio v-model="test.radio1" label="1">单选项1</el-radio>
+              <el-radio v-model="test.radio2" label="2">单选项2</el-radio>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="10" v-if="valueType ==8">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="示例:多选框">
+              <el-checkbox v-model="test.checked1">多选框1</el-checkbox>
+              <el-checkbox v-model="test.checked2">多选框2</el-checkbox>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="10" v-if="valueType ==9">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="示例:选择器">
+              <el-select
+                style="width: 100%;"
+                clearable
+                collapse-tags
+                v-model="test.selectValue"
+                placeholder="请选择"
+              >
+                <el-option label="选项1" value="0"></el-option>
+                <el-option label="选项2" value="1"></el-option>
+                <el-option label="选项3" value="1"></el-option>
+                <el-option label="选项4" value="1"></el-option>
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="是否枚举属性" prop="enumProperty">
-              <el-switch v-model="formData.enumProperty" :active-value=true :inactive-value=false
-                         @change="changeEnumProperty"></el-switch>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="是否必填">
-              <el-switch v-model="formData.required" :active-value=true :inactive-value=false></el-switch>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="是否多选" prop="multiple">
-              <el-switch v-model="formData.multiple" :active-value=true :inactive-value=false></el-switch>
+            <el-form-item label="是否销售属性" prop="isSku">
+              <el-switch v-model="formData.isSku" :active-value=true :inactive-value=false
+                         ></el-switch>
             </el-form-item>
           </el-col>
         </el-row>
@@ -120,10 +227,8 @@
             propertyCode: "",
             propertyLabel: "",
             propertyName: "",
-            sellProperty: false,
-            enumProperty: false,
-            required: false,
-            multiple: false,
+            isSku: false,
+            valueType: '',
             values: []
         }
     };
@@ -136,6 +241,8 @@
                 showAddValues: false,
                 formValue: {},
                 propertyId: '',
+                valueType: '',
+                test: {},
                 categoryList: [],
                 rules: {
                     categoryName: [
@@ -154,17 +261,12 @@
             }
         },
         methods: {
-            changeEnumProperty(value) {
-                if (value) {
+            valueTypeChange(value) {
+                this.valueType = value;
+                if (value == 7 || value == 8 || value == 9) {
                     this.showAddValues = true;
-                } else {
+                }else {
                     this.showAddValues = false;
-                }
-            },
-            changeSellProperty(value) {
-                if (value) {
-                    this.formData.enumProperty = true;
-                    this.showAddValues = true;
                 }
             },
             //跳转回列表页面
