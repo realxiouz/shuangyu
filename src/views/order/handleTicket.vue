@@ -495,7 +495,7 @@
       selectSupplier(value) {
         for (var i = 0; i < this.supplierData.length; i++) {
           if (this.supplierData[i].merchantId == value) {
-            this.orderSource = this.supplierData[i].firm.firmName;
+            this.formData.orderSource = this.supplierData[i].firm.firmName;
             break;
           }
         }
