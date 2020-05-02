@@ -892,7 +892,7 @@
       },
       //改签支付弹框
       changePay(params) {
-        console.log(JSON.stringify(params));
+        console.log("支付参数:"+JSON.stringify(params));
         this.changePayData = params;
         this.systemProfitAndLossValue = this.sellAmount - this.changePayData.totalAmount;
         this.changePayShow = true;
