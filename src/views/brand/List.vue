@@ -141,7 +141,7 @@
                 this.open(
                     this.delete,
                     row.brandId,
-                    "此操作将删除该资金账号信息, 是否继续?"
+                    "此操作将删除该信息, 是否继续?"
                 );
             },
             delete(brandId) {
