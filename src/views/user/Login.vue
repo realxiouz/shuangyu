@@ -146,12 +146,7 @@ export default {
             this.$store
               .dispatch("user/signInCode", params)
               .then(res => {
-                var flag = res.data.activateFlag;
-                if (!flag) {
-                  this.$router.push({ name: "changePassword" });
-                } else {
-                  this.$router.push({ path: this.redirect || "/index" });
-                }
+                this.$router.push({ path: this.redirect || "/index" });
                 this.loading = false;
               })
               .catch(() => {
