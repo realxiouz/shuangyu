@@ -52,6 +52,7 @@ import productProperty from "./modules/productProperty";
 import brand from "./modules/brand";
 import firmContact from "./modules/firmContact";
 import firmAccount from "./modules/firmAccount";
+import bspConfig from "./modules/bspConfig";
 import { getLoginInfo } from "@/api/staff";
 
 Vue.use(Vuex);
@@ -108,7 +109,8 @@ export default new Vuex.Store({
     productProperty,
     brand,
     firmContact,
-    firmAccount
+    firmAccount,
+    bspConfig
   },
   state: {
     loginInfo: {}
