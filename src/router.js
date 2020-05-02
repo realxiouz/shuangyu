@@ -127,6 +127,11 @@ export default new Router({
 
       children: [
         {
+          path: '/order/total/detail',
+          component: () => import('@/views/orderTaskTotal/List'),
+          meta: {title: '总订单任务', icon: 'home'}
+        },
+        {
           title: 'Pnrjy导单',
           path: '/pnrjyOrder/Export',
           name: 'pnrjyOrder',
@@ -238,7 +243,7 @@ export default new Router({
           component: () => import('@/views/orderTaskGroup/List'),
           meta: {title: '组长任务', icon: 'home'}
         },
-        
+
       ]
     },
     {

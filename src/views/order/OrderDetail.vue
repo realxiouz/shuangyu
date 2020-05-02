@@ -19,8 +19,8 @@
       <el-collapse-item name="1">
         <template slot="title">
           <span style="font-size:larger;margin-left: 15px;font-weight: bolder;">销售单信息</span>
-          <span style="font-size: 24px; margin: 0 20px">{{orderDetail_orderState}}</span>
-          <span>{{orderDetail_orderComment}}</span>
+          <span style="font-size: 24px; margin: 0 20px; color: #ff4600;">{{orderDetail_orderState}}</span>
+          <span style="color: #F56C6C">{{orderDetail_orderComment}}</span>
         </template>
         <div style="padding: 20px">
           <el-row :gutter="20">
@@ -1262,9 +1262,11 @@
           });
       },
         triggerDetailInfoTimer(){
+          //先执行一次，然后触发定时器。
+            this.qunarDetailHtml();
             this.detailInfoTimer = setInterval(() => {
-                setTimeout(this.qunarDetailHtml, 0);
-            }, 15000);
+                this.qunarDetailHtml();
+            }, 30000);
         },
       // 删除
       orderTreeRemove(row) {
@@ -1557,10 +1559,10 @@
 
 <style>
   .deadlineTicketTime label{
-    color: #E6A23C;
+    color: #ff4600;
   }
 
   .deadlineTicketTime {
-    color: #E6A23C;
+    color: #ff4600;
   }
 </style>
