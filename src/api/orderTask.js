@@ -25,6 +25,14 @@ export function getPendingTotal(params) {
   });
 }
 
+export function getGroupList(params) {
+  return request({
+    url: '/order/task/group/page/list',
+    method: 'get',
+    params: params
+  });
+}
+
 
 // 任务提交
 export function taskSubmit(params) {
@@ -54,7 +62,7 @@ export function taskRemark(params) {
     params: params
   });
 }
-// 
+//
 
 // 批量转任务
 export function taskTransfer(data) {

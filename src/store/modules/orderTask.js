@@ -1,4 +1,4 @@
-import { taskTransfer,taskRemark, taskSubmit, taskCancel, getPageList, getTotal, getPendingTotal } from '@/api/orderTask';
+import { taskTransfer,taskRemark, taskSubmit, taskCancel, getPageList, getTotal, getPendingTotal ,getGroupList} from '@/api/orderTask';
 import { getToken } from '@/utils/auth';
 
 const state = {
@@ -50,6 +50,19 @@ const actions = {
         const { filters } = params;
         return new Promise((resolve, reject) => {
             getPendingTotal(filters)
+                .then(response => {
+                    const { data } = response;
+                    resolve(data);
+                })
+                .catch(error => {
+                    reject(error);
+                });
+        });
+    },
+  getGroupList({ commit }, params) {
+        const { filters } = params;
+        return new Promise((resolve, reject) => {
+          getGroupList(filters)
                 .then(response => {
                     const { data } = response;
                     resolve(data);
