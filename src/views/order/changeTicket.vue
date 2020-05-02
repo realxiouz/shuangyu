@@ -209,17 +209,17 @@ export default {
     formatCardType,
     formatAgeType,
     // 乘客默认选中表格复选框
-    toggleSelection(rows) {
-      if (rows) {
-        rows.forEach(row => {
-          if (row.canChange) {
-            this.$refs.changePassage.toggleRowSelection(row, false);
-          }
-        });
-      } else {
-        this.$refs.changePassage.clearSelection();
-      }
-    },
+    // toggleSelection(rows) {
+    //   if (rows) {
+    //     rows.forEach(row => {
+    //       if (row.canChange) {
+    //         this.$refs.changePassage.toggleRowSelection(row, false);
+    //       }
+    //     });
+    //   } else {
+    //     this.$refs.changePassage.clearSelection();
+    //   }
+    // },
     // 判断乘客是否可以改签
     selectable(row, index) {
       if (row.canChange) {
@@ -421,9 +421,9 @@ export default {
       return "￥" + this.$numeral(amount).format("0.00");
     }
   },
-  updated() {
-    this.toggleSelection(this.passagersChange);
-  },
+  // updated() {
+  //   this.toggleSelection(this.passagersChange);
+  // },
   created() {
     let params = {};
     params.purchaseOrderNo = this.changeData.sourceOrderNo;
