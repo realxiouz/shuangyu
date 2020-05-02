@@ -8,6 +8,23 @@ export function signIn(data) {
   });
 }
 
+// 验证码登录
+export function signInCode(data) {
+  return request({
+    url: '/user/sign/in/code',
+    method: 'post',
+    data
+  });
+}
+
+// 获取用户验证码
+export function getVerification(target) {
+  return request({
+    url: `/admin/user/get/verification/code/${target}`,
+    method: 'get',
+  });
+}
+
 export function signOut() {
   return request({
     url: '/user/sign/out',
