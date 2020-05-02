@@ -4,12 +4,12 @@
       <el-row :gutter="10">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="商品编码" prop="productCode">
-            <el-input v-model="formData.productCode"></el-input>
+            <el-input v-model="formData.productCode" @change="addDataList(formData)"></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="商品名称" prop="productName">
-            <el-input v-model="formData.productName"></el-input>
+            <el-input v-model="formData.productName" @change="addDataList(formData)"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -325,19 +325,8 @@
             }
         },
         methods: {
-            calcDescartes(array) {
-                if (array.length < 2) return array[0] || [];
-                return [].reduce.call(array, function (col, set) {
-                    let res = [];
-                    col.forEach(function (c) {
-                        set.forEach(function (s) {
-                            let t = [].concat(Array.isArray(c) ? c : [c]);
-                            t.push(s);
-                            res.push(t);
-                        })
-                    });
-                    return res;
-                });
+            addDataList(value) {
+              console.log(value);
             },
             handleSku(value, item, item3) {
                 console.log(value);
