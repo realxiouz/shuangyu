@@ -19,7 +19,7 @@
       <el-collapse-item name="1">
         <template slot="title">
           <span style="font-size:larger;margin-left: 15px;font-weight: bolder;">销售单信息</span>
-          <span style="font-size: 24px; margin: 0 20px; color: rgba(253,84,0,0.83);">{{orderDetail_orderState}}</span>
+          <span style="font-size: 24px; margin: 0 20px; color: #ff4600;">{{orderDetail_orderState}}</span>
           <span style="color: #F56C6C">{{orderDetail_orderComment}}</span>
         </template>
         <div style="padding: 20px">
@@ -1020,7 +1020,6 @@
           this.passengersInfo.forEach(item => {
             this.ticketSellAmount += Number(item.amount);
           });
-          console.log(this.ticketSellAmount)
           this.handleTicketShow = true;
         }
       },
@@ -1563,11 +1562,11 @@
 </style>
 
 <style>
-  .deadlineTicketTime label {
-    color: #E6A23C;
+  .deadlineTicketTime label{
+    color: #ff4600;
   }
 
   .deadlineTicketTime {
-    color: #E6A23C;
+    color: #ff4600;
   }
 </style>
