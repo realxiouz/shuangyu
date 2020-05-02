@@ -18,6 +18,12 @@
                   </el-breadcrumb-item>
                 </el-breadcrumb>
               </div>
+              <div class="grid-content">
+                <el-button @click="skipOrderDetail" size="mini">
+                  待处理
+                  <el-badge :value="totalCount?totalCount:'0'" :max="99"></el-badge>
+                </el-button>
+              </div>
             </el-col>
               <div class="grid-content">
                 <el-button @click="skipOrderDetail" size="mini">
@@ -237,7 +243,7 @@ export default {
               });
       },
       skipOrderDetail(){
-          this.$router.push({path: '/order/task/total/list'});
+          this.$router.push({path: '/order/total/detail'});
       },
       triggerPendingTotalTimer(){
           //先执行一次，然后触发定时器。
