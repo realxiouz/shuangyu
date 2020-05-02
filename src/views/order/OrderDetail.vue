@@ -693,7 +693,7 @@
       },
       // 手工出票保存
       handleSave(params) {
-        if (params.radio == 1 && params.orderSource == "QUNAR_OPEN") {
+        if (params.radio == 1 && (params.orderSource == "QUNAR_OPEN" || params.merchantId == "d381a4abdfa643fea6be8736dd11c1e1")) {
           let woniuParams = {};
           woniuParams.sourceOrderNo = params.sourceOrderNo;
           woniuParams.orderTaskId = this.$route.query.taskId;
@@ -706,8 +706,7 @@
           let newParams = {};
           if (params) {
             newParams.accountId = params.accountId;
-            newParams.amount = this.tableData.amount;
-            newParams.thirdId = this.tableData.thirdId;
+            newParams.amount = params.amount;
             newParams.flights = [
               {
                 cabin: params.cabin,
@@ -720,14 +719,17 @@
             ];
             newParams.fundAccount = params.fundAccount;
             newParams.orderSource = params.orderSource;
-            newParams.orderType = this.tableData.orderType;
+            newParams.orderType = params.orderType;
             newParams.passengers = params.passengers;
-            newParams.pid = "";
+            if (params.pid){
+              newParams.pid = params.pid;
+            }else {
+              newParams.pid = "";
+            }
             newParams.orderTaskId = this.$route.query.taskId;
             newParams.remark = params.remark;
             newParams.rootOrderNo = this.tableData.rootOrderNo;
-            newParams.sourceOrderNo = this.tableData.sourceOrderNo;
-            newParams.transactionAmount = params.transactionAmount;
+            newParams.sourceOrderNo = params.sourceOrderNo;
             newParams.createTime = params.createTime;
             if (params.ticketNoFlag) {
               newParams.ticketNoFlag = params.ticketNoFlag;
@@ -1267,7 +1269,7 @@
         triggerDetailInfoTimer(){
             this.detailInfoTimer = setInterval(() => {
                 setTimeout(this.qunarDetailHtml, 0);
-            }, 10000);
+            }, 15000);
         },
       // 删除
       orderTreeRemove(row) {

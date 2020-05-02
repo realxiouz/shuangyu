@@ -433,7 +433,6 @@
         }
       },
       // 判断选中渠道是否是蜗牛
-      // 判断选中渠道是否是蜗牛
       selectAccount(value) {
         for (var i = 0; i < this.supplierAccountData.length; i++) {
           if (this.supplierAccountData[i].accountId == value && this.isWoniu && this.isWoniuTicket) {
