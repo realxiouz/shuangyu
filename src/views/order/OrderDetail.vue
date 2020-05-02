@@ -892,9 +892,10 @@
       },
       //改签支付弹框
       changePay(params) {
+        console.log(JSON.stringify(params));
         this.changePayData = params;
         this.systemProfitAndLossValue = this.sellAmount - this.changePayData.totalAmount;
-        this.changeTicketShow = true;
+        this.changePayShow = true;
       },
       //改签支付
       changePaySave(params) {
