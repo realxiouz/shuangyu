@@ -153,15 +153,19 @@
                     });
             },
             handleSupplement(row) {
+                console.log(row);
                 let path = "";
                 path = "/woniu/config";
-                this.$router.push({
-                    path: path,
-                    query: {
-                        firmId: row.firm.firmId,
-                        openId: row.firmId.openId
-                    }
-                });
+                switch (row.firm.openId) {
+                    case "f5c82987d25b4eba8fbf11f7963d3b14": //BSP
+                        this.$router.push({path: '/supplier/bsp/config', query: {merchantId: row.merchantId}});
+                        break;
+                    case "b9741bd0315e4abfad28cf91ac81cb0c": //去哪儿蜗牛
+                        this.$router.push({path: path, query: { firmId: row.firm.firmId, openId: row.firmId.openId }});
+                        break;
+                    default:
+                        this.$router.push({path: path, query: { firmId: row.firm.firmId, openId: row.firmId.openId }});
+                }
             },
             handleAssociate(index, row){
                 this.$store
