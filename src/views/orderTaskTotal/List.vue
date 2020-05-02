@@ -7,6 +7,17 @@
           <el-badge :value="totalCount?totalCount:'0'" :max="99"></el-badge>
         </el-button>
       </span>
+      <!-- <div>
+        <span v-for="item in taskTypeValue" :key="item.value">
+          <el-button @click="getOtherData(item.value)" type size="mini">
+            {{item.label}}
+            <el-badge
+              :value="taskTypeCounts['taskType'+item.value]?taskTypeCounts['taskType'+item.value]:'0'"
+              :max="99"
+            ></el-badge>
+          </el-button>
+        </span>
+      </div>-->
 
       <div style="margin-top:10px;">
         <span>
@@ -128,7 +139,11 @@
 
 <script>
 import orderTaskSearch from "./Search.vue";
-import { formatTaskStatus, formatTaskType } from "@/utils/status.js";
+import {
+  formatTaskStatus,
+  formatTaskType,
+  taskTypeValue
+} from "@/utils/status.js";
 
 export default {
   name: "orderTaskTotal",
@@ -146,7 +161,8 @@ export default {
       allDataSearch: {},
       totalCount: 0,
       taskTypeCounts: {},
-      timer: null
+      timer: null,
+      taskTypeValue: taskTypeValue
     };
   },
   components: {
@@ -155,7 +171,7 @@ export default {
   methods: {
     formatTaskStatus,
     formatTaskType,
-     handleSizeChange(size) {
+    handleSizeChange(size) {
       this.pageSize = size;
       this.searchParams.pageSize = this.pageSize;
       let obj = {
@@ -278,7 +294,6 @@ export default {
           taskId: row.taskId,
           taskType: row.taskType,
           remark: row.remark
-
         }
       });
     },
