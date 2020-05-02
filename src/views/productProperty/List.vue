@@ -37,24 +37,9 @@
           <el-table-column prop="categoryName" label="商品类目" align="center"></el-table-column>
           <el-table-column prop="propertyLabel" label="属性名称" align="center"></el-table-column>
           <el-table-column prop="propertyCode" label="属性编码" align="center"></el-table-column>
-          <el-table-column prop="sellProperty" label="是否销售属性" align="center">
+          <el-table-column prop="isSku" label="是否销售属性" align="center">
             <template slot-scope="scope">
-              <el-switch v-model="scope.row.sellProperty" disabled></el-switch>
-            </template>
-          </el-table-column>
-          <el-table-column prop="enumProperty" label="是否枚举属性" align="center">
-            <template slot-scope="scope">
-              <el-switch v-model="scope.row.enumProperty" disabled></el-switch>
-            </template>
-          </el-table-column>
-          <el-table-column prop="required" label="是否必填" align="center">
-            <template slot-scope="scope">
-              <el-switch v-model="scope.row.required" disabled></el-switch>
-            </template>
-          </el-table-column>
-          <el-table-column prop="multiple" label="是否多选" align="center">
-            <template slot-scope="scope">
-              <el-switch v-model="scope.row.multiple" disabled></el-switch>
+              <el-switch v-model="scope.row.isSku" disabled></el-switch>
             </template>
           </el-table-column>
           <el-table-column fixed="right" label="操作" align="center" width="350">

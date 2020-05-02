@@ -7,14 +7,7 @@
       <el-row style="margin-bottom:15px;margin-left:35px;">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
-      <el-table
-        v-loading="loading"
-        :data="tableData"
-        highlight-current-row
-        size="mini"
-        style="width: 100%; margin-bottom:15px"
-        fit
-      >
+      <el-table v-loading="loading" :data="tableData" highlight-current-row size="mini" style="width: 100%; margin-bottom:15px" fit>
         <el-table-column label="序号" type="index" width="60" align="center">
           <template slot-scope="scope">
             <span>{{(currentPage - 1) * pageSize + scope.$index + 1}}</span>

@@ -304,16 +304,16 @@
         },
         methods: {
             changeNum(value) {
-                this.formData.precision = value;
+                if (value > 0) {
+                    this.formData.precision = value;
+                }
             },
             valueTypeChange(value) {
-                console.log(typeof value);
                 this.valueType = value;
                 if (value == 7 || value == 8 || value == 9) {
                     this.showAddValues = true;
                 } else {
                     this.showAddValues = false;
-                    this.formData.values = [];
                 }
             },
             //跳转回列表页面
@@ -331,6 +331,9 @@
             handleSave() {
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
+                        if (!(this.valueType == 7 || this.valueType == 8 || this.valueType == 9)) {
+                            this.formData.values = [];
+                        }
                         this.$store
                             .dispatch("productProperty/save", this.formData)
                             .then(() => {
