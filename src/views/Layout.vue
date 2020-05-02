@@ -26,7 +26,7 @@
               </div>
             </el-col>
             <div class="grid-content bg-purple firmClass">
-              <span style="margin-right:15px;" v-if="this.$store.state.loginInfo.firm.firmId">
+              <span style="margin-right:15px;">
                 <el-button type="text" @click="skipOrderDetail" size="mini">
                   待处理
                   <el-badge :value="totalCount?totalCount:'0'" :max="99"></el-badge>
@@ -301,9 +301,7 @@ export default {
   created() {
     this.getLoginInfo(null);
     this.getTag();
-    if (this.$store.state.loginInfo.firm.firmId) {
       this.triggerPendingTotalTimer();
-    }
   },
   beforeDestroy() {
     // 离开页面销毁定时器
