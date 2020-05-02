@@ -1,4 +1,4 @@
-import { signIn, signOut, addOne, removeOne, updateOne, getOne, getList, getTotal, getPageList ,activate, isExist, resetPassword,getVerificationCode} from "@/api/user";
+import { getVerification, signIn, signInCode, signOut, addOne, removeOne, updateOne, getOne, getList, getTotal, getPageList, activate, isExist, resetPassword, getVerificationCode } from "@/api/user";
 import { getToken, setToken, removeToken } from "@/utils/auth";
 
 const state = {
@@ -29,6 +29,38 @@ const actions = {
           resolve(response);
           commit("SET_TOKEN", data.key);
           resolve();
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+
+  // 验证码登录
+  signInCode({ commit }, userInfo) {
+    const { username, password } = userInfo;
+    return new Promise((resolve, reject) => {
+      signInCode({ username: username.trim(), password: password })
+        .then(response => {
+          const { data } = response;
+          resolve(response);
+          commit("SET_TOKEN", data.key);
+          resolve();
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+
+  // 获取用户验证码
+  getVerification({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      const { target } = params;
+      getVerification(target)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -81,7 +113,7 @@ const actions = {
 
   addOne({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const {verificationCode,user} = params
+      const { verificationCode, user } = params
       addOne(user, verificationCode)
         .then(response => {
           resolve(response);
@@ -93,7 +125,7 @@ const actions = {
   },
   removeOne({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const {userId} = params
+      const { userId } = params
       removeOne(userId)
         .then(response => {
           resolve(response);
@@ -128,10 +160,10 @@ const actions = {
   },
   getList({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const {filter} = params;
+      const { filter } = params;
       getList(filter)
         .then(response => {
-          const {data} = response;
+          const { data } = response;
           resolve(data);
         })
         .catch(error => {
@@ -141,7 +173,7 @@ const actions = {
   },
   getTotal({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const {filter} = params;
+      const { filter } = params;
       getTotal(filter)
         .then(response => {
           resolve(response);
@@ -153,7 +185,7 @@ const actions = {
   },
   getPageList({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const {pageFlag, pageSize, lastId, filter} = params;
+      const { pageFlag, pageSize, lastId, filter } = params;
       getPageList(pageFlag, pageSize, lastId, filter)
         .then(response => {
           resolve(response);
@@ -178,7 +210,7 @@ const actions = {
   },
   isExist({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const {filed} = params;
+      const { filed } = params;
       isExist(filed)
         .then(response => {
           resolve(response);
@@ -190,7 +222,7 @@ const actions = {
   },
   resetPassword({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const {userId} = params;
+      const { userId } = params;
       resetPassword(userId)
         .then(response => {
           resolve(response);
@@ -202,10 +234,10 @@ const actions = {
   },
   getVerificationCode({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const {targetEmail} = params;
+      const { targetEmail } = params;
       getVerificationCode(targetEmail)
         .then(response => {
-          const {data} = response;
+          const { data } = response;
           resolve(data);
         })
         .catch(error => {

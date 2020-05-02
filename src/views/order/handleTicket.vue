@@ -275,7 +275,8 @@
   import {
     formatAgeType,
     formatCardType,
-    statusData
+    statusData,
+    orderType
   } from "@/utils/status.js";
 
   export default {
@@ -287,12 +288,7 @@
         accountData: [],
         supplierData: [],
         supplierAccountData: [],
-        orderType: [
-          {
-            value: 10,
-            label: "出票"
-          }
-        ],
+        orderType: orderType,
         isWoniuTicket: true,
         formData: {
           arr: this.flightData[0].arr,
