@@ -11,7 +11,6 @@
         <el-cascader
           v-model="formData.categoryCode"
           style="width: 100%;"
-          placeholder="可通过科目名称搜索.."
           :options="categoryList"
           :props="{ label: 'categoryName', value: 'categoryCode' }"
           @change="selectedCategory">
