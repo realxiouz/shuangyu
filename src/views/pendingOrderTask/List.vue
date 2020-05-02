@@ -1,12 +1,12 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <span>
+      <!-- <span>
         <el-button @click="geAllData()" type size="mini">
           待处理
           <el-badge :value="totalCount?totalCount:'0'" :max="99"></el-badge>
         </el-button>
-      </span>
+      </span> -->
 
       <div style="margin-top:10px;">
         <span>

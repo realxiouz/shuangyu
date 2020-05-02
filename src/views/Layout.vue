@@ -243,7 +243,7 @@ export default {
         });
     },
     skipOrderDetail() {
-      this.$router.push({ path: "/order/task/list" });
+      this.$router.push({ path: "/order/pending/task/list" });
     },
     triggerPendingTotalTimer() {
       //先执行一次，然后触发定时器。
