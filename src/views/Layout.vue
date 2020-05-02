@@ -114,7 +114,7 @@
 <script>
 import Sidebar from "@/components/SideBar.vue";
 import SelectFirms from "@/components/SelectFirms.vue";
-import userForm from "@/views/user/Edit.vue";
+import userForm from "@/views/user/personalEdit.vue";
 
 // @ is an alias to /src
 export default {
