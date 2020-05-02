@@ -308,7 +308,7 @@
           createTime: "",
           passengers: [],
           ticketNoFlag: "0",
-          userNameType: "",
+          userNameType: 0,
           amount: "",
           accountId: "",
           radio: "2",
@@ -432,7 +432,6 @@
           this.isWoniuTicket = true;
         }
       },
-      // 判断选中渠道是否是蜗牛
       // 判断选中渠道是否是蜗牛
       selectAccount(value) {
         for (var i = 0; i < this.supplierAccountData.length; i++) {

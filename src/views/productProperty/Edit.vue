@@ -46,16 +46,12 @@
               <!-- 数据类型（0文本，1开关，2数字，3日期，4日期时间，5时间，6评分，7单选，8多选，9选择器）-->
               <el-select clearable v-model="formData.valueType" placeholder="全部" style="width: 100%"
                          @change="valueTypeChange">
-                <el-option label="文本" value="0"></el-option>
-                <el-option label="开关" value="1"></el-option>
-                <el-option label="数字" value="2"></el-option>
-                <el-option label="日期" value="3"></el-option>
-                <el-option label="日期时间" value="4"></el-option>
-                <el-option label="时间" value="5"></el-option>
-                <el-option label="评分" value="6"></el-option>
-                <el-option label="单选" value="7"></el-option>
-                <el-option label="多选" value="8"></el-option>
-                <el-option label="选择器" value="9"></el-option>
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -263,7 +259,47 @@
                     , valueType: [
                         {required: true, message: "请选择属性类型", trigger: "blur"},
                     ]
-                }
+                },
+                options: [{
+                    value: 0,
+                    label: '文本'
+                },
+                    {
+                        value: 1,
+                        label: '开关'
+                    },
+                    {
+                        value: 2,
+                        label: '数字'
+                    },
+                    {
+                        value: 3,
+                        label: '日期'
+                    },
+                    {
+                        value: 4,
+                        label: '日期时间'
+                    },
+                    {
+                        value: 5,
+                        label: '时间'
+                    },
+                    {
+                        value: 6,
+                        label: '评分'
+                    },
+                    {
+                        value: 7,
+                        label: '单选'
+                    },
+                    {
+                        value: 8,
+                        label: '多选'
+                    },
+                    {
+                        value: 9,
+                        label: '选择器'
+                    }]
             }
         },
         methods: {
@@ -271,6 +307,7 @@
                 this.formData.precision = value;
             },
             valueTypeChange(value) {
+                console.log(typeof value);
                 this.valueType = value;
                 if (value == 7 || value == 8 || value == 9) {
                     this.showAddValues = true;
@@ -315,6 +352,7 @@
                         .dispatch("productProperty/getOne", {propertyId: id})
                         .then(data => {
                             this.formData = data;
+                            this.valueTypeChange(this.formData.valueType);
                         }).catch(error => {
                         console.log(error);
                     });
