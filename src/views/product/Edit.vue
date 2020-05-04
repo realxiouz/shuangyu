@@ -484,13 +484,13 @@
                         this.formData = data;
                         let param = {};
                         param.categoryCode = this.formData.categoryCode;
-                        this.loadpropertyList(param);
+                        this.loadPropertyList(param);
                         this.dialogVisible = true;
                     }).catch(error => {
                     console.log(error);
                 });
             },
-            loadpropertyList(searchForm) {
+            loadPropertyList(searchForm) {
                 this.$store
                     .dispatch("productProperty/getList", {
                         filter: searchForm
@@ -577,7 +577,7 @@
                     this.formData.categoryCode = code;
                     let param = {};
                     param.categoryCode = code;
-                    this.loadpropertyList(param);
+                    this.loadPropertyList(param);
                 }
             },
             //跳转回列表页面

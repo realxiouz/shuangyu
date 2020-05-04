@@ -3,7 +3,7 @@
     <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
       <el-row :gutter="10">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="商品类目" >
+          <el-form-item label="商品类目">
             <el-input v-model="formData.categoryName" disabled></el-input>
           </el-form-item>
         </el-col>
@@ -87,6 +87,7 @@
                 formData: {},
                 brandList: [],
                 categoryList: [],
+                propertyList: [],
                 rules: {
                     productCode: [
                         {required: true, message: "请输入商品编码", trigger: "blur"},
@@ -165,7 +166,12 @@
                     this.$store
                         .dispatch("productStockKeeping/getOne", {stockId: id})
                         .then(data => {
-                            this.formData = data;
+                            if (data) {
+                                this.formData = data;
+                                let param = {};
+                                param.categoryCode = this.formData.categoryCode;
+                                this.loadPropertyList(param);
+                            }
                         }).catch(error => {
                         console.log(error);
                     });
@@ -189,11 +195,24 @@
             },
             handleCancel() {
                 this.goBack();
-            }
+            },
+            loadPropertyList(searchForm) {
+                this.$store
+                    .dispatch("productProperty/getList", {
+                        filter: searchForm
+                    })
+                    .then(data => {
+                        if (data) {
+                            this.propertyList = data;
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
         },
         created() {
             if (this.$route.query.stockId) {
-                console.log(this.$route.query.stockId);
                 this.handleGetOne(this.$route.query.stockId);
             }
             this.loadBrand();
