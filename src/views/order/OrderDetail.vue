@@ -328,7 +328,7 @@
           v-if="changeTicketShow"
           :changeData="changeData"
           :changeDataTop="changeDataTop"
-          :sellAmount="sellAmount"
+          :sellAmount="changeSellAmount"
           @onCancel="onCancel"
           @onSavechange="handleSaveChange"
         ></change-ticket>
@@ -363,7 +363,7 @@
         <fillOut-change
           v-if="fillOutChangeShow"
           :fillOutChangeData="fillOutChangeData"
-          :sell-amount="sellAmount"
+          :sell-amount="changeSellAmount"
           :task-type="taskType"
           @onCancel="onCancel"
           @onSave="handleSavePurchase"
@@ -488,6 +488,7 @@
         refundData: "",
         sellAmount: "",
         ticketSellAmount: "",
+        changeSellAmount: "",
         purchaseOrderNo: "",
         refundChangeRule: "",
         refundpassengers: "",
@@ -925,7 +926,7 @@
       //延时获取采购树
       timeOutGetOrderTree() {
         let num = 0;
-        var second = 4;
+        var second = 3;
         const timer = setInterval(() => {
           if (num < second) {
             num++;
@@ -1383,8 +1384,8 @@
         clearInterval(this.detailInfoTimer);
       }
     },
+    // 获取改签html里的信息
     updated() {
-      // 获取改签html里的信息
       if (this.changeHtml) {
         this.changeDataTop.reason = document.querySelectorAll(
           ".select"
@@ -1408,7 +1409,16 @@
           "flightNum"
         )[0].value;
         this.changeDataTop.cabin = document.getElementsByName("cabin")[0].value;
-
+        let gqFeesAmount = 0;
+        document.getElementsByName("gqFees").forEach(item => {
+          gqFeesAmount += Number(item.value);
+        });
+        let upgradeFeesAmount = 0;
+        document.getElementsByName("upgradeFees").forEach(item => {
+          upgradeFeesAmount += Number(item.value);
+        });
+        this.changeSellAmount = Number(gqFeesAmount)+Number(upgradeFeesAmount);
+        console.log(this.changeSellAmount);
         let btnRewriteTickets = document.querySelectorAll(
           "#changeHtmlOrderDetail .back-form .back-form-info .g-clear .mrl10 .j-reset-ticket"
         );
