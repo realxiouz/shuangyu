@@ -1489,9 +1489,8 @@ export default {
           let params = { ...obj };
           params.groupCheckOut = true;
           params.groupCheckIn = false;
-          // params.orderNo = orderSerialDetail.orderNo;
-
-          // that.processingChangeTicket(params)
+          params.orderNo = that.sourceOrderNo;
+          that.processingChangeTicket(params);
         };
       }
 
@@ -1501,9 +1500,18 @@ export default {
       );
       if (changeReject) {
         changeReject.onclick = function() {
-          console.log("changeReject");
-          let _params = {};
-          // that.processingChangeTicket(_params)
+          let _inputData = document.querySelectorAll(
+            "#changeHtmlOrderDetail .box-content input"
+          );
+          let _obj = {};
+          Array.from(_inputData).forEach(item => {
+            _obj[item.name] = item.value;
+          });
+          let _params = { ...obj };
+          _params.groupCheckOut = false;
+          _params.groupCheckIn = false;
+          _params.orderNo = that.sourceOrderNo;
+          that.processingChangeTicket(_params);
         };
       }
     }
