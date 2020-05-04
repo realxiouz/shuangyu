@@ -24,9 +24,9 @@
         <el-table-column prop="skuId" label="sku" align="center"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="350">
           <template slot-scope="scope">
-            <el-button @click="handleUpdate(scope.row.productId)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="handleUpdate(scope.row.stockId)" type="primary" size="mini">编辑</el-button>
             <el-button
-              @click.native.prevent="handleRemove(scope.row.productId,scope.$index,tableData)"
+              @click.native.prevent="handleRemove(scope.row.stockId,scope.$index,tableData)"
               type="danger"
               size="mini"
             >删除
@@ -154,6 +154,16 @@
                 this.$message({
                     type: "success",
                     message: "查询成功！"
+                });
+            },
+            handleUpdate(id) {
+                let path = "";
+                path = "/product/stock/keeping/config";
+                this.$router.push({
+                    path: path,
+                    query: {
+                        stockId: id
+                    }
                 });
             }
         },

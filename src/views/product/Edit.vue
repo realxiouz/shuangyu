@@ -130,7 +130,7 @@
       <el-row :gutter="10">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="最小订单量" prop="miniOrderQuantity">
-            <el-input v-model="formData.miniOrderQuantity" οnkeyup="value=value.replace(/[^\d]/g,'')"></el-input>
+            <el-input v-model="formData.miniOrderQuantity"></el-input>
           </el-form-item>
         </el-col>
       </el-row>

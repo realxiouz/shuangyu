@@ -628,6 +628,13 @@ export default new Router({
           component: () => import('@/views/productStockKeeping/List'),
           meta: {title: '商品SKU', icon: 'home'}
         },
+        {
+          title: '商品SKU编辑',
+          path: '/product/stock/keeping/config',
+          name: 'config',
+          component: () => import('@/views/productStockKeeping/Edit'),
+          meta: {title: '商品SKU', icon: 'home'}
+        },
       ]
     },
     {
