@@ -20,6 +20,7 @@
         <el-table-column prop="unit" label="计量单位" align="center"></el-table-column>
         <el-table-column prop="price" label="单价" align="center"></el-table-column>
         <el-table-column prop="cost" label="成本" align="center"></el-table-column>
+        <el-table-column prop="skuName" label="属性名称" align="center"></el-table-column>
         <el-table-column prop="skuId" label="sku" align="center"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="350">
           <template slot-scope="scope">

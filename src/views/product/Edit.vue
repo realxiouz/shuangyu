@@ -210,7 +210,7 @@
       </el-table-column>
       <el-table-column
         align="center"
-        prop="propertiesName"
+        prop="skuName"
         label="属性名称"
         width="180">
       </el-table-column>
@@ -372,7 +372,7 @@
                     brandName: "",
                     specification: "",
                     description: "",
-                    propertiesName: "",
+                    skuName: "",
                     skuId: ""
                 };
             },
@@ -421,11 +421,11 @@
                                 codes.push(item1[0]);
                                 names.push(item1[1])
                             }
-                            row.propertiesName = names.join(" ");
+                            row.skuName = names.join(" ");
                             row.skuId = codes.join(",");
                         } else {
                             let item2 = skuIds[i].split(",");
-                            row.propertiesName = item2[1];
+                            row.skuName = item2[1];
                             row.skuId = item2[0];
                         }
                         this.dataList.push(row)
