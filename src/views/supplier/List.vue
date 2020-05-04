@@ -153,18 +153,18 @@
                     });
             },
             handleSupplement(row) {
-                console.log(row);
-                let path = "";
-                path = "/woniu/config";
                 switch (row.firm.openId) {
                     case "f5c82987d25b4eba8fbf11f7963d3b14": //BSP
                         this.$router.push({path: '/supplier/bsp/config', query: {merchantId: row.merchantId}});
                         break;
                     case "b9741bd0315e4abfad28cf91ac81cb0c": //去哪儿蜗牛
-                        this.$router.push({path: path, query: { firmId: row.firm.firmId, openId: row.firmId.openId }});
+                        this.$router.push({path: "/woniu/config", query: { firmId: row.firm.firmId, openId: row.firmId.openId }});
+                        break;
+                    case "2654f476383b4dd5a288ad9817e294ec":  //去哪儿TTS
+                        this.$router.push({path: "/qunar/config", query: {domain: row.firm.domain, openId: row.firm.openId, firmId: row.firm.firmId}});
                         break;
                     default:
-                        this.$router.push({path: path, query: { firmId: row.firm.firmId, openId: row.firmId.openId }});
+                        this.$router.push({path: "/woniu/config", query: { firmId: row.firm.firmId, openId: row.firmId.openId }});
                 }
             },
             handleAssociate(index, row){
