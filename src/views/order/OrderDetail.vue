@@ -1072,7 +1072,7 @@ export default {
           if (data) {
             this.$message({
               type: "success",
-              message: "改签申请成功！"
+              message: "提交验证成功！"
             });
           }
         })
