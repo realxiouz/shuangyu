@@ -193,6 +193,7 @@
             :data="orderTree"
             highlight-current-row
             row-key="orderNo"
+            :default-expand-all="true"
             fit
             :tree-props="{children: 'children', hasChildren: '*****'}"
           >
