@@ -22,7 +22,10 @@
         type="primary"
         size="mini"
         @click="handleConfirm"
-      >查询</el-button>
+      >查询
+      </el-button>
+      <el-button icon="el-icon-refresh" class="filter-item" type="primary" size="mini" @click="handleClear">清空
+      </el-button>
       <el-button type="text" size="mini" @click="handleMore">
         更多
         <i :class="switchIcon"></i>
@@ -31,34 +34,42 @@
   </el-row>
 </template>
 <script>
-export default {
-  name: "fundAccountSearch",
-  data() {
-    return {
-      more: false,
-      formData: {
-          bankAccount: null
-      }
+    export default {
+        name: "fundAccountSearch",
+        data() {
+            return {
+                more: false,
+                formData: {
+                    bankAccount: null
+                }
+            };
+        },
+        computed: {
+            switchIcon() {
+                if (!this.more) {
+                    return "el-icon-arrow-down el-icon--right";
+                } else {
+                    return "el-icon-arrow-up el-icon--right";
+                }
+            }
+        },
+        methods: {
+            initSearchForm() {
+                return {
+                    bankAccount: null
+                };
+            },
+            handleClear() {
+                this.formData = this.initSearchForm();
+            },
+            handleMore() {
+                this.more = !this.more;
+            },
+            handleConfirm() {
+                if (!this.formData.bankAccount || '' === this.formData.bankAccount)
+                    this.formData.bankAccount = null;
+                this.$emit("onSearch", this.formData)
+            }
+        }
     };
-  },
-  computed: {
-    switchIcon() {
-      if (!this.more) {
-        return "el-icon-arrow-down el-icon--right";
-      } else {
-        return "el-icon-arrow-up el-icon--right";
-      }
-    }
-  },
-  methods: {
-    handleMore() {
-      this.more = !this.more;
-    },
-      handleConfirm(){
-          if(!this.formData.bankAccount || '' === this.formData.bankAccount)
-              this.formData.bankAccount = null;
-          this.$emit("onSearch",this.formData)
-      }
-  }
-};
 </script>

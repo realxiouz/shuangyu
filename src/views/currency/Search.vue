@@ -3,12 +3,12 @@
     <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
       <el-form label-width="110px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="币种编码">
-              <el-input
-                v-model="formData.code"
-                placeholder="币种编码.."
-              ></el-input>
-            </el-form-item>
+          <el-form-item label="币种编码">
+            <el-input
+              v-model="formData.code"
+              placeholder="币种编码.."
+            ></el-input>
+          </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="币种名称">
@@ -20,7 +20,6 @@
         </el-col>
       </el-form>
     </el-col>
-
     <el-col :xs="8" :sm="6" :md="6" :lg="4" :xl="4" class="search-tools">
       <el-button
         icon="el-icon-search"
@@ -28,7 +27,10 @@
         type="primary"
         size="mini"
         @click="handleConfirm"
-      >查询</el-button>
+      >查询
+      </el-button>
+      <el-button icon="el-icon-refresh" class="filter-item" type="primary" size="mini" @click="handleClear">清空
+      </el-button>
       <el-button type="text" size="mini" @click="handleMore">
         更多
         <i :class="switchIcon"></i>
@@ -58,15 +60,24 @@
             }
         },
         methods: {
+            initSearchForm() {
+                return {
+                    code: null,
+                    name: null,
+                };
+            },
+            handleClear() {
+                this.formData = this.initSearchForm();
+            },
             handleMore() {
                 this.more = !this.more;
             },
-            handleConfirm(){
-                if(!this.formData.code || '' === this.formData.code)
+            handleConfirm() {
+                if (!this.formData.code || '' === this.formData.code)
                     this.formData.code = null;
-                if(!this.formData.name || '' === this.formData.name)
+                if (!this.formData.name || '' === this.formData.name)
                     this.formData.name = null;
-                this.$emit("onSearch",this.formData)
+                this.$emit("onSearch", this.formData)
             }
         }
     };

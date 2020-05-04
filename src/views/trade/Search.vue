@@ -30,6 +30,8 @@
         @click="handleConfirm"
       >查询
       </el-button>
+      <el-button icon="el-icon-refresh" class="filter-item" type="primary" size="mini" @click="handleClear">清空
+      </el-button>
       <el-button type="text" size="mini" @click="handleMore">
         更多
         <i :class="switchIcon"></i>
@@ -59,6 +61,15 @@
             }
         },
         methods: {
+            initSearchForm() {
+                return {
+                    tradeNo: null,
+                    outTradeNo: null
+                };
+            },
+            handleClear() {
+                this.formData = this.initSearchForm();
+            },
             handleMore() {
                 this.more = !this.more;
             },
