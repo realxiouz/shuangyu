@@ -55,6 +55,15 @@ export function updateOne(data) {
   });
 }
 
+export function updateMany(filter, data) {
+  return request({
+    url: '/admin/user/update/many',
+    method: 'post',
+    params: filter,
+    data
+  });
+}
+
 export function getOne(userId) {
   return request({
     url: `/user/one/${userId}`,
