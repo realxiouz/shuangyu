@@ -26,7 +26,7 @@
               </div>
             </el-col>
             <div class="grid-content bg-purple firmClass">
-              <span style="margin-right:15px;">
+              <span v-if="firmData&&firmData.firmId!=''" style="margin-right:15px;">
                 <el-button type="text" @click="skipOrderDetail" size="mini">
                   待处理
                   <el-badge :value="totalCount?totalCount:'0'" :max="99"></el-badge>
@@ -129,6 +129,7 @@ export default {
       loading: true,
       userId: "",
       firms: [],
+      firmData: "",
       tags: [],
       screenWidth: document.body.clientWidth,
       menus: [],
@@ -194,6 +195,10 @@ export default {
             this.firms = data.firms;
             this.dialogVisible = true;
           } else {
+            this.firmData = data.firm;
+            if (this.firmData && this.firmData.firmId != "") {
+              this.triggerPendingTotalTimer();
+            }
             this.menus = this.buildTree(null, data.navs);
             this.loading = false;
           }
@@ -240,8 +245,6 @@ export default {
       this.dialogEdit = false;
     },
     handleEdit() {
-      console.log(this.$store.state.loginInfo, "1");
-
       this.userId = this.$store.state.loginInfo.userId;
       this.dialogEdit = true;
     },
@@ -301,7 +304,6 @@ export default {
   created() {
     this.getLoginInfo(null);
     this.getTag();
-      this.triggerPendingTotalTimer();
   },
   beforeDestroy() {
     // 离开页面销毁定时器
