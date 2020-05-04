@@ -374,7 +374,7 @@ export default {
         .dispatch("order/checkOrder", newParams)
         .then(data => {
           if (data == true) {
-            this.$confirm("此用户已经下过单了，是否继续下单?", "提示", {
+            this.$confirm("此单可能已采购，是否继续下单?", "提示", {
               confirmButtonText: "继续下单",
               cancelButtonText: "取消",
               type: "warning"
