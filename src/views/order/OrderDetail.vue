@@ -1309,7 +1309,7 @@ export default {
       this.open(
         this.delete,
         row.orderNo,
-        "此操作将删除该用户的所有信息, 是否继续?"
+        "此操作将删除该订单的信息, 是否继续?"
       );
     },
     // 删除
