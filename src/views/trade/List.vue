@@ -5,6 +5,11 @@
     </div>
     <div class="contentBox">
       <el-table size="mini" v-loading="loading" :data="tableData" style="width: 100%;margin-bottom:15px;">
+        <el-table-column label="序号" type="index" width="50" align="center">
+          <template slot-scope="scope">
+            <span>{{(currentPage - 1) * pageSize + scope.$index + 1}}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="tradeNo" label="交易编号" align="center"></el-table-column>
         <el-table-column prop="outTradeNo" label="商家订单号" align="center"></el-table-column>
         <el-table-column prop="tradeStatus" label="交易状态" align="center"></el-table-column>
