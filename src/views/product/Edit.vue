@@ -388,9 +388,7 @@
                 for (let i = 0, len = this.dataList.length; i < len; i++) {
                     this.dataList[i].productCode = this.formData.productCode;
                     this.dataList[i].productName = this.formData.productName;
-                    this.dataList[i].categoryCode = this.formData.categoryCode;
                     this.dataList[i].categoryName = this.formData.categoryName;
-                    this.dataList[i].brandCode = this.formData.brandCode;
                     this.dataList[i].brandName = this.formData.brandName;
                     this.dataList[i].unit = this.formData.unit;
                 }
@@ -410,14 +408,7 @@
                     let skuIds = this.calcDescartes(array);
                     for (let i = 0; i < skuIds.length; i++) {
                         let row = {};
-                        row.productCode = this.formData.productCode;
-                        row.productName = this.formData.productName;
-                        row.categoryCode = this.formData.categoryCode;
-                        row.categoryName = this.formData.categoryName;
-                        row.brandCode = this.formData.brandCode;
-                        row.brandName = this.formData.brandName;
-                        row.unit = this.formData.unit;
-                        row.properties = this.formData.properties;
+                        row = this.formData;
                         if (Array.isArray(skuIds[i])) {
                             let codes = [];
                             let names = [];
@@ -453,12 +444,32 @@
                     return res;
                 });
             },
+            handleSaveData() {
+                for (let i = 0, len = this.dataList.length; i < len; i++) {
+                    this.dataList[i].productCode = this.formData.productCode;
+                    this.dataList[i].productName = this.formData.productName;
+                    this.dataList[i].categoryCode = this.formData.categoryCode;
+                    this.dataList[i].categoryName = this.formData.categoryName;
+                    this.dataList[i].brandCode = this.formData.brandCode;
+                    this.dataList[i].brandName = this.formData.brandName;
+                    this.dataList[i].unit = this.formData.unit;
+                    this.dataList[i].specification = this.formData.specification;
+                    this.dataList[i].description = this.formData.description;
+                    this.dataList[i].notSaleable = this.formData.notSaleable;
+                    this.dataList[i].notBuyable = this.formData.notBuyable;
+                    this.dataList[i].taxRate = this.formData.taxRate;
+                    this.dataList[i].grossMargin = this.formData.grossMargin;
+                    this.dataList[i].supplierId = this.formData.supplierId;
+                    this.dataList[i].supplierName = this.formData.supplierName;
+                    this.dataList[i].properties = this.formData.properties;
+                }
+            },
             handleSave() {
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
+                        this.handleSaveData();
                         this.$store
                             .dispatch("product/save", {
-                                product: this.formData,
                                 skuList: this.dataList
                             })
                             .then(() => {
