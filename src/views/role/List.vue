@@ -61,7 +61,7 @@ export default {
       loading: true,
       deleteForSearch: false,
       pageFlag: "next",
-      pageSize: 5,
+      pageSize: 10,
       lastId: "0",
       total: 0,
       tableData: []
