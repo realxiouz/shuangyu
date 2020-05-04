@@ -2,7 +2,7 @@ import request from "@/utils/request";
 
 export function addOne(data) {
   return request({
-    url: "/third/product/mark/add/one",
+    url: "/open/product/mark/add/one",
     method: "post",
     data
   });
@@ -10,7 +10,7 @@ export function addOne(data) {
 
 export function updateOne(data) {
   return request({
-    url: "/third/product/mark/update/one",
+    url: "/open/product/mark/update/one",
     method: "post",
     data
   });
@@ -66,7 +66,7 @@ export function getFirmList() {
 
 export function getFlagList(filter) {
   return request({
-    url: '/third/flag/list',
+    url: '/open/flag/list',
     method: "get",
     params: filter
   });
@@ -74,7 +74,7 @@ export function getFlagList(filter) {
 
 export function getListByFlagIds(flagIds) {
   return request({
-    url: '/third/flag/list/flagIds',
+    url: '/open/flag/list/flagIds',
     method: "get",
     params: {flagIds: flagIds}
   });
