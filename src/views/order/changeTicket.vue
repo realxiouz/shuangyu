@@ -440,7 +440,6 @@ export default {
     }
     this.orderDetailList = arr;
     this.changeSearchData(params);
-    console.log(this.sellAmount, "sellAmount");
   }
 };
 </script>
