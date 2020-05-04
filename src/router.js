@@ -81,6 +81,11 @@ export default new Router({
           meta: {title: '用户管理', icon: 'home'}
         },
         {
+          path: '/user/personal/edit',
+          component: () => import('@/views/user/personalEdit'),
+          meta: {title: '修改个人信息', icon: 'home'}
+        },
+        {
           title: '导航菜单管理',
           path: '/nav/list',
           name: 'nav',

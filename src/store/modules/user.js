@@ -1,4 +1,4 @@
-import { getVerification, signIn, signInCode, signOut, addOne, removeOne, updateOne, getOne, getList, getTotal, getPageList, activate, isExist, resetPassword, getVerificationCode } from "@/api/user";
+import { getVerification, signIn, signInCode, signOut, addOne, removeOne, updateOne, updateMany, getOne, getList, getTotal, getPageList, activate, isExist, resetPassword, getVerificationCode } from "@/api/user";
 import { getToken, setToken, removeToken } from "@/utils/auth";
 
 const state = {
@@ -140,6 +140,18 @@ const actions = {
       updateOne(params)
         .then(response => {
           resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  updateMany({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      const {filter, user} = params;
+      updateMany(filter, user)
+        .then(response => {
+          resolve(response.data);
         })
         .catch(error => {
           reject(error);
