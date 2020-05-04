@@ -224,7 +224,6 @@
             categoryPath: "",
             propertyCode: "",
             propertyLabel: "",
-            propertyName: "",
             precision: 0,
             sku: false,
             valueType: '',
@@ -234,6 +233,14 @@
     export default {
         name: 'edit',
         data() {
+            const categoryCode = (rule, value, callback) => {
+                let reg = /^[0-9a-zA-Z]*$/g;
+                if (reg.test(value)) {
+                    callback();
+                } else {
+                    callback(new Error("只能输入字母或数字！"));
+                }
+            };
             return {
                 formData: defaultData(),
                 dialogVisible: false,
@@ -247,14 +254,22 @@
                     categoryName: [
                         {required: true, message: "请输入商品类目", trigger: "blur"},
                     ],
-                    propertyName: [
-                        {required: true, message: "请输入属性名称", trigger: "blur"},
-                    ],
                     propertyCode: [
                         {required: true, message: "请输入属性编码", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到 20 个字符"
+                        },
+                        {validator: categoryCode, trigger: 'blur'}
                     ],
                     propertyLabel: [
                         {required: true, message: "请输入属性标题", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到 20 个字符"
+                        }
                     ]
                     , valueType: [
                         {required: true, message: "请选择属性类型", trigger: "blur"},

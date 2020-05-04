@@ -130,7 +130,7 @@
       <el-row :gutter="10">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="最小订单量" prop="miniOrderQuantity">
-            <el-input v-model="formData.miniOrderQuantity"></el-input>
+            <el-input v-model="formData.miniOrderQuantity" οnkeyup="value=value.replace(/[^\d]/g,'')"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -282,6 +282,22 @@
     export default {
         name: 'edit',
         data() {
+            const productCode = (rule, value, callback) => {
+                let reg = /^[0-9a-zA-Z]*$/g;
+                if (reg.test(value)) {
+                    callback();
+                } else {
+                    callback(new Error("只能输入字母或数字！"));
+                }
+            };
+            const miniOrderQuantity = (rule, value, callback) => {
+                let reg = /^[1-9]\d*$|^$/;
+                if (reg.test(value)) {
+                    callback();
+                } else {
+                    callback(new Error("只能输入正整数！"));
+                }
+            };
             return {
                 formData: {
                     properties: []
@@ -297,7 +313,8 @@
                             min: 1,
                             max: 20,
                             message: "长度在 1到 20 个字符"
-                        }
+                        },
+                        {validator: productCode, trigger: 'blur'}
                     ],
                     productName: [
                         {required: true, message: "请输入商品名称", trigger: "blur"},
@@ -335,7 +352,8 @@
                             min: 1,
                             max: 20,
                             message: "长度在 1到20 个字符"
-                        }
+                        },
+                        {validator: miniOrderQuantity, trigger: 'blur'}
                     ]
                 }
             }
