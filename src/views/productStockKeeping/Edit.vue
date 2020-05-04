@@ -3,6 +3,13 @@
     <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
       <el-row :gutter="10">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="商品类目" >
+            <el-input v-model="formData.categoryName" disabled></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="10">
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="商品编码" prop="productCode">
             <el-input v-model="formData.productCode"></el-input>
           </el-form-item>
@@ -14,20 +21,6 @@
         </el-col>
       </el-row>
       <el-row :gutter="10">
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="商品类目" prop="categoryCode">
-            <el-cascader
-              ref="categoryCascader"
-              v-model="formData.categoryCode"
-              style="width: 100%;"
-              :options="categoryList"
-              :props="{ label: 'categoryName', value: 'categoryCode' }"
-              filterable
-              @change="handleCategory"
-            >
-            </el-cascader>
-          </el-form-item>
-        </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="品牌编码" prop="brandCode">
             <el-select v-model="formData.brandCode" placeholder="品牌编码" @change="handleBrandName">
@@ -119,14 +112,6 @@
                             message: "长度在 1到 20 个字符"
                         }
                     ],
-                    categoryCode: [
-                        {required: true, message: "请选择商品类目", trigger: "blur"},
-                        {
-                            min: 1,
-                            max: 20,
-                            message: "长度在 1到 20 个字符"
-                        }
-                    ],
                     unit: [
                         {required: true, message: "请输入计量单位", trigger: "blur"},
                         {
@@ -162,33 +147,6 @@
                     console.log(error);
                 });
             },
-            loadTreeData() {
-                this.$store
-                    .dispatch("category/getTreeList", {filter: {categoryType: 9}})
-                    .then(data => {
-                        if (data) {
-                            this.categoryList = this.getTreeData(data.data);
-                        }
-                        this.loading = false;
-                    })
-                    .catch(error => {
-                        this.loading = false;
-                        console.log(error);
-                    });
-            },
-            getTreeData(data) {
-                // 循环遍历json数据
-                for (let i = 0, len = data.length; i < len; i++) {
-                    if (data[i].children.length < 1) {
-                        // children若为空数组，则将children设为undefined
-                        data[i].children = undefined;
-                    } else {
-                        // children若不为空数组，则继续 递归调用 本方法
-                        this.getTreeData(data[i].children);
-                    }
-                }
-                return data;
-            },
             handleSave() {
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
@@ -220,12 +178,6 @@
                 });
                 this.formData.brandName = object.brandName;
             },
-            handleCategory() {
-                let labelValue = this.$refs.categoryCascader.getCheckedNodes()[0].pathLabels;
-                if (labelValue.length > 0) {
-                    this.formData.categoryName = labelValue[0];
-                }
-            },
             //跳转回列表页面
             goBack() {
                 if (this.$router.history.length <= 1) {
@@ -244,7 +196,6 @@
                 console.log(this.$route.query.stockId);
                 this.handleGetOne(this.$route.query.stockId);
             }
-            this.loadTreeData();
             this.loadBrand();
         }
     }
