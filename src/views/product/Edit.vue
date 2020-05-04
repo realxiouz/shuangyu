@@ -388,7 +388,9 @@
                 for (let i = 0, len = this.dataList.length; i < len; i++) {
                     this.dataList[i].productCode = this.formData.productCode;
                     this.dataList[i].productName = this.formData.productName;
+                    this.dataList[i].categoryCode = this.formData.categoryCode;
                     this.dataList[i].categoryName = this.formData.categoryName;
+                    this.dataList[i].brandCode = this.formData.brandCode;
                     this.dataList[i].brandName = this.formData.brandName;
                     this.dataList[i].unit = this.formData.unit;
                 }
@@ -410,7 +412,10 @@
                         let row = {};
                         row.productCode = this.formData.productCode;
                         row.productName = this.formData.productName;
+                        row.categoryCode = this.formData.categoryCode;
                         row.categoryName = this.formData.categoryName;
+                        row.brandCode = this.formData.brandCode;
+                        row.brandName = this.formData.brandName;
                         row.unit = this.formData.unit;
                         row.properties = this.formData.properties;
                         if (Array.isArray(skuIds[i])) {
