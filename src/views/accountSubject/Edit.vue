@@ -67,7 +67,7 @@
         name: "accountSubjectEdit",
         props: ['editSubjectId', 'pid', 'category'],
         data() {
-            const code = (rule, value, callback) => {
+            const codeValidator = (rule, value, callback) => {
                 let reg = /^[0-9a-zA-Z]*$/g;
                 if (reg.test(value)) {
                     callback();
@@ -87,7 +87,7 @@
                             max: 20,
                             message: "长度在 1到 20 个字符"
                         },
-                        {validator: code, trigger: 'blur'}
+                        {validator: codeValidator, trigger: 'blur'}
                     ],
                     name: [
                         {required: true, message: "请输入科目名称", trigger: "blur"},
