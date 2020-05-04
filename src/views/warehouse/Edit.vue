@@ -1,10 +1,11 @@
 <template>
   <div>
-    <el-form :model="formData" label-width="110px" size="mini">
-      <el-form-item label="仓库编码">
-        <el-input v-model="formData.warehouseCode" onkeyup="this.value=this.value.toUpperCase()" :disabled="update" placeholder="请输入仓库编码.."></el-input>
+    <el-form :model="formData" ref="form" :rules="rules" label-width="110px" size="mini">
+      <el-form-item label="仓库编码" prop="warehouseCode">
+        <el-input v-model="formData.warehouseCode" onkeyup="this.value=this.value.toUpperCase()" :disabled="update"
+                  placeholder="请输入仓库编码.."></el-input>
       </el-form-item>
-      <el-form-item label="仓库名称">
+      <el-form-item label="仓库名称" prop="warehouseName">
         <el-input v-model="formData.warehouseName" placeholder="请输入仓库名称.."></el-input>
       </el-form-item>
       <el-form-item label="地址">
@@ -38,11 +39,38 @@
     export default {
         props: ["curNode", "update"],
         data() {
+            const codeValidator = (rule, value, callback) => {
+                let reg = /^[0-9a-zA-Z]*$/g;
+                if (reg.test(value)) {
+                    callback();
+                } else {
+                    callback(new Error("只能输入字母或数字！"));
+                }
+            };
             return {
                 formData: {},
                 currencyList: [],
                 subjectList: [],
-                subject: null
+                subject: null,
+                rules: {
+                    warehouseCode: [
+                        {required: true, message: "请输入仓库编码", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到 20 个字符"
+                        },
+                        {validator: codeValidator, trigger: 'blur'}
+                    ],
+                    warehouseName: [
+                        {required: true, message: "请输入仓库名称", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到 20 个字符"
+                        }
+                    ]
+                }
             };
         },
         methods: {
@@ -69,14 +97,18 @@
             },
             /*对提交的数据进行类型格式*/
             handleConfirm() {
-                if (this.formData.warehouseCode && !'' != this.formData.warehouseCode)
-                    this.formData.warehouseCode  = this.formData.warehouseCode.toUpperCase();
-                this.$emit("onSave", this.formData);
+                this.$refs['form'].validate((valid) => {
+                    if (valid) {
+                        if (this.formData.warehouseCode && !'' != this.formData.warehouseCode)
+                            this.formData.warehouseCode = this.formData.warehouseCode.toUpperCase();
+                        this.$emit("onSave", this.formData);
+                    }
+                });
             },
             initFormData() {
                 this.clearForm();
                 if (this.update) {
-                    Object.assign(this.formData,this.curNode);
+                    Object.assign(this.formData, this.curNode);
                 }
             }
         },
