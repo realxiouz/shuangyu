@@ -412,6 +412,7 @@
                         row.productName = this.formData.productName;
                         row.categoryName = this.formData.categoryName;
                         row.unit = this.formData.unit;
+                        row.properties = this.formData.properties;
                         if (Array.isArray(skuIds[i])) {
                             let codes = [];
                             let names = [];
