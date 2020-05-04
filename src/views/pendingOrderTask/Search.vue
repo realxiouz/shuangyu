@@ -2,16 +2,6 @@
   <el-row type="flex" justify="space-between" align="bottom">
     <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
       <el-form :model="formData" label-width="110px" size="mini">
-        <!-- <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="任务编号:">
-            <el-input
-              clearable
-              v-model="formData.taskNo"
-              @keyup.enter.native="$emit('onSearch', formData)"
-              placeholder="请输入任务编号搜索..."
-            ></el-input>
-          </el-form-item>
-        </el-col>-->
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="任务名称:">
             <el-input
@@ -67,7 +57,7 @@
               type="date"
               :unlink-panels="true"
               placeholder="选择日期"
-              v-model="formData.startTime"
+              v-model="formData.startCreateTime"
               style="width: 100%;"
               format="yyyy-MM-dd"
               value-format="yyyy-MM-dd"
@@ -80,11 +70,31 @@
               type="date"
               :unlink-panels="true"
               placeholder="选择日期"
-              v-model="formData.endTime"
+              v-model="formData.endCreateTime"
               style="width: 100%;"
               format="yyyy-MM-dd"
               value-format="yyyy-MM-dd"
             ></el-date-picker>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="乘机人姓名:">
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.name"
+              style="width: 100%"
+              clearable
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="乘机人证件号:">
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.cardNo"
+              clearable
+              style="width: 100%"
+            ></el-input>
           </el-form-item>
         </el-col>
       </el-form>
@@ -117,8 +127,10 @@ export default {
         taskName: "",
         taskType: "",
         taskStatus: "",
-        startTime: "",
-        endTime: ""
+        startCreateTime: "",
+        endCreateTime: "",
+        name:"",
+        cardNo:""
       },
       taskTypeValue: taskTypeValue,
       taskStatusValue: taskStatusValue
