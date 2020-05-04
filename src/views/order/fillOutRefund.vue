@@ -383,10 +383,23 @@
           this.isWoniuTicket = false;
         } else {
           this.radio = "1";
+          for (var i = 0; i < this.supplierAccountData.length; i++) {
+            if (this.supplierAccountData[i].accountId == this.formData.accountId && this.isWoniu && this.isWoniuTicket) {
+              if (this.supplierAccountData[i].username=="13064220090 " || this.supplierAccountData[i].username=="15025130712"){
+                this.formData.userNameType = 1;
+              }else if (this.supplierAccountData[i].username=="13700600184"){
+                this.formData.userNameType = 2;
+              }else {
+                delete this.formData.userNameType;
+              }
+              break;
+            }else {
+              delete this.formData.userNameType;
+            }
+          }
           this.isWoniuTicket = true;
         }
       },
-      // 判断选中渠道是否是蜗牛
       // 判断选中渠道是否是蜗牛
       selectAccount(value) {
         for (var i = 0; i < this.supplierAccountData.length; i++) {
