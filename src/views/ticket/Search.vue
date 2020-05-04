@@ -111,7 +111,10 @@
         icon="el-icon-search"
         size="mini"
         @click="$emit('onSearch', formData)"
-      >查询</el-button>
+      >查询
+      </el-button>
+      <el-button icon="el-icon-refresh" class="filter-item" type="primary" size="mini" @click="handleClear">清空
+      </el-button>
       <el-button type="text" size="mini" @click="handleMore">
         更多
         <i :class="switchIcon"></i>
@@ -121,46 +124,52 @@
 </template>
 
 <script>
-export default {
-  name: "orderReportSearch",
-  data() {
-    return {
-      more: false,
-      formData: {
-        orderType: "", //订单来源
-        flightCode: "", //航班号
-        flightDate: "", //出发日期
-        cabin: "", //舱位
-        ticketNo: "", //票号
-        orderNo: "", //订单号
-        name: "", //乘机人姓名
-        cardNo: "", //乘机人证件号
-        orderStatus: "",
-        emptyData:""
-      },
-      emptyDataValue: [
-        {
-          value: "ticketNo",
-          label: "ticketNo"
+    export default {
+        name: "orderReportSearch",
+        data() {
+            return {
+                more: false,
+                formData: this.initSearchForm(),
+                emptyDataValue: [
+                    {
+                        value: "ticketNo",
+                        label: "ticketNo"
+                    }
+                ]
+            };
+        },
+        computed: {
+            switchIcon() {
+                if (!this.more) {
+                    return "el-icon-arrow-down el-icon--right";
+                } else {
+                    return "el-icon-arrow-up el-icon--right";
+                }
+            }
+        },
+        methods: {
+            initSearchForm() {
+                return {
+                    orderType: null, //订单来源
+                    flightCode: null, //航班号
+                    flightDate: null, //出发日期
+                    cabin: null, //舱位
+                    ticketNo: null, //票号
+                    orderNo: null, //订单号
+                    name: null, //乘机人姓名
+                    cardNo: null, //乘机人证件号
+                    orderStatus: null,
+                    emptyData: null
+                };
+            },
+            handleClear() {
+                this.formData = this.initSearchForm();
+            },
+            handleMore() {
+                this.more = !this.more;
+            }
         }
-      ]
     };
-  },
-  computed: {
-    switchIcon() {
-      if (!this.more) {
-        return "el-icon-arrow-down el-icon--right";
-      } else {
-        return "el-icon-arrow-up el-icon--right";
-      }
-    }
-  },
-  methods: {
-    handleMore() {
-      this.more = !this.more;
-    }
-  }
-};
 </script>
 
 <style scoped></style>
