@@ -71,21 +71,6 @@
                   <span>{{formatDate(tableData.deadlineTicketTime,'YYYY-MM-DD HH:mm:ss')}}</span>
                 </el-form-item>
               </el-col>
-              <!--<el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="5">
-                <el-form-item label="交易编号:">
-                  <span>{{tableData.transactionNo}}</span>
-                </el-form-item>
-              </el-col>
-              <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="5">
-                <el-form-item label="交易时间:">
-                  <span>{{formatDate(tableData.transactionTime,'YYYY-MM-DD HH:mm:ss')}}</span>
-                </el-form-item>
-              </el-col>
-              <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="5">
-                <el-form-item label="业务编号:">
-                  <span>{{tableData.businessNo}}</span>
-                </el-form-item>
-              </el-col>-->
             </el-form>
           </el-row>
           <el-divider content-position="left">航班信息</el-divider>
@@ -201,6 +186,7 @@
           <span style="font-size:larger;margin-left: 15px;font-weight: bolder;">采购单信息</span>
         </template>
         <div style="padding: 20px">
+          <el-button type="primary" size="mini" @click="refreshPurchase">刷新</el-button>
           <el-table
             size="mini"
             :data="orderTree"
@@ -1171,6 +1157,10 @@
       // 退/改html刷新
       refreshHtml() {
         this.getMessageHtml();
+      },
+      //刷新采购单信息
+      refreshPurchase(){
+        this.getOrderTree();
       },
       // 获取html
       getMessageHtml() {
