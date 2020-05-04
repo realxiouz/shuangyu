@@ -235,21 +235,21 @@
                 </el-button>
                 <el-button
                   type="primary"
-                  v-show="scope.row.orderSource=='QUNAR_OPEN'"
+                  v-show="woniuPperateButton(scope.row)"
                   @click="refundTicket(scope.row)"
                   size="mini"
                 >退票
                 </el-button>
                 <el-button
                   type="primary"
-                  v-show="scope.row.orderSource=='QUNAR_OPEN'"
+                  v-show="woniuPperateButton(scope.row)"
                   @click="changeTicket(scope.row)"
                   size="mini"
                 >改签
                 </el-button>
                 <el-button
                   type="primary"
-                  v-show="scope.row.orderSource=='QUNAR_OPEN' && taskType=='4'"
+                  v-show="woniuPperateButton(scope.row) && taskType=='4'"
                   @click="intercept(scope.row)"
                   size="mini"
                 >拦截
@@ -516,6 +516,14 @@
       formatAgeType,
       formatCardType,
 
+      //蜗牛展示按钮
+      woniuPperateButton(row) {
+        var flag = false;
+        if (row.orderSource == 'QUNAR_OPEN' || row.merchantId == 'd381a4abdfa643fea6be8736dd11c1e1') {
+          flag = true;
+        }
+        return flag;
+      },
       // 获取详情信息
       getOrderDetail(orderNo) {
         this.$store
@@ -879,7 +887,7 @@
       },
       //改签支付弹框
       changePay(params) {
-        console.log("支付参数:"+JSON.stringify(params));
+        console.log("支付参数:" + JSON.stringify(params));
         this.changePayData = params;
         this.systemProfitAndLossValue = this.sellAmount - this.changePayData.totalAmount;
         this.changePayShow = true;
@@ -1159,7 +1167,7 @@
         this.getMessageHtml();
       },
       //刷新采购单信息
-      refreshPurchase(){
+      refreshPurchase() {
         this.getOrderTree();
       },
       // 获取html
@@ -1407,7 +1415,7 @@
         document.getElementsByName("upgradeFees").forEach(item => {
           upgradeFeesAmount += Number(item.value);
         });
-        this.changeSellAmount = Number(gqFeesAmount)+Number(upgradeFeesAmount);
+        this.changeSellAmount = Number(gqFeesAmount) + Number(upgradeFeesAmount);
         console.log(this.changeSellAmount);
         let btnRewriteTickets = document.querySelectorAll(
           "#changeHtmlOrderDetail .back-form .back-form-info .g-clear .mrl10 .j-reset-ticket"
