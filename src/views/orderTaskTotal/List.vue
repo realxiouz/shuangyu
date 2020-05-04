@@ -280,6 +280,7 @@ export default {
     getOtherData(taskType) {
       let params = {};
       params.taskType = taskType;
+      params.taskStatus = 1;
       this.otherDataSearch = params;
       this.loadData(params);
     },
@@ -318,7 +319,7 @@ export default {
     this.loadPendingTotal();
     this.timer = setInterval(() => {
       setTimeout(this.loadPendingTotal, 0);
-    }, 10000);
+    }, 30000);
   },
   computed: {
     formatDate() {
