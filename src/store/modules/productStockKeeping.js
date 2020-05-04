@@ -15,8 +15,8 @@ const actions = {
   },
   removeOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {productId} = params;
-      removeOne(productId)
+      const {stockId} = params;
+      removeOne(stockId)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -28,8 +28,8 @@ const actions = {
   },
   getOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {productId} = params;
-      getOne(productId)
+      const {stockId} = params;
+      getOne(stockId)
         .then(response => {
           const {data} = response;
           resolve(data);

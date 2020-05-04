@@ -1,88 +1,88 @@
 <template>
   <div>
-  <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
-    <el-row :gutter="10">
-      <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-        <el-form-item label="商品编码" prop="productCode">
-          <el-input v-model="formData.productCode"></el-input>
-        </el-form-item>
-      </el-col>
-      <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-        <el-form-item label="商品名称" prop="productName">
-          <el-input v-model="formData.productName"></el-input>
-        </el-form-item>
-      </el-col>
-    </el-row>
-    <el-row :gutter="10">
-      <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-        <el-form-item label="商品类目" prop="categoryCode">
-          <el-cascader
-            ref="categoryCascader"
-            v-model="formData.categoryCode"
-            style="width: 100%;"
-            :options="categoryList"
-            :props="{ label: 'categoryName', value: 'categoryCode' }"
-            filterable
-            @change="handleCategory"
-          >
-          </el-cascader>
-        </el-form-item>
-      </el-col>
-    </el-row>
-    <el-row :gutter="10">
-      <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-        <el-form-item label="品牌编码" prop="brandCode">
-          <el-select v-model="formData.brandCode" placeholder="品牌编码" @change="handleBrandName">
-            <el-option v-for="(item,idx) in brandList"
-                       :key="idx"
-                       :label="item.brandName"
-                       :value="item.brandCode">
-            </el-option>
-          </el-select>
-        </el-form-item>
-      </el-col>
-      <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-        <el-form-item label="计量单位" prop="unit">
-          <el-input v-model="formData.unit"></el-input>
-        </el-form-item>
-      </el-col>
-    </el-row>
-    <el-row :gutter="10">
-      <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-        <el-form-item label="库存上限" prop="maxStockQuantity">
-          <el-input v-model="formData.maxStockQuantity"></el-input>
-        </el-form-item>
-      </el-col>
-      <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-        <el-form-item label="库存下限" prop="minStockQuantity">
-          <el-input v-model="formData.minStockQuantity"></el-input>
-        </el-form-item>
-      </el-col>
-    </el-row>
-    <el-row :gutter="10">
-      <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-        <el-form-item label="单价" prop="price">
-          <el-input v-model="formData.price"></el-input>
-        </el-form-item>
-      </el-col>
-      <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-        <el-form-item label="成本" prop="cost">
-          <el-input v-model="formData.cost"></el-input>
-        </el-form-item>
-      </el-col>
-    </el-row>
-    <el-row :gutter="10">
-      <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-        <el-form-item label="数量" prop="quantity">
-          <el-input v-model="formData.quantity"></el-input>
-        </el-form-item>
-      </el-col>
-    </el-row>
-  </el-form>
-  <div slot="footer" style="text-align:center;">
-    <el-button size="mini" @click="handleCancel">取 消</el-button>
-    <el-button type="primary" size="mini" @click="handleSave">确 定</el-button>
-  </div>
+    <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
+      <el-row :gutter="10">
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="商品编码" prop="productCode">
+            <el-input v-model="formData.productCode"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="商品名称" prop="productName">
+            <el-input v-model="formData.productName"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="10">
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="商品类目" prop="categoryCode">
+            <el-cascader
+              ref="categoryCascader"
+              v-model="formData.categoryCode"
+              style="width: 100%;"
+              :options="categoryList"
+              :props="{ label: 'categoryName', value: 'categoryCode' }"
+              filterable
+              @change="handleCategory"
+            >
+            </el-cascader>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="品牌编码" prop="brandCode">
+            <el-select v-model="formData.brandCode" placeholder="品牌编码" @change="handleBrandName">
+              <el-option v-for="(item,idx) in brandList"
+                         :key="idx"
+                         :label="item.brandName"
+                         :value="item.brandCode">
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="10">
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="计量单位" prop="unit">
+            <el-input v-model="formData.unit"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="10">
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="库存上限" prop="maxStockQuantity">
+            <el-input-number v-model="formData.maxStockQuantity"></el-input-number>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="库存下限" prop="minStockQuantity">
+            <el-input-number v-model="formData.minStockQuantity"></el-input-number>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="10">
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="单价" prop="price">
+            <el-input-number v-model="formData.price" :precision="2" :step="0.1"></el-input-number>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="成本" prop="cost">
+            <el-input-number v-model="formData.cost" :precision="2" :step="0.1"></el-input-number>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="10">
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="数量" prop="quantity">
+            <el-input-number v-model="formData.quantity"></el-input-number>
+          </el-form-item>
+        </el-col>
+      </el-row>
+    </el-form>
+    <div slot="footer" style="text-align:center;">
+      <el-button size="mini" @click="handleCancel">取 消</el-button>
+      <el-button type="primary" size="mini" @click="handleSave">确 定</el-button>
+    </div>
   </div>
 </template>
 <script>
@@ -95,13 +95,60 @@
                 brandList: [],
                 categoryList: [],
                 rules: {
-                    appName: [
-                        {required: true, message: "请输入应用名称", trigger: "blur"},
+                    productCode: [
+                        {required: true, message: "请输入商品编码", trigger: "blur"},
                         {
                             min: 1,
-                            max: 10,
-                            message: "长度在 1到 10 个字符"
+                            max: 20,
+                            message: "长度在 1到 20 个字符"
                         }
+                    ],
+                    productName: [
+                        {required: true, message: "请输入商品名称", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到 20 个字符"
+                        }
+                    ],
+                    brandCode: [
+                        {required: true, message: "请选择品牌", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到 20 个字符"
+                        }
+                    ],
+                    categoryCode: [
+                        {required: true, message: "请选择商品类目", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到 20 个字符"
+                        }
+                    ],
+                    unit: [
+                        {required: true, message: "请输入计量单位", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到 20 个字符"
+                        }
+                    ],
+                    maxStockQuantity: [
+                        {required: true, message: "请输入库存上限", trigger: "blur"}
+                    ],
+                    minStockQuantity: [
+                        {required: true, message: "请输入库存下限", trigger: "blur"}
+                    ],
+                    cost: [
+                        {required: true, message: "请输入成本", trigger: "blur"}
+                    ],
+                    price: [
+                        {required: true, message: "请输入单价", trigger: "blur"}
+                    ],
+                    quantity: [
+                        {required: true, message: "请输入数量", trigger: "blur"}
                     ]
                 }
             }
@@ -194,6 +241,7 @@
         },
         created() {
             if (this.$route.query.stockId) {
+                console.log(this.$route.query.stockId);
                 this.handleGetOne(this.$route.query.stockId);
             }
             this.loadTreeData();
