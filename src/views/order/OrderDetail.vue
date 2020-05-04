@@ -1416,7 +1416,6 @@
           upgradeFeesAmount += Number(item.value);
         });
         this.changeSellAmount = Number(gqFeesAmount) + Number(upgradeFeesAmount);
-        console.log(this.changeSellAmount);
         let btnRewriteTickets = document.querySelectorAll(
           "#changeHtmlOrderDetail .back-form .back-form-info .g-clear .mrl10 .j-reset-ticket"
         );
