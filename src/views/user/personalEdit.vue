@@ -61,11 +61,6 @@ export default {
       };
     },
     handleConfirm() {
-      let _birthData = this.formData.birthDate;
-      if (_birthData && "number" != typeof _birthData) {
-        this.formData.birthDate = _birthData.getTime();
-      }
-
       this.$store
         .dispatch("user/updateMany", {
           filter: { userId: this.formData.userId },
