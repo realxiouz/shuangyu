@@ -648,7 +648,7 @@
           let woniuParams = {};
           woniuParams.sourceOrderNo = params.sourceOrderNo;
           woniuParams.orderTaskId = this.$route.query.taskId;
-          woniuParams.fundAccount = params.fundAccountId;
+          woniuParams.fundAccount = params.fundAccount;
           woniuParams.userNameType = params.userNameType;
           woniuParams.orderType = params.orderType;
           woniuParams.amount = params.amount;
@@ -687,12 +687,14 @@
       handleSave(params) {
         if (params.radio == 1 && (params.orderSource == "QUNAR_OPEN" || params.merchantId == "d381a4abdfa643fea6be8736dd11c1e1")) {
           let woniuParams = {};
+          console.log(JSON.stringify(params));
           woniuParams.sourceOrderNo = params.sourceOrderNo;
           woniuParams.orderTaskId = this.$route.query.taskId;
-          woniuParams.fundAccount = params.fundAccountId;
+          woniuParams.fundAccount = params.fundAccount;
           woniuParams.userNameType = params.userNameType;
           woniuParams.orderType = params.orderType;
           woniuParams.amount = params.amount;
+          console.log(JSON.stringify(woniuParams));
           this.woniuOrder(woniuParams);
         } else {
           let newParams = {};
@@ -722,6 +724,7 @@
             if (params.ticketNoFlag) {
               newParams.ticketNoFlag = params.ticketNoFlag;
             }
+            newParams.userNameType = params.userNameType;
           }
           this.purchaseOrder(newParams);
         }

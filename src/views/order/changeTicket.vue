@@ -208,18 +208,6 @@
     methods: {
       formatCardType,
       formatAgeType,
-      // 乘客默认选中表格复选框
-      // toggleSelection(rows) {
-      //   if (rows) {
-      //     rows.forEach(row => {
-      //       if (row.canChange) {
-      //         this.$refs.changePassage.toggleRowSelection(row, false);
-      //       }
-      //     });
-      //   } else {
-      //     this.$refs.changePassage.clearSelection();
-      //   }
-      // },
       // 判断乘客是否可以改签
       selectable(row, index) {
         if (row.canChange) {
@@ -238,7 +226,6 @@
         str = str.substring(0, str.length - 1);
         this.formData.passengerIds = str;
         this.formData.changePassagers = rows;
-        // console.log(str,"str")
       },
       // 航班表格选择复选框选中处理
       handleFlightChange(rows) {
@@ -262,7 +249,6 @@
                     }
                   });
                 }
-
                 this.passagersChange = this.orderDetailList;
               }
               if (data.result.length > 0) {
@@ -285,7 +271,7 @@
       },
       // 改签申请
       handleSave() {
-        console.log(this.formData, "foemData");
+        console.log(this.formData, "formData");
         if (this.formData.changePassagers.length < 1) {
           this.$notify({
             title: "提示",
@@ -346,8 +332,8 @@
           return;
         }
         let _profit = 0;
-        console.log("changeTotalAmount:" + this.formData.totalAmount)
-        console.log("changeSellAmount:" + this.sellAmount)
+        console.log("changeTotalAmount:" + this.formData.totalAmount);
+        console.log("changeSellAmount:" + this.sellAmount);
         _profit = Number(this.sellAmount) - Number(this.formData.totalAmount);
         if (_profit != this.formData.profit) {
           this.$notify({
@@ -363,8 +349,7 @@
       // 改签原因选中处理
       selectTgqReasons(value) {
         let code = value;
-        let flightNo =
-          this.changeDataTop.airDivision + this.changeDataTop.flightNum;
+        let flightNo = this.changeDataTop.airDivision + this.changeDataTop.flightNum;
         let actFlightNo = "";
         this.tgqReasons.forEach(item => {
           if (item.code === code) {
@@ -374,13 +359,15 @@
             }
           }
         });
+        this.formData.changeFlightSegmentList.forEach(item => {
+          if (item.flightNo == flightNo) {
+            actFlightNo = item.actFlightNo;
+          }
+        });
         var _arr = [];
         this.formData.changeFlightSegmentList.forEach(item => {
-          if (item.actFlightNo == flightNo) {
-            actFlightNo = item.actFlightNo;
-            if (item.actFlightNo == actFlightNo) {
-              _arr.push(item);
-            }
+          if (item.actFlightNo == actFlightNo) {
+            _arr.push(item);
           }
         });
         this.formData.changeFlightSegmentList = _arr;
@@ -422,9 +409,6 @@
         return "￥" + this.$numeral(amount).format("0.00");
       }
     },
-    // updated() {
-    //   this.toggleSelection(this.passagersChange);
-    // },
     created() {
       let params = {};
       params.purchaseOrderNo = this.changeData.sourceOrderNo;
