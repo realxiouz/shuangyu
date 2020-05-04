@@ -28,20 +28,20 @@
         <span v-if="isExistsForEmail" style="color: crimson">*该信息已被注册</span>
       </el-form-item>
       <el-form-item label="验证码" prop="verificationCode">
-        <el-row :gutter="20">
-          <el-col style="padding-left:0;padding-right:0;" :span="17">
+        <el-row :gutter="10">
+          <el-col :span="17">
             <el-input placeholder="请输入验证码" v-model="formData.verificationCode" />
           </el-col>
-          <el-col :span="2">
+          <el-col :span="6" style="text-align:right;">
             <el-button
               size="mini"
+              style="width:100%;"
               :disabled="showCount"
               @click="getVerificationCode(formData.email)"
               type="primary"
             >
               <span v-show="!showCount">获取</span>
-              <span v-show="showCount">{{countDown}}s后</span>
-              <span v-show="showCount">重新获取</span>
+              <span v-show="showCount">{{countDown}} s后重新获取</span>
             </el-button>
           </el-col>
         </el-row>
@@ -120,7 +120,7 @@ export default {
       isEmail: false,
       countDown: "",
       timer: "",
-      TIME_COUNT: 20
+      TIME_COUNT: 60
     };
   },
   methods: {

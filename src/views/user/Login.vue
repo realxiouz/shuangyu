@@ -34,7 +34,7 @@
               size="mini"
             >
               <span v-show="!showCount">获取验证码</span>
-              <span v-show="showCount">{{countDown}} s</span>
+              <span v-show="showCount">{{countDown}} s 后获取</span>
             </el-button>
           </el-col>
         </el-row>
