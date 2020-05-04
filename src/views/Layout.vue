@@ -46,8 +46,8 @@
                   <i class="el-icon-arrow-down el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item command="logout">退出</el-dropdown-item>
                   <el-dropdown-item command="personalEdit">修改个人信息</el-dropdown-item>
+                  <el-dropdown-item command="logout">退出</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
             </div>
@@ -213,7 +213,7 @@ export default {
           this.handleLogout();
           break;
         case "personalEdit":
-          this.handleEdit();
+          this.skipPersonalEdit();
           break;
       }
     },
@@ -293,6 +293,9 @@ export default {
     skipOrderDetail() {
       this.$router.push({ path: "/order/pending/task/list" });
     },
+      skipPersonalEdit(){
+          this.$router.push({path:"/user/personal/edit", query: {userId: this.$store.state.loginInfo.userId}});
+      },
     triggerPendingTotalTimer() {
       //先执行一次，然后触发定时器。
       this.loadPendingTotal();
