@@ -421,7 +421,7 @@ export default {
                     amountTotal += Number(item.amount);
                   });
                   this.systemProfitAndLossValue = 0;
-                  this.systemProfitAndLossValue = Number(this.payData.noPayAmount) - Number(amountTotal);
+                  this.systemProfitAndLossValue = Number(amountTotal) - Number(this.payData.noPayAmount);
                   this.$message({
                     type: "success",
                     message: "预定成功！"
