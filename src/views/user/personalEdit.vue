@@ -5,9 +5,8 @@
     </div>
   <div id="main">
     <div id="title">
-      修改信息
-      <br>
-      <hr>
+      修改个人信息
+      <el-divider></el-divider>
     </div>
     <div id="content">
       <el-form ref="form" size="mini" :model="formData" label-width="110px">
