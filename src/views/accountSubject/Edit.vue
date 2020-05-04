@@ -67,6 +67,14 @@
         name: "accountSubjectEdit",
         props: ['editSubjectId', 'pid', 'category'],
         data() {
+            const code = (rule, value, callback) => {
+                let reg = /^[0-9a-zA-Z]*$/g;
+                if (reg.test(value)) {
+                    callback();
+                } else {
+                    callback(new Error("只能输入字母或数字！"));
+                }
+            };
             return {
                 formData: defaultData(),
                 firmList: [],
@@ -78,7 +86,8 @@
                             min: 1,
                             max: 20,
                             message: "长度在 1到 20 个字符"
-                        }
+                        },
+                        {validator: code, trigger: 'blur'}
                     ],
                     name: [
                         {required: true, message: "请输入科目名称", trigger: "blur"},
