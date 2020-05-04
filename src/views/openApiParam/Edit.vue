@@ -1,24 +1,37 @@
 <template>
   <div>
-    <el-form ref="formData" :model="formData" label-width="110px" size="mini">
-      <el-form-item label="开放平台">
-        <el-select v-model="formData.openId" placeholder="请选择" style="width:100%" @change="selectOpen">
+    <el-form ref="formData" :rules="formRules" :model="formData" label-width="110px" size="mini">
+      <el-form-item label="开放平台:" prop="openId">
+        <el-select
+          clearable
+          filterable
+          v-model="formData.openId"
+          placeholder="请选择"
+          style="width:100%"
+          @change="selectOpen"
+        >
           <el-option
             v-for="(item,idx) in openList"
             :key="idx"
             :label="item.openName"
-            :value="item.openId">
-          </el-option>
+            :value="item.openId"
+          ></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="API">
-        <el-select v-model="formData.apiId" placeholder="请选择" style="width:100%" @change="selectApi" :disabled="!selectedOpen">
+      <el-form-item label="API:">
+        <el-select
+          v-model="formData.apiId"
+          placeholder="请选择"
+          style="width:100%"
+          @change="selectApi"
+          :disabled="!selectedOpen"
+        >
           <el-option
             v-for="(item, idx) in apiList"
             :key="idx"
             :label="item.method"
-            :value="item.apiId">
-          </el-option>
+            :value="item.apiId"
+          ></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="接口标签:" prop="label">
@@ -30,10 +43,10 @@
       <el-form-item label="默认值:" prop="defaultValue">
         <el-input v-model="formData.defaultValue" placeholder="请输入默认值"></el-input>
       </el-form-item>
-      <el-form-item label="参数分组">
-        <el-input v-model="formData.defaultValue" placeholder="请输入默认值"></el-input>
+      <el-form-item label="参数分组:">
+        <el-input v-model="formData.defaultValue" placeholder="请输入参数分组"></el-input>
       </el-form-item>
-      <el-form-item label="是否必须:" >
+      <el-form-item label="是否必须:">
         <el-select v-model="formData.required" placeholder="请选择" style="width:100%">
           <el-option label="是" :value="true"></el-option>
           <el-option label="否" :value="false"></el-option>
@@ -51,113 +64,110 @@
 </template>
 
 <script>
-  export default {
-    name: "paramEdit",
-    props: ["curNode", "update"],
-    data() {
+export default {
+  name: "paramEdit",
+  props: ["curNode", "update"],
+  data() {
+    return {
+      formData: {},
+      openList: [],
+      apiList: [],
+      selectedOpen: false,
+      formRules: {
+        openId: [
+          { required: true, message: "请选择开放平台", trigger: "change" }
+        ],
+        label: [{ required: true, message: "请输入接口标签", trigger: "blur" }],
+        name: [{ required: true, message: "请输入接口名称", trigger: "blur" }],
+        defaultValue: [
+          { required: true, message: "请输入默认值", trigger: "blur" }
+        ]
+      }
+    };
+  },
+  methods: {
+    defaultFormData() {
       return {
-        formData: {},
-        openList: [],
-        apiList: [],
-          selectedOpen: false,
-        /*formRules: {
-          thirdId: [
-            {required: true, message: "请选择第三方平台", trigger: "blur"}
-          ],
-          apiId: [
-            {required: true, message: "请选择政策", trigger: "blur"}
-          ],
-          label: [
-            {required: true, message: "请参数标签", trigger: "blur"}
-          ],
-          name: [
-            {required: true, message: "请选择参数名称", trigger: "blur"}
-          ],
-          defaultValue: [
-            {required: true, message: "请输入默认值", trigger: "blur"}
-          ]
-        }*/
+        //主键
+        paramId: "",
+        //开放平台
+        openId: "",
+        //API
+        apiId: "",
+        //开放平台名称
+        openName: "",
+        //API链接url
+        url: "",
+        //API方法名称
+        method: "",
+        //参数标签
+        label: "",
+        //参数名称
+        name: "",
+        //参数值
+        defaultValue: "",
+        //是否必须
+        required: "",
+        //参数分组
+        group: ""
       };
     },
-    methods: {
-      defaultFormData() {
-        return {
-            //主键
-            paramId: '',
-            //开放平台
-            openId: '',
-            //API
-            apiId: '',
-            //开放平台名称
-            openName: '',
-            //API链接url
-            url: '',
-            //API方法名称
-            method: '',
-            //参数标签
-            label: '',
-            //参数名称
-            name: '',
-            //参数值
-            defaultValue: '',
-            //是否必须
-            required: '',
-            //参数分组
-            group: ''
-        }
-      },
-      clearForm() {
-          this.selectedOpen = false;
-          this.formData = this.defaultFormData();
-      },
-        selectOpen(openId){
-          this.openList.forEach( item => {
-              if (openId === item.openId){
-                  //当前所选择的open平台
-                  this.selectedOpen = true;
-                  this.formData.openName = item.openName;
-              }
-          })
-            this.$store
-                .dispatch("openApiService/getList", {filter: {openId: openId}})
-                .then(data => {
-                    this.apiList = data.data;
-                })
-                .catch(error => {
-                    console.log(error);
-                });
-        },
-        selectApi(apiId){
-          this.apiList.forEach(item => {
-              if (apiId === item.apiId){
-                  this.formData.url = item.url;
-                  this.formData.method = item.method;
-              }
-          })
-        },
-        handleConfirm(){
-            this.$emit('onSave',this.formData);
-        },
-        loadOpenList(){
-            this.$store
-                .dispatch("open/getList", {filters: {}})
-                .then(data => {
-                    this.openList = data;
-                })
-                .catch(error => {
-                    console.log(error);
-                });
-        },
-      changeSwitch() {
-        this.formData.enable = !this.formData.enable;
-      },
+    clearForm() {
+      this.selectedOpen = false;
+      this.formData = this.defaultFormData();
     },
-    created() {
-        this.clearForm();
-        this.loadOpenList();
-      if (this.update) {
-        Object.assign(this.formData, this.curNode);
-      }
+    selectOpen(openId) {
+      this.openList.forEach(item => {
+        if (openId === item.openId) {
+          //当前所选择的open平台
+          this.selectedOpen = true;
+          this.formData.openName = item.openName;
+        }
+      });
+      this.$store
+        .dispatch("openApiService/getList", { filter: { openId: openId } })
+        .then(data => {
+          this.apiList = data.data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    selectApi(apiId) {
+      this.apiList.forEach(item => {
+        if (apiId === item.apiId) {
+          this.formData.url = item.url;
+          this.formData.method = item.method;
+        }
+      });
+    },
+    handleConfirm() {
+      this.$refs.formData.validate(valid => {
+        if (valid) {
+          this.$emit("onSave", this.formData);
+        }
+      });
+    },
+    loadOpenList() {
+      this.$store
+        .dispatch("open/getList", { filters: {} })
+        .then(data => {
+          this.openList = data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    changeSwitch() {
+      this.formData.enable = !this.formData.enable;
     }
-  };
+  },
+  created() {
+    this.clearForm();
+    this.loadOpenList();
+    if (this.update) {
+      Object.assign(this.formData, this.curNode);
+    }
+  }
+};
 </script>

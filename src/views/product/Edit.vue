@@ -210,7 +210,7 @@
       </el-table-column>
       <el-table-column
         align="center"
-        prop="propertiesName"
+        prop="skuName"
         label="属性名称"
         width="180">
       </el-table-column>
@@ -372,7 +372,7 @@
                     brandName: "",
                     specification: "",
                     description: "",
-                    propertiesName: "",
+                    skuName: "",
                     skuId: ""
                 };
             },
@@ -388,7 +388,9 @@
                 for (let i = 0, len = this.dataList.length; i < len; i++) {
                     this.dataList[i].productCode = this.formData.productCode;
                     this.dataList[i].productName = this.formData.productName;
+                    this.dataList[i].categoryCode = this.formData.categoryCode;
                     this.dataList[i].categoryName = this.formData.categoryName;
+                    this.dataList[i].brandCode = this.formData.brandCode;
                     this.dataList[i].brandName = this.formData.brandName;
                     this.dataList[i].unit = this.formData.unit;
                 }
@@ -410,8 +412,12 @@
                         let row = {};
                         row.productCode = this.formData.productCode;
                         row.productName = this.formData.productName;
+                        row.categoryCode = this.formData.categoryCode;
                         row.categoryName = this.formData.categoryName;
+                        row.brandCode = this.formData.brandCode;
+                        row.brandName = this.formData.brandName;
                         row.unit = this.formData.unit;
+                        row.properties = this.formData.properties;
                         if (Array.isArray(skuIds[i])) {
                             let codes = [];
                             let names = [];
@@ -420,11 +426,11 @@
                                 codes.push(item1[0]);
                                 names.push(item1[1])
                             }
-                            row.propertiesName = names.join(" ");
+                            row.skuName = names.join(" ");
                             row.skuId = codes.join(",");
                         } else {
                             let item2 = skuIds[i].split(",");
-                            row.propertiesName = item2[1];
+                            row.skuName = item2[1];
                             row.skuId = item2[0];
                         }
                         this.dataList.push(row)

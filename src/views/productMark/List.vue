@@ -86,7 +86,7 @@
                 this.searchForm = searchForm;
                 this.$store.dispatch("productMark/getTotal", {filter: searchForm})
                     .then(data => {
-                        this.total = data.data;
+                        this.total = data;
                     })
                     .catch(error => {
                         console.log(error);
