@@ -89,23 +89,6 @@
             ></select-firms>
           </el-dialog>
         </div>
-        <div>
-          <el-dialog
-            :title="userId?'编辑用户信息':'添加新用户'"
-            center
-            :visible.sync="dialogEdit"
-            width="33%"
-            :close-on-click-modal="false"
-          >
-            <user-form
-              v-if="dialogEdit"
-              ref="form"
-              :userId="userId"
-              @onSave="handleSave"
-              @onCancel="handleCancel"
-            ></user-form>
-          </el-dialog>
-        </div>
       </el-main>
     </el-container>
   </el-container>
@@ -114,20 +97,17 @@
 <script>
 import Sidebar from "@/components/SideBar.vue";
 import SelectFirms from "@/components/SelectFirms.vue";
-import userForm from "@/views/user/personalEdit.vue";
 
 // @ is an alias to /src
 export default {
   name: "layout",
-  components: { Sidebar, SelectFirms, userForm },
+  components: { Sidebar, SelectFirms },
   data() {
     return {
       dialogVisible: false,
-      dialogEdit: false,
       isCollapse: false,
       isDisplay: true,
       loading: true,
-      userId: "",
       firms: [],
       firmData: "",
       tags: [],
@@ -225,29 +205,7 @@ export default {
         })
         .catch(() => {});
     },
-    handleCancel() {
-      this.dialogEdit = false;
-    },
-    handleSave(formData) {
-      this.$store
-        .dispatch("user/updateOne", formData)
-        .then(data => {
-          if (data) {
-            this.$message({
-              type: "success",
-              message: "修改成功！"
-            });
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-      this.dialogEdit = false;
-    },
-    handleEdit() {
-      this.userId = this.$store.state.loginInfo.userId;
-      this.dialogEdit = true;
-    },
+
     getTag() {
       let tag = {
         name: "首页",
@@ -293,9 +251,12 @@ export default {
     skipOrderDetail() {
       this.$router.push({ path: "/order/pending/task/list" });
     },
-      skipPersonalEdit(){
-          this.$router.push({path:"/user/personal/edit", query: {userId: this.$store.state.loginInfo.userId}});
-      },
+    skipPersonalEdit() {
+      this.$router.push({
+        path: "/user/personal/edit",
+        query: { userId: this.$store.state.loginInfo.userId }
+      });
+    },
     triggerPendingTotalTimer() {
       //先执行一次，然后触发定时器。
       this.loadPendingTotal();

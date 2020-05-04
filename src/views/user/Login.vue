@@ -20,20 +20,21 @@
       </el-form-item>
       <el-form-item v-if="verificationShow" prop="verification">
         <el-row :gutter="10">
-          <el-col :span="17">
+          <el-col :span="18">
             <el-input placeholder="请输入验证码" clearable v-model="loginForm.verification">
               <i slot="prefix" class="el-input__icon el-icon-notebook-2"></i>
             </el-input>
           </el-col>
-          <el-col :span="5" style="text-align:right;">
+          <el-col :span="6" style="text-align:right;">
             <el-button
+            style="width:100%;"
               @click="getVerificationCode(loginForm.account)"
               :disabled="showCount"
               type="primary"
               size="mini"
             >
               <span v-show="!showCount">获取验证码</span>
-              <span v-show="showCount">{{countDown}} s</span>
+              <span v-show="showCount">{{countDown}} s 后获取</span>
             </el-button>
           </el-col>
         </el-row>
@@ -74,7 +75,7 @@ export default {
       var regEmail = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
       var regPhone = /^[1][3,4,5,7,8][0-9]{9}$/;
       if (!regEmail.test(value) && !regPhone.test(value)) {
-        callback(new Error("请输入的正确格式的账号！"));
+        callback(new Error("请输入格式正确的邮箱或手机号！"));
       } else {
         callback();
       }
@@ -85,7 +86,7 @@ export default {
       showCount: false,
       countDown: "",
       timer: "",
-      TIME_COUNT: 20,
+      TIME_COUNT: 60,
       loginForm: {
         username: "",
         password: "",
