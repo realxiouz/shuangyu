@@ -23,11 +23,11 @@
           value-format="timestamp"
         ></el-date-picker>
       </el-form-item>
-      <el-form-item label="邮箱" prop="email">
+      <el-form-item v-if="''== this.userId" label="邮箱" prop="email">
         <el-input placeholder="请输入您的邮箱" v-model="formData.email" @blur="isUsedForEmail"></el-input>
         <span v-if="isExistsForEmail" style="color: crimson">*该信息已被注册</span>
       </el-form-item>
-      <el-form-item label="验证码" prop="verificationCode">
+      <el-form-item v-if="''==this.userId" label="验证码" prop="verificationCode">
         <el-row :gutter="10">
           <el-col :span="17">
             <el-input placeholder="请输入验证码" v-model="formData.verificationCode" />
