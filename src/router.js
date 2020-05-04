@@ -615,7 +615,14 @@ export default new Router({
           name: 'brand',
           component: () => import('@/views/brand/List'),
           meta: {title: '品牌信息', icon: 'home'}
-        }
+        },
+        {
+          title: '商品SKU',
+          path: '/product/stock/keeping/list',
+          name: 'productStockKeeping',
+          component: () => import('@/views/productStockKeeping/List'),
+          meta: {title: '商品SKU', icon: 'home'}
+        },
       ]
     },
     {
