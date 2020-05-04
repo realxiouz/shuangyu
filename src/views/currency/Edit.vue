@@ -1,13 +1,13 @@
 <template>
   <div>
-    <el-form :model="formData" label-width="110px" size="mini">
-      <el-form-item label="币种编码">
+    <el-form :model="formData" ref="form" :rules="rules" label-width="110px" size="mini">
+      <el-form-item label="币种编码" prop="code">
         <el-input v-model="formData.code" placeholder="请输入币种编码.." :disabled="update"></el-input>
       </el-form-item>
-      <el-form-item label="币种名称">
+      <el-form-item label="币种名称" prop="name">
         <el-input v-model="formData.name" placeholder="示例：人民币"></el-input>
       </el-form-item>
-      <el-form-item label="货币符号">
+      <el-form-item label="货币符号" prop="symbol">
         <el-input v-model="formData.symbol" placeholder="示例：￥"></el-input>
       </el-form-item>
       <el-form-item label="类别">
@@ -35,8 +35,35 @@
     export default {
         props: ["curNode", "update"],
         data() {
+            const codeValidator = (rule, value, callback) => {
+                let reg = /^[0-9a-zA-Z]*$/g;
+                if (reg.test(value)) {
+                    callback();
+                } else {
+                    callback(new Error("只能输入字母或数字！"));
+                }
+            };
             return {
-                formData: {}
+                formData: {},
+                rules: {
+                    code: [
+                        {required: true, message: "请输入科目编码", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到 20 个字符"
+                        },
+                        {validator: codeValidator, trigger: 'blur'}
+                    ],
+                    name: [
+                        {required: true, message: "请输入科目名称", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到 20 个字符"
+                        }
+                    ]
+                }
             };
         },
         methods: {
@@ -61,7 +88,7 @@
             clearForm() {
                 this.formData = this.defaultFormData();
             },
-            handleSwitch(){
+            handleSwitch() {
                 this.formData.active = this.formData.active ? false : true;
             },
             /*对提交的数据进行类型格式*/
@@ -74,7 +101,7 @@
             initFormData() {
                 this.clearForm();
                 if (this.update) {
-                    Object.assign(this.formData,this.curNode);
+                    Object.assign(this.formData, this.curNode);
                 }
             }
         },
