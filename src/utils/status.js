@@ -303,13 +303,13 @@ export const taskStatusValue = [
 //格式化订单任务类型
 export function formatTaskType(row) {
     if (row.taskType == 1) {
-        return "出票（支付成功等待出票）";
+        return "出票";
     } else if (row.taskType == 2) {
-        return "退票（申请退票）";
+        return "退票";
     } else if (row.taskType == 3) {
-        return "改签（申请改签）";
+        return "改签";
     } else if (row.taskType == 4) {
-        return "未出票申请退款（未出票申请退款）";
+        return "未出票申请退款";
     } else if (row.taskType == 5) {
         return "消息";
     } else if (row.taskType == 6) {
@@ -333,19 +333,19 @@ export function formatTaskType(row) {
 export const taskTypeValue = [
     {
         value: 1,
-        label: "出票（支付成功等待出票）"
+        label: "出票"
     },
     {
         value: 2,
-        label: "退票（申请退票）"
+        label: "退票"
     },
     {
         value: 3,
-        label: "改签（申请改签）"
+        label: "改签"
     },
     {
         value: 4,
-        label: "未出票申请退款（未出票申请退款）"
+        label: "未出票申请退款"
     },
     {
         value: 5,
