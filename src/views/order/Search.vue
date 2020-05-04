@@ -328,11 +328,15 @@
         class="filter-item"
         type="primary"
         size="mini"
-        @click="$emit('onSearch', formData)">查询</el-button>
+        @click="$emit('onSearch', formData)">查询
+      </el-button>
+      <el-button icon="el-icon-refresh" class="filter-item" type="primary" size="mini" @click="handleClear">清空
+      </el-button>
       <el-button
         type="primary"
         size="mini"
-        @click="handleExport">导单</el-button>
+        @click="handleExport">导单
+      </el-button>
       <el-button type="text" size="mini" @click="handleMore">
         更多<i :class="switchIcon"></i>
       </el-button>
@@ -341,82 +345,113 @@
 </template>
 
 <script>
-export default {
-  name: "orderSearch",
-  data() {
-    return {
-      more: false,
-      formData: {
-        voyageType: "", //航程类型
-        orderType: "", //订单来源
-        flightCode: "", //航班号
-        flightDate: "", //出发日期
-        cabin: "", //舱位
-        status: "", //订单状态
-        pnr: "", //PNR
-        ticketNo: "", //票号
-        orderNo: "", //订单号
-        name: "", //乘机人姓名
-        cardNo: "", //乘机人证件号
-        rootOrderNo: "",
-        linkOrderNo: "",
-        sourceOrderNo: "",
-        createTime: "",
-        finishTime: "",
-        transactionTime: "",
-        emptyData: "",
-        exportFlag :0
-      },
-      emptyDataValue: [
-        {
-          value: "pid",
-          label: "pid"
+    export default {
+        name: "orderSearch",
+        data() {
+            return {
+                more: false,
+                formData: {
+                    voyageType: "", //航程类型
+                    orderType: "", //订单来源
+                    flightCode: "", //航班号
+                    flightDate: "", //出发日期
+                    cabin: "", //舱位
+                    status: "", //订单状态
+                    pnr: "", //PNR
+                    ticketNo: "", //票号
+                    orderNo: "", //订单号
+                    name: "", //乘机人姓名
+                    cardNo: "", //乘机人证件号
+                    rootOrderNo: "",
+                    linkOrderNo: "",
+                    sourceOrderNo: "",
+                    createTime: "",
+                    finishTime: "",
+                    transactionTime: "",
+                    emptyData: "",
+                    exportFlag: 0
+                },
+                emptyDataValue: [
+                    {
+                        value: "pid",
+                        label: "pid"
+                    },
+                    {
+                        value: "ticketNo",
+                        label: "ticketNo"
+                    },
+                    {
+                        value: "path",
+                        label: "path"
+                    },
+                    {
+                        value: "rootOrderNo",
+                        label: "rootOrderNo"
+                    },
+                    {
+                        value: "linkOrderNo",
+                        label: "linkOrderNo"
+                    },
+                    {
+                        value: "fundAccount",
+                        label: "fundAccount"
+                    },
+                    {
+                        value: "accountId",
+                        label: "accountId"
+                    }
+                ]
+            };
         },
-        {
-          value: "ticketNo",
-          label: "ticketNo"
+        computed: {
+            switchIcon() {
+                if (!this.more) {
+                    return "el-icon-arrow-down el-icon--right";
+                } else {
+                    return "el-icon-arrow-up el-icon--right";
+                }
+            }
         },
-        {
-          value: "path",
-          label: "path"
-        },
-        {
-          value: "rootOrderNo",
-          label: "rootOrderNo"
-        },
-        {
-          value: "linkOrderNo",
-          label: "linkOrderNo"
-        },
-        {
-          value: "fundAccount",
-          label: "fundAccount"
-        },
-        {
-          value: "accountId",
-          label: "accountId"
+        methods: {
+            initSearchForm() {
+                return {
+                    orderNo: null,
+                    ticketNo: null,
+                    sourceOrderNo: null,
+                    name: null,
+                    cardNo: null,
+                    pnr: null,
+                    cabin: null,
+                    flightCode: null,
+                    fundAccount: null,
+                    accountId: null,
+                    pid: null,
+                    path: null,
+                    rootOrderNo: null,
+                    linkOrderNo: null,
+                    category: null,
+                    orderType: null,
+                    flightDate: null,
+                    createTime: null,
+                    transactionTime: null,
+                    finishTime: null,
+                    deadlineTicketTime: null,
+                    deadlineReturnTime: null,
+                    deadlineChangeTime: null,
+                    voyageType: null
+                };
+            },
+            handleClear() {
+                this.formData = this.initSearchForm();
+            },
+            handleMore() {
+                this.more = !this.more;
+            },
+            handleExport() {
+                this.formData.exportFlag = 1;
+                this.$emit('onSearch', this.formData);
+                this.formData.exportFlag = 0;
+            }
         }
-      ]
     };
-  },
-  computed: {
-    switchIcon() {
-      if (!this.more) {
-        return "el-icon-arrow-down el-icon--right";
-      } else {
-        return "el-icon-arrow-up el-icon--right";
-      }
-    }
-  },
-  methods: {
-    handleMore() {
-      this.more = !this.more;
-    },
-    handleExport(){
-      this.formData.exportFlag = 1;
-      this.$emit('onSearch', this.formData);
-      this.formData.exportFlag = 0;
-    }
-  }
-};
 </script>
