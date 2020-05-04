@@ -401,7 +401,7 @@
             <el-form-item label="本次改签需支付金额：">
               <span>{{changePayData.totalAmount }}</span>
             </el-form-item>
-            <el-form-item label="本次改签需支付金额：">
+            <el-form-item label="本次改签盈亏值：">
               <span>{{systemProfitAndLossValue }}</span>
             </el-form-item>
             <el-form-item label="盈亏值：">
@@ -877,7 +877,7 @@
                 message: "改签申请成功！"
               });
               this.onCancel();
-              this.changePay(data);
+              this.changePay(data.data);
             }
           })
           .catch(error => {
@@ -893,16 +893,16 @@
         this.changePayShow = true;
       },
       //改签支付
-      changePaySave(params) {
+      changePaySave() {
         if (this.systemProfitAndLossValue != this.profitAndLossValue) {
           this.$message({
             type: "warning",
-            message: "盈亏值计算错误！"
+            message: "盈亏值填写错误！"
           });
           return;
         }
         this.$store
-          .dispatch("order/changePay", params)
+          .dispatch("order/changePay", this.changePayData)
           .then(data => {
             if (data.code == 0) {
               this.$message({
