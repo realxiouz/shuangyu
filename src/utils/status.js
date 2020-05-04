@@ -156,6 +156,8 @@ export function formatOrderType(row) {
         return "改签";
     } else if (row.orderType === 31) {
         return "二次改签";
+    }else if (row.orderType === 40) {
+        return "未出票申请退款";
     } else {
         return row.orderType
     }
