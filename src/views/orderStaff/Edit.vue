@@ -4,7 +4,15 @@
       <span style="font-weight:700;color:#303133;" v-if="!staffAddVisible">{{this.curNode.title}}</span>
       <span></span>
     </el-row>
-    <el-table v-loading="loading" stripe size="mini" style="width: 100%;" fit :data="tableData">
+    <el-table
+      highlight-current-row
+      v-loading="loading"
+      stripe
+      size="mini"
+      style="width: 100%;"
+      fit
+      :data="tableData"
+    >
       <el-table-column prop="fullName" label="姓名" width="100" align="center"></el-table-column>
       <el-table-column prop="phone" label="手机号" align="center"></el-table-column>
       <el-table-column prop="email" label="电子邮箱" align="center"></el-table-column>
@@ -83,141 +91,141 @@
 </template>
 
 <script>
-  export default {
-    name: "orderStaffEdit",
-    props: ["curNode", "staffAddVisible"],
-    data() {
-      return {
-        formData: {
-          ownFlags: []
-        },
-        loading: false,
-        dialogVisible: false,
-        logDialogVisible: false,
-        tableData: [],
-        logTableData: [],
-        ownFlags: [
-          {label: "出票", value: 1},
-          {label: "退票", value: 2},
-          {label: "改签", value: 3},
-          {label: "未出票申请退款", value: 4},
-          {label: "消息", value: 5},
-          {label: "质检", value: 6},
-          {label: "补单", value: 11},
-          {label: "填写单号", value: 12}
-        ]
+export default {
+  name: "orderStaffEdit",
+  props: ["curNode", "staffAddVisible"],
+  data() {
+    return {
+      formData: {
+        ownFlags: []
+      },
+      loading: false,
+      dialogVisible: false,
+      logDialogVisible: false,
+      tableData: [],
+      logTableData: [],
+      ownFlags: [
+        { label: "出票", value: 1 },
+        { label: "退票", value: 2 },
+        { label: "改签", value: 3 },
+        { label: "未出票申请退款", value: 4 },
+        { label: "消息", value: 5 },
+        { label: "质检", value: 6 },
+        { label: "补单", value: 11 },
+        { label: "填写单号", value: 12 }
+      ]
+    };
+  },
+  methods: {
+    loadTableData() {
+      this.loading = true;
+      var searchForm = {};
+      if (this.curNode && this.curNode != null) {
+        searchForm = {
+          firmId: this.curNode.firmId,
+          deptId: this.curNode.deptId
+        };
+      } else {
+        searchForm = {};
+      }
+      this.$store
+        .dispatch("orderStaff/getList", {
+          searchForm: searchForm
+        })
+        .then(data => {
+          if (data) {
+            this.tableData = data;
+          }
+          this.loading = false;
+        })
+        .catch(error => {
+          this.loading = false;
+          console.log(error);
+        });
+    },
+    handleFlag(row) {
+      this.dialogVisible = true;
+      this.formData = row;
+    },
+    setMonitor(row) {
+      this.$store
+        .dispatch("orderStaff/setMonitor", {
+          staffId: row.staffId
+        })
+        .then(data => {
+          if (data) {
+            this.loadTableData();
+          }
+          this.loading = false;
+        })
+        .catch(error => {
+          this.loading = false;
+          console.log(error);
+        });
+      this.formData = row;
+    },
+    logSearch(row) {
+      this.logDialogVisible = true;
+      if (row.logs && row.logs != null) {
+        this.logTableData = row.logs;
+      }
+    },
+    handleClose() {
+      this.logDialogVisible = false;
+      this.logTableData = [];
+    },
+    handleSave() {
+      this.dialogVisible = false;
+      this.$store
+        .dispatch("orderStaff/save", this.formData)
+        .then(() => {
+          this.loadTableData();
+          this.formData = {
+            ownFlags: []
+          };
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    handleCancel() {
+      this.dialogVisible = false;
+      this.formData = {
+        ownFlags: []
       };
     },
-    methods: {
-      loadTableData() {
-        this.loading = true;
-        var searchForm = {};
-        if (this.curNode && this.curNode != null) {
-          searchForm = {
-            firmId: this.curNode.firmId,
-            deptId: this.curNode.deptId
-          };
-        } else {
-          searchForm = {};
-        }
-        this.$store
-          .dispatch("orderStaff/getList", {
-            searchForm: searchForm
-          })
-          .then(data => {
-            if (data) {
-              this.tableData = data;
-            }
-            this.loading = false;
-          })
-          .catch(error => {
-            this.loading = false;
-            console.log(error);
-          });
-      },
-      handleFlag(row) {
-        this.dialogVisible = true;
-        this.formData = row;
-      },
-      setMonitor(row) {
-        this.$store
-          .dispatch("orderStaff/setMonitor", {
-            staffId: row.staffId
-          })
-          .then(data => {
-            if (data) {
-              this.loadTableData();
-            }
-            this.loading = false;
-          })
-          .catch(error => {
-            this.loading = false;
-            console.log(error);
-          });
-        this.formData = row;
-      },
-      logSearch(row) {
-        this.logDialogVisible = true;
-        if (row.logs && row.logs != null) {
-          this.logTableData = row.logs;
-        }
-      },
-      handleClose() {
-        this.logDialogVisible = false;
-        this.logTableData = [];
-      },
-      handleSave() {
-        this.dialogVisible = false;
-        this.$store
-          .dispatch("orderStaff/save", this.formData)
-          .then(() => {
-            this.loadTableData();
-            this.formData = {
-              ownFlags: []
-            };
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      },
-      handleCancel() {
-        this.dialogVisible = false;
-        this.formData = {
-          ownFlags: []
-        };
-      },
-      initDate(dateStr, format) {
-        if (dateStr && null != dateStr) {
-          let date = new Date(dateStr);
-          return this.$moment(date).format(format);
-        } else {
-          return "";
-        }
-      },
-      clearTableData() {
-        this.tableData = [];
+    initDate(dateStr, format) {
+      if (dateStr && null != dateStr) {
+        let date = new Date(dateStr);
+        return this.$moment(date).format(format);
+      } else {
+        return "";
       }
     },
-    computed: {
-      formatDate() {
-        return function (dateStr, format) {
-          return this.initDate(dateStr, format);
-        };
-      },
-      initGender() {
-        return function (gender) {
-          return 0 == gender ? "男" : "女";
-        };
-      }
-    },
-    created() {
-      this.loadTableData();
-    },
-    watch: {
-      curNode() {
-        this.clearTableData();
-        this.loadTableData();
-      }
+    clearTableData() {
+      this.tableData = [];
     }
-  };
+  },
+  computed: {
+    formatDate() {
+      return function(dateStr, format) {
+        return this.initDate(dateStr, format);
+      };
+    },
+    initGender() {
+      return function(gender) {
+        return 0 == gender ? "男" : "女";
+      };
+    }
+  },
+  created() {
+    this.loadTableData();
+  },
+  watch: {
+    curNode() {
+      this.clearTableData();
+      this.loadTableData();
+    }
+  }
+};
 </script>
