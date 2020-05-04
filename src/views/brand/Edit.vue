@@ -1,13 +1,13 @@
 <template>
   <div>
-    <el-form :model="formData" label-width="110px" size="mini">
-      <el-form-item label="品牌编码：">
+    <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
+      <el-form-item label="品牌编码：" prop="brandCode">
         <el-input v-model="formData.brandCode" placeholder="请输入品牌编码.."></el-input>
       </el-form-item>
-      <el-form-item label="品牌名称：">
+      <el-form-item label="品牌名称：" prop="brandName">
         <el-input v-model="formData.brandName" placeholder="请输入品牌编码.."></el-input>
       </el-form-item>
-      <el-form-item label="商品类目：">
+      <el-form-item label="商品类目：" prop="categoryCode">
         <el-cascader
           v-model="formData.categoryCode"
           style="width: 100%;"
@@ -17,10 +17,12 @@
         </el-cascader>
       </el-form-item>
       <el-form-item label="品牌故事：">
-        <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" v-model="formData.brandStory" placeholder="请输入品牌故事.."></el-input>
+        <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" v-model="formData.brandStory"
+                  placeholder="请输入品牌故事.."></el-input>
       </el-form-item>
       <el-form-item label="描述：">
-        <el-input v-model="formData.description" type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入描述.."></el-input>
+        <el-input v-model="formData.description" type="textarea" :autosize="{ minRows: 2, maxRows: 4}"
+                  placeholder="请输入描述.."></el-input>
       </el-form-item>
     </el-form>
     <div style="text-align:right;">
@@ -34,11 +36,46 @@
     export default {
         props: ["curNode", "update"],
         data() {
+            const brandCode = (rule, value, callback) => {
+                let reg = /^[0-9a-zA-Z]*$/g;
+                if (reg.test(value)) {
+                    callback();
+                } else {
+                    callback(new Error("只能输入字母或数字！"));
+                }
+            };
             return {
                 formData: {},
                 categoryList: [],
                 //用于记录和查找所选中的商品类别
-                tempCategoryList: []
+                tempCategoryList: [],
+                rules: {
+                    brandCode: [
+                        {required: true, message: "请输入品牌编码", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到 20 个字符"
+                        },
+                        {validator: brandCode, trigger: 'blur'}
+                    ],
+                    brandName: [
+                        {required: true, message: "请输入品牌名称", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到 20 个字符"
+                        }
+                    ],
+                    categoryCode: [
+                        {required: true, message: "请输入品牌名称", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到 20 个字符"
+                        }
+                    ]
+                }
             };
         },
         methods: {
@@ -64,7 +101,7 @@
                     description: ''
                 };
             },
-            loadCategory(){
+            loadCategory() {
                 this.$store.dispatch("category/getTreeList", {filter: {categoryType: 9}})
                     .then(data => {
                         this.categoryList = this.generateTreeData(data.data);
@@ -81,13 +118,13 @@
             handleConfirm() {
                 this.$emit("onSave", this.formData);
             },
-            selectedCategory(selected){
+            selectedCategory(selected) {
                 //选取最后的节点
                 const code = selected[selected.length - 1];
                 this.formData.categoryCode = code;
                 //找到所选择的对象
                 this.tempCategoryList.forEach(item => {
-                    if (code == item.categoryCode){
+                    if (code == item.categoryCode) {
                         this.formData.categoryName = item.categoryName;
                         this.formData.categoryPath = item.path;
                     }
@@ -97,7 +134,7 @@
                 this.clearForm();
                 this.loadCategory();
                 if (this.update) {
-                    Object.assign(this.formData,this.curNode);
+                    Object.assign(this.formData, this.curNode);
                 }
             },
             generateTreeData(data) {

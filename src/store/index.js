@@ -48,6 +48,7 @@ import warehouse from "./modules/warehouse";
 import woniuConfig from "./modules/woniuConfig";
 import qunarOrderController from "./modules/qunarOrderController";
 import product from "./modules/product";
+import productStockKeeping from "./modules/productStockKeeping";
 import productProperty from "./modules/productProperty";
 import brand from "./modules/brand";
 import firmContact from "./modules/firmContact";
@@ -106,6 +107,7 @@ export default new Vuex.Store({
     warehouse,
     qunarOrderController,
     product,
+    productStockKeeping,
     productProperty,
     brand,
     firmContact,
