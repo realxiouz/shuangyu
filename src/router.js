@@ -591,7 +591,7 @@ export default new Router({
         {
           title: '添加商品',
           path: '/product/config',
-          name: 'config',
+          name: 'productConfig',
           component: () => import('@/views/product/Edit'),
           meta: {title: '添加商品', icon: 'home'}
         },
@@ -605,7 +605,7 @@ export default new Router({
         {
           title: '添加商品属性',
           path: '/property/config',
-          name: 'config',
+          name: 'propertyConfig',
           component: () => import('@/views/productProperty/Edit'),
           meta: {title: '商品属性管理', icon: 'home'}
         },
