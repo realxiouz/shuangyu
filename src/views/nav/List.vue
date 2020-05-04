@@ -123,8 +123,7 @@ export default {
         icon: "",
         title: "",
         sort: "",
-        remark: "",
-        
+        remark: ""
       };
     },
     /*加载导航树*/
@@ -163,7 +162,6 @@ export default {
     },
     /*对导航节点进行存储*/
     handleSave() {
-      this.dialogVisible = false;
       if (this.formData.navId != "") {
         this.$store
           .dispatch("nav/updateOne", { nav: this.formData })
@@ -183,19 +181,24 @@ export default {
           this.formData.pid = null;
           this.formData.level = 0;
         }
-        this.$store
-          .dispatch("nav/addOne", { nav: this.formData })
-          .then(data => {
-            this.curLine.push(data.data);
-            this.loadData();
-            this.$message({
-              type: "success",
-              message: "添加成功！"
-            });
-          })
-          .catch(error => {
-            console.log(error);
-          });
+        this.$refs.routerForm.validate(valid => {
+          if (valid) {
+            this.$store
+              .dispatch("nav/addOne", { nav: this.formData })
+              .then(data => {
+                this.curLine.push(data.data);
+                this.loadData();
+                this.$message({
+                  type: "success",
+                  message: "添加成功！"
+                });
+              })
+              .catch(error => {
+                console.log(error);
+              });
+            this.dialogVisible = false;
+          }
+        });
       }
       this.clearForm();
     },
