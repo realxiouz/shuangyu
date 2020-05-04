@@ -157,7 +157,10 @@
         icon="el-icon-search"
         size="mini"
         @click="handleSearch"
-      >查询</el-button>
+      >查询
+      </el-button>
+      <el-button icon="el-icon-refresh" class="filter-item" type="primary" size="mini" @click="handleClear">清空
+      </el-button>
       <el-button type="text" size="mini" @click="handleMore">
         更多
         <i :class="switchIcon"></i>
@@ -167,80 +170,89 @@
 </template>
 
 <script>
-export default {
-  name: "orderReportSearch",
-  data() {
-    var validateTransactionTime = (rule, value, callback) => {
-      if (value > this.formData.endTransactionTime) {
-        callback(new Error("开始日期不能大于结束日期!"));
-      } else {
-        callback();
-      }
-    };
-    var validateFinishTime = (rule, value, callback) => {
-      if (value > this.formData.endFinishTime) {
-        callback(new Error("开始日期不能大于结束日期!"));
-      } else {
-        callback();
-      }
-    };
-    return {
-      more: false,
-      formData: {
-        transactionTime: "",
-        dateRange: "",
-        finishTime: ""
-      },
-      formRules: {
-        startTransactionTime: [
-          { validator: validateTransactionTime, trigger: "blur" }
-        ],
-        startFinishTime: [{ validator: validateFinishTime, trigger: "blur" }]
-      },
-      dateRangeValue: [
-        {
-          value: "year",
-          label: "按年查询"
+    export default {
+        name: "orderReportSearch",
+        data() {
+            let validateTransactionTime = (rule, value, callback) => {
+                if (value > this.formData.endTransactionTime) {
+                    callback(new Error("开始日期不能大于结束日期!"));
+                } else {
+                    callback();
+                }
+            };
+            let validateFinishTime = (rule, value, callback) => {
+                if (value > this.formData.endFinishTime) {
+                    callback(new Error("开始日期不能大于结束日期!"));
+                } else {
+                    callback();
+                }
+            };
+            return {
+                more: false,
+                formData: this.initSearchForm(),
+                formRules: {
+                    startTransactionTime: [
+                        {validator: validateTransactionTime, trigger: "blur"}
+                    ],
+                    startFinishTime: [{validator: validateFinishTime, trigger: "blur"}]
+                },
+                dateRangeValue: [
+                    {
+                        value: "year",
+                        label: "按年查询"
+                    },
+                    {
+                        value: "month",
+                        label: "按月查询"
+                    },
+                    {
+                        value: "week",
+                        label: "按周查询"
+                    },
+                    {
+                        value: "day",
+                        label: "按日查询"
+                    }
+                ]
+            };
         },
-        {
-          value: "month",
-          label: "按月查询"
+        computed: {
+            switchIcon() {
+                if (!this.more) {
+                    return "el-icon-arrow-down el-icon--right";
+                } else {
+                    return "el-icon-arrow-up el-icon--right";
+                }
+            }
         },
-        {
-          value: "week",
-          label: "按周查询"
-        },
-        {
-          value: "day",
-          label: "按日查询"
-        }
-      ]
-    };
-  },
-  computed: {
-    switchIcon() {
-      if (!this.more) {
-        return "el-icon-arrow-down el-icon--right";
-      } else {
-        return "el-icon-arrow-up el-icon--right";
-      }
-    }
-  },
-  methods: {
-    handleMore() {
-      this.more = !this.more;
-    },
-    handleSearch(){
-      this.$refs.form.validate((valid)=>{
-        if(valid){
-          this.$emit('onSearch', this.formData)
-        }
+        methods: {
+            initSearchForm() {
+                return {
+                    transactionTime: null,
+                    dateRange: null,
+                    finishTime: null,
+                    accountId: null,
+                    orderType: null,
+                    category: null
+                };
+            },
+            handleClear() {
+                this.formData = this.initSearchForm();
+            },
+            handleMore() {
+                this.more = !this.more;
+            },
+            handleSearch() {
+                this.$refs.form.validate((valid) => {
+                    if (valid) {
+                        this.$emit('onSearch', this.formData)
+                    }
 
-      })
+                })
 
-    }
-  }
-};
+            }
+        }
+    };
 </script>
 
 <style scoped></style>
