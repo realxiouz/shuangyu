@@ -31,10 +31,12 @@
         <el-table-column prop="terminalId" label="商户机具终端编号" align="center"></el-table-column>
       </el-table>
       <el-pagination
-        @prev-click="handlePrevClick"
-        @next-click="handleNextClick"
+        @size-change="handleSizeChange"
+        @prev-click="prevClick"
+        @next-click="nextClick"
+        :current-page="currentPage"
         background
-        layout="total,prev,next"
+        layout="total,sizes,prev,next"
         prev-text="上一页"
         next-text="下一页"
         :page-size="pageSize"
@@ -52,7 +54,7 @@
             return {
                 loading: true,
                 dialogVisible: false,
-                searchForm: {},
+                searchParams: {},
                 tableData: [],
                 currentPage: 1,
                 pageSize: 10,
@@ -63,7 +65,7 @@
             loadData(params) {
                 this.$store
                     .dispatch("trade/getList", {
-                        filters: params
+                        filter: params
                     })
                     .then(data => {
                         if (data) {
@@ -80,7 +82,7 @@
             loadTotal(params) {
                 this.$store
                     .dispatch("trade/getTotal", {
-                        filters: params
+                        filter: params
                     })
                     .then(data => {
                         if (data >= 0) {
@@ -103,22 +105,26 @@
             handleCancel() {
                 this.dialogVisible = false;
             },
-            handlePrevClick(page) {
+            handleSizeChange: function (size) {
+                this.pageSize = size;
+                this.searchParams.pageSize = this.pageSize;
+                this.loadData(this.searchParams);
+            },
+            prevClick(page) {
                 this.currentPage = page;
                 this.searchParams.pageSize = this.pageSize;
                 this.searchParams.currentPage = this.currentPage;
                 this.loadData(this.searchParams);
             },
-            handleNextClick(page) {
+            nextClick(page) {
                 this.currentPage = page;
                 this.searchParams.pageSize = this.pageSize;
                 this.searchParams.currentPage = this.currentPage;
                 this.loadData(this.searchParams);
-            }
-
+            },
         },
         created() {
-            this.loadData(this.searchForm);
+            this.loadData(this.searchParams);
         },
         components: {
             tradeSearch
