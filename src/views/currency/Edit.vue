@@ -47,7 +47,7 @@
                 formData: {},
                 rules: {
                     code: [
-                        {required: true, message: "请输入科目编码", trigger: "blur"},
+                        {required: true, message: "请输入币种编码", trigger: "blur"},
                         {
                             min: 1,
                             max: 20,
@@ -56,7 +56,7 @@
                         {validator: codeValidator, trigger: 'blur'}
                     ],
                     name: [
-                        {required: true, message: "请输入科目名称", trigger: "blur"},
+                        {required: true, message: "请输入币种名称", trigger: "blur"},
                         {
                             min: 1,
                             max: 20,
@@ -93,10 +93,14 @@
             },
             /*对提交的数据进行类型格式*/
             handleConfirm() {
-                if (this.formData.date && "number" != typeof this.formData.date) {
-                    this.formData.date = this.formData.date.getTime();
-                }
-                this.$emit("onSave", this.formData);
+                this.$refs['form'].validate((valid) => {
+                    if (valid) {
+                        if (this.formData.date && "number" != typeof this.formData.date) {
+                            this.formData.date = this.formData.date.getTime();
+                        }
+                        this.$emit("onSave", this.formData);
+                    }
+                });
             },
             initFormData() {
                 this.clearForm();
