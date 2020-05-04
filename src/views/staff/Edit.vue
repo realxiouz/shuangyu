@@ -12,7 +12,15 @@
       >添 加</el-button>
     </el-row>
     <!-- 员工列表 -->
-    <el-table v-loading="loading" stripe size="mini" style="width: 100%;" fit :data="tableData">
+    <el-table
+      highlight-current-row
+      v-loading="loading"
+      stripe
+      size="mini"
+      style="width: 100%;"
+      fit
+      :data="tableData"
+    >
       <el-table-column prop="nickName" label="昵称" width="150" align="center"></el-table-column>
       <el-table-column prop="fullName" label="姓名" width="100" align="center"></el-table-column>
       <el-table-column prop="gender" label="性别" width="80" align="center">
@@ -30,7 +38,12 @@
       <el-table-column prop="email" label="电子邮箱" align="center"></el-table-column>
       <el-table-column label="操作" width="240" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" :type="scope.row.userId?'success':'info'" :disabled="scope.row.userId?true:false" @click="handleAssociate(scope.$index, scope.row)">关联用户</el-button>
+          <el-button
+            size="mini"
+            :type="scope.row.userId?'success':'info'"
+            :disabled="scope.row.userId?true:false"
+            @click="handleAssociate(scope.$index, scope.row)"
+          >关联用户</el-button>
           <el-button
             size="mini"
             type="primary"
@@ -139,15 +152,15 @@ export default {
       permissionDialogVisible: false,
       /*点击部门后用于展示的员工列表*/
       tableData: [],
-        //当点击用户选择列表时
-        curRow: {},
+      //当点击用户选择列表时
+      curRow: {},
       /*进行用户查询后待选择的用户列表*/
       userTable: [],
       keyword: "",
       hasStep: true,
       formData: {},
       transData: [],
-        updateTempData: {},
+      updateTempData: {},
       transferProps: {
         key: "roleId",
         label: "roleName"
@@ -173,8 +186,8 @@ export default {
         deptID: "",
         domain: "",
         roles: [],
-          //类型（0：员工，1：联系人）
-          type: 0
+        //类型（0：员工，1：联系人）
+        type: 0
       };
     },
     /*获取该部门下的员工列表*/
@@ -184,7 +197,11 @@ export default {
         .dispatch("staff/getList", {
           filter: params
             ? params
-            : { firmId: this.curNode.firmId, deptId: this.curNode.deptId ,type: 0}
+            : {
+                firmId: this.curNode.firmId,
+                deptId: this.curNode.deptId,
+                type: 0
+              }
         })
         .then(data => {
           if (data) {
@@ -213,13 +230,13 @@ export default {
       this.clearUsersTable();
       this.$store
         // .dispatch("staff/associateUser", {filter: {phone: rowData.phone, email: rowData.email}})
-        .dispatch("staff/associateUser", {filter: {email: rowData.email}})
+        .dispatch("staff/associateUser", { filter: { email: rowData.email } })
         .then(data => {
-             this.userTable.push(data.data);
+          this.userTable.push(data.data);
         })
         .catch(error => {
-            console.log(error);
-            /*this.$alert(error.message, '提示', {
+          console.log(error);
+          /*this.$alert(error.message, '提示', {
                 confirmButtonText: '确定',
                 type: "warning"
             });*/
@@ -261,7 +278,7 @@ export default {
     },
     /*点击修改*/
     permissionChange(idx, row) {
-        this.clearFormData();
+      this.clearFormData();
       /*根据对应的员工ID查询对应的用工对象*/
       this.$store
         .dispatch("staff/getOne", {
@@ -276,10 +293,10 @@ export default {
             data.data.roles = [];
           }
           this.formData = data.data;
-          Object.assign(this.updateTempData,data.data);
+          Object.assign(this.updateTempData, data.data);
         })
         .catch(error => {
-            console.log(error);
+          console.log(error);
         });
 
       this.hasStep = true;
@@ -336,40 +353,40 @@ export default {
           console.log(error);
         });
     },
-      handleAssociate(idx, row){
-        this.clearFormData();
-          /*根据对应的员工ID查询对应的用工对象*/
-          this.$store
-              .dispatch("staff/getOne", {
-                  staffId: row.staffId
-              })
-              .then(data => {
-                  /*如果请求到的数据roles为null会报错*/
-                  if (!data.data.roles) {
-                      data.data.roles = [];
-                  }
-                  this.searchUser(data.data);
-                  this.formData = data.data;
-                  this.dialogVisible = true;
-              })
-              .catch(error => {
-                  console.log(error);
-              });
-      },
+    handleAssociate(idx, row) {
+      this.clearFormData();
+      /*根据对应的员工ID查询对应的用工对象*/
+      this.$store
+        .dispatch("staff/getOne", {
+          staffId: row.staffId
+        })
+        .then(data => {
+          /*如果请求到的数据roles为null会报错*/
+          if (!data.data.roles) {
+            data.data.roles = [];
+          }
+          this.searchUser(data.data);
+          this.formData = data.data;
+          this.dialogVisible = true;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     /*对员工进行删除*/
     handleDelete(idx, row) {
-        let message = "";
-        if (0 == this.curNode.level){
-            message = "此操作将删除该员工在企业下所有部门中数据，是否继续?"
-        }else{
-            message = "此操作将删除员工在该部门下的数据，是否继续?"
-        }
+      let message = "";
+      if (0 == this.curNode.level) {
+        message = "此操作将删除该员工在企业下所有部门中数据，是否继续?";
+      } else {
+        message = "此操作将删除员工在该部门下的数据，是否继续?";
+      }
       this.open(this.delete, row.staffId, message);
     },
-      //选中当前行
-      handleRowClick(row){
-          this.curRow = row;
-      },
+    //选中当前行
+    handleRowClick(row) {
+      this.curRow = row;
+    },
     /*根据对应员工ID*/
     delete(staffId) {
       this.$store
@@ -385,29 +402,29 @@ export default {
           console.log(error);
         });
     },
-      open(func, data, message) {
-        if (!message){
-            message = "确认要删除该数据!"
-        }
-          this.$confirm(message, "提示", {
-              confirmButtonText: "确定",
-              cancelButtonText: "取消",
-              type: "warning"
-          })
-              .then(() => {
-                  func(data);
-                  this.$message({
-                      type: "success",
-                      message: "删除成功!"
-                  });
-              })
-              .catch(() => {
-                  this.$message({
-                      type: "info",
-                      message: "已取消删除"
-                  });
-              });
-      },
+    open(func, data, message) {
+      if (!message) {
+        message = "确认要删除该数据!";
+      }
+      this.$confirm(message, "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          func(data);
+          this.$message({
+            type: "success",
+            message: "删除成功!"
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
     /*是否可以点击下一步*/
     nextStep() {
       this.hasStep = false;
@@ -436,56 +453,68 @@ export default {
     },
     clearFormData() {
       this.formData = this.defaultFormData();
-        this.updateTempData = {};
+      this.updateTempData = {};
     },
     /*校验所填写的信息是否已经被使用*/
     isUsedForPhone() {
-        if (!this.formData.phone || "" == this.formData.phone || this.formData.phone === this.updateTempData.phone) {
+      if (
+        !this.formData.phone ||
+        "" == this.formData.phone ||
+        this.formData.phone === this.updateTempData.phone
+      ) {
         return;
       }
-        this.$store
-          .dispatch("staff/isExist", {
-            filedValue: this.formData.phone,
-              deptId: this.curNode.deptId
-          })
-          .then(data => {
-            this.isExistsForPhone = data;
-          })
-          .catch(error => {
-            console.log(error);
-          });
+      this.$store
+        .dispatch("staff/isExist", {
+          filedValue: this.formData.phone,
+          deptId: this.curNode.deptId
+        })
+        .then(data => {
+          this.isExistsForPhone = data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
     isUsedForIDNo() {
-      if (!this.formData.idCardNo || "" == this.formData.idCardNo || this.formData.idCardNo === this.updateTempData.idCardNo) {
+      if (
+        !this.formData.idCardNo ||
+        "" == this.formData.idCardNo ||
+        this.formData.idCardNo === this.updateTempData.idCardNo
+      ) {
         return;
       }
-        this.$store
-          .dispatch("staff/isExist", {
-            filedValue: this.formData.idCardNo,
-              deptId: this.curNode.deptId
-          })
-          .then(data => {
-            this.isExistsForIDNo = data;
-          })
-          .catch(error => {
-            console.log(error);
-          });
+      this.$store
+        .dispatch("staff/isExist", {
+          filedValue: this.formData.idCardNo,
+          deptId: this.curNode.deptId
+        })
+        .then(data => {
+          this.isExistsForIDNo = data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
     isUsedForEmail() {
-        if (!this.formData.email || "" == this.formData.email || this.formData.email === this.updateTempData.email) {
+      if (
+        !this.formData.email ||
+        "" == this.formData.email ||
+        this.formData.email === this.updateTempData.email
+      ) {
         return;
       }
-        this.$store
-          .dispatch("staff/isExist", {
-            filedValue: this.formData.email,
-              deptId: this.curNode.deptId
-          })
-          .then(data => {
-            this.isExistsForEmail = data;
-          })
-          .catch(error => {
-            console.log(error);
-          });
+      this.$store
+        .dispatch("staff/isExist", {
+          filedValue: this.formData.email,
+          deptId: this.curNode.deptId
+        })
+        .then(data => {
+          this.isExistsForEmail = data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   },
   computed: {
