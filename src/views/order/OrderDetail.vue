@@ -615,9 +615,9 @@ export default {
     handleSaveTicket(params) {
       let newParams = {};
       if (params) {
+        newParams.merchantId = params.merchantId;
         newParams.accountId = params.accountId;
-        newParams.amount = this.tableData.amount;
-        newParams.thirdId = this.tableData.thirdId;
+        newParams.amount = params.amount;
         newParams.flights = [
           {
             cabin: params.cabin,
@@ -636,7 +636,7 @@ export default {
         newParams.remark = params.remark;
         newParams.orderTaskId = this.$route.query.taskId;
         newParams.rootOrderNo = this.tableData.rootOrderNo;
-        newParams.sourceOrderNo = this.tableData.sourceOrderNo;
+        newParams.sourceOrderNo = params.sourceOrderNo;
         newParams.transactionAmount = params.transactionAmount;
         newParams.createTime = params.createTime;
         newParams.ticketNoFlag = params.ticketNoFlag;
@@ -653,7 +653,7 @@ export default {
         let woniuParams = {};
         woniuParams.sourceOrderNo = params.sourceOrderNo;
         woniuParams.orderTaskId = this.$route.query.taskId;
-        woniuParams.fundAccount = params.fundAccountId;
+        woniuParams.fundAccount = params.fundAccount;
         woniuParams.userNameType = params.userNameType;
         woniuParams.orderType = params.orderType;
         woniuParams.amount = params.amount;
@@ -661,9 +661,9 @@ export default {
       } else {
         let newParams = {};
         if (params) {
+          newParams.merchantId = params.merchantId;
           newParams.accountId = params.accountId;
           newParams.amount = params.amount;
-          newParams.thirdId = params.thirdId;
           newParams.flights = [
             {
               cabin: params.cabin,
@@ -698,7 +698,9 @@ export default {
         let woniuParams = {};
         woniuParams.sourceOrderNo = params.sourceOrderNo;
         woniuParams.orderTaskId = this.$route.query.taskId;
-        woniuParams.fundAccount = params.fundAccountId;
+        woniuParams.fundAccount = params.fundAccount;
+        woniuParams.merchantId = params.merchantId;
+        woniuParams.accountId = params.accountId;
         woniuParams.userNameType = params.userNameType;
         woniuParams.orderType = params.orderType;
         woniuParams.amount = params.amount;
@@ -706,7 +708,6 @@ export default {
       } else {
         let newParams = {};
         if (params) {
-          newParams.accountId = params.accountId;
           newParams.amount = params.amount;
           newParams.flights = [
             {
@@ -728,6 +729,8 @@ export default {
           newParams.rootOrderNo = this.tableData.rootOrderNo;
           newParams.sourceOrderNo = params.sourceOrderNo;
           newParams.createTime = params.createTime;
+          newParams.merchantId = params.merchantId;
+          newParams.accountId = params.accountId;
           if (params.ticketNoFlag) {
             newParams.ticketNoFlag = params.ticketNoFlag;
           }
