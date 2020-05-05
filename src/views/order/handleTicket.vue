@@ -524,6 +524,7 @@
           } else {
             this.isWoniuTicket = false;
           }
+          this.formData.orderSource = "QUNAR_OPEN";
         } else {
           this.isWoniu = false;
         }
