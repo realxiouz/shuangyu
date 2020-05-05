@@ -294,7 +294,9 @@
             };
             return {
                 formData: {
-                    properties: []
+                    properties: [],
+                    propertiesCode: [],
+                    propertiesValue: []
                 },
                 propertyList: [],
                 categoryList: [],
@@ -398,14 +400,13 @@
                         row.categoryName = this.formData.categoryName;
                         row.brandName = this.formData.brandName;
                         row.unit = this.formData.unit;
-                        row.properties = this.formData.properties;
                         if (Array.isArray(skuIds[i])) {
                             let codes = [];
                             let names = [];
                             for (let j = 0; j < skuIds[i].length; j++) {
                                 let item1 = skuIds[i][j].split(",");
                                 codes.push(item1[0]);
-                                names.push(item1[1])
+                                names.push(item1[1]);
                             }
                             row.skuName = names.join(" ");
                             row.skuId = codes.join(",");
@@ -451,7 +452,21 @@
                     this.dataList[i].grossMargin = this.formData.grossMargin;
                     this.dataList[i].supplierId = this.formData.supplierId;
                     this.dataList[i].supplierName = this.formData.supplierName;
-                    this.dataList[i].properties = this.formData.properties;
+                    const properties = this.formData.properties;
+                    let skuIds = this.dataList[i].skuId.split(",");
+                    let skuNames = this.dataList[i].skuName.split(" ");
+                    for (let i = 0, len = skuNames.length; i < len; i++) {
+                        properties[i].value = skuNames[i];
+                    }
+                    this.dataList[i].properties = properties;
+                    const propertiesCode = {};
+                    const propertiesValue = {};
+                    for (let i = 0, len = properties.length; i < len; i++) {
+                        propertiesCode[properties[i].code] = skuIds[i];
+                        propertiesValue[properties[i].label] = skuNames[i];
+                    }
+                    this.dataList[i].propertiesCode = propertiesCode;
+                    this.dataList[i].propertiesValue = propertiesValue;
                 }
             },
             handleSave() {
