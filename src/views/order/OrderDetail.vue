@@ -1077,6 +1077,7 @@ export default {
               type: "success",
               message: "提交验证成功！"
             });
+            this.goBack();
           }
         })
         .catch(error => {
