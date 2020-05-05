@@ -108,13 +108,13 @@
             <el-input v-model="formData.brandName"></el-input>
           </el-form-item>
         </el-col>
+      </el-row>
+      <el-row :gutter="10">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="计量单位" prop="unit">
             <el-input v-model="formData.unit"></el-input>
           </el-form-item>
         </el-col>
-      </el-row>
-      <el-row :gutter="10">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="最小订单量" prop="miniOrderQuantity">
             <el-input-number v-model="formData.miniOrderQuantity"></el-input-number>
