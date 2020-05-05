@@ -72,7 +72,7 @@
                   <span>{{formatDate(tableData.deadlineTicketTime,'YYYY-MM-DD HH:mm:ss')}}</span>
                 </el-form-item>
               </el-col>
-              <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+              <el-col :span="24">
                 <el-form-item label="政策代码:">
                   <span>{{tableData.policyCode}}</span>
                 </el-form-item>
@@ -419,6 +419,44 @@
         </div>
       </el-dialog>
     </div>
+    <div>
+      <el-dialog
+        title="拒绝改签原因"
+        center
+        :visible.sync="refuseReasonShow"
+        width="33%"
+        :close-on-click-modal="false"
+      >
+        <div>
+          <el-form :model="refuseFormdata" size="mini" label-width="110px">
+            <el-form-item label="拒绝改签原因">
+              <el-select
+                placeholder="请选择拒绝改签原因"
+                v-model="refuseFormdata.refuseReasonType"
+                style="width:100%;"
+              >
+                <el-option label="特价机票不支持改签" value="4"></el-option>
+                <el-option label="改签费用不符" value="9"></el-option>
+                <el-option label="建议用户联系航司改签" value="10"></el-option>
+                <el-option label="无法改签-用户已自行改签或机票被使用" value="11"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="备注：">
+              <el-input
+                type="textarea"
+                :rows="2"
+                placeholder="请输入备注..."
+                v-model="refuseFormdata.refuseReason"
+              ></el-input>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div style="margin-top: 25px;text-align: right;">
+          <el-button size="mini" @click="onCancel">取 消</el-button>
+          <el-button size="mini" @click="submitRefuseReason" type="primary">确定</el-button>
+        </div>
+      </el-dialog>
+    </div>
   </div>
 </template>
 
@@ -447,6 +485,7 @@ export default {
       fillOutRefundShow: false,
       newFromDialogShow: false,
       rewriteTicketShow: false,
+      refuseReasonShow: false,
       changePayShow: false,
       changePayData: {},
       systemProfitAndLossValue: 0,
@@ -497,6 +536,10 @@ export default {
         arrivalTime: "",
         flightNum: "",
         departureTime: ""
+      },
+      refuseFormdata: {
+        refuseReasonType: "",
+        refuseReason: ""
       },
       activeNames: ["1", "2", "3", "4"],
       //订单详情状态
@@ -575,6 +618,7 @@ export default {
       this.refundTicketShow = false;
       this.rewriteTicketShow = false;
       this.changePayShow = false;
+      this.refuseReasonShow = false;
     },
     // 退票弹框
     refundTicket(row) {
@@ -906,7 +950,8 @@ export default {
     changePay(params) {
       console.log("支付参数:" + JSON.stringify(params));
       this.changePayData = params;
-      this.systemProfitAndLossValue = this.sellAmount - this.changePayData.totalAmount;
+      this.systemProfitAndLossValue =
+        this.sellAmount - this.changePayData.totalAmount;
       this.changePayShow = true;
     },
     //改签支付
@@ -947,10 +992,29 @@ export default {
         }
       }, 1000);
     },
-    // 受理改签/确认改签
-    processingChangeTicket(params) {
+    //拒绝改签
+    rejectChange(_params) {
       this.$store
-        .dispatch("order/processingChange", params)
+        .dispatch("order/rejectChange", { params: _params })
+        .then(data => {
+          if (data) {
+            console.log(data);
+            this.$message({
+              type: "success",
+              message: "操作成功！"
+            });
+            this.getRefundHtml();
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+
+    // 受理改签
+    processingChangeTicket(_params) {
+      this.$store
+        .dispatch("order/processingChange", { params: _params })
         .then(data => {
           if (data.code == 0) {
             console.log(data);
@@ -964,6 +1028,55 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+    // 拒绝改签确认
+    submitRefuseReason() {
+      let passagerIds = document.querySelectorAll(
+        ".box-content input[name='passagerIds']"
+      );
+      let paramsStr = "";
+      Array.from(passagerIds).forEach(item => {
+        paramsStr += "passagerIds" + "=" + item.value + "&";
+      });
+      let gqFeesData = document.querySelector(
+        ".box-content input[name='gqFees']"
+      ).value;
+      let gqFeesStr = "";
+      gqFeesStr += "gqFees" + "=" + gqFeesData + "&";
+
+      let upgradeFeesData = document.querySelector(
+        ".box-content input[name='upgradeFees']"
+      ).value;
+      let upgradeFeesStr = "";
+      upgradeFeesStr += "upgradeFees" + "=" + upgradeFeesData + "&";
+
+      let gqStatusData = document.querySelector(
+        ".box-content input[name='gqStatus']"
+      ).value;
+      let gqStatusStr = "";
+      gqStatusStr += "gqStatus" + "=" + gqStatusData + "&";
+
+      let _paramsStr = "";
+      _paramsStr +=
+        "domain=" +
+        this.sourceOrderNo.substring(0, 3) +
+        ".trade.qunar.com" +
+        "&" +
+        "refuseReasonType=" +
+        this.refuseFormdata.refuseReasonType +
+        "&" +
+        "refuseReason=" +
+        this.refuseFormdata.refuseReason +
+        "&" +
+        paramsStr +
+        gqFeesStr +
+        upgradeFeesStr +
+        gqStatusStr +
+        "orderNo=" +
+        this.sourceOrderNo;
+      console.log(_paramsStr);
+      this.rejectChange(_paramsStr);
+      this.refuseReasonShow = false;
     },
     // 确认退票信息
     affirmRefundTicket(params) {
@@ -1028,6 +1141,7 @@ export default {
           path: "/order/detail/go/ticket",
           query: {
             orderNo: this.orderNo,
+            orderTaskId: this.$route.query.taskId,
             passengersInfo: JSON.stringify(this.passengersInfo)
           }
         });
@@ -1489,39 +1603,55 @@ export default {
       );
       if (changeConfirm) {
         changeConfirm.onclick = function() {
-          let inputData = document.querySelectorAll(
-            "#changeHtmlOrderDetail .box-content input"
+          let passagerIds = document.querySelectorAll(
+            ".box-content input[name='passagerIds']"
           );
-          let obj = {};
-          Array.from(inputData).forEach(item => {
-            obj[item.name] = item.value;
+          let paramsStr = "";
+          Array.from(passagerIds).forEach(item => {
+            paramsStr += "passagerIds" + "=" + item.value + "&";
           });
-          let params = { ...obj };
-          params.groupCheckOut = true;
-          params.groupCheckIn = false;
-          params.orderNo = that.sourceOrderNo;
-          that.processingChangeTicket(params);
+          let gqFeesData = document.querySelector(
+            ".box-content input[name='gqFees']"
+          ).value;
+          let gqFeesStr = "";
+          gqFeesStr += "gqFees" + "=" + gqFeesData + "&";
+
+          let upgradeFeesData = document.querySelector(
+            ".box-content input[name='upgradeFees']"
+          ).value;
+          let upgradeFeesStr = "";
+          upgradeFeesStr += "upgradeFees" + "=" + upgradeFeesData + "&";
+
+          let gqStatusData = document.querySelector(
+            ".box-content input[name='gqStatus']"
+          ).value;
+          let gqStatusStr = "";
+          gqStatusStr += "gqStatus" + "=" + gqStatusData + "&";
+
+          let _paramsStr = "";
+          _paramsStr +=
+            // "domain=" +
+            // that.sourceOrderNo.substring(0, 3) +
+            // ".trade.qunar.com" +
+            // "&" +
+            "groupCheckOut=true&+groupCheckIn=false&" +
+            paramsStr +
+            gqFeesStr +
+            upgradeFeesStr +
+            gqStatusStr +
+            "orderNo=" +
+            that.sourceOrderNo;
+          that.processingChangeTicket(_paramsStr);
         };
       }
 
-      //拒绝改签
+      //拒绝改签弹框
       let changeReject = document.querySelector(
         '#changeHtmlOrderDetail [data-action="reject"]'
       );
       if (changeReject) {
         changeReject.onclick = function() {
-          let _inputData = document.querySelectorAll(
-            "#changeHtmlOrderDetail .box-content input"
-          );
-          let _obj = {};
-          Array.from(_inputData).forEach(item => {
-            _obj[item.name] = item.value;
-          });
-          let _params = { ...obj };
-          _params.groupCheckOut = false;
-          _params.groupCheckIn = false;
-          _params.orderNo = that.sourceOrderNo;
-          that.processingChangeTicket(_params);
+          that.refuseReasonShow = true;
         };
       }
     }

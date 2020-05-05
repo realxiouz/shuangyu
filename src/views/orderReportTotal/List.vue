@@ -95,12 +95,7 @@
         <el-table-column fixed="right" label="操作" align="center" width="150">
           <template slot-scope="scope">
             <el-button @click="handleUpdate(scope.row.deptId)" type="primary" size="mini">编辑</el-button>
-            <el-button
-              @click.native.prevent="handleRemove(scope.row.deptId)"
-              type="danger"
-              size="mini"
-            >删除
-            </el-button>
+            <el-button @click.native.prevent="handleRemove(scope.row.deptId)" size="mini">查看</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -120,249 +115,251 @@
   </div>
 </template>
 <script>
-    import orderReportTotalSearch from "./Search.vue";
-    import {formatCategory, formatStatus} from "@/utils/status.js";
+import orderReportTotalSearch from "./Search.vue";
+import { formatCategory, formatStatus } from "@/utils/status.js";
 
-    export default {
-        name: "orderReportTotal",
-        data() {
-            return {
-                loading: true,
-                currentPage: 1,
-                pageSize: 10,
-                total: 0,
-                dialogVisible: false,
-                tableData: [],
-                searchParams: {},
-                count: []
-            };
-        },
-        components: {
-            orderReportTotalSearch
-        },
-        methods: {
-          formatStatus,
-          formatCategory,
-            handleSizeChange: function (size) {
-                this.pageSize = size;
-                this.searchParams.pageSize = this.pageSize;
-                this.loadData(this.searchParams);
-            },
-            prevClick(page) {
-                this.currentPage = page;
-                this.searchParams.pageSize = this.pageSize;
-                this.searchParams.currentPage = this.currentPage;
-                this.loadData(this.searchParams);
-            },
-            nextClick(page) {
-                this.currentPage = page;
-                this.searchParams.pageSize = this.pageSize;
-                this.searchParams.currentPage = this.currentPage;
-                this.loadData(this.searchParams);
-            },
-            loadData(params) {
-                if (params) {
-                    params.orderType = 0;
-                } else {
-                    let newParams = {};
-                    newParams.orderType = 0;
-                    params = newParams;
-                }
-                this.$store
-                    .dispatch("orderReportTotal/getList", {
-                        filters: params
-                    })
-                    .then(data => {
-                        if (data) {
-                            this.tableData = data;
-                            this.loadTotal(params);
-                            this.loadCount(params);
-                        }
-                        this.loading = false;
-                    })
-                    .catch(error => {
-                        this.loading = false;
-                        console.log(error);
-                    });
-            },
-            loadTotal(params) {
-                this.$store
-                    .dispatch("orderReportTotal/getTotal", {
-                        filters: params
-                    })
-                    .then(data => {
-                        if (data >= 0) {
-                            this.total = data;
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            loadCount(params) {
-                this.$store
-                    .dispatch("orderReportTotal/getCount", {
-                        filters: params
-                    })
-                    .then(data => {
-                        if (data) {
-                            this.count = data;
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            getSummaries(params) {
-                const {columns, data} = params;
-                const sums = [];
-                columns.forEach((item, index) => {
-                    if (index === 0) {
-                        sums[index] = "统计";
-                        return;
-                    }
-                    switch (item.property !== "" && item.property) {
-                        case "amount":
-                            sums[index] =
-                                "￥" + this.$numeral(this.count.amount).format("0,0.00");
-                            break;
-                        case "transactionAmount":
-                            sums[index] =
-                                "￥" +
-                                this.$numeral(this.count.transactionAmount).format("0,0.00");
-                            break;
-                        case "receivable":
-                            sums[index] =
-                                "￥" + this.$numeral(this.count.receivable).format("0,0.00");
-                            break;
-
-                        case "receipt":
-                            sums[index] =
-                                "￥" + this.$numeral(this.count.receipt).format("0,0.00");
-                            break;
-                        case "payable":
-                            sums[index] =
-                                "￥" + this.$numeral(this.count.payable).format("0,0.00");
-                            break;
-                        case "payment":
-                            sums[index] =
-                                "￥" + this.$numeral(this.count.payment).format("0,0.00");
-                            break;
-                        case "systemProfit":
-                            sums[index] =
-                                "￥" + this.$numeral(this.count.systemProfit).format("0,0.00");
-                            break;
-                        case "shouldProfit":
-                            sums[index] =
-                                "￥" + this.$numeral(this.count.shouldProfit).format("0,0.00");
-                            break;
-                        case "profit":
-                            sums[index] =
-                                "￥" + this.$numeral(this.count.profit).format("0,0.00");
-                            break;
-                        default:
-                            sums[index] = "";
-                            break;
-                    }
-                });
-                return sums;
-            },
-            handleAdd() {
-                this.dialogVisible = true;
-            },
-            handleSearch(params) {
-                if (!params) {
-                    params = {};
-                    this.searchParams = params;
-                    this.loadData(this.searchParams);
-                } else {
-                    const newParams = {};
-                    for (let key in params) {
-                        if (params[key] && _.isArray(params[key])) {
-                            let start = "start" + key.charAt(0).toUpperCase() + key.slice(1);
-                            let end = "end" + key.charAt(0).toUpperCase() + key.slice(1);
-                            newParams[start] = params[key][0];
-                            newParams[end] = params[key][1];
-                        } else if (params[key]) {
-                            newParams[key] = params[key];
-                        }
-                    }
-                    this.searchParams = newParams;
-                    this.loadData(this.searchParams);
-                    this.$message({
-                        type: "success",
-                        message: "查询成功！"
-                    });
-                }
-            },
-            handleCancel() {
-                this.dialogVisible = false;
-            },
-            handleSave() {
-            },
-            /*初始化用工列表中的生日日期格式*/
-            initDate(dateStr, format) {
-                if (dateStr > 0) {
-                    let date = new Date(dateStr);
-                    return this.$moment(date).format(format);
-                } else {
-                    return "";
-                }
-            },
-            formatFlightDate(data) {
-                if (!data || data.length == 0) {
-                    return "";
-                }
-                return this.initDate(data[0].flightDate, "YYYY-MM-DD");
-            },
-            formatFlightNo(data) {
-                if (!data || data.length == 0) {
-                    return "";
-                }
-                return data[0].flightCode;
-            },
-            formatFlight(data) {
-                if (!data || data.length == 0) {
-                    return "";
-                }
-                return (
-                    data[0].dpt +
-                    " " +
-                    data[0].dptTime +
-                    " - " +
-                    data[0].arr +
-                    " " +
-                    data[0].arrTime
-                );
-            },
-            formatPassengers(data) {
-                if (!data || data.length == 0) {
-                    return "";
-                }
-                let str = "";
-                data.forEach(item => {
-                    str += item.name + " / ";
-                });
-
-                return str.substring(0, str.length - 2);
-            },
-            formatAmount(amount) {
-                if (!amount) {
-                    return "￥0.00";
-                }
-                return "￥" + this.$numeral(amount).format("0.00");
-            }
-        },
-
-        computed: {
-            formatDate() {
-                return function (dateStr, format) {
-                    return this.initDate(dateStr, format);
-                };
-            }
-        },
-        created() {
-            this.loadData(this.searchParams);
-        }
+export default {
+  name: "orderReportTotal",
+  data() {
+    return {
+      loading: true,
+      currentPage: 1,
+      pageSize: 10,
+      total: 0,
+      dialogVisible: false,
+      tableData: [],
+      searchParams: {},
+      count: []
     };
+  },
+  components: {
+    orderReportTotalSearch
+  },
+  methods: {
+    formatStatus,
+    formatCategory,
+    handleSizeChange: function(size) {
+      this.pageSize = size;
+      this.searchParams.pageSize = this.pageSize;
+      this.loadData(this.searchParams);
+    },
+    prevClick(page) {
+      this.currentPage = page;
+      this.searchParams.pageSize = this.pageSize;
+      this.searchParams.currentPage = this.currentPage;
+      this.loadData(this.searchParams);
+    },
+    nextClick(page) {
+      this.currentPage = page;
+      this.searchParams.pageSize = this.pageSize;
+      this.searchParams.currentPage = this.currentPage;
+      this.loadData(this.searchParams);
+    },
+    loadData(params) {
+      if (params) {
+        params.orderType = 0;
+      } else {
+        let newParams = {};
+        newParams.orderType = 0;
+        params = newParams;
+      }
+      this.$store
+        .dispatch("orderReportTotal/getList", {
+          filters: params
+        })
+        .then(data => {
+          if (data) {
+            this.tableData = data;
+            this.loadTotal(params);
+            this.loadCount(params);
+          }
+          this.loading = false;
+        })
+        .catch(error => {
+          this.loading = false;
+          console.log(error);
+        });
+    },
+    loadTotal(params) {
+      this.$store
+        .dispatch("orderReportTotal/getTotal", {
+          filters: params
+        })
+        .then(data => {
+          if (data >= 0) {
+            this.total = data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    loadCount(params) {
+      this.$store
+        .dispatch("orderReportTotal/getCount", {
+          filters: params
+        })
+        .then(data => {
+          if (data) {
+            this.count = data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    getSummaries(params) {
+      const { columns, data } = params;
+      const sums = [];
+      columns.forEach((item, index) => {
+        if (index === 0) {
+          sums[index] = "统计";
+          return;
+        }
+        switch (item.property !== "" && item.property) {
+          case "amount":
+            sums[index] =
+              "￥" + this.$numeral(this.count.amount).format("0,0.00");
+            break;
+          case "transactionAmount":
+            sums[index] =
+              "￥" +
+              this.$numeral(this.count.transactionAmount).format("0,0.00");
+            break;
+          case "receivable":
+            sums[index] =
+              "￥" + this.$numeral(this.count.receivable).format("0,0.00");
+            break;
+
+          case "receipt":
+            sums[index] =
+              "￥" + this.$numeral(this.count.receipt).format("0,0.00");
+            break;
+          case "payable":
+            sums[index] =
+              "￥" + this.$numeral(this.count.payable).format("0,0.00");
+            break;
+          case "payment":
+            sums[index] =
+              "￥" + this.$numeral(this.count.payment).format("0,0.00");
+            break;
+          case "systemProfit":
+            sums[index] =
+              "￥" + this.$numeral(this.count.systemProfit).format("0,0.00");
+            break;
+          case "shouldProfit":
+            sums[index] =
+              "￥" + this.$numeral(this.count.shouldProfit).format("0,0.00");
+            break;
+          case "profit":
+            sums[index] =
+              "￥" + this.$numeral(this.count.profit).format("0,0.00");
+            break;
+          default:
+            sums[index] = "";
+            break;
+        }
+      });
+      return sums;
+    },
+    handleAdd() {
+      this.dialogVisible = true;
+    },
+    handleSearch(params) {
+      if (!params) {
+        params = {};
+        this.searchParams = params;
+        this.loadData(this.searchParams);
+      } else {
+        const newParams = {};
+        for (let key in params) {
+          if (params[key] && _.isArray(params[key])) {
+            let start = "start" + key.charAt(0).toUpperCase() + key.slice(1);
+            let end = "end" + key.charAt(0).toUpperCase() + key.slice(1);
+            newParams[start] = params[key][0];
+            newParams[end] = params[key][1];
+          } else if (params[key]) {
+            newParams[key] = params[key];
+          }
+        }
+        this.searchParams = newParams;
+        this.loadData(this.searchParams);
+        this.$message({
+          type: "success",
+          message: "查询成功！"
+        });
+      }
+    },
+    handleUpdate(){
+
+    },
+    handleCancel() {
+      this.dialogVisible = false;
+    },
+    handleSave() {},
+    /*初始化用工列表中的生日日期格式*/
+    initDate(dateStr, format) {
+      if (dateStr > 0) {
+        let date = new Date(dateStr);
+        return this.$moment(date).format(format);
+      } else {
+        return "";
+      }
+    },
+    formatFlightDate(data) {
+      if (!data || data.length == 0) {
+        return "";
+      }
+      return this.initDate(data[0].flightDate, "YYYY-MM-DD");
+    },
+    formatFlightNo(data) {
+      if (!data || data.length == 0) {
+        return "";
+      }
+      return data[0].flightCode;
+    },
+    formatFlight(data) {
+      if (!data || data.length == 0) {
+        return "";
+      }
+      return (
+        data[0].dpt +
+        " " +
+        data[0].dptTime +
+        " - " +
+        data[0].arr +
+        " " +
+        data[0].arrTime
+      );
+    },
+    formatPassengers(data) {
+      if (!data || data.length == 0) {
+        return "";
+      }
+      let str = "";
+      data.forEach(item => {
+        str += item.name + " / ";
+      });
+
+      return str.substring(0, str.length - 2);
+    },
+    formatAmount(amount) {
+      if (!amount) {
+        return "￥0.00";
+      }
+      return "￥" + this.$numeral(amount).format("0.00");
+    }
+  },
+
+  computed: {
+    formatDate() {
+      return function(dateStr, format) {
+        return this.initDate(dateStr, format);
+      };
+    }
+  },
+  created() {
+    this.loadData(this.searchParams);
+  }
+};
 </script>
