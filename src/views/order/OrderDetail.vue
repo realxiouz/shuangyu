@@ -809,7 +809,6 @@ export default {
         .catch(error => {
           console.log(error);
         });
-      this.refundTicketShow = false;
     },
     // 改签确定申请
     handleSaveChange(params) {
