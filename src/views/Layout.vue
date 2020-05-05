@@ -317,7 +317,7 @@ export default {
     position: absolute;
     // top: 15px;
     line-height: 54px;
-    right: 158px;
+    right: 198px;
   }
   .userClass {
     position: absolute;
