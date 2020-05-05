@@ -10,6 +10,7 @@
       size="mini"
       :data="tableData"
       fit
+      highlight-current-row
       style="width: 100%;margin-bottom: 20px;"
     >
       <el-table-column prop="name" align="center" label="字典名称"></el-table-column>
