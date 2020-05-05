@@ -26,33 +26,33 @@
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item :label="item.label">
             <!-- 数据类型（0文本，1开关，2数字，3日期，4日期时间，5时间，6评分，7单选，8多选，9选择器）-->
-            <el-input v-if="propertyList[index].valueType ==0"
+            <el-input v-if="propertyList[index] && propertyList[index].valueType && propertyList[index].valueType ==0"
                       v-model="item.value"
             ></el-input>
             <!-- 开关-->
-            <el-switch v-if="propertyList[index].valueType ==1"
+            <el-switch v-if="propertyList[index] && propertyList[index].valueType && propertyList[index].valueType ==1"
                        v-model="item.value">
             </el-switch>
             <!-- 数字-->
-            <el-input-number v-if="propertyList[index].valueType ==2"
+            <el-input-number v-if="propertyList[index] && propertyList[index].valueType && propertyList[index].valueType ==2"
                              v-model="item.value" :precision="propertyList[index].precision"></el-input-number>
             <!-- 日期-->
             <el-date-picker
-              v-if="propertyList[index].valueType ==3"
+              v-if="propertyList[index] && propertyList[index].valueType && propertyList[index].valueType ==3"
               v-model="item.value"
               type="date"
               placeholder="选择日期">
             </el-date-picker>
             <!-- 日期时间-->
             <el-date-picker
-              v-if="propertyList[index].valueType ==4"
+              v-if="propertyList[index] && propertyList[index].valueType && propertyList[index].valueType ==4"
               v-model="item.value"
               type="datetime"
               placeholder="选择日期时间">
             </el-date-picker>
             <!-- 时间-->
             <el-time-picker
-              v-if="propertyList[index].valueType ==5"
+              v-if="propertyList[index] && propertyList[index].valueType && propertyList[index].valueType ==5"
               arrow-control
               v-model="item.value"
               :picker-options="{
@@ -62,11 +62,11 @@
             </el-time-picker>
             <!-- 评分-->
             <el-rate
-              v-if="propertyList[index].valueType ==6"
+              v-if="propertyList[index] && propertyList[index].valueType && propertyList[index].valueType ==6"
               v-model="item.value"></el-rate>
             <!-- 单选-->
             <el-radio-group
-              v-if="propertyList[index].valueType ==7"
+              v-if="propertyList[index] && propertyList[index].valueType && propertyList[index].valueType ==7"
               v-model="item.value">
               <el-radio v-for="item1 in propertyList[index].values" :key="item1.code"
                         :label="item1.value">{{item1.value}}
@@ -75,7 +75,7 @@
             </el-radio-group>
             <!-- 多选 非销售属性-->
             <el-checkbox-group
-              v-if="propertyList[index].valueType ==8 && !propertyList[index].sku"
+              v-if="propertyList[index] && propertyList[index].valueType && propertyList[index].valueType ==8 && !propertyList[index].sku"
               v-model="item.value">
               <el-checkbox v-for="item2 in propertyList[index].values" :key="item2.code"
                            :label="item2.value">{{item2.value}}
@@ -84,7 +84,7 @@
             <!--选择器-->
             <el-select
               v-model="item.value"
-              v-if="propertyList[index].valueType ==9">
+              v-if="propertyList[index] && propertyList[index].valueType && propertyList[index].valueType ==9">
               <el-option v-for="item3 in propertyList[index].values"
                          :key="item3.code"
                          :label="item3.value"
