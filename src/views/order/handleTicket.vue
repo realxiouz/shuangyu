@@ -454,7 +454,6 @@
               this.formData.userNameType = 1;
             } else if (this.supplierAccountData[i].username == "13700600184") {
               this.formData.userNameType = 2;
-
             } else {
               delete this.formData.userNameType;
             }
@@ -524,6 +523,7 @@
           } else {
             this.isWoniuTicket = false;
           }
+          this.formData.orderSource = "QUNAR_OPEN";
         } else {
           this.isWoniu = false;
         }

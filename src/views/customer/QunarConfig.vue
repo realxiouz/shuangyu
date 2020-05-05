@@ -1,6 +1,6 @@
 <template>
   <div class="bigBox">
-    <div id="goBack" @click="goBack">
+    <div class="searchBox" id="goBack" @click="goBack">
       <el-page-header></el-page-header>
     </div>
     <el-card class="contentBox">
@@ -14,28 +14,28 @@
         label-width="130px"
         size="mini"
       >
-        <el-row :gutter="10">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+        <el-row :gutter="15">
+          <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="7">
             <el-form-item label="域名:" prop="domain">
               <el-input v-model="notifyData.domain" disabled></el-input>
             </el-form-item>
           </el-col>
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="7">
             <span>代理商TTS域名,系统自动读取。</span>
           </el-col>
         </el-row>
-        <el-row :gutter="10">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+        <el-row :gutter="15">
+          <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="7">
             <el-form-item label="安全码:" prop="securityCode">
               <el-input v-model="notifyData.securityCode" @blur="disabledNotify"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="7">
             <span>作为安全标识，我们会将安全码配置在系统中。</span>
           </el-col>
         </el-row>
-        <el-row :gutter="10">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+        <el-row :gutter="15">
+          <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="7">
             <el-form-item label="消息通知地址:" prop="url">
               <el-input
                 type="textarea"
@@ -46,19 +46,19 @@
               ></el-input>
             </el-form-item>
           </el-col>
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="7">
             <span>
               用于我们推送消息通知机制和您返回信息，详见《TTS消息通知机制说明文档》。
               此处可添加多个消息通知地址，以回车隔开
               必须以http://开头，并且每个URL最多输入200个字
-              示例：
-              http://api.abc.com/order
-              http://123.123.123.1:9000
+              <br />示例：
+              <br />http://api.abc.com/order
+              <br />http://123.123.123.1:9000
             </span>
           </el-col>
         </el-row>
         <el-row>
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-col :xs="24" :sm="18" :md="12" :lg="10" :xl="7">
             <el-form-item>
               <el-button @click="saveNotify()" type="primary" size="mini" :disabled="isDisable">保存</el-button>
               <el-button @click="removeNotify()" type="danger" size="mini">删除</el-button>
@@ -78,48 +78,48 @@
         label-width="130px"
         size="mini"
       >
-        <el-row :gutter="10">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+        <el-row :gutter="15">
+          <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="7">
             <el-form-item label="域名:" prop="domain">
               <el-input v-model="orderData.domain" disabled></el-input>
             </el-form-item>
           </el-col>
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="7">
             <span>代理商TTS域名,系统自动读取。</span>
           </el-col>
         </el-row>
-        <el-row :gutter="10">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+        <el-row :gutter="15">
+          <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="7">
             <el-form-item label="用户名:" prop="user">
               <el-input v-model="orderData.user" @blur="disabledOrder"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="7">
             <span>代理商自己定义的非中文的用户名。</span>
           </el-col>
         </el-row>
-        <el-row :gutter="10">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+        <el-row :gutter="15">
+          <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="7">
             <el-form-item label="密码:" prop="pass">
               <el-input v-model="orderData.pass" show-password @blur="disabledOrder"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="7">
             <span>代理商自己定义的密码。</span>
           </el-col>
         </el-row>
-        <el-row :gutter="10">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+        <el-row :gutter="15">
+          <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="7">
             <el-form-item label="IP:" prop="ips">
               <el-input type="textarea" :rows="3" v-model="orderData.ips" @blur="disabledOrder"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="7">
             <span>代理商用于导出导入的服务器IP地址,多个IP时一行一个。</span>
           </el-col>
         </el-row>
         <el-row>
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-col :xs="24" :sm="18" :md="12" :lg="10" :xl="7">
             <el-form-item>
               <el-button
                 @click="saveOrder()"
@@ -141,12 +141,12 @@
       <el-row style="margin-bottom:15px; margin-left:25px;">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="policyAdd">添加</el-button>
       </el-row>
-      <el-table :data="policyData" size="mini" style="width: 100%;">
+      <el-table highlight-current-row :data="policyData" size="mini" style="width: 100%;">
         <el-table-column prop="user" label="用户名称" width="200" align="center"></el-table-column>
-        <el-table-column prop="ip" label="IP地址" width="200" align="center"></el-table-column>
-        <el-table-column prop="callbackUrl" label="回调地址" width="200" align="center"></el-table-column>
-        <el-table-column prop="remark" label="备注" width="200" align="center"></el-table-column>
-        <el-table-column prop="airlineCode" label="操作" width="200" align="center">
+        <el-table-column prop="ip" label="IP地址" width="220" align="center"></el-table-column>
+        <el-table-column prop="callbackUrl" label="回调地址" width="220" align="center"></el-table-column>
+        <el-table-column prop="remark" label="备注" align="center"></el-table-column>
+        <el-table-column prop="airlineCode" align="center" label="操作" width="200">
           <template slot-scope="scope">
             <el-button @click="policyEdit(scope.row)" type="primary" size="mini">编辑</el-button>
             <el-button

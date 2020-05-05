@@ -481,6 +481,7 @@
           } else {
             this.isWoniuTicket = false;
           }
+          this.formData.orderSource = "QUNAR_OPEN";
         } else {
           this.isWoniu = false;
         }
@@ -540,8 +541,11 @@
             return;
           }
           let _profit = 0;
+          console.log("this.formData.amount"+this.formData.amount);
+          console.log("this.sellAmount"+this.sellAmount);
           _profit = Number(this.formData.amount) + Number(this.sellAmount);
-          debugger;
+          console.log("_profit"+_profit);
+          console.log("this.formData.profit"+this.formData.profit);
           if (_profit != this.formData.profit) {
             this.$notify({
               title: "提示",
