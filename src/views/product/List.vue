@@ -90,9 +90,6 @@
                 this.loadData();
             },
             loadTotal(searchForm) {
-                if (!searchForm || !searchForm.appName) {
-                    searchForm = {};
-                }
                 this.$store
                     .dispatch("product/getTotal", {
                         filters: searchForm
