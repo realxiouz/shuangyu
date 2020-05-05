@@ -61,6 +61,7 @@
             <span>{{ formatFlight(scope.row.flights)}}</span>
           </template>
         </el-table-column>
+        <el-table-column label="政策代码" prop="policyCode" width="180" align="center"></el-table-column>
         <el-table-column prop="ruleType" width="60" label="规则类型" align="center">
           <template slot-scope="scope">
             <span>{{ scope.row.ruleType==0?"系统":"手工"}}</span>
