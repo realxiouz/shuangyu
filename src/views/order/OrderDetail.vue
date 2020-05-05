@@ -901,8 +901,7 @@ export default {
     changePay(params) {
       console.log("支付参数:" + JSON.stringify(params));
       this.changePayData = params;
-      this.systemProfitAndLossValue =
-        this.sellAmount - this.changePayData.totalAmount;
+      this.systemProfitAndLossValue = this.sellAmount - this.changePayData.totalAmount;
       this.changePayShow = true;
     },
     //改签支付

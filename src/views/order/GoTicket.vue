@@ -298,7 +298,7 @@ export default {
         amountTotal += Number(item.amount);
       });
       let _profitAndLossValue = 0;
-      _profitAndLossValue = Number(params.allPrice) - amountTotal;
+      _profitAndLossValue =Number(amountTotal) - Number(params.allPrice);
       if (_profitAndLossValue != this.profitAndLossValue) {
         this.$message({
           type: "warning",
@@ -390,8 +390,7 @@ export default {
                         amountTotal += Number(item.amount);
                       });
                       this.systemProfitAndLossValue = 0;
-                      this.systemProfitAndLossValue =
-                        Number(amountTotal) - Number(this.payData.noPayAmount);
+                      this.systemProfitAndLossValue = Number(amountTotal) - Number(this.payData.noPayAmount);
                       this.$message({
                         type: "success",
                         message: "预定成功！"
