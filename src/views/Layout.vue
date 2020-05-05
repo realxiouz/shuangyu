@@ -322,7 +322,7 @@ export default {
   .userClass {
     position: absolute;
     line-height: 54px;
-    right: 20px;
+    right: 50px;
   }
 
   .nav-switch {
