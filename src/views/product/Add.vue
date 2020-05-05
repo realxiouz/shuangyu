@@ -458,9 +458,7 @@
                     if (valid) {
                         this.handleSaveData();
                         this.$store
-                            .dispatch("product/save", {
-                                productList: this.dataList
-                            })
+                            .dispatch("product/save", this.dataList)
                             .then(() => {
                             })
                             .catch(error => {
