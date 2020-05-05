@@ -348,6 +348,7 @@ export default {
           }
         }
       }
+      newParams.taskStatus = 1;
       this.loadData(newParams);
       this.$message({
         type: "success",
