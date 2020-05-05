@@ -393,7 +393,11 @@
                     let skuIds = this.calcDescartes(array);
                     for (let i = 0; i < skuIds.length; i++) {
                         let row = {};
-                        row = this.formData;
+                        row.productCode = this.formData.productCode;
+                        row.productName = this.formData.productName;
+                        row.categoryName = this.formData.categoryName;
+                        row.brandName = this.formData.brandName;
+                        row.unit = this.formData.unit;
                         if (Array.isArray(skuIds[i])) {
                             let codes = [];
                             let names = [];

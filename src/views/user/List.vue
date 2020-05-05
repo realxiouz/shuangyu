@@ -245,14 +245,17 @@ export default {
     handleSave(formData) {
       this.dialogVisible = false;
       let url = "";
+      let requestData = {};
       if (this.userId) {
         url = "user/updateOne";
+          requestData = formData.user;
       } else {
         url = "user/addOne";
+          requestData = formData;
       }
       this.$store
-        .dispatch(url, formData)
-        .then(data => {
+        .dispatch(url, requestData)
+        .then(() => {
           this.loadData();
           if (this.userId != "") {
             this.$message({
