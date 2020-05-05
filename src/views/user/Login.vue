@@ -21,13 +21,18 @@
       <el-form-item v-if="verificationShow" prop="verification">
         <el-row :gutter="10">
           <el-col :span="18">
-            <el-input placeholder="请输入验证码" clearable v-model="loginForm.verification">
+            <el-input
+              @keyup.enter.native="handleLogin('ruleForm')"
+              placeholder="请输入验证码"
+              clearable
+              v-model="loginForm.verification"
+            >
               <i slot="prefix" class="el-input__icon el-icon-notebook-2"></i>
             </el-input>
           </el-col>
           <el-col :span="6" style="text-align:right;">
             <el-button
-            style="width:100%;"
+              style="width:100%;"
               @click="getVerificationCode(loginForm.account)"
               :disabled="showCount"
               type="primary"
@@ -41,19 +46,20 @@
       </el-form-item>
       <el-form-item v-else prop="password">
         <el-col :span="24">
-          <el-input placeholder="请输入密码" clearable v-model="loginForm.password" show-password>
+          <el-input
+            @keyup.enter.native="handleLogin('ruleForm')"
+            placeholder="请输入密码"
+            clearable
+            v-model="loginForm.password"
+            show-password
+          >
             <i slot="prefix" class="el-input__icon el-icon-lock"></i>
           </el-input>
         </el-col>
       </el-form-item>
       <span style="text-align:left;">
         <el-button v-if="verificationShow" @click="verificationLogin" type="text" size="mini">账号密码登陆</el-button>
-        <el-button
-          v-else
-          @click="passwordLogin"
-          type="text"
-          size="mini"
-        >验证码登陆</el-button>
+        <el-button v-else @click="passwordLogin" type="text" size="mini">验证码登陆</el-button>
       </span>
     </el-form>
     <el-button
