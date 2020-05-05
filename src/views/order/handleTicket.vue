@@ -107,6 +107,7 @@
             <el-form-item label="订单日期:" prop="createTime">
               <el-date-picker
                 type="datetime"
+                format="yyyy-MM-dd HH:mm"
                 placeholder="选择日期"
                 v-model="formData.createTime"
                 style="width: 100%;"

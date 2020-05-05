@@ -107,6 +107,7 @@
               <el-date-picker
                 type="datetime"
                 placeholder="选择日期"
+                format="yyyy-MM-dd HH:mm"
                 v-model="formData.createTime"
                 style="width: 100%;"
                 value-format="timestamp"
