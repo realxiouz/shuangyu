@@ -1,6 +1,6 @@
 <template>
   <el-row type="flex" class="row-bg" justify="space-between" align="bottom">
-    <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
+    <el-col :xs="14" :sm="17" :md="18" :lg="19" :xl="20">
       <el-form :model="formData" label-width="110px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="订单号:">
@@ -71,7 +71,7 @@
                 <el-input
                   clearable
                   v-model="formData.startAmount"
-                  placeholder="初始值"
+                  placeholder="最小值"
                   style="width: 100%"
                 ></el-input>
               </el-col>
@@ -80,7 +80,7 @@
                 <el-input
                   clearable
                   v-model="formData.endAmount"
-                  placeholder="结束值"
+                  placeholder="最大值"
                   style="width: 100%"
                 ></el-input>
               </el-col>
@@ -88,13 +88,13 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="应收:">
+          <el-form-item v-show="more" label="应收金额:">
             <el-row type="flex" justify="space-between">
               <el-col :span="11">
                 <el-input
                   clearable
                   v-model="formData.startReceivable"
-                  placeholder="初始值"
+                  placeholder="最小值"
                   style="width: 100%"
                 ></el-input>
               </el-col>
@@ -103,7 +103,7 @@
                 <el-input
                   clearable
                   v-model="formData.endReceivable"
-                  placeholder="结束值"
+                  placeholder="最大值"
                   style="width: 100%"
                 ></el-input>
               </el-col>
@@ -111,13 +111,13 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="实收:">
+          <el-form-item v-show="more" label="实收金额:">
             <el-row type="flex" justify="space-between">
               <el-col :span="11">
                 <el-input
                   clearable
                   v-model="formData.startReceipt"
-                  placeholder="初始值"
+                  placeholder="最小值"
                   style="width: 100%"
                 ></el-input>
               </el-col>
@@ -126,7 +126,7 @@
                 <el-input
                   clearable
                   v-model="formData.endReceipt"
-                  placeholder="结束值"
+                  placeholder="最大值"
                   style="width: 100%"
                 ></el-input>
               </el-col>
@@ -134,13 +134,13 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="应付:">
+          <el-form-item v-show="more" label="应付金额:">
             <el-row type="flex" justify="space-between">
               <el-col :span="11">
                 <el-input
                   clearable
                   v-model="formData.startPayable"
-                  placeholder="初始值"
+                  placeholder="最小值"
                   style="width: 100%"
                 ></el-input>
               </el-col>
@@ -149,7 +149,7 @@
                 <el-input
                   clearable
                   v-model="formData.endPayable"
-                  placeholder="结束值"
+                  placeholder="最大值"
                   style="width: 100%"
                 ></el-input>
               </el-col>
@@ -157,13 +157,13 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="实付:">
+          <el-form-item v-show="more" label="实付金额:">
             <el-row type="flex" justify="space-between">
               <el-col :span="11">
                 <el-input
                   clearable
                   v-model="formData.startPayment"
-                  placeholder="初始值"
+                  placeholder="最小值"
                   style="width: 100%"
                 ></el-input>
               </el-col>
@@ -172,7 +172,7 @@
                 <el-input
                   clearable
                   v-model="formData.endPayment"
-                  placeholder="结束值"
+                  placeholder="最大值"
                   style="width: 100%"
                 ></el-input>
               </el-col>
@@ -186,7 +186,7 @@
                 <el-input
                   clearable
                   v-model="formData.startSystemProfit"
-                  placeholder="初始值"
+                  placeholder="最小值"
                   style="width: 100%"
                 ></el-input>
               </el-col>
@@ -195,7 +195,7 @@
                 <el-input
                   clearable
                   v-model="formData.endSystemProfit"
-                  placeholder="结束值"
+                  placeholder="最大值"
                   style="width: 100%"
                 ></el-input>
               </el-col>
@@ -209,7 +209,7 @@
                 <el-input
                   clearable
                   v-model="formData.startShouldProfit"
-                  placeholder="初始值"
+                  placeholder="最小值"
                   style="width: 100%"
                 ></el-input>
               </el-col>
@@ -218,7 +218,7 @@
                 <el-input
                   clearable
                   v-model="formData.endShouldProfit"
-                  placeholder="结束值"
+                  placeholder="最大值"
                   style="width: 100%"
                 ></el-input>
               </el-col>
@@ -232,7 +232,7 @@
                 <el-input
                   clearable
                   v-model="formData.startProfit"
-                  placeholder="初始值"
+                  placeholder="最小值"
                   style="width: 100%"
                 ></el-input>
               </el-col>
@@ -241,7 +241,7 @@
                 <el-input
                   clearable
                   v-model="formData.endProfit"
-                  placeholder="结束值"
+                  placeholder="最大值"
                   style="width: 100%"
                 ></el-input>
               </el-col>
@@ -276,7 +276,7 @@
         </el-col>
       </el-form>
     </el-col>
-    <el-col :xs="8" :sm="6" :md="6" :lg="4" :xl="4" class="search-tools">
+    <el-col :xs="10" :sm="7" :md="6" :lg="5" :xl="4" class="search-tools">
       <el-button
         type="primary"
         icon="el-icon-search"
