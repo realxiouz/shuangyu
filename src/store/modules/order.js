@@ -34,7 +34,8 @@ import {
   rewriteTicket,
   interceptOrder,
   exportOrder,
-  qunarDetailHtml
+  qunarDetailHtml,
+  rejectChange
 } from "@/api/order";
 import { getToken } from "@/utils/auth";
 
@@ -470,6 +471,22 @@ const actions = {
         });
     });
   },
+
+  // 拒绝改签
+  rejectChange({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      rejectChange(params)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  
+
   // 重填票号
   rewriteTicket({ commit }, params) {
     return new Promise((resolve, reject) => {

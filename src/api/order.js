@@ -273,6 +273,16 @@ export function processingChange(params) {
 
   });
 }
+// 拒绝改签
+export function rejectChange(data) {
+  return request({
+    url: `qunar/fuwu/reject/change`,
+    method: 'post',
+    data: data
+
+  });
+}
+
 
 // 自动重填票号
 export function autoRewriteTicket(data) {
