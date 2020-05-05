@@ -485,7 +485,6 @@
                         let param = {};
                         param.categoryCode = this.formData.categoryCode;
                         this.loadPropertyList(param);
-                        this.dialogVisible = true;
                     }).catch(error => {
                     console.log(error);
                 });

@@ -91,21 +91,20 @@
                          :value="item3.value">
               </el-option>
             </el-select>
-            <!-- 多选 销售属性-->
-            <el-checkbox-group
-              v-if="propertyList[index].valueType ==8 && propertyList[index].sku"
-              v-model="item.value">
-              <el-checkbox v-for="item4 in propertyList[index].values" :key="item4.code"
-                           :label="item4.code+','+item4.value">{{item4.value}}
-              </el-checkbox>
-            </el-checkbox-group>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="10">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="品牌编码" prop="brandName">
-            <el-input v-model="formData.brandName"></el-input>
+            <el-input v-model="formData.brandName" disabled></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="10" v-if="formData.skuName">
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="SKU名称" prop="skuName">
+            <el-input v-model="formData.skuName" disabled></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -339,10 +338,11 @@
                     .dispatch("product/getOne", {productId: id})
                     .then(data => {
                         this.formData = data;
-                        let param = {};
-                        param.categoryCode = this.formData.categoryCode;
-                        this.loadPropertyList(param);
-                        this.dialogVisible = true;
+                        if (this.formData.skuId == null || this.formData.skuId == "") {
+                            let param = {};
+                            param.categoryCode = this.formData.categoryCode;
+                            this.loadPropertyList(param);
+                        }
                     }).catch(error => {
                     console.log(error);
                 });
@@ -358,18 +358,19 @@
                             let properties = this.formData.properties;
                             this.formData.properties = [];
                             for (let i = 0, len = data.length; i < len; i++) {
+                                if (data[i].sku) {
+                                    continue;
+                                }
                                 if (data[i].valueType > 6) {
                                     this.formData.properties.push({
                                         label: data[i].propertyLabel,
                                         code: data[i].propertyCode,
-                                        sku: data[i].sku,
                                         value: this.getValue(data[i].propertyCode, properties, [])
                                     });
                                 } else {
                                     this.formData.properties.push({
                                         label: data[i].propertyLabel,
                                         code: data[i].propertyCode,
-                                        sku: data[i].sku,
                                         value: this.getValue(data[i].propertyCode, properties, '')
                                     });
                                 }
