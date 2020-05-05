@@ -378,23 +378,27 @@
         if (value == "2") {
           this.radio = "2";
           this.isWoniuTicket = false;
+          delete this.formData.userNameType;
         } else {
           this.radio = "1";
+          this.isWoniuTicket = true;
+          let userTypeFlag = false;
           for (var i = 0; i < this.supplierAccountData.length; i++) {
             if (this.supplierAccountData[i].accountId == this.formData.accountId && this.isWoniu && this.isWoniuTicket) {
-              if (this.supplierAccountData[i].username=="13064220090 " || this.supplierAccountData[i].username=="15025130712"){
+              if (this.supplierAccountData[i].username == "13064220090 " || this.supplierAccountData[i].username == "15025130712") {
                 this.formData.userNameType = 1;
-              }else if (this.supplierAccountData[i].username=="13700600184"){
+                userTypeFlag = true;
+                break;
+              } else if (this.supplierAccountData[i].username == "13700600184") {
                 this.formData.userNameType = 2;
-              }else {
-                delete this.formData.userNameType;
+                userTypeFlag = true;
+                break;
               }
-              break;
-            }else {
-              delete this.formData.userNameType;
             }
           }
-          this.isWoniuTicket = true;
+          if (!userTypeFlag) {
+            delete this.formData.userNameType;
+          }
         }
       },
       // 判断选中渠道是否是蜗牛
@@ -461,6 +465,8 @@
       },
       // 判断选中渠道是否是蜗牛
       selectSupplier(value) {
+        delete this.formData.userNameType;
+        this.formData.accountId='';
         for (var i = 0; i < this.supplierData.length; i++) {
           if (this.supplierData[i].merchantId == value) {
             this.formData.orderSource = this.supplierData[i].firm.firmName;
