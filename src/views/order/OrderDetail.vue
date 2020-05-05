@@ -8,7 +8,7 @@
           <el-button type="warning" @click="goBack" size="mini">返回</el-button>
         </el-col>
         <el-col :span="14">
-          <el-input v-model="taskRemarkData" placeholder="输入备注信息" class="input-with-select">
+          <el-input v-model="updateRemark" placeholder="输入备注信息" class="input-with-select">
             <template slot="prepend">备注:</template>
             <el-button type="primary" @click="taskRemark" size="mini" slot="append">修改备注</el-button>
           </el-input>
@@ -21,6 +21,7 @@
           <span style="font-size:larger;margin-left: 15px;font-weight: bolder;">销售单信息</span>
           <span style="font-size: 24px; margin: 0 20px; color: #ff4600;">{{orderDetail_orderState}}</span>
           <span style="color: #F56C6C">{{orderDetail_orderComment}}</span>
+          <span style="color: red;font-size: 14px">任务备注：{{taskRemarkData}}</span>
         </template>
         <div style="padding: 20px">
           <el-row :gutter="20">
@@ -477,6 +478,7 @@ export default {
       refundChangeRule: "",
       refundpassengers: "",
       taskRemarkData: this.$route.query.remark,
+      updateRemark:"",
       timer: null,
       changeData: "",
       orderNo: this.$route.query.orderNo,
@@ -1068,7 +1070,7 @@ export default {
     taskSubmit() {
       let params = {};
       params.orderTaskId = this.$route.query.taskId;
-      params.remark = this.taskRemarkData;
+      params.remark = this.updateRemark;
       this.$store
         .dispatch("orderTask/taskSubmit", params)
         .then(data => {
@@ -1086,7 +1088,7 @@ export default {
     },
     // 任务取消
     taskCancel() {
-      if (!this.taskRemarkData) {
+      if (!this.updateRemark) {
         this.$notify({
           title: "提示",
           message: "请填写取消任务的备注信息",
@@ -1097,7 +1099,7 @@ export default {
       }
       let params = {};
       params.orderTaskId = this.$route.query.taskId;
-      params.remark = this.taskRemarkData;
+      params.remark = this.updateRemark;
       this.$store
         .dispatch("orderTask/taskCancel", params)
         .then(data => {
@@ -1106,6 +1108,7 @@ export default {
               type: "success",
               message: "取消成功"
             });
+            this.goBack();
           }
         })
         .catch(error => {
@@ -1114,7 +1117,7 @@ export default {
     },
     // 任务备注
     taskRemark() {
-      if (!this.taskRemarkData) {
+      if (!this.updateRemark) {
         this.$notify({
           title: "提示",
           message: "请填写备注信息",
@@ -1125,7 +1128,7 @@ export default {
       }
       let params = {};
       params.orderTaskId = this.$route.query.taskId;
-      params.remark = this.taskRemarkData;
+      params.remark = this.updateRemark;
       this.$store
         .dispatch("orderTask/taskRemark", params)
         .then(data => {
