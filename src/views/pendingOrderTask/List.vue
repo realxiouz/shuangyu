@@ -35,11 +35,11 @@
         v-loading="loading"
       >
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column prop="taskNo" label="任务编号" width="110" align="center"></el-table-column>
+        <!--<el-table-column prop="taskNo" label="任务编号" width="110" align="center"></el-table-column>-->
         <el-table-column prop="taskName" label="任务名称" width="80" align="center"></el-table-column>
         <el-table-column prop="taskType" :formatter="formatTaskType" label="任务类型" align="center"></el-table-column>
         <el-table-column prop="sourceOrderNo" label="订单来源单号" width="170" align="center"></el-table-column>
-        <el-table-column prop="fullName" label="员工姓名" width="100" align="center"></el-table-column>
+        <el-table-column prop="fullName" label="派单员工" width="100" align="center"></el-table-column>
         <el-table-column label="乘客" align="center" width="200">
           <template slot-scope="scope">
             <i v-if="scope.row.passengers"></i>
@@ -61,7 +61,7 @@
             <span>{{ formatFlight(scope.row.flights)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="ruleType" width="80" label="规则类型" align="center">
+        <el-table-column prop="ruleType" width="60" label="规则类型" align="center">
           <template slot-scope="scope">
             <span>{{ scope.row.ruleType==0?"系统":"手工"}}</span>
           </template>
@@ -88,7 +88,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="duration" label="持续时长" width="80" align="center"></el-table-column>
-        <el-table-column prop="remark" label="备注" align="center"></el-table-column>
+        <el-table-column prop="remark" label="备注" align="center" fixed="right"></el-table-column>
 
         <el-table-column label="操作" fixed="right" align="center" width="80">
           <template slot-scope="scope">
