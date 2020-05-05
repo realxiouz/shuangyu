@@ -48,8 +48,9 @@ export function removeOne(userId) {
 }
 
 export function updateOne(data) {
+  debugger
   return request({
-    url: '/user/update/one',
+    url: '/admin/user/update/one',
     method: 'post',
     data
   });
