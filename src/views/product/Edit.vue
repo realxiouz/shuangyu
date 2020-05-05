@@ -316,16 +316,12 @@
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
                         this.$store
-                            .dispatch("product/update", this.formData)
+                            .dispatch("product/updateOne", this.formData)
                             .then(() => {
                             })
                             .catch(error => {
                                 console.log(error);
                             });
-                        this.$message({
-                            type: "success",
-                            message: "更新成功！"
-                        });
                         this.goBack();
                     }
                 });
