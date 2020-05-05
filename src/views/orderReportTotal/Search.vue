@@ -28,6 +28,23 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="订单日期:">
+            <el-col>
+              <el-date-picker
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                :unlink-panels="true"
+                type="daterange"
+                placeholder="选择日期"
+                v-model="formData.createTime"
+                style="width: 100%;"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+              ></el-date-picker>
+            </el-col>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="PNR:">
             <el-input clearable v-model="formData.pnr" style="width: 100%"></el-input>
           </el-form-item>
@@ -248,23 +265,7 @@
             </el-row>
           </el-form-item>
         </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="订单日期:">
-            <el-col>
-              <el-date-picker
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-                :unlink-panels="true"
-                type="daterange"
-                placeholder="选择日期"
-                v-model="formData.createTime"
-                style="width: 100%;"
-                format="yyyy-MM-dd"
-                value-format="yyyy-MM-dd"
-              ></el-date-picker>
-            </el-col>
-          </el-form-item>
-        </el-col>
+
         <el-col :xs="24" :sm="18" :md="14" :lg="10" :xl="6">
           <el-form-item v-show="more" label="航程类型:">
             <el-radio-group v-model="formData.voyageType" style="width: 100%">
@@ -282,10 +283,14 @@
         icon="el-icon-search"
         size="mini"
         @click="$emit('onSearch', formData)"
-      >查询
-      </el-button>
-      <el-button icon="el-icon-refresh" class="filter-item" type="primary" size="mini" @click="handleClear">清空
-      </el-button>
+      >查询</el-button>
+      <el-button
+        icon="el-icon-refresh"
+        class="filter-item"
+        type="primary"
+        size="mini"
+        @click="handleClear"
+      >清空</el-button>
       <el-button type="text" size="mini" @click="handleMore">
         更多
         <i :class="switchIcon"></i>
@@ -295,48 +300,48 @@
 </template>
 
 <script>
-    export default {
-        name: "orderReportSearch",
-        data() {
-            return {
-                more: false,
-                formData: this.initSearchForm()
-            };
-        },
-        computed: {
-            switchIcon() {
-                if (!this.more) {
-                    return "el-icon-arrow-down el-icon--right";
-                } else {
-                    return "el-icon-arrow-up el-icon--right";
-                }
-            }
-        },
-        methods: {
-            initSearchForm() {
-                return {
-                    voyageType: null, //航程类型
-                    orderType: 0, //订单来源
-                    flightCode: null, //航班号
-                    flightDate: null, //出发日期
-                    cabin: null, //舱位
-                    status: null, //订单状态
-                    pnr: null, //PNR
-                    ticketNo: null, //票号
-                    orderNo: null, //订单号
-                    name: null, //乘机人姓名
-                    cardNo: null, //乘机人证件号
-                    createTime: null
-                };
-            },
-            handleClear() {
-                this.formData = this.initSearchForm();
-            },
-            handleMore() {
-                this.more = !this.more;
-            }
-        }
+export default {
+  name: "orderReportSearch",
+  data() {
+    return {
+      more: false,
+      formData: this.initSearchForm()
     };
+  },
+  computed: {
+    switchIcon() {
+      if (!this.more) {
+        return "el-icon-arrow-down el-icon--right";
+      } else {
+        return "el-icon-arrow-up el-icon--right";
+      }
+    }
+  },
+  methods: {
+    initSearchForm() {
+      return {
+        voyageType: null, //航程类型
+        orderType: 0, //订单来源
+        flightCode: null, //航班号
+        flightDate: null, //出发日期
+        cabin: null, //舱位
+        status: null, //订单状态
+        pnr: null, //PNR
+        ticketNo: null, //票号
+        orderNo: null, //订单号
+        name: null, //乘机人姓名
+        cardNo: null, //乘机人证件号
+        createTime: null
+      };
+    },
+    handleClear() {
+      this.formData = this.initSearchForm();
+    },
+    handleMore() {
+      this.more = !this.more;
+    }
+  }
+};
 </script>
 
 <style scoped></style>
