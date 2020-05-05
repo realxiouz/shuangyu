@@ -105,9 +105,6 @@
                     });
             },
             loadData(searchForm) {
-                if (!searchForm || !searchForm.appName) {
-                    searchForm = {};
-                }
                 this.$store
                     .dispatch("product/getPageList", {
                         pageFlag: this.pageFlag,
