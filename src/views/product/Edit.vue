@@ -317,9 +317,7 @@
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
                         this.$store
-                            .dispatch("product/save", {
-                                productList: this.dataList
-                            })
+                            .dispatch("product/update", this.formData)
                             .then(() => {
                             })
                             .catch(error => {
@@ -327,7 +325,7 @@
                             });
                         this.$message({
                             type: "success",
-                            message: "保存成功！"
+                            message: "更新成功！"
                         });
                         this.goBack();
                     }
@@ -405,7 +403,6 @@
                 this.handleGetOne(this.$route.query.productId);
             } else {
                 this.formData = this.defaultFormData();
-                this.dataList.push(this.defaultFormData());
             }
         }
     }
