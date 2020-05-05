@@ -425,14 +425,10 @@
           this.isWoniuTicket = false;
         } else {
           this.radio = "1";
-
+          this.isWoniuTicket = true;
           let userTypeFlag = false;
           for (var i = 0; i < this.supplierAccountData.length; i++) {
-            console.log(this.supplierAccountData[i].accountId == this.formData.accountId)
-            console.log(this.isWoniu)
-            console.log(this.isWoniuTicket)
             if (this.supplierAccountData[i].accountId == this.formData.accountId && this.isWoniu && this.isWoniuTicket) {
-              console.log("+++++++++++++++++++-----")
               if (this.supplierAccountData[i].username == "13064220090 " || this.supplierAccountData[i].username == "15025130712") {
                 this.formData.userNameType = 1;
                 userTypeFlag = true;
@@ -444,13 +440,9 @@
               }
             }
           }
-          console.log("-----------" + this.formData.userNameType);
           if (!userTypeFlag) {
-            console.log("-------qwrewrtewrt-----------" + this.formData.userNameType);
             delete this.formData.userNameType;
           }
-
-          this.isWoniuTicket = true;
         }
       },
       // 判断选中渠道是否是蜗牛
@@ -470,6 +462,7 @@
             delete this.formData.userNameType;
           }
         }
+        console.log(this.formData.userNameType);
       },
       // 获取资金账号
       getFinance() {
@@ -515,6 +508,8 @@
       },
       // 判断选中渠道是否是蜗牛
       selectSupplier(value) {
+        delete this.formData.userNameType;
+        this.formData.accountId='';
         for (var i = 0; i < this.supplierData.length; i++) {
           if (this.supplierData[i].merchantId == value) {
             this.formData.orderSource = this.supplierData[i].firm.firmName;
