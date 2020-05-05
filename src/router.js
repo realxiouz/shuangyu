@@ -172,6 +172,13 @@ export default new Router({
           meta: {title: '订单详情', icon: 'home'}
         },
         {
+          title: '订单详情',
+          path: '/order/detail2',
+          name: 'orderDetail2',
+          component: () => import('@/views/order/Detail'),
+          meta: {title: '订单详情', icon: 'home'}
+        },
+        {
           title: '出票',
           path: '/order/detail/go/ticket',
           name: 'goTicket',

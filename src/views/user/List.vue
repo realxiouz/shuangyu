@@ -34,9 +34,9 @@
             <el-switch :value="scope.row.super" @change="superSwitch(scope.row)"></el-switch>
           </template>
         </el-table-column>
-        <el-table-column label="是否启用" align="center" width="120">
+        <el-table-column label="是否启用"  align="center" width="120">
           <template slot-scope="scope">
-            <el-switch :value="scope.row.enable" @change="enableSwitch(scope.row)"></el-switch>
+            <el-switch :disabled="true" :value="scope.row.enable" @change="enableSwitch(scope.row)"></el-switch>
           </template>
         </el-table-column>
         <el-table-column label="操作" fixed="right" align="center" width="250">

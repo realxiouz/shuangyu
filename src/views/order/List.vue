@@ -341,7 +341,7 @@
       },
       handleOrderDetail(row) {
         let path = "";
-        path = "/order/detail";
+        path = "/order/detail2";
         this.$router.push({
           path: path,
           query: {
