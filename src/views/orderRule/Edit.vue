@@ -16,7 +16,10 @@
       <el-row>
         <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
           <el-form-item label="序号:" prop="sort">
-            <el-input v-model="formData.sort"></el-input>
+            <el-input
+              onkeyup="this.value=this.value.replace(/[^\d.]/g,'');"
+              v-model="formData.sort"
+            ></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="24" :md="4" :lg="4" :xl="4">
@@ -85,7 +88,6 @@
             </el-select>
           </el-form-item>
         </el-col>
-
       </el-row>
 
       <el-row>
@@ -215,8 +217,8 @@
               <el-button
                 @click.native.prevent="handleRemove(scope.$index, scope.row)"
                 type="danger"
-                size="mini">删除
-              </el-button>
+                size="mini"
+              >删除</el-button>
               <el-button type="primary" size="mini" @click="selectStaff">继续添加</el-button>
             </template>
           </el-table-column>
@@ -241,228 +243,228 @@
   </div>
 </template>
 <script>
-  import selectStaff from "../../components/SelectStaffs.vue";
+import selectStaff from "../../components/SelectStaffs.vue";
 
-  function defaultData() {
-    return {
-      ruleName: "",
-      ruleType: 1,
-      taskType: [],
-      ticketing: false,
-      airlines: {
-        inOrEx: 0,
-        values: [],
-        remark: ""
-      },
-      segments: {
-        inOrEx: 0,
-        values: [],
-        remark: ""
-      },
-      flights: {
-        inOrEx: 0,
-        values: [],
-        remark: ""
-      },
-      cabins: {
-        inOrEx: 0,
-        values: [],
-        remark: ""
-      },
-      policyCodes: [],
-      staffs: [],
-      nextStaffId: "",
-      principalName: "",
-      staffNames: "",
-      principal: "",
-      autoGrabTicket: false
-    };
-  }
-
-  export default {
-    name: "orderRuleEdit",
-    data() {
-      return {
-        formData: defaultData(),
-        dialogVisible: false,
-        checkboxFlag: false,
-        peopleData: [],
-        staffData: [],
-        staffIdList: [],
-        taskTypes: [
-          {label: "出票", value: 1},
-          {label: "退票", value: 2},
-          {label: "改签", value: 3},
-          {label: "未出票申请退款", value: 4},
-          {label: "消息", value: 5},
-          {label: "质检", value: 6},
-          {label: "补单", value: 11},
-          {label: "填写单号", value: 12}
-        ],
-        channels: [
-          {label: "蜗牛", value: 1},
-          {label: "BSP", value: 2}
-        ],
-        formRules: {
-          ruleName: [
-            {required: true, message: "请输入规则名称", trigger: "blur"}
-          ],
-          sort: [{required: true, message: "请输入序号", trigger: "blur"}],
-          policyCodes: [
-            {required: true, message: "请输入政策代码", trigger: "blur"}
-          ]
-        }
-      };
+function defaultData() {
+  return {
+    ruleName: "",
+    ruleType: 1,
+    taskType: [],
+    ticketing: false,
+    airlines: {
+      inOrEx: 0,
+      values: [],
+      remark: ""
     },
-    computed: {
-      _airlines: {
-        get: function () {
-          return this.formData.airlines.values.join(",");
-        },
-        set: function (newValue) {
-          this.formData.airlines.values = newValue.split(",");
-        }
-      },
-      _segments: {
-        get: function () {
-          return this.formData.segments.values.join(",");
-        },
-        set: function (newValue) {
-          this.formData.segments.values = newValue.split(",");
-        }
-      },
-      _flights: {
-        get: function () {
-          return this.formData.flights.values.join(",");
-        },
-        set: function (newValue) {
-          this.formData.flights.values = newValue.split(",");
-        }
-      },
-      _cabins: {
-        get: function () {
-          return this.formData.cabins.values.join(",");
-        },
-        set: function (newValue) {
-          this.formData.cabins.values = newValue.split(",");
-        }
-      },
-      _policyCodes: {
-        get: function () {
-          return this.formData.policyCodes.join(",");
-        },
-        set: function (newValue) {
-          this.formData.policyCodes = newValue.split(",");
-        }
-      }
+    segments: {
+      inOrEx: 0,
+      values: [],
+      remark: ""
     },
-    methods: {
-      resetForm() {
-        this.formData = defaultData();
-      },
-      goBack() {
-        this.$router.go(-1);
-      },
-      loadForm() {
-        console.log("loadForm");
-      },
-      loadStaffData(flag) {
-        this.$store
-          .dispatch("staff/getMany", {
-            staffIdList: JSON.stringify(this.staffIdList)
-          })
-          .then(data => {
-            if (flag == "1") {
-              this.peopleData = data;
-            } else {
-              this.staffData = data;
-            }
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      },
-      handleSave() {
-        var staffs = [];
-        if (this.formData.ruleType == 1) {
-          if (this.peopleData.length > 0) {
-            this.formData.principal = this.peopleData[0].staffId;
-          }else {
-            this.$message.error('必须选择负责人');
-            return;
-          }
-          if (this.staffData.length > 0) {
-            for (var i = 0; i < this.staffData.length; i++) {
-              staffs.push(this.staffData[i].staffId);
-            }
-          }else {
-            this.$message.error('必须选择员工');
-            return;
-          }
-        }
-        this.formData.staffs = staffs;
-        this.$store
-          .dispatch("orderRule/save", this.formData)
-          .then(() => {
-            this.goBack();
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      },
-      onSelectStaff(params) {
-        if (!this.checkboxFlag) {
-          var tempData = [];
-          tempData.push(params);
-          this.peopleData = tempData;
-        } else {
-          this.staffData = params;
-        }
-        this.dialogVisible = false;
-      },
-      onStaffCancel() {
-        this.dialogVisible = false;
-      },
-      selectStaff() {
-        this.checkboxFlag = true;
-        this.dialogVisible = true;
-      },
-      selectPeople() {
-        this.checkboxFlag = false;
-        this.dialogVisible = true;
-      },
-      handleRemove(index, row) {
-        console.log(row);
-        this.staffData.splice(index, 1);
-      }
+    flights: {
+      inOrEx: 0,
+      values: [],
+      remark: ""
     },
-    mounted() {
-      let paramData = this.$route.params;
-      if (Object.keys(paramData).length > 0) {
-        this.formData = JSON.parse(JSON.stringify(paramData));
-        if (this.formData.principal && this.formData.principal != null) {
-          this.staffIdList = [];
-          this.staffIdList.push(this.formData.principal);
-          this.loadStaffData("1");
-        }
-        if (
-          this.formData.staffs &&
-          this.formData.staffs != null &&
-          this.formData.staffs.length > 0
-        ) {
-          this.staffIdList = [];
-          this.staffIdList = this.formData.staffs;
-          this.loadStaffData("0");
-        }
-      }
+    cabins: {
+      inOrEx: 0,
+      values: [],
+      remark: ""
     },
-    components: {
-      selectStaff
-    }
+    policyCodes: [],
+    staffs: [],
+    nextStaffId: "",
+    principalName: "",
+    staffNames: "",
+    principal: "",
+    autoGrabTicket: false
   };
+}
+
+export default {
+  name: "orderRuleEdit",
+  data() {
+    return {
+      formData: defaultData(),
+      dialogVisible: false,
+      checkboxFlag: false,
+      peopleData: [],
+      staffData: [],
+      staffIdList: [],
+      taskTypes: [
+        { label: "出票", value: 1 },
+        { label: "退票", value: 2 },
+        { label: "改签", value: 3 },
+        { label: "未出票申请退款", value: 4 },
+        { label: "消息", value: 5 },
+        { label: "质检", value: 6 },
+        { label: "补单", value: 11 },
+        { label: "填写单号", value: 12 }
+      ],
+      channels: [
+        { label: "蜗牛", value: 1 },
+        { label: "BSP", value: 2 }
+      ],
+      formRules: {
+        ruleName: [
+          { required: true, message: "请输入规则名称", trigger: "blur" }
+        ],
+        sort: [{ required: true, message: "请输入序号", trigger: "blur" }],
+        policyCodes: [
+          { required: true, message: "请输入政策代码", trigger: "blur" }
+        ]
+      }
+    };
+  },
+  computed: {
+    _airlines: {
+      get: function() {
+        return this.formData.airlines.values.join(",");
+      },
+      set: function(newValue) {
+        this.formData.airlines.values = newValue.split(",");
+      }
+    },
+    _segments: {
+      get: function() {
+        return this.formData.segments.values.join(",");
+      },
+      set: function(newValue) {
+        this.formData.segments.values = newValue.split(",");
+      }
+    },
+    _flights: {
+      get: function() {
+        return this.formData.flights.values.join(",");
+      },
+      set: function(newValue) {
+        this.formData.flights.values = newValue.split(",");
+      }
+    },
+    _cabins: {
+      get: function() {
+        return this.formData.cabins.values.join(",");
+      },
+      set: function(newValue) {
+        this.formData.cabins.values = newValue.split(",");
+      }
+    },
+    _policyCodes: {
+      get: function() {
+        return this.formData.policyCodes.join(",");
+      },
+      set: function(newValue) {
+        this.formData.policyCodes = newValue.split(",");
+      }
+    }
+  },
+  methods: {
+    resetForm() {
+      this.formData = defaultData();
+    },
+    goBack() {
+      this.$router.go(-1);
+    },
+    loadForm() {
+      console.log("loadForm");
+    },
+    loadStaffData(flag) {
+      this.$store
+        .dispatch("staff/getMany", {
+          staffIdList: JSON.stringify(this.staffIdList)
+        })
+        .then(data => {
+          if (flag == "1") {
+            this.peopleData = data;
+          } else {
+            this.staffData = data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    handleSave() {
+      var staffs = [];
+      if (this.formData.ruleType == 1) {
+        if (this.peopleData.length > 0) {
+          this.formData.principal = this.peopleData[0].staffId;
+        } else {
+          this.$message.error("必须选择负责人");
+          return;
+        }
+        if (this.staffData.length > 0) {
+          for (var i = 0; i < this.staffData.length; i++) {
+            staffs.push(this.staffData[i].staffId);
+          }
+        } else {
+          this.$message.error("必须选择员工");
+          return;
+        }
+      }
+      this.formData.staffs = staffs;
+      this.$store
+        .dispatch("orderRule/save", this.formData)
+        .then(() => {
+          this.goBack();
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    onSelectStaff(params) {
+      if (!this.checkboxFlag) {
+        var tempData = [];
+        tempData.push(params);
+        this.peopleData = tempData;
+      } else {
+        this.staffData = params;
+      }
+      this.dialogVisible = false;
+    },
+    onStaffCancel() {
+      this.dialogVisible = false;
+    },
+    selectStaff() {
+      this.checkboxFlag = true;
+      this.dialogVisible = true;
+    },
+    selectPeople() {
+      this.checkboxFlag = false;
+      this.dialogVisible = true;
+    },
+    handleRemove(index, row) {
+      console.log(row);
+      this.staffData.splice(index, 1);
+    }
+  },
+  mounted() {
+    let paramData = this.$route.params;
+    if (Object.keys(paramData).length > 0) {
+      this.formData = JSON.parse(JSON.stringify(paramData));
+      if (this.formData.principal && this.formData.principal != null) {
+        this.staffIdList = [];
+        this.staffIdList.push(this.formData.principal);
+        this.loadStaffData("1");
+      }
+      if (
+        this.formData.staffs &&
+        this.formData.staffs != null &&
+        this.formData.staffs.length > 0
+      ) {
+        this.staffIdList = [];
+        this.staffIdList = this.formData.staffs;
+        this.loadStaffData("0");
+      }
+    }
+  },
+  components: {
+    selectStaff
+  }
+};
 </script>
 <style scoped>
-  .el-form-item {
-    margin-bottom: 20px;
-  }
+.el-form-item {
+  margin-bottom: 20px;
+}
 </style>

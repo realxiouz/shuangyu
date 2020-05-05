@@ -14,8 +14,8 @@
         size="mini"
         v-loading="loading"
       >
-        <el-table-column prop="ruleName" label="规则名称" align="center"></el-table-column>
-        <el-table-column prop="domain" label="公司域名" align="center"></el-table-column>
+        <el-table-column prop="ruleName" label="规则名称" width="180" align="center"></el-table-column>
+        <el-table-column prop="domain" label="公司域名" width="180" align="center"></el-table-column>
         <el-table-column prop="policyCodes" label="政策代码" align="center">
           <template slot-scope="scope">
             <span>{{scope.row.policyCodes.join(",")}}</span>
