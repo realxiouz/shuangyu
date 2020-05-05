@@ -24,15 +24,15 @@
         ></el-date-picker>
       </el-form-item>
       <el-form-item v-if="''== this.userId" label="邮箱" prop="email">
-        <el-input placeholder="请输入您的邮箱" v-model="formData.email" @blur="isUsedForEmail"></el-input>
+        <el-input placeholder="请输入您的邮箱" clearable v-model="formData.email" @blur="isUsedForEmail"></el-input>
         <span v-if="isExistsForEmail" style="color: crimson">*该信息已被注册</span>
       </el-form-item>
       <el-form-item v-if="''==this.userId" label="验证码" prop="verificationCode">
-        <el-row :gutter="10">
+        <el-row type="flex" justify="space-between">
           <el-col :span="17">
-            <el-input placeholder="请输入验证码" v-model="formData.verificationCode" />
+            <el-input clearable placeholder="请输入验证码" v-model="formData.verificationCode" />
           </el-col>
-          <el-col :span="6" style="text-align:right;">
+          <el-col :span="6">
             <el-button
               size="mini"
               style="width:100%;"
@@ -40,8 +40,8 @@
               @click="getVerificationCode(formData.email)"
               type="primary"
             >
-              <span v-show="!showCount">获取</span>
-              <span v-show="showCount">{{countDown}} s后重新获取</span>
+              <span v-show="!showCount">获取验证码</span>
+              <span v-show="showCount">{{countDown}} s后获取</span>
             </el-button>
           </el-col>
         </el-row>
@@ -92,7 +92,7 @@ export default {
       var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
       if (!reg.test(value)) {
         this.isEmail = false;
-        callback(new Error("您输入的邮箱格式错误！"));
+        callback(new Error("请输入正确的邮箱！"));
       } else {
         this.isEmail = true;
         callback();
@@ -207,6 +207,7 @@ export default {
     //获取邮箱验证码
     getVerificationCode(email) {
       if (this.isEmail) {
+        console.log(this.isExistsForEmail);
         if (!this.isExistsForEmail) {
           if (email) {
             this.$store
@@ -224,19 +225,19 @@ export default {
             });
             this.timer = true;
           }
-        }
-        if (!this.timer) {
-          this.countDown = this.TIME_COUNT;
-          this.showCount = true;
-          this.timer = setInterval(() => {
-            if (this.countDown > 0 && this.countDown <= this.TIME_COUNT) {
-              this.countDown--;
-            } else {
-              this.showCount = false;
-              clearInterval(this.timer); // 清除定时器
-              this.timer = null;
-            }
-          }, 1000);
+          if (!this.timer) {
+            this.countDown = this.TIME_COUNT;
+            this.showCount = true;
+            this.timer = setInterval(() => {
+              if (this.countDown > 0 && this.countDown <= this.TIME_COUNT) {
+                this.countDown--;
+              } else {
+                this.showCount = false;
+                clearInterval(this.timer); // 清除定时器
+                this.timer = null;
+              }
+            }, 1000);
+          }
         }
       } else {
         this.$message({
