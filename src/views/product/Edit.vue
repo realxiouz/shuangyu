@@ -101,7 +101,7 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row :gutter="10" v-if="formData.skuName">
+      <el-row :gutter="10" v-if="formData.skuName !=null || formData.skuName !=''">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="SKU名称" prop="skuName">
             <el-input v-model="formData.skuName" disabled></el-input>
