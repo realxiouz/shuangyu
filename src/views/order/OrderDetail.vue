@@ -236,19 +236,19 @@
                 >删除</el-button>
                 <el-button
                   type="primary"
-                  v-show="woniuPperateButton(scope.row)"
+                  v-show="woniuPerateButton(scope.row)"
                   @click="refundTicket(scope.row)"
                   size="mini"
                 >退票</el-button>
                 <el-button
                   type="primary"
-                  v-show="woniuPperateButton(scope.row)"
+                  v-show="woniuPerateButton(scope.row)"
                   @click="changeTicket(scope.row)"
                   size="mini"
                 >改签</el-button>
                 <el-button
                   type="primary"
-                  v-show="woniuPperateButton(scope.row) && taskType=='4'"
+                  v-show="woniuPerateButton(scope.row) && taskType=='4'"
                   @click="intercept(scope.row)"
                   size="mini"
                 >拦截</el-button>
@@ -515,7 +515,7 @@ export default {
     formatCardType,
 
     //蜗牛展示按钮
-    woniuPperateButton(row) {
+    woniuPerateButton(row) {
       var flag = false;
       if (
         row.orderSource == "QUNAR_OPEN" ||
