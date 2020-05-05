@@ -139,7 +139,7 @@
             },
             handleUpdate(id) {
                 let path = "";
-                path = "/product/config";
+                path = "/product/edit";
                 this.$router.push({
                     path: path,
                     query: {

@@ -597,6 +597,13 @@ export default new Router({
           title: '添加商品',
           path: '/product/config',
           name: 'productConfig',
+          component: () => import('@/views/product/Add'),
+          meta: {title: '添加商品', icon: 'home'}
+        },
+        {
+          title: '编辑商品',
+          path: '/product/edit',
+          name: 'productEdit',
           component: () => import('@/views/product/Edit'),
           meta: {title: '添加商品', icon: 'home'}
         },
@@ -620,21 +627,7 @@ export default new Router({
           name: 'brand',
           component: () => import('@/views/brand/List'),
           meta: {title: '品牌信息', icon: 'home'}
-        },
-        {
-          title: '商品SKU',
-          path: '/product/stock/keeping/list',
-          name: 'productStockKeeping',
-          component: () => import('@/views/productStockKeeping/List'),
-          meta: {title: '商品SKU', icon: 'home'}
-        },
-        {
-          title: '商品SKU编辑',
-          path: '/product/stock/keeping/config',
-          name: 'config',
-          component: () => import('@/views/productStockKeeping/Edit'),
-          meta: {title: '商品SKU', icon: 'home'}
-        },
+        }
       ]
     },
     {
