@@ -21,7 +21,7 @@
           <span style="font-size:larger;margin-left: 15px;font-weight: bolder;">销售单信息</span>
           <span style="font-size: 24px; margin: 0 20px; color: #ff4600;">{{orderDetail_orderState}}</span>
           <span style="color: #F56C6C">{{orderDetail_orderComment}}</span>
-          <span style="color: red;font-size: 14px">任务备注：{{taskRemarkData}}</span>
+          <span v-if="taskRemarkData" style="color: red;font-size: 14px">任务备注：{{taskRemarkData}}</span>
         </template>
         <div style="padding: 20px">
           <el-row :gutter="20">

@@ -390,7 +390,7 @@ export default new Router({
           title: '客户去哪儿接口管理',
           path: '/qunar/config',
           name: 'qunarOrderConfig',
-          component: () => import('@/views/customer/qunarConfig'),
+          component: () => import('@/views/customer/QunarConfig'),
           meta: {title: '客户去哪儿接口管理', icon: 'home'}
         },
         {
