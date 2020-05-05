@@ -1,6 +1,6 @@
 <template>
   <el-row type="flex" justify="space-between" align="bottom">
-    <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
+    <el-col :xs="14" :sm="15" :md="16" :lg="17" :xl="18">
       <el-form :model="formData" label-width="110px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="订单号:">
@@ -322,7 +322,7 @@
         </el-col>
       </el-form>
     </el-col>
-    <el-col :xs="8" :sm="6" :md="6" :lg="4" :xl="4" class="search-tools">
+    <el-col :xs="10" :sm="9" :md="8" :lg="7" :xl="6" class="search-tools">
       <el-button
         icon="el-icon-search"
         class="filter-item"
