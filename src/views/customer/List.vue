@@ -12,6 +12,8 @@
         size="mini"
         :data="tableData"
         row-key="firm.firmId"
+        highlight-current-row
+        fit
       >
         <el-table-column prop="firm.firmName" label="客户名称" align="center" sortable width="170"></el-table-column>
         <el-table-column prop="firm.firmCode" label="客户代码" align="center" sortable width="170"></el-table-column>
@@ -20,7 +22,7 @@
         <el-table-column prop="firm.email" label="邮箱" align="center" width="200"></el-table-column>
         <el-table-column prop="firm.address" label="地址" align="center" width="200"></el-table-column>
         <el-table-column prop="remark" label="备注" align="center" width="200"></el-table-column>
-        <el-table-column label="操作" fixed="right">
+        <el-table-column label="操作" fixed="right" align="center" width="340">
           <template slot-scope="scope">
             <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
             <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
@@ -33,13 +35,14 @@
       </el-table>
 
       <!-- 员工查询弹窗 -->
-      <el-dialog title="关联用户" width="37%" :visible.sync="dialogVisible" :close-on-click-modal="false">
+      <el-dialog center title="关联用户" width="37%" :visible.sync="dialogVisible" :close-on-click-modal="false">
         <el-table
           highlight-current-row
           size="mini"
           :data="userTableData"
           style="width: 100%"
           @row-click="handleRowClick"
+          fit
         >
           <el-table-column prop="nickName" label="昵称" align="center" width="120"></el-table-column>
           <el-table-column prop="fullName" label="姓名" align="center" width="120"></el-table-column>
@@ -51,10 +54,10 @@
           <el-table-column prop="phone" label="电话" align="center"></el-table-column>
           <el-table-column prop="email" label="邮箱" align="center"></el-table-column>
         </el-table>
-        <span slot="footer" class="dialog-footer">
+        <div slot="footer" class="dialog-footer" style="text-align:right">
         <el-button size="mini" @click="dialogVisible = false">取 消</el-button>
         <el-button size="mini" type="primary" @click="handleSaveRelation">添 加</el-button>
-      </span>
+      </div>
       </el-dialog>
     </div>
   </div>
