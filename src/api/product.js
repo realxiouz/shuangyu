@@ -9,6 +9,14 @@ export function save(data) {
   });
 }
 
+export function updateOne(data) {
+  return request({
+    url: "/product/update/one",
+    method: "post",
+    data
+  });
+}
+
 export function removeOne(id) {
   return request({
     url: `/product/remove/one/${id}`,

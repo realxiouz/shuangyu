@@ -1,7 +1,7 @@
 <template>
   <div class="contentBox">
     <el-row type="flex" justify="space-between" style="margin-bottom:20px;" align="bottom">
-      <span style="font-weight:700;color:#303133;" v-if="!dictVisible">{{this.curNode.name}}</span>
+      <span style="font-weight:700;color:#303133;" v-if="!dictVisible">{{this.curNode.categoryName}}</span>
       <span></span>
       <el-button type="primary" size="mini" @click="handleAdd" :disabled="dictVisible">添加</el-button>
     </el-row>
@@ -10,17 +10,18 @@
       size="mini"
       :data="tableData"
       fit
+      highlight-current-row
       style="width: 100%;margin-bottom: 20px;"
     >
       <el-table-column prop="name" align="center" label="字典名称"></el-table-column>
       <el-table-column prop="key" align="center" label="字典键"></el-table-column>
       <el-table-column prop="value" align="center" label="字典值" width="80"></el-table-column>
-      <el-table-column label="类别" align="center" >
+      <el-table-column label="类别" align="center">
         <template slot-scope="scope">
           <span style="margin-left: 10px">{{ formatCategory(scope.row.categoryId) }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="categoryCode" label="类别编码" ></el-table-column>
+      <el-table-column align="center" prop="categoryCode" label="类别编码"></el-table-column>
       <el-table-column label="操作" align="center" width="180">
         <template slot-scope="scope">
           <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
@@ -40,7 +41,7 @@
     ></el-pagination>
 
     <el-dialog
-      :title="isEdit?'编辑第三方平台账号信息':'添加第三方平台账号信息'"
+      :title="isEdit?'编辑第开放平台账号信息':'添加开放平台账号信息'"
       :visible.sync="dialogVisible"
       width="30%"
       :close-on-click-modal="false"
@@ -82,7 +83,7 @@ export default {
     return {
       dialogVisible: false,
       loading: false,
-      isEdit:false,
+      isEdit: false,
       tableData: [],
       formData: {},
       categoryList: [],
@@ -149,7 +150,7 @@ export default {
     },
     /*添加记录*/
     handleAdd() {
-      this.isEdit=false;
+      this.isEdit = false;
       this.dialogVisible = true;
       this.clearForm();
 
@@ -182,9 +183,9 @@ export default {
     },
     /*点击记录进行编辑*/
     handleEdit(row) {
-      this.isEdit=true;
+      this.isEdit = true;
       this.dialogVisible = true;
-        Object.assign(this.formData,row);
+      Object.assign(this.formData, row);
     },
     /*对字典信息进行删除*/
     handleDelete(row) {
@@ -195,7 +196,7 @@ export default {
       this.$store
         .dispatch("dict/removeOne", { dictId: dictId })
         .then(() => {
-            this.lastId = "blank";
+          this.lastId = "blank";
           if (1 === this.tableData.length) {
             this.handlePrevClick();
           } else {

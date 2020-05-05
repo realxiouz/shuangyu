@@ -398,7 +398,7 @@ export default new Router({
           path: '/woniu/config',
           name: 'woniuConfig',
           component: () => import('@/views/supplier/WoniuConfig'),
-          meta: {title: '客户去哪儿接口管理', icon: 'home'}
+          meta: {title: '供应商蜗牛接口管理', icon: 'home'}
         },
         {
           path: '/supplier/bsp/config',

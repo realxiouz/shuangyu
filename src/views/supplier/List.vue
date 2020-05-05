@@ -20,7 +20,7 @@
         <el-table-column prop="firm.email" label="邮箱" align="center" width="200"></el-table-column>
         <el-table-column prop="firm.address" label="地址" align="center" width="200"></el-table-column>
         <el-table-column prop="firm.remark" label="备注" align="center" width="200"></el-table-column>
-        <el-table-column label="操作" fixed="right">
+        <el-table-column label="操作" align="center" fixed="right" width="240">
           <template slot-scope="scope">
             <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
             <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
