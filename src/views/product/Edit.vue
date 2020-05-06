@@ -91,6 +91,15 @@
                          :value="item3.value">
               </el-option>
             </el-select>
+            <!-- 多选 销售属性-->
+            <el-checkbox-group
+              v-if="propertyList[index].valueType ==8 && propertyList[index].sku"
+              v-model="item.value">
+              <el-checkbox v-for="item4 in propertyList[index].values" :key="item4.code"
+                           :label="item4.code+','+item4.value">{{item4.value}}
+              </el-checkbox>
+            </el-checkbox-group>
+
           </el-form-item>
         </el-col>
       </el-row>
@@ -98,13 +107,6 @@
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="品牌编码" prop="brandName">
             <el-input v-model="formData.brandName" disabled></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="10" v-if="formData.skuName !=null || formData.skuName !=''">
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="SKU名称" prop="skuName">
-            <el-input v-model="formData.skuName" disabled></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -157,37 +159,7 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row :gutter="10">
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="库存上限" prop="maxStockQuantity">
-            <el-input-number v-model="formData.maxStockQuantity"></el-input-number>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="库存下限" prop="minStockQuantity">
-            <el-input-number v-model="formData.minStockQuantity"></el-input-number>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="10">
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="单价" prop="price">
-            <el-input-number v-model="formData.price" :precision="2" :step="0.1"></el-input-number>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="成本" prop="cost">
-            <el-input-number v-model="formData.cost" :precision="2" :step="0.1"></el-input-number>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="10">
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="数量" prop="quantity">
-            <el-input-number v-model="formData.quantity"></el-input-number>
-          </el-form-item>
-        </el-col>
-      </el-row>
+
       <el-row :gutter="10">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="描述" prop="description">
@@ -354,19 +326,18 @@
                             let properties = this.formData.properties;
                             this.formData.properties = [];
                             for (let i = 0, len = data.length; i < len; i++) {
-                                if (data[i].sku) {
-                                    continue;
-                                }
                                 if (data[i].valueType > 6) {
                                     this.formData.properties.push({
                                         label: data[i].propertyLabel,
                                         code: data[i].propertyCode,
+                                        sku: data[i].sku,
                                         value: this.getValue(data[i].propertyCode, properties, [])
                                     });
                                 } else {
                                     this.formData.properties.push({
                                         label: data[i].propertyLabel,
                                         code: data[i].propertyCode,
+                                        sku: data[i].sku,
                                         value: this.getValue(data[i].propertyCode, properties, '')
                                     });
                                 }

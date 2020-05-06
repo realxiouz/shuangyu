@@ -634,6 +634,19 @@ export default new Router({
           name: 'brand',
           component: () => import('@/views/brand/List'),
           meta: {title: '品牌信息', icon: 'home'}
+        }, {
+          title: '商品库存',
+          path: '/product/inventory/list',
+          name: 'inventory',
+          component: () => import('@/views/productInventory/List'),
+          meta: {title: '商品库存', icon: 'home'}
+        },
+        {
+          title: '商品库存编辑',
+          path: '/product/inventory/config',
+          name: 'config',
+          component: () => import('@/views/productInventory/Edit'),
+          meta: {title: '商品库存编辑', icon: 'home'}
         }
       ]
     },

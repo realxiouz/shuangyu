@@ -294,9 +294,7 @@
             };
             return {
                 formData: {
-                    properties: [],
-                    propertiesCode: [],
-                    propertiesValue: []
+                    properties: []
                 },
                 propertyList: [],
                 categoryList: [],
@@ -408,12 +406,14 @@
                                 codes.push(item1[0]);
                                 names.push(item1[1]);
                             }
+                            row.skuCode = codes;
                             row.skuName = names.join(" ");
                             row.skuId = codes.join(",");
                         } else {
                             let item2 = skuIds[i].split(",");
                             row.skuName = item2[1];
                             row.skuId = item2[0];
+                            row.skuCode = item2[0];
                         }
                         this.dataList.push(row)
                     }
@@ -452,21 +452,62 @@
                     this.dataList[i].grossMargin = this.formData.grossMargin;
                     this.dataList[i].supplierId = this.formData.supplierId;
                     this.dataList[i].supplierName = this.formData.supplierName;
-                    const properties = this.formData.properties;
-                    let skuIds = this.dataList[i].skuId.split(",");
-                    let skuNames = this.dataList[i].skuName.split(" ");
-                    for (let i = 0, len = skuNames.length; i < len; i++) {
-                        properties[i].value = skuNames[i];
+                    if (this.dataList[i].skuName.length > 0 || this.dataList[i].skuId.length > 0) {
+                        //sku
+                        let skuNames = this.dataList[i].skuName.split(" ");
+                        const properties = {};
+                        const productPropertyItems = [];
+                        for (let i = 0, len = this.formData.properties.length; i < len; i++) {
+                            properties[this.formData.properties[i].code] = skuNames[i];
+                            let propertyItems = {};
+                            propertyItems.code = this.formData.properties[i].code;
+                            propertyItems.label = this.formData.properties[i].label;
+                            propertyItems.sku = this.formData.properties[i].sku;
+                            propertyItems.value = skuNames[i];
+                            productPropertyItems.push(propertyItems);
+                        }
+                        this.dataList[i].productPropertyItems = productPropertyItems;
+                        this.dataList[i].skuName = skuNames;
+                        this.dataList[i].properties = properties;
+                    } else {
+                        //非sku
+                        this.dataList[i].productPropertyItems = this.formData.properties;
+                        if (this.formData.properties.length > 0) {
+                            const properties = {};
+                            for (let i = 0, len = this.formData.properties.length; i < len; i++) {
+                                properties[this.formData.properties[i].code] = this.formData.properties[i].value;
+                            }
+                            this.dataList[i].properties = properties;
+                        }
                     }
-                    this.dataList[i].properties = properties;
-                    const propertiesCode = {};
-                    const propertiesValue = {};
-                    for (let i = 0, len = properties.length; i < len; i++) {
-                        propertiesCode[properties[i].code] = skuIds[i];
-                        propertiesValue[properties[i].label] = skuNames[i];
+                }
+
+                if (this.formData.properties.length > 0) {
+                    const properties = {};
+                    const productPropertyItems = [];
+                    for (let i = 0, len = this.formData.properties.length; i < len; i++) {
+                        if (this.formData.properties[i].sku) {
+                            if (this.formData.properties[i].value.length > 0) {
+                                let valueArray = this.formData.properties[i].value;
+                                let values = {};
+                                for (let i = 0, len = valueArray.length; i < len; i++) {
+                                    let item2 = valueArray[i].split(",");
+                                    values[item2[0]] = item2[1];
+                                }
+                                properties[this.formData.properties[i].code] = values;
+                                let propertyItems = {};
+                                propertyItems.code = this.formData.properties[i].code;
+                                propertyItems.label = this.formData.properties[i].label;
+                                propertyItems.sku = this.formData.properties[i].sku;
+                                propertyItems.value = values;
+                                productPropertyItems.push(propertyItems);
+                            }
+                        } else {
+                            properties[this.formData.properties[i].code] = this.formData.properties[i].value;
+                        }
                     }
-                    this.dataList[i].propertiesCode = propertiesCode;
-                    this.dataList[i].propertiesValue = propertiesValue;
+                    this.formData.properties = properties;
+                    this.formData.productPropertyItems = productPropertyItems;
                 }
             },
             handleSave() {
@@ -474,7 +515,10 @@
                     if (valid) {
                         this.handleSaveData();
                         this.$store
-                            .dispatch("product/save", this.dataList)
+                            .dispatch("product/save", {
+                                skuList: this.dataList,
+                                product: this.formData
+                            })
                             .then(() => {
                             })
                             .catch(error => {
