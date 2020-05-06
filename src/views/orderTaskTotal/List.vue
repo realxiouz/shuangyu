@@ -3,13 +3,13 @@
     <div class="searchBox">
       <div style="margin-top:10px;">
         <span>
-          <el-button plain  @click="geAllData()" type="info" size="mini">
+          <el-button plain @click="geAllData()" type="info" size="mini">
             待处理
             <el-badge :value="totalCount?totalCount:'0'" :max="99"></el-badge>
           </el-button>
         </span>
         <span v-for="item in taskTypeValue" :key="item.value" style="margin-right:5px;">
-          <el-button  style="margin-bottom:10px;" @click="getOtherData(item.value)" size="mini">
+          <el-button style="margin-bottom:10px;" @click="getOtherData(item.value)" size="mini">
             {{item.label}}
             <el-badge
               :value="taskTypeCounts['taskType'+item.value]?taskTypeCounts['taskType'+item.value]:'0'"
@@ -19,13 +19,10 @@
         </span>
       </div>
       <div style="margin-top:15px;">
-      <order-task-search @onSearch="handleSearch"></order-task-search>
-
+        <order-task-search @onSearch="handleSearch"></order-task-search>
       </div>
-
     </div>
-    <!-- <div class="contentBox">
-    </div> -->
+
     <div class="contentBox">
       <el-row style="margin-bottom:15px;margin-left:40px;">
         <el-button
@@ -55,6 +52,16 @@
           <template slot-scope="scope">
             <i v-if="scope.row.passengers"></i>
             <span>{{ formatPassengers(scope.row.passengers)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="订单金额" prop="amount" width="100" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatAmount(scope.row.amount)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="ticketNos" label="票号" width="120" align="center">
+          <template slot-scope="scope">
+            <span>{{formatTicketNo(scope.row.ticketNos)}}</span>
           </template>
         </el-table-column>
         <el-table-column label="航班号" align="center">
@@ -381,6 +388,19 @@ export default {
         return "";
       }
       return this.initDate(data[0].flightDate, "YYYY-MM-DD");
+    },
+    formatTicketNo(ticketNo) {
+      if (ticketNo && ticketNo.length > 0) {
+        let str = "";
+        ticketNo.forEach((item, index) => {
+          if (item) {
+            str += item + " / ";
+          }
+        });
+        return str.substring(0, str.length - 2);
+      } else {
+        return (ticketNo = "");
+      }
     },
     formatFlightNo(data) {
       if (!data || data.length == 0) {

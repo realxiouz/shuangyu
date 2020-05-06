@@ -46,6 +46,16 @@
             <span>{{ formatPassengers(scope.row.passengers)}}</span>
           </template>
         </el-table-column>
+        <el-table-column label="订单金额" prop="amount" width="100" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatAmount(scope.row.amount)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="ticketNos" label="票号" width="120" align="center">
+          <template slot-scope="scope">
+            <span>{{formatTicketNo(scope.row.ticketNos)}}</span>
+          </template>
+        </el-table-column>
         <el-table-column label="航班号" align="center">
           <template slot-scope="scope">
             <span>{{ formatFlightNo(scope.row.flights)}}</span>
@@ -308,6 +318,19 @@ export default {
         return "￥0.00";
       }
       return "￥" + this.$numeral(amount).format("0.00");
+    },
+    formatTicketNo(ticketNo) {
+      if (ticketNo && ticketNo.length > 0) {
+        let str = "";
+        ticketNo.forEach((item, index) => {
+          if (item) {
+            str += item + " / ";
+          }
+        });
+        return str.substring(0, str.length - 2);
+      } else {
+        return (ticketNo = "");
+      }
     },
     // 获得待处理总的数据
     geAllData() {
