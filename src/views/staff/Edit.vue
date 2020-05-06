@@ -85,7 +85,7 @@
       :visible.sync="permissionDialogVisible"
       :close-on-click-modal="false"
     >
-      <el-form size="mini" label-width="120px" v-show="hasStep">
+      <el-form ref="staffForm" :rules="rules" size="mini" label-width="120px" v-show="hasStep">
         <!--   企业ID  -->
         <input type="hidden" v-model="formData.staffId" />
         <el-form-item label="员工姓名">
@@ -119,7 +119,7 @@
           ></el-input>
           <span v-if="isExistsForPhone" style="color: crimson">*信息已被使用</span>
         </el-form-item>
-        <el-form-item label="邮箱">
+        <el-form-item label="邮箱" prop="email">
           <el-input v-model="formData.email" @blur="isUsedForEmail"></el-input>
           <span v-if="isExistsForEmail" style="color: crimson">*信息已被使用</span>
         </el-form-item>
@@ -169,7 +169,13 @@ export default {
       /*用于校验所填写的信息是否已经被使用*/
       isExistsForPhone: false,
       isExistsForIDNo: false,
-      isExistsForEmail: false
+      isExistsForEmail: false,
+        rules: {
+            email:[
+                { required: true, message: '请输入邮箱地址', trigger: 'blur' },
+                { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur'] }
+            ]
+        }
     };
   },
   methods: {
@@ -312,47 +318,56 @@ export default {
     },
     /*点击修改弹窗保存按钮*/
     permissionAlterSave() {
-      //对添加的员工信息进行初始化和格式化
-      if ("number" != typeof this.formData.birthDate) {
-        this.formData.birthDate = this.formData.birthDate.getTime();
-      }
-      //如果填写的信息未通过校验，不允许保存
-      if (
-        this.isExistsForPhone ||
-        this.isExistsForIDNo ||
-        this.isExistsForEmail
-      ) {
-        this.$message({
-          type: "warning",
-          message: "请重新填写已被使用的信息!"
-        });
-        return;
-      }
 
-      //进行数据的保存
-      let url = "";
-      if ("" != this.formData.staffId) {
-        url = "staff/updateOne";
-      } else {
-        url = "staff/addOne";
-        this.formData.firmId = this.curNode.firmId;
-        this.formData.depts = [this.curNode.deptId];
-        this.formData.domain = this.curNode.domain;
-      }
+        this.$refs['staffForm'].validate((valid) => {
+            if (valid) {
+                //对添加的员工信息进行初始化和格式化
+                if ("number" != typeof this.formData.birthDate) {
+                    this.formData.birthDate = this.formData.birthDate.getTime();
+                }
+                //如果填写的信息未通过校验，不允许保存
+                if (
+                    this.isExistsForPhone ||
+                    this.isExistsForIDNo ||
+                    this.isExistsForEmail
+                ) {
+                    this.$message({
+                        type: "warning",
+                        message: "请重新填写已被使用的信息!"
+                    });
+                    return;
+                }
 
-      this.$store
-        .dispatch(url, this.formData)
-        .then(data => {
-          console.log(data);
-          //数据保存成功后可以关闭弹窗
-          this.permissionDialogVisible = false;
-          this.loadTableData();
-          this.hasStep = true;
-          this.clearFormData();
-        })
-        .catch(error => {
-          console.log(error);
+                //进行数据的保存
+                let url = "";
+                if ("" != this.formData.staffId) {
+                    url = "staff/updateOne";
+                } else {
+                    url = "staff/addOne";
+                    this.formData.firmId = this.curNode.firmId;
+                    this.formData.depts = [this.curNode.deptId];
+                    this.formData.domain = this.curNode.domain;
+                }
+
+                this.$store
+                    .dispatch(url, this.formData)
+                    .then(data => {
+                        console.log(data);
+                        //数据保存成功后可以关闭弹窗
+                        this.permissionDialogVisible = false;
+                        this.loadTableData();
+                        this.hasStep = true;
+                        this.clearFormData();
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            } else {
+                this.$message({type: "warning", message: "请完整填写数据！"});
+                return false;
+            }
         });
+
     },
     handleAssociate(idx, row) {
       this.clearFormData();
