@@ -125,10 +125,11 @@
         </el-form-item>
       </el-form>
       <el-transfer
+        v-show="!hasStep"
         v-model="formData.roles"
         :data="transData"
         :props="transferProps"
-        v-show="!hasStep"
+        :titles="['可选角色', '已选角色']"
         style="margin-top: 20px"
       ></el-transfer>
       <span slot="footer" class="dialog-footer">
