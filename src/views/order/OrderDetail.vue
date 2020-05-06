@@ -1603,43 +1603,15 @@ export default {
       );
       if (changeConfirm) {
         changeConfirm.onclick = function() {
-          let passagerIds = document.querySelectorAll(
-            ".box-content input[name='passagerIds']"
+          let inputData = document.querySelectorAll(
+            "#changeHtmlOrderDetail .box-content input"
           );
-          let paramsStr = "";
-          Array.from(passagerIds).forEach(item => {
-            paramsStr += "passagerIds" + "=" + item.value + "&";
-          });
-          let gqFeesData = document.querySelector(
-            ".box-content input[name='gqFees']"
-          ).value;
-          let gqFeesStr = "";
-          gqFeesStr += "gqFees" + "=" + gqFeesData + "&";
-
-          let upgradeFeesData = document.querySelector(
-            ".box-content input[name='upgradeFees']"
-          ).value;
-          let upgradeFeesStr = "";
-          upgradeFeesStr += "upgradeFees" + "=" + upgradeFeesData + "&";
-
-          let gqStatusData = document.querySelector(
-            ".box-content input[name='gqStatus']"
-          ).value;
-          let gqStatusStr = "";
-          gqStatusStr += "gqStatus" + "=" + gqStatusData + "&";
-
           let _paramsStr = "";
+          Array.from(passagerIds).forEach(item => {
+            _paramsStr += [item.name] + "=" + item.value + "&";
+          });
           _paramsStr +=
-            // "domain=" +
-            // that.sourceOrderNo.substring(0, 3) +
-            // ".trade.qunar.com" +
-            // "&" +
-            "groupCheckOut=true&+groupCheckIn=false&" +
-            paramsStr +
-            gqFeesStr +
-            upgradeFeesStr +
-            gqStatusStr +
-            "orderNo=" +
+            "groupCheckOut=true&groupCheckIn=false&orderNo=" +
             that.sourceOrderNo;
           that.processingChangeTicket(_paramsStr);
         };
