@@ -36,9 +36,15 @@
           <span v-else>{{ formatDate(scope.row.offlineTime,'YYYY-MM-DD HH:mm:ss') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="300">
+      <el-table-column label="操作" align="center" width="390" fixed="right">
         <template slot-scope="scope">
           <el-button size="mini" type="primary" @click="handleFlag(scope.row)">配置标签</el-button>
+          <el-button
+            size="mini"
+            type="primary"
+            v-show="scope.row.status==1&&scope.row.monitorFlag!=1"
+            @click="offLine(scope.row)"
+          >强制下线</el-button>
           <el-button size="mini" type="primary" @click="setMonitor(scope.row)">设为班长</el-button>
           <el-button size="mini" type="primary" @click="logSearch(scope.row)">查看日志</el-button>
         </template>
@@ -169,6 +175,25 @@ export default {
       if (row.logs && row.logs != null) {
         this.logTableData = row.logs;
       }
+    },
+    offLine(row) {
+      console.log(row.staffId);
+      this.$store
+        .dispatch("orderStaff/orderStaffOffline", { staffId: row.staffId })
+        .then(data => {
+          if (data) {
+            this.$message({
+              type: "success",
+              message: "下线成功！"
+            });
+            this.loadTableData();
+
+            // console.log(data);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
     handleClose() {
       this.logDialogVisible = false;

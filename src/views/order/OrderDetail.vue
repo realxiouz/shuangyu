@@ -1023,7 +1023,7 @@ export default {
               type: "success",
               message: "操作成功！"
             });
-            this.getRefundHtml();
+            this.getMessageHtml();
           }
         })
         .catch(error => {
