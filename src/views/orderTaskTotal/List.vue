@@ -47,7 +47,7 @@
         <el-table-column prop="taskName" label="任务名称" width="80" align="center"></el-table-column>
         <!-- <el-table-column prop="taskType" :formatter="formatTaskType" label="任务类型" align="center"></el-table-column> -->
         <el-table-column prop="orderNo" label="订单号" width="180" align="center"></el-table-column>
-        <el-table-column prop="sourceOrderNo" label="订单来源单号" width="170" align="center"></el-table-column>
+        <el-table-column prop="sourceOrderNo" label="源单号" width="170" align="center"></el-table-column>
         <el-table-column prop="fullName" label="操作员" width="70" align="center"></el-table-column>
         <el-table-column label="乘机人" align="center" width="100">
           <template slot-scope="scope">
@@ -107,7 +107,11 @@
             <span>{{ formatDate(scope.row.endTime,'YYYY-MM-DD HH:mm:ss') }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="duration" label="持续时长" width="80" align="center"></el-table-column>
+        <el-table-column prop="duration" label="持续时长" width="110" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatDate(scope.row.duration,' HH 小时mm 分钟') }}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="remark" label="备注" align="center"></el-table-column>
 
         <el-table-column label="操作" fixed="right" align="center" width="80">
@@ -379,7 +383,7 @@ export default {
       }
       let str = "";
       data.forEach(item => {
-        str += item.name +" / " ;
+        str += item.name + " / ";
       });
 
       return str.substring(0, str.length - 2);

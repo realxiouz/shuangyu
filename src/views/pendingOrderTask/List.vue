@@ -34,14 +34,14 @@
         size="mini"
         v-loading="loading"
       >
-        <el-table-column type="selection" width="55"></el-table-column>
+        <el-table-column type="selection" width="55" align="center"></el-table-column>
         <!--<el-table-column prop="taskNo" label="任务编号" width="110" align="center"></el-table-column>-->
         <el-table-column prop="taskName" label="任务名称" width="80" align="center"></el-table-column>
-        <el-table-column prop="taskType" :formatter="formatTaskType" label="任务类型" align="center"></el-table-column>
-        <el-table-column prop="orderNo" label="订单号" width="170" align="center"></el-table-column>
+        <!-- <el-table-column prop="taskType" :formatter="formatTaskType" label="任务类型" align="center"></el-table-column> -->
+        <el-table-column prop="orderNo" label="订单号" width="180" align="center"></el-table-column>
         <el-table-column prop="sourceOrderNo" label="源单号" width="170" align="center"></el-table-column>
-        <el-table-column prop="fullName" label="操作员" width="100" align="center"></el-table-column>
-        <el-table-column label="乘机人" align="center" width="200">
+        <el-table-column prop="fullName" label="操作员" width="70" align="center"></el-table-column>
+        <el-table-column label="乘机人" align="center" width="100">
           <template slot-scope="scope">
             <i v-if="scope.row.passengers"></i>
             <span>{{ formatPassengers(scope.row.passengers)}}</span>
@@ -73,16 +73,16 @@
           </template>
         </el-table-column>
         <el-table-column label="政策代码" prop="policyCode" width="180" align="center"></el-table-column>
-        <el-table-column prop="ruleType" width="60" label="规则类型" align="center">
+        <el-table-column prop="ruleType" width="80" label="规则类型" align="center">
           <template slot-scope="scope">
             <span>{{ scope.row.ruleType==0?"系统":"手工"}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="profit" label="利润" width="80" align="center">
+        <!-- <el-table-column prop="profit" label="利润" width="80" align="center">
           <template slot-scope="scope">
             <span>{{ formatAmount(scope.row.profit)}}</span>
           </template>
-        </el-table-column>
+        </el-table-column>-->
         <el-table-column
           prop="taskStatus"
           :formatter="formatTaskStatus"
@@ -99,7 +99,11 @@
             <span>{{ formatDate(scope.row.endTime,'YYYY-MM-DD HH:mm:ss') }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="duration" label="持续时长" width="80" align="center"></el-table-column>
+        <el-table-column prop="duration" label="持续时长" width="110" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatDate(scope.row.duration,' HH 小时mm 分钟') }}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="remark" label="备注" align="center" fixed="right"></el-table-column>
 
         <el-table-column label="操作" fixed="right" align="center" width="80">

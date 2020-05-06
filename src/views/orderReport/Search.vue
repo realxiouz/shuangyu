@@ -74,6 +74,7 @@
               style="width: 100%;"
               clearable
               collapse-tags
+              @change="selectCategory"
               v-model="formData.category"
               placeholder="请选择"
             >
@@ -84,7 +85,24 @@
         </el-col>
 
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="订单日期:">
+          <el-form-item v-show="more&&!showData" label="订单日期:">
+            <el-col>
+              <el-date-picker
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                type="daterange"
+                :unlink-panels="true"
+                placeholder="选择日期"
+                v-model="formData.createTime"
+                style="width: 100%;"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+              ></el-date-picker>
+            </el-col>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more&&showData" label="采购日期:">
             <el-col>
               <el-date-picker
                 start-placeholder="开始日期"
@@ -370,7 +388,8 @@ export default {
       more: false,
       formData: this.initSearchForm(),
       supplierData: [],
-      orderType:orderType
+      orderType: orderType,
+      showData: false
     };
   },
   computed: {
@@ -419,6 +438,14 @@ export default {
           console.log(error);
           this.loading = false;
         });
+    },
+    selectCategory(value) {
+      console.log(value);
+      if (value == "0") {
+        this.showData = true;
+      } else {
+        this.showData = false;
+      }
     }
   },
   watch: {
