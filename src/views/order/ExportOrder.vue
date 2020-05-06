@@ -43,7 +43,7 @@
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item>
             <el-button type="primary" @click="showStaffDialog" size="mini">选择派遣人</el-button>
-            <span v-if="staffData">已选择的派遣人：{{staffData.fullName}}</span>
+            <span v-if="staffData">已选择的派遣人：{{name}}</span>
           </el-form-item>
         </el-col>
       </el-row>
@@ -81,7 +81,8 @@ export default {
       staffData: {},
       orderType: orderType,
       staffDialog: false,
-      staffId: ""
+      staffId: "",
+      name: ""
     };
   },
   components: {
@@ -95,14 +96,16 @@ export default {
       this.staffDialog = true;
     },
     handleConfirm(params) {
-      console.log(params);
+      // console.log(params);
       this.staffData = params;
       this.staffId = params.staffId;
+      this.name = params.fullName;
       this.staffDialog = false;
     },
     exportOrder() {
       let params = { ...this.formData };
       params.staffId = this.staffId;
+      params.name = this.name;
       params.firmId = this.$store.state.loginInfo.firm.firmId;
       if (params.sourceOrderNo == "") {
         this.$notify({
