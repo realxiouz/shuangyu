@@ -31,7 +31,7 @@
         <el-table-column prop="email" label="电子邮箱" align="center"></el-table-column>
         <el-table-column label="是否超级管理员" width="120" align="center">
           <template slot-scope="scope">
-            <el-switch :value="scope.row.super" @change="superSwitch(scope.row)"></el-switch>
+            <el-switch :value="scope.row.super" @change="superSwitch(scope.row)" disabled></el-switch>
           </template>
         </el-table-column>
         <el-table-column label="是否启用"  align="center" width="120">

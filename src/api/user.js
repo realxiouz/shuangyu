@@ -55,9 +55,9 @@ export function updateOne(data) {
   });
 }
 
-export function updateMany(filter, data) {
+export function updateMany(filter, data, verificationCode) {
   return request({
-    url: `/admin/user/update/many/${data.verificationCode}`,
+    url: `/admin/user/update/many/${verificationCode}`,
     method: 'post',
     params: filter,
     data
