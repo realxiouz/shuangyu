@@ -37,6 +37,69 @@
             <el-input clearable v-model="formData.cardNo" style="width: 100%"></el-input>
           </el-form-item>
         </el-col>
+
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="供应商:">
+            <el-select
+              clearable
+              filterable
+              placeholder="请选择供应商"
+              v-model="formData.merchantId"
+              style="width: 100%"
+            >
+              <el-option
+                v-for="item in supplierData"
+                :key="item.merchantId"
+                :label="item.firm.firmName"
+                :value="item.merchantId"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="订单类型:">
+            <el-select clearable v-model="formData.orderType" placeholder="全部" style="width: 100%">
+              <el-option
+                v-for="item in orderType"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="订单分类:">
+            <el-select
+              style="width: 100%;"
+              clearable
+              collapse-tags
+              v-model="formData.category"
+              placeholder="请选择"
+            >
+              <el-option label="销售单" value="0"></el-option>
+              <el-option label="采购单" value="1"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="订单日期:">
+            <el-col>
+              <el-date-picker
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                type="daterange"
+                :unlink-panels="true"
+                placeholder="选择日期"
+                v-model="formData.createTime"
+                style="width: 100%;"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+              ></el-date-picker>
+            </el-col>
+          </el-form-item>
+        </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="PNR:">
             <el-input clearable v-model="formData.pnr" style="width: 100%"></el-input>
@@ -60,20 +123,13 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="订单日期:">
-            <el-col>
-              <el-date-picker
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-                type="daterange"
-                :unlink-panels="true"
-                placeholder="选择日期"
-                v-model="formData.createTime"
-                style="width: 100%;"
-                format="yyyy-MM-dd"
-                value-format="yyyy-MM-dd"
-              ></el-date-picker>
-            </el-col>
+          <el-form-item v-show="more" label="航班号:">
+            <el-input
+              clearable
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.flightCode"
+              style="width: 100%"
+            ></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -82,13 +138,18 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="航班号:">
-            <el-input
+          <el-form-item v-show="more" label="航程类型:">
+            <el-select
+              style="width: 100%;"
               clearable
-              @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.flightCode"
-              style="width: 100%"
-            ></el-input>
+              collapse-tags
+              v-model="formData.voyageType"
+              placeholder="请选择"
+            >
+              <el-option label="单程" value="0"></el-option>
+              <el-option label="往返" value="1"></el-option>
+              <el-option label="连程" value="2"></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -275,56 +336,6 @@
             </el-row>
           </el-form-item>
         </el-col>
-
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="订单类型:">
-            <el-select clearable v-model="formData.orderType" placeholder="全部" style="width: 100%">
-              <el-option label="出票完成" value="10"></el-option>
-              <el-option label="改签完成" value="30"></el-option>
-              <el-option label="退票完成" value="20"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="订单分类:">
-            <el-select
-              style="width: 100%;"
-              clearable
-              collapse-tags
-              v-model="formData.category"
-              placeholder="请选择"
-            >
-              <el-option label="销售单" value="0"></el-option>
-              <el-option label="采购单" value="1"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="订单日期:">
-            <el-col>
-              <el-date-picker
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-                type="daterange"
-                :unlink-panels="true"
-                placeholder="选择日期"
-                v-model="formData.createTime"
-                style="width: 100%;"
-                format="yyyy-MM-dd"
-                value-format="yyyy-MM-dd"
-              ></el-date-picker>
-            </el-col>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="18" :md="14" :lg="10" :xl="6">
-          <el-form-item v-show="more" label="航程类型:">
-            <el-radio-group v-model="formData.voyageType" style="width: 100%">
-              <el-radio label="0">单程</el-radio>
-              <el-radio label="1">往返</el-radio>
-              <el-radio label="2">连程</el-radio>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
       </el-form>
     </el-col>
     <el-col :xs="8" :sm="7" :md="6" :lg="5" :xl="4" class="search-tools">
@@ -350,12 +361,16 @@
 </template>
 
 <script>
+import { orderType } from "@/utils/status.js";
+
 export default {
   name: "orderReportSearch",
   data() {
     return {
       more: false,
-      formData: this.initSearchForm()
+      formData: this.initSearchForm(),
+      supplierData: [],
+      orderType:orderType
     };
   },
   computed: {
@@ -390,6 +405,27 @@ export default {
     },
     handleMore() {
       this.more = !this.more;
+    },
+    // 获取供应商
+    getSupplier() {
+      this.$store
+        .dispatch("firmMerchant/getList", {
+          filter: { merchantType: 0 }
+        })
+        .then(data => {
+          this.supplierData = data;
+        })
+        .catch(error => {
+          console.log(error);
+          this.loading = false;
+        });
+    }
+  },
+  watch: {
+    more(val, newVal) {
+      if (!newVal) {
+        this.getSupplier();
+      }
     }
   }
 };
