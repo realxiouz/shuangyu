@@ -50,7 +50,7 @@
         </el-table-column>
         <el-table-column prop="fundAccount" label="资金账号" width="100" align="center"></el-table-column>
         <el-table-column prop="accountId" label="平台账号" width="100" align="center"></el-table-column>
-        <el-table-column prop="rootOrderNo" label="销售出票单号" width="100" align="center"></el-table-column>
+        <el-table-column label="源单号" prop="sourceOrderNo" width="150" align="center"></el-table-column>
         <el-table-column prop="linkOrderNo" label="业务订单编号" width="100" align="center"></el-table-column>
         <el-table-column prop="sourceOrderNo" label="原订单" align="center"></el-table-column>
         <el-table-column prop="pid" label="pid" align="center"></el-table-column>

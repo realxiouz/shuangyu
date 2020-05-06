@@ -20,6 +20,18 @@
           </template>
         </el-table-column>
         <el-table-column prop="orderNo" label="订单号" align="center" width="160"></el-table-column>
+        <el-table-column label="源单号" prop="sourceOrderNo" width="150" align="center"></el-table-column>
+        <el-table-column label="乘客" align="center" width="100">
+          <template slot-scope="scope">
+            <span>{{ formatPassengers(scope.row.passengers)}}</span>
+          </template>
+        </el-table-column>
+
+        <el-table-column prop="ticketNos" label="票号" width="120" align="center">
+          <template slot-scope="scope">
+            <span>{{formatTicketNo(scope.row.ticketNos)}}</span>
+          </template>
+        </el-table-column>
         <el-table-column
           prop="category"
           :formatter="formatCategory"
@@ -49,11 +61,7 @@
             <span>{{ formatFlight(scope.row.flights)}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="乘客" align="center" width="100">
-          <template slot-scope="scope">
-            <span>{{ formatPassengers(scope.row.passengers)}}</span>
-          </template>
-        </el-table-column>
+
         <el-table-column label="交易金额" prop="transactionAmount" width="150" align="center">
           <template slot-scope="scope">
             <span>{{ formatAmount(scope.row.transactionAmount)}}</span>
@@ -297,9 +305,7 @@ export default {
         });
       }
     },
-    handleUpdate(){
-
-    },
+    handleUpdate() {},
     handleCancel() {
       this.dialogVisible = false;
     },
@@ -338,6 +344,19 @@ export default {
         " " +
         data[0].arrTime
       );
+    },
+    formatTicketNo(ticketNo) {
+      if (ticketNo && ticketNo.length > 0) {
+        let str = "";
+        ticketNo.forEach((item, index) => {
+          if (item) {
+            str += item + " / ";
+          }
+        });
+        return str.substring(0, str.length - 2);
+      } else {
+        return (ticketNo = "");
+      }
     },
     formatPassengers(data) {
       if (!data || data.length == 0) {
