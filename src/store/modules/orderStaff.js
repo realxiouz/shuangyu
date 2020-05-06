@@ -8,7 +8,8 @@ import {
   staffOnline,
   updateStaffOnline,
   setMonitor,
-  getOnlineList
+  getOnlineList,
+  orderStaffOffline
 } from '@/api/orderStaff';
 import {getToken} from '@/utils/auth';
 
@@ -169,6 +170,20 @@ const actions = {
     const { staffId } = params;
     return new Promise((resolve, reject) => {
       removeOne(staffId)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  // 强制下线
+  orderStaffOffline({commit}, params) {
+    const { staffId } = params;
+    return new Promise((resolve, reject) => {
+      orderStaffOffline(staffId)
         .then(response => {
           const {data} = response;
           resolve(data);
