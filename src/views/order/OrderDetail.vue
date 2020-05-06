@@ -99,7 +99,7 @@
           </el-table>
           <el-divider content-position="left">乘客信息</el-divider>
           <el-table
-            :data="passengerData"
+            :data="passengerDataTable"
             size="mini"
             highlight-current-row
             style="width: 100%;"
@@ -508,7 +508,7 @@ export default {
       refundHtml: "",
       messageData: "",
       flightData: [],
-      passengerData: [],
+      passengerDataTable: [],
       tableData: {},
       passengersInfo: [],
       sellOrderType: "",
@@ -593,7 +593,7 @@ export default {
             this.sellOrderType = data.orderType;
             this.getMessageHtml();
             if (data.passengers) {
-              this.passengerData = data.passengers;
+              this.passengerDataTable = data.passengers;
             }
             if (data.flights) {
               this.flightData = data.flights;
