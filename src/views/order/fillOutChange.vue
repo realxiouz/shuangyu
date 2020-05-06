@@ -142,11 +142,6 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="平台账号:">
-              <el-input clearable v-model="formData.accountId"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
             <el-form-item label="资金账号:" prop="fundAccount">
               <el-select
                 v-model="formData.fundAccount"
