@@ -44,7 +44,7 @@
           <el-form-item label="验证码" prop="verificationCode">
             <el-row type="flex" justify="space-between">
               <el-col :span="14">
-                <el-input clearable placeholder="请输入验证码" v-model="formData.verificationCode" />
+                <el-input clearable placeholder="请输入验证码" v-model="verificationCode" />
               </el-col>
               <el-col :span="5">
                 <el-button
@@ -85,10 +85,8 @@ export default {
     };
     return {
       isExistsForEmail: false,
+        verificationCode: '',
       formRules: {
-        verificationCode: [
-          { required: true, message: "请输入邮箱验证码", trigger: "blur" }
-        ],
         email: [
           { required: true, message: "请输入邮箱", trigger: "blur" },
           { validator: validateEmail, trigger: "blur" }
@@ -121,7 +119,8 @@ export default {
           this.$store
             .dispatch("user/updateMany", {
               filter: { userId: this.formData.userId },
-              user: this.formData
+              user: this.formData,
+                verificationCode: this.verificationCode
             })
             .then(() => {
               this.goBack();
