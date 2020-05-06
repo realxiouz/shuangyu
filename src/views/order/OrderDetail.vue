@@ -279,7 +279,7 @@
           @onCancel="onCancel"
           @onSaveTicket="handleSaveTicket"
           @onSave="handleSave"
-          :passengerData="passengersInfo"
+          :passengerData="handlePassengersInfo"
           :flightData="flightData"
           :sell-amount="ticketSellAmount"
           :task-type="taskType"
@@ -511,6 +511,7 @@ export default {
       passengerDataTable: [],
       tableData: {},
       passengersInfo: [],
+      handlePassengersInfo: [],
       sellOrderType: "",
       orderTree: [],
       sourceOrderNo: "",
@@ -1115,16 +1116,41 @@ export default {
         });
     },
     // 乘客复选框选中处理
-    handleSelectionChange(passengersInfo) {
+    handleSelectionChange(_passengersInfo) {
+      console.log(_passengersInfo, "_passengersInfo");
+      let ticketAmount = 0;
+      _passengersInfo.forEach(item => {
+        console.log(item.amount, "item.amount");
+
+        ticketAmount += Number(item.amount);
+      });
+      this.ticketSellAmount = ticketAmount;
+      console.log(this.ticketSellAmount, "ticketSellAmount");
       let arr = [];
-      for (let i = 0; i < passengersInfo.length; i++) {
+      for (let i = 0; i < _passengersInfo.length; i++) {
         this.tableData.orderDetailList.forEach(item => {
-          if (item.cardNo == passengersInfo[i].cardNo) {
+          if (item.cardNo == _passengersInfo[i].cardNo) {
             arr.push(item);
           }
         });
       }
-      this.passengersInfo = arr;
+      this.passengersInfo = [...arr];
+      let handleArr = [];
+      handleArr = [..._passengersInfo];
+      let temp = [];
+      handleArr.map(item => {
+        let obj = {
+          ageType: item.ageType,
+          birthday: item.birthday,
+          cardNo: item.cardNo,
+          cardType: item.cardType,
+          gender: item.gender,
+          name: item.name,
+          viewPrice: item.viewPrice
+        };
+        temp.push(obj);
+      });
+      this.handlePassengersInfo = temp;
     },
     // 系统出票跳转
     goTicket() {
@@ -1157,16 +1183,8 @@ export default {
           duration: 4500
         });
         return;
-      } else {
-        let ticketAmount = 0;
-        this.passengersInfo.forEach(item => {
-          console.log(item.amount);
-          ticketAmount += Number(item.amount);
-        });
-        this.ticketSellAmount = ticketAmount;
-        console.log(this.ticketSellAmount);
-        this.handleTicketShow = true;
       }
+      this.handleTicketShow = true;
     },
     // 获取采购单信息
     getOrderTree() {

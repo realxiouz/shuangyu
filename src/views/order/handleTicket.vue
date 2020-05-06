@@ -272,7 +272,12 @@
     </el-form>
     <div style="margin-top: 25px;text-align: right;">
       <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
-      <el-button size="mini" v-if="this.formData.radio!='1'" type="primary" @click="handleSaveTicket">保存并贴票</el-button>
+      <el-button
+        size="mini"
+        v-if="this.formData.radio!='1'"
+        type="primary"
+        @click="handleSaveTicket"
+      >保存并贴票</el-button>
       <el-button size="mini" type="primary" @click="handleSave">保存</el-button>
     </div>
   </div>
@@ -309,7 +314,7 @@ export default {
         orderSource: "",
         fundAccount: "",
         createTime: "",
-        passengers: [],
+        passengers: this.passengerData,
         ticketNoFlag: "0",
         userNameType: 0,
         amount: "",
@@ -338,14 +343,6 @@ export default {
   methods: {
     formatAgeType,
     formatCardType,
-    getPassengers() {
-      var passengerList = [];
-      this.passengerData.forEach(item => {
-        item.amount = "";
-        passengerList.push(item);
-      });
-      this.formData.passengers = passengerList;
-    },
     // 保存并贴票
     handleSaveTicket() {
       var validFlag = false;
@@ -607,7 +604,6 @@ export default {
   },
 
   created() {
-    this.getPassengers();
     this.getFinance();
     this.getSupplier();
   }
