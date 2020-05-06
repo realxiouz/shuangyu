@@ -54,7 +54,7 @@
       </el-table-column>
     </el-table>
     <!-- 员工查询弹窗 -->
-    <el-dialog title="关联用户" width="37%" :visible.sync="dialogVisible" :close-on-click-modal="false">
+    <el-dialog title="请选择关联用户" width="37%" :visible.sync="dialogVisible" :close-on-click-modal="false">
       <el-table
         highlight-current-row
         size="mini"
@@ -74,7 +74,7 @@
       </el-table>
       <span slot="footer" class="dialog-footer">
         <el-button size="mini" @click="handleCancel">取 消</el-button>
-        <el-button size="mini" type="primary" @click="handleSave">添 加</el-button>
+        <el-button size="mini" type="primary" @click="handleSave" :disabled="associateAble">添 加</el-button>
       </span>
     </el-dialog>
     <!-- 权限修改弹窗 -->
@@ -85,19 +85,18 @@
       :visible.sync="permissionDialogVisible"
       :close-on-click-modal="false"
     >
-      <el-form ref="staffForm" :rules="rules" size="mini" label-width="120px" v-show="hasStep">
+      <el-form ref="staffForm" :model="formData" :rules="rules" size="mini" label-width="120px" v-show="hasStep">
         <!--   企业ID  -->
-        <input type="hidden" v-model="formData.staffId" />
-        <el-form-item label="员工姓名">
+        <el-form-item label="员工姓名:">
           <el-input type="text" placeholder="请输入姓名" v-model="formData.fullName"></el-input>
         </el-form-item>
-        <el-form-item label="性别">
+        <el-form-item label="性别:">
           <el-select v-model="formData.gender" placeholder="请选择性别" style="width:100%">
             <el-option label="男" :value="0"></el-option>
             <el-option label="女" :value="1"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="出生日期">
+        <el-form-item label="出生日期:">
           <el-date-picker
             type="date"
             placeholder="选择日期"
@@ -105,11 +104,11 @@
             style="width: 100%;"
           ></el-date-picker>
         </el-form-item>
-        <el-form-item label="身份证号">
+        <el-form-item label="身份证号:">
           <el-input v-model="formData.idCardNo" @blur="isUsedForIDNo"></el-input>
           <span v-if="isExistsForIDNo" style="color: crimson">*信息已被使用</span>
         </el-form-item>
-        <el-form-item label="手机号码">
+        <el-form-item label="手机号码:">
           <el-input
             placeholder="请输入手机号码"
             v-model="formData.phone"
@@ -119,7 +118,7 @@
           ></el-input>
           <span v-if="isExistsForPhone" style="color: crimson">*信息已被使用</span>
         </el-form-item>
-        <el-form-item label="邮箱" prop="email">
+        <el-form-item label="邮箱:" prop="email">
           <el-input v-model="formData.email" @blur="isUsedForEmail"></el-input>
           <span v-if="isExistsForEmail" style="color: crimson">*信息已被使用</span>
         </el-form-item>
@@ -170,6 +169,8 @@ export default {
       isExistsForPhone: false,
       isExistsForIDNo: false,
       isExistsForEmail: false,
+        //点击是否可以关联用户
+        associateAble: true,
         rules: {
             email:[
                 { required: true, message: '请输入邮箱地址', trigger: 'blur' },
@@ -318,7 +319,6 @@ export default {
     },
     /*点击修改弹窗保存按钮*/
     permissionAlterSave() {
-
         this.$refs['staffForm'].validate((valid) => {
             if (valid) {
                 //对添加的员工信息进行初始化和格式化
@@ -363,11 +363,11 @@ export default {
                         console.log(error);
                     });
             } else {
+                console.log("niubi ");
                 this.$message({type: "warning", message: "请完整填写数据！"});
                 return false;
             }
         });
-
     },
     handleAssociate(idx, row) {
       this.clearFormData();
@@ -402,6 +402,7 @@ export default {
     //选中当前行
     handleRowClick(row) {
       this.curRow = row;
+      this.associateAble = false;
     },
     /*根据对应员工ID*/
     delete(staffId) {
