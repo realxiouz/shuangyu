@@ -236,8 +236,8 @@ export default {
     },
     loadPendingTotal() {
       this.$store
-        .dispatch("orderTaskTotal/getTotal", {
-          filters: {}
+        .dispatch("orderTask/getTotal", {
+          filters: { taskStatus: "1" }
         })
         .then(data => {
           if (data) {
