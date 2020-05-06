@@ -516,7 +516,7 @@
                         this.handleSaveData();
                         this.$store
                             .dispatch("product/save", {
-                                skuList: this.dataList
+                                skuList: this.dataList,
                                 product: this.formData
                             })
                             .then(() => {
