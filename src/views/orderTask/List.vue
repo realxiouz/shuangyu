@@ -39,6 +39,7 @@
         @selection-change="handleSelectionChange"
         size="mini"
         v-loading="loading"
+        highlight-current-row
       >
         <el-table-column type="selection" width="55"></el-table-column>
         <!--<el-table-column prop="taskNo" label="任务编号" width="110" align="center"></el-table-column>-->
