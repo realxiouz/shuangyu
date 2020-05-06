@@ -100,7 +100,7 @@
         <el-table-column label="操作" fixed="right" align="center" width="80">
           <template slot-scope="scope">
             <el-button
-              v-show="scope.row.taskStatus==1"
+              v-show="scope.row.taskStatus!=3"
               type="primary"
               @click="goToDetail(scope.row)"
               size="mini"

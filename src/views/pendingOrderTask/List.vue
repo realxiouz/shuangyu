@@ -95,7 +95,7 @@
           <template slot-scope="scope">
             <el-button
               type="primary"
-              v-show="scope.row.taskStatus==1"
+              v-show="scope.row.taskStatus!=3"
               @click="goToDetail(scope.row)"
               size="mini"
             >处理</el-button>
