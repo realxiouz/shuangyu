@@ -48,7 +48,6 @@ export function removeOne(userId) {
 }
 
 export function updateOne(data) {
-  debugger
   return request({
     url: '/admin/user/update/one',
     method: 'post',
@@ -56,9 +55,9 @@ export function updateOne(data) {
   });
 }
 
-export function updateMany(filter, data) {
+export function updateMany(filter, data, verificationCode) {
   return request({
-    url: '/admin/user/update/many',
+    url: `/admin/user/update/many/${verificationCode}`,
     method: 'post',
     params: filter,
     data

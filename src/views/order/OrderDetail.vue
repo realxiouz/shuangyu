@@ -99,7 +99,7 @@
           </el-table>
           <el-divider content-position="left">乘客信息</el-divider>
           <el-table
-            :data="passengerData"
+            :data="passengerDataTable"
             size="mini"
             highlight-current-row
             style="width: 100%;"
@@ -279,7 +279,7 @@
           @onCancel="onCancel"
           @onSaveTicket="handleSaveTicket"
           @onSave="handleSave"
-          :passengerData="passengersInfo"
+          :passengerData="handlePassengersInfo"
           :flightData="flightData"
           :sell-amount="ticketSellAmount"
           :task-type="taskType"
@@ -508,9 +508,10 @@ export default {
       refundHtml: "",
       messageData: "",
       flightData: [],
-      passengerData: [],
+      passengerDataTable: [],
       tableData: {},
       passengersInfo: [],
+      handlePassengersInfo: [],
       sellOrderType: "",
       orderTree: [],
       sourceOrderNo: "",
@@ -593,7 +594,7 @@ export default {
             this.sellOrderType = data.orderType;
             this.getMessageHtml();
             if (data.passengers) {
-              this.passengerData = data.passengers;
+              this.passengerDataTable = data.passengers;
             }
             if (data.flights) {
               this.flightData = data.flights;
@@ -1115,16 +1116,41 @@ export default {
         });
     },
     // 乘客复选框选中处理
-    handleSelectionChange(passengersInfo) {
+    handleSelectionChange(_passengersInfo) {
+      console.log(_passengersInfo, "_passengersInfo");
+      let ticketAmount = 0;
+      _passengersInfo.forEach(item => {
+        console.log(item.amount, "item.amount");
+
+        ticketAmount += Number(item.amount);
+      });
+      this.ticketSellAmount = ticketAmount;
+      console.log(this.ticketSellAmount, "ticketSellAmount");
       let arr = [];
-      for (let i = 0; i < passengersInfo.length; i++) {
+      for (let i = 0; i < _passengersInfo.length; i++) {
         this.tableData.orderDetailList.forEach(item => {
-          if (item.cardNo == passengersInfo[i].cardNo) {
+          if (item.cardNo == _passengersInfo[i].cardNo) {
             arr.push(item);
           }
         });
       }
-      this.passengersInfo = arr;
+      this.passengersInfo = [...arr];
+      let handleArr = [];
+      handleArr = [..._passengersInfo];
+      let temp = [];
+      handleArr.map(item => {
+        let obj = {
+          ageType: item.ageType,
+          birthday: item.birthday,
+          cardNo: item.cardNo,
+          cardType: item.cardType,
+          gender: item.gender,
+          name: item.name,
+          viewPrice: item.viewPrice
+        };
+        temp.push(obj);
+      });
+      this.handlePassengersInfo = temp;
     },
     // 系统出票跳转
     goTicket() {
@@ -1157,16 +1183,8 @@ export default {
           duration: 4500
         });
         return;
-      } else {
-        let ticketAmount = 0;
-        this.passengersInfo.forEach(item => {
-          console.log(item.amount);
-          ticketAmount += Number(item.amount);
-        });
-        this.ticketSellAmount = ticketAmount;
-        console.log(this.ticketSellAmount);
-        this.handleTicketShow = true;
       }
+      this.handleTicketShow = true;
     },
     // 获取采购单信息
     getOrderTree() {
@@ -1603,43 +1621,15 @@ export default {
       );
       if (changeConfirm) {
         changeConfirm.onclick = function() {
-          let passagerIds = document.querySelectorAll(
-            ".box-content input[name='passagerIds']"
+          let inputData = document.querySelectorAll(
+            "#changeHtmlOrderDetail .box-content input"
           );
-          let paramsStr = "";
-          Array.from(passagerIds).forEach(item => {
-            paramsStr += "passagerIds" + "=" + item.value + "&";
-          });
-          let gqFeesData = document.querySelector(
-            ".box-content input[name='gqFees']"
-          ).value;
-          let gqFeesStr = "";
-          gqFeesStr += "gqFees" + "=" + gqFeesData + "&";
-
-          let upgradeFeesData = document.querySelector(
-            ".box-content input[name='upgradeFees']"
-          ).value;
-          let upgradeFeesStr = "";
-          upgradeFeesStr += "upgradeFees" + "=" + upgradeFeesData + "&";
-
-          let gqStatusData = document.querySelector(
-            ".box-content input[name='gqStatus']"
-          ).value;
-          let gqStatusStr = "";
-          gqStatusStr += "gqStatus" + "=" + gqStatusData + "&";
-
           let _paramsStr = "";
+          Array.from(passagerIds).forEach(item => {
+            _paramsStr += [item.name] + "=" + item.value + "&";
+          });
           _paramsStr +=
-            // "domain=" +
-            // that.sourceOrderNo.substring(0, 3) +
-            // ".trade.qunar.com" +
-            // "&" +
-            "groupCheckOut=true&+groupCheckIn=false&" +
-            paramsStr +
-            gqFeesStr +
-            upgradeFeesStr +
-            gqStatusStr +
-            "orderNo=" +
+            "groupCheckOut=true&groupCheckIn=false&orderNo=" +
             that.sourceOrderNo;
           that.processingChangeTicket(_paramsStr);
         };

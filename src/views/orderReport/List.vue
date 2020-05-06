@@ -19,6 +19,8 @@
             <span>{{(currentPage - 1) * pageSize + scope.$index + 1}}</span>
           </template>
         </el-table-column>
+        <el-table-column prop="merchantId" label="供应商" align="center" width="160"></el-table-column>
+
         <el-table-column prop="orderNo" label="订单号" align="center" width="160"></el-table-column>
         <el-table-column prop="policyCode" label="政策代码" width="150" align="center"></el-table-column>
         <el-table-column

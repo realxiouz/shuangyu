@@ -23,7 +23,7 @@
           value-format="timestamp"
         ></el-date-picker>
       </el-form-item>
-      <el-form-item label="邮箱" prop="email">
+      <el-form-item v-if="''==this.userId" label="邮箱" prop="email">
         <el-input placeholder="请输入您的邮箱" clearable v-model="formData.email" @blur="isUsedForEmail"></el-input>
         <span v-if="isExistsForEmail" style="color: crimson">*该信息已被注册</span>
       </el-form-item>
@@ -207,7 +207,6 @@ export default {
     //获取邮箱验证码
     getVerificationCode(email) {
       if (this.isEmail) {
-        console.log(this.isExistsForEmail);
         if (!this.isExistsForEmail) {
           if (email) {
             this.$store
