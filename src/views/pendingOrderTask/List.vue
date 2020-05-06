@@ -38,9 +38,10 @@
         <!--<el-table-column prop="taskNo" label="任务编号" width="110" align="center"></el-table-column>-->
         <el-table-column prop="taskName" label="任务名称" width="80" align="center"></el-table-column>
         <el-table-column prop="taskType" :formatter="formatTaskType" label="任务类型" align="center"></el-table-column>
-        <el-table-column prop="sourceOrderNo" label="订单来源单号" width="170" align="center"></el-table-column>
-        <el-table-column prop="fullName" label="派单员工" width="100" align="center"></el-table-column>
-        <el-table-column label="乘客" align="center" width="200">
+        <el-table-column prop="orderNo" label="订单号" width="170" align="center"></el-table-column>
+        <el-table-column prop="sourceOrderNo" label="源单号" width="170" align="center"></el-table-column>
+        <el-table-column prop="fullName" label="操作员" width="100" align="center"></el-table-column>
+        <el-table-column label="乘机人" align="center" width="200">
           <template slot-scope="scope">
             <i v-if="scope.row.passengers"></i>
             <span>{{ formatPassengers(scope.row.passengers)}}</span>

@@ -20,7 +20,6 @@
           </template>
         </el-table-column>
         <el-table-column prop="merchantId" label="供应商" align="center" width="160"></el-table-column>
-
         <el-table-column prop="orderNo" label="订单号" align="center" width="160"></el-table-column>
         <el-table-column label="源单号" prop="sourceOrderNo" width="150" align="center"></el-table-column>
         <el-table-column label="乘客" align="center" width="100">
@@ -72,7 +71,7 @@
             <span>{{ formatFlightDate(scope.row.flights)}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="起飞 -- 到达" width="100" align="center">
+        <el-table-column label="起飞 -- 到达" width="160" align="center">
           <template slot-scope="scope">
             <span>{{ formatFlight(scope.row.flights)}}</span>
           </template>
@@ -98,12 +97,12 @@
             <span>{{ formatAmount(scope.row.receipt)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="payable" label="应付" width="80" align="center">
+        <el-table-column prop="payable" label="应付" width="90" align="center">
           <template slot-scope="scope">
             <span>{{ formatAmount(scope.row.payable)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="payment" label="实付" width="80" align="center">
+        <el-table-column prop="payment" label="实付" width="90" align="center">
           <template slot-scope="scope">
             <span>{{ formatAmount(scope.row.payment)}}</span>
           </template>
