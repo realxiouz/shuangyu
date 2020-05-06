@@ -23,13 +23,25 @@
       <order-task-search @onSearch="handleSearch"></order-task-search>
     </div>
     <div class="contentBox">
+      <el-row style="margin-bottom:15px;margin-left:40px;">
+        <el-button
+          :disabled="this.btnTransfer"
+          icon="el-icon-document-copy"
+          type="primary"
+          size="mini"
+          @click="batchTaskTransfer"
+        >批量转单</el-button>
+      </el-row>
       <el-table
+        highlight-current-row
         :data="tableData"
         ref="tableData"
         style="width: 100%;margin-bottom:15px;"
         size="mini"
         v-loading="loading"
+        @selection-change="handleSelectionChange"
       >
+        <el-table-column type="selection" width="55"></el-table-column>
         <!--<el-table-column prop="taskNo" label="任务编号" width="110" align="center"></el-table-column>-->
         <el-table-column prop="taskName" label="任务名称" width="80" align="center"></el-table-column>
         <el-table-column prop="taskType" :formatter="formatTaskType" label="任务类型" align="center"></el-table-column>
@@ -110,11 +122,25 @@
         :total="total"
       ></el-pagination>
     </div>
+    <div>
+      <el-dialog
+        title="选择转单员工"
+        center
+        :visible.sync="taskStaffDialog"
+        width="33%"
+        :close-on-click-modal="false"
+        :destroy-on-close="true"
+      >
+        <task-select-staff v-if="taskStaffDialog" @onCancel="onCancel" @onSave="handleConfirm"></task-select-staff>
+      </el-dialog>
+    </div>
   </div>
 </template>
 
 <script>
 import orderTaskSearch from "./Search.vue";
+import taskSelectStaff from "./selectStaff";
+
 import {
   formatTaskStatus,
   formatTaskType,
@@ -126,6 +152,8 @@ export default {
   data() {
     return {
       loading: true,
+      btnTransfer: true,
+      taskStaffDialog: false,
       currentPage: 1,
       tableData: [],
       pageSize: 10,
@@ -136,13 +164,15 @@ export default {
       otherDataSearch: {},
       allDataSearch: {},
       totalCount: 0,
+      selectTask: [],
       taskTypeCounts: {},
       timer: null,
       taskTypeValue: taskTypeValue
     };
   },
   components: {
-    orderTaskSearch
+    orderTaskSearch,
+    taskSelectStaff
   },
   methods: {
     formatTaskStatus,
@@ -180,6 +210,48 @@ export default {
       };
       this.searchParams = obj;
       this.loadData(obj);
+    },
+    // 表格
+    handleSelectionChange(row) {
+      if (row.length > 0) {
+        this.btnTransfer = false;
+      } else {
+        this.btnTransfer = true;
+      }
+      this.selectTask = row;
+    },
+    // 批量转单弹框
+    batchTaskTransfer() {
+      this.taskStaffDialog = true;
+    },
+    // 批量转单弹框取消
+    taskTransfer(params) {
+      this.$store
+        .dispatch("orderTask/taskTransfer", params)
+        .then(data => {
+          if (data) {
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    onCancel() {
+      this.taskStaffDialog = false;
+    },
+    handleConfirm(id) {
+      let params = {
+        orderTaskIds: "",
+        staffId: id
+      };
+      let str = [];
+      this.selectTask.forEach(item => {
+        str.push(item.taskId);
+      });
+      params.orderTaskIds = str;
+      console.log(params)
+      this.taskTransfer(params);
+      this.taskStaffDialog = false;
     },
     loadData(params) {
       this.$store
