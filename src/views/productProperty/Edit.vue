@@ -35,7 +35,7 @@
         </el-row>
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="属性标题" prop="propertyLabel">
+            <el-form-item label="属性名称" prop="propertyLabel">
               <el-input v-model="formData.propertyLabel"></el-input>
             </el-form-item>
           </el-col>
