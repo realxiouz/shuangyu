@@ -1625,7 +1625,7 @@ export default {
             "#changeHtmlOrderDetail .box-content input"
           );
           let _paramsStr = "";
-          Array.from(passagerIds).forEach(item => {
+          Array.from(inputData).forEach(item => {
             _paramsStr += [item.name] + "=" + item.value + "&";
           });
           _paramsStr +=

@@ -264,12 +264,12 @@ export function changePay(data) {
   });
 }
 
-// 确认改签
-export function processingChange(params) {
+// 确认改签(受理改签)
+export function processingChange(data) {
   return request({
     url: `/qunar/fuwu/processing/change`,
-    method: 'get',
-    params: params
+    method: 'post',
+    data: data
 
   });
 }
