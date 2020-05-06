@@ -24,9 +24,9 @@
         <el-table-column prop="skuId" label="sku" align="center"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="350">
           <template slot-scope="scope">
-            <el-button @click="handleUpdate(scope.row.stockId)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="handleUpdate(scope.row.inventoryId)" type="primary" size="mini">编辑</el-button>
             <el-button
-              @click.native.prevent="handleRemove(scope.row.stockId,scope.$index,tableData)"
+              @click.native.prevent="handleRemove(scope.row.inventoryId,scope.$index,tableData)"
               type="danger"
               size="mini"
             >删除
@@ -68,20 +68,17 @@
         methods: {
             prevClick() {
                 this.pageFlag = "prev";
-                this.lastId = this.tableData[0].stockId;
+                this.lastId = this.tableData[0].inventoryId;
                 this.loadData();
             },
             nextClick() {
                 this.pageFlag = "next";
-                this.lastId = this.tableData[this.tableData.length - 1].stockId;
+                this.lastId = this.tableData[this.tableData.length - 1].inventoryId;
                 this.loadData();
             },
             loadTotal(searchForm) {
-                if (!searchForm || !searchForm.appName) {
-                    searchForm = {};
-                }
                 this.$store
-                    .dispatch("productStockKeeping/getTotal", {
+                    .dispatch("productInventory/getTotal", {
                         filters: searchForm
                     })
                     .then(data => {
@@ -92,11 +89,8 @@
                     });
             },
             loadData(searchForm) {
-                if (!searchForm || !searchForm.appName) {
-                    searchForm = {};
-                }
                 this.$store
-                    .dispatch("productStockKeeping/getPageList", {
+                    .dispatch("productInventory/getPageList", {
                         pageFlag: this.pageFlag,
                         pageSize: this.pageSize,
                         lastId: this.lastId,
@@ -121,7 +115,7 @@
                     type: "warning"
                 })
                     .then(() => {
-                        this.$store.dispatch("productStockKeeping/removeOne", {stockId: id}).then(() => {
+                        this.$store.dispatch("productInventory/removeOne", {inventoryId: id}).then(() => {
                             if (1 === this.tableData.length) {
                                 this.prevClick();
                             } else {
@@ -158,11 +152,11 @@
             },
             handleUpdate(id) {
                 let path = "";
-                path = "/product/stock/keeping/config";
+                path = "/product/inventory/config";
                 this.$router.push({
                     path: path,
                     query: {
-                        stockId: id
+                        inventoryId: id
                     }
                 });
             }

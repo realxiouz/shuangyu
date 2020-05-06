@@ -152,7 +152,7 @@
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
                         this.$store
-                            .dispatch("productStockKeeping/save", this.formData)
+                            .dispatch("productInventory/updateOne", this.formData)
                             .then(data => {
                                 this.formData = data;
                             }).catch(error => {
@@ -164,7 +164,7 @@
             handleGetOne(id) {
                 if (id) {
                     this.$store
-                        .dispatch("productStockKeeping/getOne", {stockId: id})
+                        .dispatch("productInventory/getOne", {inventoryId: id})
                         .then(data => {
                             if (data) {
                                 this.formData = data;
@@ -212,8 +212,8 @@
             },
         },
         created() {
-            if (this.$route.query.stockId) {
-                this.handleGetOne(this.$route.query.stockId);
+            if (this.$route.query.inventoryId) {
+                this.handleGetOne(this.$route.query.inventoryId);
             }
             this.loadBrand();
         }

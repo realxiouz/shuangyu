@@ -159,37 +159,7 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row :gutter="10">
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="库存上限" prop="maxStockQuantity">
-            <el-input-number v-model="formData.maxStockQuantity"></el-input-number>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="库存下限" prop="minStockQuantity">
-            <el-input-number v-model="formData.minStockQuantity"></el-input-number>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="10">
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="单价" prop="price">
-            <el-input-number v-model="formData.price" :precision="2" :step="0.1"></el-input-number>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="成本" prop="cost">
-            <el-input-number v-model="formData.cost" :precision="2" :step="0.1"></el-input-number>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="10">
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="数量" prop="quantity">
-            <el-input-number v-model="formData.quantity"></el-input-number>
-          </el-form-item>
-        </el-col>
-      </el-row>
+
       <el-row :gutter="10">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="描述" prop="description">
