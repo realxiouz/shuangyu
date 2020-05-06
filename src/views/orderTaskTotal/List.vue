@@ -1,15 +1,15 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <span>
-        <el-button @click="geAllData()" type size="mini">
-          待处理
-          <el-badge :value="totalCount?totalCount:'0'" :max="99"></el-badge>
-        </el-button>
-      </span>
       <div style="margin-top:10px;">
+        <span>
+          <el-button plain  @click="geAllData()" type="info" size="mini">
+            待处理
+            <el-badge :value="totalCount?totalCount:'0'" :max="99"></el-badge>
+          </el-button>
+        </span>
         <span v-for="item in taskTypeValue" :key="item.value" style="margin-right:5px;">
-          <el-button style="margin-bottom:10px;" @click="getOtherData(item.value)" type size="mini">
+          <el-button  style="margin-bottom:10px;" @click="getOtherData(item.value)" size="mini">
             {{item.label}}
             <el-badge
               :value="taskTypeCounts['taskType'+item.value]?taskTypeCounts['taskType'+item.value]:'0'"
@@ -18,10 +18,14 @@
           </el-button>
         </span>
       </div>
-    </div>
-    <div class="contentBox">
+      <div style="margin-top:15px;">
       <order-task-search @onSearch="handleSearch"></order-task-search>
+
+      </div>
+
     </div>
+    <!-- <div class="contentBox">
+    </div> -->
     <div class="contentBox">
       <el-row style="margin-bottom:15px;margin-left:40px;">
         <el-button
@@ -249,7 +253,7 @@ export default {
         str.push(item.taskId);
       });
       params.orderTaskIds = str;
-      console.log(params)
+      console.log(params);
       this.taskTransfer(params);
       this.taskStaffDialog = false;
     },
