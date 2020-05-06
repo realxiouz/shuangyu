@@ -3,13 +3,13 @@
     <div class="searchBox">
       <div style="margin-top:10px;">
         <span>
-          <el-button plain  @click="geAllData()" type="info" size="mini">
+          <el-button plain @click="geAllData()" type="info" size="mini">
             待处理
             <el-badge :value="totalCount?totalCount:'0'" :max="99"></el-badge>
           </el-button>
         </span>
         <span v-for="item in taskTypeValue" :key="item.value" style="margin-right:5px;">
-          <el-button  style="margin-bottom:10px;" @click="getOtherData(item.value)" size="mini">
+          <el-button style="margin-bottom:10px;" @click="getOtherData(item.value)" size="mini">
             {{item.label}}
             <el-badge
               :value="taskTypeCounts['taskType'+item.value]?taskTypeCounts['taskType'+item.value]:'0'"
@@ -19,13 +19,10 @@
         </span>
       </div>
       <div style="margin-top:15px;">
-      <order-task-search @onSearch="handleSearch"></order-task-search>
-
+        <order-task-search @onSearch="handleSearch"></order-task-search>
       </div>
-
     </div>
-    <!-- <div class="contentBox">
-    </div> -->
+
     <div class="contentBox">
       <el-row style="margin-bottom:15px;margin-left:40px;">
         <el-button
@@ -45,16 +42,27 @@
         v-loading="loading"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection" width="55"></el-table-column>
+        <el-table-column type="selection" width="55" align="center"></el-table-column>
         <!--<el-table-column prop="taskNo" label="任务编号" width="110" align="center"></el-table-column>-->
         <el-table-column prop="taskName" label="任务名称" width="80" align="center"></el-table-column>
-        <el-table-column prop="taskType" :formatter="formatTaskType" label="任务类型" align="center"></el-table-column>
+        <!-- <el-table-column prop="taskType" :formatter="formatTaskType" label="任务类型" align="center"></el-table-column> -->
+        <el-table-column prop="orderNo" label="订单号" width="180" align="center"></el-table-column>
         <el-table-column prop="sourceOrderNo" label="订单来源单号" width="170" align="center"></el-table-column>
-        <el-table-column prop="fullName" label="派单员工" width="100" align="center"></el-table-column>
-        <el-table-column label="乘客" align="center" width="200">
+        <el-table-column prop="fullName" label="操作员" width="70" align="center"></el-table-column>
+        <el-table-column label="乘机人" align="center" width="100">
           <template slot-scope="scope">
             <i v-if="scope.row.passengers"></i>
             <span>{{ formatPassengers(scope.row.passengers)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="订单金额" prop="amount" width="100" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatAmount(scope.row.amount)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="ticketNos" label="票号" width="120" align="center">
+          <template slot-scope="scope">
+            <span>{{formatTicketNo(scope.row.ticketNos)}}</span>
           </template>
         </el-table-column>
         <el-table-column label="航班号" align="center">
@@ -371,7 +379,7 @@ export default {
       }
       let str = "";
       data.forEach(item => {
-        str += item.name + " / ";
+        str += item.name +" / " ;
       });
 
       return str.substring(0, str.length - 2);
@@ -381,6 +389,19 @@ export default {
         return "";
       }
       return this.initDate(data[0].flightDate, "YYYY-MM-DD");
+    },
+    formatTicketNo(ticketNo) {
+      if (ticketNo && ticketNo.length > 0) {
+        let str = "";
+        ticketNo.forEach((item, index) => {
+          if (item) {
+            str += item + " / ";
+          }
+        });
+        return str.substring(0, str.length - 2);
+      } else {
+        return (ticketNo = "");
+      }
     },
     formatFlightNo(data) {
       if (!data || data.length == 0) {
