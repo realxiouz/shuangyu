@@ -28,6 +28,7 @@
               @change="handleCategory"
             >
             </el-cascader>
+            `
           </el-form-item>
         </el-col>
       </el-row>
@@ -555,7 +556,11 @@
                     .then(data => {
                         if (data) {
                             this.propertyList = data;
-                            let properties = this.formData.properties;
+                            for (let i = 0, len = this.propertyList.length; i < len; i++) {
+                                if (this.propertyList[i].valueType > 6) {
+                                    this.propertyList[i].values = this.getValue(this.propertyList[i].values);
+                                }
+                            }
                             this.formData.properties = [];
                             for (let i = 0, len = data.length; i < len; i++) {
                                 if (data[i].valueType > 6) {
@@ -563,14 +568,14 @@
                                         label: data[i].propertyLabel,
                                         code: data[i].propertyCode,
                                         sku: data[i].sku,
-                                        value: this.getValue(data[i].propertyCode, properties, [])
+                                        value: this.getValue(data[i].values)
                                     });
                                 } else {
                                     this.formData.properties.push({
                                         label: data[i].propertyLabel,
                                         code: data[i].propertyCode,
                                         sku: data[i].sku,
-                                        value: this.getValue(data[i].propertyCode, properties, '')
+                                        value: ''
                                     });
                                 }
                             }
@@ -580,13 +585,15 @@
                         console.log(error);
                     });
             },
-            getValue(code, properties, defaultValue) {
-                for (let i = 0, len = properties.length; i < len; i++) {
-                    if (properties[i].code == code) {
-                        return properties[i].value;
-                    }
+            getValue(values) {
+                let array = [];
+                for (let key in values) {
+                    let data = {};
+                    data.code = key;
+                    data.value = values[key];
+                    array.push(data)
                 }
-                return defaultValue;
+                return array;
             },
             loadBrand() {
                 this.$store.dispatch("brand/getList", {filters: {}})
