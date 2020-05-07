@@ -60,8 +60,8 @@
             <span>{{ formatDate(scope.row.createTime,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="merchantId" label="商户(客户/供应商)" align="center" width="120"></el-table-column>
-        <el-table-column prop="orderSource" label="客户/供应商" align="center" width="100"></el-table-column>
+        <!-- <el-table-column prop="merchantId" label="商户(客户/供应商)" align="center" width="120"></el-table-column> -->
+        <!-- <el-table-column prop="orderSource" label="客户/供应商" align="center" width="100"></el-table-column> -->
         <el-table-column prop="accountId" label="平台账号" align="center" width="110"></el-table-column>
         <el-table-column prop="pnr" label="PNR" width="80" align="center"></el-table-column>
         <el-table-column label="航班号" width="80" align="center">

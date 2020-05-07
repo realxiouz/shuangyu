@@ -18,7 +18,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="showData" label="订单日期:">
+          <el-form-item v-if="showData" label="订单日期:">
             <el-col>
               <el-date-picker
                 start-placeholder="开始日期"
@@ -35,7 +35,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="!showData" label="采购日期:">
+          <el-form-item v-if="!showData" label="采购日期:">
             <el-col>
               <el-date-picker
                 start-placeholder="开始日期"
@@ -84,7 +84,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more&&!showData" label="供应商:">
+          <el-form-item v-if="more&&!showData" label="供应商:">
             <el-select
               clearable
               filterable
@@ -102,13 +102,21 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more&&showData" label="客户:">
-            <el-input
-              @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.orderSource"
+          <el-form-item v-if="more&&showData" label="客户:">
+            <el-select
               clearable
+              filterable
+              placeholder="请选择客户"
+              v-model="formData.merchantId"
               style="width: 100%"
-            ></el-input>
+            >
+              <el-option
+                v-for="item in customerData"
+                :key="item.merchantId"
+                :label="item.firm.firmName"
+                :value="item.merchantId"
+              ></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -459,6 +467,7 @@ export default {
       more: false,
       formData: this.initSearchForm(),
       supplierData: [],
+      customerData: [],
       orderType: orderType,
       showData: false
     };
@@ -529,6 +538,20 @@ export default {
           this.loading = false;
         });
     },
+    // 获取客户
+    getCustom() {
+      this.$store
+        .dispatch("firmMerchant/getList", {
+          filter: { merchantType: 1 }
+        })
+        .then(data => {
+          this.customerData = data;
+        })
+        .catch(error => {
+          console.log(error);
+          this.loading = false;
+        });
+    },
     selectCategory(value) {
       console.log(value);
       if (value == "0") {
@@ -539,9 +562,13 @@ export default {
     }
   },
   watch: {
-    more(val, newVal) {
-      if (!newVal) {
+    showData(val, newVal) {
+      if (newVal) {
         this.getSupplier();
+        this.formData.merchantId = "";
+      } else {
+        this.getCustom();
+        this.formData.merchantId = "";
       }
     }
   }
