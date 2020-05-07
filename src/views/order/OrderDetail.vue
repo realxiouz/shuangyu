@@ -160,7 +160,7 @@
           <span style="font-size:larger;margin-left: 15px;font-weight: bolder;">销售单消息</span>
         </template>
         <div style="padding: 20px">
-          <el-button type="primary" size="mini" @click="getMessage">刷新</el-button>
+          <el-button type="primary" size="mini" style="margin-bottom:15px" @click="getMessage">刷新</el-button>
           <div style="margin-top:15px;" id="messageHtml">
             <span v-if="this.messageData" v-html="this.messageData"></span>
             <span v-else>暂无数据</span>
@@ -193,7 +193,12 @@
           <span style="font-size:larger;margin-left: 15px;font-weight: bolder;">采购单信息</span>
         </template>
         <div style="padding: 20px">
-          <el-button type="primary" size="mini" @click="refreshPurchase">刷新</el-button>
+          <el-button
+            type="primary"
+            size="mini"
+            style="margin-bottom:15px"
+            @click="refreshPurchase"
+          >刷新</el-button>
           <el-table
             size="mini"
             :data="orderTree"
@@ -232,7 +237,7 @@
                 <span>{{formatTicketNo(scope.row.ticketNos)}}</span>
               </template>
             </el-table-column>-->
-            <el-table-column prop="address" align="center" fixed="right" width="360" label="操作">
+            <el-table-column prop="address" align="center" fixed="right" width="400" label="操作">
               <template slot-scope="scope">
                 <el-button
                   type="primary"
@@ -263,6 +268,31 @@
               </template>
             </el-table-column>
           </el-table>
+        </div>
+      </el-collapse-item>
+      <el-collapse-item name="5">
+        <template slot="title">
+          <span style="font-size:larger;margin-left: 15px;font-weight: bolder;">操作日志</span>
+        </template>
+        <div style="padding: 20px">
+          <el-button
+            type="primary"
+            @click="refreshTaskLog"
+            style="margin-bottom:15px;"
+            size="mini"
+          >刷新</el-button>
+          <div>
+            <el-table :data="taskLogData.logs" size="mini" highlight-current-row fit>
+              <el-table-column type="index" width="50"></el-table-column>
+              <el-table-column prop="name" label="操作员" width="80"></el-table-column>
+              <el-table-column prop="time" align="center" label="操作时间">
+                <template slot-scope="scope">
+                  <span>{{ formatDate(scope.row.time,'YYYY-MM-DD HH:mm:ss') }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column prop="content" align="center" width="360" label="操作内容"></el-table-column>
+            </el-table>
+          </div>
         </div>
       </el-collapse-item>
     </el-collapse>
@@ -499,14 +529,7 @@ export default {
       profitAndLossValue: 0,
       rootOrderNo: "",
       ticketNoData: "",
-      rewriteTicketData: {
-        orderNo: "",
-        passengerId: "",
-        ticketNo: "",
-        groupCheckOut: "",
-        groupCheckIn: "",
-        lastProductId: ""
-      },
+
       newFromDialog: "",
       fillOutRefundData: "",
       fillOutChangeData: {},
@@ -535,6 +558,7 @@ export default {
       changeData: "",
       orderNo: this.$route.query.orderNo,
       taskType: this.$route.query.taskType,
+      taskId: this.$route.query.taskId,
       changeDataTop: {
         reason: "",
         flight: "",
@@ -549,13 +573,22 @@ export default {
         refuseReasonType: "",
         refuseReason: ""
       },
-      activeNames: ["1", "2", "3", "4"],
+      rewriteTicketData: {
+        orderNo: "",
+        passengerId: "",
+        ticketNo: "",
+        groupCheckOut: "",
+        groupCheckIn: "",
+        lastProductId: ""
+      },
+      activeNames: ["1", "2", "3", "4", "5"],
       //订单详情状态
       orderDetail_orderState: "",
       //订单详情意见及备注
       orderDetail_orderComment: "",
       //订单详情触发定时器
-      detailInfoTimer: null
+      detailInfoTimer: null,
+      taskLogData: "" //操作日志数据
     };
   },
   components: {
@@ -576,7 +609,23 @@ export default {
     formatFlightDate,
     formatFlightNo,
     formatAmount,
-
+    // 刷新任务操作日志
+    refreshTaskLog() {
+      this.getOneTaskLog();
+    },
+    //获取任务详情
+    getOneTaskLog() {
+      this.$store
+        .dispatch("orderTask/getTaskInfo", this.taskId)
+        .then(data => {
+          if (data) {
+            this.taskLogData = data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     //蜗牛展示按钮
     woniuPerateButton(row) {
       var flag = false;
@@ -1528,6 +1577,7 @@ export default {
   },
   created() {
     this.getOrderDetail(this.orderNo);
+    this.getOneTaskLog();
   },
   // 离开页面销毁定时器
   beforeDestroy() {
