@@ -3,7 +3,7 @@
     <div class="searchBox">
       <div style="margin-top:10px;">
         <span>
-          <el-button plain @click="geAllData()" type="info" size="mini">
+          <el-button @click="geAllData()" type="info" size="mini">
             待处理
             <el-badge :value="totalCount?totalCount:'0'" :max="99"></el-badge>
           </el-button>
