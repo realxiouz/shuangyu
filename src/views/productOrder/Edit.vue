@@ -1,29 +1,44 @@
 <template>
-  <div>
-    <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
-      <el-form :rules="rules" :model="formData" label-position="left" label-width="20%" size="mini">
-        <el-form-item label="名称" prop="firmName">
-          <el-select v-model="formData.merchantId" filterable placeholder="请选择" @change="selectedCustomer">
-            <el-option
-              v-for="item in customerList"
-              :key="item.merchantId"
-              :label="item.firm.firmName"
-              :value="item.merchantId">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="名称" prop="firmName">
-          <el-input type="text" placeholder="请输入供应商名称" v-model="formData.firmName"></el-input>
-        </el-form-item>
-      </el-form>
-    </el-col>
-    <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
-      <el-form :rules="rules" :model="formData" label-position="left" label-width="20%" size="mini">
-        <el-form-item label="名称" prop="firmName">
-          <el-input type="text" placeholder="请输入供应商名称" v-model="firmForm.firmName"></el-input>
-        </el-form-item>
-      </el-form>
-    </el-col>
+  <div class="bigBox">
+    <div class="contentBox">
+      <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
+        <el-form :rules="rules" :model="formData" label-position="left" label-width="20%" size="mini">
+          <el-form-item label="商户:" prop="merchantId">
+            <el-select v-model="formData.merchantId" filterable placeholder="请选择" @change="selectedCustomer">
+              <el-option
+                v-for="item in customerList"
+                :key="item.merchantId"
+                :label="item.firm.firmName"
+                :value="item.merchantId">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="账号:" prop="accountId">
+            <el-select v-model="formData.accountId" filterable placeholder="请选择" @change="selectedCustomer">
+              <el-option
+                v-for="item in accountList"
+                :key="item.accountId"
+                :label="item.accountId"
+                :value="item.accountId">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="名称" prop="firmName">
+            <el-input type="text" placeholder="请输入供应商名称" v-model="formData.firmName"></el-input>
+          </el-form-item>
+          <el-form-item label="名称" prop="firmName">
+            <el-input type="text" placeholder="请输入供应商名称" v-model="formData.firmName"></el-input>
+          </el-form-item>
+        </el-form>
+      </el-col>
+      <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
+        <el-form :rules="rules" :model="formData" label-position="left" label-width="20%" size="mini">
+          <el-form-item label="名称" prop="firmName">
+            <el-input type="text" placeholder="请输入供应商名称" v-model="formData.firmName"></el-input>
+          </el-form-item>
+        </el-form>
+      </el-col>
+    </div>
   </div>
 </template>
 
@@ -35,6 +50,7 @@
                 formData: {},
                 //选择客户
                 customerList: [],
+                accountList: [],
                 //用于记录和查找所选中的商品类别
                 tempCategoryList: [],
                 rules: {
@@ -129,7 +145,7 @@
                     recordName: ''
                 };
             },
-            loadCustomer() {
+            loadCustomers() {
                 this.$store.dispatch("firmMerchant/getList", {filter: {types: JSON.stringify([1, 2])}})
                     .then(data => {
                         this.customerList = data;
@@ -138,14 +154,35 @@
                         console.log(error);
                     });
             },
-            selectedCustomer(item){
-                this.$store.dispatch("firmAccount/getOne", {filter: {}})
+            loadAccounts(merchantId) {
+                this.$store.dispatch("firmAccount/getList", {filter: {merchantId: merchantId}})
                     .then(data => {
-                        this.customerList = data;
+                        this.accountList = data;
                     })
                     .catch(error => {
                         console.log(error);
                     });
+            },
+            selectedCustomer(item) {
+                this.loadAccounts(item);
+                this.customerList.forEach(customer => {
+                    if (item === customer.merchantId) {
+                        this.$store.dispatch("firmContact/getList", {
+                            filter: {
+                                firmId: item,
+                                phone: customer.firm.phone,
+                                email: customer.firm.email
+                            }
+                        })
+                            .then(data => {
+                                this.formData.contactId = data[0].contactId;
+                                this.formData.contactName = customer.firm.fullName;
+                            })
+                            .catch(error => {
+                                console.log(error);
+                            });
+                    }
+                })
             },
             clearForm() {
                 this.formData = this.defaultFormData();
@@ -153,21 +190,8 @@
             handleConfirm() {
                 this.$emit("onSave", this.formData);
             },
-            selectedCategory(selected) {
-                //选取最后的节点
-                const code = selected[selected.length - 1];
-                this.formData.categoryCode = code;
-                //找到所选择的对象
-                this.tempCategoryList.forEach(item => {
-                    if (code == item.categoryCode) {
-                        this.formData.categoryName = item.categoryName;
-                        this.formData.categoryPath = item.path;
-                    }
-                })
-            },
             initFormData() {
                 this.clearForm();
-                this.loadCategory();
                 if (this.update) {
                     Object.assign(this.formData, this.curNode);
                 }
