@@ -563,7 +563,6 @@ export default {
         });
     },
     selectCategory(value) {
-      console.log(value);
       if (value == "0") {
         this.showData = true;
       } else {
