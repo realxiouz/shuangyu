@@ -22,7 +22,8 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row v-if="propertyList.length >0" :gutter="10" v-for="(item, index) in formData.properties" :key="index">
+      <el-row v-if="propertyList.length >0" :gutter="10" v-for="(item, index) in formData.productPropertyItems"
+              :key="index">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item :label="item.label">
             <!-- 数据类型（0文本，1开关，2数字，3日期，4日期时间，5时间，6评分，7单选，8多选，9选择器）-->
@@ -159,7 +160,6 @@
           </el-form-item>
         </el-col>
       </el-row>
-
       <el-row :gutter="10">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="描述" prop="description">
@@ -189,7 +189,7 @@
             };
             return {
                 formData: {
-                    properties: []
+                    productPropertyItems: []
                 },
                 propertyList: [],
                 categoryList: [],
@@ -256,7 +256,7 @@
             /*表单默认加载数据*/
             defaultFormData() {
                 return {
-                    properties: [],
+                    productPropertyItems: [],
                     productCode: "",
                     productName: "",
                     categoryCode: "",
@@ -321,32 +321,50 @@
                         filter: searchForm
                     })
                     .then(data => {
-                        if (data) {
-                            this.propertyList = data;
-                            let properties = this.formData.properties;
-                            this.formData.properties = [];
-                            for (let i = 0, len = data.length; i < len; i++) {
-                                if (data[i].valueType > 6) {
-                                    this.formData.properties.push({
-                                        label: data[i].propertyLabel,
-                                        code: data[i].propertyCode,
-                                        sku: data[i].sku,
-                                        value: this.getValue(data[i].propertyCode, properties, [])
-                                    });
-                                } else {
-                                    this.formData.properties.push({
-                                        label: data[i].propertyLabel,
-                                        code: data[i].propertyCode,
-                                        sku: data[i].sku,
-                                        value: this.getValue(data[i].propertyCode, properties, '')
-                                    });
+                            if (data) {
+                                this.propertyList = data;
+                                if (this.propertyList.length > 0) {
+                                    for (let i = 0, len = this.propertyList.length; i < len; i++) {
+                                        if (this.propertyList[i].valueType > 6) {
+                                            this.propertyList[i].values = this.getValueArray(this.propertyList[i].values);
+                                        }
+                                    }
+                                    let properties = this.formData.productPropertyItems;
+                                    this.formData.productPropertyItems = [];
+                                    for (let i = 0, len = data.length; i < len; i++) {
+                                        if (data[i].valueType > 6) {
+                                            this.formData.productPropertyItems.push({
+                                                label: data[i].propertyLabel,
+                                                code: data[i].propertyCode,
+                                                sku: data[i].sku,
+                                                value: this.getValue(data[i].propertyCode, properties, [])
+                                            });
+                                        } else {
+                                            this.formData.productPropertyItems.push({
+                                                label: data[i].propertyLabel,
+                                                code: data[i].propertyCode,
+                                                sku: data[i].sku,
+                                                value: this.getValue(data[i].propertyCode, properties, '')
+                                            });
+                                        }
+                                    }
                                 }
                             }
                         }
-                    })
+                    )
                     .catch(error => {
                         console.log(error);
                     });
+            },
+            getValueArray(values) {
+                let array = [];
+                for (let key in values) {
+                    let data = {};
+                    data.code = key;
+                    data.value = values[key];
+                    array.push(data)
+                }
+                return array;
             },
             getValue(code, properties, defaultValue) {
                 for (let i = 0, len = properties.length; i < len; i++) {
