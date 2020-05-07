@@ -20,6 +20,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="merchantId" label="供应商" align="center" width="160"></el-table-column>
+        <el-table-column prop="orderSource" label="客户" align="center" width="160"></el-table-column>
         <el-table-column prop="orderNo" label="订单号" align="center" width="180"></el-table-column>
         <el-table-column label="源单号" prop="sourceOrderNo" width="160" align="center"></el-table-column>
         <el-table-column label="乘客" align="center" width="100">
@@ -64,6 +65,11 @@
         <el-table-column label="航班号" width="80" align="center">
           <template slot-scope="scope">
             <span>{{ formatFlightNo(scope.row.flights)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="航司" width="80" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatAirlineCode(scope.row.flights)}}</span>
           </template>
         </el-table-column>
         <el-table-column label="航班日期" width="100" align="center">
@@ -314,101 +320,6 @@ export default {
             newParams[key] = params[key];
           }
         }
-        // if (params.name) {
-        //   newParams.name = params.name;
-        // }
-        // if (params.cardNo) {
-        //   newParams.cardNo = params.cardNo;
-        // }
-        // if (params.orderNo) {
-        //   newParams.orderNo = params.orderNo;
-        // }
-        // if (params.ticketNo) {
-        //   newParams.ticketNo = params.ticketNo;
-        // }
-        // if (params.pnr) {
-        //   newParams.pnr = params.pnr;
-        // }
-        // if (params.status) {
-        //   newParams.status = params.status;
-        // }
-        // if (params.flightDate) {
-        //   newParams.startFlightDate = params.flightDate[0];
-        //   newParams.endFlightDate = params.flightDate[1];
-        // }
-        // if (params.cabin) {
-        //   newParams.cabin = params.cabin;
-        // }
-        // if (params.flightCode) {
-        //   newParams.flightCode = params.flightCode;
-        // }
-        // if (params.orderType) {
-        //   newParams.orderType = params.orderType;
-        // }
-        // if (params.voyageType) {
-        //   newParams.voyageType = params.voyageType;
-        // }
-        // if (params.createTime) {
-        //   newParams.startCreateTime = params.createTime[0];
-        //   newParams.endCreateTime = params.createTime[1];
-        // }
-
-        // if (params.startAmount) {
-        //   newParams.startAmount = params.startAmount;
-        // }
-        // if (params.endAmount) {
-        //   newParams.endAmount = params.endAmount;
-        // }
-
-        // if (params.startReceivable) {
-        //   newParams.startReceivable = params.startReceivable;
-        // }
-        // if (params.endReceivable) {
-        //   newParams.endReceivable = params.endReceivable;
-        // }
-        // if (params.startReceipt) {
-        //   newParams.startReceipt = params.startReceipt;
-        // }
-        // if (params.endReceipt) {
-        //   newParams.endReceipt = params.endReceipt;
-        // }
-
-        // if (params.endReceipt) {
-        //   newParams.endReceipt = params.endReceipt;
-        // }
-        // if (params.endReceipt) {
-        //   newParams.endReceipt = params.endReceipt;
-        // }
-
-        // if (params.startPayable) {
-        //   newParams.startPayable = params.startPayable;
-        // }
-        // if (params.endPayable) {
-        //   newParams.endPayable = params.endPayable;
-        // }
-
-        // if (params.startPayment) {
-        //   newParams.startPayment = params.startPayment;
-        // }
-        // if (params.endPayment) {
-        //   newParams.endPayment = params.endPayment;
-        // }
-        // if (params.startSystemProfit) {
-        //   newParams.startSystemProfit = params.startSystemProfit;
-        // }
-        // if (params.endSystemProfit) {
-        //   newParams.endSystemProfit = params.endSystemProfit;
-        // }
-
-        // if (params.startShouldProfit) {
-        //   newParams.startShouldProfit = params.startShouldProfit;
-        // }
-        // if (params.endShouldProfit) {
-        //   newParams.endShouldProfit = params.endShouldProfit;
-        // }
-        // if (params.category) {
-        //   newParams.category = params.category;
-        // }
         this.searchParams = newParams;
         this.loadData(this.searchParams);
         this.$message({
@@ -441,6 +352,12 @@ export default {
         return "";
       }
       return data[0].flightCode;
+    },
+    formatAirlineCode(data) {
+      if (!data || data.length == 0) {
+        return "";
+      }
+      return data[0].airlineCode;
     },
     formatFlight(data) {
       if (!data || data.length == 0) {
