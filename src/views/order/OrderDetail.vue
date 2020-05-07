@@ -473,6 +473,14 @@ import {
   formatAgeType,
   formatCardType
 } from "@/utils/status.js";
+import {
+  formatPassengers,
+  formatTicketNo,
+  formatFlightDate,
+  formatFlightNo,
+  formatFlight,
+  formatAmount
+} from "@/utils/orderFormdata.js";
 
 export default {
   name: "orderDetail",
@@ -564,6 +572,12 @@ export default {
     formatCategory,
     formatAgeType,
     formatCardType,
+    formatPassengers,
+    formatTicketNo,
+    formatFlightDate,
+    formatFlightNo,
+    formatFlight,
+    formatAmount,
 
     //蜗牛展示按钮
     woniuPerateButton(row) {
@@ -1503,46 +1517,6 @@ export default {
         return "";
       }
     },
-    //格式化乘客信息
-    formatPassengers(data) {
-      if (!data || data.length == 0) {
-        return "";
-      }
-      let str = "";
-      data.forEach(item => {
-        str += item.name + " / ";
-      });
-
-      return str.substring(0, str.length - 2);
-    },
-    // 格式化航班信息
-    formatFlightNo(data) {
-      if (!data || data.length == 0) {
-        return "";
-      }
-      return data[0].flightCode;
-    },
-    // 格式化票号信息
-    formatTicketNo(ticketNo) {
-      if (ticketNo && ticketNo.length > 0) {
-        let str = "";
-        ticketNo.forEach((item, index) => {
-          if (item) {
-            str += item + " / ";
-          }
-        });
-        return str.substring(0, str.length - 2);
-      } else {
-        return (ticketNo = "");
-      }
-    },
-    // 格式化数字
-    formatAmount(amount) {
-      if (!amount) {
-        return "￥0.00";
-      }
-      return "￥" + this.$numeral(amount).format("0.00");
-    }
   },
   created() {
     this.getOrderDetail(this.orderNo);
