@@ -97,7 +97,7 @@
             <el-table-column prop="refundRule" label="退票规则" align="center"></el-table-column>
             <el-table-column prop="changeRule" label="改签规则" align="center"></el-table-column>
           </el-table>
-          <el-divider content-position="left">乘客信息</el-divider>
+          <el-divider content-position="left">乘机人信息</el-divider>
           <el-table
             :data="passengerDataTable"
             size="mini"
@@ -107,7 +107,7 @@
             fit
           >
             <el-table-column type="selection" width="55"></el-table-column>
-            <el-table-column prop="name" label="姓名" width="100" align="center"></el-table-column>
+            <el-table-column prop="name" label="乘机人" width="100" align="center"></el-table-column>
             <el-table-column prop="gender" label="性别" width="100" align="center"></el-table-column>
             <el-table-column label="出生年月" width="110" align="center">
               <template slot-scope="scope">
@@ -207,9 +207,9 @@
             <el-table-column prop="sourceOrderNo" align="center" width="180" label="原订单"></el-table-column>
             <el-table-column prop="status" :formatter="formatStatus" label="订单状态" width="80"></el-table-column>
             <el-table-column prop="orderSource" align="center" label="供应商"></el-table-column>
-            <el-table-column label="姓名" align="center" width="200">
+            <el-table-column label="乘机人-票号" align="center" width="200">
               <template slot-scope="scope">
-                <span>{{ formatPassengers(scope.row.orderDetailList)}}</span>
+                <span v-html="formatPassengersTicket(scope.row.orderDetailList)"></span>
               </template>
             </el-table-column>
             <el-table-column prop="createTime" align="center" label="订单时间">
@@ -227,11 +227,11 @@
                 <span>{{ formatFlightNo(scope.row.flights)}}</span>
               </template>
             </el-table-column>
-            <el-table-column prop="ticketNos" label="票号" width="120" align="center">
+            <!-- <el-table-column prop="ticketNos" label="票号" width="120" align="center">
               <template slot-scope="scope">
                 <span>{{formatTicketNo(scope.row.ticketNos)}}</span>
               </template>
-            </el-table-column>
+            </el-table-column>-->
             <el-table-column prop="address" align="center" fixed="right" width="360" label="操作">
               <template slot-scope="scope">
                 <el-button
@@ -478,7 +478,6 @@ import {
   formatTicketNo,
   formatFlightDate,
   formatFlightNo,
-  formatFlight,
   formatAmount
 } from "@/utils/orderFormdata.js";
 
@@ -576,7 +575,6 @@ export default {
     formatTicketNo,
     formatFlightDate,
     formatFlightNo,
-    formatFlight,
     formatAmount,
 
     //蜗牛展示按钮
@@ -1517,6 +1515,16 @@ export default {
         return "";
       }
     },
+    formatPassengersTicket(data) {
+      if (!data || data.length == 0) {
+        return "";
+      }
+      let str = "";
+      data.forEach(item => {
+        str += item.name + " - " + item.ticketNo + "<br/>";
+      });
+      return str;
+    }
   },
   created() {
     this.getOrderDetail(this.orderNo);
