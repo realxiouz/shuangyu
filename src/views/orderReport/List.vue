@@ -19,8 +19,7 @@
             <span>{{(currentPage - 1) * pageSize + scope.$index + 1}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="merchantId" label="供应商" align="center" width="160"></el-table-column>
-        <el-table-column prop="orderSource" label="客户" align="center" width="160"></el-table-column>
+
         <el-table-column prop="orderNo" label="订单号" align="center" width="180"></el-table-column>
         <el-table-column label="源单号" prop="sourceOrderNo" width="160" align="center"></el-table-column>
         <el-table-column label="乘客" align="center" width="100">
@@ -60,7 +59,9 @@
             <span>{{ formatDate(scope.row.createTime,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
-
+        <el-table-column prop="merchantId" label="商户(客户/供应商)" align="center" width="120"></el-table-column>
+        <el-table-column prop="orderSource" label="客户/供应商" align="center" width="100"></el-table-column>
+        <el-table-column prop="accountId" label="客户/供应商账号" align="center" width="110"></el-table-column>
         <el-table-column prop="pnr" label="PNR" width="80" align="center"></el-table-column>
         <el-table-column label="航班号" width="80" align="center">
           <template slot-scope="scope">

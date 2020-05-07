@@ -103,7 +103,22 @@
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="客户:">
-            <el-input v-model="formData.orderSource" clearable style="width: 100%"></el-input>
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.orderSource"
+              clearable
+              style="width: 100%"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="账号:">
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.accountId"
+              clearable
+              style="width: 100%"
+            ></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -118,23 +133,43 @@
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="票号:">
-            <el-input v-model="formData.ticketNo" clearable style="width: 100%"></el-input>
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.ticketNo"
+              clearable
+              style="width: 100%"
+            ></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="乘机人:">
-            <el-input v-model="formData.name" clearable style="width: 100%"></el-input>
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.name"
+              clearable
+              style="width: 100%"
+            ></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="乘机人证件号:">
-            <el-input clearable v-model="formData.cardNo" style="width: 100%"></el-input>
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              clearable
+              v-model="formData.cardNo"
+              style="width: 100%"
+            ></el-input>
           </el-form-item>
         </el-col>
 
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="PNR:">
-            <el-input clearable v-model="formData.pnr" style="width: 100%"></el-input>
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              clearable
+              v-model="formData.pnr"
+              style="width: 100%"
+            ></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -175,7 +210,12 @@
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="舱位:">
-            <el-input clearable v-model="formData.cabin" style="width: 100%"></el-input>
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              clearable
+              v-model="formData.cabin"
+              style="width: 100%"
+            ></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -209,6 +249,7 @@
                 <el-input
                   clearable
                   v-model="formData.endAmount"
+                  @keyup.enter.native="$emit('onSearch', formData)"
                   placeholder="最大值"
                   style="width: 100%"
                 ></el-input>
@@ -232,6 +273,7 @@
                 <el-input
                   clearable
                   v-model="formData.endReceivable"
+                  @keyup.enter.native="$emit('onSearch', formData)"
                   placeholder="最大值"
                   style="width: 100%"
                 ></el-input>
@@ -255,6 +297,7 @@
                 <el-input
                   clearable
                   v-model="formData.endReceipt"
+                  @keyup.enter.native="$emit('onSearch', formData)"
                   placeholder="最大值"
                   style="width: 100%"
                 ></el-input>
@@ -278,6 +321,7 @@
                 <el-input
                   clearable
                   v-model="formData.endPayable"
+                  @keyup.enter.native="$emit('onSearch', formData)"
                   placeholder="最大值"
                   style="width: 100%"
                 ></el-input>
@@ -301,6 +345,7 @@
                 <el-input
                   clearable
                   v-model="formData.endPayment"
+                  @keyup.enter.native="$emit('onSearch', formData)"
                   placeholder="最大值"
                   style="width: 100%"
                 ></el-input>
@@ -324,6 +369,7 @@
                 <el-input
                   clearable
                   v-model="formData.endSystemProfit"
+                  @keyup.enter.native="$emit('onSearch', formData)"
                   placeholder="最大值"
                   style="width: 100%"
                 ></el-input>
@@ -347,6 +393,7 @@
                 <el-input
                   clearable
                   v-model="formData.endShouldProfit"
+                  @keyup.enter.native="$emit('onSearch', formData)"
                   placeholder="最大值"
                   style="width: 100%"
                 ></el-input>
@@ -370,6 +417,7 @@
                 <el-input
                   clearable
                   v-model="formData.endProfit"
+                  @keyup.enter.native="$emit('onSearch', formData)"
                   placeholder="最大值"
                   style="width: 100%"
                 ></el-input>
@@ -434,6 +482,7 @@ export default {
         category: null,
         merchantId: null,
         orderSource: null,
+        accountId: null,
         ticketNo: null,
         name: null,
         cardNo: null,
