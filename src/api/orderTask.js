@@ -69,6 +69,16 @@ export function taskTransfer(data) {
   return request({
     url: '/order/task/transfer',
     method: 'post',
-    data:data
+    data: data
   });
 }
+
+
+// 获取任务信息
+export function getTaskInfo(taskId) {
+  return request({
+    url: `/order/task/get/${taskId}`,
+    method: 'get',
+  });
+}
+
