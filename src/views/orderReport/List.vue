@@ -357,13 +357,13 @@ export default {
         return "";
       }
     },
-   
+
     formatAirlineCode(data) {
       if (!data || data.length == 0) {
         return "";
       }
       return data[0].airlineCode;
-    },
+    }
   },
   computed: {
     formatDate() {
