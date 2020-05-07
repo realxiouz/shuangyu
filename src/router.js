@@ -647,6 +647,13 @@ export default new Router({
           name: 'config',
           component: () => import('@/views/productInventory/Edit'),
           meta: {title: '商品库存编辑', icon: 'home'}
+        },
+        {
+          title: '产品订单管理',
+          path: '/product/order/config',
+          name: 'productOrder',
+          component: () => import('@/views/productOrder/List'),
+          meta: {title: '产品订单管理', icon: 'home'}
         }
       ]
     },
