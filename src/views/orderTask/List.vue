@@ -59,6 +59,16 @@
             <span>{{ formatAmount(scope.row.amount)}}</span>
           </template>
         </el-table-column>
+        <el-table-column prop="transactionAmount" label="交易金额" width="80" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatAmount(scope.row.transactionAmount)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="profit" label="利润" width="80" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatAmount(scope.row.profit)}}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="ticketNos" label="票号" width="120" align="center">
           <template slot-scope="scope">
             <span v-html="formatTicketNo(scope.row.ticketNos)"></span>
@@ -85,11 +95,6 @@
             <span>{{ scope.row.ruleType==0?"系统":"手工"}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="profit" label="利润" width="80" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatAmount(scope.row.profit)}}</span>
-          </template>
-        </el-table-column>
         <el-table-column
           prop="taskStatus"
           :formatter="formatTaskStatus"
@@ -111,7 +116,7 @@
             <span>{{ formatDate(scope.row.duration,' HH 小时mm 分钟') }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="remark" label="备注" align="center"></el-table-column>
+        <el-table-column prop="remark" fixed="right" width="100" label="备注" align="center"></el-table-column>
         <el-table-column label="操作" fixed="right" align="center" width="80">
           <template slot-scope="scope">
             <el-button

@@ -51,6 +51,19 @@
             </el-select>
           </el-form-item>
         </el-col>
+         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="规则类型:">
+            <el-select
+              style="width: 100%;"
+              clearable
+              v-model="formData.ruleType"
+              placeholder="请选择"
+            >
+              <el-option label="系统" value="0"></el-option>
+              <el-option label="手工" value="1"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="开始时间:">
             <el-date-picker
