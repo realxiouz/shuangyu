@@ -59,6 +59,16 @@
             <span>{{ formatAmount(scope.row.amount)}}</span>
           </template>
         </el-table-column>
+        <el-table-column prop="profit" label="利润" width="80" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatAmount(scope.row.profit)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="transactionAmount" label="交易金额" width="80" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatAmount(scope.row.transactionAmount)}}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="ticketNos" label="票号" width="120" align="center">
           <template slot-scope="scope">
             <span v-html="formatTicketNo(scope.row.ticketNos)"></span>
@@ -83,16 +93,6 @@
         <el-table-column prop="ruleType" width="80" label="规则类型" align="center">
           <template slot-scope="scope">
             <span>{{ scope.row.ruleType==0?"系统":"手工"}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="profit" label="利润" width="80" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatAmount(scope.row.profit)}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="transactionAmount" label="交易金额" width="80" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatAmount(scope.row.transactionAmount)}}</span>
           </template>
         </el-table-column>
         <el-table-column
