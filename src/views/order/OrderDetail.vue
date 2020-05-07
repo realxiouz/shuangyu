@@ -397,7 +397,7 @@
         title="改签支付"
         center
         :visible.sync="changePayShow"
-        width="40%"
+        width="33%"
         :close-on-click-modal="false"
       >
         <div>

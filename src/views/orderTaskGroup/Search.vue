@@ -13,12 +13,12 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="订单来源单号:">
+          <el-form-item label="源单号:">
             <el-input
               clearable
               v-model="formData.sourceOrderNo"
               @keyup.enter.native="$emit('onSearch', formData)"
-              placeholder="请输入订单来源单号搜索..."
+              placeholder="请输入源单号搜索..."
             ></el-input>
           </el-form-item>
         </el-col>

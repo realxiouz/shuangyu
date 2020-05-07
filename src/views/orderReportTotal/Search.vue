@@ -13,12 +13,32 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="源单号:">
+            <el-input
+              clearable
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.sourceOrderNo"
+              style="width: 100%"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="政策代码:">
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.policyCode"
+              style="width: 100%"
+              clearable
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="票号:">
             <el-input v-model="formData.ticketNo" clearable style="width: 100%"></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="乘机人姓名:">
+          <el-form-item v-show="more" label="乘机人:">
             <el-input v-model="formData.name" clearable style="width: 100%"></el-input>
           </el-form-item>
         </el-col>
@@ -38,6 +58,11 @@
                 :value="item.merchantId"
               ></el-option>
             </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="客户:">
+            <el-input v-model="formData.orderSource" clearable style="width: 100%"></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">

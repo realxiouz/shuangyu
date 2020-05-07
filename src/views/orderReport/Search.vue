@@ -13,52 +13,18 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="票号:">
-            <el-input v-model="formData.ticketNo" clearable style="width: 100%"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="乘机人姓名:">
-            <el-input v-model="formData.name" clearable style="width: 100%"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="源单号:">
+          <el-form-item label="源单号:">
             <el-input
               clearable
               @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.rootOrderNo"
+              v-model="formData.sourceOrderNo"
               style="width: 100%"
             ></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="乘机人证件号:">
-            <el-input clearable v-model="formData.cardNo" style="width: 100%"></el-input>
-          </el-form-item>
-        </el-col>
-
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="供应商:">
-            <el-select
-              clearable
-              filterable
-              placeholder="请选择供应商"
-              v-model="formData.merchantId"
-              style="width: 100%"
-            >
-              <el-option
-                v-for="item in supplierData"
-                :key="item.merchantId"
-                :label="item.firm.firmName"
-                :value="item.merchantId"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="订单类型:">
-            <el-select clearable v-model="formData.orderType" placeholder="全部" style="width: 100%">
+          <el-form-item label="订单类型:">
+            <el-select clearable v-model="formData.orderType" placeholder="请选择" style="width: 100%">
               <el-option
                 v-for="item in orderType"
                 :key="item.value"
@@ -83,7 +49,6 @@
             </el-select>
           </el-form-item>
         </el-col>
-
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more&&!showData" label="订单日期:">
             <el-col>
@@ -119,25 +84,91 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="PNR:">
-            <el-input clearable v-model="formData.pnr" style="width: 100%"></el-input>
+          <el-form-item v-show="more" label="供应商:">
+            <el-select
+              clearable
+              filterable
+              placeholder="请选择供应商"
+              v-model="formData.merchantId"
+              style="width: 100%"
+            >
+              <el-option
+                v-for="item in supplierData"
+                :key="item.merchantId"
+                :label="item.firm.firmName"
+                :value="item.merchantId"
+              ></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="出发日期:">
-            <el-col>
-              <el-date-picker
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-                type="daterange"
-                :unlink-panels="true"
-                placeholder="选择日期"
-                v-model="formData.flightDate"
-                style="width: 100%;"
-                format="yyyy-MM-dd"
-                value-format="yyyy-MM-dd"
-              ></el-date-picker>
-            </el-col>
+          <el-form-item v-show="more" label="客户:">
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.orderSource"
+              clearable
+              style="width: 100%"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="账号:">
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.accountId"
+              clearable
+              style="width: 100%"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="政策代码:">
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.policyCode"
+              style="width: 100%"
+              clearable
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="票号:">
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.ticketNo"
+              clearable
+              style="width: 100%"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="乘机人:">
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.name"
+              clearable
+              style="width: 100%"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="乘机人证件号:">
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              clearable
+              v-model="formData.cardNo"
+              style="width: 100%"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="PNR:">
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              clearable
+              v-model="formData.pnr"
+              style="width: 100%"
+            ></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -151,8 +182,39 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="航班日期:">
+            <el-col>
+              <el-date-picker
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                type="daterange"
+                :unlink-panels="true"
+                v-model="formData.flightDate"
+                style="width: 100%;"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+              ></el-date-picker>
+            </el-col>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="航司:">
+            <el-input
+              clearable
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.airlineCode"
+              style="width: 100%"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="舱位:">
-            <el-input clearable v-model="formData.cabin" style="width: 100%"></el-input>
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              clearable
+              v-model="formData.cabin"
+              style="width: 100%"
+            ></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -186,6 +248,7 @@
                 <el-input
                   clearable
                   v-model="formData.endAmount"
+                  @keyup.enter.native="$emit('onSearch', formData)"
                   placeholder="最大值"
                   style="width: 100%"
                 ></el-input>
@@ -209,6 +272,7 @@
                 <el-input
                   clearable
                   v-model="formData.endReceivable"
+                  @keyup.enter.native="$emit('onSearch', formData)"
                   placeholder="最大值"
                   style="width: 100%"
                 ></el-input>
@@ -232,6 +296,7 @@
                 <el-input
                   clearable
                   v-model="formData.endReceipt"
+                  @keyup.enter.native="$emit('onSearch', formData)"
                   placeholder="最大值"
                   style="width: 100%"
                 ></el-input>
@@ -255,6 +320,7 @@
                 <el-input
                   clearable
                   v-model="formData.endPayable"
+                  @keyup.enter.native="$emit('onSearch', formData)"
                   placeholder="最大值"
                   style="width: 100%"
                 ></el-input>
@@ -278,6 +344,7 @@
                 <el-input
                   clearable
                   v-model="formData.endPayment"
+                  @keyup.enter.native="$emit('onSearch', formData)"
                   placeholder="最大值"
                   style="width: 100%"
                 ></el-input>
@@ -301,6 +368,7 @@
                 <el-input
                   clearable
                   v-model="formData.endSystemProfit"
+                  @keyup.enter.native="$emit('onSearch', formData)"
                   placeholder="最大值"
                   style="width: 100%"
                 ></el-input>
@@ -324,6 +392,7 @@
                 <el-input
                   clearable
                   v-model="formData.endShouldProfit"
+                  @keyup.enter.native="$emit('onSearch', formData)"
                   placeholder="最大值"
                   style="width: 100%"
                 ></el-input>
@@ -347,6 +416,7 @@
                 <el-input
                   clearable
                   v-model="formData.endProfit"
+                  @keyup.enter.native="$emit('onSearch', formData)"
                   placeholder="最大值"
                   style="width: 100%"
                 ></el-input>
@@ -404,19 +474,38 @@ export default {
   methods: {
     initSearchForm() {
       return {
-        voyageType: null, //航程类型
-        orderType: null, //订单来源
-        flightCode: null, //航班号
-        flightDate: null, //出发日期
-        cabin: null, //舱位
-        status: null, //订单状态
-        pnr: null, //PNR
-        ticketNo: null, //票号
-        orderNo: null, //订单号
-        name: null, //乘机人姓名
-        cardNo: null, //乘机人证件号
+        orderNo: null,
         createTime: null,
-        rootOrderNo: null
+        sourceOrderNo: null,
+        orderType: null,
+        category: null,
+        merchantId: null,
+        orderSource: null,
+        accountId: null,
+        ticketNo: null,
+        name: null,
+        cardNo: null,
+        pnr: null,
+        flightCode: null,
+        airlineCode: null,
+        cabin: null,
+        voyageType: null,
+        startAmount: null,
+        endAmount: null,
+        startReceivable: null,
+        endReceivable: null,
+        startReceipt: null,
+        endReceipt: null,
+        startPayable: null,
+        endPayable: null,
+        startPayment: null,
+        endPayment: null,
+        startSystemProfit: null,
+        endSystemProfit: null,
+        startShouldProfit: null,
+        endShouldProfit: null,
+        startProfit: null,
+        endProfit: null
       };
     },
     handleClear() {
