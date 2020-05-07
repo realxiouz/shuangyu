@@ -241,7 +241,7 @@ export default {
         })
         .then(data => {
           if (data) {
-            this.totalCount = data.totalCount;
+            this.totalCount = data;
           }
         })
         .catch(error => {

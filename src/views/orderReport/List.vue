@@ -22,7 +22,7 @@
         </el-table-column>
 
         <el-table-column prop="orderNo" label="订单号" align="center" width="180"></el-table-column>
-        <el-table-column label="源单号" prop="sourceOrderNo" width="160" align="center"></el-table-column>
+        <el-table-column label="源单号" prop="sourceOrderNo" width="170" align="center"></el-table-column>
         <el-table-column label="乘机人" align="center" width="100">
           <template slot-scope="scope">
             <span v-html="formatPassengers(scope.row.passengers)"></span>

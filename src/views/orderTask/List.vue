@@ -47,6 +47,11 @@
         <!-- <el-table-column prop="taskType" :formatter="formatTaskType" label="任务类型" align="center"></el-table-column> -->
         <el-table-column prop="orderNo" label="订单号" width="180" align="center"></el-table-column>
         <el-table-column prop="sourceOrderNo" label="源单号" width="170" align="center"></el-table-column>
+        <el-table-column prop="ticketNos" label="票号" width="120" align="center">
+          <template slot-scope="scope">
+            <span v-html="formatTicketNo(scope.row.ticketNos)"></span>
+          </template>
+        </el-table-column>
         <el-table-column prop="fullName" label="操作员" width="70" align="center"></el-table-column>
         <el-table-column label="乘机人" align="center" width="100">
           <template slot-scope="scope">
@@ -54,6 +59,7 @@
             <span v-html="formatPassengers(scope.row.passengers)"></span>
           </template>
         </el-table-column>
+
         <el-table-column label="订单金额" prop="amount" width="100" align="center">
           <template slot-scope="scope">
             <span>{{ formatAmount(scope.row.amount)}}</span>
@@ -69,11 +75,7 @@
             <span>{{ formatAmount(scope.row.profit)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="ticketNos" label="票号" width="120" align="center">
-          <template slot-scope="scope">
-            <span v-html="formatTicketNo(scope.row.ticketNos)"></span>
-          </template>
-        </el-table-column>
+
         <el-table-column label="航班号" align="center">
           <template slot-scope="scope">
             <span>{{ formatFlightNo(scope.row.flights)}}</span>
