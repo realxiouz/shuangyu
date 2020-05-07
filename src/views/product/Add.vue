@@ -410,14 +410,16 @@
                                 codes.push(item1[0]);
                                 names.push(item1[1]);
                             }
-                            row.skuCode = codes.join(",");
+                            row.skuCode = codes;
                             row.skuName = names.join(" ");
                             row.skuId = codes.join(",");
                         } else {
+                            let codes = [];
                             let item2 = skuIds[i].split(",");
                             row.skuName = item2[1];
                             row.skuId = item2[0];
-                            row.skuCode = item2[0];
+                            codes.push(item2[0]);
+                            row.skuCode = codes;
                         }
                         this.dataList.push(row)
                     }
@@ -458,7 +460,6 @@
                     this.dataList[i].supplierName = this.formData.supplierName;
                     if (this.dataList[i].skuName.length > 0 || this.dataList[i].skuId.length > 0) {
                         let skuNames = this.dataList[i].skuName.split(" ");
-                        let skuCodes = this.dataList[i].skuCode.split(",");
                         const properties = {};
                         const productPropertyItems = [];
                         for (let i = 0, len = this.formData.productPropertyItems.length; i < len; i++) {
@@ -490,7 +491,6 @@
                         }
 
                         this.dataList[i].productPropertyItems = productPropertyItems;
-                        this.dataList[i].skuCode = skuCodes;
                         this.dataList[i].skuName = skuNames;
                         this.dataList[i].properties = properties;
                     } else {

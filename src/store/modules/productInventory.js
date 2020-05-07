@@ -27,8 +27,8 @@ const actions = {
   },
   removeOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {productId} = params;
-      removeOne(productId)
+      const {inventoryId} = params;
+      removeOne(inventoryId)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -40,8 +40,8 @@ const actions = {
   },
   getOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {productId} = params;
-      getOne(productId)
+      const {inventoryId} = params;
+      getOne(inventoryId)
         .then(response => {
           const {data} = response;
           resolve(data);
