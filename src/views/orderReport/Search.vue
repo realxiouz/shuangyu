@@ -18,7 +18,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="!showData" label="订单日期:">
+          <el-form-item v-show="showData" label="订单日期:">
             <el-col>
               <el-date-picker
                 start-placeholder="开始日期"
@@ -35,7 +35,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="showData" label="采购日期:">
+          <el-form-item v-show="!showData" label="采购日期:">
             <el-col>
               <el-date-picker
                 start-placeholder="开始日期"
@@ -83,9 +83,8 @@
             </el-select>
           </el-form-item>
         </el-col>
-
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="供应商:">
+          <el-form-item v-show="more&&!showData" label="供应商:">
             <el-select
               clearable
               filterable
@@ -103,7 +102,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="客户:">
+          <el-form-item v-show="more&&showData" label="客户:">
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.orderSource"
@@ -153,7 +152,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="乘机人证件号:">
+          <el-form-item v-show="more" label="证件号码:">
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
               clearable
@@ -183,6 +182,22 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="航班日期:">
+            <el-col>
+              <el-date-picker
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                type="daterange"
+                :unlink-panels="true"
+                v-model="formData.flightDate"
+                style="width: 100%;"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+              ></el-date-picker>
+            </el-col>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="航司:">
             <el-input
               clearable
@@ -202,22 +217,7 @@
             ></el-input>
           </el-form-item>
         </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="航班日期:">
-            <el-col>
-              <el-date-picker
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-                type="daterange"
-                :unlink-panels="true"
-                v-model="formData.flightDate"
-                style="width: 100%;"
-                format="yyyy-MM-dd"
-                value-format="yyyy-MM-dd"
-              ></el-date-picker>
-            </el-col>
-          </el-form-item>
-        </el-col>
+
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="航程类型:">
             <el-select
