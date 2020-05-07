@@ -161,13 +161,22 @@
             ></el-input>
           </el-form-item>
         </el-col>
-
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="PNR:">
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
               clearable
               v-model="formData.pnr"
+              style="width: 100%"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="航班号:">
+            <el-input
+              clearable
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.flightCode"
               style="width: 100%"
             ></el-input>
           </el-form-item>
@@ -186,16 +195,6 @@
                 value-format="yyyy-MM-dd"
               ></el-date-picker>
             </el-col>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="航班号:">
-            <el-input
-              clearable
-              @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.flightCode"
-              style="width: 100%"
-            ></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
