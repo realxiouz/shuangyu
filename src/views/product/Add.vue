@@ -31,7 +31,7 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row :gutter="10" v-for="(item, index) in formData.properties" :key="index">
+      <el-row :gutter="10" v-for="(item, index) in formData.productPropertyItems" :key="index">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item :label="item.label">
             <!-- 数据类型（0文本，1开关，2数字，3日期，4日期时间，5时间，6评分，7单选，8多选，9选择器）-->
@@ -93,7 +93,8 @@
             <!--选择器-->
             <el-select
               v-model="item.value"
-              v-if="propertyList[index].valueType ==9">
+              v-if="propertyList[index].valueType ==9"
+            >
               <el-option v-for="item3 in propertyList[index].values"
                          :key="item3.code"
                          :label="item3.value"
@@ -294,7 +295,8 @@
             };
             return {
                 formData: {
-                    properties: []
+                    productPropertyItems: [],
+                    properties: {},
                 },
                 propertyList: [],
                 categoryList: [],
@@ -347,7 +349,8 @@
             /*表单默认加载数据*/
             defaultFormData() {
                 return {
-                    properties: [],
+                    productPropertyItems: [],
+                    properties: {},
                     productCode: "",
                     productName: "",
                     categoryCode: "",
@@ -357,7 +360,8 @@
                     brandName: "",
                     specification: "",
                     description: "",
-                    skuName: "",
+                    skuName: [],
+                    skuCode: [],
                     skuId: ""
                 };
             },
@@ -380,9 +384,9 @@
             },
             handleSku() {
                 let array = [];
-                for (let i = 0, len = this.formData.properties.length; i < len; i++) {
-                    if (this.formData.properties[i].sku) {
-                        let value = this.formData.properties[i].value;
+                for (let i = 0, len = this.formData.productPropertyItems.length; i < len; i++) {
+                    if (this.formData.productPropertyItems[i].sku) {
+                        let value = this.formData.productPropertyItems[i].value;
                         if (value.length > 0) {
                             array.push(value);
                         }
@@ -410,10 +414,12 @@
                             row.skuName = names.join(" ");
                             row.skuId = codes.join(",");
                         } else {
+                            let codes = [];
                             let item2 = skuIds[i].split(",");
                             row.skuName = item2[1];
                             row.skuId = item2[0];
-                            row.skuCode = item2[0];
+                            codes.push(item2[0]);
+                            row.skuCode = codes;
                         }
                         this.dataList.push(row)
                     }
@@ -453,58 +459,73 @@
                     this.dataList[i].supplierId = this.formData.supplierId;
                     this.dataList[i].supplierName = this.formData.supplierName;
                     if (this.dataList[i].skuName.length > 0 || this.dataList[i].skuId.length > 0) {
-                        //sku
                         let skuNames = this.dataList[i].skuName.split(" ");
                         const properties = {};
                         const productPropertyItems = [];
-                        for (let i = 0, len = this.formData.properties.length; i < len; i++) {
-                            properties[this.formData.properties[i].code] = skuNames[i];
+                        for (let i = 0, len = this.formData.productPropertyItems.length; i < len; i++) {
                             let propertyItems = {};
-                            propertyItems.code = this.formData.properties[i].code;
-                            propertyItems.label = this.formData.properties[i].label;
-                            propertyItems.sku = this.formData.properties[i].sku;
-                            propertyItems.value = skuNames[i];
+                            propertyItems.code = this.formData.productPropertyItems[i].code;
+                            propertyItems.label = this.formData.productPropertyItems[i].label;
+                            propertyItems.sku = this.formData.productPropertyItems[i].sku;
+                            //sku
+                            if (this.formData.productPropertyItems[i].sku) {
+                                if (this.formData.productPropertyItems[i].value.length > 0) {
+                                    let map = this.formData.productPropertyItems[i].value;
+                                    for (let key in map) {
+                                        for (let j = 0, len = skuNames.length; j < len; j++) {
+                                            let array = map[key].split(",");
+                                            if (array[1] == skuNames[j]) {
+                                                properties[this.formData.productPropertyItems[i].code] = skuNames[j];
+                                                propertyItems.value = skuNames[j];
+                                            }
+                                        }
+                                    }
+                                }
+
+                            } else {
+                                //非sku
+                                properties[this.formData.productPropertyItems[i].code] = this.formData.productPropertyItems[i].value;
+                                propertyItems.value = this.formData.productPropertyItems[i].value;
+                            }
                             productPropertyItems.push(propertyItems);
                         }
+
                         this.dataList[i].productPropertyItems = productPropertyItems;
                         this.dataList[i].skuName = skuNames;
                         this.dataList[i].properties = properties;
                     } else {
                         //非sku
-                        this.dataList[i].productPropertyItems = this.formData.properties;
-                        if (this.formData.properties.length > 0) {
+                        if (this.formData.productPropertyItems.length > 0) {
                             const properties = {};
-                            for (let i = 0, len = this.formData.properties.length; i < len; i++) {
-                                properties[this.formData.properties[i].code] = this.formData.properties[i].value;
+                            for (let i = 0, len = this.formData.productPropertyItems.length; i < len; i++) {
+                                properties[this.formData.productPropertyItems[i].code] = this.formData.productPropertyItems[i].value;
                             }
                             this.dataList[i].properties = properties;
                         }
                     }
                 }
-
-                if (this.formData.properties.length > 0) {
+                if (this.formData.productPropertyItems.length > 0) {
                     const properties = {};
                     const productPropertyItems = [];
-                    for (let i = 0, len = this.formData.properties.length; i < len; i++) {
-                        if (this.formData.properties[i].sku) {
-                            if (this.formData.properties[i].value.length > 0) {
-                                let valueArray = this.formData.properties[i].value;
-                                let values = {};
-                                for (let i = 0, len = valueArray.length; i < len; i++) {
-                                    let item2 = valueArray[i].split(",");
-                                    values[item2[0]] = item2[1];
-                                }
-                                properties[this.formData.properties[i].code] = values;
-                                let propertyItems = {};
-                                propertyItems.code = this.formData.properties[i].code;
-                                propertyItems.label = this.formData.properties[i].label;
-                                propertyItems.sku = this.formData.properties[i].sku;
-                                propertyItems.value = values;
-                                productPropertyItems.push(propertyItems);
+                    for (let i = 0, len = this.formData.productPropertyItems.length; i < len; i++) {
+                        let propertyItems = {};
+                        propertyItems.code = this.formData.productPropertyItems[i].code;
+                        propertyItems.label = this.formData.productPropertyItems[i].label;
+                        propertyItems.sku = this.formData.productPropertyItems[i].sku;
+                        if (this.formData.productPropertyItems[i].sku) {
+                            let valueArray = this.formData.productPropertyItems[i].value;
+                            let values = {};
+                            for (let i = 0, len = valueArray.length; i < len; i++) {
+                                let item2 = valueArray[i].split(",");
+                                values[item2[0]] = item2[1];
                             }
+                            properties[this.formData.productPropertyItems[i].code] = values;
+                            propertyItems.value = values;
                         } else {
-                            properties[this.formData.properties[i].code] = this.formData.properties[i].value;
+                            properties[this.formData.productPropertyItems[i].code] = this.formData.productPropertyItems[i].value;
+                            propertyItems.value = this.formData.productPropertyItems[i].value;
                         }
+                        productPropertyItems.push(propertyItems);
                     }
                     this.formData.properties = properties;
                     this.formData.productPropertyItems = productPropertyItems;
@@ -555,22 +576,26 @@
                     .then(data => {
                         if (data) {
                             this.propertyList = data;
-                            let properties = this.formData.properties;
-                            this.formData.properties = [];
+                            for (let i = 0, len = this.propertyList.length; i < len; i++) {
+                                if (this.propertyList[i].valueType > 6) {
+                                    this.propertyList[i].values = this.getValue(this.propertyList[i].values);
+                                }
+                            }
+                            this.formData.productPropertyItems = [];
                             for (let i = 0, len = data.length; i < len; i++) {
                                 if (data[i].valueType > 6) {
-                                    this.formData.properties.push({
+                                    this.formData.productPropertyItems.push({
                                         label: data[i].propertyLabel,
                                         code: data[i].propertyCode,
                                         sku: data[i].sku,
-                                        value: this.getValue(data[i].propertyCode, properties, [])
+                                        value: []
                                     });
                                 } else {
-                                    this.formData.properties.push({
+                                    this.formData.productPropertyItems.push({
                                         label: data[i].propertyLabel,
                                         code: data[i].propertyCode,
                                         sku: data[i].sku,
-                                        value: this.getValue(data[i].propertyCode, properties, '')
+                                        value: ''
                                     });
                                 }
                             }
@@ -580,13 +605,15 @@
                         console.log(error);
                     });
             },
-            getValue(code, properties, defaultValue) {
-                for (let i = 0, len = properties.length; i < len; i++) {
-                    if (properties[i].code == code) {
-                        return properties[i].value;
-                    }
+            getValue(values) {
+                let array = [];
+                for (let key in values) {
+                    let data = {};
+                    data.code = key;
+                    data.value = values[key];
+                    array.push(data)
                 }
-                return defaultValue;
+                return array;
             },
             loadBrand() {
                 this.$store.dispatch("brand/getList", {filters: {}})

@@ -13,20 +13,20 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="票号:">
+          <el-form-item label="源单号:">
             <el-input
-              @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.ticketNo"
-              style="width: 100%"
               clearable
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.sourceOrderNo"
+              style="width: 100%"
             ></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="原订单:">
+          <el-form-item label="票号:">
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.sourceOrderNo"
+              v-model="formData.ticketNo"
               style="width: 100%"
               clearable
             ></el-input>

@@ -97,7 +97,7 @@
             <el-table-column prop="refundRule" label="退票规则" align="center"></el-table-column>
             <el-table-column prop="changeRule" label="改签规则" align="center"></el-table-column>
           </el-table>
-          <el-divider content-position="left">乘客信息</el-divider>
+          <el-divider content-position="left">乘机人信息</el-divider>
           <el-table
             :data="passengerDataTable"
             size="mini"
@@ -107,7 +107,7 @@
             fit
           >
             <el-table-column type="selection" width="55"></el-table-column>
-            <el-table-column prop="name" label="姓名" width="100" align="center"></el-table-column>
+            <el-table-column prop="name" label="乘机人" width="100" align="center"></el-table-column>
             <el-table-column prop="gender" label="性别" width="100" align="center"></el-table-column>
             <el-table-column label="出生年月" width="110" align="center">
               <template slot-scope="scope">
@@ -207,9 +207,9 @@
             <el-table-column prop="sourceOrderNo" align="center" width="180" label="原订单"></el-table-column>
             <el-table-column prop="status" :formatter="formatStatus" label="订单状态" width="80"></el-table-column>
             <el-table-column prop="orderSource" align="center" label="供应商"></el-table-column>
-            <el-table-column label="姓名" align="center" width="200">
+            <el-table-column label="乘机人-票号" align="center" width="200">
               <template slot-scope="scope">
-                <span>{{ formatPassengers(scope.row.orderDetailList)}}</span>
+                <span v-html="formatPassengersTicket(scope.row.orderDetailList)"></span>
               </template>
             </el-table-column>
             <el-table-column prop="createTime" align="center" label="订单时间">
@@ -227,11 +227,11 @@
                 <span>{{ formatFlightNo(scope.row.flights)}}</span>
               </template>
             </el-table-column>
-            <el-table-column prop="ticketNos" label="票号" width="120" align="center">
+            <!-- <el-table-column prop="ticketNos" label="票号" width="120" align="center">
               <template slot-scope="scope">
                 <span>{{formatTicketNo(scope.row.ticketNos)}}</span>
               </template>
-            </el-table-column>
+            </el-table-column>-->
             <el-table-column prop="address" align="center" fixed="right" width="360" label="操作">
               <template slot-scope="scope">
                 <el-button
@@ -397,7 +397,7 @@
         title="改签支付"
         center
         :visible.sync="changePayShow"
-        width="40%"
+        width="33%"
         :close-on-click-modal="false"
       >
         <div>
@@ -473,6 +473,13 @@ import {
   formatAgeType,
   formatCardType
 } from "@/utils/status.js";
+import {
+  formatPassengers,
+  formatTicketNo,
+  formatFlightDate,
+  formatFlightNo,
+  formatAmount
+} from "@/utils/orderFormdata.js";
 
 export default {
   name: "orderDetail",
@@ -564,6 +571,11 @@ export default {
     formatCategory,
     formatAgeType,
     formatCardType,
+    formatPassengers,
+    formatTicketNo,
+    formatFlightDate,
+    formatFlightNo,
+    formatAmount,
 
     //蜗牛展示按钮
     woniuPerateButton(row) {
@@ -1023,7 +1035,7 @@ export default {
               type: "success",
               message: "操作成功！"
             });
-            this.getRefundHtml();
+            this.getMessageHtml();
           }
         })
         .catch(error => {
@@ -1503,45 +1515,15 @@ export default {
         return "";
       }
     },
-    //格式化乘客信息
-    formatPassengers(data) {
+    formatPassengersTicket(data) {
       if (!data || data.length == 0) {
         return "";
       }
       let str = "";
       data.forEach(item => {
-        str += item.name + " / ";
+        str += item.name + " - " + item.ticketNo + "<br/>";
       });
-
-      return str.substring(0, str.length - 2);
-    },
-    // 格式化航班信息
-    formatFlightNo(data) {
-      if (!data || data.length == 0) {
-        return "";
-      }
-      return data[0].flightCode;
-    },
-    // 格式化票号信息
-    formatTicketNo(ticketNo) {
-      if (ticketNo && ticketNo.length > 0) {
-        let str = "";
-        ticketNo.forEach((item, index) => {
-          if (item) {
-            str += item + " / ";
-          }
-        });
-        return str.substring(0, str.length - 2);
-      } else {
-        return (ticketNo = "");
-      }
-    },
-    // 格式化数字
-    formatAmount(amount) {
-      if (!amount) {
-        return "￥0.00";
-      }
-      return "￥" + this.$numeral(amount).format("0.00");
+      return str;
     }
   },
   created() {
