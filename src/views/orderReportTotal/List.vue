@@ -19,19 +19,19 @@
             <span>{{(currentPage - 1) * pageSize + scope.$index + 1}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="orderNo" label="订单号" align="center" width="160"></el-table-column>
-        <el-table-column label="源单号" prop="sourceOrderNo" width="150" align="center"></el-table-column>
-        <el-table-column label="乘客" align="center" width="100">
+        <el-table-column prop="orderNo" label="订单号" align="center" width="180"></el-table-column>
+        <el-table-column label="源单号" prop="sourceOrderNo" width="160" align="center"></el-table-column>
+        <el-table-column label="乘机人" align="center" width="100">
           <template slot-scope="scope">
-            <span>{{ formatPassengers(scope.row.passengers)}}</span>
+            <span v-html="formatPassengers(scope.row.passengers)"></span>
           </template>
         </el-table-column>
-
         <el-table-column prop="ticketNos" label="票号" width="120" align="center">
           <template slot-scope="scope">
-            <span>{{formatTicketNo(scope.row.ticketNos)}}</span>
+            <span v-html="formatTicketNo(scope.row.ticketNos)"></span>
           </template>
         </el-table-column>
+        <el-table-column prop="policyCode" label="政策代码" width="150" align="center"></el-table-column>
         <el-table-column
           prop="category"
           :formatter="formatCategory"
@@ -56,9 +56,9 @@
             <span>{{ formatFlightDate(scope.row.flights)}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="起飞 -- 到达" width="100" align="center">
+        <el-table-column label="起飞 -- 到达" width="90" align="center">
           <template slot-scope="scope">
-            <span>{{ formatFlight(scope.row.flights)}}</span>
+            <span v-html="formatFlight(scope.row.flights)"></span>
           </template>
         </el-table-column>
 
@@ -132,6 +132,14 @@
 <script>
 import orderReportTotalSearch from "./Search.vue";
 import { formatCategory, formatStatus } from "@/utils/status.js";
+import {
+  formatPassengers,
+  formatTicketNo,
+  formatFlightDate,
+  formatFlightNo,
+  formatFlight,
+  formatAmount
+} from "@/utils/orderFormdata.js";
 
 export default {
   name: "orderReportTotal",
@@ -153,6 +161,12 @@ export default {
   methods: {
     formatStatus,
     formatCategory,
+    formatPassengers,
+    formatTicketNo,
+    formatFlightDate,
+    formatFlightNo,
+    formatFlight,
+    formatAmount,
     handleSizeChange: function(size) {
       this.pageSize = size;
       this.searchParams.pageSize = this.pageSize;
@@ -318,65 +332,8 @@ export default {
       } else {
         return "";
       }
-    },
-    formatFlightDate(data) {
-      if (!data || data.length == 0) {
-        return "";
-      }
-      return this.initDate(data[0].flightDate, "YYYY-MM-DD");
-    },
-    formatFlightNo(data) {
-      if (!data || data.length == 0) {
-        return "";
-      }
-      return data[0].flightCode;
-    },
-    formatFlight(data) {
-      if (!data || data.length == 0) {
-        return "";
-      }
-      return (
-        data[0].dpt +
-        " " +
-        data[0].dptTime +
-        " - " +
-        data[0].arr +
-        " " +
-        data[0].arrTime
-      );
-    },
-    formatTicketNo(ticketNo) {
-      if (ticketNo && ticketNo.length > 0) {
-        let str = "";
-        ticketNo.forEach((item, index) => {
-          if (item) {
-            str += item + " / ";
-          }
-        });
-        return str.substring(0, str.length - 2);
-      } else {
-        return (ticketNo = "");
-      }
-    },
-    formatPassengers(data) {
-      if (!data || data.length == 0) {
-        return "";
-      }
-      let str = "";
-      data.forEach(item => {
-        str += item.name + " / ";
-      });
-
-      return str.substring(0, str.length - 2);
-    },
-    formatAmount(amount) {
-      if (!amount) {
-        return "￥0.00";
-      }
-      return "￥" + this.$numeral(amount).format("0.00");
     }
   },
-
   computed: {
     formatDate() {
       return function(dateStr, format) {

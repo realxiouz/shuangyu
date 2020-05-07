@@ -12,16 +12,15 @@
         v-loading="loading"
       >
         <!--<el-table-column prop="taskNo" label="任务编号" width="110" align="center"></el-table-column>-->
-        <el-table-column  type="index" width="55" align="center"></el-table-column>
+        <el-table-column type="index" width="55" align="center"></el-table-column>
         <el-table-column prop="taskName" label="任务名称" width="80" align="center"></el-table-column>
         <!-- <el-table-column prop="taskType" :formatter="formatTaskType" label="任务类型" align="center"></el-table-column> -->
         <el-table-column prop="orderNo" label="订单号" width="180" align="center"></el-table-column>
-        <el-table-column prop="sourceOrderNo" label="源单号" width="180" align="center"></el-table-column>
-        <el-table-column prop="fullName" label="派单员工" width="70" align="center"></el-table-column>
+        <el-table-column prop="sourceOrderNo" label="源单号" width="170" align="center"></el-table-column>
+        <el-table-column prop="fullName" label="操作员" width="70" align="center"></el-table-column>
         <el-table-column label="乘机人" align="center" width="100">
           <template slot-scope="scope">
-            <i v-if="scope.row.passengers"></i>
-            <span>{{ formatPassengers(scope.row.passengers)}}</span>
+            <span v-html="formatPassengers(scope.row.passengers)"></span>
           </template>
         </el-table-column>
         <el-table-column label="订单金额" prop="amount" width="100" align="center">
@@ -29,9 +28,19 @@
             <span>{{ formatAmount(scope.row.amount)}}</span>
           </template>
         </el-table-column>
+        <el-table-column prop="profit" label="利润" width="80" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatAmount(scope.row.profit)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="transactionAmount" label="交易金额" width="80" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatAmount(scope.row.transactionAmount)}}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="ticketNos" label="票号" width="120" align="center">
           <template slot-scope="scope">
-            <span>{{formatTicketNo(scope.row.ticketNos)}}</span>
+            <span v-html="formatTicketNo(scope.row.ticketNos)"></span>
           </template>
         </el-table-column>
         <el-table-column label="航班号" align="center">
@@ -44,20 +53,15 @@
             <span>{{ formatFlightDate(scope.row.flights)}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="起飞-到达" width="180" align="center">
+        <el-table-column label="起飞-到达" width="90" align="center">
           <template slot-scope="scope">
-            <span>{{ formatFlight(scope.row.flights)}}</span>
+            <span v-html="formatFlight(scope.row.flights)"></span>
           </template>
         </el-table-column>
         <el-table-column label="政策代码" prop="policyCode" width="180" align="center"></el-table-column>
         <el-table-column prop="ruleType" width="80" label="规则类型" align="center">
           <template slot-scope="scope">
             <span>{{ scope.row.ruleType==0?"系统":"手工"}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="profit" label="利润" width="80" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatAmount(scope.row.profit)}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -82,8 +86,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="remark" label="备注" align="center"></el-table-column>
-
-        <el-table-column label="操作" fixed="right" align="center" width="80" >
+        <el-table-column label="操作" fixed="right" align="center" width="80">
           <template slot-scope="scope">
             <el-button
               v-show="scope.row.taskStatus!=3"
@@ -113,6 +116,14 @@
 <script>
 import orderTaskSearch from "./Search.vue";
 import { formatTaskStatus, formatTaskType } from "@/utils/status.js";
+import {
+  formatPassengers,
+  formatTicketNo,
+  formatFlightDate,
+  formatFlightNo,
+  formatFlight,
+  formatAmount
+} from "@/utils/orderFormdata.js";
 
 export default {
   name: "orderTaskGroup",
@@ -135,6 +146,12 @@ export default {
   methods: {
     formatTaskStatus,
     formatTaskType,
+    formatPassengers,
+    formatTicketNo,
+    formatFlightDate,
+    formatFlightNo,
+    formatFlight,
+    formatAmount,
     handleSizeChange(size) {
       this.pageSize = size;
       this.searchParams.pageSize = this.pageSize;
@@ -190,12 +207,6 @@ export default {
         return "";
       }
     },
-    formatAmount(amount) {
-      if (!amount) {
-        return "￥0.00";
-      }
-      return "￥" + this.$numeral(amount).format("0.00");
-    },
     goToDetail(row) {
       let path = "";
       path = "/order/detail";
@@ -224,56 +235,6 @@ export default {
         type: "success",
         message: "查询成功！"
       });
-    },
-    formatPassengers(data) {
-      if (!data || data.length == 0) {
-        return "";
-      }
-      let str = "";
-      data.forEach(item => {
-        str += item.name + " / ";
-      });
-
-      return str.substring(0, str.length - 2);
-    },
-    formatFlightDate(data) {
-      if (!data || data.length == 0) {
-        return "";
-      }
-      return this.initDate(data[0].flightDate, "YYYY-MM-DD");
-    },
-    formatTicketNo(ticketNo) {
-      if (ticketNo && ticketNo.length > 0) {
-        let str = "";
-        ticketNo.forEach((item, index) => {
-          if (item) {
-            str += item + " / ";
-          }
-        });
-        return str.substring(0, str.length - 2);
-      } else {
-        return (ticketNo = "");
-      }
-    },
-    formatFlightNo(data) {
-      if (!data || data.length == 0) {
-        return "";
-      }
-      return data[0].flightCode;
-    },
-    formatFlight(data) {
-      if (!data || data.length == 0) {
-        return "";
-      }
-      return (
-        data[0].dpt +
-        " " +
-        data[0].dptTime +
-        " - " +
-        data[0].arr +
-        " " +
-        data[0].arrTime
-      );
     }
   },
   created() {

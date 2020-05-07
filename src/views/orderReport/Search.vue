@@ -112,7 +112,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="账号:">
+          <el-form-item v-show="more" label="平台账号:">
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.accountId"
