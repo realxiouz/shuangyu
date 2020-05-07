@@ -3,39 +3,7 @@
     <el-col :xs="16" :sm="17" :md="18" :lg="19" :xl="20">
       <el-form :model="formData" label-width="110px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="订单号:">
-            <el-input
-              v-model="formData.orderNo"
-              @keyup.enter.native="$emit('onSearch', formData)"
-              clearable
-              style="width: 100%"
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="源单号:">
-            <el-input
-              clearable
-              @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.sourceOrderNo"
-              style="width: 100%"
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="订单类型:">
-            <el-select clearable v-model="formData.orderType" placeholder="请选择" style="width: 100%">
-              <el-option
-                v-for="item in orderType"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="订单分类:">
+          <el-form-item label="订单分类:">
             <el-select
               style="width: 100%;"
               clearable
@@ -50,7 +18,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more&&!showData" label="订单日期:">
+          <el-form-item v-show="!showData" label="订单日期:">
             <el-col>
               <el-date-picker
                 start-placeholder="开始日期"
@@ -67,7 +35,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more&&showData" label="采购日期:">
+          <el-form-item v-show="showData" label="采购日期:">
             <el-col>
               <el-date-picker
                 start-placeholder="开始日期"
@@ -83,6 +51,39 @@
             </el-col>
           </el-form-item>
         </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="订单号:">
+            <el-input
+              v-model="formData.orderNo"
+              @keyup.enter.native="$emit('onSearch', formData)"
+              clearable
+              style="width: 100%"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="源单号:">
+            <el-input
+              clearable
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.sourceOrderNo"
+              style="width: 100%"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="订单类型:">
+            <el-select clearable v-model="formData.orderType" placeholder="请选择" style="width: 100%">
+              <el-option
+                v-for="item in orderType"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="供应商:">
             <el-select

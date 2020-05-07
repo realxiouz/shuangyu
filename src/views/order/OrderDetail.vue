@@ -209,7 +209,7 @@
             :tree-props="{children: 'children', hasChildren: '*****'}"
           >
             <el-table-column prop="orderNo" align="center" label="订单号" width="180"></el-table-column>
-            <el-table-column prop="sourceOrderNo" align="center" width="180" label="原订单"></el-table-column>
+            <el-table-column prop="sourceOrderNo" align="center" width="180" label="源单号"></el-table-column>
             <el-table-column prop="status" :formatter="formatStatus" label="订单状态" width="80"></el-table-column>
             <el-table-column prop="orderSource" align="center" label="供应商"></el-table-column>
             <el-table-column label="乘机人-票号" align="center" width="200">
@@ -271,9 +271,9 @@
         </div>
       </el-collapse-item>
       <el-collapse-item name="5">
-        <template slot="title">
+        <div slot="title">
           <span style="font-size:larger;margin-left: 15px;font-weight: bolder;">操作日志</span>
-        </template>
+        </div>
         <div style="padding: 20px">
           <el-button
             type="primary"
@@ -283,14 +283,14 @@
           >刷新</el-button>
           <div>
             <el-table :data="taskLogData.logs" size="mini" highlight-current-row fit>
-              <el-table-column type="index" width="50"></el-table-column>
-              <el-table-column prop="name" label="操作员" width="80"></el-table-column>
-              <el-table-column prop="time" align="center" label="操作时间">
+              <el-table-column type="index" width="50" align="center"></el-table-column>
+              <el-table-column prop="name" label="操作员" width="80" align="center"></el-table-column>
+              <el-table-column prop="time" align="center" width="180" label="操作时间">
                 <template slot-scope="scope">
                   <span>{{ formatDate(scope.row.time,'YYYY-MM-DD HH:mm:ss') }}</span>
                 </template>
               </el-table-column>
-              <el-table-column prop="content" align="center" width="360" label="操作内容"></el-table-column>
+              <el-table-column prop="content" align="left" label="操作内容"></el-table-column>
             </el-table>
           </div>
         </div>
@@ -1812,5 +1812,10 @@ export default {
 
 .deadlineTicketTime {
   color: #ff4600;
+}
+.el-collapse-item__header{
+  background-color: #ccc;
+  height: 35px;
+  font-size: 12px;
 }
 </style>

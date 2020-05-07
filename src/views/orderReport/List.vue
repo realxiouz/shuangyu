@@ -12,6 +12,7 @@
         v-loading="loading"
         show-summary
         :summary-method="getSummaries"
+        max-height="650"
         fit
       >
         <el-table-column label="序号" type="index" width="50" align="center">
