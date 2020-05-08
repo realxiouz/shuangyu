@@ -119,8 +119,11 @@
                 productOrderList:[],
                 orderDetails: [],
                 dialogVisible: false,
+                //是否对订单详情进行修改或添加
                 detailUpdate: false,
+                //记录当前正在修改的订单详情对象
                 curProduct: {},
+                //用于校验订单详情的修改。
                 tempProduct: {},
                 rules: {
                     brandName: [
