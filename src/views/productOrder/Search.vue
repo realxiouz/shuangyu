@@ -92,7 +92,9 @@
                 let _formData = Object.assign({}, this.formData);
                 for (let key in _formData){
                     if(_formData[key] && '' != _formData[key]){
-                        _formData[key] = _formData[key].trim();
+                        if ('string' == typeof _formData[key]){
+                            _formData[key] = _formData[key].trim();
+                        }
                         if ('orderDate' === key){
                             _formData[key] = _formData[key].getTime();
                         }
