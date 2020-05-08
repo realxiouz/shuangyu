@@ -2,7 +2,7 @@ import request from '@/utils/request';
 
 export function addOne(data) {
   return request({
-    url: '/firm/dict/add/one',
+    url: '/policy/order/add/one',
     method: 'post',
     data
   });
@@ -10,7 +10,7 @@ export function addOne(data) {
 
 export function updateOne(data) {
   return request({
-    url: '/firm/dict/update/one',
+    url: '/policy/order/update/one',
     method: 'post',
     data
   });
@@ -18,21 +18,21 @@ export function updateOne(data) {
 
 export function removeOne(orderNo) {
   return request({
-    url: `/firm/dict/remove/one/${orderNo}`,
+    url: `/policy/order/remove/one/${orderNo}`,
     method: 'delete'
   });
 }
 
 export function getOne(orderNo) {
   return request({
-    url: `/firm/dict/one/${orderNo}`,
+    url: `/policy/order/one/${orderNo}`,
     method: 'get'
   });
 }
 
 export function getList(filter) {
   return request({
-    url: `/firm/dict/list`,
+    url: `/policy/order/list`,
     method: 'get',
     params: filter
   });
@@ -40,7 +40,7 @@ export function getList(filter) {
 
 export function getTotal(filter) {
   return request({
-    url: '/firm/dict/total',
+    url: '/policy/order/total',
     method: 'get',
     params: filter
   });
@@ -48,7 +48,7 @@ export function getTotal(filter) {
 
 export function getPageList(pageFlag, pageSize, lastId, filter) {
   return request({
-    url: `/firm/dict/page/list/${pageFlag}/${pageSize}/${lastId}`,
+    url: `/policy/order/page/list/${pageFlag}/${pageSize}/${lastId}`,
     method: 'get',
     params: filter
   });
