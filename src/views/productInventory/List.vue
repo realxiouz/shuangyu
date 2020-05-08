@@ -24,7 +24,7 @@
         <el-table-column prop="skuId" label="sku" align="center"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="350">
           <template slot-scope="scope">
-            <el-button @click="handleUpdate(scope.row.inventoryId)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="handleUpdate(scope.row.inventoryId)" type="primary" size="mini">查看</el-button>
             <el-button
               @click.native.prevent="handleRemove(scope.row.inventoryId,scope.$index,tableData)"
               type="danger"
