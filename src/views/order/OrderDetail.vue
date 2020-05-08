@@ -151,7 +151,7 @@
           </el-row>
           <div style="margin-top:15px;">
             <span style="font-weight:700;font-size:15px;">退改说明：</span>
-            <div style=" margin-top:10px;font-size:14px; line-height:1.5;">{{this.refundChangeRule}}</div>
+            <div style=" margin-top:10px;font-size:14px; line-height:1.5;" v-html="refundChangeRule"></div>
           </div>
         </div>
       </el-collapse-item>
@@ -346,6 +346,7 @@
       >
         <change-ticket
           v-if="changeTicketShow"
+          :refundChangeRule="refundChangeRule"
           :changeData="changeData"
           :changeDataTop="changeDataTop"
           :sellAmount="changeSellAmount"
