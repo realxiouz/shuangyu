@@ -1,6 +1,6 @@
 <template>
   <div class="contentBox">
-    <el-row :gutter="20">
+    <el-row :gutter="30">
       <el-col :xs="11" :sm="10" :md="9" :lg="8" :xl="8">
         <el-button type="primary" style="margin-bottom:20px" size="mini" @click="rootAdd">添加</el-button>
         <el-tree
