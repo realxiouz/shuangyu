@@ -313,6 +313,8 @@ export default {
           }
         }
         this.searchParams = newParams;
+        this.searchParams.pageSize = this.pageSize;
+
         this.loadData(this.searchParams);
         this.$message({
           type: "success",
