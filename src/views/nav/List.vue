@@ -13,7 +13,8 @@
           @node-click="handleNodeClick"
         >
           <span class="tree-node" slot-scope="{ node, data }">
-            <span>{{ node.data.title }}</span>
+            <span>(显示顺序：{{ node.data.sort }}) </span>
+            <span> {{ node.data.title }}</span>
             <span>
               <el-button type="text" size="mini" @click="nodeAdd(node, data)">添加</el-button>
               <el-button type="text" size="mini" @click="handleEdit(node, data)">修改</el-button>
@@ -175,6 +176,7 @@ export default {
           .catch(error => {
             console.log(error);
           });
+        this.dialogVisible = false;
       } else {
         if (this.rootNav) {
           //如果添加的顶级企业信息，对某些属性进行初始化
