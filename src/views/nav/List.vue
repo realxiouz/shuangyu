@@ -13,7 +13,7 @@
           @node-click="handleNodeClick"
         >
           <span class="tree-node" slot-scope="{ node, data }">
-            <span>(显示顺序：{{ node.data.sort }}) </span>
+            <span>(排序：{{ node.data.sort }}) </span>
             <span> {{ node.data.title }}</span>
             <span>
               <el-button type="text" size="mini" @click="nodeAdd(node, data)">添加</el-button>

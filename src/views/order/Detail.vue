@@ -889,4 +889,10 @@ export default {
 .deadlineTicketTime {
   color: #ff4600;
 }
+.el-collapse-item__header {
+  background-color: #ccc;
+  height: 35px;
+  font-size: 12px;
+}
 </style>
+
