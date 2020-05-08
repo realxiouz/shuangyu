@@ -98,15 +98,9 @@
             <!-- 多选 销售属性-->
             <el-checkbox-group
               v-if="propertyList[index].valueType ==8 && propertyList[index].sku"
-              v-model="item.value"
-              @change="handleSku"
-            >
-              <el-checkbox
-                v-for="item4 in propertyList[index].values"
-                :key="item4.value"
-                :value="item4.value"
-                :label="item4.code+','+item4.value"
-              >{{item4.value}}
+              v-model="item.value">
+              <el-checkbox v-for="item4 in propertyList[index].values" :key="item4.code"
+                           :label="item4.code+','+item4.value">{{item4.value}}
               </el-checkbox>
             </el-checkbox-group>
           </el-form-item>
