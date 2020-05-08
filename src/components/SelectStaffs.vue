@@ -52,10 +52,7 @@ export default {
       staffList: []
     };
   },
-  mounted() {
-    this.loadData();
-    this.toggleSelection(this.staffData);
-  },
+
   methods: {
     loadData() {
       this.$store
@@ -68,25 +65,32 @@ export default {
         });
     },
     handleSelectionChange(val) {
-      // this.staffs = [];
       this.staffs = val;
-      console.log(this.staffs);
     },
     handleCurrentChange(val) {
       this.staffs = {};
       this.staffs = val;
-      console.log(this.staffs);
     },
+
     toggleSelection(rows) {
       if (rows) {
-        this.staffs = rows;
-        rows.forEach(row => {
-          this.$refs.staffList.toggleRowSelection(row, true);
+        this.staffList.forEach(item => {
+          for (let i = 0; i < rows.length; i++) {
+            if (rows[i].staffId == item.staffId) {
+              this.$refs.staffList.toggleRowSelection(item, true);
+            }
+          }
         });
-      } else {
-        this.$refs.staffList.clearSelection();
       }
     }
-  }
+  },
+  updated() {
+    this.$nextTick(() => {
+      this.toggleSelection(this.staffData);
+    });
+  },
+  created() {
+    this.loadData();
+  },
 };
 </script>
