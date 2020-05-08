@@ -10,8 +10,7 @@
           <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
             <el-form :rules="rules" :model="formData" label-position="left" label-width="87px" size="mini" style="width: 80%">
               <el-form-item label="商户:" prop="merchantId">
-                <el-select v-model="formData.merchantId" filterable @change="selectedCustomer" placeholder="请选择"
-                           style="width: 100%">
+                <el-select v-model="formData.merchantId" filterable @change="selectedCustomer" placeholder="请选择" style="width: 100%">
                   <el-option
                     v-for="item in customerList"
                     :key="item.merchantId"
@@ -21,7 +20,7 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="账号:" prop="accountId">
-                <el-select v-model="formData.accountId" filterable placeholder="请选择" style="width: 100%">
+                <el-select v-model="formData.accountId" filterable :disabled="customerSelected" placeholder="请选择" style="width: 100%">
                   <el-option
                     v-for="item in accountList"
                     :key="item.accountId"
@@ -52,9 +51,9 @@
                            style="width: 100%">
                   <el-option
                     v-for="item in warehouseList"
-                    :key="item.warehouseId"
+                    :key="item.warehouseCode"
                     :label="item.warehouseName"
-                    :value="item.warehouseId">
+                    :value="item.warehouseCode">
                   </el-option>
                 </el-select>
               </el-form-item>
@@ -192,6 +191,7 @@
                 dialogVisible: false,
                 //是否对订单详情进行修改或添加
                 detailUpdate: false,
+                customerSelected: true,
                 //记录当前正在修改的订单详情对象
                 curProduct: {},
                 //用于校验订单详情的修改。
@@ -314,7 +314,7 @@
             loadWarehouses() {
                 this.$store.dispatch("warehouse/getList", {filter: {}})
                     .then(data => {
-                        this.warehouseList = data;
+                        this.warehouseList = data.data;
                     })
                     .catch(error => {
                         console.log(error);
@@ -357,6 +357,7 @@
                     });
             },
             selectedCustomer(item) {
+                this.customerSelected = false;
                 this.loadAccounts(item);
                 this.customerList.forEach(customer => {
                     if (item === customer.merchantId) {
@@ -518,7 +519,7 @@
                     _orderDetails.forEach(item => {
                         _totalAmount += item.amount;
                     });
-                    return _totalAmount;
+                    return _totalAmount.toFixed(2);
                 }
             },
             formatDate() {

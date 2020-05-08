@@ -64,9 +64,6 @@
                     price: [
                         {required: true, message: '请输入单价', trigger: 'blur'},
                         {validator: valOfPrice, message: '请确认输入正确的价格，最多两位小数！'}
-                    ],
-                    amount: [
-                        {type: 'number', message: '金额必须为数字'}
                     ]
                 }
             }
@@ -103,7 +100,7 @@
             },
             computedAmount() {
                 if (0 != this.formData.quantity){
-                    this.formData.amount = this.formData.price * this.formData.quantity;
+                    this.formData.amount = parseFloat((this.formData.price * this.formData.quantity).toFixed(2));
                 }
             },
             clearForm() {
