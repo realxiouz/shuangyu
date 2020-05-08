@@ -30,7 +30,8 @@
       >
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item :label="item.label +'：'">
-            <span>{{item.value}}</span>
+            <span v-if="propertyList[index].valueType !=3">{{item.value}}</span>
+            <!--            <span v-if="propertyList[index].valueType ==3">{{formatDate(item.value,'YYYY-MM-DD')}}</span>-->
           </el-form-item>
         </el-col>
       </el-row>
@@ -224,6 +225,22 @@
                     }
                 }
                 return defaultValue;
+            },
+            // 格式化日期
+            initDate(dateStr, format) {
+                if (dateStr > 0) {
+                    let date = new Date(dateStr);
+                    return this.$moment(date).format(format);
+                } else {
+                    return "";
+                }
+            }
+        },
+        computed: {
+            formatDate() {
+                return function (dateStr, format) {
+                    return this.initDate(dateStr, format);
+                };
             }
         },
         created() {
