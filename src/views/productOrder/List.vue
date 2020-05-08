@@ -1,7 +1,7 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <order-search @onSearch="handleSearch"></order-search>
+      <product-search @onSearch="loadData"></product-search>
     </div>
     <div class="contentBox">
       <el-row style="margin-bottom:15px;margin-left:40px">
@@ -43,22 +43,16 @@
         <el-table-column prop="domain" label="企业/单位域名" align="center"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="350">
           <template slot-scope="scope">
-            <el-button @click="handleUpdate(scope.row.orderNo)" type="primary" size="mini">编辑</el-button>
-            <el-button
-              @click.native.prevent="handleRemove(scope.row.orderNo,scope.$index,tableData)"
-              type="danger"
-              size="mini"
-            >删除
-            </el-button>
+            <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
       <el-pagination
-        @size-change="handleSizeChange"
-        @prev-click="prevClick"
-        @next-click="nextClick"
+        @prev-click="handlePrevClick"
+        @next-click="handleNextClick"
         background
-        layout="total,sizes,prev,next"
+        layout="total,prev,next"
         prev-text="上一页"
         next-text="下一页"
         :page-size="pageSize"
@@ -69,115 +63,104 @@
 </template>
 
 <script>
-    import orderSearch from "./Search";
-    import orderEdit from "./Edit";
+    import productSearch from "./Search.vue";
 
     export default {
         data() {
             return {
-                lastId: "0",
+                loading: true,
+                searchForm: {},
+                curNode: {},
+                tableData: [],
+                lastId: "blank",
                 pageFlag: "next",
                 pageSize: 10,
-                dialogVisible: false,
-                loading: true,
-                tableData: [],
                 total: 0
             };
         },
         methods: {
-            handleSizeChange(pageSize) {
-                this.pageSize = pageSize;
-                this.loadData();
-            },
-            prevClick() {
-                this.pageFlag = "prev";
-                this.lastId = this.tableData[0].orderNo;
-                this.loadData();
-            },
-            nextClick() {
-                this.pageFlag = "next";
-                this.lastId = this.tableData[this.tableData.length - 1].orderNo;
-                this.loadData();
-            },
-            loadTotal(searchForm) {
-                this.$store
-                    .dispatch("productOrder/getTotal", {
-                        filters: searchForm
-                    })
+            loadData(searchForm) {
+                this.searchForm = searchForm;
+                this.$store.dispatch("productOrder/getTotal", {filter: searchForm})
                     .then(data => {
                         this.total = data;
                     })
                     .catch(error => {
                         console.log(error);
                     });
-            },
-            loadData(searchForm) {
-                this.$store
-                    .dispatch("productOrder/getPageList", {
-                        pageFlag: this.pageFlag,
-                        pageSize: this.pageSize,
-                        lastId: this.lastId,
-                        filter: searchForm
-                    })
+                this.$store.dispatch("productOrder/getPageList", {pageFlag: this.pageFlag, pageSize: this.pageSize, lastId: this.lastId,filter: searchForm})
                     .then(data => {
-                        if (data) {
-                            this.tableData = data;
-                            this.loadTotal(searchForm);
-                        }
+                        this.tableData = data;
                         this.loading = false;
                     })
                     .catch(error => {
-                        this.loading = false;
                         console.log(error);
+                        this.loading = false;
                     });
             },
             handleAdd() {
-                let path = "";
-                path = "/productOrder/config";
-                this.$router.push({
-                    path: path
-                });
+                this.skipDetail();
             },
-            handleUpdate(id) {
-                let path = "";
-                path = "/productOrder/edit";
-                this.$router.push({
-                    path: path,
-                    query: {
-                        orderNo: id
-                    }
-                });
+            handleEdit(row) {
+                this.skipDetail(row.orderNo);
             },
-            handleRemove(id, index, rows) {
-                this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
+            handlePrevClick() {
+                this.pageFlag = "prev";
+                this.lastId = this.tableData[0].orderNo;
+                this.loadData(this.searchForm);
+            },
+            handleNextClick() {
+                this.pageFlag = "next";
+                this.lastId = this.tableData[this.tableData.length - 1].orderNo;
+                this.loadData(this.searchForm);
+            },
+            handleDelete(row) {
+                this.open( this.delete, row.orderNo, "此操作将删除该信息, 是否继续?");
+            },
+            delete(orderNo) {
+                this.$store
+                    .dispatch("productOrder/removeOne", {orderNo: orderNo})
+                    .then(() => {
+                        this.$message({
+                            type: "success",
+                            message: "删除成功!"
+                        });
+                        this.lastId = "blank";
+                        if (1 === this.tableData.length) {
+                            this.handlePrevClick();
+                        } else {
+                            this.loadData({});
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            open(func, data, message) {
+                this.$confirm(message, "提示", {
                     confirmButtonText: "确定",
                     cancelButtonText: "取消",
                     type: "warning"
                 })
                     .then(() => {
-                        this.$store.dispatch("productOrder/removeOne", {appId: id}).then(() => {
-                            if (1 === this.tableData.length) {
-                                this.prevClick();
-                            } else {
-                                this.loadData();
-                            }
-                            rows.splice(index, 1);
-                        });
+                        func(data);
                     })
-                    .catch(err => {
-                        console.error(err);
+                    .catch(() => {
+                        this.$message({
+                            type: "info",
+                            message: "已取消删除"
+                        });
                     });
             },
-            handleSearch(params) {
-
+            skipDetail(orderNo){
+                this.$router.push({path: '/product/order/edit', query:{orderNo: orderNo}});
             }
         },
-        created() {
-            this.loadData();
+        mounted() {
+            this.loadData({});
         },
         components: {
-            orderSearch,
-            orderEdit
+            productSearch
         }
     };
 </script>

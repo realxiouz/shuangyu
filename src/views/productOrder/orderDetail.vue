@@ -27,7 +27,7 @@
         <el-input v-model.number="formData.quantity" placeholder="数量.." @input="computedAmount"></el-input>
       </el-form-item>
       <el-form-item label="金额:" prop="amount">
-        <el-input v-model.number="formData.amount" disabled placeholder="金额.."></el-input>
+        {{formData.amount}}
       </el-form-item>
       <el-form-item label="描述:">
         {{formData.description}}

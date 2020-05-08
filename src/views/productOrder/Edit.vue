@@ -1,77 +1,96 @@
 <template>
   <div class="bigBox">
     <div class="contentBox">
+      <div id="goBack" @click="goBack">
+        <el-page-header></el-page-header>
+      </div>
+      <br>
       <el-row>
         <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
-          <el-form :rules="rules" :model="formData" label-position="left" label-width="20%" size="mini">
-            <el-form-item label="商户:" prop="merchantId">
-              <el-select v-model="formData.merchantId" filterable placeholder="请选择" @change="selectedCustomer">
-                <el-option
-                  v-for="item in customerList"
-                  :key="item.merchantId"
-                  :label="item.firm.firmName"
-                  :value="item.merchantId">
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="账号:" prop="accountId">
-              <el-select v-model="formData.accountId" filterable placeholder="请选择">
-                <el-option
-                  v-for="item in accountList"
-                  :key="item.accountId"
-                  :label="item.accountId"
-                  :value="item.accountId">
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="联系人姓名:" prop="contactName">
-              <el-input type="text" v-model="formData.contactName" placeholder="请输入联系人姓名"></el-input>
-            </el-form-item>
-          </el-form>
+          <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
+            <el-form :rules="rules" :model="formData" label-position="left" label-width="87px" size="mini" style="width: 80%">
+              <el-form-item label="商户:" prop="merchantId">
+                <el-select v-model="formData.merchantId" filterable @change="selectedCustomer" placeholder="请选择"
+                           style="width: 100%">
+                  <el-option
+                    v-for="item in customerList"
+                    :key="item.merchantId"
+                    :label="item.firm.firmName"
+                    :value="item.merchantId">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="账号:" prop="accountId">
+                <el-select v-model="formData.accountId" filterable placeholder="请选择" style="width: 100%">
+                  <el-option
+                    v-for="item in accountList"
+                    :key="item.accountId"
+                    :label="item.accountId"
+                    :value="item.accountId">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="联系人姓名:" prop="contactName">
+                <el-input type="text" v-model="formData.contactName" placeholder="请输入联系人姓名"></el-input>
+              </el-form-item>
+            </el-form>
+          </el-col>
         </el-col>
         <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
-          <el-form :rules="rules" :model="formData" label-position="left" label-width="20%" size="mini">
-            <el-form-item label="发货期限:" prop="expireDate">
-              <el-date-picker
-                v-model="formData.expireDate"
-                type="date"
-                placeholder="选择日期">
-              </el-date-picker>
-            </el-form-item>
-            <el-form-item label="仓库:" prop="firmName">
-              <el-select v-model="formData.warehouseId" filterable placeholder="请选择" @change="selectedWarehouse">
-                <el-option
-                  v-for="item in warehouseList"
-                  :key="item.warehouseId"
-                  :label="item.warehouseName"
-                  :value="item.warehouseId">
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="出入库状态:" prop="firmName">
-              未出库
-            </el-form-item>
-            <el-form-item label="出库时间:" prop="warehouseDate">
-              <el-date-picker
-                v-model="formData.warehouseDate"
-                type="date"
-                placeholder="选择日期">
-              </el-date-picker>
-            </el-form-item>
-            <el-form-item label="快递公司:" prop="firmName">
-              <el-select v-model="formData.expressId" @change="selectedExpress" filterable placeholder="请选择">
-                <el-option
-                  v-for="item in expressList"
-                  :key="item.merchantId"
-                  :label="item.firm.firmName"
-                  :value="item.merchantId">
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="名称" prop="firmName">
-              <el-input type="text" v-model="formData.firmName" placeholder="请输入供应商名称"></el-input>
-            </el-form-item>
-          </el-form>
+          <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
+            <el-form :rules="rules" :model="formData" label-position="left" label-width="87px" size="mini" style="width: 80%">
+              <el-form-item label="发货期限:" prop="expireDate">
+                <el-date-picker
+                  v-model="formData.expireDate"
+                  type="date"
+                  placeholder="选择日期"
+                  style="width: 100%">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item label="仓库:" prop="firmName">
+                <el-select v-model="formData.warehouseId" filterable placeholder="请选择" @change="selectedWarehouse"
+                           style="width: 100%">
+                  <el-option
+                    v-for="item in warehouseList"
+                    :key="item.warehouseId"
+                    :label="item.warehouseName"
+                    :value="item.warehouseId">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="出入库状态:" prop="firmName">
+                未出库
+              </el-form-item>
+              <el-form-item label="出库时间:" prop="warehouseDate">
+                <el-date-picker
+                  v-model="formData.warehouseDate"
+                  type="date"
+                  placeholder="选择日期"
+                  style="width: 100%">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item label="快递公司:" prop="firmName">
+                <el-select v-model="formData.expressId" @change="selectedExpress" filterable placeholder="请选择"
+                           style="width: 100%">
+                  <el-option
+                    v-for="item in expressList"
+                    :key="item.merchantId"
+                    :label="item.firm.firmName"
+                    :value="item.merchantId">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="付款方式" prop="firmName">
+                <el-autocomplete
+                  v-model="formData.paymentMode"
+                  :fetch-suggestions="querySearchAsync"
+                  placeholder="请输入联系电话"
+                  @select="selectedPaymode"
+                  style="width: 100%">
+                </el-autocomplete>
+              </el-form-item>
+            </el-form>
+          </el-col>
         </el-col>
       </el-row>
       <el-row>
@@ -89,25 +108,76 @@
             <el-table-column label="操作" align="center">
               <template slot-scope="scope">
                 <el-button type="primary" size="mini" @click="handleEditProduct(scope.row)">编辑</el-button>
-                <el-button type="danger" size="mini" @click="handleRemoveProduct(scope.$index, scope.row)">删除</el-button>
+                <el-button type="danger" size="mini" @click="handleRemoveProduct(scope.$index, scope.row)">删除
+                </el-button>
               </template>
             </el-table-column>
           </el-table>
         </el-col>
       </el-row>
+      <el-row>
+        <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
+          <el-form style="width: 80%; margin-top: 10px">
+            <el-input type="textarea" v-model="formData.remark" placeholder="暂无备注信息"></el-input>
+          </el-form>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
+          <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
+            <el-form :rules="rules" :model="formData" label-position="left" label-width="87px" size="mini" style="width: 80%">
+              <el-form-item label="成交金额:">
+                <span id="totalAmount">{{computedTotalAmount(orderDetails)}}</span>
+              </el-form-item>
+              <el-form-item label="实收金额:">
+                {{formData.receiptAmount}}
+              </el-form-item>
+            </el-form>
+          </el-col>
+        </el-col>
+        <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
+          <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
+            <el-form :rules="rules" :model="formData" label-position="left" label-width="87px" size="mini" style="width: 80%">
+              <el-form-item label="结算账户:" prop="fundAccountId">
+                <el-select v-model="formData.fundAccountId" filterable placeholder="请选择" @change="selectedFundAccount" style="width: 100%">
+                  <el-option
+                    v-for="item in funAccountList"
+                    :key="item.accountId"
+                    :label="item.accountName"
+                    :value="item.accountId">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="制单人:">
+                {{this.$store.state.loginInfo.fullName}}
+              </el-form-item>
+              <el-form-item label="制单时间:">
+                {{formatDate("YYYY-MM-DD")}}
+              </el-form-item>
+            </el-form>
+          </el-col>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="16">
+          <div id="footer">
+            <el-button type="primary" @click="handleSave" size="mini">保 存</el-button>
+          </div>
+        </el-col>
+      </el-row>
 
       <el-dialog title="商品明细" :visible.sync="dialogVisible" :close-on-click-modal="false" width="24%">
-        <order-detail v-if="dialogVisible" :curProduct="curProduct" :detailUpdate="detailUpdate" @onCancel="handleCancel" @onConfirm="handleConfirm"></order-detail>
+        <order-detail v-if="dialogVisible" :curProduct="curProduct" :detailUpdate="detailUpdate"
+                      @onCancel="handleCancel" @onConfirm="handleConfirm"></order-detail>
       </el-dialog>
     </div>
   </div>
 </template>
 
 <script>
-  import orderDetail from "./orderDetail";
+    import orderDetail from "./orderDetail";
 
     export default {
-        props: ["curNode", "update"],
         data() {
             return {
                 formData: {},
@@ -116,8 +186,9 @@
                 accountList: [],
                 warehouseList: [],
                 expressList: [],
-                productOrderList:[],
+                productOrderList: [],
                 orderDetails: [],
+                funAccountList: [],
                 dialogVisible: false,
                 //是否对订单详情进行修改或添加
                 detailUpdate: false,
@@ -125,6 +196,7 @@
                 curProduct: {},
                 //用于校验订单详情的修改。
                 tempProduct: {},
+                update: false,
                 rules: {
                     brandName: [
                         {required: true, message: "请输入品牌名称", trigger: "blur"},
@@ -216,7 +288,9 @@
                     //制单时间
                     recordDate: new Date(),
                     //制单人姓名
-                    recordName: ''
+                    recordName: '',
+                    //备注
+                    remark: ''
                 };
             },
             loadCustomers() {
@@ -237,19 +311,46 @@
                         console.log(error);
                     });
             },
-            loadWarehouses(){
+            loadWarehouses() {
                 this.$store.dispatch("warehouse/getList", {filter: {}})
                     .then(data => {
-                        this.accountList = data;
+                        this.warehouseList = data;
                     })
                     .catch(error => {
                         console.log(error);
                     });
             },
-            loadExpress(){
+            loadExpress() {
                 this.$store.dispatch("firmMerchant/getList", {filter: {types: JSON.stringify([0])}})
                     .then(data => {
                         this.expressList = data;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            loadFundAccount(){
+                this.$store.dispatch("fundAccount/getList", {filter: {}})
+                    .then(data => {
+                        this.funAccountList = data;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            loadProduct(orderNo){
+                this.$store.dispatch("productOrder/getOne", {orderNo: orderNo})
+                    .then(data => {
+                        this.formData = data;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            loadOderDetails(orderNo){
+                this.$store.dispatch("productOrderDetail/getList", {filter: {orderNo: orderNo}})
+                    .then(data => {
+                        this.orderDetails = data;
                     })
                     .catch(error => {
                         console.log(error);
@@ -276,32 +377,43 @@
                     }
                 })
             },
-            selectedWarehouse(item){
+            selectedWarehouse(item) {
                 this.warehouseList.forEach(warehouse => {
-                    if (item === warehouse.warehouseId){
+                    if (item === warehouse.warehouseId) {
                         this.formData.warehouseCode = warehouse.warehouseCode;
                         this.formData.warehouseName = warehouse.warehouseName;
                     }
                 })
             },
-            selectedExpress(item){
+            selectedExpress(item) {
                 this.expressList.forEach(express => {
-                    if (item === express.merchantId){
+                    if (item === express.merchantId) {
                         this.formData.expressName = express.firmName;
                     }
                 })
             },
-            handleAddProduct(){
+            selectedPaymode(item) {
+                this.formData.paymentMode = item;
+            },
+            selectedFundAccount(item){
+                this.funAccountList.forEach(fundAccount => {
+                    if (item === fundAccount.accountId){
+                        this.formData.accountCode = fundAccount.accountCode;
+                        this.formData.accountName = fundAccount.accountName;
+                    }
+                });
+            },
+            handleAddProduct() {
                 this.detailUpdate = false;
                 this.dialogVisible = true;
             },
-            handleEditProduct(row){
+            handleEditProduct(row) {
                 this.detailUpdate = true;
                 this.curProduct = Object.assign({}, row);
                 this.tempProduct = row;
                 this.dialogVisible = true;
             },
-            handleRemoveProduct(idx,row){
+            handleRemoveProduct(idx, row) {
                 let _detailId = row.detailId;
                 if (_detailId && '' != _detailId) {
                     this.$store.dispatch("orderDetail/removeOne", {detailId: _detailId})
@@ -311,15 +423,15 @@
                 }
                 this.orderDetails.splice(idx, 1);
             },
-            handleCancel(){
-              this.dialogVisible = false;
+            handleCancel() {
+                this.dialogVisible = false;
             },
-            handleConfirm(productForm){
-                if (this.detailUpdate){
+            handleConfirm(productForm) {
+                if (this.detailUpdate) {
                     //如果点击的是编辑,对原有的对象进行覆盖。
                     Object.assign(this.orderDetails[this.orderDetails.indexOf(this.tempProduct)], productForm);
                     this.dialogVisible = false;
-                }else {
+                } else {
                     //否则新增到列表中
                     this.orderDetails.push(productForm);
                     this.dialogVisible = false;
@@ -328,29 +440,94 @@
             handleSave() {
                 const dateItem = ['expireDate', 'warehouseDate'];
                 dateItem.forEach(item => {
-                    if (this.formData[item] && 'number' != typeof this.formData[item]){
+                    if (this.formData[item] && 'number' != typeof this.formData[item]) {
                         this.formData[item] = this.formData[item].getTime();
                     }
                 });
-                this.$emit("onSave", this.formData);
+                this.formData.totalAmount = parseFloat(document.getElementById('totalAmount').textContent);
+
+                //判断添加还是更新
+                let url = '';
+                if (this.update) {
+                    url = 'productOrder/updateOne';
+                } else {
+                    url = 'productOrder/addOne';
+                }
+                //接口通过map接收数据
+                this.$store
+                    .dispatch(url, {productOrder: this.formData, orderDetails: this.orderDetails})
+                    .then(() => {
+                        this.goBack();
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            querySearchAsync(keyword, callBack) {
+                if (keyword) {
+                    this.$store.dispatch("user/getList", {filter: {email:keyword}})
+                        .then(data => {
+                            data.forEach(item => {
+                                item.value = item.fullName;
+                            });
+                            callBack(data);
+                        }).catch(error => {
+                        console.log(error);
+                    });
+                } else {
+                    callBack([]);
+                }
             },
             clearForm() {
                 this.formData = this.defaultFormData();
             },
-            initFormData() {
+            //跳转回列表页面
+            goBack() {
+                if (this.$router.history.length <= 1) {
+                    this.$router.push({path: '/home'});
+                    return false;
+                } else {
+                    this.$router.go(-1);
+                }
+            },
+            initDate(format) {
+                let date = new Date();
+                return this.$moment(date).format(format);
+            },
+            initFormData(orderNo) {
+                this.update = false;
                 this.clearForm();
                 this.loadCustomers();
                 this.loadWarehouses();
+                this.loadFundAccount();
                 this.loadExpress();
-                if (this.update) {
-                    Object.assign(this.formData, this.curNode);
+                if (orderNo) {
+                    this.update = true;
+                    this.loadProduct(orderNo);
+                    this.loadOderDetails(orderNo);
                 }
             },
         },
         created() {
-            this.initFormData();
+            this.initFormData(this.$route.query.orderNo);
         },
-        components:{
+        computed:{
+            computedTotalAmount(){
+                return function (_orderDetails) {
+                    let _totalAmount = 0;
+                    _orderDetails.forEach(item => {
+                        _totalAmount += item.amount;
+                    });
+                    return _totalAmount;
+                }
+            },
+            formatDate() {
+                return function(format) {
+                    return this.initDate(format);
+                };
+            },
+        },
+        components: {
             orderDetail
         }
     };

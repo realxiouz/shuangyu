@@ -4,18 +4,12 @@
       <el-form label-width="110px" size="mini" @keydown.enter.native="handleConfirm">
         <el-col :xs="24" :sm="18" :md="12" :lg="6" :xl="6">
           <el-form-item label="订单号:">
-            <el-input
-              v-model="formData.orderNo"
-              placeholder="订单号.."
-            ></el-input>
+            <el-input v-model="formData.orderNo" placeholder="订单号.." clearable></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="18" :md="12" :lg="6" :xl="6">
           <el-form-item label="经办人姓名:">
-            <el-input
-              v-model="formData.staffName"
-              placeholder="经办人姓名.."
-            ></el-input>
+            <el-input v-model="formData.staffName" placeholder="经办人姓名.." clearable></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="18" :md="12" :lg="6" :xl="6">
@@ -30,10 +24,7 @@
         </el-col>
         <el-col :xs="24" :sm="18" :md="12" :lg="6" :xl="6">
           <el-form-item label="客户:">
-            <el-input
-              v-model="formData.merchantId"
-              placeholder="客户.."
-            ></el-input>
+            <el-input v-model="formData.merchantId" placeholder="客户.." clearable></el-input>
           </el-form-item>
         </el-col>
       </el-form>
@@ -97,6 +88,7 @@
                         }
                         if ('orderDate' === key){
                             _formData[key] = _formData[key].getTime();
+                            console.log(_formData[key]);
                         }
                     } else {
                         _formData[key] = null;

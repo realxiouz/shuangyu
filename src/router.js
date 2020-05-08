@@ -650,10 +650,15 @@ export default new Router({
         },
         {
           title: '产品订单管理',
-          path: '/product/order/config',
+          path: '/product/order',
           name: 'productOrder',
           component: () => import('@/views/productOrder/List'),
           meta: {title: '产品订单管理', icon: 'home'}
+        },
+        {
+          path: '/product/order/edit',
+          component: () => import('@/views/productOrder/Edit'),
+          meta: {title: '产品订单', icon: 'home'}
         }
       ]
     },
