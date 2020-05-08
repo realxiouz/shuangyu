@@ -79,7 +79,7 @@
           <div class="title">
             <el-button type="primary" size="mini" @click="handleAddProduct">添加商品明细</el-button>
           </div>
-          <el-table :data="productOrderList" height="250" border>
+          <el-table :data="orderDetails" height="250" border>
             <el-table-column prop="productCode" label="商品编码" align="center"></el-table-column>
             <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
             <el-table-column prop="brandName" label="品牌" align="center"></el-table-column>
@@ -88,7 +88,7 @@
             <el-table-column prop="amount" label="金额" align="center"></el-table-column>
             <el-table-column label="操作" align="center">
               <template slot-scope="scope">
-                <el-button type="primary" size="mini" @click="handleEditProduct(scope.$index, scope.row)">编辑</el-button>
+                <el-button type="primary" size="mini" @click="handleEditProduct(scope.row)">编辑</el-button>
                 <el-button type="danger" size="mini" @click="handleRemoveProduct(scope.$index, scope.row)">删除</el-button>
               </template>
             </el-table-column>
@@ -284,7 +284,7 @@
             selectedExpress(item){
                 this.expressList.forEach(express => {
                     if (item === express.merchantId){
-
+                        this.formData.expressName = express.firmName;
                     }
                 })
             },
@@ -298,8 +298,15 @@
                 this.tempProduct = row;
                 this.dialogVisible = true;
             },
-            handleRemoveProduct(){
-
+            handleRemoveProduct(idx,row){
+                let _detailId = row.detailId;
+                if (_detailId && '' != _detailId) {
+                    this.$store.dispatch("orderDetail/removeOne", {detailId: _detailId})
+                        .catch(error => {
+                            console.log(error);
+                        });
+                }
+                this.orderDetails.splice(idx, 1);
             },
             handleCancel(){
               this.dialogVisible = false;
@@ -307,7 +314,7 @@
             handleConfirm(productForm){
                 if (this.detailUpdate){
                     //如果点击的是编辑,对原有的对象进行覆盖。
-                    Object.assign(this.orderDetails[this.orderDetails.indexOf(this.tmpContact)], productForm);
+                    Object.assign(this.orderDetails[this.orderDetails.indexOf(this.tempProduct)], productForm);
                     this.dialogVisible = false;
                 }else {
                     //否则新增到列表中

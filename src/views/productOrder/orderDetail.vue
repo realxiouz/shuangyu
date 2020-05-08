@@ -43,6 +43,7 @@
 
 <script>
     export default {
+        props: ['curProduct','detailUpdate'],
         data() {
             const valOfPrice = (rule, value, callback) => {
                 const reg = /^[0-9]+(\.[0-9]{1,2})?$/;
@@ -78,7 +79,10 @@
                     //单价
                     price: 0,
                     //金额
-                    amount: 0
+                    amount: 0,
+                    productCode: null,
+                    productName: null,
+                    brandName: null
                 }
             },
             loadProducts() {
@@ -115,10 +119,16 @@
                     }
                 });
             },
+            initFormData(){
+                this.clearForm();
+                this.loadProducts();
+                if (this.detailUpdate){
+                    Object.assign(this.formData, this.curProduct);
+                }
+            }
         },
         created() {
-            this.clearForm();
-            this.loadProducts();
+            this.initFormData();
         }
     }
 </script>
