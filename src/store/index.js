@@ -55,6 +55,7 @@ import firmContact from "./modules/firmContact";
 import firmAccount from "./modules/firmAccount";
 import bspConfig from "./modules/bspConfig";
 import productOrder from "./modules/productOrder";
+import productOrderDetail from "./modules/productOrderDetail";
 import { getLoginInfo } from "@/api/staff";
 
 Vue.use(Vuex);
@@ -114,7 +115,8 @@ export default new Vuex.Store({
     firmContact,
     firmAccount,
     bspConfig,
-    productOrder
+    productOrder,
+    productOrderDetail
   },
   state: {
     loginInfo: {}
