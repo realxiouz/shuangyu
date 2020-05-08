@@ -476,9 +476,7 @@
                                             let array = map[key].split(",");
                                             if (array[1] == skuNames[j]) {
                                                 properties[this.formData.productPropertyItems[i].code] = skuNames[j];
-                                                let value = [];
-                                                value.push(map[key])
-                                                propertyItems.value = value;
+                                                propertyItems.value = skuNames[j];
                                             }
                                         }
                                     }
@@ -522,7 +520,7 @@
                                 values[item2[0]] = item2[1];
                             }
                             properties[this.formData.productPropertyItems[i].code] = values;
-                            propertyItems.value = valueArray;
+                            propertyItems.value = values;
                         } else {
                             properties[this.formData.productPropertyItems[i].code] = this.formData.productPropertyItems[i].value;
                             propertyItems.value = this.formData.productPropertyItems[i].value;
