@@ -101,7 +101,7 @@
             },
             loadTotal(searchForm) {
                 this.$store
-                    .dispatch("app/getTotal", {
+                    .dispatch("productOrder/getTotal", {
                         filters: searchForm
                     })
                     .then(data => {
@@ -113,7 +113,7 @@
             },
             loadData(searchForm) {
                 this.$store
-                    .dispatch("app/getPageList", {
+                    .dispatch("productOrder/getPageList", {
                         pageFlag: this.pageFlag,
                         pageSize: this.pageSize,
                         lastId: this.lastId,
@@ -133,14 +133,14 @@
             },
             handleAdd() {
                 let path = "";
-                path = "/product/config";
+                path = "/productOrder/config";
                 this.$router.push({
                     path: path
                 });
             },
             handleUpdate(id) {
                 let path = "";
-                path = "/product/edit";
+                path = "/productOrder/edit";
                 this.$router.push({
                     path: path,
                     query: {
@@ -155,7 +155,7 @@
                     type: "warning"
                 })
                     .then(() => {
-                        this.$store.dispatch("app/removeOne", {appId: id}).then(() => {
+                        this.$store.dispatch("productOrder/removeOne", {appId: id}).then(() => {
                             if (1 === this.tableData.length) {
                                 this.prevClick();
                             } else {
@@ -171,6 +171,9 @@
             handleSearch(params) {
 
             }
+        },
+        created() {
+            this.loadData();
         },
         components: {
             orderSearch,
