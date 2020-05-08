@@ -652,12 +652,12 @@ export default new Router({
           title: '产品订单管理',
           path: '/product/order',
           name: 'productOrder',
-          component: () => import('@/views/productOrder/List'),
+          component: () => import('@/views/productSaleOrder/List'),
           meta: {title: '产品订单管理', icon: 'home'}
         },
         {
           path: '/product/order/edit',
-          component: () => import('@/views/productOrder/Edit'),
+          component: () => import('@/views/productSaleOrder/Edit'),
           meta: {title: '产品订单', icon: 'home'}
         }
       ]
