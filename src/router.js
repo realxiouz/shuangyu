@@ -38,7 +38,7 @@ export default new Router({
       name: 'index',
       component: Layout,
       redirect: '/home',
-      meta: {title: '首页', icon: 'home'},
+      meta: { title: '首页', icon: 'home' },
 
       children: [
         {
@@ -46,14 +46,14 @@ export default new Router({
           path: '/home',
           name: 'home',
           component: () => import('@/views/Home'),
-          meta: {title: '首页', icon: 'home'}
+          meta: { title: '首页', icon: 'home' }
         },
         {
           title: '关于',
           path: '/about',
           name: 'about',
           component: () => import('@/views/About'),
-          meta: {title: '关于', icon: 'about'}
+          meta: { title: '关于', icon: 'about' }
         }
       ]
     },
@@ -63,7 +63,7 @@ export default new Router({
       name: 'admin',
       redirect: '/user/list',
       component: Layout,
-      meta: {title: '系统管理', icon: 'home'},
+      meta: { title: '系统管理', icon: 'home' },
 
       children: [
         /*{
@@ -78,47 +78,47 @@ export default new Router({
           path: '/user/list',
           name: 'user',
           component: () => import('@/views/user/List'),
-          meta: {title: '用户管理', icon: 'home'}
+          meta: { title: '用户管理', icon: 'home' }
         },
         {
           path: '/user/personal/edit',
           component: () => import('@/views/user/personalEdit'),
-          meta: {title: '修改个人信息', icon: 'home'}
+          meta: { title: '修改个人信息', icon: 'home' }
         },
         {
           title: '导航菜单管理',
           path: '/nav/list',
           name: 'nav',
           component: () => import('@/views/nav/List'),
-          meta: {title: '导航菜单管理', icon: 'home'}
+          meta: { title: '导航菜单管理', icon: 'home' }
         },
         {
           title: 'Api管理',
           path: '/api',
           name: 'api',
           component: () => import('@/views/api/List'),
-          meta: {title: 'Api管理', icon: 'home'}
+          meta: { title: 'Api管理', icon: 'home' }
         },
         {
           title: '角色管理',
           path: '/role/list',
           name: 'role',
           component: () => import('@/views/role/List'),
-          meta: {title: '角色管理', icon: 'home'}
+          meta: { title: '角色管理', icon: 'home' }
         },
         {
           title: '政策接口参数管理',
           path: '/openApiParam/list',
           name: 'openApiParam',
           component: () => import('@/views/openApiParam/List'),
-          meta: {title: '政策接口参数管理', icon: 'home'},
+          meta: { title: '政策接口参数管理', icon: 'home' },
         },
         {
           title: '产品标签管理',
           path: '/productMark/list',
           name: 'productMark',
           component: () => import('@/views/productMark/List'),
-          meta: {title: '产品标签管理', icon: 'home'},
+          meta: { title: '产品标签管理', icon: 'home' },
         }
       ]
     },
@@ -128,132 +128,132 @@ export default new Router({
       name: 'orderList',
       component: Layout,
       redirect: '/order/list',
-      meta: {title: '订单管理', icon: 'home'},
+      meta: { title: '订单管理', icon: 'home' },
 
       children: [
         {
           path: '/order/total/detail',
           component: () => import('@/views/orderTaskTotal/List'),
-          meta: {title: '总订单任务', icon: 'home'}
+          meta: { title: '总订单任务', icon: 'home' }
         },
         {
           title: 'Pnrjy导单',
           path: '/pnrjyOrder/Export',
           name: 'pnrjyOrder',
           component: () => import('@/views/pnrjyOrder/Export'),
-          meta: {title: 'Pnrjy导单', icon: 'home'}
+          meta: { title: 'Pnrjy导单', icon: 'home' }
         },
         {
           title: '订单信息',
           path: '/order/list',
           name: 'order',
           component: () => import('@/views/order/List'),
-          meta: {title: '订单信息', icon: 'home'}
+          meta: { title: '订单信息', icon: 'home' }
         },
         {
           title: '订单统计',
           path: '/order/time/list',
           name: 'orderTime',
           component: () => import('@/views/orderTime/List'),
-          meta: {title: '订单统计', icon: 'home'}
+          meta: { title: '订单统计', icon: 'home' }
         },
         {
           title: '订单报表',
           path: '/orderReport/list',
           name: 'orderReport',
           component: () => import('@/views/orderReport/List'),
-          meta: {title: '订单报表', icon: 'home'}
+          meta: { title: '订单报表', icon: 'home' }
         },
         {
           title: '订单详情',
           path: '/order/detail',
           name: 'orderDetail',
           component: () => import('@/views/order/OrderDetail'),
-          meta: {title: '订单详情', icon: 'home'}
+          meta: { title: '订单详情', icon: 'home' }
         },
         {
           title: '订单详情',
           path: '/order/detail2',
           name: 'orderDetail2',
           component: () => import('@/views/order/Detail'),
-          meta: {title: '订单详情', icon: 'home'}
+          meta: { title: '订单详情', icon: 'home' }
         },
         {
           title: '出票',
           path: '/order/detail/go/ticket',
           name: 'goTicket',
           component: () => import('@/views/order/GoTicket'),
-          meta: {title: '出票', icon: 'home'}
+          meta: { title: '出票', icon: 'home' }
         },
         {
           title: '派单规则',
           path: '/order/rule/list',
           name: 'orderRuleList',
           component: () => import('@/views/orderRule/List'),
-          meta: {title: '派单规则', icon: 'home'}
+          meta: { title: '派单规则', icon: 'home' }
         }, {
           title: '规则编辑',
           path: '/order/rule/edit',
           name: 'orderRuleEdit',
           component: () => import('@/views/orderRule/Edit'),
-          props: {default: true, sidebar: false},
-          meta: {title: '规则编辑', icon: 'home'}
+          props: { default: true, sidebar: false },
+          meta: { title: '规则编辑', icon: 'home' }
         }, {
           title: '业务标签',
           path: '/order/staff/list',
           name: 'orderStaffList',
           component: () => import('@/views/orderStaff/List'),
-          props: {default: true, sidebar: false},
-          meta: {title: '业务标签', icon: 'home'}
+          props: { default: true, sidebar: false },
+          meta: { title: '业务标签', icon: 'home' }
         }, {
           title: '员工上线',
           path: '/order/staff/online',
           name: 'orderStaffOnline',
           component: () => import('@/views/orderStaff/Online'),
-          props: {default: true, sidebar: false},
-          meta: {title: '员工上线', icon: 'home'}
+          props: { default: true, sidebar: false },
+          meta: { title: '员工上线', icon: 'home' }
         },
         {
           title: '订单任务',
           path: '/order/task/list',
           name: 'orderTask',
           component: () => import('@/views/orderTask/List'),
-          meta: {title: '订单任务', icon: 'home'}
+          meta: { title: '订单任务', icon: 'home' }
         },
         {
           title: '待处理订单任务',
           path: '/order/pending/task/list',
           name: 'pendingOrderTask',
           component: () => import('@/views/pendingOrderTask/List'),
-          meta: {title: '待处理订单任务', icon: 'home'}
+          meta: { title: '待处理订单任务', icon: 'home' }
         },
         {
           title: '总订单任务',
           path: '/order/task/total/list',
           name: 'orderTaskTotal',
           component: () => import('@/views/orderTaskTotal/List'),
-          meta: {title: '总订单任务', icon: 'home'}
+          meta: { title: '总订单任务', icon: 'home' }
         },
         {
           title: '订单总报表',
           path: '/order/reportTotal/list',
           name: 'orderReportTotal',
           component: () => import('@/views/orderReportTotal/List'),
-          meta: {title: '订单总报表', icon: 'home'}
+          meta: { title: '订单总报表', icon: 'home' }
         },
         {
           title: '导单',
           path: '/order/export/order',
           name: 'exportOrder',
           component: () => import('@/views/order/ExportOrder'),
-          meta: {title: '导单', icon: 'home'}
+          meta: { title: '导单', icon: 'home' }
         },
         {
           title: '组长任务',
           path: '/order/order/task/group/list',
           name: 'orderTaskGroup',
           component: () => import('@/views/orderTaskGroup/List'),
-          meta: {title: '组长任务', icon: 'home'}
+          meta: { title: '组长任务', icon: 'home' }
         },
 
       ]
@@ -264,7 +264,7 @@ export default new Router({
       name: 'flightInfo',
       component: Layout,
       redirect: '/airline/list',
-      meta: {title: '航班信息管理', icon: 'home'},
+      meta: { title: '航班信息管理', icon: 'home' },
 
       children: [
         {
@@ -272,56 +272,56 @@ export default new Router({
           path: '/airport/list',
           name: 'airportList',
           component: () => import('@/views/airport/List'),
-          meta: {title: '机场信息', icon: 'home'}
+          meta: { title: '机场信息', icon: 'home' }
         },
         {
           title: '航司信息',
           path: '/airline/list',
           name: 'airlineList',
           component: () => import('@/views/airline/List'),
-          meta: {title: '航司信息', icon: 'home'}
+          meta: { title: '航司信息', icon: 'home' }
         },
         {
           title: '退改规则',
           path: '/refund/change/rule/list',
           name: 'refundChangeRuleList',
           component: () => import('@/views/refundChangeRule/List'),
-          meta: {title: '退改规则', icon: 'home'}
+          meta: { title: '退改规则', icon: 'home' }
         },
         {
           title: '航段信息',
           path: '/segment/list',
           name: 'segmentList',
           component: () => import('@/views/flightSegment/List'),
-          meta: {title: '航段信息', icon: 'home'}
+          meta: { title: '航段信息', icon: 'home' }
         },
         {
           title: '票价信息',
           path: '/fare/list',
           name: 'fare',
           component: () => import('@/views/fare/List'),
-          meta: {title: '票价信息', icon: 'home'}
+          meta: { title: '票价信息', icon: 'home' }
         },
         {
           title: '票号信息',
           path: '/ticket/list',
           name: 'ticket',
           component: () => import('@/views/ticket/List'),
-          meta: {title: '票号信息', icon: 'home'}
+          meta: { title: '票号信息', icon: 'home' }
         },
         {
           title: '航班信息',
           path: '/flight/list',
           name: 'flight',
           component: () => import('@/views/flight/List'),
-          meta: {title: '航班信息', icon: 'home'}
+          meta: { title: '航班信息', icon: 'home' }
         },
         {
           title: '净票价信息',
           path: '/fare/net/list',
           name: 'netFare',
           component: () => import('@/views/netFare/List'),
-          meta: {title: '净票价信息', icon: 'home'}
+          meta: { title: '净票价信息', icon: 'home' }
         }
       ]
     },
@@ -331,86 +331,86 @@ export default new Router({
       name: 'firm',
       component: Layout,
       redirect: '/firm/list',
-      meta: {title: '企业信息', icon: 'home'},
+      meta: { title: '企业信息', icon: 'home' },
       children: [
         {
           title: '企业管理',
           path: '/firm/list',
           name: 'firmList',
           component: () => import('@/views/firm/List'),
-          meta: {title: '企业管理', icon: 'home'}
+          meta: { title: '企业管理', icon: 'home' }
         },
         {
           title: '供应商管理',
           path: '/supplier/list',
           name: 'supplierList',
           component: () => import('@/views/supplier/List'),
-          meta: {title: '供应商管理', icon: 'home'}
+          meta: { title: '供应商管理', icon: 'home' }
         },
         {
           path: '/supplier/edit',
           component: () => import('@/views/supplier/Edit'),
-          meta: {title: '添加供应商'}
+          meta: { title: '添加供应商' }
         },
         {
           title: '客户管理',
           path: '/customer/list',
           name: 'customerList',
           component: () => import('@/views/customer/List'),
-          meta: {title: '客户管理', icon: 'home'}
+          meta: { title: '客户管理', icon: 'home' }
         },
         {
           title: '添加客户',
           path: '/customer/edit',
           component: () => import('@/views/customer/Edit'),
-          meta: {title: '添加客户'}
+          meta: { title: '添加客户' }
         },
         {
           title: '部门管理',
           path: '/dept/list',
           name: 'dept',
           component: () => import('@/views/dept/List'),
-          meta: {title: '部门管理', icon: 'home'}
+          meta: { title: '部门管理', icon: 'home' }
         },
         {
           title: '员工管理',
           path: '/staff/list',
           name: 'staff',
           component: () => import('@/views/staff/List'),
-          meta: {title: '员工管理', icon: 'home'}
+          meta: { title: '员工管理', icon: 'home' }
         },
         {
           title: '类别管理',
           path: '/dict/list',
           name: 'dict',
           component: () => import('@/views/dict/List'),
-          meta: {title: '类别管理', icon: 'home'}
+          meta: { title: '类别管理', icon: 'home' }
         },
         {
           title: '应用管理',
           path: '/app/list',
           naem: 'app',
           component: () => import('@/views/app/List'),
-          meta: {title: '应用管理', icon: 'home'}
+          meta: { title: '应用管理', icon: 'home' }
         },
         {
           title: '客户去哪儿接口管理',
           path: '/qunar/config',
           name: 'qunarOrderConfig',
           component: () => import('@/views/customer/QunarConfig'),
-          meta: {title: '客户去哪儿接口管理', icon: 'home'}
+          meta: { title: '客户去哪儿接口管理', icon: 'home' }
         },
         {
           title: '供应商蜗牛接口管理',
           path: '/woniu/config',
           name: 'woniuConfig',
           component: () => import('@/views/supplier/WoniuConfig'),
-          meta: {title: '供应商蜗牛接口管理', icon: 'home'}
+          meta: { title: '供应商蜗牛接口管理', icon: 'home' }
         },
         {
           path: '/supplier/bsp/config',
           component: () => import('@/views/supplier/BspConfig'),
-          meta: {title: 'BSP账号配置'}
+          meta: { title: 'BSP账号配置' }
         },
       ]
     },
@@ -420,7 +420,7 @@ export default new Router({
       name: 'policyList',
       component: Layout,
       redirect: '/policy/list',
-      meta: {title: '政策信息', icon: 'home'},
+      meta: { title: '政策信息', icon: 'home' },
 
       children: [
         {
@@ -428,7 +428,7 @@ export default new Router({
           path: '/policy/list',
           name: 'policy',
           component: () => import('@/views/policy/List'),
-          meta: {title: '政策管理', icon: 'home'}
+          meta: { title: '政策管理', icon: 'home' }
         }
       ]
     },
@@ -438,7 +438,7 @@ export default new Router({
       namr: 'open',
       component: Layout,
       redirect: '/open/list',
-      meta: {title: '开放平台管理', icon: 'home'},
+      meta: { title: '开放平台管理', icon: 'home' },
 
       children: [
         {
@@ -446,64 +446,64 @@ export default new Router({
           path: '/open/list',
           name: 'open',
           component: () => import('@/views/open/List'),
-          meta: {title: '开放平台', icon: 'home'}
+          meta: { title: '开放平台', icon: 'home' }
         },
         {
           title: '开放平台API',
           path: '/openApi/list',
           name: 'openApi',
           component: () => import('@/views/openApi/List'),
-          meta: {title: '开放平台API', icon: 'home'}
+          meta: { title: '开放平台API', icon: 'home' }
         },
         {
           title: 'TGQ调度',
           path: '/tgq/product/list',
           name: 'tgqProductList',
           component: () => import('@/views/tgqProduct/List'),
-          meta: {title: 'TGQ调度', icon: 'home'}
+          meta: { title: 'TGQ调度', icon: 'home' }
         }, {
           title: 'TGQ编辑',
           path: '/tgq/product/edit',
           name: 'tgqProductEdit',
           component: () => import('@/views/tgqProduct/Edit'),
-          props: {default: true, sidebar: false},
-          meta: {title: 'TGQ编辑', icon: 'home'}
+          props: { default: true, sidebar: false },
+          meta: { title: 'TGQ编辑', icon: 'home' }
         },
         {
           title: 'TTS调度',
           path: '/ttsScheduler/list',
           name: 'ttsSchedulerList',
           component: () => import('@/views/ttsScheduler/List'),
-          meta: {title: 'TTS调度', icon: 'home'}
+          meta: { title: 'TTS调度', icon: 'home' }
         },
         {
           title: 'TTS编辑',
           path: '/tts/scheduler/edit',
           name: 'ttsSchedulerEdit',
           component: () => import('@/views/ttsScheduler/Edit'),
-          props: {default: true, sidebar: false},
-          meta: {title: 'TTS编辑', icon: 'home'}
+          props: { default: true, sidebar: false },
+          meta: { title: 'TTS编辑', icon: 'home' }
         },
         {
           title: '政策标签',
           path: '/policy/flag/list',
           name: 'flag',
           component: () => import('@/views/policyFlag/List'),
-          meta: {title: '政策标签', icon: 'home'}
+          meta: { title: '政策标签', icon: 'home' }
         },
         {
           title: '标签参数',
           path: '/policy/flag/param/list',
           name: 'param',
           component: () => import('@/views/policyFlagParam/List'),
-          meta: {title: 'Open标签参数', icon: 'home'}
+          meta: { title: 'Open标签参数', icon: 'home' }
         },
         {
           title: '开放平台账号',
           path: '/open/account/list',
           name: 'account',
           component: () => import('@/views/openAccount/List'),
-          meta: {title: '开放平台账号', icon: 'home'}
+          meta: { title: '开放平台账号', icon: 'home' }
         }
 
       ]
@@ -514,7 +514,7 @@ export default new Router({
       name: 'qunar',
       component: Layout,
       redirect: '/qunar/order',
-      meta: {title: '去哪儿', icon: 'home'},
+      meta: { title: '去哪儿', icon: 'home' },
 
       children: [
         {
@@ -522,22 +522,40 @@ export default new Router({
           path: '/qunar/order',
           name: 'qunarOrder',
           component: () => import('@/views/qunarOrderConfig/List'),
-          meta: {title: '去哪儿订单管理', icon: 'home'}
+          meta: { title: '去哪儿订单管理', icon: 'home' }
         },
         {
           title: '去哪儿订单通知管理',
           path: '/qunar/order/notify',
           name: 'qunarOrderNotify',
           component: () => import('@/views/qunarOrderNotifyConfig/List'),
-          meta: {title: '去哪儿订单通知管理', icon: 'home'}
+          meta: { title: '去哪儿订单通知管理', icon: 'home' }
         },
         {
           title: '去哪儿政策管理',
           path: '/qunar/policy',
           name: 'qunarPolicyConfig',
           component: () => import('@/views/qunarPolicyConfig/List'),
-          meta: {title: '去哪儿政策管理', icon: 'about'}
+          meta: { title: '去哪儿政策管理', icon: 'about' }
         }
+      ]
+    },
+    {
+      title: 'BSP',
+      path: '/bsp',
+      name: 'bsp',
+      component: Layout,
+      redirect: '/bsp/order',
+      meta: { title: 'BSP', icon: 'home' },
+
+      children: [
+        {
+          title: 'BSP 订单管理',
+          path: '/bsp/order',
+          name: 'bspOrder',
+          component: () => import('@/views/qunarOrderConfig/List'),
+          meta: { title: '去哪儿订单管理', icon: 'home' }
+        },
       ]
     },
     {
@@ -546,42 +564,42 @@ export default new Router({
       name: 'finance',
       component: Layout,
       redirect: '/finance/list',
-      meta: {title: '财务管理', icon: 'home'},
+      meta: { title: '财务管理', icon: 'home' },
       children: [
         {
           title: '资金账号管理',
           path: '/finance/fund/account',
           name: 'fundAccount',
           component: () => import('@/views/fundAccount/List'),
-          meta: {title: '资金账号管理', icon: 'home'}
+          meta: { title: '资金账号管理', icon: 'home' }
         },
         {
           title: '科目管理',
           path: '/finance/account/subject',
           name: 'accountSubject',
           component: () => import('@/views/accountSubject/List'),
-          meta: {title: '科目管理', icon: 'home'}
+          meta: { title: '科目管理', icon: 'home' }
         },
         {
           title: '货币管理',
           path: '/finance/currency/list',
           name: 'currency',
           component: () => import('@/views/currency/List'),
-          meta: {title: '货币管理', icon: 'home'}
+          meta: { title: '货币管理', icon: 'home' }
         },
         {
           title: '仓库管理',
           path: '/finance/warehouse/list',
           name: 'warehouse',
           component: () => import('@/views/warehouse/List'),
-          meta: {title: '仓库管理', icon: 'home'}
+          meta: { title: '仓库管理', icon: 'home' }
         },
         {
           title: '交易记录',
           path: '/finance/trade/list',
           name: 'trade',
           component: () => import('@/views/trade/List'),
-          meta: {title: '交易记录', icon: 'home'}
+          meta: { title: '交易记录', icon: 'home' }
         }
       ]
     },
@@ -591,74 +609,74 @@ export default new Router({
       name: 'productList',
       component: Layout,
       redirect: '/product/list',
-      meta: {title: '商品信息', icon: 'home'},
+      meta: { title: '商品信息', icon: 'home' },
       children: [
         {
           title: '商品管理',
           path: '/product/list',
           name: 'product',
           component: () => import('@/views/product/List'),
-          meta: {title: '商品管理', icon: 'home'}
+          meta: { title: '商品管理', icon: 'home' }
         },
         {
           title: '添加商品',
           path: '/product/config',
           name: 'productConfig',
           component: () => import('@/views/product/Add'),
-          meta: {title: '添加商品', icon: 'home'}
+          meta: { title: '添加商品', icon: 'home' }
         },
         {
           title: '编辑商品',
           path: '/product/edit',
           name: 'productEdit',
           component: () => import('@/views/product/Edit'),
-          meta: {title: '添加商品', icon: 'home'}
+          meta: { title: '添加商品', icon: 'home' }
         },
         {
           title: '商品属性管理',
           path: '/property/list',
           name: 'property',
           component: () => import('@/views/productProperty/List'),
-          meta: {title: '商品属性管理', icon: 'home'}
+          meta: { title: '商品属性管理', icon: 'home' }
         },
         {
           title: '添加商品属性',
           path: '/property/config',
           name: 'propertyConfig',
           component: () => import('@/views/productProperty/Edit'),
-          meta: {title: '商品属性管理', icon: 'home'}
+          meta: { title: '商品属性管理', icon: 'home' }
         },
         {
           title: '品牌信息',
           path: '/brand/list',
           name: 'brand',
           component: () => import('@/views/brand/List'),
-          meta: {title: '品牌信息', icon: 'home'}
+          meta: { title: '品牌信息', icon: 'home' }
         }, {
           title: '商品库存',
           path: '/product/inventory/list',
           name: 'inventory',
           component: () => import('@/views/productInventory/List'),
-          meta: {title: '商品库存', icon: 'home'}
+          meta: { title: '商品库存', icon: 'home' }
         },
         {
           title: '商品库存编辑',
           path: '/product/inventory/config',
           name: 'config',
           component: () => import('@/views/productInventory/Edit'),
-          meta: {title: '商品库存编辑', icon: 'home'}
+          meta: { title: '商品库存编辑', icon: 'home' }
         },
         {
           title: '产品订单管理',
           path: '/product/order',
           name: 'productOrder',
           component: () => import('@/views/productSaleOrder/List'),
-          meta: {title: '产品订单管理', icon: 'home'}
+          meta: { title: '产品订单管理', icon: 'home' }
         },
         {
           path: '/product/order/edit',
           component: () => import('@/views/productSaleOrder/Edit'),
-          meta: {title: '产品订单', icon: 'home'}
+          meta: { title: '产品订单', icon: 'home' }
         }
       ]
     },

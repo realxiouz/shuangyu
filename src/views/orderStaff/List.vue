@@ -12,9 +12,11 @@
           @node-click="handleNodeClick"
         ></el-tree>
       </el-col>
-      <el-col :xs="13" :sm="14" :md="15" :lg="18" :xl="18">
-        <staff-form :curNode="curNode" :staffAddVisible="staffAddVisible" style="width: 100%" />
-      </el-col>
+      <el-col :xs="13" :sm="14" :md="15" :lg="18" :xl="18"></el-col>
+    </el-row>
+    <el-divider></el-divider>
+    <el-row>
+      <staff-form :curNode="curNode" :staffAddVisible="staffAddVisible" style="width: 100%" />
     </el-row>
   </div>
 </template>

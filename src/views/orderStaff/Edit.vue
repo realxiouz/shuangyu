@@ -36,7 +36,7 @@
           <span v-else>{{ formatDate(scope.row.offlineTime,'YYYY-MM-DD HH:mm:ss') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="390" fixed="right">
+      <el-table-column label="操作" align="center" width="400" fixed="right">
         <template slot-scope="scope">
           <el-button size="mini" type="primary" @click="handleFlag(scope.row)">配置标签</el-button>
           <el-button
