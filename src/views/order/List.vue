@@ -21,7 +21,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="orderNo" label="订单号" width="175" align="center"></el-table-column>
-        <el-table-column label="源单号" prop="sourceOrderNo" width="160" align="center"></el-table-column>
+        <el-table-column label="源单号" prop="sourceOrderNo" width="170" align="center"></el-table-column>
         <el-table-column prop="policyCode" label="政策代码" align="center" width="180"></el-table-column>
         <el-table-column
           :formatter="formatOrderType"

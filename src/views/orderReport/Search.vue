@@ -3,39 +3,7 @@
     <el-col :xs="16" :sm="17" :md="18" :lg="19" :xl="20">
       <el-form :model="formData" label-width="110px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="订单号:">
-            <el-input
-              v-model="formData.orderNo"
-              @keyup.enter.native="$emit('onSearch', formData)"
-              clearable
-              style="width: 100%"
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="源单号:">
-            <el-input
-              clearable
-              @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.sourceOrderNo"
-              style="width: 100%"
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="订单类型:">
-            <el-select clearable v-model="formData.orderType" placeholder="请选择" style="width: 100%">
-              <el-option
-                v-for="item in orderType"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="订单分类:">
+          <el-form-item label="订单分类:">
             <el-select
               style="width: 100%;"
               clearable
@@ -50,7 +18,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more&&!showData" label="订单日期:">
+          <el-form-item v-if="showData" label="订单日期:">
             <el-col>
               <el-date-picker
                 start-placeholder="开始日期"
@@ -67,7 +35,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more&&showData" label="采购日期:">
+          <el-form-item v-if="!showData" label="采购日期:">
             <el-col>
               <el-date-picker
                 start-placeholder="开始日期"
@@ -84,7 +52,39 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="供应商:">
+          <el-form-item label="订单号:">
+            <el-input
+              v-model="formData.orderNo"
+              @keyup.enter.native="$emit('onSearch', formData)"
+              clearable
+              style="width: 100%"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="源单号:">
+            <el-input
+              clearable
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.sourceOrderNo"
+              style="width: 100%"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="订单类型:">
+            <el-select clearable v-model="formData.orderType" placeholder="请选择" style="width: 100%">
+              <el-option
+                v-for="item in orderType"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-if="more&&!showData" label="供应商:">
             <el-select
               clearable
               filterable
@@ -102,7 +102,25 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="客户:">
+          <el-form-item v-if="more&&showData" label="客户:">
+            <el-select
+              clearable
+              filterable
+              placeholder="请选择客户"
+              v-model="formData.merchantId"
+              style="width: 100%"
+            >
+              <el-option
+                v-for="item in customerData"
+                :key="item.merchantId"
+                :label="item.firm.firmName"
+                :value="item.merchantId"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <!-- <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="客户/供应商:">
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.orderSource"
@@ -110,7 +128,7 @@
               style="width: 100%"
             ></el-input>
           </el-form-item>
-        </el-col>
+        </el-col> -->
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="平台账号:">
             <el-input
@@ -152,7 +170,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="乘机人证件号:">
+          <el-form-item v-show="more" label="证件号码:">
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
               clearable
@@ -217,6 +235,7 @@
             ></el-input>
           </el-form-item>
         </el-col>
+
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="航程类型:">
             <el-select
@@ -458,6 +477,7 @@ export default {
       more: false,
       formData: this.initSearchForm(),
       supplierData: [],
+      customerData: [],
       orderType: orderType,
       showData: false
     };
@@ -528,8 +548,21 @@ export default {
           this.loading = false;
         });
     },
+    // 获取客户
+    getCustom() {
+      this.$store
+        .dispatch("firmMerchant/getList", {
+          filter: { merchantType: 1 }
+        })
+        .then(data => {
+          this.customerData = data;
+        })
+        .catch(error => {
+          console.log(error);
+          this.loading = false;
+        });
+    },
     selectCategory(value) {
-      console.log(value);
       if (value == "0") {
         this.showData = true;
       } else {
@@ -538,9 +571,13 @@ export default {
     }
   },
   watch: {
-    more(val, newVal) {
-      if (!newVal) {
+    showData(val, newVal) {
+      if (newVal) {
         this.getSupplier();
+        this.formData.merchantId = "";
+      } else {
+        this.getCustom();
+        this.formData.merchantId = "";
       }
     }
   }

@@ -11,6 +11,7 @@
         style="width: 100%;margin-bottom:15px"
         v-loading="loading"
         show-summary
+        max-height="650"
         :summary-method="getSummaries"
         fit
       >

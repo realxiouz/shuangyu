@@ -18,7 +18,7 @@
               clearable
               v-model="formData.sourceOrderNo"
               @keyup.enter.native="$emit('onSearch', formData)"
-              placeholder="请输入源单号搜索..."
+              placeholder="请输入订单源单号搜索..."
             ></el-input>
           </el-form-item>
         </el-col>
@@ -52,12 +52,30 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="操作员:">
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.fullName"
+              style="width: 100%"
+              clearable
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="规则类型:">
+            <el-select style="width: 100%;" clearable v-model="formData.ruleType" placeholder="请选择">
+              <el-option label="系统" value="0"></el-option>
+              <el-option label="手工" value="1"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="开始时间:">
             <el-date-picker
               type="date"
               :unlink-panels="true"
               placeholder="选择日期"
-              v-model="formData.startTime"
+              v-model="formData.startCreateTime"
               style="width: 100%;"
               format="yyyy-MM-dd"
               value-format="yyyy-MM-dd"
@@ -70,11 +88,31 @@
               type="date"
               :unlink-panels="true"
               placeholder="选择日期"
-              v-model="formData.endTime"
+              v-model="formData.endCreateTime"
               style="width: 100%;"
               format="yyyy-MM-dd"
               value-format="yyyy-MM-dd"
             ></el-date-picker>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="乘机人:">
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.name"
+              style="width: 100%"
+              clearable
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="乘机人证件号:">
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.cardNo"
+              clearable
+              style="width: 100%"
+            ></el-input>
           </el-form-item>
         </el-col>
       </el-form>
@@ -107,8 +145,10 @@ export default {
         taskName: "",
         taskType: "",
         taskStatus: "",
-        startTime: "",
-        endTime: ""
+        startCreateTime: "",
+        endCreateTime: "",
+        name: "",
+        cardNo: ""
       },
       taskTypeValue: taskTypeValue,
       taskStatusValue: taskStatusValue
