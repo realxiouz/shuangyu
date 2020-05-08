@@ -1510,16 +1510,15 @@ export default {
     },
     // 删除
     orderTreeRemove(row) {
-      this.open(
-        this.delete,
-        row.orderNo,
-        "此操作将删除该订单的信息, 是否继续?"
-      );
+      let params = {};
+      params.orderId = row.orderNo;
+      params.orderTaskId = this.taskId;
+      this.open(this.delete, params, "此操作将删除该订单的信息, 是否继续?");
     },
     // 删除
-    delete(orderNo) {
+    delete(params) {
       this.$store
-        .dispatch("order/removeOne", { orderNo: orderNo })
+        .dispatch("orderTask/removeTaskOrder", params)
         .then(data => {
           if (data) {
             this.$message({
@@ -1813,7 +1812,7 @@ export default {
 .deadlineTicketTime {
   color: #ff4600;
 }
-.el-collapse-item__header{
+.el-collapse-item__header {
   background-color: #ccc;
   height: 35px;
   font-size: 12px;

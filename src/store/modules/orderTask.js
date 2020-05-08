@@ -1,4 +1,4 @@
-import { getTaskInfo, taskTransfer, taskRemark, taskSubmit, taskCancel, getPageList, getTotal, getPendingTotal, getGroupList } from '@/api/orderTask';
+import { removeTaskOrder, getTaskInfo, taskTransfer, taskRemark, taskSubmit, taskCancel, getPageList, getTotal, getPendingTotal, getGroupList } from '@/api/orderTask';
 import { getToken } from '@/utils/auth';
 
 const state = {
@@ -140,6 +140,20 @@ const actions = {
                 });
         });
     },
+
+    removeTaskOrder({ commit }, params) {
+        return new Promise((resolve, reject) => {
+            removeTaskOrder(params)
+                .then(response => {
+                    const { data } = response;
+                    resolve(data);
+                })
+                .catch(error => {
+                    reject(error);
+                });
+        });
+    },
+
 
 
 };

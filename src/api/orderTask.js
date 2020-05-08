@@ -82,3 +82,12 @@ export function getTaskInfo(taskId) {
   });
 }
 
+// removeTaskOrder
+
+export function removeTaskOrder(params) {
+  return request({
+    url: `/order/task/remove/${params.orderTaskId}/${params.orderId}`,
+    method: "delete"
+  });
+}
+
