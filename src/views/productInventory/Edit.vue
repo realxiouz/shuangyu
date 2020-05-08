@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="contentBox">
     <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
       <el-row :gutter="10">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
