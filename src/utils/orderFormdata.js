@@ -43,6 +43,15 @@ export function formatFlightNo(data) {
     return data[0].flightCode;
 }
 
+// 格式化订单 航司 数据
+export function formatAirlineCode(data) {
+    if (!data || data.length == 0) {
+        return "";
+    }
+    return data[0].airlineCode;
+}
+
+
 // 格式化订单 航班 数据
 export function formatFlight(data) {
     if (!data || data.length == 0) {
