@@ -2,7 +2,7 @@ import request from '@/utils/request';
 
 export function addOne(data) {
   return request({
-    url: '/policy/order/add/one',
+    url: '/policy/order/detail/add/one',
     method: 'post',
     data
   });
@@ -10,29 +10,29 @@ export function addOne(data) {
 
 export function updateOne(data) {
   return request({
-    url: '/policy/order/update/one',
+    url: '/policy/order/detail/update/one',
     method: 'post',
     data
   });
 }
 
-export function removeOne(orderNo) {
+export function removeOne(detailId) {
   return request({
-    url: `/policy/order/remove/one/${orderNo}`,
+    url: `/policy/order/detail/remove/one/${detailId}`,
     method: 'delete'
   });
 }
 
-export function getOne(orderNo) {
+export function getOne(detailId) {
   return request({
-    url: `/policy/order/one/${orderNo}`,
+    url: `/policy/order/detail/one/${detailId}`,
     method: 'get'
   });
 }
 
 export function getList(filter) {
   return request({
-    url: `/policy/order/list`,
+    url: `/policy/order/detail/list`,
     method: 'get',
     params: filter
   });
@@ -40,7 +40,7 @@ export function getList(filter) {
 
 export function getTotal(filter) {
   return request({
-    url: '/policy/order/total',
+    url: '/policy/order/detail/total',
     method: 'get',
     params: filter
   });
@@ -48,7 +48,7 @@ export function getTotal(filter) {
 
 export function getPageList(pageFlag, pageSize, lastId, filter) {
   return request({
-    url: `/policy/order/page/list/${pageFlag}/${pageSize}/${lastId}`,
+    url: `/policy/order/detail/page/list/${pageFlag}/${pageSize}/${lastId}`,
     method: 'get',
     params: filter
   });
