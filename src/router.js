@@ -560,7 +560,7 @@ export default new Router({
     {
       title: 'Pnrjy',
       path: '/pnrjy',
-      name: 'pnrjyOrder',
+      name: 'pnrjy',
       component: Layout,
       redirect: '/pnrjy/order/list',
       meta: { title: 'Pnrjy', icon: 'home' },
