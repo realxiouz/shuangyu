@@ -27,9 +27,9 @@ import openApiService from "./modules/openApiService";
 import openAccount from "./modules/openAccount";
 import tgqProduct from "./modules/tgqProduct";
 import pnrjyOrder from "./modules/pnrjyOrder";
-import qunarOrderConfig from "./modules/qunarOrderConfig";
-import qunarOrderNotifyConfig from "./modules/qunarOrderNotifyConfig";
-import qunarPolicyConfig from "./modules/qunarPolicyConfig";
+import qunarOrderConfig from "./modules/otherOrderConfig/qunarOrderConfig";
+import qunarOrderNotifyConfig from "./modules/otherOrderConfig/qunarOrderNotifyConfig";
+import qunarPolicyConfig from "./modules/otherOrderConfig/qunarPolicyConfig";
 import orderStaff from "./modules/orderStaff";
 import ttsScheduler from "./modules/ttsScheduler";
 import category from "./modules/category";
@@ -56,9 +56,9 @@ import firmAccount from "./modules/firmAccount";
 import bspConfig from "./modules/bspConfig";
 import productOrder from "./modules/productOrder";
 import productOrderDetail from "./modules/productOrderDetail";
-import bspOrderConfig from "./modules/bspOrderConfig";
-import pnrjyOrderConfig from "./modules/pnrjyOrderConfig";
-import woniuOrderConfig from "./modules/woniuOrderConfig";
+import bspOrderConfig from "./modules/otherOrderConfig/bspOrderConfig";
+import pnrjyOrderConfig from "./modules/otherOrderConfig/pnrjyOrderConfig";
+import woniuOrderConfig from "./modules/otherOrderConfig/woniuOrderConfig";
 
 import { getLoginInfo } from "@/api/staff";
 

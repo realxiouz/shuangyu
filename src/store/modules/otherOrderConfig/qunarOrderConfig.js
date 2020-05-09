@@ -1,4 +1,4 @@
-import { save } from '@/api/pnrjyOrderConfig';
+import { save } from '@/api/otherOrderConfig/qunarOrderConfig';
 
 const actions = {
   save({ commit }, params) {

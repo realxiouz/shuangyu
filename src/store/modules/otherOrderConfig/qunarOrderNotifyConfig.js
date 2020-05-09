@@ -1,4 +1,4 @@
-import {addOne, getList, getOne, getPageList, getTotal, removeOne, save, updateOne} from '@/api/qunarOrderNotifyConfig';
+import {addOne, getList, getOne, getPageList, getTotal, removeOne, save, updateOne} from '@/api/otherOrderConfig/qunarOrderNotifyConfig';
 
 const actions = {
   save({commit}, params) {

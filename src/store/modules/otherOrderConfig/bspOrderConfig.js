@@ -1,4 +1,4 @@
-import { save, } from '@/api/woniuOrderConfig';
+import { save } from '@/api/otherOrderConfig/bspOrderConfig';
 
 const actions = {
   save({ commit }, params) {
