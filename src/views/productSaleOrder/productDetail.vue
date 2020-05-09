@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div>
+
+    </div>
     <el-table ref="productTable" :data="productList" @selection-change="handleSelectionChange" highlight-current-row size="mini">
       <el-table-column type="selection"></el-table-column>
       <el-table-column prop="productCode" label="商品编码" align="center"></el-table-column>
@@ -11,7 +14,6 @@
       <el-table-column prop="minStockQuantity" label="库存下线" align="center"></el-table-column>
       <el-table-column prop="unit" label="计量单位" align="center"></el-table-column>
       <el-table-column prop="price" label="单价" align="center"></el-table-column>
-      <el-table-column prop="cost" label="成本" align="center"></el-table-column>
       <el-table-column prop="skuName" label="属性名称" align="center"></el-table-column>
       <el-table-column prop="skuId" label="sku" align="center"></el-table-column>
     </el-table>
@@ -25,7 +27,6 @@
 
 <script>
     export default {
-        props: ['orderDetails'],
         data() {
             return {
                 formData: {},
@@ -49,10 +50,17 @@
                 this.selectedList = selection;
             },
             handleConfirm() {
-                this.$emit('onConfirm', this.selectedList);
-            },
-            clearSelectedList(){
-                this.selectedList = [];
+                let _selectedProductList = [];
+                this.selectedList.forEach(item => {
+                    //库存
+                    item.stockQuantity = item.quantity;
+                    //数量
+                    item.quantity = 0;
+                    //金额
+                    item.amount = 0;
+                    _selectedProductList.push(item);
+                })
+                this.$emit('onConfirm', _selectedProductList);
             }
         },
         created() {

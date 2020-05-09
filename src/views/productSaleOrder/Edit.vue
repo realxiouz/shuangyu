@@ -9,7 +9,7 @@
         <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
           <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
             <el-form :rules="rules" :model="formData" label-position="left" label-width="87px" size="mini" style="width: 80%">
-              <el-form-item label="商户:" prop="merchantId">
+              <el-form-item label="客户:" prop="merchantId">
                 <el-select v-model="formData.merchantId" filterable @change="selectedCustomer" placeholder="请选择" style="width: 100%">
                   <el-option
                     v-for="item in customerList"
@@ -102,13 +102,17 @@
             <el-table-column prop="productCode" label="商品编码" align="center"></el-table-column>
             <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
             <el-table-column prop="brandName" label="品牌" align="center"></el-table-column>
+            <el-table-column prop="skuName" label="属性名称" align="center"></el-table-column>
             <el-table-column prop="price" label="单价" align="center"></el-table-column>
+            <el-table-column prop="stockQuantity" label="库存" align="center"></el-table-column>
             <el-table-column prop="quantity" label="数量" align="center">
               <template slot-scope="prop">
-                <el-input v-model.number="prop.row.quantity" placeholder="输入单价" @input="testQuantity" size="mini"></el-input>
+                <el-input v-model.number="prop.row.quantity" placeholder="输入单价" @input="testQuantity(prop.row)" size="mini"></el-input>
+                <span v-if="verifyQuantity(prop.row.quantity)" style="color: #F56C6C">*商品数量必须为数字</span>
+                <span v-if="verifyStockQuantity(prop.row)" style="color: #F56C6C">*商品数量应该小于或等于库存数量</span>
               </template>
-              <span v-if="testQuantity" style="color: #F56C6C">*商品数量必须为数字</span>
             </el-table-column>
+            <el-table-column prop="unit" label="计量单位" align="center"></el-table-column>
             <el-table-column prop="amount" label="金额" align="center">
               <template slot-scope="prop">
                 {{computedRowAmount(prop.row)}}
@@ -137,7 +141,7 @@
           <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
             <el-form :rules="rules" :model="formData" label-position="left" label-width="87px" size="mini" style="width: 80%">
               <el-form-item label="成交金额:">
-                <span id="totalAmount">{{computedTotalAmount()}}</span>
+                <span id="totalAmount">{{totalAmount}}</span>
               </el-form-item>
               <el-form-item label="实收金额:">
                 {{formData.receiptAmount}}
@@ -172,14 +176,15 @@
       <el-row>
         <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="16">
           <div id="footer">
-            <el-button type="primary" @click="handleSave" size="mini">保 存</el-button>
+            <span v-show="quantityError" style="color: #F56C6C">商品数量必须为数字</span><br/>
+            <span v-show="stockError" style="color: #F56C6C">商品数量应该小于或等于库存数量</span><br/>
+            <el-button :disabled="quantityError || stockError" type="primary" @click="handleSave" size="mini">保 存</el-button>
           </div>
         </el-col>
       </el-row>
 
       <el-dialog title="商品明细" :visible.sync="dialogVisible" :close-on-click-modal="false" width="60%">
-        <product-detail v-if="dialogVisible" :curProduct="curProduct" :detailUpdate="detailUpdate"
-                      @onCancel="handleCancel" @onConfirm="handleConfirm"></product-detail>
+        <product-detail v-if="dialogVisible" @onCancel="handleCancel" @onConfirm="handleConfirm"></product-detail>
       </el-dialog>
     </div>
   </div>
@@ -204,12 +209,11 @@
                 //是否对订单详情进行修改或添加
                 detailUpdate: false,
                 customerSelected: true,
-                //记录当前正在修改的订单详情对象
-                curProduct: {},
-                //用于校验订单详情的修改。
-                tempProduct: {},
                 update: false,
-                quantityType: false,
+                quantityError: false,
+                stockError: false,
+                productIdList: [],
+                totalAmount: 0,
                 rules: {
                     brandName: [
                         {required: true, message: "请输入品牌名称", trigger: "blur"},
@@ -382,8 +386,10 @@
                             }
                         })
                             .then(data => {
-                                this.formData.contactId = data[0].contactId;
-                                this.formData.contactName = customer.firm.fullName;
+                                if (data.length > 0){
+                                    this.formData.contactId = data[0].contactId;
+                                    this.formData.contactName = customer.firm.fullName;
+                                }
                             })
                             .catch(error => {
                                 console.log(error);
@@ -436,10 +442,12 @@
             },
             handleConfirm(productSelection) {
                 productSelection.forEach(item => {
-                    if (-1 === this.orderDetails.indexOf(item)){
+                    if (-1 === this.productIdList.indexOf(item.productId + item.skuId)){
+                        this.productIdList.push(item.productId + item.skuId);
                         this.orderDetails.push(item);
                     }
                 });
+                this.dialogVisible = false;
             },
             handleSave() {
                 const dateItem = ['expireDate', 'warehouseDate'];
@@ -482,14 +490,18 @@
                     callBack([]);
                 }
             },
-            testQuantity(quantity){
+            testQuantity(row){
                 let reg = /^[0-9]*$/;
-                if (!reg.test(quantity)){
-                   this.quantityType = true;
+                if (!reg.test(row.quantity)){
+                   this.quantityError = true;
                }else {
-                   this.quantityType = false;
+                   this.quantityError = false;
                }
-                return reg.test(quantity);
+                if (row.stockQuantity < row.quantity){
+                    this.stockError = true;
+                }else {
+                    this.stockError = false;
+                }
             },
             clearForm() {
                 this.formData = this.defaultFormData();
@@ -505,7 +517,15 @@
             },
             computedRowAmount(row){
                 row.amount = parseFloat(row.quantity * row.price).toFixed(2);
+                this.computedTotalAmount();
               return row.amount;
+            },
+            computedTotalAmount(){
+                let _totalAmount = 0;
+                this.orderDetails.forEach(item => {
+                    _totalAmount += parseFloat(item.amount);
+                });
+                this.totalAmount = _totalAmount.toFixed(2);
             },
             initDate(format) {
                 let date = new Date();
@@ -529,14 +549,16 @@
             this.initFormData(this.$route.query.orderNo);
         },
         computed:{
-            computedTotalAmount(){
-                return function(){
-                    let _totalAmount = 0;
-                    this.orderDetails.forEach(item => {
-                        _totalAmount += parseFloat(item.amount);
-                    });
-                    return _totalAmount.toFixed(2);
-                };
+            verifyQuantity(){
+                return function (quantity) {
+                    let reg = /^[0-9]*$/;
+                    return !reg.test(quantity);
+                }
+            },
+            verifyStockQuantity(){
+                return function (row) {
+                    return row.stockQuantity < row.quantity;
+                }
             },
             formatDate() {
                 return function(format) {
