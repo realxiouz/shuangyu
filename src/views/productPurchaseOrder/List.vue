@@ -81,6 +81,7 @@
         methods: {
             loadData(searchForm) {
                 this.searchForm = searchForm;
+                searchForm['orderType'] = 2;
                 this.$store.dispatch("productOrder/getTotal", {filter: searchForm})
                     .then(data => {
                         this.total = data;
@@ -153,7 +154,7 @@
                     });
             },
             skipDetail(orderNo){
-                this.$router.push({path: '/product/order/edit', query:{orderNo: orderNo}});
+                this.$router.push({path: '/product/purchase/order/edit', query:{orderNo: orderNo}});
             }
         },
         mounted() {

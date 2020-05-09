@@ -9,7 +9,7 @@
         <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
           <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
             <el-form :rules="rules" :model="formData" label-position="left" label-width="87px" size="mini" style="width: 80%">
-              <el-form-item label="商户:" prop="merchantId">
+              <el-form-item label="供应商:" prop="merchantId">
                 <el-select v-model="formData.merchantId" filterable @change="selectedCustomer" placeholder="请选择" style="width: 100%">
                   <el-option
                     v-for="item in customerList"
@@ -58,9 +58,9 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="出入库状态:" prop="firmName">
-                未出库
+                未入库
               </el-form-item>
-              <el-form-item label="出库时间:" prop="warehouseDate">
+              <el-form-item label="入库时间:" prop="warehouseDate">
                 <el-date-picker
                   v-model="formData.warehouseDate"
                   type="date"
@@ -101,7 +101,11 @@
             <el-table-column prop="productCode" label="商品编码" align="center"></el-table-column>
             <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
             <el-table-column prop="brandName" label="品牌" align="center"></el-table-column>
-            <el-table-column prop="quantity" label="数量" align="center"></el-table-column>
+            <el-table-column prop="quantity" label="数量" align="center">
+              <template slot-scope="prop">
+                <el-input v-model="prop.row.quantity" placeholder="输入单价"></el-input>
+              </template>
+            </el-table-column>
             <el-table-column prop="price" label="单价" align="center"></el-table-column>
             <el-table-column prop="amount" label="金额" align="center"></el-table-column>
             <el-table-column label="操作" align="center">
@@ -242,7 +246,7 @@
                     //单据日期
                     orderDate: null,
                     //单据类型（0：其他，1：销售，2：采购，10：销售发货单，11：销售退货单，12：销售变更单，20：采购入库单，21：采购退货单，22：采购变更单）
-                    orderType: 1,
+                    orderType: 2,
                     //***************
                     //仓库
                     warehouseId: '',
@@ -253,7 +257,7 @@
                     //出入库状态（0：未出库，1：已出库）
                     warehouseStatus: 0,
                     //出入库类型（委外，生产，赠送，销售出库，采购入库）
-                    warehouseType: '销售出库',
+                    warehouseType: '采购入库',
                     //出入库时间
                     warehouseDate: null,
                     //***************
