@@ -53,16 +53,18 @@
             </div>
           </el-row>
           <div class="tags-view">
-            <el-tag
-              class="tags-view-item"
-              @close="handleClose(tag)"
-              v-for="tag in tags"
-              :key="tag.name"
-              :closable="tag.closable"
-              :type="tag.type"
-            >
-              <router-link :to="tag.path">{{tag.name}}</router-link>
-            </el-tag>
+            <scroll-pane ref="scrollPane" class="tags-view-wrapper">
+              <el-tag
+                class="tags-view-item"
+                @close="handleClose(tag)"
+                v-for="tag in tags"
+                :key="tag.name"
+                :closable="tag.closable"
+                :type="tag.type"
+              >
+                <router-link :to="tag.path">{{tag.name}}</router-link>
+              </el-tag>
+            </scroll-pane>
           </div>
         </div>
       </el-header>
@@ -99,11 +101,12 @@
 <script>
 import Sidebar from "@/components/SideBar.vue";
 import SelectFirms from "@/components/SelectFirms.vue";
+import ScrollPane from "@/components/TagsView/ScrollPane.vue";
 
 // @ is an alias to /src
 export default {
   name: "layout",
-  components: { Sidebar, SelectFirms },
+  components: { Sidebar, SelectFirms, ScrollPane },
   data() {
     return {
       dialogVisible: false,

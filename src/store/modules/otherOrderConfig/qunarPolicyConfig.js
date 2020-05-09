@@ -1,11 +1,11 @@
-import {addOne, getList, getOne, getPageList, getTotal, removeOne, save, updateOne} from '@/api/qunarPolicyConfig';
+import { addOne, getList, getOne, getPageList, getTotal, removeOne, save, updateOne } from '@/api/otherOrderConfig/qunarPolicyConfig';
 
 const actions = {
-  save({commit}, params) {
+  save({ commit }, params) {
     return new Promise((resolve, reject) => {
       save(params)
         .then(response => {
-          const {data} = response;
+          const { data } = response;
           resolve(data);
         })
         .catch(error => {
@@ -13,11 +13,11 @@ const actions = {
         });
     });
   },
-  addOne({commit}, params) {
+  addOne({ commit }, params) {
     return new Promise((resolve, reject) => {
       addOne(params)
         .then(response => {
-          const {data} = response;
+          const { data } = response;
           resolve(data);
         })
         .catch(error => {
@@ -25,11 +25,11 @@ const actions = {
         });
     });
   },
-  updateOne({commit}, params) {
+  updateOne({ commit }, params) {
     return new Promise((resolve, reject) => {
       updateOne(params)
         .then(response => {
-          const {data} = response;
+          const { data } = response;
           resolve(data);
         })
         .catch(error => {
@@ -37,12 +37,12 @@ const actions = {
         });
     });
   },
-  removeOne({commit}, params) {
+  removeOne({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const {user, firmId} = params;
+      const { user, firmId } = params;
       removeOne(user, firmId)
         .then(response => {
-          const {data} = response;
+          const { data } = response;
           resolve(data);
         })
         .catch(error => {
@@ -50,12 +50,12 @@ const actions = {
         });
     });
   },
-  getOne({commit}, params) {
+  getOne({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const {user, firmId} = params;
+      const { user, firmId } = params;
       getOne(user, firmId)
         .then(response => {
-          const {data} = response;
+          const { data } = response;
           resolve(data);
         })
         .catch(error => {
@@ -63,12 +63,12 @@ const actions = {
         });
     });
   },
-  getTotal({commit}, params) {
+  getTotal({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const {filter} = params;
+      const { filter } = params;
       getTotal(filter)
         .then(response => {
-          const {data} = response;
+          const { data } = response;
           resolve(data);
         })
         .catch(error => {
@@ -76,12 +76,12 @@ const actions = {
         });
     });
   },
-  getList({commit}, params) {
+  getList({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const {filters} = params;
+      const { filters } = params;
       getList(filters)
         .then(response => {
-          const {data} = response;
+          const { data } = response;
           resolve(data);
         })
         .catch(error => {
@@ -89,12 +89,12 @@ const actions = {
         });
     });
   },
-  getPageList({commit}, params) {
+  getPageList({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const {pageFlag, pageSize, lastId, filter} = params;
+      const { pageFlag, pageSize, lastId, filter } = params;
       getPageList(pageFlag, pageSize, lastId, filter)
         .then(response => {
-          const {data} = response;
+          const { data } = response;
           resolve(data);
         })
         .catch(error => {

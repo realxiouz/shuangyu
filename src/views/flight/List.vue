@@ -49,10 +49,10 @@
                 <span>{{ props.row.arrTerminal }}</span>
               </el-form-item>
               <el-form-item label="起飞时间:">
-                <span>{{ props.row.dptTime }}</span>
+                <span>{{ formatTime(props.row.dptTime) }}</span>
               </el-form-item>
               <el-form-item label="到达时间:">
-                <span>{{ props.row.arrTime }}</span>
+                <span>{{ formatTime(props.row.arrTime) }}</span>
               </el-form-item>
               <el-form-item label="航程:">
                 <span>{{ props.row.distance + " km"}}</span>
@@ -116,10 +116,14 @@
         <el-table-column prop="flightCode" label="航班号" align="center"></el-table-column>
         <el-table-column prop="dptAirport" label="出发机场" align="center"></el-table-column>
         <el-table-column prop="arrAirport" label="到达机场" width="100" align="center"></el-table-column>
-        <el-table-column prop="dptTime" label="起飞时间" width="100" align="center"></el-table-column>
+        <el-table-column prop="dptTime" label="起飞时间" width="100" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatTime(scope.row.dptTime)}}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="arrTime" label="到达时间" width="150" align="center">
           <template slot-scope="scope">
-            <span>{{ formatAmount(scope.row.price)}}</span>
+            <span>{{ formatTime(scope.row.arrTime)}}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center" width="180">
@@ -327,6 +331,13 @@ export default {
         return this.$moment(date).format(format);
       } else {
         return "";
+      }
+    },
+    formatTime(time) {
+      if (time) {
+        return time.substring(0, 2) + " : " + time.substring(2, time.length);
+      } else {
+        return time;
       }
     },
     formatAmount(amount) {

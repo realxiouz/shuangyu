@@ -8,10 +8,15 @@
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table
-        v-loading="loading"
         :data="tableData"
-        style="width: 100%;margin-bottom: 20px;"
         size="mini"
+        highlight-current-row
+        style="width: 100%;margin-bottom:15px"
+        v-loading="loading"
+        show-summary
+        :summary-method="getSummaries"
+        max-height="650"
+        fit
       >
         <el-table-column type="index" align="center"></el-table-column>
         <el-table-column prop="domain" label="订单号" width="180" align="center"></el-table-column>
@@ -94,7 +99,7 @@ import {
 } from "@/utils/orderFormdata.js";
 
 export default {
-  name: "woniuOrderConfig",
+  name: "qunarOrderConfig",
   data() {
     return {
       loading: false,
@@ -119,7 +124,7 @@ export default {
     formatFlightNo,
     formatFlight,
     formatAmount,
-    handleSizeChange(){},
+    handleSizeChange() {},
     prevClick() {},
     nextClick() {},
     loadData() {},
@@ -148,6 +153,26 @@ export default {
           message: "查询成功！"
         });
       }
+    },
+    getSummaries(params) {
+      const { columns, data } = params;
+      const sums = [];
+      columns.forEach((item, index) => {
+        if (index === 0) {
+          sums[index] = "统计";
+          return;
+        }
+        switch (item.property !== "" && item.property) {
+          case "amount":
+            sums[index] =
+              "￥" + this.$numeral(this.count.amount).format("0,0.00");
+            break;
+          default:
+            sums[index] = "";
+            break;
+        }
+      });
+      return sums;
     },
     handleAdd() {},
     handleSave(formData) {},
