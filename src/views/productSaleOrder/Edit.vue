@@ -92,21 +92,30 @@
           </el-col>
         </el-col>
       </el-row>
+      <!--productDetailTable-->
       <el-row>
         <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="16">
           <div class="title">
             <el-button type="primary" size="mini" @click="handleAddProduct">添加商品明细</el-button>
           </div>
-          <el-table :data="orderDetails" height="250" border>
+          <el-table :data="orderDetails" height="250" border size="mini">
             <el-table-column prop="productCode" label="商品编码" align="center"></el-table-column>
             <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
             <el-table-column prop="brandName" label="品牌" align="center"></el-table-column>
-            <el-table-column prop="quantity" label="数量" align="center"></el-table-column>
             <el-table-column prop="price" label="单价" align="center"></el-table-column>
-            <el-table-column prop="amount" label="金额" align="center"></el-table-column>
+            <el-table-column prop="quantity" label="数量" align="center">
+              <template slot-scope="prop">
+                <el-input v-model.number="prop.row.quantity" placeholder="输入单价" @input="testQuantity" size="mini"></el-input>
+              </template>
+              <span v-if="testQuantity" style="color: #F56C6C">*商品数量必须为数字</span>
+            </el-table-column>
+            <el-table-column prop="amount" label="金额" align="center">
+              <template slot-scope="prop">
+                {{computedRowAmount(prop.row)}}
+              </template>
+            </el-table-column>
             <el-table-column label="操作" align="center">
               <template slot-scope="scope">
-                <el-button type="primary" size="mini" @click="handleEditProduct(scope.row)">编辑</el-button>
                 <el-button type="danger" size="mini" @click="handleRemoveProduct(scope.$index, scope.row)">删除
                 </el-button>
               </template>
@@ -114,6 +123,7 @@
           </el-table>
         </el-col>
       </el-row>
+      <!--remark-->
       <el-row>
         <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
           <el-form style="width: 80%; margin-top: 10px">
@@ -121,12 +131,13 @@
           </el-form>
         </el-col>
       </el-row>
+      <!--totalAmount/recordInfo-->
       <el-row>
         <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
           <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
             <el-form :rules="rules" :model="formData" label-position="left" label-width="87px" size="mini" style="width: 80%">
               <el-form-item label="成交金额:">
-                <span id="totalAmount">{{computedTotalAmount(orderDetails)}}</span>
+                <span id="totalAmount">{{computedTotalAmount()}}</span>
               </el-form-item>
               <el-form-item label="实收金额:">
                 {{formData.receiptAmount}}
@@ -157,6 +168,7 @@
           </el-col>
         </el-col>
       </el-row>
+      <!--postButton-->
       <el-row>
         <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="16">
           <div id="footer">
@@ -165,16 +177,16 @@
         </el-col>
       </el-row>
 
-      <el-dialog title="商品明细" :visible.sync="dialogVisible" :close-on-click-modal="false" width="24%">
-        <order-detail v-if="dialogVisible" :curProduct="curProduct" :detailUpdate="detailUpdate"
-                      @onCancel="handleCancel" @onConfirm="handleConfirm"></order-detail>
+      <el-dialog title="商品明细" :visible.sync="dialogVisible" :close-on-click-modal="false" width="60%">
+        <product-detail v-if="dialogVisible" :curProduct="curProduct" :detailUpdate="detailUpdate"
+                      @onCancel="handleCancel" @onConfirm="handleConfirm"></product-detail>
       </el-dialog>
     </div>
   </div>
 </template>
 
 <script>
-    import orderDetail from "./orderDetail";
+    import productDetail from "./productDetail";
 
     export default {
         data() {
@@ -197,6 +209,7 @@
                 //用于校验订单详情的修改。
                 tempProduct: {},
                 update: false,
+                quantityType: false,
                 rules: {
                     brandName: [
                         {required: true, message: "请输入品牌名称", trigger: "blur"},
@@ -408,12 +421,6 @@
                 this.detailUpdate = false;
                 this.dialogVisible = true;
             },
-            handleEditProduct(row) {
-                this.detailUpdate = true;
-                this.curProduct = Object.assign({}, row);
-                this.tempProduct = row;
-                this.dialogVisible = true;
-            },
             handleRemoveProduct(idx, row) {
                 let _detailId = row.detailId;
                 if (_detailId && '' != _detailId) {
@@ -427,16 +434,12 @@
             handleCancel() {
                 this.dialogVisible = false;
             },
-            handleConfirm(productForm) {
-                if (this.detailUpdate) {
-                    //如果点击的是编辑,对原有的对象进行覆盖。
-                    Object.assign(this.orderDetails[this.orderDetails.indexOf(this.tempProduct)], productForm);
-                    this.dialogVisible = false;
-                } else {
-                    //否则新增到列表中
-                    this.orderDetails.push(productForm);
-                    this.dialogVisible = false;
-                }
+            handleConfirm(productSelection) {
+                productSelection.forEach(item => {
+                    if (-1 === this.orderDetails.indexOf(item)){
+                        this.orderDetails.push(item);
+                    }
+                });
             },
             handleSave() {
                 const dateItem = ['expireDate', 'warehouseDate'];
@@ -479,6 +482,15 @@
                     callBack([]);
                 }
             },
+            testQuantity(quantity){
+                let reg = /^[0-9]*$/;
+                if (!reg.test(quantity)){
+                   this.quantityType = true;
+               }else {
+                   this.quantityType = false;
+               }
+                return reg.test(quantity);
+            },
             clearForm() {
                 this.formData = this.defaultFormData();
             },
@@ -490,6 +502,10 @@
                 } else {
                     this.$router.go(-1);
                 }
+            },
+            computedRowAmount(row){
+                row.amount = parseFloat(row.quantity * row.price).toFixed(2);
+              return row.amount;
             },
             initDate(format) {
                 let date = new Date();
@@ -514,13 +530,13 @@
         },
         computed:{
             computedTotalAmount(){
-                return function (_orderDetails) {
+                return function(){
                     let _totalAmount = 0;
-                    _orderDetails.forEach(item => {
-                        _totalAmount += item.amount;
+                    this.orderDetails.forEach(item => {
+                        _totalAmount += parseFloat(item.amount);
                     });
                     return _totalAmount.toFixed(2);
-                }
+                };
             },
             formatDate() {
                 return function(format) {
@@ -529,7 +545,7 @@
             },
         },
         components: {
-            orderDetail
+            productDetail
         }
     };
 </script>

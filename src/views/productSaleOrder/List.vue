@@ -154,7 +154,7 @@
                     });
             },
             skipDetail(orderNo){
-                this.$router.push({path: '/product/order/edit', query:{orderNo: orderNo}});
+                this.$router.push({path: '/product/sale/order/edit', query:{orderNo: orderNo}});
             }
         },
         mounted() {
