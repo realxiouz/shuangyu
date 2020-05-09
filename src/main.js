@@ -29,3 +29,12 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app');
+
+/* 路由发生变化修改页面title */
+router.beforeEach((to, from, next) => {
+  /* 路由发生变化修改页面title */
+  if (to.meta.title) {
+    document.title = to.meta.title + " - 昆明双宇航空服务有限公司" 
+  }
+  next()
+})
