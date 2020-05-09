@@ -46,7 +46,7 @@
                   style="width: 100%">
                 </el-date-picker>
               </el-form-item>
-              <el-form-item label="仓库:" prop="firmName">
+              <el-form-item label="仓库:" prop="warehouseId">
                 <el-select v-model="formData.warehouseId" filterable placeholder="请选择" @change="selectedWarehouse"
                            style="width: 100%">
                   <el-option
@@ -57,7 +57,7 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="出入库状态:" prop="firmName">
+              <el-form-item label="出入库状态:">
                 未出库
               </el-form-item>
               <el-form-item label="出库时间:" prop="warehouseDate">
@@ -68,7 +68,7 @@
                   style="width: 100%">
                 </el-date-picker>
               </el-form-item>
-              <el-form-item label="快递公司:" prop="firmName">
+              <el-form-item label="快递公司:" prop="expressId">
                 <el-select v-model="formData.expressId" @change="selectedExpress" filterable placeholder="请选择"
                            style="width: 100%">
                   <el-option
@@ -79,7 +79,7 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="付款方式" prop="firmName">
+              <el-form-item label="付款方式" prop="paymentMode">
                 <el-autocomplete
                   v-model="formData.paymentMode"
                   :fetch-suggestions="querySearchAsync"
@@ -104,7 +104,7 @@
             <el-table-column prop="brandName" label="品牌" align="center"></el-table-column>
             <el-table-column prop="skuName" label="属性名称" align="center"></el-table-column>
             <el-table-column prop="price" label="单价" align="center"></el-table-column>
-            <el-table-column prop="stockQuantity" label="库存" align="center"></el-table-column>
+            <el-table-column v-if="!update" prop="stockQuantity" label="库存" align="center"></el-table-column>
             <el-table-column prop="quantity" label="数量" align="center">
               <template slot-scope="prop">
                 <el-input v-model.number="prop.row.quantity" placeholder="输入单价" @input="testQuantity(prop.row)" size="mini"></el-input>
@@ -215,21 +215,14 @@
                 productIdList: [],
                 totalAmount: 0,
                 rules: {
-                    brandName: [
-                        {required: true, message: "请输入品牌名称", trigger: "blur"},
-                        {
-                            min: 1,
-                            max: 20,
-                            message: "长度在 1到 20 个字符"
-                        }
+                    contactName: [
+                        {required: true, message: "请输入联系人", trigger: "blur"}
                     ],
-                    categoryCode: [
-                        {required: true, message: "请输入品牌名称", trigger: "blur"},
-                        {
-                            min: 1,
-                            max: 20,
-                            message: "长度在 1到 20 个字符"
-                        }
+                    paymentMode: [
+                        {required: true, message: "请输入付款方式", trigger: "blur"}
+                    ],
+                    fundAccountId: [
+                        {required: true, message: "请选择结算账户", trigger: "blur"}
                     ]
                 }
             };
@@ -358,6 +351,7 @@
             loadProduct(orderNo){
                 this.$store.dispatch("productOrder/getOne", {orderNo: orderNo})
                     .then(data => {
+                        console.log(data);
                         this.formData = data;
                     })
                     .catch(error => {
@@ -546,6 +540,7 @@
             },
         },
         created() {
+            console.log(this.$route.query.orderNo);
             this.initFormData(this.$route.query.orderNo);
         },
         computed:{

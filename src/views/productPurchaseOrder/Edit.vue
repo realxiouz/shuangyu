@@ -46,31 +46,11 @@
                   style="width: 100%">
                 </el-date-picker>
               </el-form-item>
-              <el-form-item label="仓库:" prop="firmName">
-                <el-select v-model="formData.warehouseId" filterable placeholder="请选择" @change="selectedWarehouse"
-                           style="width: 100%">
-                  <el-option
-                    v-for="item in warehouseList"
-                    :key="item.warehouseCode"
-                    :label="item.warehouseName"
-                    :value="item.warehouseCode">
-                  </el-option>
-                </el-select>
+              <el-form-item label="出入库状态:">
+                未出库
               </el-form-item>
-              <el-form-item label="出入库状态:" prop="firmName">
-                未入库
-              </el-form-item>
-              <el-form-item label="入库时间:" prop="warehouseDate">
-                <el-date-picker
-                  v-model="formData.warehouseDate"
-                  type="date"
-                  placeholder="选择日期"
-                  style="width: 100%">
-                </el-date-picker>
-              </el-form-item>
-              <el-form-item label="快递公司:" prop="firmName">
-                <el-select v-model="formData.expressId" @change="selectedExpress" filterable placeholder="请选择"
-                           style="width: 100%">
+              <el-form-item label="快递公司:" prop="expressId">
+                <el-select v-model="formData.expressId" @change="selectedExpress" filterable placeholder="请选择" style="width: 100%">
                   <el-option
                     v-for="item in expressList"
                     :key="item.merchantId"
@@ -79,7 +59,7 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="付款方式" prop="firmName">
+              <el-form-item label="付款方式" prop="paymentMode">
                 <el-autocomplete
                   v-model="formData.paymentMode"
                   :fetch-suggestions="querySearchAsync"
@@ -92,25 +72,34 @@
           </el-col>
         </el-col>
       </el-row>
+      <!--productDetailTable-->
       <el-row>
         <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="16">
           <div class="title">
             <el-button type="primary" size="mini" @click="handleAddProduct">添加商品明细</el-button>
           </div>
-          <el-table :data="orderDetails" height="250" border>
+          <el-table :data="orderDetails" height="250" border size="mini">
             <el-table-column prop="productCode" label="商品编码" align="center"></el-table-column>
             <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
             <el-table-column prop="brandName" label="品牌" align="center"></el-table-column>
+            <el-table-column prop="skuName" label="属性名称" align="center"></el-table-column>
+            <el-table-column prop="price" label="单价" align="center"></el-table-column>
+            <el-table-column prop="stockQuantity" label="库存" align="center"></el-table-column>
             <el-table-column prop="quantity" label="数量" align="center">
               <template slot-scope="prop">
-                <el-input v-model="prop.row.quantity" placeholder="输入单价"></el-input>
+                <el-input v-model.number="prop.row.quantity" placeholder="输入单价" @input="testQuantity(prop.row)" size="mini"></el-input>
+                <span v-if="verifyQuantity(prop.row.quantity)" style="color: #F56C6C">*商品数量必须为数字</span>
+                <span v-if="verifyStockQuantity(prop.row)" style="color: #F56C6C">*商品数量应该小于或等于库存数量</span>
               </template>
             </el-table-column>
-            <el-table-column prop="price" label="单价" align="center"></el-table-column>
-            <el-table-column prop="amount" label="金额" align="center"></el-table-column>
+            <el-table-column prop="unit" label="计量单位" align="center"></el-table-column>
+            <el-table-column prop="amount" label="金额" align="center">
+              <template slot-scope="prop">
+                {{computedRowAmount(prop.row)}}
+              </template>
+            </el-table-column>
             <el-table-column label="操作" align="center">
               <template slot-scope="scope">
-                <el-button type="primary" size="mini" @click="handleEditProduct(scope.row)">编辑</el-button>
                 <el-button type="danger" size="mini" @click="handleRemoveProduct(scope.$index, scope.row)">删除
                 </el-button>
               </template>
@@ -118,6 +107,7 @@
           </el-table>
         </el-col>
       </el-row>
+      <!--remark-->
       <el-row>
         <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
           <el-form style="width: 80%; margin-top: 10px">
@@ -125,14 +115,15 @@
           </el-form>
         </el-col>
       </el-row>
+      <!--totalAmount/recordInfo-->
       <el-row>
         <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
           <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
             <el-form :rules="rules" :model="formData" label-position="left" label-width="87px" size="mini" style="width: 80%">
               <el-form-item label="成交金额:">
-                <span id="totalAmount">{{computedTotalAmount(orderDetails)}}</span>
+                <span id="totalAmount">{{totalAmount}}</span>
               </el-form-item>
-              <el-form-item label="实收金额:">
+              <el-form-item label="实付金额:">
                 {{formData.receiptAmount}}
               </el-form-item>
             </el-form>
@@ -161,24 +152,26 @@
           </el-col>
         </el-col>
       </el-row>
+      <!--postButton-->
       <el-row>
         <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="16">
           <div id="footer">
-            <el-button type="primary" @click="handleSave" size="mini">保 存</el-button>
+            <span v-show="quantityError" style="color: #F56C6C">商品数量必须为数字</span><br/>
+            <span v-show="stockError" style="color: #F56C6C">商品数量应该小于或等于库存数量</span><br/>
+            <el-button :disabled="quantityError || stockError" type="primary" @click="handleSave" size="mini">保 存</el-button>
           </div>
         </el-col>
       </el-row>
 
-      <el-dialog title="商品明细" :visible.sync="dialogVisible" :close-on-click-modal="false" width="24%">
-        <order-detail v-if="dialogVisible" :curProduct="curProduct" :detailUpdate="detailUpdate"
-                      @onCancel="handleCancel" @onConfirm="handleConfirm"></order-detail>
+      <el-dialog title="商品明细" :visible.sync="dialogVisible" :close-on-click-modal="false" width="60%">
+        <product-detail v-if="dialogVisible" @onCancel="handleCancel" @onConfirm="handleConfirm"></product-detail>
       </el-dialog>
     </div>
   </div>
 </template>
 
 <script>
-    import orderDetail from "./orderDetail";
+    import productDetail from "./productDetail";
 
     export default {
         data() {
@@ -196,27 +189,20 @@
                 //是否对订单详情进行修改或添加
                 detailUpdate: false,
                 customerSelected: true,
-                //记录当前正在修改的订单详情对象
-                curProduct: {},
-                //用于校验订单详情的修改。
-                tempProduct: {},
                 update: false,
+                quantityError: false,
+                stockError: false,
+                productIdList: [],
+                totalAmount: 0,
                 rules: {
-                    brandName: [
-                        {required: true, message: "请输入品牌名称", trigger: "blur"},
-                        {
-                            min: 1,
-                            max: 20,
-                            message: "长度在 1到 20 个字符"
-                        }
+                    contactName: [
+                        {required: true, message: "请输入联系人", trigger: "blur"}
                     ],
-                    categoryCode: [
-                        {required: true, message: "请输入品牌名称", trigger: "blur"},
-                        {
-                            min: 1,
-                            max: 20,
-                            message: "长度在 1到 20 个字符"
-                        }
+                    paymentMode: [
+                        {required: true, message: "请输入付款方式", trigger: "blur"}
+                    ],
+                    fundAccountId: [
+                        {required: true, message: "请选择结算账户", trigger: "blur"}
                     ]
                 }
             };
@@ -257,7 +243,7 @@
                     //出入库状态（0：未出库，1：已出库）
                     warehouseStatus: 0,
                     //出入库类型（委外，生产，赠送，销售出库，采购入库）
-                    warehouseType: '采购入库',
+                    warehouseType: '销售出库',
                     //出入库时间
                     warehouseDate: null,
                     //***************
@@ -373,8 +359,10 @@
                             }
                         })
                             .then(data => {
-                                this.formData.contactId = data[0].contactId;
-                                this.formData.contactName = customer.firm.fullName;
+                                if (data.length > 0){
+                                    this.formData.contactId = data[0].contactId;
+                                    this.formData.contactName = customer.firm.fullName;
+                                }
                             })
                             .catch(error => {
                                 console.log(error);
@@ -412,12 +400,6 @@
                 this.detailUpdate = false;
                 this.dialogVisible = true;
             },
-            handleEditProduct(row) {
-                this.detailUpdate = true;
-                this.curProduct = Object.assign({}, row);
-                this.tempProduct = row;
-                this.dialogVisible = true;
-            },
             handleRemoveProduct(idx, row) {
                 let _detailId = row.detailId;
                 if (_detailId && '' != _detailId) {
@@ -431,16 +413,14 @@
             handleCancel() {
                 this.dialogVisible = false;
             },
-            handleConfirm(productForm) {
-                if (this.detailUpdate) {
-                    //如果点击的是编辑,对原有的对象进行覆盖。
-                    Object.assign(this.orderDetails[this.orderDetails.indexOf(this.tempProduct)], productForm);
-                    this.dialogVisible = false;
-                } else {
-                    //否则新增到列表中
-                    this.orderDetails.push(productForm);
-                    this.dialogVisible = false;
-                }
+            handleConfirm(productSelection) {
+                productSelection.forEach(item => {
+                    if (-1 === this.productIdList.indexOf(item.productId + item.skuId)){
+                        this.productIdList.push(item.productId + item.skuId);
+                        this.orderDetails.push(item);
+                    }
+                });
+                this.dialogVisible = false;
             },
             handleSave() {
                 const dateItem = ['expireDate', 'warehouseDate'];
@@ -483,6 +463,19 @@
                     callBack([]);
                 }
             },
+            testQuantity(row){
+                let reg = /^[0-9]*$/;
+                if (!reg.test(row.quantity)){
+                   this.quantityError = true;
+               }else {
+                   this.quantityError = false;
+               }
+                if (row.stockQuantity < row.quantity){
+                    this.stockError = true;
+                }else {
+                    this.stockError = false;
+                }
+            },
             clearForm() {
                 this.formData = this.defaultFormData();
             },
@@ -494,6 +487,18 @@
                 } else {
                     this.$router.go(-1);
                 }
+            },
+            computedRowAmount(row){
+                row.amount = parseFloat(row.quantity * row.price).toFixed(2);
+                this.computedTotalAmount();
+              return row.amount;
+            },
+            computedTotalAmount(){
+                let _totalAmount = 0;
+                this.orderDetails.forEach(item => {
+                    _totalAmount += parseFloat(item.amount);
+                });
+                this.totalAmount = _totalAmount.toFixed(2);
             },
             initDate(format) {
                 let date = new Date();
@@ -517,13 +522,15 @@
             this.initFormData(this.$route.query.orderNo);
         },
         computed:{
-            computedTotalAmount(){
-                return function (_orderDetails) {
-                    let _totalAmount = 0;
-                    _orderDetails.forEach(item => {
-                        _totalAmount += item.amount;
-                    });
-                    return _totalAmount.toFixed(2);
+            verifyQuantity(){
+                return function (quantity) {
+                    let reg = /^[0-9]*$/;
+                    return !reg.test(quantity);
+                }
+            },
+            verifyStockQuantity(){
+                return function (row) {
+                    return row.stockQuantity < row.quantity;
                 }
             },
             formatDate() {
@@ -533,7 +540,7 @@
             },
         },
         components: {
-            orderDetail
+            productDetail
         }
     };
 </script>
