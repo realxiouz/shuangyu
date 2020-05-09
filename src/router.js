@@ -702,16 +702,28 @@ export default new Router({
           meta: { title: '商品库存编辑', icon: 'home' }
         },
         {
-          title: '产品订单管理',
-          path: '/product/order',
-          name: 'productOrder',
+          title: '销售订单管理',
+          path: '/product/sale/order',
+          name: 'productSaleOrder',
           component: () => import('@/views/productSaleOrder/List'),
-          meta: { title: '产品订单管理', icon: 'home' }
+          meta: {title: '销售订单管理', icon: 'home'}
         },
         {
-          path: '/product/order/edit',
+          title: '采购订单管理',
+          path: '/product/purchase/order',
+          name: 'productPurchaseOrder',
+          component: () => import('@/views/productPurchaseOrder/List'),
+          meta: {title: '采购订单管理', icon: 'home'}
+        },
+        {
+          path: '/product/purchase/order/edit',
+          component: () => import('@/views/productPurchaseOrder/Edit'),
+          meta: {title: '采购订单', icon: 'home'}
+        },
+        {
+          path: '/product/sale/order/edit',
           component: () => import('@/views/productSaleOrder/Edit'),
-          meta: { title: '产品订单', icon: 'home' }
+          meta: {title: '销售订单', icon: 'home'}
         }
       ]
     },
