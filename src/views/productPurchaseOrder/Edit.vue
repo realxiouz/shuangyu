@@ -47,7 +47,7 @@
                 </el-date-picker>
               </el-form-item>
               <el-form-item label="出入库状态:">
-                未出库
+                未入库
               </el-form-item>
               <el-form-item label="快递公司:" prop="expressId">
                 <el-select v-model="formData.expressId" @change="selectedExpress" filterable placeholder="请选择" style="width: 100%">
