@@ -37,6 +37,12 @@
         <el-table-column type="selection" width="55" align="center"></el-table-column>
         <!--<el-table-column prop="taskNo" label="任务编号" width="110" align="center"></el-table-column>-->
         <el-table-column prop="taskName" label="任务名称" width="80" align="center"></el-table-column>
+        <el-table-column
+          prop="taskStatus"
+          :formatter="formatTaskStatus"
+          label="任务状态"
+          align="center"
+        ></el-table-column>
         <!-- <el-table-column prop="taskType" :formatter="formatTaskType" label="任务类型" align="center"></el-table-column> -->
         <el-table-column prop="orderNo" label="订单号" width="180" align="center"></el-table-column>
         <el-table-column prop="sourceOrderNo" label="源单号" width="170" align="center"></el-table-column>
@@ -88,12 +94,6 @@
             <span>{{ formatAmount(scope.row.profit)}}</span>
           </template>
         </el-table-column>-->
-        <el-table-column
-          prop="taskStatus"
-          :formatter="formatTaskStatus"
-          label="任务状态"
-          align="center"
-        ></el-table-column>
         <el-table-column prop="startTime" label="开始时间" align="center">
           <template slot-scope="scope">
             <span>{{ formatDate(scope.row.startTime,'YYYY-MM-DD HH:mm:ss') }}</span>
