@@ -70,8 +70,9 @@ export function formatFlight(data) {
 
 // 格式化订单 金额 数据
 export function formatAmount(amount) {
-    if (!amount) {
-        return "";
+    if (amount) {
+        return "￥" + this.$numeral(amount).format("0.00");
+    } else {
+        return amount
     }
-    return "￥" + this.$numeral(amount).format("0.00");
 }
