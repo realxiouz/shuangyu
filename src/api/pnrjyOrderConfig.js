@@ -7,4 +7,3 @@ export function save(data) {
     data
   });
 }
-
