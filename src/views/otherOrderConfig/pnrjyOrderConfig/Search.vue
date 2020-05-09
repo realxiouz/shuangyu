@@ -181,7 +181,7 @@
 import { orderType } from "@/utils/status.js";
 
 export default {
-  name: "orderSearch",
+  name: "pnrjyOrderSearch",
   data() {
     return {
       more: false,

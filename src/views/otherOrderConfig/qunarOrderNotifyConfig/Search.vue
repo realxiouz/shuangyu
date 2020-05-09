@@ -30,9 +30,8 @@ export default {
   data() {
     return {
       more: false,
-      formData:{
-      keyword: ""
-
+      formData: {
+        keyword: ""
       }
     };
   },
