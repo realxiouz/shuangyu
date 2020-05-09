@@ -543,6 +543,8 @@ export default {
         }
         let _profit = 0;
         _profit = amountTotal + Number(this.sellAmount);
+        console.log(_profit,"_profit")
+        console.log(this.sellAmount,"this.sellAmount")
         if (_profit != this.formData.profit) {
           this.$notify({
             title: "提示",

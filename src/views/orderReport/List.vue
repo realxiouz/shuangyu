@@ -199,7 +199,7 @@ export default {
     formatFlightNo,
     formatFlight,
     formatAmount,
-    handleSizeChange: function(size) {
+    handleSizeChange(size) {
       this.pageSize = size;
       this.searchParams.pageSize = this.pageSize;
       this.loadData(this.searchParams);
@@ -337,6 +337,7 @@ export default {
           }
         }
         this.searchParams = newParams;
+        this.searchParams.pageSize = this.pageSize;
         this.loadData(this.searchParams);
         this.$message({
           type: "success",

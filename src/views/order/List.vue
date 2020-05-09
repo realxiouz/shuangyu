@@ -308,6 +308,7 @@ export default {
           }
         }
         this.searchParams = newParams;
+        this.searchParams.pageSize = this.pageSize;
         if (exportFlag == 1) {
           this.exportOrder(this.searchParams);
         } else {
