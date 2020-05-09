@@ -33,16 +33,6 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="政策代码:">
-            <el-input
-              @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.policyCode"
-              style="width: 100%"
-              clearable
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="订单日期:">
             <el-col>
               <el-date-picker
@@ -80,7 +70,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="乘机人姓名:">
+          <el-form-item v-show="more" label="乘机人:">
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.name"
@@ -100,11 +90,31 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="政策代码:">
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.policyCode"
+              style="width: 100%"
+              clearable
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="航班号:">
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.flightCode"
               clearable
+              style="width: 100%"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="航司:">
+            <el-input
+              clearable
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.airlineCode"
               style="width: 100%"
             ></el-input>
           </el-form-item>
@@ -127,21 +137,6 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="航程类型:">
-            <el-select
-              style="width: 100%;"
-              clearable
-              collapse-tags
-              v-model="formData.voyageType"
-              placeholder="请选择"
-            >
-              <el-option label="单程" value="0"></el-option>
-              <el-option label="往返" value="1"></el-option>
-              <el-option label="连程" value="2"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="舱位:">
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
@@ -149,6 +144,20 @@
               clearable
               style="width: 100%"
             ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="航程类型:">
+            <el-select
+              style="width: 100%;"
+              clearable
+              v-model="formData.voyageType"
+              placeholder="请选择"
+            >
+              <el-option label="单程" value="0"></el-option>
+              <el-option label="往返" value="1"></el-option>
+              <el-option label="连程" value="2"></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
       </el-form>
@@ -212,7 +221,9 @@ export default {
         orderType: null,
         flightDate: null,
         createTime: null,
-        voyageType: null
+        voyageType: null,
+        policyCode: null,
+        airlineCode: null
       };
     },
     handleClear() {
