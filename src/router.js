@@ -511,31 +511,30 @@ export default new Router({
     {
       title: '去哪儿',
       path: '/qunar',
-      name: 'qunar',
+      name: 'qunarOrder',
       component: Layout,
-      redirect: '/qunar/order',
+      redirect: '/qunar/order/list',
       meta: { title: '去哪儿', icon: 'home' },
-
       children: [
         {
           title: '去哪儿订单管理',
-          path: '/qunar/order',
-          name: 'qunarOrder',
-          component: () => import('@/views/qunarOrderConfig/List'),
+          path: '/qunar/order/list',
+          name: 'qunarOrderList',
+          component: () => import('@/views/otherOrderConfig/qunarOrderConfig/List'),
           meta: { title: '去哪儿订单管理', icon: 'home' }
         },
         {
           title: '去哪儿订单通知管理',
           path: '/qunar/order/notify',
           name: 'qunarOrderNotify',
-          component: () => import('@/views/qunarOrderNotifyConfig/List'),
+          component: () => import('@/views/otherOrderConfig/qunarOrderNotifyConfig/List'),
           meta: { title: '去哪儿订单通知管理', icon: 'home' }
         },
         {
           title: '去哪儿政策管理',
           path: '/qunar/policy',
           name: 'qunarPolicyConfig',
-          component: () => import('@/views/qunarPolicyConfig/List'),
+          component: () => import('@/views/otherOrderConfig/qunarPolicyConfig/List'),
           meta: { title: '去哪儿政策管理', icon: 'about' }
         }
       ]
@@ -543,18 +542,54 @@ export default new Router({
     {
       title: 'BSP',
       path: '/bsp',
-      name: 'bsp',
+      name: 'bspList',
       component: Layout,
-      redirect: '/bsp/order',
+      redirect: '/bsp/order/list',
       meta: { title: 'BSP', icon: 'home' },
 
       children: [
         {
           title: 'BSP 订单管理',
-          path: '/bsp/order',
-          name: 'bspOrder',
-          component: () => import('@/views/qunarOrderConfig/List'),
-          meta: { title: '去哪儿订单管理', icon: 'home' }
+          path: '/bsp/order/list',
+          name: 'bspOrderList',
+          component: () => import('@/views/otherOrderConfig/bspOrderConfig/List'),
+          meta: { title: 'BSP 订单管理', icon: 'home' }
+        },
+      ]
+    },
+    {
+      title: 'Pnrjy',
+      path: '/pnrjy',
+      name: 'pnrjyOrder',
+      component: Layout,
+      redirect: '/pnrjy/order/list',
+      meta: { title: 'Pnrjy', icon: 'home' },
+
+      children: [
+        {
+          title: 'Pnrjy 订单管理',
+          path: '/pnrjy/order/list',
+          name: 'pnrjyOrderList',
+          component: () => import('@/views/otherOrderConfig/pnrjyOrderConfig/List'),
+          meta: { title: 'Pnrjy 订单管理', icon: 'home' }
+        },
+      ]
+    },
+    {
+      title: '蜗牛',
+      path: '/woniu',
+      name: 'woniuOrder',
+      component: Layout,
+      redirect: '/woniu/order/list',
+      meta: { title: '蜗牛', icon: 'home' },
+
+      children: [
+        {
+          title: '蜗牛订单管理',
+          path: '/woniu/order/list',
+          name: 'woniuOrderList',
+          component: () => import('@/views/otherOrderConfig/woniuOrderConfig/List'),
+          meta: { title: '蜗牛订单管理', icon: 'home' }
         },
       ]
     },
