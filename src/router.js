@@ -470,21 +470,6 @@ export default new Router({
           meta: { title: 'TGQ编辑', icon: 'home' }
         },
         {
-          title: 'TTS调度',
-          path: '/ttsScheduler/list',
-          name: 'ttsSchedulerList',
-          component: () => import('@/views/ttsScheduler/List'),
-          meta: { title: 'TTS调度', icon: 'home' }
-        },
-        {
-          title: 'TTS编辑',
-          path: '/tts/scheduler/edit',
-          name: 'ttsSchedulerEdit',
-          component: () => import('@/views/ttsScheduler/Edit'),
-          props: { default: true, sidebar: false },
-          meta: { title: 'TTS编辑', icon: 'home' }
-        },
-        {
           title: '政策标签',
           path: '/policy/flag/list',
           name: 'flag',
