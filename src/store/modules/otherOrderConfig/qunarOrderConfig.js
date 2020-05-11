@@ -1,9 +1,9 @@
-import { save } from '@/api/otherOrderConfig/qunarOrderConfig';
+import { getList } from '@/api/otherOrderConfig/qunarOrderConfig';
 
 const actions = {
-  save({ commit }, params) {
+  getList({ commit }, params) {
     return new Promise((resolve, reject) => {
-      save(params)
+      getList(params)
         .then(response => {
           const { data } = response;
           resolve(data);

@@ -19,43 +19,37 @@
         fit
       >
         <el-table-column type="index" align="center"></el-table-column>
-        <el-table-column prop="domain" label="订单号" width="180" align="center"></el-table-column>
+        <el-table-column prop="orderNo" label="订单号" width="180" align="center"></el-table-column>
+
         <el-table-column label="类型" width="100" align="center">
-          <template slot-scope="scope">
+          <!-- <template slot-scope="scope">
             <span style="margin-left: 10px">{{ formatFirmData(scope.row.firmId) }}</span>
-          </template>
+          </template>-->
         </el-table-column>
-        <el-table-column label="订单日期" align="center">
-          <template slot-scope="scope">
-            <span style="margin-left: 10px">{{ formatPartyData(scope.row.thirdId) }}</span>
-          </template>
-        </el-table-column>
+        <el-table-column prop="createTime" width="90" label="订单日期" align="center"></el-table-column>
 
         <el-table-column label="乘机人" width="90" align="center">
-          <!-- <template slot-scope="scope">
-            <span v-html="formatFlight(scope.row.flights)"></span>
-          </template>-->
+          <template slot-scope="scope">
+            <span v-html="formatPassengers(scope.row.passenger)"></span>
+          </template>
         </el-table-column>
-        <el-table-column label="票号" width="90" align="center">
-          <!-- <template slot-scope="scope">
-            <span v-html="formatFlight(scope.row.flights)"></span>
-          </template>-->
-        </el-table-column>
+        <!-- <el-table-column label="票号" width="90" align="center">
+        </el-table-column> -->
         <el-table-column label="起飞-到达" width="90" align="center">
-          <!-- <template slot-scope="scope">
-            <span v-html="formatFlight(scope.row.flights)"></span>
-          </template>-->
+          <template slot-scope="scope">
+            <span v-html="formatFlight2(scope.row.flight)"></span>
+          </template>
         </el-table-column>
         <el-table-column label="航班日期/航班号" width="150" align="center">
-          <!-- <template slot-scope="scope">
-            <span v-html="formatFlight(scope.row.flights)"></span>
-          </template>-->
+          <template slot-scope="scope">
+            <span v-html="formatFlighCode(scope.row.flight)"></span>
+          </template>
         </el-table-column>
 
-        <el-table-column prop="user" label="PNR" align="center"></el-table-column>
+        <el-table-column prop="pnr" label="PNR" align="center"></el-table-column>
         <el-table-column prop="ips" label="总价/人数" align="center"></el-table-column>
-        <el-table-column prop label="订单状态" align="center"></el-table-column>
-        <el-table-column prop label="政策ID" align="center"></el-table-column>
+        <el-table-column prop="status" label="订单状态" align="center"></el-table-column>
+        <el-table-column prop="policySource" label="政策ID" align="center"></el-table-column>
         <el-table-column prop label="是否退差额" align="center"></el-table-column>
         <el-table-column prop label="锁定人" align="center"></el-table-column>
 
@@ -94,7 +88,8 @@ import {
   formatTicketNo,
   formatFlightDate,
   formatFlightNo,
-  formatFlight,
+  formatFlight2,
+  formatFlighCode,
   formatAmount
 } from "@/utils/orderFormdata.js";
 
@@ -122,12 +117,29 @@ export default {
     formatTicketNo,
     formatFlightDate,
     formatFlightNo,
-    formatFlight,
+    formatFlight2,
+    formatFlighCode,
     formatAmount,
     handleSizeChange() {},
     prevClick() {},
     nextClick() {},
-    loadData() {},
+    loadData(params) {
+      this.$store
+        .dispatch("qunarOrderConfig/getList", {
+          filters: params
+        })
+        .then(data => {
+          if (data) {
+            // this.loadTotal(params);
+            this.tableData = data;
+          }
+          this.loading = false;
+        })
+        .catch(error => {
+          this.loading = false;
+          console.log(error);
+        });
+    },
     handleSearch(params) {
       if (!params) {
         params = {};
@@ -181,7 +193,7 @@ export default {
     handleDelete(row) {}
   },
   created() {
-    this.loadData();
+    this.loadData(this.searchParams);
   }
 };
 </script>

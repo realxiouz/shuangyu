@@ -67,6 +67,35 @@ export function formatFlight(data) {
         data[0].arrTime
     );
 }
+export function formatFlight2(data) {
+    if (!data || data.length == 0) {
+        return "";
+    }
+    return (
+        data[0].dep +
+        " " +
+        data[0].arr +
+        "<br/>" +
+        data[0].depTime +
+        " " +
+        data[0].arrTime
+    );
+}
+
+// 航班日期/航班号
+
+export function formatFlighCode(data) {
+    if (!data || data.length == 0) {
+        return "";
+    }
+    return (
+        data[0].depDay +
+        "<br/>" +
+        data[0].code
+    );
+}
+
+
 
 // 格式化订单 金额 数据
 export function formatAmount(amount) {
