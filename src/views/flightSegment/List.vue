@@ -22,7 +22,7 @@
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
             <el-button @click="lookFlights(scope.row.flights)" type="primary" size="small">查看航班</el-button>
-            <el-button @click="lookSegments(scope.row.segments)" type="primary" size="small">查看航段</el-button>
+            <el-button @click="lookSegments(scope.row.airlines)" type="primary" size="small">查看航司</el-button>
             <el-button @click="removeOne(scope.row.segment)" type="danger" size="mini">删除</el-button>
           </template>
         </el-table-column>
@@ -52,7 +52,7 @@
         <look-lnfo
           v-if="showInfo"
           :flights="flightsInfo"
-          :segments="segmentsInfo"
+          :airlines="airlinesInfo"
           :isFlights="isFlights"
           ref="form"
           @onCancel="handleCancel"
@@ -77,7 +77,7 @@ export default {
       isFlights: false,
       lookTitle: "",
       flightsInfo: "",
-      segmentsInfo: "",
+      airlinesInfo: "",
       tableData: [],
       lastId: "0",
       pageFlag: "next",
@@ -184,9 +184,9 @@ export default {
       this.isFlights = true;
       this.showInfo = true;
     },
-    lookSegments(segments) {
-      this.lookTitle = "查看航段信息";
-      this.segmentsInfo = segments;
+    lookSegments(airlines) {
+      this.lookTitle = "查看航司信息";
+      this.airlinesInfo = airlines;
       this.isFlights = false;
       this.showInfo = true;
     },

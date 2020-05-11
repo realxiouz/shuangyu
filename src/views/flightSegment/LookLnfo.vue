@@ -2,11 +2,11 @@
   <div>
     <div v-if="isFlights">
       <span v-if="flights" v-html="_flightsData" style="line-height:1.5;"></span>
-      <span v-else>此航司没有航班信息</span>
+      <span v-else>此航段没有航班信息</span>
     </div>
     <div v-else>
-      <span v-if="segments" v-html="_segmentsData" style="line-height:1.5;"></span>
-      <span v-else>此航司没有航段信息</span>
+      <span v-if="airlines" v-html="_airlinesData" style="line-height:1.5;"></span>
+      <span v-else>此航段没有航司信息</span>
     </div>
 
     <div slot="footer" class="dialog-footer" style="text-align:right;margin-top:15px;">
@@ -17,11 +17,11 @@
 <script>
 export default {
   name: "lookLnfo",
-  props: ["isFlights", "flights", "segments"],
+  props: ["isFlights", "flights", "airlines"],
   data() {
     return {
       flightsData: "",
-      segmentsData: ""
+      airlinesData: ""
     };
   },
   computed: {
@@ -34,10 +34,10 @@ export default {
         return temp.substring(0, temp.length - 2);
       }
     },
-    _segmentsData: function() {
-      if (this.segments) {
+    _airlinesData: function() {
+      if (this.airlines) {
         let temp = "";
-        this.segments.forEach(item => {
+        this.airlines.forEach(item => {
           temp += item + " , ";
         });
         return temp.substring(0, temp.length - 2);
