@@ -29,7 +29,7 @@
               <el-form-item label="发票号">
                 <span>{{ props.row.invoiceNo }}</span>
               </el-form-item>
-              <el-form-item label="销售员">
+              <el-form-item label="经办人">
                 <span>{{ props.row.staffName }}</span>
               </el-form-item>
               <el-form-item label="到期日期">
@@ -94,7 +94,7 @@
         </el-table-column>
         <el-table-column prop="orderNo" label="单号" align="center"></el-table-column>
         <el-table-column prop="invoiceNo" label="发票号" align="center"></el-table-column>
-        <el-table-column prop="staffName" label="销售员" align="center"></el-table-column>
+        <el-table-column prop="staffName" label="经办人" align="center"></el-table-column>
         <el-table-column prop="orderDate" label="单据日期" align="center">
           <template slot-scope="prop">
             {{initDate(prop.row.orderDate, 'YYYY-MM-DD')}}

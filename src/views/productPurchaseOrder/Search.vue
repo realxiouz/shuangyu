@@ -23,7 +23,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="18" :md="12" :lg="6" :xl="6">
-          <el-form-item label="客户:">
+          <el-form-item label="供应商:">
             <el-input v-model="formData.merchantId" placeholder="客户.." clearable></el-input>
           </el-form-item>
         </el-col>
