@@ -14,6 +14,8 @@
         style="width: 100%;margin-bottom:15px;"
         size="mini"
         v-loading="loading"
+        highlight-current-row
+
       >
         <el-table-column prop="airlineName" width="180" label="航司名称" align="center"></el-table-column>
         <el-table-column prop="airlineCode" width="180" label="航司二字码" align="center"></el-table-column>
@@ -63,7 +65,6 @@
           :flights="flightsInfo"
           :segments="segmentsInfo"
           :isFlights="isFlights"
-          :airline-code="airlineCode"
           ref="form"
           @onCancel="handleCancel"
         ></look-lnfo>
@@ -85,6 +86,7 @@ export default {
       searchForm: {},
       dialogVisible: false,
       showInfo: false,
+      isFlights: false,
       tableData: [],
       lastId: "0",
       pageFlag: "next",
@@ -206,7 +208,6 @@ export default {
       this.flightsInfo = flights;
       this.isFlights = true;
       this.showInfo = true;
-      console.log(flights, "ww");
     },
     lookSegments(segments) {
       this.lookTitle = "查看航段信息";

@@ -13,13 +13,16 @@
         :data="tableData"
         ref="tableData"
         @row-dblclick="handleEdit"
+        highlight-current-row
         style="width: 100%;margin-bottom:15px;"
       >
         <el-table-column prop="dpt" label="出发地" align="center"></el-table-column>
         <el-table-column prop="arr" label="目的地" align="center"></el-table-column>
-        <el-table-column label="操作" align="center" width="200">
+        <el-table-column label="操作" align="center" width="350">
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="lookFlights(scope.row.flights)" type="primary" size="small">查看航班</el-button>
+            <el-button @click="lookSegments(scope.row.segments)" type="primary" size="small">查看航段</el-button>
             <el-button @click="removeOne(scope.row.segment)" type="danger" size="mini">删除</el-button>
           </template>
         </el-table-column>
@@ -45,12 +48,24 @@
           @onCancel="handleCancel"
         ></segment-edit>
       </el-dialog>
+      <el-dialog :title="lookTitle" center :visible.sync="showInfo" width="30%">
+        <look-lnfo
+          v-if="showInfo"
+          :flights="flightsInfo"
+          :segments="segmentsInfo"
+          :isFlights="isFlights"
+          ref="form"
+          @onCancel="handleCancel"
+        ></look-lnfo>
+      </el-dialog>
     </div>
   </div>
 </template>
 <script>
 import segmentSearch from "./Search.vue";
 import segmentEdit from "./Edit.vue";
+import LookLnfo from "./LookLnfo.vue";
+
 export default {
   data() {
     return {
@@ -58,6 +73,11 @@ export default {
       segment: "",
       searchForm: {},
       dialogVisible: false,
+      showInfo: false,
+      isFlights: false,
+      lookTitle: "",
+      flightsInfo: "",
+      segmentsInfo: "",
       tableData: [],
       lastId: "0",
       pageFlag: "next",
@@ -68,7 +88,8 @@ export default {
   },
   components: {
     segmentEdit,
-    segmentSearch
+    segmentSearch,
+    LookLnfo
   },
   methods: {
     handleAdd() {
@@ -151,10 +172,23 @@ export default {
     },
     handleCancel() {
       this.dialogVisible = false;
+      this.showInfo = false;
     },
     handleSave() {
       this.dialogVisible = false;
       this.loadData();
+    },
+    lookFlights(flights) {
+      this.lookTitle = "查看航班信息";
+      this.flightsInfo = flights;
+      this.isFlights = true;
+      this.showInfo = true;
+    },
+    lookSegments(segments) {
+      this.lookTitle = "查看航段信息";
+      this.segmentsInfo = segments;
+      this.isFlights = false;
+      this.showInfo = true;
     },
     handleSearch(params) {
       const newParams = {};

@@ -10,6 +10,7 @@
       <el-table
         v-loading="loading"
         :data="tableData"
+        highlight-current-row
         style="width: 100%;margin-bottom: 15px;"
         size="mini"
       >
@@ -126,6 +127,8 @@
             <span>{{ formatTime(scope.row.arrTime)}}</span>
           </template>
         </el-table-column>
+        <el-table-column prop="cycle" label="航班周期" width="100" align="center"></el-table-column>
+
         <el-table-column label="操作" align="center" width="180">
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
