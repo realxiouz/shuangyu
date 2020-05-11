@@ -31,7 +31,6 @@ import qunarOrderConfig from "./modules/qunarOrderConfig";
 import qunarOrderNotifyConfig from "./modules/qunarOrderNotifyConfig";
 import qunarPolicyConfig from "./modules/qunarPolicyConfig";
 import orderStaff from "./modules/orderStaff";
-import ttsScheduler from "./modules/ttsScheduler";
 import category from "./modules/category";
 import dict from "./modules/dict";
 import fundAccount from "./modules/fundAccount";
@@ -90,7 +89,6 @@ export default new Vuex.Store({
     qunarOrderNotifyConfig,
     qunarPolicyConfig,
     orderStaff,
-    ttsScheduler,
     category,
     dict,
     orderTask,
