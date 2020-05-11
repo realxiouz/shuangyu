@@ -134,7 +134,7 @@ export default new Router({
         {
           path: '/order/total/detail',
           component: () => import('@/views/orderTaskTotal/List'),
-          meta: { title: '总订单任务', icon: 'home' }
+          meta: { title: '总订单任务', icon: 'home',keepAlive: true }
         },
         {
           title: 'Pnrjy导单',
