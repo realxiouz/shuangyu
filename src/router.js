@@ -709,6 +709,18 @@ export default new Router({
           path: '/product/sale/order/edit',
           component: () => import('@/views/productSaleOrder/Edit'),
           meta: { title: '销售订单', icon: 'home' }
+        },
+        {
+          title: '发货订单管理',
+          path: '/product/shipment/order',
+          name: 'saleShipmentOrder',
+          component: () => import('@/views/saleShipmentOrder/List'),
+          meta: { title: '发货订单管理', icon: 'home' }
+        },
+        {
+          path: '/product/shipment/order/edit',
+          component: () => import('@/views/saleShipmentOrder/Edit'),
+          meta: { title: '发货订单', icon: 'home' }
         }
       ]
     },

@@ -29,7 +29,7 @@
               <el-form-item label="发票号">
                 <span>{{ props.row.invoiceNo }}</span>
               </el-form-item>
-              <el-form-item label="销售员">
+              <el-form-item label="经办人">
                 <span>{{ props.row.staffName }}</span>
               </el-form-item>
               <el-form-item label="到期日期">
@@ -94,7 +94,7 @@
         </el-table-column>
         <el-table-column prop="orderNo" label="单号" align="center"></el-table-column>
         <el-table-column prop="invoiceNo" label="发票号" align="center"></el-table-column>
-        <el-table-column prop="staffName" label="销售员" align="center"></el-table-column>
+        <el-table-column prop="staffName" label="经办人" align="center"></el-table-column>
         <el-table-column prop="orderDate" label="单据日期" align="center">
           <template slot-scope="prop">
             {{initDate(prop.row.orderDate, 'YYYY-MM-DD')}}
@@ -123,7 +123,6 @@
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
             <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
-            <el-button @click="skipShipmentOrder(scope.row)" type="info" size="mini">配置发货单</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -160,7 +159,7 @@
         methods: {
             loadData(searchForm) {
                 this.searchForm = searchForm;
-                searchForm['orderType'] = 1;
+                searchForm['orderType'] = 10;
                 this.$store.dispatch("productOrder/getTotal", {filter: searchForm})
                     .then(data => {
                         this.total = data;
@@ -233,10 +232,7 @@
                     });
             },
             skipDetail(orderNo){
-                this.$router.push({path: '/product/sale/order/edit', query:{orderNo: orderNo}});
-            },
-            skipShipmentOrder(row){
-                this.$router.push({path: '/product/shipment/order/edit', query:{parentNo: row.orderNo}});
+                this.$router.push({path: '/product/shipment/order/edit', query:{orderNo: orderNo}});
             },
             initOrderType(orderType){
                 switch (orderType) {
