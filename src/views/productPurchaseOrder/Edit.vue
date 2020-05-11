@@ -8,7 +8,7 @@
       <el-row>
         <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
           <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
-            <el-form :rules="rules" :model="formData" label-position="left" label-width="87px" size="mini" style="width: 80%">
+            <el-form :rules="rules" :model="formData" label-position="left" label-width="97px" size="mini" style="width: 80%">
               <el-form-item label="供应商:" prop="merchantId">
                 <el-select v-model="formData.merchantId" filterable @change="selectedCustomer" placeholder="请选择" style="width: 100%">
                   <el-option
@@ -20,11 +20,11 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="账号:" prop="accountId">
-                <el-select v-model="formData.accountId" filterable :disabled="customerSelected" placeholder="请选择" style="width: 100%">
+                <el-select v-model="formData.accountId" filterable :disabled="customerSelected && !update" placeholder="请选择" style="width: 100%">
                   <el-option
                     v-for="item in accountList"
                     :key="item.accountId"
-                    :label="item.accountId"
+                    :label="item.username"
                     :value="item.accountId">
                   </el-option>
                 </el-select>
@@ -37,7 +37,7 @@
         </el-col>
         <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
           <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
-            <el-form :rules="rules" :model="formData" label-position="left" label-width="87px" size="mini" style="width: 80%">
+            <el-form :rules="rules" :model="formData" label-position="left" label-width="97px" size="mini" style="width: 80%">
               <el-form-item label="发货期限:" prop="expireDate">
                 <el-date-picker
                   v-model="formData.expireDate"
@@ -119,7 +119,7 @@
       <el-row>
         <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
           <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
-            <el-form :rules="rules" :model="formData" label-position="left" label-width="87px" size="mini" style="width: 80%">
+            <el-form :rules="rules" :model="formData" label-position="left" label-width="97px" size="mini" style="width: 80%">
               <el-form-item label="成交金额:">
                 <span id="totalAmount">{{totalAmount}}</span>
               </el-form-item>
@@ -131,7 +131,7 @@
         </el-col>
         <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
           <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
-            <el-form :rules="rules" :model="formData" label-position="left" label-width="87px" size="mini" style="width: 80%">
+            <el-form :rules="rules" :model="formData" label-position="left" label-width="97px" size="mini" style="width: 80%">
               <el-form-item label="结算账户:" prop="fundAccountId">
                 <el-select v-model="formData.fundAccountId" filterable placeholder="请选择" @change="selectedFundAccount" style="width: 100%">
                   <el-option
@@ -332,6 +332,9 @@
                 this.$store.dispatch("productOrder/getOne", {orderNo: orderNo})
                     .then(data => {
                         this.formData = data;
+                        if (data.merchantId){
+                            this.loadAccounts(data.merchantId);
+                        }
                     })
                     .catch(error => {
                         console.log(error);
@@ -341,6 +344,11 @@
                 this.$store.dispatch("productOrderDetail/getList", {filter: {orderNo: orderNo}})
                     .then(data => {
                         this.orderDetails = data;
+                        if (0 < data.length){
+                            data.forEach(item => {
+                                this.productIdList.push(item.productId + item.skuId);
+                            });
+                        }
                     })
                     .catch(error => {
                         console.log(error);
