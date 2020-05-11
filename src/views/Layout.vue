@@ -54,16 +54,32 @@
           </el-row>
           <div class="tags-view">
             <scroll-pane ref="scrollPane" class="tags-view-wrapper">
-              <el-tag
+              <!-- <el-tag
                 class="tags-view-item"
                 @close="handleClose(tag)"
                 v-for="tag in tags"
                 :key="tag.name"
                 :closable="tag.closable"
-                :type="tag.type"
+                :type="isActive(tag)?'info': tag.type"
               >
                 <router-link :to="tag.path">{{tag.name}}</router-link>
-              </el-tag>
+              </el-tag>-->
+
+              <router-link
+                :class="isActive(tag)?'active':''"
+                class="tags-view-item"
+                v-for="tag in tags"
+                :key="tag.patn"
+                :to="tag.path"
+                tag="span"
+              >
+                {{ tag.name }}
+                <span
+                  v-if="isActive(tag)&&tag.name!='首页'"
+                  @click.prevent.stop="handleClose(tag)"
+                  class="el-icon-close"
+                />
+              </router-link>
             </scroll-pane>
           </div>
         </div>
@@ -151,6 +167,9 @@ export default {
     }
   },
   methods: {
+    isActive(route) {
+      return route.path === this.$route.path;
+    },
     handleSwitch() {
       if (this.screenWidth > 500) {
         this.isCollapse = !this.isCollapse;
@@ -238,6 +257,9 @@ export default {
     },
     handleClose(tag) {
       this.tags.splice(this.tags.indexOf(tag), 1);
+      this.$router.push({
+        path: this.tags[this.tags.length - 1].path
+      });
     },
     loadPendingTotal() {
       this.$store
@@ -341,15 +363,43 @@ export default {
 
   .tags-view {
     height: 40px;
-    padding-top: 6px;
-    border-top: 1px solid #edeff0;
-    border-bottom: 1px solid #edeff0;
+    line-height: 40px;
 
     .tags-view-item {
-      margin: 0 5px;
+      display: inline-block;
+      position: relative;
       cursor: pointer;
       height: 26px;
       line-height: 26px;
+      border: 1px solid #d8dce5;
+      border-radius: 4px;
+      color: #495060;
+      background: #fff;
+      padding: 0 8px;
+      font-size: 12px;
+      margin-left: 5px;
+      margin-top: 4px;
+      &:first-of-type {
+        margin-left: 15px;
+      }
+      &:last-of-type {
+        margin-right: 15px;
+      }
+      &.active {
+        background-color: #67c23a;
+        color: #fff;
+        border-color: #67c23a;
+        &::before {
+          content: "";
+          background: #fff;
+          display: inline-block;
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          position: relative;
+          margin-right: 2px;
+        }
+      }
     }
   }
 }
