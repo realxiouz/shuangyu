@@ -75,7 +75,7 @@
               >
                 {{ tag.name }}
                 <span
-                  v-if="isActive(tag)"
+                  v-if="isActive(tag)&&tag.name!='首页'"
                   @click.prevent.stop="handleClose(tag)"
                   class="el-icon-close"
                 />
