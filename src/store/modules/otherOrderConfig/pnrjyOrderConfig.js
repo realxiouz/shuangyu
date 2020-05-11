@@ -1,4 +1,7 @@
-import { save } from '@/api/otherOrderConfig/pnrjyOrderConfig';
+import {
+  save,
+  exportOrder
+} from '@/api/otherOrderConfig/pnrjyOrderConfig';
 
 const actions = {
   save({ commit }, params) {
@@ -13,6 +16,19 @@ const actions = {
         });
     });
   },
+  exportOrder({ commit }, params) {
+    // const {orderType, file} = params;
+    return new Promise((resolve, reject) => {
+      exportOrder(params)
+        .then(response => {
+          //const { data } = response;
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
 
 }
 

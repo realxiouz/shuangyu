@@ -134,14 +134,7 @@ export default new Router({
         {
           path: '/order/total/detail',
           component: () => import('@/views/orderTaskTotal/List'),
-          meta: { title: '总订单任务', icon: 'home',keepAlive: true }
-        },
-        {
-          title: 'Pnrjy导单',
-          path: '/pnrjyOrder/Export',
-          name: 'pnrjyOrder',
-          component: () => import('@/views/pnrjyOrder/Export'),
-          meta: { title: 'Pnrjy导单', icon: 'home' }
+          meta: { title: '总订单任务', icon: 'home', keepAlive: true }
         },
         {
           title: '订单信息',
@@ -540,6 +533,7 @@ export default new Router({
           component: () => import('@/views/otherOrderConfig/bspOrderConfig/List'),
           meta: { title: 'BSP 订单管理', icon: 'home' }
         },
+
       ]
     },
     {
@@ -557,6 +551,13 @@ export default new Router({
           name: 'pnrjyOrderList',
           component: () => import('@/views/otherOrderConfig/pnrjyOrderConfig/List'),
           meta: { title: 'Pnrjy 订单管理', icon: 'home' }
+        },
+        {
+          title: 'Pnrjy导单',
+          path: '/pnrjy/order/Export',
+          name: 'pnrjyOrderExport',
+          component: () => import('@/views/otherOrderConfig/pnrjyOrderConfig/Export'),
+          meta: { title: 'Pnrjy导单', icon: 'home' }
         },
       ]
     },

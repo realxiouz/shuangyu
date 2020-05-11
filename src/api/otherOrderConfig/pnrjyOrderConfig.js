@@ -7,3 +7,12 @@ export function save(data) {
     data
   });
 }
+
+export function exportOrder(data) {
+  return request({
+    url: "/pnrjy/order/export",
+    method: "post",
+    data
+  });
+}
+
