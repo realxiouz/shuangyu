@@ -72,7 +72,7 @@ export default {
           form.append("file", params.file);
           form.append("orderType", this.formData.orderType);
           this.$store
-            .dispatch("pnrjyOrder/exportOrder", form)
+            .dispatch("pnrjyOrderConfig/exportOrder", form)
             .then(data => {
               alert("上传成功");
             })

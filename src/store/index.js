@@ -26,7 +26,6 @@ import fare from "./modules/fare";
 import openApiService from "./modules/openApiService";
 import openAccount from "./modules/openAccount";
 import tgqProduct from "./modules/tgqProduct";
-import pnrjyOrder from "./modules/pnrjyOrder";
 import qunarOrderConfig from "./modules/otherOrderConfig/qunarOrderConfig";
 import qunarOrderNotifyConfig from "./modules/otherOrderConfig/qunarOrderNotifyConfig";
 import qunarPolicyConfig from "./modules/otherOrderConfig/qunarPolicyConfig";
@@ -90,7 +89,6 @@ export default new Vuex.Store({
     openApiService,
     openAccount,
     tgqProduct,
-    pnrjyOrder,
     qunarOrderConfig,
     qunarOrderNotifyConfig,
     qunarPolicyConfig,
