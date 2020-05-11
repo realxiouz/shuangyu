@@ -22,9 +22,11 @@
             <span v-html="formatcabins(scope.row.cabins)"></span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" width="200">
+        <el-table-column label="操作" fixed="right" align="center" width="350">
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary" size="small">编辑</el-button>
+            <el-button @click="lookFlights(scope.row.flights)" type="primary" size="small">查看航班</el-button>
+            <el-button @click="lookSegments(scope.row.segments)" type="primary" size="small">查看航段</el-button>
             <el-button @click="removeOne(scope.row.airlineCode)" type="danger" size="small">删除</el-button>
           </template>
         </el-table-column>
@@ -41,7 +43,12 @@
         :page-size="pageSize"
         :total="total"
       ></el-pagination>
-      <el-dialog title="航司信息" center :visible.sync="dialogVisible" width="30%">
+      <el-dialog
+        :title="airlineCode?'编辑航司信息':'添加航司信息'"
+        center
+        :visible.sync="dialogVisible"
+        width="30%"
+      >
         <airline-edit
           v-if="dialogVisible"
           :airline-code="airlineCode"
@@ -50,31 +57,48 @@
           @onCancel="handleCancel"
         ></airline-edit>
       </el-dialog>
+      <el-dialog :title="lookTitle" center :visible.sync="showInfo" width="30%">
+        <look-lnfo
+          v-if="showInfo"
+          :flights="flightsInfo"
+          :segments="segmentsInfo"
+          :isFlights="isFlights"
+          :airline-code="airlineCode"
+          ref="form"
+          @onCancel="handleCancel"
+        ></look-lnfo>
+      </el-dialog>
     </div>
   </div>
 </template>
 <script>
 import airlineSearch from "./Search.vue";
 import airlineEdit from "./Edit.vue";
+import LookLnfo from "./LookLnfo.vue";
 
 export default {
   data() {
     return {
       loading: true,
       airlineCode: "",
+      lookTitle: "",
       searchForm: {},
       dialogVisible: false,
+      showInfo: false,
       tableData: [],
       lastId: "0",
       pageFlag: "next",
       pageSize: 10,
       total: 0,
-      currentPage: 0
+      currentPage: 0,
+      flightsInfo: "",
+      segmentsInfo: ""
     };
   },
   components: {
     airlineEdit,
-    airlineSearch
+    airlineSearch,
+    LookLnfo
   },
   methods: {
     handleAdd() {
@@ -156,6 +180,7 @@ export default {
     },
     handleCancel() {
       this.dialogVisible = false;
+      this.showInfo = false;
     },
     handleSave() {
       this.dialogVisible = false;
@@ -175,6 +200,19 @@ export default {
         type: "success",
         message: "查询成功！"
       });
+    },
+    lookFlights(flights) {
+      this.lookTitle = "查看航班信息";
+      this.flightsInfo = flights;
+      this.isFlights = true;
+      this.showInfo = true;
+      console.log(flights, "ww");
+    },
+    lookSegments(segments) {
+      this.lookTitle = "查看航段信息";
+      this.segmentsInfo = segments;
+      this.isFlights = false;
+      this.showInfo = true;
     },
     formatcabins(data) {
       if (!data) {
