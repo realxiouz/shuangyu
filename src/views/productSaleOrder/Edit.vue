@@ -351,7 +351,6 @@
             loadProduct(orderNo){
                 this.$store.dispatch("productOrder/getOne", {orderNo: orderNo})
                     .then(data => {
-                        console.log(data);
                         this.formData = data;
                     })
                     .catch(error => {
@@ -540,7 +539,6 @@
             },
         },
         created() {
-            console.log(this.$route.query.orderNo);
             this.initFormData(this.$route.query.orderNo);
         },
         computed:{

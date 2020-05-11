@@ -285,7 +285,7 @@
                 return "￥" + this.$numeral(amount).format("0.00");
             }
         },
-        mounted() {
+        created() {
             this.loadData({});
         },
         components: {
