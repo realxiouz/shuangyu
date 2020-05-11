@@ -148,21 +148,21 @@ export default new Router({
           path: '/order/list',
           name: 'order',
           component: () => import('@/views/order/List'),
-          meta: { title: '订单信息', icon: 'home' }
+          meta: { title: '订单信息', icon: 'home', keepAlive: true }
         },
         {
           title: '订单统计',
           path: '/order/time/list',
           name: 'orderTime',
           component: () => import('@/views/orderTime/List'),
-          meta: { title: '订单统计', icon: 'home' }
+          meta: { title: '订单统计', icon: 'home', keepAlive: true }
         },
         {
           title: '订单报表',
           path: '/orderReport/list',
           name: 'orderReport',
           component: () => import('@/views/orderReport/List'),
-          meta: { title: '订单报表', icon: 'home' }
+          meta: { title: '订单报表', icon: 'home', keepAlive: true }
         },
         {
           title: '订单详情',
@@ -218,7 +218,7 @@ export default new Router({
           path: '/order/task/list',
           name: 'orderTask',
           component: () => import('@/views/orderTask/List'),
-          meta: { title: '订单任务', icon: 'home' }
+          meta: { title: '订单任务', icon: 'home', keepAlive: true }
         },
         {
           title: '待处理订单任务',
@@ -232,14 +232,14 @@ export default new Router({
           path: '/order/task/total/list',
           name: 'orderTaskTotal',
           component: () => import('@/views/orderTaskTotal/List'),
-          meta: { title: '总订单任务', icon: 'home' }
+          meta: { title: '总订单任务', icon: 'home', keepAlive: true }
         },
         {
           title: '订单总报表',
           path: '/order/reportTotal/list',
           name: 'orderReportTotal',
           component: () => import('@/views/orderReportTotal/List'),
-          meta: { title: '订单总报表', icon: 'home' }
+          meta: { title: '订单总报表', icon: 'home', keepAlive: true }
         },
         {
           title: '导单',
@@ -253,7 +253,7 @@ export default new Router({
           path: '/order/order/task/group/list',
           name: 'orderTaskGroup',
           component: () => import('@/views/orderTaskGroup/List'),
-          meta: { title: '组长任务', icon: 'home' }
+          meta: { title: '组长任务', icon: 'home', keepAlive: true }
         },
 
       ]
@@ -706,24 +706,24 @@ export default new Router({
           path: '/product/sale/order',
           name: 'productSaleOrder',
           component: () => import('@/views/productSaleOrder/List'),
-          meta: {title: '销售订单管理', icon: 'home'}
+          meta: { title: '销售订单管理', icon: 'home' }
         },
         {
           title: '采购订单管理',
           path: '/product/purchase/order',
           name: 'productPurchaseOrder',
           component: () => import('@/views/productPurchaseOrder/List'),
-          meta: {title: '采购订单管理', icon: 'home'}
+          meta: { title: '采购订单管理', icon: 'home' }
         },
         {
           path: '/product/purchase/order/edit',
           component: () => import('@/views/productPurchaseOrder/Edit'),
-          meta: {title: '采购订单', icon: 'home'}
+          meta: { title: '采购订单', icon: 'home' }
         },
         {
           path: '/product/sale/order/edit',
           component: () => import('@/views/productSaleOrder/Edit'),
-          meta: {title: '销售订单', icon: 'home'}
+          meta: { title: '销售订单', icon: 'home' }
         }
       ]
     },

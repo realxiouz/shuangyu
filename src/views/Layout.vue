@@ -87,9 +87,12 @@
       <el-main>
         <section class="app-main">
           <transition name="fade-transform" mode="out-in">
-            <keep-alive>
-              <router-view :key="key" />
-            </keep-alive>
+            <div>
+              <keep-alive>
+                <router-view v-if="$route.meta.keepAlive"></router-view>
+              </keep-alive>
+              <router-view v-if="!$route.meta.keepAlive"></router-view>
+            </div>
           </transition>
         </section>
         <div>
@@ -424,10 +427,10 @@ body .el-container {
       vertical-align: 2px;
       border-radius: 50%;
       text-align: center;
-      transition: all .3s cubic-bezier(.645, .045, .355, 1);
+      transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
       transform-origin: 100% 50%;
       &:before {
-        transform: scale(.6);
+        transform: scale(0.6);
         display: inline-block;
         vertical-align: -3px;
       }
