@@ -53,23 +53,46 @@
             </div>
           </el-row>
           <div class="tags-view">
-            <el-tag
-              class="tags-view-item"
-              @close="handleClose(tag)"
-              v-for="tag in tags"
-              :key="tag.name"
-              :closable="tag.closable"
-              :type="tag.type"
-            >
-              <router-link :to="tag.path">{{tag.name}}</router-link>
-            </el-tag>
+            <scroll-pane ref="scrollPane" class="tags-view-wrapper">
+              <!-- <el-tag
+                class="tags-view-item"
+                @close="handleClose(tag)"
+                v-for="tag in tags"
+                :key="tag.name"
+                :closable="tag.closable"
+                :type="isActive(tag)?'info': tag.type"
+              >
+                <router-link :to="tag.path">{{tag.name}}</router-link>
+              </el-tag>-->
+
+              <router-link
+                :class="isActive(tag)?'active':''"
+                class="tags-view-item"
+                v-for="tag in tags"
+                :key="tag.patn"
+                :to="tag.path"
+                tag="span"
+              >
+                {{ tag.name }}
+                <span
+                  v-if="tag.name!='首页'"
+                  @click.prevent.stop="handleClose(tag)"
+                  class="el-icon-close"
+                />
+              </router-link>
+            </scroll-pane>
           </div>
         </div>
       </el-header>
       <el-main>
         <section class="app-main">
           <transition name="fade-transform" mode="out-in">
-            <router-view :key="key" />
+            <div>
+              <keep-alive>
+                <router-view v-if="$route.meta.keepAlive"></router-view>
+              </keep-alive>
+              <router-view v-if="!$route.meta.keepAlive"></router-view>
+            </div>
           </transition>
         </section>
         <div>
@@ -97,11 +120,12 @@
 <script>
 import Sidebar from "@/components/SideBar.vue";
 import SelectFirms from "@/components/SelectFirms.vue";
+import ScrollPane from "@/components/TagsView/ScrollPane.vue";
 
 // @ is an alias to /src
 export default {
   name: "layout",
-  components: { Sidebar, SelectFirms },
+  components: { Sidebar, SelectFirms, ScrollPane },
   data() {
     return {
       dialogVisible: false,
@@ -146,6 +170,9 @@ export default {
     }
   },
   methods: {
+    isActive(route) {
+      return route.path === this.$route.path;
+    },
     handleSwitch() {
       if (this.screenWidth > 500) {
         this.isCollapse = !this.isCollapse;
@@ -233,15 +260,18 @@ export default {
     },
     handleClose(tag) {
       this.tags.splice(this.tags.indexOf(tag), 1);
+      this.$router.push({
+        path: this.tags[this.tags.length - 1].path
+      });
     },
     loadPendingTotal() {
       this.$store
-        .dispatch("orderTaskTotal/getTotal", {
-          filters: {}
+        .dispatch("orderTask/getTotal", {
+          filters: { taskStatus: "1" }
         })
         .then(data => {
           if (data) {
-            this.totalCount = data.totalCount;
+            this.totalCount = data;
           }
         })
         .catch(error => {
@@ -317,12 +347,12 @@ export default {
     position: absolute;
     // top: 15px;
     line-height: 54px;
-    right: 158px;
+    right: 198px;
   }
   .userClass {
     position: absolute;
     line-height: 54px;
-    right: 20px;
+    right: 50px;
   }
 
   .nav-switch {
@@ -336,15 +366,43 @@ export default {
 
   .tags-view {
     height: 40px;
-    padding-top: 6px;
-    border-top: 1px solid #edeff0;
-    border-bottom: 1px solid #edeff0;
+    line-height: 40px;
 
     .tags-view-item {
-      margin: 0 5px;
+      display: inline-block;
+      position: relative;
       cursor: pointer;
       height: 26px;
       line-height: 26px;
+      border: 1px solid #d8dce5;
+      border-radius: 4px;
+      color: #495060;
+      background: #fff;
+      padding: 0 8px;
+      font-size: 12px;
+      margin-left: 5px;
+      margin-top: 4px;
+      &:first-of-type {
+        margin-left: 15px;
+      }
+      &:last-of-type {
+        margin-right: 15px;
+      }
+      &.active {
+        background-color: #67c23a;
+        color: #fff;
+        border-color: #67c23a;
+        &::before {
+          content: "";
+          background: #fff;
+          display: inline-block;
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          position: relative;
+          margin-right: 2px;
+        }
+      }
     }
   }
 }
@@ -357,5 +415,30 @@ export default {
 
 body .el-container {
   height: 100%;
+}
+</style>
+
+<style lang="scss">
+.tags-view-wrapper {
+  .tags-view-item {
+    .el-icon-close {
+      width: 16px;
+      height: 16px;
+      vertical-align: 2px;
+      border-radius: 50%;
+      text-align: center;
+      transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+      transform-origin: 100% 50%;
+      &:before {
+        transform: scale(0.6);
+        display: inline-block;
+        vertical-align: -3px;
+      }
+      &:hover {
+        background-color: #909399;
+        color: #fff;
+      }
+    }
+  }
 }
 </style>

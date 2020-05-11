@@ -13,12 +13,12 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="订单来源单号:">
+          <el-form-item label="源单号:">
             <el-input
               clearable
               v-model="formData.sourceOrderNo"
               @keyup.enter.native="$emit('onSearch', formData)"
-              placeholder="请输入订单来源单号搜索..."
+              placeholder="请输入订单源单号搜索..."
             ></el-input>
           </el-form-item>
         </el-col>
@@ -52,6 +52,29 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="操作员:">
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.fullName"
+              style="width: 100%"
+              clearable
+            ></el-input>
+          </el-form-item>
+        </el-col>
+         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="规则类型:">
+            <el-select
+              style="width: 100%;"
+              clearable
+              v-model="formData.ruleType"
+              placeholder="请选择"
+            >
+              <el-option label="系统" value="0"></el-option>
+              <el-option label="手工" value="1"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="开始时间:">
             <el-date-picker
               type="date"
@@ -78,7 +101,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="乘机人姓名:">
+          <el-form-item v-show="more" label="乘机人:">
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.name"

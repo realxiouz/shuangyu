@@ -148,8 +148,8 @@ const actions = {
   },
   updateMany({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const {filter, user} = params;
-      updateMany(filter, user)
+      const {filter, user, verificationCode} = params;
+      updateMany(filter, user, verificationCode)
         .then(response => {
           resolve(response.data);
         })

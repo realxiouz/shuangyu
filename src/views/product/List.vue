@@ -90,9 +90,6 @@
                 this.loadData();
             },
             loadTotal(searchForm) {
-                if (!searchForm || !searchForm.appName) {
-                    searchForm = {};
-                }
                 this.$store
                     .dispatch("product/getTotal", {
                         filters: searchForm
@@ -105,9 +102,6 @@
                     });
             },
             loadData(searchForm) {
-                if (!searchForm || !searchForm.appName) {
-                    searchForm = {};
-                }
                 this.$store
                     .dispatch("product/getPageList", {
                         pageFlag: this.pageFlag,
@@ -139,7 +133,7 @@
             },
             handleUpdate(id) {
                 let path = "";
-                path = "/product/config";
+                path = "/product/edit";
                 this.$router.push({
                     path: path,
                     query: {

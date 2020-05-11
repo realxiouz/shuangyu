@@ -291,14 +291,15 @@ export default {
         bankCode: this.payData.bankCode,
         cabin: this.predetermineOrderData.cabin,
         payOrderNo: this.payData.orderNo,
-        sellOrderNo: this.orderData.sourceOrderNo
+        sellOrderNo: this.orderData.sourceOrderNo,
+        orderTaskId: this.$route.query.orderTaskId
       };
       let amountTotal = 0;
       this.passengerData.forEach(item => {
         amountTotal += Number(item.amount);
       });
       let _profitAndLossValue = 0;
-      _profitAndLossValue = Number(params.allPrice) - amountTotal;
+      _profitAndLossValue = Number(amountTotal) - Number(params.allPrice);
       if (_profitAndLossValue != this.profitAndLossValue) {
         this.$message({
           type: "warning",
@@ -370,6 +371,7 @@ export default {
       newParams.to = row.offerPrice.to;
       newParams.startTime = row.offerPrice.startTime;
       newParams.dptTime = row.offerPrice.dptTime;
+      newParams.orderTaskId = this.$route.query.orderTaskId;
       this.$store
         .dispatch("order/checkOrder", newParams)
         .then(data => {
@@ -421,7 +423,8 @@ export default {
                     amountTotal += Number(item.amount);
                   });
                   this.systemProfitAndLossValue = 0;
-                  this.systemProfitAndLossValue = Number(amountTotal) - Number(this.payData.noPayAmount);
+                  this.systemProfitAndLossValue =
+                    Number(amountTotal) - Number(this.payData.noPayAmount);
                   this.$message({
                     type: "success",
                     message: "预定成功！"

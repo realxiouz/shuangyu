@@ -1,4 +1,4 @@
-import { taskTransfer,taskRemark, taskSubmit, taskCancel, getPageList, getTotal, getPendingTotal ,getGroupList} from '@/api/orderTask';
+import { removeTaskOrder, getTaskInfo, taskTransfer, taskRemark, taskSubmit, taskCancel, getPageList, getTotal, getPendingTotal, getGroupList } from '@/api/orderTask';
 import { getToken } from '@/utils/auth';
 
 const state = {
@@ -59,10 +59,10 @@ const actions = {
                 });
         });
     },
-  getGroupList({ commit }, params) {
+    getGroupList({ commit }, params) {
         const { filters } = params;
         return new Promise((resolve, reject) => {
-          getGroupList(filters)
+            getGroupList(filters)
                 .then(response => {
                     const { data } = response;
                     resolve(data);
@@ -126,6 +126,34 @@ const actions = {
                 });
         });
     },
+
+    // 批量转单
+    getTaskInfo({ commit }, taskId) {
+        return new Promise((resolve, reject) => {
+            getTaskInfo(taskId)
+                .then(response => {
+                    const { data } = response;
+                    resolve(data);
+                })
+                .catch(error => {
+                    reject(error);
+                });
+        });
+    },
+
+    removeTaskOrder({ commit }, params) {
+        return new Promise((resolve, reject) => {
+            removeTaskOrder(params)
+                .then(response => {
+                    const { data } = response;
+                    resolve(data);
+                })
+                .catch(error => {
+                    reject(error);
+                });
+        });
+    },
+
 
 
 };

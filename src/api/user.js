@@ -49,15 +49,15 @@ export function removeOne(userId) {
 
 export function updateOne(data) {
   return request({
-    url: '/user/update/one',
+    url: '/admin/user/update/one',
     method: 'post',
     data
   });
 }
 
-export function updateMany(filter, data) {
+export function updateMany(filter, data, verificationCode) {
   return request({
-    url: '/admin/user/update/many',
+    url: `/admin/user/update/many/${verificationCode}`,
     method: 'post',
     params: filter,
     data

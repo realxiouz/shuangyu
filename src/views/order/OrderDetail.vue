@@ -8,7 +8,7 @@
           <el-button type="warning" @click="goBack" size="mini">返回</el-button>
         </el-col>
         <el-col :span="14">
-          <el-input v-model="taskRemarkData" placeholder="输入备注信息" class="input-with-select">
+          <el-input v-model="updateRemark" placeholder="输入备注信息" class="input-with-select">
             <template slot="prepend">备注:</template>
             <el-button type="primary" @click="taskRemark" size="mini" slot="append">修改备注</el-button>
           </el-input>
@@ -21,6 +21,7 @@
           <span style="font-size:larger;margin-left: 15px;font-weight: bolder;">销售单信息</span>
           <span style="font-size: 24px; margin: 0 20px; color: #ff4600;">{{orderDetail_orderState}}</span>
           <span style="color: #F56C6C">{{orderDetail_orderComment}}</span>
+          <span v-if="taskRemarkData" style="color: red;font-size: 14px">任务备注：{{taskRemarkData}}</span>
         </template>
         <div style="padding: 20px">
           <el-row :gutter="20">
@@ -71,6 +72,11 @@
                   <span>{{formatDate(tableData.deadlineTicketTime,'YYYY-MM-DD HH:mm:ss')}}</span>
                 </el-form-item>
               </el-col>
+              <el-col :span="24">
+                <el-form-item label="政策代码:">
+                  <span>{{tableData.policyCode}}</span>
+                </el-form-item>
+              </el-col>
             </el-form>
           </el-row>
           <el-divider content-position="left">航班信息</el-divider>
@@ -91,9 +97,9 @@
             <el-table-column prop="refundRule" label="退票规则" align="center"></el-table-column>
             <el-table-column prop="changeRule" label="改签规则" align="center"></el-table-column>
           </el-table>
-          <el-divider content-position="left">乘客信息</el-divider>
+          <el-divider content-position="left">乘机人信息</el-divider>
           <el-table
-            :data="passengerData"
+            :data="passengerDataTable"
             size="mini"
             highlight-current-row
             style="width: 100%;"
@@ -101,7 +107,7 @@
             fit
           >
             <el-table-column type="selection" width="55"></el-table-column>
-            <el-table-column prop="name" label="姓名" width="100" align="center"></el-table-column>
+            <el-table-column prop="name" label="乘机人" width="100" align="center"></el-table-column>
             <el-table-column prop="gender" label="性别" width="100" align="center"></el-table-column>
             <el-table-column label="出生年月" width="110" align="center">
               <template slot-scope="scope">
@@ -145,7 +151,7 @@
           </el-row>
           <div style="margin-top:15px;">
             <span style="font-weight:700;font-size:15px;">退改说明：</span>
-            <div style=" margin-top:10px;font-size:14px; line-height:1.5;">{{this.refundChangeRule}}</div>
+            <div style=" margin-top:10px;font-size:14px; line-height:1.5;" v-html="refundChangeRule"></div>
           </div>
         </div>
       </el-collapse-item>
@@ -154,7 +160,7 @@
           <span style="font-size:larger;margin-left: 15px;font-weight: bolder;">销售单消息</span>
         </template>
         <div style="padding: 20px">
-          <el-button type="primary" size="mini" @click="getMessage">刷新</el-button>
+          <el-button type="primary" size="mini" style="margin-bottom:15px" @click="getMessage">刷新</el-button>
           <div style="margin-top:15px;" id="messageHtml">
             <span v-if="this.messageData" v-html="this.messageData"></span>
             <span v-else>暂无数据</span>
@@ -187,7 +193,12 @@
           <span style="font-size:larger;margin-left: 15px;font-weight: bolder;">采购单信息</span>
         </template>
         <div style="padding: 20px">
-          <el-button type="primary" size="mini" @click="refreshPurchase">刷新</el-button>
+          <el-button
+            type="primary"
+            size="mini"
+            style="margin-bottom:15px"
+            @click="refreshPurchase"
+          >刷新</el-button>
           <el-table
             size="mini"
             :data="orderTree"
@@ -198,12 +209,12 @@
             :tree-props="{children: 'children', hasChildren: '*****'}"
           >
             <el-table-column prop="orderNo" align="center" label="订单号" width="180"></el-table-column>
-            <el-table-column prop="sourceOrderNo" align="center" width="180" label="原订单"></el-table-column>
+            <el-table-column prop="sourceOrderNo" align="center" width="180" label="源单号"></el-table-column>
             <el-table-column prop="status" :formatter="formatStatus" label="订单状态" width="80"></el-table-column>
             <el-table-column prop="orderSource" align="center" label="供应商"></el-table-column>
-            <el-table-column label="姓名" align="center" width="200">
+            <el-table-column label="乘机人-票号" align="center" width="200">
               <template slot-scope="scope">
-                <span>{{ formatPassengers(scope.row.orderDetailList)}}</span>
+                <span v-html="formatPassengersTicket(scope.row.orderDetailList)"></span>
               </template>
             </el-table-column>
             <el-table-column prop="createTime" align="center" label="订单时间">
@@ -221,12 +232,12 @@
                 <span>{{ formatFlightNo(scope.row.flights)}}</span>
               </template>
             </el-table-column>
-            <el-table-column prop="ticketNos" label="票号" width="120" align="center">
+            <!-- <el-table-column prop="ticketNos" label="票号" width="120" align="center">
               <template slot-scope="scope">
                 <span>{{formatTicketNo(scope.row.ticketNos)}}</span>
               </template>
-            </el-table-column>
-            <el-table-column prop="address" align="center" fixed="right" width="360" label="操作">
+            </el-table-column>-->
+            <el-table-column prop="address" align="center" fixed="right" width="400" label="操作">
               <template slot-scope="scope">
                 <el-button
                   type="primary"
@@ -236,19 +247,19 @@
                 >删除</el-button>
                 <el-button
                   type="primary"
-                  v-show="woniuPperateButton(scope.row)"
+                  v-show="woniuPerateButton(scope.row)"
                   @click="refundTicket(scope.row)"
                   size="mini"
                 >退票</el-button>
                 <el-button
                   type="primary"
-                  v-show="woniuPperateButton(scope.row)"
+                  v-show="woniuPerateButton(scope.row)"
                   @click="changeTicket(scope.row)"
                   size="mini"
                 >改签</el-button>
                 <el-button
                   type="primary"
-                  v-show="woniuPperateButton(scope.row) && taskType=='4'"
+                  v-show="woniuPerateButton(scope.row) && taskType=='4'"
                   @click="intercept(scope.row)"
                   size="mini"
                 >拦截</el-button>
@@ -257,6 +268,31 @@
               </template>
             </el-table-column>
           </el-table>
+        </div>
+      </el-collapse-item>
+      <el-collapse-item name="5">
+        <div slot="title">
+          <span style="font-size:larger;margin-left: 15px;font-weight: bolder;">操作日志</span>
+        </div>
+        <div style="padding: 20px">
+          <el-button
+            type="primary"
+            @click="refreshTaskLog"
+            style="margin-bottom:15px;"
+            size="mini"
+          >刷新</el-button>
+          <div>
+            <el-table :data="taskLogData.logs" size="mini" highlight-current-row fit>
+              <el-table-column type="index" width="50" align="center"></el-table-column>
+              <el-table-column prop="name" label="操作员" width="80" align="center"></el-table-column>
+              <el-table-column prop="time" align="center" width="180" label="操作时间">
+                <template slot-scope="scope">
+                  <span>{{ formatDate(scope.row.time,'YYYY-MM-DD HH:mm:ss') }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column prop="content" align="left" label="操作内容"></el-table-column>
+            </el-table>
+          </div>
         </div>
       </el-collapse-item>
     </el-collapse>
@@ -273,7 +309,7 @@
           @onCancel="onCancel"
           @onSaveTicket="handleSaveTicket"
           @onSave="handleSave"
-          :passengerData="passengersInfo"
+          :passengerData="handlePassengersInfo"
           :flightData="flightData"
           :sell-amount="ticketSellAmount"
           :task-type="taskType"
@@ -310,6 +346,7 @@
       >
         <change-ticket
           v-if="changeTicketShow"
+          :refundChangeRule="refundChangeRule"
           :changeData="changeData"
           :changeDataTop="changeDataTop"
           :sellAmount="changeSellAmount"
@@ -391,7 +428,7 @@
         title="改签支付"
         center
         :visible.sync="changePayShow"
-        width="40%"
+        width="33%"
         :close-on-click-modal="false"
       >
         <div>
@@ -413,6 +450,44 @@
         </div>
       </el-dialog>
     </div>
+    <div>
+      <el-dialog
+        title="拒绝改签原因"
+        center
+        :visible.sync="refuseReasonShow"
+        width="33%"
+        :close-on-click-modal="false"
+      >
+        <div>
+          <el-form :model="refuseFormdata" size="mini" label-width="110px">
+            <el-form-item label="拒绝改签原因">
+              <el-select
+                placeholder="请选择拒绝改签原因"
+                v-model="refuseFormdata.refuseReasonType"
+                style="width:100%;"
+              >
+                <el-option label="特价机票不支持改签" value="4"></el-option>
+                <el-option label="改签费用不符" value="9"></el-option>
+                <el-option label="建议用户联系航司改签" value="10"></el-option>
+                <el-option label="无法改签-用户已自行改签或机票被使用" value="11"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="备注：">
+              <el-input
+                type="textarea"
+                :rows="2"
+                placeholder="请输入备注..."
+                v-model="refuseFormdata.refuseReason"
+              ></el-input>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div style="margin-top: 25px;text-align: right;">
+          <el-button size="mini" @click="onCancel">取 消</el-button>
+          <el-button size="mini" @click="submitRefuseReason" type="primary">确定</el-button>
+        </div>
+      </el-dialog>
+    </div>
   </div>
 </template>
 
@@ -429,6 +504,13 @@ import {
   formatAgeType,
   formatCardType
 } from "@/utils/status.js";
+import {
+  formatPassengers,
+  formatTicketNo,
+  formatFlightDate,
+  formatFlightNo,
+  formatAmount
+} from "@/utils/orderFormdata.js";
 
 export default {
   name: "orderDetail",
@@ -441,20 +523,14 @@ export default {
       fillOutRefundShow: false,
       newFromDialogShow: false,
       rewriteTicketShow: false,
+      refuseReasonShow: false,
       changePayShow: false,
       changePayData: {},
       systemProfitAndLossValue: 0,
       profitAndLossValue: 0,
       rootOrderNo: "",
       ticketNoData: "",
-      rewriteTicketData: {
-        orderNo: "",
-        passengerId: "",
-        ticketNo: "",
-        groupCheckOut: "",
-        groupCheckIn: "",
-        lastProductId: ""
-      },
+
       newFromDialog: "",
       fillOutRefundData: "",
       fillOutChangeData: {},
@@ -463,9 +539,10 @@ export default {
       refundHtml: "",
       messageData: "",
       flightData: [],
-      passengerData: [],
+      passengerDataTable: [],
       tableData: {},
       passengersInfo: [],
+      handlePassengersInfo: [],
       sellOrderType: "",
       orderTree: [],
       sourceOrderNo: "",
@@ -477,10 +554,12 @@ export default {
       refundChangeRule: "",
       refundpassengers: "",
       taskRemarkData: this.$route.query.remark,
+      updateRemark: "",
       timer: null,
       changeData: "",
       orderNo: this.$route.query.orderNo,
       taskType: this.$route.query.taskType,
+      taskId: this.$route.query.taskId,
       changeDataTop: {
         reason: "",
         flight: "",
@@ -491,13 +570,26 @@ export default {
         flightNum: "",
         departureTime: ""
       },
-      activeNames: ["1", "2", "3", "4"],
+      refuseFormdata: {
+        refuseReasonType: "",
+        refuseReason: ""
+      },
+      rewriteTicketData: {
+        orderNo: "",
+        passengerId: "",
+        ticketNo: "",
+        groupCheckOut: "",
+        groupCheckIn: "",
+        lastProductId: ""
+      },
+      activeNames: ["1", "2", "3", "4", "5"],
       //订单详情状态
       orderDetail_orderState: "",
       //订单详情意见及备注
       orderDetail_orderComment: "",
       //订单详情触发定时器
-      detailInfoTimer: null
+      detailInfoTimer: null,
+      taskLogData: "" //操作日志数据
     };
   },
   components: {
@@ -513,9 +605,30 @@ export default {
     formatCategory,
     formatAgeType,
     formatCardType,
-
+    formatPassengers,
+    formatTicketNo,
+    formatFlightDate,
+    formatFlightNo,
+    formatAmount,
+    // 刷新任务操作日志
+    refreshTaskLog() {
+      this.getOneTaskLog();
+    },
+    //获取任务详情
+    getOneTaskLog() {
+      this.$store
+        .dispatch("orderTask/getTaskInfo", this.taskId)
+        .then(data => {
+          if (data) {
+            this.taskLogData = data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     //蜗牛展示按钮
-    woniuPperateButton(row) {
+    woniuPerateButton(row) {
       var flag = false;
       if (
         row.orderSource == "QUNAR_OPEN" ||
@@ -543,7 +656,7 @@ export default {
             this.sellOrderType = data.orderType;
             this.getMessageHtml();
             if (data.passengers) {
-              this.passengerData = data.passengers;
+              this.passengerDataTable = data.passengers;
             }
             if (data.flights) {
               this.flightData = data.flights;
@@ -568,6 +681,7 @@ export default {
       this.refundTicketShow = false;
       this.rewriteTicketShow = false;
       this.changePayShow = false;
+      this.refuseReasonShow = false;
     },
     // 退票弹框
     refundTicket(row) {
@@ -615,9 +729,9 @@ export default {
     handleSaveTicket(params) {
       let newParams = {};
       if (params) {
+        newParams.merchantId = params.merchantId;
         newParams.accountId = params.accountId;
-        newParams.amount = this.tableData.amount;
-        newParams.thirdId = this.tableData.thirdId;
+        newParams.amount = params.amount;
         newParams.flights = [
           {
             cabin: params.cabin,
@@ -636,7 +750,7 @@ export default {
         newParams.remark = params.remark;
         newParams.orderTaskId = this.$route.query.taskId;
         newParams.rootOrderNo = this.tableData.rootOrderNo;
-        newParams.sourceOrderNo = this.tableData.sourceOrderNo;
+        newParams.sourceOrderNo = params.sourceOrderNo;
         newParams.transactionAmount = params.transactionAmount;
         newParams.createTime = params.createTime;
         newParams.ticketNoFlag = params.ticketNoFlag;
@@ -653,7 +767,7 @@ export default {
         let woniuParams = {};
         woniuParams.sourceOrderNo = params.sourceOrderNo;
         woniuParams.orderTaskId = this.$route.query.taskId;
-        woniuParams.fundAccount = params.fundAccountId;
+        woniuParams.fundAccount = params.fundAccount;
         woniuParams.userNameType = params.userNameType;
         woniuParams.orderType = params.orderType;
         woniuParams.amount = params.amount;
@@ -661,9 +775,9 @@ export default {
       } else {
         let newParams = {};
         if (params) {
+          newParams.merchantId = params.merchantId;
           newParams.accountId = params.accountId;
           newParams.amount = params.amount;
-          newParams.thirdId = params.thirdId;
           newParams.flights = [
             {
               cabin: params.cabin,
@@ -698,7 +812,9 @@ export default {
         let woniuParams = {};
         woniuParams.sourceOrderNo = params.sourceOrderNo;
         woniuParams.orderTaskId = this.$route.query.taskId;
-        woniuParams.fundAccount = params.fundAccountId;
+        woniuParams.fundAccount = params.fundAccount;
+        woniuParams.merchantId = params.merchantId;
+        woniuParams.accountId = params.accountId;
         woniuParams.userNameType = params.userNameType;
         woniuParams.orderType = params.orderType;
         woniuParams.amount = params.amount;
@@ -706,7 +822,6 @@ export default {
       } else {
         let newParams = {};
         if (params) {
-          newParams.accountId = params.accountId;
           newParams.amount = params.amount;
           newParams.flights = [
             {
@@ -728,6 +843,8 @@ export default {
           newParams.rootOrderNo = this.tableData.rootOrderNo;
           newParams.sourceOrderNo = params.sourceOrderNo;
           newParams.createTime = params.createTime;
+          newParams.merchantId = params.merchantId;
+          newParams.accountId = params.accountId;
           if (params.ticketNoFlag) {
             newParams.ticketNoFlag = params.ticketNoFlag;
           }
@@ -809,7 +926,6 @@ export default {
         .catch(error => {
           console.log(error);
         });
-      this.refundTicketShow = false;
     },
     // 改签确定申请
     handleSaveChange(params) {
@@ -939,12 +1055,12 @@ export default {
         }
       }, 1000);
     },
-    // 受理改签/确认改签
-    processingChangeTicket(params) {
+    //拒绝改签
+    rejectChange(_params) {
       this.$store
-        .dispatch("order/processingChange", params)
+        .dispatch("order/rejectChange", { params: _params })
         .then(data => {
-          if (data.code == 0) {
+          if (data) {
             console.log(data);
             this.$message({
               type: "success",
@@ -956,6 +1072,74 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+
+    // 受理改签
+    processingChangeTicket(_params) {
+      this.$store
+        .dispatch("order/processingChange", { params: _params })
+        .then(data => {
+          if (data.code == 0) {
+            console.log(data);
+            this.$message({
+              type: "success",
+              message: "操作成功！"
+            });
+            this.getMessageHtml();
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    // 拒绝改签确认
+    submitRefuseReason() {
+      let passagerIds = document.querySelectorAll(
+        ".box-content input[name='passagerIds']"
+      );
+      let paramsStr = "";
+      Array.from(passagerIds).forEach(item => {
+        paramsStr += "passagerIds" + "=" + item.value + "&";
+      });
+      let gqFeesData = document.querySelector(
+        ".box-content input[name='gqFees']"
+      ).value;
+      let gqFeesStr = "";
+      gqFeesStr += "gqFees" + "=" + gqFeesData + "&";
+
+      let upgradeFeesData = document.querySelector(
+        ".box-content input[name='upgradeFees']"
+      ).value;
+      let upgradeFeesStr = "";
+      upgradeFeesStr += "upgradeFees" + "=" + upgradeFeesData + "&";
+
+      let gqStatusData = document.querySelector(
+        ".box-content input[name='gqStatus']"
+      ).value;
+      let gqStatusStr = "";
+      gqStatusStr += "gqStatus" + "=" + gqStatusData + "&";
+
+      let _paramsStr = "";
+      _paramsStr +=
+        "domain=" +
+        this.sourceOrderNo.substring(0, 3) +
+        ".trade.qunar.com" +
+        "&" +
+        "refuseReasonType=" +
+        this.refuseFormdata.refuseReasonType +
+        "&" +
+        "refuseReason=" +
+        this.refuseFormdata.refuseReason +
+        "&" +
+        paramsStr +
+        gqFeesStr +
+        upgradeFeesStr +
+        gqStatusStr +
+        "orderNo=" +
+        this.sourceOrderNo;
+      console.log(_paramsStr);
+      this.rejectChange(_paramsStr);
+      this.refuseReasonShow = false;
     },
     // 确认退票信息
     affirmRefundTicket(params) {
@@ -994,16 +1178,41 @@ export default {
         });
     },
     // 乘客复选框选中处理
-    handleSelectionChange(passengersInfo) {
+    handleSelectionChange(_passengersInfo) {
+      console.log(_passengersInfo, "_passengersInfo");
+      let ticketAmount = 0;
+      _passengersInfo.forEach(item => {
+        console.log(item.amount, "item.amount");
+
+        ticketAmount += Number(item.amount);
+      });
+      this.ticketSellAmount = ticketAmount;
+      console.log(this.ticketSellAmount, "ticketSellAmount");
       let arr = [];
-      for (let i = 0; i < passengersInfo.length; i++) {
+      for (let i = 0; i < _passengersInfo.length; i++) {
         this.tableData.orderDetailList.forEach(item => {
-          if (item.cardNo == passengersInfo[i].cardNo) {
+          if (item.cardNo == _passengersInfo[i].cardNo) {
             arr.push(item);
           }
         });
       }
-      this.passengersInfo = arr;
+      this.passengersInfo = [...arr];
+      let handleArr = [];
+      handleArr = [..._passengersInfo];
+      let temp = [];
+      handleArr.map(item => {
+        let obj = {
+          ageType: item.ageType,
+          birthday: item.birthday,
+          cardNo: item.cardNo,
+          cardType: item.cardType,
+          gender: item.gender,
+          name: item.name,
+          viewPrice: item.viewPrice
+        };
+        temp.push(obj);
+      });
+      this.handlePassengersInfo = temp;
     },
     // 系统出票跳转
     goTicket() {
@@ -1020,6 +1229,7 @@ export default {
           path: "/order/detail/go/ticket",
           query: {
             orderNo: this.orderNo,
+            orderTaskId: this.$route.query.taskId,
             passengersInfo: JSON.stringify(this.passengersInfo)
           }
         });
@@ -1035,16 +1245,8 @@ export default {
           duration: 4500
         });
         return;
-      } else {
-        let ticketAmount = 0;
-        this.passengersInfo.forEach(item => {
-          console.log(item.amount);
-          ticketAmount += Number(item.amount);
-        });
-        this.ticketSellAmount = ticketAmount;
-        console.log(this.ticketSellAmount);
-        this.handleTicketShow = true;
       }
+      this.handleTicketShow = true;
     },
     // 获取采购单信息
     getOrderTree() {
@@ -1066,7 +1268,7 @@ export default {
     taskSubmit() {
       let params = {};
       params.orderTaskId = this.$route.query.taskId;
-      params.remark = this.taskRemarkData;
+      params.remark = this.updateRemark;
       this.$store
         .dispatch("orderTask/taskSubmit", params)
         .then(data => {
@@ -1075,6 +1277,7 @@ export default {
               type: "success",
               message: "提交验证成功！"
             });
+            this.goBack();
           }
         })
         .catch(error => {
@@ -1083,7 +1286,7 @@ export default {
     },
     // 任务取消
     taskCancel() {
-      if (!this.taskRemarkData) {
+      if (!this.updateRemark) {
         this.$notify({
           title: "提示",
           message: "请填写取消任务的备注信息",
@@ -1094,7 +1297,7 @@ export default {
       }
       let params = {};
       params.orderTaskId = this.$route.query.taskId;
-      params.remark = this.taskRemarkData;
+      params.remark = this.updateRemark;
       this.$store
         .dispatch("orderTask/taskCancel", params)
         .then(data => {
@@ -1103,6 +1306,7 @@ export default {
               type: "success",
               message: "取消成功"
             });
+            this.goBack();
           }
         })
         .catch(error => {
@@ -1111,7 +1315,7 @@ export default {
     },
     // 任务备注
     taskRemark() {
-      if (!this.taskRemarkData) {
+      if (!this.updateRemark) {
         this.$notify({
           title: "提示",
           message: "请填写备注信息",
@@ -1122,7 +1326,7 @@ export default {
       }
       let params = {};
       params.orderTaskId = this.$route.query.taskId;
-      params.remark = this.taskRemarkData;
+      params.remark = this.updateRemark;
       this.$store
         .dispatch("orderTask/taskRemark", params)
         .then(data => {
@@ -1307,16 +1511,15 @@ export default {
     },
     // 删除
     orderTreeRemove(row) {
-      this.open(
-        this.delete,
-        row.orderNo,
-        "此操作将删除该订单的信息, 是否继续?"
-      );
+      let params = {};
+      params.orderId = row.orderNo;
+      params.orderTaskId = this.taskId;
+      this.open(this.delete, params, "此操作将删除该订单的信息, 是否继续?");
     },
     // 删除
-    delete(orderNo) {
+    delete(params) {
       this.$store
-        .dispatch("order/removeOne", { orderNo: orderNo })
+        .dispatch("orderTask/removeTaskOrder", params)
         .then(data => {
           if (data) {
             this.$message({
@@ -1361,49 +1564,20 @@ export default {
         return "";
       }
     },
-    //格式化乘客信息
-    formatPassengers(data) {
+    formatPassengersTicket(data) {
       if (!data || data.length == 0) {
         return "";
       }
       let str = "";
       data.forEach(item => {
-        str += item.name + " / ";
+        str += item.name + " - " + item.ticketNo + "<br/>";
       });
-
-      return str.substring(0, str.length - 2);
-    },
-    // 格式化航班信息
-    formatFlightNo(data) {
-      if (!data || data.length == 0) {
-        return "";
-      }
-      return data[0].flightCode;
-    },
-    // 格式化票号信息
-    formatTicketNo(ticketNo) {
-      if (ticketNo && ticketNo.length > 0) {
-        let str = "";
-        ticketNo.forEach((item, index) => {
-          if (item) {
-            str += item + " / ";
-          }
-        });
-        return str.substring(0, str.length - 2);
-      } else {
-        return (ticketNo = "");
-      }
-    },
-    // 格式化数字
-    formatAmount(amount) {
-      if (!amount) {
-        return "￥0.00";
-      }
-      return "￥" + this.$numeral(amount).format("0.00");
+      return str;
     }
   },
   created() {
     this.getOrderDetail(this.orderNo);
+    this.getOneTaskLog();
   },
   // 离开页面销毁定时器
   beforeDestroy() {
@@ -1482,28 +1656,24 @@ export default {
           let inputData = document.querySelectorAll(
             "#changeHtmlOrderDetail .box-content input"
           );
-          let obj = {};
+          let _paramsStr = "";
           Array.from(inputData).forEach(item => {
-            obj[item.name] = item.value;
+            _paramsStr += [item.name] + "=" + item.value + "&";
           });
-          let params = { ...obj };
-          params.groupCheckOut = true;
-          params.groupCheckIn = false;
-          // params.orderNo = orderSerialDetail.orderNo;
-
-          // that.processingChangeTicket(params)
+          _paramsStr +=
+            "groupCheckOut=true&groupCheckIn=false&orderNo=" +
+            that.sourceOrderNo;
+          that.processingChangeTicket(_paramsStr);
         };
       }
 
-      //拒绝改签
+      //拒绝改签弹框
       let changeReject = document.querySelector(
         '#changeHtmlOrderDetail [data-action="reject"]'
       );
       if (changeReject) {
         changeReject.onclick = function() {
-          console.log("changeReject");
-          let _params = {};
-          // that.processingChangeTicket(_params)
+          that.refuseReasonShow = true;
         };
       }
     }
@@ -1642,5 +1812,10 @@ export default {
 
 .deadlineTicketTime {
   color: #ff4600;
+}
+.el-collapse-item__header {
+  background-color: #ccc;
+  height: 35px;
+  font-size: 12px;
 }
 </style>

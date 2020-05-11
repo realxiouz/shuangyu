@@ -76,3 +76,11 @@ export function removeOne(staffId) {
     method: 'delete'
   });
 }
+// 强制下线
+export function orderStaffOffline(staffId) {
+  return request({
+    url: `/order/staff/offline/${staffId}`,
+    method: 'get'
+  });
+}
+

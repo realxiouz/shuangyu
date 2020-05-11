@@ -32,6 +32,11 @@
             <span>{{ formatFlightNo(scope.row.flights)}}</span>
           </template>
         </el-table-column>
+        <el-table-column label="航司" width="80" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatAirlineCode(scope.row.flights)}}</span>
+          </template>
+        </el-table-column>
         <el-table-column label="出发日期" width="100" align="center">
           <template slot-scope="scope">
             <span>{{ formatFlightDate(scope.row.flights)}}</span>
@@ -39,7 +44,7 @@
         </el-table-column>
         <el-table-column label="起飞 -- 到达" width="100" align="center">
           <template slot-scope="scope">
-            <span>{{ formatFlight(scope.row.flights)}}</span>
+            <span v-html="formatFlight(scope.row.flights)"></span>
           </template>
         </el-table-column>
         <el-table-column prop="name" label="姓名" width="80" align="center"></el-table-column>
@@ -57,8 +62,14 @@
         </el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="150">
           <template slot-scope="scope">
-            <el-button @click="handleUpdate(scope.row.deptId)" type="primary" size="mini">编辑</el-button>
             <el-button
+              disabled
+              @click="handleUpdate(scope.row.deptId)"
+              type="primary"
+              size="mini"
+            >编辑</el-button>
+            <el-button
+              disabled
               @click.native.prevent="handleRemove(scope.row.deptId)"
               type="danger"
               size="mini"
@@ -89,6 +100,15 @@ import {
   formatOrderType
 } from "@/utils/status.js";
 
+import {
+  formatTicketNo,
+  formatFlightDate,
+  formatFlightNo,
+  formatFlight,
+  formatAmount,
+  formatAirlineCode
+} from "@/utils/orderFormdata.js";
+
 export default {
   name: "orderReportList",
   data() {
@@ -107,6 +127,12 @@ export default {
     formatOrderStatus,
     formatCategory,
     formatOrderType,
+    formatTicketNo,
+    formatFlightDate,
+    formatFlightNo,
+    formatFlight,
+    formatAmount,
+    formatAirlineCode,
     handleSizeChange: function(size) {
       this.pageSize = size;
       this.searchParams.pageSize = this.pageSize;
@@ -236,49 +262,6 @@ export default {
       } else {
         return "";
       }
-    },
-    formatFlightDate(data) {
-      if (!data || data.length == 0) {
-        return "";
-      }
-      return this.initDate(data[0].flightDate, "YYYY-MM-DD");
-    },
-    formatFlightNo(data) {
-      if (!data || data.length == 0) {
-        return "";
-      }
-      return data[0].flightCode;
-    },
-    formatFlight(data) {
-      if (!data || data.length == 0) {
-        return "";
-      }
-      return (
-        data[0].dpt +
-        " " +
-        data[0].dptTime +
-        " - " +
-        data[0].arr +
-        " " +
-        data[0].arrTime
-      );
-    },
-    formatPassengers(data) {
-      if (!data || data.length == 0) {
-        return "";
-      }
-      let str = "";
-      data.forEach(item => {
-        str += item.name + " / ";
-      });
-
-      return str.substring(0, str.length - 2);
-    },
-    formatAmount(amount) {
-      if (!amount) {
-        return "￥0.00";
-      }
-      return "￥" + this.$numeral(amount).format("0.00");
     }
   },
   components: {

@@ -1,6 +1,13 @@
 <template>
   <div>
-    <el-form :model="formData" ref="fillOutRefundForm" :rules="formRules"  label-width="110px" size="mini" style="margin-top:15px;">
+    <el-form
+      :model="formData"
+      ref="fillOutRefundForm"
+      :rules="formRules"
+      label-width="110px"
+      size="mini"
+      style="margin-top:15px;"
+    >
       <el-row>
         <el-col :span="8">
           <el-form-item v-show="this.isWoniu">
@@ -59,7 +66,7 @@
       <div v-if="this.isWoniu && this.isWoniuTicket">
         <el-row>
           <el-col :span="8">
-            <el-form-item label="订单类型:"  prop="orderType">
+            <el-form-item label="订单类型:" prop="orderType">
               <el-select
                 v-model="formData.orderType"
                 clearable
@@ -76,7 +83,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="金额:" prop="amount">
+            <el-form-item label="退回金额:" prop="amount">
               <el-input clearable v-model="formData.amount"></el-input>
             </el-form-item>
           </el-col>
@@ -107,6 +114,7 @@
               <el-date-picker
                 type="datetime"
                 placeholder="选择日期"
+                format="yyyy-MM-dd HH:mm"
                 v-model="formData.createTime"
                 style="width: 100%;"
                 value-format="timestamp"
@@ -131,7 +139,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="金额:" prop="amount">
+            <el-form-item label="退回金额:" prop="amount">
               <el-input clearable v-model="formData.amount"></el-input>
             </el-form-item>
           </el-col>
@@ -272,287 +280,288 @@
 </template>
 
 <script>
-  import {
-    formatAgeType,
-    formatCardType,
-    statusData
-  } from "@/utils/status.js";
+import { formatAgeType, formatCardType, statusData } from "@/utils/status.js";
 
-  export default {
-    name: "fillOutRefund",
-    props: ["fillOutRefundData","sellAmount","taskType"],
-    data() {
-      return {
-        selectStatusDataFlag: false,
-        isWoniu: false,
-        orderType: [{
+export default {
+  name: "fillOutRefund",
+  props: ["fillOutRefundData", "sellAmount", "taskType"],
+  data() {
+    return {
+      selectStatusDataFlag: false,
+      isWoniu: false,
+      orderType: [
+        {
           value: 20,
           label: "退票"
         },
-          {
-            value: 21,
-            label: "二次退票"
-          },
-          {
-            value: 22,
-            label: "退差"
-          },
-          {
-            value: 23,
-            label: "退改"
-          }],
-        isWoniuTicket: true,
-        formData: {
+        {
+          value: 21,
+          label: "二次退票"
         },
-        selectOrderDetailList: [],
-        accountData: [],
-        statusData: statusData,
-        supplierData: [],
-        supplierAccountData: [],
-        formRules: {
-          orderType: [
-            {required: true, message: "必填项", trigger: "change"}
-          ],
-          merchantId: [
-            {required: true, message: "必填项", trigger: "change"}
-          ],
-          amount: [
-            {required: true, message: "必填项！", trigger: "blur"}
-          ],
-          createTime: [
-            {required: true, message: "必填项！", trigger: "blur"}
-          ],
-          fundAccount: [
-            {required: true, message: "必填项！", trigger: "blur"}
-          ],
-          profit: [
-            {required: true, message: "必填项！", trigger: "blur"}
-          ],
-          dpt: [
-            {required: true, message: "必填项！", trigger: "blur"}
-          ],
-          arr: [
-            {required: true, message: "必填项！", trigger: "blur"}
-          ],
-          flightCode: [
-            {required: true, message: "必填项！", trigger: "blur"}
-          ],
-          flightDate: [
-            {required: true, message: "必填项！", trigger: "blur"}
-          ],
-          dptTime: [
-            {required: true, message: "必填项！", trigger: "blur"}
-          ],
+        {
+          value: 22,
+          label: "退差"
+        },
+        {
+          value: 23,
+          label: "退改"
         }
+      ],
+      isWoniuTicket: true,
+      formData: {},
+      selectOrderDetailList: [],
+      accountData: [],
+      statusData: statusData,
+      supplierData: [],
+      supplierAccountData: [],
+      formRules: {
+        orderType: [{ required: true, message: "必填项", trigger: "change" }],
+        merchantId: [{ required: true, message: "必填项", trigger: "change" }],
+        amount: [{ required: true, message: "必填项！", trigger: "blur" }],
+        createTime: [{ required: true, message: "必填项！", trigger: "blur" }],
+        fundAccount: [{ required: true, message: "必填项！", trigger: "blur" }],
+        profit: [{ required: true, message: "必填项！", trigger: "blur" }],
+        dpt: [{ required: true, message: "必填项！", trigger: "blur" }],
+        arr: [{ required: true, message: "必填项！", trigger: "blur" }],
+        flightCode: [{ required: true, message: "必填项！", trigger: "blur" }],
+        flightDate: [{ required: true, message: "必填项！", trigger: "blur" }],
+        dptTime: [{ required: true, message: "必填项！", trigger: "blur" }]
+      }
+    };
+  },
+  methods: {
+    formatAgeType,
+    formatCardType,
+    // 默认数据
+    defaultFormData() {
+      var _orderDetailList = [];
+      this.fillOutRefundData.orderDetailList.forEach(item => {
+        item.amount = "";
+        _orderDetailList.push(item);
+      });
+      return {
+        orderDetailList: _orderDetailList,
+        arr: this.fillOutRefundData.flights[0].arr,
+        dpt: this.fillOutRefundData.flights[0].dpt,
+        flightCode: this.fillOutRefundData.flights[0].flightCode,
+        dptTime: this.fillOutRefundData.flights[0].dptTime,
+        arrTime: this.fillOutRefundData.flights[0].arrTime,
+        flightDate: this.fillOutRefundData.flights[0].flightDate,
+        cabin: this.fillOutRefundData.flights[0].cabin,
+        fundAccount: "",
+        userNameType: "",
+        accountId: "",
+        radio: "2",
+        profit: "",
+        merchantId: ""
       };
     },
-    methods: {
-      formatAgeType,
-      formatCardType,
-      // 默认数据
-      defaultFormData() {
-        var _orderDetailList = [];
-        this.fillOutRefundData.orderDetailList.forEach(item => {
-          item.amount = '';
-          _orderDetailList.push(item);
-        });
-        return {
-          orderDetailList: _orderDetailList,
-          arr: this.fillOutRefundData.flights[0].arr,
-          dpt: this.fillOutRefundData.flights[0].dpt,
-          flightCode: this.fillOutRefundData.flights[0].flightCode,
-          dptTime: this.fillOutRefundData.flights[0].dptTime,
-          arrTime: this.fillOutRefundData.flights[0].arrTime,
-          flightDate: this.fillOutRefundData.flights[0].flightDate,
-          cabin: this.fillOutRefundData.flights[0].cabin,
-          fundAccount: "",
-          userNameType: "",
-          accountId: "",
-          radio: "2",
-          profit: "",
-          merchantId: ""
-        };
-      },
-      clearForm() {
-        this.formData = this.defaultFormData();
-      },
-      //判断是蜗牛导单还是出票
-      radioChange(value) {
-        if (value == "2") {
-          this.radio = "2";
-          this.isWoniuTicket = false;
-        } else {
-          this.radio = "1";
-          for (var i = 0; i < this.supplierAccountData.length; i++) {
-            if (this.supplierAccountData[i].accountId == this.formData.accountId && this.isWoniu && this.isWoniuTicket) {
-              if (this.supplierAccountData[i].username=="13064220090 " || this.supplierAccountData[i].username=="15025130712"){
-                this.formData.userNameType = 1;
-              }else if (this.supplierAccountData[i].username=="13700600184"){
-                this.formData.userNameType = 2;
-              }else {
-                delete this.formData.userNameType;
-              }
-              break;
-            }else {
-              delete this.formData.userNameType;
-            }
-          }
-          this.isWoniuTicket = true;
-        }
-      },
-      // 判断选中渠道是否是蜗牛
-      selectAccount(value) {
+    clearForm() {
+      this.formData = this.defaultFormData();
+    },
+    //判断是蜗牛导单还是出票
+    radioChange(value) {
+      if (value == "2") {
+        this.radio = "2";
+        this.isWoniuTicket = false;
+      } else {
+        this.radio = "1";
+        this.isWoniuTicket = true;
+        let userTypeFlag = false;
         for (var i = 0; i < this.supplierAccountData.length; i++) {
-          if (this.supplierAccountData[i].accountId == value && this.isWoniu && this.isWoniuTicket) {
-            if (this.supplierAccountData[i].username=="13064220090 " || this.supplierAccountData[i].username=="15025130712"){
+          if (
+            this.supplierAccountData[i].accountId == this.formData.accountId &&
+            this.isWoniu &&
+            this.isWoniuTicket
+          ) {
+            if (
+              this.supplierAccountData[i].username == "13064220090 " ||
+              this.supplierAccountData[i].username == "15025130712"
+            ) {
               this.formData.userNameType = 1;
-            }else if (this.supplierAccountData[i].username=="13700600184"){
+              userTypeFlag = true;
+              break;
+            } else if (this.supplierAccountData[i].username == "13700600184") {
               this.formData.userNameType = 2;
-            }else {
-              delete this.formData.userNameType;
+              userTypeFlag = true;
+              break;
             }
-            break;
-          }else {
-            delete this.formData.userNameType;
           }
         }
-      },
-      handleSelectionChange(row) {
-        this.selectOrderDetailList = row;
-      },
-      // 获取资金账号
-      getFinance() {
-        this.$store
-          .dispatch("fundAccount/getList", {
-            filter: {}
-          })
-          .then(data => {
-            this.accountData = data;
-          })
-          .catch(error => {
-            console.log(error);
-            this.loading = false;
-          });
-      },
-      // 获取供应商
-      getSupplier() {
-        this.$store
-          .dispatch("firmMerchant/getList", {
-            filter: {merchantType: 0}
-          })
-          .then(data => {
-            this.supplierData = data;
-          })
-          .catch(error => {
-            console.log(error);
-            this.loading = false;
-          });
-      },
-      // 获取供应商账号
-      getSupplierAccount(value) {
-        this.$store
-          .dispatch("firmAccount/getList", {
-            filter: {firmId: value}
-          })
-          .then(data => {
-            this.supplierAccountData = data;
-          })
-          .catch(error => {
-            console.log(error);
-            this.loading = false;
-          });
-      },
-      // 判断选中渠道是否是蜗牛
-      selectSupplier(value) {
-        for (var i = 0; i < this.supplierData.length; i++) {
-          if (this.supplierData[i].merchantId == value) {
-            this.formData.orderSource = this.supplierData[i].firm.firmName;
-            break;
-          }
+        if (!userTypeFlag) {
+          delete this.formData.userNameType;
         }
-        if (value == "d381a4abdfa643fea6be8736dd11c1e1") {
-          this.isWoniu = true;
-          if (this.formData.radio == "1") {
-            this.isWoniuTicket = true;
-          } else {
-            this.isWoniuTicket = false;
-          }
-        } else {
-          this.isWoniu = false;
-        }
-        this.getSupplierAccount(value);
-      },
-      // 保存
-      handleSave() {
-        var validFlag = false;
-        this.$refs["fillOutRefundForm"].validate((valid) => {
-          if (!valid) {
-            console.log('error submit!!');
-            validFlag = true;
-            return false;
-          }});
-        if (validFlag){
-          return;
-        }
-        this.formData.orderDetailList = this.selectOrderDetailList;
-        this.formData.pid = this.fillOutRefundData.orderNo;
-        this.formData.passengers = this.selectOrderDetailList;
-        if (this.formData.radio != "1" && (this.taskType==2 || this.taskType==4)) {
-          let amountTotal = 0;
-          if (this.selectOrderDetailList.length<1){
-            this.$notify({
-              title: "提示",
-              message: "请选择人！",
-              type: "warning",
-              duration: 4500
-            });
-            return;
-          }
-          var flag =false;
-          this.formData.passengers.forEach(item => {
-            if (item.amount && item.amount!=''){
-              amountTotal += Number(item.amount);
-            }else {
-              flag = true;
-            }
-          });
-          if (flag){
-            this.$notify({
-              title: "提示",
-              message: "填写人的金额！",
-              type: "warning",
-              duration: 4500
-            });
-            return;
-          }
-          if (amountTotal!=this.formData.amount){
-            this.$notify({
-              title: "提示",
-              message: "金额填写错误，请重新填写！",
-              type: "warning",
-              duration: 4500
-            });
-            return;
-          }
-          let _profit = 0;
-          _profit = amountTotal + Number(this.sellAmount);
-          if (_profit != this.formData.profit) {
-            this.$notify({
-              title: "提示",
-              message: "利润金额计算错误，请重新计算！",
-              type: "warning",
-              duration: 4500
-            });
-            return;
-          }
-        }
-        this.$emit("onSave", this.formData);
       }
     },
-    created() {
-      this.clearForm();
-      this.getFinance();
-      this.getSupplier();
+    // 判断选中渠道是否是蜗牛
+    selectAccount(value) {
+      for (var i = 0; i < this.supplierAccountData.length; i++) {
+        if (
+          this.supplierAccountData[i].accountId == value &&
+          this.isWoniu &&
+          this.isWoniuTicket
+        ) {
+          if (
+            this.supplierAccountData[i].username == "13064220090 " ||
+            this.supplierAccountData[i].username == "15025130712"
+          ) {
+            this.formData.userNameType = 1;
+          } else if (this.supplierAccountData[i].username == "13700600184") {
+            this.formData.userNameType = 2;
+          } else {
+            delete this.formData.userNameType;
+          }
+          break;
+        } else {
+          delete this.formData.userNameType;
+        }
+      }
+    },
+    handleSelectionChange(row) {
+      this.selectOrderDetailList = row;
+    },
+    // 获取资金账号
+    getFinance() {
+      this.$store
+        .dispatch("fundAccount/getList", {
+          filter: {}
+        })
+        .then(data => {
+          this.accountData = data;
+        })
+        .catch(error => {
+          console.log(error);
+          this.loading = false;
+        });
+    },
+    // 获取供应商
+    getSupplier() {
+      this.$store
+        .dispatch("firmMerchant/getList", {
+          filter: { merchantType: 0 }
+        })
+        .then(data => {
+          this.supplierData = data;
+        })
+        .catch(error => {
+          console.log(error);
+          this.loading = false;
+        });
+    },
+    // 获取供应商账号
+    getSupplierAccount(value) {
+      this.$store
+        .dispatch("firmAccount/getList", {
+          filter: { firmId: value }
+        })
+        .then(data => {
+          this.supplierAccountData = data;
+        })
+        .catch(error => {
+          console.log(error);
+          this.loading = false;
+        });
+    },
+    // 判断选中渠道是否是蜗牛
+    selectSupplier(value) {
+      delete this.formData.userNameType;
+      this.formData.accountId = "";
+      for (var i = 0; i < this.supplierData.length; i++) {
+        if (this.supplierData[i].merchantId == value) {
+          this.formData.orderSource = this.supplierData[i].firm.firmName;
+          break;
+        }
+      }
+      if (value == "d381a4abdfa643fea6be8736dd11c1e1") {
+        this.isWoniu = true;
+        if (this.formData.radio == "1") {
+          this.isWoniuTicket = true;
+        } else {
+          this.isWoniuTicket = false;
+        }
+        this.formData.orderSource = "QUNAR_OPEN";
+      } else {
+        this.isWoniu = false;
+      }
+      this.getSupplierAccount(value);
+    },
+    // 保存
+    handleSave() {
+      var validFlag = false;
+      this.$refs["fillOutRefundForm"].validate(valid => {
+        if (!valid) {
+          console.log("error submit!!");
+          validFlag = true;
+          return false;
+        }
+      });
+      if (validFlag) {
+        return;
+      }
+      this.formData.orderDetailList = this.selectOrderDetailList;
+      this.formData.pid = this.fillOutRefundData.orderNo;
+      this.formData.passengers = this.selectOrderDetailList;
+      if (
+        this.formData.radio != "1" &&
+        (this.taskType == 2 || this.taskType == 4)
+      ) {
+        let amountTotal = 0;
+        if (this.selectOrderDetailList.length < 1) {
+          this.$notify({
+            title: "提示",
+            message: "请选择人！",
+            type: "warning",
+            duration: 4500
+          });
+          return;
+        }
+        var flag = false;
+        this.formData.passengers.forEach(item => {
+          if (item.amount && item.amount != "") {
+            amountTotal += Number(item.amount);
+          } else {
+            flag = true;
+          }
+        });
+        if (flag) {
+          this.$notify({
+            title: "提示",
+            message: "填写人的金额！",
+            type: "warning",
+            duration: 4500
+          });
+          return;
+        }
+        if (amountTotal != this.formData.amount) {
+          this.$notify({
+            title: "提示",
+            message: "金额填写错误，请重新填写！",
+            type: "warning",
+            duration: 4500
+          });
+          return;
+        }
+        let _profit = 0;
+        _profit = amountTotal + Number(this.sellAmount);
+        console.log(_profit,"_profit")
+        console.log(this.sellAmount,"this.sellAmount")
+        if (_profit != this.formData.profit) {
+          this.$notify({
+            title: "提示",
+            message: "利润金额计算错误，请重新计算！",
+            type: "warning",
+            duration: 4500
+          });
+          return;
+        }
+      }
+      this.$emit("onSave", this.formData);
     }
-  };
+  },
+  created() {
+    this.clearForm();
+    this.getFinance();
+    this.getSupplier();
+  }
+};
 </script>

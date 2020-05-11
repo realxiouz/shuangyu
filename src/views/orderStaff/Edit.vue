@@ -10,13 +10,14 @@
       stripe
       size="mini"
       style="width: 100%;"
+      :header-cell-style="headClass"
       fit
       :data="tableData"
     >
       <el-table-column prop="fullName" label="姓名" width="100" align="center"></el-table-column>
-      <el-table-column prop="phone" label="手机号" align="center"></el-table-column>
-      <el-table-column prop="email" label="电子邮箱" align="center"></el-table-column>
-      <el-table-column prop="status" label="状态" width="80" align="center">
+      <el-table-column prop="phone" label="手机号" align="center" width="200"></el-table-column>
+      <el-table-column prop="email" label="电子邮箱" width="200" align="center"></el-table-column>
+      <el-table-column prop="status" label="在线状态" width="80" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.status==1" style="color: green">在线</span>
           <span v-else style="color: red">离线</span>
@@ -36,11 +37,17 @@
           <span v-else>{{ formatDate(scope.row.offlineTime,'YYYY-MM-DD HH:mm:ss') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="300">
+      <el-table-column label="操作" align="left" width="400" fixed="right">
         <template slot-scope="scope">
           <el-button size="mini" type="primary" @click="handleFlag(scope.row)">配置标签</el-button>
           <el-button size="mini" type="primary" @click="setMonitor(scope.row)">设为班长</el-button>
           <el-button size="mini" type="primary" @click="logSearch(scope.row)">查看日志</el-button>
+          <el-button
+            size="mini"
+            type="primary"
+            v-show="scope.row.status==1&&scope.row.monitorFlag!=1"
+            @click="offLine(scope.row)"
+          >强制下线</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -170,6 +177,25 @@ export default {
         this.logTableData = row.logs;
       }
     },
+    offLine(row) {
+      console.log(row.staffId);
+      this.$store
+        .dispatch("orderStaff/orderStaffOffline", { staffId: row.staffId })
+        .then(data => {
+          if (data) {
+            this.$message({
+              type: "success",
+              message: "下线成功！"
+            });
+            this.loadTableData();
+
+            // console.log(data);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     handleClose() {
       this.logDialogVisible = false;
       this.logTableData = [];
@@ -204,7 +230,10 @@ export default {
     },
     clearTableData() {
       this.tableData = [];
-    }
+    },
+    headClass() {
+      return "background:#eef1f6;";
+    },
   },
   computed: {
     formatDate() {

@@ -34,11 +34,7 @@
       <el-form-item label="改签原因:">
         <span>{{changeDataTop.reason}}</span>
       </el-form-item>
-      <el-form-item label="退改说明:">
-        <span v-if="this.tgqText" v-html="this.tgqText"></span>
-        <span v-if="this.reason" style="color:red;">{{this.reason}}</span>
-        <span v-if="!this.tgqText && !this.reason">暂无数据</span>
-      </el-form-item>
+
       <el-row>
         <el-col :span="12">
           <el-form-item prop="changeCauseId" label="改签原因:">
@@ -146,6 +142,16 @@
           </el-table-column>
         </el-table>
       </el-form-item>
+      <el-form-item label="销售退改说明:">
+        <span v-if="this.tgqText" v-html="refundChangeRule"></span>
+        <span v-else>暂无数据</span>
+      </el-form-item>
+
+      <el-form-item label="蜗牛退改说明:">
+        <span v-if="this.tgqText" v-html="this.tgqText"></span>
+        <span v-if="this.reason" style="color:red;">{{this.reason}}</span>
+        <span v-if="!this.tgqText && !this.reason">暂无数据</span>
+      </el-form-item>
     </el-form>
     <div style="margin-top: 25px;text-align: right;">
       <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
@@ -155,275 +161,276 @@
 </template>
 
 <script>
-  import {formatAgeType, formatCardType} from "@/utils/status.js";
+import { formatAgeType, formatCardType } from "@/utils/status.js";
 
-  export default {
-    name: "changeTicket",
-    props: ["changeData", "changeDataTop", "sellAmount"],
-    data() {
-      return {
-        changeDataResult: [],
-        tgqReasons: "",
-        reason: "",
-        tgqText: "",
-        orderDetailList: "",
-        passagersChange: [],
-        formData: {
-          appKey: "",
-          changeFlightSegmentList: [],
-          passengerIds: "",
-          flightData: "",
-          changePassagers: "",
-          applyRemarks: "",
-          totalAmount: ""
-        },
-        formRules: {
-          changeCauseId: [
-            {required: true, message: "请选择改签原因", trigger: "change"}
-          ],
-          profit: [
-            {
-              required: true,
-              message: "请选择填写利润金额！",
-              trigger: "blur"
-            }
-          ],
-          applyRemarks: [
-            {
-              required: true,
-              message: "必填！",
-              trigger: "blur"
-            }
-          ],
-          totalAmount: [
-            {
-              required: true,
-              message: "必填！",
-              trigger: "blur"
-            }
-          ]
-        }
-      };
-    },
-    methods: {
-      formatCardType,
-      formatAgeType,
-      // 判断乘客是否可以改签
-      selectable(row, index) {
-        if (row.canChange) {
-          return true;
-        } else {
-          return false;
-        }
+export default {
+  name: "changeTicket",
+  props: ["changeData", "changeDataTop", "sellAmount", "refundChangeRule"],
+  data() {
+    return {
+      changeDataResult: [],
+      tgqReasons: "",
+      reason: "",
+      tgqText: "",
+      orderDetailList: "",
+      passagersChange: [],
+      formData: {
+        appKey: "",
+        changeFlightSegmentList: [],
+        passengerIds: "",
+        flightData: "",
+        changePassagers: "",
+        applyRemarks: "",
+        totalAmount: ""
       },
-
-      // 乘客表格复选框选中处理
-      handlePassagersChange(rows) {
-        let str = "";
-        rows.forEach(row => {
-          str += row.id + ",";
-        });
-        str = str.substring(0, str.length - 1);
-        this.formData.passengerIds = str;
-        this.formData.changePassagers = rows;
-      },
-      // 航班表格选择复选框选中处理
-      handleFlightChange(rows) {
-        this.formData.flightData = rows;
-      },
-      // 改签查询
-      changeSearchData(params) {
-        this.$store
-          .dispatch("order/changeSearch", params)
-          .then(data => {
-            if (data) {
-              this.formData.appKey = data.appKey;
-              this.changeDataResult = data.result;
-              if (this.orderDetailList) {
-                for (let i = 0; i < this.orderDetailList.length; i++) {
-                  data.result.forEach(item => {
-                    if (this.orderDetailList[i].name.indexOf(item.name) != -1) {
-                      this.orderDetailList[i]["id"] = item.id;
-                      this.orderDetailList[i]["canChange"] =
-                        item.changeSearchResult.canChange;
-                    }
-                  });
-                }
-                this.passagersChange = this.orderDetailList;
-              }
-              if (data.result.length > 0) {
-                if (data.result[0].changeSearchResult.tgqReasons) {
-                  this.tgqReasons = data.result[0].changeSearchResult.tgqReasons;
-                }
-                if (data.result[0].changeSearchResult.changeRuleInfo) {
-                  this.tgqText =
-                    data.result[0].changeSearchResult.changeRuleInfo.tgqText;
-                }
-                if (data.result[0].changeSearchResult.reason) {
-                  this.reason = data.result[0].changeSearchResult.reason;
-                }
-              }
-            }
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      },
-      // 改签申请
-      handleSave() {
-        console.log(this.formData, "formData");
-        if (this.formData.changePassagers.length < 1) {
-          this.$notify({
-            title: "提示",
-            message: "请选择需要改签的乘客",
-            type: "warning",
-            duration: 4500
-          });
-          return;
-        }
-        if (this.formData.flightData.length == 0) {
-          this.$notify({
-            title: "提示",
-            message: "请选择需要改签的航班",
-            type: "warning",
-            duration: 4500
-          });
-          return;
-        }
-        if (this.formData.flightData.length > 1) {
-          this.$notify({
-            title: "提示",
-            message: "改签航班只能选择一个",
-            type: "warning",
-            duration: 4500
-          });
-          return;
-        }
-        let adultCount = 0;
-        let childCount = 0;
-
-        this.formData.changePassagers.forEach(item => {
-          if (item.ageType == "0") {
-            adultCount += 1;
-          } else if (item.ageType == "1") {
-            childCount += 1;
+      formRules: {
+        changeCauseId: [
+          { required: true, message: "请选择改签原因", trigger: "change" }
+        ],
+        profit: [
+          {
+            required: true,
+            message: "请选择填写利润金额！",
+            trigger: "blur"
           }
-        });
-        let adultFee = 0;
-        if (adultCount > 0) {
-          adultFee =
-            Number(this.formData.flightData[0].gqFee) * adultCount +
-            Number(this.formData.flightData[0].upgradeFee) * adultCount;
-        }
-        let childFee = 0;
-        if (childCount > 0) {
-          childFee =
-            Number(this.formData.flightData[0].childGqFee) * childCount +
-            Number(this.formData.flightData[0].childUpgradeFee) * childCount;
-        }
-        let totalCount = adultFee + childFee;
-        if (totalCount != this.formData.totalAmount) {
-          this.$notify({
-            title: "提示",
-            message: "改签费计算错误",
-            type: "warning",
-            duration: 4500
-          });
-          return;
-        }
-        let _profit = 0;
-        console.log("changeTotalAmount:" + this.formData.totalAmount);
-        console.log("changeSellAmount:" + this.sellAmount);
-        _profit = Number(this.sellAmount) - Number(this.formData.totalAmount);
-        if (_profit != this.formData.profit) {
-          this.$notify({
-            title: "提示",
-            message: "利润金额计算错误，请重新计算！",
-            type: "warning",
-            duration: 4500
-          });
-          return;
-        }
-        this.$emit("onSavechange", this.formData);
-      },
-      // 改签原因选中处理
-      selectTgqReasons(value) {
-        let code = value;
-        let flightNo = this.changeDataTop.airDivision + this.changeDataTop.flightNum;
-        let actFlightNo = "";
-        this.tgqReasons.forEach(item => {
-          if (item.code === code) {
-            if (item.changeFlightSegmentList) {
-              this.formData.changeFlightSegmentList =
-                item.changeFlightSegmentList;
-            }
+        ],
+        applyRemarks: [
+          {
+            required: true,
+            message: "必填！",
+            trigger: "blur"
           }
-        });
-        this.formData.changeFlightSegmentList.forEach(item => {
-          if (item.flightNo == flightNo) {
-            actFlightNo = item.actFlightNo;
+        ],
+        totalAmount: [
+          {
+            required: true,
+            message: "必填！",
+            trigger: "blur"
           }
-        });
-        var _arr = [];
-        this.formData.changeFlightSegmentList.forEach(item => {
-          if (item.actFlightNo == actFlightNo) {
-            _arr.push(item);
-          }
-        });
-        this.formData.changeFlightSegmentList = _arr;
-      },
-
-      // 格式化日期
-      initDate(dateStr, format) {
-        if (dateStr > 0) {
-          let date = new Date(dateStr);
-          return this.$moment(date).format(format);
-        } else {
-          return "";
-        }
-      },
-      // 格式化乘客
-      formatPassengers(data) {
-        if (!data || data.length == 0) {
-          return "";
-        }
-        let str = "";
-        data.forEach(item => {
-          str += item.name + " / ";
-        });
-
-        return str.substring(0, str.length - 2);
-      },
-      // 格式化航班日期
-      formatFlightDate(data) {
-        if (!data || data.length == 0) {
-          return "";
-        }
-        return this.initDate(data[0].flightDate, "YYYY-MM-DD");
-      },
-      // 格式化金额
-      formatAmount(amount) {
-        if (!amount) {
-          return "￥0.00";
-        }
-        return "￥" + this.$numeral(amount).format("0.00");
+        ]
+      }
+    };
+  },
+  methods: {
+    formatCardType,
+    formatAgeType,
+    // 判断乘客是否可以改签
+    selectable(row, index) {
+      if (row.canChange) {
+        return true;
+      } else {
+        return false;
       }
     },
-    created() {
-      let params = {};
-      params.purchaseOrderNo = this.changeData.sourceOrderNo;
-      params.changeDptDate = this.changeDataTop.flightDate;
-      let arr = [];
-      for (let i = 0; i < this.changeDataTop.passagers.length; i++) {
-        this.changeData.orderDetailList.forEach(item => {
-          if (this.changeDataTop.passagers[i].cardNo.indexOf(item.cardNo) != -1) {
-            arr.push(item);
+
+    // 乘客表格复选框选中处理
+    handlePassagersChange(rows) {
+      let str = "";
+      rows.forEach(row => {
+        str += row.id + ",";
+      });
+      str = str.substring(0, str.length - 1);
+      this.formData.passengerIds = str;
+      this.formData.changePassagers = rows;
+    },
+    // 航班表格选择复选框选中处理
+    handleFlightChange(rows) {
+      this.formData.flightData = rows;
+    },
+    // 改签查询
+    changeSearchData(params) {
+      this.$store
+        .dispatch("order/changeSearch", params)
+        .then(data => {
+          if (data) {
+            this.formData.appKey = data.appKey;
+            this.changeDataResult = data.result;
+            if (this.orderDetailList) {
+              for (let i = 0; i < this.orderDetailList.length; i++) {
+                data.result.forEach(item => {
+                  if (this.orderDetailList[i].name.indexOf(item.name) != -1) {
+                    this.orderDetailList[i]["id"] = item.id;
+                    this.orderDetailList[i]["canChange"] =
+                      item.changeSearchResult.canChange;
+                  }
+                });
+              }
+              this.passagersChange = this.orderDetailList;
+            }
+            if (data.result.length > 0) {
+              if (data.result[0].changeSearchResult.tgqReasons) {
+                this.tgqReasons = data.result[0].changeSearchResult.tgqReasons;
+              }
+              if (data.result[0].changeSearchResult.changeRuleInfo) {
+                this.tgqText =
+                  data.result[0].changeSearchResult.changeRuleInfo.tgqText;
+              }
+              if (data.result[0].changeSearchResult.reason) {
+                this.reason = data.result[0].changeSearchResult.reason;
+              }
+            }
           }
+        })
+        .catch(error => {
+          console.log(error);
         });
+    },
+    // 改签申请
+    handleSave() {
+      console.log(this.formData, "formData");
+      if (this.formData.changePassagers.length < 1) {
+        this.$notify({
+          title: "提示",
+          message: "请选择需要改签的乘客",
+          type: "warning",
+          duration: 4500
+        });
+        return;
       }
-      this.orderDetailList = arr;
-      this.changeSearchData(params);
-      console.log(this.sellAmount, "sellAmount");
+      if (this.formData.flightData.length == 0) {
+        this.$notify({
+          title: "提示",
+          message: "请选择需要改签的航班",
+          type: "warning",
+          duration: 4500
+        });
+        return;
+      }
+      if (this.formData.flightData.length > 1) {
+        this.$notify({
+          title: "提示",
+          message: "改签航班只能选择一个",
+          type: "warning",
+          duration: 4500
+        });
+        return;
+      }
+      let adultCount = 0;
+      let childCount = 0;
+
+      this.formData.changePassagers.forEach(item => {
+        if (item.ageType == "0") {
+          adultCount += 1;
+        } else if (item.ageType == "1") {
+          childCount += 1;
+        }
+      });
+      let adultFee = 0;
+      if (adultCount > 0) {
+        adultFee =
+          Number(this.formData.flightData[0].gqFee) * adultCount +
+          Number(this.formData.flightData[0].upgradeFee) * adultCount;
+      }
+      let childFee = 0;
+      if (childCount > 0) {
+        childFee =
+          Number(this.formData.flightData[0].childGqFee) * childCount +
+          Number(this.formData.flightData[0].childUpgradeFee) * childCount;
+      }
+      let totalCount = adultFee + childFee;
+      if (totalCount != this.formData.totalAmount) {
+        this.$notify({
+          title: "提示",
+          message: "改签费计算错误",
+          type: "warning",
+          duration: 4500
+        });
+        return;
+      }
+      let _profit = 0;
+      console.log("changeTotalAmount:" + this.formData.totalAmount);
+      console.log("changeSellAmount:" + this.sellAmount);
+      _profit = Number(this.sellAmount) - Number(this.formData.totalAmount);
+      if (_profit != this.formData.profit) {
+        this.$notify({
+          title: "提示",
+          message: "利润金额计算错误，请重新计算！",
+          type: "warning",
+          duration: 4500
+        });
+        return;
+      }
+      this.$emit("onSavechange", this.formData);
+    },
+    // 改签原因选中处理
+    selectTgqReasons(value) {
+      let code = value;
+      let flightNo =
+        this.changeDataTop.airDivision + this.changeDataTop.flightNum;
+      let actFlightNo = "";
+      this.tgqReasons.forEach(item => {
+        if (item.code === code) {
+          if (item.changeFlightSegmentList) {
+            this.formData.changeFlightSegmentList =
+              item.changeFlightSegmentList;
+          }
+        }
+      });
+      this.formData.changeFlightSegmentList.forEach(item => {
+        if (item.flightNo == flightNo) {
+          actFlightNo = item.actFlightNo;
+        }
+      });
+      var _arr = [];
+      this.formData.changeFlightSegmentList.forEach(item => {
+        if (item.actFlightNo == actFlightNo) {
+          _arr.push(item);
+        }
+      });
+      this.formData.changeFlightSegmentList = _arr;
+    },
+
+    // 格式化日期
+    initDate(dateStr, format) {
+      if (dateStr > 0) {
+        let date = new Date(dateStr);
+        return this.$moment(date).format(format);
+      } else {
+        return "";
+      }
+    },
+    // 格式化乘客
+    formatPassengers(data) {
+      if (!data || data.length == 0) {
+        return "";
+      }
+      let str = "";
+      data.forEach(item => {
+        str += item.name + " / ";
+      });
+
+      return str.substring(0, str.length - 2);
+    },
+    // 格式化航班日期
+    formatFlightDate(data) {
+      if (!data || data.length == 0) {
+        return "";
+      }
+      return this.initDate(data[0].flightDate, "YYYY-MM-DD");
+    },
+    // 格式化金额
+    formatAmount(amount) {
+      if (!amount) {
+        return "￥0.00";
+      }
+      return "￥" + this.$numeral(amount).format("0.00");
     }
-  };
+  },
+  created() {
+    let params = {};
+    params.purchaseOrderNo = this.changeData.sourceOrderNo;
+    params.changeDptDate = this.changeDataTop.flightDate;
+    let arr = [];
+    for (let i = 0; i < this.changeDataTop.passagers.length; i++) {
+      this.changeData.orderDetailList.forEach(item => {
+        if (this.changeDataTop.passagers[i].cardNo.indexOf(item.cardNo) != -1) {
+          arr.push(item);
+        }
+      });
+    }
+    this.orderDetailList = arr;
+    this.changeSearchData(params);
+    console.log(this.sellAmount, "sellAmount");
+  }
+};
 </script>

@@ -27,9 +27,9 @@ import openApiService from "./modules/openApiService";
 import openAccount from "./modules/openAccount";
 import tgqProduct from "./modules/tgqProduct";
 import pnrjyOrder from "./modules/pnrjyOrder";
-import qunarOrderConfig from "./modules/qunarOrderConfig";
-import qunarOrderNotifyConfig from "./modules/qunarOrderNotifyConfig";
-import qunarPolicyConfig from "./modules/qunarPolicyConfig";
+import qunarOrderConfig from "./modules/otherOrderConfig/qunarOrderConfig";
+import qunarOrderNotifyConfig from "./modules/otherOrderConfig/qunarOrderNotifyConfig";
+import qunarPolicyConfig from "./modules/otherOrderConfig/qunarPolicyConfig";
 import orderStaff from "./modules/orderStaff";
 import category from "./modules/category";
 import dict from "./modules/dict";
@@ -47,12 +47,18 @@ import warehouse from "./modules/warehouse";
 import woniuConfig from "./modules/woniuConfig";
 import qunarOrderController from "./modules/qunarOrderController";
 import product from "./modules/product";
-import productStockKeeping from "./modules/productStockKeeping";
+import productInventory from "./modules/productInventory";
 import productProperty from "./modules/productProperty";
 import brand from "./modules/brand";
 import firmContact from "./modules/firmContact";
 import firmAccount from "./modules/firmAccount";
 import bspConfig from "./modules/bspConfig";
+import productOrder from "./modules/productOrder";
+import productOrderDetail from "./modules/productOrderDetail";
+import bspOrderConfig from "./modules/otherOrderConfig/bspOrderConfig";
+import pnrjyOrderConfig from "./modules/otherOrderConfig/pnrjyOrderConfig";
+import woniuOrderConfig from "./modules/otherOrderConfig/woniuOrderConfig";
+
 import { getLoginInfo } from "@/api/staff";
 
 Vue.use(Vuex);
@@ -105,12 +111,17 @@ export default new Vuex.Store({
     warehouse,
     qunarOrderController,
     product,
-    productStockKeeping,
+    productInventory,
     productProperty,
     brand,
     firmContact,
     firmAccount,
-    bspConfig
+    bspConfig,
+    productOrder,
+    productOrderDetail,
+    bspOrderConfig,
+    pnrjyOrderConfig,
+    woniuOrderConfig,
   },
   state: {
     loginInfo: {}

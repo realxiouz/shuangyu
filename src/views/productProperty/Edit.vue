@@ -35,7 +35,7 @@
         </el-row>
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="属性标题" prop="propertyLabel">
+            <el-form-item label="属性名称" prop="propertyLabel">
               <el-input v-model="formData.propertyLabel"></el-input>
             </el-form-item>
           </el-col>
@@ -178,7 +178,7 @@
         <div v-show="showAddValues">
           <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加属性值</el-button>
           <el-table
-            :data="formData.values"
+            :data="values"
             style="width: 100%;margin-bottom: 15px;"
             size="mini"
             border
@@ -188,7 +188,7 @@
             <el-table-column label="操作" align="center" width="350">
               <template slot-scope="scope">
                 <el-button type="danger" size="mini"
-                           @click="valueRemove(scope.row.code,scope.$index,formData.values)">删除
+                           @click="valueRemove(scope.row.code,scope.$index,values)">删除
                 </el-button>
               </template>
             </el-table-column>
@@ -226,8 +226,7 @@
             propertyLabel: "",
             precision: 0,
             sku: false,
-            valueType: '',
-            values: []
+            valueType: ''
         }
     };
     export default {
@@ -249,6 +248,7 @@
                 propertyId: '',
                 valueType: '',
                 test: {},
+                values: [],
                 categoryList: [],
                 rules: {
                     categoryName: [
@@ -346,11 +346,18 @@
             handleSave() {
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
-                        if (!(this.valueType == 7 || this.valueType == 8 || this.valueType == 9)) {
-                            this.formData.values = [];
+                        if (this.values.length > 0) {
+                            let map = {};
+                            for (let i = 0, len = this.values.length; i < len; i++) {
+                                map[this.values[i].code] = this.values[i].value;
+                            }
+                            this.formData.values = map;
                         }
                         this.$store
-                            .dispatch("productProperty/save", this.formData)
+                            .dispatch("productProperty/save", {
+                                property: this.formData,
+                                valueList: this.values
+                            })
                             .then(() => {
                             })
                             .catch(error => {
@@ -369,8 +376,21 @@
                     this.$store
                         .dispatch("productProperty/getOne", {propertyId: id})
                         .then(data => {
-                            this.formData = data;
-                            this.valueTypeChange(this.formData.valueType);
+                            if (data) {
+                                this.formData = data;
+                                this.valueTypeChange(this.formData.valueType);
+                                if (data.values != null) {
+                                    let array = [];
+                                    let map = data.values;
+                                    for (let key in map) {
+                                        let data = {};
+                                        data.code = key;
+                                        data.value = map[key];
+                                        array.push(data)
+                                    }
+                                    this.values = array;
+                                }
+                            }
                         }).catch(error => {
                         console.log(error);
                     });
@@ -402,7 +422,7 @@
                     this.$message("请填写完整属性信息！")
                     return false;
                 }
-                this.formData.values.push(this.formValue);
+                this.values.push(this.formValue);
                 this.dialogVisible = false;
                 this.formValue = {};
             },

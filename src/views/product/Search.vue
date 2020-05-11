@@ -7,8 +7,28 @@
             <el-input
               clearable
               @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.propertyName"
+              v-model="formData.productName"
               placeholder="请输入商品名称搜索..."
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="品牌名称:">
+            <el-input
+              clearable
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.brandName"
+              placeholder="请输入品牌搜索..."
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="商品类目:">
+            <el-input
+              clearable
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.categoryName"
+              placeholder="请输入商品类目..."
             ></el-input>
           </el-form-item>
         </el-col>
@@ -53,7 +73,9 @@
         methods: {
             initSearchForm() {
                 return {
-                    propertyName: null
+                    productName: null,
+                    brandName: null,
+                    categoryName: null
                 };
             },
             handleMore() {
