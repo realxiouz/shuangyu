@@ -75,7 +75,7 @@
               >
                 {{ tag.name }}
                 <span
-                  v-if="isActive(tag)&&tag.name!='首页'"
+                  v-if="tag.name!='首页'"
                   @click.prevent.stop="handleClose(tag)"
                   class="el-icon-close"
                 />
@@ -412,5 +412,30 @@ export default {
 
 body .el-container {
   height: 100%;
+}
+</style>
+
+<style lang="scss">
+.tags-view-wrapper {
+  .tags-view-item {
+    .el-icon-close {
+      width: 16px;
+      height: 16px;
+      vertical-align: 2px;
+      border-radius: 50%;
+      text-align: center;
+      transition: all .3s cubic-bezier(.645, .045, .355, 1);
+      transform-origin: 100% 50%;
+      &:before {
+        transform: scale(.6);
+        display: inline-block;
+        vertical-align: -3px;
+      }
+      &:hover {
+        background-color: #909399;
+        color: #fff;
+      }
+    }
+  }
 }
 </style>
