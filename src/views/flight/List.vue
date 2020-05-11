@@ -114,8 +114,8 @@
         </el-table-column>
         <el-table-column prop="airlineCode" label="航司" width="100" align="center"></el-table-column>
         <el-table-column prop="flightCode" label="航班号" align="center"></el-table-column>
-        <el-table-column prop="dptAirport" label="出发机场" align="center"></el-table-column>
-        <el-table-column prop="arrAirport" label="到达机场" width="100" align="center"></el-table-column>
+        <el-table-column prop="dpt" label="出发机场" align="center"></el-table-column>
+        <el-table-column prop="arr" label="到达机场" width="100" align="center"></el-table-column>
         <el-table-column prop="dptTime" label="起飞时间" width="100" align="center">
           <template slot-scope="scope">
             <span>{{ formatTime(scope.row.dptTime)}}</span>

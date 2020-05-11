@@ -58,10 +58,14 @@ export default {
   computed: {
     _cabins: {
       get: function() {
-        return this.formData.cabins.join(",");
+        if (this.formData.cabins) {
+          return this.formData.cabins.join(",");
+        }
       },
       set: function(newValue) {
-        this.formData.cabins = newValue.split(",");
+        if (newValue) {
+          this.formData.cabins = newValue.split(" , ");
+        }
       }
     }
   },
@@ -87,7 +91,6 @@ export default {
           .then(data => {
             this.formData = data;
             this.formData.cabinNames = this.formData.cabins.join(",");
-            console.log(this.formData);
           })
           .catch(error => {
             console.log(error);

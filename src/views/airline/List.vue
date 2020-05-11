@@ -15,9 +15,13 @@
         size="mini"
         v-loading="loading"
       >
-        <el-table-column prop="airlineName" label="航司名称" align="center"></el-table-column>
-        <el-table-column prop="airlineCode" label="航司二字码" align="center"></el-table-column>
-        <el-table-column prop="cabins" label="舱位" align="center"></el-table-column>
+        <el-table-column prop="airlineName" width="180" label="航司名称" align="center"></el-table-column>
+        <el-table-column prop="airlineCode" width="180" label="航司二字码" align="center"></el-table-column>
+        <el-table-column prop="cabins" label="舱位" align="center">
+          <template slot-scope="scope">
+            <span v-html="formatcabins(scope.row.cabins)"></span>
+          </template>
+        </el-table-column>
         <el-table-column label="操作" align="center" width="200">
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary" size="small">编辑</el-button>
@@ -171,6 +175,16 @@ export default {
         type: "success",
         message: "查询成功！"
       });
+    },
+    formatcabins(data) {
+      if (!data) {
+        return "";
+      }
+      let str = "";
+      data.forEach(item => {
+        str += item + " , ";
+      });
+      return str.substring(0, str.length - 2);
     }
   },
   mounted() {
