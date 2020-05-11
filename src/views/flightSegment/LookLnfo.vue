@@ -1,11 +1,11 @@
 <template>
   <div>
     <div v-if="isFlights">
-      <span v-if="flights" v-html="_flightsData"></span>
+      <span v-if="flights" v-html="_flightsData" style="line-height:1.5;"></span>
       <span v-else>此航司没有航班信息</span>
     </div>
     <div v-else>
-      <span v-if="segments" v-html="_segmentsData"></span>
+      <span v-if="segments" v-html="_segmentsData" style="line-height:1.5;"></span>
       <span v-else>此航司没有航段信息</span>
     </div>
 
