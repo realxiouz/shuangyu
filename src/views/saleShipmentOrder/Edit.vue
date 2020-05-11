@@ -404,7 +404,7 @@
             },
             //加载可供选择的销售订单
             loadSaleOrders(){
-                this.$store.dispatch("productOrder/getList", {filter: {}})
+                this.$store.dispatch("productOrder/getList", {filter: {orderType: 1}})
                     .then(data => {
                         this.saleOrderList = data;
                     })
@@ -463,6 +463,7 @@
                 });
             },
             selectedSaleOrder(item){
+                this.customerSelected = false;
                 this.loadSaleOrder(item);
             },
             handleAddProduct() {
