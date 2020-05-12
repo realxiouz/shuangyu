@@ -18,20 +18,21 @@
       >
         <el-table-column type="index" align="center"></el-table-column>
         <el-table-column prop="orderNo" label="订单号" width="240" align="center"></el-table-column>
-        <el-table-column prop="orderType" width="90" label="订单状态" align="center">
-          <template slot-scope="scope">
-            <span v-if="scope.row.orderType==10">出票完成</span>
-            <span v-if="scope.row.orderType==20">退票完成</span>
-            <span v-if="scope.row.orderType==30">改签完成</span>
-          </template>
-        </el-table-column>
+        <el-table-column
+          prop="orderType"
+          :formatter="formatOrderType"
+          width="90"
+          label="订单状态"
+          align="center"
+        ></el-table-column>
 
-        <el-table-column prop="category" width="90" label="订单类型" align="center">
-          <template slot-scope="scope">
-            <span v-if="scope.row.category==1">采购单</span>
-            <span v-else>销售单</span>
-          </template>
-        </el-table-column>
+        <el-table-column
+          prop="category"
+          :formatter="formatCategory"
+          width="90"
+          label="订单类型"
+          align="center"
+        ></el-table-column>
         <el-table-column prop="ticketNo" width="120" label="票号" align="center"></el-table-column>
 
         <el-table-column label="起飞-到达" width="100" align="center">
@@ -54,8 +55,17 @@
             <span>{{ formatDate(scope.row.ticketTime,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
+        <el-table-column prop="transactionTime" width="160" label="交易时间" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatDate(scope.row.transactionTime,'YYYY-MM-DD HH:mm:ss')}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="finishTime" width="160" label="交易完成时间" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatDate(scope.row.finishTime,'YYYY-MM-DD HH:mm:ss')}}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="pnr" label="PNR" align="center"></el-table-column>
-        <el-table-column prop="policySource" label="政策ID" align="center"></el-table-column>
         <el-table-column fixed="right" label="操作" width="180" align="center">
           <template slot-scope="scope">
             <el-button disabled @click="handleEdit(scope.row)" type="primary" size="mini">查看</el-button>
@@ -123,20 +133,20 @@ export default {
       this.loadData(this.searchParams);
     },
     prevClick(page) {
+      this.currentPage = page;
       this.searchParams.pageSize = this.pageSize;
       this.searchParams.currentPage = this.currentPage;
       this.loadData(this.searchParams);
     },
     nextClick(page) {
+      this.currentPage = page;
       this.searchParams.pageSize = this.pageSize;
       this.searchParams.currentPage = this.currentPage;
       this.loadData(this.searchParams);
     },
     loadData(params) {
       this.$store
-        .dispatch("bspOrderConfig/getList", {
-          filters: params
-        })
+        .dispatch("bspOrderConfig/getList", { filters: params })
         .then(data => {
           if (data) {
             this.loadTotal(params);
@@ -152,9 +162,7 @@ export default {
     },
     loadTotal(params) {
       this.$store
-        .dispatch("bspOrderConfig/getTotal", {
-          filters: params
-        })
+        .dispatch("bspOrderConfig/getTotal", { filters: params })
         .then(data => {
           if (data) {
             this.total = data;
@@ -171,30 +179,30 @@ export default {
       return data.dpt + " - " + data.arr;
     },
     handleSearch(params) {
-      if (!params) {
-        params = {};
-        this.searchParams = params;
-        this.loadData(this.searchParams);
-      } else {
-        const newParams = {};
-        for (let key in params) {
-          if (params[key] && _.isArray(params[key])) {
-            let start = "start" + key.charAt(0).toUpperCase() + key.slice(1);
-            let end = "end" + key.charAt(0).toUpperCase() + key.slice(1);
-            newParams[start] = params[key][0];
-            newParams[end] = params[key][1];
-          } else if (params[key]) {
-            newParams[key] = params[key];
-          }
-        }
-        this.searchParams = newParams;
-        this.searchParams.pageSize = this.pageSize;
-        this.loadData(this.searchParams);
-        this.$message({
-          type: "success",
-          message: "查询成功！"
-        });
-      }
+      // if (!params) {
+      //   params = {};
+      //   this.searchParams = params;
+      //   this.loadData(this.searchParams);
+      // } else {
+      //   const newParams = {};
+      //   for (let key in params) {
+      //     if (params[key] && _.isArray(params[key])) {
+      //       let start = "start" + key.charAt(0).toUpperCase() + key.slice(1);
+      //       let end = "end" + key.charAt(0).toUpperCase() + key.slice(1);
+      //       newParams[start] = params[key][0];
+      //       newParams[end] = params[key][1];
+      //     } else if (params[key]) {
+      //       newParams[key] = params[key];
+      //     }
+      //   }
+      //   this.searchParams = newParams;
+      //   this.searchParams.pageSize = this.pageSize;
+      //   this.loadData(this.searchParams);
+      //   this.$message({
+      //     type: "success",
+      //     message: "查询成功！"
+      //   });
+      // }
     },
     formatDate(dateStr, format) {
       if (dateStr > 0) {

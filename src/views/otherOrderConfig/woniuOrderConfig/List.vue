@@ -124,9 +124,23 @@ export default {
     formatFlightNo,
     formatFlight,
     formatAmount,
-    handleSizeChange() {},
-    prevClick() {},
-    nextClick() {},
+    handleSizeChange(size) {
+      this.pageSize = size;
+      this.searchParams.pageSize = this.pageSize;
+      this.loadData(this.searchParams);
+    },
+    prevClick(page) {
+      this.currentPage = page;
+      this.searchParams.pageSize = this.pageSize;
+      this.searchParams.currentPage = this.currentPage;
+      this.loadData(this.searchParams);
+    },
+    nextClick(page) {
+      this.currentPage = page;
+      this.searchParams.pageSize = this.pageSize;
+      this.searchParams.currentPage = this.currentPage;
+      this.loadData(this.searchParams);
+    },
     loadData() {},
     handleSearch(params) {
       if (!params) {

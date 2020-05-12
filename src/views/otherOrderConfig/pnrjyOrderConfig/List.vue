@@ -4,45 +4,67 @@
       <pnrjy-order-config-search @onSearch="handleSearch" />
     </div>
     <div class="contentBox">
-      <el-row style="margin-bottom:15px;margin-left:23px">
+      <!-- <el-row style="margin-bottom:15px;margin-left:23px">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
-      </el-row>
+      </el-row>-->
       <el-table
         :data="tableData"
         size="mini"
         highlight-current-row
         style="width: 100%;margin-bottom:15px"
         v-loading="loading"
-        show-summary
         max-height="650"
         fit
       >
         <el-table-column type="index" align="center"></el-table-column>
         <el-table-column prop="sourceOrderNo" label="订单号" width="180" align="center"></el-table-column>
-        <el-table-column label="航程类型" width="100" align="center"></el-table-column>
+        <el-table-column prop="orderType" :formatter="formatOrderType" width="90" label="订单状态" align="center">
+        </el-table-column>
+        <el-table-column prop="category" width="90" :formatter="formatCategory" label="订单类型" align="center">
+        </el-table-column>
+        <el-table-column label="航程类型" :formatter="formatVoyageType" width="100" align="center"></el-table-column>
         <el-table-column prop="ticketNo" width="180" label="票号" align="center"></el-table-column>
-        <el-table-column prop="createTime" width="90" label="订单日期" align="center"></el-table-column>
         <el-table-column prop="name" label="乘机人" width="90" align="center"></el-table-column>
+        <el-table-column prop="ageType" label="乘机人类型" :formatter="formatAgeType" width="90" align="center"></el-table-column>
+
         <el-table-column label="起飞-到达" width="90" align="center">
           <template slot-scope="scope">
-            <span v-html="formatFlight2(scope.row.flight)"></span>
+            <span v-html="formatFlight(scope.row)"></span>
           </template>
         </el-table-column>
-        <el-table-column label="航班日期/航班号" width="150" align="center">
+        <el-table-column prop="constructionFee" label="机建费" width="80" align="center">
           <template slot-scope="scope">
-            <span v-html="formatFlighCode(scope.row.flight)"></span>
+            <span>{{ formatAmount(scope.row.constructionFee)}}</span>
           </template>
         </el-table-column>
+        <el-table-column prop="fuelTax" label="燃油费" width="80" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatAmount(scope.row.fuelTax)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="flightCode" label="航班号" width="150" align="center"></el-table-column>
         <el-table-column prop="cabin" label="舱位" width="150" align="center"></el-table-column>
         <el-table-column prop="pnr" label="PNR" align="center"></el-table-column>
-        <el-table-column label="总价/人数" width="150" align="center">
+        <el-table-column prop="amount" label="价格" align="center">
           <template slot-scope="scope">
-            <span v-html="formatAmountAndPeople(scope.row.passenger)"></span>
+            <span>{{ formatAmount(scope.row.amount)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="viewPrice" label="票面价" align="center"></el-table-column>
-        <el-table-column prop="status" label="订单状态" :formatter="formatQunarStatus" align="center"></el-table-column>
-        <el-table-column prop="policySource" label="政策ID" align="center"></el-table-column>
+        <el-table-column prop="viewPrice" label="票面价" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatAmount(scope.row.viewPrice)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="transactionTime" width="160" label="交易时间" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatDate(scope.row.transactionTime,'YYYY-MM-DD HH:mm:ss')}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="finishTime" width="160" label="交易完成时间" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatDate(scope.row.finishTime,'YYYY-MM-DD HH:mm:ss')}}</span>
+          </template>
+        </el-table-column>
         <el-table-column fixed="right" label="操作" width="180" align="center">
           <template slot-scope="scope">
             <el-button disabled @click="handleEdit(scope.row)" type="primary" size="mini">查看</el-button>
@@ -71,7 +93,9 @@ import pnrjyOrderConfigSearch from "./Search";
 import {
   formatCategory,
   formatOrderType,
-  formatVoyageType
+  formatVoyageType,
+  formatAgeType
+
 } from "@/utils/status.js";
 import {
   formatPassengers,
@@ -102,6 +126,7 @@ export default {
     pnrjyOrderConfigSearch
   },
   methods: {
+    formatAgeType,
     formatCategory,
     formatOrderType,
     formatVoyageType,
@@ -119,15 +144,24 @@ export default {
       this.searchParams.pageSize = this.pageSize;
       this.loadData(this.searchParams);
     },
-    prevClick() {},
-    nextClick() {},
+    prevClick(page) {
+      this.currentPage = page;
+      this.searchParams.pageSize = this.pageSize;
+      this.searchParams.currentPage = this.currentPage;
+      this.loadData(this.searchParams);
+    },
+    nextClick(page) {
+      this.currentPage = page;
+      this.searchParams.pageSize = this.pageSize;
+      this.searchParams.currentPage = this.currentPage;
+      this.loadData(this.searchParams);
+    },
     loadData(params) {
       this.$store
-        .dispatch("pnrjyOrderConfig/getList", {
-          filters: params
-        })
+        .dispatch("pnrjyOrderConfig/getList", { filters: params })
         .then(data => {
           if (data) {
+            console.log(data);
             this.loadTotal(params);
             this.tableData = data;
           }
@@ -140,9 +174,7 @@ export default {
     },
     loadTotal(params) {
       this.$store
-        .dispatch("pnrjyOrderConfig/getTotal", {
-          filters: params
-        })
+        .dispatch("pnrjyOrderConfig/getTotal", { filters: params })
         .then(data => {
           if (data) {
             this.total = data;
@@ -178,7 +210,20 @@ export default {
         });
       }
     },
-    handleAdd() {},
+    formatFlight(data) {
+      if (!data) {
+        return "";
+      }
+      return data.dpt + " - " + data.arr;
+    },
+    formatDate(dateStr, format) {
+      if (dateStr > 0) {
+        let date = new Date(dateStr);
+        return this.$moment(date).format(format);
+      } else {
+        return "";
+      }
+    },
     handleSave(formData) {},
     handleCancel() {},
     handleEdit(row) {},
