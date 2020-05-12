@@ -22,6 +22,20 @@
             }
         }
     }
+    .js-dispatchMsgReply {
+        .rows {
+            .label-info {
+                .g-ipt {
+                    input {
+                        margin-top: 5px;
+                        margin-bottom: 15px;
+                        height: 50px;
+                        width: 40%;
+                    }
+                }
+            }
+        }
+    }
 }
 
 /* 拒绝退款弹框样式 */
