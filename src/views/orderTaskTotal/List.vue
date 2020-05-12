@@ -116,7 +116,7 @@
         </el-table-column>
         <el-table-column prop="duration" label="持续时长" width="110" align="center">
           <template slot-scope="scope">
-            <span>{{ formatDate(scope.row.duration,' HH 小时mm 分钟') }}</span>
+            <span>{{ formatDuration(scope.row.duration) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="remark" fixed="right" width="200" label="备注" align="center"></el-table-column>
@@ -390,6 +390,25 @@ export default {
         type: "success",
         message: "查询成功！"
       });
+    },
+    formatDuration(data) {
+      if (!data) {
+        return "";
+      } else {
+        let hours = parseInt(data / (1000 * 60 * 60));
+        let minutes = parseInt((data % (1000 * 60 * 60)) / (1000 * 60));
+        let seconds = parseInt((data % (1000 * 60)) / 1000);
+        let str = "";
+        if (hours > 0) {
+          str = hours + " 小时 " + minutes + " 分钟 " + seconds + " 秒 ";
+        }
+        if (minutes > 0) {
+          str = minutes + " 分钟 " + seconds + " 秒 ";
+        } else {
+          str = seconds + " 秒 ";
+        }
+        return str;
+      }
     }
   },
   created() {
