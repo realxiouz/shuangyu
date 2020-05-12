@@ -13,12 +13,11 @@
         highlight-current-row
         style="width: 100%;margin-bottom:15px"
         v-loading="loading"
-        show-summary
         max-height="650"
         fit
       >
         <el-table-column type="index" align="center"></el-table-column>
-        <el-table-column prop="orderNo" label="订单号" width="180" align="center"></el-table-column>
+        <el-table-column prop="orderNo" label="订单号" width="240" align="center"></el-table-column>
         <el-table-column prop="createTime" width="90" label="订单日期" align="center"></el-table-column>
         <el-table-column label="乘机人" width="90" align="center">
           <template slot-scope="scope">
@@ -121,6 +120,7 @@ export default {
         .then(data => {
           if (data) {
             this.loadTotal(params);
+            console.log(data,"daa")
             this.tableData = data;
           }
           this.loading = false;
@@ -130,7 +130,7 @@ export default {
           console.log(error);
         });
     },
-    loadDloadTotalata(params) {
+    loadTotal(params) {
       this.$store
         .dispatch("bspOrderConfig/getTotal", {
           filters: params

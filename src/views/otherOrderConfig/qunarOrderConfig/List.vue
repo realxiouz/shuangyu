@@ -141,7 +141,7 @@ export default {
           console.log(error);
         });
     },
-    loadDloadTotalata(params) {
+    loadTotal(params) {
       this.$store
         .dispatch("qunarOrderConfig/getTotal", {
           filters: params

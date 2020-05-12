@@ -14,7 +14,7 @@ export function getTotal(params) {
   return request({
     url: '/qunar/order/get/total',
     method: 'get',
-    params
+    params: params
   });
 }
 
