@@ -18,21 +18,43 @@
       >
         <el-table-column type="index" align="center"></el-table-column>
         <el-table-column prop="orderNo" label="订单号" width="240" align="center"></el-table-column>
-        <el-table-column prop="createTime" width="90" label="订单日期" align="center"></el-table-column>
-        <el-table-column label="乘机人" width="90" align="center">
+        <el-table-column prop="orderType" width="90" label="订单状态" align="center">
           <template slot-scope="scope">
-            <span v-html="formatPassengers(scope.row.passenger)"></span>
+            <span v-if="scope.row.orderType==10">出票完成</span>
+            <span v-if="scope.row.orderType==20">退票完成</span>
+            <span v-if="scope.row.orderType==30">改签完成</span>
           </template>
         </el-table-column>
-        <el-table-column prop="ticketNo" width="90" label="票号" align="center"></el-table-column>
 
-        <el-table-column label="起飞-到达" width="90" align="center">
+        <el-table-column prop="category" width="90" label="订单类型" align="center">
           <template slot-scope="scope">
-            <span v-html="formatFlight2(scope.row.flight)"></span>
+            <span v-if="scope.row.category==1">采购单</span>
+            <span v-else>销售单</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="ticketNo" width="120" label="票号" align="center"></el-table-column>
+
+        <el-table-column label="起飞-到达" width="100" align="center">
+          <template slot-scope="scope">
+            <span v-html="formatFlight(scope.row)"></span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="constructionFee" label="机建费" width="80" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatAmount(scope.row.constructionFee)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="fuelTax" label="燃油费" width="80" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatAmount(scope.row.fuelTax)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="出票时间" width="100" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatDate(scope.row.ticketTime,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="pnr" label="PNR" align="center"></el-table-column>
-        <el-table-column prop="status" label="订单状态" :formatter="formatQunarStatus" align="center"></el-table-column>
         <el-table-column prop="policySource" label="政策ID" align="center"></el-table-column>
         <el-table-column fixed="right" label="操作" width="180" align="center">
           <template slot-scope="scope">
@@ -65,12 +87,7 @@ import {
   formatVoyageType
 } from "@/utils/status.js";
 import {
-  formatPassengers,
   formatTicketNo,
-  formatFlightDate,
-  formatFlightNo,
-  formatFlight2,
-  formatFlighCode,
   formatAmount,
   formatAmountAndPeople,
   formatQunarStatus
@@ -96,12 +113,7 @@ export default {
     formatCategory,
     formatOrderType,
     formatVoyageType,
-    formatPassengers,
     formatTicketNo,
-    formatFlightDate,
-    formatFlightNo,
-    formatFlight2,
-    formatFlighCode,
     formatAmount,
     formatAmountAndPeople,
     formatQunarStatus,
@@ -110,8 +122,16 @@ export default {
       this.searchParams.pageSize = this.pageSize;
       this.loadData(this.searchParams);
     },
-    prevClick() {},
-    nextClick() {},
+    prevClick(page) {
+      this.searchParams.pageSize = this.pageSize;
+      this.searchParams.currentPage = this.currentPage;
+      this.loadData(this.searchParams);
+    },
+    nextClick(page) {
+      this.searchParams.pageSize = this.pageSize;
+      this.searchParams.currentPage = this.currentPage;
+      this.loadData(this.searchParams);
+    },
     loadData(params) {
       this.$store
         .dispatch("bspOrderConfig/getList", {
@@ -120,7 +140,7 @@ export default {
         .then(data => {
           if (data) {
             this.loadTotal(params);
-            console.log(data,"daa")
+            console.log(data, "daa");
             this.tableData = data;
           }
           this.loading = false;
@@ -143,6 +163,12 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+    formatFlight(data) {
+      if (!data) {
+        return "";
+      }
+      return data.dpt + " - " + data.arr;
     },
     handleSearch(params) {
       if (!params) {
@@ -168,6 +194,14 @@ export default {
           type: "success",
           message: "查询成功！"
         });
+      }
+    },
+    formatDate(dateStr, format) {
+      if (dateStr > 0) {
+        let date = new Date(dateStr);
+        return this.$moment(date).format(format);
+      } else {
+        return "";
       }
     },
     handleAdd() {},

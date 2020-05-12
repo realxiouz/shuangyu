@@ -305,51 +305,51 @@ export default {
         });
         return;
       }
-      let adultCount = 0;
-      let childCount = 0;
+      // let adultCount = 0;
+      // let childCount = 0;
 
-      this.formData.changePassagers.forEach(item => {
-        if (item.ageType == "0") {
-          adultCount += 1;
-        } else if (item.ageType == "1") {
-          childCount += 1;
-        }
-      });
-      let adultFee = 0;
-      if (adultCount > 0) {
-        adultFee =
-          Number(this.formData.flightData[0].gqFee) * adultCount +
-          Number(this.formData.flightData[0].upgradeFee) * adultCount;
-      }
-      let childFee = 0;
-      if (childCount > 0) {
-        childFee =
-          Number(this.formData.flightData[0].childGqFee) * childCount +
-          Number(this.formData.flightData[0].childUpgradeFee) * childCount;
-      }
-      let totalCount = adultFee + childFee;
-      if (totalCount != this.formData.totalAmount) {
-        this.$notify({
-          title: "提示",
-          message: "改签费计算错误",
-          type: "warning",
-          duration: 4500
-        });
-        return;
-      }
-      let _profit = 0;
-      console.log("changeTotalAmount:" + this.formData.totalAmount);
-      console.log("changeSellAmount:" + this.sellAmount);
-      _profit = Number(this.sellAmount) - Number(this.formData.totalAmount);
-      if (_profit != this.formData.profit) {
-        this.$notify({
-          title: "提示",
-          message: "利润金额计算错误，请重新计算！",
-          type: "warning",
-          duration: 4500
-        });
-        return;
-      }
+      // this.formData.changePassagers.forEach(item => {
+      //   if (item.ageType == "0") {
+      //     adultCount += 1;
+      //   } else if (item.ageType == "1") {
+      //     childCount += 1;
+      //   }
+      // });
+      // let adultFee = 0;
+      // if (adultCount > 0) {
+      //   adultFee =
+      //     Number(this.formData.flightData[0].gqFee) * adultCount +
+      //     Number(this.formData.flightData[0].upgradeFee) * adultCount;
+      // }
+      // let childFee = 0;
+      // if (childCount > 0) {
+      //   childFee =
+      //     Number(this.formData.flightData[0].childGqFee) * childCount +
+      //     Number(this.formData.flightData[0].childUpgradeFee) * childCount;
+      // }
+      // let totalCount = adultFee + childFee;
+      // if (totalCount != this.formData.totalAmount) {
+      //   this.$notify({
+      //     title: "提示",
+      //     message: "改签费计算错误",
+      //     type: "warning",
+      //     duration: 4500
+      //   });
+      //   return;
+      // }
+      // let _profit = 0;
+      // console.log("changeTotalAmount:" + this.formData.totalAmount);
+      // console.log("changeSellAmount:" + this.sellAmount);
+      // _profit = Number(this.sellAmount) - Number(this.formData.totalAmount);
+      // if (_profit != this.formData.profit) {
+      //   this.$notify({
+      //     title: "提示",
+      //     message: "利润金额计算错误，请重新计算！",
+      //     type: "warning",
+      //     duration: 4500
+      //   });
+      //   return;
+      // }
       this.$emit("onSavechange", this.formData);
     },
     // 改签原因选中处理
