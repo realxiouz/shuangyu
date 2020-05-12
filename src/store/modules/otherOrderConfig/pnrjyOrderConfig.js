@@ -1,12 +1,14 @@
 import {
-  save,
+  getList,
+  getTotal,
   exportOrder
 } from '@/api/otherOrderConfig/pnrjyOrderConfig';
 
 const actions = {
-  save({ commit }, params) {
+  // 查询原始单
+  getList({ commit }, params) {
     return new Promise((resolve, reject) => {
-      save(params)
+      getList(params)
         .then(response => {
           const { data } = response;
           resolve(data);
@@ -16,6 +18,22 @@ const actions = {
         });
     });
   },
+
+  // 查询原始单数量
+  getTotal({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      getTotal(params)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+
+  //导单 
   exportOrder({ commit }, params) {
     // const {orderType, file} = params;
     return new Promise((resolve, reject) => {

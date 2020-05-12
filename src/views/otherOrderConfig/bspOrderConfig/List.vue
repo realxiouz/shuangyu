@@ -1,7 +1,7 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <qunar-order-config-search @onSearch="handleSearch" />
+      <bsp-order-config-search @onSearch="handleSearch" />
     </div>
     <div class="contentBox">
       <el-row style="margin-bottom:15px;margin-left:23px">
@@ -14,51 +14,27 @@
         style="width: 100%;margin-bottom:15px"
         v-loading="loading"
         show-summary
-        :summary-method="getSummaries"
         max-height="650"
         fit
       >
         <el-table-column type="index" align="center"></el-table-column>
-        <el-table-column prop="domain" label="订单号" width="180" align="center"></el-table-column>
-        <el-table-column label="类型" width="100" align="center">
-          <template slot-scope="scope">
-            <span style="margin-left: 10px">{{ formatFirmData(scope.row.firmId) }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="订单日期" align="center">
-          <template slot-scope="scope">
-            <span style="margin-left: 10px">{{ formatPartyData(scope.row.thirdId) }}</span>
-          </template>
-        </el-table-column>
-
+        <el-table-column prop="orderNo" label="订单号" width="180" align="center"></el-table-column>
+        <el-table-column prop="createTime" width="90" label="订单日期" align="center"></el-table-column>
         <el-table-column label="乘机人" width="90" align="center">
-          <!-- <template slot-scope="scope">
-            <span v-html="formatFlight(scope.row.flights)"></span>
-          </template>-->
+          <template slot-scope="scope">
+            <span v-html="formatPassengers(scope.row.passenger)"></span>
+          </template>
         </el-table-column>
-        <el-table-column label="票号" width="90" align="center">
-          <!-- <template slot-scope="scope">
-            <span v-html="formatFlight(scope.row.flights)"></span>
-          </template>-->
-        </el-table-column>
+        <el-table-column prop="ticketNo" width="90" label="票号" align="center"></el-table-column>
+
         <el-table-column label="起飞-到达" width="90" align="center">
-          <!-- <template slot-scope="scope">
-            <span v-html="formatFlight(scope.row.flights)"></span>
-          </template>-->
+          <template slot-scope="scope">
+            <span v-html="formatFlight2(scope.row.flight)"></span>
+          </template>
         </el-table-column>
-        <el-table-column label="航班日期/航班号" width="150" align="center">
-          <!-- <template slot-scope="scope">
-            <span v-html="formatFlight(scope.row.flights)"></span>
-          </template>-->
-        </el-table-column>
-
-        <el-table-column prop="user" label="PNR" align="center"></el-table-column>
-        <el-table-column prop="ips" label="总价/人数" align="center"></el-table-column>
-        <el-table-column prop label="订单状态" align="center"></el-table-column>
-        <el-table-column prop label="政策ID" align="center"></el-table-column>
-        <el-table-column prop label="是否退差额" align="center"></el-table-column>
-        <el-table-column prop label="锁定人" align="center"></el-table-column>
-
+        <el-table-column prop="pnr" label="PNR" align="center"></el-table-column>
+        <el-table-column prop="status" label="订单状态" :formatter="formatQunarStatus" align="center"></el-table-column>
+        <el-table-column prop="policySource" label="政策ID" align="center"></el-table-column>
         <el-table-column fixed="right" label="操作" width="180" align="center">
           <template slot-scope="scope">
             <el-button disabled @click="handleEdit(scope.row)" type="primary" size="mini">查看</el-button>
@@ -83,7 +59,7 @@
 </template>
 
 <script>
-import qunarOrderConfigSearch from "./Search";
+import bspOrderConfigSearch from "./Search";
 import {
   formatCategory,
   formatOrderType,
@@ -94,15 +70,18 @@ import {
   formatTicketNo,
   formatFlightDate,
   formatFlightNo,
-  formatFlight,
-  formatAmount
+  formatFlight2,
+  formatFlighCode,
+  formatAmount,
+  formatAmountAndPeople,
+  formatQunarStatus
 } from "@/utils/orderFormdata.js";
 
 export default {
   name: "qunarOrderConfig",
   data() {
     return {
-      loading: false,
+      loading: true,
       tableData: [],
       currentPage: 1,
       pageSize: 10,
@@ -112,7 +91,7 @@ export default {
     };
   },
   components: {
-    qunarOrderConfigSearch
+    bspOrderConfigSearch
   },
   methods: {
     formatCategory,
@@ -122,12 +101,49 @@ export default {
     formatTicketNo,
     formatFlightDate,
     formatFlightNo,
-    formatFlight,
+    formatFlight2,
+    formatFlighCode,
     formatAmount,
-    handleSizeChange() {},
+    formatAmountAndPeople,
+    formatQunarStatus,
+    handleSizeChange(size) {
+      this.pageSize = size;
+      this.searchParams.pageSize = this.pageSize;
+      this.loadData(this.searchParams);
+    },
     prevClick() {},
     nextClick() {},
-    loadData() {},
+    loadData(params) {
+      this.$store
+        .dispatch("bspOrderConfig/getList", {
+          filters: params
+        })
+        .then(data => {
+          if (data) {
+            this.loadTotal(params);
+            this.tableData = data;
+          }
+          this.loading = false;
+        })
+        .catch(error => {
+          this.loading = false;
+          console.log(error);
+        });
+    },
+    loadDloadTotalata(params) {
+      this.$store
+        .dispatch("bspOrderConfig/getTotal", {
+          filters: params
+        })
+        .then(data => {
+          if (data) {
+            this.total = data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     handleSearch(params) {
       if (!params) {
         params = {};
@@ -154,26 +170,6 @@ export default {
         });
       }
     },
-    getSummaries(params) {
-      const { columns, data } = params;
-      const sums = [];
-      columns.forEach((item, index) => {
-        if (index === 0) {
-          sums[index] = "统计";
-          return;
-        }
-        switch (item.property !== "" && item.property) {
-          case "amount":
-            sums[index] =
-              "￥" + this.$numeral(this.count.amount).format("0,0.00");
-            break;
-          default:
-            sums[index] = "";
-            break;
-        }
-      });
-      return sums;
-    },
     handleAdd() {},
     handleSave(formData) {},
     handleCancel() {},
@@ -181,7 +177,7 @@ export default {
     handleDelete(row) {}
   },
   created() {
-    this.loadData();
+    this.loadData(this.searchParams);
   }
 };
 </script>

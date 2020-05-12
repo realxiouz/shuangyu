@@ -14,27 +14,18 @@
         style="width: 100%;margin-bottom:15px"
         v-loading="loading"
         show-summary
-        :summary-method="getSummaries"
         max-height="650"
         fit
       >
         <el-table-column type="index" align="center"></el-table-column>
         <el-table-column prop="orderNo" label="订单号" width="180" align="center"></el-table-column>
-
-        <el-table-column label="类型" width="100" align="center">
-          <!-- <template slot-scope="scope">
-            <span style="margin-left: 10px">{{ formatFirmData(scope.row.firmId) }}</span>
-          </template>-->
-        </el-table-column>
+        <el-table-column label="类型" width="100" align="center"></el-table-column>
         <el-table-column prop="createTime" width="90" label="订单日期" align="center"></el-table-column>
-
         <el-table-column label="乘机人" width="90" align="center">
           <template slot-scope="scope">
             <span v-html="formatPassengers(scope.row.passenger)"></span>
           </template>
         </el-table-column>
-        <!-- <el-table-column label="票号" width="90" align="center">
-        </el-table-column> -->
         <el-table-column label="起飞-到达" width="90" align="center">
           <template slot-scope="scope">
             <span v-html="formatFlight2(scope.row.flight)"></span>
@@ -45,14 +36,16 @@
             <span v-html="formatFlighCode(scope.row.flight)"></span>
           </template>
         </el-table-column>
-
         <el-table-column prop="pnr" label="PNR" align="center"></el-table-column>
-        <el-table-column prop="ips" label="总价/人数" align="center"></el-table-column>
-        <el-table-column prop="status" label="订单状态" align="center"></el-table-column>
+        <el-table-column label="总价/人数" width="150" align="center">
+          <template slot-scope="scope">
+            <span v-html="formatAmountAndPeople(scope.row.passenger)"></span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="status" label="订单状态" :formatter="formatQunarStatus" align="center"></el-table-column>
         <el-table-column prop="policySource" label="政策ID" align="center"></el-table-column>
         <el-table-column prop label="是否退差额" align="center"></el-table-column>
         <el-table-column prop label="锁定人" align="center"></el-table-column>
-
         <el-table-column fixed="right" label="操作" width="180" align="center">
           <template slot-scope="scope">
             <el-button disabled @click="handleEdit(scope.row)" type="primary" size="mini">查看</el-button>
@@ -90,14 +83,16 @@ import {
   formatFlightNo,
   formatFlight2,
   formatFlighCode,
-  formatAmount
+  formatAmount,
+  formatAmountAndPeople,
+  formatQunarStatus
 } from "@/utils/orderFormdata.js";
 
 export default {
   name: "qunarOrderConfig",
   data() {
     return {
-      loading: false,
+      loading: true,
       tableData: [],
       currentPage: 1,
       pageSize: 10,
@@ -120,7 +115,13 @@ export default {
     formatFlight2,
     formatFlighCode,
     formatAmount,
-    handleSizeChange() {},
+    formatAmountAndPeople,
+    formatQunarStatus,
+    handleSizeChange(size) {
+      this.pageSize = size;
+      this.searchParams.pageSize = this.pageSize;
+      this.loadData(this.searchParams);
+    },
     prevClick() {},
     nextClick() {},
     loadData(params) {
@@ -130,13 +131,27 @@ export default {
         })
         .then(data => {
           if (data) {
-            // this.loadTotal(params);
+            this.loadTotal(params);
             this.tableData = data;
           }
           this.loading = false;
         })
         .catch(error => {
           this.loading = false;
+          console.log(error);
+        });
+    },
+    loadDloadTotalata(params) {
+      this.$store
+        .dispatch("qunarOrderConfig/getTotal", {
+          filters: params
+        })
+        .then(data => {
+          if (data) {
+            this.total = data;
+          }
+        })
+        .catch(error => {
           console.log(error);
         });
     },
@@ -166,26 +181,26 @@ export default {
         });
       }
     },
-    getSummaries(params) {
-      const { columns, data } = params;
-      const sums = [];
-      columns.forEach((item, index) => {
-        if (index === 0) {
-          sums[index] = "统计";
-          return;
-        }
-        switch (item.property !== "" && item.property) {
-          case "amount":
-            sums[index] =
-              "￥" + this.$numeral(this.count.amount).format("0,0.00");
-            break;
-          default:
-            sums[index] = "";
-            break;
-        }
-      });
-      return sums;
-    },
+    // getSummaries(params) {
+    //   const { columns, data } = params;
+    //   const sums = [];
+    //   columns.forEach((item, index) => {
+    //     if (index === 0) {
+    //       sums[index] = "统计";
+    //       return;
+    //     }
+    //     switch (item.property !== "" && item.property) {
+    //       case "amount":
+    //         sums[index] =
+    //           "￥" + this.$numeral(this.count.amount).format("0,0.00");
+    //         break;
+    //       default:
+    //         sums[index] = "";
+    //         break;
+    //     }
+    //   });
+    //   return sums;
+    // },
     handleAdd() {},
     handleSave(formData) {},
     handleCancel() {},
