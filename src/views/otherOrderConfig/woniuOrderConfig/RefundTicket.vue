@@ -40,18 +40,6 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination
-      @size-change="handleSizeChange"
-      @prev-click="prevClick"
-      @next-click="nextClick"
-      :current-page="currentPage"
-      background
-      layout="total,sizes,prev,next"
-      prev-text="上一页"
-      next-text="下一页"
-      :page-size="pageSize"
-      :total="total"
-    ></el-pagination>
   </div>
 </template>
 
@@ -73,13 +61,9 @@ import {
 
 export default {
   name: "goTicket",
-  props:['tableData'],
+  props:['tableData',"loading"],
   data() {
     return {
-      loading: false,
-      currentPage: 1,
-      pageSize: 10,
-      total: 0,
       searchParams: {},
     };
   },
@@ -96,28 +80,6 @@ export default {
     formatFlightNo,
     formatFlight,
     formatAmount,
-    handleSizeChange(size) {
-      this.pageSize = size;
-      this.searchParams.pageSize = this.pageSize;
-      this.searchParams.orderType = 20;
-
-      this.$emit("onLoadData", this.searchParams);
-    },
-    prevClick(page) {
-      this.currentPage = page;
-      this.searchParams.pageSize = this.pageSize;
-      this.searchParams.currentPage = this.currentPage;
-      this.searchParams.orderType = 20;
-
-      this.$emit("onLoadData", this.searchParams);
-    },
-    nextClick(page) {
-      this.currentPage = page;
-      this.searchParams.pageSize = this.pageSize;
-      this.searchParams.currentPage = this.currentPage;
-      this.searchParams.orderType = 20;
-      this.$emit("onLoadData", this.searchParams);
-    },
     handleSearch(params) {
       if (!params) {
         params = {};
