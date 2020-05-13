@@ -35,7 +35,7 @@
         ></el-table-column>
         <el-table-column prop="ticketNo" width="120" label="票号" align="center"></el-table-column>
 
-        <el-table-column label="起飞-到达" width="100" align="center">
+        <el-table-column label="起飞-到达" width="110" align="center">
           <template slot-scope="scope">
             <span v-html="formatFlight(scope.row)"></span>
           </template>
@@ -150,7 +150,6 @@ export default {
         .then(data => {
           if (data) {
             this.loadTotal(params);
-            console.log(data, "daa");
             this.tableData = data;
           }
           this.loading = false;
@@ -176,33 +175,37 @@ export default {
       if (!data) {
         return "";
       }
-      return data.dpt + " - " + data.arr;
+      if (data.arr && data.dpt) {
+        return data.dpt + " - " + data.arr;
+      } else {
+        return data.dpt;
+      }
     },
     handleSearch(params) {
-      // if (!params) {
-      //   params = {};
-      //   this.searchParams = params;
-      //   this.loadData(this.searchParams);
-      // } else {
-      //   const newParams = {};
-      //   for (let key in params) {
-      //     if (params[key] && _.isArray(params[key])) {
-      //       let start = "start" + key.charAt(0).toUpperCase() + key.slice(1);
-      //       let end = "end" + key.charAt(0).toUpperCase() + key.slice(1);
-      //       newParams[start] = params[key][0];
-      //       newParams[end] = params[key][1];
-      //     } else if (params[key]) {
-      //       newParams[key] = params[key];
-      //     }
-      //   }
-      //   this.searchParams = newParams;
-      //   this.searchParams.pageSize = this.pageSize;
-      //   this.loadData(this.searchParams);
-      //   this.$message({
-      //     type: "success",
-      //     message: "查询成功！"
-      //   });
-      // }
+      if (!params) {
+        params = {};
+        this.searchParams = params;
+        this.loadData(this.searchParams);
+      } else {
+        const newParams = {};
+        for (let key in params) {
+          if (params[key] && _.isArray(params[key])) {
+            let start = "start" + key.charAt(0).toUpperCase() + key.slice(1);
+            let end = "end" + key.charAt(0).toUpperCase() + key.slice(1);
+            newParams[start] = params[key][0];
+            newParams[end] = params[key][1];
+          } else if (params[key]) {
+            newParams[key] = params[key];
+          }
+        }
+        this.searchParams = newParams;
+        this.searchParams.pageSize = this.pageSize;
+        this.loadData(this.searchParams);
+        this.$message({
+          type: "success",
+          message: "查询成功！"
+        });
+      }
     },
     formatDate(dateStr, format) {
       if (dateStr > 0) {

@@ -13,16 +13,6 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="源单号:">
-            <el-input
-              clearable
-              @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.sourceOrderNo"
-              style="width: 100%"
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="票号:">
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
@@ -32,7 +22,7 @@
             ></el-input>
           </el-form-item>
         </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+        <!-- <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="订单日期:">
             <el-col>
               <el-date-picker
@@ -48,7 +38,7 @@
               ></el-date-picker>
             </el-col>
           </el-form-item>
-        </el-col>
+        </el-col> -->
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="订单分类:">
             <el-select style="width: 100%;" clearable v-model="formData.category" placeholder="请选择">
@@ -58,105 +48,11 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="订单类型:">
+          <el-form-item v-show="more" label="订单状态:">
             <el-select clearable v-model="formData.orderType" placeholder="全部" style="width: 100%">
-              <el-option
-                v-for="item in orderType"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="乘机人:">
-            <el-input
-              @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.name"
-              style="width: 100%"
-              clearable
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="证件号:">
-            <el-input
-              @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.cardNo"
-              clearable
-              style="width: 100%"
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="政策代码:">
-            <el-input
-              @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.policyCode"
-              style="width: 100%"
-              clearable
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="航班号:">
-            <el-input
-              @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.flightCode"
-              clearable
-              style="width: 100%"
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="航司:">
-            <el-input
-              clearable
-              @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.airlineCode"
-              style="width: 100%"
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="航班日期:">
-            <el-col>
-              <el-date-picker
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-                type="daterange"
-                placeholder="选择日期"
-                :unlink-panels="true"
-                v-model="formData.flightDate"
-                style="width: 100%;"
-                format="yyyy-MM-dd"
-                value-format="yyyy-MM-dd"
-              ></el-date-picker>
-            </el-col>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="舱位:">
-            <el-input
-              @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.cabin"
-              clearable
-              style="width: 100%"
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="航程类型:">
-            <el-select
-              style="width: 100%;"
-              clearable
-              v-model="formData.voyageType"
-              placeholder="请选择"
-            >
-              <el-option label="单程" value="0"></el-option>
-              <el-option label="往返" value="1"></el-option>
-              <el-option label="连程" value="2"></el-option>
+              <el-option label="出票" value="10"></el-option>
+              <el-option label="退票" value="20"></el-option>
+              <el-option label="改签" value="30"></el-option>
             </el-select>
           </el-form-item>
         </el-col>

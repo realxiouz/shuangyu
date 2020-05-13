@@ -163,3 +163,59 @@ export function formatQunarStatus(row) {
             return "";
     }
 }
+
+
+export const qunarStatus = [
+    {
+        value: "PAY_OK",
+        label: "支付成功等待出票"
+    },
+    {
+        value: "TICKET_LOCK",
+        label: "出票中"
+    },
+    {
+        value: "TICKET_OK",
+        label: "出票完成"
+    },
+    {
+        value: "CANCEL_OK",
+        label: "订单取消"
+    },
+    {
+        value: "APPLY_CHANGE",
+        label: "改签申请中"
+    },
+
+    {
+        value: "CHANGE_OK",
+        label: "改签完成"
+    },
+    {
+        value: "APPLY_4_RETURN_PAY",
+        label: "未出票申请退款"
+    },
+    {
+        value: "APPLY_REFUNDMENT",
+        label: "退票申请中"
+    },
+    {
+        value: "WAIT_REFUNDMENT",
+        label: "退票完成等待退款"
+    },
+    {
+        value: "REFUND_OK",
+        label: "退款完成"
+    }, {
+        value: "WAIT_CONFIRM",
+        label: "等待座位确认"
+    },
+    {
+        value: "ORDER_SUCCESS_WAIT_4_PRICE_CONFIRM",
+        label: "订座成功等待价格确认"
+    },
+    {
+        value: "BOOK_OK",
+        label: "订座成功等待支付"
+    },
+]

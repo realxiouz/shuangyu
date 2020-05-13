@@ -211,10 +211,14 @@ export default {
       }
     },
     formatFlight(data) {
-      if (!data) {
+     if (!data) {
         return "";
       }
-      return data.dpt + " - " + data.arr;
+      if (data.arr && data.dpt) {
+        return data.dpt + " - " + data.arr;
+      } else {
+        return data.dpt;
+      }
     },
     formatDate(dateStr, format) {
       if (dateStr > 0) {

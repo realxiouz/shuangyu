@@ -13,27 +13,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="源单号:">
-            <el-input
-              clearable
-              @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.sourceOrderNo"
-              style="width: 100%"
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="票号:">
-            <el-input
-              @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.ticketNo"
-              style="width: 100%"
-              clearable
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="订单日期:">
+          <el-form-item label="订单日期:">
             <el-col>
               <el-date-picker
                 start-placeholder="开始日期"
@@ -58,10 +38,10 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="订单类型:">
-            <el-select clearable v-model="formData.orderType" placeholder="全部" style="width: 100%">
+          <el-form-item v-show="more" label="订单状态:">
+            <el-select clearable v-model="formData.status" placeholder="请选择" style="width: 100%">
               <el-option
-                v-for="item in orderType"
+                v-for="item in qunarStatus"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
@@ -83,7 +63,7 @@
           <el-form-item v-show="more" label="证件号:">
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.cardNo"
+              v-model="formData.cardNum"
               clearable
               style="width: 100%"
             ></el-input>
@@ -93,7 +73,7 @@
           <el-form-item v-show="more" label="政策代码:">
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.policyCode"
+              v-model="formData.policySource"
               style="width: 100%"
               clearable
             ></el-input>
@@ -103,7 +83,7 @@
           <el-form-item v-show="more" label="航班号:">
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.flightCode"
+              v-model="formData.code"
               clearable
               style="width: 100%"
             ></el-input>
@@ -187,14 +167,15 @@
 </template>
 
 <script>
-import { orderType } from "@/utils/status.js";
+import { qunarStatus } from "@/utils/orderFormdata.js";
+
 
 export default {
   name: "qunarOrderSearch",
   data() {
     return {
       more: false,
-      orderType: orderType,
+      qunarStatus: qunarStatus,
       formData: this.initSearchForm()
     };
   },
