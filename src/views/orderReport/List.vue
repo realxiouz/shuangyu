@@ -28,6 +28,11 @@
             <span v-html="formatPassengers(scope.row.passengers)"></span>
           </template>
         </el-table-column>
+        <el-table-column label="舱位" width="80" align="center">
+          <template slot-scope="scope">
+            <span>{{ scope.row.flights[0].cabin}}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="ticketNos" label="票号" width="120" align="center">
           <template slot-scope="scope">
             <span v-html="formatTicketNo(scope.row.ticketNos)"></span>
@@ -84,10 +89,19 @@
             <span v-html="formatFlight(scope.row.flights)"></span>
           </template>
         </el-table-column>
-
         <el-table-column label="交易金额" prop="transactionAmount" width="150" align="center">
           <template slot-scope="scope">
             <span>{{ formatAmount(scope.row.transactionAmount)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="交易时间" width="100" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatDate(scope.row.transactionTime,'YYYY-MM-DD') }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="业务完结时间" width="100" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatDate(scope.row.finishTime,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="amount" label="总价" width="150" align="center">

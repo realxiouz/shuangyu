@@ -310,6 +310,7 @@
           @onSaveTicket="handleSaveTicket"
           @onSave="handleSave"
           :passengerData="handlePassengersInfo"
+          :salesAmountTotal="this.tableData.amount"
           :flightData="flightData"
           :sell-amount="ticketSellAmount"
           :task-type="taskType"
@@ -1208,7 +1209,8 @@ export default {
           cardType: item.cardType,
           gender: item.gender,
           name: item.name,
-          viewPrice: item.viewPrice
+          viewPrice: item.viewPrice,
+          _amount:item.amount
         };
         temp.push(obj);
       });

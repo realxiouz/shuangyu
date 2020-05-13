@@ -1,7 +1,7 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <qunar-order-config-search @onSearch="handleSearch" />
+      <bsp-order-config-search @onSearch="handleSearch" />
     </div>
     <div class="contentBox">
       <el-row style="margin-bottom:15px;margin-left:23px">
@@ -13,52 +13,59 @@
         highlight-current-row
         style="width: 100%;margin-bottom:15px"
         v-loading="loading"
-        show-summary
-        :summary-method="getSummaries"
         max-height="650"
         fit
       >
         <el-table-column type="index" align="center"></el-table-column>
-        <el-table-column prop="domain" label="订单号" width="180" align="center"></el-table-column>
-        <el-table-column label="类型" width="100" align="center">
+        <el-table-column prop="orderNo" label="订单号" width="240" align="center"></el-table-column>
+        <el-table-column
+          prop="orderType"
+          :formatter="formatOrderType"
+          width="90"
+          label="订单状态"
+          align="center"
+        ></el-table-column>
+
+        <el-table-column
+          prop="category"
+          :formatter="formatCategory"
+          width="90"
+          label="订单类型"
+          align="center"
+        ></el-table-column>
+        <el-table-column prop="ticketNo" width="120" label="票号" align="center"></el-table-column>
+
+        <el-table-column label="起飞-到达" width="110" align="center">
           <template slot-scope="scope">
-            <span style="margin-left: 10px">{{ formatFirmData(scope.row.firmId) }}</span>
+            <span v-html="formatFlight(scope.row)"></span>
           </template>
         </el-table-column>
-        <el-table-column label="订单日期" align="center">
+        <el-table-column prop="constructionFee" label="机建费" width="80" align="center">
           <template slot-scope="scope">
-            <span style="margin-left: 10px">{{ formatPartyData(scope.row.thirdId) }}</span>
+            <span>{{ formatAmount(scope.row.constructionFee)}}</span>
           </template>
         </el-table-column>
-
-        <el-table-column label="乘机人" width="90" align="center">
-          <!-- <template slot-scope="scope">
-            <span v-html="formatFlight(scope.row.flights)"></span>
-          </template>-->
+        <el-table-column prop="fuelTax" label="燃油费" width="80" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatAmount(scope.row.fuelTax)}}</span>
+          </template>
         </el-table-column>
-        <el-table-column label="票号" width="90" align="center">
-          <!-- <template slot-scope="scope">
-            <span v-html="formatFlight(scope.row.flights)"></span>
-          </template>-->
+        <el-table-column label="出票时间" width="100" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatDate(scope.row.ticketTime,'YYYY-MM-DD') }}</span>
+          </template>
         </el-table-column>
-        <el-table-column label="起飞-到达" width="90" align="center">
-          <!-- <template slot-scope="scope">
-            <span v-html="formatFlight(scope.row.flights)"></span>
-          </template>-->
+        <el-table-column prop="transactionTime" width="160" label="交易时间" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatDate(scope.row.transactionTime,'YYYY-MM-DD HH:mm:ss')}}</span>
+          </template>
         </el-table-column>
-        <el-table-column label="航班日期/航班号" width="150" align="center">
-          <!-- <template slot-scope="scope">
-            <span v-html="formatFlight(scope.row.flights)"></span>
-          </template>-->
+        <el-table-column prop="finishTime" width="160" label="交易完成时间" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatDate(scope.row.finishTime,'YYYY-MM-DD HH:mm:ss')}}</span>
+          </template>
         </el-table-column>
-
-        <el-table-column prop="user" label="PNR" align="center"></el-table-column>
-        <el-table-column prop="ips" label="总价/人数" align="center"></el-table-column>
-        <el-table-column prop label="订单状态" align="center"></el-table-column>
-        <el-table-column prop label="政策ID" align="center"></el-table-column>
-        <el-table-column prop label="是否退差额" align="center"></el-table-column>
-        <el-table-column prop label="锁定人" align="center"></el-table-column>
-
+        <el-table-column prop="pnr" label="PNR" align="center"></el-table-column>
         <el-table-column fixed="right" label="操作" width="180" align="center">
           <template slot-scope="scope">
             <el-button disabled @click="handleEdit(scope.row)" type="primary" size="mini">查看</el-button>
@@ -83,51 +90,96 @@
 </template>
 
 <script>
-import qunarOrderConfigSearch from "./Search";
+import bspOrderConfigSearch from "./Search";
 import {
   formatCategory,
   formatOrderType,
   formatVoyageType
 } from "@/utils/status.js";
 import {
-  formatPassengers,
   formatTicketNo,
-  formatFlightDate,
-  formatFlightNo,
-  formatFlight,
-  formatAmount
+  formatAmount,
+  formatAmountAndPeople,
+  formatQunarStatus
 } from "@/utils/orderFormdata.js";
 
 export default {
   name: "qunarOrderConfig",
   data() {
     return {
-      loading: false,
+      loading: true,
       tableData: [],
       currentPage: 1,
       pageSize: 10,
       total: 0,
       searchParams: {},
-      count: []
     };
   },
   components: {
-    qunarOrderConfigSearch
+    bspOrderConfigSearch
   },
   methods: {
     formatCategory,
     formatOrderType,
     formatVoyageType,
-    formatPassengers,
     formatTicketNo,
-    formatFlightDate,
-    formatFlightNo,
-    formatFlight,
     formatAmount,
-    handleSizeChange() {},
-    prevClick() {},
-    nextClick() {},
-    loadData() {},
+    formatAmountAndPeople,
+    formatQunarStatus,
+    handleSizeChange(size) {
+      this.pageSize = size;
+      this.searchParams.pageSize = this.pageSize;
+      this.loadData(this.searchParams);
+    },
+    prevClick(page) {
+      this.currentPage = page;
+      this.searchParams.pageSize = this.pageSize;
+      this.searchParams.currentPage = this.currentPage;
+      this.loadData(this.searchParams);
+    },
+    nextClick(page) {
+      this.currentPage = page;
+      this.searchParams.pageSize = this.pageSize;
+      this.searchParams.currentPage = this.currentPage;
+      this.loadData(this.searchParams);
+    },
+    loadData(params) {
+      this.$store
+        .dispatch("bspOrderConfig/getList", { filters: params })
+        .then(data => {
+          if (data) {
+            this.loadTotal(params);
+            this.tableData = data;
+          }
+          this.loading = false;
+        })
+        .catch(error => {
+          this.loading = false;
+          console.log(error);
+        });
+    },
+    loadTotal(params) {
+      this.$store
+        .dispatch("bspOrderConfig/getTotal", { filters: params })
+        .then(data => {
+          if (data) {
+            this.total = data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    formatFlight(data) {
+      if (!data) {
+        return "";
+      }
+      if (data.arr && data.dpt) {
+        return data.dpt + " - " + data.arr;
+      } else {
+        return data.dpt;
+      }
+    },
     handleSearch(params) {
       if (!params) {
         params = {};
@@ -154,25 +206,13 @@ export default {
         });
       }
     },
-    getSummaries(params) {
-      const { columns, data } = params;
-      const sums = [];
-      columns.forEach((item, index) => {
-        if (index === 0) {
-          sums[index] = "统计";
-          return;
-        }
-        switch (item.property !== "" && item.property) {
-          case "amount":
-            sums[index] =
-              "￥" + this.$numeral(this.count.amount).format("0,0.00");
-            break;
-          default:
-            sums[index] = "";
-            break;
-        }
-      });
-      return sums;
+    formatDate(dateStr, format) {
+      if (dateStr > 0) {
+        let date = new Date(dateStr);
+        return this.$moment(date).format(format);
+      } else {
+        return "";
+      }
     },
     handleAdd() {},
     handleSave(formData) {},
@@ -181,7 +221,7 @@ export default {
     handleDelete(row) {}
   },
   created() {
-    this.loadData();
+    this.loadData(this.searchParams);
   }
 };
 </script>

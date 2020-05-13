@@ -51,6 +51,42 @@
             </el-col>
           </el-form-item>
         </el-col>
+
+        <!-- <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-if="showData" label="收款时间:">
+            <el-col>
+              <el-date-picker
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                type="daterange"
+                :unlink-panels="true"
+                placeholder="选择日期"
+                v-model="formData.createTime"
+                style="width: 100%;"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+              ></el-date-picker>
+            </el-col>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-if="!showData" label="付款时间:">
+            <el-col>
+              <el-date-picker
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                type="daterange"
+                :unlink-panels="true"
+                placeholder="选择日期"
+                v-model="formData.createTime"
+                style="width: 100%;"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+              ></el-date-picker>
+            </el-col>
+          </el-form-item>
+        </el-col> -->
+
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="订单号:">
             <el-input
@@ -128,7 +164,7 @@
               style="width: 100%"
             ></el-input>
           </el-form-item>
-        </el-col> -->
+        </el-col>-->
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="平台账号:">
             <el-input

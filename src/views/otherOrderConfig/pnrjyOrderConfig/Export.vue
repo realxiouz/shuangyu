@@ -2,15 +2,15 @@
   <div class="contentBox">
     <el-form :rules="formRules" ref="formData" :model="formData" label-width="110px" size="mini">
       <el-row>
-      <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-        <el-form-item label="导单类型:" prop="orderType">
-          <el-select v-model="formData.orderType" placeholder="请选择">
-            <el-option label="出票" :value="0"></el-option>
-            <el-option label="退票" :value="1"></el-option>
-            <el-option label="改签" :value="2"></el-option>
-          </el-select>
-        </el-form-item>
-      </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="导单类型:" prop="orderType">
+            <el-select v-model="formData.orderType" placeholder="请选择">
+              <el-option label="出票" :value="0"></el-option>
+              <el-option label="退票" :value="1"></el-option>
+              <el-option label="改签" :value="2"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
       </el-row>
       <el-row>
         <el-form-item label="选择文件:">
@@ -74,10 +74,20 @@ export default {
           this.$store
             .dispatch("pnrjyOrderConfig/exportOrder", form)
             .then(data => {
-              alert("上传成功");
+              this.$notify({
+                title: "提示",
+                message: "上传成功",
+                type: "success",
+                duration: 4500
+              });
             })
             .catch(error => {
-              alert("上传失败");
+              this.$notify({
+                title: "提示",
+                message: "上传失败",
+                type: "warning",
+                duration: 4500
+              });
             });
         }
       });

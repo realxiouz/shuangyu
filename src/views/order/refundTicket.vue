@@ -224,20 +224,20 @@ export default {
       });
     },
     handleSave() {
-      let _profit = 0;
-      let count = this.selectPassenger.length;
-      _profit =
-        Number(this.formData.refundFeeInfo.returnRefundFee) * count +
-        Number(this.sellAmount);
-      if (_profit != this.formData.profit) {
-        this.$notify({
-          title: "提示",
-          message: "利润金额计算错误，请重新计算！",
-          type: "warning",
-          duration: 4500
-        });
-        return;
-      }
+      // let _profit = 0;
+      // let count = this.selectPassenger.length;
+      // _profit =
+      //   Number(this.formData.refundFeeInfo.returnRefundFee) * count +
+      //   Number(this.sellAmount);
+      // if (_profit != this.formData.profit) {
+      //   this.$notify({
+      //     title: "提示",
+      //     message: "利润金额计算错误，请重新计算！",
+      //     type: "warning",
+      //     duration: 4500
+      //   });
+      //   return;
+      // }
       this.$emit("onSaveRefund", this.formData);
     },
 

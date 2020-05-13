@@ -502,6 +502,13 @@ export default new Router({
           meta: { title: '去哪儿订单管理', icon: 'home' }
         },
         {
+          title: '去哪儿导单',
+          path: '/qunar/order/export',
+          name: 'qunarOrderExport',
+          component: () => import('@/views/otherOrderConfig/qunarOrderConfig/Export'),
+          meta: { title: '去哪儿订单管理', icon: 'home' }
+        },
+        {
           title: '去哪儿订单通知管理',
           path: '/qunar/order/notify',
           name: 'qunarOrderNotify',
@@ -659,6 +666,13 @@ export default new Router({
           name: 'property',
           component: () => import('@/views/productProperty/List'),
           meta: { title: '商品属性管理', icon: 'home' }
+        },
+        {
+          title: '商品功能管理',
+          path: '/feature/list',
+          name: 'feature',
+          component: () => import('@/views/productFeature/List'),
+          meta: { title: '商品功能管理', icon: 'home' }
         },
         {
           title: '添加商品属性',
