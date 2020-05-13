@@ -4,8 +4,9 @@ const actions = {
 
   // 查询原始单
   getList({ commit }, params) {
+    const { filters } = params;
     return new Promise((resolve, reject) => {
-      getList(params)
+      getList(filters)
         .then(response => {
           const { data } = response;
           resolve(data);
@@ -18,8 +19,9 @@ const actions = {
 
   // 查询原始单数量
   getTotal({ commit }, params) {
+    const { filters } = params;
     return new Promise((resolve, reject) => {
-      getTotal(params)
+      getTotal(filters)
         .then(response => {
           const { data } = response;
           resolve(data);
@@ -31,9 +33,9 @@ const actions = {
   },
 
   // 根据原始单号导单
-  exportOrderNo({ commit }, params) {
+  exportOrderNo({ commit }, sourceOrderNo) {
     return new Promise((resolve, reject) => {
-      exportOrderNo(params)
+      exportOrderNo(sourceOrderNo)
         .then(response => {
           resolve(response);
         })

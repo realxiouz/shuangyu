@@ -13,13 +13,12 @@
         highlight-current-row
         style="width: 100%;margin-bottom:15px"
         v-loading="loading"
-        show-summary
         max-height="650"
         fit
       >
         <el-table-column type="index" align="center"></el-table-column>
         <el-table-column prop="orderNo" label="订单号" width="180" align="center"></el-table-column>
-        <el-table-column label="类型" width="100" align="center"></el-table-column>
+        <!-- <el-table-column label="类型" width="100" align="center"></el-table-column> -->
         <el-table-column prop="createTime" width="90" label="订单日期" align="center"></el-table-column>
         <el-table-column label="乘机人" width="90" align="center">
           <template slot-scope="scope">
@@ -71,11 +70,7 @@
 
 <script>
 import qunarOrderConfigSearch from "./Search";
-import {
-  formatCategory,
-  formatOrderType,
-  formatVoyageType
-} from "@/utils/status.js";
+import { formatOrderType, formatVoyageType } from "@/utils/status.js";
 import {
   formatPassengers,
   formatTicketNo,
@@ -105,7 +100,6 @@ export default {
     qunarOrderConfigSearch
   },
   methods: {
-    formatCategory,
     formatOrderType,
     formatVoyageType,
     formatPassengers,
@@ -122,13 +116,21 @@ export default {
       this.searchParams.pageSize = this.pageSize;
       this.loadData(this.searchParams);
     },
-    prevClick() {},
-    nextClick() {},
+    prevClick(page) {
+      this.currentPage = page;
+      this.searchParams.pageSize = this.pageSize;
+      this.searchParams.currentPage = this.currentPage;
+      this.loadData(this.searchParams);
+    },
+    nextClick(page) {
+      this.currentPage = page;
+      this.searchParams.pageSize = this.pageSize;
+      this.searchParams.currentPage = this.currentPage;
+      this.loadData(this.searchParams);
+    },
     loadData(params) {
       this.$store
-        .dispatch("qunarOrderConfig/getList", {
-          filters: params
-        })
+        .dispatch("qunarOrderConfig/getList", { filters: params })
         .then(data => {
           if (data) {
             this.loadTotal(params);
@@ -141,11 +143,9 @@ export default {
           console.log(error);
         });
     },
-    loadDloadTotalata(params) {
+    loadTotal(params) {
       this.$store
-        .dispatch("qunarOrderConfig/getTotal", {
-          filters: params
-        })
+        .dispatch("qunarOrderConfig/getTotal", { filters: params })
         .then(data => {
           if (data) {
             this.total = data;

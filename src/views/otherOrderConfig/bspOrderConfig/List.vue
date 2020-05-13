@@ -13,28 +13,59 @@
         highlight-current-row
         style="width: 100%;margin-bottom:15px"
         v-loading="loading"
-        show-summary
         max-height="650"
         fit
       >
         <el-table-column type="index" align="center"></el-table-column>
-        <el-table-column prop="orderNo" label="订单号" width="180" align="center"></el-table-column>
-        <el-table-column prop="createTime" width="90" label="订单日期" align="center"></el-table-column>
-        <el-table-column label="乘机人" width="90" align="center">
+        <el-table-column prop="orderNo" label="订单号" width="240" align="center"></el-table-column>
+        <el-table-column
+          prop="orderType"
+          :formatter="formatOrderType"
+          width="90"
+          label="订单状态"
+          align="center"
+        ></el-table-column>
+
+        <el-table-column
+          prop="category"
+          :formatter="formatCategory"
+          width="90"
+          label="订单类型"
+          align="center"
+        ></el-table-column>
+        <el-table-column prop="ticketNo" width="120" label="票号" align="center"></el-table-column>
+
+        <el-table-column label="起飞-到达" width="100" align="center">
           <template slot-scope="scope">
-            <span v-html="formatPassengers(scope.row.passenger)"></span>
+            <span v-html="formatFlight(scope.row)"></span>
           </template>
         </el-table-column>
-        <el-table-column prop="ticketNo" width="90" label="票号" align="center"></el-table-column>
-
-        <el-table-column label="起飞-到达" width="90" align="center">
+        <el-table-column prop="constructionFee" label="机建费" width="80" align="center">
           <template slot-scope="scope">
-            <span v-html="formatFlight2(scope.row.flight)"></span>
+            <span>{{ formatAmount(scope.row.constructionFee)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="fuelTax" label="燃油费" width="80" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatAmount(scope.row.fuelTax)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="出票时间" width="100" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatDate(scope.row.ticketTime,'YYYY-MM-DD') }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="transactionTime" width="160" label="交易时间" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatDate(scope.row.transactionTime,'YYYY-MM-DD HH:mm:ss')}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="finishTime" width="160" label="交易完成时间" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatDate(scope.row.finishTime,'YYYY-MM-DD HH:mm:ss')}}</span>
           </template>
         </el-table-column>
         <el-table-column prop="pnr" label="PNR" align="center"></el-table-column>
-        <el-table-column prop="status" label="订单状态" :formatter="formatQunarStatus" align="center"></el-table-column>
-        <el-table-column prop="policySource" label="政策ID" align="center"></el-table-column>
         <el-table-column fixed="right" label="操作" width="180" align="center">
           <template slot-scope="scope">
             <el-button disabled @click="handleEdit(scope.row)" type="primary" size="mini">查看</el-button>
@@ -66,12 +97,7 @@ import {
   formatVoyageType
 } from "@/utils/status.js";
 import {
-  formatPassengers,
   formatTicketNo,
-  formatFlightDate,
-  formatFlightNo,
-  formatFlight2,
-  formatFlighCode,
   formatAmount,
   formatAmountAndPeople,
   formatQunarStatus
@@ -97,12 +123,7 @@ export default {
     formatCategory,
     formatOrderType,
     formatVoyageType,
-    formatPassengers,
     formatTicketNo,
-    formatFlightDate,
-    formatFlightNo,
-    formatFlight2,
-    formatFlighCode,
     formatAmount,
     formatAmountAndPeople,
     formatQunarStatus,
@@ -111,16 +132,25 @@ export default {
       this.searchParams.pageSize = this.pageSize;
       this.loadData(this.searchParams);
     },
-    prevClick() {},
-    nextClick() {},
+    prevClick(page) {
+      this.currentPage = page;
+      this.searchParams.pageSize = this.pageSize;
+      this.searchParams.currentPage = this.currentPage;
+      this.loadData(this.searchParams);
+    },
+    nextClick(page) {
+      this.currentPage = page;
+      this.searchParams.pageSize = this.pageSize;
+      this.searchParams.currentPage = this.currentPage;
+      this.loadData(this.searchParams);
+    },
     loadData(params) {
       this.$store
-        .dispatch("bspOrderConfig/getList", {
-          filters: params
-        })
+        .dispatch("bspOrderConfig/getList", { filters: params })
         .then(data => {
           if (data) {
             this.loadTotal(params);
+            console.log(data, "daa");
             this.tableData = data;
           }
           this.loading = false;
@@ -130,11 +160,9 @@ export default {
           console.log(error);
         });
     },
-    loadDloadTotalata(params) {
+    loadTotal(params) {
       this.$store
-        .dispatch("bspOrderConfig/getTotal", {
-          filters: params
-        })
+        .dispatch("bspOrderConfig/getTotal", { filters: params })
         .then(data => {
           if (data) {
             this.total = data;
@@ -144,30 +172,44 @@ export default {
           console.log(error);
         });
     },
+    formatFlight(data) {
+      if (!data) {
+        return "";
+      }
+      return data.dpt + " - " + data.arr;
+    },
     handleSearch(params) {
-      if (!params) {
-        params = {};
-        this.searchParams = params;
-        this.loadData(this.searchParams);
+      // if (!params) {
+      //   params = {};
+      //   this.searchParams = params;
+      //   this.loadData(this.searchParams);
+      // } else {
+      //   const newParams = {};
+      //   for (let key in params) {
+      //     if (params[key] && _.isArray(params[key])) {
+      //       let start = "start" + key.charAt(0).toUpperCase() + key.slice(1);
+      //       let end = "end" + key.charAt(0).toUpperCase() + key.slice(1);
+      //       newParams[start] = params[key][0];
+      //       newParams[end] = params[key][1];
+      //     } else if (params[key]) {
+      //       newParams[key] = params[key];
+      //     }
+      //   }
+      //   this.searchParams = newParams;
+      //   this.searchParams.pageSize = this.pageSize;
+      //   this.loadData(this.searchParams);
+      //   this.$message({
+      //     type: "success",
+      //     message: "查询成功！"
+      //   });
+      // }
+    },
+    formatDate(dateStr, format) {
+      if (dateStr > 0) {
+        let date = new Date(dateStr);
+        return this.$moment(date).format(format);
       } else {
-        const newParams = {};
-        for (let key in params) {
-          if (params[key] && _.isArray(params[key])) {
-            let start = "start" + key.charAt(0).toUpperCase() + key.slice(1);
-            let end = "end" + key.charAt(0).toUpperCase() + key.slice(1);
-            newParams[start] = params[key][0];
-            newParams[end] = params[key][1];
-          } else if (params[key]) {
-            newParams[key] = params[key];
-          }
-        }
-        this.searchParams = newParams;
-        this.searchParams.pageSize = this.pageSize;
-        this.loadData(this.searchParams);
-        this.$message({
-          type: "success",
-          message: "查询成功！"
-        });
+        return "";
       }
     },
     handleAdd() {},

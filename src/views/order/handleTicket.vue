@@ -8,6 +8,16 @@
       size="mini"
       style="margin-top:15px;"
     >
+      <el-row style="margin-bottom:15px;" :gutter="15">
+        <el-col :span="6">
+          <span>销售单金额：</span>
+          <span style="color:red;">{{formatAmount(this.salesAmountTotal)}}</span>
+        </el-col>
+        <el-col v-for="item in passengerData" :key="item.cardNo" :span="5">
+          <span>{{item.name}} :</span>
+          <span style="color:red;">{{formatAmount(item._amount)}}</span>
+        </el-col>
+      </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item v-show="this.isWoniu">
@@ -290,10 +300,17 @@ import {
   statusData,
   orderType
 } from "@/utils/status.js";
+import { formatAmount } from "@/utils/orderFormdata.js";
 
 export default {
   name: "handleTicket",
-  props: ["passengerData", "flightData", "sellAmount", "taskType"],
+  props: [
+    "passengerData",
+    "flightData",
+    "sellAmount",
+    "taskType",
+    "salesAmountTotal"
+  ],
   data() {
     return {
       isWoniu: false,
@@ -343,6 +360,7 @@ export default {
   methods: {
     formatAgeType,
     formatCardType,
+    formatAmount,
     // 保存并贴票
     handleSaveTicket() {
       var validFlag = false;
@@ -606,6 +624,8 @@ export default {
   created() {
     this.getFinance();
     this.getSupplier();
+    console.log(this.passengerData, "ss");
+    console.log(this.salesAmountTotal, "salesAmountTotal");
   }
 };
 </script>

@@ -3,8 +3,9 @@ import { getList, getTotal, exportOrder } from '@/api/otherOrderConfig/bspOrderC
 const actions = {
   // 查询原始单
   getList({ commit }, params) {
+    const { filters } = params;
     return new Promise((resolve, reject) => {
-      getList(params)
+      getList(filters)
         .then(response => {
           const { data } = response;
           resolve(data);
@@ -17,8 +18,9 @@ const actions = {
 
   // 查询原始单数量
   getTotal({ commit }, params) {
+    const { filters } = params;
     return new Promise((resolve, reject) => {
-      getTotal(params)
+      getTotal(filters)
         .then(response => {
           const { data } = response;
           resolve(data);
