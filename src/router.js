@@ -668,6 +668,13 @@ export default new Router({
           meta: { title: '商品属性管理', icon: 'home' }
         },
         {
+          title: '商品功能管理',
+          path: '/feature/list',
+          name: 'feature',
+          component: () => import('@/views/productFeature/List'),
+          meta: { title: '商品功能管理', icon: 'home' }
+        },
+        {
           title: '添加商品属性',
           path: '/property/config',
           name: 'propertyConfig',
