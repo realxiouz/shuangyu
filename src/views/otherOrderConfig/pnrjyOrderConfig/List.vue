@@ -17,10 +17,10 @@
         fit
       >
         <el-table-column type="index" align="center"></el-table-column>
-        <el-table-column prop="sourceOrderNo" label="订单号" width="180" align="center"></el-table-column>
+        <el-table-column prop="sourceOrderNo" label="订单号" width="150" align="center"></el-table-column>
         <el-table-column prop="orderType" :formatter="formatOrderType" width="90" label="订单状态" align="center">
         </el-table-column>
-        <el-table-column prop="category" width="90" :formatter="formatCategory" label="订单类型" align="center">
+        <el-table-column prop="category" width="90" :formatter="formatCategory" label="订单分类" align="center">
         </el-table-column>
         <el-table-column label="航程类型" :formatter="formatVoyageType" width="100" align="center"></el-table-column>
         <el-table-column prop="ticketNo" width="180" label="票号" align="center"></el-table-column>

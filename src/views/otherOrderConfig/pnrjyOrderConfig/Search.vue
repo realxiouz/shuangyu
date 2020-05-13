@@ -6,13 +6,13 @@
           <el-form-item label="订单号:">
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.orderNo"
+              v-model="formData.sourceOrderNo"
               style="width: 100%"
               clearable
             ></el-input>
           </el-form-item>
         </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+        <!-- <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="源单号:">
             <el-input
               clearable
@@ -21,7 +21,7 @@
               style="width: 100%"
             ></el-input>
           </el-form-item>
-        </el-col>
+        </el-col>-->
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="票号:">
             <el-input
@@ -32,8 +32,8 @@
             ></el-input>
           </el-form-item>
         </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="订单日期:">
+        <!-- <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item  label="订单日期:">
             <el-col>
               <el-date-picker
                 start-placeholder="开始日期"
@@ -48,7 +48,7 @@
               ></el-date-picker>
             </el-col>
           </el-form-item>
-        </el-col>
+        </el-col>-->
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="订单分类:">
             <el-select style="width: 100%;" clearable v-model="formData.category" placeholder="请选择">
@@ -58,14 +58,11 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="订单类型:">
+          <el-form-item v-show="more" label="订单状态:">
             <el-select clearable v-model="formData.orderType" placeholder="全部" style="width: 100%">
-              <el-option
-                v-for="item in orderType"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              ></el-option>
+              <el-option label="出票" value="10"></el-option>
+              <el-option label="退票" value="20"></el-option>
+              <el-option label="改签" value="30"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
@@ -79,7 +76,7 @@
             ></el-input>
           </el-form-item>
         </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+        <!-- <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="证件号:">
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
@@ -88,8 +85,8 @@
               style="width: 100%"
             ></el-input>
           </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+        </el-col>-->
+        <!-- <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="政策代码:">
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
@@ -98,7 +95,7 @@
               clearable
             ></el-input>
           </el-form-item>
-        </el-col>
+        </el-col>-->
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="航班号:">
             <el-input
@@ -109,7 +106,7 @@
             ></el-input>
           </el-form-item>
         </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+        <!-- <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="航司:">
             <el-input
               clearable
@@ -118,9 +115,9 @@
               style="width: 100%"
             ></el-input>
           </el-form-item>
-        </el-col>
+        </el-col>-->
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="航班日期:">
+          <el-form-item v-show="more" label="交易时间:">
             <el-col>
               <el-date-picker
                 start-placeholder="开始日期"
@@ -128,7 +125,7 @@
                 type="daterange"
                 placeholder="选择日期"
                 :unlink-panels="true"
-                v-model="formData.flightDate"
+                v-model="formData.transactionTime"
                 style="width: 100%;"
                 format="yyyy-MM-dd"
                 value-format="yyyy-MM-dd"
@@ -177,7 +174,6 @@
         size="mini"
         @click="handleClear"
       >清空</el-button>
-      <!-- <el-button type="primary" size="mini" @click="handleExport">导单</el-button> -->
       <el-button type="text" size="mini" @click="handleMore">
         更多
         <i :class="switchIcon"></i>
@@ -187,14 +183,11 @@
 </template>
 
 <script>
-import { orderType } from "@/utils/status.js";
-
 export default {
   name: "qunarOrderSearch",
   data() {
     return {
       more: false,
-      orderType: orderType,
       formData: this.initSearchForm()
     };
   },
@@ -231,9 +224,6 @@ export default {
     },
     handleMore() {
       this.more = !this.more;
-    },
-    handleExport() {
-      this.$emit("onSearch", this.formData);
     }
   }
 };

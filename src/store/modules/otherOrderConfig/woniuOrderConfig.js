@@ -1,9 +1,11 @@
-import { save, } from '@/api/otherOrderConfig/woniuOrderConfig';
+import { getList, getTotal } from '@/api/otherOrderConfig/woniuOrderConfig';
 
 const actions = {
-  save({ commit }, params) {
+  // 获取蜗牛原始单
+  getList({ commit }, params) {
+    const { filters } = params;
     return new Promise((resolve, reject) => {
-      save(params)
+      getList(filters)
         .then(response => {
           const { data } = response;
           resolve(data);
@@ -13,6 +15,21 @@ const actions = {
         });
     });
   },
+  // 查询原始单数量
+  getTotal({ commit }, params) {
+    const { filters } = params;
+    return new Promise((resolve, reject) => {
+      getTotal(filters)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+
 
 }
 
