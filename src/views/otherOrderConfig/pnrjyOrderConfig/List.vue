@@ -17,16 +17,15 @@
         fit
       >
         <el-table-column type="index" align="center"></el-table-column>
-        <el-table-column prop="sourceOrderNo" label="订单号" width="150" align="center"></el-table-column>
+        <el-table-column prop="sourceOrderNo" label="订单号" width="100" align="center"></el-table-column>
         <el-table-column prop="orderType" :formatter="formatOrderType" width="90" label="订单状态" align="center">
         </el-table-column>
         <el-table-column prop="category" width="90" :formatter="formatCategory" label="订单分类" align="center">
         </el-table-column>
-        <el-table-column label="航程类型" :formatter="formatVoyageType" width="100" align="center"></el-table-column>
-        <el-table-column prop="ticketNo" width="180" label="票号" align="center"></el-table-column>
-        <el-table-column prop="name" label="乘机人" width="90" align="center"></el-table-column>
+        <el-table-column label="航程类型" :formatter="formatVoyageType" width="80" align="center"></el-table-column>
+        <el-table-column prop="ticketNo" width="150" label="票号" align="center"></el-table-column>
+        <el-table-column prop="name" label="乘机人" width="120" align="center"></el-table-column>
         <el-table-column prop="ageType" label="乘机人类型" :formatter="formatAgeType" width="90" align="center"></el-table-column>
-
         <el-table-column label="起飞-到达" width="90" align="center">
           <template slot-scope="scope">
             <span v-html="formatFlight(scope.row)"></span>
@@ -42,8 +41,8 @@
             <span>{{ formatAmount(scope.row.fuelTax)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="flightCode" label="航班号" width="150" align="center"></el-table-column>
-        <el-table-column prop="cabin" label="舱位" width="150" align="center"></el-table-column>
+        <el-table-column prop="flightCode" label="航班号" width="80" align="center"></el-table-column>
+        <el-table-column prop="cabin" label="舱位" width="60" align="center"></el-table-column>
         <el-table-column prop="pnr" label="PNR" align="center"></el-table-column>
         <el-table-column prop="amount" label="价格" align="center">
           <template slot-scope="scope">

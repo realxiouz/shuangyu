@@ -94,7 +94,7 @@ export default {
         .then(data => {
           if (data) {
             this.loadTotal(params);
-            console.log(data, "daa");
+            console.log(data, "woniuData");
             this.tableData = data;
           }
           this.loading = false;

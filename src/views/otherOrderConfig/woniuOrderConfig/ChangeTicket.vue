@@ -12,27 +12,34 @@
       fit
     >
       <el-table-column type="index" align="center"></el-table-column>
-      <el-table-column prop="domain" label="订单号" width="180" align="center"></el-table-column>
-      <el-table-column label="类型" width="100" align="center">
+      <el-table-column prop="orderNo" label="订单号" width="180" align="center"></el-table-column>
+      <el-table-column prop="orderStatusDesc" label="订单状态" width="180" align="center"></el-table-column>
+      <el-table-column label="乘机人" width="90" align="center">
         <template slot-scope="scope">
-          <span style="margin-left: 10px">{{ formatFirmData(scope.row.firmId) }}</span>
+          <span v-html="formatPassengers(scope.row.passengerInfos)"></span>
         </template>
       </el-table-column>
-      <el-table-column label="订单日期" align="center">
+       <el-table-column prop="changeFee" label="改签费" align="center">
         <template slot-scope="scope">
-          <span style="margin-left: 10px">{{ formatPartyData(scope.row.thirdId) }}</span>
+          <span v-html="formatAmount(scope.row.changeFee)"></span>
         </template>
       </el-table-column>
-      <el-table-column label="乘机人" width="90" align="center"></el-table-column>
-      <el-table-column label="票号" width="90" align="center"></el-table-column>
-      <el-table-column label="起飞-到达" width="90" align="center"></el-table-column>
-      <el-table-column label="航班日期/航班号" width="150" align="center"></el-table-column>
-      <el-table-column prop="user" label="PNR" align="center"></el-table-column>
-      <el-table-column prop="ips" label="总价/人数" align="center"></el-table-column>
-      <el-table-column prop label="订单状态" align="center"></el-table-column>
-      <el-table-column prop label="政策ID" align="center"></el-table-column>
-      <el-table-column prop label="是否退差额" align="center"></el-table-column>
-      <el-table-column prop label="锁定人" align="center"></el-table-column>
+      <el-table-column label="票号" width="90" align="center">
+        <template slot-scope="scope">
+          <span v-html="formatTicketNo(scope.row.passengerInfos)"></span>
+        </template>
+      </el-table-column>
+      <el-table-column label="改签单号" width="90" align="center">
+        <template slot-scope="scope">
+          <span v-html="formatChangeOrderNo(scope.row.passengerInfos)"></span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="account" label="账号" width="150" align="center"></el-table-column>
+      <el-table-column prop="flightNo" label="航班号" width="150" align="center"></el-table-column>
+      <el-table-column prop="depDate" label="航班日期" width="150" align="center"></el-table-column>
+      <el-table-column prop="dep" label="起飞地" width="90" align="center"></el-table-column>
+      <el-table-column prop="arr" label="到达地" width="90" align="center"></el-table-column>
+      <el-table-column prop="payStatusDesc" label="支付状态" width="180" align="center"></el-table-column>
       <el-table-column fixed="right" label="操作" width="180" align="center">
         <template slot-scope="scope">
           <el-button disabled @click="handleEdit(scope.row)" type="primary" size="mini">查看</el-button>
@@ -45,47 +52,28 @@
 
 <script>
 import qunarOrderConfigSearch from "./Search";
-import {
-  formatCategory,
-  formatOrderType,
-  formatVoyageType
-} from "@/utils/status.js";
-import {
-  formatPassengers,
-  formatTicketNo,
-  formatFlightDate,
-  formatFlightNo,
-  formatFlight,
-  formatAmount
-} from "@/utils/orderFormdata.js";
+
+import { formatAmount } from "@/utils/orderFormdata.js";
 
 export default {
-  name: "goTicket",
-  props:['tableData',"loading"],
+  name: "changeTicketList",
+  props: ["tableData", "loading"],
   data() {
     return {
-      searchParams: {},
+      searchParams: {}
     };
   },
   components: {
     qunarOrderConfigSearch
   },
   methods: {
-    formatCategory,
-    formatOrderType,
-    formatVoyageType,
-    formatPassengers,
-    formatTicketNo,
-    formatFlightDate,
-    formatFlightNo,
-    formatFlight,
     formatAmount,
     handleSearch(params) {
       if (!params) {
         params = {};
         this.searchParams = params;
         this.searchParams.orderType = 30;
-        this.$emit("onLoadData", this.searchParams);
+        this.loadData(this.searchParams);
       } else {
         const newParams = {};
         for (let key in params) {
@@ -101,7 +89,8 @@ export default {
         this.searchParams = newParams;
         this.searchParams.pageSize = this.pageSize;
         this.searchParams.orderType = 30;
-        this.$emit("onLoadData", this.searchParams);
+        this.loadData(this.searchParams);
+
         this.$message({
           type: "success",
           message: "查询成功！"
@@ -111,7 +100,37 @@ export default {
     handleSave(formData) {},
     handleCancel() {},
     handleEdit(row) {},
-    handleDelete(row) {}
+    handleDelete(row) {},
+    formatPassengers(data) {
+      if (!data || data.length == 0) {
+        return "";
+      }
+      let str = "";
+      data.forEach(item => {
+        str += item.personName + "<br/>";
+      });
+      return str;
+    },
+    formatTicketNo(data) {
+      if (!data || data.length == 0) {
+        return "";
+      }
+      let str = "";
+      data.forEach(item => {
+        str += item.tktno + "<br/>";
+      });
+      return str;
+    },
+    formatChangeOrderNo(data) {
+      if (!data || data.length == 0) {
+        return "";
+      }
+      let str = "";
+      data.forEach(item => {
+        str += item.changeOrderNo + "<br/>";
+      });
+      return str;
+    }
   },
   created() {}
 };

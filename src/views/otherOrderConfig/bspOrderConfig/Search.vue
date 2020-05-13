@@ -40,14 +40,6 @@
           </el-form-item>
         </el-col> -->
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="订单分类:">
-            <el-select style="width: 100%;" clearable v-model="formData.category" placeholder="请选择">
-              <el-option label="销售单" value="0"></el-option>
-              <el-option label="采购单" value="1"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="订单状态:">
             <el-select clearable v-model="formData.orderType" placeholder="全部" style="width: 100%">
               <el-option label="出票" value="10"></el-option>
@@ -108,18 +100,9 @@ export default {
       return {
         orderNo: null,
         ticketNo: null,
-        sourceOrderNo: null,
         name: null,
-        cardNo: null,
-        cabin: null,
-        flightCode: null,
-        category: null,
         orderType: null,
-        flightDate: null,
         createTime: null,
-        voyageType: null,
-        policyCode: null,
-        airlineCode: null
       };
     },
     handleClear() {

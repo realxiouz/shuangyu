@@ -13,16 +13,6 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="源单号:">
-            <el-input
-              clearable
-              @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.sourceOrderNo"
-              style="width: 100%"
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="票号:">
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
@@ -50,14 +40,6 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="订单分类:">
-            <el-select style="width: 100%;" clearable v-model="formData.category" placeholder="请选择">
-              <el-option label="销售单" value="0"></el-option>
-              <el-option label="采购单" value="1"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="订单类型:">
             <el-select clearable v-model="formData.orderType" placeholder="全部" style="width: 100%">
               <el-option
@@ -74,26 +56,6 @@
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.name"
-              style="width: 100%"
-              clearable
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="证件号:">
-            <el-input
-              @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.cardNo"
-              clearable
-              style="width: 100%"
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="政策代码:">
-            <el-input
-              @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.policyCode"
               style="width: 100%"
               clearable
             ></el-input>
@@ -212,17 +174,13 @@ export default {
       return {
         orderNo: null,
         ticketNo: null,
-        sourceOrderNo: null,
         name: null,
-        cardNo: null,
         cabin: null,
         flightCode: null,
-        category: null,
         orderType: null,
         flightDate: null,
         createTime: null,
         voyageType: null,
-        policyCode: null,
         airlineCode: null
       };
     },
