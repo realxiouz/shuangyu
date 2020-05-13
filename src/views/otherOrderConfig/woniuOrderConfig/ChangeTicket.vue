@@ -73,17 +73,14 @@ import {
 
 export default {
   name: "goTicket",
+  props:['tableData'],
   data() {
     return {
       loading: false,
-      tableData: [],
       currentPage: 1,
       pageSize: 10,
       total: 0,
-      searchParams: {
-        orderType: 30
-      },
-      count: []
+      searchParams: {},
     };
   },
   components: {
@@ -102,25 +99,29 @@ export default {
     handleSizeChange(size) {
       this.pageSize = size;
       this.searchParams.pageSize = this.pageSize;
-      this.loadData(this.searchParams);
+      this.searchParams.orderType = 30;
+      this.$emit("onLoadData", this.searchParams);
     },
     prevClick(page) {
       this.currentPage = page;
       this.searchParams.pageSize = this.pageSize;
       this.searchParams.currentPage = this.currentPage;
-      this.loadData(this.searchParams);
+      this.searchParams.orderType = 30;
+      this.$emit("onLoadData", this.searchParams);
     },
     nextClick(page) {
       this.currentPage = page;
       this.searchParams.pageSize = this.pageSize;
       this.searchParams.currentPage = this.currentPage;
-      this.loadData(this.searchParams);
+      this.searchParams.orderType = 30;
+      this.$emit("onLoadData", this.searchParams);
     },
     handleSearch(params) {
       if (!params) {
         params = {};
         this.searchParams = params;
-        this.loadData(this.searchParams);
+        this.searchParams.orderType = 30;
+        this.$emit("onLoadData", this.searchParams);
       } else {
         const newParams = {};
         for (let key in params) {
@@ -135,7 +136,8 @@ export default {
         }
         this.searchParams = newParams;
         this.searchParams.pageSize = this.pageSize;
-        this.loadData(this.searchParams);
+        this.searchParams.orderType = 30;
+        this.$emit("onLoadData", this.searchParams);
         this.$message({
           type: "success",
           message: "查询成功！"
@@ -147,8 +149,6 @@ export default {
     handleEdit(row) {},
     handleDelete(row) {}
   },
-  created() {
-    // this.loadData(this.searchParams);
-  }
+  created() {}
 };
 </script>

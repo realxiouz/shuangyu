@@ -119,7 +119,6 @@ export default {
       pageSize: 10,
       total: 0,
       searchParams: {},
-      count: []
     };
   },
   components: {
@@ -161,7 +160,6 @@ export default {
         .dispatch("pnrjyOrderConfig/getList", { filters: params })
         .then(data => {
           if (data) {
-            console.log(data);
             this.loadTotal(params);
             this.tableData = data;
           }

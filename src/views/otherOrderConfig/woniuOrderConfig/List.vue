@@ -3,13 +3,13 @@
     <div class>
       <el-tabs v-model="activeName" type="border-card" @tab-click="handleClick">
         <el-tab-pane label="出票订单" name="goTicket">
-          <go-ticket></go-ticket>
+          <go-ticket @onLoadData="loadData" :tableData="tableData" ></go-ticket>
         </el-tab-pane>
         <el-tab-pane label="退票订单" name="refundTicket">
-          <change-ticket></change-ticket>
+          <refund-ticket @onLoadData="loadData" :tableData="tableData"></refund-ticket>
         </el-tab-pane>
         <el-tab-pane label="改签订单" name="changeTicket">
-          <refund-ticket></refund-ticket>
+          <change-ticket @onLoadData="loadData" :tableData="tableData"></change-ticket>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -26,6 +26,7 @@ export default {
   data() {
     return {
       activeName: "goTicket",
+      tableData: [],
       searchParams: {
         orderType: 10
       }

@@ -128,7 +128,6 @@ export default {
       pageSize: 10,
       total: 0,
       searchParams: {},
-      count: [],
       dialogVisible: false,
       logData: {}
     };
@@ -173,7 +172,6 @@ export default {
           if (data) {
             this.loadTotal(params);
             this.tableData = data;
-            console.log(data);
           }
           this.loading = false;
         })
@@ -227,7 +225,6 @@ export default {
     },
     handleEdit(row) {},
     lookLogInfo(row) {
-      console.log(row);
       if (row.log) {
         this.logData = row;
       }
