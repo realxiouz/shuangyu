@@ -138,7 +138,7 @@ export default {
             this.$store
               .dispatch("user/signIn", params)
               .then(res => {
-                var flag = res.data.activateFlag;
+                var flag = res.data.activate;
                 if (!flag) {
                   this.$router.push({ name: "changePassword" });
                 } else {

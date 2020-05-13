@@ -1,4 +1,4 @@
-import { getVerification, signIn, signInCode, signOut, addOne, removeOne, updateOne, updateMany, getOne, getList, getTotal, getPageList, activate, isExist, resetPassword, getVerificationCode } from "@/api/user";
+import { getVerification, signIn, signInCode, signOut, addOne, removeOne, updateOne, personalEdit, getOne, getList, getTotal, getPageList, activate, isExist, resetPassword, getVerificationCode } from "@/api/user";
 import { getToken, setToken, removeToken } from "@/utils/auth";
 
 const state = {
@@ -137,7 +137,8 @@ const actions = {
   },
   updateOne({ commit }, params) {
     return new Promise((resolve, reject) => {
-      updateOne(params)
+      const {userId, update} = params;
+      updateOne(userId, update)
         .then(response => {
           resolve(response);
         })
@@ -146,10 +147,10 @@ const actions = {
         });
     });
   },
-  updateMany({ commit }, params) {
+  personalEdit({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const {filter, user, verificationCode} = params;
-      updateMany(filter, user, verificationCode)
+      const {userId, update, verificationCode} = params;
+      personalEdit(userId, verificationCode, update)
         .then(response => {
           resolve(response.data);
         })

@@ -90,7 +90,7 @@ export default {
       userId: "",
       /*重置用户密码时记录当前用户节点信息*/
       curNode: {},
-      pageFlag: "next",
+      pageFlag: 1,
       pageSize: 10,
       lastId: "blank",
       total: 0,
@@ -248,7 +248,7 @@ export default {
       let requestData = {};
       if (this.userId) {
         url = "user/updateOne";
-          requestData = formData.user;
+          requestData = {userId: formData.user.userId, update: formData.user};
       } else {
         url = "user/addOne";
           requestData = formData;
@@ -275,13 +275,13 @@ export default {
     },
     /*翻前页*/
     handlePrevClick() {
-      this.pageFlag = "prev";
+      this.pageFlag = -1;
       this.lastId = this.tableData[0].userId;
       this.loadData();
     },
     /*翻后页*/
     handleNextClick() {
-      this.pageFlag = "next";
+      this.pageFlag = 1;
       this.lastId = this.tableData[this.tableData.length - 1].userId;
       this.loadData();
     },

@@ -2,7 +2,7 @@ import request from '@/utils/request';
 
 export function signIn(data) {
   return request({
-    url: '/user/sign/in',
+    url: '/admin/user/sign/in',
     method: 'post',
     data
   });
@@ -11,7 +11,7 @@ export function signIn(data) {
 // 验证码登录
 export function signInCode(data) {
   return request({
-    url: '/user/sign/in/code',
+    url: '/admin/user/sign/in/code',
     method: 'post',
     data
   });
@@ -27,14 +27,14 @@ export function getVerification(target) {
 
 export function signOut() {
   return request({
-    url: '/user/sign/out',
+    url: '/admin/user/sign/out',
     method: 'post'
   });
 }
 
 export function addOne(data, vcode) {
   return request({
-    url: `/user/add/one/${vcode}`,
+    url: `/admin/user/add/one/${vcode}`,
     method: 'post',
     data
   });
@@ -42,15 +42,24 @@ export function addOne(data, vcode) {
 
 export function removeOne(userId) {
   return request({
-    url: `/user/remove/one/${userId}`,
+    url: `/admin/user/remove/one/${userId}`,
     method: 'delete'
   });
 }
 
-export function updateOne(data) {
+export function updateOne(userId, data) {
   return request({
-    url: '/admin/user/update/one',
-    method: 'post',
+    url: `/admin/user/update/one/${userId}`,
+    method: 'put',
+    data
+  });
+}
+
+export function personalEdit(userId, verificationCode, data) {
+  debugger
+  return request({
+    url: `/admin/user/update/one/${userId}/${verificationCode}`,
+    method: 'put',
     data
   });
 }
@@ -58,7 +67,7 @@ export function updateOne(data) {
 export function updateMany(filter, data, verificationCode) {
   return request({
     url: `/admin/user/update/many/${verificationCode}`,
-    method: 'post',
+    method: 'put',
     params: filter,
     data
   });
@@ -66,14 +75,14 @@ export function updateMany(filter, data, verificationCode) {
 
 export function getOne(userId) {
   return request({
-    url: `/user/one/${userId}`,
+    url: `/admin/user/one/${userId}`,
     method: 'get'
   });
 }
 
 export function getList(filter) {
   return request({
-    url: '/user/list',
+    url: '/admin/user/list',
     method: 'get',
     params: filter
   });
@@ -81,7 +90,7 @@ export function getList(filter) {
 
 export function getTotal(filter) {
   return request({
-    url: `/user/total`,
+    url: `/admin/user/total`,
     method: 'get',
     params: filter
   });
@@ -89,7 +98,7 @@ export function getTotal(filter) {
 
 export function getPageList(pageFlag, pageSize, lastId, filter) {
   return request({
-    url: `/user/page/list/${pageFlag}/${pageSize}/${lastId}`,
+    url: `/admin/user/page/list/${pageFlag}/${pageSize}/${lastId}`,
     method: 'get',
     params: filter
   });
@@ -99,7 +108,7 @@ export function getPageList(pageFlag, pageSize, lastId, filter) {
 export function activate(data) {
   return request({
     url: `/admin/user/activate`,
-    method: 'post',
+    method: 'put',
     data
   });
 }
@@ -107,7 +116,7 @@ export function activate(data) {
 export function resetPassword(userID) {
   return request({
     url: `/admin/user/reset/password/${userID}`,
-    method: 'post'
+    method: 'put'
   });
 }
 

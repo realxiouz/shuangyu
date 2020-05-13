@@ -143,9 +143,9 @@ export default {
       this.$refs.form.validate(valid => {
         if (valid) {
           this.$store
-            .dispatch("user/updateMany", {
-              filter: { userId: this.formData.userId },
-              user: this.formData,
+            .dispatch("user/personalEdit", {
+                userId: this.formData.userId,
+              update: this.formData,
               verificationCode: this.formData.verificationCode
             })
             .then(() => {
@@ -201,7 +201,7 @@ export default {
           if (email) {
             this.$store
               .dispatch("user/getVerificationCode", { targetEmail: email })
-              .then(data => {
+              .then(() => {
                 this.timer = null;
               })
               .catch(error => {
