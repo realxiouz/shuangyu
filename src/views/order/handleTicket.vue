@@ -624,8 +624,6 @@ export default {
   created() {
     this.getFinance();
     this.getSupplier();
-    console.log(this.passengerData, "ss");
-    console.log(this.salesAmountTotal, "salesAmountTotal");
   }
 };
 </script>

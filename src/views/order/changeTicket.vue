@@ -113,7 +113,7 @@
           <el-table-column prop="changeDate" label="起飞日期" align="center"></el-table-column>
           <el-table-column prop="startTime" label="起飞时间" align="center"></el-table-column>
           <el-table-column prop="endTime" label="到达时间" align="center"></el-table-column>
-          <el-table-column prop="cabin" label="舱位" width="70" align="center"></el-table-column>
+          <el-table-column prop="cabinCode" label="舱位" width="70" align="center"></el-table-column>
           <el-table-column prop="cabinStatus" label="数显" width="70" align="center"></el-table-column>
           <el-table-column prop="gqFee" label="手续费" width="70" align="center">
             <template slot-scope="scope">

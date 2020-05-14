@@ -8,8 +8,52 @@
       size="mini"
       style="margin-top:15px;"
     >
+      <el-row style="margin-bottom:25px;">
+        <el-table
+          :data="formData.orderDetailList"
+          v-show="!(this.isWoniu && this.radio=='1') "
+          @selection-change="handleSelectionChange"
+          size="mini"
+          highlight-current-row
+          style="width: 100%;"
+          fit
+        >
+          <el-table-column type="selection" width="55"></el-table-column>
+          <el-table-column prop="name" label="姓名" width="150" align="center"></el-table-column>
+          <el-table-column prop="gender" label="性别" width="50" align="center"></el-table-column>
+          <el-table-column
+            prop="ageType"
+            :formatter="formatAgeType"
+            label="乘机人类型"
+            align="center"
+            width="80"
+          ></el-table-column>
+          <el-table-column
+            prop="cardType"
+            :formatter="formatCardType"
+            label="乘机人证件类型"
+            align="center"
+            width="120"
+          ></el-table-column>
+          <el-table-column prop="amount" label="价格" align="center" width="150">
+            <template slot-scope="scope">
+              <el-input clearable v-model="scope.row.amount"></el-input>
+            </template>
+          </el-table-column>
+          <el-table-column prop="cardNo" label="乘机人证件号" align="center" width="220">
+            <template slot-scope="scope">
+              <el-input clearable v-model="scope.row.cardNo"></el-input>
+            </template>
+          </el-table-column>
+          <el-table-column prop="ticketNo" label="票号" align="center">
+            <template slot-scope="scope">
+              <el-input clearable v-model="scope.row.ticketNo"></el-input>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-row>
       <el-row>
-        <el-col :span="8">
+        <el-col :span="12">
           <el-form-item v-show="this.isWoniu">
             <el-radio-group @change="radioChange" v-model="formData.radio" style="width:100%">
               <el-radio label="1">导单</el-radio>
@@ -229,47 +273,6 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-table
-          :data="formData.orderDetailList"
-          @selection-change="handleSelectionChange"
-          size="mini"
-          highlight-current-row
-          style="width: 100%;"
-          fit
-        >
-          <el-table-column type="selection" width="55"></el-table-column>
-          <el-table-column prop="name" label="姓名" width="150" align="center"></el-table-column>
-          <el-table-column prop="gender" label="性别" width="50" align="center"></el-table-column>
-          <el-table-column
-            prop="ageType"
-            :formatter="formatAgeType"
-            label="乘机人类型"
-            align="center"
-            width="80"
-          ></el-table-column>
-          <el-table-column
-            prop="cardType"
-            :formatter="formatCardType"
-            label="乘机人证件类型"
-            align="center"
-            width="120"
-          ></el-table-column>
-          <el-table-column prop="amount" label="价格" align="center" width="150">
-            <template slot-scope="scope">
-              <el-input clearable v-model="scope.row.amount"></el-input>
-            </template>
-          </el-table-column>
-          <el-table-column prop="cardNo" label="乘机人证件号" align="center" width="220">
-            <template slot-scope="scope">
-              <el-input clearable v-model="scope.row.cardNo"></el-input>
-            </template>
-          </el-table-column>
-          <el-table-column prop="ticketNo" label="票号" align="center">
-            <template slot-scope="scope">
-              <el-input clearable v-model="scope.row.ticketNo"></el-input>
-            </template>
-          </el-table-column>
-        </el-table>
       </div>
     </el-form>
     <div style="margin-top: 25px;text-align:right;">
@@ -289,6 +292,7 @@ export default {
     return {
       selectStatusDataFlag: false,
       isWoniu: false,
+      radio: "2",
       orderType: [
         {
           value: 30,
@@ -547,7 +551,7 @@ export default {
           return;
         }
       }
-      this.$emit("onSave", this.formData);
+      // this.$emit("onSave", this.formData);
     }
   },
   created() {

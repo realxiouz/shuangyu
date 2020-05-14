@@ -16,14 +16,14 @@
           <el-form-item label="票号:">
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.ticketNo"
+              v-model="formData.tktno"
               style="width: 100%"
               clearable
             ></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="订单日期:">
+          <el-form-item label="订单日期:">
             <el-col>
               <el-date-picker
                 start-placeholder="开始日期"
@@ -40,22 +40,10 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="订单类型:">
-            <el-select clearable v-model="formData.orderType" placeholder="全部" style="width: 100%">
-              <el-option
-                v-for="item in orderType"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="乘机人:">
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.name"
+              v-model="formData.personName"
               style="width: 100%"
               clearable
             ></el-input>
@@ -65,18 +53,8 @@
           <el-form-item v-show="more" label="航班号:">
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.flightCode"
+              v-model="formData.flightNo"
               clearable
-              style="width: 100%"
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="航司:">
-            <el-input
-              clearable
-              @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.airlineCode"
               style="width: 100%"
             ></el-input>
           </el-form-item>
@@ -90,7 +68,7 @@
                 type="daterange"
                 placeholder="选择日期"
                 :unlink-panels="true"
-                v-model="formData.flightDate"
+                v-model="formData.depDate"
                 style="width: 100%;"
                 format="yyyy-MM-dd"
                 value-format="yyyy-MM-dd"
@@ -122,6 +100,39 @@
             </el-select>
           </el-form-item>
         </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-if="more && orderType == 10" label="订单状态:">
+            <el-select
+              style="width: 100%;"
+              clearable
+              v-model="formData.orderStatus"
+              placeholder="请选择"
+            >
+              <el-option label value="0"></el-option>
+              <el-option label value="1"></el-option>
+              <el-option label value="2"></el-option>
+              <el-option label value="3"></el-option>
+              <el-option label value="4"></el-option>
+              <el-option label value="5"></el-option>
+              <el-option label value="6"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-if="more && orderType == 20" label="退票原因:">
+            <el-select
+              style="width: 100%;"
+              clearable
+              v-model="formData.refundType"
+              placeholder="请选择"
+            >
+              <el-option label="自愿退票" value="1"></el-option>
+              <el-option label="航变退票" value="2"></el-option>
+              <el-option label="病退" value="3"></el-option>
+              <el-option label="空" value="0"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
       </el-form>
     </el-col>
     <el-col :xs="10" :sm="9" :md="8" :lg="7" :xl="6" class="search-tools">
@@ -139,7 +150,6 @@
         size="mini"
         @click="handleClear"
       >清空</el-button>
-      <!-- <el-button type="primary" size="mini" @click="handleExport">导单</el-button> -->
       <el-button type="text" size="mini" @click="handleMore">
         更多
         <i :class="switchIcon"></i>
@@ -149,14 +159,12 @@
 </template>
 
 <script>
-import { orderType } from "@/utils/status.js";
-
 export default {
   name: "qunarOrderSearch",
+  props: ["orderType"],
   data() {
     return {
       more: false,
-      orderType: orderType,
       formData: this.initSearchForm()
     };
   },
@@ -173,18 +181,19 @@ export default {
     initSearchForm() {
       return {
         orderNo: null,
-        ticketNo: null,
-        name: null,
+        tktno: null,
+        personName: null,
         cabin: null,
-        flightCode: null,
-        orderType: null,
-        flightDate: null,
+        flightNo: null,
+        depDate: null,
         createTime: null,
         voyageType: null,
-        airlineCode: null
+        refundType: null,
+        orderStatus: null
       };
     },
     handleClear() {
+      console.log("2222222");
       this.formData = this.initSearchForm();
     },
     handleMore() {
@@ -193,6 +202,9 @@ export default {
     handleExport() {
       this.$emit("onSearch", this.formData);
     }
+  },
+  attached() {
+    console.log("beforeDestroy");
   }
 };
 </script>

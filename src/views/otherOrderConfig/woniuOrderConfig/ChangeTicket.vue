@@ -1,7 +1,5 @@
 <template>
   <div class="contentBox">
-    <qunar-order-config-search @onSearch="handleSearch" />
-    <el-divider></el-divider>
     <el-table
       :data="tableData"
       size="mini"
@@ -10,36 +8,53 @@
       v-loading="loading"
       max-height="650"
       fit
+      border
     >
       <el-table-column type="index" align="center"></el-table-column>
-      <el-table-column prop="orderNo" label="订单号" width="180" align="center"></el-table-column>
-      <el-table-column prop="orderStatusDesc" label="订单状态" width="180" align="center"></el-table-column>
+      <el-table-column prop="orderNo" label="订单号" width="150" align="center"></el-table-column>
+      <el-table-column prop="orderStatusDesc" label="订单状态" width="110" align="center"></el-table-column>
+      <el-table-column label="订单日期" prop="createTime" align="center" width="120"></el-table-column>
       <el-table-column label="乘机人" width="90" align="center">
         <template slot-scope="scope">
           <span v-html="formatPassengers(scope.row.passengerInfos)"></span>
         </template>
       </el-table-column>
-       <el-table-column prop="changeFee" label="改签费" align="center">
+      <el-table-column prop="payStatusDesc" label="支付状态" width="110" align="center"></el-table-column>
+      <el-table-column prop="changeFee" label="改签费" align="center">
         <template slot-scope="scope">
           <span v-html="formatAmount(scope.row.changeFee)"></span>
         </template>
       </el-table-column>
-      <el-table-column label="票号" width="90" align="center">
+      <el-table-column label="票号" width="120" align="center">
         <template slot-scope="scope">
           <span v-html="formatTicketNo(scope.row.passengerInfos)"></span>
         </template>
       </el-table-column>
-      <el-table-column label="改签单号" width="90" align="center">
-        <template slot-scope="scope">
-          <span v-html="formatChangeOrderNo(scope.row.passengerInfos)"></span>
-        </template>
+      <el-table-column prop="account" label="账号" width="100" align="center"></el-table-column>
+      <el-table-column label="原航班信息" align="center">
+        <el-table-column prop="flightNo" label="航班号" width="70" align="center"></el-table-column>
+        <el-table-column prop="depDate" label="航班日期" width="120" align="center"></el-table-column>
+        <el-table-column prop="dep" label="起飞-" width="150" align="center"></el-table-column>
+        <el-table-column prop="arr" label="到达地" width="150" align="center"></el-table-column>
       </el-table-column>
-      <el-table-column prop="account" label="账号" width="150" align="center"></el-table-column>
-      <el-table-column prop="flightNo" label="航班号" width="150" align="center"></el-table-column>
-      <el-table-column prop="depDate" label="航班日期" width="150" align="center"></el-table-column>
-      <el-table-column prop="dep" label="起飞地" width="90" align="center"></el-table-column>
-      <el-table-column prop="arr" label="到达地" width="90" align="center"></el-table-column>
-      <el-table-column prop="payStatusDesc" label="支付状态" width="180" align="center"></el-table-column>
+      <el-table-column label="改签航班信息" align="center">
+        <el-table-column prop="flightNo" label="航班号" width="70" align="center">
+          <template slot-scope="scope">
+            <span>{{scope.row.changeFlightInfos[0].flightNo}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="depDate" label="航班日期" width="120" align="center">
+          <template slot-scope="scope">
+            <span>{{scope.row.changeFlightInfos[0].depDate}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="起飞-到达" width="90" align="center">
+          <template slot-scope="scope">
+            <span v-html="formatFlight2(scope.row.changeFlightInfos)"></span>
+          </template>
+        </el-table-column>
+      </el-table-column>
+
       <el-table-column fixed="right" label="操作" width="180" align="center">
         <template slot-scope="scope">
           <el-button disabled @click="handleEdit(scope.row)" type="primary" size="mini">查看</el-button>
@@ -51,9 +66,7 @@
 </template>
 
 <script>
-import qunarOrderConfigSearch from "./Search";
-
-import { formatAmount } from "@/utils/orderFormdata.js";
+import { formatAmount, formatFlight2 } from "@/utils/orderFormdata.js";
 
 export default {
   name: "changeTicketList",
@@ -63,40 +76,10 @@ export default {
       searchParams: {}
     };
   },
-  components: {
-    qunarOrderConfigSearch
-  },
+  components: {},
   methods: {
+    formatFlight2,
     formatAmount,
-    handleSearch(params) {
-      if (!params) {
-        params = {};
-        this.searchParams = params;
-        this.searchParams.orderType = 30;
-        this.loadData(this.searchParams);
-      } else {
-        const newParams = {};
-        for (let key in params) {
-          if (params[key] && _.isArray(params[key])) {
-            let start = "start" + key.charAt(0).toUpperCase() + key.slice(1);
-            let end = "end" + key.charAt(0).toUpperCase() + key.slice(1);
-            newParams[start] = params[key][0];
-            newParams[end] = params[key][1];
-          } else if (params[key]) {
-            newParams[key] = params[key];
-          }
-        }
-        this.searchParams = newParams;
-        this.searchParams.pageSize = this.pageSize;
-        this.searchParams.orderType = 30;
-        this.loadData(this.searchParams);
-
-        this.$message({
-          type: "success",
-          message: "查询成功！"
-        });
-      }
-    },
     handleSave(formData) {},
     handleCancel() {},
     handleEdit(row) {},
