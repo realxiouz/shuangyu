@@ -35,8 +35,8 @@
         </el-row>
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="属性名称" prop="propertyLabel">
-              <el-input v-model="formData.propertyLabel"></el-input>
+            <el-form-item label="属性名称" prop="propertyName">
+              <el-input v-model="formData.propertyName"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -187,6 +187,9 @@
             <el-table-column prop="value" label="值" align="center"></el-table-column>
             <el-table-column label="操作" align="center" width="350">
               <template slot-scope="scope">
+                <el-button type="primary" size="mini"
+                           @click="valueEdit(scope.row)">编辑
+                </el-button>
                 <el-button type="danger" size="mini"
                            @click="valueRemove(scope.row.code,scope.$index,values)">删除
                 </el-button>
@@ -223,7 +226,7 @@
             categoryName: "",
             categoryPath: "",
             propertyCode: "",
-            propertyLabel: "",
+            propertyName: "",
             precision: 0,
             sku: false,
             valueType: ''
@@ -263,7 +266,7 @@
                         },
                         {validator: categoryCode, trigger: 'blur'}
                     ],
-                    propertyLabel: [
+                    propertyName: [
                         {required: true, message: "请输入属性标题", trigger: "blur"},
                         {
                             min: 1,
@@ -397,6 +400,11 @@
                 } else {
                     this.formData = defaultData();
                 }
+            },
+            valueEdit(rows) {
+                this.formValue = {};
+                this.formValue = rows;
+                this.dialogVisible = true;
             },
             valueRemove(id, index, rows) {
                 this.$confirm("此操作将删除该条记录, 是否继续?", "提示", {
