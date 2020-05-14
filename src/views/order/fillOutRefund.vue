@@ -503,7 +503,7 @@ export default {
       if (validFlag) {
         return;
       }
-      this.formData.orderDetailList = this.selectOrderDetailList;
+      // this.formData.orderDetailList = this.selectOrderDetailList;
       this.formData.pid = this.fillOutRefundData.orderNo;
       this.formData.passengers = this.selectOrderDetailList;
       if (
@@ -544,6 +544,7 @@ export default {
             type: "warning",
             duration: 4500
           });
+          
           return;
         }
         let _profit = 0;
@@ -560,7 +561,7 @@ export default {
           return;
         }
       }
-      this.$emit("onSave", this.formData);
+      // this.$emit("onSave", this.formData);
     }
   },
   created() {

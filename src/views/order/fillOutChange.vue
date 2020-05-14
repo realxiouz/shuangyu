@@ -496,7 +496,7 @@ export default {
       }
       this.formData.flightData = this.flightData;
       this.formData.passengers = this.selectOrderDetailList;
-      this.formData.orderDetailList = this.selectOrderDetailList;
+      // this.formData.orderDetailList = this.selectOrderDetailList;
       this.formData.pid = this.fillOutChangeData.orderNo;
       if (this.formData.radio != "1" && this.taskType == 3) {
         if (this.selectOrderDetailList.length < 1) {

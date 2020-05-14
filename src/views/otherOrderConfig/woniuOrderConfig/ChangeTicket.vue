@@ -40,12 +40,12 @@
       <el-table-column label="改签航班信息" align="center">
         <el-table-column prop="flightNo" label="航班号" width="70" align="center">
           <template slot-scope="scope">
-            <span>{{scope.row.changeFlightInfos[0].flightNo}}</span>
+            <span v-html="formatFlightNo(scope.row.changeFlightInfos)"></span>
           </template>
         </el-table-column>
         <el-table-column prop="depDate" label="航班日期" width="120" align="center">
           <template slot-scope="scope">
-            <span>{{scope.row.changeFlightInfos[0].depDate}}</span>
+            <span v-html="formatDepDate(scope.row.changeFlightInfos)"></span>
           </template>
         </el-table-column>
         <el-table-column label="起飞-到达" width="90" align="center">
@@ -94,6 +94,19 @@ export default {
       });
       return str;
     },
+    formatFlightNo(data) {
+      if (!data || data.length == 0) {
+        return "";
+      }
+      return data[0].flightNo;
+    },
+    formatDepDate(data) {
+      if (!data || data.length == 0) {
+        return "";
+      }
+      return data[0].depDate;
+    },
+
     formatTicketNo(data) {
       if (!data || data.length == 0) {
         return "";
