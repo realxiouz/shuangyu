@@ -41,7 +41,7 @@
         v-loading="loading"
         highlight-current-row
       >
-        <el-table-column type="selection" width="55"></el-table-column>
+        <el-table-column :selectable="selectable" type="selection" width="55"></el-table-column>
         <!--<el-table-column prop="taskNo" label="任务编号" width="110" align="center"></el-table-column>-->
         <el-table-column prop="taskName" label="任务名称" width="80" align="center"></el-table-column>
         <el-table-column
@@ -379,6 +379,13 @@ export default {
         }
       });
     },
+    selectable(row) {
+      if (row.taskStatus == 3) {
+        return false;
+      } else {
+        return true;
+      }
+    },
     handleSearch(params) {
       let newParams = {};
       if (params) {
@@ -388,7 +395,8 @@ export default {
           }
         }
       }
-      this.loadData(newParams);
+      this.searchParams=newParams
+      this.loadData(this.searchParams);
       this.$message({
         type: "success",
         message: "查询成功！"

@@ -34,7 +34,7 @@
         size="mini"
         v-loading="loading"
       >
-        <el-table-column type="selection" width="55" align="center"></el-table-column>
+        <el-table-column :selectable="selectable" type="selection" width="55" align="center"></el-table-column>
         <!--<el-table-column prop="taskNo" label="任务编号" width="110" align="center"></el-table-column>-->
         <el-table-column prop="taskName" label="任务名称" width="80" align="center"></el-table-column>
         <el-table-column
@@ -372,6 +372,14 @@ export default {
       this.otherDataSearch = params;
       this.loadData(params);
     },
+    selectable(row) {
+      if (row.taskStatus == 3) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+
     // 调转详情页
     goToDetail(row) {
       let path = "";
@@ -397,7 +405,9 @@ export default {
         }
       }
       newParams.taskStatus = 1;
-      this.loadData(newParams);
+      this.searchParams = newParams;
+
+      this.loadData(this.searchParams);
       this.$message({
         type: "success",
         message: "查询成功！"

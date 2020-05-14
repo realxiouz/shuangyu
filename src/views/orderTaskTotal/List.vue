@@ -42,8 +42,8 @@
         v-loading="loading"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection" width="55" align="center"></el-table-column>
-        <!--<el-table-column prop="taskNo" label="任务编号" width="110" align="center"></el-table-column>-->
+        <el-table-column :selectable="selectable" type="selection" width="55" align="center"></el-table-column>
+        <!-- <el-table-column prop="taskNo" label="任务编号" width="110" align="center"></el-table-column> -->
         <el-table-column prop="taskName" label="任务名称" width="80" align="center"></el-table-column>
         <el-table-column
           prop="taskStatus"
@@ -53,7 +53,6 @@
         ></el-table-column>
         <el-table-column prop="fullName" label="操作员" width="70" align="center"></el-table-column>
 
-        <!-- <el-table-column prop="taskType" :formatter="formatTaskType" label="任务类型" align="center"></el-table-column> -->
         <el-table-column prop="orderNo" label="订单号" width="180" align="center"></el-table-column>
         <el-table-column prop="sourceOrderNo" label="源单号" width="170" align="center"></el-table-column>
         <el-table-column prop="ticketNos" label="票号" width="120" align="center">
@@ -103,7 +102,7 @@
             <span>{{ scope.row.ruleType==0?"系统":"手工"}}</span>
           </template>
         </el-table-column>
-
+        <el-table-column prop="taskType" :formatter="formatTaskType" label="任务类型" align="center"></el-table-column>
         <el-table-column prop="startTime" label="开始时间" align="center">
           <template slot-scope="scope">
             <span>{{ formatDate(scope.row.startTime,'YYYY-MM-DD HH:mm:ss') }}</span>
@@ -341,13 +340,29 @@ export default {
           console.log(error);
         });
     },
-    initDate(dateStr, format) {
-      if (dateStr && dateStr > 0) {
-        let date = new Date(dateStr);
-        return this.$moment(date).format(format);
+    selectable(row) {
+      if (row.taskStatus == 3) {
+        return false;
       } else {
-        return "";
+        return true;
       }
+    },
+
+    handleSearch(params) {
+      let newParams = {};
+      if (params) {
+        for (let key in params) {
+          if (params[key]) {
+            newParams[key] = params[key];
+          }
+        }
+      }
+      this.searchParams = newParams;
+      this.loadData(this.searchParams);
+      this.$message({
+        type: "success",
+        message: "查询成功！"
+      });
     },
     geAllData() {
       let newParams = {};
@@ -376,20 +391,13 @@ export default {
         }
       });
     },
-    handleSearch(params) {
-      let newParams = {};
-      if (params) {
-        for (let key in params) {
-          if (params[key]) {
-            newParams[key] = params[key];
-          }
-        }
+    initDate(dateStr, format) {
+      if (dateStr && dateStr > 0) {
+        let date = new Date(dateStr);
+        return this.$moment(date).format(format);
+      } else {
+        return "";
       }
-      this.loadData(newParams);
-      this.$message({
-        type: "success",
-        message: "查询成功！"
-      });
     },
     formatDuration(data) {
       if (!data) {

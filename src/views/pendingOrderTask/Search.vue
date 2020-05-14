@@ -35,23 +35,6 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="任务状态:">
-            <el-select
-              style="width: 100%;"
-              clearable
-              v-model="formData.taskStatus"
-              placeholder="请选择"
-            >
-              <el-option
-                v-for="item in taskStatusValue"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="开始时间:">
             <el-date-picker
               type="date"

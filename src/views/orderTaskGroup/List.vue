@@ -233,7 +233,8 @@ export default {
           }
         }
       }
-      this.loadData(newParams);
+      this.searchParams = newParams;
+      this.loadData(this.searchParams);
       this.$message({
         type: "success",
         message: "查询成功！"
