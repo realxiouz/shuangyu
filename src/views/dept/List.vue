@@ -5,7 +5,7 @@
     </div>
     <div class="contentBox">
       <el-row style="margin-bottom:15px; margin-left:30px">
-        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加机构</el-button>
       </el-row>
       <el-table
         v-loading="loading"
@@ -24,7 +24,7 @@
         <el-table-column prop="domain" label="域名" align="center"></el-table-column>
         <el-table-column fixed="right" label="操作" width="280">
           <template slot-scope="scope">
-            <el-button @click="handleAddChild(scope.row.deptId)" type="success" size="mini">添加子级</el-button>
+            <el-button @click="handleAddChild(scope.row.deptId)" type="success" size="mini">添加部门</el-button>
             <span v-show="'0' != scope.row.level" style="margin-left: 10px;">
               <el-button @click="handleUpdate(scope.row.deptId)" type="primary" size="mini">编辑</el-button>
               <el-button
