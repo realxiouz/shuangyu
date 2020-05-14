@@ -698,6 +698,7 @@ export default {
     },
     // 补退弹框
     fillOutRefund(row) {
+      // console.log(row)
       this.fillOutRefundData = Object.assign({}, row);
       this.fillOutRefundShow = true;
     },
