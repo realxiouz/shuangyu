@@ -29,8 +29,8 @@
         :key="index"
       >
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item :label="item.label +'：'">
-            <span v-if="propertyList[index].valueType !=3">{{item.value}}</span>
+          <el-form-item :label="item.name +'：'">
+            <span >{{item.value}}</span>
             <!--            <span v-if="propertyList[index].valueType ==3">{{formatDate(item.value,'YYYY-MM-DD')}}</span>-->
           </el-form-item>
         </el-col>
@@ -155,7 +155,7 @@
                                 this.formData = data;
                                 let param = {};
                                 param.categoryCode = this.formData.categoryCode;
-                                this.loadPropertyList(param);
+                                // this.loadPropertyList(param);
                             }
                         })
                         .catch(error => {
@@ -195,7 +195,7 @@
                                 this.formData.productPropertyItems = [];
                                 for (let i = 0, len = data.length; i < len; i++) {
                                     this.formData.productPropertyItems.push({
-                                        label: data[i].propertyLabel,
+                                        label: data[i].propertyName,
                                         code: data[i].propertyCode,
                                         sku: data[i].sku,
                                         value: this.getValue(data[i].propertyCode, properties, "")
