@@ -291,7 +291,7 @@ export default {
       //先执行一次，然后触发定时器。
       this.loadPendingTotal();
       this.pendingTotalTimer = setInterval(() => {
-        this.loadPendingTotal();
+        setTimeout(this.loadPendingTotal, 0);
       }, 60000);
     }
   },

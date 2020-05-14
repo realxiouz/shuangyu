@@ -424,7 +424,7 @@ export default {
     this.loadPendingTotal();
     this.timer = setInterval(() => {
       setTimeout(this.loadPendingTotal, 0);
-    }, 30000);
+    }, 60000);
   },
   computed: {
     formatDate() {
