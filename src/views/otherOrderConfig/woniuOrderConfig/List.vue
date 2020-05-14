@@ -48,7 +48,7 @@ export default {
   data() {
     return {
       activeName: "goTicket",
-      loading: false,
+      loading: true,
       tableData: [],
       currentPage: 1,
       pageSize: 10,
