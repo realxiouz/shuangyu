@@ -30,7 +30,7 @@
       >
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item :label="item.name +'：'">
-            <span >{{item.value}}</span>
+            <span>{{item.value}}</span>
             <!--            <span v-if="propertyList[index].valueType ==3">{{formatDate(item.value,'YYYY-MM-DD')}}</span>-->
           </el-form-item>
         </el-col>
@@ -155,7 +155,6 @@
                                 this.formData = data;
                                 let param = {};
                                 param.categoryCode = this.formData.categoryCode;
-                                // this.loadPropertyList(param);
                             }
                         })
                         .catch(error => {
@@ -174,39 +173,6 @@
             },
             handleCancel() {
                 this.goBack();
-            },
-            loadPropertyList(searchForm) {
-                this.$store
-                    .dispatch("productProperty/getList", {
-                        filter: searchForm
-                    })
-                    .then(data => {
-                        if (data) {
-                            this.propertyList = data;
-                            if (this.propertyList.length > 0) {
-                                for (let i = 0, len = this.propertyList.length; i < len; i++) {
-                                    if (this.propertyList[i].valueType > 6) {
-                                        this.propertyList[i].values = this.getValueArray(
-                                            this.propertyList[i].values
-                                        );
-                                    }
-                                }
-                                let properties = this.formData.productPropertyItems;
-                                this.formData.productPropertyItems = [];
-                                for (let i = 0, len = data.length; i < len; i++) {
-                                    this.formData.productPropertyItems.push({
-                                        label: data[i].propertyName,
-                                        code: data[i].propertyCode,
-                                        sku: data[i].sku,
-                                        value: this.getValue(data[i].propertyCode, properties, "")
-                                    });
-                                }
-                            }
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
             },
             getValueArray(values) {
                 let array = [];
