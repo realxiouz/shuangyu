@@ -334,14 +334,14 @@
                                     for (let i = 0, len = data.length; i < len; i++) {
                                         if (data[i].valueType > 6) {
                                             this.formData.productPropertyItems.push({
-                                                label: data[i].propertyLabel,
+                                                label: data[i].propertyName,
                                                 code: data[i].propertyCode,
                                                 sku: data[i].sku,
                                                 value: this.getValue(data[i].propertyCode, properties, [])
                                             });
                                         } else {
                                             this.formData.productPropertyItems.push({
-                                                label: data[i].propertyLabel,
+                                                label: data[i].propertyName,
                                                 code: data[i].propertyCode,
                                                 sku: data[i].sku,
                                                 value: this.getValue(data[i].propertyCode, properties, '')
