@@ -23,7 +23,6 @@
         </el-col>
       </el-row>
       <el-row
-        v-if="propertyList.length > 0"
         :gutter="10"
         v-for="(item, index) in formData.productPropertyItems"
         :key="index"
