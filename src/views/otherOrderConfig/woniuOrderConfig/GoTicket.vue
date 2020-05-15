@@ -4,7 +4,7 @@
       :data="tableData"
       size="mini"
       highlight-current-row
-      style="width: 100%;margin-bottom:15px"
+      style="width: 100%;"
       v-loading="loading"
       max-height="650"
       fit
@@ -31,9 +31,9 @@
       <el-table-column prop="account" label="账号" width="100" align="center"></el-table-column>
       <el-table-column prop="flightNo" label="航班号" width="70" align="center"></el-table-column>
       <el-table-column prop="depDate" label="航班日期" width="120" align="center"></el-table-column>
-      <el-table-column prop="dep" label="起飞地" align="center"></el-table-column>
-      <el-table-column prop="arr" label="到达地" align="center"></el-table-column>
-      <el-table-column fixed="right" label="操作" width="180" align="center">
+      <el-table-column prop="dep" label="起飞地" width="150" align="center"></el-table-column>
+      <el-table-column prop="arr" label="到达地" width="150" align="center"></el-table-column>
+      <el-table-column fixed="right" label="操作"  width="180" align="center">
         <template slot-scope="scope">
           <el-button disabled @click="handleEdit(scope.row)" type="primary" size="mini">查看</el-button>
           <el-button disabled @click="handleDelete(scope.row)" type="danger" size="mini">处理</el-button>

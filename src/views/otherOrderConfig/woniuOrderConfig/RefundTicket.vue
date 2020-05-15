@@ -4,11 +4,10 @@
       :data="tableData"
       size="mini"
       highlight-current-row
-      style="width: 100%;margin-bottom:15px"
+      style="width: 100%;"
       v-loading="loading"
       max-height="650"
       fit
-      border
     >
       <el-table-column type="index" align="center"></el-table-column>
       <el-table-column prop="orderNo" label="订单号" width="150" align="center"></el-table-column>
@@ -30,12 +29,6 @@
         </template>
       </el-table-column>
       <el-table-column prop="refundTypeDesc" label="退票类型" width="100" align="center"></el-table-column>
-
-      <!-- <el-table-column label="退票单号" width="120" align="center">
-        <template slot-scope="scope">
-          <span v-html="formatRefundOrderNo(scope.row.passengerInfos)"></span>
-        </template>
-      </el-table-column>-->
       <el-table-column prop="account" label="账号" width="100" align="center"></el-table-column>
       <el-table-column prop="flightNo" label="航班号" width="70" align="center"></el-table-column>
       <el-table-column prop="depDate" label="航班日期" width="120" align="center"></el-table-column>
