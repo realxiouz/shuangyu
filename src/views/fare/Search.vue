@@ -54,7 +54,7 @@
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more">
-            <span style="color:#F56C6C">提示：亲，没有更多查询条件了 ^o^</span>
+            <span>提示：亲，没有更多查询条件了 ^-^</span>
           </el-form-item>
         </el-col>
       </el-form>
