@@ -152,7 +152,7 @@ export default {
           } else {
             let params = {};
             params.username = this.loginForm.account;
-            params.password = this.loginForm.verification;
+            params.code = this.loginForm.verification;
             this.$store
               .dispatch("user/signInCode", params)
               .then(res => {

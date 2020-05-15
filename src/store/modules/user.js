@@ -38,9 +38,9 @@ const actions = {
 
   // 验证码登录
   signInCode({ commit }, userInfo) {
-    const { username, password } = userInfo;
+    const { username, code } = userInfo;
     return new Promise((resolve, reject) => {
-      signInCode({ username: username.trim(), password: password })
+      signInCode({ username: username.trim(), code: code })
         .then(response => {
           const { data } = response;
           resolve(response);
