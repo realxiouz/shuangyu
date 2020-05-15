@@ -18,6 +18,9 @@
     <el-collapse v-model="activeNames">
       <el-collapse-item name="1">
         <span class="collapse-title" slot="title">
+          <span v-if="this.activeNames.indexOf('1')!=-1">收起</span>
+          <span v-else>展开</span>
+
           <span style="font-size:larger;margin-left: 15px;font-weight: bolder;">销售单信息</span>
           <span style="font-size: 24px; margin: 0 20px; color: #ff4600;">{{orderDetail_orderState}}</span>
           <span style="color: #F56C6C">{{orderDetail_orderComment}}</span>
@@ -160,6 +163,8 @@
       </el-collapse-item>
       <el-collapse-item name="2">
         <span class="collapse-title" slot="title">
+          <span v-if="this.activeNames.indexOf('2')!=-1">收起</span>
+          <span v-else>展开</span>
           <span style="font-size:larger;margin-left: 15px;font-weight: bolder;">销售单消息</span>
         </span>
         <div style="padding: 20px">
@@ -172,6 +177,8 @@
       </el-collapse-item>
       <el-collapse-item v-if="this.tableData.orderType !='10'" name="3">
         <span class="collapse-title" slot="title">
+          <span v-if="this.activeNames.indexOf('3')!=-1">收起</span>
+          <span v-else>展开</span>
           <span
             v-if="this.tableData.orderType=='30'|| this.tableData.orderType=='31'"
             style="font-size:larger;margin-left: 15px;font-weight: bolder;"
@@ -193,6 +200,8 @@
       </el-collapse-item>
       <el-collapse-item name="4">
         <span class="collapse-title" slot="title">
+          <span v-if="this.activeNames.indexOf('4')!=-1">收起</span>
+          <span v-else>展开</span>
           <span style="font-size:larger;margin-left: 15px;font-weight: bolder;">采购单信息</span>
         </span>
         <div style="padding: 20px">
@@ -275,6 +284,8 @@
       </el-collapse-item>
       <el-collapse-item name="5">
         <div slot="title" class="collapse-title">
+          <span v-if="this.activeNames.indexOf('5')!=-1">收起</span>
+          <span v-else>展开</span>
           <span style="font-size:larger;margin-left: 15px;font-weight: bolder;">操作日志</span>
         </div>
         <div style="padding: 20px">
@@ -1820,7 +1831,7 @@ export default {
   color: #ff4600;
 }
 .el-collapse-item__header {
-  background-color: #ccc;
+  background-color: #fafafa;
   height: 35px;
   font-size: 12px;
   flex: 1 0 auto;
