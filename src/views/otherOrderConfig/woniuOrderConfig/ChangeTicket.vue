@@ -8,6 +8,7 @@
       v-loading="loading"
       max-height="650"
       fit
+      :border="false"
     >
       <el-table-column type="index" align="center"></el-table-column>
       <el-table-column prop="orderNo" label="订单号" width="150" align="center"></el-table-column>
