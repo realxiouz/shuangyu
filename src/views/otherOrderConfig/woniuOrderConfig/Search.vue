@@ -108,13 +108,10 @@
               v-model="formData.orderStatus"
               placeholder="请选择"
             >
-              <el-option label value="0"></el-option>
-              <el-option label value="1"></el-option>
-              <el-option label value="2"></el-option>
-              <el-option label value="3"></el-option>
-              <el-option label value="4"></el-option>
-              <el-option label value="5"></el-option>
-              <el-option label value="6"></el-option>
+              <el-option label="订座成功等待支付" value="0"></el-option>
+              <el-option label="支付成功等待出票" value="2"></el-option>
+              <el-option label="出票完成" value="4"></el-option>
+              <el-option label="已取消订单" value="7"></el-option>
             </el-select>
           </el-form-item>
         </el-col>

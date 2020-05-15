@@ -307,6 +307,13 @@ export default {
         .dispatch("orderTask/taskTransfer", params)
         .then(data => {
           if (data) {
+            setTimeout(() => {
+              this.loadData();
+            }, 3000);
+            this.$message({
+              type: "success",
+              message: "转单成功！"
+            });
           }
         })
         .catch(error => {

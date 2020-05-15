@@ -261,18 +261,26 @@ export default {
     batchTaskTransfer() {
       this.taskStaffDialog = true;
     },
-    // 批量转单弹框取消
     taskTransfer(params) {
       this.$store
         .dispatch("orderTask/taskTransfer", params)
         .then(data => {
           if (data) {
+            setTimeout(() => {
+              this.loadData();
+            }, 3000);
+            this.$message({
+              type: "success",
+              message: "转单成功！"
+            });
           }
         })
         .catch(error => {
           console.log(error);
         });
     },
+    // 批量转单弹框取消
+
     onCancel() {
       this.taskStaffDialog = false;
     },
