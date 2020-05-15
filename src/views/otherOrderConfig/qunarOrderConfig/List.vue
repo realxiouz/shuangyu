@@ -18,8 +18,14 @@
       >
         <el-table-column type="index" align="center"></el-table-column>
         <el-table-column prop="orderNo" label="订单号" width="180" align="center"></el-table-column>
-        <el-table-column prop="createTime" width="90" label="订单日期" align="center"></el-table-column>
-        <el-table-column prop="status" label="订单状态" :formatter="formatQunarStatus" align="center"></el-table-column>
+        <el-table-column prop="createTime" width="150" label="订单日期" align="center"></el-table-column>
+        <el-table-column
+          prop="status"
+          width="150"
+          label="订单状态"
+          :formatter="formatQunarStatus"
+          align="center"
+        ></el-table-column>
         <!-- <el-table-column
           prop="category"
           :formatter="formatCategory"
