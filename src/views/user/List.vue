@@ -30,7 +30,7 @@
         </el-table-column>
         <el-table-column prop="phone" label="手机号" align="left"></el-table-column>
         <el-table-column prop="email" label="电子邮箱" align="left"></el-table-column>
-        <el-table-column prop="roles" label="用户现有的角色" align="center">
+        <el-table-column label="角色权限" align="center">
           <template slot-scope="scope">
             <span v-html="formDataRole(scope.row.roles)"></span>
           </template>

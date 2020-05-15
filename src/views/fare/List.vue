@@ -11,13 +11,16 @@
         v-loading="loading"
         :data="tableData"
         style="width: 100%;margin-bottom: 15px;"
+        max-height="650"
         size="mini"
       >
+        <el-table-column type="index" width="50" align="center"></el-table-column>
+
         <el-table-column prop="segment" label="航段" width="100" align="center"></el-table-column>
-        <el-table-column prop="dpt" label="出发地三字码" align="center"></el-table-column>
-        <el-table-column prop="arr" label="目的地三字码" align="center"></el-table-column>
-        <el-table-column prop="airlineCode" label="航司二字码" width="100" align="center"></el-table-column>
-        <el-table-column prop="cabin" label="航司舱位" width="100" align="center"></el-table-column>
+        <el-table-column prop="dpt" label="出发地" align="center"></el-table-column>
+        <el-table-column prop="arr" label="目的地" align="center"></el-table-column>
+        <el-table-column prop="airlineCode" label="航司" width="100" align="center"></el-table-column>
+        <el-table-column prop="cabin" label="舱位" width="100" align="center"></el-table-column>
         <el-table-column prop="price" label="价格" width="150" align="center">
           <template slot-scope="scope">
             <span>{{ formatAmount(scope.row.price)}}</span>
@@ -42,11 +45,12 @@
       </el-table>
       <el-pagination
         background
-        layout="total,prev,next"
+        layout="total,sizes,prev,next"
         prev-text="上一页"
         next-text="下一页"
         :page-size="pageSize"
         :total="total"
+        @size-change="handleSizeChange"
         @prev-click="handlePrevClick"
         @next-click="handleNextClick"
       ></el-pagination>
@@ -195,13 +199,17 @@ export default {
     handlePrevClick() {
       this.pageFlag = "prev";
       this.lastId = this.tableData[0].fareId;
-      this.loadData()
+      this.loadData();
     },
     /*翻后页*/
     handleNextClick() {
       this.pageFlag = "next";
       this.lastId = this.tableData[this.tableData.length - 1].fareId;
-      this.loadData()
+      this.loadData();
+    },
+    handleSizeChange(size) {
+      this.pageSize = size;
+      this.loadData();
     },
     open(func, data, message) {
       this.$confirm(message, "提示", {
