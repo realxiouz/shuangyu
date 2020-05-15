@@ -26,7 +26,7 @@
           width="90"
           label="订单类型"
           align="center"
-        ></el-table-column> -->
+        ></el-table-column>-->
         <el-table-column label="乘机人" width="90" align="center">
           <template slot-scope="scope">
             <span v-html="formatPassengers(scope.row.passenger)"></span>
@@ -82,7 +82,6 @@
         :close-on-click-modal="false"
       >
         <div v-if="dialogVisible">
-
           <el-table :data="logData.log" size="mini" highlight-current-row fit>
             <el-table-column type="index" width="50" align="center"></el-table-column>
             <el-table-column prop="operator" label="操作员" width="80" align="center"></el-table-column>
@@ -184,7 +183,7 @@ export default {
       this.$store
         .dispatch("qunarOrderConfig/getTotal", { filters: params })
         .then(data => {
-          if (data) {
+          if (data >= 0) {
             this.total = data;
           }
         })

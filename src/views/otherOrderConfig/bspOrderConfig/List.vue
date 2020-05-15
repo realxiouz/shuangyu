@@ -112,7 +112,7 @@ export default {
       currentPage: 1,
       pageSize: 10,
       total: 0,
-      searchParams: {},
+      searchParams: {}
     };
   },
   components: {
@@ -162,7 +162,7 @@ export default {
       this.$store
         .dispatch("bspOrderConfig/getTotal", { filters: params })
         .then(data => {
-          if (data) {
+          if (data >= 0) {
             this.total = data;
           }
         })

@@ -18,14 +18,30 @@
       >
         <el-table-column type="index" align="center"></el-table-column>
         <el-table-column prop="sourceOrderNo" label="订单号" width="100" align="center"></el-table-column>
-        <el-table-column prop="orderType" :formatter="formatOrderType" width="90" label="订单状态" align="center">
-        </el-table-column>
-        <el-table-column prop="category" width="90" :formatter="formatCategory" label="订单分类" align="center">
-        </el-table-column>
+        <el-table-column
+          prop="orderType"
+          :formatter="formatOrderType"
+          width="90"
+          label="订单状态"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="category"
+          width="90"
+          :formatter="formatCategory"
+          label="订单分类"
+          align="center"
+        ></el-table-column>
         <el-table-column label="航程类型" :formatter="formatVoyageType" width="80" align="center"></el-table-column>
         <el-table-column prop="ticketNo" width="150" label="票号" align="center"></el-table-column>
         <el-table-column prop="name" label="乘机人" width="120" align="center"></el-table-column>
-        <el-table-column prop="ageType" label="乘机人类型" :formatter="formatAgeType" width="90" align="center"></el-table-column>
+        <el-table-column
+          prop="ageType"
+          label="乘机人类型"
+          :formatter="formatAgeType"
+          width="90"
+          align="center"
+        ></el-table-column>
         <el-table-column label="起飞-到达" width="90" align="center">
           <template slot-scope="scope">
             <span v-html="formatFlight(scope.row)"></span>
@@ -94,7 +110,6 @@ import {
   formatOrderType,
   formatVoyageType,
   formatAgeType
-
 } from "@/utils/status.js";
 import {
   formatPassengers,
@@ -117,7 +132,7 @@ export default {
       currentPage: 1,
       pageSize: 10,
       total: 0,
-      searchParams: {},
+      searchParams: {}
     };
   },
   components: {
@@ -173,7 +188,7 @@ export default {
       this.$store
         .dispatch("pnrjyOrderConfig/getTotal", { filters: params })
         .then(data => {
-          if (data) {
+          if (data >= 0) {
             this.total = data;
           }
         })
@@ -208,7 +223,7 @@ export default {
       }
     },
     formatFlight(data) {
-     if (!data) {
+      if (!data) {
         return "";
       }
       if (data.arr && data.dpt) {

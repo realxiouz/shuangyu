@@ -129,7 +129,7 @@ export default {
       this.$store
         .dispatch("woniuOrderConfig/getTotal", { filters: params })
         .then(data => {
-          if (data) {
+          if (data >= 0) {
             this.total = data;
           }
         })
