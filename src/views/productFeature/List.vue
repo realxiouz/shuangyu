@@ -1,236 +1,194 @@
 <template>
   <div class="contentBox">
+    <!-- 功能列表 -->
     <el-row :gutter="20">
-      <el-col :xs="11" :sm="10" :md="9" :lg="8" :xl="8">
-        <el-row style="margin-bottom:20px;">
-          <span style="font-weight:700;color:#303133;">商品类目</span>
-        </el-row>
-        <el-tree
-          v-loading="loading"
-          node-key="categoryId"
-          auto-expand-parent
-          :data="treeData"
-          :default-expanded-keys="curLine"
-          :props="treeProps"
-          :highlight-current="true"
-          @node-click="handleNodeClick"
-        >
-          <span class="tree-node" slot-scope="{ node}">
-            <span>{{ node.data.categoryName }}</span>
-          </span>
-        </el-tree>
-      </el-col>
-      <el-col :xs="13" :sm="14" :md="15" :lg="16" :xl="16">
-        <!--        <div class="searchBox">-->
-        <!--          <search @onSearch="handleSearch"></search>-->
-        <!--        </div>-->
+      <el-col>
         <el-row type="flex" justify="space-between" style="margin-bottom:20px;" align="bottom">
-          <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd" :disabled="dialogVisible">添加属性
-          </el-button>
+          <el-button icon="el-icon-plus" type="primary" size="mini" @click="toAddFeature">添加功能</el-button>
         </el-row>
-        <el-table
-          v-loading="loading"
-          :data="tableData"
-          style="width: 100%;margin-bottom: 15px;"
-          size="mini"
-        >
-          <el-table-column prop="categoryName" label="商品类目" align="center"></el-table-column>
-          <el-table-column prop="propertyLabel" label="属性名称" align="center"></el-table-column>
-          <el-table-column prop="propertyCode" label="属性编码" align="center"></el-table-column>
-          <el-table-column prop="isSku" label="是否销售属性" align="center">
+
+        <el-table :data="tableData" style="width: 100%">
+          <el-table-column label="功能类别" width="100">
             <template slot-scope="scope">
-              <el-switch v-model="scope.row.sku" disabled></el-switch>
+              <span style="margin-left: 10px">{{ featureCate[scope.row.featureType].value}}</span>
             </template>
           </el-table-column>
-          <el-table-column fixed="right" label="操作" align="center" width="350">
+
+          <el-table-column label="功能名称" width="100">
             <template slot-scope="scope">
-              <el-button @click="handleUpdate(scope.row.propertyId)" type="primary" size="mini">编辑</el-button>
-              <el-button
-                @click.native.prevent="handleRemove(scope.row.propertyId,scope.$index,tableData)"
-                type="danger"
-                size="mini"
-              >删除
-              </el-button>
+              <span style="margin-left: 10px">{{scope.row.featureName}}</span>
+            </template>
+          </el-table-column>
+
+          <el-table-column label="标识符" width="100">
+            <template slot-scope="scope">
+              <span style="margin-left: 10px">{{scope.row.featureCode}}</span>
+            </template>
+          </el-table-column>
+
+  
+
+          <el-table-column label="提交时间" width="180">
+            <template slot-scope="scope">
+              <span
+                style="margin-left: 10px"
+              >{{formatDate(scope.row.createTime,"YYYY-MM-DD h:mm:ss")}}</span>
+            </template>
+          </el-table-column>
+
+          <el-table-column label="操作">
+            <template slot-scope="scope">
+              <el-button size="mini" @click="handleEdit(scope.row)">修改</el-button>
+              <el-button size="mini" type="danger" @click="handleDelete(scope.row.featureId)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
-        <el-pagination
-          @size-change="handleSizeChange"
-          @prev-click="prevClick"
-          @next-click="nextClick"
-          background
-          layout="total,sizes,prev,next"
-          prev-text="上一页"
-          next-text="下一页"
-          :page-size="pageSize"
-          :total="total"
-        ></el-pagination>
+
+        <product-feature-edit ref="edit" @editSuccess="getList()" @addSuccess="getList()" />
+
+        <div style="text-align: center;margin-top: 30px;">
+          <el-pagination
+            @current-change="currentChange"
+            background
+            layout="total,prev,next"
+            prev-text="上一页"
+            next-text="下一页"
+            :page-size="pageSize"
+            :total="total"
+          ></el-pagination>
+        </div>
       </el-col>
     </el-row>
+
+    <!-- 删除弹窗 -->
+
+    <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
+      <span>确定删除？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="confirmDelete">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-    import search from "./Search";
+import productFeatureEdit from "./Edit";
 
-    export default {
-        data() {
-            return {
-                loading: true,
-                curNode: null,
-                tableData: [],
-                treeData: [],
-                curLine: [],
-                treeProps: {
-                    children: "children",
-                    hasChildren: "xxx"
-                },
-                lastId: "0",
-                pageFlag: "next",
-                pageSize: 10,
-                dialogVisible: true,
-                propertyId: "",
-                total: 0
-            };
-        },
-        methods: {
-            /*加载类别树*/
-            loadTreeData() {
-                this.$store
-                    .dispatch("category/getTreeList", {filter: {categoryType: 9}})
-                    .then(data => {
-                        if (data) {
-                            this.treeData = data.data;
-                        }
-                        this.loading = false;
-                    })
-                    .catch(error => {
-                        this.loading = false;
-                        console.log(error);
-                    });
-            },
-            /*点击部门树时调用*/
-            handleNodeClick(data) {
-                this.dialogVisible = false;
-                this.curNode = data;
-                let searchForm = {};
-                searchForm.categoryCode = data.categoryCode;
-                this.lastId = '0';
-                this.loadData(searchForm);
-            },
-            prevClick() {
-                this.pageFlag = "prev";
-                this.lastId = this.tableData[0].propertyId;
-                this.loadData();
-            },
-            nextClick() {
-                this.pageFlag = "next";
-                this.lastId = this.tableData[this.tableData.length - 1].propertyId;
-                this.loadData();
-            },
-            loadTotal(searchForm) {
-                this.$store
-                    .dispatch("productProperty/getTotal", {
-                        filter: searchForm
-                    })
-                    .then(data => {
-                        this.total = data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            loadData(searchForm) {
-                this.$store
-                    .dispatch("productProperty/getPageList", {
-                        pageFlag: this.pageFlag,
-                        pageSize: this.pageSize,
-                        lastId: this.lastId,
-                        filter: searchForm
-                    })
-                    .then(data => {
-                        if (data) {
-                            this.tableData = data;
-                            this.loadTotal(searchForm);
-                        }
-                        this.loading = false;
-                    })
-                    .catch(error => {
-                        this.loading = false;
-                        console.log(error);
-                    });
-            },
-            handleAdd() {
-                let path = "";
-                path = "/property/config";
-                this.$router.push({
-                    path: path,
-                    query: {
-                        categoryCode: this.curNode.categoryCode,
-                        categoryName: this.curNode.categoryName,
-                        categoryPath: this.curNode.path
-                    }
-                });
-            },
-            handleUpdate(id) {
-                let path = "";
-                path = "/property/config";
-                this.$router.push({
-                    path: path,
-                    query: {
-                        propertyId: id
-                    }
-                });
-            },
-            handleRemove(id, index, rows) {
-                this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
-                    confirmButtonText: "确定",
-                    cancelButtonText: "取消",
-                    type: "warning"
-                })
-                    .then(() => {
-                        this.$store.dispatch("productProperty/removeOne", {propertyId: id}).then(() => {
-                            if (1 === this.tableData.length) {
-                                this.prevClick();
-                            } else {
-                                this.loadData();
-                            }
-                            rows.splice(index, 1);
-                        });
-                    })
-                    .catch(err => {
-                        console.error(err);
-                    });
-            },
-            handleSizeChange(pageSize) {
-                this.pageSize = pageSize;
-                this.loadData();
-            },
-            handleSearch(params) {
-                const newParams = {};
-                if (params) {
-                    for (let key in params) {
-                        if (params[key]) {
-                            newParams[key] = params[key];
-                        }
-                    }
-                }
-                if (Object.keys(newParams).length == 0) {
-                    this.lastId = 0;
-                }
-                this.loadData(newParams);
-                this.$message({
-                    type: "success",
-                    message: "查询成功！"
-                });
-            },
-        },
-        created() {
-            this.loadTreeData();
-            this.loadData();
-        },
-        components: {
-            search
-        }
+export default {
+  data() {
+    const validateSign = (rule, value, callback) => {
+      var signRe = /^[a-zA-Z_][a-zA-Z0-9_]{4,20}$/;
+      if (signRe.test(value)) {
+        callback();
+      } else {
+        callback(new Error("不能数字开头，支持中英文下划线，5-20位"));
+      }
     };
+
+    return {
+      pageFlag: false,
+      lastId: "",
+      dialogVisible: false,
+      tableData: [],
+      total: 0,
+      currentParamList: "",
+      currentPage: 1,
+      pageSize: 8,
+      featureCate: [
+        { id: 0, value: "属性" },
+        { id: 1, value: "服务" },
+        { id: 2, value: "事件" }
+      ],
+      cocurrentFeatureId: ""
+    };
+  },
+  methods: {
+    // 新增功能
+    toAddFeature() {
+      this.$refs.edit.handleAddFeature();
+    },
+    // 获取列表
+    getList(cb) {
+      this.$store
+        .dispatch("productFeature/getList", {
+          pageFlag: this.pageFlag,
+          pageSize: this.pageSize,
+          lastId: this.lastId
+        })
+        .then(result => {
+          this.tableData = result;
+          cb && cb();
+        });
+    },
+    // 页码切换
+    currentChange(nextPage) {
+      const pageFlag = this.currentPage > nextPage ? -1 : 1;
+      const tableData = this.tableData;
+      let lastId;
+      if (tableData.length) {
+        if (pageFlag == 1) {
+          lastId = tableData[tableData.length - 1].featureId;
+        } else {
+          lastId = tableData[0].featureId;
+        }
+      }
+      this.lastId = lastId;
+      this.pageFlag = pageFlag;
+      this.getList(() => {
+        this.currentPage = nextPage;
+      });
+    },
+    getTotal() {
+      this.$store.dispatch("productFeature/getTotal").then(result => {
+        this.total = result;
+      });
+    },
+    // 获取数据 （列表+条数）
+    getData() {
+      this.currentPage = 1;
+      this.pageFlag = 0;
+      this.getList();
+      this.getTotal();
+    },
+    // 编辑功能
+    handleEdit(data) {
+      this.$refs.edit.handleEditFeature(data);
+    },
+    // 提示是否删除
+    handleDelete(id) {
+      this.dialogVisible = true;
+      this.cocurrentFeatureId = id;
+    },
+    // 确定删除
+    confirmDelete() {
+      this.$store
+        .dispatch("productFeature/delFeatureById", this.cocurrentFeatureId)
+        .then(result => {
+          this.dialogVisible = false;
+          this.$message({
+            message: "删除成功！",
+            type: "success"
+          });
+          this.getList();
+          this.getTotal();
+        });
+    },
+    // 时间格式
+    formatDate(dateStr, format) {
+      if (null != dateStr) {
+        const date = new Date(dateStr);
+        return this.$moment(date).format(format);
+      } else {
+        return "";
+      }
+    }
+  },
+  components: {
+    productFeatureEdit
+  },
+  created() {
+    this.getData();
+  }
+};
 </script>

@@ -1,480 +1,522 @@
 <template>
-  <div>
-    <div id="goBack" @click="goBack">
-      <el-page-header></el-page-header>
-    </div>
-    <el-card class="contentBox">
-      <div slot="header">
-        <span>商品属性管理</span>
-      </div>
-      <el-form ref="form" :rules="rules" :model="formData" label-width="130px" size="mini">
-        <el-row :gutter="10">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="商品类目" prop="categoryName">
-              <el-input v-model="formData.categoryName" disabled></el-input>
-            </el-form-item>
-            <!--            <el-form-item label="商品类目">-->
-            <!--              <el-cascader-->
-            <!--                v-model="formData.categoryCode"-->
-            <!--                style="width: 100%;"-->
-            <!--                :options="categoryList"-->
-            <!--                :props="{ label: 'categoryName', value: 'categoryCode' }"-->
-            <!--                filterable-->
-            <!--                @change="handleCategory"-->
-            <!--              >-->
-            <!--              </el-cascader>-->
-            <!--            </el-form-item>-->
+  <div v-if="showMask">
+    <!-- 功能列表弹窗 -->
+    <el-dialog :title="myTitle" :visible.sync="showMask">
+      <el-form label-position="top" :rules="baseRule" :model="commonForm" ref="common-form">
+        <el-form-item label="自定义功能">
+          <el-radio-group v-model="commonForm.featureType">
+            <el-radio-button
+              :label="item.id"
+              v-for="(item,index) in featureCate"
+              :key="index"
+            >{{item.value}}</el-radio-button>
+          </el-radio-group>
+        </el-form-item>
+
+        <el-form-item label="功能名称" prop="featureName">
+          <el-col :span="12">
+            <el-input placeholder="请输入您的公共功能名称" v-model="commonForm.featureName" />
           </el-col>
-        </el-row>
-        <el-row :gutter="10">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="属性编码" prop="propertyCode">
-              <el-input v-model="formData.propertyCode"></el-input>
-            </el-form-item>
+        </el-form-item>
+
+        <el-form-item label="标识符" prop="featureCode">
+          <el-col :span="12">
+            <el-input placeholder="请输入您的标识符" v-model="commonForm.featureCode" />
           </el-col>
-        </el-row>
-        <el-row :gutter="10">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="属性名称" prop="propertyLabel">
-              <el-input v-model="formData.propertyLabel"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="属性类型:" prop="valueType">
-              <!-- 数据类型（0文本，1开关，2数字，3日期，4日期时间，5时间，6评分，7单选，8多选，9选择器）-->
-              <el-select clearable v-model="formData.valueType" placeholder="全部" style="width: 100%"
-                         @change="valueTypeChange">
-                <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10" v-if="valueType ==8">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="是否销售属性" prop="sku">
-              <el-switch v-model="formData.sku" :active-value=true :inactive-value=false
-              ></el-switch>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10" v-if="valueType ==2">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="精度" prop="precision">
-              <el-input v-model="formData.precision" @change="changeNum"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10" v-if="valueType ==0">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="示例:" prop="precision">
-              <el-input v-model="test.input" placeholder="请输入内容"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10" v-if="valueType ==1">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="示例:">
-              <el-switch
-                v-model="test.switchValue"
-              >
-              </el-switch>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10" v-if="valueType ==2">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="示例:">
-              <el-input-number v-model="test.num" :precision="formData.precision"></el-input-number>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10" v-if="valueType ==3">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="示例:">
-              <el-date-picker
-                v-model="test.time1"
-                type="date"
-                placeholder="选择日期">
-              </el-date-picker>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10" v-if="valueType ==4">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="示例:">
-              <el-date-picker
-                v-model="test.time2"
-                type="datetime"
-                placeholder="选择日期时间">
-              </el-date-picker>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10" v-if="valueType ==5">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="示例:">
-              <el-time-select
-                v-model="test.time3"
-                :picker-options="{
-    start: '08:30',
-    step: '00:15',
-    end: '18:30'
-  }"
-                placeholder="选择时间">
-              </el-time-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10" v-if="valueType ==6">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="示例:">
-              <el-rate v-model="test.rateValue"></el-rate>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10" v-if="valueType ==7">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="示例:">
-              <el-radio v-model="test.radio" label="1">单选项1</el-radio>
-              <el-radio v-model="test.radio" label="2">单选项2</el-radio>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10" v-if="valueType ==8">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="示例:">
-              <el-checkbox v-model="test.checked1">多选框1</el-checkbox>
-              <el-checkbox v-model="test.checked2">多选框2</el-checkbox>
-              <el-checkbox v-model="test.checked3">多选框3</el-checkbox>
-              <el-checkbox v-model="test.checked4">多选框4</el-checkbox>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10" v-if="valueType ==9">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="示例:">
-              <el-select
-                style="width: 100%;"
-                clearable
-                collapse-tags
-                v-model="test.selectValue"
-                placeholder="请选择"
-              >
-                <el-option label="选项1" value="0"></el-option>
-                <el-option label="选项2" value="1"></el-option>
-                <el-option label="选项3" value="1"></el-option>
-                <el-option label="选项4" value="1"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <div v-show="showAddValues">
-          <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加属性值</el-button>
-          <el-table
-            :data="values"
-            style="width: 100%;margin-bottom: 15px;"
-            size="mini"
-            border
-          >
-            <el-table-column prop="code" label="编码" align="center"></el-table-column>
-            <el-table-column prop="value" label="值" align="center"></el-table-column>
-            <el-table-column label="操作" align="center" width="350">
-              <template slot-scope="scope">
-                <el-button type="danger" size="mini"
-                           @click="valueRemove(scope.row.code,scope.$index,values)">删除
-                </el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-        </div>
-        <el-dialog title="属性值" :visible.sync="dialogVisible" width="20%">
-          <el-form ref="form" :model="formValue" label-width="90px">
-            <el-form-item label="编码">
-              <el-input v-model="formValue.code"></el-input>
-            </el-form-item>
-            <el-form-item label="值">
-              <el-input v-model="formValue.value"></el-input>
-            </el-form-item>
-          </el-form>
-          <div slot="footer" class="dialog-footer">
-            <el-button @click="valueCancel">取 消</el-button>
-            <el-button type="primary" @click="valueSave">确 定</el-button>
-          </div>
-        </el-dialog>
+        </el-form-item>
       </el-form>
-    </el-card>
-    <div slot="footer" style="text-align:center;">
-      <el-button size="mini" type="primary" @click="handleCancel">取消</el-button>
-      <el-button size="mini" type="primary" @click="handleSave">保存</el-button>
-    </div>
+
+      <!-- 属性 -->
+      <parameter-form ref="base-form-box" v-if="showParameterFromInline" />
+      <!-- 服务 -->
+      <el-form
+        label-position="top"
+        v-if="showServer"
+        ref="server-form"
+        :model="serverForm"
+        :rules="serverRule"
+      >
+        <el-form-item :label="'调用方式'+serverForm.callType">
+          <el-radio-group v-model="serverForm.callType">
+            <el-radio :label="0">异步</el-radio>
+            <el-radio :label="1">同步</el-radio>
+          </el-radio-group>
+        </el-form-item>
+
+        <el-form-item label="输入参数" prop="input">
+          <el-row v-for="(param,index) in serverForm.inputParams" :key="index">
+            <el-col :span="12">
+              <el-link>参数名称：{{param.paramName}}</el-link>
+              <div style="float:right">
+                <el-link @click="editParamByIndex('serverForm.inputParams',index)">编辑</el-link>
+                <span>|</span>
+                <el-link @click="removeParamByIndex('serverForm.inputParams',index)">删除</el-link>
+              </div>
+            </el-col>
+          </el-row>
+
+          <el-row>
+            <el-link type="primary" @click="toAddParam('serverForm.inputParams')">+添加参数</el-link>
+          </el-row>
+        </el-form-item>
+
+        <el-form-item label="输出参数" prop="output">
+          <el-row v-for="(param,index) in serverForm.outputParams" :key="index">
+            <el-col :span="12">
+              <el-link>参数名称：{{param.paramName}}</el-link>
+              <div style="float:right">
+                <el-link @click="editParamByIndex('serverForm.outputParams',index)">编辑</el-link>
+                <span>|</span>
+                <el-link @click="removeParamByIndex('serverForm.outputParams',index)">删除</el-link>
+              </div>
+            </el-col>
+          </el-row>
+
+          <el-link type="primary" @click="toAddParam('serverForm.outputParams')">+添加参数</el-link>
+        </el-form-item>
+      </el-form>
+
+      <!-- 事件 -->
+      <el-form
+        label-position="top"
+        v-if="showEvent"
+        :model="eventForm"
+        ref="event-form"
+        :rules="eventRule"
+      >
+        <el-form-item label="事件类型" prop="eventType">
+          <el-radio-group v-model="eventForm.eventType">
+            <el-radio label="0">信息</el-radio>
+            <el-radio label="1">告警</el-radio>
+            <el-radio label="2">故障</el-radio>
+          </el-radio-group>
+        </el-form-item>
+
+        <el-form-item label="输出参数" prop="output">
+          <el-row v-for="(param,index) in eventForm.outputParams" :key="index">
+            <el-col :span="12">
+              <el-link>参数名称：{{param.paramName}}</el-link>
+              <div style="float:right">
+                <el-link @click="editParamByIndex('eventForm.outputParams',index)">编辑</el-link>
+                <span>|</span>
+                <el-link @click="removeParamByIndex('eventForm.outputParams',index)">删除</el-link>
+              </div>
+            </el-col>
+          </el-row>
+
+          <el-link type="primary" @click="toAddParam('eventForm.outputParams')">+添加参数</el-link>
+        </el-form-item>
+      </el-form>
+
+      <el-form :model="descForm" ref="desc-form">
+        <el-form-item
+          label="描述"
+          prop="description"
+          :rules="[{required: true, message: '描述不能为空', trigger: 'blur'}]"
+        >
+          <el-input placeholder="请输入描述" type="textarea" v-model="descForm.description" />
+        </el-form-item>
+      </el-form>
+
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="cancelEdit">取 消</el-button>
+        <el-button type="primary" @click="checkForm">确 定</el-button>
+      </span>
+    </el-dialog>
+
+    <!-- 参数弹窗 -->
+    <el-dialog :visible.sync="isAddParam" :title="parameterTitle">
+      <parameter-form ref="mask-form-box" :show-param-name="true" />
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="isAddParam = false">取 消</el-button>
+        <el-button type="primary" @click="handleAddParam">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
+
 <script>
-    function defaultData() {
-        return {
-            categoryCode: "",
-            categoryName: "",
-            categoryPath: "",
-            propertyCode: "",
-            propertyLabel: "",
-            precision: 0,
-            sku: false,
-            valueType: ''
-        }
+import parameterForm from "./ParameterForm";
+const ADD = "ADD";
+const EDIT = "EDIT";
+export default {
+  data() {
+    const validateSign = (rule, value, callback) => {
+      var signRe = /^[a-zA-Z_][a-zA-Z0-9_]{4,20}$/;
+      if (signRe.test(value)) {
+        callback();
+      } else {
+        callback(new Error("不能数字开头，支持中英文下划线，5-20位"));
+      }
     };
-    export default {
-        name: 'edit',
-        data() {
-            const categoryCode = (rule, value, callback) => {
-                let reg = /^[0-9a-zA-Z]*$/g;
-                if (reg.test(value)) {
-                    callback();
-                } else {
-                    callback(new Error("只能输入字母或数字！"));
-                }
-            };
-            return {
-                formData: defaultData(),
-                dialogVisible: false,
-                showAddValues: false,
-                formValue: {},
-                propertyId: '',
-                valueType: '',
-                test: {},
-                values: [],
-                categoryList: [],
-                rules: {
-                    categoryName: [
-                        {required: true, message: "请输入商品类目", trigger: "blur"},
-                    ],
-                    propertyCode: [
-                        {required: true, message: "请输入属性编码", trigger: "blur"},
-                        {
-                            min: 1,
-                            max: 20,
-                            message: "长度在 1到 20 个字符"
-                        },
-                        {validator: categoryCode, trigger: 'blur'}
-                    ],
-                    propertyLabel: [
-                        {required: true, message: "请输入属性标题", trigger: "blur"},
-                        {
-                            min: 1,
-                            max: 20,
-                            message: "长度在 1到 20 个字符"
-                        }
-                    ]
-                    , valueType: [
-                        {required: true, message: "请选择属性类型", trigger: "blur"},
-                    ]
-                },
-                options: [{
-                    value: 0,
-                    label: '文本'
-                },
-                    {
-                        value: 1,
-                        label: '开关'
-                    },
-                    {
-                        value: 2,
-                        label: '数字'
-                    },
-                    {
-                        value: 3,
-                        label: '日期'
-                    },
-                    {
-                        value: 4,
-                        label: '日期时间'
-                    },
-                    {
-                        value: 5,
-                        label: '时间'
-                    },
-                    {
-                        value: 6,
-                        label: '评分'
-                    },
-                    {
-                        value: 7,
-                        label: '单选'
-                    },
-                    {
-                        value: 8,
-                        label: '多选'
-                    },
-                    {
-                        value: 9,
-                        label: '选择器'
-                    }]
+
+    return {
+      dialogVisible: false,
+      featureCate: [
+        { id: 0, value: "属性" },
+        { id: 1, value: "服务" },
+        { id: 2, value: "事件" }
+      ],
+      tableData: [],
+      total: 0,
+      showMask: false,
+      isAddParam: false,
+      currentParamList: "",
+      currentPage: 1,
+      pageSize: 8,
+      handleType: ADD,
+      handleParamType: ADD,
+      currentParamIndex: -1,
+      // 属性表单
+      commonForm: {
+        featureId: "", //功能id
+        featureName: "", //功能名称
+        featureType: 0, //功能类型 0属性，1服务，2事件
+        featureCode: "", //功能编码
+        productId: "", //商品ID
+        productName: "", //商品名称
+        remark: "", //备注
+        productCode: "", //商品编码
+        sort: "", //排序号
+        required: true
+      },
+      //   服务表单
+      serverForm: {
+        callType: 0,
+        input: "",
+        inputParams: [],
+        output: "",
+        outputParams: []
+      },
+      //   事件表单
+      eventForm: {
+        eventType: 0,
+        output: "",
+        outputParams: []
+      },
+
+      descForm: {
+        description: ""
+      },
+      baseRule: {
+        featureName: [
+          { required: true, message: "请输入您的公共功能名称", trigger: "blur" }
+        ],
+        featureCode: [
+          { required: true, message: "请输入标志符", trigger: "blur" },
+          { validator: validateSign, trigger: "input" }
+        ]
+      },
+
+      serverRule: {
+        input: [
+          { required: true, message: "请添加输入参数", trigger: "change" }
+        ],
+        output: [
+          { required: true, message: "请添加输出参数", trigger: "change" }
+        ]
+      },
+      
+      eventRule: {
+        output: [
+          { required: true, message: "请添加输出参数", trigger: "change" }
+        ]
+      }
+    };
+  },
+  methods: {
+    handleEditFeature(data) {
+      this.showMask = true;
+      this.resetMainForm();
+      // 属性功能
+      const {
+        featureType,
+        featureId,
+        featureName,
+        description,
+        callType,
+        inputParams,
+        outputParams,
+        featureCode,
+        eventType
+      } = data;
+      this.commonForm.featureName = featureName;
+      this.commonForm.featureId = featureId;
+      this.commonForm.featureType = featureType;
+      this.commonForm.featureCode = featureCode;
+      this.descForm.description = description;
+      this.handleType = EDIT;
+
+      if (featureType == 0) {
+        this.$nextTick(() => {
+          this.$refs["base-form-box"].setData(data);
+        });
+      }
+      if (featureType == 1) {
+        this.serverForm.callType = callType;
+        this.serverForm.inputParams = inputParams;
+        this.serverForm.outputParams = outputParams;
+        this.serverForm.input = 1;
+        this.serverForm.output = 1;
+      }
+      if (featureType == 2) {
+        this.eventForm.eventType = eventType;
+        this.eventForm.outputParams = outputParams;
+        this.serverForm.out = 1;
+      }
+    },
+    // 新增功能
+    handleAddFeature() {
+      this.showMask = true;
+      this.resetMainForm();
+      this.handleType = ADD;
+    },
+    // 充重置所有表单
+    resetMainForm() {
+      this.commonForm = {
+        featureId: "", //功能id
+        featureName: "", //功能名称
+        featureType: 0, //功能类型 0属性，1服务，2事件
+        featureCode: "", //功能编码
+        productId: "", //商品ID
+        productName: "", //商品名称
+        remark: "", //备注
+        productCode: "", //商品编码
+        sort: "", //排序号
+        required: true
+      };
+      this.descForm = {
+        description: ""
+      };
+      this.customReset();
+    },
+
+    customReset() {
+      this.commonForm = {
+        featureId: "", //功能id
+        featureName: "", //功能名称
+        featureType: 0, //功能类型 0属性，1服务，2事件
+        featureCode: "", //功能编码
+        productId: "", //商品ID
+        productName: "", //商品名称
+        remark: "", //备注
+        productCode: "", //商品编码
+        sort: "", //排序号
+        required: true
+      };
+      //   服务表单
+      this.serverForm = {
+        callType: 0,
+        input: "",
+        inputParams: [],
+        output: "",
+        outputParams: []
+      };
+      //   事件表单
+      this.eventForm = {
+        eventType: "0",
+        output: "",
+        outputParams: []
+      };
+    },
+    // 处理新增的参数
+    handleAddParam() {
+      const childResult = this.getChildFormData("mask-form-box");
+      const [form, paramList] = this.currentParamList;
+      const realKey = paramList.replace("Params", "");
+      if (this.handleParamType == ADD) {
+        this[form][paramList].push(childResult);
+      } else if (this.handleParamType == EDIT) {
+        this.$set(this[form][paramList], this.currentParamIndex, childResult);
+      }
+      this[form][realKey] = JSON.stringify(this[form][paramList]);
+      this.isAddParam = false;
+    },
+    // 新增参数
+    toAddParam(key) {
+      this.currentParamList = key.split(".");
+      this.isAddParam = true;
+      this.handleParamType = ADD;
+      this.$refs["mask-form-box"] && this.$refs["mask-form-box"].resetForm();
+    },
+    // 编辑新增参数
+    editParamByIndex(key, index) {
+      this.currentParamList = key.split(".");
+      const [form, paramList] = this.currentParamList;
+      this.isAddParam = true;
+      this.handleParamType = EDIT;
+      this.currentParamIndex = index;
+      this.$nextTick(() => {
+        this.$refs["mask-form-box"].setData(this[form][paramList][index]);
+      });
+    },
+    // 删除参数
+    removeParamByIndex(key, index) {
+      this.currentParamList = key.split(".");
+      const [form, paramList] = this.currentParamList;
+      const realKey = paramList.replace("Params", "");
+      this[form][realKey] = this[form][paramList];
+      this[form][paramList].splice(index, 1);
+    },
+    // 提交
+    checkForm() {
+      if (this.showParameterFromInline) {
+        this.checkBaseFrom();
+      }
+      if (this.showServer) {
+        this.checkServerFrom();
+      }
+      if (this.showEvent) {
+        this.checkEventFrom();
+      }
+    },
+    // 属性表单
+    checkBaseFrom() {
+      this.$refs["common-form"].validate(valid => {
+        this.$refs["base-form-box"].checkForm(childValid => {
+          this.$refs["desc-form"].validate(descValid => {
+            const isPass = childValid && valid && descValid;
+            if (isPass) {
+              const childResult = this.getChildFormData("base-form-box");
+              const param = Object.assign(
+                {},
+                childResult,
+                this.commonForm,
+                this.descForm
+              );
+              this.handleFeature(param);
             }
-        },
-        methods: {
-            changeNum(value) {
-                if (value > 0) {
-                    this.formData.precision = value;
-                }
-            },
-            valueTypeChange(value) {
-                this.valueType = value;
-                if (value == 7 || value == 8 || value == 9) {
-                    this.showAddValues = true;
-                } else {
-                    this.showAddValues = false;
-                }
-            },
-            //跳转回列表页面
-            goBack() {
-                if (this.$router.history.length <= 1) {
-                    this.$router.push({path: '/home'});
-                    return false;
-                } else {
-                    this.$router.go(-1);
-                }
-            },
-            handleCancel() {
-                this.goBack();
-            },
-            handleSave() {
-                this.$refs['form'].validate((valid) => {
-                    if (valid) {
-                        if (this.values.length > 0) {
-                            let map = {};
-                            for (let i = 0, len = this.values.length; i < len; i++) {
-                                map[this.values[i].code] = this.values[i].value;
-                            }
-                            this.formData.values = map;
-                        }
-                        this.$store
-                            .dispatch("productProperty/save", {
-                                property: this.formData,
-                                valueList: this.values
-                            })
-                            .then(() => {
-                            })
-                            .catch(error => {
-                                console.log(error);
-                            });
-                        this.$message({
-                            type: "success",
-                            message: "保存成功！"
-                        });
-                        this.goBack();
-                    }
-                });
-            },
-            handleGetOne(id) {
-                if (id) {
-                    this.$store
-                        .dispatch("productProperty/getOne", {propertyId: id})
-                        .then(data => {
-                            if (data) {
-                                this.formData = data;
-                                this.valueTypeChange(this.formData.valueType);
-                                if (data.values != null) {
-                                    let array = [];
-                                    let map = data.values;
-                                    for (let key in map) {
-                                        let data = {};
-                                        data.code = key;
-                                        data.value = map[key];
-                                        array.push(data)
-                                    }
-                                    this.values = array;
-                                }
-                            }
-                        }).catch(error => {
-                        console.log(error);
-                    });
-                } else {
-                    this.formData = defaultData();
-                }
-            },
-            valueRemove(id, index, rows) {
-                this.$confirm("此操作将删除该条记录, 是否继续?", "提示", {
-                    confirmButtonText: "确定",
-                    cancelButtonText: "取消",
-                    type: "warning"
-                })
-                    .then(() => {
-                        rows.splice(index, 1);
-                    })
-                    .catch(err => {
-                        console.error(err);
-                    });
-            },
-            handleAdd() {
-                this.dialogVisible = true;
-            },
-            valueCancel() {
-                this.dialogVisible = false;
-            },
-            valueSave() {
-                if (!this.formValue.code || !this.formValue.value) {
-                    this.$message("请填写完整属性信息！")
-                    return false;
-                }
-                this.values.push(this.formValue);
-                this.dialogVisible = false;
-                this.formValue = {};
-            },
-            loadTreeData() {
-                this.$store
-                    .dispatch("category/getTreeList", {filter: {categoryType: 9}})
-                    .then(data => {
-                        if (data) {
-                            this.categoryList = this.getTreeData(data.data);
-                        }
-                        this.loading = false;
-                    })
-                    .catch(error => {
-                        this.loading = false;
-                        console.log(error);
-                    });
-            },
-            getTreeData(data) {
-                // 循环遍历json数据
-                for (var i = 0; i < data.length; i++) {
-                    if (data[i].children.length < 1) {
-                        // children若为空数组，则将children设为undefined
-                        data[i].children = undefined;
-                    } else {
-                        // children若不为空数组，则继续 递归调用 本方法
-                        this.getTreeData(data[i].children);
-                    }
-                }
-                return data;
-            },
-            handleCategory(category) {
-                if (category) {
-                    let code = category[category.length - 1];
-                    this.formData.categoryCode = code;
-                }
-            },
-        },
-        created() {
-            if (this.$route.query.propertyId) {
-                this.propertyId = this.$route.query.propertyId;
-                this.handleGetOne(this.$route.query.propertyId);
+          });
+        });
+      });
+    },
+    // 服务表单
+    checkServerFrom() {
+      this.$refs["server-form"].validate(severValid => {
+        this.$refs["common-form"].validate(commonValid => {
+          this.$refs["desc-form"].validate(descValid => {
+            const isPass = commonValid && severValid && descValid;
+            if (isPass) {
+              let selfData = JSON.parse(JSON.stringify(this.serverForm));
+              delete selfData.input;
+              delete selfData.output;
+              delete selfData.inputList;
+              delete selfData.outputList;
+              const param = Object.assign(
+                {},
+                this.commonForm,
+                this.descForm,
+                selfData
+              );
+              this.handleFeature(param);
             }
-            if (this.$route.query.categoryCode) {
-                this.formData.categoryCode = this.$route.query.categoryCode;
+          });
+        });
+      });
+    },
+    // 事件表单
+    checkEventFrom() {
+      this.$refs["event-form"].validate(eventValid => {
+        this.$refs["common-form"].validate(commonValid => {
+          this.$refs["desc-form"].validate(descValid => {
+            const isPass = commonValid && eventValid && descValid;
+            if (isPass) {
+              let selfData = JSON.parse(JSON.stringify(this.eventForm));
+              delete selfData.output;
+              delete selfData.outputList;
+              const param = Object.assign(
+                {},
+                this.commonForm,
+                this.descForm,
+                selfData
+              );
+              this.handleFeature(param);
             }
-            if (this.$route.query.categoryName) {
-                this.formData.categoryName = this.$route.query.categoryName;
-            }
-            if (this.$route.query.categoryPath) {
-                this.formData.categoryPath = this.$route.query.categoryPath;
-            }
-            this.loadTreeData();
-        }
+          });
+        });
+      });
+    },
+    // 新增功能
+
+    handleFeature(feature) {
+      // 判断当前的事件类型是新增还是编辑
+      if (this.handleType == ADD) {
+        const num = 0;
+        this.$store.dispatch("productFeature/addOne", feature).then(result => {
+          this.$message({
+            message: "提交成功！",
+            type: "success"
+          });
+          this.showMask = false;
+          this.$emit("addSuccess", feature);
+          if (code < num) {
+            code++;
+            aa(code);
+          }
+        });
+      } else if ((this.handleType = EDIT)) {
+        this.$store
+          .dispatch("productFeature/editFeatureById", feature)
+          .then(result => {
+            this.$message({
+              message: "修改成功！",
+              type: "success"
+            });
+            this.resetMainForm();
+            this.showMask = false;
+            this.$emit("editSuccess", feature);
+          });
+      }
+    },
+    // 取消编辑
+    cancelEdit() {
+      this.resetMainForm();
+      this.showMask = false;
+    },
+    // 获取数据表单的结果
+    getChildFormData(ref) {
+      const child = this.$refs[ref];
+      const result = JSON.parse(JSON.stringify(child.selfForm));
+      const { valueType, enumList, max, min } = result;
+      const rangeType = child.rangeType;
+      if (rangeType == 0) {
+        result.values = { max, min };
+      }
+      if (rangeType == 1) {
+        result.values = enumList;
+      }
+      delete result.readOrWrite;
+      delete result.enumList;
+      return result;
     }
+  },
+  components: {
+    parameterForm
+  },
+  computed: {
+    //是否在当前弹窗显示参数表单，而不是弹窗
+    showParameterFromInline() {
+      return this.commonForm.featureType == 0;
+    },
+    // 服务
+    showServer() {
+      return this.commonForm.featureType == 1;
+    },
+    // 事件
+    showEvent() {
+      return this.commonForm.featureType == 2;
+    },
+    // 当前title
+    myTitle() {
+      return this.handleType == "ADD" ? "新增功能" : "修改功能";
+    },
+    // 参数titile
+    parameterTitle() {
+      return this.handleParamType == "ADD" ? "新增参数" : "修改参数";
+    }
+  }
+};
 </script>
+
+<style>
+</style>

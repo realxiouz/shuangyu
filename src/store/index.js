@@ -57,6 +57,7 @@ import productOrderDetail from "./modules/productOrderDetail";
 import bspOrderConfig from "./modules/otherOrderConfig/bspOrderConfig";
 import pnrjyOrderConfig from "./modules/otherOrderConfig/pnrjyOrderConfig";
 import woniuOrderConfig from "./modules/otherOrderConfig/woniuOrderConfig";
+import productFeature from "./modules/productFeature";
 
 import { getLoginInfo } from "@/api/staff";
 
@@ -120,6 +121,7 @@ export default new Vuex.Store({
     bspOrderConfig,
     pnrjyOrderConfig,
     woniuOrderConfig,
+    productFeature
   },
   state: {
     loginInfo: {}
