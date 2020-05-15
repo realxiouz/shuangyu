@@ -15,7 +15,6 @@
         size="mini"
       >
         <el-table-column type="index" width="50" align="center"></el-table-column>
-
         <el-table-column prop="segment" label="航段" width="100" align="center"></el-table-column>
         <el-table-column prop="dpt" label="出发地" align="center"></el-table-column>
         <el-table-column prop="arr" label="目的地" align="center"></el-table-column>
@@ -54,7 +53,6 @@
         @prev-click="handlePrevClick"
         @next-click="handleNextClick"
       ></el-pagination>
-
       <el-dialog
         title="票价信息"
         center
