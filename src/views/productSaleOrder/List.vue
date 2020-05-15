@@ -7,7 +7,7 @@
       <el-row style="margin-bottom:15px;margin-left:40px">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
-      <el-table v-loading="loading" :data="tableData" style="width: 100%;margin-bottom: 15px;" size="mini">
+      <el-table v-loading="loading" :data="tableData" style="width: 100%;margin-bottom: 15px;" size="mini" fit>
         <el-table-column type="expand">
           <template slot-scope="props">
             <el-form label-position="right" :inline="true" label-width="120px" class="demo-table-expand">
@@ -119,6 +119,25 @@
           </template>
         </el-table-column>
         <el-table-column prop="recordName" label="制单人姓名" align="center"></el-table-column>
+        <el-table-column label="明细" align="center" width="580">
+          <template slot-scope="scope">
+            <el-table :data="scope.row.orderDetails"  border size="mini">
+              <el-table-column prop="productCode" label="商品编码" align="center"></el-table-column>
+              <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
+              <el-table-column prop="brandName" label="品牌" align="center"></el-table-column>
+              <el-table-column prop="skuName" label="属性名称" align="center"></el-table-column>
+              <el-table-column prop="price" label="单价" align="center"></el-table-column>
+              <el-table-column prop="stockQuantity" label="库存" align="center"></el-table-column>
+              <el-table-column prop="quantity" label="数量" align="center"></el-table-column>
+              <el-table-column prop="unit" label="计量单位" align="center"></el-table-column>
+              <el-table-column prop="amount" label="金额" align="center">
+                <template slot-scope="prop">
+                  {{computedRowAmount(prop.row)}}
+                </template>
+              </el-table-column>
+            </el-table>
+          </template>
+        </el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="160">
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
@@ -168,7 +187,12 @@
                     .catch(error => {
                         console.log(error);
                     });
-                this.$store.dispatch("productOrder/getPageList", {pageFlag: this.pageFlag, pageSize: this.pageSize, lastId: this.lastId,filter: searchForm})
+                this.$store.dispatch("productOrder/getPageList", {
+                    pageFlag: this.pageFlag,
+                    pageSize: this.pageSize,
+                    lastId: this.lastId,
+                    filter: searchForm
+                })
                     .then(data => {
                         this.tableData = data;
                         this.loading = false;
@@ -195,7 +219,7 @@
                 this.loadData(this.searchForm);
             },
             handleDelete(row) {
-                this.open( this.delete, row.orderNo, "此操作将删除该信息, 是否继续?");
+                this.open(this.delete, row.orderNo, "此操作将删除该信息, 是否继续?");
             },
             delete(orderNo) {
                 this.$store
@@ -232,13 +256,13 @@
                         });
                     });
             },
-            skipDetail(orderNo){
-                this.$router.push({path: '/product/sale/order/edit', query:{orderNo: orderNo}});
+            skipDetail(orderNo) {
+                this.$router.push({path: '/product/sale/order/edit', query: {orderNo: orderNo}});
             },
-            skipShipmentOrder(row){
-                this.$router.push({path: '/product/shipment/order/edit', query:{parentNo: row.orderNo}});
+            skipShipmentOrder(row) {
+                this.$router.push({path: '/product/shipment/order/edit', query: {parentNo: row.orderNo}});
             },
-            initOrderType(orderType){
+            initOrderType(orderType) {
                 switch (orderType) {
                     case 1:
                         return '销售';
@@ -251,7 +275,7 @@
                     case 12:
                         return '销售变更单';
                     case 20:
-                        return  '采购入库单';
+                        return '采购入库单';
                     case 21:
                         return '采购退货单';
                     case 22:
@@ -268,7 +292,7 @@
                     return "";
                 }
             },
-            initWarehouseStatus(warehouseStatus){
+            initWarehouseStatus(warehouseStatus) {
                 switch (warehouseStatus) {
                     case 0:
                         return '未出库';
@@ -276,8 +300,8 @@
                         return '已出库';
                 }
             },
-            initPaymentStatus(paymentStatus){
-                if (0 === paymentStatus){
+            initPaymentStatus(paymentStatus) {
+                if (0 === paymentStatus) {
                     return '未付款';
                 }
                 return '已付款';
@@ -287,7 +311,19 @@
                     return "";
                 }
                 return "￥" + this.$numeral(amount).format("0.00");
-            }
+            },
+            computedRowAmount(row){
+                row.amount = parseFloat(row.quantity * row.price).toFixed(2);
+                this.computedTotalAmount();
+                return row.amount;
+            },
+            computedTotalAmount(){
+                let _totalAmount = 0;
+                this.orderDetails.forEach(item => {
+                    _totalAmount += parseFloat(item.amount);
+                });
+                this.totalAmount = _totalAmount.toFixed(2);
+            },
         },
         created() {
             this.loadData({});
@@ -302,10 +338,12 @@
   .demo-table-expand {
     font-size: 0;
   }
+
   .demo-table-expand label {
     width: 90px;
     color: #99a9bf;
   }
+
   .demo-table-expand .el-form-item {
     margin-right: 0;
     margin-bottom: 0;

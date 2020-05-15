@@ -119,6 +119,25 @@
           </template>
         </el-table-column>
         <el-table-column prop="recordName" label="制单人姓名" align="center"></el-table-column>
+        <el-table-column label="明细" align="center" width="580">
+          <template slot-scope="scope">
+            <el-table :data="scope.row.orderDetails"  border size="mini">
+              <el-table-column prop="productCode" label="商品编码" align="center"></el-table-column>
+              <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
+              <el-table-column prop="brandName" label="品牌" align="center"></el-table-column>
+              <el-table-column prop="skuName" label="属性名称" align="center"></el-table-column>
+              <el-table-column prop="price" label="单价" align="center"></el-table-column>
+              <el-table-column prop="stockQuantity" label="库存" align="center"></el-table-column>
+              <el-table-column prop="quantity" label="数量" align="center"></el-table-column>
+              <el-table-column prop="unit" label="计量单位" align="center"></el-table-column>
+              <el-table-column prop="amount" label="金额" align="center">
+                <template slot-scope="prop">
+                  {{computedRowAmount(prop.row)}}
+                </template>
+              </el-table-column>
+            </el-table>
+          </template>
+        </el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="160">
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
