@@ -4,11 +4,10 @@
       :data="tableData"
       size="mini"
       highlight-current-row
-      style="width: 100%;margin-bottom:15px"
+      style="width: 100%;"
       v-loading="loading"
       max-height="650"
       fit
-      border
     >
       <el-table-column type="index" align="center"></el-table-column>
       <el-table-column prop="orderNo" label="订单号" width="150" align="center"></el-table-column>
@@ -34,7 +33,7 @@
       <el-table-column label="原航班信息" align="center">
         <el-table-column prop="flightNo" label="航班号" width="70" align="center"></el-table-column>
         <el-table-column prop="depDate" label="航班日期" width="120" align="center"></el-table-column>
-        <el-table-column prop="dep" label="起飞-" width="150" align="center"></el-table-column>
+        <el-table-column prop="dep" label="起飞地" width="150" align="center"></el-table-column>
         <el-table-column prop="arr" label="到达地" width="150" align="center"></el-table-column>
       </el-table-column>
       <el-table-column label="改签航班信息" align="center">
@@ -51,6 +50,11 @@
         <el-table-column label="起飞-到达" width="90" align="center">
           <template slot-scope="scope">
             <span v-html="formatFlight2(scope.row.changeFlightInfos)"></span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="depDate" label="舱位" width="70" align="center">
+          <template slot-scope="scope">
+            <span v-html="formatCabin(scope.row.changeFlightInfos)"></span>
           </template>
         </el-table-column>
       </el-table-column>
@@ -100,6 +104,12 @@ export default {
       }
       return data[0].flightNo;
     },
+    formatCabin(data) {
+      if (!data || data.length == 0) {
+        return "";
+      }
+      return data[0].cabin;
+    },
     formatDepDate(data) {
       if (!data || data.length == 0) {
         return "";
@@ -117,6 +127,7 @@ export default {
       });
       return str;
     },
+
     formatChangeOrderNo(data) {
       if (!data || data.length == 0) {
         return "";
