@@ -78,17 +78,21 @@ export default {
   name: "Login",
   data() {
     var validateCode = (rule, value, callback) => {
-      var regEmail = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+      var regEmail = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
       var regPhone = /^[1][3,4,5,7,8][0-9]{9}$/;
       if (!regEmail.test(value) && !regPhone.test(value)) {
         callback(new Error("请输入格式正确的邮箱或手机号！"));
+        this.regPhoneAndEmail = false;
       } else {
+        this.regPhoneAndEmail = true;
+
         callback();
       }
     };
     return {
       loading: false,
       verificationShow: false,
+      regPhoneAndEmail: false,
       showCount: false,
       countDown: "",
       timer: "",
@@ -176,7 +180,7 @@ export default {
       this.verificationShow = !this.verificationShow;
     },
     getVerificationCode(account) {
-      if (account) {
+      if (this.regPhoneAndEmail && account) {
         this.$store
           .dispatch("user/getVerification", { target: account })
           .then(data => {
@@ -188,9 +192,10 @@ export default {
       } else {
         this.$message({
           type: "warning",
-          message: "请输入您的手机号或者邮箱！"
+          message: "请输入正确的手机号或者邮箱！"
         });
         this.timer = true;
+        return;
       }
       if (!this.timer) {
         this.countDown = this.TIME_COUNT;
