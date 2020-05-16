@@ -165,7 +165,7 @@ export default {
     handleSave() {
       if (this.formData.navId != "") {
         this.$store
-          .dispatch("nav/updateOne", { nav: this.formData })
+          .dispatch("nav/updateOne", {id: this.formData.navId, data: this.formData})
           .then(() => {
             this.loadData();
             this.$message({
@@ -186,7 +186,7 @@ export default {
         this.$refs.routerForm.validate(valid => {
           if (valid) {
             this.$store
-              .dispatch("nav/addOne", { nav: this.formData })
+              .dispatch("nav/addOne", this.formData)
               .then(data => {
                 this.curLine.push(data.data);
                 this.loadData();
@@ -221,7 +221,7 @@ export default {
     /*移除导航节点*/
     remove(params) {
       this.$store
-        .dispatch("nav/removeOne", { navId: params })
+        .dispatch("nav/removeOne", { id: params })
         .then(() => {
           this.loadData();
         })

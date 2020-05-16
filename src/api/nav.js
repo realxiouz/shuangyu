@@ -51,6 +51,7 @@ export function updateManyByFilter(filter, data) {
 }
 
 export function removeOne(id) {
+  debugger
   return request({
     url: `/admin/nav/remove/one/${id}`,
     method: 'delete'
