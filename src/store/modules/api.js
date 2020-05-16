@@ -1,44 +1,75 @@
-import {getAll, getMany, getOne, getPageList, getTotal, removeOne, save, updateOne} from "@/api/api";
-import {getToken} from "@/utils/auth";
-
-
-const state = {
-  token: getToken(),
-  name: "",
-  avatar: ""
-};
-
-const mutations = {
-  SET_TOKEN: (state, token) => {
-    state.token = token;
-  },
-  SET_NAME: (state, name) => {
-    state.name = name;
-  },
-  SET_AVATAR: (state, avatar) => {
-    state.avatar = avatar;
-  }
-};
+import {saveOne, addOne, addMany, updateOne, updateMany, updateManyByFilter, removeOne, removeMany, removeManyByFilter, removeRealOne, getOne, getOneByFilter, getMany, getList, getPageList, getTotal} from '@/api/api';
 
 const actions = {
-  updateOne({commit}, params) {
+  saveOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      updateOne(params)
+      saveOne(params)
         .then(response => {
-          //const { data } = response;
-          resolve(response);
+          const { data } = response;
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  save({commit}, params) {
+  addOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      save(params)
+      addOne(params)
         .then(response => {
-          //const { data } = response;
-          resolve(response);
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  addMany({commit}, params) {
+    return new Promise((resolve, reject) => {
+      addMany(params)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  updateOne({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {id, data} = params;
+      updateOne(id, data)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  updateMany({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {id, data} = params;
+      updateMany(id, data)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  updateManyByFilter({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {id, data} = params;
+      updateManyByFilter(id, data)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -46,11 +77,11 @@ const actions = {
     });
   },
   removeOne({commit}, params) {
-    const {apiId} = params;
     return new Promise((resolve, reject) => {
-      removeOne(apiId)
+      const {id} = params;
+      removeOne(id)
         .then(response => {
-          const {data} = response;
+          const { data } = response;
           resolve(data);
         })
         .catch(error => {
@@ -58,12 +89,12 @@ const actions = {
         });
     });
   },
-  getPageList({commit}, params) {
-    const {pageFlag, pageSize, lastId, filters} = params;
+  removeMany({commit}, params) {
     return new Promise((resolve, reject) => {
-      getPageList(pageFlag, pageSize, lastId, filters)
+      const {ids} = params;
+      removeMany(ids)
         .then(response => {
-          const {data} = response;
+          const { data } = response;
           resolve(data);
         })
         .catch(error => {
@@ -71,13 +102,25 @@ const actions = {
         });
     });
   },
-
-  getTotal({commit}, params) {
-    const {filters} = params;
+  removeManyByFilter({commit}, params) {
     return new Promise((resolve, reject) => {
-      getTotal(filters)
+      const {filter} = params;
+      removeManyByFilter(filter)
         .then(response => {
-          const {data} = response;
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  removeRealOne({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {id} = params;
+      removeRealOne(id)
+        .then(response => {
+          const { data } = response;
           resolve(data);
         })
         .catch(error => {
@@ -86,11 +129,11 @@ const actions = {
     });
   },
   getOne({commit}, params) {
-    const {apiId} = params;
     return new Promise((resolve, reject) => {
-      getOne(apiId)
+      const {id} = params;
+      getOne(id)
         .then(response => {
-          const {data} = response;
+          const { data } = response;
           resolve(data);
         })
         .catch(error => {
@@ -98,11 +141,12 @@ const actions = {
         });
     });
   },
-  getAll({commit}, params) {
+  getOneByFilter({commit}, params) {
     return new Promise((resolve, reject) => {
-      getAll(params)
+      const {filter} = params;
+      getOneByFilter(filter)
         .then(response => {
-          const {data} = response;
+          const { data } = response;
           resolve(data);
         })
         .catch(error => {
@@ -112,10 +156,49 @@ const actions = {
   },
   getMany({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {apiIDList} = params;
-      getMany(apiIDList)
+      const {ids} = params;
+      getMany(ids)
         .then(response => {
-          const {data} = response;
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getList({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {filter} = params;
+      getList(filter)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getPageList({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {pageFlag, pageSize, lastId, filter} = params;
+      getPageList(pageFlag, pageSize, lastId, filter)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getTotal({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {filter} = params;
+      getTotal(filter)
+        .then(response => {
+          const { data } = response;
           resolve(data);
         })
         .catch(error => {
@@ -123,12 +206,9 @@ const actions = {
         });
     });
   }
-
-};
+}
 
 export default {
   namespaced: true,
-  state,
-  mutations,
   actions
 };

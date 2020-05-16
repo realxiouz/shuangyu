@@ -1,64 +1,136 @@
 import request from '@/utils/request';
-import de from "element-ui/src/locale/lang/de";
 
+export function saveOne(data) {
+  return request({
+    url: `/admin/nav/save/one`,
+    method: 'post',
+    data
+  });
+}
+
+export function addOne(data) {
+  return request({
+    url: `/admin/nav/add/one`,
+    method: 'post',
+    data
+  });
+}
+
+export function addMany(data) {
+  return request({
+    url: `/admin/nav/add/many`,
+    method: 'post',
+    data
+  });
+}
+
+export function updateOne(id, data) {
+  return request({
+    url: `/admin/nav/update/one/${id}`,
+    method: 'put',
+    data
+  });
+}
+
+export function updateMany(ids, data) {
+  return request({
+    url: `/admin/nav/update/many`,
+    method: 'put',
+    params: ids,
+    data
+  });
+}
+
+export function updateManyByFilter(filter, data) {
+  return request({
+    url: `/admin/nav/update/many/filter`,
+    method: 'put',
+    params: filter,
+    data
+  });
+}
 
 export function removeOne(id) {
   return request({
-    url: `/api/remove/one/${id}`,
+    url: `/admin/nav/remove/one/${id}`,
     method: 'delete'
   });
 }
 
-export function updateOne(data) {
+export function removeMany(data) {
   return request({
-    url: '/api/update/one',
-    method: 'post',
+    url: `/admin/nav/remove/many`,
+    method: 'delete',
     data
   });
 }
 
-export function getPageList(pageFlag, pageSize, lastId, params) {
+export function removeManyByFilter(filter) {
   return request({
-    url: `/api/page/list/${pageFlag}/${pageSize}/${lastId}`,
-    method: 'get',
-    params: params
+    url: `/admin/nav/remove/many/filter`,
+    method: 'delete',
+    params: filter
   });
 }
 
-export function getTotal(params) {
+export function removeRealOne(id) {
   return request({
-    url: `/api/total`,
-    method: 'get',
-    params: params
-  });
-}
-
-export function save(data) {
-  return request({
-    url: '/api/save',
-    method: 'post',
-    data
+    url: `/admin/nav/remove/one/real/${id}`,
+    method: 'delete'
   });
 }
 
 export function getOne(id) {
   return request({
-    url: `/api/one/${id}`,
+    url: `/admin/nav/get/one/${id}`,
     method: 'get'
   });
 }
 
-export function getAll() {
+export function getOneByFilter(filter) {
   return request({
-    url: `/api/all`,
-    method: 'get'
+    url: `/admin/nav/get/one`,
+    method: 'get',
+    params: filter
   });
 }
 
 export function getMany(data) {
   return request({
-    url: `/api/many`,
+    url: `/admin/nav/get/many`,
     method: 'post',
     data
+  });
+}
+
+export function getList(filter) {
+  return request({
+    url: `/admin/nav/get/list`,
+    method: 'get',
+    params: filter
+  });
+}
+
+export function getTreeList(filter) {
+  return request({
+    url: `/admin/nav/get/list/tree`,
+    method: 'get',
+    params: filter
+  });
+}
+
+export function getPageList(pageFlag, pageSize, lastId, filter) {
+  return request({
+    url: `/admin/nav/get/list/page/${pageFlag}/${pageSize}/${lastId}`,
+    method: 'get',
+    params: filter
+  });
+}
+
+export function getTotal(filter) {
+  return request({
+    url: `/admin/nav/get/total`,
+    method: 'get',
+    params: filter
   });
 }
