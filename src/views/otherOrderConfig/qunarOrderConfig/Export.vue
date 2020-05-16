@@ -78,7 +78,7 @@
             class="upload-demo"
             :before-upload="beforeUpload"
             ref="upload"
-            :limit="2"
+            :limit="1"
             :data="formData"
             action="test"
             :http-request="uploadSectionFile"
