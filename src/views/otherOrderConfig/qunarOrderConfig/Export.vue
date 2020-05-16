@@ -133,8 +133,7 @@ export default {
         ],
         toLastId: [
           { required: true, message: "截止导单lastId必须填写", trigger: "blur" }
-        ],
-        file: [{ required: true, message: "没有上传文件", trigger: "blur" }]
+        ]
       }
     };
   },
