@@ -2,21 +2,55 @@
   <div>
     <el-form
       :model="formData"
-      ref="handleTicketForm"
+      ref="fillOutRefundForm"
       :rules="formRules"
-      label-width="110px"
+      label-width="120px"
       size="mini"
       style="margin-top:15px;"
     >
-      <el-row style="margin-bottom:15px;" :gutter="15">
-        <el-col :span="6">
-          <span>销售单金额：</span>
-          <span style="color:red;">{{formatAmount(this.salesAmountTotal)}}</span>
-        </el-col>
-        <el-col v-for="item in passengerData" :key="item.cardNo" :span="5">
-          <span>{{item.name}} :</span>
-          <span style="color:red;">{{formatAmount(item._amount)}}</span>
-        </el-col>
+      <el-row style="margin-bottom:25px;">
+        <el-table
+          v-show="!(this.isWoniu && this.radio=='1') "
+          :data="formData.orderDetailList"
+          size="mini"
+          highlight-current-row
+          style="width: 100%;"
+          @selection-change="handleSelectionChange"
+          fit
+        >
+          <el-table-column type="selection" width="55"></el-table-column>
+          <el-table-column prop="name" label="姓名" width="150" align="center"></el-table-column>
+          <el-table-column prop="gender" label="性别" width="50" align="center"></el-table-column>
+          <el-table-column
+            prop="ageType"
+            :formatter="formatAgeType"
+            label="乘机人类型"
+            align="center"
+            width="80"
+          ></el-table-column>
+          <el-table-column
+            prop="cardType"
+            :formatter="formatCardType"
+            label="乘机人证件类型"
+            align="center"
+            width="120"
+          ></el-table-column>
+          <el-table-column prop="amount" label="价格" align="center" width="150">
+            <template slot-scope="scope">
+              <el-input clearable v-model="scope.row.amount"></el-input>
+            </template>
+          </el-table-column>
+          <el-table-column prop="cardNo" label="乘机人证件号" align="center" width="220">
+            <template slot-scope="scope">
+              <el-input clearable v-model="scope.row.cardNo"></el-input>
+            </template>
+          </el-table-column>
+          <el-table-column prop="ticketNo" label="票号" align="center">
+            <template slot-scope="scope">
+              <el-input clearable v-model="scope.row.ticketNo"></el-input>
+            </template>
+          </el-table-column>
+        </el-table>
       </el-row>
       <el-row>
         <el-col :span="12">
@@ -92,11 +126,11 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
-            <el-form-item label="金额:" prop="amount">
+          <!-- <el-col :span="8">
+            <el-form-item label="退回金额:" prop="amount">
               <el-input clearable v-model="formData.amount"></el-input>
             </el-form-item>
-          </el-col>
+          </el-col>-->
           <el-col :span="8">
             <el-form-item label="资金账号:" prop="fundAccount">
               <el-select
@@ -117,14 +151,15 @@
           </el-col>
         </el-row>
       </div>
+
       <div v-else>
         <el-row>
           <el-col :span="8">
             <el-form-item label="订单日期:" prop="createTime">
               <el-date-picker
                 type="datetime"
-                format="yyyy-MM-dd HH:mm"
                 placeholder="选择日期"
+                format="yyyy-MM-dd HH:mm"
                 v-model="formData.createTime"
                 style="width: 100%;"
                 value-format="timestamp"
@@ -149,8 +184,20 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="支付金额:" prop="amount">
+            <el-form-item label="退回金额:" prop="amount">
               <el-input clearable v-model="formData.amount"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="业务完结时间:" prop="finishTime">
+              <el-date-picker
+                type="datetime"
+                format="yyyy-MM-dd HH:mm"
+                placeholder="选择业务完结时间"
+                v-model="formData.finishTime"
+                style="width: 100%;"
+                value-format="timestamp"
+              ></el-date-picker>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -239,113 +286,56 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-table
-          :data="formData.passengers"
-          size="mini"
-          highlight-current-row
-          style="width: 100%;"
-          fit
-        >
-          <el-table-column prop="name" label="姓名" width="150" align="center"></el-table-column>
-          <el-table-column prop="gender" label="性别" width="50" align="center"></el-table-column>
-          <el-table-column
-            prop="ageType"
-            :formatter="formatAgeType"
-            label="乘机人类型"
-            align="center"
-            width="80"
-          ></el-table-column>
-          <el-table-column
-            prop="cardType"
-            :formatter="formatCardType"
-            label="乘机人证件类型"
-            align="center"
-            width="120"
-          ></el-table-column>
-          <el-table-column prop="amount" label="价格" align="center" width="150">
-            <template slot-scope="scope">
-              <el-input clearable v-model="scope.row.amount" required="required"></el-input>
-            </template>
-          </el-table-column>
-          <el-table-column prop="cardNo" label="乘机人证件号" align="center" width="220">
-            <template slot-scope="scope">
-              <el-input clearable v-model="scope.row.cardNo"></el-input>
-            </template>
-          </el-table-column>
-          <el-table-column prop="ticketNo" label="票号" align="center">
-            <template slot-scope="scope">
-              <el-input clearable v-model="scope.row.ticketNo"></el-input>
-            </template>
-          </el-table-column>
-        </el-table>
       </div>
     </el-form>
-    <div style="margin-top: 25px;text-align: right;">
+    <div style="margin-top: 25px;text-align:right;">
       <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
-      <el-button
-        size="mini"
-        v-if="this.formData.radio!='1'"
-        type="primary"
-        @click="handleSaveTicket"
-      >保存并贴票</el-button>
       <el-button size="mini" type="primary" @click="handleSave">保存</el-button>
     </div>
   </div>
 </template>
 
 <script>
-import {
-  formatAgeType,
-  formatCardType,
-  statusData,
-  orderType
-} from "@/utils/status.js";
-import { formatAmount } from "@/utils/orderFormdata.js";
+import { formatAgeType, formatCardType, statusData } from "@/utils/status.js";
 
 export default {
-  name: "handleTicket",
-  props: [
-    "passengerData",
-    "flightData",
-    "sellAmount",
-    "taskType",
-    "salesAmountTotal"
-  ],
+  name: "fillOutRefund",
+  props: ["fillOutRefundData", "sellAmount", "taskType"],
   data() {
     return {
+      selectStatusDataFlag: false,
       isWoniu: false,
+      radio: "2",
+      orderType: [
+        {
+          value: 20,
+          label: "退票"
+        },
+        {
+          value: 21,
+          label: "二次退票"
+        },
+        {
+          value: 22,
+          label: "退差"
+        },
+        {
+          value: 23,
+          label: "退改"
+        }
+      ],
+      isWoniuTicket: true,
+      formData: {},
+      selectOrderDetailList: [],
       accountData: [],
+      statusData: statusData,
       supplierData: [],
       supplierAccountData: [],
-      orderType: orderType,
-      isWoniuTicket: true,
-      formData: {
-        arr: this.flightData[0].arr,
-        dpt: this.flightData[0].dpt,
-        flightCode: this.flightData[0].flightCode,
-        dptTime: this.flightData[0].dptTime,
-        arrTime: this.flightData[0].arrTime,
-        flightDate: this.flightData[0].flightDate,
-        cabin: this.flightData[0].cabin,
-        remark: "",
-        orderSource: "",
-        fundAccount: "",
-        createTime: "",
-        passengers: this.passengerData,
-        ticketNoFlag: "0",
-        userNameType: 0,
-        amount: "",
-        accountId: "",
-        radio: "2",
-        profit: "",
-        orderType: 10,
-        merchantId: ""
-      },
-      statusData: statusData,
       formRules: {
         orderType: [{ required: true, message: "必填项", trigger: "change" }],
         merchantId: [{ required: true, message: "必填项", trigger: "change" }],
         amount: [{ required: true, message: "必填项！", trigger: "blur" }],
+        finishTime: [{ required: true, message: "必填项！", trigger: "blur" }],
         createTime: [{ required: true, message: "必填项！", trigger: "blur" }],
         fundAccount: [{ required: true, message: "必填项！", trigger: "blur" }],
         profit: [{ required: true, message: "必填项！", trigger: "blur" }],
@@ -360,63 +350,32 @@ export default {
   methods: {
     formatAgeType,
     formatCardType,
-    formatAmount,
-    // 保存并贴票
-    handleSaveTicket() {
-      var validFlag = false;
-      this.$refs["handleTicketForm"].validate(valid => {
-        if (!valid) {
-          console.log("error submit!!");
-          validFlag = true;
-          return false;
-        }
+    // 默认数据
+    defaultFormData() {
+      var _orderDetailList = [];
+      this.fillOutRefundData.orderDetailList.forEach(item => {
+        item.amount = "";
+        _orderDetailList.push(item);
       });
-      if (validFlag) {
-        return;
-      }
-      this.formData.ticketNoFlag = "1";
-      this.formData.flightData = this.flightData;
-      if (this.taskType == 1) {
-        let amountTotal = 0;
-        var flag = false;
-        this.formData.passengers.forEach(item => {
-          if (item.amount && item.amount != "" && Number(item.amount) < 0) {
-            amountTotal += Number(item.amount);
-          } else {
-            flag = true;
-          }
-        });
-        if (flag) {
-          this.$notify({
-            title: "提示",
-            message: "填写人的金额，需填写负数！",
-            type: "warning",
-            duration: 4500
-          });
-          return;
-        }
-        if (amountTotal != this.formData.amount) {
-          this.$notify({
-            title: "提示",
-            message: "金额填写错误，请重新填写！",
-            type: "warning",
-            duration: 4500
-          });
-          return;
-        }
-        let _profit = 0;
-        _profit = Number(this.formData.amount) + Number(this.sellAmount);
-        if (_profit != this.formData.profit) {
-          this.$notify({
-            title: "提示",
-            message: "利润金额计算错误，请重新计算！",
-            type: "warning",
-            duration: 4500
-          });
-          return;
-        }
-      }
-      this.$emit("onSaveTicket", this.formData);
+      return {
+        orderDetailList: _orderDetailList,
+        arr: this.fillOutRefundData.flights[0].arr,
+        dpt: this.fillOutRefundData.flights[0].dpt,
+        flightCode: this.fillOutRefundData.flights[0].flightCode,
+        dptTime: this.fillOutRefundData.flights[0].dptTime,
+        arrTime: this.fillOutRefundData.flights[0].arrTime,
+        flightDate: this.fillOutRefundData.flights[0].flightDate,
+        cabin: this.fillOutRefundData.flights[0].cabin,
+        fundAccount: "",
+        userNameType: "",
+        accountId: "",
+        radio: "2",
+        profit: "",
+        merchantId: ""
+      };
+    },
+    clearForm() {
+      this.formData = this.defaultFormData();
     },
     //判断是蜗牛导单还是出票
     radioChange(value) {
@@ -475,7 +434,9 @@ export default {
           delete this.formData.userNameType;
         }
       }
-      console.log(this.formData.userNameType);
+    },
+    handleSelectionChange(row) {
+      this.selectOrderDetailList = row;
     },
     // 获取资金账号
     getFinance() {
@@ -545,8 +506,9 @@ export default {
     // 保存
     handleSave() {
       var validFlag = false;
-      this.$refs["handleTicketForm"].validate(valid => {
+      this.$refs["fillOutRefundForm"].validate(valid => {
         if (!valid) {
+          console.log("error submit!!");
           validFlag = true;
           return false;
         }
@@ -554,13 +516,26 @@ export default {
       if (validFlag) {
         return;
       }
-      this.formData.ticketNoFlag = "0";
-      this.formData.flightData = this.flightData;
-      if (this.formData.radio != "1" && this.taskType == 1) {
+      // this.formData.orderDetailList = this.selectOrderDetailList;
+      this.formData.pid = this.fillOutRefundData.orderNo;
+      this.formData.passengers = this.selectOrderDetailList;
+      if (
+        this.formData.radio != "1" &&
+        (this.taskType == 2 || this.taskType == 4)
+      ) {
         let amountTotal = 0;
+        if (this.selectOrderDetailList.length < 1) {
+          this.$notify({
+            title: "提示",
+            message: "请选择人！",
+            type: "warning",
+            duration: 4500
+          });
+          return;
+        }
         var flag = false;
         this.formData.passengers.forEach(item => {
-          if (item.amount && item.amount != "" && Number(item.amount) < 0) {
+          if (item.amount && item.amount != "") {
             amountTotal += Number(item.amount);
           } else {
             flag = true;
@@ -569,7 +544,7 @@ export default {
         if (flag) {
           this.$notify({
             title: "提示",
-            message: "填写人的金额，需填写负数！",
+            message: "填写人的金额！",
             type: "warning",
             duration: 4500
           });
@@ -582,15 +557,14 @@ export default {
             type: "warning",
             duration: 4500
           });
+
           return;
         }
         let _profit = 0;
-        console.log("this.formData.amount" + this.formData.amount);
-        console.log("this.sellAmount" + this.sellAmount);
-        _profit = Number(this.formData.amount) + Number(this.sellAmount);
-        console.log("_profit" + _profit);
-        console.log("this.formData.profit" + this.formData.profit);
-        if (_profit != Number(this.formData.profit)) {
+        _profit = amountTotal + Number(this.sellAmount);
+        console.log(_profit, "_profit");
+        console.log(this.sellAmount, "this.sellAmount");
+        if (_profit != this.formData.profit) {
           this.$notify({
             title: "提示",
             message: "利润金额计算错误，请重新计算！",
@@ -600,28 +574,11 @@ export default {
           return;
         }
       }
-      console.log(this.formData);
-      this.$emit("onSave", this.formData);
-    },
-    // 日期格式化
-    initDate(dateStr, format) {
-      if (dateStr > 0) {
-        let date = new Date(dateStr);
-        return this.$moment(date).format(format);
-      } else {
-        return "";
-      }
+      // this.$emit("onSave", this.formData);
     }
   },
-  computed: {
-    formatDate() {
-      return function(dateStr, format) {
-        return this.initDate(dateStr, format);
-      };
-    }
-  },
-
   created() {
+    this.clearForm();
     this.getFinance();
     this.getSupplier();
   }
