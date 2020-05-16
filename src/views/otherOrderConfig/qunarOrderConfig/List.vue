@@ -52,7 +52,7 @@
         <el-table-column prop label="锁定人" align="center"></el-table-column>
         <el-table-column fixed="right" label="操作" width="280" align="center">
           <template slot-scope="scope">
-            <el-button disabled @click="handleEdit(scope.row)" type="primary" size="mini">查看</el-button>
+            <el-button disabled @click="handleOrderDetail(scope.row)" type="primary" size="mini">查看</el-button>
             <el-button @click="lookLogInfo(scope.row)" type="primary" size="mini">查看日志</el-button>
 
             <el-button disabled type="danger" size="mini">处理</el-button>
@@ -221,7 +221,17 @@ export default {
     handleCancel() {
       this.dialogVisible = false;
     },
-    handleEdit(row) {},
+    handleOrderDetail(row) {
+      let path = "";
+      path = "/qunar/order/detail";
+      this.$router.push({
+        path: path,
+        query: {
+          orderNo: row.orderNo
+        }
+      });
+
+    },
     lookLogInfo(row) {
       if (row.log) {
         this.logData = row;

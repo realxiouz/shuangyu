@@ -231,32 +231,26 @@ export default {
 
     // 根据文件导单
     uploadSectionFile(params) {
-      console.log(params, "444444");
-      this.$refs["formData3"].validate(valid => {
-        if (valid) {
-          var form = new FormData();
-          form.append("file", params.file);
-          form.append("orderType", this.formData.orderType);
-          this.$store
-            .dispatch("qunarOrderConfig/exportOrderFile", form)
-            .then(data => {
-              this.$notify({
-                title: "提示",
-                message: "上传成功",
-                type: "success",
-                duration: 4500
-              });
-            })
-            .catch(error => {
-              this.$notify({
-                title: "提示",
-                message: "上传失败",
-                type: "warning",
-                duration: 4500
-              });
-            });
-        }
-      });
+      var form = new FormData();
+      form.append("file", params.file);
+      this.$store
+        .dispatch("qunarOrderConfig/exportOrderFile", form)
+        .then(data => {
+          this.$notify({
+            title: "提示",
+            message: "上传成功",
+            type: "success",
+            duration: 4500
+          });
+        })
+        .catch(error => {
+          this.$notify({
+            title: "提示",
+            message: "上传失败",
+            type: "warning",
+            duration: 4500
+          });
+        });
     }
   }
 };
