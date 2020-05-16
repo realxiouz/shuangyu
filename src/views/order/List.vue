@@ -51,7 +51,7 @@
         </el-table-column>
         <el-table-column prop="fundAccount" label="资金账号" width="100" align="center"></el-table-column>
         <el-table-column prop="accountId" label="平台账号" width="100" align="center"></el-table-column>
-        <el-table-column prop="linkOrderNo" label="业务订单编号" width="100" align="center"></el-table-column>
+        <el-table-column prop="transactionNo" label="流水号" width="100" align="center"></el-table-column>
         <el-table-column prop="pid" label="pid" align="center"></el-table-column>
         <el-table-column prop="path" label="path" width="100" align="center"></el-table-column>
         <el-table-column label="交易时间" width="100" align="center">
@@ -74,7 +74,7 @@
             <span>{{ formatDate(scope.row.deadlineReturnTime,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="最晚退票时限" width="100" align="center">
+        <el-table-column label="最晚改签时限" width="100" align="center">
           <template slot-scope="scope">
             <span>{{ formatDate(scope.row.deadlineChangeTime,'YYYY-MM-DD') }}</span>
           </template>
