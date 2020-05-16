@@ -97,7 +97,7 @@ export default {
           pageFlag: this.pageFlag,
           pageSize: this.pageSize,
           lastId: this.lastId,
-          filter: params
+          filter: {}
         })
         .then(data => {
           if (data) {
@@ -145,7 +145,7 @@ export default {
         type: "warning"
       })
         .then(() => {
-          this.$store.dispatch("api/removeOne", { apiId: id }).then(() => {
+          this.$store.dispatch("api/removeOne", { id: id }).then(() => {
             if (1 === this.tableData.length) {
               this.prevClick();
             } else {
@@ -168,7 +168,7 @@ export default {
     },
     handleSave(params) {
       this.$store
-        .dispatch("api/save", params)
+        .dispatch("api/saveOne", params)
         .then(() => {
           this.loadData();
           if (this.apiId != "") {

@@ -111,17 +111,9 @@ export function getList(filter) {
   });
 }
 
-export function getTreeList(filter) {
-  return request({
-    url: `/admin/api/get/list/tree`,
-    method: 'get',
-    params: filter
-  });
-}
-
 export function getPageList(pageFlag, pageSize, lastId, filter) {
   return request({
-    url: `/admin/api/get/list/page/${pageFlag}/${pageSize}/${lastId}`,
+    url: `/admin/api/get/page/list/${pageFlag}/${pageSize}/${lastId}`,
     method: 'get',
     params: filter
   });
