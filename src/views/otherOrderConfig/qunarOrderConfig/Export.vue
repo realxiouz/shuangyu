@@ -147,14 +147,14 @@ export default {
       var testmsg = file.name.substring(file.name.lastIndexOf(".") + 1);
       const extension = testmsg === "xls";
       const extension2 = testmsg === "xlsx";
-      const isLt2M = file.size / 1024 / 1024 < 10; //这里做文件大小限制
+      const isLt10M = file.size / 1024 / 1024 < 10; //这里做文件大小限制
       if (!extension && !extension2) {
         this.$message({
           message: "上传文件只能是 xls、xlsx格式!",
           type: "warning"
         });
       }
-      if (!isLt2M) {
+      if (!isLt10M) {
         this.$message({
           message: "上传文件大小不能超过 10MB!",
           type: "warning"
