@@ -24,7 +24,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-button type="primary" size="mini" @click="exportOrderNo">导入</el-button>
+          <el-button type="primary" :loading="loadingOrderNo" size="mini" @click="exportOrderNo">导入</el-button>
         </el-col>
       </el-row>
     </el-form>
@@ -60,7 +60,7 @@
         </el-col>
       </el-row>
 
-      <el-button type="primary" size="mini" @click="exportLastId">导入</el-button>
+      <el-button type="primary" size="mini" :loading="loadingLastId" @click="exportLastId">导入</el-button>
     </el-form>
 
     <!-- 根据文件导单 -->
@@ -119,6 +119,9 @@ export default {
       fileList: [],
       radio: 1,
       loading: false,
+      loadingOrderNo: false,
+      loadingLastId: false,
+      fileName: "",
       formRules: {
         sourceOrderNo: [
           { required: true, message: "源单号必须填写", trigger: "blur" }
@@ -183,6 +186,7 @@ export default {
     exportOrderNo() {
       this.$refs["formData1"].validate(valid => {
         if (valid) {
+          this.loadingOrderNo = true;
           this.$store
             .dispatch(
               "qunarOrderConfig/exportOrderNo",
@@ -194,11 +198,13 @@ export default {
                   type: "success",
                   message: data.data
                 });
+                this.loadingOrderNo = false;
               } else {
                 this.$message({
                   type: "warning",
                   message: data.data
                 });
+                this.loadingOrderNo = false;
               }
             })
             .catch(error => {
@@ -210,29 +216,44 @@ export default {
     // 根据lastId增量导单
     exportLastId() {
       this.$refs["formData2"].validate(valid => {
-        let params = {};
-        params.domain = this.formData.domain;
-        params.fromLastId = this.formData.fromLastId;
-        params.toLastId = this.formData.toLastId;
-        this.$store
-          .dispatch("qunarOrderConfig/exportLastId", params)
-          .then(data => {
-            if (data) {
-              this.$message({
-                type: "success",
-                message: "导入成功！"
-              });
-            }
-          })
-          .catch(error => {
-            console.log(error);
-          });
+        if (valid) {
+          this.loadingLastId = true;
+          let params = {};
+          params.domain = this.formData.domain;
+          params.fromLastId = this.formData.fromLastId;
+          params.toLastId = this.formData.toLastId;
+          this.$store
+            .dispatch("qunarOrderConfig/exportLastId", params)
+            .then(data => {
+              if (data) {
+                this.$message({
+                  type: "success",
+                  message: "导入成功！"
+                });
+                this.loadingLastId = false;
+              }
+            })
+            .catch(error => {
+              console.log(error);
+              this.loadingLastId = false;
+            });
+        }
       });
     },
 
     // 根据文件导单
     uploadSectionFile(params) {
       this.loading = true;
+      if (this.fileName == params.file.name) {
+        this.$notify({
+          title: "提示",
+          message: "请勿重复上传文件",
+          type: "warning",
+          duration: 4500
+        });
+        this.loading = false;
+        return;
+      }
       var form = new FormData();
       form.append("file", params.file);
       this.$store
@@ -245,6 +266,7 @@ export default {
             duration: 4500
           });
           this.loading = false;
+          this.fileName = params.file.name;
         })
         .catch(error => {
           this.$notify({
@@ -254,6 +276,7 @@ export default {
             duration: 4500
           });
           this.loading = false;
+          this.fileName = "";
         });
     }
   }
