@@ -4,7 +4,7 @@
       :model="formData"
       ref="handleTicketForm"
       :rules="formRules"
-      label-width="110px"
+      label-width="120px"
       size="mini"
       style="margin-top:15px;"
     >
@@ -92,11 +92,11 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <!-- <el-col :span="8">
             <el-form-item label="金额:" prop="amount">
               <el-input clearable v-model="formData.amount"></el-input>
             </el-form-item>
-          </el-col>
+          </el-col>-->
           <el-col :span="8">
             <el-form-item label="资金账号:" prop="fundAccount">
               <el-select
@@ -153,9 +153,22 @@
               <el-input clearable v-model="formData.amount"></el-input>
             </el-form-item>
           </el-col>
+
           <el-col :span="8">
             <el-form-item label="利润金额:" prop="profit">
               <el-input clearable v-model="formData.profit"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="业务完结时间:" prop="finishTime">
+              <el-date-picker
+                type="datetime"
+                format="yyyy-MM-dd HH:mm"
+                placeholder="选择业务完结时间"
+                v-model="formData.finishTime"
+                style="width: 100%;"
+                value-format="timestamp"
+              ></el-date-picker>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -284,11 +297,16 @@
       <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
       <el-button
         size="mini"
-        v-if="this.formData.radio!='1'"
+        v-if="!(this.isWoniu && this.radio==1)"
         type="primary"
         @click="handleSaveTicket"
       >保存并贴票</el-button>
-      <el-button size="mini" type="primary" @click="handleSave">保存</el-button>
+      <el-button
+        size="mini"
+        type="primary"
+        v-if="this.isWoniu && this.radio==1"
+        @click="handleSave"
+      >保存</el-button>
     </div>
   </div>
 </template>
@@ -346,6 +364,7 @@ export default {
         orderType: [{ required: true, message: "必填项", trigger: "change" }],
         merchantId: [{ required: true, message: "必填项", trigger: "change" }],
         amount: [{ required: true, message: "必填项！", trigger: "blur" }],
+        finishTime: [{ required: true, message: "必填项！", trigger: "blur" }],
         createTime: [{ required: true, message: "必填项！", trigger: "blur" }],
         fundAccount: [{ required: true, message: "必填项！", trigger: "blur" }],
         profit: [{ required: true, message: "必填项！", trigger: "blur" }],
