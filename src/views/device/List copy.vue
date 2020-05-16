@@ -3,26 +3,23 @@
     <!-- 功能列表 -->
     <el-row :gutter="20">
       <el-col>
-        <el-row type="flex" justify="space-between" style="margin-bottom:20px;" align="bottom">
-          <el-button icon="el-icon-plus" type="primary" size="mini" @click="toAddFeature">添加功能</el-button>
+        <el-row type="flex" justify="flex-start" style="margin-bottom:20px;" align="bottom">
+          <el-button icon="el-icon-plus" type="primary" size="mini" @click="toAddDevice">添加设备</el-button>
+          <el-button icon="el-icon-plus" type="primary" size="mini" @click="toAddManyDevice">批量添加设备</el-button>
         </el-row>
 
-        <el-table :data="tableData" style="width: 100%">
-          <el-table-column label="功能类别" width="100">
+        <el-table :data="tableData" style="width: 100%" >
+          <el-table-column label="设备名称" width="150">
             <template slot-scope="scope">
-              <span style="margin-left: 10px">{{ featureCate[scope.row.featureType].value}}</span>
+              <span style="margin-left: 10px">{{scope.row.deviceName}}</span>
             </template>
           </el-table-column>
 
-          <el-table-column label="功能名称" width="100">
+          <el-table-column label="设备key" width="180">
             <template slot-scope="scope">
-              <span style="margin-left: 10px">{{scope.row.featureName}}</span>
-            </template>
-          </el-table-column>
-
-          <el-table-column label="标识符" width="100">
-            <template slot-scope="scope">
-              <span style="margin-left: 10px">{{scope.row.featureCode}}</span>
+              <span
+                style="margin-left: 10px"
+              >{{scope.row.deviceKey}}</span>
             </template>
           </el-table-column>
 
@@ -37,12 +34,12 @@
           <el-table-column label="操作">
             <template slot-scope="scope">
               <el-button size="mini" @click="handleEdit(scope.row)">修改</el-button>
-              <el-button size="mini" type="danger" @click="handleDelete(scope.row.featureId)">删除</el-button>
+              <el-button size="mini" type="danger" @click="handleDelete(scope.row.deviceId)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
 
-        <product-feature-edit ref="edit" @handleCompelete="getList()" />
+        <device-edit ref="edit" @handleComplete="getList()" />
 
         <div style="text-align: center;margin-top: 30px;">
           <el-pagination
@@ -71,45 +68,35 @@
 </template>
 
 <script>
-import productFeatureEdit from "./Edit";
+import deviceEdit from "./Edit";
 
 export default {
   data() {
-    const validateSign = (rule, value, callback) => {
-      var signRe = /^[a-zA-Z_][a-zA-Z0-9_]{4,20}$/;
-      if (signRe.test(value)) {
-        callback();
-      } else {
-        callback(new Error("不能数字开头，支持中英文下划线，5-20位"));
-      }
-    };
-
     return {
       pageFlag: false,
+      // deleteDialog: false,
       lastId: "",
       dialogVisible: false,
       tableData: [],
       total: 0,
-      currentParamList: "",
       currentPage: 1,
       pageSize: 8,
-      featureCate: [
-        { id: 0, value: "属性" },
-        { id: 1, value: "服务" },
-        { id: 2, value: "事件" }
-      ],
-      cocurrentFeatureId: ""
+      cocurrentDeviceId: "",
+      // selectedSelection: []
     };
   },
   methods: {
-    // 新增功能
-    toAddFeature() {
-      this.$refs.edit.handleAddFeature();
+    // 新增设备
+    toAddDevice() {
+      this.$refs.edit.addDevice();
+    },
+    toAddManyDevice() {
+      this.$refs.edit.addManyDevice();
     },
     // 获取列表
     getList(cb) {
       this.$store
-        .dispatch("productFeature/getList", {
+        .dispatch("device/getList", {
           pageFlag: this.pageFlag,
           pageSize: this.pageSize,
           lastId: this.lastId
@@ -126,9 +113,9 @@ export default {
       let lastId;
       if (tableData.length) {
         if (pageFlag == 1) {
-          lastId = tableData[tableData.length - 1].featureId;
+          lastId = tableData[tableData.length - 1].deviceId;
         } else {
-          lastId = tableData[0].featureId;
+          lastId = tableData[0].deviceId;
         }
       }
       this.lastId = lastId;
@@ -138,7 +125,8 @@ export default {
       });
     },
     getTotal() {
-      this.$store.dispatch("productFeature/getTotal").then(result => {
+      this.$store.dispatch("device/getTotal")
+      .then(result => {
         this.total = result;
       });
     },
@@ -151,17 +139,17 @@ export default {
     },
     // 编辑功能
     handleEdit(data) {
-      this.$refs.edit.handleEditFeature(data);
+      this.$refs.edit.handleEdit(data);
     },
     // 提示是否删除
     handleDelete(id) {
       this.dialogVisible = true;
-      this.cocurrentFeatureId = id;
+      this.cocurrentDeviceId = id;
     },
     // 确定删除
     confirmDelete() {
       this.$store
-        .dispatch("productFeature/delFeatureById", this.cocurrentFeatureId)
+        .dispatch("device/deleteById", this.cocurrentDeviceId)
         .then(result => {
           this.dialogVisible = false;
           this.$message({
@@ -183,7 +171,7 @@ export default {
     }
   },
   components: {
-    productFeatureEdit
+    deviceEdit
   },
   created() {
     this.getData();

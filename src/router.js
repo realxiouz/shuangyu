@@ -668,6 +668,13 @@ export default new Router({
           meta: { title: '商品属性管理', icon: 'home' }
         },
         {
+          title: '设备功能管理',
+          path: '/device/list',
+          name: 'device',
+          component: () => import('@/views/device/List'),
+          meta: { title: '设备功能管理', icon: 'home' }
+        },
+        {
           title: '商品功能管理',
           path: '/feature/list',
           name: 'feature',

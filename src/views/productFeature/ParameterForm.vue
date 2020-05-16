@@ -120,8 +120,6 @@
         </el-radio-group>
       </el-form-item>
     </el-form>
-
-
   </div>
 </template>
 
@@ -385,6 +383,11 @@ export default {
         callback(valid);
       });
     },
+    validate(callback) {
+      this.$refs.selfForm.validate(valid => {
+        callback(valid);
+      });
+    },
     // 转换读写转态
     changeReadWriteType(e) {
       const flag = e == "只读" ? true : false;
@@ -395,7 +398,7 @@ export default {
     resetForm() {
       this.$refs.selfForm.resetFields();
     }
-  },
+  }
 };
 </script>
 

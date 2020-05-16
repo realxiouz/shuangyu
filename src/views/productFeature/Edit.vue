@@ -24,97 +24,98 @@
             <el-input placeholder="请输入您的标识符" v-model="commonForm.featureCode" />
           </el-col>
         </el-form-item>
-      </el-form>
 
-      <!-- 属性 -->
-      <parameter-form ref="base-form-box" v-if="showParameterFromInline" />
-      <!-- 服务 -->
-      <el-form
-        label-position="top"
-        v-if="showServer"
-        ref="server-form"
-        :model="serverForm"
-        :rules="serverRule"
-      >
-        <el-form-item :label="'调用方式'+serverForm.callType">
-          <el-radio-group v-model="serverForm.callType">
-            <el-radio :label="0">异步</el-radio>
-            <el-radio :label="1">同步</el-radio>
-          </el-radio-group>
-        </el-form-item>
+        <!-- 属性 -->
+        <!-- ----------------------------------------------------------------------- -->
+        <parameter-form ref="base-form-box" v-if="showParameterFromInline" />
+        <!-- 服务 -->
+        <!-- ----------------------------------------------------------------------- -->
+        <el-form
+          label-position="top"
+          v-if="showServer"
+          ref="server-form"
+          :model="serverForm"
+          :rules="serverRule"
+        >
+          <el-form-item :label="'调用方式'+serverForm.callType">
+            <el-radio-group v-model="serverForm.callType">
+              <el-radio :label="0">异步</el-radio>
+              <el-radio :label="1">同步</el-radio>
+            </el-radio-group>
+          </el-form-item>
 
-        <el-form-item label="输入参数" prop="input">
-          <el-row v-for="(param,index) in serverForm.inputParams" :key="index">
-            <el-col :span="12">
-              <el-link>参数名称：{{param.paramName}}</el-link>
-              <div style="float:right">
-                <el-link @click="editParamByIndex('serverForm.inputParams',index)">编辑</el-link>
-                <span>|</span>
-                <el-link @click="removeParamByIndex('serverForm.inputParams',index)">删除</el-link>
-              </div>
-            </el-col>
-          </el-row>
+          <el-form-item label="输入参数" prop="input" style="border:1px solid">
+            <el-row v-for="(param,index) in serverForm.inputParams" :key="index">
+              <el-col :span="12">
+                <el-link>参数名称：{{param.paramName}}</el-link>
+                <div style="float:right">
+                  <el-link @click="editParamByIndex('serverForm.inputParams',index)">编辑</el-link>
+                  <span>|</span>
+                  <el-link @click="removeParamByIndex('serverForm.inputParams',index)">删除</el-link>
+                </div>
+              </el-col>
+            </el-row>
 
-          <el-row>
-            <el-link type="primary" @click="toAddParam('serverForm.inputParams')">+添加参数</el-link>
-          </el-row>
-        </el-form-item>
+            <el-row>
+              <el-link type="primary" @click="toAddParam('serverForm.inputParams')">+添加参数</el-link>
+            </el-row>
+          </el-form-item>
 
-        <el-form-item label="输出参数" prop="output">
-          <el-row v-for="(param,index) in serverForm.outputParams" :key="index">
-            <el-col :span="12">
-              <el-link>参数名称：{{param.paramName}}</el-link>
-              <div style="float:right">
-                <el-link @click="editParamByIndex('serverForm.outputParams',index)">编辑</el-link>
-                <span>|</span>
-                <el-link @click="removeParamByIndex('serverForm.outputParams',index)">删除</el-link>
-              </div>
-            </el-col>
-          </el-row>
+          <el-form-item label="输出参数 serverForm" prop="output">
+            <el-row v-for="(param,index) in serverForm.outputParams" :key="index">
+              <el-col :span="12">
+                <el-link>参数名称：{{param.paramName}}</el-link>
+                <div style="float:right">
+                  <el-link @click="editParamByIndex('serverForm.outputParams',index)">编辑</el-link>
+                  <span>|</span>
+                  <el-link @click="removeParamByIndex('serverForm.outputParams',index)">删除</el-link>
+                </div>
+              </el-col>
+            </el-row>
 
-          <el-link type="primary" @click="toAddParam('serverForm.outputParams')">+添加参数</el-link>
-        </el-form-item>
-      </el-form>
+            <el-link type="primary" @click="toAddParam('serverForm.outputParams')">+添加参数</el-link>
+          </el-form-item>
+        </el-form>
+        <!-- 事件 -->
+        <!-- ----------------------------------------------------------------------- -->
+        <el-form
+          label-position="top"
+          v-if="showEvent"
+          :model="eventForm"
+          ref="event-form"
+          :rules="eventRule"
+        >
+          <el-form-item label="事件类型" prop="eventType">
+            <el-radio-group v-model="eventForm.eventType">
+              <el-radio label="0">信息</el-radio>
+              <el-radio label="1">告警</el-radio>
+              <el-radio label="2">故障</el-radio>
+            </el-radio-group>
+          </el-form-item>
 
-      <!-- 事件 -->
-      <el-form
-        label-position="top"
-        v-if="showEvent"
-        :model="eventForm"
-        ref="event-form"
-        :rules="eventRule"
-      >
-        <el-form-item label="事件类型" prop="eventType">
-          <el-radio-group v-model="eventForm.eventType">
-            <el-radio label="0">信息</el-radio>
-            <el-radio label="1">告警</el-radio>
-            <el-radio label="2">故障</el-radio>
-          </el-radio-group>
-        </el-form-item>
+          <el-form-item label="输出参数 eventForm" prop="output">
+            <el-row v-for="(param,index) in eventForm.outputParams" :key="index">
+              <el-col :span="12">
+                <el-link>参数名称：{{param.paramName}}</el-link>
+                <div style="float:right">
+                  <el-link @click="editParamByIndex('eventForm.outputParams',index)">编辑</el-link>
+                  <span>|</span>
+                  <el-link @click="removeParamByIndex('eventForm.outputParams',index)">删除</el-link>
+                </div>
+              </el-col>
+            </el-row>
 
-        <el-form-item label="输出参数" prop="output">
-          <el-row v-for="(param,index) in eventForm.outputParams" :key="index">
-            <el-col :span="12">
-              <el-link>参数名称：{{param.paramName}}</el-link>
-              <div style="float:right">
-                <el-link @click="editParamByIndex('eventForm.outputParams',index)">编辑</el-link>
-                <span>|</span>
-                <el-link @click="removeParamByIndex('eventForm.outputParams',index)">删除</el-link>
-              </div>
-            </el-col>
-          </el-row>
+            <el-link type="primary" @click="toAddParam('eventForm.outputParams')">+添加参数</el-link>
+          </el-form-item>
+        </el-form>
+        <!-- ----------------------------------------------------------------------- -->
 
-          <el-link type="primary" @click="toAddParam('eventForm.outputParams')">+添加参数</el-link>
-        </el-form-item>
-      </el-form>
-
-      <el-form :model="descForm" ref="desc-form">
         <el-form-item
           label="描述"
           prop="description"
           :rules="[{required: true, message: '描述不能为空', trigger: 'blur'}]"
         >
-          <el-input placeholder="请输入描述" type="textarea" v-model="descForm.description" />
+          <el-input placeholder="请输入描述" type="textarea" v-model="commonForm.description" />
         </el-form-item>
       </el-form>
 
@@ -178,7 +179,8 @@ export default {
         remark: "", //备注
         productCode: "", //商品编码
         sort: "", //排序号
-        required: true
+        required: true,
+        description: ""
       },
       //   服务表单
       serverForm: {
@@ -195,9 +197,6 @@ export default {
         outputParams: []
       },
 
-      descForm: {
-        description: ""
-      },
       baseRule: {
         featureName: [
           { required: true, message: "请输入您的公共功能名称", trigger: "blur" }
@@ -213,10 +212,9 @@ export default {
           { required: true, message: "请添加输入参数", trigger: "change" }
         ],
         output: [
-          { required: true, message: "请添加输出参数", trigger: "change" }
+          { required: true, message: "请添加输出参数111", trigger: "change" }
         ]
       },
-      
       eventRule: {
         output: [
           { required: true, message: "请添加输出参数", trigger: "change" }
@@ -244,7 +242,7 @@ export default {
       this.commonForm.featureId = featureId;
       this.commonForm.featureType = featureType;
       this.commonForm.featureCode = featureCode;
-      this.descForm.description = description;
+      this.commonForm.description = description;
       this.handleType = EDIT;
 
       if (featureType == 0) {
@@ -283,9 +281,7 @@ export default {
         remark: "", //备注
         productCode: "", //商品编码
         sort: "", //排序号
-        required: true
-      };
-      this.descForm = {
+        required: true,
         description: ""
       };
       this.customReset();
@@ -370,103 +366,60 @@ export default {
         this.checkEventFrom();
       }
     },
-    // 属性表单
-    checkBaseFrom() {
-      this.$refs["common-form"].validate(valid => {
-        this.$refs["base-form-box"].checkForm(childValid => {
-          this.$refs["desc-form"].validate(descValid => {
-            const isPass = childValid && valid && descValid;
-            if (isPass) {
-              const childResult = this.getChildFormData("base-form-box");
-              const param = Object.assign(
-                {},
-                childResult,
-                this.commonForm,
-                this.descForm
-              );
-              this.handleFeature(param);
-            }
-          });
+
+    validateFroms(arr) {
+      let promiseList = [];
+      let promiseValidate = form =>
+        new Promise((resolve, reject) => {
+          this.$refs[form].validate(result => result && resolve("__success__"));
         });
-      });
+      arr.forEach(item => promiseList.push(promiseValidate(item)));
+      return Promise.all(promiseList);
+    },
+    // 属性表单
+    async checkBaseFrom() {
+      await this.validateFroms(["common-form", "base-form-box"]);
+      const childResult = this.getChildFormData("base-form-box");
+      const param = Object.assign({}, childResult, this.commonForm);
+      this.handleFeature(param);
     },
     // 服务表单
-    checkServerFrom() {
-      this.$refs["server-form"].validate(severValid => {
-        this.$refs["common-form"].validate(commonValid => {
-          this.$refs["desc-form"].validate(descValid => {
-            const isPass = commonValid && severValid && descValid;
-            if (isPass) {
-              let selfData = JSON.parse(JSON.stringify(this.serverForm));
-              delete selfData.input;
-              delete selfData.output;
-              delete selfData.inputList;
-              delete selfData.outputList;
-              const param = Object.assign(
-                {},
-                this.commonForm,
-                this.descForm,
-                selfData
-              );
-              this.handleFeature(param);
-            }
-          });
-        });
-      });
+    async checkServerFrom() {
+      await this.validateFroms(["common-form", "server-form"]);
+      const param = Object.assign({}, this.commonForm, this.serverForm);
+      this.handleFeature(param);
     },
     // 事件表单
-    checkEventFrom() {
-      this.$refs["event-form"].validate(eventValid => {
-        this.$refs["common-form"].validate(commonValid => {
-          this.$refs["desc-form"].validate(descValid => {
-            const isPass = commonValid && eventValid && descValid;
-            if (isPass) {
-              let selfData = JSON.parse(JSON.stringify(this.eventForm));
-              delete selfData.output;
-              delete selfData.outputList;
-              const param = Object.assign(
-                {},
-                this.commonForm,
-                this.descForm,
-                selfData
-              );
-              this.handleFeature(param);
-            }
-          });
-        });
-      });
+    async checkEventFrom() {
+      await this.validateFroms(["common-form", "event-form"]);
+      const param = Object.assign({}, this.commonForm, this.selfData);
+      this.handleFeature(param);
     },
     // 新增功能
 
     handleFeature(feature) {
       // 判断当前的事件类型是新增还是编辑
       if (this.handleType == ADD) {
-        const num = 0;
         this.$store.dispatch("productFeature/addOne", feature).then(result => {
-          this.$message({
-            message: "提交成功！",
-            type: "success"
-          });
-          this.showMask = false;
-          this.$emit("addSuccess", feature);
-          if (code < num) {
-            code++;
-            aa(code);
-          }
+          this.handleCompelete("提交成功！");
         });
       } else if ((this.handleType = EDIT)) {
         this.$store
           .dispatch("productFeature/editFeatureById", feature)
           .then(result => {
-            this.$message({
-              message: "修改成功！",
-              type: "success"
-            });
-            this.resetMainForm();
-            this.showMask = false;
-            this.$emit("editSuccess", feature);
+            this.handleCompelete("修改成功！");
           });
       }
+    },
+
+    handleCompelete(message) {
+      this.$message({
+        message,
+        type: "success"
+      });
+      this.resetMainForm();
+      this.$emit("handleCompelete");
+      this.showMask = false;
     },
     // 取消编辑
     cancelEdit() {
@@ -513,6 +466,11 @@ export default {
     // 参数titile
     parameterTitle() {
       return this.handleParamType == "ADD" ? "新增参数" : "修改参数";
+    }
+  },
+  watch: {
+    serverForm(newValue, oldValue) {
+      console.log(newValue, oldValue);
     }
   }
 };
