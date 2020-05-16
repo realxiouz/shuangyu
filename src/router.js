@@ -506,7 +506,14 @@ export default new Router({
           path: '/qunar/order/export',
           name: 'qunarOrderExport',
           component: () => import('@/views/otherOrderConfig/qunarOrderConfig/Export'),
-          meta: { title: '去哪儿订单管理', icon: 'home' }
+          meta: { title: '去哪儿导单', icon: 'home' }
+        },
+        {
+          title: '去哪儿订单详情',
+          path: '/qunar/order/detail',
+          name: 'qunarOrderDetail',
+          component: () => import('@/views/otherOrderConfig/qunarOrderConfig/Detail'),
+          meta: { title: '去哪儿订单详情', icon: 'home' }
         },
         {
           title: '去哪儿订单通知管理',

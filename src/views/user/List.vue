@@ -14,32 +14,38 @@
         style="width: 100%;margin-bottom: 20px;"
         size="mini"
       >
+        >
         <el-table-column prop="nickName" label="昵称" width="100" align="center"></el-table-column>
         <el-table-column prop="fullName" label="姓名" width="100" align="center"></el-table-column>
-        <el-table-column label="性别" width="100" align="center">
+        <el-table-column label="性别" width="50" align="center">
           <template slot-scope="scope">
             <span>{{ initGender(scope.row.gender) }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="出生日期" width="180" align="center">
+        <el-table-column label="出生日期" width="110" align="center">
           <template slot-scope="scope">
             <i v-if="scope.row.birthDate" class="el-icon-time"></i>
             <span style="margin-left: 10px">{{ formatDate(scope.row.birthDate,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="phone" label="手机号" align="center"></el-table-column>
-        <el-table-column prop="email" label="电子邮箱" align="center"></el-table-column>
+        <el-table-column prop="phone" label="手机号" align="left"></el-table-column>
+        <el-table-column prop="email" label="电子邮箱" align="left"></el-table-column>
+        <el-table-column label="角色权限" align="center">
+          <template slot-scope="scope">
+            <span v-html="formDataRole(scope.row.roles)"></span>
+          </template>
+        </el-table-column>
         <el-table-column label="是否超级管理员" width="120" align="center">
           <template slot-scope="scope">
             <el-switch :value="scope.row.super" @change="superSwitch(scope.row)" disabled></el-switch>
           </template>
         </el-table-column>
-        <el-table-column label="是否启用"  align="center" width="120">
+        <el-table-column label="是否启用" align="center" width="120">
           <template slot-scope="scope">
             <el-switch :disabled="true" :value="scope.row.enable" @change="enableSwitch(scope.row)"></el-switch>
           </template>
         </el-table-column>
-        <el-table-column label="操作" fixed="right" align="center" width="250">
+        <el-table-column label="操作" fixed="right" align="center" width="280">
           <template slot-scope="scope">
             <el-button @click="handleResetPwd(scope.row)" type="primary" size="mini">重置密码</el-button>
             <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
@@ -95,7 +101,8 @@ export default {
       lastId: "blank",
       total: 0,
       tableData: [],
-      loading: true
+      loading: true,
+      roleData: []
     };
   },
   components: {
@@ -115,6 +122,7 @@ export default {
           if (data) {
             this.tableData = data.data;
             this.loadTotal(params);
+            this.loadRoles();
           }
           this.loading = false;
         })
@@ -134,6 +142,29 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+
+    /*加载所有的角色信息*/
+    loadRoles() {
+      this.$store
+        .dispatch("role/getAll", {})
+        .then(data => {
+          this.roleData = data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    formDataRole(data) {
+      let str = "";
+      for (let i = 0; i < this.roleData.length; i++) {
+        data.forEach(item => {
+          if (item == this.roleData[i].roleId) {
+            str += this.roleData[i].roleName + " ， ";
+          }
+        });
+      }
+      return str.substring(0, str.length - 2);
     },
     /*根据关键字查询用户列表*/
     handleSearch(params) {
@@ -248,10 +279,10 @@ export default {
       let requestData = {};
       if (this.userId) {
         url = "user/updateOne";
-          requestData = {userId: formData.user.userId, update: formData.user};
+        requestData = { userId: formData.user.userId, update: formData.user };
       } else {
         url = "user/addOne";
-          requestData = formData;
+        requestData = formData;
       }
       this.$store
         .dispatch(url, requestData)

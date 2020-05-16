@@ -8,11 +8,11 @@
               clearable
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.segment"
-              placeholder="航段"
+              placeholder="示例：（ CSX-PEK ）"
             ></el-input>
           </el-form-item>
         </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+        <!-- <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="出发地三字码:">
             <el-input
               clearable
@@ -21,8 +21,8 @@
               placeholder="出发地三字码"
             ></el-input>
           </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+        </el-col>-->
+        <!-- <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="目的地三字码:">
             <el-input
               clearable
@@ -31,25 +31,30 @@
               placeholder="目的地三字码"
             ></el-input>
           </el-form-item>
-        </el-col>
+        </el-col>-->
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="航司二字码:">
+          <el-form-item label="航司:">
             <el-input
               clearable
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.airlineCode"
-              placeholder="航司二字码"
+              placeholder="航司"
             ></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="航司舱位:">
+          <el-form-item label="舱位:">
             <el-input
               clearable
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.cabin"
-              placeholder="航司舱位"
+              placeholder="舱位"
             ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more">
+            <span>提示：亲，没有更多查询条件了 ^-^</span>
           </el-form-item>
         </el-col>
       </el-form>

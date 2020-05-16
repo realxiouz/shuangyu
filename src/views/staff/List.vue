@@ -17,6 +17,7 @@
           :default-expanded-keys="defaultExpandedKeys"
           :highlight-current="true"
           :expand-on-click-node="false"
+          default-expand-all
           @node-click="handleNodeClick"
         ></el-tree>
       </el-col>

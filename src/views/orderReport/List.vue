@@ -144,7 +144,7 @@
             <span>{{ formatAmount(scope.row.profit)}}</span>
           </template>
         </el-table-column>
-        <el-table-column fixed="right" label="操作" align="center" width="150">
+        <el-table-column fixed="right" label="操作" align="center" width="180">
           <template slot-scope="scope">
             <el-button @click="handleUpdate(scope.row.deptId)" type="primary" size="mini">编辑</el-button>
             <el-button

@@ -23,7 +23,7 @@
             </el-switch>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" width="180">
+        <el-table-column label="操作" align="center" width="180" fixed="right">
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
             <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>

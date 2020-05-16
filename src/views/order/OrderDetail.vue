@@ -17,12 +17,15 @@
     </el-card>
     <el-collapse v-model="activeNames">
       <el-collapse-item name="1">
-        <template slot="title">
+        <span class="collapse-title" slot="title">
+          <span v-if="this.activeNames.indexOf('1')!=-1">收起</span>
+          <span v-else>展开</span>
+
           <span style="font-size:larger;margin-left: 15px;font-weight: bolder;">销售单信息</span>
           <span style="font-size: 24px; margin: 0 20px; color: #ff4600;">{{orderDetail_orderState}}</span>
           <span style="color: #F56C6C">{{orderDetail_orderComment}}</span>
           <span v-if="taskRemarkData" style="color: red;font-size: 14px">任务备注：{{taskRemarkData}}</span>
-        </template>
+        </span>
         <div style="padding: 20px">
           <el-row :gutter="20">
             <div style="margin-bottom:15px;">
@@ -151,14 +154,19 @@
           </el-row>
           <div style="margin-top:15px;">
             <span style="font-weight:700;font-size:15px;">退改说明：</span>
-            <div style=" margin-top:10px;font-size:14px; line-height:1.5;" v-html="refundChangeRule"></div>
+            <div
+              style=" margin-top:10px;font-size:14px; line-height:1.5;"
+              v-html="refundChangeRule"
+            ></div>
           </div>
         </div>
       </el-collapse-item>
       <el-collapse-item name="2">
-        <template slot="title">
+        <span class="collapse-title" slot="title">
+          <span v-if="this.activeNames.indexOf('2')!=-1">收起</span>
+          <span v-else>展开</span>
           <span style="font-size:larger;margin-left: 15px;font-weight: bolder;">销售单消息</span>
-        </template>
+        </span>
         <div style="padding: 20px">
           <el-button type="primary" size="mini" style="margin-bottom:15px" @click="getMessage">刷新</el-button>
           <div style="margin-top:15px;" id="messageHtml">
@@ -168,13 +176,15 @@
         </div>
       </el-collapse-item>
       <el-collapse-item v-if="this.tableData.orderType !='10'" name="3">
-        <template slot="title">
+        <span class="collapse-title" slot="title">
+          <span v-if="this.activeNames.indexOf('3')!=-1">收起</span>
+          <span v-else>展开</span>
           <span
             v-if="this.tableData.orderType=='30'|| this.tableData.orderType=='31'"
             style="font-size:larger;margin-left: 15px;font-weight: bolder;"
           >改签</span>
           <span v-else style="font-size:larger;margin-left: 15px;font-weight: bolder;">退票</span>
-        </template>
+        </span>
         <div style="padding: 20px">
           <el-button type="primary" style="margin-bottom:15px;" size="mini" @click="refreshHtml">刷新</el-button>
           <div id="changeHtmlOrderDetail">
@@ -189,9 +199,11 @@
         </div>
       </el-collapse-item>
       <el-collapse-item name="4">
-        <template slot="title">
+        <span class="collapse-title" slot="title">
+          <span v-if="this.activeNames.indexOf('4')!=-1">收起</span>
+          <span v-else>展开</span>
           <span style="font-size:larger;margin-left: 15px;font-weight: bolder;">采购单信息</span>
-        </template>
+        </span>
         <div style="padding: 20px">
           <el-button
             type="primary"
@@ -271,7 +283,9 @@
         </div>
       </el-collapse-item>
       <el-collapse-item name="5">
-        <div slot="title">
+        <div slot="title" class="collapse-title">
+          <span v-if="this.activeNames.indexOf('5')!=-1">收起</span>
+          <span v-else>展开</span>
           <span style="font-size:larger;margin-left: 15px;font-weight: bolder;">操作日志</span>
         </div>
         <div style="padding: 20px">
@@ -1211,7 +1225,7 @@ export default {
           gender: item.gender,
           name: item.name,
           viewPrice: item.viewPrice,
-          _amount:item.amount
+          _amount: item.amount
         };
         temp.push(obj);
       });
@@ -1817,8 +1831,15 @@ export default {
   color: #ff4600;
 }
 .el-collapse-item__header {
-  background-color: #ccc;
+  background-color: #fafafa;
   height: 35px;
   font-size: 12px;
+  flex: 1 0 auto;
+  order: -1;
+  padding-left: 15px;
+}
+.collapse-title {
+  flex: 1 0 90%;
+  order: 1;
 }
 </style>

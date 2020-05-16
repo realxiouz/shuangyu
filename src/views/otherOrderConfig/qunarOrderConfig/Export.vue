@@ -76,6 +76,7 @@
         <el-form-item label="选择文件:" prop="file">
           <el-upload
             class="upload-demo"
+            :before-upload="beforeUpload"
             ref="upload"
             :limit="2"
             :data="formData"
@@ -83,7 +84,6 @@
             :http-request="uploadSectionFile"
             :on-change="handleChange"
             :on-remove="handleRemove"
-            :before-upload="beforeUpload"
             :file-list="fileList"
             :auto-upload="false"
           >
@@ -93,6 +93,7 @@
               size="mini"
               type="success"
               @click="submitUpload"
+              :loading="loading"
             >导单</el-button>
             <div slot="tip" class="el-upload__tip" style="color:red">只能上传xls/xlsx文件</div>
           </el-upload>
@@ -117,6 +118,7 @@ export default {
       formData: defaultData(),
       fileList: [],
       radio: 1,
+      loading: false,
       formRules: {
         sourceOrderNo: [
           { required: true, message: "源单号必须填写", trigger: "blur" }
@@ -133,17 +135,15 @@ export default {
         ],
         toLastId: [
           { required: true, message: "截止导单lastId必须填写", trigger: "blur" }
-        ],
-        file: [{ required: true, message: "没有上传文件", trigger: "blur" }]
+        ]
       }
     };
   },
   methods: {
     beforeUpload(file) {
-      // var testmsg = file.name.substring(file.name.lastIndexOf(".") + 1);
-      console.log(file, "222122");
-      const extension = file.type === "xls";
-      const extension2 = file.type === "xlsx";
+      var testmsg = file.name.substring(file.name.lastIndexOf(".") + 1);
+      const extension = testmsg === "xls";
+      const extension2 = testmsg === "xlsx";
       const isLt2M = file.size / 1024 / 1024 < 10; //这里做文件大小限制
       if (!extension && !extension2) {
         this.$message({
@@ -160,11 +160,20 @@ export default {
       return extension || (extension2 && isLt2M);
     },
     submitUpload() {
-      this.$refs.upload.submit();
+      if (this.$refs.upload.fileList.length > 0) {
+        this.$refs.upload.submit();
+      } else {
+        this.$notify({
+          title: "提示",
+          message: "请选择你要导入的excel文件",
+          type: "warning",
+          duration: 4500
+        });
+      }
     },
 
     handleRemove(file, fileList) {
-      console.log(file, fileList);
+      // console.log(file, fileList);
     },
     handleChange(file, fileList) {
       this.fileList = fileList.slice(-1);
@@ -223,32 +232,29 @@ export default {
 
     // 根据文件导单
     uploadSectionFile(params) {
-      console.log(params);
-      this.$refs["formData3"].validate(valid => {
-        if (valid) {
-          var form = new FormData();
-          form.append("file", params.file);
-          form.append("orderType", this.formData.orderType);
-          this.$store
-            .dispatch("qunarOrderConfig/exportOrderFile", form)
-            .then(data => {
-              this.$notify({
-                title: "提示",
-                message: "上传成功",
-                type: "success",
-                duration: 4500
-              });
-            })
-            .catch(error => {
-              this.$notify({
-                title: "提示",
-                message: "上传失败",
-                type: "warning",
-                duration: 4500
-              });
-            });
-        }
-      });
+      this.loading = true;
+      var form = new FormData();
+      form.append("file", params.file);
+      this.$store
+        .dispatch("qunarOrderConfig/exportOrderFile", form)
+        .then(data => {
+          this.$notify({
+            title: "提示",
+            message: "上传成功",
+            type: "success",
+            duration: 4500
+          });
+          this.loading = false;
+        })
+        .catch(error => {
+          this.$notify({
+            title: "提示",
+            message: "上传失败",
+            type: "warning",
+            duration: 4500
+          });
+          this.loading = false;
+        });
     }
   }
 };
