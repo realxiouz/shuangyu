@@ -1,9 +1,9 @@
 <template>
   <div class="contentBox">
-    <el-row style="margin-bottom:20px;">
+    <el-row style="margin-bottom:20px; margin-left:20px;">
       <el-radio-group v-model="radio">
         <el-radio :label="1">原始单号导单</el-radio>
-        <el-radio :label="2">lastId增量导单</el-radio>
+        <!-- <el-radio :label="2">lastId增量导单</el-radio> -->
         <el-radio :label="3">文件导单</el-radio>
       </el-radio-group>
     </el-row>
@@ -30,7 +30,7 @@
     </el-form>
 
     <!--  根据lastId增量导单-->
-    <el-form
+    <!-- <el-form
       v-if="radio==2"
       ref="formData2"
       :model="formData"
@@ -61,7 +61,7 @@
       </el-row>
 
       <el-button type="primary" size="mini" :loading="loadingLastId" @click="exportLastId">导入</el-button>
-    </el-form>
+    </el-form> -->
 
     <!-- 根据文件导单 -->
     <el-form
