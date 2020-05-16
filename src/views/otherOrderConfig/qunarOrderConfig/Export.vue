@@ -159,7 +159,16 @@ export default {
       return extension || (extension2 && isLt2M);
     },
     submitUpload() {
-      this.$refs.upload.submit();
+      if (this.$refs.upload.fileList.length > 0) {
+        this.$refs.upload.submit();
+      } else {
+        this.$notify({
+          title: "提示",
+          message: "请选择你要导入的excel文件",
+          type: "warning",
+          duration: 4500
+        });
+      }
     },
 
     handleRemove(file, fileList) {
@@ -222,7 +231,7 @@ export default {
 
     // 根据文件导单
     uploadSectionFile(params) {
-      console.log(params);
+      console.log(params, "444444");
       this.$refs["formData3"].validate(valid => {
         if (valid) {
           var form = new FormData();
