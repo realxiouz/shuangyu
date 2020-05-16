@@ -76,6 +76,7 @@
         <el-form-item label="选择文件:" prop="file">
           <el-upload
             class="upload-demo"
+            :before-upload="beforeUpload"
             ref="upload"
             :limit="2"
             :data="formData"
@@ -83,7 +84,6 @@
             :http-request="uploadSectionFile"
             :on-change="handleChange"
             :on-remove="handleRemove"
-            :before-upload="beforeUpload"
             :file-list="fileList"
             :auto-upload="false"
           >
@@ -140,10 +140,9 @@ export default {
   },
   methods: {
     beforeUpload(file) {
-      // var testmsg = file.name.substring(file.name.lastIndexOf(".") + 1);
-      console.log(file, "222122");
-      const extension = file.type === "xls";
-      const extension2 = file.type === "xlsx";
+      var testmsg = file.name.substring(file.name.lastIndexOf(".") + 1);
+      const extension = testmsg === "xls";
+      const extension2 = testmsg === "xlsx";
       const isLt2M = file.size / 1024 / 1024 < 10; //这里做文件大小限制
       if (!extension && !extension2) {
         this.$message({
@@ -164,7 +163,7 @@ export default {
     },
 
     handleRemove(file, fileList) {
-      console.log(file, fileList);
+      // console.log(file, fileList);
     },
     handleChange(file, fileList) {
       this.fileList = fileList.slice(-1);
