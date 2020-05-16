@@ -99,7 +99,7 @@
               <el-option label="连程" value="2"></el-option>
             </el-select>
           </el-form-item>
-        </el-col> -->
+        </el-col>-->
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-if="more && orderType == 10" label="订单状态:">
             <el-select
@@ -190,7 +190,6 @@ export default {
       };
     },
     handleClear() {
-      console.log("2222222");
       this.formData = this.initSearchForm();
     },
     handleMore() {
@@ -199,9 +198,6 @@ export default {
     handleExport() {
       this.$emit("onSearch", this.formData);
     }
-  },
-  attached() {
-    console.log("beforeDestroy");
   }
 };
 </script>

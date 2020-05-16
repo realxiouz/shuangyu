@@ -14,12 +14,12 @@
         row-key="code"
         :tree-props="tableProps"
       >
-        <el-table-column prop="warehouseCode" label="仓库编码" align="center" width="260"></el-table-column>
-        <el-table-column prop="warehouseName" label="仓库名称" align="center" width="260"></el-table-column>
-        <el-table-column prop="address" label="地址" align="center" width="260"></el-table-column>
-        <el-table-column prop="contact" label="联系人" align="center" width="260"></el-table-column>
-        <el-table-column prop="phone" label="联系电话" align="center" width="260"></el-table-column>
-        <el-table-column label="操作" align="center">
+        <el-table-column prop="warehouseCode" label="仓库编码" align="center" width="180"></el-table-column>
+        <el-table-column prop="warehouseName" label="仓库名称" align="center" width="180"></el-table-column>
+        <el-table-column prop="contact" label="联系人" align="center" width="100"></el-table-column>
+        <el-table-column prop="phone" label="联系电话" align="center" width="180"></el-table-column>
+        <el-table-column prop="address" label="地址" align="center" ></el-table-column>
+        <el-table-column label="操作" align="center" fixed="right" width="250">
           <template slot-scope="scope">
             <el-button type="primary" size="mini" @click="handleAppend(scope.$index, scope.row)">添加</el-button>
             <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>

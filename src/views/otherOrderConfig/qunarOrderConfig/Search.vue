@@ -29,6 +29,16 @@
             </el-col>
           </el-form-item>
         </el-col>
+         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="乘机人:">
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.name"
+              style="width: 100%"
+              clearable
+            ></el-input>
+          </el-form-item>
+        </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="订单状态:">
             <el-select clearable v-model="formData.status" placeholder="请选择" style="width: 100%">
@@ -39,16 +49,6 @@
                 :value="item.value"
               ></el-option>
             </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="乘机人:">
-            <el-input
-              @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.name"
-              style="width: 100%"
-              clearable
-            ></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">

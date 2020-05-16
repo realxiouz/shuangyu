@@ -113,7 +113,16 @@ export default {
       return extension || (extension2 && isLt2M);
     },
     submitUpload() {
-      this.$refs.upload.submit();
+      if (this.$refs.upload.fileList.length > 0) {
+        this.$refs.upload.submit();
+      } else {
+        this.$notify({
+          title: "提示",
+          message: "请选择你要导入的excel文件",
+          type: "warning",
+          duration: 4500
+        });
+      }
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);

@@ -1,26 +1,27 @@
 <template>
   <div>
     <el-form :model="formData" ref="form" :rules="rules" label-width="110px" size="mini">
-      <el-form-item label="币种编码" prop="code">
+      <el-form-item label="币种编码：" prop="code">
         <el-input v-model="formData.code" placeholder="请输入币种编码.." :disabled="update"></el-input>
       </el-form-item>
-      <el-form-item label="币种名称" prop="name">
+      <el-form-item label="币种名称：" prop="name">
         <el-input v-model="formData.name" placeholder="示例：人民币"></el-input>
       </el-form-item>
-      <el-form-item label="货币符号" prop="symbol">
+      <el-form-item label="货币符号：" prop="symbol">
         <el-input v-model="formData.symbol" placeholder="示例：￥"></el-input>
       </el-form-item>
-      <el-form-item label="类别">
+      <el-form-item label="日期：">
         <el-date-picker
           v-model="formData.date"
+          style="width:100%;"
           type="date"
           placeholder="选择日期">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="当前比率">
+      <el-form-item label="当前比率：">
         <el-input v-model="formData.rate" placeholder="当前比率.."></el-input>
       </el-form-item>
-      <el-form-item label="是否有效">
+      <el-form-item label="是否有效：">
         <el-switch v-model="formData.active" @click="handleSwitch"></el-switch>
       </el-form-item>
     </el-form>

@@ -16,15 +16,14 @@
         max-height="650"
         fit
       >
-        <el-table-column type="index" align="center"></el-table-column>
-        <el-table-column prop="orderNo" label="订单号" width="180" align="center"></el-table-column>
-        <el-table-column prop="createTime" width="90" label="订单日期" align="center"></el-table-column>
-        <el-table-column prop="status" label="订单状态" :formatter="formatQunarStatus" align="center"></el-table-column>
+        <el-table-column type="index" width="50" align="center"></el-table-column>
+        <el-table-column prop="orderNo" label="订单号" width="160" align="center"></el-table-column>
+        <el-table-column prop="createTime" width="150" label="订单日期" align="center"></el-table-column>
         <el-table-column
-          prop="category"
-          :formatter="formatCategory"
-          width="90"
-          label="订单类型"
+          prop="status"
+          width="150"
+          label="订单状态"
+          :formatter="formatQunarStatus"
           align="center"
         ></el-table-column>
         <el-table-column label="乘机人" width="90" align="center">
@@ -53,7 +52,7 @@
         <el-table-column prop label="锁定人" align="center"></el-table-column>
         <el-table-column fixed="right" label="操作" width="280" align="center">
           <template slot-scope="scope">
-            <el-button disabled @click="handleEdit(scope.row)" type="primary" size="mini">查看</el-button>
+            <el-button disabled @click="handleOrderDetail(scope.row)" type="primary" size="mini">查看</el-button>
             <el-button @click="lookLogInfo(scope.row)" type="primary" size="mini">查看日志</el-button>
 
             <el-button disabled type="danger" size="mini">处理</el-button>
@@ -82,7 +81,6 @@
         :close-on-click-modal="false"
       >
         <div v-if="dialogVisible">
-
           <el-table :data="logData.log" size="mini" highlight-current-row fit>
             <el-table-column type="index" width="50" align="center"></el-table-column>
             <el-table-column prop="operator" label="操作员" width="80" align="center"></el-table-column>
@@ -184,7 +182,7 @@ export default {
       this.$store
         .dispatch("qunarOrderConfig/getTotal", { filters: params })
         .then(data => {
-          if (data) {
+          if (data >= 0) {
             this.total = data;
           }
         })
@@ -223,7 +221,17 @@ export default {
     handleCancel() {
       this.dialogVisible = false;
     },
-    handleEdit(row) {},
+    handleOrderDetail(row) {
+      let path = "";
+      path = "/qunar/order/detail";
+      this.$router.push({
+        path: path,
+        query: {
+          orderNo: row.orderNo
+        }
+      });
+
+    },
     lookLogInfo(row) {
       if (row.log) {
         this.logData = row;

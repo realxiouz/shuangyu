@@ -11,13 +11,28 @@
         </div>
         <el-divider></el-divider>
         <el-tab-pane label="出票订单" name="goTicket">
-          <go-ticket @onLoadData="loadData" :tableData="tableData" :loading="loading"></go-ticket>
+          <go-ticket
+            v-if="orderType==10"
+            @onLoadData="loadData"
+            :tableData="tableData"
+            :loading="loading"
+          ></go-ticket>
         </el-tab-pane>
         <el-tab-pane label="退票订单" name="refundTicket">
-          <refund-ticket @onLoadData="loadData" :tableData="tableData" :loading="loading"></refund-ticket>
+          <refund-ticket
+            v-if="orderType==20"
+            @onLoadData="loadData"
+            :tableData="tableData"
+            :loading="loading"
+          ></refund-ticket>
         </el-tab-pane>
         <el-tab-pane label="改签订单" name="changeTicket">
-          <change-ticket @onLoadData="loadData" :tableData="tableData" :loading="loading"></change-ticket>
+          <change-ticket
+            v-if="orderType==30"
+            @onLoadData="loadData"
+            :tableData="tableData"
+            :loading="loading"
+          ></change-ticket>
         </el-tab-pane>
         <el-pagination
           style="margin-left:15px;"
@@ -129,7 +144,7 @@ export default {
       this.$store
         .dispatch("woniuOrderConfig/getTotal", { filters: params })
         .then(data => {
-          if (data) {
+          if (data >= 0) {
             this.total = data;
           }
         })

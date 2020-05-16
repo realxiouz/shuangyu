@@ -30,7 +30,7 @@
           <span v-html="formatTicketNo(scope.row.passengerInfos)"></span>
         </template>
       </el-table-column>
-      <el-table-column prop="account" label="账号" width="100" align="center"></el-table-column>
+      <el-table-column prop="account" label="平台账号" width="100" align="center"></el-table-column>
       <el-table-column label="原航班信息" align="center">
         <el-table-column prop="flightNo" label="航班号" width="70" align="center"></el-table-column>
         <el-table-column prop="depDate" label="航班日期" width="120" align="center"></el-table-column>

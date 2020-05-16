@@ -29,7 +29,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="refundTypeDesc" label="退票类型" width="100" align="center"></el-table-column>
-      <el-table-column prop="account" label="账号" width="100" align="center"></el-table-column>
+      <el-table-column prop="account" label="平台账号" width="100" align="center"></el-table-column>
       <el-table-column prop="flightNo" label="航班号" width="70" align="center"></el-table-column>
       <el-table-column prop="depDate" label="航班日期" width="120" align="center"></el-table-column>
       <el-table-column prop="dep" label="起飞地" align="center"></el-table-column>

@@ -2,6 +2,7 @@
   <div class="bigBox">
     <div class="searchBox">
       <accountSubject-search @onSearch="handleSearch"></accountSubject-search>
+      <el-divider></el-divider>
     </div>
     <div class="contentBox">
       <el-row style="margin-bottom:15px; margin-left:30px">
@@ -67,154 +68,154 @@
 </template>
 
 <script>
-    import accountSubjectSearch from "./Search.vue";
-    import accountSubjectEdit from "./Edit.vue";
-    import { subjectCategory } from "@/utils/status.js";
+import accountSubjectSearch from "./Search.vue";
+import accountSubjectEdit from "./Edit.vue";
+import { subjectCategory } from "@/utils/status.js";
 
-    export default {
-        name: "subjectContent",
-        props: ["category"],
-        data() {
-            return {
-                loading: true,
-                searchForm: {},
-                dialogVisible: false,
-                editSubjectId: "",
-                pid: "",
-                tableData: [],
-                expandRowKeys: [],
-            };
-        },
-        methods: {
-            formatBalanceDirection(row) {
-                return row.balanceDirection === 0 ? "借" : "贷";
-            },
-            subjectCategory,
-            prevClick() {
-                this.pageFlag = "prev";
-                this.lastId = this.tableData[0].subjectId;
-                this.loadData();
-            },
-            nextClick() {
-                this.pageFlag = "next";
-                this.lastId = this.tableData[this.tableData.length - 1].subjectId;
-                this.loadData();
-            },
-            loadData(params) {
-                this.$store
-                    .dispatch("accountSubject/getTreeList", {
-                        filters: params
-                    })
-                    .then(data => {
-                        if (data && data.length > 0) {
-                            this.tableData = data;
-                            this.expandRowKeys = [];
-                            this.expandRowKeys.push(data[0].subjectId);
-                            this.loadTotal(params);
-                        }
-                        this.loading = false;
-                    })
-                    .catch(error => {
-                        this.loading = false;
-                        console.log(error);
-                    });
-            },
-            loadTotal(params) {
-                this.$store
-                    .dispatch("accountSubject/getTotal", {
-                        filters: params
-                    })
-                    .then(data => {
-                        this.total = data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            handleAddChild(subjectId) {
-                this.pid = subjectId;
-                this.editSubjectId = "";
-                this.dialogVisible = true;
-            },
-            handleAdd() {
-                this.editSubjectId = "";
-                this.pid = "";
-                this.dialogVisible = true;
-            },
-            handleSearch(params) {
-                const newParams = {};
-                if (params) {
-                    for (let key in params) {
-                        if (params[key]) {
-                            newParams[key] = params[key];
-                        }
-                    }
-                }
-                this.loadData(newParams);
-                this.$message({
-                    type: "success",
-                    message: "查询成功！"
-                });
-            },
-            handleUpdate(subjectId) {
-                this.editSubjectId = subjectId;
-                this.pid = "";
-                this.dialogVisible = true;
-            },
-            handleSizeChange(pageSize) {
-                this.pageSize = pageSize;
-                this.loadData();
-            },
-            handleRemove(id) {
-                this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
-                    confirmButtonText: "确定",
-                    cancelButtonText: "取消",
-                    type: "warning"
-                })
-                    .then(() => {
-                        this.$store
-                            .dispatch("accountSubject/removeOne", { subjectId: id })
-                            .then(() => {
-                                if (1 === this.tableData.length) {
-                                    this.prevClick();
-                                } else {
-                                    this.loadData();
-                                }
-                            });
-                    })
-                    .catch(err => {
-                        console.error(err);
-                    });
-            },
-            handleCancel() {
-                this.dialogVisible = false;
-            },
-            handleSave(formData) {
-                formData.category = this.category;
-                this.$store
-                    .dispatch("accountSubject/save", formData)
-                    .then(() => {
-                        this.loadData({category: this.category});
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-                this.dialogVisible = false;
-            }
-        },
-        created() {
-            this.loadData({category: this.category});
-        },
-        components: {
-            accountSubjectSearch,
-            accountSubjectEdit
-        }
+export default {
+  name: "subjectContent",
+  props: ["category"],
+  data() {
+    return {
+      loading: true,
+      searchForm: {},
+      dialogVisible: false,
+      editSubjectId: "",
+      pid: "",
+      tableData: [],
+      expandRowKeys: []
     };
+  },
+  methods: {
+    formatBalanceDirection(row) {
+      return row.balanceDirection === 0 ? "借" : "贷";
+    },
+    subjectCategory,
+    prevClick() {
+      this.pageFlag = "prev";
+      this.lastId = this.tableData[0].subjectId;
+      this.loadData();
+    },
+    nextClick() {
+      this.pageFlag = "next";
+      this.lastId = this.tableData[this.tableData.length - 1].subjectId;
+      this.loadData();
+    },
+    loadData(params) {
+      this.$store
+        .dispatch("accountSubject/getTreeList", {
+          filters: params
+        })
+        .then(data => {
+          if (data && data.length > 0) {
+            this.tableData = data;
+            this.expandRowKeys = [];
+            this.expandRowKeys.push(data[0].subjectId);
+            this.loadTotal(params);
+          }
+          this.loading = false;
+        })
+        .catch(error => {
+          this.loading = false;
+          console.log(error);
+        });
+    },
+    loadTotal(params) {
+      this.$store
+        .dispatch("accountSubject/getTotal", {
+          filters: params
+        })
+        .then(data => {
+          this.total = data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    handleAddChild(subjectId) {
+      this.pid = subjectId;
+      this.editSubjectId = "";
+      this.dialogVisible = true;
+    },
+    handleAdd() {
+      this.editSubjectId = "";
+      this.pid = "";
+      this.dialogVisible = true;
+    },
+    handleSearch(params) {
+      const newParams = {};
+      if (params) {
+        for (let key in params) {
+          if (params[key]) {
+            newParams[key] = params[key];
+          }
+        }
+      }
+      this.loadData(newParams);
+      this.$message({
+        type: "success",
+        message: "查询成功！"
+      });
+    },
+    handleUpdate(subjectId) {
+      this.editSubjectId = subjectId;
+      this.pid = "";
+      this.dialogVisible = true;
+    },
+    handleSizeChange(pageSize) {
+      this.pageSize = pageSize;
+      this.loadData();
+    },
+    handleRemove(id) {
+      this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$store
+            .dispatch("accountSubject/removeOne", { subjectId: id })
+            .then(() => {
+              if (1 === this.tableData.length) {
+                this.prevClick();
+              } else {
+                this.loadData();
+              }
+            });
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    },
+    handleCancel() {
+      this.dialogVisible = false;
+    },
+    handleSave(formData) {
+      formData.category = this.category;
+      this.$store
+        .dispatch("accountSubject/save", formData)
+        .then(() => {
+          this.loadData({ category: this.category });
+        })
+        .catch(error => {
+          console.log(error);
+        });
+      this.dialogVisible = false;
+    }
+  },
+  created() {
+    this.loadData({ category: this.category });
+  },
+  components: {
+    accountSubjectSearch,
+    accountSubjectEdit
+  }
+};
 </script>
 
 <style>
-  .contentBox {
-    margin-top: -10px;
-    padding-top: 0;
-  }
+.contentBox {
+  margin-top: -10px;
+  padding-top: 0;
+}
 </style>

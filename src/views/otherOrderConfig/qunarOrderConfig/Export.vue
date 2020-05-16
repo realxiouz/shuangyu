@@ -1,9 +1,9 @@
 <template>
   <div class="contentBox">
-    <el-row style="margin-bottom:20px;">
+    <el-row style="margin-bottom:20px; margin-left:20px;">
       <el-radio-group v-model="radio">
         <el-radio :label="1">原始单号导单</el-radio>
-        <el-radio :label="2">lastId增量导单</el-radio>
+        <!-- <el-radio :label="2">lastId增量导单</el-radio> -->
         <el-radio :label="3">文件导单</el-radio>
       </el-radio-group>
     </el-row>
@@ -24,13 +24,13 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-button type="primary" size="mini" @click="exportOrderNo">导入</el-button>
+          <el-button type="primary" :loading="loadingOrderNo" size="mini" @click="exportOrderNo">导入</el-button>
         </el-col>
       </el-row>
     </el-form>
 
     <!--  根据lastId增量导单-->
-    <el-form
+    <!-- <el-form
       v-if="radio==2"
       ref="formData2"
       :model="formData"
@@ -60,8 +60,8 @@
         </el-col>
       </el-row>
 
-      <el-button type="primary" size="mini" @click="exportLastId">导入</el-button>
-    </el-form>
+      <el-button type="primary" size="mini" :loading="loadingLastId" @click="exportLastId">导入</el-button>
+    </el-form> -->
 
     <!-- 根据文件导单 -->
     <el-form
@@ -76,6 +76,7 @@
         <el-form-item label="选择文件:" prop="file">
           <el-upload
             class="upload-demo"
+            :before-upload="beforeUpload"
             ref="upload"
             :limit="2"
             :data="formData"
@@ -83,7 +84,6 @@
             :http-request="uploadSectionFile"
             :on-change="handleChange"
             :on-remove="handleRemove"
-            :before-upload="beforeUpload"
             :file-list="fileList"
             :auto-upload="false"
           >
@@ -93,6 +93,7 @@
               size="mini"
               type="success"
               @click="submitUpload"
+              :loading="loading"
             >导单</el-button>
             <div slot="tip" class="el-upload__tip" style="color:red">只能上传xls/xlsx文件</div>
           </el-upload>
@@ -117,6 +118,10 @@ export default {
       formData: defaultData(),
       fileList: [],
       radio: 1,
+      loading: false,
+      loadingOrderNo: false,
+      loadingLastId: false,
+      fileName: "",
       formRules: {
         sourceOrderNo: [
           { required: true, message: "源单号必须填写", trigger: "blur" }
@@ -133,17 +138,15 @@ export default {
         ],
         toLastId: [
           { required: true, message: "截止导单lastId必须填写", trigger: "blur" }
-        ],
-        file: [{ required: true, message: "没有上传文件", trigger: "blur" }]
+        ]
       }
     };
   },
   methods: {
     beforeUpload(file) {
-      // var testmsg = file.name.substring(file.name.lastIndexOf(".") + 1);
-      console.log(file, "222122");
-      const extension = file.type === "xls";
-      const extension2 = file.type === "xlsx";
+      var testmsg = file.name.substring(file.name.lastIndexOf(".") + 1);
+      const extension = testmsg === "xls";
+      const extension2 = testmsg === "xlsx";
       const isLt2M = file.size / 1024 / 1024 < 10; //这里做文件大小限制
       if (!extension && !extension2) {
         this.$message({
@@ -160,11 +163,20 @@ export default {
       return extension || (extension2 && isLt2M);
     },
     submitUpload() {
-      this.$refs.upload.submit();
+      if (this.$refs.upload.fileList.length > 0) {
+        this.$refs.upload.submit();
+      } else {
+        this.$notify({
+          title: "提示",
+          message: "请选择你要导入的excel文件",
+          type: "warning",
+          duration: 4500
+        });
+      }
     },
 
     handleRemove(file, fileList) {
-      console.log(file, fileList);
+      // console.log(file, fileList);
     },
     handleChange(file, fileList) {
       this.fileList = fileList.slice(-1);
@@ -174,6 +186,7 @@ export default {
     exportOrderNo() {
       this.$refs["formData1"].validate(valid => {
         if (valid) {
+          this.loadingOrderNo = true;
           this.$store
             .dispatch(
               "qunarOrderConfig/exportOrderNo",
@@ -185,11 +198,13 @@ export default {
                   type: "success",
                   message: data.data
                 });
+                this.loadingOrderNo = false;
               } else {
                 this.$message({
                   type: "warning",
                   message: data.data
                 });
+                this.loadingOrderNo = false;
               }
             })
             .catch(error => {
@@ -201,54 +216,68 @@ export default {
     // 根据lastId增量导单
     exportLastId() {
       this.$refs["formData2"].validate(valid => {
-        let params = {};
-        params.domain = this.formData.domain;
-        params.fromLastId = this.formData.fromLastId;
-        params.toLastId = this.formData.toLastId;
-        this.$store
-          .dispatch("qunarOrderConfig/exportLastId", params)
-          .then(data => {
-            if (data) {
-              this.$message({
-                type: "success",
-                message: "导入成功！"
-              });
-            }
-          })
-          .catch(error => {
-            console.log(error);
-          });
+        if (valid) {
+          this.loadingLastId = true;
+          let params = {};
+          params.domain = this.formData.domain;
+          params.fromLastId = this.formData.fromLastId;
+          params.toLastId = this.formData.toLastId;
+          this.$store
+            .dispatch("qunarOrderConfig/exportLastId", params)
+            .then(data => {
+              if (data) {
+                this.$message({
+                  type: "success",
+                  message: "导入成功！"
+                });
+                this.loadingLastId = false;
+              }
+            })
+            .catch(error => {
+              console.log(error);
+              this.loadingLastId = false;
+            });
+        }
       });
     },
 
     // 根据文件导单
     uploadSectionFile(params) {
-      console.log(params);
-      this.$refs["formData3"].validate(valid => {
-        if (valid) {
-          var form = new FormData();
-          form.append("file", params.file);
-          form.append("orderType", this.formData.orderType);
-          this.$store
-            .dispatch("qunarOrderConfig/exportOrderFile", form)
-            .then(data => {
-              this.$notify({
-                title: "提示",
-                message: "上传成功",
-                type: "success",
-                duration: 4500
-              });
-            })
-            .catch(error => {
-              this.$notify({
-                title: "提示",
-                message: "上传失败",
-                type: "warning",
-                duration: 4500
-              });
-            });
-        }
-      });
+      this.loading = true;
+      if (this.fileName == params.file.name) {
+        this.$notify({
+          title: "提示",
+          message: "请勿重复上传文件",
+          type: "warning",
+          duration: 4500
+        });
+        this.loading = false;
+        return;
+      }
+      var form = new FormData();
+      form.append("file", params.file);
+      this.$store
+        .dispatch("qunarOrderConfig/exportOrderFile", form)
+        .then(data => {
+          this.$notify({
+            title: "提示",
+            message: "上传成功",
+            type: "success",
+            duration: 4500
+          });
+          this.loading = false;
+          this.fileName = params.file.name;
+        })
+        .catch(error => {
+          this.$notify({
+            title: "提示",
+            message: "上传失败",
+            type: "warning",
+            duration: 4500
+          });
+          this.loading = false;
+          this.fileName = "";
+        });
     }
   }
 };
