@@ -4,7 +4,7 @@
       :model="formData"
       ref="fillOutChangeForm"
       :rules="formRules"
-      label-width="110px"
+      label-width="120px"
       size="mini"
       style="margin-top:15px;"
     >
@@ -126,11 +126,11 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <!-- <el-col :span="8">
             <el-form-item label="支出金额:" prop="amount">
               <el-input clearable v-model="formData.amount"></el-input>
             </el-form-item>
-          </el-col>
+          </el-col>-->
           <el-col :span="8">
             <el-form-item label="资金账号:" prop="fundAccount">
               <el-select
@@ -267,9 +267,9 @@
               <el-input clearable v-model="formData.cabin"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="16">
             <el-form-item label="备注:">
-              <el-input clearable v-model="formData.remark"></el-input>
+              <el-input type="textarea" :rows="2" clearable v-model="formData.remark"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -314,6 +314,7 @@ export default {
         orderType: [{ required: true, message: "必填项", trigger: "change" }],
         merchantId: [{ required: true, message: "必填项", trigger: "change" }],
         amount: [{ required: true, message: "必填项！", trigger: "blur" }],
+        finishTime: [{ required: true, message: "必填项！", trigger: "blur" }],
         createTime: [{ required: true, message: "必填项！", trigger: "blur" }],
         fundAccount: [{ required: true, message: "必填项！", trigger: "blur" }],
         profit: [{ required: true, message: "必填项！", trigger: "blur" }],
