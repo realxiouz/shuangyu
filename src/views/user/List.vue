@@ -150,7 +150,6 @@ export default {
         .dispatch("role/getList", {})
         .then(data => {
           this.roleData = data;
-          console.log(data,"55555")
         })
         .catch(error => {
           console.log(error);
