@@ -98,7 +98,7 @@ export default {
       curNode: {},
       pageFlag: 1,
       pageSize: 10,
-      lastId: null,
+      lastId: "0",
       total: 0,
       tableData: [],
       loading: true,
@@ -147,7 +147,7 @@ export default {
     /*加载所有的角色信息*/
     loadRoles() {
       this.$store
-        .dispatch("role/getAll", {})
+        .dispatch("role/getList", {})
         .then(data => {
           this.roleData = data;
         })
