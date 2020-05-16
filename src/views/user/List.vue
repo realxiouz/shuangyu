@@ -98,7 +98,7 @@ export default {
       curNode: {},
       pageFlag: 1,
       pageSize: 10,
-      lastId: "blank",
+      lastId: null,
       total: 0,
       tableData: [],
       loading: true,
@@ -111,7 +111,7 @@ export default {
   },
   methods: {
     loadData(params) {
-      this.$store
+        this.$store
         .dispatch("user/getPageList", {
           pageFlag: this.pageFlag,
           pageSize: this.pageSize,
@@ -178,7 +178,7 @@ export default {
         }
       }
       if (Object.keys(newParams).length == 0) {
-        this.lastId = "blank";
+        this.lastId = null;
       }
       this.loadData(newParams);
       this.$message({
@@ -256,7 +256,7 @@ export default {
       this.$store
         .dispatch("user/removeOne", { userId: userId })
         .then(() => {
-          this.lastId = "blank";
+          this.lastId = null;
           if (1 === this.tableData.length && !this.deleteForSearch) {
             this.handlePrevClick();
           } else {

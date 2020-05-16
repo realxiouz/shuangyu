@@ -74,18 +74,19 @@ export default {
     },
     initTreeData: function() {
       this.$store
-        .dispatch("nav/getList", { filter: {} })
+        .dispatch("nav/getTreeList", { filter: {} })
         .then(data => {
           this.treeData = data;
           this.loading = false;
         })
         .catch(error => {
+            this.loading = false;
           console.log(error);
         });
     },
     loadRoleByID(roleID) {
-      this.$store
-        .dispatch("role/getOne", { roleID: roleID })
+        this.$store
+        .dispatch("role/getOne", { id: roleID })
         .then(data => {
           this.formData = data;
         })
@@ -95,7 +96,7 @@ export default {
       this.dialogVisible = true;
     },
     changeSwitch() {
-      this.formData.enable = this.formData.enable ? true : false;
+      this.formData.enable = !this.formData.enable;
     }
   },
   created() {

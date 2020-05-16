@@ -83,7 +83,7 @@ export default {
     /*加载所有的api数据*/
     loadAllApis() {
       this.$store
-        .dispatch("api/getAll", {})
+        .dispatch("api/getList", {filter: {}})
         .then(data => {
           this.allApiData = data;
         })
@@ -95,7 +95,7 @@ export default {
     loadApisTableList(apiIDList) {
       this.loading = true;
       this.$store
-        .dispatch("api/getMany", { apiIDList: apiIDList })
+        .dispatch("api/getMany", { ids: apiIDList })
         .then(data => {
           if (data) {
             this.tableData = data;
@@ -179,7 +179,6 @@ export default {
     curNode() {
       /*监听导航节点的点击并加载其中的api列表*/
       this.tableLoad();
-      // console.log(this.curNode);
     }
   }
 };

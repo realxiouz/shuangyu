@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form ref="form" size="mini" :model="formData" label-width="110px" :rules="formRules">
+    <el-form ref="userForm" size="mini" :model="formData" label-width="110px" :rules="formRules">
       <input type="hidden" v-model="formData.userId" />
       <el-form-item label="昵称">
         <el-input placeholder="请输入您的昵称" v-model="formData.nickName"></el-input>
@@ -25,7 +25,7 @@
       </el-form-item>
       <el-form-item v-if="''==this.userId" label="邮箱" prop="email">
         <el-input placeholder="请输入您的邮箱" clearable v-model="formData.email" @blur="isUsedForEmail"></el-input>
-        <span v-if="isExistsForEmail" style="color: crimson">*该信息已被注册</span>
+        <span v-if="isExistsForEmail" style="color: #F56C6C">*该信息已被注册</span>
       </el-form-item>
       <el-form-item v-if="''==this.userId" label="验证码" prop="verificationCode">
         <el-row type="flex" justify="space-between">
@@ -140,8 +140,8 @@ export default {
       };
     },
     handleConfirm() {
-      this.$refs.form.validate(valid => {
-        if (valid) {
+      this.$refs.userForm.validate(valid => {
+        if (valid && !this.isExistsForEmail) {
           let addData = {
             user: this.formData,
             verificationCode: this.formData.verificationCode
@@ -176,7 +176,7 @@ export default {
     loadRoles() {
       this.clearRoles();
       this.$store
-        .dispatch("role/getAll", {})
+        .dispatch("role/getList", {})
         .then(data => {
           this.transData = data;
         })
@@ -211,7 +211,7 @@ export default {
           if (email) {
             this.$store
               .dispatch("user/getVerificationCode", { targetEmail: email })
-              .then(data => {
+              .then(() => {
                 this.timer = null;
               })
               .catch(error => {

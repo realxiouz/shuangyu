@@ -130,7 +130,7 @@ export default {
     /*加载导航树*/
     loadData() {
       this.$store
-        .dispatch("nav/getList", {})
+        .dispatch("nav/getTreeList", {filter: {}})
         .then(data => {
           if (data) {
             this.treeData = data;

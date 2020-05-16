@@ -60,7 +60,7 @@ export default {
       dialogVisible: false,
       loading: true,
       deleteForSearch: false,
-      pageFlag: "next",
+      pageFlag: 1,
       pageSize: 10,
       lastId: "0",
       total: 0,
@@ -109,12 +109,12 @@ export default {
         });
     },
     prevClick: function() {
-      this.pageFlag = "prev";
+      this.pageFlag = -1;
       this.lastId = this.tableData[0].roleId;
       this.loadData();
     },
     nextClick: function() {
-      this.pageFlag = "next";
+      this.pageFlag = 1;
       this.lastId = this.tableData[this.tableData.length - 1].roleId;
       this.loadData();
     },
@@ -128,11 +128,11 @@ export default {
           pageFlag: this.pageFlag,
           pageSize: this.pageSize,
           lastId: this.lastId,
-          filter: params
+          filter: {}
         })
         .then(data => {
           if (data) {
-            this.tableData = data;
+              this.tableData = data;
             this.loadTotal(params);
           }
           this.loading = false;
