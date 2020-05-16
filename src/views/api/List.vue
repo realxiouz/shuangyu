@@ -67,7 +67,7 @@ export default {
     return {
       loading: true,
       lastId: "0",
-      pageFlag: "next",
+      pageFlag: 1,
       pageSize: 10,
       total: 0,
       dialogVisible: false,
@@ -75,14 +75,18 @@ export default {
       apiId: ""
     };
   },
+  components: {
+    apiEdit,
+    apiSearch
+  },
   methods: {
     prevClick() {
-      this.pageFlag = "prev";
+      this.pageFlag = -1;
       this.lastId = this.tableData[0].apiId;
       this.loadData();
     },
     nextClick() {
-      this.pageFlag = "next";
+      this.pageFlag = 1;
       this.lastId = this.tableData[this.tableData.length - 1].apiId;
       this.loadData();
     },
@@ -93,7 +97,7 @@ export default {
           pageFlag: this.pageFlag,
           pageSize: this.pageSize,
           lastId: this.lastId,
-          filters: params
+          filter: params
         })
         .then(data => {
           if (data) {
@@ -109,7 +113,7 @@ export default {
     },
     loadTotal(params) {
       this.$store
-        .dispatch("api/getTotal", { filters: params })
+        .dispatch("api/getTotal", { filter: params })
         .then(data => {
           if (data >= 0) {
             this.total = data;
@@ -158,7 +162,6 @@ export default {
           console.error(err);
         });
     },
-
     handleSizeChange(pageSize) {
       this.pageSize = pageSize;
       this.loadData();
@@ -210,10 +213,6 @@ export default {
   },
   created() {
     this.loadData();
-  },
-  components: {
-    apiEdit,
-    apiSearch
   }
 };
 </script>
