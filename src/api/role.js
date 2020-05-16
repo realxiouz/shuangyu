@@ -111,9 +111,9 @@ export function getList(filter) {
   });
 }
 
-export function getPageList(pageFlag, pageSize, lastId, filter) {
+export function getPageList(pageFlag, pageSize, filter) {
   return request({
-    url: `/admin/role/get/list/page/${pageFlag}/${pageSize}/${lastId}`,
+    url: `/admin/role/get/list/page/${pageFlag}/${pageSize}`,
     method: 'get',
     params: filter
   });
