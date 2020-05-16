@@ -79,7 +79,7 @@ export default {
     /*根据用户ID删除用户*/
     delete(roleID) {
       this.$store
-        .dispatch("role/removeOne", { roleID: roleID })
+        .dispatch("role/removeOne", { id: roleID })
         .then(() => {
           this.lastId = "0";
           if (1 === this.tableData.length && !this.deleteForSearch) {
@@ -100,7 +100,7 @@ export default {
     changeSwitch(row) {
       row.enable = row.enable ? true : false;
       this.$store
-        .dispatch("role/save", { role: row })
+        .dispatch("role/saveOne", row)
         .then(() => {
           this.loadData();
         })
@@ -156,7 +156,7 @@ export default {
     },
     handleSave(formData) {
       this.$store
-        .dispatch("role/save", { role: formData })
+        .dispatch("role/saveOne", formData)
         .then(() => {
           this.loadData();
           if (this.roleId != "") {
