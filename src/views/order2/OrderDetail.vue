@@ -763,6 +763,7 @@ export default {
         newParams.orderType = params.orderType;
         newParams.passengers = params.passengers;
         newParams.pid = "";
+        newParams.finishTime = params.finishTime;
         newParams.remark = params.remark;
         newParams.orderTaskId = this.$route.query.taskId;
         newParams.rootOrderNo = this.tableData.rootOrderNo;
@@ -786,7 +787,7 @@ export default {
         woniuParams.fundAccount = params.fundAccount;
         woniuParams.userNameType = params.userNameType;
         woniuParams.orderType = params.orderType;
-        woniuParams.amount = params.amount;
+        // woniuParams.amount = params.amount;
         this.woniuOrder(woniuParams);
       } else {
         let newParams = {};
@@ -807,6 +808,7 @@ export default {
           newParams.fundAccount = params.fundAccount;
           newParams.orderSource = params.orderSource;
           newParams.orderType = params.orderType;
+          newParams.finishTime = params.finishTime;
           newParams.passengers = params.orderDetailList;
           newParams.pid = params.pid;
           newParams.remark = params.remark;
