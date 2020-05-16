@@ -151,7 +151,7 @@
             ></el-input>
           </el-form-item>
         </el-col>
-        
+
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="航班号:">
             <el-input
@@ -208,7 +208,7 @@
             ></el-input>
           </el-form-item>
         </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+        <!-- <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="pid:">
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
@@ -217,7 +217,7 @@
               style="width: 100%"
             ></el-input>
           </el-form-item>
-        </el-col>
+        </el-col> -->
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="path:">
             <el-input
@@ -353,6 +353,19 @@
             </el-select>
           </el-form-item>
         </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="问题单查询:">
+            <el-select
+              style="width: 100%;"
+              clearable
+              v-model="formData.typeFlag"
+              placeholder="请选择"
+            >
+              <el-option label="异常" value="-1"></el-option>
+              <el-option label="正常" value="1"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
       </el-form>
     </el-col>
     <el-col :xs="10" :sm="9" :md="8" :lg="7" :xl="6" class="search-tools">
@@ -477,7 +490,8 @@ export default {
         deadlineTicketTime: null,
         deadlineReturnTime: null,
         deadlineChangeTime: null,
-        voyageType: null
+        voyageType: null,
+        typeFlag: null
       };
     },
     handleClear() {
