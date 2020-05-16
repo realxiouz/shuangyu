@@ -93,6 +93,7 @@
               size="mini"
               type="success"
               @click="submitUpload"
+              :loading="loading"
             >导单</el-button>
             <div slot="tip" class="el-upload__tip" style="color:red">只能上传xls/xlsx文件</div>
           </el-upload>
@@ -117,6 +118,7 @@ export default {
       formData: defaultData(),
       fileList: [],
       radio: 1,
+      loading: false,
       formRules: {
         sourceOrderNo: [
           { required: true, message: "源单号必须填写", trigger: "blur" }
@@ -230,6 +232,7 @@ export default {
 
     // 根据文件导单
     uploadSectionFile(params) {
+      this.loading = true;
       var form = new FormData();
       form.append("file", params.file);
       this.$store
@@ -241,6 +244,7 @@ export default {
             type: "success",
             duration: 4500
           });
+          this.loading = false;
         })
         .catch(error => {
           this.$notify({
@@ -249,6 +253,7 @@ export default {
             type: "warning",
             duration: 4500
           });
+          this.loading = false;
         });
     }
   }
