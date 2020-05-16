@@ -131,9 +131,6 @@
               <el-table-column prop="quantity" label="数量" align="center"></el-table-column>
               <el-table-column prop="unit" label="计量单位" align="center"></el-table-column>
               <el-table-column prop="amount" label="金额" align="center">
-                <template slot-scope="prop">
-                  {{computedRowAmount(prop.row)}}
-                </template>
               </el-table-column>
             </el-table>
           </template>

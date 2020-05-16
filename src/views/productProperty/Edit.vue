@@ -56,6 +56,14 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <el-row :gutter="10">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="是否前端隐藏" prop="hidden">
+              <el-switch v-model="formData.hidden" :active-value=true :inactive-value=false
+              ></el-switch>
+            </el-form-item>
+          </el-col>
+        </el-row>
         <el-row :gutter="10" v-if="valueType ==8">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="是否销售属性" prop="sku">
@@ -229,6 +237,7 @@
             propertyName: "",
             precision: 0,
             sku: false,
+            hidden: false,
             valueType: ''
         }
     };
