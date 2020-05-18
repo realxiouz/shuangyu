@@ -574,7 +574,7 @@ export default {
           return;
         }
       }
-      // this.$emit("onSave", this.formData);
+      this.$emit("onSave", this.formData);
     }
   },
   created() {
