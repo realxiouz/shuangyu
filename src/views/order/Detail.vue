@@ -3,16 +3,8 @@
     <el-card class="contentBox">
       <el-row>
         <el-col :span="5">
-          <!-- <el-button type="danger" @click="taskSubmit" size="mini">处理完成提交验证</el-button> -->
-          <!-- <el-button type="primary" @click="taskCancel" size="mini">任务取消</el-button> -->
           <el-button type="warning" @click="goBack" size="mini">返回</el-button>
         </el-col>
-        <!-- <el-col :span="14">
-          <el-input v-model="updateRemark" placeholder="输入备注信息" class="input-with-select">
-            <template slot="prepend">备注:</template>
-            <el-button type="primary" @click="taskRemark" size="mini" slot="append">修改备注</el-button>
-          </el-input>
-        </el-col>-->
       </el-row>
     </el-card>
     <el-collapse v-model="activeNames">
@@ -23,15 +15,9 @@
           <span style="font-size:larger;margin-left: 15px;font-weight: bolder;">销售单信息</span>
           <span style="font-size: 24px; margin: 0 20px; color: #ff4600;">{{orderDetail_orderState}}</span>
           <span style="color: #F56C6C">{{orderDetail_orderComment}}</span>
-          <!-- <span v-if="taskRemarkData" style="color: red;font-size: 14px">任务备注：{{taskRemarkData}}</span> -->
         </span>
         <div style="padding: 20px">
           <el-row :gutter="20">
-            <!-- <div style="margin-bottom:15px;">
-              <el-button type="danger" @click="lockOrder" size="mini">锁单</el-button>
-              <el-button type="primary" @click="unLockOrder" size="mini">解锁订单</el-button>
-              <el-button type="warning" @click="useGoTicket" size="mini">调用出票中</el-button>
-            </div>-->
             <el-form :model="tableData" label-width="130px" size="mini">
               <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
                 <el-form-item label="订单编号:">
@@ -49,7 +35,7 @@
                 </el-form-item>
               </el-col>
               <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-                <el-form-item label="金额:">
+                <el-form-item label="订单总金额:">
                   <span>￥{{this.$numeral(tableData.amount).format('0.00')}}</span>
                 </el-form-item>
               </el-col>
@@ -106,8 +92,9 @@
             style="width: 100%;"
             fit
           >
-            <!-- <el-table-column type="selection" width="55"></el-table-column> -->
             <el-table-column prop="name" label="姓名" width="100" align="center"></el-table-column>
+            <el-table-column prop="ticketNo" label="票号" width="300" align="center"></el-table-column>
+            <el-table-column prop="linkOrderNo" label="业务编号（linkOrderNo）" width="300" align="center"></el-table-column>
             <el-table-column prop="gender" label="性别" width="100" align="center"></el-table-column>
             <el-table-column label="出生年月" width="110" align="center">
               <template slot-scope="scope">
@@ -140,15 +127,6 @@
               </template>
             </el-table-column>
           </el-table>
-          <!-- <el-row style="margin-top:20px">
-            <el-button
-              v-if="this.tableData.orderType==10"
-              type="primary"
-              @click="goTicket"
-              size="mini"
-            >系统出票</el-button>
-            <el-button type="primary" v-if="taskType!=2" @click="handleTicket" size="mini">手工出票</el-button>
-          </el-row>-->
           <div style="margin-top:15px;">
             <span style="font-weight:700;font-size:15px;">退改说明：</span>
             <div style=" margin-top:10px;font-size:14px; line-height:1.5;">{{this.refundChangeRule}}</div>
@@ -238,36 +216,6 @@
                 <span>{{formatTicketNo(scope.row.ticketNos)}}</span>
               </template>
             </el-table-column>
-            <!-- <el-table-column prop="address" align="center" fixed="right" width="360" label="操作">
-              <template slot-scope="scope">
-                <el-button
-                  type="primary"
-                  @click="orderTreeRemove(scope.row)"
-                  v-show="scope.row.processCategory=='1'"
-                  size="mini"
-                >删除</el-button>
-                <el-button
-                  type="primary"
-                  v-show="woniuPerateButton(scope.row)"
-                  @click="refundTicket(scope.row)"
-                  size="mini"
-                >退票</el-button>
-                <el-button
-                  type="primary"
-                  v-show="woniuPerateButton(scope.row)"
-                  @click="changeTicket(scope.row)"
-                  size="mini"
-                >改签</el-button>
-                <el-button
-                  type="primary"
-                  v-show="woniuPerateButton(scope.row) && taskType=='4'"
-                  @click="intercept(scope.row)"
-                  size="mini"
-                >拦截</el-button>
-                <el-button type="primary" @click="fillOutRefund(scope.row)" size="mini">补退</el-button>
-                <el-button type="primary" @click="fillOutChange(scope.row)" size="mini">补改</el-button>
-              </template>
-            </el-table-column>-->
           </el-table>
         </div>
       </el-collapse-item>
@@ -288,35 +236,20 @@ export default {
   name: "orderDetail",
   data() {
     return {
-      systemProfitAndLossValue: 0,
-      profitAndLossValue: 0,
       rootOrderNo: "",
       ticketNoData: "",
-      newFromDialog: "",
-      fillOutRefundData: "",
-      fillOutChangeData: {},
-      getRefundHtmlData: {},
       changeHtml: "",
       refundHtml: "",
       messageData: "",
       flightData: [],
       passengerData: [],
       tableData: {},
-      passengersInfo: [],
       sellOrderType: "",
       orderTree: [],
       sourceOrderNo: "",
-      refundData: "",
-      sellAmount: "",
-      ticketSellAmount: "",
-      changeSellAmount: "",
-      purchaseOrderNo: "",
       refundChangeRule: "",
       refundpassengers: "",
-      taskRemarkData: this.$route.query.remark,
-      updateRemark: "",
       timer: null,
-      changeData: "",
       orderNo: this.$route.query.orderNo,
       changeDataTop: {
         reason: "",
@@ -350,7 +283,8 @@ export default {
       var flag = false;
       if (
         row.orderSource == "QUNAR_OPEN" ||
-        row.merchantId == "d381a4abdfa643fea6be8736dd11c1e1" || row.merchantId == "746807b6d2ad40428d36b66d7bb8a79c"
+        row.merchantId == "d381a4abdfa643fea6be8736dd11c1e1" ||
+        row.merchantId == "746807b6d2ad40428d36b66d7bb8a79c"
       ) {
         flag = true;
       }
@@ -363,7 +297,6 @@ export default {
         .then(data => {
           if (data) {
             this.tableData = data;
-            this.sellAmount = data.amount;
             this.refundChangeRule = data.refundChangeRule;
             this.sourceOrderNo = data.sourceOrderNo;
             this.rootOrderNo = data.rootOrderNo;
@@ -373,8 +306,8 @@ export default {
             this.getMessage();
             this.sellOrderType = data.orderType;
             this.getMessageHtml();
-            if (data.passengers) {
-              this.passengerData = data.passengers;
+            if (data.orderDetailList) {
+              this.passengerData = data.orderDetailList;
             }
             if (data.flights) {
               this.flightData = data.flights;
@@ -476,29 +409,6 @@ export default {
           console.log(error);
         });
     },
-    // // 重填票号
-    // rewriteTicket(params) {
-    //   this.$store
-    //     .dispatch("order/rewriteTicket", params)
-    //     .then(data => {
-    //       if (data.code == 0) {
-    //         this.$message({
-    //           type: "success",
-    //           message: "操作成功!"
-    //         });
-    //         this.onCancel();
-    //         this.getChangeHtml();
-    //       }
-    //     })
-    //     .catch(error => {
-    //       console.log(error);
-    //     });
-    // },
-    // rewriteTicketSave() {
-    //   this.rewriteTicketData.orderNo = this.sourceOrderNo;
-    //   this.rewriteTicketData.ticketNo = "+" + this.ticketNoData;
-    //   this.rewriteTicket(this.rewriteTicketData);
-    // },
     // 获取退票改签信息Html
     getRefundHtml() {
       this.$store
@@ -513,7 +423,6 @@ export default {
               }
             });
             this.refundpassengers = temp;
-            console.log(this.refundpassengers, "refundpassengers");
           }
         })
         .catch(error => {
@@ -661,217 +570,7 @@ export default {
       clearInterval(this.detailInfoTimer);
     }
   },
-  // 获取改签html里的信息
-  // updated() {
-  //   if (this.changeHtml) {
-  //     this.changeDataTop.reason = document.querySelectorAll(
-  //       ".select"
-  //     )[0].innerText;
-  //     this.changeDataTop.flight = document.querySelectorAll(
-  //       ".pr01"
-  //     )[1].innerText;
-  //     this.changeDataTop.flightDate = document.getElementsByName(
-  //       "departureDay"
-  //     )[0].value;
-  //     this.changeDataTop.departureTime = document.getElementsByName(
-  //       "departureTime"
-  //     )[0].value;
-  //     this.changeDataTop.arrivalTime = document.getElementsByName(
-  //       "arrivalTime"
-  //     )[0].value;
-  //     this.changeDataTop.airDivision = document.getElementsByName(
-  //       "airDivision"
-  //     )[0].value;
-  //     this.changeDataTop.flightNum = document.getElementsByName(
-  //       "flightNum"
-  //     )[0].value;
-  //     this.changeDataTop.cabin = document.getElementsByName("cabin")[0].value;
-  //     let gqFeesAmount = 0;
-  //     document.getElementsByName("gqFees").forEach(item => {
-  //       gqFeesAmount += Number(item.value);
-  //     });
-  //     let upgradeFeesAmount = 0;
-  //     document.getElementsByName("upgradeFees").forEach(item => {
-  //       upgradeFeesAmount += Number(item.value);
-  //     });
-  //     this.changeSellAmount = Number(gqFeesAmount) + Number(upgradeFeesAmount);
-  //     let btnRewriteTickets = document.querySelectorAll(
-  //       "#changeHtmlOrderDetail .back-form .back-form-info .g-clear .mrl10 .j-reset-ticket"
-  //     );
-  //     // 重贴票号按钮事件
-  //     var that = this;
-  //     if (btnRewriteTickets) {
-  //       Array.from(btnRewriteTickets).forEach(item => {
-  //         item.onclick = function() {
-  //           that.rewriteTicketData.passengerId = item.getAttribute(
-  //             "data-passenger-id"
-  //           );
-  //           that.rewriteTicketData.groupCheckOut = item.getAttribute(
-  //             "data-group-check-out"
-  //           );
-  //           that.rewriteTicketData.groupCheckIn = item.getAttribute(
-  //             "data-group-check-in"
-  //           );
-  //           that.rewriteTicketData.lastProductId = item.getAttribute(
-  //             "data-last-product-id"
-  //           );
-  //           that.rewriteTicketShow = true;
-  //         };
-  //       });
-  //     }
-  //     //受理改签
-  //     let changeConfirm = document.querySelector(
-  //       '#changeHtmlOrderDetail [data-action="accept"]'
-  //     );
-  //     if (changeConfirm) {
-  //       changeConfirm.onclick = function() {
-  //         let inputData = document.querySelectorAll(
-  //           "#changeHtmlOrderDetail .box-content input"
-  //         );
-  //         let obj = {};
-  //         Array.from(inputData).forEach(item => {
-  //           obj[item.name] = item.value;
-  //         });
-  //         let params = { ...obj };
-  //         params.groupCheckOut = true;
-  //         params.groupCheckIn = false;
-  //         params.orderNo = that.sourceOrderNo;
-  //         that.processingChangeTicket(params);
-  //       };
-  //     }
 
-  //     //拒绝改签
-  //     let changeReject = document.querySelector(
-  //       '#changeHtmlOrderDetail [data-action="reject"]'
-  //     );
-  //     if (changeReject) {
-  //       changeReject.onclick = function() {
-  //         let _inputData = document.querySelectorAll(
-  //           "#changeHtmlOrderDetail .box-content input"
-  //         );
-  //         let _obj = {};
-  //         Array.from(_inputData).forEach(item => {
-  //           _obj[item.name] = item.value;
-  //         });
-  //         let _params = { ...obj };
-  //         _params.groupCheckOut = false;
-  //         _params.groupCheckIn = false;
-  //         _params.orderNo = that.sourceOrderNo;
-  //         that.processingChangeTicket(_params);
-  //       };
-  //     }
-  //   }
-  //   // 退票Html操作
-  //   if (this.refundHtml) {
-  //     this.getRefundHtmlData.reason = document.querySelector(
-  //       "#refundHtmlOrderDetail #js_form_rm .js_box_content .refund-ticket-info-row .refund-ticket-info-coll .ticket-cell"
-  //     ).innerText;
-  //     this.getRefundHtmlData.refundAmount = document.querySelector(
-  //       "#refundHtmlOrderDetail #js_form_rm #js_should_refund_fee"
-  //     ).innerText;
-  //     let refundConfirm = document.querySelector(
-  //       '#refundHtmlOrderDetail [data-action="btn_confirm"]'
-  //     );
-  //     if (refundConfirm) {
-  //       // 退票确认按钮事件
-  //       var that = this;
-  //       refundConfirm.onclick = function() {
-  //         let refundRemark = document.querySelectorAll(
-  //           "#refundHtmlOrderDetail #js_rticket_remark"
-  //         )[0].value;
-  //         let orderNo = document.querySelectorAll(
-  //           "#refundHtmlOrderDetail #js_form_rt #orderNo"
-  //         )[0].value;
-  //         let form = document.querySelectorAll(
-  //           "#refundHtmlOrderDetail #js_form_rt #js_passanger_rt tbody tr td input[type='hidden']"
-  //         );
-  //         let str = "";
-  //         Array.from(form).forEach(item => {
-  //           str += item.value + "|";
-  //         });
-  //         var container = document.querySelector("#js_form_rt");
-  //         for (let i = 0; i < Array.from(form).length; i++) {
-  //           let name = "rt" + i;
-  //           let _status = container.querySelectorAll(
-  //             "input[name=" + name + "]"
-  //           );
-  //           var ticketreturnstatus = "";
-  //           Array.from(_status).forEach(item => {
-  //             if (item.checked) {
-  //               ticketreturnstatus += item.value + "|";
-  //             }
-  //           });
-  //         }
-
-  //         let ticketNos = str.substring(0, str.length - 1);
-  //         let _ticketreturnstatus = ticketreturnstatus.substring(
-  //           0,
-  //           ticketreturnstatus.length - 1
-  //         );
-  //         let params = {
-  //           orderNo: orderNo,
-  //           ticketNos: ticketNos,
-  //           ticketreturnstatus: _ticketreturnstatus,
-  //           remark: refundRemark
-  //         };
-  //         that.affirmRefundTicket(params);
-  //       };
-  //     }
-  //     // 拒绝退款按钮
-  //     let refundReject = document.querySelector(
-  //       '#refundHtmlOrderDetail [data-action="btn_reject"]'
-  //     );
-  //     if (refundReject) {
-  //       var that = this;
-  //       refundReject.onclick = function() {
-  //         let from = document.getElementById("js_from_reject");
-  //         that.newFromDialog = from.innerHTML;
-  //         that.newFromDialogShow = true;
-  //       };
-  //     }
-  //     // 拒绝退款弹 框取消
-  //     let btnRejectCancel = document.querySelector(
-  //       "#refundTts [data-action='btn_reject_cancel']"
-  //     );
-  //     if (btnRejectCancel) {
-  //       btnRejectCancel.onclick = function() {
-  //         that.newFromDialogShow = false;
-  //       };
-  //     }
-  //     //拒绝退款弹框确定
-  //     let btnRejectAffirm = document.querySelector(
-  //       "#refundTts [data-action='btn_reject_enter']"
-  //     );
-  //     if (btnRejectAffirm) {
-  //       btnRejectAffirm.onclick = function() {
-  //         let refuseRefundReason = document.querySelector(
-  //           "#refundTts #js_refuse_refund_reason"
-  //         ).value;
-  //         let refuseRemark = document.querySelector("#refundTts #js_rj_remark")
-  //           .value;
-
-  //         let _orderNo = document.querySelector(
-  //           "#refundTts .refuse-cause-cont input[type='hidden']"
-  //         ).value;
-  //         let params = {
-  //           orderNo: _orderNo,
-  //           refuseRefundReason: refuseRefundReason,
-  //           remark: refuseRemark
-  //         };
-
-  //         if (refuseRefundReason == 0) {
-  //           that.$message({
-  //             type: "info",
-  //             message: "请选择未及时退款的原因"
-  //           });
-  //           return;
-  //         }
-  //         that.refundCheckRefuseReason(params);
-  //         that.newFromDialogShow = false;
-  //       };
-  //     }
-  //   }
-  // },
   computed: {
     formatDate() {
       return function(dateStr, format) {
@@ -898,7 +597,7 @@ export default {
   color: #ff4600;
 }
 .el-collapse-item__header {
-  background-color:#fafafa;
+  background-color: #fafafa;
   height: 35px;
   font-size: 12px;
   flex: 1 0 auto;

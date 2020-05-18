@@ -239,11 +239,11 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="业务订单编号:">
+          <el-form-item v-show="more" label="流水号:">
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
               clearable
-              v-model="formData.linkOrderNo"
+              v-model="formData.transactionNo"
               style="width: 100%"
             ></el-input>
           </el-form-item>
