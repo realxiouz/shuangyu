@@ -647,7 +647,7 @@ export default {
       var flag = false;
       if (
         row.orderSource == "QUNAR_OPEN" ||
-        row.merchantId == "d381a4abdfa643fea6be8736dd11c1e1"
+        row.merchantId == "d381a4abdfa643fea6be8736dd11c1e1" || row.merchantId == "746807b6d2ad40428d36b66d7bb8a79c"
       ) {
         flag = true;
       }
@@ -779,7 +779,7 @@ export default {
       if (
         params.radio == 1 &&
         (params.orderSource == "QUNAR_OPEN" ||
-          params.merchantId == "d381a4abdfa643fea6be8736dd11c1e1")
+          params.merchantId == "d381a4abdfa643fea6be8736dd11c1e1" || params.merchantId == "746807b6d2ad40428d36b66d7bb8a79c")
       ) {
         let woniuParams = {};
         woniuParams.sourceOrderNo = params.sourceOrderNo;
@@ -825,7 +825,7 @@ export default {
       if (
         params.radio == 1 &&
         (params.orderSource == "QUNAR_OPEN" ||
-          params.merchantId == "d381a4abdfa643fea6be8736dd11c1e1")
+          params.merchantId == "d381a4abdfa643fea6be8736dd11c1e1" || params.merchantId == "746807b6d2ad40428d36b66d7bb8a79c")
       ) {
         let woniuParams = {};
         woniuParams.sourceOrderNo = params.sourceOrderNo;

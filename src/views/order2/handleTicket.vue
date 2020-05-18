@@ -548,7 +548,7 @@ export default {
           break;
         }
       }
-      if (value == "d381a4abdfa643fea6be8736dd11c1e1") {
+      if (value == "d381a4abdfa643fea6be8736dd11c1e1" || value == "746807b6d2ad40428d36b66d7bb8a79c") {
         this.isWoniu = true;
         if (this.formData.radio == "1") {
           this.isWoniuTicket = true;
