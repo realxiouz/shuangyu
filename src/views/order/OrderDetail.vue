@@ -20,7 +20,6 @@
         <span class="collapse-title" slot="title">
           <span v-if="this.activeNames.indexOf('1')!=-1">收起</span>
           <span v-else>展开</span>
-
           <span style="font-size:larger;margin-left: 15px;font-weight: bolder;">销售单信息</span>
           <span style="font-size: 24px; margin: 0 20px; color: #ff4600;">{{orderDetail_orderState}}</span>
           <span style="color: #F56C6C">{{orderDetail_orderComment}}</span>
@@ -51,7 +50,7 @@
                 </el-form-item>
               </el-col>
               <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-                <el-form-item label="金额:">
+                <el-form-item label="订单总金额:">
                   <span>￥{{this.$numeral(tableData.amount).format('0.00')}}</span>
                 </el-form-item>
               </el-col>
@@ -73,6 +72,36 @@
               <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
                 <el-form-item class="deadlineTicketTime" label="最晚出票时限:">
                   <span>{{formatDate(tableData.deadlineTicketTime,'YYYY-MM-DD HH:mm:ss')}}</span>
+                </el-form-item>
+              </el-col>
+              <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+                <el-form-item label="操作员:">
+                  <span v-if="this.fullName">{{this.fullName}}</span>
+                </el-form-item>
+              </el-col>
+              <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+                <el-form-item label="进单类型:">
+                  <span>D</span>
+                </el-form-item>
+              </el-col>
+              <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+                <el-form-item label="行程单:">
+                  <span>否</span>
+                </el-form-item>
+              </el-col>
+              <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+                <el-form-item label="URL:">
+                  <span>0</span>
+                </el-form-item>
+              </el-col>
+              <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+                <el-form-item label="报价类型:">
+                  <span>{{0}}</span>
+                </el-form-item>
+              </el-col>
+              <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+                <el-form-item label="fee:">
+                  <span></span>
                 </el-form-item>
               </el-col>
               <el-col :span="24">
@@ -97,6 +126,11 @@
             <el-table-column prop="dptTime" label="起飞时间" width="150" align="center"></el-table-column>
             <el-table-column prop="arrTime" label="到达时间" width="100" align="center"></el-table-column>
             <el-table-column prop="distance" label="航程" width="50" align="center"></el-table-column>
+            <el-table-column label="机建 / 燃油" width="100" align="center">
+              <template slot-scope="scope">
+                <span>{{ formateConstructionFee(scope.row) }}</span>
+              </template>
+            </el-table-column>
             <el-table-column prop="refundRule" label="退票规则" align="center"></el-table-column>
             <el-table-column prop="changeRule" label="改签规则" align="center"></el-table-column>
           </el-table>
@@ -112,32 +146,33 @@
             <el-table-column type="selection" width="55"></el-table-column>
             <el-table-column prop="name" label="乘机人" width="100" align="center"></el-table-column>
             <el-table-column prop="gender" label="性别" width="100" align="center"></el-table-column>
-            <el-table-column label="出生年月" width="110" align="center">
-              <template slot-scope="scope">
-                <span>{{ formatDate(scope.row.birthday,'YYYY-MM-DD') }}</span>
-              </template>
-            </el-table-column>
+
             <el-table-column
               prop="ageType"
               :formatter="formatAgeType"
-              label="乘机人类型"
+              label="乘客类型"
               width="250"
               align="center"
             ></el-table-column>
             <el-table-column
               prop="cardType"
               :formatter="formatCardType"
-              label="乘机人证件类型"
+              label="证件类型"
               width="250"
               align="center"
             ></el-table-column>
-            <el-table-column prop="cardNo" label="乘机人证件号" width="300" align="center"></el-table-column>
+            <el-table-column prop="cardNo" label="证件号码" width="300" align="center"></el-table-column>
+            <el-table-column label="出生年月" width="110" align="center">
+              <template slot-scope="scope">
+                <span>{{ formatDate(scope.row.birthday,'YYYY-MM-DD') }}</span>
+              </template>
+            </el-table-column>
             <el-table-column label="票面价" align="center">
               <template slot-scope="scope">
                 <span>{{formatAmount(scope.row.viewPrice)}}</span>
               </template>
             </el-table-column>
-            <el-table-column label="价格" align="center">
+            <el-table-column label="应收金额" align="center">
               <template slot-scope="scope">
                 <span>{{formatAmount(scope.row.amount)}}</span>
               </template>
@@ -220,35 +255,55 @@
             fit
             :tree-props="{children: 'children', hasChildren: '*****'}"
           >
-            <el-table-column prop="orderNo" align="center" label="订单号" width="180"></el-table-column>
-            <el-table-column prop="sourceOrderNo" align="center" width="180" label="源单号"></el-table-column>
+            <el-table-column prop="orderNo" align="center" label="订单号" width="170"></el-table-column>
+            <el-table-column prop="sourceOrderNo" align="center" width="150" label="源单号"></el-table-column>
             <el-table-column prop="status" :formatter="formatStatus" label="订单状态" width="80"></el-table-column>
-            <el-table-column prop="orderSource" align="center" label="供应商"></el-table-column>
-            <el-table-column label="乘机人-票号" align="center" width="200">
+            <el-table-column prop="orderSource" align="center" width="120" label="供应商"></el-table-column>
+            <el-table-column prop="accountId" align="center" label="账号" width="100">
+              <template slot-scope="scope">
+                <span v-html="formatAccount(scope.row)"></span>
+              </template>
+            </el-table-column>
+            <el-table-column label="乘机人 - 票号" align="center" width="170">
               <template slot-scope="scope">
                 <span v-html="formatPassengersTicket(scope.row.orderDetailList)"></span>
               </template>
             </el-table-column>
-            <el-table-column prop="createTime" align="center" label="订单时间">
+            <el-table-column label="证件类型" align="center" width="80">
+              <template slot-scope="scope">
+                <span v-html="formatCardType2(scope.row.orderDetailList)"></span>
+              </template>
+            </el-table-column>
+            <el-table-column label="证件号码" align="center" width="150">
+              <template slot-scope="scope">
+                <span v-html="formatCardNo(scope.row.orderDetailList)"></span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="createTime" align="center" width="90" label="出票时间">
               <template slot-scope="scope">
                 <span>{{ formatDate(scope.row.createTime,'YYYY-MM-DD') }}</span>
               </template>
             </el-table-column>
-            <el-table-column prop="amount" align="center" label="金额">
+            <el-table-column prop="amount" align="center" label="应付金额">
               <template slot-scope="scope">
                 <span>{{ formatAmount(scope.row.amount)}}</span>
               </template>
             </el-table-column>
-            <el-table-column label="航班号" align="center">
+            <el-table-column label="航班号" align="center" width="70">
               <template slot-scope="scope">
                 <span>{{ formatFlightNo(scope.row.flights)}}</span>
               </template>
             </el-table-column>
-            <!-- <el-table-column prop="ticketNos" label="票号" width="120" align="center">
+            <el-table-column label="舱位" align="center" width="60">
               <template slot-scope="scope">
-                <span>{{formatTicketNo(scope.row.ticketNos)}}</span>
+                <span>{{ formatCabin(scope.row.flights)}}</span>
               </template>
-            </el-table-column>-->
+            </el-table-column>
+            <el-table-column label="航班日期" align="center" width="90">
+              <template slot-scope="scope">
+                <span>{{ formatFlightDate(scope.row.flights)}}</span>
+              </template>
+            </el-table-column>
             <el-table-column prop="address" align="center" fixed="right" width="400" label="操作">
               <template slot-scope="scope">
                 <el-button
@@ -283,11 +338,11 @@
         </div>
       </el-collapse-item>
       <el-collapse-item name="5">
-        <div slot="title" class="collapse-title">
+        <span slot="title" class="collapse-title">
           <span v-if="this.activeNames.indexOf('5')!=-1">收起</span>
           <span v-else>展开</span>
           <span style="font-size:larger;margin-left: 15px;font-weight: bolder;">操作日志</span>
-        </div>
+        </span>
         <div style="padding: 20px">
           <el-button
             type="primary"
@@ -524,6 +579,8 @@ import {
   formatTicketNo,
   formatFlightDate,
   formatFlightNo,
+  formatCabin,
+  formatFlight,
   formatAmount
 } from "@/utils/orderFormdata.js";
 
@@ -545,7 +602,6 @@ export default {
       profitAndLossValue: 0,
       rootOrderNo: "",
       ticketNoData: "",
-
       newFromDialog: "",
       fillOutRefundData: "",
       fillOutChangeData: {},
@@ -575,6 +631,7 @@ export default {
       orderNo: this.$route.query.orderNo,
       taskType: this.$route.query.taskType,
       taskId: this.$route.query.taskId,
+      fullName: this.$route.query.fullName,
       changeDataTop: {
         reason: "",
         flight: "",
@@ -604,7 +661,8 @@ export default {
       orderDetail_orderComment: "",
       //订单详情触发定时器
       detailInfoTimer: null,
-      taskLogData: "" //操作日志数据
+      taskLogData: "", //操作日志数据
+      supplierAccountData: []
     };
   },
   components: {
@@ -624,12 +682,14 @@ export default {
     formatTicketNo,
     formatFlightDate,
     formatFlightNo,
+    formatCabin,
+    formatFlight,
     formatAmount,
     // 刷新任务操作日志
     refreshTaskLog() {
       this.getOneTaskLog();
     },
-    //获取任务详情
+    //获取任务操作日志
     getOneTaskLog() {
       this.$store
         .dispatch("orderTask/getTaskInfo", this.taskId)
@@ -647,7 +707,8 @@ export default {
       var flag = false;
       if (
         row.orderSource == "QUNAR_OPEN" ||
-        row.merchantId == "d381a4abdfa643fea6be8736dd11c1e1" || row.merchantId == "746807b6d2ad40428d36b66d7bb8a79c"
+        row.merchantId == "d381a4abdfa643fea6be8736dd11c1e1" ||
+        row.merchantId == "746807b6d2ad40428d36b66d7bb8a79c"
       ) {
         flag = true;
       }
@@ -741,6 +802,7 @@ export default {
           console.log(error);
         });
     },
+
     // 手工出票保存并贴票
     handleSaveTicket(params) {
       let newParams = {};
@@ -778,7 +840,8 @@ export default {
       if (
         params.radio == 1 &&
         (params.orderSource == "QUNAR_OPEN" ||
-          params.merchantId == "d381a4abdfa643fea6be8736dd11c1e1" || params.merchantId == "746807b6d2ad40428d36b66d7bb8a79c")
+          params.merchantId == "d381a4abdfa643fea6be8736dd11c1e1" ||
+          params.merchantId == "746807b6d2ad40428d36b66d7bb8a79c")
       ) {
         let woniuParams = {};
         woniuParams.sourceOrderNo = params.sourceOrderNo;
@@ -823,7 +886,8 @@ export default {
       if (
         params.radio == 1 &&
         (params.orderSource == "QUNAR_OPEN" ||
-          params.merchantId == "d381a4abdfa643fea6be8736dd11c1e1" ||params.merchantId == "746807b6d2ad40428d36b66d7bb8a79c")
+          params.merchantId == "d381a4abdfa643fea6be8736dd11c1e1" ||
+          params.merchantId == "746807b6d2ad40428d36b66d7bb8a79c")
       ) {
         let woniuParams = {};
         woniuParams.sourceOrderNo = params.sourceOrderNo;
@@ -1275,11 +1339,39 @@ export default {
         .then(data => {
           if (data) {
             this.orderTree = data;
+            this.getSupplierAccount(data[0].merchantId);
           }
         })
         .catch(error => {
           console.log(error);
         });
+    },
+    // 获取供应商账号
+    getSupplierAccount(value) {
+      this.$store
+        .dispatch("firmAccount/getList", {
+          filter: { firmId: value }
+        })
+        .then(data => {
+          this.supplierAccountData = data;
+        })
+        .catch(error => {
+          console.log(error);
+          this.loading = false;
+        });
+    },
+    formatAccount(data) {
+      if (data.orderSource == "QUNAR_OPEN") {
+        return data.accountId;
+      } else {
+        let str = "";
+        this.supplierAccountData.forEach(item => {
+          if (item.accountId == data.accountId) {
+            str += item.username;
+          }
+        });
+        return str;
+      }
     },
     // 任务提交
     taskSubmit() {
@@ -1589,6 +1681,34 @@ export default {
       data.forEach(item => {
         str += item.name + " - " + item.ticketNo + "<br/>";
       });
+      return str;
+    },
+    formatCardType2(data) {
+      if (!data || data.length == 0) {
+        return "";
+      }
+      let str = "";
+      data.forEach(item => {
+        str += this.formatCardType(item) + "<br/>";
+      });
+      return str;
+    },
+    formatCardNo(data) {
+      if (!data || data.length == 0) {
+        return "";
+      }
+      let str = "";
+      data.forEach(item => {
+        str += item.cardNo + "<br/>";
+      });
+      return str;
+    },
+    formateConstructionFee(data) {
+      if (!data) {
+        return "";
+      }
+      let str = "";
+      str += data.constructionFee + " / " + data.fuelTax;
       return str;
     }
   },

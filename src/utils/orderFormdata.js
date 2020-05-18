@@ -51,6 +51,14 @@ export function formatAirlineCode(data) {
     return data[0].airlineCode;
 }
 
+// 格式化订单 舱位 数据
+export function formatCabin(data) {
+    if (!data || data.length == 0) {
+        return "";
+    }
+    return data[0].cabin;
+}
+
 
 // 格式化订单 航班 数据
 export function formatFlight(data) {

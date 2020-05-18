@@ -386,6 +386,7 @@ export default {
       this.loadData(params);
     },
     goToDetail(row) {
+      // console.log(row,"row")
       let path = "";
       path = "/order/detail";
       this.$router.push({
@@ -395,7 +396,8 @@ export default {
           rootOrderNo: row.rootOrderNo,
           taskId: row.taskId,
           taskType: row.taskType,
-          remark: row.remark
+          remark: row.remark,
+          fullName:row.fullName
         }
       });
     },

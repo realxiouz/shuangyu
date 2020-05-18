@@ -382,7 +382,9 @@ export default {
           rootOrderNo: row.rootOrderNo,
           taskId: row.taskId,
           taskType: row.taskType,
-          remark: row.remark
+          remark: row.remark,
+          fullName:row.fullName
+
         }
       });
     },
