@@ -537,10 +537,11 @@ export default {
           });
           return;
         }
+        console.log(amountTotal,"amountTotal")
         if (amountTotal != this.formData.amount) {
           this.$notify({
             title: "提示",
-            message: "金额填写错误，请重新填写！",
+            message: "退回金额填写错误，请重新填写！",
             type: "warning",
             duration: 4500
           });
