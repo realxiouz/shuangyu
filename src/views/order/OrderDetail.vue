@@ -117,6 +117,11 @@
             <el-table-column prop="arr" label="到达机场" width="160" align="center"></el-table-column>
             <el-table-column prop="airlineCode" label="航司" width="50" align="center"></el-table-column>
             <el-table-column prop="flightCode" label="航班号" width="100" align="center"></el-table-column>
+            <el-table-column label="机建 / 燃油" width="100" align="center">
+              <template slot-scope="scope">
+                <span>{{ formateConstructionFee(scope.row) }}</span>
+              </template>
+            </el-table-column>
             <el-table-column prop="cabin" label="舱位" width="160" align="center"></el-table-column>
             <el-table-column label="出发日期" width="110" align="center">
               <template slot-scope="scope">
@@ -126,11 +131,6 @@
             <el-table-column prop="dptTime" label="起飞时间" width="150" align="center"></el-table-column>
             <el-table-column prop="arrTime" label="到达时间" width="100" align="center"></el-table-column>
             <el-table-column prop="distance" label="航程" width="50" align="center"></el-table-column>
-            <el-table-column label="机建 / 燃油" width="100" align="center">
-              <template slot-scope="scope">
-                <span>{{ formateConstructionFee(scope.row) }}</span>
-              </template>
-            </el-table-column>
             <el-table-column prop="refundRule" label="退票规则" align="center"></el-table-column>
             <el-table-column prop="changeRule" label="改签规则" align="center"></el-table-column>
           </el-table>
