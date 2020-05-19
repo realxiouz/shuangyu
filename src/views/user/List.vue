@@ -83,285 +83,288 @@
 </template>
 
 <script>
-import userForm from "./Edit";
-import userSearch from "./Search";
+  import userForm from "./Edit";
+  import userSearch from "./Search";
 
-export default {
-  name: "userList",
-  data() {
-    return {
-      dialogVisible: false,
-      deleteForSearch: false,
-      /*进行编辑当前用户ID*/
-      userId: "",
-      /*重置用户密码时记录当前用户节点信息*/
-      curNode: {},
-      pageFlag: 1,
-      pageSize: 10,
-      lastId: "0",
-      total: 0,
-      tableData: [],
-      loading: true,
-      roleData: []
-    };
-  },
-  components: {
-    userForm,
-    userSearch
-  },
-  methods: {
-    loadData(params) {
+  export default {
+    name: "userList",
+    data() {
+      return {
+        dialogVisible: false,
+        deleteForSearch: false,
+        /*进行编辑当前用户ID*/
+        userId: "",
+        /*重置用户密码时记录当前用户节点信息*/
+        curNode: {},
+        pageFlag: 1,
+        pageSize: 10,
+        lastId: null,
+        total: 0,
+        tableData: [],
+        loading: true,
+        roleData: []
+      };
+    },
+    components: {
+      userForm,
+      userSearch
+    },
+    methods: {
+      loadData(params) {
+        if (this.lastId) {
+          params.lastId = this.lastId;
+        }
         this.$store
-        .dispatch("user/getPageList", {
-          pageFlag: this.pageFlag,
-          pageSize: this.pageSize,
-          lastId: this.lastId,
-          filter: params
-        })
-        .then(data => {
-          if (data) {
-            this.tableData = data.data;
-            this.loadTotal(params);
-            this.loadRoles();
-          }
-          this.loading = false;
-        })
-        .catch(error => {
-          this.loading = false;
-          console.log(error);
-        });
-    },
-    loadTotal(params) {
-      this.$store
-        .dispatch("user/getTotal", { filter: params })
-        .then(data => {
-          if (data) {
-            this.total = data.data;
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
+          .dispatch("user/getPageList", {
+            pageFlag: this.pageFlag,
+            pageSize: this.pageSize,
+            filter: params
+          })
+          .then(data => {
+            if (data) {
+              this.tableData = data.data;
+              this.loadTotal(params);
+              this.loadRoles();
+            }
+            this.loading = false;
+          })
+          .catch(error => {
+            this.loading = false;
+            console.log(error);
+          });
+      },
+      loadTotal(params) {
+        this.$store
+          .dispatch("user/getTotal", {filter: params})
+          .then(data => {
+            if (data) {
+              this.total = data.data;
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
 
-    /*加载所有的角色信息*/
-    loadRoles() {
-      this.$store
-        .dispatch("role/getList", {})
-        .then(data => {
-          this.roleData = data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    formDataRole(data) {
-      let str = "";
-      for (let i = 0; i < this.roleData.length; i++) {
-        data.forEach(item => {
-          if (item == this.roleData[i].roleId) {
-            str += this.roleData[i].roleName + " ， ";
-          }
-        });
-      }
-      return str.substring(0, str.length - 2);
-    },
-    /*根据关键字查询用户列表*/
-    handleSearch(params) {
-      this.deleteForSearch = true;
-      const newParams = {};
-      if (params) {
-        for (let key in params) {
-          if (params[key]) {
-            newParams[key] = params[key];
+      /*加载所有的角色信息*/
+      loadRoles() {
+        this.$store
+          .dispatch("role/getList", {})
+          .then(data => {
+            this.roleData = data;
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      formDataRole(data) {
+        let str = "";
+        for (let i = 0; i < this.roleData.length; i++) {
+          data.forEach(item => {
+            if (item == this.roleData[i].roleId) {
+              str += this.roleData[i].roleName + " ， ";
+            }
+          });
+        }
+        return str.substring(0, str.length - 2);
+      },
+      /*根据关键字查询用户列表*/
+      handleSearch(params) {
+        this.deleteForSearch = true;
+        const newParams = {};
+        if (params) {
+          for (let key in params) {
+            if (params[key]) {
+              newParams[key] = params[key];
+            }
           }
         }
-      }
-      if (Object.keys(newParams).length == 0) {
-        this.lastId = null;
-      }
-      this.loadData(newParams);
-      this.$message({
-        type: "success",
-        message: "查询成功！"
-      });
-    },
-    /*添加用户按钮*/
-    handleAdd() {
-      this.dialogVisible = true;
-      this.userId = "";
-    },
-    /*修改是否超级管理员状态*/
-    superSwitch(row) {
-      row.super = row.super ? false : true;
-      this.$store
-        .dispatch("user/updateOne", row)
-        .then(() => {
-          this.loadData();
-        })
-        .catch(error => {
-          console.log(error);
+        if (Object.keys(newParams).length == 0) {
+          this.lastId = null;
+        }
+        this.loadData(newParams);
+        this.$message({
+          type: "success",
+          message: "查询成功！"
         });
-    },
-    /*修改是否启用状态*/
-    enableSwitch(row) {
-      row.enable = row.enable ? false : true;
-      this.$store
-        .dispatch("user/updateOne", row)
-        .then(() => {
-          this.loadData();
+      },
+      /*添加用户按钮*/
+      handleAdd() {
+        this.dialogVisible = true;
+        this.userId = "";
+      },
+      /*修改是否超级管理员状态*/
+      superSwitch(row) {
+        row.super = row.super ? false : true;
+        this.$store
+          .dispatch("user/updateOne", row)
+          .then(() => {
+            this.loadData();
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      /*修改是否启用状态*/
+      enableSwitch(row) {
+        row.enable = row.enable ? false : true;
+        this.$store
+          .dispatch("user/updateOne", row)
+          .then(() => {
+            this.loadData();
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      /*确认重置用户密码*/
+      handleResetPwd(row) {
+        this.$confirm("此操作将重置该用户的登录密码, 是否继续?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
         })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    /*确认重置用户密码*/
-    handleResetPwd(row) {
-      this.$confirm("此操作将重置该用户的登录密码, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.$store
-            .dispatch("user/resetPassword", { userId: row.userId })
-            .then(() => {
+          .then(() => {
+            this.$store
+              .dispatch("user/resetPassword", {userId: row.userId})
+              .then(() => {
+                this.loadData();
+                this.$message({
+                  type: "success",
+                  message: "新密码已通过邮件发送给用户!"
+                });
+              })
+              .catch(error => {
+                console.log(error);
+              });
+          })
+          .catch(() => {
+          });
+      },
+      /*点击用户编辑按钮*/
+      handleEdit(row) {
+        this.dialogVisible = true;
+        this.userId = row.userId;
+      },
+      /*对员工进行删除*/
+      handleDelete(row) {
+        this.open(
+          this.delete,
+          row.userId,
+          "此操作将删除该用户的所有信息, 是否继续?"
+        );
+      },
+      /*根据用户ID删除用户*/
+      delete(userId) {
+        this.$store
+          .dispatch("user/removeOne", {userId: userId})
+          .then(() => {
+            this.lastId = null;
+            if (1 === this.tableData.length && !this.deleteForSearch) {
+              this.handlePrevClick();
+            } else {
               this.loadData();
+            }
+            this.deleteForSearch = false;
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      /*点击弹窗按钮*/
+      handleCancel() {
+        this.dialogVisible = false;
+      },
+      /*添加保存用户*/
+      handleSave(formData) {
+        this.dialogVisible = false;
+        let url = "";
+        let requestData = {};
+        if (this.userId) {
+          url = "user/updateOne";
+          requestData = {userId: formData.user.userId, update: formData.user};
+        } else {
+          url = "user/addOne";
+          requestData = formData;
+        }
+        this.$store
+          .dispatch(url, requestData)
+          .then(() => {
+            this.loadData();
+            if (this.userId != "") {
               this.$message({
                 type: "success",
-                message: "新密码已通过邮件发送给用户!"
+                message: "修改成功！"
               });
-            })
-            .catch(error => {
-              console.log(error);
-            });
+            } else {
+              this.$message({
+                type: "success",
+                message: "添加成功！"
+              });
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      /*翻前页*/
+      handlePrevClick() {
+        this.pageFlag = -1;
+        this.lastId = this.tableData[0].userId;
+        this.loadData();
+      },
+      /*翻后页*/
+      handleNextClick() {
+        this.pageFlag = 1;
+        this.lastId = this.tableData[this.tableData.length - 1].userId;
+        this.loadData();
+      },
+      open(func, data, message) {
+        this.$confirm(message, "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
         })
-        .catch(() => {});
-    },
-    /*点击用户编辑按钮*/
-    handleEdit(row) {
-      this.dialogVisible = true;
-      this.userId = row.userId;
-    },
-    /*对员工进行删除*/
-    handleDelete(row) {
-      this.open(
-        this.delete,
-        row.userId,
-        "此操作将删除该用户的所有信息, 是否继续?"
-      );
-    },
-    /*根据用户ID删除用户*/
-    delete(userId) {
-      this.$store
-        .dispatch("user/removeOne", { userId: userId })
-        .then(() => {
-          this.lastId = null;
-          if (1 === this.tableData.length && !this.deleteForSearch) {
-            this.handlePrevClick();
-          } else {
-            this.loadData();
-          }
-          this.deleteForSearch = false;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    /*点击弹窗按钮*/
-    handleCancel() {
-      this.dialogVisible = false;
-    },
-    /*添加保存用户*/
-    handleSave(formData) {
-      this.dialogVisible = false;
-      let url = "";
-      let requestData = {};
-      if (this.userId) {
-        url = "user/updateOne";
-        requestData = { userId: formData.user.userId, update: formData.user };
-      } else {
-        url = "user/addOne";
-        requestData = formData;
-      }
-      this.$store
-        .dispatch(url, requestData)
-        .then(() => {
-          this.loadData();
-          if (this.userId != "") {
+          .then(() => {
+            func(data);
             this.$message({
               type: "success",
-              message: "修改成功！"
+              message: "删除成功!"
             });
-          } else {
+          })
+          .catch(() => {
             this.$message({
-              type: "success",
-              message: "添加成功！"
+              type: "info",
+              message: "已取消删除"
             });
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    /*翻前页*/
-    handlePrevClick() {
-      this.pageFlag = -1;
-      this.lastId = this.tableData[0].userId;
-      this.loadData();
-    },
-    /*翻后页*/
-    handleNextClick() {
-      this.pageFlag = 1;
-      this.lastId = this.tableData[this.tableData.length - 1].userId;
-      this.loadData();
-    },
-    open(func, data, message) {
-      this.$confirm(message, "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          func(data);
-          this.$message({
-            type: "success",
-            message: "删除成功!"
           });
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除"
-          });
-        });
-    },
-    /*初始化用工列表中的生日日期格式*/
-    initDate(dateStr, format) {
-      if (dateStr > 0) {
-        let date = new Date(dateStr);
-        return this.$moment(date).format(format);
-      } else {
-        return "";
+      },
+      /*初始化用工列表中的生日日期格式*/
+      initDate(dateStr, format) {
+        if (dateStr > 0) {
+          let date = new Date(dateStr);
+          return this.$moment(date).format(format);
+        } else {
+          return "";
+        }
       }
-    }
-  },
-  computed: {
-    formatDate() {
-      return function(dateStr, format) {
-        return this.initDate(dateStr, format);
-      };
     },
-    initGender() {
-      return function(gender) {
-        return 0 == gender ? "男" : "女";
-      };
+    computed: {
+      formatDate() {
+        return function (dateStr, format) {
+          return this.initDate(dateStr, format);
+        };
+      },
+      initGender() {
+        return function (gender) {
+          return 0 == gender ? "男" : "女";
+        };
+      }
+    },
+    created() {
+      this.loadData();
     }
-  },
-  created() {
-    this.loadData();
-  }
-};
+  };
 </script>
 <style>
 </style>
