@@ -94,7 +94,12 @@
           >
             <el-table-column prop="name" label="姓名" width="100" align="center"></el-table-column>
             <el-table-column prop="ticketNo" label="票号" width="300" align="center"></el-table-column>
-            <el-table-column prop="linkOrderNo" label="业务编号（linkOrderNo）" width="300" align="center"></el-table-column>
+            <el-table-column
+              prop="linkOrderNo"
+              label="业务编号（linkOrderNo）"
+              width="300"
+              align="center"
+            ></el-table-column>
             <el-table-column prop="gender" label="性别" width="100" align="center"></el-table-column>
             <el-table-column label="出生年月" width="110" align="center">
               <template slot-scope="scope">
@@ -191,9 +196,9 @@
             <el-table-column prop="sourceOrderNo" align="center" width="180" label="原订单"></el-table-column>
             <el-table-column prop="status" :formatter="formatStatus" label="订单状态" width="80"></el-table-column>
             <el-table-column prop="orderSource" align="center" label="供应商"></el-table-column>
-            <el-table-column label="姓名" align="center" width="200">
+            <el-table-column label="乘机人-票号" align="center" width="200">
               <template slot-scope="scope">
-                <span>{{ formatPassengers(scope.row.orderDetailList)}}</span>
+                <span v-html="formatPassengersTicket(scope.row.orderDetailList)"></span>
               </template>
             </el-table-column>
             <el-table-column prop="createTime" align="center" label="订单时间">
@@ -211,9 +216,9 @@
                 <span>{{ formatFlightNo(scope.row.flights)}}</span>
               </template>
             </el-table-column>
-            <el-table-column prop="ticketNos" label="票号" width="120" align="center">
+            <el-table-column label="操作" width="120" align="center">
               <template slot-scope="scope">
-                <span>{{formatTicketNo(scope.row.ticketNos)}}</span>
+                <el-button @click="lookOrderDetailList(scope.row)" type="primary" size="mini">查看明细</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -323,7 +328,9 @@ export default {
     goBack() {
       this.$router.go(-1);
     },
-
+    lookOrderDetailList(row) {
+      console.log(row,"rowF")
+    },
     //延时获取采购树
     timeOutGetOrderTree() {
       let num = 0;
@@ -517,16 +524,15 @@ export default {
       }
     },
     //格式化乘客信息
-    formatPassengers(data) {
+    formatPassengersTicket(data) {
       if (!data || data.length == 0) {
         return "";
       }
       let str = "";
       data.forEach(item => {
-        str += item.name + " / ";
+        str += item.name + " - " + item.ticketNo + "<br/>";
       });
-
-      return str.substring(0, str.length - 2);
+      return str;
     },
     // 格式化航班信息
     formatFlightNo(data) {
@@ -535,20 +541,7 @@ export default {
       }
       return data[0].flightCode;
     },
-    // 格式化票号信息
-    formatTicketNo(ticketNo) {
-      if (ticketNo && ticketNo.length > 0) {
-        let str = "";
-        ticketNo.forEach((item, index) => {
-          if (item) {
-            str += item + " / ";
-          }
-        });
-        return str.substring(0, str.length - 2);
-      } else {
-        return (ticketNo = "");
-      }
-    },
+
     // 格式化数字
     formatAmount(amount) {
       if (!amount) {
