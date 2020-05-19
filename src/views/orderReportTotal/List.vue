@@ -93,11 +93,6 @@
             <span>{{ formatAmount(scope.row.payment)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="systemProfit" label="系统利润" width="80" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatAmount(scope.row.systemProfit)}}</span>
-          </template>
-        </el-table-column>
         <el-table-column prop="shouldProfit" label="业务利润" width="80" align="center">
           <template slot-scope="scope">
             <span>{{ formatAmount(scope.row.shouldProfit)}}</span>
