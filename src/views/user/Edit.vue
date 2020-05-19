@@ -2,7 +2,7 @@
   <div>
     <el-form ref="userForm" size="mini" :model="formData" label-width="110px" :rules="formRules">
       <input type="hidden" v-model="formData.userId" />
-      <el-form-item label="昵称">
+      <el-form-item label="昵称" prop="nickName">
         <el-input placeholder="请输入您的昵称" v-model="formData.nickName"></el-input>
       </el-form-item>
       <el-form-item label="姓名">
@@ -14,7 +14,7 @@
           <el-option label="女" :value="1"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="出生日期">
+      <el-form-item label="出生日期" prop="birthDate">
         <el-date-picker
           type="date"
           placeholder="选择日期"
@@ -23,29 +23,11 @@
           value-format="timestamp"
         ></el-date-picker>
       </el-form-item>
-      <el-form-item v-if="''==this.userId" label="邮箱" prop="email">
+      <el-form-item v-if="!isEdit" label="邮箱" prop="email">
         <el-input placeholder="请输入您的邮箱" clearable v-model="formData.email" @blur="isUsedForEmail"></el-input>
         <span v-if="isExistsForEmail" style="color: #F56C6C">*该信息已被注册</span>
       </el-form-item>
-      <el-form-item v-if="''==this.userId" label="验证码" prop="verificationCode">
-        <el-row type="flex" justify="space-between">
-          <el-col :span="17">
-            <el-input clearable placeholder="请输入验证码" v-model="formData.verificationCode" />
-          </el-col>
-          <el-col :span="6">
-            <el-button
-              size="mini"
-              style="width:100%;"
-              :disabled="showCount"
-              @click="getVerificationCode(formData.email)"
-              type="primary"
-            >
-              <span v-show="!showCount">获取验证码</span>
-              <span v-show="showCount">{{countDown}} s后获取</span>
-            </el-button>
-          </el-col>
-        </el-row>
-      </el-form-item>
+
       <el-form-item label="角色:">
         <el-select
           style="width: 100%;"
@@ -63,12 +45,6 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="是否超级管理员">
-        <el-switch v-model="formData.super" :active-value="true" :inactive-value="false"></el-switch>
-      </el-form-item>
-      <el-form-item label="是否启用">
-        <el-switch v-model="formData.enable" :active-value="true" :inactive-value="false"></el-switch>
-      </el-form-item>
       <el-form-item label="备注">
         <el-input type="textarea" v-model="formData.comment"></el-input>
       </el-form-item>
@@ -81,20 +57,15 @@
 </template>
 
 <script>
-import selectRoles from "../../components/SelectRoles.vue";
-
 export default {
   name: "userEdit",
   props: ["userId"],
-  comments: { selectRoles },
   data() {
     var validateEmail = (rule, value, callback) => {
       var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
       if (!reg.test(value)) {
-        this.isEmail = false;
         callback(new Error("请输入正确的邮箱！"));
       } else {
-        this.isEmail = true;
         callback();
       }
     };
@@ -103,24 +74,16 @@ export default {
       formData: {},
       /*所有的可操作的角色信息*/
       transData: [],
-      updateTempData: {},
       /*用于校验所填写的信息是否已经被使用*/
       isExistsForPhone: false,
       isExistsForEmail: false,
       formRules: {
-        verificationCode: [
-          { required: true, message: "请输入邮箱验证码", trigger: "blur" }
-        ],
+        nickName: { required: true, message: "请输入昵称", trigger: "blur" },
         email: [
           { required: true, message: "请输入邮箱", trigger: "blur" },
           { validator: validateEmail, trigger: "blur" }
         ]
-      },
-      showCount: false,
-      isEmail: false,
-      countDown: "",
-      timer: "",
-      TIME_COUNT: 60
+      }
     };
   },
   methods: {
@@ -132,40 +95,33 @@ export default {
         fullName: "",
         gender: 0,
         birthDate: "",
-        emailCode: "",
         email: "",
         super: false,
-        enable: true,
-        verificationCode: ""
+        enable: true
       };
     },
     handleConfirm() {
       this.$refs.userForm.validate(valid => {
         if (valid && !this.isExistsForEmail) {
-          let addData = {
-            user: this.formData,
-            verificationCode: this.formData.verificationCode
-          };
-          this.$emit("onSave", addData);
+          this.$emit("onSave", { user: this.formData });
         }
       });
     },
     /*清除表单*/
     clearForm() {
       this.formData = this.defaultFormData();
-      this.updateTempData = {};
     },
     clearRoles() {
       this.transData = [];
     },
     /*根据用户ID查询用户信息*/
     loadUser() {
-      if ("" != this.userId) {
+      
+      if (this.$props.userId !="") {
         this.$store
-          .dispatch("user/getOne", { userId: this.userId })
+          .dispatch("user/getOne", { userId: this.$props.userId })
           .then(data => {
             this.formData = data.data;
-            Object.assign(this.updateTempData, data.data);
           })
           .catch(error => {
             console.log(error);
@@ -186,11 +142,7 @@ export default {
     },
     /*校验所填写的信息是否已经被使用*/
     isUsedForEmail() {
-      if (
-        !this.formData.email ||
-        "" == this.formData.email ||
-        this.formData.email === this.updateTempData.email
-      ) {
+      if (!this.formData.email) {
         return;
       }
       this.$store
@@ -203,54 +155,17 @@ export default {
         .catch(error => {
           console.log(error);
         });
-    },
-    //获取邮箱验证码
-    getVerificationCode(email) {
-      if (this.isEmail) {
-        if (!this.isExistsForEmail) {
-          if (email) {
-            this.$store
-              .dispatch("user/getVerificationCode", { targetEmail: email })
-              .then(() => {
-                this.timer = null;
-              })
-              .catch(error => {
-                console.log(error);
-              });
-          } else {
-            this.$message({
-              type: "warning",
-              message: "请输入您的邮箱！"
-            });
-            this.timer = true;
-          }
-          if (!this.timer) {
-            this.countDown = this.TIME_COUNT;
-            this.showCount = true;
-            this.timer = setInterval(() => {
-              if (this.countDown > 0 && this.countDown <= this.TIME_COUNT) {
-                this.countDown--;
-              } else {
-                this.showCount = false;
-                clearInterval(this.timer); // 清除定时器
-                this.timer = null;
-              }
-            }, 1000);
-          }
-        }
-      } else {
-        this.$message({
-          type: "warning",
-          message: "您输入的邮箱格式错误！"
-        });
-        return;
-      }
     }
   },
   created() {
     this.clearForm();
     this.loadUser();
     this.loadRoles();
+  },
+  computed: {
+    isEdit() {
+      return this.$props.userId != "";
+    }
   }
 };
 </script>

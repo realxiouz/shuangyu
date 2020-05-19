@@ -113,8 +113,8 @@ const actions = {
 
   addOne({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const { verificationCode, user } = params
-      addOne(user, verificationCode)
+      const { user } = params
+      addOne(user)
         .then(response => {
           resolve(response);
         })
@@ -137,8 +137,8 @@ const actions = {
   },
   updateOne({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const {userId, update} = params;
-      updateOne(userId, update)
+      const { userId, data } = params;
+      updateOne(userId, data)
         .then(response => {
           resolve(response);
         })
@@ -149,7 +149,7 @@ const actions = {
   },
   personalEdit({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const {userId, update, verificationCode} = params;
+      const { userId, update, verificationCode } = params;
       personalEdit(userId, verificationCode, update)
         .then(response => {
           resolve(response.data);

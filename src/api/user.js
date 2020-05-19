@@ -32,9 +32,9 @@ export function signOut() {
   });
 }
 
-export function addOne(data, vcode) {
+export function addOne(data) {
   return request({
-    url: `/admin/user/add/one/${vcode}`,
+    url: `/admin/user/add/one`,
     method: 'post',
     data
   });
