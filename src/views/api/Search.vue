@@ -6,10 +6,16 @@
           <el-form-item label="api名称:">
             <el-input
               clearable
-              @keyup.enter.native="$emit('onSearch', formData)"
+              @keyup.enter.native="toSearch"
               v-model="formData.apiName"
               placeholder="请输入api名称搜索..."
             ></el-input>
+          </el-form-item>
+        </el-col>
+
+        <el-col v-if="more" :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="是否启用:">
+            <el-switch v-model="formData.enable"></el-switch>
           </el-form-item>
         </el-col>
       </el-form>
@@ -20,7 +26,7 @@
         class="filter-item"
         type="primary"
         size="mini"
-        @click="$emit('onSearch', formData)"
+        @click="toSearch"
       >查询</el-button>
       <el-button type="text" size="mini" @click="handleMore">
         更多
@@ -53,6 +59,15 @@ export default {
   methods: {
     handleMore() {
       this.more = !this.more;
+    },
+    toSearch() {
+      let data = {};
+      if (!this.more) {
+        data = { apiName: this.formData.apiName };
+      } else {
+        data = this.formData;
+      }
+      this.$emit("onSearch", data);
     }
   }
 };

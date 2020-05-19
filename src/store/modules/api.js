@@ -39,8 +39,8 @@ const actions = {
   },
   updateOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {id, data} = params;
-      updateOne(id, data)
+      const {apiId, data} = params;
+      updateOne(apiId, data)
         .then(response => {
           const { data } = response;
           resolve(data);

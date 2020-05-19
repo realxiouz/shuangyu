@@ -46,7 +46,7 @@
       </el-form-item>
 
       <el-form-item label="备注">
-        <el-input type="textarea" v-model="formData.comment"></el-input>
+        <el-input type="textarea" v-model="formData.remark"></el-input>
       </el-form-item>
     </el-form>
     <div style="margin-top: 25px;text-align: right;">
@@ -96,8 +96,7 @@ export default {
         gender: 0,
         birthDate: "",
         email: "",
-        super: false,
-        enable: true
+        remark:''
       };
     },
     handleConfirm() {

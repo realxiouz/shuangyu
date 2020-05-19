@@ -36,7 +36,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="备注" prop="comment" align="center" width="180"></el-table-column>
+        <el-table-column label="备注" prop="remark" align="center" width="180"></el-table-column>
         <el-table-column label="是否启用" align="center" width="120">
           <template slot-scope="scope">
             <el-switch :value="scope.row.enable" @change="enableSwitch(scope.row)"></el-switch>
@@ -120,7 +120,7 @@ export default {
     userSearch
   },
   methods: {
-    loadData(params = {}) {
+    loadData(params = {}, callback) {
       if (this.lastId) {
         params.lastId = this.lastId;
       }
@@ -134,8 +134,8 @@ export default {
           if (data) {
             this.tableData = data.data;
             this.loadTotal(params);
-            // this.loadRoles();
           }
+          callback && callback(data);
           this.loading = false;
         })
         .catch(error => {
@@ -174,7 +174,11 @@ export default {
       const newParams = {};
       if (params) {
         for (let key in params) {
-          if (params[key]) {
+          // 判断enable不为false
+          if (key == "enable") {
+            newParams[key] = params[key];
+          } else if (params[key]) {
+            console.log(params,key,'111')
             newParams[key] = params[key];
           }
         }
@@ -182,10 +186,11 @@ export default {
       if (Object.keys(newParams).length == 0) {
         this.lastId = null;
       }
-      this.loadData(newParams);
-      this.$message({
-        type: "success",
-        message: "查询成功！"
+      this.loadData(newParams, () => {
+        this.$message({
+          type: "success",
+          message: "查询成功!"
+        });
       });
     },
     /*添加用户按钮*/
@@ -212,7 +217,7 @@ export default {
         .dispatch("user/updateOne", {
           userId: row.userId,
           data: {
-            enable: row.enable,
+            enable: row.enable
             // comment: `备注测试.${Math.random().toFixed(2)}`
           }
         })

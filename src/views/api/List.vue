@@ -18,6 +18,12 @@
         <el-table-column prop="uri" label="URL" align="left"></el-table-column>
         <el-table-column prop="category" align="center" label="类别"></el-table-column>
         <el-table-column prop="apiName" align="center" label="api名称"></el-table-column>
+        <el-table-column align="center" label="创建时间">
+          <template slot-scope="scope">
+            <span>{{formatDate(scope.row.createTime,'YYYY-MM-DD HH:mm:ss')}}</span>
+          </template>
+        </el-table-column>
+
         <el-table-column label="是否启用" align="center">
           <template slot-scope="scope">
             <el-switch v-model="scope.row.enable" @change="handleSwitch(scope.row)"></el-switch>
@@ -92,24 +98,21 @@ export default {
       this.loadData();
     },
 
-    loadData(params) {
+    loadData(params, callback) {
       this.$store
         .dispatch("api/getPageList", {
           pageFlag: this.pageFlag,
           pageSize: this.pageSize,
           lastId: this.lastId,
-          filter: {}
+          filter: params
         })
         .then(data => {
           if (data) {
             this.tableData = data;
             this.loadTotal(params);
           }
+          callback && callback();
           this.loading = false;
-        })
-        .catch(error => {
-          this.loading = false;
-          console.log(error);
         });
     },
     loadTotal(params) {
@@ -131,12 +134,13 @@ export default {
     handleSwitch(row) {
       row.enable = row.enable ? true : false;
       this.$store
-        .dispatch("api/updateOne", row)
+        .dispatch("api/updateOne", { apiId: row.apiId, data: row })
         .then(() => {
+          this.$message({
+            message: "更新成功！",
+            type: "success"
+          });
           this.loadData();
-        })
-        .catch(error => {
-          console.log(error);
         });
     },
     handleRemove(id, index, rows) {
@@ -198,18 +202,33 @@ export default {
     },
     handleSearch(params) {
       const newParams = {};
+
       if (params) {
         for (let key in params) {
-          if (params[key]) {
+          // 判断enable不为false
+          if (key == "enable") {
+            newParams[key] = params[key];
+          } else if (params[key]) {
+            console.log(params, key, "111");
             newParams[key] = params[key];
           }
         }
       }
-      this.loadData(newParams);
-      this.$message({
-        type: "success",
-        message: "查询成功！"
+
+      this.loadData(newParams, () => {
+        this.$message({
+          type: "success",
+          message: "查询成功！"
+        });
       });
+    },
+    formatDate(dateStr, format) {
+      if (null != dateStr) {
+        const date = new Date(dateStr);
+        return this.$moment(date).format(format);
+      } else {
+        return "";
+      }
     }
   },
   created() {

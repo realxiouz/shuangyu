@@ -195,6 +195,7 @@ export default {
     },
     getLoginInfo(firmId) {
       this.dialogVisible = false;
+      console.log({firmId})
       this.$store
         .dispatch("getLoginInfo", { firmId: firmId })
         .then(data => {
@@ -296,6 +297,7 @@ export default {
     }
   },
   created() {
+    console.log('layout console')
     this.getLoginInfo(null);
     this.getTag();
   },

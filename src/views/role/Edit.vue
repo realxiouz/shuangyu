@@ -4,9 +4,6 @@
       <el-form-item label="角色名称:" prop="roleName">
         <el-input v-model="formData.roleName" placeholder="请输入你要添加的角色名称"></el-input>
       </el-form-item>
-      <el-form-item label="是否启用:">
-        <el-switch v-model="formData.enable" @change="changeSwitch"></el-switch>
-      </el-form-item>
       <el-form-item label="选择菜单:">
         <el-tree
           v-loading="loading"
@@ -95,9 +92,6 @@ export default {
           console.log(error);
         });
       this.dialogVisible = true;
-    },
-    changeSwitch() {
-      this.formData.enable = !this.formData.enable;
     }
   },
   created() {

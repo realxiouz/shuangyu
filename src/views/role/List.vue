@@ -37,12 +37,7 @@
         :total="total"
       ></el-pagination>
       <el-dialog :title="roleId?'编辑角色信息':'添加新角色'" center :visible.sync="dialogVisible" width="30%">
-        <role-edit
-          v-if="dialogVisible"
-          :roleId="roleId"
-          @onSave="handleSave"
-          @onCancel="handleCancel"
-        ></role-edit>
+        <role-edit v-if="dialogVisible" :roleId="roleId" @onSave="onSave" @onCancel="handleCancel"></role-edit>
       </el-dialog>
     </div>
   </div>
@@ -61,7 +56,7 @@ export default {
       loading: true,
       deleteForSearch: false,
       pageFlag: 1,
-      pageSize: 3,
+      pageSize: 10,
       lastId: "",
       total: 0,
       tableData: []
@@ -151,7 +146,6 @@ export default {
         })
         .catch(error => {
           this.loading = false;
-          console.log(error);
         });
     },
     loadTotal(params) {
@@ -166,27 +160,18 @@ export default {
           console.log(error);
         });
     },
-    handleSave(formData) {
-      this.$store
-        .dispatch("role/saveOne", formData)
-        .then(() => {
-          this.loadData();
-          if (this.roleId != "") {
-            this.$message({
-              type: "success",
-              message: "修改成功！"
-            });
-          } else {
-            this.$message({
-              type: "success",
-              message: "添加成功！"
-            });
-          }
-        })
-        .catch(error => {
-          console.log(error);
+    // 新增或存储新的角色
+    onSave(formData) {
+      /** test end **/
+      const isEdit = !!this.roleId;
+      const message = isEdit ? "修改成功！" : "添加成功！";
+      this.$store.dispatch("role/saveOne", formData).then(() => {
+        this.loadData();
+        this.$message({
+          type: "success",
+          message
         });
-
+      });
       this.dialogVisible = false;
     },
     handleCancel: function() {
@@ -194,7 +179,7 @@ export default {
     },
     handleSearch(params) {
       this.deleteForSearch = true;
-      const newParams = {};
+      let newParams = {};
       if (params) {
         for (let key in params) {
           if (params[key]) {
@@ -202,7 +187,21 @@ export default {
           }
         }
       }
-      this.loadData(newParams);
+      this.$store
+        .dispatch("role/getList", {
+          filter: newParams
+        })
+        .then(data => {
+          if (data) {
+            this.tableData = data;
+            this.loadTotal(params);
+          }
+          this.loading = false;
+        })
+        .catch(error => {
+          this.loading = false;
+        });
+
       this.$message({
         type: "success",
         message: "查询成功!"
