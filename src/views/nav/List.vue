@@ -13,8 +13,8 @@
           @node-click="handleNodeClick"
         >
           <span class="tree-node" slot-scope="{ node, data }">
-            <span>(排序：{{ node.data.sort }}) </span>
-            <span> {{ node.data.title }}</span>
+            <span>(排序：{{ node.data.sort }})</span>
+            <span>{{ node.data.title }}</span>
             <span>
               <el-button type="text" size="mini" @click="nodeAdd(node, data)">添加</el-button>
               <el-button type="text" size="mini" @click="handleEdit(node, data)">修改</el-button>
@@ -55,8 +55,8 @@
         <el-form-item label="图标">
           <el-input type="text" placeholder="请输入导航路由图标(icon)" v-model="formData.icon"></el-input>
         </el-form-item>
-        <el-form-item label="排序">
-          <el-input type="text" placeholder="请输入导航路由排序(sort)" v-model="formData.sort"></el-input>
+        <el-form-item label="排序" prop="sort">
+          <el-input type="number" placeholder="请输入导航路由排序(sort)" v-model="formData.sort"></el-input>
         </el-form-item>
         <el-form-item label="是否启用">
           <el-switch v-model="formData.enable"></el-switch>
@@ -107,7 +107,8 @@ export default {
         ],
         uri: [
           { required: true, message: "请输入路由导航路径", trigger: "blur" }
-        ]
+        ],
+        sort: [{ required: true, message: "请输入路由排序", trigger: "blur" }]
       }
     };
   },
@@ -130,7 +131,7 @@ export default {
     /*加载导航树*/
     loadData() {
       this.$store
-        .dispatch("nav/getTreeList", {filter: {}})
+        .dispatch("nav/getTreeList", { filter: {} })
         .then(data => {
           if (data) {
             this.treeData = data;
@@ -165,18 +166,21 @@ export default {
     handleSave() {
       if (this.formData.navId != "") {
         this.$store
-          .dispatch("nav/updateOne", {id: this.formData.navId, data: this.formData})
+          .dispatch("nav/updateOne", {
+            id: this.formData.navId,
+            data: this.formData
+          })
           .then(() => {
             this.loadData();
             this.$message({
               type: "success",
               message: "修改成功！"
             });
+            this.dialogVisible = false;
           })
           .catch(error => {
             console.log(error);
           });
-        this.dialogVisible = false;
       } else {
         if (this.rootNav) {
           //如果添加的顶级企业信息，对某些属性进行初始化
@@ -194,11 +198,11 @@ export default {
                   type: "success",
                   message: "添加成功！"
                 });
+                this.dialogVisible = false;
               })
               .catch(error => {
                 console.log(error);
               });
-            this.dialogVisible = false;
           }
         });
       }

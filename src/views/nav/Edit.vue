@@ -83,7 +83,7 @@ export default {
     /*加载所有的api数据*/
     loadAllApis() {
       this.$store
-        .dispatch("api/getList", {filter: {}})
+        .dispatch("api/getList", { filter: {} })
         .then(data => {
           this.allApiData = data;
         })
@@ -143,7 +143,10 @@ export default {
       this.dialogVisible = false;
       this.curNode.apis = this.transferData;
       this.$store
-        .dispatch("nav/updateOne", { nav: this.curNode })
+        .dispatch("nav/updateOne", {
+          data: { apis: this.transferData },
+          id: this.curNode.navId
+        })
         .then(() => {
           //对数据列表进行重新加载
           this.tableLoad();
