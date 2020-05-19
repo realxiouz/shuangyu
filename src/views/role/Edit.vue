@@ -84,11 +84,12 @@ export default {
           console.log(error);
         });
     },
-    loadRoleByID(roleID) {
+    loadRoleById(roleId) {
         this.$store
-        .dispatch("role/getOne", { id: roleID })
+        .dispatch("role/getOne", { id: roleId })
         .then(data => {
           this.formData = data;
+          console.log(data)
         })
         .catch(error => {
           console.log(error);
@@ -102,8 +103,8 @@ export default {
   created() {
     this.clearForm();
     this.initTreeData();
-    if ("" != this.roleId) {
-      this.loadRoleByID(this.roleId);
+    if (this.roleId) {
+      this.loadRoleById(this.roleId);
     }
   }
 };

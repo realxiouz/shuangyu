@@ -19,7 +19,7 @@
         <el-table-column prop="fullName" label="姓名" width="120" align="center"></el-table-column>
         <el-table-column label="性别" width="50" align="center">
           <template slot-scope="scope">
-            <span>{{ initGender(scope.row.gender) }}</span>
+            <span>{{ scope.row.gender|initGender }}</span>
           </template>
         </el-table-column>
         <el-table-column label="出生日期" width="110" align="center">
@@ -32,7 +32,7 @@
         <el-table-column prop="email" label="电子邮箱" align="center" width="200"></el-table-column>
         <el-table-column label="角色权限" align="center" width="180">
           <template slot-scope="scope">
-            <span v-html="formDataRole(scope.row.roles)"></span>
+            <span>{{scope.row.roleNames | roles}}</span>
           </template>
         </el-table-column>
 
@@ -86,6 +86,18 @@ import userSearch from "./Search";
 
 export default {
   name: "userList",
+  filters: {
+    roles(roleList) {
+      if (roleList instanceof Array) {
+        return roleList.toString();
+      } else {
+        return "";
+      }
+    },
+    initGender(gender) {
+      return gender == 0 ? "男" : "女";
+    }
+  },
   data() {
     return {
       dialogVisible: false,
@@ -122,7 +134,7 @@ export default {
           if (data) {
             this.tableData = data.data;
             this.loadTotal(params);
-            this.loadRoles();
+            // this.loadRoles();
           }
           this.loading = false;
         })
@@ -155,17 +167,7 @@ export default {
           console.log(error);
         });
     },
-    formDataRole(data) {
-      let str = "";
-      for (let i = 0; i < this.roleData.length; i++) {
-        data.forEach(item => {
-          if (item == this.roleData[i].roleId) {
-            str += this.roleData[i].roleName + " ， ";
-          }
-        });
-      }
-      return str.substring(0, str.length - 2);
-    },
+
     /*根据关键字查询用户列表*/
     handleSearch(params) {
       this.deleteForSearch = true;
@@ -205,20 +207,20 @@ export default {
     },
     /*修改是否启用状态*/
     enableSwitch(row) {
-      row.enable = !row.enable
+      row.enable = !row.enable;
       this.$store
         .dispatch("user/updateOne", {
           userId: row.userId,
-          data:{
-            isEnable: row.enable,
-            comment:`备注测试.${Math.random().toFixed(2)}`
-          },
+          data: {
+            enable: row.enable,
+            // comment: `备注测试.${Math.random().toFixed(2)}`
+          }
         })
         .then(() => {
           this.$message({
-            message:"更新成功",
-            type:"success"
-          })
+            message: "更新成功",
+            type: "success"
+          });
           this.loadData();
         })
         .catch(error => {
@@ -287,7 +289,6 @@ export default {
       this.dialogVisible = false;
       let url = "";
       let requestData = {};
-      console.log(formData)
       if (this.userId) {
         url = "user/updateOne";
         requestData = { userId: formData.user.userId, data: formData.user };
@@ -361,11 +362,6 @@ export default {
     formatDate() {
       return function(dateStr, format) {
         return this.initDate(dateStr, format);
-      };
-    },
-    initGender() {
-      return function(gender) {
-        return 0 == gender ? "男" : "女";
       };
     }
   },

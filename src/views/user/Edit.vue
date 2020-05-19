@@ -37,7 +37,7 @@
           placeholder="请选择"
         >
           <el-option
-            v-for="item in transData"
+            v-for="item in roleData"
             :key="item.roleName"
             :label="item.roleName"
             :value="item.roleId"
@@ -73,7 +73,7 @@ export default {
     return {
       formData: {},
       /*所有的可操作的角色信息*/
-      transData: [],
+      roleData: [],
       /*用于校验所填写的信息是否已经被使用*/
       isExistsForPhone: false,
       isExistsForEmail: false,
@@ -112,12 +112,11 @@ export default {
       this.formData = this.defaultFormData();
     },
     clearRoles() {
-      this.transData = [];
+      this.roleData = [];
     },
     /*根据用户ID查询用户信息*/
     loadUser() {
-      
-      if (this.$props.userId !="") {
+      if (this.userId !="") {
         this.$store
           .dispatch("user/getOne", { userId: this.$props.userId })
           .then(data => {
@@ -134,7 +133,7 @@ export default {
       this.$store
         .dispatch("role/getList", {})
         .then(data => {
-          this.transData = data;
+          this.roleData = data;
         })
         .catch(error => {
           console.log(error);
@@ -164,7 +163,7 @@ export default {
   },
   computed: {
     isEdit() {
-      return this.$props.userId != "";
+      return this.userId != "";
     }
   }
 };
