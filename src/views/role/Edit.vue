@@ -4,6 +4,10 @@
       <el-form-item label="角色名称:" prop="roleName">
         <el-input v-model="formData.roleName" placeholder="请输入你要添加的角色名称"></el-input>
       </el-form-item>
+
+      <el-form-item label="备注:" prop="remark">
+        <el-input v-model="formData.remark" placeholder="备注" type="textarea"></el-input>
+      </el-form-item>
       <el-form-item label="选择菜单:">
         <el-tree
           v-loading="loading"
@@ -31,13 +35,16 @@ export default {
   props: ["roleId"],
   data() {
     return {
-      formData: {},
+      formData: {
+        remark: ""
+      },
       loading: true,
       treeData: [],
       formRules: {
         roleName: [
           { required: true, message: "请输入角色名称", trigger: "blur" }
-        ]
+        ],
+        remark: [{ required: true, message: "请输入角色备注", trigger: "blur" }]
       }
     };
   },
@@ -77,16 +84,16 @@ export default {
           this.loading = false;
         })
         .catch(error => {
-            this.loading = false;
+          this.loading = false;
           console.log(error);
         });
     },
     loadRoleById(roleId) {
-        this.$store
+      this.$store
         .dispatch("role/getOne", { id: roleId })
         .then(data => {
           this.formData = data;
-          console.log(data)
+          console.log(data);
         })
         .catch(error => {
           console.log(error);
