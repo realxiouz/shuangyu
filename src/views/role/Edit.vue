@@ -15,9 +15,9 @@
           show-checkbox
           default-expand-all
           node-key="navId"
+          ref="tree"
           highlight-current
           :default-checked-keys="formData.navs"
-          @check="getCheckedKeys"
           :props="{label:'title'}"
         ></el-tree>
       </el-form-item>
@@ -30,82 +30,74 @@
 </template>
 
 <script>
-export default {
-  name: "roleEdit",
-  props: ["roleId"],
-  data() {
-    return {
-      formData: {
-        remark: ""
-      },
-      loading: true,
-      treeData: [],
-      formRules: {
-        roleName: [
-          { required: true, message: "请输入角色名称", trigger: "blur" }
-        ]
-      }
-    };
-  },
-  methods: {
-    handeleSave() {
-      this.$refs["form"].validate(valid => {
-        if (valid) {
-          this.$emit("onSave", this.formData);
-        }
-      });
-    },
-    getCheckedKeys(nodes, selection) {
-      let tmpList = [];
-      selection.checkedNodes.forEach(item => {
-        if (!item.hasChildren) {
-          tmpList.push(item.navId);
-        }
-      });
-      this.formData.navs = tmpList;
-    },
-    defaultFormData() {
+  export default {
+    name: "roleEdit",
+    props: ["roleId"],
+    data() {
       return {
-        roleId: "",
-        roleName: "",
-        enable: true,
-        navs: []
+        formData: {
+          remark: ""
+        },
+        loading: true,
+        treeData: [],
+        formRules: {
+          roleName: [
+            {required: true, message: "请输入角色名称", trigger: "blur"}
+          ]
+        }
       };
     },
-    clearForm() {
-      this.formData = this.defaultFormData();
-    },
-    initTreeData: function() {
-      this.$store
-        .dispatch("nav/getTreeList", { filter: {} })
-        .then(data => {
-          this.treeData = data;
-          this.loading = false;
-        })
-        .catch(error => {
-          this.loading = false;
-          console.log(error);
+    methods: {
+      handeleSave() {
+        this.$refs["form"].validate(valid => {
+          if (valid) {
+            this.formData.navs = this.$refs.tree.getCheckedKeys();
+            this.$emit("onSave", this.formData);
+          }
         });
+      },
+      defaultFormData() {
+        return {
+          roleId: "",
+          roleName: "",
+          enable: true,
+          navs: []
+        };
+      },
+      clearForm() {
+        this.formData = this.defaultFormData();
+      },
+      loadNavs: function () {
+        this.$store
+          .dispatch("nav/getTreeList", {filter: {}})
+          .then(data => {
+            this.treeData = data;
+            this.loading = false;
+          })
+          .catch(error => {
+            this.loading = false;
+            console.log(error);
+          });
+      },
+      loadData(roleId) {
+        this.$store
+          .dispatch("role/getOne", {id: roleId})
+          .then(data => {
+            this.formData = data;
+            this.loadNavs();
+            console.log(data);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+        this.dialogVisible = true;
+      }
     },
-    loadRoleById(roleId) {
-      this.$store
-        .dispatch("role/getOne", { id: roleId })
-        .then(data => {
-          this.formData = data;
-          console.log(data);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-      this.dialogVisible = true;
+    created() {
+      this.clearForm();
+      if (this.roleId) {
+        this.loadData(this.roleId);
+      }
     }
-  },
-  created() {
-    this.clearForm();
-    this.initTreeData();
-    if (this.roleId) {
-      this.loadRoleById(this.roleId);
-    }
-  }
-};
+  };
 </script>
