@@ -113,7 +113,7 @@ export function getList(filter) {
 
 export function getTreeList(filter) {
   return request({
-    url: `/admin/nav/get/tree/list`,
+    url: `/admin/nav/get/list/tree`,
     method: 'get',
     params: filter
   });
