@@ -37,10 +37,12 @@
       <el-form :model="formData" label-width="90px" size="mini">
         <input type="hidden" v-model="formData.categoryId"/>
         <el-form-item label="类别类型">
-          <el-input type="text" v-model="formData.categoryType" :disabled="typeEditAbel || update" placeholder="请输入类别类型.."></el-input>
+          <el-input type="text" v-model="formData.categoryType" :disabled="typeEditAbel || update"
+                    placeholder="请输入类别类型.."></el-input>
         </el-form-item>
         <el-form-item label="类别编码">
-          <el-input type="text" v-model="formData.categoryCode" @input="toUpperCase" :disabled="update" placeholder="请输入类别编码.."></el-input>
+          <el-input type="text" v-model="formData.categoryCode" @input="toUpperCase" :disabled="update"
+                    placeholder="请输入类别编码.."></el-input>
         </el-form-item>
         <el-form-item label="类别名称">
           <el-input type="text" v-model="formData.categoryName" placeholder="请输入类别名称.."></el-input>
@@ -152,7 +154,7 @@
 
                 if (this.formData.categoryId != "") {
                     this.$store
-                        .dispatch("category/updateOne", this.formData)
+                        .dispatch("category/updateOne", {id: this.formData.categoryId, data: this.formData})
                         .then(() => {
                             this.loadData();
                         })
