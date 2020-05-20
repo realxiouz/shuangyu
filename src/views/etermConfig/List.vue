@@ -89,7 +89,6 @@ export default {
           console.log(error);
         });
     },
-    /*输入条件时可进行条件查询*/
     handleSearch(params) {
       this.$store
         .dispatch("etermConfig/getList", {
@@ -102,12 +101,10 @@ export default {
           console.log(error);
         });
     },
-
     handleAdd() {
       this.dialogVisible = true;
       this.update = false;
     },
-
     handleSave() {
       let num = 0;
       var second = 5;
@@ -124,13 +121,11 @@ export default {
     handleCancel() {
       this.dialogVisible = false;
     },
-    /*点击记录进行编辑*/
     handleEdit(row) {
       this.dialogVisible = true;
       this.curNode = row;
       this.update = true;
     },
-    /*对员工进行删除*/
     handleDelete(row) {
       this.open(
         this.delete,
@@ -138,7 +133,6 @@ export default {
         "此操作将删除eterm配置, 是否继续?"
       );
     },
-    /*根据用户ID删除用户*/
     delete(id) {
       this.$store
         .dispatch("etermConfig/removeOne", { id: id })
@@ -149,7 +143,6 @@ export default {
           console.log(error);
         });
     },
-
     online(id) {
       this.$store
         .dispatch("etermConfig/online", { id: id })
@@ -160,7 +153,6 @@ export default {
           console.log(error);
         });
     },
-
     offline(id) {
       this.$store
         .dispatch("etermConfig/offline", { id: id })

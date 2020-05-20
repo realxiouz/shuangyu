@@ -91,7 +91,6 @@
       };
     },
     methods: {
-      /*表单默认加载数据*/
       defaultFormData() {
         return {
           firmId: '',
@@ -109,11 +108,9 @@
           etermRemark: ''
         };
       },
-      /*清除表单*/
       clearForm() {
         this.formData = this.defaultFormData();
       },
-      /*对提交的数据进行类型格式*/
       handleConfirm() {
         this.$store
           .dispatch("etermConfig/save", {etermConfig:this.formData})
@@ -123,7 +120,6 @@
           .catch(error => {
             console.log(error);
           });
-        //this.$emit('onSave', this.formData);
       },
       initFormData() {
         this.clearForm();
