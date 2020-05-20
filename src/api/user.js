@@ -56,7 +56,6 @@ export function updateOne(userId, data) {
 }
 
 export function personalEdit(userId, verificationCode, data) {
-  debugger
   return request({
     url: `/admin/user/update/one/${userId}/${verificationCode}`,
     method: 'put',

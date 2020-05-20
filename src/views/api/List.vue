@@ -43,15 +43,14 @@
         </el-table-column>
       </el-table>
       <el-pagination
-        @size-change="handleSizeChange"
-        @prev-click="prevClick"
-        @next-click="nextClick"
         background
-        layout="total,sizes,prev,next"
+        layout="total,prev,next"
         prev-text="上一页"
         next-text="下一页"
         :page-size="pageSize"
         :total="total"
+        @prev-click="handlePrevClick"
+        @next-click="handleNextClick"
       ></el-pagination>
       <el-dialog
         center
@@ -89,23 +88,23 @@ export default {
     apiSearch
   },
   methods: {
-    prevClick() {
-      this.pageFlag = -1;
-      this.lastId = this.tableData[0].apiId;
-      this.loadData();
-    },
-    nextClick() {
-      this.pageFlag = 1;
-      this.lastId = this.tableData[this.tableData.length - 1].apiId;
-      this.loadData();
-    },
-
+      /*翻前页*/
+      handlePrevClick() {
+          this.pageFlag = -1;
+          this.lastId = this.tableData[0].apiId;
+          this.loadData();
+      },
+      /*翻后页*/
+      handleNextClick() {
+          this.pageFlag = 1;
+          this.lastId = this.tableData[this.tableData.length - 1].apiId;
+          this.loadData();
+      },
     loadData(params, callback) {
       this.$store
         .dispatch("api/getPageList", {
           pageFlag: this.pageFlag,
           pageSize: this.pageSize,
-          lastId: this.lastId,
           filter: params
         })
         .then(data => {
