@@ -17,14 +17,6 @@ export function signInCode(data) {
   });
 }
 
-// 获取用户验证码
-export function getVerification(target) {
-  return request({
-    url: `/admin/user/get/verification/code/${target}`,
-    method: 'get',
-  });
-}
-
 export function signOut() {
   return request({
     url: '/admin/user/sign/out',
@@ -55,17 +47,9 @@ export function updateOne(userId, data) {
   });
 }
 
-export function personalEdit(userId, verificationCode, data) {
+export function updateMany(filter, data) {
   return request({
-    url: `/admin/user/update/one/${userId}/${verificationCode}`,
-    method: 'put',
-    data
-  });
-}
-
-export function updateMany(filter, data, verificationCode) {
-  return request({
-    url: `/admin/user/update/many/${verificationCode}`,
+    url: `/admin/user/update/many`,
     method: 'put',
     params: filter,
     data
@@ -126,9 +110,9 @@ export function isExist(filed) {
   });
 }
 
-export function getVerificationCode(targetEmail) {
+export function getVerifyCode(target) {
   return request({
-    url: `admin/user/get/verification/code/${targetEmail}`,
+    url: `admin/user/get/verify/code/${target}`,
     method: 'get'
   });
 }
