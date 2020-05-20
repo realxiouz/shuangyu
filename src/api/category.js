@@ -8,9 +8,9 @@ export function addOne(data) {
   });
 }
 
-export function updateOne(data) {
+export function updateOne(id, data) {
   return request({
-    url: '/firm/category/update/one',
+    url: `/firm/category/update/one/${id}`,
     method: 'post',
     data
   });

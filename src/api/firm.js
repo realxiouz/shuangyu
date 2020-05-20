@@ -1,8 +1,8 @@
 import request from '@/utils/request';
 
-export function getPageList(pageFlag, pageSize, lastId, filter) {
+export function getPageList(pageFlag, pageSize, filter) {
   return request({
-    url: `/firm/page/list/${pageFlag}/${pageSize}/${lastId}`,
+    url: `/firm/page/list/${pageFlag}/${pageSize}`,
     method: `get`,
     params: filter
   });
@@ -16,9 +16,9 @@ export function addOne(data) {
   });
 }
 
-export function updateOne(data) {
+export function updateOne(id, data) {
   return request({
-    url: `/firm/update/one`,
+    url: `/firm/update/one/${id}`,
     method: `post`,
     data
   });
