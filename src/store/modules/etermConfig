@@ -1,0 +1,77 @@
+import { save, removeOne, online, offline, getList } from "@/api/etermConfig";
+
+const actions = {
+  save({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      const { etermConfig } = params
+      save(etermConfig)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  removeOne({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      const { id } = params
+      removeOne(id)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+
+  online({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      const { id } = params
+      online(id)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+
+  offline({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      const { id } = params
+      offline(id)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+
+  getList({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      const { filter } = params;
+      getList(filter)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+};
+
+export default {
+  namespaced: true,
+  actions
+};

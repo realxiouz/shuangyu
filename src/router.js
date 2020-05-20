@@ -64,7 +64,6 @@ export default new Router({
       redirect: '/user/list',
       component: Layout,
       meta: { title: '系统管理', icon: 'home' },
-
       children: [
         /*{
           title: '模板',
@@ -405,6 +404,13 @@ export default new Router({
           component: () => import('@/views/supplier/BspConfig'),
           meta: { title: 'BSP账号配置' }
         },
+        {
+          title: 'eterm配置信息',
+          path: '/eterm/config/list',
+          name: 'etermConfig',
+          component: () => import('@/views/etermConfig/List'),
+          meta: { title: 'eterm配置信息', icon: 'home' },
+        }
       ]
     },
     {
