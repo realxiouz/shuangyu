@@ -124,7 +124,6 @@
       initFormData() {
         this.clearForm();
         if (this.update) {
-          debugger
           Object.assign(this.formData, this.curNode);
         }
       }
