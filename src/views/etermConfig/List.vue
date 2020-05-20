@@ -105,7 +105,16 @@ export default {
     },
 
     handleSave() {
-      this.loadData();
+      let num = 0;
+      var second = 5;
+      const timer = setInterval(() => {
+        if (num < second) {
+          num++;
+        } else {
+          clearInterval(timer);
+          this.loadData();
+        }
+      }, 1000);
       this.dialogVisible = false;
     },
     handleCancel() {
