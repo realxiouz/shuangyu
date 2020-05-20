@@ -13,8 +13,8 @@
           @node-click="handleNodeClick"
         >
           <span class="tree-node" slot-scope="{ node, data }">
+             <span>{{ node.data.title }}</span>
             <span>(排序：{{ node.data.sort }})</span>
-            <span>{{ node.data.title }}</span>
             <span>
               <el-button type="text" size="mini" @click="nodeAdd(node, data)">添加</el-button>
               <el-button type="text" size="mini" @click="handleEdit(node, data)">修改</el-button>
@@ -42,7 +42,7 @@
         label-width="110px"
         size="mini"
       >
-        <input type="hidden" v-model="formData.navId" />
+        <input type="hidden" v-model="formData.navId"/>
         <el-form-item label="标题" prop="title">
           <el-input type="text" placeholder="请输入导航路由标题(title)" v-model="formData.title"></el-input>
         </el-form-item>
@@ -74,227 +74,227 @@
 </template>
 
 <script>
-import navEdit from "./Edit";
+  import navEdit from "./Edit";
 
-export default {
-  data() {
-    return {
-      addFlag: true,
-      treeLoading: true,
-      dialogVisible: false,
-      /*是否选择导航节点，没有选择则不可编辑*/
-      apiVisible: true,
-      /*判断是否添加的是根导航节点*/
-      rootNav: false,
-      /*导航树数据列表*/
-      treeData: [],
-      /*在添加完一条导航数据后用于展开该条导航分支*/
-      curLine: [],
-      /*需要进行编辑的导航节点*/
-      curNode: null,
-      /*导航节点添加编辑表单*/
-      formData: {},
-      treeProps: {
-        children: "children",
-        hasChildren: "xxx"
-      },
-      routerForm: {
-        title: [
-          { required: true, message: "请输入导航路由标题", trigger: "blur" }
-        ],
-        navName: [
-          { required: true, message: "请输入路由组件名称", trigger: "blur" }
-        ],
-        uri: [
-          { required: true, message: "请输入路由导航路径", trigger: "blur" }
-        ],
-        sort: [{ required: true, message: "请输入路由排序", trigger: "blur" }]
-      }
-    };
-  },
-  methods: {
-    /*初始化导航添加表单*/
-    defaultFormData() {
+  export default {
+    data() {
       return {
-        navId: "",
-        navName: "",
-        enable: true,
-        uri: "",
-        pid: null,
-        apis: [],
-        icon: "",
-        title: "",
-        sort: "",
-        remark: ""
+        addFlag: true,
+        treeLoading: true,
+        dialogVisible: false,
+        /*是否选择导航节点，没有选择则不可编辑*/
+        apiVisible: true,
+        /*判断是否添加的是根导航节点*/
+        rootNav: false,
+        /*导航树数据列表*/
+        treeData: [],
+        /*在添加完一条导航数据后用于展开该条导航分支*/
+        curLine: [],
+        /*需要进行编辑的导航节点*/
+        curNode: null,
+        /*导航节点添加编辑表单*/
+        formData: {},
+        treeProps: {
+          children: "children",
+          hasChildren: "xxx"
+        },
+        routerForm: {
+          title: [
+            {required: true, message: "请输入导航路由标题", trigger: "blur"}
+          ],
+          navName: [
+            {required: true, message: "请输入路由组件名称", trigger: "blur"}
+          ],
+          uri: [
+            {required: true, message: "请输入路由导航路径", trigger: "blur"}
+          ],
+          sort: [{required: true, message: "请输入路由排序", trigger: "blur"}]
+        }
       };
     },
-    /*加载导航树*/
-    loadData() {
-      this.$store
-        .dispatch("nav/getTreeList", { filter: {} })
-        .then(data => {
-          if (data) {
-            this.treeData = data;
-          }
-          this.treeLoading = false;
-        })
-        .catch(error => {
-          this.treeLoading = false;
-          console.log(error);
-        });
-    },
-    /*点击添加顶级企业信息*/
-    rootAdd() {
-      this.addFlag = true;
-      this.formData = this.defaultFormData();
-      //判断添加的导航是否是顶级导航
-      this.rootNav = true;
-      this.dialogVisible = true;
-    },
-    /*点击添加节点企业信息*/
-    nodeAdd(idx, node) {
-      this.addFlag = true;
-      this.formData = this.defaultFormData();
-      //添加的导航菜单不是顶级菜单
-      this.formData.pid = node.navId;
-      this.formData.level = node.level + 1;
-      this.curLine = [];
-      this.rootNav = false;
-      this.dialogVisible = true;
-    },
-    /*对导航节点进行存储*/
-    handleSave() {
-      if (this.formData.navId != "") {
+    methods: {
+      /*初始化导航添加表单*/
+      defaultFormData() {
+        return {
+          navId: "",
+          navName: "",
+          enable: true,
+          uri: "",
+          pid: null,
+          apis: [],
+          icon: "",
+          title: "",
+          sort: "",
+          remark: ""
+        };
+      },
+      /*加载导航树*/
+      loadData() {
         this.$store
-          .dispatch("nav/updateOne", {
-            id: this.formData.navId,
-            data: this.formData
+          .dispatch("nav/getTreeList", {filter: {}})
+          .then(data => {
+            if (data) {
+              this.treeData = data;
+            }
+            this.treeLoading = false;
           })
+          .catch(error => {
+            this.treeLoading = false;
+            console.log(error);
+          });
+      },
+      /*点击添加顶级企业信息*/
+      rootAdd() {
+        this.addFlag = true;
+        this.formData = this.defaultFormData();
+        //判断添加的导航是否是顶级导航
+        this.rootNav = true;
+        this.dialogVisible = true;
+      },
+      /*点击添加节点企业信息*/
+      nodeAdd(idx, node) {
+        this.addFlag = true;
+        this.formData = this.defaultFormData();
+        //添加的导航菜单不是顶级菜单
+        this.formData.pid = node.navId;
+        this.formData.level = node.level + 1;
+        this.curLine = [];
+        this.rootNav = false;
+        this.dialogVisible = true;
+      },
+      /*对导航节点进行存储*/
+      handleSave() {
+        if (this.formData.navId != "") {
+          this.$store
+            .dispatch("nav/updateOne", {
+              id: this.formData.navId,
+              data: this.formData
+            })
+            .then(() => {
+              this.loadData();
+              this.$message({
+                type: "success",
+                message: "修改成功！"
+              });
+              this.dialogVisible = false;
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        } else {
+          if (this.rootNav) {
+            //如果添加的顶级企业信息，对某些属性进行初始化
+            this.formData.pid = null;
+            this.formData.level = 0;
+          }
+          this.$refs.routerForm.validate(valid => {
+            if (valid) {
+              this.$store
+                .dispatch("nav/addOne", this.formData)
+                .then(data => {
+                  this.curLine.push(data.data);
+                  this.loadData();
+                  this.$message({
+                    type: "success",
+                    message: "添加成功！"
+                  });
+                  this.dialogVisible = false;
+                })
+                .catch(error => {
+                  console.log(error);
+                });
+            }
+          });
+        }
+        this.clearForm();
+      },
+      /*点击移除导航节点*/
+      removeNode(data, node) {
+        this.curLine = [];
+        if (null != node.pid) {
+          this.curLine.push(node.pid);
+        } else {
+          this.curLine = [];
+        }
+        this.open(
+          this.remove,
+          node.navId,
+          "此操作将删除该条导航及子导航信息, 是否继续?"
+        );
+      },
+      /*移除导航节点*/
+      remove(params) {
+        this.$store
+          .dispatch("nav/removeOne", {id: params})
           .then(() => {
             this.loadData();
-            this.$message({
-              type: "success",
-              message: "修改成功！"
-            });
-            this.dialogVisible = false;
           })
           .catch(error => {
             console.log(error);
           });
-      } else {
-        if (this.rootNav) {
-          //如果添加的顶级企业信息，对某些属性进行初始化
-          this.formData.pid = null;
-          this.formData.level = 0;
+      },
+      /*点击取消按钮*/
+      handleCancel() {
+        this.clearForm();
+        this.dialogVisible = false;
+      },
+      /*选择导航节点后对该节点进行编辑*/
+      handleNodeClick(data, node) {
+        /*加载该节点所有的api数据*/
+        this.curNode = node.data;
+        this.apiVisible = false;
+      },
+      handleEdit(data, node) {
+        this.addFlag = false;
+        this.formData = node;
+        this.dialogVisible = true;
+        this.curLine = [];
+        if (null != node.pid) {
+          this.curLine.push(node.pid);
+        } else {
+          this.curLine = [];
         }
-        this.$refs.routerForm.validate(valid => {
-          if (valid) {
-            this.$store
-              .dispatch("nav/addOne", this.formData)
-              .then(data => {
-                this.curLine.push(data.data);
-                this.loadData();
-                this.$message({
-                  type: "success",
-                  message: "添加成功！"
-                });
-                this.dialogVisible = false;
-              })
-              .catch(error => {
-                console.log(error);
-              });
-          }
-        });
-      }
-      this.clearForm();
-    },
-    /*点击移除导航节点*/
-    removeNode(data, node) {
-      this.curLine = [];
-      if (null != node.pid) {
-        this.curLine.push(node.pid);
-      } else {
-        this.curLine = [];
-      }
-      this.open(
-        this.remove,
-        node.navId,
-        "此操作将删除该条导航及子导航信息, 是否继续?"
-      );
-    },
-    /*移除导航节点*/
-    remove(params) {
-      this.$store
-        .dispatch("nav/removeOne", { id: params })
-        .then(() => {
-          this.loadData();
+      },
+      clearForm() {
+        this.formData = this.defaultFormData();
+      },
+      open(func, data, message) {
+        this.$confirm(message, "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
         })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    /*点击取消按钮*/
-    handleCancel() {
-      this.clearForm();
-      this.dialogVisible = false;
-    },
-    /*选择导航节点后对该节点进行编辑*/
-    handleNodeClick(data, node) {
-      /*加载该节点所有的api数据*/
-      this.curNode = node.data;
-      this.apiVisible = false;
-    },
-    handleEdit(data, node) {
-      this.addFlag = false;
-      this.formData = node;
-      this.dialogVisible = true;
-      this.curLine = [];
-      if (null != node.pid) {
-        this.curLine.push(node.pid);
-      } else {
-        this.curLine = [];
+          .then(() => {
+            func(data);
+            this.$message({
+              type: "success",
+              message: "删除成功!"
+            });
+          })
+          .catch(() => {
+            this.$message({
+              type: "info",
+              message: "已取消删除"
+            });
+          });
       }
     },
-    clearForm() {
-      this.formData = this.defaultFormData();
+    created() {
+      this.loadData();
     },
-    open(func, data, message) {
-      this.$confirm(message, "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          func(data);
-          this.$message({
-            type: "success",
-            message: "删除成功!"
-          });
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除"
-          });
-        });
+    components: {
+      navEdit
     }
-  },
-  created() {
-    this.loadData();
-  },
-  components: {
-    navEdit
-  }
-};
+  };
 </script>
 
 <style scoped>
-.tree-node {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 14px;
-  padding-right: 8px;
-}
+  .tree-node {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    padding-right: 8px;
+  }
 </style>

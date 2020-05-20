@@ -8,10 +8,10 @@ export function addOne(data) {
   });
 }
 
-export function updateOne(data) {
+export function updateOne(id, data) {
   return request({
-    url: '/firm/category/update/one',
-    method: 'post',
+    url: `/firm/category/update/one/${id}`,
+    method: 'put',
     data
   });
 }

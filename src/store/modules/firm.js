@@ -1,13 +1,23 @@
-import {addOne, removeOne, updateOne, getOne, getPageList, getTotal, getList, getTreeList, getDealerCustomerList} from '@/api/firm';
+import {
+  addOne,
+  getDealerCustomerList,
+  getList,
+  getOne,
+  getPageList,
+  getTotal,
+  getTreeList,
+  removeOne,
+  updateOne
+} from '@/api/firm';
 
 
 const actions = {
-  getList({ commit }, params) {
+  getList({commit}, params) {
     return new Promise((resolve, reject) => {
       const {filter} = params;
       getList(filter)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -15,12 +25,12 @@ const actions = {
         });
     });
   },
-  getTreeList({ commit }, params) {
+  getTreeList({commit}, params) {
     return new Promise((resolve, reject) => {
       const {filters} = params;
       getTreeList(filters)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -28,12 +38,12 @@ const actions = {
         });
     });
   },
-  getDealerCustomerList({ commit }, params) {
+  getDealerCustomerList({commit}, params) {
     return new Promise((resolve, reject) => {
       const {filters} = params;
       getDealerCustomerList(filters)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -41,10 +51,10 @@ const actions = {
         });
     });
   },
-  getPageList({ commit }, params) {
+  getPageList({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {pageFlag, pageSize, lastId, filter} = params;
-      getPageList(pageFlag, pageSize, lastId, filter)
+      const {pageFlag, pageSize, filter} = params;
+      getPageList(pageFlag, pageSize, filter)
         .then(response => {
           // const { data } = response;
           resolve(response);
@@ -54,7 +64,7 @@ const actions = {
         });
     });
   },
-  getTotal({ commit }, params) {
+  getTotal({commit}, params) {
     return new Promise((resolve, reject) => {
       const {filter} = params;
       getTotal(filter)
@@ -69,8 +79,8 @@ const actions = {
   },
   updateOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {firm} = params;
-      updateOne(firm)
+      const {id, data} = params;
+      updateOne(id, data)
         .then(response => {
           // const { data } = response;
           resolve(response);
