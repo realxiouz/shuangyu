@@ -112,7 +112,7 @@ export function getList(filter) {
 }
 
 
-export function getPageList(pageFlag, pageSize, lastId, filter) {
+export function getPageList(pageFlag, pageSize, filter) {
   return request({
     url: `/admin/api/get/page/list/${pageFlag}/${pageSize}`,
     method: 'get',

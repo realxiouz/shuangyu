@@ -113,15 +113,15 @@ export function getList(filter) {
 
 export function getTreeList(filter) {
   return request({
-    url: `/admin/nav/get/list/tree`,
+    url: `/admin/nav/get/tree/list`,
     method: 'get',
     params: filter
   });
 }
 
-export function getPageList(pageFlag, pageSize, lastId, filter) {
+export function getPageList(pageFlag, pageSize, filter) {
   return request({
-    url: `/admin/nav/get/list/page/${pageFlag}/${pageSize}/${lastId}`,
+    url: `/admin/nav/get/list/page/${pageFlag}/${pageSize}`,
     method: 'get',
     params: filter
   });
