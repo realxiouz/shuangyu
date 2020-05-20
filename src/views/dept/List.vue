@@ -117,9 +117,7 @@ export default {
     },
     loadTotal(params) {
       this.$store
-        .dispatch("dept/getTotal", {
-          filters: params
-        })
+        .dispatch("dept/getTotal", {filter: params})
         .then(data => {
           this.total = data;
         })

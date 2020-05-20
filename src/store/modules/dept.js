@@ -88,9 +88,9 @@ const actions = {
   },
 
   getTotal({commit}, params) {
-    const {filters} = params;
+    const {filter} = params;
     return new Promise((resolve, reject) => {
-      getTotal(filters)
+      getTotal(filter)
         .then(response => {
           const {data} = response;
           resolve(data);

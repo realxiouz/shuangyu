@@ -49,7 +49,7 @@ export default {
     /*获取部门树*/
     loadTreeData() {
       this.$store
-        .dispatch("dept/getList", {
+        .dispatch("dept/getTreeList", {
           filters: {}
         })
         .then(data => {

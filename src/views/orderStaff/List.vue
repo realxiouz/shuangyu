@@ -40,7 +40,7 @@ export default {
   methods: {
     loadTreeData() {
       this.$store
-        .dispatch("dept/getList", { filters: {} })
+        .dispatch("dept/getTreeList", { filters: {} })
         .then(data => {
           if (data) {
             this.treeData = data;
