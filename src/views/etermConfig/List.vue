@@ -48,6 +48,8 @@
       >
         <eterm-config-edit
           v-if="dialogVisible"
+          :update="update"
+          :curNode="curNode"
           @onSave="handleSave"
           @onCancel="handleCancel"
         ></eterm-config-edit>
@@ -65,7 +67,9 @@ export default {
     return {
       loading: true,
       dialogVisible: false,
-      tableData: []
+      tableData: [],
+      update:false,
+      curNode:{}
     };
   },
   methods: {
