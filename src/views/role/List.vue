@@ -14,6 +14,13 @@
         size="mini"
       >
         <el-table-column prop="roleName" label="角色名称" align="left" width="200"></el-table-column>
+        <el-table-column label="角色类型" align="center" width="120">
+          <template slot-scope="scope">
+            <span v-if="scope.row.roleType==0">平台</span>
+            <span v-else-if="scope.row.roleType==1">企业</span>
+            <span v-else-if="scope.row.roleType==-1">默认</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="remark" label="备注" align="center" :fit='true'></el-table-column>
         <el-table-column label="是否启用" align="center" fixed="right" width="100">
           <template slot-scope="scope">
