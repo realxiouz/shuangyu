@@ -296,7 +296,6 @@ export default {
     }
   },
   created() {
-    console.log('layout console')
     this.getLoginInfo(null);
     this.getTag();
   },

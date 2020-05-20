@@ -15,7 +15,7 @@
         :header-cell-style="{'text-align':'center'}"
         fit
       >
-        <el-table-column prop="uri" label="URL" align="left"></el-table-column>
+        <el-table-column prop="uri" label="URL" align="center"></el-table-column>
         <el-table-column prop="category" align="center" label="类别"></el-table-column>
         <el-table-column prop="apiName" align="center" label="api名称"></el-table-column>
         <el-table-column align="center" label="创建时间">
