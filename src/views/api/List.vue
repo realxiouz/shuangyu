@@ -15,16 +15,16 @@
         :header-cell-style="{'text-align':'center'}"
         fit
       >
-        <el-table-column prop="uri" label="URL" align="center"></el-table-column>
+        <el-table-column prop="uri" label="URL" align="left"></el-table-column>
         <el-table-column prop="category" align="center" label="类别"></el-table-column>
-        <el-table-column prop="apiName" align="center" label="api名称"></el-table-column>
+        <el-table-column prop="apiName" align="left" label="api名称"></el-table-column>
         <el-table-column align="center" label="创建时间">
           <template slot-scope="scope">
             <span>{{formatDate(scope.row.createTime,'YYYY-MM-DD HH:mm:ss')}}</span>
           </template>
         </el-table-column>
 
-        <el-table-column prop="remark" label="备注" align="center" :fit='true'></el-table-column>
+        <el-table-column prop="remark" label="备注" align="left" :fit='true'></el-table-column>
 
         <el-table-column label="是否启用" align="center" fixed="right" width="120">
           <template slot-scope="scope">
