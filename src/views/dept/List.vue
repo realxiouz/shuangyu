@@ -36,17 +36,17 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination
-        @size-change="handleSizeChange"
-        @prev-click="prevClick"
-        @next-click="nextClick"
-        background
-        layout="total,sizes,prev,next"
-        prev-text="上一页"
-        next-text="下一页"
-        :page-size="pageSize"
-        :total="total"
-      ></el-pagination>
+<!--      <el-pagination-->
+<!--        @size-change="handleSizeChange"-->
+<!--        @prev-click="prevClick"-->
+<!--        @next-click="nextClick"-->
+<!--        background-->
+<!--        layout="total,sizes,prev,next"-->
+<!--        prev-text="上一页"-->
+<!--        next-text="下一页"-->
+<!--        :page-size="pageSize"-->
+<!--        :total="total"-->
+<!--      ></el-pagination>-->
       <el-dialog
         title="部门信息"
         center
@@ -99,7 +99,7 @@ export default {
     },
     loadData(params) {
       this.$store
-        .dispatch("dept/getList", {
+        .dispatch("dept/getTreeList", {
           filters: params
         })
         .then(data => {

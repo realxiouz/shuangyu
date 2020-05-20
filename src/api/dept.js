@@ -16,11 +16,12 @@ export function removeOne(id) {
   });
 }
 
-export function getPageList(pageFlag, pageSize, lastId, params) {
+
+export function getPageList(pageFlag, pageSize, filter) {
   return request({
-    url: `/dept/page/list/${pageFlag}/${pageSize}/${lastId}`,
-    method: "get",
-    params: params
+    url: `/dept/page/list/${pageFlag}/${pageSize}`,
+    method: 'get',
+    params: filter
   });
 }
 
@@ -39,6 +40,15 @@ export function getList(params) {
     params: params
   });
 }
+
+export function getTreeList(params) {
+  return request({
+    url: `/dept/tree/list`,
+    method: "get",
+    params: params
+  });
+}
+
 export function getOne(id) {
   return request({
     url: `/dept/one/${id}`,
