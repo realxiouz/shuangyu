@@ -19,7 +19,7 @@ export function addOne(data) {
 export function updateOne(id, data) {
   return request({
     url: `/firm/update/one/${id}`,
-    method: `post`,
+    method: 'put',
     data
   });
 }

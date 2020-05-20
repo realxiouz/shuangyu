@@ -1,4 +1,4 @@
-import {addOne, updateOne, removeOne, getOne, getTreeList, getList, getTotal, getPageList} from '@/api/category';
+import {addOne, getList, getOne, getPageList, getTotal, getTreeList, removeOne, updateOne} from '@/api/category';
 
 const actions = {
   addOne({commit}, params) {
@@ -14,7 +14,8 @@ const actions = {
   },
   updateOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      updateOne(params)
+      const {id, data} = params;
+      updateOne(id, data)
         .then(response => {
           resolve(response);
         })
@@ -85,8 +86,8 @@ const actions = {
   },
   getPageList({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {pageFlag, pageSize, lastId, filter} = params;
-      getPageList(pageFlag, pageSize, lastId, filter)
+      const {pageFlag, pageSize, filter} = params;
+      getPageList(pageFlag, pageSize, filter)
         .then(response => {
           resolve(response);
         })
