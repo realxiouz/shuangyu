@@ -24,12 +24,14 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="是否启用" align="center">
+        <el-table-column prop="remark" label="备注" align="center" :fit='true'></el-table-column>
+
+        <el-table-column label="是否启用" align="center" fixed="right" width="120">
           <template slot-scope="scope">
             <el-switch v-model="scope.row.enable" @change="handleSwitch(scope.row)"></el-switch>
           </template>
         </el-table-column>
-        <el-table-column fixed="right" label="操作" align="center" width="180">
+        <el-table-column fixed="right" label="操作" align="center" width="180" >
           <template slot-scope="scope">
             <el-button @click="handleUpdate(scope.row.apiId)" type="primary" size="mini">编辑</el-button>
             <el-button

@@ -14,7 +14,7 @@
         size="mini"
       >
         <el-table-column prop="roleName" label="角色名称" align="center" width="200"></el-table-column>
-        <el-table-column prop="remark" label="备注" align="center"></el-table-column>
+        <el-table-column prop="remark" label="备注" align="center" :fit='true'></el-table-column>
         <el-table-column label="是否启用" align="center"  fixed="right" width="100">
           <template slot-scope="scope">
             <el-switch v-model="scope.row.enable" @change="changeSwitch(scope.row)"></el-switch>
