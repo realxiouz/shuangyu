@@ -13,14 +13,14 @@
         style="width:100%;margin-bottom:15px;"
         size="mini"
       >
-        <el-table-column prop="roleName" label="角色名称" align="center"></el-table-column>
+        <el-table-column prop="roleName" label="角色名称" align="center" width="200"></el-table-column>
         <el-table-column prop="remark" label="备注" align="center"></el-table-column>
-        <el-table-column label="是否启用" align="center">
+        <el-table-column label="是否启用" align="center"  fixed="right" width="100">
           <template slot-scope="scope">
             <el-switch v-model="scope.row.enable" @change="changeSwitch(scope.row)"></el-switch>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center">
+        <el-table-column label="操作" align="center" fixed="right" width="200">
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
             <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>

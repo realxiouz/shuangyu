@@ -43,8 +43,7 @@ export default {
       formRules: {
         roleName: [
           { required: true, message: "请输入角色名称", trigger: "blur" }
-        ],
-        remark: [{ required: true, message: "请输入角色备注", trigger: "blur" }]
+        ]
       }
     };
   },

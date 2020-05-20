@@ -195,7 +195,6 @@ export default {
     },
     getLoginInfo(firmId) {
       this.dialogVisible = false;
-      console.log({firmId})
       this.$store
         .dispatch("getLoginInfo", { firmId: firmId })
         .then(data => {
