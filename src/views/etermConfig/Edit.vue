@@ -5,7 +5,7 @@
       <el-form-item label="账号:">
         <el-input v-model="formData.etermAccount"></el-input>
       </el-form-item>
-      <el-form-item label="密码:">
+      <el-form-item v-if="!update" label="密码:">
         <el-input v-model="formData.etermPassword" type="password" show-password></el-input>
       </el-form-item>
       <el-form-item label="地址:">
