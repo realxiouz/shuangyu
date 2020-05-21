@@ -46,7 +46,8 @@
                   <i class="el-icon-arrow-down el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item command="personalEdit">修改个人信息</el-dropdown-item>
+                  <el-dropdown-item command="personalEdit">个人资料</el-dropdown-item>
+                  <el-dropdown-item command="personalEdit">安全设置</el-dropdown-item>
                   <el-dropdown-item command="logout">退出</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>

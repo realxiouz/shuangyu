@@ -75,7 +75,7 @@
           if (valid) {
             this.loading = true;
             this.$store
-              .dispatch("user/activate", { newPassword: this.formData.newPassword })
+              .dispatch("user/activation", { newPassword: this.formData.newPassword })
               .then(res => {
                 console.log(res);
                 this.$message({

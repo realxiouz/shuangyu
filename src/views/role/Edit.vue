@@ -97,6 +97,8 @@
       this.clearForm();
       if (this.roleId) {
         this.loadData(this.roleId);
+      } else {
+        this.loadNavs();
       }
     }
   };
