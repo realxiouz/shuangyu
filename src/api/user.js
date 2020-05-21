@@ -88,9 +88,9 @@ export function getPageList(pageFlag, pageSize, filter) {
 }
 
 // 更新激活标记
-export function activate(data) {
+export function activation(data) {
   return request({
-    url: `/admin/user/activate`,
+    url: `/admin/user/activation`,
     method: 'put',
     data
   });

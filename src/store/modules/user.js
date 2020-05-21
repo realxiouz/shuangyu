@@ -9,7 +9,7 @@ import {
   getList,
   getTotal,
   getPageList,
-  activate,
+  activation,
   isExist,
   resetPassword,
   getVerifyCode
@@ -174,9 +174,9 @@ const actions = {
         });
     });
   },
-  activate({commit}, params) {
+  activation({commit}, params) {
     return new Promise((resolve, reject) => {
-      activate(params)
+      activation(params)
         .then(response => {
           resolve(response);
           commit("SET_TOKEN", "");

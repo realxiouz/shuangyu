@@ -139,7 +139,7 @@
               this.$store
                 .dispatch("user/signIn", params)
                 .then(res => {
-                  var flag = res.data.activate;
+                  var flag = res.data.activation;
                   if (!flag) {
                     this.$router.push({name: "changePassword"});
                   } else {
