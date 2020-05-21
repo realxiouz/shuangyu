@@ -179,7 +179,7 @@
             /*企业的添加、编辑保存*/
             handleSave(formData) {
                 this.dialogVisible = false;
-                if (formData.firmId != "") {
+                if (formData.firmId) {
                     this.$store
                         .dispatch("firm/updateOne", {id: formData.firmId, data: formData})
                         .then(() => {
