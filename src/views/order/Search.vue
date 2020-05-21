@@ -375,14 +375,16 @@
         type="primary"
         size="mini"
         @click="$emit('onSearch', formData)"
-      >查询</el-button>
+      >查询
+      </el-button>
       <el-button
         icon="el-icon-refresh"
         class="filter-item"
         type="primary"
         size="mini"
         @click="handleClear"
-      >清空</el-button>
+      >清空
+      </el-button>
       <el-button type="primary" size="mini" @click="handleExport">导单</el-button>
       <el-button type="text" size="mini" @click="handleMore">
         更多
@@ -393,139 +395,139 @@
 </template>
 
 <script>
-import { orderType } from "@/utils/status.js";
+  import {orderType} from "@/utils/status.js";
 
-export default {
-  name: "orderSearch",
-  data() {
-    return {
-      more: false,
-      orderType: orderType,
-      supplierData: [],
-      formData: {
-        voyageType: "", //航程类型
-        orderType: "", //订单来源
-        flightCode: "", //航班号
-        flightDate: "", //出发日期
-        cabin: "", //舱位
-        status: "", //订单状态
-        pnr: "", //PNR
-        ticketNo: "", //票号
-        orderNo: "", //订单号
-        name: "", //乘机人姓名
-        cardNo: "", //乘机人证件号
-        rootOrderNo: "",
-        linkOrderNo: "",
-        sourceOrderNo: "",
-        createTime: "",
-        finishTime: "",
-        transactionTime: "",
-        emptyData: "",
-        exportFlag: 0
-      },
-      emptyDataValue: [
-        {
-          value: "pid",
-          label: "pid"
-        },
-        {
-          value: "ticketNo",
-          label: "ticketNo"
-        },
-        {
-          value: "path",
-          label: "path"
-        },
-        {
-          value: "rootOrderNo",
-          label: "rootOrderNo"
-        },
-        {
-          value: "linkOrderNo",
-          label: "linkOrderNo"
-        },
-        {
-          value: "fundAccount",
-          label: "fundAccount"
-        },
-        {
-          value: "accountId",
-          label: "accountId"
-        }
-      ]
-    };
-  },
-  computed: {
-    switchIcon() {
-      if (!this.more) {
-        return "el-icon-arrow-down el-icon--right";
-      } else {
-        return "el-icon-arrow-up el-icon--right";
-      }
-    }
-  },
-  methods: {
-    initSearchForm() {
+  export default {
+    name: "orderSearch",
+    data() {
       return {
-        orderNo: null,
-        ticketNo: null,
-        sourceOrderNo: null,
-        name: null,
-        cardNo: null,
-        pnr: null,
-        cabin: null,
-        flightCode: null,
-        fundAccount: null,
-        accountId: null,
-        pid: null,
-        path: null,
-        rootOrderNo: null,
-        linkOrderNo: null,
-        category: null,
-        orderType: null,
-        flightDate: null,
-        createTime: null,
-        transactionTime: null,
-        finishTime: null,
-        deadlineTicketTime: null,
-        deadlineReturnTime: null,
-        deadlineChangeTime: null,
-        voyageType: null,
-        typeFlag: null
+        more: false,
+        orderType: orderType,
+        supplierData: [],
+        formData: {
+          voyageType: "", //航程类型
+          orderType: "", //订单来源
+          flightCode: "", //航班号
+          flightDate: "", //出发日期
+          cabin: "", //舱位
+          status: "", //订单状态
+          pnr: "", //PNR
+          ticketNo: "", //票号
+          orderNo: "", //订单号
+          name: "", //乘机人姓名
+          cardNo: "", //乘机人证件号
+          rootOrderNo: "",
+          linkOrderNo: "",
+          sourceOrderNo: "",
+          createTime: "",
+          finishTime: "",
+          transactionTime: "",
+          emptyData: "",
+          exportFlag: 0
+        },
+        emptyDataValue: [
+          {
+            value: "pid",
+            label: "pid"
+          },
+          {
+            value: "ticketNo",
+            label: "ticketNo"
+          },
+          {
+            value: "path",
+            label: "path"
+          },
+          {
+            value: "rootOrderNo",
+            label: "rootOrderNo"
+          },
+          {
+            value: "linkOrderNo",
+            label: "linkOrderNo"
+          },
+          {
+            value: "fundAccount",
+            label: "fundAccount"
+          },
+          {
+            value: "accountId",
+            label: "accountId"
+          }
+        ]
       };
     },
-    handleClear() {
-      this.formData = this.initSearchForm();
+    computed: {
+      switchIcon() {
+        if (!this.more) {
+          return "el-icon-arrow-down el-icon--right";
+        } else {
+          return "el-icon-arrow-up el-icon--right";
+        }
+      }
     },
-    handleMore() {
-      this.more = !this.more;
+    methods: {
+      initSearchForm() {
+        return {
+          orderNo: null,
+          ticketNo: null,
+          sourceOrderNo: null,
+          name: null,
+          cardNo: null,
+          pnr: null,
+          cabin: null,
+          flightCode: null,
+          fundAccount: null,
+          accountId: null,
+          pid: null,
+          path: null,
+          rootOrderNo: null,
+          linkOrderNo: null,
+          category: null,
+          orderType: null,
+          flightDate: null,
+          createTime: null,
+          transactionTime: null,
+          finishTime: null,
+          deadlineTicketTime: null,
+          deadlineReturnTime: null,
+          deadlineChangeTime: null,
+          voyageType: null,
+          typeFlag: null
+        };
+      },
+      handleClear() {
+        this.formData = this.initSearchForm();
+      },
+      handleMore() {
+        this.more = !this.more;
+      },
+      handleExport() {
+        this.formData.exportFlag = 1;
+        this.$emit("onSearch", this.formData);
+        this.formData.exportFlag = 0;
+      },
+      // 获取供应商
+      getSupplier() {
+        this.$store
+          .dispatch("firmMerchant/getList", {
+            filter: {merchantType: 0}
+          })
+          .then(data => {
+            this.supplierData = data;
+          })
+          .catch(error => {
+            console.log(error);
+            this.loading = false;
+          });
+      }
     },
-    handleExport() {
-      this.formData.exportFlag = 1;
-      this.$emit("onSearch", this.formData);
-      this.formData.exportFlag = 0;
-    },
-    // 获取供应商
-    getSupplier() {
-      this.$store
-        .dispatch("firmMerchant/getList", {
-          filter: { merchantType: 0 }
-        })
-        .then(data => {
-          this.supplierData = data;
-        })
-        .catch(error => {
-          console.log(error);
-          this.loading = false;
-        });
-    }
-  },
-  watch: {
-    more(val, newVal) {
-      if (!newVal) {
-        this.getSupplier();
+    watch: {
+      more(val, newVal) {
+        if (!newVal) {
+          this.getSupplier();
+        }
       }
     }
-  }
-};
+  };
 </script>

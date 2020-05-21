@@ -220,337 +220,338 @@
 </template>
 
 <script>
-import {
-  formatOrderType,
-  formatCategory,
-  formatStatus,
-  formatAgeType,
-  formatCardType
-} from "@/utils/status.js";
-
-export default {
-  name: "goTicket",
-  data() {
-    return {
-      orderNo: this.$route.query.orderNo,
-      flightShow: false,
-      payShow: false,
-      orderData: {},
-      flightData: [],
-      loading: true,
-      expands: [],
-      systemProfitAndLossValue: "", //盈亏值
-      profitAndLossValue: "", //盈亏值
-      passengerData: JSON.parse(this.$route.query.passengersInfo),
-      flightInfo: {
-        arr: "",
-        dpt: "",
-        dptDay: "",
-        dptTime: "",
-        flightCode: ""
-      },
-      predetermineOrderData: "",
-      //支付数据
-      payData: {
-        allPrice: 0,
-        bankCode: "",
-        cabin: "",
-        payOrderNo: "",
-        sellOrderNo: ""
-      }
-    };
-  },
-  created() {
-    this.getOrderDetail();
-  },
-  computed: {
-    formatDate() {
-      return function(dateStr, format) {
-        return this.initDate(dateStr, format);
-      };
-    }
-  },
-  methods: {
+  import {
     formatOrderType,
+    formatCategory,
     formatStatus,
     formatAgeType,
-    formatCategory,
-    formatCardType,
-    // 取消支付弹框
-    onCancel() {
-      this.payShow = false;
-    },
-    // 返回
-    goBack() {
-      this.$router.go(-1);
-    },
-    // 显示支付弹框
-    confirmPay() {
-      let params = {
-        allPrice: this.payData.noPayAmount,
-        bankCode: this.payData.bankCode,
-        cabin: this.predetermineOrderData.cabin,
-        payOrderNo: this.payData.orderNo,
-        sellOrderNo: this.orderData.sourceOrderNo,
-        orderTaskId: this.$route.query.orderTaskId
-      };
-      let amountTotal = 0;
-      this.passengerData.forEach(item => {
-        amountTotal += Number(item.amount);
-      });
-      let _profitAndLossValue = 0;
-      _profitAndLossValue = Number(amountTotal) - Number(params.allPrice);
-      if (_profitAndLossValue != this.profitAndLossValue) {
-        this.$message({
-          type: "warning",
-          message: "盈亏值计算错误！"
-        });
-        return;
-      }
-      this.openPay(params);
-      this.payShow = false;
-    },
-    // 获得详情
-    getOrderDetail() {
-      this.$store
-        .dispatch("order/getOrderDetail", this.orderNo)
-        .then(data => {
-          if (data) {
-            this.orderData = data;
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    // 搜素航班
-    searchFlight() {
-      this.flightShow = true;
-      this.flightInfo = {
-        arr: this.orderData.flights[0].arr,
-        dpt: this.orderData.flights[0].dpt,
-        dptDay: this.formatDate(
-          this.orderData.flights[0].flightDate,
-          "YYYY-MM-DD"
-        ),
-        dptTime: this.orderData.flights[0].dptTime.substr(-5, 5),
-        flightCode: this.orderData.flights[0].flightCode
-      };
-      this.getOrderFlight(this.flightInfo);
-    },
-    // （预定）下单
-    predetermineOrder(row, item) {
-      this.predetermineOrderData = item;
-      let newParams = {};
-      newParams.flightNum = row.offerPrice.flightNum;
-      newParams.domain = item.domain;
-      newParams.client = item.domain;
-      newParams.passengers = [];
-      this.passengerData.forEach(item => {
-        let obj = {
-          name: item.name,
-          ageType: item.ageType,
-          cardType: item.cardType,
-          cardNo: item.cardNo,
-          price: item.viewPrice
-        };
-        newParams.passengers.push(obj);
-      });
-      newParams.ticketPrice = item.vppr;
-      newParams.barePrice = item.barePrice;
-      newParams.basePrice = item.basePrice;
-      newParams.price = item.price;
-      newParams.businessExt = item.businessExt;
-      newParams.tag = item.prtag;
-      newParams.cabin = item.cabin;
-      newParams.policyType = item.policyType;
-      newParams.policyId = item.policyId;
-      newParams.wrapperId = item.wrapperId;
-      newParams.carrier = row.offerPrice.carrier;
-      newParams.from = row.offerPrice.from;
-      newParams.to = row.offerPrice.to;
-      newParams.startTime = row.offerPrice.startTime;
-      newParams.dptTime = row.offerPrice.dptTime;
-      newParams.orderTaskId = this.$route.query.orderTaskId;
-      this.$store
-        .dispatch("order/checkOrder", newParams)
-        .then(data => {
-          if (data == true) {
-            this.$confirm("此单可能已采购，是否继续下单?", "提示", {
-              confirmButtonText: "继续下单",
-              cancelButtonText: "取消",
-              type: "warning"
-            })
-              .then(() => {
-                this.$store
-                  .dispatch("order/placeAnOrder", newParams)
-                  .then(data => {
-                    if (data.code == 0) {
-                      this.payData = data;
-                      let amountTotal = 0;
-                      this.passengerData.forEach(item => {
-                        amountTotal += Number(item.amount);
-                      });
-                      this.systemProfitAndLossValue = 0;
-                      this.systemProfitAndLossValue =
-                        Number(amountTotal) - Number(this.payData.noPayAmount);
-                      this.$message({
-                        type: "success",
-                        message: "预定成功！"
-                      });
-                      this.payShow = true;
-                    } else {
-                      this.payShow = false;
-                      this.$message({
-                        type: "warning",
-                        message: data.msg
-                      });
-                    }
-                  })
-                  .catch(error => {
-                    console.log(error);
-                  });
-              })
-              .catch(() => {});
-          } else {
-            this.$store
-              .dispatch("order/placeAnOrder", newParams)
-              .then(data => {
-                if (data.code == 0) {
-                  this.payData = data;
-                  let amountTotal = 0;
-                  this.passengerData.forEach(item => {
-                    amountTotal += Number(item.amount);
-                  });
-                  this.systemProfitAndLossValue = 0;
-                  this.systemProfitAndLossValue =
-                    Number(amountTotal) - Number(this.payData.noPayAmount);
-                  this.$message({
-                    type: "success",
-                    message: "预定成功！"
-                  });
-                  this.payShow = true;
-                } else {
-                  this.payShow = false;
-                  this.$message({
-                    type: "warning",
-                    message: data.msg
-                  });
-                }
-              })
-              .catch(error => {
-                console.log(error);
-              });
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
+    formatCardType
+  } from "@/utils/status.js";
 
-    openPay(params) {
-      this.$store
-        .dispatch("order/openPay", params)
-        .then(data => {
-          if (data.code == 0) {
-            this.$message({
-              type: "success",
-              message: "支付成功！"
-            });
-            this.payShow = false;
-            this.$router.go(-1);
-          } else {
-            this.$message({
-              type: "warning",
-              message: data.msg
-            });
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
+  export default {
+    name: "goTicket",
+    data() {
+      return {
+        orderNo: this.$route.query.orderNo,
+        flightShow: false,
+        payShow: false,
+        orderData: {},
+        flightData: [],
+        loading: true,
+        expands: [],
+        systemProfitAndLossValue: "", //盈亏值
+        profitAndLossValue: "", //盈亏值
+        passengerData: JSON.parse(this.$route.query.passengersInfo),
+        flightInfo: {
+          arr: "",
+          dpt: "",
+          dptDay: "",
+          dptTime: "",
+          flightCode: ""
+        },
+        predetermineOrderData: "",
+        //支付数据
+        payData: {
+          allPrice: 0,
+          bankCode: "",
+          cabin: "",
+          payOrderNo: "",
+          sellOrderNo: ""
+        }
+      };
     },
-    // 查询航班信息
-    getOrderFlight(flightInfo) {
-      this.$store
-        .dispatch("order/getOrderFlight", flightInfo)
-        .then(data => {
-          if (data) {
-            this.flightData = data;
+    created() {
+      this.getOrderDetail();
+    },
+    computed: {
+      formatDate() {
+        return function (dateStr, format) {
+          return this.initDate(dateStr, format);
+        };
+      }
+    },
+    methods: {
+      formatOrderType,
+      formatStatus,
+      formatAgeType,
+      formatCategory,
+      formatCardType,
+      // 取消支付弹框
+      onCancel() {
+        this.payShow = false;
+      },
+      // 返回
+      goBack() {
+        this.$router.go(-1);
+      },
+      // 显示支付弹框
+      confirmPay() {
+        let params = {
+          allPrice: this.payData.noPayAmount,
+          bankCode: this.payData.bankCode,
+          cabin: this.predetermineOrderData.cabin,
+          payOrderNo: this.payData.orderNo,
+          sellOrderNo: this.orderData.sourceOrderNo,
+          orderTaskId: this.$route.query.orderTaskId
+        };
+        let amountTotal = 0;
+        this.passengerData.forEach(item => {
+          amountTotal += Number(item.amount);
+        });
+        let _profitAndLossValue = 0;
+        _profitAndLossValue = Number(amountTotal) - Number(params.allPrice);
+        if (_profitAndLossValue != this.profitAndLossValue) {
+          this.$message({
+            type: "warning",
+            message: "盈亏值计算错误！"
+          });
+          return;
+        }
+        this.openPay(params);
+        this.payShow = false;
+      },
+      // 获得详情
+      getOrderDetail() {
+        this.$store
+          .dispatch("order/getOrderDetail", this.orderNo)
+          .then(data => {
+            if (data) {
+              this.orderData = data;
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      // 搜素航班
+      searchFlight() {
+        this.flightShow = true;
+        this.flightInfo = {
+          arr: this.orderData.flights[0].arr,
+          dpt: this.orderData.flights[0].dpt,
+          dptDay: this.formatDate(
+            this.orderData.flights[0].flightDate,
+            "YYYY-MM-DD"
+          ),
+          dptTime: this.orderData.flights[0].dptTime.substr(-5, 5),
+          flightCode: this.orderData.flights[0].flightCode
+        };
+        this.getOrderFlight(this.flightInfo);
+      },
+      // （预定）下单
+      predetermineOrder(row, item) {
+        this.predetermineOrderData = item;
+        let newParams = {};
+        newParams.flightNum = row.offerPrice.flightNum;
+        newParams.domain = item.domain;
+        newParams.client = item.domain;
+        newParams.passengers = [];
+        this.passengerData.forEach(item => {
+          let obj = {
+            name: item.name,
+            ageType: item.ageType,
+            cardType: item.cardType,
+            cardNo: item.cardNo,
+            price: item.viewPrice
+          };
+          newParams.passengers.push(obj);
+        });
+        newParams.ticketPrice = item.vppr;
+        newParams.barePrice = item.barePrice;
+        newParams.basePrice = item.basePrice;
+        newParams.price = item.price;
+        newParams.businessExt = item.businessExt;
+        newParams.tag = item.prtag;
+        newParams.cabin = item.cabin;
+        newParams.policyType = item.policyType;
+        newParams.policyId = item.policyId;
+        newParams.wrapperId = item.wrapperId;
+        newParams.carrier = row.offerPrice.carrier;
+        newParams.from = row.offerPrice.from;
+        newParams.to = row.offerPrice.to;
+        newParams.startTime = row.offerPrice.startTime;
+        newParams.dptTime = row.offerPrice.dptTime;
+        newParams.orderTaskId = this.$route.query.orderTaskId;
+        this.$store
+          .dispatch("order/checkOrder", newParams)
+          .then(data => {
+            if (data == true) {
+              this.$confirm("此单可能已采购，是否继续下单?", "提示", {
+                confirmButtonText: "继续下单",
+                cancelButtonText: "取消",
+                type: "warning"
+              })
+                .then(() => {
+                  this.$store
+                    .dispatch("order/placeAnOrder", newParams)
+                    .then(data => {
+                      if (data.code == 0) {
+                        this.payData = data;
+                        let amountTotal = 0;
+                        this.passengerData.forEach(item => {
+                          amountTotal += Number(item.amount);
+                        });
+                        this.systemProfitAndLossValue = 0;
+                        this.systemProfitAndLossValue =
+                          Number(amountTotal) - Number(this.payData.noPayAmount);
+                        this.$message({
+                          type: "success",
+                          message: "预定成功！"
+                        });
+                        this.payShow = true;
+                      } else {
+                        this.payShow = false;
+                        this.$message({
+                          type: "warning",
+                          message: data.msg
+                        });
+                      }
+                    })
+                    .catch(error => {
+                      console.log(error);
+                    });
+                })
+                .catch(() => {
+                });
+            } else {
+              this.$store
+                .dispatch("order/placeAnOrder", newParams)
+                .then(data => {
+                  if (data.code == 0) {
+                    this.payData = data;
+                    let amountTotal = 0;
+                    this.passengerData.forEach(item => {
+                      amountTotal += Number(item.amount);
+                    });
+                    this.systemProfitAndLossValue = 0;
+                    this.systemProfitAndLossValue =
+                      Number(amountTotal) - Number(this.payData.noPayAmount);
+                    this.$message({
+                      type: "success",
+                      message: "预定成功！"
+                    });
+                    this.payShow = true;
+                  } else {
+                    this.payShow = false;
+                    this.$message({
+                      type: "warning",
+                      message: data.msg
+                    });
+                  }
+                })
+                .catch(error => {
+                  console.log(error);
+                });
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+
+      openPay(params) {
+        this.$store
+          .dispatch("order/openPay", params)
+          .then(data => {
+            if (data.code == 0) {
+              this.$message({
+                type: "success",
+                message: "支付成功！"
+              });
+              this.payShow = false;
+              this.$router.go(-1);
+            } else {
+              this.$message({
+                type: "warning",
+                message: data.msg
+              });
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      // 查询航班信息
+      getOrderFlight(flightInfo) {
+        this.$store
+          .dispatch("order/getOrderFlight", flightInfo)
+          .then(data => {
+            if (data) {
+              this.flightData = data;
+              this.loading = false;
+            }
+          })
+          .catch(error => {
             this.loading = false;
-          }
-        })
-        .catch(error => {
-          this.loading = false;
-          console.log(error);
-        });
-    },
-    // 蜗牛搜素报价
-    getFlightPrice(flightPrice) {
-      this.$store
-        .dispatch("order/getFlightPrice", flightPrice)
-        .then(data => {
-          if (data) {
-            this.flightData.forEach((item, index) => {
-              if (item.flightNum == flightPrice.flightNum) {
-                this.$set((item["offerPrice"] = data));
-              }
-            });
-            this.flightData = [...this.flightData];
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    //点击表格行展开展开行
-    clickRowHandle(row, index, e) {
-      let flightPrice = {
-        arr: row.arr,
-        dpt: row.dpt,
-        date: row.flightDate,
-        ex_track: row.exTrack,
-        flightNum: row.flightNum
-      };
-      if (!row.offerPrice) {
-        this.getFlightPrice(flightPrice);
+            console.log(error);
+          });
+      },
+      // 蜗牛搜素报价
+      getFlightPrice(flightPrice) {
+        this.$store
+          .dispatch("order/getFlightPrice", flightPrice)
+          .then(data => {
+            if (data) {
+              this.flightData.forEach((item, index) => {
+                if (item.flightNum == flightPrice.flightNum) {
+                  this.$set((item["offerPrice"] = data));
+                }
+              });
+              this.flightData = [...this.flightData];
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      //点击表格行展开展开行
+      clickRowHandle(row, index, e) {
+        let flightPrice = {
+          arr: row.arr,
+          dpt: row.dpt,
+          date: row.flightDate,
+          ex_track: row.exTrack,
+          flightNum: row.flightNum
+        };
+        if (!row.offerPrice) {
+          this.getFlightPrice(flightPrice);
+        }
+        this.$refs.refTable.toggleRowExpansion(row);
+      },
+      // 点击按钮展开展开行
+      expandChange(row) {
+        let flightPrice = {
+          arr: row.arr,
+          dpt: row.dpt,
+          date: row.flightDate,
+          ex_track: row.exTrack,
+          flightNum: row.flightNum
+        };
+        if (!row.offerPrice) {
+          this.getFlightPrice(flightPrice);
+        }
+      },
+      /*初始化用工列表中的生日日期格式*/
+      initDate(dateStr, format) {
+        if (dateStr > 0) {
+          let date = new Date(dateStr);
+          return this.$moment(date).format(format);
+        } else {
+          return "";
+        }
+      },
+      formatAmount(amount) {
+        if (!amount) {
+          return "￥0.00";
+        }
+        return "￥" + this.$numeral(amount).format("0.00");
       }
-      this.$refs.refTable.toggleRowExpansion(row);
-    },
-    // 点击按钮展开展开行
-    expandChange(row) {
-      let flightPrice = {
-        arr: row.arr,
-        dpt: row.dpt,
-        date: row.flightDate,
-        ex_track: row.exTrack,
-        flightNum: row.flightNum
-      };
-      if (!row.offerPrice) {
-        this.getFlightPrice(flightPrice);
-      }
-    },
-    /*初始化用工列表中的生日日期格式*/
-    initDate(dateStr, format) {
-      if (dateStr > 0) {
-        let date = new Date(dateStr);
-        return this.$moment(date).format(format);
-      } else {
-        return "";
-      }
-    },
-    formatAmount(amount) {
-      if (!amount) {
-        return "￥0.00";
-      }
-      return "￥" + this.$numeral(amount).format("0.00");
     }
-  }
-};
+  };
 </script>
 <style scoped>
-.contentBox {
-  padding-top: 0px !important;
-  padding-bottom: 0px !important;
-}
+  .contentBox {
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+  }
 </style>

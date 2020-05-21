@@ -229,377 +229,379 @@
 </template>
 
 <script>
-import {
-  formatOrderType,
-  formatCategory,
-  formatStatus,
-  formatAgeType,
-  formatCardType
-} from "@/utils/status.js";
-
-export default {
-  name: "orderDetail",
-  data() {
-    return {
-      rootOrderNo: "",
-      ticketNoData: "",
-      changeHtml: "",
-      refundHtml: "",
-      messageData: "",
-      flightData: [],
-      passengerData: [],
-      tableData: {},
-      sellOrderType: "",
-      orderTree: [],
-      sourceOrderNo: "",
-      refundChangeRule: "",
-      refundpassengers: "",
-      timer: null,
-      orderNo: this.$route.query.orderNo,
-      changeDataTop: {
-        reason: "",
-        flight: "",
-        flightDate: "",
-        passagers: [],
-        airDivision: "",
-        arrivalTime: "",
-        flightNum: "",
-        departureTime: ""
-      },
-      activeNames: ["1", "2", "3", "4"],
-      //订单详情状态
-      orderDetail_orderState: "",
-      //订单详情意见及备注
-      orderDetail_orderComment: "",
-      //订单详情触发定时器
-      detailInfoTimer: null
-    };
-  },
-  components: {},
-  methods: {
+  import {
     formatOrderType,
-    formatStatus,
     formatCategory,
+    formatStatus,
     formatAgeType,
-    formatCardType,
+    formatCardType
+  } from "@/utils/status.js";
 
-    //蜗牛展示按钮
-    woniuPerateButton(row) {
-      var flag = false;
-      if (
-        row.orderSource == "QUNAR_OPEN" ||
-        row.merchantId == "d381a4abdfa643fea6be8736dd11c1e1" ||
-        row.merchantId == "746807b6d2ad40428d36b66d7bb8a79c"
-      ) {
-        flag = true;
-      }
-      return flag;
+  export default {
+    name: "orderDetail",
+    data() {
+      return {
+        rootOrderNo: "",
+        ticketNoData: "",
+        changeHtml: "",
+        refundHtml: "",
+        messageData: "",
+        flightData: [],
+        passengerData: [],
+        tableData: {},
+        sellOrderType: "",
+        orderTree: [],
+        sourceOrderNo: "",
+        refundChangeRule: "",
+        refundpassengers: "",
+        timer: null,
+        orderNo: this.$route.query.orderNo,
+        changeDataTop: {
+          reason: "",
+          flight: "",
+          flightDate: "",
+          passagers: [],
+          airDivision: "",
+          arrivalTime: "",
+          flightNum: "",
+          departureTime: ""
+        },
+        activeNames: ["1", "2", "3", "4"],
+        //订单详情状态
+        orderDetail_orderState: "",
+        //订单详情意见及备注
+        orderDetail_orderComment: "",
+        //订单详情触发定时器
+        detailInfoTimer: null
+      };
     },
-    // 获取详情信息
-    getOrderDetail(orderNo) {
-      this.$store
-        .dispatch("order/getOrderDetail", orderNo)
-        .then(data => {
-          if (data) {
-            this.tableData = data;
-            this.refundChangeRule = data.refundChangeRule;
-            this.sourceOrderNo = data.sourceOrderNo;
-            this.rootOrderNo = data.rootOrderNo;
-            if (data.rootOrderNo) {
-              this.getOrderTree();
-            }
-            this.getMessage();
-            this.sellOrderType = data.orderType;
-            this.getMessageHtml();
-            if (data.orderDetailList) {
-              this.passengerData = data.orderDetailList;
-            }
-            if (data.flights) {
-              this.flightData = data.flights;
-            }
-            this.triggerDetailInfoTimer();
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    // 返回
-    goBack() {
-      this.$router.go(-1);
-    },
-    lookOrderDetailList(row) {
-      console.log(row,"rowF")
-    },
-    //延时获取采购树
-    timeOutGetOrderTree() {
-      let num = 0;
-      var second = 3;
-      const timer = setInterval(() => {
-        if (num < second) {
-          num++;
-        } else {
-          clearInterval(timer);
-          this.getOrderTree();
+    components: {},
+    methods: {
+      formatOrderType,
+      formatStatus,
+      formatCategory,
+      formatAgeType,
+      formatCardType,
+
+      //蜗牛展示按钮
+      woniuPerateButton(row) {
+        var flag = false;
+        if (
+          row.orderSource == "QUNAR_OPEN" ||
+          row.merchantId == "d381a4abdfa643fea6be8736dd11c1e1" ||
+          row.merchantId == "746807b6d2ad40428d36b66d7bb8a79c"
+        ) {
+          flag = true;
         }
-      }, 1000);
-    },
-
-    // 获取采购单信息
-    getOrderTree() {
-      let params = {};
-      params.rootOrderNo = this.rootOrderNo;
-      params.category = 1;
-      this.$store
-        .dispatch("order/getOrderTree", params)
-        .then(data => {
-          if (data) {
-            this.orderTree = data;
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-
-    // 消息刷新
-    getMessage() {
-      this.$store
-        .dispatch("order/getMessageDetail", this.sourceOrderNo)
-        .then(data => {
-          if (data) {
-            this.messageData = data;
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    // 退/改html刷新
-    refreshHtml() {
-      this.getMessageHtml();
-    },
-    //刷新采购单信息
-    refreshPurchase() {
-      this.getOrderTree();
-    },
-    // 获取html
-    getMessageHtml() {
-      if (
-        this.sellOrderType == 20 ||
-        this.sellOrderType == 21 ||
-        this.sellOrderType == 22 ||
-        this.sellOrderType == 23
-      ) {
-        this.getRefundHtml();
-      } else if (this.sellOrderType == 30 || this.sellOrderType == 31) {
-        this.getChangeHtml();
-      }
-    },
-    // 获取销售改签信息Html
-    getChangeHtml() {
-      this.$store
-        .dispatch("order/getChangeHtml", this.sourceOrderNo)
-        .then(data => {
-          if (data) {
-            this.changeHtml = data;
-            let _arr = [];
-            this.tableData.passengers.forEach(item => {
-              if (this.changeHtml.indexOf(item.name) != -1) {
-                _arr.push(item);
+        return flag;
+      },
+      // 获取详情信息
+      getOrderDetail(orderNo) {
+        this.$store
+          .dispatch("order/getOrderDetail", orderNo)
+          .then(data => {
+            if (data) {
+              this.tableData = data;
+              this.refundChangeRule = data.refundChangeRule;
+              this.sourceOrderNo = data.sourceOrderNo;
+              this.rootOrderNo = data.rootOrderNo;
+              if (data.rootOrderNo) {
+                this.getOrderTree();
               }
-            });
-            this.changeDataTop.passagers = _arr;
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    // 获取退票改签信息Html
-    getRefundHtml() {
-      this.$store
-        .dispatch("order/getRefundHtml", this.sourceOrderNo)
-        .then(data => {
-          if (data) {
-            this.refundHtml = data;
-            let temp = [];
-            this.tableData.passengers.forEach(item => {
-              if (this.refundHtml.indexOf(item.name) != -1) {
-                temp.push(item);
+              this.getMessage();
+              this.sellOrderType = data.orderType;
+              this.getMessageHtml();
+              if (data.orderDetailList) {
+                this.passengerData = data.orderDetailList;
               }
-            });
-            this.refundpassengers = temp;
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    qunarDetailHtml() {
-      this.$store
-        .dispatch("order/qunarDetailHtml", {
-          sourceOrderNo: this.sourceOrderNo
-        })
-        .then(data => {
-          if (data) {
-            let el = document.createElement("div");
-            el.innerHTML = data.split("script>\n")[1];
-            this.orderDetail_orderState = el.querySelector(
-              "#j-switch-form > div.b-bkifo.g-clear > div.e-bkifo-rt > div > h1"
-            ).textContent;
-            let orderComment = el.querySelector(
-              "#j-switch-orderBook > form.j-passenger > div.btn-box.j-ticket-btn > span.light > div"
-            ).textContent;
-            if (orderComment) {
-              this.orderDetail_orderComment = orderComment;
+              if (data.flights) {
+                this.flightData = data.flights;
+              }
+              this.triggerDetailInfoTimer();
             }
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    triggerDetailInfoTimer() {
-      //先执行一次，然后触发定时器。
-      this.qunarDetailHtml();
-      this.detailInfoTimer = setInterval(() => {
-        this.qunarDetailHtml();
-      }, 30000);
-    },
-    // 删除
-    orderTreeRemove(row) {
-      this.open(
-        this.delete,
-        row.orderNo,
-        "此操作将删除该订单的信息, 是否继续?"
-      );
-    },
-    // 删除
-    delete(orderNo) {
-      this.$store
-        .dispatch("order/removeOne", { orderNo: orderNo })
-        .then(data => {
-          if (data) {
-            this.$message({
-              type: "success",
-              message: "删除成功!"
-            });
-            this.timeOutGetOrderTree();
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      // 返回
+      goBack() {
+        this.$router.go(-1);
+      },
+      lookOrderDetailList(row) {
+        console.log(row, "rowF")
+      },
+      //延时获取采购树
+      timeOutGetOrderTree() {
+        let num = 0;
+        var second = 3;
+        const timer = setInterval(() => {
+          if (num < second) {
+            num++;
           } else {
+            clearInterval(timer);
+            this.getOrderTree();
+          }
+        }, 1000);
+      },
+
+      // 获取采购单信息
+      getOrderTree() {
+        let params = {};
+        params.rootOrderNo = this.rootOrderNo;
+        params.category = 1;
+        this.$store
+          .dispatch("order/getOrderTree", params)
+          .then(data => {
+            if (data) {
+              this.orderTree = data;
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+
+      // 消息刷新
+      getMessage() {
+        this.$store
+          .dispatch("order/getMessageDetail", this.sourceOrderNo)
+          .then(data => {
+            if (data) {
+              this.messageData = data;
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      // 退/改html刷新
+      refreshHtml() {
+        this.getMessageHtml();
+      },
+      //刷新采购单信息
+      refreshPurchase() {
+        this.getOrderTree();
+      },
+      // 获取html
+      getMessageHtml() {
+        if (
+          this.sellOrderType == 20 ||
+          this.sellOrderType == 21 ||
+          this.sellOrderType == 22 ||
+          this.sellOrderType == 23
+        ) {
+          this.getRefundHtml();
+        } else if (this.sellOrderType == 30 || this.sellOrderType == 31) {
+          this.getChangeHtml();
+        }
+      },
+      // 获取销售改签信息Html
+      getChangeHtml() {
+        this.$store
+          .dispatch("order/getChangeHtml", this.sourceOrderNo)
+          .then(data => {
+            if (data) {
+              this.changeHtml = data;
+              let _arr = [];
+              this.tableData.passengers.forEach(item => {
+                if (this.changeHtml.indexOf(item.name) != -1) {
+                  _arr.push(item);
+                }
+              });
+              this.changeDataTop.passagers = _arr;
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      // 获取退票改签信息Html
+      getRefundHtml() {
+        this.$store
+          .dispatch("order/getRefundHtml", this.sourceOrderNo)
+          .then(data => {
+            if (data) {
+              this.refundHtml = data;
+              let temp = [];
+              this.tableData.passengers.forEach(item => {
+                if (this.refundHtml.indexOf(item.name) != -1) {
+                  temp.push(item);
+                }
+              });
+              this.refundpassengers = temp;
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      qunarDetailHtml() {
+        this.$store
+          .dispatch("order/qunarDetailHtml", {
+            sourceOrderNo: this.sourceOrderNo
+          })
+          .then(data => {
+            if (data) {
+              let el = document.createElement("div");
+              el.innerHTML = data.split("script>\n")[1];
+              this.orderDetail_orderState = el.querySelector(
+                "#j-switch-form > div.b-bkifo.g-clear > div.e-bkifo-rt > div > h1"
+              ).textContent;
+              let orderComment = el.querySelector(
+                "#j-switch-orderBook > form.j-passenger > div.btn-box.j-ticket-btn > span.light > div"
+              ).textContent;
+              if (orderComment) {
+                this.orderDetail_orderComment = orderComment;
+              }
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      triggerDetailInfoTimer() {
+        //先执行一次，然后触发定时器。
+        this.qunarDetailHtml();
+        this.detailInfoTimer = setInterval(() => {
+          this.qunarDetailHtml();
+        }, 30000);
+      },
+      // 删除
+      orderTreeRemove(row) {
+        this.open(
+          this.delete,
+          row.orderNo,
+          "此操作将删除该订单的信息, 是否继续?"
+        );
+      },
+      // 删除
+      delete(orderNo) {
+        this.$store
+          .dispatch("order/removeOne", {orderNo: orderNo})
+          .then(data => {
+            if (data) {
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
+              this.timeOutGetOrderTree();
+            } else {
+              this.$message({
+                type: "info",
+                message: "删除失败!"
+              });
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      // 删除提示
+      open(func, data, message) {
+        this.$confirm(message, "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
+          .then(() => {
+            func(data);
+          })
+          .catch(() => {
             this.$message({
               type: "info",
-              message: "删除失败!"
+              message: "已取消删除"
             });
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    // 删除提示
-    open(func, data, message) {
-      this.$confirm(message, "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          func(data);
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除"
           });
+      },
+      // 格式化日期
+      initDate(dateStr, format) {
+        if (dateStr > 0) {
+          let date = new Date(dateStr);
+          return this.$moment(date).format(format);
+        } else {
+          return "";
+        }
+      },
+      //格式化乘客信息
+      formatPassengersTicket(data) {
+        if (!data || data.length == 0) {
+          return "";
+        }
+        let str = "";
+        data.forEach(item => {
+          str += item.name + " - " + item.ticketNo + "<br/>";
         });
-    },
-    // 格式化日期
-    initDate(dateStr, format) {
-      if (dateStr > 0) {
-        let date = new Date(dateStr);
-        return this.$moment(date).format(format);
-      } else {
-        return "";
+        return str;
+      },
+      // 格式化航班信息
+      formatFlightNo(data) {
+        if (!data || data.length == 0) {
+          return "";
+        }
+        return data[0].flightCode;
+      },
+
+      // 格式化数字
+      formatAmount(amount) {
+        if (!amount) {
+          return "￥0.00";
+        }
+        return "￥" + this.$numeral(amount).format("0.00");
       }
     },
-    //格式化乘客信息
-    formatPassengersTicket(data) {
-      if (!data || data.length == 0) {
-        return "";
-      }
-      let str = "";
-      data.forEach(item => {
-        str += item.name + " - " + item.ticketNo + "<br/>";
-      });
-      return str;
+    created() {
+      this.getOrderDetail(this.orderNo);
     },
-    // 格式化航班信息
-    formatFlightNo(data) {
-      if (!data || data.length == 0) {
-        return "";
+    // 离开页面销毁定时器
+    beforeDestroy() {
+      if (this.timer) {
+        //如果定时器还在运行 或者直接关闭，不用判断
+        clearInterval(this.timer); //关闭
       }
-      return data[0].flightCode;
+      if (this.detailInfoTimer) {
+        clearInterval(this.detailInfoTimer);
+      }
     },
 
-    // 格式化数字
-    formatAmount(amount) {
-      if (!amount) {
-        return "￥0.00";
+    computed: {
+      formatDate() {
+        return function (dateStr, format) {
+          return this.initDate(dateStr, format);
+        };
       }
-      return "￥" + this.$numeral(amount).format("0.00");
     }
-  },
-  created() {
-    this.getOrderDetail(this.orderNo);
-  },
-  // 离开页面销毁定时器
-  beforeDestroy() {
-    if (this.timer) {
-      //如果定时器还在运行 或者直接关闭，不用判断
-      clearInterval(this.timer); //关闭
-    }
-    if (this.detailInfoTimer) {
-      clearInterval(this.detailInfoTimer);
-    }
-  },
-
-  computed: {
-    formatDate() {
-      return function(dateStr, format) {
-        return this.initDate(dateStr, format);
-      };
-    }
-  }
-};
+  };
 </script>
 
 <style scoped>
-.contentBox {
-  padding-top: 0px !important;
-  padding-bottom: 0px !important;
-}
+  .contentBox {
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+  }
 </style>
 
 <style>
-.deadlineTicketTime label {
-  color: #ff4600;
-}
+  .deadlineTicketTime label {
+    color: #ff4600;
+  }
 
-.deadlineTicketTime {
-  color: #ff4600;
-}
-.el-collapse-item__header {
-  background-color: #fafafa;
-  height: 35px;
-  font-size: 12px;
-  flex: 1 0 auto;
-  order: -1;
-  padding-left: 15px;
-}
-.collapse-title {
-  flex: 1 0 90%;
-  order: 1;
-}
+  .deadlineTicketTime {
+    color: #ff4600;
+  }
+
+  .el-collapse-item__header {
+    background-color: #fafafa;
+    height: 35px;
+    font-size: 12px;
+    flex: 1 0 auto;
+    order: -1;
+    padding-left: 15px;
+  }
+
+  .collapse-title {
+    flex: 1 0 90%;
+    order: 1;
+  }
 </style>
 

@@ -141,245 +141,246 @@
 </template>
 
 <script>
-import orderSearch from "./Search.vue";
-import {
-  formatCategory,
-  formatOrderType,
-  formatStatus,
-  formatVoyageType
-} from "@/utils/status.js";
-import {
-  formatPassengers,
-  formatTicketNo,
-  formatFlightDate,
-  formatFlightNo,
-  formatFlight,
-  formatAmount
-} from "@/utils/orderFormdata.js";
-
-export default {
-  name: "orderList",
-  data() {
-    return {
-      currentPage: 1,
-      pageSize: 10,
-      total: 0,
-      loading: true,
-      dialogVisible: false,
-      tableData: [],
-      searchParams: {},
-      count: []
-    };
-  },
-  components: {
-    orderSearch
-  },
-  methods: {
-    formatStatus,
+  import orderSearch from "./Search.vue";
+  import {
     formatCategory,
     formatOrderType,
-    formatVoyageType,
+    formatStatus,
+    formatVoyageType
+  } from "@/utils/status.js";
+  import {
     formatPassengers,
     formatTicketNo,
     formatFlightDate,
     formatFlightNo,
     formatFlight,
-    formatAmount,
-    handleSizeChange: function(size) {
-      this.pageSize = size;
-      this.searchParams.pageSize = this.pageSize;
-      this.loadData(this.searchParams);
-    },
-    prevClick(page) {
-      this.currentPage = page;
-      this.searchParams.pageSize = this.pageSize;
-      this.searchParams.currentPage = this.currentPage;
-      this.loadData(this.searchParams);
-    },
-    nextClick(page) {
-      this.currentPage = page;
-      this.searchParams.pageSize = this.pageSize;
-      this.searchParams.currentPage = this.currentPage;
-      this.loadData(this.searchParams);
-    },
-    loadData(params) {
-      this.$store
-        .dispatch("order/getList", {
-          filters: params
-        })
-        .then(data => {
-          if (data) {
-            this.tableData = data;
-            this.loadTotal(params);
-            this.loadCount(params);
-          }
-          this.loading = false;
-        })
-        .catch(error => {
-          this.loading = false;
-          console.log(error);
-        });
-    },
-    exportOrder(params) {
-      this.$store.dispatch("order/exportOrder", {
-        filters: params
-      });
-    },
-    loadTotal(params) {
-      this.$store
-        .dispatch("order/getTotal", {
-          filters: params
-        })
-        .then(data => {
-          if (data >= 0) {
-            this.total = data;
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    loadCount(params) {
-      this.$store
-        .dispatch("order/getCount", {
-          filters: params
-        })
-        .then(data => {
-          if (data) {
-            this.count = data;
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    getSummaries(params) {
-      const { columns } = params;
-      const sums = [];
-      columns.forEach((item, index) => {
-        if (index === 0) {
-          sums[index] = "统计";
-          return;
-        }
-        switch (item.property !== "" && item.property) {
-          case "amount":
-            sums[index] =
-              "￥" + this.$numeral(this.count.amount).format("0,0.00");
-            break;
-          case "transactionAmount":
-            sums[index] =
-              "￥" +
-              this.$numeral(this.count.transactionAmount).format("0,0.00");
-            break;
-          default:
-            sums[index] = "";
-            break;
-        }
-      });
-      return sums;
-    },
-    handleSearch(params) {
-      var exportFlag = params.exportFlag;
-      delete params.exportFlag;
-      if (!params) {
-        params = {};
-        this.searchParams = params;
-        if (exportFlag == 1) {
-          this.exportOrder(this.searchParams);
-        } else {
-          this.loadData(this.searchParams);
-        }
-      } else {
-        const newParams = {};
-        for (let key in params) {
-          if (params[key] && _.isArray(params[key])) {
-            if (key === "emptyData") {
-              params[key].forEach(item => {
-                newParams[item] = "";
-              });
-            } else {
-              let start = "start" + key.charAt(0).toUpperCase() + key.slice(1);
-              let end = "end" + key.charAt(0).toUpperCase() + key.slice(1);
-              newParams[start] = params[key][0];
-              newParams[end] = params[key][1];
-            }
-          } else if (params[key]) {
-            newParams[key] = params[key];
-          }
-        }
-        this.searchParams = newParams;
-        this.searchParams.pageSize = this.pageSize;
-        if (exportFlag == 1) {
-          this.exportOrder(this.searchParams);
-        } else {
-          this.loadData(this.searchParams);
-          this.$message({
-            type: "success",
-            message: "查询成功！"
-          });
-        }
-      }
-    },
-    handleRemove(orderNo) {
-      this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.$store
-            .dispatch("order/removeOne", { orderNo: orderNo })
-            .then(() => {
-              if (1 === this.tableData.length) {
-                this.prevClick();
-              } else {
-                this.loadData(this.searchParams);
-              }
-            })
-            .catch(error => {
-              console.log(error);
-            });
-        })
-        .catch(err => {
-          console.error(err);
-        });
-    },
-    handleCancel() {
-      this.dialogVisible = false;
-    },
-    handleSave() {},
-    handleAdd() {
-      this.dialogVisible = true;
-    },
-    handleOrderDetail(row) {
-      let path = "";
-      path = "/order/detail2";
-      this.$router.push({
-        path: path,
-        query: {
-          orderNo: row.orderNo
-        }
-      });
-    },
-    initDate(dateStr, format) {
-      if (dateStr > 0) {
-        let date = new Date(dateStr);
-        return this.$moment(date).format(format);
-      } else {
-        return "";
-      }
-    },
-  },
-  computed: {
-    formatDate() {
-      return function(dateStr, format) {
-        return this.initDate(dateStr, format);
-      };
-    }
-  },
+    formatAmount
+  } from "@/utils/orderFormdata.js";
 
-  created() {
-    this.loadData(this.searchParams);
-  }
-};
+  export default {
+    name: "orderList",
+    data() {
+      return {
+        currentPage: 1,
+        pageSize: 10,
+        total: 0,
+        loading: true,
+        dialogVisible: false,
+        tableData: [],
+        searchParams: {},
+        count: []
+      };
+    },
+    components: {
+      orderSearch
+    },
+    methods: {
+      formatStatus,
+      formatCategory,
+      formatOrderType,
+      formatVoyageType,
+      formatPassengers,
+      formatTicketNo,
+      formatFlightDate,
+      formatFlightNo,
+      formatFlight,
+      formatAmount,
+      handleSizeChange: function (size) {
+        this.pageSize = size;
+        this.searchParams.pageSize = this.pageSize;
+        this.loadData(this.searchParams);
+      },
+      prevClick(page) {
+        this.currentPage = page;
+        this.searchParams.pageSize = this.pageSize;
+        this.searchParams.currentPage = this.currentPage;
+        this.loadData(this.searchParams);
+      },
+      nextClick(page) {
+        this.currentPage = page;
+        this.searchParams.pageSize = this.pageSize;
+        this.searchParams.currentPage = this.currentPage;
+        this.loadData(this.searchParams);
+      },
+      loadData(params) {
+        this.$store
+          .dispatch("order/getList", {
+            filters: params
+          })
+          .then(data => {
+            if (data) {
+              this.tableData = data;
+              this.loadTotal(params);
+              this.loadCount(params);
+            }
+            this.loading = false;
+          })
+          .catch(error => {
+            this.loading = false;
+            console.log(error);
+          });
+      },
+      exportOrder(params) {
+        this.$store.dispatch("order/exportOrder", {
+          filters: params
+        });
+      },
+      loadTotal(params) {
+        this.$store
+          .dispatch("order/getTotal", {
+            filters: params
+          })
+          .then(data => {
+            if (data >= 0) {
+              this.total = data;
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      loadCount(params) {
+        this.$store
+          .dispatch("order/getCount", {
+            filters: params
+          })
+          .then(data => {
+            if (data) {
+              this.count = data;
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      getSummaries(params) {
+        const {columns} = params;
+        const sums = [];
+        columns.forEach((item, index) => {
+          if (index === 0) {
+            sums[index] = "统计";
+            return;
+          }
+          switch (item.property !== "" && item.property) {
+            case "amount":
+              sums[index] =
+                "￥" + this.$numeral(this.count.amount).format("0,0.00");
+              break;
+            case "transactionAmount":
+              sums[index] =
+                "￥" +
+                this.$numeral(this.count.transactionAmount).format("0,0.00");
+              break;
+            default:
+              sums[index] = "";
+              break;
+          }
+        });
+        return sums;
+      },
+      handleSearch(params) {
+        var exportFlag = params.exportFlag;
+        delete params.exportFlag;
+        if (!params) {
+          params = {};
+          this.searchParams = params;
+          if (exportFlag == 1) {
+            this.exportOrder(this.searchParams);
+          } else {
+            this.loadData(this.searchParams);
+          }
+        } else {
+          const newParams = {};
+          for (let key in params) {
+            if (params[key] && _.isArray(params[key])) {
+              if (key === "emptyData") {
+                params[key].forEach(item => {
+                  newParams[item] = "";
+                });
+              } else {
+                let start = "start" + key.charAt(0).toUpperCase() + key.slice(1);
+                let end = "end" + key.charAt(0).toUpperCase() + key.slice(1);
+                newParams[start] = params[key][0];
+                newParams[end] = params[key][1];
+              }
+            } else if (params[key]) {
+              newParams[key] = params[key];
+            }
+          }
+          this.searchParams = newParams;
+          this.searchParams.pageSize = this.pageSize;
+          if (exportFlag == 1) {
+            this.exportOrder(this.searchParams);
+          } else {
+            this.loadData(this.searchParams);
+            this.$message({
+              type: "success",
+              message: "查询成功！"
+            });
+          }
+        }
+      },
+      handleRemove(orderNo) {
+        this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
+          .then(() => {
+            this.$store
+              .dispatch("order/removeOne", {orderNo: orderNo})
+              .then(() => {
+                if (1 === this.tableData.length) {
+                  this.prevClick();
+                } else {
+                  this.loadData(this.searchParams);
+                }
+              })
+              .catch(error => {
+                console.log(error);
+              });
+          })
+          .catch(err => {
+            console.error(err);
+          });
+      },
+      handleCancel() {
+        this.dialogVisible = false;
+      },
+      handleSave() {
+      },
+      handleAdd() {
+        this.dialogVisible = true;
+      },
+      handleOrderDetail(row) {
+        let path = "";
+        path = "/order/detail2";
+        this.$router.push({
+          path: path,
+          query: {
+            orderNo: row.orderNo
+          }
+        });
+      },
+      initDate(dateStr, format) {
+        if (dateStr > 0) {
+          let date = new Date(dateStr);
+          return this.$moment(date).format(format);
+        } else {
+          return "";
+        }
+      },
+    },
+    computed: {
+      formatDate() {
+        return function (dateStr, format) {
+          return this.initDate(dateStr, format);
+        };
+      }
+    },
+
+    created() {
+      this.loadData(this.searchParams);
+    }
+  };
 </script>

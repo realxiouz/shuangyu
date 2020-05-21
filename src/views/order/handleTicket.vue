@@ -368,7 +368,7 @@
           merchantId: "",
           pointAmount: 0,
           receiptAmount: 0,
-          finishTime:""
+          finishTime: ""
         },
         statusData: statusData,
         formRules: {

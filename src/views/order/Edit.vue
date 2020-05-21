@@ -17,20 +17,20 @@
   </div>
 </template>
 <script>
-    function defaultData() {
-        return {
-            orderNo: '',
-            rootOrderNo: ""
-        };
+  function defaultData() {
+    return {
+      orderNo: '',
+      rootOrderNo: ""
     };
-    export default {
-        name: "orderEdit",
+  };
+  export default {
+    name: "orderEdit",
 
-        data() {
-            return {
-                formData: defaultData,
-            };
-        }
-    };
+    data() {
+      return {
+        formData: defaultData,
+      };
+    }
+  };
 </script>
 

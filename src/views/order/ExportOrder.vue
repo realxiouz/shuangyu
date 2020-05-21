@@ -63,105 +63,105 @@
   </div>
 </template>
 <script>
-import selectStaff from "./selectStaff";
+  import selectStaff from "./selectStaff";
 
-import { orderType } from "@/utils/status.js";
+  import {orderType} from "@/utils/status.js";
 
-export default {
-  name: "exportOrder",
-  data() {
-    return {
-      formData: {
-        firmId: "",
-        historyOrCurrent: "",
-        orderType: "",
-        sourceOrderNo: "",
-        staffId: ""
+  export default {
+    name: "exportOrder",
+    data() {
+      return {
+        formData: {
+          firmId: "",
+          historyOrCurrent: "",
+          orderType: "",
+          sourceOrderNo: "",
+          staffId: ""
+        },
+        staffData: {},
+        orderType: orderType,
+        staffDialog: false,
+        staffId: "",
+        name: ""
+      };
+    },
+    components: {
+      selectStaff
+    },
+    methods: {
+      onCancel() {
+        this.staffDialog = false;
       },
-      staffData: {},
-      orderType: orderType,
-      staffDialog: false,
-      staffId: "",
-      name: ""
-    };
-  },
-  components: {
-    selectStaff
-  },
-  methods: {
-    onCancel() {
-      this.staffDialog = false;
-    },
-    showStaffDialog() {
-      this.staffDialog = true;
-    },
-    handleConfirm(params) {
-      // console.log(params);
-      this.staffData = params;
-      this.staffId = params.staffId;
-      this.name = params.fullName;
-      this.staffDialog = false;
-    },
-    exportOrder() {
-      let params = { ...this.formData };
-      params.staffId = this.staffId;
-      params.name = this.name;
-      params.firmId = this.$store.state.loginInfo.firm.firmId;
-      if (params.sourceOrderNo == "") {
-        this.$notify({
-          title: "提示",
-          message: "订单号不能为空！",
-          type: "warning",
-          duration: 4500
-        });
-        return;
+      showStaffDialog() {
+        this.staffDialog = true;
+      },
+      handleConfirm(params) {
+        // console.log(params);
+        this.staffData = params;
+        this.staffId = params.staffId;
+        this.name = params.fullName;
+        this.staffDialog = false;
+      },
+      exportOrder() {
+        let params = {...this.formData};
+        params.staffId = this.staffId;
+        params.name = this.name;
+        params.firmId = this.$store.state.loginInfo.firm.firmId;
+        if (params.sourceOrderNo == "") {
+          this.$notify({
+            title: "提示",
+            message: "订单号不能为空！",
+            type: "warning",
+            duration: 4500
+          });
+          return;
+        }
+        if (params.orderType == "") {
+          this.$notify({
+            title: "提示",
+            message: "请选择订单状态",
+            type: "warning",
+            duration: 4500
+          });
+          return;
+        }
+        if (params.historyOrCurrent == "") {
+          this.$notify({
+            title: "提示",
+            message: "请选择类型",
+            type: "warning",
+            duration: 4500
+          });
+          return;
+        }
+        if (params.staffId == "") {
+          this.$notify({
+            title: "提示",
+            message: "请选择需要派遣的员工",
+            type: "warning",
+            duration: 4500
+          });
+          return;
+        }
+        this.$store
+          .dispatch("qunarOrderController/orderNonexist", params)
+          .then(data => {
+            if (data.code == 0) {
+              this.$message({
+                type: "success",
+                message: data.data
+              });
+            } else {
+              this.$message({
+                type: "warning",
+                message: data.msg
+              });
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
       }
-      if (params.orderType == "") {
-        this.$notify({
-          title: "提示",
-          message: "请选择订单状态",
-          type: "warning",
-          duration: 4500
-        });
-        return;
-      }
-      if (params.historyOrCurrent == "") {
-        this.$notify({
-          title: "提示",
-          message: "请选择类型",
-          type: "warning",
-          duration: 4500
-        });
-        return;
-      }
-      if (params.staffId == "") {
-        this.$notify({
-          title: "提示",
-          message: "请选择需要派遣的员工",
-          type: "warning",
-          duration: 4500
-        });
-        return;
-      }
-      this.$store
-        .dispatch("qunarOrderController/orderNonexist", params)
-        .then(data => {
-          if (data.code == 0) {
-            this.$message({
-              type: "success",
-              message: data.data
-            });
-          } else {
-            this.$message({
-              type: "warning",
-              message: data.msg
-            });
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
     }
-  }
-};
+  };
 </script>

@@ -30,7 +30,8 @@
         <el-col :span="8">
           <el-form-item prop="profit" label="利润金额:">
             <!--<el-input placeholder="请输入利润金额..." v-model="formData.profit"></el-input>-->
-            <el-input-number v-model="formData.profit" controls-position="right" :precision="2" placeholder="请输入利润金额..." style="width: 100%"></el-input-number>
+            <el-input-number v-model="formData.profit" controls-position="right" :precision="2" placeholder="请输入利润金额..."
+                             style="width: 100%"></el-input-number>
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -97,171 +98,171 @@
 </template>
 
 <script>
-import { formatCardType, formatAgeType } from "@/utils/status.js";
+  import {formatCardType, formatAgeType} from "@/utils/status.js";
 
-export default {
-  name: "refundTicket",
-  props: [
-    "refundChangeRule",
-    "refundpassengers",
-    "refundData",
-    "getRefundHtmlData",
-    "sellAmount"
-  ],
-  data() {
-    return {
-      tgqReasons: "",
-      tgqText: "",
-      showFlight: "",
-      reason: "",
-      flightInfo: "",
-      orderDetailList: [],
-      passagersRefund: [],
-      selectPassenger: [],
-      formData: {
-        refundCauseId: "",
-        refundFeeInfo: "",
-        refundCause: "",
-        passengerIds: "",
-        appKey: ""
-      },
-      formRules: {
-        refundCauseId: [
-          { required: true, message: "请选择退票原因", trigger: "change" }
-        ],
-        profit: [
-          {
-            required: true,
-            message: "请选择填写利润金额！",
-            trigger: "blur"
-          }
-        ]
-      }
-    };
-  },
-  methods: {
-    formatCardType,
-    formatAgeType,
-    // 表格复选框选中处理
-    handleSelectionChange(rows) {
-      this.selectPassenger = rows;
-      let str = "";
-      rows.forEach(row => {
-        str += row.id + ",";
-      });
-      str = str.substring(0, str.length - 1);
-      this.formData.passengerIds = str;
-      console.log(str);
-    },
-    // 判断乘客是否可以可以退票
-    selectable(row, index) {
-      if (row.canRefund) {
-        return true;
-      } else {
-        return false;
-      }
-    },
-    // 退票查询
-    refundSearchData(purchaseOrderNo) {
-      this.$store
-        .dispatch("order/refundSearch", purchaseOrderNo)
-        .then(data => {
-          if (data) {
-            this.formData.appKey = data.appKey;
-            console.log(data, "data");
-            if (this.orderDetailList) {
-              for (let i = 0; i < this.orderDetailList.length; i++) {
-                data.result.forEach(item => {
-                  if (this.orderDetailList[i].name.indexOf(item.name) != -1) {
-                    this.orderDetailList[i]["id"] = item.id;
-                    this.orderDetailList[i]["canRefund"] =
-                      item.refundSearchResult.canRefund;
-                  }
-                });
-              }
-              this.passagersRefund = this.orderDetailList;
+  export default {
+    name: "refundTicket",
+    props: [
+      "refundChangeRule",
+      "refundpassengers",
+      "refundData",
+      "getRefundHtmlData",
+      "sellAmount"
+    ],
+    data() {
+      return {
+        tgqReasons: "",
+        tgqText: "",
+        showFlight: "",
+        reason: "",
+        flightInfo: "",
+        orderDetailList: [],
+        passagersRefund: [],
+        selectPassenger: [],
+        formData: {
+          refundCauseId: "",
+          refundFeeInfo: "",
+          refundCause: "",
+          passengerIds: "",
+          appKey: ""
+        },
+        formRules: {
+          refundCauseId: [
+            {required: true, message: "请选择退票原因", trigger: "change"}
+          ],
+          profit: [
+            {
+              required: true,
+              message: "请选择填写利润金额！",
+              trigger: "blur"
             }
-            if (data.result.length > 0) {
-              if (data.result[0].refundSearchResult.tgqReasons) {
-                this.tgqReasons = data.result[0].refundSearchResult.tgqReasons;
-              }
-              if (data.result[0].refundSearchResult.reason) {
-                this.reason = data.result[0].refundSearchResult.reason;
-              }
-              if (data.result[0].refundSearchResult.refundRuleInfo) {
-                this.tgqText =
-                  data.result[0].refundSearchResult.refundRuleInfo.tgqText;
-              }
-              if (data.result[0].refundSearchResult.flightSegmentList) {
-                this.flightInfo =
-                  data.result[0].refundSearchResult.flightSegmentList[0];
-
-                this.showFlight =
-                  this.flightInfo.dptAirport +
-                  "-" +
-                  this.flightInfo.arrAirport +
-                  "--" +
-                  this.flightInfo.flightNo +
-                  "-" +
-                  this.flightInfo.dptDate +
-                  " " +
-                  this.flightInfo.dptTime;
-              }
-            }
-          }
-        })
-        .catch(error => {
-          console.log(error);
+          ]
+        }
+      };
+    },
+    methods: {
+      formatCardType,
+      formatAgeType,
+      // 表格复选框选中处理
+      handleSelectionChange(rows) {
+        this.selectPassenger = rows;
+        let str = "";
+        rows.forEach(row => {
+          str += row.id + ",";
         });
-    },
-    // 退票原因选中处理
-    selectTgqReasons(value) {
-      let code = value;
-      this.tgqReasons.forEach(item => {
-        if (item.code === code) {
-          this.formData.refundFeeInfo =
-            item.refundPassengerPriceInfoList[0].refundFeeInfo;
+        str = str.substring(0, str.length - 1);
+        this.formData.passengerIds = str;
+        console.log(str);
+      },
+      // 判断乘客是否可以可以退票
+      selectable(row, index) {
+        if (row.canRefund) {
+          return true;
+        } else {
+          return false;
         }
-      });
-    },
-    handleSave() {
-      // let _profit = 0;
-      // let count = this.selectPassenger.length;
-      // _profit =
-      //   Number(this.formData.refundFeeInfo.returnRefundFee) * count +
-      //   Number(this.sellAmount);
-      // if (_profit != this.formData.profit) {
-      //   this.$notify({
-      //     title: "提示",
-      //     message: "利润金额计算错误，请重新计算！",
-      //     type: "warning",
-      //     duration: 4500
-      //   });
-      //   return;
-      // }
-      this.$emit("onSaveRefund", this.formData);
-    },
+      },
+      // 退票查询
+      refundSearchData(purchaseOrderNo) {
+        this.$store
+          .dispatch("order/refundSearch", purchaseOrderNo)
+          .then(data => {
+            if (data) {
+              this.formData.appKey = data.appKey;
+              console.log(data, "data");
+              if (this.orderDetailList) {
+                for (let i = 0; i < this.orderDetailList.length; i++) {
+                  data.result.forEach(item => {
+                    if (this.orderDetailList[i].name.indexOf(item.name) != -1) {
+                      this.orderDetailList[i]["id"] = item.id;
+                      this.orderDetailList[i]["canRefund"] =
+                        item.refundSearchResult.canRefund;
+                    }
+                  });
+                }
+                this.passagersRefund = this.orderDetailList;
+              }
+              if (data.result.length > 0) {
+                if (data.result[0].refundSearchResult.tgqReasons) {
+                  this.tgqReasons = data.result[0].refundSearchResult.tgqReasons;
+                }
+                if (data.result[0].refundSearchResult.reason) {
+                  this.reason = data.result[0].refundSearchResult.reason;
+                }
+                if (data.result[0].refundSearchResult.refundRuleInfo) {
+                  this.tgqText =
+                    data.result[0].refundSearchResult.refundRuleInfo.tgqText;
+                }
+                if (data.result[0].refundSearchResult.flightSegmentList) {
+                  this.flightInfo =
+                    data.result[0].refundSearchResult.flightSegmentList[0];
 
-    formatAmount(amount) {
-      if (!amount) {
-        return "￥0.00";
-      }
-      return "￥" + this.$numeral(amount).format("0.00");
-    }
-  },
-  created() {
-    let arr = [];
-    for (let i = 0; i < this.refundpassengers.length; i++) {
-      this.refundData.orderDetailList.forEach(item => {
-        if (this.refundpassengers[i].cardNo.indexOf(item.cardNo) != -1) {
-          arr.push(item);
+                  this.showFlight =
+                    this.flightInfo.dptAirport +
+                    "-" +
+                    this.flightInfo.arrAirport +
+                    "--" +
+                    this.flightInfo.flightNo +
+                    "-" +
+                    this.flightInfo.dptDate +
+                    " " +
+                    this.flightInfo.dptTime;
+                }
+              }
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      // 退票原因选中处理
+      selectTgqReasons(value) {
+        let code = value;
+        this.tgqReasons.forEach(item => {
+          if (item.code === code) {
+            this.formData.refundFeeInfo =
+              item.refundPassengerPriceInfoList[0].refundFeeInfo;
+          }
+        });
+      },
+      handleSave() {
+        // let _profit = 0;
+        // let count = this.selectPassenger.length;
+        // _profit =
+        //   Number(this.formData.refundFeeInfo.returnRefundFee) * count +
+        //   Number(this.sellAmount);
+        // if (_profit != this.formData.profit) {
+        //   this.$notify({
+        //     title: "提示",
+        //     message: "利润金额计算错误，请重新计算！",
+        //     type: "warning",
+        //     duration: 4500
+        //   });
+        //   return;
+        // }
+        this.$emit("onSaveRefund", this.formData);
+      },
+
+      formatAmount(amount) {
+        if (!amount) {
+          return "￥0.00";
         }
-      });
+        return "￥" + this.$numeral(amount).format("0.00");
+      }
+    },
+    created() {
+      let arr = [];
+      for (let i = 0; i < this.refundpassengers.length; i++) {
+        this.refundData.orderDetailList.forEach(item => {
+          if (this.refundpassengers[i].cardNo.indexOf(item.cardNo) != -1) {
+            arr.push(item);
+          }
+        });
+      }
+      this.orderDetailList = arr;
+      this.refundSearchData(this.refundData.sourceOrderNo);
     }
-    this.orderDetailList = arr;
-    this.refundSearchData(this.refundData.sourceOrderNo);
-  }
-};
+  };
 </script>
 <style>
   .el-input-number--mini {

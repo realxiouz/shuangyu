@@ -19,47 +19,47 @@
   </div>
 </template>
 <script>
-export default {
-  name: "taskSelectStaff",
-  data() {
-    return {
-      staffs: [],
-      total: 0,
-      staffList: [],
-      staffData:"",
-      staffId: ""
-    };
-  },
+  export default {
+    name: "taskSelectStaff",
+    data() {
+      return {
+        staffs: [],
+        total: 0,
+        staffList: [],
+        staffData: "",
+        staffId: ""
+      };
+    },
 
-  methods: {
-    handleConfirm() {
-      if (this.staffData == "") {
-        this.$notify({
-          title: "提示",
-          message: "请选择需要派遣的员工",
-          type: "warning",
-          duration: 4500
-        });
-        return;
+    methods: {
+      handleConfirm() {
+        if (this.staffData == "") {
+          this.$notify({
+            title: "提示",
+            message: "请选择需要派遣的员工",
+            type: "warning",
+            duration: 4500
+          });
+          return;
+        }
+        this.$emit("onSave", this.staffData);
+      },
+      handleCurrentChange(row) {
+        this.staffData = row;
+      },
+      loadData() {
+        this.$store
+          .dispatch("orderStaff/getOnlineList", {filter: {}})
+          .then(data => {
+            this.staffList = data;
+          })
+          .catch(error => {
+            console.log(error);
+          });
       }
-      this.$emit("onSave", this.staffData);
     },
-    handleCurrentChange(row) {
-      this.staffData = row;
-    },
-    loadData() {
-      this.$store
-        .dispatch("orderStaff/getOnlineList", { filter: {} })
-        .then(data => {
-          this.staffList = data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
+    created() {
+      this.loadData();
     }
-  },
-  created() {
-    this.loadData();
-  }
-};
+  };
 </script>
