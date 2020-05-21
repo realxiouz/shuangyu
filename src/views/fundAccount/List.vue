@@ -15,7 +15,7 @@
         :tree-props="{children: 'children', hasChildren: 'XXX'}"
       >
         <el-table-column prop="accountCode" label="账号编码" width="80" align="center"></el-table-column>
-        <el-table-column prop="accountName" label="账号名称" width="180"  align="center"></el-table-column>
+        <el-table-column prop="accountName" label="账号名称" width="180" align="center"></el-table-column>
         <el-table-column prop="bankAccount" label="银行账号" width="180" align="center"></el-table-column>
         <el-table-column label="类别" align="center" width="80">
           <template slot-scope="scope">
@@ -24,7 +24,7 @@
         </el-table-column>
         <el-table-column prop="initBalance" label="初始余额" width="100" align="center"></el-table-column>
         <el-table-column prop="balance" label="余额" width="100" align="center"></el-table-column>
-        <el-table-column label="积分/优惠券有效期" align="center" >
+        <el-table-column label="积分/优惠券有效期" align="center">
           <template slot-scope="prop">
             <i v-if="prop.row.expire" class="el-icon-time"></i>
             <span style="margin-left: 10px">{{ formatDate(prop.row.expire,'YYYY-MM-DD') }}</span>
@@ -61,144 +61,151 @@
 </template>
 
 <script>
-import fundAccountSearch from "./Search.vue";
-import fundAccountEdit from "./Edit.vue";
+  import fundAccountSearch from "./Search.vue";
+  import fundAccountEdit from "./Edit.vue";
 
-export default {
-  data() {
-    return {
-      loading: true,
-      dialogVisible: false,
-      searchForm: {},
-      editAccountId: "",
-      pid: "",
-      tableData: []
-    };
-  },
-  methods: {
-    loadData(searchForm) {
-      this.searchForm = searchForm;
-      this.$store
-        .dispatch("fundAccount/getTreeList", { filter: searchForm })
-        .then(data => {
-          this.tableData = data;
-          this.loading = false;
-        })
-        .catch(error => {
-          console.log(error);
-          this.loading = false;
-        });
+  export default {
+    data() {
+      return {
+        loading: true,
+        dialogVisible: false,
+        searchForm: {},
+        editAccountId: "",
+        pid: "",
+        tableData: []
+      };
     },
-    handleAdd() {
-      this.editAccountId = "";
-      this.pid = "";
-      this.dialogVisible = true;
-    },
-    handleSave(formData) {
-      this.dialogVisible = false;
-      this.$store
-        .dispatch("fundAccount/save", formData)
-        .then(() => {
-          this.loadData({});
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    handleCancel() {
-      this.dialogVisible = false;
-    },
-    handleAddChild(accountId) {
-      this.editAccountId = "";
-      this.dialogVisible = true;
-      this.pid = accountId;
-    },
-    handleEdit(accountId) {
-      this.editAccountId = accountId;
-      this.pid = "";
-      this.dialogVisible = true;
-    },
-    handlePrevClick() {
-      this.pageFlag = "prev";
-      this.lastId = this.tableData[0].accountId;
-      this.loadData(this.searchForm);
-    },
-    handleNextClick() {
-      this.pageFlag = "next";
-      this.lastId = this.tableData[this.tableData.length - 1].accountId;
-      this.loadData(this.searchForm);
-    },
-    handleDelete(row) {
-      this.open(
-        this.delete,
-        row.accountId,
-        "此操作将删除该资金账号信息, 是否继续?"
-      );
-    },
-    delete(accountId) {
-      this.$store
-        .dispatch("fundAccount/removeOne", { accountId: accountId })
-        .then(() => {
-          this.lastId = "blank";
-          if (1 === this.tableData.length) {
-            this.handlePrevClick();
-          } else {
-            this.loadData({});
+    methods: {
+      loadData(searchForm) {
+        const newParams = {};
+        if (searchForm) {
+          for (let key in searchForm) {
+            if (searchForm[key]) {
+              newParams[key] = searchForm[key];
+            }
           }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    open(func, data, message) {
-      this.$confirm(message, "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          func(data);
-          this.$message({
-            type: "success",
-            message: "删除成功!"
+        }
+        this.$store
+          .dispatch("fundAccount/getTreeList", {filter: newParams})
+          .then(data => {
+            this.tableData = data;
+            this.loading = false;
+          })
+          .catch(error => {
+            console.log(error);
+            this.loading = false;
           });
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除"
+      },
+      handleAdd() {
+        this.editAccountId = "";
+        this.pid = "";
+        this.dialogVisible = true;
+      },
+      handleSave(formData) {
+        this.dialogVisible = false;
+        this.$store
+          .dispatch("fundAccount/save", formData)
+          .then(() => {
+            this.loadData({});
+          })
+          .catch(error => {
+            console.log(error);
           });
-        });
-    },
-    initCategory(category) {
-      if (0 === category) {
-        return "现金";
-      } else if (1 === category) {
-        return "银行存款";
-      } else if (2 === category) {
-        return "积分";
-      } else if (3 === category) {
-        return "优惠券";
-      } else {
-        return "无";
+      },
+      handleCancel() {
+        this.dialogVisible = false;
+      },
+      handleAddChild(accountId) {
+        this.editAccountId = "";
+        this.dialogVisible = true;
+        this.pid = accountId;
+      },
+      handleEdit(accountId) {
+        this.editAccountId = accountId;
+        this.pid = "";
+        this.dialogVisible = true;
+      },
+      handlePrevClick() {
+        this.pageFlag = "prev";
+        this.lastId = this.tableData[0].accountId;
+        this.loadData(this.searchForm);
+      },
+      handleNextClick() {
+        this.pageFlag = "next";
+        this.lastId = this.tableData[this.tableData.length - 1].accountId;
+        this.loadData(this.searchForm);
+      },
+      handleDelete(row) {
+        this.open(
+          this.delete,
+          row.accountId,
+          "此操作将删除该资金账号信息, 是否继续?"
+        );
+      },
+      delete(accountId) {
+        this.$store
+          .dispatch("fundAccount/removeOne", {accountId: accountId})
+          .then(() => {
+            this.lastId = "blank";
+            if (1 === this.tableData.length) {
+              this.handlePrevClick();
+            } else {
+              this.loadData({});
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      open(func, data, message) {
+        this.$confirm(message, "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
+          .then(() => {
+            func(data);
+            this.$message({
+              type: "success",
+              message: "删除成功!"
+            });
+          })
+          .catch(() => {
+            this.$message({
+              type: "info",
+              message: "已取消删除"
+            });
+          });
+      },
+      initCategory(category) {
+        if (0 === category) {
+          return "现金";
+        } else if (1 === category) {
+          return "银行存款";
+        } else if (2 === category) {
+          return "积分";
+        } else if (3 === category) {
+          return "优惠券";
+        } else {
+          return "无";
+        }
+      },
+      /*初始化用工列表中的生日日期格式*/
+      formatDate(dateStr, format) {
+        if (dateStr > 0) {
+          let date = new Date(dateStr);
+          return this.$moment(date).format(format);
+        } else {
+          return "";
+        }
       }
     },
-    /*初始化用工列表中的生日日期格式*/
-    formatDate(dateStr, format) {
-      if (dateStr > 0) {
-        let date = new Date(dateStr);
-        return this.$moment(date).format(format);
-      } else {
-        return "";
-      }
+    mounted() {
+      this.loadData(this.searchForm);
+    },
+    components: {
+      fundAccountEdit,
+      fundAccountSearch
     }
-  },
-  mounted() {
-    this.loadData(this.searchForm);
-  },
-  components: {
-    fundAccountEdit,
-    fundAccountSearch
-  }
-};
+  };
 </script>
