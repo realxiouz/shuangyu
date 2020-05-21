@@ -355,7 +355,7 @@
           orderType: 10,
           merchantId: "",
           pointAmount: 0,
-          receiptAmount:0
+          receiptAmount: 0
         },
         statusData: statusData,
         formRules: {
