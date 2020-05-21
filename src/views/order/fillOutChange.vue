@@ -126,11 +126,11 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <!--<el-col :span="8">
             <el-form-item label="支出金额:" prop="amount">
               <el-input clearable v-model="formData.amount"></el-input>
             </el-form-item>
-          </el-col>
+          </el-col>-->
           <el-col :span="8">
             <el-form-item label="资金账号:" prop="fundAccount">
               <el-select
@@ -535,13 +535,13 @@ export default {
           });
           return;
         }
-        let _profit = 0;
+        /* let _profit = 0;
         console.log("this.formData.amount" + this.formData.amount);
         console.log("this.sellAmount" + this.sellAmount);
         _profit = Number(this.formData.amount) + Number(this.sellAmount);
         console.log("_profit" + _profit);
         console.log("this.formData.profit" + this.formData.profit);
-        if (_profit != this.formData.profit) {
+       if (_profit != this.formData.profit) {
           this.$notify({
             title: "提示",
             message: "利润金额计算错误，请重新计算！",
@@ -549,7 +549,7 @@ export default {
             duration: 4500
           });
           return;
-        }
+        }*/
       }
       this.$emit("onSave", this.formData);
     }

@@ -126,11 +126,11 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <!--<el-col :span="8">
             <el-form-item label="退回金额:" prop="amount">
               <el-input clearable v-model="formData.amount"></el-input>
             </el-form-item>
-          </el-col>
+          </el-col>-->
           <el-col :span="8">
             <el-form-item label="资金账号:" prop="fundAccount">
               <el-select
@@ -548,7 +548,7 @@ export default {
 
           return;
         }
-        let _profit = 0;
+       /* let _profit = 0;
         _profit = amountTotal + Number(this.sellAmount);
         console.log(_profit, "_profit");
         console.log(this.sellAmount, "this.sellAmount");
@@ -560,7 +560,7 @@ export default {
             duration: 4500
           });
           return;
-        }
+        }*/
       }
       this.$emit("onSave", this.formData);
     }
