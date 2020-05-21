@@ -4,7 +4,7 @@
       :model="formData"
       ref="fillOutRefundForm"
       :rules="formRules"
-      label-width="110px"
+      label-width="130px"
       size="mini"
       style="margin-top:15px;"
     >
@@ -168,6 +168,18 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
+            <el-form-item label="业务完结日期:" prop="finishTime">
+              <el-date-picker
+                type="datetime"
+                format="yyyy-MM-dd HH:mm"
+                placeholder="选择日期"
+                v-model="formData.finishTime"
+                style="width: 100%;"
+                value-format="timestamp"
+              ></el-date-picker>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
             <el-form-item label="订单类型:" prop="orderType">
               <el-select
                 v-model="formData.orderType"
@@ -271,9 +283,14 @@
               <el-input clearable v-model="formData.cabin"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+         <!-- <el-col :span="8">
             <el-form-item label="备注:">
               <el-input clearable v-model="formData.remark"></el-input>
+            </el-form-item>
+          </el-col>-->
+          <el-col :span="16">
+            <el-form-item label="备注:">
+              <el-input type="textarea" :rows="2" clearable v-model="formData.remark"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -327,6 +344,7 @@ export default {
         merchantId: [{ required: true, message: "必填项", trigger: "change" }],
         amount: [{ required: true, message: "必填项！", trigger: "blur" }],
         createTime: [{ required: true, message: "必填项！", trigger: "blur" }],
+        finishTime: [{ required: true, message: "必填项！", trigger: "blur" }],
         fundAccount: [{ required: true, message: "必填项！", trigger: "blur" }],
         profit: [{ required: true, message: "必填项！", trigger: "blur" }],
         dpt: [{ required: true, message: "必填项！", trigger: "blur" }],

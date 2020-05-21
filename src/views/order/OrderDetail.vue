@@ -371,7 +371,7 @@
         title="手工出票"
         center
         :visible.sync="handleTicketShow"
-        width="55%"
+        width="66%"
         :close-on-click-modal="false"
       >
         <handle-ticket
@@ -392,7 +392,7 @@
         title="蜗牛退票申请"
         center
         :visible.sync="refundTicketShow"
-        width="55%"
+        width="66%"
         :close-on-click-modal="false"
       >
         <refund-ticket
@@ -412,7 +412,7 @@
         title="蜗牛改签申请"
         center
         :visible.sync="changeTicketShow"
-        width="55%"
+        width="66%"
         :close-on-click-modal="false"
       >
         <change-ticket
@@ -431,7 +431,7 @@
         title="补退"
         center
         :visible.sync="fillOutRefundShow"
-        width="55%"
+        width="66%"
         :close-on-click-modal="false"
       >
         <fillOut-refund
@@ -449,7 +449,7 @@
         title="补改"
         center
         :visible.sync="fillOutChangeShow"
-        width="55%"
+        width="66%"
         :close-on-click-modal="false"
       >
         <fillOut-change

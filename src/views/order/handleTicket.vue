@@ -4,7 +4,7 @@
       :model="formData"
       ref="handleTicketForm"
       :rules="formRules"
-      label-width="110px"
+      label-width="130px"
       size="mini"
       style="margin-top:15px;"
     >
@@ -126,6 +126,18 @@
                 format="yyyy-MM-dd HH:mm"
                 placeholder="选择日期"
                 v-model="formData.createTime"
+                style="width: 100%;"
+                value-format="timestamp"
+              ></el-date-picker>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="业务完结日期:" prop="finishTime">
+              <el-date-picker
+                type="datetime"
+                format="yyyy-MM-dd HH:mm"
+                placeholder="选择日期"
+                v-model="formData.finishTime"
                 style="width: 100%;"
                 value-format="timestamp"
               ></el-date-picker>
@@ -355,7 +367,8 @@
           orderType: 10,
           merchantId: "",
           pointAmount: 0,
-          receiptAmount: 0
+          receiptAmount: 0,
+          finishTime:""
         },
         statusData: statusData,
         formRules: {
@@ -363,6 +376,7 @@
           merchantId: [{required: true, message: "必填项", trigger: "change"}],
           amount: [{required: true, message: "必填项！", trigger: "blur"}],
           createTime: [{required: true, message: "必填项！", trigger: "blur"}],
+          finishTime: [{required: true, message: "必填项！", trigger: "blur"}],
           fundAccount: [{required: true, message: "必填项！", trigger: "blur"}],
           profit: [{required: true, message: "必填项！", trigger: "blur"}],
           dpt: [{required: true, message: "必填项！", trigger: "blur"}],
