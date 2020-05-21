@@ -29,7 +29,8 @@
       <el-row>
         <el-col :span="8">
           <el-form-item prop="profit" label="利润金额:">
-            <el-input placeholder="请输入利润金额..." v-model="formData.profit"></el-input>
+            <!--<el-input placeholder="请输入利润金额..." v-model="formData.profit"></el-input>-->
+            <el-input-number v-model="formData.profit" controls-position="right" :precision="2" placeholder="请输入利润金额..." style="width: 100%"></el-input-number>
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -262,3 +263,9 @@ export default {
   }
 };
 </script>
+<style>
+  .el-input-number--mini {
+    width: 100%;
+    line-height: 26px;
+  }
+</style>

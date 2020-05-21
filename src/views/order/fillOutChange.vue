@@ -37,7 +37,8 @@
           ></el-table-column>
           <el-table-column prop="amount" label="价格" align="center" width="150">
             <template slot-scope="scope">
-              <el-input clearable v-model="scope.row.amount"></el-input>
+              <!--<el-input clearable v-model="scope.row.amount"></el-input>-->
+              <el-input-number v-model="scope.row.amount" controls-position="right" :max="0" :precision="2"></el-input-number>
             </template>
           </el-table-column>
           <el-table-column prop="cardNo" label="乘机人证件号" align="center" width="220">
@@ -184,12 +185,14 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="支出金额:" prop="amount">
-              <el-input clearable v-model="formData.amount"></el-input>
+              <!--<el-input clearable v-model="formData.amount"></el-input>-->
+              <el-input-number clearable v-model="formData.amount" controls-position="right" :max="0" :precision="2"></el-input-number>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="利润金额:" prop="profit">
-              <el-input clearable v-model="formData.profit"></el-input>
+              <!--<el-input clearable v-model="formData.profit"></el-input>-->
+              <el-input-number clearable v-model="formData.profit" controls-position="right" :precision="2"></el-input-number>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -561,3 +564,9 @@ export default {
   }
 };
 </script>
+<style>
+  .el-input-number--mini {
+    width: 100%;
+    line-height: 26px;
+  }
+</style>
