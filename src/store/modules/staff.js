@@ -1,19 +1,20 @@
 import {
-  addOne,
   addMany,
-  updateOne,
-  removeOne,
-  getOne,
-  getOneByFidAndUid,
+  addOne,
+  associateUser,
   getList,
   getListByFirmId,
-  getTotal,
-  getPageList,
-  associateUser,
   getMany,
-  isExist
+  getOne,
+  getOneByFidAndUid,
+  getPageList,
+  getRelationUser,
+  getTotal,
+  isExist,
+  removeOne,
+  updateOne
 } from "@/api/staff";
-import {getToken, setToken, removeToken} from "@/utils/auth";
+import {getToken} from "@/utils/auth";
 
 
 const state = {
@@ -180,8 +181,21 @@ const actions = {
   },
   isExist({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {filedValue,deptId} = params;
-      isExist( deptId, filedValue)
+      const {filedValue, deptId} = params;
+      isExist(deptId, filedValue)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getRelationUser({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {staffId} = params;
+      getRelationUser(staffId)
         .then(response => {
           const {data} = response;
           resolve(data);

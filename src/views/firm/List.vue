@@ -22,11 +22,14 @@
         <el-table-column prop="email" label="邮箱" align="center" width="180"></el-table-column>
         <el-table-column prop="address" label="地址" align="center" width="180"></el-table-column>
         <el-table-column prop="remark" label="备注" align="center"></el-table-column>
-        <el-table-column label="操作" fixed="right" align="center" width="300">
+        <el-table-column label="操作" fixed="right" align="center" width="400">
           <template slot-scope="scope">
             <el-button type="primary" size="mini" @click="handleAddChild(scope.row.firmId)">添加子企业</el-button>
             <el-button type="primary" size="mini" @click="handleEdit(scope.row.firmId)">编辑</el-button>
             <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            <el-button size="mini" type="info"
+                       @click="handleAssociate(scope.row)">关联用户
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -41,6 +44,38 @@
         <firm-edit v-if="dialogVisible" :edit-firm-id="editFirmId"
                    :pid="pid" @onSave="handleSave" @onCancel="handleCancel"/>
       </el-dialog>
+
+      <!-- 员工查询弹窗 -->
+      <el-dialog center title="关联用户" width="40%" :visible.sync="userDialogVisible" :close-on-click-modal="false">
+        <el-form ref="form" :model="userData" size="mini">
+          <el-row>
+            <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+              <el-form-item label="姓名:">
+                <span>{{userData.fullName}}</span>
+              </el-form-item>
+            </el-col>
+            <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+              <el-form-item label="电话:">
+                <span>{{userData.phone}}</span>
+              </el-form-item>
+            </el-col>
+            <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+              <el-form-item label="邮箱:">
+                <span>{{userData.email}}</span>
+              </el-form-item>
+            </el-col>
+            <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+              <el-form-item>
+                <el-button size="mini" align="center" @click="userDialogVisible = false">取 消</el-button>
+                <el-button size="mini" align="center" type="primary" @click="handleSaveRelation" :disabled="isDisable">
+                  确认关联
+                </el-button>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-form>
+
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -54,11 +89,15 @@
             return {
                 loading: true,
                 dialogVisible: false,
-                rootNav: false,
+                isDisable: false,
+                userDialogVisible: false,
                 pid: "",
+                staffId: "",
                 editFirmId: "",
                 tableData: [],
-                curNode: {},
+                userData: {},
+                //关联用户时用于记录当前选中的用户对象
+                curRow: {},
                 tableProps: {
                     hasChildren: "xxx",
                     children: "children"
@@ -98,27 +137,77 @@
                 });
             },
             handleAdd() {
-                this.rootNav = true;
                 this.dialogVisible = true;
-
-                this.curNode = {};
             },
-            /*企业的添加、编辑保存*/
-            handleSave(formData) {
-                this.dialogVisible = false;
+            //当前选中用户对象
+            handleRowClick(row) {
+                this.curRow = row;
+            },
+            handleSaveRelation() {
                 this.$store
-                    .dispatch("firm/saveOne", {firm: formData})
+                    .dispatch("staff/updateOne", this.userData)
                     .then(() => {
-                        this.$message({
-                            type: "success",
-                            message:
-                                "企业账号已添加成功!超级管理员账号为企业联系人手机号或邮箱，密码已通过邮件发送给联系人"
-                        });
-                        this.loadData();
+                        this.userDialogVisible = false;
                     })
                     .catch(error => {
                         console.log(error);
                     });
+            },
+            handleAssociate(row) {
+                this.staffId = row.firmId;
+                this.$store
+                    .dispatch("staff/getRelationUser", {
+                        staffId: row.firmId
+                    })
+                    .then(data => {
+                        if (data) {
+                            this.userData = data;
+                            this.isDisable = false;
+                        } else {
+                            this.userData = {};
+                            this.isDisable = true;
+                        }
+                        this.userDialogVisible = true;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            initGender(gender) {
+                return 0 == gender ? "男" : "女";
+            },
+            /*企业的添加、编辑保存*/
+            handleSave(formData) {
+                this.dialogVisible = false;
+                if (formData.firmId != "") {
+                    this.$store
+                        .dispatch("firm/updateOne", {id: formData.firmId, data: formData})
+                        .then(() => {
+                            this.$message({
+                                type: "success",
+                                message:
+                                    "企业账号更新成功!"
+                            });
+                            this.loadData();
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                } else {
+                    this.$store
+                        .dispatch("firm/addOne", {firm: formData})
+                        .then(() => {
+                            this.$message({
+                                type: "success",
+                                message:
+                                    "企业账号已添加成功!"
+                            });
+                            this.loadData();
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                }
             },
             handleCancel() {
                 this.dialogVisible = false;
