@@ -42,7 +42,7 @@
       <el-dialog
         title="Eterm配置信息"
         :visible.sync="dialogVisible"
-        width="50%"
+        width="40%"
         :close-on-click-modal="false"
         center
       >
