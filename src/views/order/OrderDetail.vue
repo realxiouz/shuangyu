@@ -304,6 +304,7 @@
                 <span>{{ formatFlightDate(scope.row.flights)}}</span>
               </template>
             </el-table-column>
+            <el-table-column prop="remark" align="center" width="200" label="备注"></el-table-column>
             <el-table-column prop="address" align="center" fixed="right" width="400" label="操作">
               <template slot-scope="scope">
                 <el-button
