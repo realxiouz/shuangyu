@@ -7,6 +7,7 @@ import {
   getTotal,
   getTreeList,
   removeOne,
+  saveOne,
   updateOne
 } from '@/api/firm';
 
@@ -97,6 +98,19 @@ const actions = {
         .then(response => {
           // const { data } = response;
           resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  saveOne({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {firm} = params;
+      saveOne(firm)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
         })
         .catch(error => {
           reject(error);

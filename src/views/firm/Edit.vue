@@ -33,7 +33,10 @@
 <script>
     export default {
         /*当前进行操作的企业节点*/
-        props: ["curNode"],
+        props: {
+            editFirmId: String,
+            pid: String
+        },
         data() {
             const validateMobile = (rule, value, callback) => {
                 let mobile_mode = /^1[34578]\d{9}$/;
@@ -118,14 +121,6 @@
                 this.formData = this.defaultFormData();
                 this.updateTempData = {};
             },
-            /*初始化表单*/
-            initFormData() {
-                this.clearForm();
-                if (this.curNode.firmName) {
-                    Object.assign(this.formData, this.curNode);
-                    Object.assign(this.updateTempData, this.curNode);
-                }
-            },
             handleSave() {
                 this.$refs["form"].validate(valid => {
                     if (valid) {
@@ -133,15 +128,30 @@
                         this.$emit("onSave", this.formData);
                     }
                 });
-            }
-        },
-        watch: {
-            curNode() {
-                this.initFormData();
-            }
+            },
+            handleGetOne(id) {
+                if (id) {
+                    this.$store
+                        .dispatch("firm/getOne", {firmId: id})
+                        .then(data => {
+                            this.formData = data;
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                } else {
+                    this.formData = this.defaultFormData();
+                }
+            },
         },
         created() {
-            this.initFormData();
+            if (this.editFirmId) {
+                this.handleGetOne(this.editFirmId);
+            }
+            if (this.pid) {
+                debugger
+                this.formData.pid = this.pid;
+            }
         }
     };
 </script>

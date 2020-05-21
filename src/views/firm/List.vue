@@ -22,10 +22,10 @@
         <el-table-column prop="email" label="邮箱" align="center" width="180"></el-table-column>
         <el-table-column prop="address" label="地址" align="center" width="180"></el-table-column>
         <el-table-column prop="remark" label="备注" align="center"></el-table-column>
-        <el-table-column label="操作" fixed="right" align="center" width="250">
+        <el-table-column label="操作" fixed="right" align="center" width="300">
           <template slot-scope="scope">
-            <el-button type="primary" size="mini" @click="handleAppend(scope.$index, scope.row)">添加</el-button>
-            <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+            <el-button type="primary" size="mini" @click="handleAddChild(scope.row.firmId)">添加子企业</el-button>
+            <el-button type="primary" size="mini" @click="handleEdit(scope.row.firmId)">编辑</el-button>
             <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
@@ -38,7 +38,8 @@
         width="33%"
         :close-on-click-modal="false"
       >
-        <firm-edit :curNode="curNode" @onSave="handleSave" @onCancel="handleCancel"/>
+        <firm-edit v-if="dialogVisible" :edit-firm-id="editFirmId"
+                   :pid="pid" @onSave="handleSave" @onCancel="handleCancel"/>
       </el-dialog>
     </div>
   </div>
@@ -54,6 +55,8 @@
                 loading: true,
                 dialogVisible: false,
                 rootNav: false,
+                pid: "",
+                editFirmId: "",
                 tableData: [],
                 curNode: {},
                 tableProps: {
@@ -66,7 +69,7 @@
             /*加载企业列表*/
             loadData(params) {
                 this.$store
-                    .dispatch("firm/getList", {filters: params})
+                    .dispatch("firm/getTreeList", {filters: params})
                     .then(data => {
                         if (data) {
                             this.tableData = data;
@@ -103,55 +106,33 @@
             /*企业的添加、编辑保存*/
             handleSave(formData) {
                 this.dialogVisible = false;
-
-                if (formData.firmId != "") {
-                    this.$store
-                        .dispatch("firm/updateOne", {id: formData.firmId, data: formData})
-                        .then(() => {
-                            this.loadData();
-                        })
-                        .catch(error => {
-                            console.log(error);
+                this.$store
+                    .dispatch("firm/saveOne", {firm: formData})
+                    .then(() => {
+                        this.$message({
+                            type: "success",
+                            message:
+                                "企业账号已添加成功!超级管理员账号为企业联系人手机号或邮箱，密码已通过邮件发送给联系人"
                         });
-                } else {
-                    if (this.rootNav) {
-                        //如果添加的顶级企业信息，对某些属性进行初始化
-                        formData.level = 0;
-                    } else {
-                        formData.pid = this.curNode.firmId;
-                        formData.level = this.curNode.level + 1;
-                    }
-
-                    this.$store
-                        .dispatch("firm/addOne", {firm: formData})
-                        .then(() => {
-                            this.$message({
-                                type: "success",
-                                message:
-                                    "企业账号已添加成功!超级管理员账号为企业联系人手机号或邮箱，密码已通过邮件发送给联系人"
-                            });
-                            this.loadData();
-                        })
-                        .catch(error => {
-                            console.log(error);
-                        });
-                }
+                        this.loadData();
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
             },
             handleCancel() {
                 this.dialogVisible = false;
             },
             /*点击添加企业子节点按钮*/
-            handleAppend(idx, row) {
-                this.rootNav = false;
+            handleAddChild(firmId) {
+                this.pid = firmId;
+                this.editFirmId = "";
                 this.dialogVisible = true;
-
-                this.curNode = {};
-                this.curNode.firmId = row.firmId;
-                this.curNode.level = row.level;
             },
             /*点击编辑*/
-            handleEdit(index, row) {
-                this.curNode = row;
+            handleEdit(firmId) {
+                this.editFirmId = firmId;
+                this.pid = "";
                 this.dialogVisible = true;
             },
             /*点击删除*/
@@ -167,6 +148,7 @@
                 this.$store
                     .dispatch("firm/removeOne", {firmID: params})
                     .then(() => {
+                        this.loadData();
                     })
                     .catch(error => {
                         console.log(error);

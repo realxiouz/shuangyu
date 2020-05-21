@@ -76,7 +76,6 @@ export default {
         })
         .then(data => {
           this.firmList = data;
-          console.log(this.firmList);
         })
         .catch(error => {
           console.log(error);

@@ -8,6 +8,14 @@ export function getPageList(pageFlag, pageSize, filter) {
   });
 }
 
+export function saveOne(data) {
+  return request({
+    url: `/firm/save/one`,
+    method: `post`,
+    data
+  });
+}
+
 export function addOne(data) {
   return request({
     url: `/firm/add/one`,
