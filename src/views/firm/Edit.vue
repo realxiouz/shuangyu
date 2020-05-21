@@ -149,7 +149,6 @@
                 this.handleGetOne(this.editFirmId);
             }
             if (this.pid) {
-                debugger
                 this.formData.pid = this.pid;
             }
         }

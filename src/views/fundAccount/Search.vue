@@ -3,10 +3,10 @@
     <el-col :xs="16" :sm="17" :md="18" :lg="19" :xl="20">
       <el-form :model="formData" label-width="80px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="资金账号">
+          <el-form-item label="账号名称">
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.bankAccount"
+              v-model="formData.accountName"
               placeholder="请输入资金账号.."
               size
             ></el-input>
