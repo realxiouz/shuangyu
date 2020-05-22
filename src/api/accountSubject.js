@@ -26,17 +26,17 @@ export function getPageList(pageFlag, pageSize, lastId, params) {
 
 export function getTotal(params) {
   return request({
-    url: `/subject/get/total`,
+    url: `/subject/get/root/total`,
     method: "get",
     params: params
   });
 }
 
-export function getTreeList(params) {
+export function getRootPageList(pageFlag, pageSize, filter) {
   return request({
-    url: `/subject/tree/list`,
+    url: `/account/subject/get/root/list/page/${pageFlag}/${pageSize}`,
     method: "get",
-    params: params
+    params: filter
   });
 }
 
@@ -62,3 +62,12 @@ export function getSelectingList(filter) {
     params: filter
   });
 }
+
+export function getAsyncTreeList(pid, filter) {
+  return request({
+    url: `/subject/async/tree/list/${pid}`,
+    method: 'get',
+    params: filter
+  });
+}
+

@@ -45,6 +45,7 @@ export function getList(filter) {
     params: filter
   });
 }
+
 export function getTreeList(filter) {
   return request({
     url: `/finance/account/tree/list`,
@@ -55,16 +56,25 @@ export function getTreeList(filter) {
 
 export function getTotal(filter) {
   return request({
-    url: '/finance/account/total',
+    url: '/finance/account/root/total',
     method: 'get',
     params: filter
   });
 }
 
-export function getPageList(pageFlag, pageSize, lastId, filter) {
+export function getRootPageList(pageFlag, pageSize, filter) {
   return request({
-    url: `/finance/account/page/list/${pageFlag}/${pageSize}/${lastId}`,
+    url: `/finance/account/get/root/list/page/${pageFlag}/${pageSize}`,
     method: 'get',
+    params: filter
+  });
+
+}
+
+export function getAsyncTreeList(pid, filter) {
+  return request({
+    url: `/finance/account/async/tree/list/${pid}`,
+    method: `get`,
     params: filter
   });
 }

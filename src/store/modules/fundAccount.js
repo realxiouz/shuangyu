@@ -2,15 +2,29 @@ import {
   addOne,
   getList,
   getOne,
-  getPageList,
+  getRootPageList,
   getTotal,
   getTreeList,
   removeOne,
   save,
-  updateOne
+  updateOne,
+  getAsyncTreeList
 } from '@/api/fundAccount';
 
 const actions = {
+  getAsyncTreeList({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {pid, filter} = params;
+      getAsyncTreeList(pid, filter)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
   save({commit}, params) {
     return new Promise((resolve, reject) => {
       save(params)
@@ -112,10 +126,10 @@ const actions = {
         });
     });
   },
-  getPageList({commit}, params) {
+  getRootPageList({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {pageFlag, pageSize, lastId, filter} = params;
-      getPageList(pageFlag, pageSize, lastId, filter)
+      const {pageFlag, pageSize, filter} = params;
+      getRootPageList(pageFlag, pageSize, filter)
         .then(response => {
           const {data} = response;
           resolve(data);
