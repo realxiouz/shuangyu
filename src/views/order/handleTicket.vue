@@ -378,6 +378,7 @@
           createTime: [{required: true, message: "必填项！", trigger: "blur"}],
           finishTime: [{required: true, message: "必填项！", trigger: "blur"}],
           fundAccount: [{required: true, message: "必填项！", trigger: "blur"}],
+          pointAmount: [{required: true, message: "必填项！", trigger: "blur"}],
           profit: [{required: true, message: "必填项！", trigger: "blur"}],
           dpt: [{required: true, message: "必填项！", trigger: "blur"}],
           arr: [{required: true, message: "必填项！", trigger: "blur"}],
