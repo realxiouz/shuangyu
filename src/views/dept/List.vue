@@ -16,7 +16,9 @@
         size="mini"
         fit
         :expand-row-keys="expandRowKeys"
-        :tree-props="{children: 'children', hasChildren: 'test'}"
+        :load="loadChildren"
+        lazy
+        :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
       >
         <el-table-column prop="deptName" label="部门名称" align="center"></el-table-column>
         <el-table-column prop="ddId" label="钉钉Id" align="center"></el-table-column>
@@ -36,17 +38,17 @@
           </template>
         </el-table-column>
       </el-table>
-<!--      <el-pagination-->
-<!--        @size-change="handleSizeChange"-->
-<!--        @prev-click="prevClick"-->
-<!--        @next-click="nextClick"-->
-<!--        background-->
-<!--        layout="total,sizes,prev,next"-->
-<!--        prev-text="上一页"-->
-<!--        next-text="下一页"-->
-<!--        :page-size="pageSize"-->
-<!--        :total="total"-->
-<!--      ></el-pagination>-->
+      <el-pagination
+        @size-change="handleSizeChange"
+        @prev-click="handlePrevClick"
+        @next-click="handleNextClick"
+        background
+        layout="total,sizes,prev,next"
+        prev-text="上一页"
+        next-text="下一页"
+        :page-size="pageSize"
+        :total="total"
+      ></el-pagination>
       <el-dialog
         title="部门信息"
         center
@@ -66,144 +68,163 @@
   </div>
 </template>
 <script>
-import deptSearch from "./Search.vue";
-import deptEdit from "./Edit.vue";
+    import deptSearch from "./Search.vue";
+    import deptEdit from "./Edit.vue";
 
-export default {
-  name: "dept",
-  data() {
-    return {
-      loading: true,
-      searchForm: {},
-      lastId: "0",
-      pageFlag: "next",
-      pageSize: 10,
-      dialogVisible: false,
-      editDeptId: "",
-      pid: "",
-      total: 0,
-      tableData: [],
-      expandRowKeys: []
-    };
-  },
-  methods: {
-    prevClick() {
-      this.pageFlag = "prev";
-      this.lastId = this.tableData[0].deptId;
-      this.loadData();
-    },
-    nextClick() {
-      this.pageFlag = "next";
-      this.lastId = this.tableData[this.tableData.length - 1].deptId;
-      this.loadData();
-    },
-    loadData(params) {
-      this.$store
-        .dispatch("dept/getTreeList", {
-          filters: params
-        })
-        .then(data => {
-          if (data) {
-            this.tableData = data;
-            this.expandRowKeys = [];
-            this.expandRowKeys.push(data[0].deptId);
-            this.loadTotal(params);
-          }
-          this.loading = false;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    loadTotal(params) {
-      this.$store
-        .dispatch("dept/getTotal", {filter: params})
-        .then(data => {
-          this.total = data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    handleAddChild(deptId) {
-      this.pid = deptId;
-      this.editDeptId = "";
-      this.dialogVisible = true;
-    },
-    handleAdd() {
-      this.editDeptId = "";
-      this.pid = "";
-      this.dialogVisible = true;
-    },
-    handleSearch(params) {
-      const newParams = {};
-      if (params) {
-        for (let key in params) {
-          if (params[key]) {
-            newParams[key] = params[key];
-          }
-        }
-      }
-      this.loadData(newParams);
-      this.$message({
-        type: "success",
-        message: "查询成功！"
-      });
-    },
-    handleUpdate(deptId) {
-      this.editDeptId = deptId;
-      this.pid = "";
-      this.dialogVisible = true;
-    },
-    handleSizeChange(pageSize) {
-      this.pageSize = pageSize;
-      this.loadData();
-    },
-    handleRemove(id) {
-      this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.$store.dispatch("dept/removeOne", { deptId: id }).then(() => {
-            if (1 === this.tableData.length) {
-              this.prevClick();
-            } else {
-              this.loadData("{}");
+    export default {
+        name: "dept",
+        data() {
+            return {
+                loading: true,
+                searchForm: {},
+                dialogVisible: false,
+                editDeptId: "",
+                pid: "",
+                tableData: [],
+                expandRowKeys: [],
+                pageFlag: 1,
+                pageSize: 10,
+                lastId: null,
+                total: 0
+            };
+        },
+        methods: {
+            handleSizeChange(pageSize) {
+                this.pageSize = pageSize;
+                this.loadData();
+            },
+            /*翻前页*/
+            handlePrevClick() {
+                this.pageFlag = -1;
+                this.lastId = this.tableData[0].deptId;
+                this.loadData();
+            },
+            /*翻后页*/
+            handleNextClick() {
+                this.pageFlag = 1;
+                this.lastId = this.tableData[this.tableData.length - 1].deptId;
+                this.loadData();
+            },
+            loadData(params = {}) {
+                if (this.lastId) {
+                    params.lastId = this.lastId;
+                }
+                this.$store
+                    .dispatch("dept/getRootPageList", {
+                        pageFlag: this.pageFlag,
+                        pageSize: this.pageSize,
+                        filter: params
+                    })
+                    .then(data => {
+                        if (data) {
+                            this.tableData = data;
+                            this.expandRowKeys = [];
+                            this.expandRowKeys.push(data[0].deptId);
+                            this.loadTotal(params);
+                        }
+                        this.loading = false;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            loadTotal(params) {
+                this.$store
+                    .dispatch("dept/getRootTotal", {filter: params})
+                    .then(data => {
+                        this.total = data;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            loadChildren(tree, treeNode, resolve) {
+                this.$store
+                    .dispatch("dept/getAsyncTreeList", {pid: tree.deptId, filter: {}})
+                    .then(data => {
+                        if (data) {
+                            resolve(data);
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            handleAddChild(deptId) {
+                this.pid = deptId;
+                this.editDeptId = "";
+                this.dialogVisible = true;
+            },
+            handleAdd() {
+                this.editDeptId = "";
+                this.pid = "";
+                this.dialogVisible = true;
+            },
+            handleSearch(params) {
+                const newParams = {};
+                if (params) {
+                    for (let key in params) {
+                        if (params[key]) {
+                            newParams[key] = params[key];
+                        }
+                    }
+                }
+                this.loadData(newParams);
+                this.$message({
+                    type: "success",
+                    message: "查询成功！"
+                });
+            },
+            handleUpdate(deptId) {
+                this.editDeptId = deptId;
+                this.pid = "";
+                this.dialogVisible = true;
+            },
+            handleRemove(id) {
+                this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消",
+                    type: "warning"
+                })
+                    .then(() => {
+                        this.$store.dispatch("dept/removeOne", {deptId: id}).then(() => {
+                            if (1 === this.tableData.length) {
+                                this.prevClick();
+                            } else {
+                                this.loadData("{}");
+                            }
+                        });
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    });
+            },
+            handleCancel() {
+                this.dialogVisible = false;
+            },
+            handleSave(formData) {
+                this.$store
+                    .dispatch("dept/save", formData)
+                    .then(() => {
+                        this.loadData();
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+                this.dialogVisible = false;
             }
-          });
-        })
-        .catch(err => {
-          console.error(err);
-        });
-    },
-    handleCancel() {
-      this.dialogVisible = false;
-    },
-    handleSave(formData) {
-      this.$store
-        .dispatch("dept/save", formData)
-        .then(() => {
-          this.loadData();
-        })
-        .catch(error => {
-          console.log(error);
-        });
-      this.dialogVisible = false;
-    }
-  },
-  created() {
-    this.loadData();
-  },
-  components: {
-    deptSearch,
-    deptEdit
-  }
-};
+        },
+        created() {
+            this.loadData();
+        },
+        components: {
+            deptSearch,
+            deptEdit
+        }
+    };
 </script>
 <style>
-.el-cascader-menu {
-  height: 200px;
-}
+  .el-cascader-menu {
+    height: 200px;
+  }
 </style>

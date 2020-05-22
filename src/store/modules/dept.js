@@ -1,4 +1,15 @@
-import {getList, getOne, getPageList, getTotal, getTreeList, removeOne, save} from "@/api/dept";
+import {
+  getAsyncTreeList,
+  getList,
+  getOne,
+  getPageList,
+  getRootPageList,
+  getRootTotal,
+  getTotal,
+  getTreeList,
+  removeOne,
+  save
+} from "@/api/dept";
 import {getToken} from "@/utils/auth";
 
 
@@ -86,7 +97,45 @@ const actions = {
         });
     });
   },
-
+  getRootPageList({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {pageFlag, pageSize, filter} = params;
+      getRootPageList(pageFlag, pageSize, filter)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getAsyncTreeList({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {pid, filter} = params;
+      getAsyncTreeList(pid, filter)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getRootTotal({commit}, params) {
+    const {filter} = params;
+    return new Promise((resolve, reject) => {
+      getRootTotal(filter)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
   getTotal({commit}, params) {
     const {filter} = params;
     return new Promise((resolve, reject) => {

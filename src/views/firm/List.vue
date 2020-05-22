@@ -42,6 +42,7 @@
         next-text="下一页"
         :page-size="pageSize"
         :total="total"
+        @size-change="handleSizeChange"
         @prev-click="handlePrevClick"
         @next-click="handleNextClick"
       ></el-pagination>
@@ -131,6 +132,7 @@
             },
             /*加载企业列表*/
             loadData(params = {}) {
+                debugger
                 if (this.lastId) {
                     params.lastId = this.lastId;
                 }
@@ -164,10 +166,13 @@
                         console.log(error);
                     });
             },
+            handleSizeChange(pageSize) {
+                this.pageSize = pageSize;
+                this.loadData();
+            },
             loadChildren(tree, treeNode, resolve) {
-                let params = {};
                 this.$store
-                    .dispatch("firm/getAsyncTreeList", {pid: tree.firmId, filter: params})
+                    .dispatch("firm/getAsyncTreeList", {pid: tree.firmId, filter: {}})
                     .then(data => {
                         if (data) {
                             resolve(data);

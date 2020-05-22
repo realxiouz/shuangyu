@@ -17,6 +17,14 @@ export function removeOne(id) {
 }
 
 
+export function getRootPageList(pageFlag, pageSize, filter) {
+  return request({
+    url: `/dept/get/root/list/page/${pageFlag}/${pageSize}`,
+    method: 'get',
+    params: filter
+  });
+}
+
 export function getPageList(pageFlag, pageSize, filter) {
   return request({
     url: `/dept/page/list/${pageFlag}/${pageSize}`,
@@ -24,10 +32,24 @@ export function getPageList(pageFlag, pageSize, filter) {
     params: filter
   });
 }
-
+export function getAsyncTreeList(pid, filter) {
+  return request({
+    url: `/dept/get/async/tree/list/${pid}`,
+    method: `get`,
+    params: filter
+  });
+}
 export function getTotal(params) {
   return request({
     url: `/dept/get/total`,
+    method: "get",
+    params: params
+  });
+}
+
+export function getRootTotal(params) {
+  return request({
+    url: `/dept/get/root/total`,
     method: "get",
     params: params
   });
