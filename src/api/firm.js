@@ -69,3 +69,19 @@ export function getList(filter) {
     params: filter
   });
 }
+
+export function getAsyncTreeList(pid, filter) {
+  return request({
+    url: `/firm/get/async/tree/list/${pid}`,
+    method: `get`,
+    params: filter
+  });
+}
+
+export function getRootPageList(pageFlag, pageSize, filter) {
+  return request({
+    url: `/firm/get/root/list/page/${pageFlag}/${pageSize}`,
+    method: `get`,
+    params: filter
+  });
+}

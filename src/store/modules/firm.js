@@ -1,9 +1,11 @@
 import {
   addOne,
+  getAsyncTreeList,
   getDealerCustomerList,
   getList,
   getOne,
   getPageList,
+  getRootPageList,
   getTotal,
   getTreeList,
   removeOne,
@@ -13,6 +15,19 @@ import {
 
 
 const actions = {
+  getAsyncTreeList({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {pid, filter} = params;
+      getAsyncTreeList(pid, filter)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
   getList({commit}, params) {
     return new Promise((resolve, reject) => {
       const {filter} = params;
@@ -43,6 +58,19 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {filters} = params;
       getDealerCustomerList(filters)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getRootPageList({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {pageFlag, pageSize, filter} = params;
+      getRootPageList(pageFlag, pageSize, filter)
         .then(response => {
           const {data} = response;
           resolve(data);

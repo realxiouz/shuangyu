@@ -13,7 +13,9 @@
         size="mini"
         :data="tableData"
         row-key="firmId"
-        :tree-props="tableProps"
+        :load="loadChildren"
+        lazy
+        :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
       >
         <el-table-column prop="firmName" label="企业名称" align="center" sortable width="180"></el-table-column>
         <el-table-column prop="firmCode" label="企业代码" align="center" sortable width="100"></el-table-column>
@@ -33,6 +35,16 @@
           </template>
         </el-table-column>
       </el-table>
+      <el-pagination
+        background
+        layout="total,prev,next"
+        prev-text="上一页"
+        next-text="下一页"
+        :page-size="pageSize"
+        :total="total"
+        @prev-click="handlePrevClick"
+        @next-click="handleNextClick"
+      ></el-pagination>
       <!-- 表单对话框 -->
       <el-dialog
         title="添加企业"
@@ -98,25 +110,74 @@
                 userData: {},
                 //关联用户时用于记录当前选中的用户对象
                 curRow: {},
+                pageFlag: 1,
+                pageSize: 10,
+                lastId: null,
+                total: 0,
                 tableProps: {
-                    hasChildren: "xxx",
+                    hasChildren: "hasChildren",
                     children: "children"
                 }
             };
         },
         methods: {
+            /*翻前页*/
+            handlePrevClick() {
+                this.pageFlag = -1;
+                this.lastId = this.tableData[0].firmId;
+                this.loadData();
+            },
+            /*翻后页*/
+            handleNextClick() {
+                this.pageFlag = 1;
+                this.lastId = this.tableData[this.tableData.length - 1].firmId;
+                this.loadData();
+            },
             /*加载企业列表*/
-            loadData(params) {
+            loadData(params = {}) {
+                if (this.lastId) {
+                    params.lastId = this.lastId;
+                }
                 this.$store
-                    .dispatch("firm/getTreeList", {filters: params})
+                    .dispatch("firm/getRootPageList", {
+                        pageFlag: this.pageFlag,
+                        pageSize: this.pageSize,
+                        filter: params
+                    })
                     .then(data => {
                         if (data) {
                             this.tableData = data;
+                            this.loadTotal(params);
                         }
                         this.loading = false;
                     })
                     .catch(error => {
                         this.loading = false;
+                        console.log(error);
+                    });
+            },
+            loadTotal(params) {
+                this.$store
+                    .dispatch("firm/getTotal", {filter: params})
+                    .then(data => {
+                        if (data) {
+                            this.total = data.data;
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            loadChildren(tree, treeNode, resolve) {
+                let params = {};
+                this.$store
+                    .dispatch("firm/getAsyncTreeList", {pid: tree.firmId, filter: params})
+                    .then(data => {
+                        if (data) {
+                            resolve(data);
+                        }
+                    })
+                    .catch(error => {
                         console.log(error);
                     });
             },
