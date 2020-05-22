@@ -885,6 +885,7 @@
             newParams.orderTaskId = this.$route.query.taskId;
             newParams.sourceOrderNo = params.sourceOrderNo;
             newParams.createTime = params.createTime;
+            newParams.finishTime = params.finishTime;
           }
           this.purchaseOrder(newParams);
         }
