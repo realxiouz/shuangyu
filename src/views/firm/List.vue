@@ -114,7 +114,12 @@
                 pageFlag: 1,
                 pageSize: 10,
                 lastId: null,
-                total: 0
+                total: 0,
+                uploadData: {
+                    tree: null,
+                    treeNode: null,
+                    resolve: null
+                }
             };
         },
         methods: {
@@ -171,6 +176,10 @@
                 this.loadData();
             },
             loadChildren(tree, treeNode, resolve) {
+                // tree为点击那一行的数据
+                this.uploadData.tree = tree;
+                this.uploadData.treeNode = treeNode;
+                this.uploadData.resolve = resolve;
                 this.$store
                     .dispatch("firm/getAsyncTreeList", {pid: tree.firmId, filter: {}})
                     .then(data => {
@@ -251,6 +260,7 @@
                                     "企业账号更新成功!"
                             });
                             this.loadData();
+                            this.loadChildren(this.uploadData.tree, this.uploadData.treeNode, this.uploadData.resolve);
                         })
                         .catch(error => {
                             console.log(error);
@@ -265,6 +275,7 @@
                                     "企业账号已添加成功!"
                             });
                             this.loadData();
+                            this.loadChildren(this.uploadData.tree, this.uploadData.treeNode, this.uploadData.resolve);
                         })
                         .catch(error => {
                             console.log(error);
@@ -300,6 +311,7 @@
                     .dispatch("firm/removeOne", {firmID: params})
                     .then(() => {
                         this.loadData();
+                        this.loadChildren(this.uploadData.tree, this.uploadData.treeNode, this.uploadData.resolve);
                     })
                     .catch(error => {
                         console.log(error);

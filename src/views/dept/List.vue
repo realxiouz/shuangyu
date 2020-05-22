@@ -85,7 +85,12 @@
                 pageFlag: 1,
                 pageSize: 10,
                 lastId: null,
-                total: 0
+                total: 0,
+                uploadData: {
+                    tree: null,
+                    treeNode: null,
+                    resolve: null
+                }
             };
         },
         methods: {
@@ -139,6 +144,10 @@
                     });
             },
             loadChildren(tree, treeNode, resolve) {
+                // tree为点击那一行的数据
+                this.uploadData.tree = tree;
+                this.uploadData.treeNode = treeNode;
+                this.uploadData.resolve = resolve;
                 this.$store
                     .dispatch("dept/getAsyncTreeList", {pid: tree.deptId, filter: {}})
                     .then(data => {
@@ -190,6 +199,7 @@
                         this.$store.dispatch("dept/removeOne", {deptId: id}).then(() => {
                             if (1 === this.tableData.length) {
                                 this.prevClick();
+                                this.loadChildren(this.uploadData.tree, this.uploadData.treeNode, this.uploadData.resolve);
                             } else {
                                 this.loadData("{}");
                             }
@@ -212,6 +222,7 @@
                                 "部门信息保存成功!"
                         });
                         this.loadData();
+                        this.loadChildren(this.uploadData.tree, this.uploadData.treeNode, this.uploadData.resolve);
                     })
                     .catch(error => {
                         console.log(error);
