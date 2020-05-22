@@ -16,9 +16,11 @@
         default-expand-all
         style="width: 100%;margin-bottom:15px"
         size="mini"
+        :load="loadChildren"
         fit
         :indent="40"
-        :tree-props="{children: 'children', hasChildren: 'test'}"
+        lazy
+        :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
       >
         <el-table-column prop="code" label="科目编码" align="center"></el-table-column>
         <el-table-column prop="name" label="科目名称" align="center"></el-table-column>
@@ -47,6 +49,16 @@
           </template>
         </el-table-column>
       </el-table>
+      <el-pagination
+        @prev-click="prevClick"
+        @next-click="nextClick"
+        background
+        layout="total,prev,next"
+        prev-text="上一页"
+        next-text="下一页"
+        :page-size="pageSize"
+        :total="total"
+      ></el-pagination>
       <el-dialog
         title="会计科目"
         center
@@ -83,7 +95,11 @@
         editSubjectId: "",
         pid: "",
         tableData: [],
-        expandRowKeys: []
+        expandRowKeys: [],
+        pageFlag: 1,
+        pageSize: 10,
+        lastId: "",
+        total: 0,
       };
     },
     methods: {
@@ -92,19 +108,24 @@
       },
       subjectCategory,
       prevClick() {
-        this.pageFlag = "prev";
+        this.pageFlag = -1;
         this.lastId = this.tableData[0].subjectId;
         this.loadData();
       },
       nextClick() {
-        this.pageFlag = "next";
+        this.pageFlag = 1;
         this.lastId = this.tableData[this.tableData.length - 1].subjectId;
         this.loadData();
       },
-      loadData(params) {
+      loadData(params = {}) {
+        if (this.lastId) {
+          params.lastId = this.lastId;
+        }
         this.$store
-          .dispatch("accountSubject/getTreeList", {
-            filters: params
+          .dispatch("accountSubject/getRootPageList", {
+            pageFlag: this.pageFlag,
+            pageSize: this.pageSize,
+            filter: params
           })
           .then(data => {
             if (data && data.length > 0) {
@@ -129,6 +150,19 @@
           })
           .then(data => {
             this.total = data;
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      loadChildren(tree, treeNode, resolve) {
+        let params = {};
+        this.$store
+          .dispatch("accountSubject/getAsyncTreeList", {pid: tree.subjectId, filter: params})
+          .then(data => {
+            if (data) {
+              resolve(data);
+            }
           })
           .catch(error => {
             console.log(error);

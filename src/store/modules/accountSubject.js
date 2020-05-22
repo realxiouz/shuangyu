@@ -1,4 +1,14 @@
-import {getList,getTreeList, getOne, getPageList, getTotal, removeOne, save, getSelectingList} from "@/api/accountSubject";
+import {
+  getList,
+  getRootPageList,
+  getOne,
+  getPageList,
+  getTotal,
+  removeOne,
+  save,
+  getSelectingList,
+  getAsyncTreeList
+} from "@/api/accountSubject";
 import {getToken} from "@/utils/auth";
 
 
@@ -21,6 +31,19 @@ const mutations = {
 };
 
 const actions = {
+  getAsyncTreeList({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {pid, filter} = params;
+      getAsyncTreeList(pid, filter)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
   save({commit}, params) {
     return new Promise((resolve, reject) => {
       save(params)
@@ -33,10 +56,10 @@ const actions = {
         });
     });
   },
-  getTreeList({commit}, params) {
-    const {filters} = params;
+  getRootPageList({commit}, params) {
+    const {pageFlag, pageSize, filter} = params;
     return new Promise((resolve, reject) => {
-      getTreeList(filters)
+      getRootPageList(pageFlag, pageSize, filter)
         .then(response => {
           const {data} = response;
           resolve(data);

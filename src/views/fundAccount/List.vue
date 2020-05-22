@@ -12,7 +12,9 @@
         size="mini"
         :data="tableData"
         row-key="accountId"
-        :tree-props="{children: 'children', hasChildren: 'XXX'}"
+        :load="loadChildren"
+        lazy
+        :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
       >
         <el-table-column prop="accountCode" label="账号编码" width="80" align="center"></el-table-column>
         <el-table-column prop="accountName" label="账号名称" width="180" align="center"></el-table-column>
@@ -41,6 +43,16 @@
           </template>
         </el-table-column>
       </el-table>
+      <el-pagination
+        @prev-click="prevClick"
+        @next-click="nextClick"
+        background
+        layout="total,prev,next"
+        prev-text="上一页"
+        next-text="下一页"
+        :page-size="pageSize"
+        :total="total"
+      ></el-pagination>
       <el-dialog
         title="资金账号信息"
         center
@@ -72,28 +84,57 @@
         searchForm: {},
         editAccountId: "",
         pid: "",
-        tableData: []
+        tableData: [],
+        pageFlag: 1,
+        pageSize: 10,
+        lastId: "",
+        total: 0
       };
     },
     methods: {
-      loadData(searchForm) {
-        const newParams = {};
-        if (searchForm) {
-          for (let key in searchForm) {
-            if (searchForm[key]) {
-              newParams[key] = searchForm[key];
-            }
-          }
+      loadData(params = {}) {
+        if (this.lastId) {
+          params.lastId = this.lastId;
         }
         this.$store
-          .dispatch("fundAccount/getTreeList", {filter: newParams})
+          .dispatch("fundAccount/getRootPageList", {
+            pageFlag: this.pageFlag,
+            pageSize: this.pageSize,
+            filter: params
+          })
           .then(data => {
             this.tableData = data;
             this.loading = false;
+            this.loadTotal(params);
           })
           .catch(error => {
             console.log(error);
             this.loading = false;
+          });
+      },
+      loadTotal(params) {
+        this.$store
+          .dispatch("fundAccount/getTotal", {
+            filters: params
+          })
+          .then(data => {
+            this.total = data;
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      loadChildren(tree, treeNode, resolve) {
+        let params = {};
+        this.$store
+          .dispatch("fundAccount/getAsyncTreeList", {pid: tree.accountId, filter: params})
+          .then(data => {
+            if (data) {
+              resolve(data);
+            }
+          })
+          .catch(error => {
+            console.log(error);
           });
       },
       handleAdd() {
@@ -125,13 +166,13 @@
         this.pid = "";
         this.dialogVisible = true;
       },
-      handlePrevClick() {
-        this.pageFlag = "prev";
+      prevClick() {
+        this.pageFlag = "-1";
         this.lastId = this.tableData[0].accountId;
         this.loadData(this.searchForm);
       },
-      handleNextClick() {
-        this.pageFlag = "next";
+      nextClick() {
+        this.pageFlag = "1";
         this.lastId = this.tableData[this.tableData.length - 1].accountId;
         this.loadData(this.searchForm);
       },
