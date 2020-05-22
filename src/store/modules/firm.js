@@ -6,7 +6,7 @@ import {
   getOne,
   getPageList,
   getRootPageList,
-  getTotal,
+  getRootTotal,
   getTreeList,
   removeOne,
   saveOne,
@@ -93,10 +93,10 @@ const actions = {
         });
     });
   },
-  getTotal({commit}, params) {
+  getRootTotal({commit}, params) {
     return new Promise((resolve, reject) => {
       const {filter} = params;
-      getTotal(filter)
+      getRootTotal(filter)
         .then(response => {
           // const { data } = response;
           resolve(response);

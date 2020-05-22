@@ -113,11 +113,7 @@
                 pageFlag: 1,
                 pageSize: 10,
                 lastId: null,
-                total: 0,
-                tableProps: {
-                    hasChildren: "hasChildren",
-                    children: "children"
-                }
+                total: 0
             };
         },
         methods: {
@@ -158,7 +154,7 @@
             },
             loadTotal(params) {
                 this.$store
-                    .dispatch("firm/getTotal", {filter: params})
+                    .dispatch("firm/getRootTotal", {filter: params})
                     .then(data => {
                         if (data) {
                             this.total = data.data;
