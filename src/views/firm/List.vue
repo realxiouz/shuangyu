@@ -30,7 +30,7 @@
             <el-button type="primary" size="mini" @click="handleEdit(scope.row.firmId)">编辑</el-button>
             <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
             <el-button size="mini" :type="scope.row.userId?'success':'info'"
-                       @click="handleAssociate(scope.row)">关联用户
+                       @click="handleAssociate(scope.row)">{{scope.row.userId?'已关联用户':'未关联用户'}}
             </el-button>
           </template>
         </el-table-column>
@@ -113,11 +113,7 @@
                 pageFlag: 1,
                 pageSize: 10,
                 lastId: null,
-                total: 0,
-                tableProps: {
-                    hasChildren: "hasChildren",
-                    children: "children"
-                }
+                total: 0
             };
         },
         methods: {
@@ -158,7 +154,7 @@
             },
             loadTotal(params) {
                 this.$store
-                    .dispatch("firm/getTotal", {filter: params})
+                    .dispatch("firm/getRootTotal", {filter: params})
                     .then(data => {
                         if (data) {
                             this.total = data.data;

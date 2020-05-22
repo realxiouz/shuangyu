@@ -46,9 +46,9 @@ export function getOne(firmId) {
   });
 }
 
-export function getTotal(filter) {
+export function getRootTotal(filter) {
   return request({
-    url: `/firm/get/total`,
+    url: `/firm/get/root/total`,
     method: `get`,
     params: filter
   });
