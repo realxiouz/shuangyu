@@ -17,13 +17,13 @@
         lazy
         :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
       >
-        <el-table-column prop="firmName" label="企业名称" align="center" sortable width="180"></el-table-column>
+        <el-table-column prop="firmName" label="企业名称" align="left" sortable width="180"></el-table-column>
         <el-table-column prop="firmCode" label="企业代码" align="center" sortable width="100"></el-table-column>
         <el-table-column prop="fullName" label="联系人" align="center" width="180"></el-table-column>
         <el-table-column prop="phone" label="联系人电话" align="center" width="180"></el-table-column>
         <el-table-column prop="email" label="邮箱" align="center" width="180"></el-table-column>
-        <el-table-column prop="address" label="地址" align="center" width="180"></el-table-column>
-        <el-table-column prop="remark" label="备注" align="center"></el-table-column>
+        <el-table-column prop="address" label="地址" align="left" width="180"></el-table-column>
+        <el-table-column prop="remark" label="备注" align="left"></el-table-column>
         <el-table-column label="操作" fixed="right" align="center" width="400">
           <template slot-scope="scope">
             <el-button type="primary" size="mini" @click="handleAddChild(scope.row.firmId)">添加子企业</el-button>
@@ -137,7 +137,6 @@
             },
             /*加载企业列表*/
             loadData(params = {}) {
-                debugger
                 if (this.lastId) {
                     params.lastId = this.lastId;
                 }
