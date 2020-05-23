@@ -100,6 +100,11 @@
         pageSize: 10,
         lastId: "",
         total: 0,
+        uploadData: {
+          tree: null,
+          treeNode: null,
+          resolve: null
+        }
       };
     },
     methods: {
@@ -156,6 +161,9 @@
           });
       },
       loadChildren(tree, treeNode, resolve) {
+        this.uploadData.tree = tree;
+        this.uploadData.treeNode = treeNode;
+        this.uploadData.resolve = resolve;
         let params = {};
         this.$store
           .dispatch("accountSubject/getAsyncTreeList", {pid: tree.subjectId, filter: params})
@@ -231,7 +239,8 @@
         this.$store
           .dispatch("accountSubject/save", formData)
           .then(() => {
-            this.loadData({category: this.category});
+            this.loadData();
+            this.loadChildren(this.uploadData.tree, this.uploadData.treeNode, this.uploadData.resolve);
           })
           .catch(error => {
             console.log(error);
