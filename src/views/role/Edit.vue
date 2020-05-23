@@ -4,7 +4,13 @@
       <el-form-item label="角色名称:" prop="roleName">
         <el-input v-model="formData.roleName" placeholder="请输入你要添加的角色名称"></el-input>
       </el-form-item>
-
+      <el-form-item label="角色类型">
+        <el-select v-model="formData.roleType" placeholder="请选择角色类型" style="width: 50%">
+          <el-option label="默认角色" :value="-1"></el-option>
+          <el-option label="平台角色" :value="0"></el-option>
+          <el-option label="企业角色" :value="1"></el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item label="备注:" prop="remark">
         <el-input v-model="formData.remark" placeholder="备注" type="textarea"></el-input>
       </el-form-item>
@@ -30,76 +36,77 @@
 </template>
 
 <script>
-  export default {
-    name: "roleEdit",
-    props: ["roleId"],
-    data() {
-      return {
-        formData: {
-          remark: ""
+    export default {
+        name: "roleEdit",
+        props: ["roleId"],
+        data() {
+            return {
+                formData: {
+                    remark: ""
+                },
+                loading: true,
+                treeData: [],
+                formRules: {
+                    roleName: [
+                        {required: true, message: "请输入角色名称", trigger: "blur"}
+                    ]
+                }
+            };
         },
-        loading: true,
-        treeData: [],
-        formRules: {
-          roleName: [
-            {required: true, message: "请输入角色名称", trigger: "blur"}
-          ]
+        methods: {
+            handeleSave() {
+                this.$refs["form"].validate(valid => {
+                    if (valid) {
+                        this.formData.navs = this.$refs.tree.getCheckedKeys();
+                        this.$emit("onSave", this.formData);
+                    }
+                });
+            },
+            defaultFormData() {
+                return {
+                    roleId: "",
+                    roleName: "",
+                    roleType: "",
+                    enable: true,
+                    navs: []
+                };
+            },
+            clearForm() {
+                this.formData = this.defaultFormData();
+            },
+            loadNavs: function () {
+                this.$store
+                    .dispatch("nav/getTreeList", {filter: {}})
+                    .then(data => {
+                        this.treeData = data;
+                        this.loading = false;
+                    })
+                    .catch(error => {
+                        this.loading = false;
+                        console.log(error);
+                    });
+            },
+            loadData(roleId) {
+                this.$store
+                    .dispatch("role/getOne", {id: roleId})
+                    .then(data => {
+                        this.formData = data;
+                        this.loadNavs();
+                        console.log(data);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+                this.dialogVisible = true;
+            }
+        },
+        created() {
+            this.clearForm();
+            if (this.roleId) {
+                this.loadData(this.roleId);
+            } else {
+                this.loadNavs();
+            }
         }
-      };
-    },
-    methods: {
-      handeleSave() {
-        this.$refs["form"].validate(valid => {
-          if (valid) {
-            this.formData.navs = this.$refs.tree.getCheckedKeys();
-            this.$emit("onSave", this.formData);
-          }
-        });
-      },
-      defaultFormData() {
-        return {
-          roleId: "",
-          roleName: "",
-          enable: true,
-          navs: []
-        };
-      },
-      clearForm() {
-        this.formData = this.defaultFormData();
-      },
-      loadNavs: function () {
-        this.$store
-          .dispatch("nav/getTreeList", {filter: {}})
-          .then(data => {
-            this.treeData = data;
-            this.loading = false;
-          })
-          .catch(error => {
-            this.loading = false;
-            console.log(error);
-          });
-      },
-      loadData(roleId) {
-        this.$store
-          .dispatch("role/getOne", {id: roleId})
-          .then(data => {
-            this.formData = data;
-            this.loadNavs();
-            console.log(data);
-          })
-          .catch(error => {
-            console.log(error);
-          });
-        this.dialogVisible = true;
-      }
-    },
-    created() {
-      this.clearForm();
-      if (this.roleId) {
-        this.loadData(this.roleId);
-      } else {
-        this.loadNavs();
-      }
-    }
-  };
+    };
 </script>
