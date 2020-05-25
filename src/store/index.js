@@ -60,6 +60,7 @@ import woniuOrderConfig from "./modules/otherOrderConfig/woniuOrderConfig";
 import productFeature from "./modules/productFeature";
 import device from "./modules/device";
 import etermConfig from "./modules/etermConfig";
+import owp from "./modules/owp";
 
 import { getLoginInfo } from "@/api/staff";
 
@@ -125,7 +126,8 @@ export default new Vuex.Store({
     woniuOrderConfig,
     productFeature,
     device,
-    etermConfig
+    etermConfig,
+    owp
   },
   state: {
     loginInfo: {}
