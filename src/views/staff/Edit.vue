@@ -185,8 +185,6 @@
                 tableData: [],
                 //当点击用户选择列表时
                 curRow: {},
-                /*进行用户查询后待选择的用户列表*/
-                userTable: [],
                 userData: {},
                 keyword: "",
                 hasStep: true,
@@ -263,23 +261,6 @@
                 this.isExistsForPhone = false;
                 this.isExistsForIDNo = false;
                 this.isExistsForEmail = false;
-            },
-            /*进行用户查询*/
-            searchUser(rowData) {
-                this.clearUsersTable();
-                this.$store
-                // .dispatch("staff/associateUser", {filter: {phone: rowData.phone, email: rowData.email}})
-                    .dispatch("staff/associateUser", {filter: {email: rowData.email}})
-                    .then(data => {
-                        this.userTable.push(data.data);
-                    })
-                    .catch(error => {
-                        console.log(error);
-                        /*this.$alert(error.message, '提示', {
-                              confirmButtonText: '确定',
-                              type: "warning"
-                          });*/
-                    });
             },
             /*加载所有的角色信息*/
             loadRoles() {
@@ -496,10 +477,6 @@
             },
             clearRoles() {
                 this.transData = [];
-            },
-            /*清空用户查询列表*/
-            clearUsersTable() {
-                this.userTable = [];
             },
             clearFormData() {
                 this.formData = this.defaultFormData();
