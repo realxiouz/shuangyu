@@ -187,7 +187,8 @@ const actions = {
   },
   getUserRole({commit}, params) {
     return new Promise((resolve, reject) => {
-      getUserRole()
+      const {flog} = params;
+      getUserRole(flog)
         .then(response => {
           const {data} = response;
           resolve(data);

@@ -127,9 +127,9 @@ export function getTotal(filter) {
   });
 }
 
-export function getUserRole() {
+export function getUserRole(flog) {
   return request({
-    url: `/admin/role/get/user`,
+    url: `/admin/role/get/user/${flog}`,
     method: 'get'
   });
 }

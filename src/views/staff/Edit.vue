@@ -253,14 +253,14 @@ export default {
     /*加载所有的角色信息*/
     loadRoles() {
       this.clearRoles();
-      this.$store
-        .dispatch("role/getMany")
-        .then(data => {
-          this.transData = data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
+        this.$store
+            .dispatch("role/getUserRole", {flog: 0})
+            .then(data => {
+                this.transData = data;
+            })
+            .catch(error => {
+                console.log(error);
+            });
     },
     /*点击搜索栏里的icon*/
     handleIconClick() {

@@ -166,7 +166,7 @@
             loadRoles() {
                 this.clearRoles();
                 this.$store
-                    .dispatch("role/getUserRole")
+                    .dispatch("role/getUserRole", {flog: 1})
                     .then(data => {
                         this.roleData = data;
                     })
