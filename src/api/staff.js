@@ -98,7 +98,7 @@ export function getLoginInfo(firmId) {
   return request({
     url: `/staff/login/info`,
     method: "get",
-    params: { firmId }
+    params: {firmId}
   });
 }
 
@@ -110,3 +110,9 @@ export function isExist(deptId, filedValue) {
   });
 }
 
+export function relationUser(staffId, userId) {
+  return request({
+    url: `/staff/relation/user/${staffId}/${userId}`,
+    method: "get"
+  });
+}

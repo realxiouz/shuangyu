@@ -59,33 +59,49 @@
       </el-dialog>
 
       <!-- 员工查询弹窗 -->
-      <el-dialog center title="关联用户" width="40%" :visible.sync="userDialogVisible" :close-on-click-modal="false">
+      <el-dialog center title="关联用户" width="45%" :visible.sync="userDialogVisible" :close-on-click-modal="false">
         <el-form ref="form" :model="userData" size="mini">
-          <el-row>
+          <el-row :gutter="10">
             <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
               <el-form-item label="昵称:">
                 <span>{{userData.nickName}}</span>
               </el-form-item>
             </el-col>
+          </el-row>
+          <el-row :gutter="10">
             <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
               <el-form-item label="姓名:">
                 <span>{{userData.fullName}}</span>
               </el-form-item>
             </el-col>
+          </el-row>
+          <el-row :gutter="10">
+            <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+              <el-form-item label="性别:">
+                <span>{{initGender(userData.gender) }}</span>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="10">
             <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
               <el-form-item label="电话:">
                 <span>{{userData.phone}}</span>
               </el-form-item>
             </el-col>
+          </el-row>
+          <el-row :gutter="10">
             <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
               <el-form-item label="邮箱:">
                 <span>{{userData.email}}</span>
               </el-form-item>
             </el-col>
+          </el-row>
+          <el-row :gutter="10">
             <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
               <el-form-item>
                 <el-button size="mini" align="center" @click="userDialogVisible = false">取 消</el-button>
-                <el-button size="mini" align="center" type="primary" @click="handleSaveRelation" :disabled="isDisable">
+                <el-button size="mini" align="center" type="primary" @click="handleSaveRelation"
+                           :disabled="isDisable">
                   确认关联
                 </el-button>
               </el-form-item>
@@ -195,6 +211,9 @@
                         console.log(error);
                     });
             },
+            initGender(gender) {
+                return gender == 0 ? "男" : "女";
+            },
             /*根据关键字进行企业搜索*/
             handleSearch(params) {
                 const newParams = {};
@@ -220,8 +239,20 @@
             },
             handleSaveRelation() {
                 this.$store
-                    .dispatch("staff/updateOne", this.userData)
-                    .then(() => {
+                    .dispatch("staff/relationUser", {userId: this.userData.userId, staffId: this.userData.firmId})
+                    .then(data => {
+                        if (data) {
+                            this.$message({
+                                type: "success",
+                                message: "关联成功！"
+                            });
+                            this.loadData();
+                        } else {
+                            this.$message({
+                                type: "info",
+                                message: "关联失败！"
+                            });
+                        }
                         this.userDialogVisible = false;
                     })
                     .catch(error => {
@@ -239,6 +270,7 @@
                     .then(data => {
                         if (data) {
                             this.userData = data;
+                            this.userData.firmId = row.firmId;
                             this.isDisable = false;
                         } else {
                             this.userData = {};

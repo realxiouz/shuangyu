@@ -10,6 +10,7 @@ import {
   getPageList,
   getTotal,
   isExist,
+  relationUser,
   removeOne,
   updateOne
 } from "@/api/staff";
@@ -120,6 +121,18 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {filter} = params;
       getList(filter)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  relationUser({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {staffId, userId} = params;
+      relationUser(staffId, userId)
         .then(response => {
           resolve(response);
         })
