@@ -29,8 +29,10 @@
             <el-button type="primary" size="mini" @click="handleAddChild(scope.row.firmId)">添加子企业</el-button>
             <el-button type="primary" size="mini" @click="handleEdit(scope.row.firmId)">编辑</el-button>
             <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-            <el-button size="mini" :type="scope.row.userId?'success':'info'"
-                       @click="handleAssociate(scope.row)">{{scope.row.userId?'已关联用户':'未关联用户'}}
+            <el-button size="mini"
+                       :type="scope.row.userId?'success':'info'"
+                       :disabled="scope.row.userId?true:false"
+                       @click="handleAssociate(scope.row)">关联用户
             </el-button>
           </template>
         </el-table-column>
