@@ -29,8 +29,10 @@
             <el-button type="primary" size="mini" @click="handleAddChild(scope.row.firmId)">添加子企业</el-button>
             <el-button type="primary" size="mini" @click="handleEdit(scope.row.firmId)">编辑</el-button>
             <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-            <el-button size="mini" :type="scope.row.userId?'success':'info'"
-                       @click="handleAssociate(scope.row)">{{scope.row.userId?'已关联用户':'未关联用户'}}
+            <el-button size="mini"
+                       :type="scope.row.userId?'success':'info'"
+                       :disabled="scope.row.userId?true:false"
+                       @click="handleAssociate(scope.row)">关联用户
             </el-button>
           </template>
         </el-table-column>
@@ -100,15 +102,13 @@
             <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
               <el-form-item>
                 <el-button size="mini" align="center" @click="userDialogVisible = false">取 消</el-button>
-                <el-button size="mini" align="center" type="primary" @click="handleSaveRelation"
-                           :disabled="isDisable">
+                <el-button size="mini" align="center" type="primary" @click="handleSaveRelation">
                   确认关联
                 </el-button>
               </el-form-item>
             </el-col>
           </el-row>
         </el-form>
-
       </el-dialog>
     </div>
   </div>
@@ -123,7 +123,6 @@
             return {
                 loading: true,
                 dialogVisible: false,
-                isDisable: false,
                 userDialogVisible: false,
                 pid: "",
                 staffId: "",
@@ -271,19 +270,18 @@
                         if (data) {
                             this.userData = data;
                             this.userData.firmId = row.firmId;
-                            this.isDisable = false;
+                            this.userDialogVisible = true;
                         } else {
                             this.userData = {};
-                            this.isDisable = true;
+                            this.$message({
+                                type: "info",
+                                message: "没有可关联的用户!"
+                            });
                         }
-                        this.userDialogVisible = true;
                     })
                     .catch(error => {
                         console.log(error);
                     });
-            },
-            initGender(gender) {
-                return 0 == gender ? "男" : "女";
             },
             /*企业的添加、编辑保存*/
             handleSave(formData) {
