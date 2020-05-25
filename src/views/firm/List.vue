@@ -284,9 +284,6 @@
                         console.log(error);
                     });
             },
-            initGender(gender) {
-                return 0 == gender ? "男" : "女";
-            },
             /*企业的添加、编辑保存*/
             handleSave(formData) {
                 this.dialogVisible = false;
