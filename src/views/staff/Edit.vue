@@ -100,7 +100,7 @@
             <el-form-item>
               <el-button size="mini" align="center" @click="userDialogVisible = false">取 消</el-button>
               <el-button size="mini" align="center" type="primary" @click="handleSaveRelation"
-                         :disabled="isDisable">
+              >
                 确认关联
               </el-button>
             </el-form-item>
@@ -202,7 +202,6 @@
                 isExistsForIDNo: false,
                 isExistsForEmail: false,
                 userDialogVisible: false,
-                isDisable: false,
                 rules: {
                     email: [
                         {required: true, message: '请输入邮箱地址', trigger: 'blur'},
@@ -415,12 +414,14 @@
                         if (data) {
                             this.userData = data;
                             this.userData.staffId = row.staffId;
-                            this.isDisable = false;
+                            this.userDialogVisible = true;
                         } else {
                             this.userData = {};
-                            this.isDisable = true;
+                            this.$message({
+                                type: "info",
+                                message: "没有可关联的用户!"
+                            });
                         }
-                        this.userDialogVisible = true;
                     })
                     .catch(error => {
                         console.log(error);

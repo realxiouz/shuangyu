@@ -102,15 +102,13 @@
             <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
               <el-form-item>
                 <el-button size="mini" align="center" @click="userDialogVisible = false">取 消</el-button>
-                <el-button size="mini" align="center" type="primary" @click="handleSaveRelation"
-                           :disabled="isDisable">
+                <el-button size="mini" align="center" type="primary" @click="handleSaveRelation">
                   确认关联
                 </el-button>
               </el-form-item>
             </el-col>
           </el-row>
         </el-form>
-
       </el-dialog>
     </div>
   </div>
@@ -125,7 +123,6 @@
             return {
                 loading: true,
                 dialogVisible: false,
-                isDisable: false,
                 userDialogVisible: false,
                 pid: "",
                 staffId: "",
@@ -273,12 +270,14 @@
                         if (data) {
                             this.userData = data;
                             this.userData.firmId = row.firmId;
-                            this.isDisable = false;
+                            this.userDialogVisible = true;
                         } else {
                             this.userData = {};
-                            this.isDisable = true;
+                            this.$message({
+                                type: "info",
+                                message: "没有可关联的用户!"
+                            });
                         }
-                        this.userDialogVisible = true;
                     })
                     .catch(error => {
                         console.log(error);
