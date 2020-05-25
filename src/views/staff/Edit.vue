@@ -201,8 +201,6 @@
                 isExistsForPhone: false,
                 isExistsForIDNo: false,
                 isExistsForEmail: false,
-                //点击是否可以关联用户
-                associateAble: true,
                 userDialogVisible: false,
                 isDisable: false,
                 rules: {
@@ -437,11 +435,6 @@
                     message = "此操作将删除员工在该部门下的数据，是否继续?";
                 }
                 this.open(this.delete, row.staffId, message);
-            },
-            //选中当前行
-            handleRowClick(row) {
-                this.curRow = row;
-                this.associateAble = false;
             },
             /*根据对应员工ID*/
             delete(staffId) {
