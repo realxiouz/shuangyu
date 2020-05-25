@@ -9,7 +9,8 @@
         size="mini"
         @click="addStaff"
         :disabled="staffAddVisible"
-      >添 加</el-button>
+      >添 加
+      </el-button>
     </el-row>
     <!-- 员工列表 -->
     <el-table
@@ -43,12 +44,14 @@
             :type="scope.row.userId?'success':'info'"
             :disabled="scope.row.userId?true:false"
             @click="handleAssociate(scope.$index, scope.row)"
-          >关联用户</el-button>
+          >关联用户
+          </el-button>
           <el-button
             size="mini"
             type="primary"
             @click="permissionChange(scope.$index, scope.row)"
-          >编辑</el-button>
+          >编辑
+          </el-button>
           <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
         </template>
       </el-table-column>
@@ -142,420 +145,420 @@
 </template>
 
 <script>
-export default {
-  name: "staffEdit",
-  props: ["curNode", "staffAddVisible"],
-  data() {
-    return {
-      loading: "",
-      dialogVisible: false,
-      permissionDialogVisible: false,
-      /*点击部门后用于展示的员工列表*/
-      tableData: [],
-      //当点击用户选择列表时
-      curRow: {},
-      /*进行用户查询后待选择的用户列表*/
-      userTable: [],
-      keyword: "",
-      hasStep: true,
-      formData: {},
-      transData: [],
-      updateTempData: {},
-      transferProps: {
-        key: "roleId",
-        label: "roleName"
-      },
-      /*用于校验所填写的信息是否已经被使用*/
-      isExistsForPhone: false,
-      isExistsForIDNo: false,
-      isExistsForEmail: false,
-        //点击是否可以关联用户
-        associateAble: true,
-        rules: {
-            email:[
-                { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-                { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur'] }
-            ]
-        }
-    };
-  },
-  methods: {
-    defaultFormData() {
-      return {
-        staffId: "",
-        userId: "",
-        firmId: "",
-        fullName: "",
-        gender: 0,
-        birthDate: 0,
-        phone: "",
-        email: "",
-        idCardNo: "",
-        deptID: "",
-        domain: "",
-        roles: [],
-        //类型（0：员工，1：联系人）
-        type: 0
-      };
-    },
-    /*获取该部门下的员工列表*/
-    loadTableData(params) {
-      this.loading = true;
-      this.$store
-        .dispatch("staff/getList", {
-          filter: params
-            ? params
-            : {
-                firmId: this.curNode.firmId,
-                deptId: this.curNode.deptId,
-                type: 0
-              }
-        })
-        .then(data => {
-          if (data) {
-            if (data) {
-              this.tableData = data.data;
-            }
-            this.loading = false;
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    /*点击添加按钮*/
-    addStaff() {
-      this.handleIconClick();
-      this.clearFormData();
-      this.hasStep = true;
-      this.permissionDialogVisible = true;
-      this.isExistsForPhone = false;
-      this.isExistsForIDNo = false;
-      this.isExistsForEmail = false;
-    },
-    /*进行用户查询*/
-    searchUser(rowData) {
-      this.clearUsersTable();
-      this.$store
-        // .dispatch("staff/associateUser", {filter: {phone: rowData.phone, email: rowData.email}})
-        .dispatch("staff/associateUser", { filter: { email: rowData.email } })
-        .then(data => {
-          this.userTable.push(data.data);
-        })
-        .catch(error => {
-          console.log(error);
-          /*this.$alert(error.message, '提示', {
-                confirmButtonText: '确定',
-                type: "warning"
-            });*/
-        });
-    },
-    /*加载所有的角色信息*/
-    loadRoles() {
-      this.clearRoles();
-        this.$store
-            .dispatch("role/getUserRole", {flog: 0})
-            .then(data => {
-                this.transData = data;
-            })
-            .catch(error => {
-                console.log(error);
-            });
-    },
-    /*点击搜索栏里的icon*/
-    handleIconClick() {
-      this.keyword = "";
-    },
-    /*对待提交员工列表进行提交*/
-    handleSave() {
-      this.dialogVisible = false;
-      this.formData.userId = this.curRow.userId;
-
-      this.$store
-        .dispatch("staff/updateOne", this.formData)
-        .then(() => {
-          this.loadTableData();
-          this.loading = false;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    handleCancel() {
-      this.dialogVisible = false;
-    },
-    /*点击修改*/
-    permissionChange(idx, row) {
-      this.clearFormData();
-      /*根据对应的员工ID查询对应的用工对象*/
-      this.$store
-        .dispatch("staff/getOne", {
-          staffId: row.staffId
-        })
-        .then(data => {
-          console.log(data);
-          this.loading = false;
-
-          /*如果请求到的数据roles为null会报错*/
-          if (!data.data.roles) {
-            data.data.roles = [];
-          }
-          this.formData = data.data;
-          Object.assign(this.updateTempData, data.data);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-
-      this.hasStep = true;
-      this.permissionDialogVisible = true;
-      this.isExistsForPhone = false;
-      this.isExistsForIDNo = false;
-      this.isExistsForEmail = false;
-    },
-    /*点击修改弹窗取消按钮*/
-    permissionAlterCancel() {
-      this.permissionDialogVisible = false;
-    },
-    /*点击修改弹窗保存按钮*/
-    permissionAlterSave() {
-        this.$refs['staffForm'].validate((valid) => {
-            if (valid) {
-                //对添加的员工信息进行初始化和格式化
-                if ("number" != typeof this.formData.birthDate) {
-                    this.formData.birthDate = this.formData.birthDate.getTime();
+    export default {
+        name: "staffEdit",
+        props: ["curNode", "staffAddVisible"],
+        data() {
+            return {
+                loading: "",
+                dialogVisible: false,
+                permissionDialogVisible: false,
+                /*点击部门后用于展示的员工列表*/
+                tableData: [],
+                //当点击用户选择列表时
+                curRow: {},
+                /*进行用户查询后待选择的用户列表*/
+                userTable: [],
+                keyword: "",
+                hasStep: true,
+                formData: {},
+                transData: [],
+                updateTempData: {},
+                transferProps: {
+                    key: "roleId",
+                    label: "roleName"
+                },
+                /*用于校验所填写的信息是否已经被使用*/
+                isExistsForPhone: false,
+                isExistsForIDNo: false,
+                isExistsForEmail: false,
+                //点击是否可以关联用户
+                associateAble: true,
+                rules: {
+                    email: [
+                        {required: true, message: '请输入邮箱地址', trigger: 'blur'},
+                        {type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur']}
+                    ]
                 }
-                //如果填写的信息未通过校验，不允许保存
-                if (
-                    this.isExistsForPhone ||
-                    this.isExistsForIDNo ||
-                    this.isExistsForEmail
-                ) {
-                    this.$message({
-                        type: "warning",
-                        message: "请重新填写已被使用的信息!"
-                    });
-                    return;
-                }
-
-                //进行数据的保存
-                let url = "";
-                if ("" != this.formData.staffId) {
-                    url = "staff/updateOne";
-                } else {
-                    url = "staff/addOne";
-                    this.formData.firmId = this.curNode.firmId;
-                    this.formData.depts = [this.curNode.deptId];
-                    this.formData.domain = this.curNode.domain;
-                }
-
+            };
+        },
+        methods: {
+            defaultFormData() {
+                return {
+                    staffId: "",
+                    userId: "",
+                    firmId: "",
+                    fullName: "",
+                    gender: 0,
+                    birthDate: 0,
+                    phone: "",
+                    email: "",
+                    idCardNo: "",
+                    deptID: "",
+                    domain: "",
+                    roles: [],
+                    //类型（0：员工，1：联系人）
+                    staffType: 0
+                };
+            },
+            /*获取该部门下的员工列表*/
+            loadTableData(params) {
+                this.loading = true;
                 this.$store
-                    .dispatch(url, this.formData)
+                    .dispatch("staff/getList", {
+                        filter: params
+                            ? params
+                            : {
+                                firmId: this.curNode.firmId,
+                                deptId: this.curNode.deptId,
+                                staffType: 0
+                            }
+                    })
                     .then(data => {
-                        console.log(data);
-                        //数据保存成功后可以关闭弹窗
-                        this.permissionDialogVisible = false;
-                        this.loadTableData();
-                        this.hasStep = true;
-                        this.clearFormData();
+                        if (data) {
+                            if (data) {
+                                this.tableData = data.data;
+                            }
+                            this.loading = false;
+                        }
                     })
                     .catch(error => {
                         console.log(error);
                     });
-            } else {
-                console.log("niubi ");
-                this.$message({type: "warning", message: "请完整填写数据！"});
-                return false;
+            },
+            /*点击添加按钮*/
+            addStaff() {
+                this.handleIconClick();
+                this.clearFormData();
+                this.hasStep = true;
+                this.permissionDialogVisible = true;
+                this.isExistsForPhone = false;
+                this.isExistsForIDNo = false;
+                this.isExistsForEmail = false;
+            },
+            /*进行用户查询*/
+            searchUser(rowData) {
+                this.clearUsersTable();
+                this.$store
+                // .dispatch("staff/associateUser", {filter: {phone: rowData.phone, email: rowData.email}})
+                    .dispatch("staff/associateUser", {filter: {email: rowData.email}})
+                    .then(data => {
+                        this.userTable.push(data.data);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        /*this.$alert(error.message, '提示', {
+                              confirmButtonText: '确定',
+                              type: "warning"
+                          });*/
+                    });
+            },
+            /*加载所有的角色信息*/
+            loadRoles() {
+                this.clearRoles();
+                this.$store
+                    .dispatch("role/getUserRole", {flog: 0})
+                    .then(data => {
+                        this.transData = data;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            /*点击搜索栏里的icon*/
+            handleIconClick() {
+                this.keyword = "";
+            },
+            /*对待提交员工列表进行提交*/
+            handleSave() {
+                this.dialogVisible = false;
+                this.formData.userId = this.curRow.userId;
+
+                this.$store
+                    .dispatch("staff/updateOne", this.formData)
+                    .then(() => {
+                        this.loadTableData();
+                        this.loading = false;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            handleCancel() {
+                this.dialogVisible = false;
+            },
+            /*点击修改*/
+            permissionChange(idx, row) {
+                this.clearFormData();
+                /*根据对应的员工ID查询对应的用工对象*/
+                this.$store
+                    .dispatch("staff/getOne", {
+                        staffId: row.staffId
+                    })
+                    .then(data => {
+                        console.log(data);
+                        this.loading = false;
+
+                        /*如果请求到的数据roles为null会报错*/
+                        if (!data.data.roles) {
+                            data.data.roles = [];
+                        }
+                        this.formData = data.data;
+                        Object.assign(this.updateTempData, data.data);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+
+                this.hasStep = true;
+                this.permissionDialogVisible = true;
+                this.isExistsForPhone = false;
+                this.isExistsForIDNo = false;
+                this.isExistsForEmail = false;
+            },
+            /*点击修改弹窗取消按钮*/
+            permissionAlterCancel() {
+                this.permissionDialogVisible = false;
+            },
+            /*点击修改弹窗保存按钮*/
+            permissionAlterSave() {
+                this.$refs['staffForm'].validate((valid) => {
+                    if (valid) {
+                        //对添加的员工信息进行初始化和格式化
+                        if ("number" != typeof this.formData.birthDate) {
+                            this.formData.birthDate = this.formData.birthDate.getTime();
+                        }
+                        //如果填写的信息未通过校验，不允许保存
+                        if (
+                            this.isExistsForPhone ||
+                            this.isExistsForIDNo ||
+                            this.isExistsForEmail
+                        ) {
+                            this.$message({
+                                type: "warning",
+                                message: "请重新填写已被使用的信息!"
+                            });
+                            return;
+                        }
+
+                        //进行数据的保存
+                        let url = "";
+                        if ("" != this.formData.staffId) {
+                            url = "staff/updateOne";
+                        } else {
+                            url = "staff/addOne";
+                            this.formData.firmId = this.curNode.firmId;
+                            this.formData.depts = [this.curNode.deptId];
+                            this.formData.domain = this.curNode.domain;
+                        }
+
+                        this.$store
+                            .dispatch(url, this.formData)
+                            .then(data => {
+                                console.log(data);
+                                //数据保存成功后可以关闭弹窗
+                                this.permissionDialogVisible = false;
+                                this.loadTableData();
+                                this.hasStep = true;
+                                this.clearFormData();
+                            })
+                            .catch(error => {
+                                console.log(error);
+                            });
+                    } else {
+                        console.log("niubi ");
+                        this.$message({type: "warning", message: "请完整填写数据！"});
+                        return false;
+                    }
+                });
+            },
+            handleAssociate(idx, row) {
+                this.clearFormData();
+                /*根据对应的员工ID查询对应的用工对象*/
+                this.$store
+                    .dispatch("staff/getOne", {
+                        staffId: row.staffId
+                    })
+                    .then(data => {
+                        /*如果请求到的数据roles为null会报错*/
+                        if (!data.data.roles) {
+                            data.data.roles = [];
+                        }
+                        this.searchUser(data.data);
+                        this.formData = data.data;
+                        this.dialogVisible = true;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            /*对员工进行删除*/
+            handleDelete(idx, row) {
+                let message = "";
+                if (0 == this.curNode.level) {
+                    message = "此操作将删除该员工在企业下所有部门中数据，是否继续?";
+                } else {
+                    message = "此操作将删除员工在该部门下的数据，是否继续?";
+                }
+                this.open(this.delete, row.staffId, message);
+            },
+            //选中当前行
+            handleRowClick(row) {
+                this.curRow = row;
+                this.associateAble = false;
+            },
+            /*根据对应员工ID*/
+            delete(staffId) {
+                this.$store
+                    .dispatch("staff/removeOne", {
+                        deptId: this.curNode.deptId,
+                        staffId: staffId
+                    })
+                    .then(data => {
+                        console.log(data);
+                        this.loadTableData();
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            open(func, data, message) {
+                if (!message) {
+                    message = "确认要删除该数据!";
+                }
+                this.$confirm(message, "提示", {
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消",
+                    type: "warning"
+                })
+                    .then(() => {
+                        func(data);
+                        this.$message({
+                            type: "success",
+                            message: "删除成功!"
+                        });
+                    })
+                    .catch(() => {
+                        this.$message({
+                            type: "info",
+                            message: "已取消删除"
+                        });
+                    });
+            },
+            /*是否可以点击下一步*/
+            nextStep() {
+                this.hasStep = false;
+            },
+            prevStep() {
+                this.hasStep = true;
+            },
+            /*初始化用工列表中的生日日期格式*/
+            initDate(dateStr, format) {
+                if (null != dateStr) {
+                    let date = new Date(dateStr);
+                    return this.$moment(date).format(format);
+                } else {
+                    return "";
+                }
+            },
+            clearTableData() {
+                this.tableData = [];
+            },
+            clearRoles() {
+                this.transData = [];
+            },
+            /*清空用户查询列表*/
+            clearUsersTable() {
+                this.userTable = [];
+            },
+            clearFormData() {
+                this.formData = this.defaultFormData();
+                this.updateTempData = {};
+            },
+            /*校验所填写的信息是否已经被使用*/
+            isUsedForPhone() {
+                if (
+                    !this.formData.phone ||
+                    "" == this.formData.phone ||
+                    this.formData.phone === this.updateTempData.phone
+                ) {
+                    return;
+                }
+                this.$store
+                    .dispatch("staff/isExist", {
+                        filedValue: this.formData.phone,
+                        deptId: this.curNode.deptId
+                    })
+                    .then(data => {
+                        this.isExistsForPhone = data;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            isUsedForIDNo() {
+                if (
+                    !this.formData.idCardNo ||
+                    "" == this.formData.idCardNo ||
+                    this.formData.idCardNo === this.updateTempData.idCardNo
+                ) {
+                    return;
+                }
+                this.$store
+                    .dispatch("staff/isExist", {
+                        filedValue: this.formData.idCardNo,
+                        deptId: this.curNode.deptId
+                    })
+                    .then(data => {
+                        this.isExistsForIDNo = data;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            isUsedForEmail() {
+                if (
+                    !this.formData.email ||
+                    "" == this.formData.email ||
+                    this.formData.email === this.updateTempData.email
+                ) {
+                    return;
+                }
+                this.$store
+                    .dispatch("staff/isExist", {
+                        filedValue: this.formData.email,
+                        deptId: this.curNode.deptId
+                    })
+                    .then(data => {
+                        this.isExistsForEmail = data;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
             }
-        });
-    },
-    handleAssociate(idx, row) {
-      this.clearFormData();
-      /*根据对应的员工ID查询对应的用工对象*/
-      this.$store
-        .dispatch("staff/getOne", {
-          staffId: row.staffId
-        })
-        .then(data => {
-          /*如果请求到的数据roles为null会报错*/
-          if (!data.data.roles) {
-            data.data.roles = [];
-          }
-          this.searchUser(data.data);
-          this.formData = data.data;
-          this.dialogVisible = true;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    /*对员工进行删除*/
-    handleDelete(idx, row) {
-      let message = "";
-      if (0 == this.curNode.level) {
-        message = "此操作将删除该员工在企业下所有部门中数据，是否继续?";
-      } else {
-        message = "此操作将删除员工在该部门下的数据，是否继续?";
-      }
-      this.open(this.delete, row.staffId, message);
-    },
-    //选中当前行
-    handleRowClick(row) {
-      this.curRow = row;
-      this.associateAble = false;
-    },
-    /*根据对应员工ID*/
-    delete(staffId) {
-      this.$store
-        .dispatch("staff/removeOne", {
-          deptId: this.curNode.deptId,
-          staffId: staffId
-        })
-        .then(data => {
-          console.log(data);
-          this.loadTableData();
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    open(func, data, message) {
-      if (!message) {
-        message = "确认要删除该数据!";
-      }
-      this.$confirm(message, "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          func(data);
-          this.$message({
-            type: "success",
-            message: "删除成功!"
-          });
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除"
-          });
-        });
-    },
-    /*是否可以点击下一步*/
-    nextStep() {
-      this.hasStep = false;
-    },
-    prevStep() {
-      this.hasStep = true;
-    },
-    /*初始化用工列表中的生日日期格式*/
-    initDate(dateStr, format) {
-      if (null != dateStr) {
-        let date = new Date(dateStr);
-        return this.$moment(date).format(format);
-      } else {
-        return "";
-      }
-    },
-    clearTableData() {
-      this.tableData = [];
-    },
-    clearRoles() {
-      this.transData = [];
-    },
-    /*清空用户查询列表*/
-    clearUsersTable() {
-      this.userTable = [];
-    },
-    clearFormData() {
-      this.formData = this.defaultFormData();
-      this.updateTempData = {};
-    },
-    /*校验所填写的信息是否已经被使用*/
-    isUsedForPhone() {
-      if (
-        !this.formData.phone ||
-        "" == this.formData.phone ||
-        this.formData.phone === this.updateTempData.phone
-      ) {
-        return;
-      }
-      this.$store
-        .dispatch("staff/isExist", {
-          filedValue: this.formData.phone,
-          deptId: this.curNode.deptId
-        })
-        .then(data => {
-          this.isExistsForPhone = data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    isUsedForIDNo() {
-      if (
-        !this.formData.idCardNo ||
-        "" == this.formData.idCardNo ||
-        this.formData.idCardNo === this.updateTempData.idCardNo
-      ) {
-        return;
-      }
-      this.$store
-        .dispatch("staff/isExist", {
-          filedValue: this.formData.idCardNo,
-          deptId: this.curNode.deptId
-        })
-        .then(data => {
-          this.isExistsForIDNo = data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    isUsedForEmail() {
-      if (
-        !this.formData.email ||
-        "" == this.formData.email ||
-        this.formData.email === this.updateTempData.email
-      ) {
-        return;
-      }
-      this.$store
-        .dispatch("staff/isExist", {
-          filedValue: this.formData.email,
-          deptId: this.curNode.deptId
-        })
-        .then(data => {
-          this.isExistsForEmail = data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    }
-  },
-  computed: {
-    formatDate() {
-      return function(dateStr, format) {
-        return this.initDate(dateStr, format);
-      };
-    },
-    initGender() {
-      return function(gender) {
-        return 0 == gender ? "男" : "女";
-      };
-    }
-  },
-  created() {
-    this.loadRoles();
-    let params = {};
-    this.loadTableData(params);
-  },
-  watch: {
-    curNode() {
-      this.clearTableData();
-      this.loadTableData();
-    }
-  }
-};
+        },
+        computed: {
+            formatDate() {
+                return function (dateStr, format) {
+                    return this.initDate(dateStr, format);
+                };
+            },
+            initGender() {
+                return function (gender) {
+                    return 0 == gender ? "男" : "女";
+                };
+            }
+        },
+        created() {
+            this.loadRoles();
+            let params = {};
+            this.loadTableData(params);
+        },
+        watch: {
+            curNode() {
+                this.clearTableData();
+                this.loadTableData();
+            }
+        }
+    };
 </script>
