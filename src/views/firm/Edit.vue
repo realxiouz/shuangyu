@@ -162,7 +162,7 @@
             clearRoles() {
                 this.roleData = [];
             },
-            /*加载所有的角色信息*/
+            /*加载当前用户的企业角色信息*/
             loadRoles() {
                 this.clearRoles();
                 this.$store
