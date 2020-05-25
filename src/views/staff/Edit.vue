@@ -43,7 +43,7 @@
             size="mini"
             :type="scope.row.userId?'success':'info'"
             :disabled="scope.row.userId?true:false"
-            @click="handleAssociate(scope.$index, scope.row)"
+            @click="handleAssociate(scope.row)"
           >关联用户
           </el-button>
           <el-button
@@ -57,28 +57,56 @@
       </el-table-column>
     </el-table>
     <!-- 员工查询弹窗 -->
-    <el-dialog title="请选择关联用户" width="37%" :visible.sync="dialogVisible" :close-on-click-modal="false">
-      <el-table
-        highlight-current-row
-        size="mini"
-        :data="userTable"
-        style="width: 100%"
-        @row-click="handleRowClick"
-      >
-        <el-table-column prop="nickName" label="昵称" align="center" width="120"></el-table-column>
-        <el-table-column prop="fullName" label="姓名" align="center" width="120"></el-table-column>
-        <el-table-column prop="gender" label="性别" align="center" width="120">
-          <template slot-scope="scope">
-            <span>{{ initGender(scope.row.gender) }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="phone" label="电话" align="center"></el-table-column>
-        <el-table-column prop="email" label="邮箱" align="center"></el-table-column>
-      </el-table>
-      <span slot="footer" class="dialog-footer">
-        <el-button size="mini" @click="handleCancel">取 消</el-button>
-        <el-button size="mini" type="primary" @click="handleSave" :disabled="associateAble">添 加</el-button>
-      </span>
+    <!-- 员工查询弹窗 -->
+    <el-dialog center title="关联用户" width="45%" :visible.sync="userDialogVisible" :close-on-click-modal="false">
+      <el-form ref="form" :model="userData" size="mini">
+        <el-row :gutter="10">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="昵称:">
+              <span>{{userData.nickName}}</span>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="10">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="姓名:">
+              <span>{{userData.fullName}}</span>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="10">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="性别:">
+              <span>{{initGender(userData.gender) }}</span>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="10">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="电话:">
+              <span>{{userData.phone}}</span>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="10">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="邮箱:">
+              <span>{{userData.email}}</span>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="10">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item>
+              <el-button size="mini" align="center" @click="userDialogVisible = false">取 消</el-button>
+              <el-button size="mini" align="center" type="primary" @click="handleSaveRelation"
+                         :disabled="isDisable">
+                确认关联
+              </el-button>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
     </el-dialog>
     <!-- 权限修改弹窗 -->
     <el-dialog
@@ -159,6 +187,7 @@
                 curRow: {},
                 /*进行用户查询后待选择的用户列表*/
                 userTable: [],
+                userData: {},
                 keyword: "",
                 hasStep: true,
                 formData: {},
@@ -174,6 +203,8 @@
                 isExistsForEmail: false,
                 //点击是否可以关联用户
                 associateAble: true,
+                userDialogVisible: false,
+                isDisable: false,
                 rules: {
                     email: [
                         {required: true, message: '请输入邮箱地址', trigger: 'blur'},
@@ -269,24 +300,6 @@
             handleIconClick() {
                 this.keyword = "";
             },
-            /*对待提交员工列表进行提交*/
-            handleSave() {
-                this.dialogVisible = false;
-                this.formData.userId = this.curRow.userId;
-
-                this.$store
-                    .dispatch("staff/updateOne", this.formData)
-                    .then(() => {
-                        this.loadTableData();
-                        this.loading = false;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            handleCancel() {
-                this.dialogVisible = false;
-            },
             /*点击修改*/
             permissionChange(idx, row) {
                 this.clearFormData();
@@ -296,7 +309,6 @@
                         staffId: row.staffId
                     })
                     .then(data => {
-                        console.log(data);
                         this.loading = false;
 
                         /*如果请求到的数据roles为null会报错*/
@@ -355,7 +367,6 @@
                         this.$store
                             .dispatch(url, this.formData)
                             .then(data => {
-                                console.log(data);
                                 //数据保存成功后可以关闭弹窗
                                 this.permissionDialogVisible = false;
                                 this.loadTableData();
@@ -372,21 +383,46 @@
                     }
                 });
             },
-            handleAssociate(idx, row) {
-                this.clearFormData();
-                /*根据对应的员工ID查询对应的用工对象*/
+            handleSaveRelation() {
+                this.userDialogVisible = false;
                 this.$store
-                    .dispatch("staff/getOne", {
-                        staffId: row.staffId
+                    .dispatch("staff/relationUser", {userId: this.userData.userId, staffId: this.userData.staffId})
+                    .then(data => {
+                        if (data) {
+                            this.$message({
+                                type: "success",
+                                message: "关联成功！"
+                            });
+                            this.loadData();
+                        } else {
+                            this.$message({
+                                type: "info",
+                                message: "关联失败！"
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            handleAssociate(row) {
+                let params = {};
+                params.phone = row.phone;
+                params.email = row.email;
+                this.$store
+                    .dispatch("user/getFirstOne", {
+                        filter: params
                     })
                     .then(data => {
-                        /*如果请求到的数据roles为null会报错*/
-                        if (!data.data.roles) {
-                            data.data.roles = [];
+                        if (data) {
+                            this.userData = data;
+                            this.userData.staffId = row.staffId;
+                            this.isDisable = false;
+                        } else {
+                            this.userData = {};
+                            this.isDisable = true;
                         }
-                        this.searchUser(data.data);
-                        this.formData = data.data;
-                        this.dialogVisible = true;
+                        this.userDialogVisible = true;
                     })
                     .catch(error => {
                         console.log(error);
