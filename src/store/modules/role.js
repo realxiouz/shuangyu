@@ -7,6 +7,7 @@ import {
   getOneByFilter,
   getPageList,
   getTotal,
+  getUserRole,
   removeMany,
   removeManyByFilter,
   removeOne,
@@ -14,8 +15,7 @@ import {
   saveOne,
   updateMany,
   updateManyByFilter,
-  updateOne,
-  getUserRole
+  updateOne
 } from '@/api/role';
 
 const actions = {
