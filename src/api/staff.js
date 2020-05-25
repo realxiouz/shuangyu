@@ -110,9 +110,3 @@ export function isExist(deptId, filedValue) {
   });
 }
 
-export function getRelationUser(staffId) {
-  return request({
-    url: `/staff/relation/user/${staffId}`,
-    method: "get"
-  });
-}

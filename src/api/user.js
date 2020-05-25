@@ -63,6 +63,14 @@ export function getOne(userId) {
   });
 }
 
+export function getFirstOne(filter) {
+  return request({
+    url: '/admin/user/get/first/one',
+    method: 'get',
+    params: filter
+  });
+}
+
 export function getList(filter) {
   return request({
     url: '/admin/user/list',

@@ -63,6 +63,11 @@
         <el-form ref="form" :model="userData" size="mini">
           <el-row>
             <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+              <el-form-item label="昵称:">
+                <span>{{userData.nickName}}</span>
+              </el-form-item>
+            </el-col>
+            <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
               <el-form-item label="姓名:">
                 <span>{{userData.fullName}}</span>
               </el-form-item>
@@ -224,10 +229,12 @@
                     });
             },
             handleAssociate(row) {
-                this.staffId = row.firmId;
+                let params = {};
+                params.phone = row.phone;
+                params.email = row.email;
                 this.$store
-                    .dispatch("staff/getRelationUser", {
-                        staffId: row.firmId
+                    .dispatch("user/getFirstOne", {
+                        filter: params
                     })
                     .then(data => {
                         if (data) {

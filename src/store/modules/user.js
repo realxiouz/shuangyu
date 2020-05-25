@@ -1,20 +1,21 @@
 import {
+  activation,
+  addOne,
+  getFirstOne,
+  getList,
+  getOne,
+  getPageList,
+  getTotal,
+  getVerifyCode,
+  isExist,
+  removeOne,
+  resetPassword,
   signIn,
   signInCode,
   signOut,
-  addOne,
-  removeOne,
-  updateOne,
-  getOne,
-  getList,
-  getTotal,
-  getPageList,
-  activation,
-  isExist,
-  resetPassword,
-  getVerifyCode
+  updateOne
 } from "@/api/user";
-import {getToken, setToken, removeToken} from "@/utils/auth";
+import {getToken, removeToken} from "@/utils/auth";
 
 const state = {
   token: getToken(),
@@ -107,6 +108,19 @@ const actions = {
       removeOne(userId)
         .then(response => {
           resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getFirstOne({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {filter} = params;
+      getFirstOne(filter)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
         })
         .catch(error => {
           reject(error);
