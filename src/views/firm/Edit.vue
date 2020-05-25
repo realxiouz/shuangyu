@@ -22,6 +22,22 @@
       <el-form-item label="地址" prop="address">
         <el-input type="text" placeholder="请输入联系地址" v-model="formData.address"></el-input>
       </el-form-item>
+      <el-form-item label="角色:" prop="roles">
+        <el-select
+          style="width: 100%;"
+          clearable
+          multiple
+          v-model="formData.roles"
+          placeholder="请选择"
+        >
+          <el-option
+            v-for="item in roleData"
+            :key="item.roleName"
+            :label="item.roleName"
+            :value="item.roleId"
+          ></el-option>
+        </el-select>
+      </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer" style="margin-top:10px;text-align:right">
       <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
@@ -63,6 +79,7 @@
                 transData: [],
                 formData: {},
                 updateTempData: {},
+                roleData: [],
                 formRules: {
                     firmName: [
                         {required: true, message: "请输入企业名称", trigger: "blur"},
@@ -114,7 +131,6 @@
                     domain: "",
                     type: 0,
                     roles: []
-
                 };
             },
             clearForm() {
@@ -143,6 +159,21 @@
                     this.formData = this.defaultFormData();
                 }
             },
+            clearRoles() {
+                this.roleData = [];
+            },
+            /*加载所有的角色信息*/
+            loadRoles() {
+                this.clearRoles();
+                this.$store
+                    .dispatch("role/getUserRole")
+                    .then(data => {
+                        this.roleData = data;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            }
         },
         created() {
             if (this.editFirmId) {
@@ -151,6 +182,7 @@
             if (this.pid) {
                 this.formData.pid = this.pid;
             }
+            this.loadRoles();
         }
     };
 </script>

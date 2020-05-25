@@ -1,11 +1,29 @@
-import {saveOne, addOne, addMany, updateOne, updateMany, updateManyByFilter, removeOne, removeMany, removeManyByFilter, removeRealOne, getOne, getOneByFilter, getMany, getList, getPageList, getTotal} from '@/api/role';
+import {
+  addMany,
+  addOne,
+  getList,
+  getMany,
+  getOne,
+  getOneByFilter,
+  getPageList,
+  getTotal,
+  removeMany,
+  removeManyByFilter,
+  removeOne,
+  removeRealOne,
+  saveOne,
+  updateMany,
+  updateManyByFilter,
+  updateOne,
+  getUserRole
+} from '@/api/role';
 
 const actions = {
   saveOne({commit}, params) {
     return new Promise((resolve, reject) => {
       saveOne(params)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -17,7 +35,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       addOne(params)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -29,7 +47,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       addMany(params)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -42,7 +60,7 @@ const actions = {
       const {roleId, data} = params;
       updateOne(roleId, data)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -55,7 +73,7 @@ const actions = {
       const {id, data} = params;
       updateMany(id, data)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -68,7 +86,7 @@ const actions = {
       const {id, data} = params;
       updateManyByFilter(id, data)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -81,7 +99,7 @@ const actions = {
       const {id} = params;
       removeOne(id)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -94,7 +112,7 @@ const actions = {
       const {ids} = params;
       removeMany(ids)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -107,7 +125,7 @@ const actions = {
       const {filter} = params;
       removeManyByFilter(filter)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -120,7 +138,7 @@ const actions = {
       const {id} = params;
       removeRealOne(id)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -133,7 +151,7 @@ const actions = {
       const {id} = params;
       getOne(id)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -146,7 +164,7 @@ const actions = {
       const {filter} = params;
       getOneByFilter(filter)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -159,7 +177,19 @@ const actions = {
       const {ids} = params;
       getMany(ids)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getUserRole({commit}, params) {
+    return new Promise((resolve, reject) => {
+      getUserRole()
+        .then(response => {
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -172,7 +202,7 @@ const actions = {
       const {filter} = params;
       getList(filter)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -185,7 +215,7 @@ const actions = {
       const {pageFlag, pageSize, filter} = params;
       getPageList(pageFlag, pageSize, filter)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -198,7 +228,7 @@ const actions = {
       const {filter} = params;
       getTotal(filter)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {

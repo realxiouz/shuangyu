@@ -126,3 +126,10 @@ export function getTotal(filter) {
     params: filter
   });
 }
+
+export function getUserRole() {
+  return request({
+    url: `/admin/role/get/user`,
+    method: 'get'
+  });
+}
