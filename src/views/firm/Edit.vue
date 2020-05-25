@@ -74,6 +74,14 @@
                     callback();
                 }
             };
+            const codeValidator = (rule, value, callback) => {
+                let reg = /^[0-9a-zA-Z]*$/g;
+                if (reg.test(value)) {
+                    callback();
+                } else {
+                    callback(new Error("只能输入字母或数字！"));
+                }
+            };
             return {
                 /*所有的可操作的角色信息*/
                 transData: [],
@@ -93,12 +101,19 @@
                         {required: true, message: "请输入企业代码", trigger: "blur"},
                         {
                             min: 1,
-                            max: 20,
-                            message: "长度在 1到 20 个字符"
-                        }
+                            max: 30,
+                            message: "长度在 1到30 个字符"
+                        },
+                        {validator: codeValidator, trigger: 'blur'}
                     ],
                     domain: [
-                        {required: true, message: "请输入域名", trigger: "blur"}
+                        {required: true, message: "请输入域名", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 30,
+                            message: "长度在 1到 30 个字符"
+                        },
+                        {validator: codeValidator, trigger: 'blur'}
                     ],
                     fullName: [
                         {required: true, message: "请输入联系人", trigger: "blur"},
