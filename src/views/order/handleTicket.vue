@@ -417,7 +417,7 @@
               flag = true;
             }
           });
-          if (flag) {
+         /* if (flag) {
             this.$notify({
               title: "提示",
               message: "填写人的金额，需填写负数！",
@@ -425,7 +425,7 @@
               duration: 4500
             });
             return;
-          }
+          }*/
           if (amountTotal != this.formData.amount) {
             this.$notify({
               title: "提示",
@@ -599,7 +599,7 @@
               flag = true;
             }
           });
-          if (flag) {
+          /*if (flag) {
             this.$notify({
               title: "提示",
               message: "填写人的金额，需填写负数！",
@@ -607,7 +607,7 @@
               duration: 4500
             });
             return;
-          }
+          }*/
           if (amountTotal != this.formData.amount) {
             this.$notify({
               title: "提示",
