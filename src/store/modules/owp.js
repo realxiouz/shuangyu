@@ -1,6 +1,7 @@
 import {
   addOne,
   updateOne,
+  getOne,
   getTotal,
   getPageList,
   removeOne
@@ -23,6 +24,18 @@ const actions= {
     return new Promise((resolve, reject) => {
       const {id} = params
       removeOne(id)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getOne({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {id} = params
+      getOne(id)
         .then(response => {
           resolve(response);
         })
