@@ -129,6 +129,11 @@
             <span>{{ formatAmount(scope.row.payment)}}</span>
           </template>
         </el-table-column>
+        <el-table-column prop="pointAmount" label="积分金额" width="90" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatAmount(scope.row.pointAmount)}}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="systemProfit" label="系统利润" width="80" align="center">
           <template slot-scope="scope">
             <span>{{ formatAmount(scope.row.systemProfit)}}</span>
@@ -310,6 +315,10 @@ export default {
           case "payment":
             sums[index] =
               "￥" + this.$numeral(this.count.payment).format("0,0.00");
+            break;
+          case "pointAmount":
+            sums[index] =
+              "￥" + this.$numeral(this.count.pointAmount).format("0,0.00");
             break;
           case "systemProfit":
             sums[index] =
