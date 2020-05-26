@@ -188,7 +188,7 @@
         this.$store
           .dispatch("user/getVerifyCode", {target: this.loginForm.account})
           .then(() => {
-            this.clearTimer();
+            //this.clearTimer();
           })
           .catch(() => {
             this.clearTimer();
