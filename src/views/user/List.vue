@@ -178,7 +178,6 @@ export default {
           if (key == "enable") {
             newParams[key] = params[key];
           } else if (params[key]) {
-            console.log(params,key,'111')
             newParams[key] = params[key];
           }
         }

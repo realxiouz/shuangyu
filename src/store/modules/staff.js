@@ -6,7 +6,6 @@ import {
   getListByFirmId,
   getMany,
   getOne,
-  getOneByFidAndUid,
   getPageList,
   getTotal,
   isExist,
@@ -85,18 +84,6 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {staffId} = params;
       getOne(staffId)
-        .then(response => {
-          resolve(response);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  getOneByFidAndUid({commit}, params) {
-    return new Promise((resolve, reject) => {
-      const {firmId, userId} = params;
-      getOneByFidAndUid(firmId, userId)
         .then(response => {
           resolve(response);
         })

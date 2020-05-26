@@ -3,14 +3,24 @@
     <el-row type="flex" justify="space-between" style="margin-bottom:20px;" align="bottom">
       <span style="font-weight:700;color:#303133;" v-if="!staffAddVisible">{{this.curNode.deptName}}</span>
       <span></span>
-      <el-button
-        type="primary"
-        icon="el-icon-plus"
-        size="mini"
-        @click="addStaff"
-        :disabled="staffAddVisible"
-      >添 加
-      </el-button>
+      <el-row>
+        <el-button
+          type="primary"
+          icon="el-icon-search"
+          size="mini"
+          @click="searchStaff"
+          :disabled="staffAddVisible"
+        >搜 索
+        </el-button>
+        <el-button
+          type="primary"
+          icon="el-icon-plus"
+          size="mini"
+          @click="addStaff"
+          :disabled="staffAddVisible"
+        >添 加
+        </el-button>
+      </el-row>
     </el-row>
     <!-- 员工列表 -->
     <el-table
@@ -56,8 +66,6 @@
         </template>
       </el-table-column>
     </el-table>
-    <!-- 员工查询弹窗 -->
-    <!-- 员工查询弹窗 -->
     <el-dialog center title="关联用户" width="45%" :visible.sync="userDialogVisible" :close-on-click-modal="false">
       <el-form ref="form" :model="userData" size="mini">
         <el-row :gutter="10">
@@ -108,7 +116,6 @@
         </el-row>
       </el-form>
     </el-dialog>
-    <!-- 权限修改弹窗 -->
     <el-dialog
       center
       title="员工信息"
@@ -167,6 +174,60 @@
         <el-button size="mini" type="primary" @click="permissionAlterSave">确 定</el-button>
       </span>
     </el-dialog>
+    <el-dialog center title="搜索用户" width="70%" :visible.sync="searchDialogVisible" :close-on-click-modal="false">
+      <el-form :inline="true" :model="searchUserForm">
+        <el-form-item label="昵称:">
+          <el-input clearable v-model="searchUserForm.nickName" placeholder="昵称"></el-input>
+        </el-form-item>
+        <el-form-item label="姓名:">
+          <el-input clearable v-model="searchUserForm.fullName" placeholder="姓名"></el-input>
+        </el-form-item>
+        <el-form-item label="电话:">
+          <el-input clearable v-model="searchUserForm.phone" placeholder="姓名"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱:">
+          <el-input clearable v-model="searchUserForm.email" placeholder="姓名"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button clearable type="primary" icon="el-icon-search" @click="handleUserSearch">查询</el-button>
+        </el-form-item>
+      </el-form>
+      <el-table
+        highlight-current-row
+        v-loading="loading"
+        stripe
+        size="mini"
+        style="width: 100%;"
+        fit
+        :data="searchTableData"
+      >
+        <el-table-column prop="nickName" label="昵称" width="150" align="center"></el-table-column>
+        <el-table-column prop="fullName" label="姓名" width="100" align="center"></el-table-column>
+        <el-table-column prop="gender" label="性别" width="80" align="center">
+          <template slot-scope="scope">
+            <span style="margin-left: 10px">{{ initGender(scope.row.gender) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="出生日期" width="150" align="center">
+          <template slot-scope="scope">
+            <i class="el-icon-time"></i>
+            <span style="margin-left: 10px">{{ formatDate(scope.row.birthDate,'YYYY-MM-DD') }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="phone" label="手机号" align="center"></el-table-column>
+        <el-table-column prop="email" label="电子邮箱" align="center"></el-table-column>
+        <el-table-column label="操作" width="240" align="center">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="primary"
+              @click="handleUser(scope.row)"
+            >确定
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
   </div>
 </template>
 
@@ -179,6 +240,7 @@
                 loading: "",
                 dialogVisible: false,
                 permissionDialogVisible: false,
+                searchDialogVisible: false,
                 /*点击部门后用于展示的员工列表*/
                 tableData: [],
                 //当点击用户选择列表时
@@ -188,7 +250,9 @@
                 hasStep: true,
                 formData: {},
                 transData: [],
+                searchTableData: [],
                 updateTempData: {},
+                searchUserForm: {},
                 transferProps: {
                     key: "roleId",
                     label: "roleName"
@@ -251,9 +315,13 @@
                         console.log(error);
                     });
             },
+            searchStaff() {
+                this.searchDialogVisible = true;
+            },
+            handleUser() {
+            },
             /*点击添加按钮*/
             addStaff() {
-                this.handleIconClick();
                 this.clearFormData();
                 this.hasStep = true;
                 this.permissionDialogVisible = true;
@@ -273,9 +341,19 @@
                         console.log(error);
                     });
             },
-            /*点击搜索栏里的icon*/
-            handleIconClick() {
-                this.keyword = "";
+            handleUserSearch() {
+                this.$store
+                    .dispatch("user/getList", {
+                        filter: this.searchUserForm
+                    })
+                    .then(data => {
+                        if (data) {
+                            this.searchTableData = data;
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
             },
             /*点击修改*/
             permissionChange(idx, row) {
@@ -547,7 +625,6 @@
         },
         watch: {
             curNode() {
-                debugger
                 this.clearTableData();
                 this.loadTableData();
             }

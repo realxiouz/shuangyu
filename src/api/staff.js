@@ -38,13 +38,6 @@ export function getOne(staffId) {
   });
 }
 
-export function getOneByFidAndUid(firmId, userId) {
-  return request({
-    url: `/staff/one/${firmId}/${userId}`,
-    method: "get"
-  });
-}
-
 export function getList(filter) {
   return request({
     url: `/staff/list`,
