@@ -123,7 +123,7 @@
       :visible.sync="permissionDialogVisible"
       :close-on-click-modal="false"
     >
-      <el-form ref="staffForm" :model="formData" :rules="rules" size="mini" label-width="120px" v-show="hasStep">
+      <el-form ref="staffForm" :model="formData" :rules="rules" size="mini" label-width="120px">
         <!--   企业ID  -->
         <el-form-item label="员工姓名:">
           <el-input type="text" placeholder="请输入姓名" v-model="formData.fullName"></el-input>
@@ -247,7 +247,6 @@
                 curRow: {},
                 userData: {},
                 keyword: "",
-                hasStep: true,
                 formData: {},
                 transData: [],
                 searchTableData: [],
@@ -319,11 +318,12 @@
                 this.searchDialogVisible = true;
             },
             handleUser() {
+                this.permissionDialogVisible = true;
+                this.searchDialogVisible = false;
             },
             /*点击添加按钮*/
             addStaff() {
                 this.clearFormData();
-                this.hasStep = true;
                 this.permissionDialogVisible = true;
                 this.isExistsForPhone = false;
                 this.isExistsForIDNo = false;
@@ -376,8 +376,6 @@
                     .catch(error => {
                         console.log(error);
                     });
-
-                this.hasStep = true;
                 this.permissionDialogVisible = true;
                 this.isExistsForPhone = false;
                 this.isExistsForIDNo = false;
