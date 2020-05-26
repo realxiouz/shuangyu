@@ -104,7 +104,7 @@
         editFlagFlag: false,
         dialogVisible: false,
         dialogVisibleFlag: false,
-        offlineFlag:false,
+        offlineFlag: false,
         staffList: [],
         selectFlags: [],
         orderStaff: {},
@@ -133,13 +133,15 @@
 
       },
       loadData() {
-        this.$store
-          .dispatch("orderStaff/getList", {
-            searchForm: {online: "1"}
-          })
-          .then(data => {
-            if (data.length > 0) {
-              this.formData = data[0];
+        let staffId = this.$store.state.loginInfo.staffId;
+        console.log("staffId:" + staffId);
+        if (staffId && staffId != undefined && staffId != null && staffId != '') {
+          this.$store
+            .dispatch("orderStaff/getOne", {
+              staffId: staffId
+            })
+            .then(data => {
+              this.formData = data;
               this.selectFlags = [];
               if (this.formData.ownFlags && this.formData.ownFlags != null && this.formData.ownFlags.length > 0) {
                 for (var i = 0; i < this.formData.ownFlags.length; i++) {
@@ -151,11 +153,11 @@
                   }
                 }
               }
-            }
-          })
-          .catch(error => {
-            console.log(error);
-          });
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        }
       },
       setMonitor() {
         this.dialogVisibleFlag = true;
