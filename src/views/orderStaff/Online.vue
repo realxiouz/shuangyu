@@ -275,9 +275,9 @@
         }
       }
     },
-    created() {
+    /*created() {
       this.loadData();
-    },
+    },*/
     computed: {
       formatDate() {
         return function (dateStr, format) {
