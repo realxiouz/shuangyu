@@ -20,6 +20,7 @@
     "numeral": "^2.0.6",
     "path-to-regexp": "^3.1.0",
     "vue": "^2.6.10",
+    "vue-cron": "^1.0.9",
     "vue-router": "3.0.7",
     "vuex": "3.1.1"
   },

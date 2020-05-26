@@ -14,6 +14,9 @@ import _ from 'lodash'
 import moment from 'moment'
 import numeral from 'numeral';
 
+import VueCron from 'vue-cron';
+Vue.use(VueCron);
+
 // import { mockXHR } from '../mock';
 // if (process.env.NODE_ENV === 'development') {
 //   mockXHR();
