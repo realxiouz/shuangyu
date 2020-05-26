@@ -408,19 +408,12 @@
             },
             /*对员工进行删除*/
             handleDelete(idx, row) {
-                let message = "";
-                if (0 == this.curNode.level) {
-                    message = "此操作将删除该员工在企业下所有部门中数据，是否继续?";
-                } else {
-                    message = "此操作将删除员工在该部门下的数据，是否继续?";
-                }
-                this.open(this.delete, row.staffId, message);
+                this.open(this.delete, row.staffId);
             },
             /*根据对应员工ID*/
             delete(staffId) {
                 this.$store
                     .dispatch("staff/removeOne", {
-                        deptId: this.curNode.deptId,
                         staffId: staffId
                     })
                     .then(data => {
@@ -554,6 +547,7 @@
         },
         watch: {
             curNode() {
+                debugger
                 this.clearTableData();
                 this.loadTableData();
             }

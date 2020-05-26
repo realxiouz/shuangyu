@@ -24,9 +24,9 @@ export function updateOne(data) {
   });
 }
 
-export function removeOne(staffId, deptId) {
+export function removeOne(staffId) {
   return request({
-    url: `/staff/remove/one/${staffId}/${deptId}`,
+    url: `/staff/remove/one/${staffId}`,
     method: "delete"
   });
 }
