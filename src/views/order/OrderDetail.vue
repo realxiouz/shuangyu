@@ -840,6 +840,9 @@
           newParams.transactionAmount = params.transactionAmount;
           newParams.createTime = params.createTime;
           newParams.ticketNoFlag = params.ticketNoFlag;
+          newParams.receiptAmount = params.receiptAmount;
+          newParams.pointAmount = params.pointAmount;
+          newParams.pointBatchNo = params.pointBatchNo;
         }
         this.purchaseOrder(newParams);
       },
@@ -934,6 +937,10 @@
             newParams.createTime = params.createTime;
             newParams.merchantId = params.merchantId;
             newParams.accountId = params.accountId;
+            newParams.transactionAmount = params.transactionAmount;
+            newParams.receiptAmount = params.receiptAmount;
+            newParams.pointAmount = params.pointAmount;
+            newParams.pointBatchNo = params.pointBatchNo;
             if (params.ticketNoFlag) {
               newParams.ticketNoFlag = params.ticketNoFlag;
             }
