@@ -390,25 +390,34 @@
                             this.formData.birthDate = this.formData.birthDate.getTime();
                         }
                         //进行数据的保存
-                        let url = "";
-                        if ("" != this.formData.staffId) {
-                            url = "staff/updateOne";
+                        if (this.formData.staffId && "" != this.formData.staffId) {
+                            this.$store
+                                .dispatch("staff/updateOne", {id: this.formData.staffId, data: this.formData})
+                                .then(() => {
+                                    //数据保存成功后可以关闭弹窗
+                                    this.permissionDialogVisible = false;
+                                    this.loadTableData();
+                                    this.clearFormData();
+                                })
+                                .catch(error => {
+                                    console.log(error);
+                                });
                         } else {
-                            url = "staff/addOne";
                             this.formData.depts = [this.curNode.deptId];
-                            this.formData.domain = this.curNode.domain;
+                            this.$store
+                                .dispatch("staff/addOne", this.formData)
+                                .then(() => {
+                                    //数据保存成功后可以关闭弹窗
+                                    this.permissionDialogVisible = false;
+                                    this.loadTableData();
+                                    this.clearFormData();
+                                })
+                                .catch(error => {
+                                    console.log(error);
+                                });
+
                         }
-                        this.$store
-                            .dispatch(url, this.formData)
-                            .then(() => {
-                                //数据保存成功后可以关闭弹窗
-                                this.permissionDialogVisible = false;
-                                this.loadTableData();
-                                this.clearFormData();
-                            })
-                            .catch(error => {
-                                console.log(error);
-                            });
+
                     } else {
                         this.$message({type: "warning", message: "请完整填写数据！"});
                         return false;
