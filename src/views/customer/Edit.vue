@@ -18,10 +18,10 @@
               </el-select>
             </el-form-item>
             <el-form-item label="名称" prop="firmName">
-              <el-input type="text" placeholder="请输入供应商名称" v-model="firmForm.firmName"></el-input>
+              <el-input type="text" placeholder="请输入客户名称" v-model="firmForm.firmName"></el-input>
             </el-form-item>
             <el-form-item label="编码" prop="firmCode">
-              <el-input type="text" placeholder="请输入供应商代码" v-model="firmForm.firmCode"></el-input>
+              <el-input type="text" placeholder="请输入客户代码" v-model="firmForm.firmCode"></el-input>
             </el-form-item>
             <el-form-item label="域名" prop="domain">
               <el-input type="text" placeholder="请输入域名" v-model="firmForm.domain"></el-input>
@@ -156,7 +156,7 @@
                 open: {},
                 rules: {
                     firmName: [
-                        {required: true, message: "请输入供应商名称", trigger: "blur"},
+                        {required: true, message: "请输入客户名称", trigger: "blur"},
                         {
                             min: 1,
                             max: 20,
@@ -164,7 +164,7 @@
                         }
                     ],
                     firmCode: [
-                        {required: true, message: "请输入供应商代码", trigger: "blur"},
+                        {required: true, message: "请输入客户代码", trigger: "blur"},
                         {
                             min: 1,
                             max: 20,
