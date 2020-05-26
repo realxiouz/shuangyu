@@ -175,6 +175,11 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
+            <el-form-item label="积分批次号:">
+              <el-input clearable v-model="formData.pointBatchNo"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
             <el-form-item label="利润金额:" prop="profit">
               <!--<el-input clearable v-model="formData.profit"></el-input>-->
               <el-input-number clearable v-model="formData.profit" controls-position="right"
@@ -368,7 +373,8 @@
           merchantId: "",
           pointAmount: 0,
           receiptAmount: 0,
-          finishTime: ""
+          finishTime: "",
+          pointBatchNo:""
         },
         statusData: statusData,
         formRules: {

@@ -78,6 +78,21 @@
           jobCron: ''
         };
       },
+    },
+    computed: {
+      _inRouters: {
+        get: function () {
+          if (this.formData.inRouters.length > 0) {
+            return this.formData.inRouters.join(',')
+          } else {
+            return '';
+          }
+        },
+        set: function (newValue) {
+          this.formData.inRouters = newValue.split(',')
+        }
+      }
     }
   }
+
 </script>
