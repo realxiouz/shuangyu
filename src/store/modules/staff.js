@@ -3,7 +3,6 @@ import {
   addOne,
   associateUser,
   getList,
-  getListByFirmId,
   getMany,
   getOne,
   getPageList,
@@ -128,18 +127,6 @@ const actions = {
         });
     });
   },
-  getListByFirmId({commit}, params) {
-    return new Promise((resolve, reject) => {
-      const {firmId, filter} = params;
-      getListByFirmId(firmId, filter)
-        .then(response => {
-          resolve(response);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
   getPageList({commit}, params) {
     return new Promise((resolve, reject) => {
       const {pageFlag, pageSize, lastId, filter} = params;
@@ -180,8 +167,8 @@ const actions = {
   },
   isExist({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {firmId, account} = params;
-      isExist(firmId, account)
+      const {account} = params;
+      isExist(account)
         .then(response => {
           const {data} = response;
           resolve(data);

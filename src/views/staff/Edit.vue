@@ -293,7 +293,6 @@
                         filter: params
                             ? params
                             : {
-                                firmId: this.curNode.firmId,
                                 deptId: this.curNode.deptId,
                                 staffType: 0
                             }
@@ -396,7 +395,6 @@
                             url = "staff/updateOne";
                         } else {
                             url = "staff/addOne";
-                            this.formData.firmId = this.curNode.firmId;
                             this.formData.depts = [this.curNode.deptId];
                             this.formData.domain = this.curNode.domain;
                         }
@@ -536,7 +534,6 @@
                 this.$store
                     .dispatch("staff/isExist", {
                         account: this.formData.phone,
-                        firmId: this.curNode.firmId
                     })
                     .then(data => {
                         this.isExistsForPhone = data;
@@ -555,8 +552,7 @@
                 }
                 this.$store
                     .dispatch("staff/isExist", {
-                        account: this.formData.idCardNo,
-                        firmId: this.curNode.firmId
+                        account: this.formData.idCardNo
                     })
                     .then(data => {
                         this.isExistsForIDNo = data;
@@ -575,8 +571,7 @@
                 }
                 this.$store
                     .dispatch("staff/isExist", {
-                        account: this.formData.email,
-                        firmId: this.curNode.firmId
+                        account: this.formData.email
                     })
                     .then(data => {
                         this.isExistsForEmail = data;

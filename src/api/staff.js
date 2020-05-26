@@ -46,14 +46,6 @@ export function getList(filter) {
   });
 }
 
-export function getListByFirmId(firmId, filter) {
-  return request({
-    url: `/staff/list/${firmId}`,
-    method: "get",
-    params: filter
-  });
-}
-
 export function getTotal(filter) {
   return request({
     url: "/staff/total",
@@ -95,11 +87,11 @@ export function getLoginInfo(firmId) {
   });
 }
 
-export function isExist(firmId, account) {
+export function isExist(account) {
   return request({
     url: `/staff/exist`,
     method: "post",
-    params: {firmId, account}
+    params: {account}
   });
 }
 
