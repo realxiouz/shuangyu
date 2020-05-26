@@ -24,10 +24,8 @@
         ></el-date-picker>
       </el-form-item>
       <el-form-item v-if="!isEdit" label="邮箱" prop="email">
-        <el-input placeholder="请输入您的邮箱" clearable v-model="formData.email" @blur="isUsedForEmail"></el-input>
-        <!--<span v-if="isExistsForEmail" style="color: #F56C6C">*该信息已被注册</span>-->
+        <el-input placeholder="请输入您的邮箱" clearable v-model="formData.email"></el-input>
       </el-form-item>
-
       <el-form-item label="角色:">
         <el-select
           style="width: 100%;"
