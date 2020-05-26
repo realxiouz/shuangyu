@@ -95,11 +95,11 @@ export function getLoginInfo(firmId) {
   });
 }
 
-export function isExist(deptId, filedValue) {
+export function isExist(firmId, account) {
   return request({
-    url: `/staff/exists/${filedValue}`,
-    method: "get",
-    params: {deptId}
+    url: `/staff/exist`,
+    method: "post",
+    params: {firmId, account}
   });
 }
 

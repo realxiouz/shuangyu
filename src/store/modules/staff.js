@@ -180,8 +180,8 @@ const actions = {
   },
   isExist({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {filedValue, deptId} = params;
-      isExist(deptId, filedValue)
+      const {firmId, account} = params;
+      isExist(firmId, account)
         .then(response => {
           const {data} = response;
           resolve(data);

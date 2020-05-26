@@ -144,7 +144,7 @@
         </el-form-item>
         <el-form-item label="身份证号:">
           <el-input v-model="formData.idCardNo" @blur="isUsedForIDNo"></el-input>
-          <span v-if="isExistsForIDNo" style="color: crimson">*信息已被使用</span>
+          <span v-if="isExistsForIDNo" style="color: crimson">*身份证号已被使用</span>
         </el-form-item>
         <el-form-item label="手机号码:">
           <el-input
@@ -154,11 +154,11 @@
             show-word-limit
             @blur="isUsedForPhone"
           ></el-input>
-          <span v-if="isExistsForPhone" style="color: crimson">*信息已被使用</span>
+          <span v-if="isExistsForPhone" style="color: crimson">*手机号码已被使用</span>
         </el-form-item>
         <el-form-item label="邮箱:" prop="email">
           <el-input v-model="formData.email" @blur="isUsedForEmail"></el-input>
-          <span v-if="isExistsForEmail" style="color: crimson">*信息已被使用</span>
+          <span v-if="isExistsForEmail" style="color: crimson">*邮箱已被使用</span>
         </el-form-item>
         <el-form-item label="角色:" prop="roles">
           <el-transfer
@@ -241,12 +241,8 @@
                 dialogVisible: false,
                 permissionDialogVisible: false,
                 searchDialogVisible: false,
-                /*点击部门后用于展示的员工列表*/
                 tableData: [],
-                //当点击用户选择列表时
-                curRow: {},
                 userData: {},
-                keyword: "",
                 formData: {},
                 transData: [],
                 searchTableData: [],
@@ -317,8 +313,9 @@
             searchStaff() {
                 this.searchDialogVisible = true;
             },
-            handleUser() {
+            handleUser(data) {
                 this.permissionDialogVisible = true;
+                this.formData = data;
                 this.searchDialogVisible = false;
             },
             /*点击添加按钮*/
@@ -393,19 +390,6 @@
                         if ("number" != typeof this.formData.birthDate) {
                             this.formData.birthDate = this.formData.birthDate.getTime();
                         }
-                        //如果填写的信息未通过校验，不允许保存
-                        if (
-                            this.isExistsForPhone ||
-                            this.isExistsForIDNo ||
-                            this.isExistsForEmail
-                        ) {
-                            this.$message({
-                                type: "warning",
-                                message: "请重新填写已被使用的信息!"
-                            });
-                            return;
-                        }
-
                         //进行数据的保存
                         let url = "";
                         if ("" != this.formData.staffId) {
@@ -416,10 +400,9 @@
                             this.formData.depts = [this.curNode.deptId];
                             this.formData.domain = this.curNode.domain;
                         }
-
                         this.$store
                             .dispatch(url, this.formData)
-                            .then(data => {
+                            .then(() => {
                                 //数据保存成功后可以关闭弹窗
                                 this.permissionDialogVisible = false;
                                 this.loadTableData();
@@ -429,7 +412,6 @@
                                 console.log(error);
                             });
                     } else {
-                        console.log("niubi ");
                         this.$message({type: "warning", message: "请完整填写数据！"});
                         return false;
                     }
@@ -553,8 +535,8 @@
                 }
                 this.$store
                     .dispatch("staff/isExist", {
-                        filedValue: this.formData.phone,
-                        deptId: this.curNode.deptId
+                        account: this.formData.phone,
+                        firmId: this.curNode.firmId
                     })
                     .then(data => {
                         this.isExistsForPhone = data;
@@ -573,8 +555,8 @@
                 }
                 this.$store
                     .dispatch("staff/isExist", {
-                        filedValue: this.formData.idCardNo,
-                        deptId: this.curNode.deptId
+                        account: this.formData.idCardNo,
+                        firmId: this.curNode.firmId
                     })
                     .then(data => {
                         this.isExistsForIDNo = data;
@@ -593,8 +575,8 @@
                 }
                 this.$store
                     .dispatch("staff/isExist", {
-                        filedValue: this.formData.email,
-                        deptId: this.curNode.deptId
+                        account: this.formData.email,
+                        firmId: this.curNode.firmId
                     })
                     .then(data => {
                         this.isExistsForEmail = data;
