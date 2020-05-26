@@ -16,9 +16,9 @@ export function addMany(data) {
   });
 }
 
-export function updateOne(data) {
+export function updateOne(id, data) {
   return request({
-    url: "/staff/update/one",
+    url: `/staff/update/one/${id}`,
     method: "post",
     data
   });
