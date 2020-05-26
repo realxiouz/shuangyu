@@ -112,7 +112,7 @@
     <el-dialog
       center
       title="员工信息"
-      width="33%"
+      width="35%"
       :visible.sync="permissionDialogVisible"
       :close-on-click-modal="false"
     >
@@ -153,20 +153,18 @@
           <el-input v-model="formData.email" @blur="isUsedForEmail"></el-input>
           <span v-if="isExistsForEmail" style="color: crimson">*信息已被使用</span>
         </el-form-item>
+        <el-form-item label="角色:" prop="roles">
+          <el-transfer
+            v-model="formData.roles"
+            :data="transData"
+            :props="transferProps"
+            :titles="['可选角色', '已选角色']"
+          ></el-transfer>
+        </el-form-item>
       </el-form>
-      <el-transfer
-        v-show="!hasStep"
-        v-model="formData.roles"
-        :data="transData"
-        :props="transferProps"
-        :titles="['可选角色', '已选角色']"
-        style="margin-top: 20px"
-      ></el-transfer>
       <span slot="footer" class="dialog-footer">
         <el-button size="mini" @click="permissionAlterCancel">取 消</el-button>
-        <el-button v-show="hasStep" size="mini" type="primary" @click="nextStep">下一步</el-button>
-        <el-button v-show="!hasStep" size="mini" type="primary" @click="prevStep">上一步</el-button>
-        <el-button v-show="!hasStep" size="mini" type="primary" @click="permissionAlterSave">确 定</el-button>
+        <el-button size="mini" type="primary" @click="permissionAlterSave">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -204,7 +202,8 @@
                     email: [
                         {required: true, message: '请输入邮箱地址', trigger: 'blur'},
                         {type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur']}
-                    ]
+                    ],
+                    roles: [{required: true, message: '请选择角色', trigger: 'blur'},]
                 }
             };
         },
@@ -348,7 +347,6 @@
                                 //数据保存成功后可以关闭弹窗
                                 this.permissionDialogVisible = false;
                                 this.loadTableData();
-                                this.hasStep = true;
                                 this.clearFormData();
                             })
                             .catch(error => {
@@ -455,13 +453,6 @@
                             message: "已取消删除"
                         });
                     });
-            },
-            /*是否可以点击下一步*/
-            nextStep() {
-                this.hasStep = false;
-            },
-            prevStep() {
-                this.hasStep = true;
             },
             /*初始化用工列表中的生日日期格式*/
             initDate(dateStr, format) {

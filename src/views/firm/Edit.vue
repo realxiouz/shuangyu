@@ -129,6 +129,9 @@
                     email: [
                         {required: true, validator: validateEmail, trigger: "blur"}
                     ],
+                    roles: [
+                        {required: true, message: "请选择角色", trigger: "blur"},
+                    ]
                 }
             };
         },
