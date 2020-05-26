@@ -428,6 +428,12 @@ export default new Router({
           name: 'policy',
           component: () => import('@/views/policy/List'),
           meta: { title: '政策管理', icon: 'home' }
+        },{
+          title: '官网产品',
+          path: '/owp/list',
+          name: 'owpList',
+          component: () => import('@/views/owp/List'),
+          meta: { title: '官网产品', icon: 'home' }
         }
       ]
     },

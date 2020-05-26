@@ -11,6 +11,7 @@
         highlight-current-row
         v-loading="loading"
         :data="tableData"
+        ref="tableData"
         style="width: 100%;margin-bottom: 20px;"
         size="mini"
       >
@@ -21,7 +22,8 @@
         <el-table-column label="操作" fixed="right" align="center" width="280">
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
-            <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
+            <el-button @click="handleCopy(scope.row)" type="primary" size="mini">复制</el-button>
+            <el-button @click="removeOne(scope.row)" type="danger" size="mini">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -32,11 +34,12 @@
         next-text="下一页"
         :page-size="pageSize"
         :total="total"
+        @size-change="handleSizeChange"
         @prev-click="handlePrevClick"
         @next-click="handleNextClick"
       ></el-pagination>
       <el-dialog
-        :title="id?'编辑用户信息':'添加新用户'"
+        :title="updateFlag?'更新':'新增'"
         center
         :visible.sync="dialogVisible"
         width="33%"
@@ -46,7 +49,8 @@
         <owp-edit
           v-if="dialogVisible"
           ref="form"
-          :id="id"
+          :owp-id="id"
+          :update-flag="updateFlag"
           @onSave="handleSave"
           @onCancel="handleCancel"
         ></owp-edit>
@@ -60,13 +64,12 @@
   import owpSearch from "./Search";
 
   export default {
-    name: "owpList",
+    name:"owpList",
     data() {
       return {
         dialogVisible: false,
-        deleteForSearch: false,
+        updateFlag:false,
         id: "",
-        curNode: {},
         pageFlag: 1,
         pageSize: 10,
         lastId: null,
@@ -80,12 +83,12 @@
       owpSearch
     },
     methods: {
-      loadData(params = {}, callback) {
+      loadData(params) {
         if (this.lastId) {
           params.lastId = this.lastId;
         }
         this.$store
-          .dispatch("user/getPageList", {
+          .dispatch("owp/getPageList", {
             pageFlag: this.pageFlag,
             pageSize: this.pageSize,
             filter: params
@@ -95,7 +98,6 @@
               this.tableData = data.data;
               this.loadTotal(params);
             }
-            callback && callback(data);
             this.loading = false;
           })
           .catch(error => {
@@ -105,7 +107,7 @@
       },
       loadTotal(params) {
         this.$store
-          .dispatch("user/getTotal", { filter: params })
+          .dispatch("owp/getTotal", { filter: params })
           .then(data => {
             if (data) {
               this.total = data.data;
@@ -115,169 +117,79 @@
             console.log(error);
           });
       },
+      handleSizeChange(pageSize) {
+        this.pageSize = pageSize;
+        this.lastId = null;
+        this.loadData();
+      },
+      handlePrevClick() {
+        this.pageFlag = -1;
+        this.lastId = this.tableData[0].id;
+        this.loadData();
+      },
+      handleNextClick() {
+        this.pageFlag = 1;
+        this.lastId = this.tableData[this.tableData.length - 1].id;
+        this.loadData();
+      },
 
-
-      /*根据关键字查询用户列表*/
       handleSearch(params) {
-        this.deleteForSearch = true;
-        const newParams = {};
-        if (params) {
-          for (let key in params) {
-            // 判断enable不为false
-            if (key == "enable") {
-              newParams[key] = params[key];
-            } else if (params[key]) {
-              console.log(params,key,'111')
-              newParams[key] = params[key];
-            }
-          }
-        }
-        if (Object.keys(newParams).length == 0) {
+        if (Object.keys(params).length == 0) {
           this.lastId = null;
         }
-        this.loadData(newParams, () => {
-          this.$message({
-            type: "success",
-            message: "查询成功!"
-          });
-        });
+        this.loadData(params);
       },
-
       handleAdd() {
         this.dialogVisible = true;
+        this.updateFlag = false;
         this.id = "";
       },
-
-      superSwitch(row) {
-        row.super = row.super ? false : true;
-        this.$store
-          .dispatch("user/updateOne", row)
-          .then(() => {
-            this.loadData();
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      },
-
-      /*点击用户编辑按钮*/
       handleEdit(row) {
         this.dialogVisible = true;
+        this.updateFlag = true;
         this.id = row.id;
       },
-      /*对员工进行删除*/
-      handleDelete(row) {
-        this.open(
-          this.delete,
-          row.id,
-          "是否确认删除?"
-        );
+      handleCopy(row) {
+        this.dialogVisible = true;
+        this.updateFlag = false;
+        this.id = row.id;
       },
-
-      delete(id) {
-        this.$store
-          .dispatch("owp/removeOne", { id: id })
+      removeOne(id) {
+        this.$confirm("是否确定删除?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
           .then(() => {
-            this.lastId = null;
-            if (this.tableData.length === 1 && !this.deleteForSearch) {
-              this.handlePrevClick();
-            } else {
-              this.loadData();
-            }
-            this.deleteForSearch = false;
+            this.$store
+              .dispatch("owp/removeOne", { airlineCode: id })
+              .then(() => {
+                if (1 === this.tableData.length) {
+                  this.prevClick();
+                } else {
+                  this.loadData();
+                }
+              })
+              .catch(error => {
+                console.log(error);
+              });
           })
-          .catch(error => {
-            console.log(error);
+          .catch(err => {
+            console.error(err);
           });
       },
 
       handleCancel() {
         this.dialogVisible = false;
       },
-
-      handleSave(formData) {
+      handleSave() {
         this.dialogVisible = false;
-        let url = "";
-        let requestData = {};
-        if (this.id) {
-          url = "owp/updateOne";
-          requestData = { id: formData.user.userId, data: formData.user };
-        } else {
-          url = "owp/addOne";
-          requestData = formData;
-        }
-        this.$store
-          .dispatch(url, requestData)
-          .then(() => {
-            this.loadData();
-            if (this.userId != "") {
-              this.$message({
-                type: "success",
-                message: "修改成功！"
-              });
-            } else {
-              this.$message({
-                type: "success",
-                message: "添加成功！"
-              });
-            }
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      },
-      /*翻前页*/
-      handlePrevClick() {
-        this.pageFlag = -1;
-        this.lastId = this.tableData[0].id;
-        this.loadData();
-      },
-      /*翻后页*/
-      handleNextClick() {
-        this.pageFlag = 1;
-        this.lastId = this.tableData[this.tableData.length - 1].id;
-        this.loadData();
-      },
-      open(func, data, message) {
-        this.$confirm(message, "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        })
-          .then(() => {
-            func(data);
-            this.$message({
-              type: "success",
-              message: "删除成功!"
-            });
-          })
-          .catch(() => {
-            this.$message({
-              type: "info",
-              message: "已取消删除"
-            });
-          });
-      },
-      /*初始化用工列表中的生日日期格式*/
-      initDate(dateStr, format) {
-        if (dateStr > 0) {
-          let date = new Date(dateStr);
-          return this.$moment(date).format(format);
-        } else {
-          return "";
-        }
-      }
-    },
-    computed: {
-      formatDate() {
-        return function(dateStr, format) {
-          return this.initDate(dateStr, format);
-        };
       }
     },
     created() {
       this.loadData();
-    }
+    },
+
   };
 </script>
 

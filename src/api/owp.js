@@ -32,6 +32,13 @@ export function getPageList(pageFlag, pageSize, filter) {
   });
 }
 
+export function getOne(id) {
+  return request({
+    url: `/owp/config/remove/one/${id}`,
+    method: 'get'
+  });
+}
+
 export function removeOne(id) {
   return request({
     url: `/owp/config/remove/one/${id}`,
