@@ -6,11 +6,11 @@
       <el-row>
         <el-button
           type="primary"
-          icon="el-icon-search"
+          icon="el-icon-plus"
           size="mini"
           @click="searchStaff"
           :disabled="staffAddVisible"
-        >搜 索
+        >选择用户添加
         </el-button>
         <el-button
           type="primary"
@@ -161,12 +161,20 @@
           <span v-if="isExistsForEmail" style="color: crimson">*邮箱已被使用</span>
         </el-form-item>
         <el-form-item label="角色:" prop="roles">
-          <el-transfer
+          <el-select
+            style="width: 100%;"
+            clearable
+            multiple
             v-model="formData.roles"
-            :data="transData"
-            :props="transferProps"
-            :titles="['可选角色', '已选角色']"
-          ></el-transfer>
+            placeholder="请选择"
+          >
+            <el-option
+              v-for="item in transData"
+              :key="item.roleName"
+              :label="item.roleName"
+              :value="item.roleId"
+            ></el-option>
+          </el-select>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -174,7 +182,7 @@
         <el-button size="mini" type="primary" @click="permissionAlterSave">确 定</el-button>
       </span>
     </el-dialog>
-    <el-dialog center title="搜索用户" width="70%" :visible.sync="searchDialogVisible" :close-on-click-modal="false">
+    <el-dialog center width="70%" :visible.sync="searchDialogVisible" :close-on-click-modal="false">
       <el-form :inline="true" :model="searchUserForm">
         <el-form-item label="昵称:" size="mini">
           <el-input clearable v-model="searchUserForm.nickName" placeholder="昵称"></el-input>
@@ -183,13 +191,13 @@
           <el-input clearable v-model="searchUserForm.fullName" placeholder="姓名"></el-input>
         </el-form-item>
         <el-form-item label="电话:" size="mini">
-          <el-input clearable v-model="searchUserForm.phone" placeholder="姓名"></el-input>
+          <el-input clearable v-model="searchUserForm.phone" placeholder="电话"></el-input>
         </el-form-item>
         <el-form-item label="邮箱:" size="mini">
-          <el-input clearable v-model="searchUserForm.email" placeholder="姓名"></el-input>
+          <el-input clearable v-model="searchUserForm.email" placeholder="邮箱"></el-input>
         </el-form-item>
         <el-form-item size="mini">
-          <el-button size="mini" type="primary" icon="el-icon-search" @click="handleUserSearch">查询</el-button>
+          <el-button size="mini" type="primary" icon="el-icon-search" @click="handleUserSearch">搜索用户</el-button>
         </el-form-item>
       </el-form>
       <el-table
@@ -274,7 +282,7 @@
                     firmId: "",
                     fullName: "",
                     gender: 0,
-                    birthDate: 0,
+                    birthDate: new Date(),
                     phone: "",
                     email: "",
                     idCardNo: "",
@@ -361,7 +369,6 @@
                     })
                     .then(data => {
                         this.loading = false;
-
                         /*如果请求到的数据roles为null会报错*/
                         if (!data.data.roles) {
                             data.data.roles = [];
@@ -415,9 +422,7 @@
                                 .catch(error => {
                                     console.log(error);
                                 });
-
                         }
-
                     } else {
                         this.$message({type: "warning", message: "请完整填写数据！"});
                         return false;
@@ -589,15 +594,6 @@
                         console.log(error);
                     });
             },
-            getCurrentMonthFirst() {
-                let date = new Date()
-                date.setDate(1)
-                let month = parseInt(date.getMonth() + 1)
-                let day = date.getDate()
-                if (month < 10) month = '0' + month
-                if (day < 10) day = '0' + day
-                this.formData.birthDate = date.getFullYear() + '-' + month + '-' + day
-            }
         },
         computed: {
             formatDate() {
@@ -615,7 +611,6 @@
             this.loadRoles();
             let params = {};
             this.loadTableData(params);
-            this.getCurrentMonthFirst();
         },
         watch: {
             curNode() {
