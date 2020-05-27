@@ -35,7 +35,7 @@
               <!--              <span-->
               <!--                v-if="this.$store.state.loginInfo.firm"-->
               <!--              >{{this.$store.state.loginInfo.firm.firmName}}</span>-->
-              <el-select v-model="firmId" style="width: 50%" placeholder="切换企业"
+              <el-select v-model="firmId" size="mini" style="width: 60%" placeholder="切换企业"
                          @change="handleCurrentChange">
                 <el-option
                   v-for="item in this.$store.state.loginInfo.firms"

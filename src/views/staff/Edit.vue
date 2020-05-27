@@ -176,20 +176,20 @@
     </el-dialog>
     <el-dialog center title="搜索用户" width="70%" :visible.sync="searchDialogVisible" :close-on-click-modal="false">
       <el-form :inline="true" :model="searchUserForm">
-        <el-form-item label="昵称:">
+        <el-form-item label="昵称:" size="mini">
           <el-input clearable v-model="searchUserForm.nickName" placeholder="昵称"></el-input>
         </el-form-item>
-        <el-form-item label="姓名:">
+        <el-form-item label="姓名:" size="mini">
           <el-input clearable v-model="searchUserForm.fullName" placeholder="姓名"></el-input>
         </el-form-item>
-        <el-form-item label="电话:">
+        <el-form-item label="电话:" size="mini">
           <el-input clearable v-model="searchUserForm.phone" placeholder="姓名"></el-input>
         </el-form-item>
-        <el-form-item label="邮箱:">
+        <el-form-item label="邮箱:" size="mini">
           <el-input clearable v-model="searchUserForm.email" placeholder="姓名"></el-input>
         </el-form-item>
-        <el-form-item>
-          <el-button clearable type="primary" icon="el-icon-search" @click="handleUserSearch">查询</el-button>
+        <el-form-item size="mini">
+          <el-button size="mini" type="primary" icon="el-icon-search" @click="handleUserSearch">查询</el-button>
         </el-form-item>
       </el-form>
       <el-table
@@ -588,6 +588,15 @@
                     .catch(error => {
                         console.log(error);
                     });
+            },
+            getCurrentMonthFirst() {
+                let date = new Date()
+                date.setDate(1)
+                let month = parseInt(date.getMonth() + 1)
+                let day = date.getDate()
+                if (month < 10) month = '0' + month
+                if (day < 10) day = '0' + day
+                this.formData.birthDate = date.getFullYear() + '-' + month + '-' + day
             }
         },
         computed: {
@@ -606,6 +615,7 @@
             this.loadRoles();
             let params = {};
             this.loadTableData(params);
+            this.getCurrentMonthFirst();
         },
         watch: {
             curNode() {
