@@ -227,7 +227,6 @@
       paramCode: "",
       propertyName: "",
       precision: 0,
-      sku: false,
       required: true,
       unit: '',
       valueType: '',
@@ -259,11 +258,17 @@
         categoryList: [],
         openList: [],
         rules: {
+          merchantId: [
+            {required: true, message: "客户不能为空!", trigger: "blur"}
+          ],
+          merchantDomain: [
+            {required: true, message: "客户域名不能为空!", trigger: "blur"}
+          ],
           paramName: [
-            {required: true, message: "请输入商品类目", trigger: "blur"},
+            {required: true, message: "参数名称不能为空!", trigger: "blur"}
           ],
           paramCode: [
-            {required: true, message: "请输入属性编码", trigger: "blur"},
+            {required: true, message: "参数编码不能为空!", trigger: "blur"},
             {
               min: 1,
               max: 20,
@@ -271,16 +276,8 @@
             },
             {validator: categoryCode, trigger: 'blur'}
           ],
-          propertyName: [
-            {required: true, message: "请输入属性标题", trigger: "blur"},
-            {
-              min: 1,
-              max: 20,
-              message: "长度在 1到 20 个字符"
-            }
-          ]
-          , valueType: [
-            {required: true, message: "请选择属性类型", trigger: "blur"},
+          defaultValue: [
+            {required: true, message: "默认在不能为空！", trigger: "blur"}
           ]
         },
         options: [{
@@ -351,16 +348,18 @@
         this.goBack();
       },
       handleSave() {
-        // this.$refs['form'].validate((valid) => {
-        //   if (valid) {
-        if (this.values.length > 0) {
-          let map = {};
-          for (let i = 0, len = this.values.length; i < len; i++) {
-            map[this.values[i].code] = this.values[i].value;
+        this.$refs['form'].validate((valid) => {
+          if (valid) {
+            if (this.values.length > 0) {
+              let map = {};
+              for (let i = 0, len = this.values.length; i < len; i++) {
+                map[this.values[i].code] = this.values[i].value;
+              }
+              this.formData.values = map;
+            }
+            this.$emit("onSave", this.formData);
           }
-          this.formData.values = map;
-        }
-        this.$emit("onSave", this.formData);
+        });
       },
       getOne(id) {
         if (id) {
