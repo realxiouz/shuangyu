@@ -1,7 +1,6 @@
 import request from "@/utils/request";
 
 export function save(data) {
-  debugger
   return request({
     url: "/qunar/policy/param/save",
     method: "post",

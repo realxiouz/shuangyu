@@ -45,7 +45,7 @@
         width="33%"
         :close-on-click-modal="false"
       >
-        <el-form ref="form" :rules="rules"  :model="formData" label-width="100px" size="mini">
+        <el-form ref="form"  :model="formData" label-width="100px" size="mini">
           <el-form-item label="客户" prop="merchantId">
             <el-select
               v-model="formData.merchantId"

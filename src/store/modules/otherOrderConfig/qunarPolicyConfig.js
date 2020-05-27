@@ -61,7 +61,8 @@ const actions = {
   },
   getOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      getOne(params)
+      const {configId} = params;
+      getOne(configId)
         .then(response => {
           const {data} = response;
           resolve(data);

@@ -11,6 +11,9 @@
           </el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="客户域名" prop="merchantDomain">
+        <el-input v-model="formData.merchantDomain"></el-input>
+      </el-form-item>
       <el-form-item label="用户名">
         <el-input v-model="formData.user"></el-input>
       </el-form-item>
@@ -60,16 +63,9 @@
       handleSave() {
         this.$emit("onSave", this.formData);
       },
-      handleGetOne(user, merchantId) {
-        var params = {};
-        if (user) {
-          params.user = user;
-        }
-        if (merchantId) {
-          params.merchantId = merchantId;
-        }
+      handleGetOne(configId) {
         this.$store
-          .dispatch("qunarPolicyConfig/getOne", {filter: params})
+          .dispatch("qunarPolicyConfig/getOne",{configId: configId})
           .then(data => {
             this.formData = data;
             this.dialogVisible = true;
