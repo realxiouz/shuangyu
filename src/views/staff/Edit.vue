@@ -191,10 +191,10 @@
           <el-input clearable v-model="searchUserForm.fullName" placeholder="姓名"></el-input>
         </el-form-item>
         <el-form-item label="电话:" size="mini">
-          <el-input clearable v-model="searchUserForm.phone" placeholder="姓名"></el-input>
+          <el-input clearable v-model="searchUserForm.phone" placeholder="电话"></el-input>
         </el-form-item>
         <el-form-item label="邮箱:" size="mini">
-          <el-input clearable v-model="searchUserForm.email" placeholder="姓名"></el-input>
+          <el-input clearable v-model="searchUserForm.email" placeholder="邮箱"></el-input>
         </el-form-item>
         <el-form-item size="mini">
           <el-button size="mini" type="primary" icon="el-icon-search" @click="handleUserSearch">搜索用户</el-button>
