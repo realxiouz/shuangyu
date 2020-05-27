@@ -343,6 +343,9 @@
           this.$router.go(-1);
         }
       },
+      handleAdd() {
+        this.dialogVisible = true;
+      },
       handleCancel() {
         this.goBack();
       },
