@@ -24,17 +24,18 @@ export function updateOne(data) {
   });
 }
 
-export function removeOne(user, firmId) {
+export function removeOne(configId) {
   return request({
-    url: `/qunar/policy/config/remove/one/${user}/${firmId}`,
+    url: `/qunar/policy/config/remove/one/${configId}`,
     method: 'delete'
   });
 }
 
-export function getOne(user, firmId) {
+export function getOne(filter) {
   return request({
-    url: `/qunar/policy/config/one/${user}/${firmId}`,
-    method: 'get'
+    url: `/qunar/policy/config/one`,
+    method: 'get',
+    params: filter
   });
 }
 
@@ -54,9 +55,9 @@ export function getTotal(filter) {
   });
 }
 
-export function getPageList(pageFlag, pageSize, lastId, filter) {
+export function getPageList(pageFlag, pageSize, filter) {
   return request({
-    url: `/qunar/policy/config/page/list/${pageFlag}/${pageSize}/${lastId}`,
+    url: `/qunar/policy/config/page/list/${pageFlag}/${pageSize}`,
     method: 'get',
     params: filter
   });

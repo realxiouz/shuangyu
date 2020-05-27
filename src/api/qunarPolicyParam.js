@@ -1,8 +1,9 @@
 import request from "@/utils/request";
 
 export function save(data) {
+  debugger
   return request({
-    url: "/open/api/param/save",
+    url: "/qunar/policy/param/save",
     method: "post",
     data
   });
@@ -10,22 +11,22 @@ export function save(data) {
 
 export function removeOne(paramId) {
   return request({
-    url: `/open/api/param/remove/one/${paramId}`,
+    url: `/qunar/policy/param/remove/one/${paramId}`,
     method: "delete"
   });
 }
 
 export function getOne(paramId) {
   return request({
-    url: `/open/api/param/${paramId}`,
+    url: `/qunar/policy/param/one/${paramId}`,
     method: `get`
   });
 }
 
 
-export function getPageList(pageFlag, pageSize, lastId, searchForm) {
+export function getPageList(pageFlag, pageSize, searchForm) {
   return request({
-    url: `/open/api/param/page/list/${pageFlag}/${pageSize}/${lastId}`,
+    url: `/qunar/policy/param/page/list/${pageFlag}/${pageSize}`,
     method: "get",
     params: searchForm
   });
@@ -33,14 +34,14 @@ export function getPageList(pageFlag, pageSize, lastId, searchForm) {
 
 export function getTotal() {
   return request({
-    url: `/open/api/param/total`,
+    url: `/qunar/policy/param/total`,
     method: "get"
   });
 }
 
 export function getList(params) {
   return request({
-    url: `/open/api/param/list`,
+    url: `/qunar/policy/param/list`,
     method: "get",
     params: params
   });
@@ -48,15 +49,7 @@ export function getList(params) {
 
 export function getApiUrlList() {
   return request({
-    url: `/open/api/param/api/url/list`,
+    url: `/qunar/policy/param/api/url/list`,
     method: "get"
   });
 }
-
-export function getOpenPartyList() {
-  return request({
-    url: `/open/list`,
-    method: "get"
-  });
-}
-

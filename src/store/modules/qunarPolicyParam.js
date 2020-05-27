@@ -1,4 +1,4 @@
-import {save, removeOne, getPageList, getTotal, getOne, getApiUrlList,getOpenPartyList,getList} from "@/api/openApiParam";
+import {save, removeOne, getPageList, getTotal, getOne, getApiUrlList,getList} from "@/api/qunarPolicyParam";
 import {getToken} from "@/utils/auth";
 
 
@@ -47,9 +47,9 @@ const actions = {
   },
 
   getPageList({commit}, params) {
-    const {pageFlag, pageSize, lastId, filter} = params;
+    const {pageFlag, pageSize, filter} = params;
     return new Promise((resolve, reject) => {
-      getPageList(pageFlag, pageSize, lastId, filter)
+      getPageList(pageFlag, pageSize, filter)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -86,18 +86,6 @@ const actions = {
   getApiUrlList({commit}, params) {
     return new Promise((resolve, reject) => {
       getApiUrlList(params)
-        .then(response => {
-          const {data} = response;
-          resolve(data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  getOpenPartyList({commit}, params) {
-    return new Promise((resolve, reject) => {
-      getOpenPartyList(params)
         .then(response => {
           const {data} = response;
           resolve(data);
