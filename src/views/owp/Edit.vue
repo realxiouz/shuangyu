@@ -3,10 +3,13 @@
     <el-form ref="owpForm" size="mini" :model="formData" label-width="110px" :rules="formRules">
       <input type="hidden" v-model="formData.id"/>
       <input type="hidden" v-model="formData.jobInfoId"/>
-      <el-form-item label="时间间隔" prop="timeInterval">
+      <el-form-item label="政策代码前缀">
+        <el-input placeholder="政策代码前缀" v-model="formData.policyCode"></el-input>
+      </el-form-item>
+      <el-form-item label="时间间隔">
         <el-input placeholder="时间间隔，大于0生效" v-model="formData.timeInterval"></el-input>
       </el-form-item>
-      <el-form-item label="Cron" prop="jobCron">
+      <el-form-item label="Cron">
         <el-popover v-model="formData.cronPopover">
           <vue-cron @change="changeCron" @close="formData.cronPopover=false" i18n="cn"></vue-cron>
           <el-input slot="reference" @click="formData.cronPopover=true" v-model="formData.jobCron"
@@ -16,38 +19,35 @@
       <el-form-item label="指定航线" >
         <el-input placeholder="多个英文逗号分隔：PEK-KMG,KMG-PEK" v-model="_inRouters"></el-input>
       </el-form-item>
-      <el-form-item label="排除航线" prop="_exRouters">
+      <el-form-item label="排除航线">
         <el-input placeholder="多个英文逗号分隔：PEK-KMG,KMG-PEK" v-model="_exRouters"></el-input>
       </el-form-item>
-      <el-form-item label="指定舱位" prop="_inCabins">
+      <el-form-item label="指定舱位">
         <el-input placeholder="多个英文逗号分隔：MU-Y-B,CA-Y-U" v-model="_inCabins"></el-input>
       </el-form-item>
-      <el-form-item label="排除舱位" prop="_exCabins">
+      <el-form-item label="排除舱位">
         <el-input placeholder="多个英文逗号分隔：MU-Y-B,CA-Y-U" v-model="_exCabins"></el-input>
       </el-form-item>
-      <el-form-item label="指定航司" prop="_inAirLines">
+      <el-form-item label="指定航司">
         <el-input placeholder="多个英文逗号分隔：MU,CA,SC" v-model="_inAirLines"></el-input>
       </el-form-item>
-      <el-form-item label="排除航司" prop="_exAirLines">
+      <el-form-item label="排除航司">
         <el-input placeholder="多个英文逗号分隔：MU,CA,SC" v-model="_exAirLines"></el-input>
       </el-form-item>
-      <el-form-item label="指定航班号" prop="_inFlightCodes">
+      <el-form-item label="指定航班号">
         <el-input placeholder="多个英文逗号分隔：MU1234,CA1234,SC1234" v-model="_inFlightCodes"></el-input>
       </el-form-item>
-      <el-form-item label="排除航班号" prop="_exFlightCodes">
+      <el-form-item label="排除航班号">
         <el-input placeholder="多个英文逗号分隔：MU1234,CA1234,SC1234" v-model="_exFlightCodes"></el-input>
       </el-form-item>
-      <el-form-item label="旅行开始日期" prop="startDate">
+      <el-form-item label="旅行开始日期">
         <el-input placeholder="2020-06-06" v-model="formData.startDate"></el-input>
       </el-form-item>
-      <el-form-item label="旅行结束日期" prop="endDate">
+      <el-form-item label="旅行结束日期">
         <el-input placeholder="2020-06-06" v-model="formData.endDate"></el-input>
       </el-form-item>
-      <el-form-item label="班期限制" prop="dayCondition">
-        <el-input placeholder="1,2,3,4,5,6,7" v-model="formData.dayCondition"></el-input>
-      </el-form-item>
-      <el-form-item label="政策代码前缀" prop="policyCode">
-        <el-input placeholder="政策代码前缀" v-model="formData.policyCode"></el-input>
+      <el-form-item label="班期限制">
+        <el-input placeholder="1,2,3,4,5,6,7" v-model="_dayCondition"></el-input>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer" style="text-align:right;">
@@ -113,7 +113,6 @@
       },
 
       handleSave() {
-        debugger
         let url = '';
         if (this.updateFlag){
           url= 'owp/updateOne/'+this.formData.id;
@@ -121,14 +120,14 @@
         }else {
           url= 'owp/addOne';
         }
-        /*this.$store
-          .dispatch(url, this.formData)
+        this.$store
+          .dispatch(url, {owpConfig:this.formData})
           .then(() => {
             this.$emit("onSave");
           })
           .catch(error => {
             console.log(error);
-          });*/
+          });
       }
     },
     computed: {
@@ -228,6 +227,18 @@
         },
         set: function (newValue) {
           this.formData.exFlightCodes = newValue.split(',')
+        }
+      },
+      _dayCondition: {
+        get: function () {
+          if (this.formData.dayCondition.length > 0) {
+            return this.formData.dayCondition.join(',')
+          } else {
+            return '';
+          }
+        },
+        set: function (newValue) {
+          this.formData.dayCondition = newValue.split(',')
         }
       },
     },

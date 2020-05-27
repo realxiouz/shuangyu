@@ -34,7 +34,7 @@ export function getPageList(pageFlag, pageSize, filter) {
 
 export function getOne(id) {
   return request({
-    url: `/owp/config/remove/one/${id}`,
+    url: `/owp/config/get/one/${id}`,
     method: 'get'
   });
 }
