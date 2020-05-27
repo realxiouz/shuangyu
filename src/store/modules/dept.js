@@ -1,4 +1,5 @@
 import {
+  addOne,
   getAsyncTreeList,
   getList,
   getOne,
@@ -8,7 +9,7 @@ import {
   getTotal,
   getTreeList,
   removeOne,
-  save
+  updateOne
 } from "@/api/dept";
 import {getToken} from "@/utils/auth";
 
@@ -32,19 +33,31 @@ const mutations = {
 };
 
 const actions = {
-  save({commit}, params) {
+  addOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      save(params)
+      addOne(params)
         .then(response => {
-          //const { data } = response;
-          resolve(response);
+          const {data} = response;
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-
+  updateOne({commit}, params) {
+    const {id, data} = params;
+    return new Promise((resolve, reject) => {
+      updateOne(id, data)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
   getTreeList({commit}, params) {
     const {filters} = params;
     return new Promise((resolve, reject) => {

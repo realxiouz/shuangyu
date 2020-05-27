@@ -9,6 +9,22 @@ export function save(data) {
   });
 }
 
+export function addOne(data) {
+  return request({
+    url: `/dept/add/one`,
+    method: `post`,
+    data
+  });
+}
+
+export function updateOne(id, data) {
+  return request({
+    url: `/dept/update/one/${id}`,
+    method: 'put',
+    data
+  });
+}
+
 export function removeOne(id) {
   return request({
     url: `/dept/remove/one/${id}`,
@@ -32,6 +48,7 @@ export function getPageList(pageFlag, pageSize, filter) {
     params: filter
   });
 }
+
 export function getAsyncTreeList(pid, filter) {
   return request({
     url: `/dept/get/async/tree/list/${pid}`,
@@ -39,6 +56,7 @@ export function getAsyncTreeList(pid, filter) {
     params: filter
   });
 }
+
 export function getTotal(params) {
   return request({
     url: `/dept/get/total`,
