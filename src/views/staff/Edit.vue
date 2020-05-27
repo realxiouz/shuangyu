@@ -6,11 +6,11 @@
       <el-row>
         <el-button
           type="primary"
-          icon="el-icon-search"
+          icon="el-icon-plus"
           size="mini"
           @click="searchStaff"
           :disabled="staffAddVisible"
-        >搜 索
+        >选择用户添加
         </el-button>
         <el-button
           type="primary"
@@ -144,7 +144,7 @@
         </el-form-item>
         <el-form-item label="身份证号:">
           <el-input v-model="formData.idCardNo" @blur="isUsedForIDNo"></el-input>
-          <span v-if="isExistsForIDNo" style="color: crimson">*信息已被使用</span>
+          <span v-if="isExistsForIDNo" style="color: crimson">*身份证号已被使用</span>
         </el-form-item>
         <el-form-item label="手机号码:">
           <el-input
@@ -154,19 +154,27 @@
             show-word-limit
             @blur="isUsedForPhone"
           ></el-input>
-          <span v-if="isExistsForPhone" style="color: crimson">*信息已被使用</span>
+          <span v-if="isExistsForPhone" style="color: crimson">*手机号码已被使用</span>
         </el-form-item>
         <el-form-item label="邮箱:" prop="email">
           <el-input v-model="formData.email" @blur="isUsedForEmail"></el-input>
-          <span v-if="isExistsForEmail" style="color: crimson">*信息已被使用</span>
+          <span v-if="isExistsForEmail" style="color: crimson">*邮箱已被使用</span>
         </el-form-item>
         <el-form-item label="角色:" prop="roles">
-          <el-transfer
+          <el-select
+            style="width: 100%;"
+            clearable
+            multiple
             v-model="formData.roles"
-            :data="transData"
-            :props="transferProps"
-            :titles="['可选角色', '已选角色']"
-          ></el-transfer>
+            placeholder="请选择"
+          >
+            <el-option
+              v-for="item in transData"
+              :key="item.roleName"
+              :label="item.roleName"
+              :value="item.roleId"
+            ></el-option>
+          </el-select>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -174,22 +182,22 @@
         <el-button size="mini" type="primary" @click="permissionAlterSave">确 定</el-button>
       </span>
     </el-dialog>
-    <el-dialog center title="搜索用户" width="70%" :visible.sync="searchDialogVisible" :close-on-click-modal="false">
+    <el-dialog center width="70%" :visible.sync="searchDialogVisible" :close-on-click-modal="false">
       <el-form :inline="true" :model="searchUserForm">
-        <el-form-item label="昵称:">
+        <el-form-item label="昵称:" size="mini">
           <el-input clearable v-model="searchUserForm.nickName" placeholder="昵称"></el-input>
         </el-form-item>
-        <el-form-item label="姓名:">
+        <el-form-item label="姓名:" size="mini">
           <el-input clearable v-model="searchUserForm.fullName" placeholder="姓名"></el-input>
         </el-form-item>
-        <el-form-item label="电话:">
-          <el-input clearable v-model="searchUserForm.phone" placeholder="姓名"></el-input>
+        <el-form-item label="电话:" size="mini">
+          <el-input clearable v-model="searchUserForm.phone" placeholder="电话"></el-input>
         </el-form-item>
-        <el-form-item label="邮箱:">
-          <el-input clearable v-model="searchUserForm.email" placeholder="姓名"></el-input>
+        <el-form-item label="邮箱:" size="mini">
+          <el-input clearable v-model="searchUserForm.email" placeholder="邮箱"></el-input>
         </el-form-item>
-        <el-form-item>
-          <el-button clearable type="primary" icon="el-icon-search" @click="handleUserSearch">查询</el-button>
+        <el-form-item size="mini">
+          <el-button size="mini" type="primary" icon="el-icon-search" @click="handleUserSearch">搜索用户</el-button>
         </el-form-item>
       </el-form>
       <el-table
@@ -241,12 +249,8 @@
                 dialogVisible: false,
                 permissionDialogVisible: false,
                 searchDialogVisible: false,
-                /*点击部门后用于展示的员工列表*/
                 tableData: [],
-                //当点击用户选择列表时
-                curRow: {},
                 userData: {},
-                keyword: "",
                 formData: {},
                 transData: [],
                 searchTableData: [],
@@ -278,7 +282,7 @@
                     firmId: "",
                     fullName: "",
                     gender: 0,
-                    birthDate: 0,
+                    birthDate: new Date(),
                     phone: "",
                     email: "",
                     idCardNo: "",
@@ -297,7 +301,6 @@
                         filter: params
                             ? params
                             : {
-                                firmId: this.curNode.firmId,
                                 deptId: this.curNode.deptId,
                                 staffType: 0
                             }
@@ -317,8 +320,9 @@
             searchStaff() {
                 this.searchDialogVisible = true;
             },
-            handleUser() {
+            handleUser(data) {
                 this.permissionDialogVisible = true;
+                this.formData = data;
                 this.searchDialogVisible = false;
             },
             /*点击添加按钮*/
@@ -365,7 +369,6 @@
                     })
                     .then(data => {
                         this.loading = false;
-
                         /*如果请求到的数据roles为null会报错*/
                         if (!data.data.roles) {
                             data.data.roles = [];
@@ -393,43 +396,34 @@
                         if ("number" != typeof this.formData.birthDate) {
                             this.formData.birthDate = this.formData.birthDate.getTime();
                         }
-                        //如果填写的信息未通过校验，不允许保存
-                        if (
-                            this.isExistsForPhone ||
-                            this.isExistsForIDNo ||
-                            this.isExistsForEmail
-                        ) {
-                            this.$message({
-                                type: "warning",
-                                message: "请重新填写已被使用的信息!"
-                            });
-                            return;
-                        }
-
                         //进行数据的保存
-                        let url = "";
-                        if ("" != this.formData.staffId) {
-                            url = "staff/updateOne";
+                        if (this.formData.staffId && "" != this.formData.staffId) {
+                            this.$store
+                                .dispatch("staff/updateOne", {id: this.formData.staffId, data: this.formData})
+                                .then(() => {
+                                    //数据保存成功后可以关闭弹窗
+                                    this.permissionDialogVisible = false;
+                                    this.loadTableData();
+                                    this.clearFormData();
+                                })
+                                .catch(error => {
+                                    console.log(error);
+                                });
                         } else {
-                            url = "staff/addOne";
-                            this.formData.firmId = this.curNode.firmId;
                             this.formData.depts = [this.curNode.deptId];
-                            this.formData.domain = this.curNode.domain;
+                            this.$store
+                                .dispatch("staff/addOne", this.formData)
+                                .then(() => {
+                                    //数据保存成功后可以关闭弹窗
+                                    this.permissionDialogVisible = false;
+                                    this.loadTableData();
+                                    this.clearFormData();
+                                })
+                                .catch(error => {
+                                    console.log(error);
+                                });
                         }
-
-                        this.$store
-                            .dispatch(url, this.formData)
-                            .then(data => {
-                                //数据保存成功后可以关闭弹窗
-                                this.permissionDialogVisible = false;
-                                this.loadTableData();
-                                this.clearFormData();
-                            })
-                            .catch(error => {
-                                console.log(error);
-                            });
                     } else {
-                        console.log("niubi ");
                         this.$message({type: "warning", message: "请完整填写数据！"});
                         return false;
                     }
@@ -553,8 +547,7 @@
                 }
                 this.$store
                     .dispatch("staff/isExist", {
-                        filedValue: this.formData.phone,
-                        deptId: this.curNode.deptId
+                        account: this.formData.phone,
                     })
                     .then(data => {
                         this.isExistsForPhone = data;
@@ -573,8 +566,7 @@
                 }
                 this.$store
                     .dispatch("staff/isExist", {
-                        filedValue: this.formData.idCardNo,
-                        deptId: this.curNode.deptId
+                        account: this.formData.idCardNo
                     })
                     .then(data => {
                         this.isExistsForIDNo = data;
@@ -593,8 +585,7 @@
                 }
                 this.$store
                     .dispatch("staff/isExist", {
-                        filedValue: this.formData.email,
-                        deptId: this.curNode.deptId
+                        account: this.formData.email
                     })
                     .then(data => {
                         this.isExistsForEmail = data;
@@ -602,7 +593,7 @@
                     .catch(error => {
                         console.log(error);
                     });
-            }
+            },
         },
         computed: {
             formatDate() {

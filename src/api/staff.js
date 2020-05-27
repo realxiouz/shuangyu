@@ -16,9 +16,9 @@ export function addMany(data) {
   });
 }
 
-export function updateOne(data) {
+export function updateOne(id, data) {
   return request({
-    url: "/staff/update/one",
+    url: `/staff/update/one/${id}`,
     method: "post",
     data
   });
@@ -41,14 +41,6 @@ export function getOne(staffId) {
 export function getList(filter) {
   return request({
     url: `/staff/list`,
-    method: "get",
-    params: filter
-  });
-}
-
-export function getListByFirmId(firmId, filter) {
-  return request({
-    url: `/staff/list/${firmId}`,
     method: "get",
     params: filter
   });
@@ -95,11 +87,11 @@ export function getLoginInfo(firmId) {
   });
 }
 
-export function isExist(deptId, filedValue) {
+export function isExist(account) {
   return request({
-    url: `/staff/exists/${filedValue}`,
-    method: "get",
-    params: {deptId}
+    url: `/staff/exist`,
+    method: "post",
+    params: {account}
   });
 }
 
