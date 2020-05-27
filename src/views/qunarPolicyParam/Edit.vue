@@ -273,8 +273,7 @@
               min: 1,
               max: 20,
               message: "长度在 1到 20 个字符"
-            },
-            {validator: categoryCode, trigger: 'blur'}
+            }
           ],
           defaultValue: [
             {required: true, message: "默认在不能为空！", trigger: "blur"}
