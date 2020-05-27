@@ -12,9 +12,10 @@ export function stop(jobId) {
     method: 'get'
   });
 }
-export function trigger(jobId) {
+export function trigger(jobId,filter) {
   return request({
     url: `/xxl/job/info/trigger/${jobId}`,
-    method: 'get'
+    method: 'get',
+    params:filter
   });
 }
