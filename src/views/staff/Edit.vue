@@ -143,8 +143,7 @@
           ></el-date-picker>
         </el-form-item>
         <el-form-item label="身份证号:">
-          <el-input v-model="formData.idCardNo" @blur="isUsedForIDNo"></el-input>
-          <span v-if="isExistsForIDNo" style="color: crimson">*身份证号已被使用</span>
+          <el-input v-model="formData.idCardNo"></el-input>
         </el-form-item>
         <el-form-item label="手机号码:">
           <el-input
@@ -152,13 +151,10 @@
             v-model="formData.phone"
             maxlength="11"
             show-word-limit
-            @blur="isUsedForPhone"
           ></el-input>
-          <span v-if="isExistsForPhone" style="color: crimson">*手机号码已被使用</span>
         </el-form-item>
         <el-form-item label="邮箱:" prop="email">
-          <el-input v-model="formData.email" @blur="isUsedForEmail"></el-input>
-          <span v-if="isExistsForEmail" style="color: crimson">*邮箱已被使用</span>
+          <el-input v-model="formData.email"></el-input>
         </el-form-item>
         <el-form-item label="角色:" prop="roles">
           <el-select
@@ -244,6 +240,30 @@
         name: "staffEdit",
         props: ["curNode", "staffAddVisible"],
         data() {
+            let validateEmail = (rule, value, callback) => {
+                if (value === this.updateTempData.email) {
+                    callback();
+                }
+                let reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+                if (!reg.test(value)) {
+                    callback(new Error("请输入正确的邮箱！"));
+                } else {
+                    this.$store
+                        .dispatch("user/isExist", {
+                            filed: this.formData.email
+                        })
+                        .then(data => {
+                            if (data.data) {
+                                callback("该信息已被注册");
+                            } else {
+                                callback();
+                            }
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                }
+            };
             return {
                 loading: "",
                 dialogVisible: false,
@@ -260,15 +280,11 @@
                     key: "roleId",
                     label: "roleName"
                 },
-                /*用于校验所填写的信息是否已经被使用*/
-                isExistsForPhone: false,
-                isExistsForIDNo: false,
-                isExistsForEmail: false,
                 userDialogVisible: false,
                 rules: {
                     email: [
                         {required: true, message: '请输入邮箱地址', trigger: 'blur'},
-                        {type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur']}
+                        {validator: validateEmail, trigger: "blur"}
                     ],
                     roles: [{required: true, message: '请选择角色', trigger: 'blur'},]
                 }
@@ -329,9 +345,6 @@
             addStaff() {
                 this.clearFormData();
                 this.permissionDialogVisible = true;
-                this.isExistsForPhone = false;
-                this.isExistsForIDNo = false;
-                this.isExistsForEmail = false;
             },
             /*加载所有的角色信息*/
             loadRoles() {
@@ -380,9 +393,6 @@
                         console.log(error);
                     });
                 this.permissionDialogVisible = true;
-                this.isExistsForPhone = false;
-                this.isExistsForIDNo = false;
-                this.isExistsForEmail = false;
             },
             /*点击修改弹窗取消按钮*/
             permissionAlterCancel() {
@@ -423,9 +433,6 @@
                                     console.log(error);
                                 });
                         }
-                    } else {
-                        this.$message({type: "warning", message: "请完整填写数据！"});
-                        return false;
                     }
                 });
             },
@@ -535,64 +542,6 @@
             clearFormData() {
                 this.formData = this.defaultFormData();
                 this.updateTempData = {};
-            },
-            /*校验所填写的信息是否已经被使用*/
-            isUsedForPhone() {
-                if (
-                    !this.formData.phone ||
-                    "" == this.formData.phone ||
-                    this.formData.phone === this.updateTempData.phone
-                ) {
-                    return;
-                }
-                this.$store
-                    .dispatch("staff/isExist", {
-                        account: this.formData.phone,
-                    })
-                    .then(data => {
-                        this.isExistsForPhone = data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            isUsedForIDNo() {
-                if (
-                    !this.formData.idCardNo ||
-                    "" == this.formData.idCardNo ||
-                    this.formData.idCardNo === this.updateTempData.idCardNo
-                ) {
-                    return;
-                }
-                this.$store
-                    .dispatch("staff/isExist", {
-                        account: this.formData.idCardNo
-                    })
-                    .then(data => {
-                        this.isExistsForIDNo = data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            isUsedForEmail() {
-                if (
-                    !this.formData.email ||
-                    "" == this.formData.email ||
-                    this.formData.email === this.updateTempData.email
-                ) {
-                    return;
-                }
-                this.$store
-                    .dispatch("staff/isExist", {
-                        account: this.formData.email
-                    })
-                    .then(data => {
-                        this.isExistsForEmail = data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
             },
         },
         computed: {
