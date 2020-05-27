@@ -131,210 +131,210 @@
 </template>
 
 <script>
-    import Sidebar from "@/components/SideBar.vue";
-    import SelectFirms from "@/components/SelectFirms.vue";
-    import ScrollPane from "@/components/TagsView/ScrollPane.vue";
+  import Sidebar from "@/components/SideBar.vue";
+  import SelectFirms from "@/components/SelectFirms.vue";
+  import ScrollPane from "@/components/TagsView/ScrollPane.vue";
 
-    // @ is an alias to /src
-    export default {
-        name: "layout",
-        components: {Sidebar, SelectFirms, ScrollPane},
-        data() {
-            return {
-                dialogVisible: false,
-                isCollapse: false,
-                isDisplay: true,
-                loading: true,
-                firms: [],
-                firmId: "",
-                firmData: "",
-                tags: [],
-                screenWidth: document.body.clientWidth,
-                menus: [],
-                //待处理任务总量
-                totalCount: 0,
-                //待处理任务总数加载触发定时器
-                pendingTotalTimer: null
-            };
-        },
-        computed: {
-            switchClass() {
-                if (this.isCollapse) return "el-icon-s-unfold";
-                else return "el-icon-s-fold";
-            },
-            key() {
-                return this.$router.path;
-            }
-        },
-        watch: {
-            screenWidth(val) {
-                if (val <= 500) {
-                    this.isDisplay = false;
-                } else {
-                    this.isDisplay = true;
-                }
-                if (val < 760) {
-                    this.isCollapse = true;
-                } else {
-                    this.isCollapse = false;
-                }
-            },
-            $route() {
-                this.getTag();
-            }
-        },
-        methods: {
-            handleCurrentChange(firmId) {
-                this.getLoginInfo(firmId);
-                this.$router.go(0);
-            },
-            isActive(route) {
-                return route.path === this.$route.path;
-            },
-            handleSwitch() {
-                if (this.screenWidth > 500) {
-                    this.isCollapse = !this.isCollapse;
-                }
-            },
-            buildTree(pid, navs) {
-                let menus = [];
-                for (let i = 0; i < navs.length; i++) {
-                    if (navs[i].pid === pid) {
-                        menus.push(navs[i]);
-                    }
-                }
-                if (menus.length > 0) {
-                    for (let i = 0; i < menus.length; i++) {
-                        let children = this.buildTree(menus[i].navId, navs);
-                        menus[i].children = children;
-                    }
-                }
-                return menus;
-            },
-            getLoginInfo(firmId) {
-                this.dialogVisible = false;
-                this.$store
-                    .dispatch("getLoginInfo", {firmId: firmId})
-                    .then(data => {
-                        if (data.firms.length > 1 && this._.isEmpty(data.staffId)) {
-                            this.firms = data.firms;
-                            this.dialogVisible = true;
-                        } else {
-                            this.firmData = data.firm;
-                            this.firmId = data.firm.firmId;
-                            if (this.firmData && this.firmData.firmId != "") {
-                                this.triggerPendingTotalTimer();
-                            }
-                            this.menus = this.buildTree(null, data.navs);
-                            this.loading = false;
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            handleCommand(command) {
-                switch (command) {
-                    case "logout":
-                        this.handleLogout();
-                        break;
-                    case "personalEdit":
-                        this.skipPersonalEdit();
-                        break;
-                }
-            },
-            handleLogout() {
-                this.$store
-                    .dispatch("user/signOut")
-                    .then(() => {
-                        this.$router.push({path: "/login"});
-                    })
-                    .catch(() => {
-                    });
-            },
-
-            getTag() {
-                let tag = {
-                    name: "首页",
-                    closable: false,
-                    type: "",
-                    path: "/home"
-                };
-                let matched = this.$route.matched;
-                matched.forEach(item => {
-                    if (item.parent != undefined) {
-                        tag = {
-                            name: item.meta.title,
-                            path: item.path,
-                            closable: true,
-                            type: "success"
-                        };
-                    }
-                    this.tags.push(tag);
-                });
-                let obj = {};
-                this.tags = this.tags.reduce((item, next) => {
-                    obj[next.name] ? "" : (obj[next.name] = true && item.push(next));
-                    return item;
-                }, []);
-            },
-            handleClose(tag) {
-                this.tags.splice(this.tags.indexOf(tag), 1);
-                this.$router.push({
-                    path: this.tags[this.tags.length - 1].path
-                });
-            },
-            loadPendingTotal() {
-                this.$store
-                    .dispatch("orderTask/getTotal", {
-                        filters: {taskStatus: "1"}
-                    })
-                    .then(data => {
-                        if (data) {
-                            this.totalCount = data;
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            skipOrderDetail() {
-                this.$router.push({path: "/order/pending/task/list"});
-            },
-            skipPersonalEdit() {
-                this.$router.push({
-                    path: "/user/personal/edit",
-                    query: {userId: this.$store.state.loginInfo.userId}
-                });
-            },
-            triggerPendingTotalTimer() {
-                //先执行一次，然后触发定时器。
-                this.loadPendingTotal();
-                this.pendingTotalTimer = setInterval(() => {
-                    setTimeout(this.loadPendingTotal, 0);
-                }, 60000);
-            }
-        },
-        created() {
-            this.getLoginInfo(null);
-            this.getTag();
-        },
-        beforeDestroy() {
-            // 离开页面销毁定时器
-            if (this.pendingTotalTimer) {
-                clearInterval(this.pendingTotalTimer);
-            }
-        },
-        mounted() {
-            const _this = this;
-            window.onresize = () => {
-                return (() => {
-                    window.screenWidth = document.body.clientWidth;
-                    _this.screenWidth = window.screenWidth;
-                })();
-            };
+  // @ is an alias to /src
+  export default {
+    name: "layout",
+    components: {Sidebar, SelectFirms, ScrollPane},
+    data() {
+      return {
+        dialogVisible: false,
+        isCollapse: false,
+        isDisplay: true,
+        loading: true,
+        firms: [],
+        firmId: "",
+        firmData: "",
+        tags: [],
+        screenWidth: document.body.clientWidth,
+        menus: [],
+        //待处理任务总量
+        totalCount: 0,
+        //待处理任务总数加载触发定时器
+        pendingTotalTimer: null
+      };
+    },
+    computed: {
+      switchClass() {
+        if (this.isCollapse) return "el-icon-s-unfold";
+        else return "el-icon-s-fold";
+      },
+      key() {
+        return this.$router.path;
+      }
+    },
+    watch: {
+      screenWidth(val) {
+        if (val <= 500) {
+          this.isDisplay = false;
+        } else {
+          this.isDisplay = true;
         }
-    };
+        if (val < 760) {
+          this.isCollapse = true;
+        } else {
+          this.isCollapse = false;
+        }
+      },
+      $route() {
+        this.getTag();
+      }
+    },
+    methods: {
+      handleCurrentChange(firmId) {
+        this.getLoginInfo(firmId);
+        this.$router.go(0);
+      },
+      isActive(route) {
+        return route.path === this.$route.path;
+      },
+      handleSwitch() {
+        if (this.screenWidth > 500) {
+          this.isCollapse = !this.isCollapse;
+        }
+      },
+      buildTree(pid, navs) {
+        let menus = [];
+        for (let i = 0; i < navs.length; i++) {
+          if (navs[i].pid === pid) {
+            menus.push(navs[i]);
+          }
+        }
+        if (menus.length > 0) {
+          for (let i = 0; i < menus.length; i++) {
+            let children = this.buildTree(menus[i].navId, navs);
+            menus[i].children = children;
+          }
+        }
+        return menus;
+      },
+      getLoginInfo(firmId) {
+        this.dialogVisible = false;
+        this.$store
+          .dispatch("getLoginInfo", {firmId: firmId})
+          .then(data => {
+            if (data.firms.length > 1 && this._.isEmpty(data.staffId)) {
+              this.firms = data.firms;
+              this.dialogVisible = true;
+            } else {
+              this.firmData = data.firm;
+              if (this.firmData && this.firmData.firmId != "") {
+                this.firmId = this.firmData.firmId;
+                this.triggerPendingTotalTimer();
+              }
+              this.menus = this.buildTree(null, data.navs);
+              this.loading = false;
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      handleCommand(command) {
+        switch (command) {
+          case "logout":
+            this.handleLogout();
+            break;
+          case "personalEdit":
+            this.skipPersonalEdit();
+            break;
+        }
+      },
+      handleLogout() {
+        this.$store
+          .dispatch("user/signOut")
+          .then(() => {
+            this.$router.push({path: "/login"});
+          })
+          .catch(() => {
+          });
+      },
+
+      getTag() {
+        let tag = {
+          name: "首页",
+          closable: false,
+          type: "",
+          path: "/home"
+        };
+        let matched = this.$route.matched;
+        matched.forEach(item => {
+          if (item.parent != undefined) {
+            tag = {
+              name: item.meta.title,
+              path: item.path,
+              closable: true,
+              type: "success"
+            };
+          }
+          this.tags.push(tag);
+        });
+        let obj = {};
+        this.tags = this.tags.reduce((item, next) => {
+          obj[next.name] ? "" : (obj[next.name] = true && item.push(next));
+          return item;
+        }, []);
+      },
+      handleClose(tag) {
+        this.tags.splice(this.tags.indexOf(tag), 1);
+        this.$router.push({
+          path: this.tags[this.tags.length - 1].path
+        });
+      },
+      loadPendingTotal() {
+        this.$store
+          .dispatch("orderTask/getTotal", {
+            filters: {taskStatus: "1"}
+          })
+          .then(data => {
+            if (data) {
+              this.totalCount = data;
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      skipOrderDetail() {
+        this.$router.push({path: "/order/pending/task/list"});
+      },
+      skipPersonalEdit() {
+        this.$router.push({
+          path: "/user/personal/edit",
+          query: {userId: this.$store.state.loginInfo.userId}
+        });
+      },
+      triggerPendingTotalTimer() {
+        //先执行一次，然后触发定时器。
+        this.loadPendingTotal();
+        this.pendingTotalTimer = setInterval(() => {
+          setTimeout(this.loadPendingTotal, 0);
+        }, 60000);
+      }
+    },
+    created() {
+      this.getLoginInfo(null);
+      this.getTag();
+    },
+    beforeDestroy() {
+      // 离开页面销毁定时器
+      if (this.pendingTotalTimer) {
+        clearInterval(this.pendingTotalTimer);
+      }
+    },
+    mounted() {
+      const _this = this;
+      window.onresize = () => {
+        return (() => {
+          window.screenWidth = document.body.clientWidth;
+          _this.screenWidth = window.screenWidth;
+        })();
+      };
+    }
+  };
 </script>
 
 <style lang="scss" scoped>
