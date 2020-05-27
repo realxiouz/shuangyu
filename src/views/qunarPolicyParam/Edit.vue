@@ -201,7 +201,7 @@
         </el-form-item>
       </el-row>
       <el-row :gutter="18">
-        <el-form-item label="默认值:">
+        <el-form-item label="默认值:" prop="defaultValue">
           <el-input v-model="formData.defaultValue" placeholder="请输入内容"></el-input>
         </el-form-item>
       </el-row>
@@ -276,7 +276,7 @@
             }
           ],
           defaultValue: [
-            {required: true, message: "默认在不能为空！", trigger: "blur"}
+            {required: true, message: "默认值不能为空！", trigger: "blur"}
           ]
         },
         options: [{
