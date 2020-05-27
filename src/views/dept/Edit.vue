@@ -18,106 +18,108 @@
   </div>
 </template>
 <script>
-function defaultData() {
-  return {
-    deptName: "",
-    ddId: "",
-    ddParentIdId: ""
-  };
-}
-export default {
-  name: "deptEdit",
-  data() {
-    return {
-      formData: defaultData(),
-      firmList: [],
-      newDialogVisible: false,
-      rules: {
-        deptName: [
-          { required: true, message: "请输入部门名称", trigger: "blur" },
-          {
-            min: 1,
-            max: 20,
-            message: "长度在 1到 20 个字符"
-          }
-        ],
-        domain: [
-          { required: true, message: "请输入域名", trigger: "blur" },
-          {
-            min: 1,
-            max: 20,
-            message: "长度在 1到 20 个字符"
-          }
-        ],
-        ddId: [
-          { required: true, message: "请输入钉钉ID", trigger: "blur" },
-          {
-            type: "number",
-            message: "钉钉ID必须为数字",
-            trigger: "blur"
-          }
-        ],
-        ddParentIdId: [
-          { required: true, message: "请输入钉钉父节点", trigger: "blur" },
-          {
-            type: "number",
-            message: "钉钉父节点必须为数字",
-            trigger: "blur"
-          }
-        ]
-      }
-    };
-  },
-  methods: {
-    loadFirms() {
-      this.$store
-        .dispatch("firm/getTreeList", {
-          filters: {}
-        })
-        .then(data => {
-          this.firmList = data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    handleChange(value) {
-      this.formData.roles = value;
-    },
-    handleGetOne(id) {
-      if (id) {
-        this.$store
-          .dispatch("dept/getOne", { deptId: id })
-          .then(data => {
-            this.formData = data;
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      } else {
-        this.formData = defaultData();
-      }
-    },
-    handleSave() {
-      this.$refs["form"].validate(valid => {
-        if (valid) {
-          this.$emit("onSave", this.formData);
+    function defaultData() {
+        return {
+            deptName: "",
+            ddId: "",
+            ddParentIdId: ""
+        };
+    }
+
+    export default {
+        name: "deptEdit",
+        data() {
+            return {
+                formData: defaultData(),
+                firmList: [],
+                newDialogVisible: false,
+                rules: {
+                    deptName: [
+                        {required: true, message: "请输入部门名称", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到 20 个字符"
+                        }
+                    ],
+                    domain: [
+                        {required: true, message: "请输入域名", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到 20 个字符"
+                        }
+                    ],
+                    ddId: [
+                        {required: true, message: "请输入钉钉ID", trigger: "blur"},
+                        {
+                            type: "number",
+                            message: "钉钉ID必须为数字",
+                            trigger: "blur"
+                        }
+                    ],
+                    ddParentIdId: [
+                        {required: true, message: "请输入钉钉父节点", trigger: "blur"},
+                        {
+                            type: "number",
+                            message: "钉钉父节点必须为数字",
+                            trigger: "blur"
+                        }
+                    ]
+                }
+            };
+        },
+        methods: {
+            loadFirms() {
+                this.$store
+                    .dispatch("firm/getTreeList", {
+                        filters: {}
+                    })
+                    .then(data => {
+                        this.firmList = data;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            handleChange(value) {
+                this.formData.roles = value;
+            },
+            handleGetOne(id) {
+                if (id) {
+                    this.$store
+                        .dispatch("dept/getOne", {deptId: id})
+                        .then(data => {
+                            this.formData = data;
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                } else {
+                    this.formData = defaultData();
+                }
+            },
+            handleSave() {
+                this.$refs["form"].validate(valid => {
+                    if (valid) {
+                        this.$emit("onSave", this.formData);
+                    }
+                });
+            }
+        },
+        created() {
+            this.loadFirms();
+            if (this.editDeptId) {
+                this.handleGetOne(this.editDeptId);
+            }
+            if (this.pid) {
+                this.formData.pid = this.pid;
+                this.formData.deptType = 0;
+            }
+        },
+        props: {
+            editDeptId: String,
+            pid: String
         }
-      });
-    }
-  },
-  created() {
-    this.loadFirms();
-    if (this.editDeptId) {
-      this.handleGetOne(this.editDeptId);
-    }
-    if (this.pid) {
-      this.formData.pid = this.pid;
-    }
-  },
-  props: {
-    editDeptId: String,
-    pid: String
-  }
-};
+    };
 </script>

@@ -44,7 +44,8 @@
         :page-size="pageSize"
         :total="total"
       ></el-pagination>
-      <el-dialog :title="roleId?'编辑角色信息':'添加新角色'" center :visible.sync="dialogVisible" width="30%">
+      <el-dialog :title="roleId?'编辑角色信息':'添加新角色'" center :visible.sync="dialogVisible" width="30%"
+                 :close-on-click-modal="false">
         <role-edit v-if="dialogVisible" :roleId="roleId" @onSave="onSave" @onCancel="handleCancel"></role-edit>
       </el-dialog>
     </div>
@@ -52,196 +53,206 @@
 </template>
 
 <script>
-  import roleEdit from "./Edit.vue";
-  import roleSearch from "./Search.vue";
+    import roleEdit from "./Edit.vue";
+    import roleSearch from "./Search.vue";
 
-  export default {
-    name: "roleList",
-    data() {
-      return {
-        roleId: "",
-        dialogVisible: false,
-        loading: true,
-        deleteForSearch: false,
-        pageFlag: 1,
-        pageSize: 10,
-        lastId: "",
-        total: 0,
-        tableData: []
-      };
-    },
-    methods: {
-      /*对员工进行删除*/
-      handleDelete(row) {
-        this.open(
-          this.delete,
-          row.roleId,
-          "此操作将删除该用户的所有信息, 是否继续?"
-        );
-      },
-      /*根据用户ID删除用户*/
-      delete(roleID) {
-        this.$store
-          .dispatch("role/removeOne", {id: roleID})
-          .then(() => {
-            this.lastId = "0";
-            if (1 === this.tableData.length && !this.deleteForSearch) {
-              this.prevClick();
-            } else {
-              this.loadData();
+    export default {
+        name: "roleList",
+        data() {
+            return {
+                roleId: "",
+                dialogVisible: false,
+                loading: true,
+                deleteForSearch: false,
+                pageFlag: 1,
+                pageSize: 10,
+                lastId: "",
+                total: 0,
+                tableData: []
+            };
+        },
+        methods: {
+            /*对员工进行删除*/
+            handleDelete(row) {
+                this.open(
+                    this.delete,
+                    row.roleId,
+                    "此操作将删除该用户的所有信息, 是否继续?"
+                );
+            },
+            /*根据用户ID删除用户*/
+            delete(roleID) {
+                this.$store
+                    .dispatch("role/removeOne", {id: roleID})
+                    .then(() => {
+                        this.lastId = "0";
+                        if (1 === this.tableData.length && !this.deleteForSearch) {
+                            this.prevClick();
+                        } else {
+                            this.loadData();
+                        }
+                        this.deleteForSearch = false;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            handleEdit(row) {
+                this.dialogVisible = true;
+                this.roleId = row.roleId;
+            },
+            changeSwitch(row) {
+                row.enable = row.enable ? true : false;
+                this.$store
+                    .dispatch("role/updateOne", {
+                        roleId: row.roleId,
+                        data: {
+                            enable: row.enable
+                        }
+                    })
+                    .then(() => {
+                        this.$message({
+                            message: "更新成功",
+                            type: "success"
+                        });
+                        this.loadData();
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            prevClick() {
+                this.pageFlag = -1;
+                this.lastId = this.tableData[0].roleId;
+                this.loadData();
+            },
+            nextClick() {
+                this.pageFlag = 1;
+                this.lastId = this.tableData[this.tableData.length - 1].roleId;
+                this.loadData();
+            },
+            handleAdd() {
+                this.roleId = "";
+                this.dialogVisible = true;
+            },
+            loadData(params) {
+                let filter = {};
+                if (this.lastId) {
+                    filter.lastId = this.lastId;
+                }
+                this.$store
+                    .dispatch("role/getPageList", {
+                        pageFlag: this.pageFlag,
+                        pageSize: this.pageSize,
+                        filter
+                    })
+                    .then(data => {
+                        if (data) {
+                            this.tableData = data;
+                            this.loadTotal(params);
+                        }
+                        this.loading = false;
+                    })
+                    .catch(error => {
+                        this.loading = false;
+                    });
+            },
+            loadTotal(params) {
+                this.$store
+                    .dispatch("role/getTotal", {filter: params})
+                    .then(data => {
+                        if (data >= 0) {
+                            this.total = data;
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            // 新增或存储新的角色
+            onSave(formData) {
+                /** test end **/
+                const isEdit = !!this.roleId;
+                const message = isEdit ? "修改成功！" : "添加成功！";
+                if (isEdit) {
+                    this.$store.dispatch("role/updateOne", {roleId: formData.roleId, data: formData}).then(() => {
+                        this.loadData();
+                        this.$message({
+                            type: "success",
+                            message
+                        });
+                    });
+                } else {
+                    this.$store.dispatch("role/addOne", formData).then(() => {
+                        this.loadData();
+                        this.$message({
+                            type: "success",
+                            message
+                        });
+                    });
+                }
+                this.dialogVisible = false;
+            },
+            handleCancel: function () {
+                this.dialogVisible = false;
+            },
+            handleSearch(params) {
+                this.deleteForSearch = true;
+                let newParams = {};
+                if (params) {
+                    for (let key in params) {
+                        if (params[key]) {
+                            newParams[key] = params[key];
+                        }
+                    }
+                }
+                this.$store
+                    .dispatch("role/getList", {
+                        filter: newParams
+                    })
+                    .then(data => {
+                        if (data) {
+                            this.tableData = data;
+                            this.loadTotal(params);
+                        }
+                        this.loading = false;
+                    })
+                    .catch(error => {
+                        this.loading = false;
+                    });
+
+                this.$message({
+                    type: "success",
+                    message: "查询成功!"
+                });
+            },
+            open(func, data, message) {
+                this.$confirm(message, "提示", {
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消",
+                    type: "warning"
+                })
+                    .then(() => {
+                        func(data);
+                        this.$message({
+                            type: "success",
+                            message: "删除成功!"
+                        });
+                    })
+                    .catch(() => {
+                        this.$message({
+                            type: "info",
+                            message: "已取消删除"
+                        });
+                    });
             }
-            this.deleteForSearch = false;
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      },
-      handleEdit(row) {
-        this.dialogVisible = true;
-        this.roleId = row.roleId;
-      },
-      changeSwitch(row) {
-        row.enable = row.enable ? true : false;
-        this.$store
-          .dispatch("role/updateOne", {
-            roleId: row.roleId,
-            data: {
-              enable: row.enable
-            }
-          })
-          .then(() => {
-            this.$message({
-              message: "更新成功",
-              type: "success"
-            });
+        },
+        created() {
             this.loadData();
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      },
-      prevClick() {
-        this.pageFlag = -1;
-        this.lastId = this.tableData[0].roleId;
-        this.loadData();
-      },
-      nextClick() {
-        this.pageFlag = 1;
-        this.lastId = this.tableData[this.tableData.length - 1].roleId;
-        this.loadData();
-      },
-      handleAdd() {
-        this.roleId = "";
-        this.dialogVisible = true;
-      },
-      loadData(params) {
-        let filter = {};
-        if (this.lastId) {
-          filter.lastId = this.lastId;
+        },
+        components: {
+            roleEdit,
+            roleSearch
         }
-        this.$store
-          .dispatch("role/getPageList", {
-            pageFlag: this.pageFlag,
-            pageSize: this.pageSize,
-            filter
-          })
-          .then(data => {
-            if (data) {
-              this.tableData = data;
-              this.loadTotal(params);
-            }
-            this.loading = false;
-          })
-          .catch(error => {
-            this.loading = false;
-          });
-      },
-      loadTotal(params) {
-        this.$store
-          .dispatch("role/getTotal", {filter: params})
-          .then(data => {
-            if (data >= 0) {
-              this.total = data;
-            }
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      },
-      // 新增或存储新的角色
-      onSave(formData) {
-        /** test end **/
-        const isEdit = !!this.roleId;
-        const message = isEdit ? "修改成功！" : "添加成功！";
-        this.$store.dispatch("role/saveOne", formData).then(() => {
-          this.loadData();
-          this.$message({
-            type: "success",
-            message
-          });
-        });
-        this.dialogVisible = false;
-      },
-      handleCancel: function () {
-        this.dialogVisible = false;
-      },
-      handleSearch(params) {
-        this.deleteForSearch = true;
-        let newParams = {};
-        if (params) {
-          for (let key in params) {
-            if (params[key]) {
-              newParams[key] = params[key];
-            }
-          }
-        }
-        this.$store
-          .dispatch("role/getList", {
-            filter: newParams
-          })
-          .then(data => {
-            if (data) {
-              this.tableData = data;
-              this.loadTotal(params);
-            }
-            this.loading = false;
-          })
-          .catch(error => {
-            this.loading = false;
-          });
-
-        this.$message({
-          type: "success",
-          message: "查询成功!"
-        });
-      },
-      open(func, data, message) {
-        this.$confirm(message, "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        })
-          .then(() => {
-            func(data);
-            this.$message({
-              type: "success",
-              message: "删除成功!"
-            });
-          })
-          .catch(() => {
-            this.$message({
-              type: "info",
-              message: "已取消删除"
-            });
-          });
-      }
-    },
-    created() {
-      this.loadData();
-    },
-    components: {
-      roleEdit,
-      roleSearch
-    }
-  };
+    };
 </script>

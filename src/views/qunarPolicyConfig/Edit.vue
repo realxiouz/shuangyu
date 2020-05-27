@@ -1,7 +1,7 @@
 <template>
   <div>
-    <el-form ref="formData" :model="formData" label-width="100px" size="mini">
-      <el-form-item label="客户:">
+    <el-form ref="form" :rules="rules" :model="formData" label-width="100px" size="mini">
+      <el-form-item label="客户:" prop="merchantId">
         <el-select v-model="formData.merchantId" placeholder="请选择客户.." style="width: 100%">
           <el-option
             v-for="item in merchantList"
@@ -14,16 +14,16 @@
       <el-form-item label="客户域名" prop="merchantDomain">
         <el-input v-model="formData.merchantDomain"></el-input>
       </el-form-item>
-      <el-form-item label="用户名">
+      <el-form-item label="用户名" prop="user">
         <el-input v-model="formData.user"></el-input>
       </el-form-item>
-      <el-form-item label="密码">
+      <el-form-item label="密码" prop="pass">
         <el-input v-model="formData.pass"></el-input>
       </el-form-item>
-      <el-form-item label="IP">
+      <el-form-item label="IP" prop="ip">
         <el-input v-model="formData.ip"></el-input>
       </el-form-item>
-      <el-form-item label="回调地址">
+      <el-form-item label="回调地址" prop="callbackUrl">
         <el-input v-model="formData.callbackUrl"></el-input>
       </el-form-item>
       <el-form-item label="备注">
@@ -32,7 +32,7 @@
     </el-form>
     <div slot="footer" class="dialog-footer" style="text-align: right;">
       <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
-      <el-button size="mini" type="primary" @click="$emit('onUpdate', formData)">确 定</el-button>
+      <el-button size="mini" type="primary" @click="handleSave">确 定</el-button>
     </div>
   </div>
 </template>
@@ -56,16 +56,40 @@
     data() {
       return {
         formData: defaultData(),
-        merchantList: []
+        merchantList: [],
+        rules: {
+          merchantId: [
+            {required: true, message: '请选择客户', trigger: 'blur'}
+          ],
+          merchantDomain: [
+            {required: true, message: '请输入客户域名', trigger: 'blur'}
+          ],
+          user: [
+            {required: true, message: '请输入用户名', trigger: 'blur'}
+          ],
+          pass: [
+            {required: true, message: '请输入密码', trigger: 'blur'}
+          ],
+          ip: [
+            {required: true, message: '请输入IP', trigger: 'blur'}
+          ],
+          callbackUrl: [
+            {required: true, message: '请输入回调地址', trigger: 'blur'}
+          ]
+        }
       };
     },
     methods: {
       handleSave() {
-        this.$emit("onSave", this.formData);
+        this.$refs['form'].validate((valid) => {
+          if (valid) {
+            this.$emit("onSave", this.formData);
+          }
+        });
       },
       handleGetOne(configId) {
         this.$store
-          .dispatch("qunarPolicyConfig/getOne",{configId: configId})
+          .dispatch("qunarPolicyConfig/getOne", {configId: configId})
           .then(data => {
             this.formData = data;
             this.dialogVisible = true;
@@ -79,9 +103,6 @@
       },
       addParams() {
         this.paramDialogVisible = true;
-      },
-      handleCancel() {
-        this.paramDialogVisible = false;
       },
       handleConfirm() {
 

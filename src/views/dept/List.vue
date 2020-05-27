@@ -27,7 +27,7 @@
         <el-table-column fixed="right" label="操作" width="280">
           <template slot-scope="scope">
             <el-button @click="handleAddChild(scope.row.deptId)" type="success" size="mini">添加子部门</el-button>
-            <span v-show="'0' != scope.row.level" style="margin-left: 10px;">
+            <span v-show="0 == scope.row.deptType" style="margin-left: 10px;">
               <el-button @click="handleUpdate(scope.row.deptId)" type="primary" size="mini">编辑</el-button>
               <el-button
                 @click.native.prevent="handleRemove(scope.row.deptId)"
@@ -213,21 +213,40 @@
                 this.dialogVisible = false;
             },
             handleSave(formData) {
-                this.$store
-                    .dispatch("dept/save", formData)
-                    .then(() => {
-                        this.$message({
-                            type: "success",
-                            message:
-                                "部门信息保存成功!"
+                if (formData.deptId) {
+                    this.$store
+                        .dispatch("dept/updateOne", {id: formData.deptId, data: formData})
+                        .then(() => {
+                            this.$message({
+                                type: "success",
+                                message:
+                                    "部门信息保存成功!"
+                            });
+                            this.loadData();
+                            this.loadChildren(this.uploadData.tree, this.uploadData.treeNode, this.uploadData.resolve);
+                        })
+                        .catch(error => {
+                            console.log(error);
                         });
-                        this.loadData();
-                        this.loadChildren(this.uploadData.tree, this.uploadData.treeNode, this.uploadData.resolve);
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-                this.dialogVisible = false;
+                    this.dialogVisible = false;
+                } else {
+                    this.$store
+                        .dispatch("dept/addOne", formData)
+                        .then(() => {
+                            this.$message({
+                                type: "success",
+                                message:
+                                    "部门信息保存成功!"
+                            });
+                            this.loadData();
+                            this.loadChildren(this.uploadData.tree, this.uploadData.treeNode, this.uploadData.resolve);
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                    this.dialogVisible = false;
+                }
+
             }
         },
         created() {

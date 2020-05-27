@@ -38,55 +38,9 @@
         :page-size="pageSize"
         :total="total"
       ></el-pagination>
-      <el-dialog
-        title="配置信息"
-        center
-        :visible.sync="dialogVisible"
-        width="33%"
-        :close-on-click-modal="false"
-      >
-        <el-form ref="form"  :model="formData" label-width="100px" size="mini">
-          <el-form-item label="客户" prop="merchantId">
-            <el-select
-              v-model="formData.merchantId"
-              placeholder="请选择客户.."
-              style="width: 100%"
-            >
-              <el-option
-                v-for="item in openList"
-                :key="item.merchantId"
-                :label="item.firm.firmName"
-                :value="item.merchantId"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="客户域名" prop="merchantDomain">
-            <el-input v-model="formData.merchantDomain"></el-input>
-          </el-form-item>
-          <el-form-item label="用户名" prop="user">
-            <el-input v-model="formData.user"></el-input>
-          </el-form-item>
-          <el-form-item label="密码" prop="pass">
-            <el-input v-model="formData.pass"></el-input>
-          </el-form-item>
-          <el-form-item label="IP" prop="ip">
-            <el-input v-model="formData.ip"></el-input>
-          </el-form-item>
-          <el-form-item label="回调地址" prop="callbackUrl">
-            <el-input v-model="formData.callbackUrl"></el-input>
-          </el-form-item>
-          <el-form-item label="备注">
-            <el-input v-model="formData.remark"></el-input>
-          </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer" style="text-align:right;">
-          <el-button size="mini" @click="handleCancel">取 消</el-button>
-          <el-button size="mini" type="primary" @click="handleSave">确 定</el-button>
-        </div>
-      </el-dialog>
-      <el-dialog :title="configId?'编辑配置信息':'添加新角色'" center :visible.sync="editDialogVisible" width="30%">
-        <config-edit v-if="editDialogVisible" :configId="configId" @onSave="onSave"
-                     @onCancel="handleCancel" @onUpdate="handleUpdate"></config-edit>
+      <el-dialog :title="configId?'编辑配置信息':'添加新角色'" center :visible.sync="dialogVisible" width="30%">
+        <config-edit v-if="dialogVisible" :configId="configId" @onSave="handleSave"
+                     @onCancel="handleCancel"></config-edit>
       </el-dialog>
     </div>
   </div>
@@ -94,31 +48,11 @@
 
 <script>
   import configSearch from "./Search.vue";
-  import configEdit from "./Edit"
+  import configEdit from "./Edit.vue"
 
   function defaultData() {
     return {
       configId: "",
-      rules: {
-        merchantId: [
-          {required: true, message: '请选择客户', trigger: 'blur'}
-        ],
-        merchantDomain: [
-          {required: true, message: '请输入客户域名', trigger: 'blur'}
-        ],
-        configId: [
-          {required: true, message: '请输入用户名', trigger: 'blur'}
-        ],
-        pass: [
-          {required: true, message: '请输入密码', trigger: 'blur'}
-        ],
-        ip: [
-          {required: true, message: '请输入IP', trigger: 'blur'}
-        ],
-        callbackUrl: [
-          {required: true, message: '请输入回调地址', trigger: 'blur'}
-        ]
-      }
     };
   }
 
@@ -132,7 +66,6 @@
         pageSize: 10,
         total: 0,
         dialogVisible: false,
-        editDialogVisible: false,
         tableData: [],
         configId: '',
         paramDialogVisible: false,
@@ -156,7 +89,7 @@
         };
       },
       handleEdit(row) {
-        this.editDialogVisible = true;
+        this.dialogVisible = true;
         this.configId = row.configId;
       },
       handleDelete(row) {
@@ -285,9 +218,13 @@
           });
       }
       ,
-      handleSave() {
+      handleSave(formData) {
+        var url = "qunarPolicyConfig/addOne";
+        if (formData.configId) {
+          url = "qunarPolicyConfig/updateOne";
+        }
         this.$store
-          .dispatch("qunarPolicyConfig/addOne", this.formData)
+          .dispatch(url, formData)
           .then(() => {
             this.handleSearch();
           })
@@ -295,28 +232,14 @@
             console.log(error);
           });
         this.dialogVisible = false;
-      }
-      ,
-      handleUpdate(params) {
-        this.$store
-          .dispatch("qunarPolicyConfig/updateOne", params)
-          .then(() => {
-            this.handleSearch();
-          })
-          .catch(error => {
-            console.log(error);
-          });
-        this.editDialogVisible = false;
-      }
-      ,
+      },
       handleCancel() {
         this.dialogVisible = false;
-        this.editDialogVisible = false;
       }
       ,
-      handleSearch(params) {
+      handleSearch(params = {}) {
         this.deleteForSearch = true;
-        if (!params) {
+        if (!params.merchantId) {
           params = {};
         }
         this.loadData(params);

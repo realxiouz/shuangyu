@@ -201,7 +201,7 @@
         </el-form-item>
       </el-row>
       <el-row :gutter="18">
-        <el-form-item label="默认值:">
+        <el-form-item label="默认值:" prop="defaultValue">
           <el-input v-model="formData.defaultValue" placeholder="请输入内容"></el-input>
         </el-form-item>
       </el-row>
@@ -238,14 +238,6 @@
     name: 'edit',
     props: ["merchantId", "paramId"],
     data() {
-      const categoryCode = (rule, value, callback) => {
-        let reg = /^[0-9a-zA-Z]*$/g;
-        if (reg.test(value)) {
-          callback();
-        } else {
-          callback(new Error("只能输入字母或数字！"));
-        }
-      };
       return {
         formData: defaultData(),
         dialogVisible: false,
@@ -276,7 +268,7 @@
             }
           ],
           defaultValue: [
-            {required: true, message: "默认在不能为空！", trigger: "blur"}
+            {required: true, message: "默认值不能为空！", trigger: "blur"}
           ]
         },
         options: [{
@@ -342,6 +334,9 @@
         } else {
           this.$router.go(-1);
         }
+      },
+      handleAdd() {
+        this.dialogVisible = true;
       },
       handleCancel() {
         this.goBack();
