@@ -32,8 +32,8 @@ const actions = {
   },
   trigger({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {jobId} = params
-      trigger(jobId)
+      const {jobId,filter} = params
+      trigger(jobId,filter)
         .then(response => {
           resolve(response);
         })

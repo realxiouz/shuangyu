@@ -21,8 +21,8 @@
         <el-table-column prop="endDate" label="旅行结束日期" align="center"></el-table-column>
         <el-table-column label="操作" fixed="right" align="center" width="330">
           <template slot-scope="scope">
-            <el-button @click="start(scope.row.jobInfoId)" type="primary" size="mini">启动</el-button>
-            <el-button @click="stop(scope.row.jobInfoId)" type="primary" size="mini">停止</el-button>
+            <el-button @click="start(scope.row)" type="primary" size="mini">启动</el-button>
+            <el-button @click="stop(scope.row)" type="primary" size="mini">停止</el-button>
             <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
             <el-button @click="handleCopy(scope.row)" type="primary" size="mini">复制</el-button>
             <el-button @click="removeOne(scope.row.id)" type="danger" size="mini">删除</el-button>
@@ -44,7 +44,7 @@
         :title="updateFlag?'更新':'新增'"
         center
         :visible.sync="dialogVisible"
-        width="33%"
+        width="50%"
         ref="user-edit"
         :close-on-click-modal="false"
       >
@@ -157,7 +157,6 @@
         this.id = row.id;
       },
       removeOne(id) {
-        debugger
         this.$confirm("是否确定删除?", "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
@@ -177,13 +176,37 @@
             console.error(err);
           });
       },
-
       handleCancel() {
         this.dialogVisible = false;
       },
       handleSave() {
         this.dialogVisible = false;
-      }
+      },
+      start(row) {
+        this.$store
+          .dispatch("xxlJob/trigger", {
+            jobId: row.jobInfoId,
+            filter: {
+              executorParam: row.jobInfoId
+            }
+          })
+          .then(() => {
+            this.loadData();
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      stop(row) {
+        this.$store
+          .dispatch("xxlJob/stop", {jobId:  row.jobInfoId})
+          .then(() => {
+            this.loadData();
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
     },
     created() {
       this.loadData();
