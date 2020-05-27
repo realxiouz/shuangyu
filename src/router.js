@@ -106,13 +106,6 @@ export default new Router({
           meta: { title: '角色管理', icon: 'home' }
         },
         {
-          title: '政策接口参数管理',
-          path: '/openApiParam/list',
-          name: 'openApiParam',
-          component: () => import('@/views/openApiParam/List'),
-          meta: { title: '政策接口参数管理', icon: 'home' },
-        },
-        {
           title: '产品标签管理',
           path: '/productMark/list',
           name: 'productMark',
@@ -535,11 +528,18 @@ export default new Router({
           meta: { title: '去哪儿订单通知管理', icon: 'home' }
         },
         {
-          title: '去哪儿政策管理',
-          path: '/qunar/policy',
+          title: '政策配置管理',
+          path: '/qunarPolicyConfig/list',
           name: 'qunarPolicyConfig',
-          component: () => import('@/views/otherOrderConfig/qunarPolicyConfig/List'),
-          meta: { title: '去哪儿政策管理', icon: 'about' }
+          component: () => import('@/views/qunarPolicyConfig/List'),
+          meta: { title: '政策配置管理', icon: 'home' }
+        },
+        {
+          title: '政策接口参数管理',
+          path: '/qunarPolicyParam/list',
+          name: 'qunarPolicyParam',
+          component: () => import('@/views/qunarPolicyParam/List'),
+          meta: { title: '政策接口参数管理', icon: 'home' },
         }
       ]
     },
