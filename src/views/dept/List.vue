@@ -4,9 +4,6 @@
       <dept-search @onSearch="handleSearch"></dept-search>
     </div>
     <div class="contentBox">
-      <el-row style="margin-bottom:15px; margin-left:30px">
-        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
-      </el-row>
       <el-table
         v-loading="loading"
         :data="tableData"
@@ -162,11 +159,6 @@
             handleAddChild(deptId) {
                 this.pid = deptId;
                 this.editDeptId = "";
-                this.dialogVisible = true;
-            },
-            handleAdd() {
-                this.editDeptId = "";
-                this.pid = "";
                 this.dialogVisible = true;
             },
             handleSearch(params) {
