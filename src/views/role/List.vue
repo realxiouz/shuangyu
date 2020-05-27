@@ -174,13 +174,23 @@
                 /** test end **/
                 const isEdit = !!this.roleId;
                 const message = isEdit ? "修改成功！" : "添加成功！";
-                this.$store.dispatch("role/saveOne", formData).then(() => {
-                    this.loadData();
-                    this.$message({
-                        type: "success",
-                        message
+                if (isEdit) {
+                    this.$store.dispatch("role/updateOne", {roleId: formData.roleId, data: formData}).then(() => {
+                        this.loadData();
+                        this.$message({
+                            type: "success",
+                            message
+                        });
                     });
-                });
+                } else {
+                    this.$store.dispatch("role/addOne", formData).then(() => {
+                        this.loadData();
+                        this.$message({
+                            type: "success",
+                            message
+                        });
+                    });
+                }
                 this.dialogVisible = false;
             },
             handleCancel: function () {
