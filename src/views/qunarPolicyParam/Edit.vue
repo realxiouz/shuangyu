@@ -238,14 +238,6 @@
     name: 'edit',
     props: ["merchantId", "paramId"],
     data() {
-      const categoryCode = (rule, value, callback) => {
-        let reg = /^[0-9a-zA-Z]*$/g;
-        if (reg.test(value)) {
-          callback();
-        } else {
-          callback(new Error("只能输入字母或数字！"));
-        }
-      };
       return {
         formData: defaultData(),
         dialogVisible: false,
