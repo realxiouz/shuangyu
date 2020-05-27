@@ -15,15 +15,17 @@
         style="width: 100%;margin-bottom: 20px;"
         size="mini"
       >
-        <el-table-column prop="policyCode" label="政策前缀" width="120" align="center"></el-table-column>
-        <el-table-column prop="author" label="负责人" width="120" align="center"></el-table-column>
-        <el-table-column prop="startDate" label="旅行开始日期" width="120" align="center"></el-table-column>
-        <el-table-column prop="endDate" label="旅行结束日期" width="120" align="center"></el-table-column>
-        <el-table-column label="操作" fixed="right" align="center" width="280">
+        <el-table-column prop="policyCode" label="政策前缀" align="center"></el-table-column>
+        <el-table-column prop="author" label="负责人" align="center"></el-table-column>
+        <el-table-column prop="startDate" label="旅行开始日期" align="center"></el-table-column>
+        <el-table-column prop="endDate" label="旅行结束日期" align="center"></el-table-column>
+        <el-table-column label="操作" fixed="right" align="center" width="330">
           <template slot-scope="scope">
+            <el-button @click="start(scope.row.jobInfoId)" type="primary" size="mini">启动</el-button>
+            <el-button @click="stop(scope.row.jobInfoId)" type="primary" size="mini">停止</el-button>
             <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
             <el-button @click="handleCopy(scope.row)" type="primary" size="mini">复制</el-button>
-            <el-button @click="removeOne(scope.row)" type="danger" size="mini">删除</el-button>
+            <el-button @click="removeOne(scope.row.id)" type="danger" size="mini">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -64,11 +66,11 @@
   import owpSearch from "./Search";
 
   export default {
-    name:"owpList",
+    name: "owpList",
     data() {
       return {
         dialogVisible: false,
-        updateFlag:false,
+        updateFlag: false,
         id: "",
         pageFlag: 1,
         pageSize: 10,
@@ -107,7 +109,7 @@
       },
       loadTotal(params) {
         this.$store
-          .dispatch("owp/getTotal", { filter: params })
+          .dispatch("owp/getTotal", {filter: params})
           .then(data => {
             if (data) {
               this.total = data.data;
@@ -155,6 +157,7 @@
         this.id = row.id;
       },
       removeOne(id) {
+        debugger
         this.$confirm("是否确定删除?", "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
@@ -162,13 +165,9 @@
         })
           .then(() => {
             this.$store
-              .dispatch("owp/removeOne", { airlineCode: id })
+              .dispatch("owp/removeOne", {id: id})
               .then(() => {
-                if (1 === this.tableData.length) {
-                  this.prevClick();
-                } else {
-                  this.loadData();
-                }
+                this.loadData();
               })
               .catch(error => {
                 console.log(error);

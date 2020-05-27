@@ -61,6 +61,7 @@ import productFeature from "./modules/productFeature";
 import device from "./modules/device";
 import etermConfig from "./modules/etermConfig";
 import owp from "./modules/owp";
+import xxlJob from "./modules/xxlJob";
 
 import { getLoginInfo } from "@/api/staff";
 
@@ -127,7 +128,8 @@ export default new Vuex.Store({
     productFeature,
     device,
     etermConfig,
-    owp
+    owp,
+    xxlJob
   },
   state: {
     loginInfo: {}

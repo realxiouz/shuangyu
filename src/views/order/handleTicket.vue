@@ -455,6 +455,7 @@
             return;
           }*/
         }
+        console.log("onSaveTicket+++++++++++++++++++++++"+JSON.stringify(this.formData));
         this.$emit("onSaveTicket", this.formData);
       },
       //判断是蜗牛导单还是出票
@@ -641,7 +642,7 @@
           let receiptAmount = Number(this.formData.amount) - Number(this.formData.pointAmount);
           this.formData.receiptAmount = receiptAmount;
         }
-        console.log(this.formData);
+        console.log("onSave+++++++++++++++++++++++"+JSON.stringify(this.formData));
         this.$emit("onSave", this.formData);
       },
       // 日期格式化
