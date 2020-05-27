@@ -339,6 +339,14 @@
           this.showAddValues = false;
         }
       },
+      goBack() {
+        if (this.$router.history.length <= 1) {
+          this.$router.push({path: '/home'});
+          return false;
+        } else {
+          this.$router.go(-1);
+        }
+      },
       handleCancel() {
         this.goBack();
       },

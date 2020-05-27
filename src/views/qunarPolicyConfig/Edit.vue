@@ -6,7 +6,7 @@
           <el-option
             v-for="item in merchantList"
             :key="item.merchantId"
-            :label="item.merchantName"
+            :label="item.firm.firmName"
             :value="item.merchantId">
           </el-option>
         </el-select>
@@ -88,9 +88,23 @@
       },
       handleClose(idx) {
         this.paramList.splice(idx, 1);
+      },
+      //加载平台信息
+      loadMerchants() {
+        this.$store
+          .dispatch("firmMerchant/getList", {
+            filter: {merchantType: 0}
+          })
+          .then(data => {
+            this.merchantList = data;
+          })
+          .catch(error => {
+            console.log(error);
+          });
       }
     },
     created() {
+      this.loadMerchants();
       if (this.configId) {
         this.handleGetOne(this.configId);
       }
