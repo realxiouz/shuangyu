@@ -274,7 +274,7 @@
                     firmId: "",
                     fullName: "",
                     gender: 0,
-                    birthDate: 0,
+                    birthDate: new Date(),
                     phone: "",
                     email: "",
                     idCardNo: "",
@@ -361,7 +361,6 @@
                     })
                     .then(data => {
                         this.loading = false;
-
                         /*如果请求到的数据roles为null会报错*/
                         if (!data.data.roles) {
                             data.data.roles = [];
@@ -415,9 +414,7 @@
                                 .catch(error => {
                                     console.log(error);
                                 });
-
                         }
-
                     } else {
                         this.$message({type: "warning", message: "请完整填写数据！"});
                         return false;
@@ -589,15 +586,6 @@
                         console.log(error);
                     });
             },
-            getCurrentMonthFirst() {
-                let date = new Date()
-                date.setDate(1)
-                let month = parseInt(date.getMonth() + 1)
-                let day = date.getDate()
-                if (month < 10) month = '0' + month
-                if (day < 10) day = '0' + day
-                this.formData.birthDate = date.getFullYear() + '-' + month + '-' + day
-            }
         },
         computed: {
             formatDate() {
@@ -615,7 +603,6 @@
             this.loadRoles();
             let params = {};
             this.loadTableData(params);
-            this.getCurrentMonthFirst();
         },
         watch: {
             curNode() {
