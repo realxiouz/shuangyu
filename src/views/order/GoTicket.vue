@@ -503,6 +503,7 @@
         newParams.startTime = row.offerPrice.startTime;
         newParams.dptTime = row.offerPrice.dptTime;
         newParams.orderTaskId = this.$route.query.orderTaskId;
+        return newParams;
       },
       //构建验证重复下单参数
       buildCheckOrderParams: function (row) {
@@ -544,12 +545,12 @@
                     let foPlaceOrderparams = this.buildFOPlaceOrcerParams(item, row);
                     console.info("51下单了" + JSON.stringify(foPlaceOrderparams));
                     this.source="51Book";
-                    //this.placeFOOrder(foPlaceOrderparams);
+                    this.placeFOOrder(foPlaceOrderparams);
                   } else {
                     console.info("蜗牛下单了")
-                    this.buildOpenPlaceOrcerParams(row, item);
+                    let newParams = this.buildOpenPlaceOrcerParams(row, item);
                     this.source="OPEN";
-                    //this.placeOpenOrder(newParams);
+                    this.placeOpenOrder(newParams);
                   }
 
                 })
@@ -559,11 +560,11 @@
               if (item.source && item.source == "51Book") {
                 let foPlaceOrderparams = this.buildFOPlaceOrcerParams(item, row);
                 console.info("51下单了" + JSON.stringify(foPlaceOrderparams));
-                //this.placeFOOrder(foPlaceOrderparams);
+                this.placeFOOrder(foPlaceOrderparams);
               } else {
                 console.info("蜗牛下单了")
-                this.buildOpenPlaceOrcerParams(row, item);
-                //this.placeOpenOrder(newParams);
+                let newParams = this.buildOpenPlaceOrcerParams(row, item);
+                this.placeOpenOrder(newParams);
               }
             }
           })
