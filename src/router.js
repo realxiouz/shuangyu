@@ -443,7 +443,7 @@ export default new Router({
           title: '开放平台',
           path: '/open/list',
           name: 'open',
-          component: () => import('@/views/open/List'),
+          component: () => import('@/views/openPlatform/List'),
           meta: { title: '开放平台', icon: 'home' }
         },
         {
