@@ -129,11 +129,6 @@
             <span>{{ formatAmount(scope.row.payment)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="pointAmount" label="积分金额" width="90" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatAmount(scope.row.pointAmount)}}</span>
-          </template>
-        </el-table-column>
         <el-table-column prop="systemProfit" label="系统利润" width="80" align="center">
           <template slot-scope="scope">
             <span>{{ formatAmount(scope.row.systemProfit)}}</span>
@@ -149,6 +144,13 @@
             <span>{{ formatAmount(scope.row.profit)}}</span>
           </template>
         </el-table-column>
+
+        <el-table-column prop="pointAmount" label="积分金额" width="90" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatAmount(scope.row.pointAmount)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="pointBatchNo" label="积分批次" width="120" align="center"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="180">
           <template slot-scope="scope">
             <el-button @click="handleUpdate(scope.row.deptId)" type="primary" size="mini">编辑</el-button>
@@ -316,10 +318,6 @@ export default {
             sums[index] =
               "￥" + this.$numeral(this.count.payment).format("0,0.00");
             break;
-          case "pointAmount":
-            sums[index] =
-              "￥" + this.$numeral(this.count.pointAmount).format("0,0.00");
-            break;
           case "systemProfit":
             sums[index] =
               "￥" + this.$numeral(this.count.systemProfit).format("0,0.00");
@@ -331,6 +329,10 @@ export default {
           case "profit":
             sums[index] =
               "￥" + this.$numeral(this.count.profit).format("0,0.00");
+            break;
+          case "pointAmount":
+            sums[index] =
+              "￥" + this.$numeral(this.count.pointAmount).format("0,0.00");
             break;
           default:
             sums[index] = "";

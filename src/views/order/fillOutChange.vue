@@ -37,7 +37,6 @@
           ></el-table-column>
           <el-table-column prop="amount" label="价格" align="center" width="150">
             <template slot-scope="scope">
-              <!--<el-input clearable v-model="scope.row.amount"></el-input>-->
               <el-input-number v-model="scope.row.amount" controls-position="right" :max="0"
                                :precision="2"></el-input-number>
             </template>
@@ -128,11 +127,6 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <!--<el-col :span="8">
-            <el-form-item label="支出金额:" prop="amount">
-              <el-input clearable v-model="formData.amount"></el-input>
-            </el-form-item>
-          </el-col>-->
           <el-col :span="8">
             <el-form-item label="资金账号:" prop="fundAccount">
               <el-select
@@ -197,15 +191,48 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="支出金额:" prop="amount">
-              <!--<el-input clearable v-model="formData.amount"></el-input>-->
+            <el-form-item label="支付方式:" prop="payMethod">
+              <el-select
+                v-model="formData.payMethod"
+                clearable
+                placeholder="支付方式"
+                style="width: 100%"
+                @change="payMethod"
+              >
+                <el-option
+                  v-for="item in payMethods"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col v-if="formData.payMethod==1||formData.payMethod==3" :span="8">
+            <el-form-item label="现金支付金额:" prop="receiptAmount">
+              <el-input-number clearable v-model="formData.receiptAmount" controls-position="right" :max="0"
+                               :precision="2" @blur="getAmount"></el-input-number>
+            </el-form-item>
+          </el-col>
+          <el-col v-if="formData.payMethod==2||formData.payMethod==3" :span="8">
+            <el-form-item label="积分支付金额:" prop="pointAmount">
+              <el-input-number clearable v-model="formData.pointAmount" controls-position="right" :max="0"
+                               :precision="2" @blur="getAmount"></el-input-number>
+            </el-form-item>
+          </el-col>
+          <el-col v-if="formData.payMethod==2||formData.payMethod==3" :span="8">
+            <el-form-item label="积分批次号:" prop="pointBatchNo">
+              <el-input clearable v-model="formData.pointBatchNo"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="总支付金额:" prop="amount">
               <el-input-number clearable v-model="formData.amount" controls-position="right" :max="0"
-                               :precision="2"></el-input-number>
+                               :precision="2" :disabled="disabled"></el-input-number>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="利润金额:" prop="profit">
-              <!--<el-input clearable v-model="formData.profit"></el-input>-->
               <el-input-number clearable v-model="formData.profit" controls-position="right"
                                :precision="2"></el-input-number>
             </el-form-item>
@@ -285,11 +312,6 @@
               <el-input clearable v-model="formData.cabin"></el-input>
             </el-form-item>
           </el-col>
-          <!--<el-col :span="8">
-            <el-form-item label="备注:">
-              <el-input clearable v-model="formData.remark"></el-input>
-            </el-form-item>
-          </el-col>-->
           <el-col :span="16">
             <el-form-item label="备注:">
               <el-input type="textarea" :rows="2" clearable v-model="formData.remark"></el-input>
@@ -333,6 +355,21 @@
         supplierData: [],
         supplierAccountData: [],
         selectOrderDetailList: [],
+        disabled: true,
+        payMethods:[
+          {
+            label:"现金支付",
+            value:1
+          },
+          {
+            label:"积分支付",
+            value:2
+          },
+          {
+            label:"现金积分支付",
+            value:3
+          },
+        ],
         formRules: {
           orderType: [{required: true, message: "必填项", trigger: "change"}],
           merchantId: [{required: true, message: "必填项", trigger: "change"}],
@@ -345,13 +382,34 @@
           arr: [{required: true, message: "必填项！", trigger: "blur"}],
           flightCode: [{required: true, message: "必填项！", trigger: "blur"}],
           flightDate: [{required: true, message: "必填项！", trigger: "blur"}],
-          dptTime: [{required: true, message: "必填项！", trigger: "blur"}]
+          dptTime: [{required: true, message: "必填项！", trigger: "blur"}],
+          receiptAmount: [{required: true, message: "必填项", trigger: "change"}],
+          pointBatchNo: [{required: true, message: "必填项", trigger: "change"}],
+          pointAmount: [{required: true, message: "必填项！", trigger: "blur"}],
+          payMethod: [{required: true, message: "必填项！", trigger: "blur"}],
         }
       };
     },
     methods: {
       formatAgeType,
       formatCardType,
+      payMethod(){
+        this.formData.receiptAmount=undefined;
+        this.formData.pointAmount=undefined;
+        this.formData.amount=0;
+        this.formData.pointBatchNo="";
+      },
+      getAmount(){
+        let receiptAmount = 0;
+        if (this.formData.receiptAmount){
+          receiptAmount = Number(this.formData.receiptAmount);
+        }
+        let pointAmount = 0;
+        if (this.formData.pointAmount){
+          pointAmount = Number(this.formData.pointAmount);
+        }
+        this.formData.amount = Number(receiptAmount)+Number(pointAmount);
+      },
       // 默认数据
       defaultFormData() {
         var _orderDetailList = [];
@@ -371,8 +429,12 @@
           radio: "2",
           userNameType: "",
           accountId: "",
-          profit: "",
-          merchantId: ""
+          merchantId: "",
+          pointBatchNo:"",
+          profit: undefined,
+          pointAmount: undefined,
+          receiptAmount: undefined,
+          payMethod:""
         };
       },
       clearForm() {
@@ -575,6 +637,7 @@
             return;
           }*/
         }
+        console.log("onSave+++++++++++++++++++++++"+JSON.stringify(this.formData))
         this.$emit("onSave", this.formData);
       }
     },

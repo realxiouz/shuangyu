@@ -260,15 +260,31 @@
             <el-table-column prop="orderNo" align="center" label="订单号" width="170"></el-table-column>
             <el-table-column prop="sourceOrderNo" align="center" width="150" label="源单号"></el-table-column>
             <el-table-column prop="status" :formatter="formatStatus" label="订单状态" width="80"></el-table-column>
+            <el-table-column label="乘机人 - 票号" align="center" width="170">
+              <template slot-scope="scope">
+                <span v-html="formatPassengersTicket(scope.row.orderDetailList)"></span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="amount" align="center" label="总金额">
+              <template slot-scope="scope">
+                <span>{{ formatAmount(scope.row.amount)}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="receiptAmount" align="center" width="90" label="现金金额">
+              <template slot-scope="scope">
+                <span>{{ formatAmount(scope.row.receiptAmount)}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="pointAmount" align="center" width="90" label="积分金额">
+              <template slot-scope="scope">
+                <span>{{ formatAmount(scope.row.pointAmount)}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="pointBatchNo" align="center" width="120" label="积分批次号"></el-table-column>
             <el-table-column prop="orderSource" align="center" width="120" label="供应商"></el-table-column>
             <el-table-column prop="accountId" align="center" label="账号" width="100">
               <template slot-scope="scope">
                 <span v-html="formatAccount(scope.row)"></span>
-              </template>
-            </el-table-column>
-            <el-table-column label="乘机人 - 票号" align="center" width="170">
-              <template slot-scope="scope">
-                <span v-html="formatPassengersTicket(scope.row.orderDetailList)"></span>
               </template>
             </el-table-column>
             <el-table-column label="证件类型" align="center" width="80">
@@ -284,11 +300,6 @@
             <el-table-column prop="createTime" align="center" width="90" label="出票时间">
               <template slot-scope="scope">
                 <span>{{ formatDate(scope.row.createTime,'YYYY-MM-DD') }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column prop="amount" align="center" label="应付金额">
-              <template slot-scope="scope">
-                <span>{{ formatAmount(scope.row.amount)}}</span>
               </template>
             </el-table-column>
             <el-table-column label="航班号" align="center" width="70">
@@ -844,6 +855,7 @@
           newParams.pointAmount = params.pointAmount;
           newParams.pointBatchNo = params.pointBatchNo;
         }
+        console.log("+++++++++++++++++"+JSON.stringify(newParams))
         this.purchaseOrder(newParams);
       },
       // 补退 补改 保存
@@ -889,7 +901,11 @@
             newParams.sourceOrderNo = params.sourceOrderNo;
             newParams.createTime = params.createTime;
             newParams.finishTime = params.finishTime;
+            newParams.receiptAmount = params.receiptAmount;
+            newParams.pointAmount = params.pointAmount;
+            newParams.pointBatchNo = params.pointBatchNo;
           }
+          console.log("+++++++++++++++++"+JSON.stringify(newParams))
           this.purchaseOrder(newParams);
         }
       },
@@ -945,6 +961,7 @@
               newParams.ticketNoFlag = params.ticketNoFlag;
             }
           }
+          console.log("+++++++++++++++++"+JSON.stringify(newParams))
           this.purchaseOrder(newParams);
         }
       },
