@@ -62,6 +62,8 @@ import device from "./modules/device";
 import etermConfig from "./modules/etermConfig";
 import owp from "./modules/owp";
 import xxlJob from "./modules/xxlJob";
+import firmOpenAuth from "./modules/firmOpenAuth";
+import openPlatform from "./modules/openPlatform";
 
 import { getLoginInfo } from "@/api/staff";
 
@@ -129,7 +131,9 @@ export default new Vuex.Store({
     device,
     etermConfig,
     owp,
-    xxlJob
+    xxlJob,
+    firmOpenAuth,
+    openPlatform
   },
   state: {
     loginInfo: {}
