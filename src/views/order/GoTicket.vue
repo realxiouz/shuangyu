@@ -503,6 +503,7 @@
         newParams.startTime = row.offerPrice.startTime;
         newParams.dptTime = row.offerPrice.dptTime;
         newParams.orderTaskId = this.$route.query.orderTaskId;
+        return newParams;
       },
       //构建验证重复下单参数
       buildCheckOrderParams: function (row) {
