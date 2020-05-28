@@ -16,6 +16,13 @@ export function updateOne(id, data) {
   });
 }
 
+export function getList(params) {
+  return request({
+    url: `/open/platform/get/list`,
+    method: 'get',
+    params: params
+  });
+}
 
 export function getPageList(pageFlag, pageSize, filter) {
   return request({
