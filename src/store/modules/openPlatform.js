@@ -28,8 +28,8 @@ const actions = {
   },
   removeOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {id} = params;
-      removeOne(id)
+      const {openId} = params;
+      removeOne(openId)
         .then(response => {
           const {data} = response;
           resolve(data);
