@@ -1,11 +1,27 @@
 <template>
   <div>
     <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
+      <el-form-item label="企业" prop="firmId" size="mini">
+        <el-select
+          style="width: 100%;"
+          v-model="formData.firmId"
+          placeholder="请选择"
+          @change="changeFirm"
+        >
+          <el-option
+            v-for="item in firmData"
+            :key="item.firmId"
+            :label="item.firmName"
+            :value="item.firmId"
+          ></el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item label="平台:" prop="openCode">
         <el-select
           style="width: 100%;"
           v-model="formData.openCode"
           placeholder="请选择"
+          @change="changeOpen"
         >
           <el-option
             v-for="item in openData"
@@ -14,9 +30,6 @@
             :value="item.openCode"
           ></el-option>
         </el-select>
-      </el-form-item>
-      <el-form-item label="企业" prop="openName" size="mini">
-        <el-input v-model="formData.openName"></el-input>
       </el-form-item>
     </el-form>
     <div slot="footer" style="text-align:right;">
@@ -38,26 +51,52 @@
         data() {
             return {
                 openData: [],
+                firmData: [],
                 formData: defaultData(),
                 rules: {
                     openCode: [
-                        {required: true, message: "请输入平台编码", trigger: "blur"},
-                        {
-                            min: 1,
-                            max: 20,
-                            message: "长度在 1到 20 个字符"
-                        }
+                        {required: true, message: "请选择平台", trigger: "blur"}
+                    ],
+                    firmId: [
+                        {required: true, message: "请选择企业", trigger: "blur"}
                     ]
                 }
             }
         },
         methods: {
-            /*加载当前用户的企业角色信息*/
+            changeFirm(code) {
+                for (let i = 0, len = this.firmData.length; i < len; i++) {
+                    if (code == this.firmData[i].firmId) {
+                        this.formData.firmName = this.firmData[i].firmName;
+                        break;
+                    }
+                }
+            },
+            changeOpen(code) {
+                for (let i = 0, len = this.openData.length; i < len; i++) {
+                    if (code == this.openData[i].openCode) {
+                        this.formData.openName = this.openData[i].openName;
+                        this.formData.openId = this.openData[i].openId;
+                        break;
+                    }
+                }
+            },
             loadOpenPlatform() {
                 this.$store
                     .dispatch("openPlatform/getList", {})
                     .then(data => {
                         this.openData = data;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            /*加载当前用户的企业角色信息*/
+            loadFirm() {
+                this.$store
+                    .dispatch("firm/getList", {})
+                    .then(data => {
+                        this.firmData = data;
                     })
                     .catch(error => {
                         console.log(error);
@@ -90,6 +129,7 @@
                 this.handleGetOne(this.openId);
             }
             this.loadOpenPlatform();
+            this.loadFirm();
         },
         props: {
             openId: String,
