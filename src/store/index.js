@@ -64,6 +64,9 @@ import owp from "./modules/owp";
 import xxlJob from "./modules/xxlJob";
 import firmOpenAuth from "./modules/firmOpenAuth";
 import openPlatform from "./modules/openPlatform";
+import jobTag from "./modules/jobTag";
+import jobConfig from "./modules/jobConfig";
+import jobScheduler from "./modules/jobScheduler";
 
 import { getLoginInfo } from "@/api/staff";
 
@@ -133,7 +136,10 @@ export default new Vuex.Store({
     owp,
     xxlJob,
     firmOpenAuth,
-    openPlatform
+    openPlatform,
+    jobTag,
+    jobConfig,
+    jobScheduler
   },
   state: {
     loginInfo: {}
