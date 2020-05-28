@@ -16,11 +16,19 @@ export function updateOne(id, data) {
   });
 }
 
-export function getPageList(pageFlag, pageSize, lastId, params) {
+export function getList(params) {
   return request({
-    url: `/open/platform/get/page/list/${pageFlag}/${pageSize}/${lastId}`,
+    url: `/open/platform/get/list`,
     method: 'get',
     params: params
+  });
+}
+
+export function getPageList(pageFlag, pageSize, filter) {
+  return request({
+    url: `/open/platform/get/page/list/${pageFlag}/${pageSize}`,
+    method: 'get',
+    params: filter
   });
 }
 

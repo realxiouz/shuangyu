@@ -1,4 +1,4 @@
-import {addOne, getOne, getPageList, getTotal, removeOne, updateOne} from '@/api/openPlatform';
+import {addOne, getList, getOne, getPageList, getTotal, removeOne, updateOne} from '@/api/openPlatform';
 
 const actions = {
   addOne({commit}, params) {
@@ -57,6 +57,19 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {pageFlag, pageSize, filter} = params;
       getPageList(pageFlag, pageSize, filter)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getList({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {filter} = params;
+      getList(filter)
         .then(response => {
           const {data} = response;
           resolve(data);
