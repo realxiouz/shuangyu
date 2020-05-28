@@ -20,10 +20,13 @@ import {
   getOrderDetail,
   getOrderMinPrice,
   getOrderFlight,
+  get51FlightPrice,
   getFlightPrice,
-  placeAnOrder,
+  placeAnOpenOrder,
+  placeAnFOOrder,
   checkOrder,
   openPay,
+  foPay,
   getMessageDetail,
   purchaseOrder,
   woniuOrder,
@@ -198,6 +201,18 @@ const actions = {
         });
     });
   },
+  get51FlightPrice({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      get51FlightPrice(params)
+        .then(response => {
+          // const { data } = response;
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
   getFlightPrice({ commit }, params) {
     return new Promise((resolve, reject) => {
       getFlightPrice(params)
@@ -211,9 +226,22 @@ const actions = {
     });
   },
   // 蜗牛下单
-  placeAnOrder({ commit }, params) {
+  placeAnOpenOrder({ commit }, params) {
     return new Promise((resolve, reject) => {
-      placeAnOrder(params)
+      placeAnOpenOrder(params)
+        .then(response => {
+          const { data } = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  // 51下单
+  placeAnFOOrder({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      placeAnFOOrder(params)
         .then(response => {
           const { data } = response;
           resolve(data);
@@ -242,6 +270,19 @@ const actions = {
       openPay(params)
         .then(response => {
          // const { data } = response;
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  // 51Book支付
+  foPay({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      foPay(params)
+        .then(response => {
+          // const { data } = response;
           resolve(response);
         })
         .catch(error => {
@@ -485,7 +526,7 @@ const actions = {
         });
     });
   },
-  
+
 
   // 重填票号
   rewriteTicket({ commit }, params) {
