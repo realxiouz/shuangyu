@@ -206,11 +206,22 @@
                 <span>{{ formatDate(scope.row.createTime,'YYYY-MM-DD') }}</span>
               </template>
             </el-table-column>
-            <el-table-column prop="amount" align="center" label="金额">
+            <el-table-column prop="amount" align="center" label="总金额">
               <template slot-scope="scope">
                 <span>{{ formatAmount(scope.row.amount)}}</span>
               </template>
             </el-table-column>
+            <el-table-column prop="receiptAmount" align="center" width="90" label="现金金额">
+              <template slot-scope="scope">
+                <span>{{ formatAmount(scope.row.receiptAmount)}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="pointAmount" align="center" width="90" label="积分金额">
+              <template slot-scope="scope">
+                <span>{{ formatAmount(scope.row.pointAmount)}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="pointBatchNo" align="center" width="120" label="积分批次号"></el-table-column>
             <el-table-column label="航班号" align="center">
               <template slot-scope="scope">
                 <span>{{ formatFlightNo(scope.row.flights)}}</span>
