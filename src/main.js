@@ -10,8 +10,8 @@ import App from './App';
 import router from './router';
 import store from './store';
 import '@/permission';
-import _ from 'lodash'
-import moment from 'moment'
+import _ from 'lodash';
+import moment from 'moment';
 import numeral from 'numeral';
 
 import VueCron from 'vue-cron';
@@ -21,8 +21,8 @@ Vue.use(VueCron);
 // if (process.env.NODE_ENV === 'development') {
 //   mockXHR();
 // }
-Vue.prototype._ = _
-Vue.prototype.$moment = moment
+Vue.prototype._ = _;
+Vue.prototype.$moment = moment;
 Vue.prototype.$numeral = numeral;
 Vue.use(ElementUI, { locale });
 Vue.config.productionTip = false;
@@ -37,7 +37,7 @@ new Vue({
 router.beforeEach((to, from, next) => {
   /* 路由发生变化修改页面title */
   if (to.meta.title) {
-    document.title = to.meta.title + " - 昆明双宇航空服务有限公司" 
+    document.title = to.meta.title + " - 昆明双宇航空服务有限公司"
   }
-  next()
-})
+  next();
+});

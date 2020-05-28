@@ -101,10 +101,27 @@ export function getFlightPrice(data) {
   });
 }
 
+// 51报价搜素
+export function get51FlightPrice(data) {
+  return request({
+    url: `/FOBook/get/policy/fareInfo`,
+    method: 'get',
+    params:data
+  });
+}
+
 // 蜗牛下单
-export function placeAnOrder(data) {
+export function placeAnOpenOrder(data) {
   return request({
     url: `/qunar/open/place/an/order`,
+    method: 'post',
+    data
+  });
+}
+// 51下单
+export function placeAnFOOrder(data) {
+  return request({
+    url: `/FOBook/place/order`,
     method: 'post',
     data
   });
@@ -133,6 +150,15 @@ export function interceptOrder(data) {
 export function openPay(params) {
   return request({
     url: `/qunar/open/pay`,
+    method: 'get',
+    params: params
+  });
+}
+
+// 51Book支付
+export function foPay(params) {
+  return request({
+    url: `/FOBook/order/pay`,
     method: 'get',
     params: params
   });
