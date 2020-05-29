@@ -3,21 +3,11 @@
     <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
       <el-form :model="formData" label-width="110px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="标签名称:">
-            <el-input clearable v-model="formData.tagName" placeholder="标签名称..."></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="标签编码:">
-            <el-input clearable v-model="formData.tagCode" placeholder="标签编码..."></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="标签类别:">
             <el-select
               v-model="formData.tagType"
               clearable
-              placeholder="支付方式"
+              placeholder="标签类别"
               style="width: 100%"
             >
               <el-option
@@ -29,6 +19,17 @@
             </el-select>
           </el-form-item>
         </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="标签名称:">
+            <el-input clearable v-model="formData.tagName" placeholder="标签名称..."></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="标签编码:">
+            <el-input clearable v-model="formData.tagCode" placeholder="标签编码..."></el-input>
+          </el-form-item>
+        </el-col>
+
       </el-form>
     </el-col>
     <el-col :xs="8" :sm="6" :md="6" :lg="4" :xl="4" class="search-tools">
@@ -81,10 +82,10 @@
       },
       toSearch() {
         let data = {};
-        if (!this.more) {
-          data = {policyCode: this.formData.policyCode};
-        } else {
-          data = this.formData;
+        for (var attr in this.formData) {
+          if (this.formData[attr] != null && this.formData[attr] != undefined && this.formData[attr] != '') {
+            data[attr] = this.formData[attr];
+          }
         }
         this.$emit("onSearch", data);
       },
