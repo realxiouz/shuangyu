@@ -359,9 +359,15 @@
                     });
             },
             handleUserSearch() {
+                const newParams = {};
+                for (let key in this.searchUserForm) {
+                    if (this.searchUserForm[key]) {
+                        newParams[key] = this.searchUserForm[key];
+                    }
+                }
                 this.$store
                     .dispatch("user/getList", {
-                        filter: this.searchUserForm
+                        filter: newParams
                     })
                     .then(data => {
                         if (data) {

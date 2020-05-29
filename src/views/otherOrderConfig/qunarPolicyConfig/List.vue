@@ -251,7 +251,7 @@ export default {
     },
     loadPartyData() {
       this.$store
-        .dispatch("open/getList", { filters: {} })
+        .dispatch("openPlatform/getList", { filters: {} })
         .then(data => {
           this.partyList = data;
         })
@@ -282,7 +282,7 @@ export default {
   },
   created() {
     this.loadFirmData();
-    this.loadPartyData();
+    // this.loadPartyData();
     this.loadData();
   },
   computed: {
