@@ -384,7 +384,6 @@
         }
       },
       loadJobTagData() {
-        console.log(this.jobConfigId)
         this.$store
           .dispatch("jobTag/getList", {})
           .then(data => {
