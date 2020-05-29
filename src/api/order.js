@@ -106,7 +106,7 @@ export function get51FlightPrice(data) {
   return request({
     url: `/FOBook/get/policy/fareInfo`,
     method: 'get',
-    params:data
+    params: data
   });
 }
 
@@ -299,6 +299,7 @@ export function processingChange(data) {
 
   });
 }
+
 // 拒绝改签
 export function rejectChange(data) {
   return request({
@@ -353,5 +354,14 @@ export function qunarDetailHtml(sourceOrderNo) {
   return request({
     url: `qunar/fuwu/get/detail/html?orderNo=${sourceOrderNo}`,
     method: 'get'
+  });
+
+}
+
+export function updateBspTicketNo(orderDetails) {
+  return request({
+    url: '/eterm/order/update/bsp/ticketno',
+    method: 'post',
+    data: orderDetails
   });
 }
