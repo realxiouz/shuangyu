@@ -24,6 +24,14 @@ export function getPageList(pageFlag, pageSize, filter) {
   });
 }
 
+export function getList(params) {
+  return request({
+    url: `/open/auth/get/list`,
+    method: 'get',
+    params: params
+  });
+}
+
 export function getTotal(params) {
   return request({
     url: `/open/auth/get/total`,
