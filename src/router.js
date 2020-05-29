@@ -341,6 +341,20 @@ export default new Router({
           component: () => import('@/views/jobTag/List'),
           meta: {title: '调度标签', icon: 'home'}
         },
+        {
+          title: '调度参数',
+          path: '/job/config/list',
+          name: 'jobConfigList',
+          component: () => import('@/views/jobConfig/List'),
+          meta: {title: '调度参数', icon: 'home'}
+        },
+        {
+          title: '调度参数编辑',
+          path: '/job/config/edit',
+          name: 'jobConfigEdit',
+          component: () => import('@/views/jobConfig/Edit'),
+          meta: {title: '调度参数编辑', icon: 'home'}
+        },
       ]
     },
     {
