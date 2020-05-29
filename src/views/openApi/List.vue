@@ -228,7 +228,7 @@ export default {
     //加载平台信息
     loadOpenParty() {
       this.$store
-        .dispatch("open/getList", { filters: {} })
+        .dispatch("openPlatform/getList", { filters: {} })
         .then(data => {
           this.openList = data;
         })

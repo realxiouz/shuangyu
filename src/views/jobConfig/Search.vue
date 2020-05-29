@@ -50,7 +50,7 @@
 </template>
 <script>
   export default {
-    name: "jobTagSearch",
+    name: "jobConfigSearch",
     data() {
       return {
         more: false,

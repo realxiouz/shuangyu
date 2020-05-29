@@ -3,12 +3,12 @@
     <el-form ref="jobTagForm" size="mini" :model="formData" label-width="110px" :rules="formRules">
       <input type="hidden" v-model="formData.tagId"/>
       <el-row :gutter="5">
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="标签类别:">
+        <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+          <el-form-item label="标签类别:" prop="tagType">
             <el-select
               v-model="formData.tagType"
               clearable
-              placeholder="支付方式"
+              placeholder="标签类别"
               style="width: 100%"
             >
               <el-option
@@ -20,17 +20,17 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+        <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
           <el-form-item label="标签名称" prop="tagName">
             <el-input placeholder="标签名称" v-model="formData.tagName"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+        <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
           <el-form-item label="标签编码" prop="tagCode">
             <el-input placeholder="标签编码" v-model="formData.tagCode"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+        <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
           <el-form-item label="备注" prop="remark">
             <el-input placeholder="备注" v-model="formData.remark"></el-input>
           </el-form-item>
@@ -78,9 +78,10 @@
         this.formData = this.defaultFormData();
       },
       loadJobTagData() {
+        console.log(this.jobTagId)
         if (this.jobTagId && this.jobTagId != '') {
           this.$store
-            .dispatch("jobTag/getOne", {id: this.jobTagId})
+            .dispatch("jobTag/getOne", {jobTagId: this.jobTagId})
             .then(data => {
               if (data.code == 0) {
                 this.formData = data.data;
@@ -93,14 +94,24 @@
       },
 
       handleSave() {
+        var validFlag = false;
+        this.$refs["jobTagForm"].validate(valid => {
+          if (!valid) {
+            validFlag = true;
+            return false;
+          }
+        });
+        if (validFlag) {
+          return;
+        }
         let url = '';
         if (this.updateFlag) {
-          url = 'jobTag/updateOne/' + this.formData.tagId;
+          url = 'jobTag/updateOne';
         } else {
           url = 'jobTag/addOne';
         }
         this.$store
-          .dispatch(url, {jobTag: this.formData})
+          .dispatch(url, {jobTagId: this.jobTagId,jobTag: this.formData})
           .then(() => {
             this.$emit("onSave");
           })

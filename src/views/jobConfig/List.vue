@@ -1,7 +1,7 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <job-tag-search ref="search" @onSearch="handleSearch"></job-tag-search>
+      <job-config-search ref="search" @onSearch="handleSearch"></job-config-search>
     </div>
     <div class="contentBox">
       <el-row style="margin-bottom:15px; margin-left:38px;">
@@ -15,6 +15,12 @@
         style="width: 100%;margin-bottom: 20px;"
         size="mini"
       >
+        <el-table-column prop="name" label="属性名称" align="center"></el-table-column>
+        <el-table-column prop="code" label="属性编码" align="center"></el-table-column>
+        <el-table-column prop="group" label="属性分组" align="center"></el-table-column>
+        <el-table-column prop="required" label="是否必填" align="center"></el-table-column>
+        <el-table-column prop="readonly" label="是否只读" align="center"></el-table-column>
+        <el-table-column prop="value" label="默认值" align="center"></el-table-column>
         <el-table-column prop="tagName" label="标签名称" align="center"></el-table-column>
         <el-table-column prop="tagCode" label="标签编码" align="center"></el-table-column>
         <el-table-column prop="tagType" label="标签类别" align="center">
@@ -41,7 +47,7 @@
         @prev-click="handlePrevClick"
         @next-click="handleNextClick"
       ></el-pagination>
-      <el-dialog
+      <!--<el-dialog
         :title="updateFlag?'更新':'新增'"
         center
         :visible.sync="dialogVisible"
@@ -49,25 +55,24 @@
         ref="user-edit"
         :close-on-click-modal="false"
       >
-        <job-tag-edit
+        <job-config-edit
           v-if="dialogVisible"
           ref="form"
           :job-tag-id="tagId"
           :update-flag="updateFlag"
           @onSave="handleSave"
           @onCancel="handleCancel"
-        ></job-tag-edit>
-      </el-dialog>
+        ></job-config-edit>
+      </el-dialog>-->
     </div>
   </div>
 </template>
 
 <script>
-  import jobTagEdit from "./Edit";
-  import jobTagSearch from "./Search";
+  import jobConfigSearch from "./Search";
 
   export default {
-    name: "jobTagList",
+    name: "jobConfigList",
     data() {
       return {
         dialogVisible: false,
@@ -88,8 +93,7 @@
       };
     },
     components: {
-      jobTagEdit,
-      jobTagSearch
+      jobConfigSearch
     },
     methods: {
       loadData(params) {
@@ -97,7 +101,7 @@
           params.lastId = this.lastId;
         }
         this.$store
-          .dispatch("jobTag/getPageList", {
+          .dispatch("jobConfig/getPageList", {
             pageFlag: this.pageFlag,
             pageSize: this.pageSize,
             filter: params
@@ -116,7 +120,7 @@
       },
       loadTotal(params) {
         this.$store
-          .dispatch("jobTag/getTotal", {filter: params})
+          .dispatch("jobConfig/getTotal", {filter: params})
           .then(data => {
             if (data) {
               this.total = data.data;
@@ -148,17 +152,20 @@
         this.loadData(params);
       },
       handleAdd() {
-        this.dialogVisible = true;
-        this.updateFlag = false;
-        this.tagId = "";
+        let path = "/job/config/edit";
+        this.$router.push({
+          path: path,
+          query: {}
+        });
       },
       handleEdit(row) {
-        this.updateFlag = true;
-        this.tagId = row.tagId;
-        this.dialogVisible = true;
-
+        let path = "";
+        path = "/job/config/edit";
+        this.$router.push({
+          path: path,
+          query: {jobConfigId:row.configId}
+        });
       },
-
       removeOne(tagId) {
         this.$confirm("是否确定删除?", "提示", {
           confirmButtonText: "确定",
@@ -167,7 +174,7 @@
         })
           .then(() => {
             this.$store
-              .dispatch("jobTag/removeOne", {jobTagId: tagId})
+              .dispatch("jobConfig/removeOne", {jobConfigId: tagId})
               .then(() => {
                 this.loadData();
               })
@@ -179,13 +186,13 @@
             console.error(err);
           });
       },
-      handleCancel() {
+     /* handleCancel() {
         this.dialogVisible = false;
       },
       handleSave() {
         this.dialogVisible = false;
         this.loadData();
-      },
+      },*/
       formatTagType(value){
         for (var i =0;i<this.tagTypes.length;i++){
           if (value==this.tagTypes[i].value){
