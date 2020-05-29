@@ -350,9 +350,21 @@
                 </el-button>
                 <el-button type="primary" @click="fillOutRefund(scope.row)" size="mini">补退</el-button>
                 <el-button type="primary" @click="fillOutChange(scope.row)" size="mini">补改</el-button>
+                <el-button type="primary" @click="editBSP(scope.row.orderDetailList)" size="mini"
+                           v-show="taskType=='15'">编辑
+                </el-button>
               </template>
             </el-table-column>
           </el-table>
+          <el-dialog
+            title="编辑票号信息"
+            :visible.sync="bspEditVisible"
+            center
+            width="40%"
+          >
+            <bsp-edit v-if="bspEditVisible" @onCancel="handleCancelEditBsp"
+                      :orderDetailList="orderDetailList"></bsp-edit>
+          </el-dialog>
         </div>
       </el-collapse-item>
       <el-collapse-item name="5">
@@ -586,6 +598,7 @@
   import changeTicket from "./changeTicket";
   import fillOutChange from "./fillOutChange";
   import fillOutRefund from "./fillOutRefund";
+  import bspEdit from "./BspEdit";
   import {
     formatOrderType,
     formatCategory,
@@ -616,6 +629,7 @@
         rewriteTicketShow: false,
         refuseReasonShow: false,
         changePayShow: false,
+        bspEditVisible: false,
         changePayData: {},
         systemProfitAndLossValue: 0,
         profitAndLossValue: 0,
@@ -681,7 +695,8 @@
         //订单详情触发定时器
         detailInfoTimer: null,
         taskLogData: "", //操作日志数据
-        supplierAccountData: []
+        supplierAccountData: [],
+        orderDetailList: []
       };
     },
     components: {
@@ -689,7 +704,8 @@
       refundTicket,
       changeTicket,
       fillOutChange,
-      fillOutRefund
+      fillOutRefund,
+      bspEdit
     },
     methods: {
       formatOrderType,
@@ -720,6 +736,13 @@
           .catch(error => {
             console.log(error);
           });
+      },
+      editBSP(row) {
+        this.bspEditVisible = true;
+        this.orderDetailList = row;
+      },
+      handleCancelEditBsp() {
+        this.bspEditVisible = false;
       },
       //蜗牛展示按钮
       woniuPerateButton(row) {
@@ -855,7 +878,7 @@
           newParams.pointAmount = params.pointAmount;
           newParams.pointBatchNo = params.pointBatchNo;
         }
-        console.log("+++++++++++++++++"+JSON.stringify(newParams))
+        console.log("+++++++++++++++++" + JSON.stringify(newParams))
         this.purchaseOrder(newParams);
       },
       // 补退 补改 保存
@@ -905,7 +928,7 @@
             newParams.pointAmount = params.pointAmount;
             newParams.pointBatchNo = params.pointBatchNo;
           }
-          console.log("+++++++++++++++++"+JSON.stringify(newParams))
+          console.log("+++++++++++++++++" + JSON.stringify(newParams))
           this.purchaseOrder(newParams);
         }
       },
@@ -961,7 +984,7 @@
               newParams.ticketNoFlag = params.ticketNoFlag;
             }
           }
-          console.log("+++++++++++++++++"+JSON.stringify(newParams))
+          console.log("+++++++++++++++++" + JSON.stringify(newParams))
           this.purchaseOrder(newParams);
         }
       },
