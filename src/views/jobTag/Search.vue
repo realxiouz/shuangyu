@@ -89,7 +89,6 @@
         }
         this.$emit("onSearch", data);
       },
-
     }
   };
 </script>
