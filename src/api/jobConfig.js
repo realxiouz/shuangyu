@@ -16,7 +16,6 @@ export function removeOne(jobConfigId) {
 }
 
 export function updateOne(jobConfigId, data) {
-  console.log("++++++++++++++" + JSON.stringify(data))
   return request({
     url: `/job/config/update/one/${jobConfigId}`,
     method: 'put',

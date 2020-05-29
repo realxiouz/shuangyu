@@ -17,7 +17,13 @@
       >
         <el-table-column prop="name" label="属性名称" align="center"></el-table-column>
         <el-table-column prop="code" label="属性编码" align="center"></el-table-column>
-        <el-table-column prop="group" label="属性分组" align="center"></el-table-column>
+        <!--<el-table-column prop="group" label="属性分组" align="center"></el-table-column>-->
+        <el-table-column prop="valueType" label="数据类型" align="center">
+          <template slot-scope="scope">
+            <span v-html="formatValueType(scope.row.valueType)"></span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="value" label="默认值" align="center"></el-table-column>
         <el-table-column prop="required" label="是否必填" align="center">
           <template slot-scope="scope">
             <span v-if="scope.row.required">是</span>
@@ -36,14 +42,13 @@
             <span v-else>否</span>
           </template>
         </el-table-column>
-        <el-table-column prop="value" label="默认值" align="center"></el-table-column>
-        <el-table-column prop="tagName" label="标签名称" align="center"></el-table-column>
-        <el-table-column prop="tagCode" label="标签编码" align="center"></el-table-column>
+        <el-table-column prop="tagName" label="标签" align="center"></el-table-column>
+        <!--<el-table-column prop="tagCode" label="标签编码" align="center"></el-table-column>
         <el-table-column prop="tagType" label="标签类别" align="center">
           <template slot-scope="scope">
             <span v-html="formatTagType(scope.row.tagType)"></span>
           </template>
-        </el-table-column>
+        </el-table-column>-->
         <el-table-column prop="remark" label="备注" align="center"></el-table-column>
         <el-table-column label="操作" fixed="right" align="center" width="330">
           <template slot-scope="scope">
@@ -100,10 +105,52 @@
         lastId: null,
         total: 0,
         tableData: [],
-        tagTypes:[
+        valueTypes: [
           {
-            label:"工厂",
-            value:1
+            value: 0,
+            label: '文本'
+          },
+          {
+            value: 1,
+            label: '开关'
+          },
+          {
+            value: 2,
+            label: '数字'
+          },
+          {
+            value: 3,
+            label: '日期'
+          },
+          {
+            value: 4,
+            label: '日期时间'
+          },
+          {
+            value: 5,
+            label: '时间'
+          },
+          {
+            value: 6,
+            label: '评分'
+          },
+          {
+            value: 7,
+            label: '单选'
+          },
+          {
+            value: 12,
+            label: '多选'
+          },
+          {
+            value: 9,
+            label: '选择器'
+          }
+        ],
+        tagTypes: [
+          {
+            label: "工厂",
+            value: 1
           }
         ],
         loading: true
@@ -206,10 +253,17 @@
         this.dialogVisible = false;
         this.loadData();
       },
-      formatTagType(value){
-        for (var i =0;i<this.tagTypes.length;i++){
-          if (value==this.tagTypes[i].value){
+      formatTagType(value) {
+        for (var i = 0; i < this.tagTypes.length; i++) {
+          if (value == this.tagTypes[i].value) {
             return this.tagTypes[i].label;
+          }
+        }
+      },
+      formatValueType(value) {
+        for (var i = 0; i < this.valueTypes.length; i++) {
+          if (value == this.valueTypes[i].value) {
+            return this.valueTypes[i].label;
           }
         }
       }

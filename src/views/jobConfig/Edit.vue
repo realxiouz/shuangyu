@@ -418,7 +418,6 @@
         }
       },
       handleSave() {
-        console.log("++++++++++++++" + JSON.stringify(this.values))
         if (this.values && this.values.length > 0) {
           let attributes = {};
           for (var i = 0; i < this.values.length; i++) {
