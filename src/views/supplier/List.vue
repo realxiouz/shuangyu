@@ -30,7 +30,8 @@
             <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
             <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
             <el-button size="mini" :type="scope.row.staffId?'success':'info'"
-                       @click="handleAssociate(scope.$index, scope.row)">关联用户
+                       :disabled="scope.row.staffId?true:false"
+                       @click="handleAssociate(scope.row)">关联用户
             </el-button>
             <span v-show="scope.row.firm.openId && '' != scope.row.firm.openId">
             <el-button type="info" size="mini" @click="handleSupplement(scope.row)">配置管理</el-button>
@@ -50,28 +51,55 @@
         @next-click="handleNextClick"
       ></el-pagination>
       <!-- 员工查询弹窗 -->
-      <el-dialog title="关联用户" width="37%" :visible.sync="dialogVisible" :close-on-click-modal="false">
-        <el-table
-          highlight-current-row
-          size="mini"
-          :data="userTableData"
-          style="width: 100%"
-          @row-click="handleRowClick"
-        >
-          <el-table-column prop="nickName" label="昵称" align="center" width="120"></el-table-column>
-          <el-table-column prop="fullName" label="姓名" align="center" width="120"></el-table-column>
-          <el-table-column prop="gender" label="性别" align="center" width="120">
-            <template slot-scope="scope">
-              <span>{{ initGender(scope.row.gender) }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column prop="phone" label="电话" align="center"></el-table-column>
-          <el-table-column prop="email" label="邮箱" align="center"></el-table-column>
-        </el-table>
-        <span slot="footer" class="dialog-footer">
-        <el-button size="mini" @click="dialogVisible = false">取 消</el-button>
-        <el-button size="mini" type="primary" @click="handleSaveRelation">添 加</el-button>
-      </span>
+      <!-- 员工查询弹窗 -->
+      <el-dialog center title="关联用户" width="45%" :visible.sync="userDialogVisible" :close-on-click-modal="false">
+        <el-form ref="form" :model="userData" size="mini">
+          <el-row :gutter="10">
+            <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+              <el-form-item label="昵称:">
+                <span>{{userData.nickName}}</span>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="10">
+            <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+              <el-form-item label="姓名:">
+                <span>{{userData.fullName}}</span>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="10">
+            <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+              <el-form-item label="性别:">
+                <span>{{initGender(userData.gender) }}</span>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="10">
+            <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+              <el-form-item label="电话:">
+                <span>{{userData.phone}}</span>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="10">
+            <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+              <el-form-item label="邮箱:">
+                <span>{{userData.email}}</span>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="10">
+            <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+              <el-form-item>
+                <el-button size="mini" align="center" @click="userDialogVisible = false">取 消</el-button>
+                <el-button size="mini" align="center" type="primary" @click="handleSaveRelation">
+                  确认关联
+                </el-button>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-form>
       </el-dialog>
     </div>
   </div>
@@ -85,12 +113,10 @@
         data() {
             return {
                 loading: true,
-                dialogVisible: false,
+                userDialogVisible: false,
                 tableData: [],
-                userTableData: [],
+                userData: [],
                 tmpStaff: {},
-                //关联用户时用于记录当前选中的用户对象
-                curRow: {},
                 pageFlag: 1,
                 pageSize: 10,
                 lastId: null,
@@ -149,15 +175,26 @@
                         console.log(error);
                     });
             },
-            /*进行用户查询*/
-            searchUser(rowData) {
-                this.clearUserTableData();
+            handleAssociate(row) {
+                let params = {};
+                params.phone = row.firm.phone;
+                params.email = row.firm.email;
                 this.$store
-                // .dispatch("staff/associateUser", {filter: {phone: rowData.phone, email: rowData.email}})
-                    .dispatch("staff/associateUser", {filter: {email: rowData.email}})
+                    .dispatch("user/getFirstOne", {
+                        filter: params
+                    })
                     .then(data => {
-                        console.log(data.data);
-                        this.userTableData.push(data.data);
+                        if (data) {
+                            this.userData = data;
+                            this.userData.firmId = row.firm.firmId;
+                            this.userDialogVisible = true;
+                        } else {
+                            this.userData = {};
+                            this.$message({
+                                type: "info",
+                                message: "没有可关联的用户!"
+                            });
+                        }
                     })
                     .catch(error => {
                         console.log(error);
@@ -226,37 +263,18 @@
                         });
                 }
             },
-            handleAssociate(index, row) {
-                this.$store
-                    .dispatch("staff/getOne", {
-                        staffId: row.merchantId
-                    })
-                    .then(data => {
-                        this.tmpStaff = data.data;
-                        this.searchUser(data.data);
-                        this.dialogVisible = true;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            //当前选中用户对象
-            handleRowClick(row) {
-                this.curRow = row;
-            },
             handleSaveRelation() {
-                this.tmpStaff.userId = this.curRow.userId;
                 this.$store
-                    .dispatch("firmMerchant/associateUser", this.tmpStaff)
+                    .dispatch("firmMerchant/associateUser", {
+                        userId: this.userData.userId,
+                        staffId: this.userData.firmId
+                    })
                     .then(() => {
                         this.loadData();
                     })
                     .catch(error => {
                         console.log(error);
                     });
-            },
-            clearUserTableData() {
-                this.userTableData = [];
             },
             open(func, data, message) {
                 this.$confirm(message, "提示", {

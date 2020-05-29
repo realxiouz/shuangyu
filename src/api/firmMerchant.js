@@ -87,11 +87,10 @@ export function getList(filter) {
   });
 }
 
-export function associateUser(data) {
+export function associateUser(staffId, userId) {
   return request({
-    url: `/firm/merchant/associate`,
+    url: `/firm/merchant/associate/${staffId}/${userId}`,
     method: `put`,
-    data
   });
 }
 
