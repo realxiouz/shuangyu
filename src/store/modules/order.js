@@ -33,12 +33,12 @@ import {
   affirmRefund,
   refundCheckRefuseReason,
   processingChange,
-  autoRewriteTicket,
   rewriteTicket,
   interceptOrder,
   exportOrder,
   qunarDetailHtml,
-  rejectChange
+  rejectChange,
+  updateBspTicketNo
 } from "@/api/order";
 import { getToken } from "@/utils/auth";
 
@@ -569,6 +569,17 @@ const actions = {
   qunarDetailHtml({ commit }, params) {
     return new Promise((resolve, reject) => {
       qunarDetailHtml(params.sourceOrderNo)
+        .then(response => {
+          resolve(response.data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  updateBspTicketNo({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      updateBspTicketNo(params)
         .then(response => {
           resolve(response.data);
         })

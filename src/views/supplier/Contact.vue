@@ -1,10 +1,9 @@
 <template>
   <div>
     <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="16">
-      <div class="title">
-        添加联系人
-        <el-button type="primary" size="mini" @click="handleAdd">添加</el-button>
-      </div>
+      <el-row style="margin-bottom:15px; margin-left:25px;">
+        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+      </el-row>
       <el-table size="mini" :data="contacts" style="width: 100%" fit>
         <el-table-column prop="fullName" label="姓名" align="center"></el-table-column>
         <el-table-column prop="phone" label="联系方式" align="center"></el-table-column>
@@ -29,35 +28,34 @@
         </el-table-column>
       </el-table>
     </el-col>
-    <el-dialog title="编辑联系人" :visible.sync="dialogVisible" :close-on-click-modal="false" width="24%">
+    <el-dialog :visible.sync="dialogVisible" :close-on-click-modal="false" width="24%">
       <el-form :model="contact" :rules="rules" ref="contactForm" label-position="left" label-width="80px" size="mini">
-        <el-form-item label="姓名" prop="fullName">
+        <el-form-item label="姓名" prop="fullName" size="mini">
           <el-input type="text" v-model="contact.fullName" placeholder="请输入姓名.."></el-input>
         </el-form-item>
-        <el-form-item label="电话" prop="phone">
+        <el-form-item label="电话" prop="phone" size="mini">
           <el-input type="text" v-model="contact.phone" placeholder="请输入电话.."></el-input>
         </el-form-item>
-        <el-form-item label="邮箱" prop="email">
+        <el-form-item label="邮箱" prop="email" size="mini">
           <el-input type="text" v-model="contact.email" placeholder="请输入邮箱.."></el-input>
         </el-form-item>
-        <el-form-item label="性别" prop="gender">
+        <el-form-item label="性别" prop="gender" size="mini">
           <el-select v-model="contact.gender" placeholder="请选择性别.." style="width: 50%">
             <el-option label="男" :value="0"></el-option>
             <el-option label="女" :value="1"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="出生日期">
+        <el-form-item label="出生日期" size="mini">
           <el-date-picker
             v-model="contact.birthDate"
             type="date"
             placeholder="选择日期">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="身份证号" prop="idCardNo">
+        <el-form-item label="身份证号" prop="idCardNo" size="mini">
           <el-input type="text" v-model="contact.idCardNo" placeholder="请输入身份证号.."></el-input>
         </el-form-item>
       </el-form>
-
       <span slot="footer">
         <el-button size="mini" @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" size="mini" @click="handleConfirm">确 定</el-button>
@@ -131,10 +129,10 @@
                 this.$refs['contactForm'].validate((valid) => {
                     if (valid) {
                         //如果点击的是编辑,对原有的对象进行覆盖。
-                        if (this.update){
+                        if (this.update) {
                             Object.assign(this.contacts[this.contacts.indexOf(this.tmpContact)], this.contact);
                             this.dialogVisible = false;
-                        }else {
+                        } else {
                             //否则新增到列表中
                             this.contacts.push(this.contact);
                             this.dialogVisible = false;
