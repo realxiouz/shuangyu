@@ -17,7 +17,11 @@
       >
         <el-table-column prop="tagName" label="标签名称" align="center"></el-table-column>
         <el-table-column prop="tagCode" label="标签编码" align="center"></el-table-column>
-        <el-table-column prop="tagType" label="标签类别" align="center"></el-table-column>
+        <el-table-column prop="tagType" label="标签类别" align="center">
+          <template slot-scope="scope">
+            <span v-html="formatTagType(scope.row.tagType)"></span>
+          </template>
+        </el-table-column>
         <el-table-column prop="remark" label="备注" align="center"></el-table-column>
         <el-table-column label="操作" fixed="right" align="center" width="330">
           <template slot-scope="scope">
@@ -41,7 +45,7 @@
         :title="updateFlag?'更新':'新增'"
         center
         :visible.sync="dialogVisible"
-        width="50%"
+        width="33%"
         ref="user-edit"
         :close-on-click-modal="false"
       >
@@ -74,6 +78,12 @@
         lastId: null,
         total: 0,
         tableData: [],
+        tagTypes:[
+          {
+            label:"工厂",
+            value:1
+          }
+        ],
         loading: true
       };
     },
@@ -143,9 +153,10 @@
         this.tagId = "";
       },
       handleEdit(row) {
-        this.dialogVisible = true;
         this.updateFlag = true;
         this.tagId = row.tagId;
+        this.dialogVisible = true;
+
       },
 
       removeOne(tagId) {
@@ -173,6 +184,14 @@
       },
       handleSave() {
         this.dialogVisible = false;
+        this.loadData();
+      },
+      formatTagType(value){
+        for (var i =0;i<this.tagTypes.length;i++){
+          if (value==this.tagTypes[i].value){
+            return this.tagTypes[i].label;
+          }
+        }
       }
     },
     created() {

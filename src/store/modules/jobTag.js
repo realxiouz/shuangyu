@@ -36,8 +36,8 @@ const actions = {
 
   updateOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {jobTagId, data} = params;
-      updateOne(jobTagId, data)
+      const {jobTagId, jobTag} = params;
+      updateOne(jobTagId, jobTag)
         .then(response => {
           resolve(response);
         })
