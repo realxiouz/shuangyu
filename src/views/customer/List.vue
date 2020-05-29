@@ -23,7 +23,7 @@
         <el-table-column prop="firm.address" label="地址" align="center"></el-table-column>
         <el-table-column prop="priority" label="重要性" align="center">
           <template slot-scope="scope">
-            <el-rate v-model="scope.row.priority" :colors="['#99A9BF', '#F7BA2A', '#FF9900']"/>
+            <el-rate v-model="scope.row.priority" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" disabled/>
           </template>
         </el-table-column>
         <el-table-column prop="remark" label="备注" align="center"></el-table-column>
