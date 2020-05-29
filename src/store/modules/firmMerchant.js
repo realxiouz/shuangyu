@@ -157,8 +157,9 @@ const actions = {
     });
   },
   associateUser({commit}, params) {
+    const {staffId, userId} = params;
     return new Promise((resolve, reject) => {
-      associateUser(params)
+      associateUser(staffId, userId)
         .then(response => {
           const {data} = response;
           resolve(data);
