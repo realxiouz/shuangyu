@@ -144,7 +144,7 @@ export default {
       },
       //加载平台信息
       loadOpenParty() {
-          this.$store.dispatch("open/getList", {filters: {}})
+          this.$store.dispatch("openPlatform/getList", {filters: {}})
               .then(data => {
                   this.openList = data;
               }).catch(error => {
