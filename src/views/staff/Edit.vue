@@ -241,7 +241,7 @@
         props: ["curNode", "staffAddVisible"],
         data() {
             let validateEmail = (rule, value, callback) => {
-                if (value === this.updateTempData.email) {
+                if (this.formData.email === this.updateTempData.email) {
                     callback();
                 }
                 let reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
@@ -249,11 +249,11 @@
                     callback(new Error("请输入正确的邮箱！"));
                 } else {
                     this.$store
-                        .dispatch("user/isExist", {
-                            filed: this.formData.email
+                        .dispatch("staff/isExist", {
+                            account: this.formData.email
                         })
                         .then(data => {
-                            if (data.data) {
+                            if (data) {
                                 callback("该信息已被注册");
                             } else {
                                 callback();
