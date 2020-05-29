@@ -239,7 +239,7 @@
             },
             //加载平台信息
             loadOpen() {
-                this.$store.dispatch("open/getList", {filters: {}})
+                this.$store.dispatch("firmOpenAuth/getList", {filters: {}})
                     .then(data => {
                         this.openList = data;
                     }).catch(error => {

@@ -1,4 +1,4 @@
-import {addOne, getOne, getPageList, getTotal, removeOne, updateOne} from '@/api/firmOpenAuth';
+import {addOne, getList, getOne, getPageList, getTotal, removeOne, updateOne} from '@/api/firmOpenAuth';
 
 const actions = {
   addOne({commit}, params) {
@@ -28,8 +28,8 @@ const actions = {
   },
   removeOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {id} = params;
-      removeOne(id)
+      const {authId} = params;
+      removeOne(authId)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -52,7 +52,19 @@ const actions = {
         });
     });
   },
-
+  getList({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {filter} = params;
+      getList(filter)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
   getPageList({commit}, params) {
     return new Promise((resolve, reject) => {
       const {pageFlag, pageSize, filter} = params;

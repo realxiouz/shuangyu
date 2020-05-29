@@ -237,7 +237,7 @@
             },
             //加载平台信息
             loadOpen() {
-                this.$store.dispatch("open/getList", {filters: {}})
+                this.$store.dispatch("firmOpenAuth/getList", {filters: {}})
                     .then(data => {
                         this.openList = data;
                     }).catch(error => {
@@ -245,7 +245,7 @@
                 });
             },
             loadContacts(firmId) {
-                this.$store.dispatch("firmContact/getList", {filter:{firmId: firmId}})
+                this.$store.dispatch("firmContact/getList", {filter: {firmId: firmId}})
                     .then(data => {
                         this.contacts = data;
                     }).catch(error => {
