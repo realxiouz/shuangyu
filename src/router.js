@@ -121,7 +121,6 @@ export default new Router({
       component: Layout,
       redirect: '/order/list',
       meta: {title: '订单管理', icon: 'home'},
-
       children: [
         {
           path: '/order/total/detail',
@@ -308,6 +307,40 @@ export default new Router({
           component: () => import('@/views/netFare/List'),
           meta: {title: '净票价信息', icon: 'home'}
         }
+      ]
+    },
+    {
+      title: '工厂信息',
+      path: '/factoryInfo',
+      name: 'factoryInfo',
+      component: Layout,
+      redirect: '/factory/list',
+      meta: {title: '工厂信息', icon: 'home'},
+      children: [
+        {
+          title: '官网工厂',
+          path: '/owp/list',
+          name: 'owpList',
+          component: () => import('@/views/owp/List'),
+          meta: {title: '官网工厂', icon: 'home'}
+        },
+      ]
+    },
+    {
+      title: '调度任务',
+      path: '/jobSchedulerInfo',
+      name: 'jobSchedulerInfo',
+      component: Layout,
+      redirect: '/job/scheduler/list',
+      meta: {title: '调度任务', icon: 'home'},
+      children: [
+        {
+          title: '调度标签',
+          path: '/job/tag/list',
+          name: 'jobTagList',
+          component: () => import('@/views/jobTag/List'),
+          meta: {title: '调度标签', icon: 'home'}
+        },
       ]
     },
     {
