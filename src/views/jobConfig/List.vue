@@ -217,6 +217,7 @@
         this.loadData(params);
       },
       handleAdd() {
+        this.configId = "";
         this.updateFlag = false;
         this.dialogVisible = true;
       },

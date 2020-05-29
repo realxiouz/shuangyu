@@ -362,11 +362,11 @@
                 this.formData = data.data;
                 if (this.formData.valueType == 7 || this.formData.valueType == 12 || this.formData.valueType == 9) {
                   this.showAddValues = true;
+                  this.values = [];
                 } else {
                   this.showAddValues = false;
                 }
                 let attributes = this.formData.attributes;
-                this.values = [];
                 for (var attr in attributes) {
                   if (attributes[attr] != undefined && attributes[attr] != null && attributes[attr] != '') {
                     let value = {
@@ -418,6 +418,13 @@
         }
       },
       handleSave() {
+        let valueTypeFlag = false;
+        if (this.formData.valueType == 7 || this.formData.valueType == 12 || this.formData.valueType == 9) {
+          valueTypeFlag = true;
+        }
+        if (!valueTypeFlag){
+          this.values = [];
+        }
         if (this.values && this.values.length > 0) {
           let attributes = {};
           for (var i = 0; i < this.values.length; i++) {
