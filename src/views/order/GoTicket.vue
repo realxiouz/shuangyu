@@ -299,10 +299,9 @@
         //判断51还是蜗牛
         let amountTotal = 0;
         this.passengerData.forEach(item => {
-          amountTotal += Number(item.amount);
+          amountTotal += Number(item.amount).toFixed(2);
         });
-        let _profitAndLossValue = 0;
-        _profitAndLossValue = Number(amountTotal) - Number(params.allPrice);
+        let _profitAndLossValue = (Number(amountTotal) - Number(this.payData.noPayAmount)).toFixed(2);
         if (_profitAndLossValue != this.profitAndLossValue) {
           this.$message({
             type: "warning",
@@ -310,7 +309,9 @@
           });
           return;
         }
-        if( this.source=="OPEN"){
+        console.info("蜗牛支付-------++++++++++--------"+this.source);
+        if(this.source=="OPEN"){
+          console.info("蜗牛支付-------------------");
           let params = {
             allPrice: this.payData.noPayAmount,
             bankCode: this.payData.bankCode,
@@ -319,10 +320,12 @@
             sellOrderNo: this.orderData.sourceOrderNo,
             orderTaskId: this.$route.query.orderTaskId
           };
+          console.info("蜗牛支付++++++++++++++++++++++++");
           this.openPay(params);
           this.payShow = false;
         }
         if(this.source=="51Book"){
+          console.info("51支付");
           let params = {
             orderNo:this.FOBookOrderData.liantuoOrderNo,
             sellOrderNo:this.orderData.orderNo
@@ -371,12 +374,12 @@
                 amountTotal += Number(item.amount);
               });
               this.systemProfitAndLossValue = 0;
-              this.systemProfitAndLossValue =
-                Number(amountTotal) - Number(this.payData.noPayAmount);
+              this.systemProfitAndLossValue = (Number(amountTotal)  - Number(this.payData.noPayAmount)).toFixed(2) ;
               this.$message({
                 type: "success",
                 message: "预定成功！"
               });
+              this.source="OPEN";
               this.payShow = true;
             } else {
               this.payShow = false;
@@ -395,6 +398,7 @@
         this.$store
           .dispatch("order/placeAnFOOrder", foPlaceOrderparams)
           .then(data => {
+            console.info("51下单返回"+JSON.stringify(data)+"--CODE--"+data.code)
             if (data.code == 0) {
               this.FOBookOrderData = data.data;
               let amountTotal = 0;
@@ -402,18 +406,18 @@
                 amountTotal += Number(item.amount);
               });
               this.systemProfitAndLossValue = 0;
-              this.systemProfitAndLossValue =
-                Number(amountTotal) - Number(this.FOBookOrderData.paymentInfo.settlePrice);
+              this.systemProfitAndLossValue =(Number(amountTotal) - Number(this.FOBookOrderData.paymentInfo.settlePrice)).toFixed(2);
               this.$message({
                 type: "success",
                 message: "预定成功！"
               });
+              this.source="51Book";
               this.payShow = true;
             } else {
               this.payShow = false;
               this.$message({
                 type: "warning",
-                message: data.msg
+                message: data.message
               });
             }
           })
@@ -595,6 +599,7 @@
           });
       },
       openPay(params) {
+        console.info("蜗牛下单参数"+JSON.stringify(params))
         this.$store
           .dispatch("order/openPay", params)
           .then(data => {
