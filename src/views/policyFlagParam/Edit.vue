@@ -88,7 +88,7 @@
             },
             loadOpenList(){
                 this.$store
-                    .dispatch("open/getList", {filters: {}})
+                    .dispatch("openPlatform/getList", {filters: {}})
                     .then(data => {
                         this.openList = data;
                     })
