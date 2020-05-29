@@ -99,12 +99,13 @@
               <el-input type="textarea" v-model="firmMerchantForm.remark" placeholder="请输入备注.."></el-input>
             </el-form-item>
             <el-form-item label="开放平台">
-              <el-select v-model="firmForm.openId" placeholder="请选择平台" style="width: 50%">
+              <el-select v-model="firmMerchantForm.openCode" placeholder="请选择平台" style="width: 50%"
+                         @change="changeOpen">
                 <el-option :value=null>&nbsp;- -</el-option>
-                <el-option v-for="(item,idx) in openList"
-                           :key="idx"
+                <el-option v-for="item in openData"
+                           :key="item.openCode"
                            :label="item.openName"
-                           :value="item.openId">
+                           :value="item.openCode">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -146,7 +147,7 @@
             return {
                 firmForm: {},
                 firmMerchantForm: {},
-                openList: [],
+                openData: [],
                 tagList: [],
                 contacts: [],
                 accounts: [],
@@ -239,7 +240,7 @@
             loadOpen() {
                 this.$store.dispatch("firmOpenAuth/getList", {filters: {}})
                     .then(data => {
-                        this.openList = data;
+                        this.openData = data;
                     }).catch(error => {
                     console.log(error);
                 });
@@ -276,10 +277,21 @@
                     console.log(error);
                 });
             },
+            changeOpen(code) {
+                for (let i = 0, len = this.openData.length; i < len; i++) {
+                    if (code == this.openData[i].openCode) {
+                        this.firmMerchantForm.openName = this.openData[i].openName;
+                        this.firmMerchantForm.openId = this.openData[i].openId;
+                        this.firmMerchantForm.openCode = this.openData[i].openCode;
+                        this.firmForm.openId = this.openData[i].openId;
+                        break;
+                    }
+                }
+            },
             clearForm() {
                 this.firmForm = this.defaultFirmFormData();
                 this.firmMerchantForm = this.defaultMerchantFormData();
-                this.openList = [];
+                this.openData = [];
             },
             initFormData(merchantId) {
                 this.clearForm();
@@ -303,7 +315,7 @@
                 //需要将联系人添加为员工数据，账号信息添加为Open账号信息
                 let accountList = [];
                 //需要补充Open账号中的数据
-                this.openList.forEach(item => {
+                this.openData.forEach(item => {
                     const _openId = this.firmForm.openId;
                     //_openId可能为空
                     if (_openId && _openId == item.openId) {

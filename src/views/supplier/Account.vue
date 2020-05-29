@@ -1,10 +1,9 @@
 <template>
   <div id="main">
     <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="16">
-      <div class="title">
-        添加平台账号
-        <el-button type="primary" size="mini" @click="handleAdd">添加</el-button>
-      </div>
+      <el-row style="margin-bottom:15px; margin-left:25px;">
+        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+      </el-row>
       <el-table :data="accounts" @selection-change="handleSelectionChange" style="width: 100%">
         <el-table-column type="selection"></el-table-column>
         <el-table-column prop="username" label="登录账号" align="center"></el-table-column>

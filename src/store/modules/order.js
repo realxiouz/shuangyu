@@ -243,8 +243,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       placeAnFOOrder(params)
         .then(response => {
-          const { data } = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);

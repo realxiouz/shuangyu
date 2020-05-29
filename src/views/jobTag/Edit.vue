@@ -94,6 +94,16 @@
       },
 
       handleSave() {
+        var validFlag = false;
+        this.$refs["jobTagForm"].validate(valid => {
+          if (!valid) {
+            validFlag = true;
+            return false;
+          }
+        });
+        if (validFlag) {
+          return;
+        }
         let url = '';
         if (this.updateFlag) {
           url = 'jobTag/updateOne';

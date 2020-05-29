@@ -11,29 +11,46 @@
         v-loading="loading"
         size="mini"
         :data="tableData"
-        row-key="firm.firmId"
+        row-key="merchantId"
         highlight-current-row
         fit
       >
-        <el-table-column prop="firm.firmName" label="客户名称" align="center" sortable width="170"></el-table-column>
-        <el-table-column prop="firm.firmCode" label="客户代码" align="center" sortable width="170"></el-table-column>
-        <el-table-column prop="firm.fullName" label="联系人" align="center" width="170"></el-table-column>
-        <el-table-column prop="firm.phone" label="联系人电话" align="center" width="170"></el-table-column>
-        <el-table-column prop="firm.email" label="邮箱" align="center" width="200"></el-table-column>
-        <el-table-column prop="firm.address" label="地址" align="center" width="200"></el-table-column>
-        <el-table-column prop="remark" label="备注" align="center" width="200"></el-table-column>
+        <el-table-column prop="firm.firmName" label="客户名称" align="center" sortable></el-table-column>
+        <el-table-column prop="firm.firmCode" label="客户代码" align="center" sortable></el-table-column>
+        <el-table-column prop="firm.fullName" label="联系人" align="center"></el-table-column>
+        <el-table-column prop="firm.phone" label="联系人电话" align="center"></el-table-column>
+        <el-table-column prop="firm.email" label="邮箱" align="center"></el-table-column>
+        <el-table-column prop="firm.address" label="地址" align="center"></el-table-column>
+        <el-table-column prop="priority" label="重要性" align="center">
+          <template slot-scope="scope">
+            <el-rate v-model="scope.row.priority" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" disabled/>
+          </template>
+        </el-table-column>
+        <el-table-column prop="remark" label="备注" align="center"></el-table-column>
         <el-table-column label="操作" fixed="right" align="center" width="340">
           <template slot-scope="scope">
             <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
             <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-            <el-button size="mini" :type="scope.row.staffId?'success':'info'" @click="handleAssociate(scope.$index, scope.row)">关联用户</el-button>
+            <el-button size="mini" :type="scope.row.staffId?'success':'info'"
+                       @click="handleAssociate(scope.$index, scope.row)">关联用户
+            </el-button>
             <span v-show="scope.row.firm.openId && '' != scope.row.firm.openId">
-            <el-button type="info" size="mini" @click="handleSupplement(scope.row)">配置管理</el-button>
-                        </span>
+                        <el-button type="info" size="mini" @click="handleSupplement(scope.row)">配置管理</el-button>
+                                    </span>
           </template>
         </el-table-column>
       </el-table>
-
+      <el-pagination
+        background
+        layout="total,prev,next"
+        prev-text="上一页"
+        next-text="下一页"
+        :page-size="pageSize"
+        :total="total"
+        @size-change="handleSizeChange"
+        @prev-click="handlePrevClick"
+        @next-click="handleNextClick"
+      ></el-pagination>
       <!-- 员工查询弹窗 -->
       <el-dialog center title="关联用户" width="37%" :visible.sync="dialogVisible" :close-on-click-modal="false">
         <el-table
@@ -55,9 +72,9 @@
           <el-table-column prop="email" label="邮箱" align="center"></el-table-column>
         </el-table>
         <div slot="footer" class="dialog-footer" style="text-align:right">
-        <el-button size="mini" @click="dialogVisible = false">取 消</el-button>
-        <el-button size="mini" type="primary" @click="handleSaveRelation">添 加</el-button>
-      </div>
+          <el-button size="mini" @click="dialogVisible = false">取 消</el-button>
+          <el-button size="mini" type="primary" @click="handleSaveRelation">添 加</el-button>
+        </div>
       </el-dialog>
     </div>
   </div>
@@ -75,29 +92,62 @@
                 userTableData: [],
                 tmpStaff: {},
                 //关联用户时用于记录当前选中的用户对象
-                curRow: {}
+                curRow: {},
+                pageFlag: 1,
+                pageSize: 10,
+                lastId: null,
+                total: 0,
             };
         },
         methods: {
+            /*翻前页*/
+            handlePrevClick() {
+                this.pageFlag = -1;
+                this.lastId = this.tableData[0].merchantId;
+                this.loadData();
+            },
+            /*翻后页*/
+            handleNextClick() {
+                this.pageFlag = 1;
+                this.lastId = this.tableData[this.tableData.length - 1].merchantId;
+                this.loadData();
+            },
+            handleSizeChange(pageSize) {
+                this.pageSize = pageSize;
+                this.loadData();
+            },
             /*加载客户列表1：企业客户，2：个人客户*/
-            loadData(params) {
-                if (params) {
-                    params.types = JSON.stringify([1, 2])
-                } else {
-                    let newParams = {};
-                    newParams.types = JSON.stringify([1, 2])
-                    params = newParams;
+            loadData(params = {}) {
+                if (this.lastId) {
+                    params.lastId = this.lastId;
                 }
                 this.$store
-                    .dispatch("firmMerchant/getList", {filter: params})
+                    .dispatch("firmMerchant/getCustomerPageList", {
+                        pageFlag: this.pageFlag,
+                        pageSize: this.pageSize,
+                        filter: params
+                    })
                     .then(data => {
                         if (data) {
                             this.tableData = data;
+                            this.loadTotal(params);
                         }
                         this.loading = false;
                     })
                     .catch(error => {
                         this.loading = false;
+                        console.log(error);
+                    });
+            },
+            loadTotal(params) {
+                this.$store
+                    .dispatch("firmMerchant/getCustomerTotal", {filter: params})
+                    .then(data => {
+                        if (data) {
+                            this.total = data;
+                        }
+                    })
+                    .catch(error => {
                         console.log(error);
                     });
             },
@@ -151,13 +201,22 @@
                         this.$router.push({path: '/supplier/bsp/config', query: {merchantId: row.merchantId}});
                         break;
                     case "b9741bd0315e4abfad28cf91ac81cb0c": //去哪儿蜗牛
-                        this.$router.push({path: "/woniu/config", query: { firmId: row.firm.firmId, openId: row.firmId.openId }});
+                        this.$router.push({
+                            path: "/woniu/config",
+                            query: {firmId: row.firm.firmId, openId: row.firmId.openId}
+                        });
                         break;
                     case "2654f476383b4dd5a288ad9817e294ec":  //去哪儿TTS
-                        this.$router.push({path: "/qunar/config", query: {domain: row.firm.domain, openId: row.firm.openId, firmId: row.firm.firmId}});
+                        this.$router.push({
+                            path: "/qunar/config",
+                            query: {domain: row.firm.domain, openId: row.firm.openId, firmId: row.firm.firmId}
+                        });
                         break;
                     default:
-                        this.$router.push({path: "/qunar/config", query: {domain: row.firm.domain, openId: row.firm.openId, firmId: row.firm.firmId}});
+                        this.$router.push({
+                            path: "/qunar/config",
+                            query: {domain: row.firm.domain, openId: row.firm.openId, firmId: row.firm.firmId}
+                        });
                 }
             },
             /*删除企业数据*/
@@ -171,7 +230,7 @@
                         console.log(error);
                     });
             },
-            handleAssociate(index, row){
+            handleAssociate(index, row) {
                 this.$store
                     .dispatch("staff/getOne", {
                         staffId: row.merchantId
@@ -186,10 +245,10 @@
                     });
             },
             //当前选中用户对象
-            handleRowClick(row){
+            handleRowClick(row) {
                 this.curRow = row;
             },
-            handleSaveRelation(){
+            handleSaveRelation() {
                 this.tmpStaff.userId = this.curRow.userId;
                 this.$store
                     .dispatch("firmMerchant/associateUser", this.tmpStaff)
@@ -200,7 +259,7 @@
                         console.log(error);
                     });
             },
-            clearUserTableData(){
+            clearUserTableData() {
                 this.userTableData = [];
             },
             open(func, data, message) {
