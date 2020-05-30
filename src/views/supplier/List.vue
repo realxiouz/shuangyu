@@ -11,7 +11,7 @@
         v-loading="loading"
         size="mini"
         :data="tableData"
-        row-key="firm.firmId"
+        row-key="merchantId"
       >
         <el-table-column prop="firm.firmName" label="供应商名称" align="center"></el-table-column>
         <el-table-column prop="firm.firmCode" label="供应商代码" align="center"></el-table-column>
@@ -25,7 +25,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="firm.remark" label="备注" align="center"></el-table-column>
-        <el-table-column label="操作" align="center" fixed="right" width="240">
+        <el-table-column label="操作" align="center" fixed="right" width="350">
           <template slot-scope="scope">
             <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
             <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
@@ -33,7 +33,7 @@
                        :disabled="scope.row.staffId?true:false"
                        @click="handleAssociate(scope.row)">关联用户
             </el-button>
-            <span v-show="scope.row.firm.openId && '' != scope.row.firm.openId">
+            <span v-show="scope.row.openId && '' != scope.row.openId">
             <el-button type="info" size="mini" @click="handleSupplement(scope.row)">配置管理</el-button>
                         </span>
           </template>
@@ -240,28 +240,10 @@
                     });
             },
             handleSupplement(row) {
-                switch (row.firm.openId) {
-                    case "f5c82987d25b4eba8fbf11f7963d3b14": //BSP
-                        this.$router.push({path: '/supplier/bsp/config', query: {merchantId: row.merchantId}});
-                        break;
-                    case "b9741bd0315e4abfad28cf91ac81cb0c": //去哪儿蜗牛
-                        this.$router.push({
-                            path: "/woniu/config",
-                            query: {firmId: row.firm.firmId, openId: row.firmId.openId}
-                        });
-                        break;
-                    case "2654f476383b4dd5a288ad9817e294ec":  //去哪儿TTS
-                        this.$router.push({
-                            path: "/qunar/config",
-                            query: {domain: row.firm.domain, openId: row.firm.openId, firmId: row.firm.firmId}
-                        });
-                        break;
-                    default:
-                        this.$router.push({
-                            path: "/woniu/config",
-                            query: {firmId: row.firm.firmId, openId: row.firmId.openId}
-                        });
-                }
+                this.$router.push({
+                    path: row.configUri,
+                    query: {firmId: row.firm.firmId, openId: row.firmId.openId}
+                });
             },
             handleSaveRelation() {
                 this.$store

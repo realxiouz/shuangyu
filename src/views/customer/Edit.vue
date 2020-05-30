@@ -241,7 +241,7 @@
             },
             //加载平台信息
             loadOpen() {
-                this.$store.dispatch("firmOpenAuth/getList", {filters: {}})
+                this.$store.dispatch("firmOpenAuth/getCustomerList", {filters: {}})
                     .then(data => {
                         this.openData = data;
                     }).catch(error => {

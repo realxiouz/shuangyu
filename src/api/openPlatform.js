@@ -10,7 +10,7 @@ export function removeOne(id) {
 
 export function updateOne(id, data) {
   return request({
-    url: `/open/platform/update/one${id}`,
+    url: `/open/platform/update/one/${id}`,
     method: 'put',
     data
   });

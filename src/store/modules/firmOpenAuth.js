@@ -1,4 +1,4 @@
-import {addOne, getList, getOne, getPageList, getTotal, removeOne, updateOne} from '@/api/firmOpenAuth';
+import {addOne, getCustomerList, getSupplierList,getOne, getPageList, getTotal, removeOne, updateOne} from '@/api/firmOpenAuth';
 
 const actions = {
   addOne({commit}, params) {
@@ -52,10 +52,23 @@ const actions = {
         });
     });
   },
-  getList({commit}, params) {
+  getSupplierList({commit}, params) {
     return new Promise((resolve, reject) => {
       const {filter} = params;
-      getList(filter)
+      getSupplierList(filter)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getCustomerList({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {filter} = params;
+      getCustomerList(filter)
         .then(response => {
           const {data} = response;
           resolve(data);
