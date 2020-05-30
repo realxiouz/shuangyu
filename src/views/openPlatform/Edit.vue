@@ -7,6 +7,9 @@
       <el-form-item label="平台编码" prop="openCode" size="mini">
         <el-input v-model="formData.openCode"></el-input>
       </el-form-item>
+      <el-form-item label="平台配置URL" prop="configUri" size="mini">
+        <el-input v-model="formData.configUri"></el-input>
+      </el-form-item>
       <el-form-item label="平台类型" prop="openType">
         <el-select v-model="formData.openType" placeholder="请选择平台类型" style="width: 50%">
           <el-option label="客户" :value=-1></el-option>
@@ -26,6 +29,7 @@
         return {
             openName: "",
             openCode: "",
+            configUri: "",
             openType: null
         }
     };
@@ -45,6 +49,14 @@
                     ],
                     openCode: [
                         {required: true, message: "请输入平台编码", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到 20 个字符"
+                        }
+                    ],
+                    configUri: [
+                        {required: true, message: "请输入平台配置URL", trigger: "blur"},
                         {
                             min: 1,
                             max: 20,
