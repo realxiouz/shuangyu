@@ -163,7 +163,7 @@
         <policy-config-edit
           v-if="dialogVisible"
           :user="user"
-          :firmId="firmId"
+          :merchant-id="merchantId"
           :domain="domain"
           @onCancel="handleCancel"
           @onSave="policySave"
@@ -183,7 +183,7 @@
                 orderData: {},
                 policyData: [],
                 dialogVisible: false,
-                domain: "",
+                merchantId: "",
                 openId: "",
                 user: "",
                 isDisable: false,
@@ -245,7 +245,7 @@
             loadPolicy(domain, firmId) {
                 this.$store
                     .dispatch("qunarPolicyConfig/getList", {
-                        filters: {domain: domain, firmId: firmId}
+                        filters: {domain: domain, merchantId: firmId}
                     })
                     .then(data => {
                         if (data) {
@@ -305,6 +305,7 @@
                 });
             },
             policyAdd() {
+
                 this.dialogVisible = true;
             },
             handleCancel() {
@@ -314,8 +315,8 @@
                 this.dialogVisible = false;
                 if (params) {
                     params.openId = this.openId;
-                    params.domain = this.domain;
-                    params.firmId = this.firmId;
+                    params.merchantDomain = this.domain;
+                    params.merchantId = this.firmId;
                 }
                 this.$store
                     .dispatch("qunarPolicyConfig/save", params)
@@ -334,7 +335,7 @@
             },
             policyEdit(row) {
                 this.user = row.user;
-                this.firmId = row.firmId;
+                this.merchantId = row.merchantId;
                 this.dialogVisible = true;
             },
             policyRemove(row, index, rows) {
@@ -347,7 +348,7 @@
                         this.$store
                             .dispatch("qunarPolicyConfig/removeOne", {
                                 user: row.user,
-                                firmId: row.firmId
+                                merchantId: row.merchantId
                             })
                             .then(() => {
                                 rows.splice(index, 1);
