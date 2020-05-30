@@ -347,8 +347,7 @@
                     .then(() => {
                         this.$store
                             .dispatch("qunarPolicyConfig/removeOne", {
-                                user: row.user,
-                                merchantId: row.merchantId
+                                configId: row.configId
                             })
                             .then(() => {
                                 rows.splice(index, 1);
