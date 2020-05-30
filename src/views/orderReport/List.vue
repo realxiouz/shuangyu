@@ -332,7 +332,7 @@ export default {
             break;
           case "pointAmount":
             sums[index] =
-              "￥" + this.$numeral(this.count.pointAmount).format("0,0.00");
+              "￥" + this.$numeral(this.count.pointAmountSum).format("0,0.00");
             break;
           default:
             sums[index] = "";
