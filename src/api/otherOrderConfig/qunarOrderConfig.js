@@ -43,5 +43,34 @@ export function exportOrderFile(data) {
   });
 }
 
+export function getOne(domain) {
+  return request({
+    url: `/qunar/order/config/one/${domain}`,
+    method: 'get'
+  });
+}
 
+export function addOne(data) {
+  return request({
+    url: '/qunar/order/config/add/one',
+    method: 'post',
+    data
+  });
+}
+
+export function save(data) {
+  return request({
+    url: '/qunar/order/config/save',
+    method: 'post',
+    data
+  });
+}
+
+export function updateOne(data) {
+  return request({
+    url: '/qunar/order/config/update/one',
+    method: 'post',
+    data
+  });
+}
 
