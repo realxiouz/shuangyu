@@ -24,9 +24,17 @@ export function getPageList(pageFlag, pageSize, filter) {
   });
 }
 
-export function getList(params) {
+export function getCustomerList(params) {
   return request({
-    url: `/open/auth/get/list`,
+    url: `/customer/open/auth/get/list`,
+    method: 'get',
+    params: params
+  });
+}
+
+export function getSupplierList(params) {
+  return request({
+    url: `/supplier/open/auth/get/list`,
     method: 'get',
     params: params
   });
