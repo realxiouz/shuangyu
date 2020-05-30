@@ -17,7 +17,7 @@
         lazy
         :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
       >
-        <el-table-column prop="deptName" label="部门名称" align="center"></el-table-column>
+        <el-table-column prop="deptName" label="部门名称" align="left" ></el-table-column>
         <el-table-column prop="ddId" label="钉钉Id" align="center"></el-table-column>
         <el-table-column prop="ddParentIdId" label="钉钉父节点" align="center"></el-table-column>
         <el-table-column prop="domain" label="域名" align="center"></el-table-column>
