@@ -18,7 +18,7 @@
               <el-input v-model="formData.username" placeholder="请输入登录账号.."></el-input>
             </el-form-item>
             <el-form-item label="登录密码:" prop="password">
-              <el-input v-model="formData.password" placeholder="请输入登录密码.."></el-input>
+              <el-input v-model="formData.password" show-password placeholder="请输入登录密码.."></el-input>
             </el-form-item>
           </el-form>
         </el-col>

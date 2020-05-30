@@ -163,7 +163,7 @@
         <policy-config-edit
           v-if="dialogVisible"
           :user="user"
-          :firmId="firmId"
+          :merchant-id="merchantId"
           :domain="domain"
           @onCancel="handleCancel"
           @onSave="policySave"
@@ -183,7 +183,7 @@
                 orderData: {},
                 policyData: [],
                 dialogVisible: false,
-                domain: "",
+                merchantId: "",
                 openId: "",
                 user: "",
                 isDisable: false,
@@ -228,8 +228,7 @@
                 if (!domain) {
                     domain = this.orderData.domain;
                 }
-                this.$store
-                    .dispatch("qunarOrderConfig/getOne", {domain: domain})
+                this.$store.dispatch("qunarOrderConfig/getOne", {domain: domain})
                     .then(data => {
                         if (data && data.domain) {
                             this.orderData = data;
@@ -238,16 +237,15 @@
                             this.orderData.domain = this.domain;
                         }
                         this.loading = false;
-                    })
-                    .catch(error => {
-                        this.loading = false;
-                        console.log(error);
-                    });
+                    }).catch(error => {
+                    console.log(error);
+                    this.loading = false;
+                });
             },
             loadPolicy(domain, firmId) {
                 this.$store
                     .dispatch("qunarPolicyConfig/getList", {
-                        filters: {domain: domain, firmId: firmId}
+                        filters: {domain: domain, merchantId: firmId}
                     })
                     .then(data => {
                         if (data) {
@@ -280,31 +278,6 @@
                     }
                 });
             },
-            removeNotify() {
-                if (this.notifyData && this.notifyData.domain) {
-                    this.$confirm("此操作将删除改记录, 是否继续?", "提示", {
-                        confirmButtonText: "确定",
-                        cancelButtonText: "取消",
-                        type: "warning"
-                    })
-                        .then(() => {
-                            this.$store
-                                .dispatch("qunarOrderNotifyConfig/removeOne", {
-                                    domain: this.notifyData.domain
-                                })
-                                .then(() => {
-                                    this.notifyData = [];
-                                    this.$message({
-                                        type: "success",
-                                        message: "删除成功！"
-                                    });
-                                });
-                        })
-                        .catch(err => {
-                            console.error(err);
-                        });
-                }
-            },
             disabledNotify() {
                 this.isDisable = false;
             },
@@ -331,32 +304,8 @@
                     }
                 });
             },
-            removeOrder() {
-                if (this.orderData && this.orderData.domain) {
-                    this.$confirm("此操作将删除改记录, 是否继续?", "提示", {
-                        confirmButtonText: "确定",
-                        cancelButtonText: "取消",
-                        type: "warning"
-                    })
-                        .then(() => {
-                            this.$store
-                                .dispatch("qunarOrderConfig/removeOne", {
-                                    domain: this.orderData.domain
-                                })
-                                .then(() => {
-                                    this.orderData = [];
-                                    this.$message({
-                                        type: "success",
-                                        message: "删除成功！"
-                                    });
-                                });
-                        })
-                        .catch(err => {
-                            console.error(err);
-                        });
-                }
-            },
             policyAdd() {
+
                 this.dialogVisible = true;
             },
             handleCancel() {
@@ -366,8 +315,8 @@
                 this.dialogVisible = false;
                 if (params) {
                     params.openId = this.openId;
-                    params.domain = this.domain;
-                    params.firmId = this.firmId;
+                    params.merchantDomain = this.domain;
+                    params.merchantId = this.firmId;
                 }
                 this.$store
                     .dispatch("qunarPolicyConfig/save", params)
@@ -386,7 +335,7 @@
             },
             policyEdit(row) {
                 this.user = row.user;
-                this.firmId = row.firmId;
+                this.merchantId = row.merchantId;
                 this.dialogVisible = true;
             },
             policyRemove(row, index, rows) {
@@ -398,8 +347,7 @@
                     .then(() => {
                         this.$store
                             .dispatch("qunarPolicyConfig/removeOne", {
-                                user: row.user,
-                                firmId: row.firmId
+                                configId: row.configId
                             })
                             .then(() => {
                                 rows.splice(index, 1);
