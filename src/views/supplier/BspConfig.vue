@@ -129,7 +129,7 @@
             }
         },
         created() {
-            this.initFormData(this.$route.query.merchantId);
+            this.initFormData(this.$route.query.firmId);
         }
     }
 </script>
