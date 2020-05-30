@@ -73,7 +73,7 @@
         center
         :visible.sync="dialogVisible"
         width="55%"
-        ref="user-edit"
+        ref="job-config-edit"
         :close-on-click-modal="false"
       >
         <job-config-edit

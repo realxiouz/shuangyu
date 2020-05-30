@@ -257,8 +257,8 @@
         dialogVisible: false,
         showAddValues: false,
         values: [{
-          label:'',
-          value:''
+          label: '',
+          value: ''
         }],
         tagTypes: [
           {
@@ -366,8 +366,8 @@
                 for (var attr in attributes) {
                   if (attributes[attr] != undefined && attributes[attr] != null && attributes[attr] != '') {
                     let value = {
-                      label:attr,
-                      value:attributes[attr]
+                      label: attr,
+                      value: attributes[attr]
                     };
                     this.values.push(value);
                   }
@@ -398,8 +398,8 @@
       },
       addRuleItem() {
         this.values.push({
-          label:'',
-          value:''
+          label: '',
+          value: ''
         });
       },
       deleteRuleItem(index) {
@@ -420,7 +420,7 @@
         if (this.formData.valueType == 7 || this.formData.valueType == 12 || this.formData.valueType == 9) {
           valueTypeFlag = true;
         }
-        if (!valueTypeFlag){
+        if (!valueTypeFlag) {
           this.values = [];
         }
         if (this.values && this.values.length > 0) {
