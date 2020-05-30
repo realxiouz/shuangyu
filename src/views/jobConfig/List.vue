@@ -32,7 +32,7 @@
         </el-table-column>
         <el-table-column prop="readonly" label="是否只读" align="center">
           <template slot-scope="scope">
-            <span v-if="scope.row.required">是</span>
+            <span v-if="scope.row.readonly">是</span>
             <span v-else>否</span>
           </template>
         </el-table-column>

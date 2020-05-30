@@ -209,24 +209,17 @@
       <el-row v-if="showAddValues">
         <el-row
           v-for="(item, index) in values"
-          :key="values[index].key"
-          id="rule-item"
+          :key="item.id"
           :gutter="10"
         >
           <el-col :span="11">
             <el-form-item label-width="10px" style="width:100%">
-              <el-input
-                v-model="values[index].key"
-                placeholder="key"
-              ></el-input>
+              <el-input v-model="item.label" placeholder="label"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="11">
             <el-form-item label-width="10px" style="width:100%">
-              <el-input
-                v-model="values[index].value"
-                placeholder="value"
-              ></el-input>
+              <el-input v-model="item.value" placeholder="value"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="2">
@@ -263,7 +256,10 @@
         formData: {},
         dialogVisible: false,
         showAddValues: false,
-        values: [{}],
+        values: [{
+          label:'',
+          value:''
+        }],
         tagTypes: [
           {
             label: "工厂",
@@ -370,7 +366,7 @@
                 for (var attr in attributes) {
                   if (attributes[attr] != undefined && attributes[attr] != null && attributes[attr] != '') {
                     let value = {
-                      key:attr,
+                      label:attr,
                       value:attributes[attr]
                     };
                     this.values.push(value);
@@ -401,7 +397,10 @@
         }
       },
       addRuleItem() {
-        this.values.push({});
+        this.values.push({
+          label:'',
+          value:''
+        });
       },
       deleteRuleItem(index) {
         this.values.splice(index, 1);
@@ -427,8 +426,8 @@
         if (this.values && this.values.length > 0) {
           let attributes = {};
           for (var i = 0; i < this.values.length; i++) {
-            if (this.values[i].key && this.values[i].key != undefined && this.values[i].key != '') {
-              attributes[this.values[i].key] = this.values[i].value;
+            if (this.values[i].label && this.values[i].label != undefined && this.values[i].label != '') {
+              attributes[this.values[i].label] = this.values[i].value;
             }
           }
           this.formData.attributes = attributes;
@@ -450,7 +449,7 @@
           url = 'jobConfig/addOne';
         }
         this.$store
-          .dispatch(url, {jobConfigId: this.jobConfigId, data: this.formData})
+          .dispatch(url, {jobConfigId: this.jobConfigId, jobConfig: this.formData})
           .then(() => {
             this.$emit("onSave");
           })
