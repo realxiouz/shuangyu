@@ -355,6 +355,13 @@ export default new Router({
           component: () => import('@/views/jobScheduler/List'),
           meta: {title: '调度', icon: 'home'}
         },
+        {
+          title: '政策上传',
+          path: '/tts/policy/job/scheduler/list',
+          name: 'ttsPolicyJobSchedulerList',
+          component: () => import('@/views/ttsPolicyJobScheduler/List'),
+          meta: {title: '调度', icon: 'home'}
+        }
       ]
     },
     {
