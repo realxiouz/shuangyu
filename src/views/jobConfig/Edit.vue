@@ -209,7 +209,7 @@
       <el-row v-if="showAddValues">
         <el-row
           v-for="(item, index) in values"
-          :key="item.id"
+          :key="item.index"
           :gutter="10"
         >
           <el-col :span="11">
@@ -423,11 +423,14 @@
         if (!valueTypeFlag) {
           this.values = [];
         }
+        if (this.formData.valueType == 12) {
+          this.formData.value = [];
+        }
         if (this.values && this.values.length > 0) {
           let attributes = {};
           for (var i = 0; i < this.values.length; i++) {
             if (this.values[i].label && this.values[i].label != undefined && this.values[i].label != '') {
-              attributes[this.values[i].label] = this.values[i].value;
+              attributes[this.values[i].value] = this.values[i].label;
             }
           }
           this.formData.attributes = attributes;
