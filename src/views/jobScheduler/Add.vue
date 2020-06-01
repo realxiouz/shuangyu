@@ -129,16 +129,14 @@
         this.formData.tagName = this.formData.params[0].tagName;
         this.formData.tagCode = this.formData.params[0].tagCode;
         this.formData.tagType = this.formData.params[0].tagType;
-        console.log("+++++++++++++++"+JSON.stringify(this.formData));
-        /*this.$refs['form'].validate((valid) => {
+        this.$refs['form'].validate((valid) => {
           if (valid) {
-            this.handleSaveData();
             this.$store
-              .dispatch("product/save", {
-                skuList: this.dataList,
-                product: this.formData
+              .dispatch("jobScheduler/addOne", {
+                jobScheduler: this.formData
               })
               .then(() => {
+                this.$emit('onSave')
               })
               .catch(error => {
                 console.log(error);
@@ -147,9 +145,8 @@
               type: "success",
               message: "保存成功！"
             });
-            this.goBack();
           }
-        });*/
+        });
       },
       getParams() {
         let searchForm = {

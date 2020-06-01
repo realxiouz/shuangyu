@@ -46,32 +46,18 @@
         @next-click="handleNextClick"
       ></el-pagination>
       <el-dialog
-        :title="'新增'"
+        :title="updateFlag?'更新':'新增'"
         center
         :visible.sync="dialogVisible"
-        width="55%"
-        ref="job-scheduler-add"
-        :close-on-click-modal="false"
-      >
-        <job-scheduler-add
-          v-if="dialogVisible"
-          ref="form"
-          @onSave="handleSave"
-          @onCancel="handleCancel"
-        ></job-scheduler-add>
-      </el-dialog>
-      <el-dialog
-        :title="'更新'"
-        center
-        :visible.sync="dialogVisibleUpdate"
         width="55%"
         ref="job-scheduler-edit"
         :close-on-click-modal="false"
       >
         <job-scheduler-edit
-          v-if="dialogVisibleUpdate"
+          v-if="dialogVisible"
           ref="form"
-          :job-config-id="schedulerId"
+          :job-scheduler-id="schedulerId"
+          :update-flag="updateFlag"
           @onSave="handleSave"
           @onCancel="handleCancel"
         ></job-scheduler-edit>
@@ -82,7 +68,6 @@
 
 <script>
   import jobSchedulerSearch from "./Search";
-  import jobSchedulerAdd from "./Add";
   import jobSchedulerEdit from "./Edit";
 
   export default {
@@ -90,7 +75,6 @@
     data() {
       return {
         dialogVisible: false,
-        dialogVisibleUpdate: false,
         updateFlag: false,
         schedulerId: "",
         pageFlag: 1,
@@ -151,8 +135,7 @@
     },
     components: {
       jobSchedulerSearch,
-      jobSchedulerEdit,
-      jobSchedulerAdd
+      jobSchedulerEdit
     },
     methods: {
       loadData(params) {
@@ -211,12 +194,14 @@
         this.loadData(params);
       },
       handleAdd() {
+        this.schedulerId='';
+        this.updateFlag=false;
         this.dialogVisible = true;
       },
       handleEdit(row) {
         this.schedulerId = row.schedulerId;
         this.updateFlag = true;
-        this.dialogVisibleUpdate = true;
+        this.dialogVisible = true;
       },
       removeOne(schedulerId) {
         this.$confirm("是否确定删除?", "提示", {
@@ -240,11 +225,9 @@
       },
       handleCancel() {
         this.dialogVisible=false;
-        this.dialogVisibleUpdate= false;
       },
       handleSave() {
         this.dialogVisible=false;
-        this.dialogVisibleUpdate= false;
         this.loadData();
       },
       formatTagType(value) {
