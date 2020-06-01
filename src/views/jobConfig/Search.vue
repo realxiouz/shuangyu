@@ -2,7 +2,7 @@
   <el-row type="flex" justify="space-between" align="bottom">
     <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
       <el-form :model="formData" label-width="110px" size="mini">
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+        <!--<el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="标签类别:">
             <el-select
               v-model="formData.tagType"
@@ -18,18 +18,17 @@
               ></el-option>
             </el-select>
           </el-form-item>
-        </el-col>
+        </el-col>-->
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="标签名称:">
             <el-input clearable v-model="formData.tagName" placeholder="标签名称..."></el-input>
           </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+        </el-col >
+        <!--<el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="标签编码:">
             <el-input clearable v-model="formData.tagCode" placeholder="标签编码..."></el-input>
           </el-form-item>
-        </el-col>
-
+        </el-col>-->
       </el-form>
     </el-col>
     <el-col :xs="8" :sm="6" :md="6" :lg="4" :xl="4" class="search-tools">
@@ -50,7 +49,7 @@
 </template>
 <script>
   export default {
-    name: "jobTagSearch",
+    name: "jobConfigSearch",
     data() {
       return {
         more: false,
@@ -89,6 +88,7 @@
         }
         this.$emit("onSearch", data);
       },
+
     }
   };
 </script>

@@ -31,6 +31,54 @@ export function getOne(merchantId) {
   });
 }
 
+export function getTotal(filter) {
+  return request({
+    url: `/firm/merchant/get/total`,
+    method: `get`,
+    params: filter
+  });
+}
+
+export function getSupplierTotal(filter) {
+  return request({
+    url: `/firm/supplier/get/total`,
+    method: `get`,
+    params: filter
+  });
+}
+
+export function getCustomerTotal(filter) {
+  return request({
+    url: `/firm/customer/get/total`,
+    method: `get`,
+    params: filter
+  });
+}
+
+export function getPageList(pageFlag, pageSize, filter) {
+  return request({
+    url: `/firm/merchant/get/page/list/${pageFlag}/${pageSize}`,
+    method: `get`,
+    params: filter
+  });
+}
+
+export function getCustomerPageList(pageFlag, pageSize, filter) {
+  return request({
+    url: `/firm/customer/get/page/list/${pageFlag}/${pageSize}`,
+    method: `get`,
+    params: filter
+  });
+}
+
+export function getSupplierPageList(pageFlag, pageSize, filter) {
+  return request({
+    url: `/firm/supplier/get/page/list/${pageFlag}/${pageSize}`,
+    method: `get`,
+    params: filter
+  });
+}
+
 export function getList(filter) {
   return request({
     url: `/firm/merchant/list`,
@@ -39,11 +87,10 @@ export function getList(filter) {
   });
 }
 
-export function associateUser(data) {
+export function associateUser(staffId, userId) {
   return request({
-    url: `/firm/merchant/associate`,
+    url: `/firm/merchant/associate/${staffId}/${userId}`,
     method: `put`,
-    data
   });
 }
 

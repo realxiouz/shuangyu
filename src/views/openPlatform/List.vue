@@ -15,6 +15,7 @@
       >
         <el-table-column prop="openName" label="平台名称" align="center"></el-table-column>
         <el-table-column prop="openCode" label="平台编码" align="center"></el-table-column>
+        <el-table-column prop="configUri" label="平台配置URL" align="center"></el-table-column>
         <el-table-column :formatter="formatOpenType" prop="openType" label="平台类型" align="center"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="350">
           <template slot-scope="scope">

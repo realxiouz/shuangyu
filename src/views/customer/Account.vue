@@ -1,10 +1,9 @@
 <template>
   <div id="main">
     <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="16">
-      <div class="title">
-        添加平台账号
-        <el-button type="primary" size="mini" @click="handleAdd">添加</el-button>
-      </div>
+      <el-row style="margin-bottom:15px; margin-left:25px;">
+        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+      </el-row>
       <el-table :data="accounts" @selection-change="handleSelectionChange" style="width: 100%">
         <el-table-column type="selection"></el-table-column>
         <el-table-column prop="username" label="登录账号" align="center"></el-table-column>
@@ -21,18 +20,18 @@
         <el-button type="primary" size="mini" @click="removeSelected">删除</el-button>
       </div>
     </el-col>
-    <el-dialog title="编辑账号" :visible.sync="dialogVisible" :close-on-click-modal="false" width="24%">
+    <el-dialog :visible.sync="dialogVisible" :close-on-click-modal="false" width="24%">
       <el-form :model="account" :rules="rules" ref="accountForm" label-position="left" label-width="80px" size="mini">
-        <el-form-item label="登录账号" prop="username">
+        <el-form-item label="登录账号" prop="username" size="mini">
           <el-input v-model="account.username" placeholder="请输入平台账号"></el-input>
         </el-form-item>
-        <el-form-item label="登录密码" prop="password">
+        <el-form-item label="登录密码" prop="password" size="mini">
           <el-input v-model="account.password" placeholder="请输入密码"></el-input>
         </el-form-item>
-        <el-form-item label="登录地址" prop="loginUrl">
+        <el-form-item label="登录地址" prop="loginUrl" size="mini">
           <el-input v-model="account.loginUrl" placeholder="请输入登录地址"></el-input>
         </el-form-item>
-        <el-form-item label="备注">
+        <el-form-item label="备注" size="mini">
           <el-input type="textarea" v-model="account.remark"></el-input>
         </el-form-item>
       </el-form>
@@ -101,10 +100,10 @@
             handleConfirm() {
                 this.$refs['accountForm'].validate((valid) => {
                     if (valid) {
-                        if (this.update){
+                        if (this.update) {
                             Object.assign(this.accounts[this.accounts.indexOf(this.tmpAccount)], this.account);
                             this.dialogVisible = false;
-                        }else {
+                        } else {
                             //否则新增到列表中
                             this.accounts.push(this.account);
                             this.dialogVisible = false;

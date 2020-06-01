@@ -1,14 +1,20 @@
-import { getList, getTotal, exportOrderNo, exportLastId, exportOrderFile } from '@/api/otherOrderConfig/qunarOrderConfig';
+import {
+  addOne,
+  exportLastId,
+  exportOrderFile,
+  exportOrderNo,
+  getList,
+  getOne,
+  getTotal,
+  save
+} from '@/api/otherOrderConfig/qunarOrderConfig';
 
 const actions = {
-
-  // 查询原始单
-  getList({ commit }, params) {
-    const { filters } = params;
+  save({commit}, params) {
     return new Promise((resolve, reject) => {
-      getList(filters)
+      save(params)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -16,14 +22,64 @@ const actions = {
         });
     });
   },
-
+  addOne({commit}, params) {
+    return new Promise((resolve, reject) => {
+      addOne(params)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  updateOne({commit}, params) {
+    return new Promise((resolve, reject) => {
+      updateOne(params)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  // 查询原始单
+  getList({commit}, params) {
+    const {filters} = params;
+    return new Promise((resolve, reject) => {
+      getList(filters)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getOne({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {domain} = params;
+      getOne(domain)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
   // 查询原始单数量
-  getTotal({ commit }, params) {
-    const { filters } = params;
+  getTotal({commit}, params) {
+    const {filters} = params;
     return new Promise((resolve, reject) => {
       getTotal(filters)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -33,7 +89,7 @@ const actions = {
   },
 
   // 根据原始单号导单
-  exportOrderNo({ commit }, sourceOrderNo) {
+  exportOrderNo({commit}, sourceOrderNo) {
     return new Promise((resolve, reject) => {
       exportOrderNo(sourceOrderNo)
         .then(response => {
@@ -46,7 +102,7 @@ const actions = {
   },
 
   // 根据lastId增量导单
-  exportLastId({ commit }, params) {
+  exportLastId({commit}, params) {
     return new Promise((resolve, reject) => {
       exportLastId(params)
         .then(response => {
@@ -59,7 +115,7 @@ const actions = {
   },
 
   // 根据文件导单
-  exportOrderFile({ commit }, params) {
+  exportOrderFile({commit}, params) {
     return new Promise((resolve, reject) => {
       exportOrderFile(params)
         .then(response => {
