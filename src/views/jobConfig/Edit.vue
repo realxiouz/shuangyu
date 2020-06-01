@@ -423,6 +423,9 @@
         if (!valueTypeFlag) {
           this.values = [];
         }
+        if (this.formData.valueType == 12) {
+          this.formData.value = [];
+        }
         if (this.values && this.values.length > 0) {
           let attributes = {};
           for (var i = 0; i < this.values.length; i++) {
