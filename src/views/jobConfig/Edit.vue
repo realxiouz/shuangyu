@@ -427,7 +427,7 @@
           let attributes = {};
           for (var i = 0; i < this.values.length; i++) {
             if (this.values[i].label && this.values[i].label != undefined && this.values[i].label != '') {
-              attributes[this.values[i].label] = this.values[i].value;
+              attributes[this.values[i].value] = this.values[i].label;
             }
           }
           this.formData.attributes = attributes;
