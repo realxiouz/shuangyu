@@ -124,6 +124,7 @@
         this.formData.cron = val
       },
       handleSave() {
+        let data = {};
         this.formData.values = this.getValues(this.formData.params);
         this.formData.status = 0;
         this.formData.tagId = this.formData.params[0].tagId;
@@ -131,17 +132,31 @@
         this.formData.tagCode = this.formData.params[0].tagCode;
         this.formData.tagType = this.formData.params[0].tagType;
         let url = '';
-        if (this.updateFlag){
+        if (this.updateFlag) {
           url = "jobScheduler/updateOne";
-        }else {
-          url = "jobScheduler/addOne";
+          data = this.formData;
+        } else {
+          let xxlJobGroup = {
+            appName: '',
+            addressType:0,
+            title:'官网执行器'
+          };
+          let xxlJobInfo = {
+            jobDesc: this.formData.schedulerName,
+            jobCron:this.formData.cron,
+            executorHandler:'owpStartJobHandler'
+          };
+          data.xxlJobInfo = xxlJobInfo;
+          data.xxlJobGroup = xxlJobGroup;
+          data.jobScheduler = this.formData;
+          url = "jobScheduler/addOneXxl";
         }
         this.$refs['form'].validate((valid) => {
           if (valid) {
             this.$store
               .dispatch(url, {
-                jobScheduler: this.formData,
-                jobSchedulerId:this.formData.schedulerId
+                jobScheduler: data,
+                jobSchedulerId: this.formData.schedulerId
               })
               .then(() => {
                 this.$emit('onSave')
@@ -157,7 +172,7 @@
         });
       },
       getParams() {
-        if (!this.jobSchedulerId || this.jobSchedulerId==null || this.jobSchedulerId==''){
+        if (!this.jobSchedulerId || this.jobSchedulerId == null || this.jobSchedulerId == '') {
           let searchForm = {
             tagId: 'ee7e640c3acb409bb01acb4098dd8416',
             tagCode: 'owp'
@@ -177,7 +192,7 @@
         }
       },
       getData() {
-        if (this.jobSchedulerId && this.jobSchedulerId!=null&& this.jobSchedulerId!=''){
+        if (this.jobSchedulerId && this.jobSchedulerId != null && this.jobSchedulerId != '') {
           this.$store
             .dispatch("jobScheduler/getOne", {
               jobSchedulerId: this.jobSchedulerId
@@ -194,8 +209,8 @@
       },
       getValues(params) {
         let data = {};
-        if (params && params.length>0){
-          for (var i =0;i<params.length;i++) {
+        if (params && params.length > 0) {
+          for (var i = 0; i < params.length; i++) {
             data[params[i].code] = params[i].value;
           }
         }

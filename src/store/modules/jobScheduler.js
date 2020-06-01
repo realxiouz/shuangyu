@@ -5,7 +5,8 @@ import {
   getPageList,
   getTotal,
   removeOne,
-  updateOne
+  updateOne,
+  addOneXxl
 } from "@/api/jobScheduler";
 
 const actions = {
@@ -13,6 +14,18 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {jobScheduler} = params
       addOne(jobScheduler)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  addOneXxl({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {jobScheduler} = params
+      addOneXxl(jobScheduler)
         .then(response => {
           resolve(response);
         })

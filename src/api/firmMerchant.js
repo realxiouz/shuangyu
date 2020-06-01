@@ -87,6 +87,14 @@ export function getList(filter) {
   });
 }
 
+export function getSupplierList(filter) {
+  return request({
+    url: `supplier/open/auth/get/list`,
+    method: `get`,
+    params: filter
+  });
+}
+
 export function associateUser(staffId, userId) {
   return request({
     url: `/firm/merchant/associate/${staffId}/${userId}`,
