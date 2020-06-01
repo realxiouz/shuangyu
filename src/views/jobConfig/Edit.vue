@@ -209,7 +209,7 @@
       <el-row v-if="showAddValues">
         <el-row
           v-for="(item, index) in values"
-          :key="item.id"
+          :key="item.index"
           :gutter="10"
         >
           <el-col :span="11">
