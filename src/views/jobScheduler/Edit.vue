@@ -7,11 +7,6 @@
             <el-input placeholder="调度名称" v-model="formData.schedulerName"></el-input>
           </el-form-item>
         </el-col>
-        <!--<el-col :span="12">
-          <el-form-item label="企业/客户/供应商" prop="name">
-            <el-input placeholder="企业/客户/供应商" v-model="formData.firmId"></el-input>
-          </el-form-item>
-        </el-col>-->
         <el-col :span="12">
           <el-form-item label="定时策略">
             <el-popover v-model="formData.cronPopover">
@@ -137,7 +132,7 @@
           data = this.formData;
         } else {
           let xxlJobGroup = {
-            appName: '',
+            appName: 'owp-provider',
             addressType:0,
             title:'官网执行器'
           };
