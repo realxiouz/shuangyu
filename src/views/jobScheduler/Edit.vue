@@ -211,7 +211,6 @@
         }
         return data;
       },
-
     },
     created() {
       this.formData = this.defaultFormData();
