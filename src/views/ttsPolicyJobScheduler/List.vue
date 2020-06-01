@@ -80,6 +80,8 @@
         pageFlag: 1,
         pageSize: 10,
         lastId: null,
+        tagId: '',
+        tagCode: '',
         total: 0,
         tableData: [],
         valueTypes: [
@@ -194,8 +196,8 @@
         this.loadData(params);
       },
       handleAdd() {
-        this.schedulerId='';
-        this.updateFlag=false;
+        this.schedulerId = '';
+        this.updateFlag = false;
         this.dialogVisible = true;
       },
       handleEdit(row) {
@@ -224,10 +226,10 @@
           });
       },
       handleCancel() {
-        this.dialogVisible=false;
+        this.dialogVisible = false;
       },
       handleSave() {
-        this.dialogVisible=false;
+        this.dialogVisible = false;
         this.loadData();
       },
       formatTagType(value) {
@@ -246,7 +248,10 @@
       }
     },
     created() {
-      this.loadData();
+      var params = {};
+      params.tagId = 'cd17704040f048c385730e9c6b72b90a';
+      params.tagCode = 'policy';
+      this.loadData(params);
     },
   };
 </script>

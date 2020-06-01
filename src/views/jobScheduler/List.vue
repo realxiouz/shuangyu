@@ -80,6 +80,7 @@
         pageFlag: 1,
         pageSize: 10,
         lastId: null,
+        tagId: '',
         total: 0,
         tableData: [],
         valueTypes: [
@@ -194,8 +195,8 @@
         this.loadData(params);
       },
       handleAdd() {
-        this.schedulerId='';
-        this.updateFlag=false;
+        this.schedulerId = '';
+        this.updateFlag = false;
         this.dialogVisible = true;
       },
       handleEdit(row) {
@@ -224,10 +225,10 @@
           });
       },
       handleCancel() {
-        this.dialogVisible=false;
+        this.dialogVisible = false;
       },
       handleSave() {
-        this.dialogVisible=false;
+        this.dialogVisible = false;
         this.loadData();
       },
       formatTagType(value) {
@@ -246,7 +247,10 @@
       }
     },
     created() {
-      this.loadData();
+      var params = {};
+      params.tagId = 'ee7e640c3acb409bb01acb4098dd8416';
+      params.tagCode = 'owp';
+      this.loadData(params);
     },
   };
 </script>
