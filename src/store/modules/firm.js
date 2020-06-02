@@ -10,7 +10,9 @@ import {
   getTreeList,
   removeOne,
   saveOne,
-  updateOne
+  updateOne,
+  getConfigPageList,
+  getConfigTotal
 } from '@/api/firm';
 
 
@@ -170,7 +172,33 @@ const actions = {
           reject(error);
         });
     });
-  }
+  },
+  getConfigPageList({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {pageFlag, pageSize, filter} = params;
+      getConfigPageList(pageFlag, pageSize, filter)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getConfigTotal({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {filter} = params;
+      getConfigTotal(filter)
+        .then(response => {
+          // const { data } = response;
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
 }
 
 export default {

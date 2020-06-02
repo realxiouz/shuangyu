@@ -14,6 +14,16 @@
       <el-form-item label="客户域名" prop="merchantDomain">
         <el-input v-model="formData.merchantDomain"></el-input>
       </el-form-item>
+      <el-form-item label="调度任务:" prop="schedulerId">
+        <el-select v-model="formData.schedulerId" placeholder="请选择客户.." style="width: 100%">
+          <el-option
+            v-for="item in schedulerList"
+            :key="item.schedulerId"
+            :label="item.schedulerName"
+            :value="item.schedulerId">
+          </el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item label="用户名" prop="user">
         <el-input v-model="formData.user"></el-input>
       </el-form-item>
@@ -57,12 +67,16 @@
       return {
         formData: defaultData(),
         merchantList: [],
+        schedulerList: [],
         rules: {
           merchantId: [
             {required: true, message: '请选择客户', trigger: 'blur'}
           ],
           merchantDomain: [
             {required: true, message: '请输入客户域名', trigger: 'blur'}
+          ],
+          schedulerId: [
+            {required: true, message: '请选择调度任务', trigger: 'blur'}
           ],
           user: [
             {required: true, message: '请输入用户名', trigger: 'blur'}
@@ -122,10 +136,28 @@
           .catch(error => {
             console.log(error);
           });
+      },
+      //加载平台信息
+      loadSchedulers() {
+        let searchForm = {
+          tagId: 'cd17704040f048c385730e9c6b72b90a',
+          tagCode: 'policy'
+        }
+        this.$store
+          .dispatch("jobScheduler/getList", {
+            filter: searchForm
+          })
+          .then(data => {
+            this.schedulerList = data;
+          })
+          .catch(error => {
+            console.log(error);
+          });
       }
     },
     created() {
       this.loadMerchants();
+      this.loadSchedulers();
       if (this.configId) {
         this.handleGetOne(this.configId);
       }

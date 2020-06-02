@@ -35,11 +35,16 @@
             <span>{{scope.row.roleNames | roles}}</span>
           </template>
         </el-table-column>
-
         <el-table-column label="备注" prop="remark" align="center" :fit='true'></el-table-column>
         <el-table-column label="是否启用" align="center" width="100"  fixed="right" >
           <template slot-scope="scope">
             <el-switch :value="scope.row.enable" @change="enableSwitch(scope.row)"></el-switch>
+          </template>
+        </el-table-column>
+        <el-table-column label="最后登录" width="120" align="center" fixed="right">
+          <template slot-scope="scope">
+            <i v-if="scope.row.lastLoginTime" class="el-icon-time"></i>
+            <span style="margin-left: 10px">{{ formatDate(scope.row.lastLoginTime,'YYYY-MM-DD HH:mm:ss') }}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" fixed="right" align="center" width="280">

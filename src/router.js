@@ -348,13 +348,20 @@ export default new Router({
           component: () => import('@/views/jobConfig/List'),
           meta: {title: '调度参数', icon: 'home'}
         },
-        /*{
+        {
           title: '调度',
           path: '/job/scheduler/list',
           name: 'jobSchedulerList',
           component: () => import('@/views/jobScheduler/List'),
-          meta: {title: '调度参数编辑', icon: 'home'}
-        },*/
+          meta: {title: '调度', icon: 'home'}
+        },
+        {
+          title: '政策上传',
+          path: '/tts/policy/job/scheduler/list',
+          name: 'ttsPolicyJobSchedulerList',
+          component: () => import('@/views/ttsPolicyJobScheduler/List'),
+          meta: {title: '调度', icon: 'home'}
+        }
       ]
     },
     {
@@ -450,7 +457,14 @@ export default new Router({
           name: 'etermConfig',
           component: () => import('@/views/etermConfig/List'),
           meta: {title: 'eterm配置信息', icon: 'home'},
-        }
+        },
+        {
+          title: '企业开放平台配置',
+          path: '/firmOpenPlatform/list',
+          name: 'firmOpenPlatformList',
+          component: () => import('@/views/firmOpenPlatform/List'),
+          meta: {title: '企业开放平台配置', icon: 'home'}
+        },
       ]
     },
     {

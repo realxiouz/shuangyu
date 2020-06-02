@@ -13,6 +13,7 @@
     >
       <el-table-column prop="merchantName" label="客户" align="center" width="150"></el-table-column>
       <el-table-column prop="merchantDomain" label="客户域名" align="center" width="220"></el-table-column>
+      <el-table-column prop="schedulerName" label="调度任务" width="300" align="center"></el-table-column>
       <el-table-column prop="paramName" label="参数名称" align="center" width="220"></el-table-column>
       <el-table-column prop="paramCode" label="参数编码" align="center"></el-table-column>
       <el-table-column
