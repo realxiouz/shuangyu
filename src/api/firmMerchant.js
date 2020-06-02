@@ -9,10 +9,10 @@ export function addOne(data) {
   });
 }
 
-export function updateOne(data) {
+export function updateOne(merchantId, data) {
   return request({
-    url: `/firm/merchant/update/one`,
-    method: `post`,
+    url: `/firm/merchant/update/one/${merchantId}`,
+    method: `put`,
     data
   });
 }
