@@ -26,7 +26,7 @@
           <el-input v-model="account.username" placeholder="请输入平台账号"></el-input>
         </el-form-item>
         <el-form-item label="登录密码" prop="password" size="mini">
-          <el-input v-model="account.password" placeholder="请输入密码"></el-input>
+          <el-input v-model="account.password" show-password  placeholder="请输入密码"></el-input>
         </el-form-item>
         <el-form-item label="登录地址" prop="loginUrl" size="mini">
           <el-input v-model="account.loginUrl" placeholder="请输入登录地址"></el-input>
