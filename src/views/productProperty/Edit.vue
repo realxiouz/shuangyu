@@ -28,15 +28,15 @@
         </el-row>
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="属性编码" prop="propertyCode">
-              <el-input v-model="formData.propertyCode"></el-input>
+            <el-form-item label="属性编码" prop="code">
+              <el-input v-model="formData.code"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="属性名称" prop="propertyName">
-              <el-input v-model="formData.propertyName"></el-input>
+            <el-form-item label="属性名称" prop="name">
+              <el-input v-model="formData.name"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -186,7 +186,7 @@
         <div v-show="showAddValues">
           <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加属性值</el-button>
           <el-table
-            :data="values"
+            :data="attributes"
             style="width: 100%;margin-bottom: 15px;"
             size="mini"
             border
@@ -199,7 +199,7 @@
                            @click="valueEdit(scope.row)">编辑
                 </el-button>
                 <el-button type="danger" size="mini"
-                           @click="valueRemove(scope.row.code,scope.$index,values)">删除
+                           @click="valueRemove(scope.row.code,scope.$index,attributes)">删除
                 </el-button>
               </template>
             </el-table-column>
@@ -228,271 +228,271 @@
   </div>
 </template>
 <script>
-  function defaultData() {
-    return {
-      categoryCode: "",
-      categoryName: "",
-      categoryPath: "",
-      propertyCode: "",
-      propertyName: "",
-      precision: 0,
-      sku: false,
-      hidden: false,
-      valueType: ''
-    }
-  };
-  export default {
-    name: 'edit',
-    data() {
-      const categoryCode = (rule, value, callback) => {
-        let reg = /^[0-9a-zA-Z]*$/g;
-        if (reg.test(value)) {
-          callback();
-        } else {
-          callback(new Error("只能输入字母或数字！"));
+    function defaultData() {
+        return {
+            categoryCode: "",
+            categoryName: "",
+            categoryPath: "",
+            code: "",
+            name: "",
+            precision: 0,
+            sku: false,
+            hidden: false,
+            valueType: ''
         }
-      };
-      return {
-        formData: defaultData(),
-        dialogVisible: false,
-        showAddValues: false,
-        formValue: {},
-        propertyId: '',
-        valueType: '',
-        test: {},
-        values: [],
-        categoryList: [],
-        rules: {
-          categoryName: [
-            {required: true, message: "请输入商品类目", trigger: "blur"},
-          ],
-          propertyCode: [
-            {required: true, message: "请输入属性编码", trigger: "blur"},
-            {
-              min: 1,
-              max: 20,
-              message: "长度在 1到 20 个字符"
-            },
-            {validator: categoryCode, trigger: 'blur'}
-          ],
-          propertyName: [
-            {required: true, message: "请输入属性标题", trigger: "blur"},
-            {
-              min: 1,
-              max: 20,
-              message: "长度在 1到 20 个字符"
-            }
-          ]
-          , valueType: [
-            {required: true, message: "请选择属性类型", trigger: "blur"},
-          ]
-        },
-        options: [
-          {
-            value: 0,
-            label: '文本'
-          },
-          {
-            value: 1,
-            label: '开关'
-          },
-          {
-            value: 2,
-            label: '数字'
-          },
-          {
-            value: 3,
-            label: '日期'
-          },
-          {
-            value: 4,
-            label: '日期时间'
-          },
-          {
-            value: 5,
-            label: '时间'
-          },
-          {
-            value: 6,
-            label: '评分'
-          },
-          {
-            value: 7,
-            label: '单选'
-          },
-          {
-            value: 8,
-            label: '多选'
-          },
-          {
-            value: 9,
-            label: '选择器'
-          }]
-      }
-    },
-    methods: {
-      changeNum(value) {
-        if (value > 0) {
-          this.formData.precision = value;
-        }
-      },
-      valueTypeChange(value) {
-        this.valueType = value;
-        if (value == 7 || value == 8 || value == 9) {
-          this.showAddValues = true;
-        } else {
-          this.showAddValues = false;
-        }
-      },
-      //跳转回列表页面
-      goBack() {
-        if (this.$router.history.length <= 1) {
-          this.$router.push({path: '/home'});
-          return false;
-        } else {
-          this.$router.go(-1);
-        }
-      },
-      handleCancel() {
-        this.goBack();
-      },
-      handleSave() {
-        this.$refs['form'].validate((valid) => {
-          if (valid) {
-            if (this.values.length > 0) {
-              let map = {};
-              for (let i = 0, len = this.values.length; i < len; i++) {
-                map[this.values[i].code] = this.values[i].value;
-              }
-              this.formData.values = map;
-            }
-            this.$store
-              .dispatch("productProperty/save", {
-                property: this.formData,
-                valueList: this.values
-              })
-              .then(() => {
-              })
-              .catch(error => {
-                console.log(error);
-              });
-            this.$message({
-              type: "success",
-              message: "保存成功！"
-            });
-            this.goBack();
-          }
-        });
-      },
-      handleGetOne(id) {
-        if (id) {
-          this.$store
-            .dispatch("productProperty/getOne", {propertyId: id})
-            .then(data => {
-              if (data) {
-                this.formData = data;
-                this.valueTypeChange(this.formData.valueType);
-                if (data.values != null) {
-                  let array = [];
-                  let map = data.values;
-                  for (let key in map) {
-                    let data = {};
-                    data.code = key;
-                    data.value = map[key];
-                    array.push(data)
-                  }
-                  this.values = array;
+    };
+    export default {
+        name: 'edit',
+        data() {
+            const categoryCode = (rule, value, callback) => {
+                let reg = /^[0-9a-zA-Z]*$/g;
+                if (reg.test(value)) {
+                    callback();
+                } else {
+                    callback(new Error("只能输入字母或数字！"));
                 }
-              }
-            }).catch(error => {
-            console.log(error);
-          });
-        } else {
-          this.formData = defaultData();
-        }
-      },
-      valueEdit(rows) {
-        this.formValue = {};
-        this.formValue = rows;
-        this.dialogVisible = true;
-      },
-      valueRemove(id, index, rows) {
-        this.$confirm("此操作将删除该条记录, 是否继续?", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        })
-          .then(() => {
-            rows.splice(index, 1);
-          })
-          .catch(err => {
-            console.error(err);
-          });
-      },
-      handleAdd() {
-        this.dialogVisible = true;
-      },
-      valueCancel() {
-        this.dialogVisible = false;
-      },
-      valueSave() {
-        if (!this.formValue.code || !this.formValue.value) {
-          this.$message("请填写完整属性信息！")
-          return false;
-        }
-        this.values.push(this.formValue);
-        this.dialogVisible = false;
-        this.formValue = {};
-      },
-      loadTreeData() {
-        this.$store
-          .dispatch("category/getTreeList", {filter: {categoryType: 9}})
-          .then(data => {
-            if (data) {
-              this.categoryList = this.getTreeData(data.data);
+            };
+            return {
+                formData: defaultData(),
+                dialogVisible: false,
+                showAddValues: false,
+                formValue: {},
+                propertyId: '',
+                valueType: '',
+                test: {},
+                attributes: [],
+                categoryList: [],
+                rules: {
+                    categoryName: [
+                        {required: true, message: "请输入商品类目", trigger: "blur"},
+                    ],
+                    code: [
+                        {required: true, message: "请输入属性编码", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到 20 个字符"
+                        },
+                        {validator: categoryCode, trigger: 'blur'}
+                    ],
+                    name: [
+                        {required: true, message: "请输入属性标题", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到 20 个字符"
+                        }
+                    ]
+                    , valueType: [
+                        {required: true, message: "请选择属性类型", trigger: "blur"},
+                    ]
+                },
+                options: [
+                    {
+                        value: 0,
+                        label: '文本'
+                    },
+                    {
+                        value: 1,
+                        label: '开关'
+                    },
+                    {
+                        value: 2,
+                        label: '数字'
+                    },
+                    {
+                        value: 3,
+                        label: '日期'
+                    },
+                    {
+                        value: 4,
+                        label: '日期时间'
+                    },
+                    {
+                        value: 5,
+                        label: '时间'
+                    },
+                    {
+                        value: 6,
+                        label: '评分'
+                    },
+                    {
+                        value: 7,
+                        label: '单选'
+                    },
+                    {
+                        value: 8,
+                        label: '多选'
+                    },
+                    {
+                        value: 9,
+                        label: '选择器'
+                    }]
             }
-            this.loading = false;
-          })
-          .catch(error => {
-            this.loading = false;
-            console.log(error);
-          });
-      },
-      getTreeData(data) {
-        // 循环遍历json数据
-        for (var i = 0; i < data.length; i++) {
-          if (data[i].children.length < 1) {
-            // children若为空数组，则将children设为undefined
-            data[i].children = undefined;
-          } else {
-            // children若不为空数组，则继续 递归调用 本方法
-            this.getTreeData(data[i].children);
-          }
+        },
+        methods: {
+            changeNum(value) {
+                if (value > 0) {
+                    this.formData.precision = value;
+                }
+            },
+            valueTypeChange(value) {
+                this.valueType = value;
+                if (value == 7 || value == 8 || value == 9) {
+                    this.showAddValues = true;
+                } else {
+                    this.showAddValues = false;
+                }
+            },
+            //跳转回列表页面
+            goBack() {
+                if (this.$router.history.length <= 1) {
+                    this.$router.push({path: '/home'});
+                    return false;
+                } else {
+                    this.$router.go(-1);
+                }
+            },
+            handleCancel() {
+                this.goBack();
+            },
+            handleSave() {
+                this.$refs['form'].validate((valid) => {
+                    if (valid) {
+                        if (this.attributes.length > 0) {
+                            let map = {};
+                            for (let i = 0, len = this.attributes.length; i < len; i++) {
+                                map[this.attributes[i].code] = this.attributes[i].value;
+                            }
+                            this.formData.attributes = map;
+                        }
+                        this.$store
+                            .dispatch("productProperty/save", {
+                                property: this.formData,
+                                valueList: this.attributes
+                            })
+                            .then(() => {
+                            })
+                            .catch(error => {
+                                console.log(error);
+                            });
+                        this.$message({
+                            type: "success",
+                            message: "保存成功！"
+                        });
+                        this.goBack();
+                    }
+                });
+            },
+            handleGetOne(id) {
+                if (id) {
+                    this.$store
+                        .dispatch("productProperty/getOne", {propertyId: id})
+                        .then(data => {
+                            if (data) {
+                                this.formData = data;
+                                this.valueTypeChange(this.formData.valueType);
+                                if (data.attributes != null) {
+                                    let array = [];
+                                    let map = data.attributes;
+                                    for (let key in map) {
+                                        let data = {};
+                                        data.code = key;
+                                        data.value = map[key];
+                                        array.push(data)
+                                    }
+                                    this.attributes = array;
+                                }
+                            }
+                        }).catch(error => {
+                        console.log(error);
+                    });
+                } else {
+                    this.formData = defaultData();
+                }
+            },
+            valueEdit(rows) {
+                this.formValue = {};
+                this.formValue = rows;
+                this.dialogVisible = true;
+            },
+            valueRemove(id, index, rows) {
+                this.$confirm("此操作将删除该条记录, 是否继续?", "提示", {
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消",
+                    type: "warning"
+                })
+                    .then(() => {
+                        rows.splice(index, 1);
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    });
+            },
+            handleAdd() {
+                this.dialogVisible = true;
+            },
+            valueCancel() {
+                this.dialogVisible = false;
+            },
+            valueSave() {
+                if (!this.formValue.code || !this.formValue.value) {
+                    this.$message("请填写完整属性信息！")
+                    return false;
+                }
+                this.attributes.push(this.formValue);
+                this.dialogVisible = false;
+                this.formValue = {};
+            },
+            loadTreeData() {
+                this.$store
+                    .dispatch("category/getTreeList", {filter: {categoryType: 9}})
+                    .then(data => {
+                        if (data) {
+                            this.categoryList = this.getTreeData(data.data);
+                        }
+                        this.loading = false;
+                    })
+                    .catch(error => {
+                        this.loading = false;
+                        console.log(error);
+                    });
+            },
+            getTreeData(data) {
+                // 循环遍历json数据
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].children.length < 1) {
+                        // children若为空数组，则将children设为undefined
+                        data[i].children = undefined;
+                    } else {
+                        // children若不为空数组，则继续 递归调用 本方法
+                        this.getTreeData(data[i].children);
+                    }
+                }
+                return data;
+            },
+            handleCategory(category) {
+                if (category) {
+                    let code = category[category.length - 1];
+                    this.formData.categoryCode = code;
+                }
+            },
+        },
+        created() {
+            if (this.$route.query.propertyId) {
+                this.propertyId = this.$route.query.propertyId;
+                this.handleGetOne(this.$route.query.propertyId);
+            }
+            if (this.$route.query.categoryCode) {
+                this.formData.categoryCode = this.$route.query.categoryCode;
+            }
+            if (this.$route.query.categoryName) {
+                this.formData.categoryName = this.$route.query.categoryName;
+            }
+            if (this.$route.query.categoryPath) {
+                this.formData.categoryPath = this.$route.query.categoryPath;
+            }
+            this.loadTreeData();
         }
-        return data;
-      },
-      handleCategory(category) {
-        if (category) {
-          let code = category[category.length - 1];
-          this.formData.categoryCode = code;
-        }
-      },
-    },
-    created() {
-      if (this.$route.query.propertyId) {
-        this.propertyId = this.$route.query.propertyId;
-        this.handleGetOne(this.$route.query.propertyId);
-      }
-      if (this.$route.query.categoryCode) {
-        this.formData.categoryCode = this.$route.query.categoryCode;
-      }
-      if (this.$route.query.categoryName) {
-        this.formData.categoryName = this.$route.query.categoryName;
-      }
-      if (this.$route.query.categoryPath) {
-        this.formData.categoryPath = this.$route.query.categoryPath;
-      }
-      this.loadTreeData();
     }
-  }
 </script>
