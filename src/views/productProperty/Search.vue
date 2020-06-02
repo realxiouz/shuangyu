@@ -7,7 +7,7 @@
             <el-input
               clearable
               @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.propertyName"
+              v-model="formData.name"
             ></el-input>
           </el-form-item>
         </el-col>
@@ -36,7 +36,7 @@
             return {
                 more: false,
                 formData: {
-                    propertyName: ""
+                    name: ""
                 }
             };
         },
