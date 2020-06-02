@@ -31,11 +31,10 @@ export function removeOne(configId) {
   });
 }
 
-export function getOne(filter) {
+export function getOne(configId) {
   return request({
-    url: `/qunar/policy/config/one`,
-    method: 'get',
-    params: filter
+    url: `/qunar/policy/config/one/${configId}`,
+    method: 'get'
   });
 }
 

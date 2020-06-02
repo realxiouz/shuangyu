@@ -66,8 +66,9 @@ import openPlatform from "./modules/openPlatform";
 import jobTag from "./modules/jobTag";
 import jobConfig from "./modules/jobConfig";
 import jobScheduler from "./modules/jobScheduler";
+import qunarOrderUpdateConfig from "./modules/qunarOrderUpdateConfig"
 
-import { getLoginInfo } from "@/api/staff";
+import {getLoginInfo} from "@/api/staff";
 
 Vue.use(Vuex);
 export default new Vuex.Store({
@@ -137,7 +138,8 @@ export default new Vuex.Store({
     openPlatform,
     jobTag,
     jobConfig,
-    jobScheduler
+    jobScheduler,
+    qunarOrderUpdateConfig
   },
   state: {
     loginInfo: {}
@@ -151,12 +153,12 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    getLoginInfo({ commit }, params) {
+    getLoginInfo({commit}, params) {
       return new Promise((resolve, reject) => {
-        const { firmId } = params;
+        const {firmId} = params;
         getLoginInfo(firmId)
           .then(response => {
-            const { data } = response;
+            const {data} = response;
             commit("SET_LOGIN_INFO", data);
             resolve(data);
           })

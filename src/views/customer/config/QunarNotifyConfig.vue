@@ -70,93 +70,93 @@
   </div>
 </template>
 <script>
-    export default {
-        name: "config",
-        data() {
-            return {
-                notifyData: {},
-                dialogVisible: false,
-                merchantId: "",
-                openId: "",
-                isDisable: false,
-                notifyRules: {
-                    domain: [{required: true, message: "域名不能为空", trigger: "blur"}],
-                    securityCode: [
-                        {required: true, message: "请输入安全码", trigger: "blur"}
-                    ],
-                    url: [{required: true, message: "请输入url", trigger: "blur"}]
-                },
-            };
+  export default {
+    name: "config",
+    data() {
+      return {
+        notifyData: {},
+        dialogVisible: false,
+        merchantId: "",
+        openId: "",
+        isDisable: false,
+        notifyRules: {
+          domain: [{required: true, message: "域名不能为空", trigger: "blur"}],
+          securityCode: [
+            {required: true, message: "请输入安全码", trigger: "blur"}
+          ],
+          url: [{required: true, message: "请输入url", trigger: "blur"}]
         },
-        methods: {
-            loadNotify(domain) {
-                if (!domain) {
-                    domain = this.notifyData.domain;
-                }
-                this.$store
-                    .dispatch("qunarOrderNotifyConfig/getOne", {domain: domain})
-                    .then(data => {
-                        if (data && data.domain) {
-                            this.notifyData = data;
-                            this.isDisable = true;
-                        } else {
-                            this.notifyData.domain = this.domain;
-                        }
-                        this.loading = false;
-                    })
-                    .catch(error => {
-                        this.loading = false;
-                        console.log(error);
-                    });
-            },
-            saveNotify() {
-                this.$refs["notifyForm"].validate(valid => {
-                    if (valid) {
-                        this.$store
-                            .dispatch("qunarOrderNotifyConfig/save", this.notifyData)
-                            .then(data => {
-                                if (data) {
-                                    this.isDisable = true;
-                                    this.$message({
-                                        type: "success",
-                                        message: "保存成功！"
-                                    });
-                                }
-                            })
-                            .catch(error => {
-                                console.log(error);
-                            });
-                    }
-                });
-            },
-            disabledNotify() {
-                this.isDisable = false;
-            },
-            //跳转回列表页面
-            goBack() {
-                if (this.$router.history.length <= 1) {
-                    this.$router.push({path: "/home"});
-                    return false;
-                } else {
-                    this.$router.go(-1);
-                }
-            }
-        },
-        created() {
-            this.domain = this.$route.query.domain;
-            this.openId = this.$route.query.openId;
-            this.firmId = this.$route.query.firmId;
-            if (this.firmId) {
-                this.notifyData.firmId = this.firmId;
-            }
-            if (this.openId) {
-                this.notifyData.openId = this.openId;
-            }
-            if (this.domain) {
-                this.loadNotify(this.domain);
-            }
+      };
+    },
+    methods: {
+      loadNotify(domain) {
+        if (!domain) {
+          domain = this.notifyData.domain;
+        } else {
+          this.notifyData.domain = this.domain;
         }
-    };
+        this.$store
+          .dispatch("qunarOrderNotifyConfig/getOne", {domain: domain})
+          .then(data => {
+            if (data && data.domain) {
+              this.notifyData = data;
+              this.isDisable = true;
+            }
+            this.loading = false;
+          })
+          .catch(error => {
+            this.loading = false;
+            console.log(error);
+          });
+      },
+      saveNotify() {
+        this.$refs["notifyForm"].validate(valid => {
+          if (valid) {
+            this.$store
+              .dispatch("qunarOrderNotifyConfig/save", this.notifyData)
+              .then(data => {
+                if (data) {
+                  this.isDisable = true;
+                  this.$message({
+                    type: "success",
+                    message: "保存成功！"
+                  });
+                }
+              })
+              .catch(error => {
+                console.log(error);
+              });
+          }
+        });
+      },
+      disabledNotify() {
+        this.isDisable = false;
+      },
+      //跳转回列表页面
+      goBack() {
+        if (this.$router.history.length <= 1) {
+          this.$router.push({path: "/home"});
+          return false;
+        } else {
+          this.$router.go(-1);
+        }
+      }
+    },
+    created() {
+      this.domain = this.$route.query.domain;
+      this.openId = this.$route.query.openId;
+      this.firmId = this.$route.query.firmId;
+      if (this.firmId) {
+        this.notifyData.firmId = this.firmId;
+      }
+      if (this.openId) {
+        this.notifyData.openId = this.openId;
+      }
+      if (this.domain) {
+        this.loadNotify(this.domain);
+      }
+    }
+  };
 </script>
 <style>
   #goBack {
