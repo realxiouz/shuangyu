@@ -54,6 +54,10 @@
           {
             label:"工厂",
             value:1
+          },
+          {
+            label:"政策",
+            value:2
           }
         ],
         formRules: {

@@ -10,7 +10,8 @@ import {
   getSupplierTotal,
   getTotal,
   removeOne,
-  updateOne
+  updateOne,
+  getSupplierList
 } from '@/api/firmMerchant';
 
 
@@ -134,6 +135,19 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {filter} = params;
       getList(filter)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getSupplierList({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {filter} = params;
+      getSupplierList(filter)
         .then(response => {
           const {data} = response;
           resolve(data);

@@ -348,13 +348,20 @@ export default new Router({
           component: () => import('@/views/jobConfig/List'),
           meta: {title: '调度参数', icon: 'home'}
         },
-        /*{
-          title: '调度参数编辑',
-          path: '/job/config/edit',
-          name: 'jobConfigEdit',
-          component: () => import('@/views/jobConfig/Edit'),
-          meta: {title: '调度参数编辑', icon: 'home'}
-        },*/
+        {
+          title: '调度',
+          path: '/job/scheduler/list',
+          name: 'jobSchedulerList',
+          component: () => import('@/views/jobScheduler/List'),
+          meta: {title: '调度', icon: 'home'}
+        },
+        {
+          title: '政策上传',
+          path: '/tts/policy/job/scheduler/list',
+          name: 'ttsPolicyJobSchedulerList',
+          component: () => import('@/views/ttsPolicyJobScheduler/List'),
+          meta: {title: '调度', icon: 'home'}
+        }
       ]
     },
     {

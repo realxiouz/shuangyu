@@ -7,6 +7,13 @@ export function addOne(data) {
     data
   });
 }
+export function addOneXxl(data) {
+  return request({
+    url: `job/scheduler/xxl/add/one`,
+    method: 'post',
+    data
+  });
+}
 
 export function removeOne(jobSchedulerId) {
   return request({

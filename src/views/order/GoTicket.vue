@@ -128,10 +128,8 @@
         <el-table-column prop="exTrack" label="报价类型" width="100" align="center"></el-table-column>
         <el-table-column prop="dptTime" label="出发时间" width="100" align="center"></el-table-column>
         <el-table-column prop="arrTime" label="到达时间" width="100" align="center"></el-table-column>
-        <el-table-column prop="dpt" width="150" label="出发机场三字码" align="center"></el-table-column>
-        <el-table-column prop="dptAirport" label="出发地" align="center"></el-table-column>
-        <el-table-column prop="arr" width="150" label="到达机场三字码" align="center"></el-table-column>
-        <el-table-column prop="arrAirport" label="起始地" align="center"></el-table-column>
+        <el-table-column prop="dptArrTxt" label="航段" align="center" ></el-table-column>
+        <el-table-column prop="dptArr" width="300" label="出发到达机场" align="center"></el-table-column>
         <el-table-column prop="codeShare" label="是否共享" width="80" align="center">
           <template slot-scope="scope">
             <span>{{formatBoolean(scope.row.codeShare)}}</span>
@@ -147,6 +145,12 @@
         <el-table-column prop="barePrice" label="采购价" width="80" align="center">
           <template slot-scope="scope">
             <span>{{formatAmount(scope.row.barePrice)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="arfTof" label="机建/燃油" width="80" align="center"></el-table-column>
+        <el-table-column prop="barePrice" label="采购合计" width="80" align="center">
+          <template slot-scope="scope">
+            <span>{{formatAmount(scope.row.allBarePrice)}}</span>
           </template>
         </el-table-column>
         <el-table-column width="80" label="预定" align="center" type="expand">
@@ -248,7 +252,7 @@
         expands: [],
         systemProfitAndLossValue: "", //盈亏值
         profitAndLossValue: "", //盈亏值
-        source:"",//采购渠道
+        source: "",//采购渠道
         passengerData: JSON.parse(this.$route.query.passengersInfo),
         flightInfo: {
           arr: "",
@@ -299,18 +303,19 @@
         //判断51还是蜗牛
         let amountTotal = 0;
         this.passengerData.forEach(item => {
-          amountTotal += Number(item.amount).toFixed(2);
+          amountTotal += Number(item.amount);
         });
         let _profitAndLossValue = (Number(amountTotal) - Number(this.payData.noPayAmount)).toFixed(2);
-        if (_profitAndLossValue != this.profitAndLossValue) {
+        console.info("系统计算利润"+Number(_profitAndLossValue).toFixed(2)+"手工计算利润"+Number(this.profitAndLossValue).toFixed(2));
+        if (Number(_profitAndLossValue).toFixed(2) != Number(this.profitAndLossValue).toFixed(2)) {
           this.$message({
             type: "warning",
             message: "盈亏值计算错误！"
           });
           return;
         }
-        console.info("蜗牛支付-------++++++++++--------"+this.source);
-        if(this.source=="OPEN"){
+        console.info("蜗牛支付-------++++++++++--------" + this.source);
+        if (this.source == "OPEN") {
           console.info("蜗牛支付-------------------");
           let params = {
             allPrice: this.payData.noPayAmount,
@@ -324,11 +329,11 @@
           this.openPay(params);
           this.payShow = false;
         }
-        if(this.source=="51Book"){
+        if (this.source == "51Book") {
           console.info("51支付");
           let params = {
-            orderNo:this.FOBookOrderData.liantuoOrderNo,
-            sellOrderNo:this.orderData.orderNo
+            orderNo: this.FOBookOrderData.liantuoOrderNo,
+            sellOrderNo: this.orderData.orderNo
           }
           this.foPay(params);
           this.payShow = false;
@@ -374,12 +379,12 @@
                 amountTotal += Number(item.amount);
               });
               this.systemProfitAndLossValue = 0;
-              this.systemProfitAndLossValue = (Number(amountTotal)  - Number(this.payData.noPayAmount)).toFixed(2) ;
+              this.systemProfitAndLossValue = (Number(amountTotal) - Number(this.payData.noPayAmount)).toFixed(2);
               this.$message({
                 type: "success",
                 message: "预定成功！"
               });
-              this.source="OPEN";
+              this.source = "OPEN";
               this.payShow = true;
             } else {
               this.payShow = false;
@@ -398,7 +403,7 @@
         this.$store
           .dispatch("order/placeAnFOOrder", foPlaceOrderparams)
           .then(data => {
-            console.info("51下单返回"+JSON.stringify(data)+"--CODE--"+data.code)
+            console.info("51下单返回" + JSON.stringify(data) + "--CODE--" + data.code)
             if (data.code == 0) {
               this.FOBookOrderData = data.data;
               let amountTotal = 0;
@@ -406,12 +411,12 @@
                 amountTotal += Number(item.amount);
               });
               this.systemProfitAndLossValue = 0;
-              this.systemProfitAndLossValue =(Number(amountTotal) - Number(this.FOBookOrderData.paymentInfo.settlePrice)).toFixed(2);
+              this.systemProfitAndLossValue = (Number(amountTotal) - Number(this.FOBookOrderData.paymentInfo.settlePrice)).toFixed(2);
               this.$message({
                 type: "success",
                 message: "预定成功！"
               });
-              this.source="51Book";
+              this.source = "51Book";
               this.payShow = true;
             } else {
               this.payShow = false;
@@ -548,12 +553,12 @@
                   if (item.source && item.source == "51Book") {
                     let foPlaceOrderparams = this.buildFOPlaceOrcerParams(item, row);
                     console.info("51下单了" + JSON.stringify(foPlaceOrderparams));
-                    this.source="51Book";
+                    this.source = "51Book";
                     this.placeFOOrder(foPlaceOrderparams);
                   } else {
                     console.info("蜗牛下单了")
                     let newParams = this.buildOpenPlaceOrcerParams(row, item);
-                    this.source="OPEN";
+                    this.source = "OPEN";
                     this.placeOpenOrder(newParams);
                   }
 
@@ -576,7 +581,7 @@
             console.log(error);
           });
       },
-      foPay(params){
+      foPay(params) {
         this.$store
           .dispatch("order/foPay", params)
           .then(data => {
@@ -599,7 +604,7 @@
           });
       },
       openPay(params) {
-        console.info("蜗牛下单参数"+JSON.stringify(params))
+        console.info("蜗牛下单参数" + JSON.stringify(params))
         this.$store
           .dispatch("order/openPay", params)
           .then(data => {
@@ -674,11 +679,39 @@
               var lengthData = data.length;
               for (var i = 0; i < lengthData; i++) {
                 data[i].providerName = "蜗牛";
+                data[i].arfTof = data[i].arf + "/" + data[i].tof;
+                data[i].dptArr = data[i].dptAirport+"--"+data[i].arrAirport;
+                data[i].dptArrTxt = data[i].dpt+"--"+data[i].arr;
+                data[i].allBarePrice = (Number(data[i].arf)+Number(data[i].tof)+Number(data[i].barePrice)).toFixed(2);
                 if (data[i].exTrack == "djjj" && !data[i].codeShare) {
                   var foflight = this.deepClone(data[i]);
                   foflight.providerName = "51Book";
                   foflight.exTrack = "51Book";
-                  foflight.barePrice = "--";
+                  foflight.barePrice = "获取中";
+                  foflight.arfTof = "获取中";
+                  foflight.allBarePrice = "获取中";
+                  let flightPrice51 = {
+                    arrCode: foflight.arr,
+                    depCode: foflight.dpt,
+                    dateTime: foflight.flightDate,
+                    cabin: this.orderData.flights[0].cabin,
+                    flightNo: foflight.flightNum
+                  };
+                  this.$store
+                    .dispatch("order/get51FlightPrice", flightPrice51)
+                    .then(data => {
+                      if (data.data) {
+                        if (data.data.return.returnCode == "S") {
+                          foflight.barePrice = (Number(data.data.return.flightDataList[0].seatAndPolicyList[0].ticketPrice) - Number(Number(data.data.return.flightDataList[0].seatAndPolicyList[0].ticketPrice) * Number(data.data.return.flightDataList[0].seatAndPolicyList[0].policyList[0].commisionPoint)) - Number(data.data.return.flightDataList[0].seatAndPolicyList[0].policyList[0].param1)).toFixed(2);
+                          foflight.arfTof = Number(data.data.return.flightDataList[0].adultAirportTax) + "/" + Number(data.data.return.flightDataList[0].adultFuelTax);
+                          foflight.allBarePrice = (Number(data.data.return.flightDataList[0].adultAirportTax)+Number(data.data.return.flightDataList[0].adultFuelTax)+Number(foflight.barePrice)).toFixed(2);
+                        }else{
+                          foflight.barePrice = "获取失败";
+                          foflight.arfTof = "获取失败";
+                          foflight.allBarePrice = "获取失败";
+                        }
+                      }
+                    })
                   data.push(foflight);
                 }
               }
@@ -821,7 +854,7 @@
       }
       ,
       formatAmount(amount) {
-        if (amount == "--") {
+        if (amount == "获取中"||amount == "获取失败") {
           return amount;
         }
         if (!amount) {

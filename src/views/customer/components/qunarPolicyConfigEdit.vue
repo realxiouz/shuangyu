@@ -1,8 +1,8 @@
 <template>
   <div>
     <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
-      <el-form-item label="代理商域名" prop="domain">
-        <el-input v-model="formData.domain" disabled></el-input>
+      <el-form-item label="代理商域名" prop="merchantDomain">
+        <el-input v-model="formData.merchantDomain" disabled></el-input>
       </el-form-item>
       <el-form-item label="用户名" prop="user">
         <el-input v-model="formData.user"></el-input>
@@ -34,7 +34,7 @@
             return {
                 formData: {},
                 rules: {
-                    domain: [
+                    merchantDomain: [
                         {required: true, message: "域名不能为空", trigger: "blur"}
                     ],
                     user: [
@@ -56,7 +56,7 @@
             /*表单默认加载数据*/
             defaultFormData() {
                 return {
-                    domain: '',
+                    merchantDomain: '',
                     openId: '',
                     user: '',
                     pass: '',
@@ -80,10 +80,10 @@
             initFormData() {
                 this.clearForm();
             },
-            handleGetOne(user, firmId) {
-                if (user && firmId) {
+            handleGetOne(user, merchantId) {
+                if (user && merchantId) {
                     this.$store
-                        .dispatch("qunarPolicyConfig/getOne", {user: user, firmId: firmId})
+                        .dispatch("qunarPolicyConfig/getOne", {user: user, merchantId: merchantId})
                         .then(data => {
                             this.formData = data;
                             this.dialogVisible = true;
@@ -96,17 +96,17 @@
             },
         },
         created() {
-            if (this.user && this.firmId) {
-                this.handleGetOne(this.user, this.firmId);
+            if (this.user && this.merchantId) {
+                this.handleGetOne(this.user, this.merchantId);
             }
             if (this.domain) {
-                this.formData.domain = this.domain;
+                this.formData.merchantDomain = this.domain;
             }
         },
         props: {
-            domain: String,
-            firmId: String,
+            merchantId: String,
             user: String,
+            domain: String,
         }
     };
 </script>

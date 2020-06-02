@@ -23,6 +23,18 @@
         </el-form-item>
       </el-row>
       <el-row :gutter="18">
+        <el-form-item label="调度任务:" prop="schedulerId">
+          <el-select v-model="formData.schedulerId" placeholder="请选择客户.." style="width: 100%">
+            <el-option
+              v-for="item in schedulerList"
+              :key="item.schedulerId"
+              :label="item.schedulerName"
+              :value="item.schedulerId">
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-row>
+      <el-row :gutter="18">
         <!--          <el-col :xs="36" :sm="24" :md="24" :lg="18" :xl="18">-->
         <el-form-item label="参数名称" prop="paramName" align="left">
           <el-input v-model="formData.paramName"></el-input>
@@ -249,12 +261,16 @@
         values: [],
         categoryList: [],
         openList: [],
+        schedulerList: [],
         rules: {
           merchantId: [
             {required: true, message: "客户不能为空!", trigger: "blur"}
           ],
           merchantDomain: [
             {required: true, message: "客户域名不能为空!", trigger: "blur"}
+          ],
+          schedulerId: [
+            {required: true, message: '请选择调度任务', trigger: 'blur'}
           ],
           paramName: [
             {required: true, message: "参数名称不能为空!", trigger: "blur"}
@@ -431,14 +447,28 @@
           this.formData.categoryCode = code;
         }
       },
+      //加载平台信息
+      loadSchedulers() {
+        let searchForm = {
+          tagId: 'cd17704040f048c385730e9c6b72b90a',
+          tagCode: 'policy'
+        }
+        this.$store
+          .dispatch("jobScheduler/getList", {
+            filter: searchForm
+          })
+          .then(data => {
+            this.schedulerList = data;
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }
     },
 
     created() {
-      if (this.merchantId) {
-        this.loadMerchants();
-      } else {
-        this.loadMerchants();
-      }
+      this.loadMerchants();
+      this.loadSchedulers();
       if (this.paramId) {
         this.getOne(this.paramId);
       }

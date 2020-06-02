@@ -32,12 +32,12 @@
                 :disabled="isDisable"
               >保存
               </el-button>
-              <el-button
-                @click="remove()"
-                type="danger"
-                size="mini"
-              >删除
-              </el-button>
+              <!--              <el-button-->
+              <!--                @click="remove()"-->
+              <!--                type="danger"-->
+              <!--                size="mini"-->
+              <!--              >删除-->
+              <!--              </el-button>-->
             </el-form-item>
           </el-col>
         </el-row>
