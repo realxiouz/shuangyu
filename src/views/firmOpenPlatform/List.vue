@@ -145,10 +145,10 @@
     export default {
         data() {
             return {
-                //loading: true,
-                loading:false,
-                //tableData: [],
-                tableData:test,
+                loading: true,
+                //loading:false,
+                tableData: [],
+                //tableData:test,
                 pageFlag: 1,
                 pageSize: 10,
                 lastId: null,
@@ -259,7 +259,7 @@
           }
         },
         mounted() {
-          //this.loadData();
+          this.loadData();
         },
         components: {
             firmSearch
