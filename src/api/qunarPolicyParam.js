@@ -31,10 +31,11 @@ export function getPageList(pageFlag, pageSize, searchForm) {
   });
 }
 
-export function getTotal() {
+export function getTotal(params) {
   return request({
     url: `/qunar/policy/param/total`,
-    method: "get"
+    method: "get",
+    params: params
   });
 }
 

@@ -2,27 +2,6 @@
   <div>
     <el-form ref="form" :rules="rules" :model="formData" label-width="300px" size="mini" align="center">
       <el-row :gutter="18">
-        <el-form-item label="客户" prop="merchantId">
-          <el-select
-            v-model="formData.merchantId"
-            placeholder="请选择客户.."
-            style="width: 100%"
-          >
-            <el-option
-              v-for="item in openList"
-              :key="item.merchantId"
-              :label="item.firm.firmName"
-              :value="item.merchantId"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-      </el-row>
-      <el-row>
-        <el-form-item label="客户域名" prop="merchantDomain">
-          <el-input v-model="formData.merchantDomain"></el-input>
-        </el-form-item>
-      </el-row>
-      <el-row :gutter="18">
         <el-form-item label="调度任务:" prop="schedulerId">
           <el-select v-model="formData.schedulerId" placeholder="请选择客户.." style="width: 100%">
             <el-option
@@ -428,19 +407,7 @@
         this.dialogVisible = false;
         this.formValue = {};
       },
-      //加载平台信息
-      loadMerchants() {
-        this.$store
-          .dispatch("firmMerchant/getList", {
-            filter: {merchantType: 0}
-          })
-          .then(data => {
-            this.openList = data;
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      },
+
       handleCategory(category) {
         if (category) {
           let code = category[category.length - 1];
@@ -467,7 +434,6 @@
     },
 
     created() {
-      this.loadMerchants();
       this.loadSchedulers();
       if (this.paramId) {
         this.getOne(this.paramId);

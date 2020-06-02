@@ -590,21 +590,35 @@ export default new Router({
         },
         {
           title: '去哪儿订单通知管理',
-          path: '/qunar/order/notify',
-          name: 'qunarOrderNotify',
-          component: () => import('@/views/otherOrderConfig/qunarOrderNotifyConfig/List'),
+          path: '/qunar/notify/config',
+          name: 'qunarNotifyConfig',
+          component: () => import('@/views/customer/config/QunarNotifyConfig'),
           meta: {title: '去哪儿订单通知管理', icon: 'home'}
         },
         {
+          title: '去哪儿订单接口管理',
+          path: '/qunar/order/config',
+          name: 'QunarOrderConfig',
+          component: () => import('@/views/customer/config/QunarOrderConfig'),
+          meta: {title: '去哪儿订单接口管理', icon: 'home'}
+        },
+        {
+          title: '去哪儿订单更新管理',
+          path: '/qunar/order/update/config',
+          name: 'QunarOrderUpdateConfig',
+          component: () => import('@/views/customer/config/QunarOrderUpdateConfig'),
+          meta: {title: '去哪儿订单更新管理', icon: 'home'}
+        },
+        {
           title: '政策配置管理',
-          path: '/qunarPolicyConfig/list',
+          path: '/qunar/policy/config/list',
           name: 'qunarPolicyConfig',
           component: () => import('@/views/qunarPolicyConfig/List'),
           meta: {title: '政策配置管理', icon: 'home'}
         },
         {
           title: '政策接口参数管理',
-          path: '/qunarPolicyParam/list',
+          path: '/qunar/policy/param/list',
           name: 'qunarPolicyParam',
           component: () => import('@/views/qunarPolicyParam/List'),
           meta: {title: '政策接口参数管理', icon: 'home'},
