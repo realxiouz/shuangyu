@@ -33,9 +33,9 @@
                        :disabled="scope.row.staffId?true:false"
                        @click="handleAssociate(scope.row)">关联用户
             </el-button>
-            <span v-show="scope.row.openId && '' != scope.row.openId">
+<!--            <span v-show="scope.row.openId && '' != scope.row.openId">
             <el-button type="info" size="mini" @click="handleSupplement(scope.row)">配置管理</el-button>
-                        </span>
+                        </span>-->
           </template>
         </el-table-column>
       </el-table>

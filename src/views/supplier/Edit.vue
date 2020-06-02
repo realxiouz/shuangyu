@@ -324,7 +324,6 @@
                 this.firmMerchantForm.firm = this.firmForm;
                 this.firmMerchantForm.contacts = this.contacts;
                 this.firmMerchantForm.accounts = accountList;
-
                 if (this.update) {
                     this.$store
                         .dispatch('firmMerchant/updateOne',
