@@ -85,3 +85,19 @@ export function getRootPageList(pageFlag, pageSize, filter) {
     params: filter
   });
 }
+
+export function getConfigPageList(pageFlag,pageSize,filter) {
+  return request({
+    url:`/firm/open/config/get/page/list/${pageFlag}/${pageSize}`,
+    method: `get`,
+    params: filter
+  });
+}
+
+export function getConfigTotal(filter) {
+  return request({
+    url:`/firm/open/config/get/total`,
+    method: `get`,
+    params: filter
+  });
+}

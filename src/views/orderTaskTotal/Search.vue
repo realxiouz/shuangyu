@@ -120,6 +120,16 @@
             ></el-input>
           </el-form-item>
         </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="订单号:">
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.orderNo"
+              clearable
+              style="width: 100%"
+            ></el-input>
+          </el-form-item>
+        </el-col>
       </el-form>
     </el-col>
     <el-col :xs="8" :sm="6" :md="6" :lg="4" :xl="4" class="search-tools">
@@ -146,14 +156,17 @@ export default {
     return {
       more: false,
       formData: {
-        taskNo: "",
         taskName: "",
+        sourceOrderNo: "",
         taskType: "",
         taskStatus: "",
+        fullName:"",
+        ruleType:"",
         startCreateTime: "",
         endCreateTime: "",
         name:"",
-        cardNo:""
+        cardNo:"",
+        orderNo:""
       },
       taskTypeValue: taskTypeValue,
       taskStatusValue: taskStatusValue
