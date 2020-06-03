@@ -488,14 +488,7 @@ export default new Router({
           name: 'etermConfig',
           component: () => import('@/views/etermConfig/List'),
           meta: {title: 'eterm配置信息', icon: 'home'},
-        },
-        {
-          title: '企业开放平台配置',
-          path: '/firmOpenPlatform/list',
-          name: 'firmOpenPlatformList',
-          component: () => import('@/views/firmOpenPlatform/List'),
-          meta: {title: '企业开放平台配置', icon: 'home'}
-        },
+        }
       ]
     },
     {
@@ -586,8 +579,14 @@ export default new Router({
           name: 'account',
           component: () => import('@/views/openAccount/List'),
           meta: {title: '开放平台账号', icon: 'home'}
+        },
+        {
+          title: '企业开放平台配置',
+          path: '/firm/open/platform/list',
+          name: 'firmOpenPlatformList',
+          component: () => import('@/views/firmOpenPlatform/List'),
+          meta: {title: '企业开放平台配置', icon: 'home'}
         }
-
       ]
     },
     {

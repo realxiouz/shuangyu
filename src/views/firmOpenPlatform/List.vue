@@ -15,16 +15,17 @@
         size="mini"
         :data="tableData"
       >
-        <el-table-column type="expand">
+        <el-table-column label="配置" type="expand">
           <template slot-scope="props">
-              <template v-for="(item,index) in props.row.configNavs">
-                <el-row style="padding-top: 10px;">
-                  <el-button :key="index" type="primary" @click="detailsOnClick(item.uri,props.row)">{{ item.name }}</el-button>
-                </el-row>
-              </template>
+            <el-row>
+              <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="3" v-for="(item,index) in props.row.configNavs" :v-key="index">
+                <el-button :key="index" type="primary" @click="detailsOnClick(item.uri,props.row)">{{ item.name }}
+                </el-button>
+              </el-col>
+            </el-row>
           </template>
         </el-table-column>
-        <el-table-column prop="firm" label="企业名称" :formatter="firmNameFormat" align="left" sortable width="180"></el-table-column>
+        <el-table-column prop="firm" label="企业名称" :formatter="firmNameFormat" align="left" sortable></el-table-column>
         <el-table-column prop="openName" label="开发平台名称" align="left" sortable width="180"></el-table-column>
         <!--
         <el-table-column prop="accountName" label="收款人户名" align="left" sortable width="180"></el-table-column>
@@ -65,136 +66,135 @@
 </template>
 
 <script>
-    import firmEdit from "./Edit";
-    import firmSearch from "./Search";
-    export default {
-        data() {
-            return {
-                loading: true,
-                //loading:false,
-                tableData: [],
-                //tableData:test,
-                pageFlag: 1,
-                pageSize: 10,
-                lastId: null,
-                total: 0
-            };
-        },
-        methods: {
-            /*翻前页*/
-            handlePrevClick() {
-                this.pageFlag = -1;
-                this.lastId = this.tableData[0].firmId;
-                this.loadData();
-            },
-            /*翻后页*/
-            handleNextClick() {
-                this.pageFlag = 1;
-                this.lastId = this.tableData[this.tableData.length - 1].firmId;
-                this.loadData();
-            },
-            /*加载列表*/
-            loadData(params = {}) {
-                if (this.lastId) {
-                    params.lastId = this.lastId;
-                }
-                this.$store
-                    .dispatch("firm/getConfigPageList", {
-                        pageFlag: this.pageFlag,
-                        pageSize: this.pageSize,
-                        filter: params
-                    })
-                    .then(data => {
-                        if (data) {
-                            this.tableData = data;
-                            this.loadTotal(params);
-                        }
-                        this.loading = false;
-                    })
-                    .catch(error => {
-                        this.loading = false;
-                        console.log(error);
-                    });
-            },
-            loadTotal(params) {
-                this.$store
-                    .dispatch("firm/getConfigTotal", {filter: params})
-                    .then(data => {
-                        if (data) {
-                            this.total = data.data;
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            handleSizeChange(pageSize) {
-                this.pageSize = pageSize;
-                this.loadData();
-            },
-            /*根据关键字进行搜索*/
-            handleSearch(params) {
-                const newParams = {};
-                if (params) {
-                    for (let key in params) {
-                        if (params[key]) {
-                            newParams[key] = params[key];
-                        }
-                    }
-                }
-                this.loadData(newParams);
-                this.$message({
-                    type: "success",
-                    message: "查询成功！"
-                });
-            },
-          //点击展开行中的按钮
-          detailsOnClick(uri,item){
-            this.$router.push({
-              path: uri,
-              query: {domain: item.firm.domain, openId: item.openId, firmId: item.firm.firmId}
-            });
-          },
-          //账户类型格式化值
-          accountTypeFormat(row) {
-            switch(row.accountType)
-            {
-              case 0:
-                return "现金";
-              case 1:
-                return "银行存款";
-              case 2:
-                return "支付宝";
-              case 3:
-                return "微信支付";
-              case 4:
-                return "汇付";
-              case 5:
-                return "易宝";
-            }
-          },
-          //客户类型格式化值
-          merchantTypeFormat(row){
-            switch(row.accountType)
-            {
-              case 0:
-                return "现金";
-              case 1:
-                return "银行存款";
-              case 2:
-                return "支付宝";
-            }
-          },
-          firmNameFormat(row){
-              return row.firm.firmName;
-          }
-          //企业名称
-        },
-        mounted() {
-          this.loadData();
-        },
-        components: {
-            firmSearch
+  import firmEdit from "./Edit";
+  import firmSearch from "./Search";
+
+  export default {
+    data() {
+      return {
+        loading: true,
+        //loading:false,
+        tableData: [],
+        //tableData:test,
+        pageFlag: 1,
+        pageSize: 10,
+        lastId: null,
+        total: 0
+      };
+    },
+    methods: {
+      /*翻前页*/
+      handlePrevClick() {
+        this.pageFlag = -1;
+        this.lastId = this.tableData[0].firmId;
+        this.loadData();
+      },
+      /*翻后页*/
+      handleNextClick() {
+        this.pageFlag = 1;
+        this.lastId = this.tableData[this.tableData.length - 1].firmId;
+        this.loadData();
+      },
+      /*加载列表*/
+      loadData(params = {}) {
+        if (this.lastId) {
+          params.lastId = this.lastId;
         }
-    };
+        this.$store
+          .dispatch("firm/getConfigPageList", {
+            pageFlag: this.pageFlag,
+            pageSize: this.pageSize,
+            filter: params
+          })
+          .then(data => {
+            if (data) {
+              this.tableData = data;
+              this.loadTotal(params);
+            }
+            this.loading = false;
+          })
+          .catch(error => {
+            this.loading = false;
+            console.log(error);
+          });
+      },
+      loadTotal(params) {
+        this.$store
+          .dispatch("firm/getConfigTotal", {filter: params})
+          .then(data => {
+            if (data) {
+              this.total = data.data;
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      handleSizeChange(pageSize) {
+        this.pageSize = pageSize;
+        this.loadData();
+      },
+      /*根据关键字进行搜索*/
+      handleSearch(params) {
+        const newParams = {};
+        if (params) {
+          for (let key in params) {
+            if (params[key]) {
+              newParams[key] = params[key];
+            }
+          }
+        }
+        this.loadData(newParams);
+        this.$message({
+          type: "success",
+          message: "查询成功！"
+        });
+      },
+      //点击展开行中的按钮
+      detailsOnClick(uri, item) {
+        this.$router.push({
+          path: uri,
+          query: {domain: item.firm.domain, openId: item.openId, firmId: item.firm.firmId}
+        });
+      },
+      //账户类型格式化值
+      accountTypeFormat(row) {
+        switch (row.accountType) {
+          case 0:
+            return "现金";
+          case 1:
+            return "银行存款";
+          case 2:
+            return "支付宝";
+          case 3:
+            return "微信支付";
+          case 4:
+            return "汇付";
+          case 5:
+            return "易宝";
+        }
+      },
+      //客户类型格式化值
+      merchantTypeFormat(row) {
+        switch (row.accountType) {
+          case 0:
+            return "现金";
+          case 1:
+            return "银行存款";
+          case 2:
+            return "支付宝";
+        }
+      },
+      firmNameFormat(row) {
+        return row.firm.firmName;
+      }
+      //企业名称
+    },
+    mounted() {
+      this.loadData();
+    },
+    components: {
+      firmSearch
+    }
+  };
 </script>
