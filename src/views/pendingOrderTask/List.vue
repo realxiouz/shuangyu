@@ -14,7 +14,7 @@
       </div>
     </div>
     <div class="contentBox">
-      <order-task-search @onSearch="handleSearch"></order-task-search>
+      <order-task-search @onSearch="handleSearch" ref="search"></order-task-search>
     </div>
     <div class="contentBox">
       <el-row style="margin-bottom:15px;margin-left:40px;">
@@ -179,8 +179,8 @@ export default {
       taskId: "blank",
       total: 0,
       searchParams: {},
-      otherDataSearch: {},
-      allDataSearch: {},
+      //otherDataSearch: {},
+      //allDataSearch: {},
       totalCount: 0,
       taskTypeCounts: {},
       selectTask: [],
@@ -195,8 +195,6 @@ export default {
   methods: {
     formatTaskStatus,
     formatTaskType,
-    formatTaskStatus,
-    formatTaskType,
     formatPassengers,
     formatTicketNo,
     formatFlightDate,
@@ -206,36 +204,21 @@ export default {
     handleSizeChange(size) {
       this.pageSize = size;
       this.searchParams.pageSize = this.pageSize;
-      let obj = {
-        ...this.searchParams,
-        ...this.allDataSearch,
-        ...this.otherDataSearch
-      };
-      this.searchParams = obj;
-      this.loadData(obj);
+      this.currentPage = 1;
+      this.searchParams.currentPage = this.currentPage;
+      this.loadData(this.searchParams);
     },
     prevClick(page) {
       this.currentPage = page;
       this.searchParams.pageSize = this.pageSize;
       this.searchParams.currentPage = this.currentPage;
-      let obj = {
-        ...this.searchParams,
-        ...this.allDataSearch,
-        ...this.otherDataSearch
-      };
-      this.loadData(obj);
+      this.loadData(this.searchParams);
     },
     nextClick(page) {
       this.currentPage = page;
       this.searchParams.pageSize = this.pageSize;
       this.searchParams.currentPage = this.currentPage;
-      let obj = {
-        ...this.searchParams,
-        ...this.allDataSearch,
-        ...this.otherDataSearch
-      };
-      this.searchParams = obj;
-      this.loadData(obj);
+      this.loadData(this.searchParams);
     },
     loadData(params) {
       this.$store
@@ -367,17 +350,24 @@ export default {
     // 获得待处理总的数据
     geAllData() {
       let newParams = {};
-      newParams.taskStatus = 1;
-      this.allDataSearch = newParams;
+      newParams.taskStatus = "1";
+      newParams.pageSize = this.pageSize;
+      this.currentPage = 1;
+      newParams.currentPage = this.currentPage;
+      this.searchParams = newParams;
       this.loadData(newParams);
     },
     // 根据顶部得到按钮得到数据（出票，退票，改签。。。。）
     getOtherData(taskType) {
-      let params = {};
-      params.taskType = taskType;
-      params.taskStatus = 1;
-      this.otherDataSearch = params;
-      this.loadData(params);
+      let newParams = {};
+      newParams.taskType = taskType;
+      this.$refs.search.formData = newParams;
+      newParams.taskStatus = "1";
+      newParams.pageSize = this.pageSize;
+      this.currentPage = 1;
+      newParams.currentPage = this.currentPage;
+      this.searchParams = newParams;
+      this.loadData(newParams);
     },
     selectable(row) {
       if (row.taskStatus == 3) {
@@ -413,8 +403,10 @@ export default {
         }
       }
       newParams.taskStatus = 1;
+      newParams.pageSize = this.pageSize;
+      this.currentPage = 1
+      newParams.currentPage = this.currentPage;
       this.searchParams = newParams;
-
       this.loadData(this.searchParams);
       this.$message({
         type: "success",

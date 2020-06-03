@@ -136,6 +136,8 @@ export default {
     handleSizeChange: function(size) {
       this.pageSize = size;
       this.searchParams.pageSize = this.pageSize;
+      this.currentPage = 1;
+      this.searchParams.currentPage = this.currentPage;
       this.loadData(this.searchParams);
     },
     prevClick(page) {
@@ -174,9 +176,7 @@ export default {
           filters: params
         })
         .then(data => {
-          if (data) {
             this.total = data;
-          }
         })
         .catch(error => {
           console.log(error);
@@ -246,6 +246,9 @@ export default {
             newParams[key] = params[key];
           }
         }
+        newParams.pageSize = this.pageSize;
+        this.currentPage = 1;
+        newParams.currentPage = this.currentPage;
         this.searchParams = newParams;
         this.loadData(this.searchParams);
       }

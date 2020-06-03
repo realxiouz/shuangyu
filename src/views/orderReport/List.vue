@@ -223,6 +223,8 @@ export default {
     handleSizeChange(size) {
       this.pageSize = size;
       this.searchParams.pageSize = this.pageSize;
+      this.currentPage = 1;
+      this.searchParams.currentPage = this.currentPage;
       this.loadData(this.searchParams);
     },
     prevClick(page) {
@@ -363,6 +365,8 @@ export default {
         }
         this.searchParams = newParams;
         this.searchParams.pageSize = this.pageSize;
+        this.currentPage = 1;
+        this.searchParams.currentPage = this.currentPage;
         this.loadData(this.searchParams);
         this.$message({
           type: "success",
