@@ -166,36 +166,45 @@
                 searchForm: {},
                 curNode: {},
                 tableData: [],
-                lastId: "blank",
-                pageFlag: "next",
+                pageFlag: 1,
                 pageSize: 10,
+                lastId: null,
                 total: 0
             };
         },
         methods: {
-            loadData(searchForm) {
-                this.searchForm = searchForm;
+            loadData(searchForm = {}) {
+                if (this.lastId) {
+                    searchForm.lastId = this.lastId;
+                }
                 searchForm['orderType'] = 10;
-                this.$store.dispatch("productOrder/getTotal", {filter: searchForm})
+                this.$store.dispatch("productOrder/getPageList", {
+                    pageFlag: this.pageFlag,
+                    pageSize: this.pageSize,
+                    filter: searchForm
+                })
+                    .then(data => {
+                        if (data) {
+                            this.tableData = data;
+                            this.loadTotal(searchForm);
+                        }
+                        this.loading = false;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        this.loading = false;
+                    });
+            },
+            loadTotal(searchForm) {
+                this.$store
+                    .dispatch("productOrder/getTotal", {
+                        filter: searchForm
+                    })
                     .then(data => {
                         this.total = data;
                     })
                     .catch(error => {
                         console.log(error);
-                    });
-                this.$store.dispatch("productOrder/getPageList", {
-                    pageFlag: this.pageFlag,
-                    pageSize: this.pageSize,
-                    lastId: this.lastId,
-                    filter: searchForm
-                })
-                    .then(data => {
-                        this.tableData = data;
-                        this.loading = false;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                        this.loading = false;
                     });
             },
             handleAdd() {
@@ -204,15 +213,17 @@
             handleEdit(row) {
                 this.skipDetail(row.orderNo);
             },
+            /*翻前页*/
             handlePrevClick() {
-                this.pageFlag = "prev";
+                this.pageFlag = -1;
                 this.lastId = this.tableData[0].orderNo;
-                this.loadData(this.searchForm);
+                this.loadData();
             },
+            /*翻后页*/
             handleNextClick() {
-                this.pageFlag = "next";
+                this.pageFlag = 1;
                 this.lastId = this.tableData[this.tableData.length - 1].orderNo;
-                this.loadData(this.searchForm);
+                this.loadData();
             },
             handleDelete(row) {
                 this.open(this.delete, row.orderNo, "此操作将删除该信息, 是否继续?");
@@ -229,7 +240,7 @@
                         if (1 === this.tableData.length) {
                             this.handlePrevClick();
                         } else {
-                            this.loadData({});
+                            this.loadData();
                         }
                     })
                     .catch(error => {
@@ -307,7 +318,7 @@
             }
         },
         created() {
-            this.loadData({});
+            this.loadData();
         },
         components: {
             productSearch

@@ -9,10 +9,10 @@ export function save(data) {
   });
 }
 
-export function updateOne(data) {
+export function updateOne(id, data) {
   return request({
-    url: "/product/inventory/update/one",
-    method: "post",
+    url: `/product/inventory/update/one/${id}`,
+    method: "put",
     data
   });
 }
@@ -25,9 +25,9 @@ export function removeOne(id) {
 }
 
 
-export function getPageList(pageFlag, pageSize, lastId, params) {
+export function getPageList(pageFlag, pageSize, params) {
   return request({
-    url: `/product/inventory/page/list/${pageFlag}/${pageSize}/${lastId}`,
+    url: `/product/inventory/page/list/${pageFlag}/${pageSize}`,
     method: 'get',
     params: params
   });
