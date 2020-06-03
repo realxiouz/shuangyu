@@ -8,10 +8,10 @@ export function addOne(data) {
   });
 }
 
-export function updateOne(data) {
+export function updateOne(orderNo, data) {
   return request({
-    url: '/policy/order/update/one',
-    method: 'post',
+    url: `/policy/order/update/one/${orderNo}`,
+    method: 'put',
     data
   });
 }
@@ -46,9 +46,9 @@ export function getTotal(filter) {
   });
 }
 
-export function getPageList(pageFlag, pageSize, lastId, filter) {
+export function getPageList(pageFlag, pageSize, filter) {
   return request({
-    url: `/policy/order/page/list/${pageFlag}/${pageSize}/${lastId}`,
+    url: `/policy/order/page/list/${pageFlag}/${pageSize}`,
     method: 'get',
     params: filter
   });

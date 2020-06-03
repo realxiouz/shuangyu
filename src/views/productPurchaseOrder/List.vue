@@ -121,7 +121,7 @@
         <el-table-column prop="recordName" label="制单人姓名" align="center"></el-table-column>
         <el-table-column label="明细" align="center" width="580">
           <template slot-scope="scope">
-            <el-table :data="scope.row.orderDetails"  border size="mini">
+            <el-table :data="scope.row.orderDetails" border size="mini">
               <el-table-column prop="productCode" label="商品编码" align="center"></el-table-column>
               <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
               <el-table-column prop="brandName" label="品牌" align="center"></el-table-column>
@@ -166,31 +166,46 @@
                 searchForm: {},
                 curNode: {},
                 tableData: [],
-                lastId: "blank",
-                pageFlag: "next",
+                pageFlag: 1,
                 pageSize: 10,
+                lastId: null,
                 total: 0
             };
         },
         methods: {
-            loadData(searchForm) {
+            loadData(searchForm = {}) {
+                if (this.lastId) {
+                    searchForm.lastId = this.lastId;
+                }
                 this.searchForm = searchForm;
                 searchForm['orderType'] = 2;
-                this.$store.dispatch("productOrder/getTotal", {filter: searchForm})
+                this.$store.dispatch("productOrder/getPageList", {
+                    pageFlag: this.pageFlag,
+                    pageSize: this.pageSize,
+                    filter: searchForm
+                })
+                    .then(data => {
+                        if (data) {
+                            this.tableData = data;
+                            this.loadTotal(searchForm);
+                        }
+                        this.loading = false;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        this.loading = false;
+                    });
+            },
+            loadTotal(searchForm) {
+                this.$store
+                    .dispatch("productOrder/getTotal", {
+                        filter: searchForm
+                    })
                     .then(data => {
                         this.total = data;
                     })
                     .catch(error => {
                         console.log(error);
-                    });
-                this.$store.dispatch("productOrder/getPageList", {pageFlag: this.pageFlag, pageSize: this.pageSize, lastId: this.lastId,filter: searchForm})
-                    .then(data => {
-                        this.tableData = data;
-                        this.loading = false;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                        this.loading = false;
                     });
             },
             handleAdd() {
@@ -199,18 +214,20 @@
             handleEdit(row) {
                 this.skipDetail(row.orderNo);
             },
+            /*翻前页*/
             handlePrevClick() {
-                this.pageFlag = "prev";
+                this.pageFlag = -1;
                 this.lastId = this.tableData[0].orderNo;
-                this.loadData(this.searchForm);
+                this.loadData();
             },
+            /*翻后页*/
             handleNextClick() {
-                this.pageFlag = "next";
+                this.pageFlag = 1;
                 this.lastId = this.tableData[this.tableData.length - 1].orderNo;
-                this.loadData(this.searchForm);
+                this.loadData();
             },
             handleDelete(row) {
-                this.open( this.delete, row.orderNo, "此操作将删除该信息, 是否继续?");
+                this.open(this.delete, row.orderNo, "此操作将删除该信息, 是否继续?");
             },
             delete(orderNo) {
                 this.$store
@@ -247,10 +264,10 @@
                         });
                     });
             },
-            skipDetail(orderNo){
-                this.$router.push({path: '/product/purchase/order/edit', query:{orderNo: orderNo}});
+            skipDetail(orderNo) {
+                this.$router.push({path: '/product/purchase/order/edit', query: {orderNo: orderNo}});
             },
-            initOrderType(orderType){
+            initOrderType(orderType) {
                 switch (orderType) {
                     case 1:
                         return '销售';
@@ -263,7 +280,7 @@
                     case 12:
                         return '销售变更单';
                     case 20:
-                        return  '采购入库单';
+                        return '采购入库单';
                     case 21:
                         return '采购退货单';
                     case 22:
@@ -280,7 +297,7 @@
                     return "";
                 }
             },
-            initWarehouseStatus(warehouseStatus){
+            initWarehouseStatus(warehouseStatus) {
                 switch (warehouseStatus) {
                     case 0:
                         return '未出库';
@@ -288,8 +305,8 @@
                         return '已出库';
                 }
             },
-            initPaymentStatus(paymentStatus){
-                if (0 === paymentStatus){
+            initPaymentStatus(paymentStatus) {
+                if (0 === paymentStatus) {
                     return '未付款';
                 }
                 return '已付款';
@@ -314,10 +331,12 @@
   .demo-table-expand {
     font-size: 0;
   }
+
   .demo-table-expand label {
     width: 90px;
     color: #99a9bf;
   }
+
   .demo-table-expand .el-form-item {
     margin-right: 0;
     margin-bottom: 0;
