@@ -9,10 +9,10 @@ export function save(data) {
   });
 }
 
-export function updateOne(data) {
+export function updateOne(id, data) {
   return request({
-    url: "/product/inventory/update/one",
-    method: "post",
+    url: `/product/inventory/update/one/${id}`,
+    method: "put",
     data
   });
 }

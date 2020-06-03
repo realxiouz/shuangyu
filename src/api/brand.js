@@ -11,7 +11,7 @@ export function addOne(data) {
 export function updateOne(id, data) {
   return request({
     url: `/brand/update/one/${id}`,
-    method: 'post',
+    method: 'put',
     data
   });
 }
