@@ -217,7 +217,8 @@ export default {
     handleSizeChange(size) {
       this.pageSize = size;
       this.searchParams.pageSize = this.pageSize;
-      this.searchParams.currentPage = 1;
+      this.currentPage = 1;
+      this.searchParams.currentPage = this.currentPage;
       this.loadData(this.searchParams);
     },
     prevClick(page) {
@@ -350,7 +351,8 @@ export default {
         }
       }
       newParams.pageSize = this.pageSize;
-      newParams.currentPage = 1;
+      this.currentPage = 1
+      newParams.currentPage = this.currentPage;
       this.searchParams = newParams;
       this.loadData(this.searchParams);
       this.$message({
@@ -363,7 +365,8 @@ export default {
       newParams.taskStatus = "1";
       this.$refs.search.formData = newParams;
       newParams.pageSize = this.pageSize;
-      newParams.currentPage = 1;
+      this.currentPage = 1;
+      newParams.currentPage = this.currentPage;
       this.searchParams = newParams;
       this.loadData(newParams);
     },
@@ -373,7 +376,8 @@ export default {
       newParams.taskStatus = "1";
       this.$refs.search.formData = newParams;
       newParams.pageSize = this.pageSize;
-      newParams.currentPage = 1;
+      this.currentPage = 1;
+      newParams.currentPage = this.currentPage;
       this.searchParams = newParams;
       this.loadData(newParams);
     },

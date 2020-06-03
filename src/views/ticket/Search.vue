@@ -22,7 +22,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="乘机人证件号:">
+          <el-form-item label="乘机人证件号:">
             <el-input v-model="formData.cardNo" style="width: 100%"></el-input>
           </el-form-item>
         </el-col>

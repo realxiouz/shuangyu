@@ -188,6 +188,8 @@
       handleSizeChange: function (size) {
         this.pageSize = size;
         this.searchParams.pageSize = this.pageSize;
+        this.currentPage = 1;
+        this.searchParams.currentPage = this.currentPage;
         this.loadData(this.searchParams);
       },
       prevClick(page) {
@@ -309,6 +311,8 @@
           }
           this.searchParams = newParams;
           this.searchParams.pageSize = this.pageSize;
+          this.currentPage = 1;
+          this.searchParams.currentPage = this.currentPage;
           if (exportFlag == 1) {
             this.exportOrder(this.searchParams);
           } else {
