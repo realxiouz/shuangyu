@@ -59,31 +59,57 @@
     export default {
         data() {
             return {
+                pageFlag: 1,
+                pageSize: 10,
+                lastId: null,
+                total: 0,
                 loading: true,
                 dialogVisible: false,
                 update: false,
                 searchForm: {},
                 curNode: {},
-                tableData: [],
-                lastId: "blank",
-                pageFlag: "next",
-                pageSize: 10,
-                total: 0
+                tableData: []
             };
         },
         methods: {
-            loadData(searchForm) {
-                this.searchForm = searchForm;
-                this.$store.dispatch("brand/getTotal", {filter: searchForm})
+            /*翻前页*/
+            handlePrevClick() {
+                this.pageFlag = -1;
+                this.lastId = this.tableData[0].brandId;
+                this.loadData();
+            },
+            /*翻后页*/
+            handleNextClick() {
+                this.pageFlag = 1;
+                this.lastId = this.tableData[this.tableData.length - 1].brandId;
+                this.loadData();
+            },
+            loadTotal(searchForm) {
+                this.$store
+                    .dispatch("brand/getTotal", {
+                        filter: searchForm
+                    })
                     .then(data => {
                         this.total = data;
                     })
                     .catch(error => {
                         console.log(error);
                     });
-                this.$store.dispatch("brand/getPageList", {pageFlag: this.pageFlag, pageSize: this.pageSize, lastId: this.lastId,filter: searchForm})
+            },
+            loadData(searchForm = {}) {
+                if (this.lastId) {
+                    searchForm.lastId = this.lastId;
+                }
+                this.$store.dispatch("brand/getPageList", {
+                    pageFlag: this.pageFlag,
+                    pageSize: this.pageSize,
+                    filter: searchForm
+                })
                     .then(data => {
-                        this.tableData = data;
+                        if (data) {
+                            this.tableData = data;
+                            this.loadTotal(searchForm);
+                        }
                         this.loading = false;
                     })
                     .catch(error => {
@@ -98,10 +124,9 @@
             },
             handleSave(formData) {
                 this.dialogVisible = false;
-
                 if (this.update) {
                     this.$store
-                        .dispatch("brand/updateOne", formData)
+                        .dispatch("brand/updateOne", {brandId: formData.brandId, data: formData})
                         .then(() => {
                             this.loadData({});
                         })
@@ -126,16 +151,6 @@
                 this.dialogVisible = true;
                 this.curNode = row;
                 this.update = true;
-            },
-            handlePrevClick() {
-                this.pageFlag = "prev";
-                this.lastId = this.tableData[0].brandId;
-                this.loadData(this.searchForm);
-            },
-            handleNextClick() {
-                this.pageFlag = "next";
-                this.lastId = this.tableData[this.tableData.length - 1].brandId;
-                this.loadData(this.searchForm);
             },
             handleDelete(row) {
                 this.open(
