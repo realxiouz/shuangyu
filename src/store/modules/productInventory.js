@@ -79,8 +79,8 @@ const actions = {
   },
   getPageList({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {pageFlag, pageSize, lastId, filter} = params;
-      getPageList(pageFlag, pageSize, lastId, filter)
+      const {pageFlag, pageSize, filter} = params;
+      getPageList(pageFlag, pageSize, filter)
         .then(response => {
           const {data} = response;
           resolve(data);

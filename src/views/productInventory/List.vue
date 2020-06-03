@@ -36,8 +36,8 @@
       </el-table>
       <el-pagination
         @size-change="handleSizeChange"
-        @prev-click="prevClick"
-        @next-click="nextClick"
+        @prev-click="handlePrevClick"
+        @next-click="handleNextClick"
         background
         layout="total,sizes,prev,next"
         prev-text="上一页"
@@ -56,23 +56,25 @@
         name: "list",
         data() {
             return {
-                lastId: "0",
-                pageFlag: "next",
+                pageFlag: 1,
                 pageSize: 10,
+                lastId: null,
+                total: 0,
                 dialogVisible: false,
                 loading: true,
-                tableData: [],
-                total: 0
+                tableData: []
             };
         },
         methods: {
-            prevClick() {
-                this.pageFlag = "prev";
+            /*翻前页*/
+            handlePrevClick() {
+                this.pageFlag = -1;
                 this.lastId = this.tableData[0].inventoryId;
                 this.loadData();
             },
-            nextClick() {
-                this.pageFlag = "next";
+            /*翻后页*/
+            handleNextClick() {
+                this.pageFlag = 1;
                 this.lastId = this.tableData[this.tableData.length - 1].inventoryId;
                 this.loadData();
             },
@@ -88,12 +90,14 @@
                         console.log(error);
                     });
             },
-            loadData(searchForm) {
+            loadData(searchForm = {}) {
+                if (this.lastId) {
+                    searchForm.lastId = this.lastId;
+                }
                 this.$store
                     .dispatch("productInventory/getPageList", {
                         pageFlag: this.pageFlag,
                         pageSize: this.pageSize,
-                        lastId: this.lastId,
                         filter: searchForm
                     })
                     .then(data => {
