@@ -81,6 +81,7 @@
         pageSize: 10,
         lastId: null,
         tagId: '',
+        tagCode: '',
         total: 0,
         tableData: [],
         valueTypes: [
@@ -248,8 +249,8 @@
     },
     created() {
       var params = {};
-      params.tagId = 'ee7e640c3acb409bb01acb4098dd8416';
-      params.tagCode = 'owp';
+      params.tagId = 'cd17704040f048c385730e9c6b72b90a';
+      params.tagCode = 'policy';
       this.loadData(params);
     },
   };

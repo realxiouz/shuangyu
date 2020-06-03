@@ -19,7 +19,7 @@
         </span>
       </div>
       <div style="margin-top:15px;">
-        <order-task-search @onSearch="handleSearch"></order-task-search>
+        <order-task-search @onSearch="handleSearch" ref="search"></order-task-search>
       </div>
     </div>
 
@@ -192,8 +192,8 @@ export default {
       taskId: "blank",
       total: 0,
       searchParams: {},
-      otherDataSearch: {},
-      allDataSearch: {},
+      //otherDataSearch: {},
+      //allDataSearch: {},
       totalCount: 0,
       selectTask: [],
       taskTypeCounts: {},
@@ -217,36 +217,20 @@ export default {
     handleSizeChange(size) {
       this.pageSize = size;
       this.searchParams.pageSize = this.pageSize;
-      let obj = {
-        ...this.searchParams,
-        ...this.allDataSearch,
-        ...this.otherDataSearch
-      };
-      this.searchParams = obj;
-      this.loadData(obj);
+      this.searchParams.currentPage = 1;
+      this.loadData(this.searchParams);
     },
     prevClick(page) {
       this.currentPage = page;
       this.searchParams.pageSize = this.pageSize;
       this.searchParams.currentPage = this.currentPage;
-      let obj = {
-        ...this.searchParams,
-        ...this.allDataSearch,
-        ...this.otherDataSearch
-      };
-      this.loadData(obj);
+      this.loadData(this.searchParams);
     },
     nextClick(page) {
       this.currentPage = page;
       this.searchParams.pageSize = this.pageSize;
       this.searchParams.currentPage = this.currentPage;
-      let obj = {
-        ...this.searchParams,
-        ...this.allDataSearch,
-        ...this.otherDataSearch
-      };
-      this.searchParams = obj;
-      this.loadData(obj);
+      this.loadData(this.searchParams);
     },
     // 表格
     handleSelectionChange(row) {
@@ -365,6 +349,8 @@ export default {
           }
         }
       }
+      newParams.pageSize = this.pageSize;
+      newParams.currentPage = 1;
       this.searchParams = newParams;
       this.loadData(this.searchParams);
       this.$message({
@@ -374,16 +360,22 @@ export default {
     },
     geAllData() {
       let newParams = {};
-      newParams.taskStatus = 1;
-      this.allDataSearch = newParams;
+      newParams.taskStatus = "1";
+      this.$refs.search.formData = newParams;
+      newParams.pageSize = this.pageSize;
+      newParams.currentPage = 1;
+      this.searchParams = newParams;
       this.loadData(newParams);
     },
     getOtherData(taskType) {
-      let params = {};
-      params.taskType = taskType;
-      params.taskStatus = 1;
-      this.otherDataSearch = params;
-      this.loadData(params);
+      let newParams = {};
+      newParams.taskType = taskType;
+      newParams.taskStatus = "1";
+      this.$refs.search.formData = newParams;
+      newParams.pageSize = this.pageSize;
+      newParams.currentPage = 1;
+      this.searchParams = newParams;
+      this.loadData(newParams);
     },
     goToDetail(row) {
       // console.log(row,"row")

@@ -3,7 +3,7 @@
     <el-row style="margin-bottom:15px;">
       <el-button type="warning" @click="goBack" size="mini">返回</el-button>
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
-      <param-search  @onSearch="handleSearch"></param-search>
+<!--      <param-search @onSearch="handleSearch"></param-search>-->
     </el-row>
     <el-table
       v-loading="loading"
@@ -13,6 +13,7 @@
     >
       <el-table-column prop="merchantName" label="客户" align="center" width="150"></el-table-column>
       <el-table-column prop="merchantDomain" label="客户域名" align="center" width="220"></el-table-column>
+      <el-table-column prop="schedulerName" label="调度任务" width="300" align="center"></el-table-column>
       <el-table-column prop="paramName" label="参数名称" align="center" width="220"></el-table-column>
       <el-table-column prop="paramCode" label="参数编码" align="center"></el-table-column>
       <el-table-column
@@ -64,7 +65,7 @@
 
 <script>
   import paramEdit from "./Edit.vue";
-  import paramSearch from "./Search.vue"
+  // import paramSearch from "./Search.vue"
 
   export default {
     name: "List",
@@ -96,8 +97,12 @@
         }
       },
       loadData(params = {}) {
+        if (!params) {
+          params = {};
+        }
+        params.merchantId = this.merchantId;
         this.$store
-          .dispatch("qunarPolicyParam/getTotal")
+          .dispatch("qunarPolicyParam/getTotal", params)
           .then(data => {
             this.total = data;
           })
@@ -158,6 +163,9 @@
         this.paramId = "";
       },
       handleSave(formData) {
+        formData.merchantId = this.merchantId;
+        formData.merchantDomain = this.merchantDomain;
+        debugger
         this.$store
           .dispatch("qunarPolicyParam/save", formData)
           .then(() => {
@@ -227,14 +235,12 @@
       }
     },
     created() {
-      if (this.$route.query.merchantId) {
-        this.merchantId = this.$route.query.merchantId;
-      }
+      this.merchantDomain = this.$route.query.domain;
+      this.merchantId = this.$route.query.firmId;
       this.loadData();
     },
     components: {
-      paramEdit,
-      paramSearch
+      paramEdit
     }
   };
 </script>

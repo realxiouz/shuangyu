@@ -3,11 +3,12 @@
     <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
       <el-form :model="formData" label-width="110px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="属性名称:">
+          <el-form-item label="企业名称：">
             <el-input
               clearable
               @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.name"
+              v-model="formData.firmName"
+              placeholder="请输入企业名称搜索.."
             ></el-input>
           </el-form-item>
         </el-col>
@@ -20,8 +21,7 @@
         type="primary"
         size="mini"
         @click="$emit('onSearch', formData)"
-      >查询
-      </el-button>
+      >查询</el-button>
       <el-button type="text" size="mini" @click="handleMore">
         更多
         <i :class="switchIcon"></i>
@@ -29,30 +29,31 @@
     </el-col>
   </el-row>
 </template>
+
 <script>
-    export default {
-        name: "search",
-        data() {
-            return {
-                more: false,
-                formData: {
-                    name: ""
-                }
-            };
-        },
-        computed: {
-            switchIcon() {
-                if (!this.more) {
-                    return "el-icon-arrow-down el-icon--right";
-                } else {
-                    return "el-icon-arrow-up el-icon--right";
-                }
-            }
-        },
-        methods: {
-            handleMore() {
-                this.more = !this.more;
-            }
-        }
+export default {
+  data() {
+    return {
+      more: false,
+      formData: {
+        firmName: ""
+      }
     };
+  },
+
+  computed: {
+    switchIcon() {
+      if (!this.more) {
+        return "el-icon-arrow-down el-icon--right";
+      } else {
+        return "el-icon-arrow-up el-icon--right";
+      }
+    }
+  },
+  methods: {
+    handleMore() {
+      this.more = !this.more;
+    }
+  }
+};
 </script>

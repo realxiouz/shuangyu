@@ -41,10 +41,18 @@
         </el-col> -->
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="订单状态:">
-            <el-select clearable v-model="formData.orderType" placeholder="全部" style="width: 100%">
+            <el-select clearable v-model="formData.orderType" placeholder="请选择" style="width: 100%">
               <el-option label="出票" value="10"></el-option>
               <el-option label="退票" value="20"></el-option>
               <el-option label="改签" value="30"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="是否异常:">
+            <el-select clearable v-model="formData.normal" placeholder="请选择" style="width: 100%">
+              <el-option label="正常" value="true"></el-option>
+              <el-option label="异常" value="false"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
@@ -103,6 +111,7 @@ export default {
         name: null,
         orderType: null,
         createTime: null,
+        normal: null
       };
     },
     handleClear() {

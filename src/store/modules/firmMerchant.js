@@ -6,12 +6,12 @@ import {
   getList,
   getOne,
   getPageList,
+  getSupplierList,
   getSupplierPageList,
   getSupplierTotal,
   getTotal,
   removeOne,
-  updateOne,
-  getSupplierList
+  updateOne
 } from '@/api/firmMerchant';
 
 
@@ -43,7 +43,8 @@ const actions = {
   },
   updateOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      updateOne(params)
+      const {merchantId, data} = params;
+      updateOne(merchantId, data)
         .then(response => {
           const {data} = response;
           resolve(data);

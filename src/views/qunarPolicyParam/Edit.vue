@@ -2,24 +2,15 @@
   <div>
     <el-form ref="form" :rules="rules" :model="formData" label-width="300px" size="mini" align="center">
       <el-row :gutter="18">
-        <el-form-item label="客户" prop="merchantId">
-          <el-select
-            v-model="formData.merchantId"
-            placeholder="请选择客户.."
-            style="width: 100%"
-          >
+        <el-form-item label="调度任务:" prop="schedulerId">
+          <el-select v-model="formData.schedulerId" placeholder="请选择客户.." style="width: 100%">
             <el-option
-              v-for="item in openList"
-              :key="item.merchantId"
-              :label="item.firm.firmName"
-              :value="item.merchantId"
-            ></el-option>
+              v-for="item in schedulerList"
+              :key="item.schedulerId"
+              :label="item.schedulerName"
+              :value="item.schedulerId">
+            </el-option>
           </el-select>
-        </el-form-item>
-      </el-row>
-      <el-row>
-        <el-form-item label="客户域名" prop="merchantDomain">
-          <el-input v-model="formData.merchantDomain"></el-input>
         </el-form-item>
       </el-row>
       <el-row :gutter="18">
@@ -249,12 +240,16 @@
         values: [],
         categoryList: [],
         openList: [],
+        schedulerList: [],
         rules: {
           merchantId: [
             {required: true, message: "客户不能为空!", trigger: "blur"}
           ],
           merchantDomain: [
             {required: true, message: "客户域名不能为空!", trigger: "blur"}
+          ],
+          schedulerId: [
+            {required: true, message: '请选择调度任务', trigger: 'blur'}
           ],
           paramName: [
             {required: true, message: "参数名称不能为空!", trigger: "blur"}
@@ -412,33 +407,34 @@
         this.dialogVisible = false;
         this.formValue = {};
       },
-      //加载平台信息
-      loadMerchants() {
-        this.$store
-          .dispatch("firmMerchant/getList", {
-            filter: {merchantType: 0}
-          })
-          .then(data => {
-            this.openList = data;
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      },
+
       handleCategory(category) {
         if (category) {
           let code = category[category.length - 1];
           this.formData.categoryCode = code;
         }
       },
+      //加载平台信息
+      loadSchedulers() {
+        let searchForm = {
+          tagId: 'cd17704040f048c385730e9c6b72b90a',
+          tagCode: 'policy'
+        }
+        this.$store
+          .dispatch("jobScheduler/getList", {
+            filter: searchForm
+          })
+          .then(data => {
+            this.schedulerList = data;
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }
     },
 
     created() {
-      if (this.merchantId) {
-        this.loadMerchants();
-      } else {
-        this.loadMerchants();
-      }
+      this.loadSchedulers();
       if (this.paramId) {
         this.getOne(this.paramId);
       }

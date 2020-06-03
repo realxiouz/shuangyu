@@ -1,18 +1,15 @@
 <template>
   <div>
     <el-form ref="form" :rules="rules" :model="formData" label-width="100px" size="mini">
-      <el-form-item label="客户:" prop="merchantId">
-        <el-select v-model="formData.merchantId" placeholder="请选择客户.." style="width: 100%">
+      <el-form-item label="调度任务:" prop="schedulerId">
+        <el-select v-model="formData.schedulerId" placeholder="请选择客户.." style="width: 100%">
           <el-option
-            v-for="item in merchantList"
-            :key="item.merchantId"
-            :label="item.firm.firmName"
-            :value="item.merchantId">
+            v-for="item in schedulerList"
+            :key="item.schedulerId"
+            :label="item.schedulerName"
+            :value="item.schedulerId">
           </el-option>
         </el-select>
-      </el-form-item>
-      <el-form-item label="客户域名" prop="merchantDomain">
-        <el-input v-model="formData.merchantDomain"></el-input>
       </el-form-item>
       <el-form-item label="用户名" prop="user">
         <el-input v-model="formData.user"></el-input>
@@ -42,6 +39,7 @@
       configId: '',
       merchantId: '',
       merchantDomain: '',
+      schedulerId: '',
       user: '',
       pass: '',
       ip: '',
@@ -57,12 +55,10 @@
       return {
         formData: defaultData(),
         merchantList: [],
+        schedulerList: [],
         rules: {
-          merchantId: [
-            {required: true, message: '请选择客户', trigger: 'blur'}
-          ],
-          merchantDomain: [
-            {required: true, message: '请输入客户域名', trigger: 'blur'}
+          schedulerId: [
+            {required: true, message: '请选择调度任务', trigger: 'blur'}
           ],
           user: [
             {required: true, message: '请输入用户名', trigger: 'blur'}
@@ -89,7 +85,7 @@
       },
       handleGetOne(configId) {
         this.$store
-          .dispatch("qunarPolicyConfig/getOne", {configId: configId})
+          .dispatch("qunarPolicyConfig/getOne", configId)
           .then(data => {
             this.formData = data;
             this.dialogVisible = true;
@@ -111,13 +107,17 @@
         this.paramList.splice(idx, 1);
       },
       //加载平台信息
-      loadMerchants() {
+      loadSchedulers() {
+        let searchForm = {
+          tagId: 'cd17704040f048c385730e9c6b72b90a',
+          tagCode: 'policy'
+        }
         this.$store
-          .dispatch("firmMerchant/getList", {
-            filter: {merchantType: 0}
+          .dispatch("jobScheduler/getList", {
+            filter: searchForm
           })
           .then(data => {
-            this.merchantList = data;
+            this.schedulerList = data;
           })
           .catch(error => {
             console.log(error);
@@ -125,7 +125,7 @@
       }
     },
     created() {
-      this.loadMerchants();
+      this.loadSchedulers();
       if (this.configId) {
         this.handleGetOne(this.configId);
       }

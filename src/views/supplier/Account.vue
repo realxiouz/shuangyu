@@ -7,7 +7,7 @@
       <el-table :data="accounts" @selection-change="handleSelectionChange" style="width: 100%">
         <el-table-column type="selection"></el-table-column>
         <el-table-column prop="username" label="登录账号" align="center"></el-table-column>
-        <el-table-column prop="password" label="登录密码" align="center"></el-table-column>
+        <el-table-column prop="password" label="登录密码" show-password align="center"></el-table-column>
         <el-table-column prop="remark" label="备注" align="center"></el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">

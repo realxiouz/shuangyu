@@ -305,16 +305,7 @@
                 }
             },
             addSupplierClick() {
-                //判断添加还是更新
-                let url = '';
-                if (this.update) {
-                    url = 'firmMerchant/updateOne';
-                } else {
-                    url = 'firmMerchant/addOne';
-                }
-                //需要将联系人添加为员工数据，账号信息添加为Open账号信息
                 let accountList = [];
-                //需要补充Open账号中的数据
                 this.openData.forEach(item => {
                     const _openId = this.firmForm.openId;
                     //_openId可能为空
@@ -327,26 +318,36 @@
                     item.openName = this.open.openName;
                     accountList.push(item);
                 })
-
-                //firmForm中生日日期需装换成时间戳
                 if (this.firmForm.biethDate) {
                     this.firmForm.biethDate = this.firmForm.biethDate.getTime();
                 }
+                this.firmMerchantForm.firm = this.firmForm;
+                this.firmMerchantForm.contacts = this.contacts;
+                this.firmMerchantForm.accounts = accountList;
+                if (this.update) {
+                    this.$store
+                        .dispatch('firmMerchant/updateOne',
+                            {merchantId: this.firmMerchantForm.merchantId, data: this.firmMerchantForm}
+                        )
+                        .then(() => {
+                            this.goBack();
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                } else {
+                    this.$store
+                        .dispatch('firmMerchant/addOne',
+                            this.firmMerchantForm
+                        )
+                        .then(() => {
+                            this.goBack();
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                }
 
-                //接口通过map接收数据
-                this.$store
-                    .dispatch(url, {
-                        firm: this.firmForm,
-                        firmMerchant: this.firmMerchantForm,
-                        contacts: this.contacts,
-                        accounts: accountList
-                    })
-                    .then(() => {
-                        this.goBack();
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
             },
             //跳转回列表页面
             goBack() {

@@ -386,6 +386,13 @@ export default new Router({
           component: () => import('@/views/owp/List'),
           meta: {title: 'owp工厂', icon: 'home'}
         },
+        {
+          title: '政策上传',
+          path: '/tts/policy/job/scheduler/list',
+          name: 'ttsPolicyJobSchedulerList',
+          component: () => import('@/views/ttsPolicyJobScheduler/List'),
+          meta: {title: '调度', icon: 'home'}
+        }
       ]
     },
     {
@@ -481,7 +488,14 @@ export default new Router({
           name: 'etermConfig',
           component: () => import('@/views/etermConfig/List'),
           meta: {title: 'eterm配置信息', icon: 'home'},
-        }
+        },
+        {
+          title: '企业开放平台配置',
+          path: '/firmOpenPlatform/list',
+          name: 'firmOpenPlatformList',
+          component: () => import('@/views/firmOpenPlatform/List'),
+          meta: {title: '企业开放平台配置', icon: 'home'}
+        },
       ]
     },
     {
@@ -607,21 +621,35 @@ export default new Router({
         },
         {
           title: '去哪儿订单通知管理',
-          path: '/qunar/order/notify',
-          name: 'qunarOrderNotify',
-          component: () => import('@/views/otherOrderConfig/qunarOrderNotifyConfig/List'),
+          path: '/qunar/notify/config',
+          name: 'qunarNotifyConfig',
+          component: () => import('@/views/customer/config/QunarNotifyConfig'),
           meta: {title: '去哪儿订单通知管理', icon: 'home'}
         },
         {
+          title: '去哪儿订单接口管理',
+          path: '/qunar/order/config',
+          name: 'QunarOrderConfig',
+          component: () => import('@/views/customer/config/QunarOrderConfig'),
+          meta: {title: '去哪儿订单接口管理', icon: 'home'}
+        },
+        {
+          title: '去哪儿订单更新管理',
+          path: '/qunar/order/update/config',
+          name: 'QunarOrderUpdateConfig',
+          component: () => import('@/views/customer/config/QunarOrderUpdateConfig'),
+          meta: {title: '去哪儿订单更新管理', icon: 'home'}
+        },
+        {
           title: '政策配置管理',
-          path: '/qunarPolicyConfig/list',
+          path: '/qunar/policy/config/list',
           name: 'qunarPolicyConfig',
           component: () => import('@/views/qunarPolicyConfig/List'),
           meta: {title: '政策配置管理', icon: 'home'}
         },
         {
           title: '政策接口参数管理',
-          path: '/qunarPolicyParam/list',
+          path: '/qunar/policy/param/list',
           name: 'qunarPolicyParam',
           component: () => import('@/views/qunarPolicyParam/List'),
           meta: {title: '政策接口参数管理', icon: 'home'},

@@ -1,10 +1,11 @@
 <template>
   <div class="bigBox">
-    <div class="searchBox">
-      <config-search @onSearch="handleSearch"></config-search>
-    </div>
+    <!--    <div class="searchBox">-->
+    <!--      <config-search @onSearch="handleSearch"></config-search>-->
+    <!--    </div>-->
     <div class="contentBox">
       <el-row style="margin-bottom:15px;margin-left:15px;">
+        <el-button type="warning" @click="goBack" size="mini">返回</el-button>
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table
@@ -15,7 +16,8 @@
       >
         <el-table-column prop="merchantName" label="客户" width="300" align="center"></el-table-column>
         <el-table-column prop="merchantDomain" label="客户域名" width="300" align="center"></el-table-column>
-        <el-table-column prop="configId" label="用户名" align="center"></el-table-column>
+        <el-table-column prop="schedulerName" label="调度任务" width="300" align="center"></el-table-column>
+        <el-table-column prop="user" label="用户名" align="center"></el-table-column>
         <el-table-column prop="pass" label="密码" align="center"></el-table-column>
         <el-table-column prop="ip" label="IP" align="center"></el-table-column>
         <el-table-column prop="callbackUrl" label="回调地址" align="center"></el-table-column>
@@ -88,6 +90,14 @@
           remark: ''
         };
       },
+      goBack() {
+        if (this.$router.history.length <= 1) {
+          this.$router.push({path: '/home'});
+          return false;
+        } else {
+          this.$router.go(-1);
+        }
+      },
       handleEdit(row) {
         this.dialogVisible = true;
         this.configId = row.configId;
@@ -148,12 +158,12 @@
           });
       }
       ,
-      loadTotal: function (params) {
-        if (!params || !params.apiName) {
+      loadTotal: function (params = {}) {
+        if (!params) {
           params = {};
         }
         this.$store
-          .dispatch("qunarPolicyConfig/getTotal", {filters: params})
+          .dispatch("qunarPolicyConfig/getTotal", {filter: params})
           .then(response => {
             this.total = response;
           })
@@ -162,23 +172,8 @@
           });
       }
       ,
-      //加载平台信息
-      loadMerchants() {
-        this.$store
-          .dispatch("firmMerchant/getList", {
-            filter: {merchantType: 0}
-          })
-          .then(data => {
-            this.openList = data;
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      }
-      ,
       handleAdd() {
         this.formData = defaultData();
-        this.loadMerchants();
         this.dialogVisible = true;
         this.configId = "";
       }
@@ -223,6 +218,9 @@
         if (formData.configId) {
           url = "qunarPolicyConfig/updateOne";
         }
+        debugger
+        formData.merchantId = this.merchantId;
+        formData.merchantDomain = this.merchantDomain;
         this.$store
           .dispatch(url, formData)
           .then(() => {
@@ -239,9 +237,7 @@
       ,
       handleSearch(params = {}) {
         this.deleteForSearch = true;
-        if (!params.merchantId) {
-          params = {};
-        }
+        params.merchantId = this.merchantId;
         this.loadData(params);
         this.loadTotal(params);
       }
@@ -284,11 +280,12 @@
       }
     },
     created() {
+      this.merchantDomain = this.$route.query.domain;
+      this.merchantId = this.$route.query.firmId;
       this.handleSearch();
     },
     components: {
-      configEdit,
-      configSearch
+      configEdit
     }
   };
 </script>
