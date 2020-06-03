@@ -132,14 +132,14 @@
           data = this.formData;
         } else {
           let xxlJobGroup = {
-            appName: 'owp-provider',
+            appName: 'wop-provider',
             addressType:0,
-            title:'官网执行器'
+            title:'wop执行器'
           };
           let xxlJobInfo = {
             jobDesc: this.formData.schedulerName,
             jobCron:this.formData.cron,
-            executorHandler:'owpStartJobHandler'
+            executorHandler:'wopStartJobHandler'
           };
           data.xxlJobInfo = xxlJobInfo;
           data.xxlJobGroup = xxlJobGroup;
