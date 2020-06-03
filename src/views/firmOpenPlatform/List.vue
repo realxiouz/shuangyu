@@ -17,21 +17,16 @@
       >
         <el-table-column type="expand">
           <template slot-scope="props">
-              <!--
-              <el-form-item label="企业名称">
-                <span>{{ props.row.firmName }}</span>
-                <el-button type="primary" @click="detailsOnClick('http://www.baidu.com')">点击跳转</el-button>
-              </el-form-item>
-              -->
-            <el-row :gutter="10">
-              <template v-for="item in props.row.configNavs">
-                <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1">
-                  <el-button :key="item" type="primary" @click="detailsOnClick(item.uri)">{{ item.name }}</el-button>
-                </el-col>
+              <template v-for="(item,index) in props.row.configNavs">
+                <el-row style="padding-top: 10px;">
+                  <el-button :key="index" type="primary" @click="detailsOnClick(item.uri,props.row)">{{ item.name }}</el-button>
+                </el-row>
               </template>
-            </el-row>
           </template>
         </el-table-column>
+        <el-table-column prop="firm" label="企业名称" :formatter="firmNameFormat" align="left" sortable width="180"></el-table-column>
+        <el-table-column prop="openName" label="开发平台名称" align="left" sortable width="180"></el-table-column>
+        <!--
         <el-table-column prop="accountName" label="收款人户名" align="left" sortable width="180"></el-table-column>
         <el-table-column prop="accountType" label="资金账号类型" :formatter="accountTypeFormat" align="center" width="100"></el-table-column>
         <el-table-column prop="bankAccount" label="银行账号" align="center" width="180"></el-table-column>
@@ -52,6 +47,7 @@
         <el-table-column prop="staffName" label="负责人姓名" align="center" width="180"></el-table-column>
         <el-table-column prop="taxNo" label="税务登记号" align="center" width="180"></el-table-column>
         <el-table-column prop="taxRate" label="税率" align="center" width="180"></el-table-column>
+        -->
       </el-table>
       <el-pagination
         background
@@ -71,77 +67,6 @@
 <script>
     import firmEdit from "./Edit";
     import firmSearch from "./Search";
-    var test = [
-      {
-        "accountName": "string",
-        "accountType": 0,
-        "bankAccount": "string",
-        "bankName": "string",
-        "categoryCode": "string",
-        "categoryName": "string",
-        "configNavs": [
-          {
-            "name": "string",
-            "uri": "string"
-          },
-          {
-            "name": "string1",
-            "uri": "string1"
-          }
-        ],
-        "configUri": "string",
-        "domain": "string",
-        "financeEmail": "string",
-        "financeName": "string",
-        "financePhone": "string",
-        "firm": {
-          "adcode": "string",
-          "address": "string",
-          "adname": "string",
-          "birthDate": 0,
-          "domain": "string",
-          "email": "string",
-          "firmCode": "string",
-          "firmId": "string",
-          "firmName": "string",
-          "firmType": 0,
-          "fullName": "string",
-          "gender": 0,
-          "hasChildren": true,
-          "level": 0,
-          "location": {},
-          "officialUrl": "string",
-          "openId": "string",
-          "path": "string",
-          "phone": "string",
-          "pid": "string",
-          "roles": [
-            "string"
-          ],
-          "tags": [
-            "string"
-          ]
-        },
-        "firmId": "string",
-        "merchantDomain": "string",
-        "merchantId": "string",
-        "merchantType": 0,
-        "openCode": "string",
-        "openId": "string",
-        "openName": "string",
-        "paymentType": "string",
-        "priority": 0,
-        "remark": "string",
-        "sharedStaffs": [
-          "string"
-        ],
-        "sort": 0,
-        "staffId": "string",
-        "staffName": "string",
-        "taxNo": "string",
-        "taxRate": 0
-      }
-    ];
     export default {
         data() {
             return {
@@ -224,8 +149,11 @@
                 });
             },
           //点击展开行中的按钮
-          detailsOnClick(url){
-              window.open(url);
+          detailsOnClick(uri,item){
+            this.$router.push({
+              path: uri,
+              query: {domain: item.firm.domain, openId: item.openId, firmId: item.firm.firmId}
+            });
           },
           //账户类型格式化值
           accountTypeFormat(row) {
@@ -256,7 +184,11 @@
               case 2:
                 return "支付宝";
             }
+          },
+          firmNameFormat(row){
+              return row.firm.firmName;
           }
+          //企业名称
         },
         mounted() {
           this.loadData();
