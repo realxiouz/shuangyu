@@ -3,12 +3,22 @@
     <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
       <el-form :model="formData" label-width="110px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="任务名称:">
+          <el-form-item label="操作员:">
             <el-input
-              clearable
-              v-model="formData.taskName"
               @keyup.enter.native="$emit('onSearch', formData)"
-              placeholder="请输入任务名称搜索..."
+              v-model="formData.fullName"
+              style="width: 100%"
+              clearable
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="订单号:">
+            <el-input
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.orderNo"
+              clearable
+              style="width: 100%"
             ></el-input>
           </el-form-item>
         </el-col>
@@ -23,45 +33,6 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="任务类型:">
-            <el-select style="width: 100%;" clearable v-model="formData.taskType" placeholder="请选择">
-              <el-option
-                v-for="item in taskTypeValue"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="任务状态:">
-            <el-select
-              style="width: 100%;"
-              clearable
-              v-model="formData.taskStatus"
-              placeholder="请选择"
-            >
-              <el-option
-                v-for="item in taskStatusValue"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="操作员:">
-            <el-input
-              @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.fullName"
-              style="width: 100%"
-              clearable
-            ></el-input>
-          </el-form-item>
-        </el-col>
-         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="规则类型:">
             <el-select
               style="width: 100%;"
@@ -101,6 +72,45 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="任务类型:">
+            <el-select style="width: 100%;" clearable v-model="formData.taskType" placeholder="请选择">
+              <el-option
+                v-for="item in taskTypeValue"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="任务状态:">
+            <el-select
+              style="width: 100%;"
+              clearable
+              v-model="formData.taskStatus"
+              placeholder="请选择"
+            >
+              <el-option
+                v-for="item in taskStatusValue"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="任务名称:">
+            <el-input
+              clearable
+              v-model="formData.taskName"
+              @keyup.enter.native="$emit('onSearch', formData)"
+              placeholder="请输入任务名称搜索..."
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="乘机人:">
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
@@ -120,16 +130,7 @@
             ></el-input>
           </el-form-item>
         </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="订单号:">
-            <el-input
-              @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.orderNo"
-              clearable
-              style="width: 100%"
-            ></el-input>
-          </el-form-item>
-        </el-col>
+
       </el-form>
     </el-col>
     <el-col :xs="8" :sm="6" :md="6" :lg="4" :xl="4" class="search-tools">
