@@ -348,12 +348,43 @@ export default new Router({
           component: () => import('@/views/jobConfig/List'),
           meta: {title: '调度参数', icon: 'home'}
         },
-        {
+       /* {
           title: '调度',
           path: '/job/scheduler/list',
           name: 'jobSchedulerList',
           component: () => import('@/views/jobScheduler/List'),
           meta: {title: '调度', icon: 'home'}
+        },*/
+      ]
+    },
+    {
+      title: '工厂管理',
+      path: '/factory',
+      name: 'factory',
+      component: Layout,
+      redirect: '/factory',
+      meta: {title: '工厂管理', icon: 'home'},
+      children: [
+        {
+          title: 'tgq工厂',
+          path: '/tgq/list',
+          name: 'tgqList',
+          component: () => import('@/views/tgq/List'),
+          meta: {title: 'tgq工厂', icon: 'home'}
+        },
+        {
+          title: 'wop工厂',
+          path: '/wop/list',
+          name: 'wopList',
+          component: () => import('@/views/wop/List'),
+          meta: {title: 'wop工厂', icon: 'home'}
+        },
+        {
+          title: 'owp工厂',
+          path: '/owp/list',
+          name: 'owpList',
+          component: () => import('@/views/owp/List'),
+          meta: {title: 'owp工厂', icon: 'home'}
         },
         {
           title: '政策上传',
