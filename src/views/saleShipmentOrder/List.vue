@@ -177,7 +177,6 @@
                 if (this.lastId) {
                     searchForm.lastId = this.lastId;
                 }
-                this.searchForm = searchForm;
                 searchForm['orderType'] = 10;
                 this.$store.dispatch("productOrder/getPageList", {
                     pageFlag: this.pageFlag,
@@ -241,7 +240,7 @@
                         if (1 === this.tableData.length) {
                             this.handlePrevClick();
                         } else {
-                            this.loadData({});
+                            this.loadData();
                         }
                     })
                     .catch(error => {
@@ -319,7 +318,7 @@
             }
         },
         created() {
-            this.loadData({});
+            this.loadData();
         },
         components: {
             productSearch
