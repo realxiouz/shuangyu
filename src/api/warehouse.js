@@ -32,10 +32,10 @@ export function addOne(data) {
   });
 }
 
-export function updateOne(data) {
+export function updateOne(id, data) {
   return request({
-    url: '/warehouse/update/one',
-    method: 'post',
+    url: `/warehouse/update/one/${id}`,
+    method: 'put',
     data
   });
 }
