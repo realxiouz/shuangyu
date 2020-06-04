@@ -28,12 +28,12 @@
           </template>
         </el-table-column>
       </el-table>
-
       <el-pagination
+        @size-change="handleSizeChange"
         @prev-click="handlePrevClick"
         @next-click="handleNextClick"
         background
-        layout="total,prev,next"
+        layout="total,sizes,prev,next"
         prev-text="上一页"
         next-text="下一页"
         :page-size="pageSize"
@@ -82,6 +82,10 @@
             handleNextClick() {
                 this.pageFlag = 1;
                 this.lastId = this.tableData[this.tableData.length - 1].brandId;
+                this.loadData();
+            },
+            handleSizeChange(pageSize) {
+                this.pageSize = pageSize;
                 this.loadData();
             },
             loadTotal(searchForm) {

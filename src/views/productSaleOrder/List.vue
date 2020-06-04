@@ -144,10 +144,11 @@
         </el-table-column>
       </el-table>
       <el-pagination
+        @size-change="handleSizeChange"
         @prev-click="handlePrevClick"
         @next-click="handleNextClick"
         background
-        layout="total,prev,next"
+        layout="total,sizes,prev,next"
         prev-text="上一页"
         next-text="下一页"
         :page-size="pageSize"
@@ -174,6 +175,22 @@
             };
         },
         methods: {
+            /*翻前页*/
+            handlePrevClick() {
+                this.pageFlag = -1;
+                this.lastId = this.tableData[0].orderNo;
+                this.loadData();
+            },
+            /*翻后页*/
+            handleNextClick() {
+                this.pageFlag = 1;
+                this.lastId = this.tableData[this.tableData.length - 1].orderNo;
+                this.loadData();
+            },
+            handleSizeChange(pageSize) {
+                this.pageSize = pageSize;
+                this.loadData();
+            },
             loadData(searchForm = {}) {
                 if (this.lastId) {
                     searchForm.lastId = this.lastId;
@@ -213,18 +230,6 @@
             },
             handleEdit(row) {
                 this.skipDetail(row.orderNo);
-            },
-            /*翻前页*/
-            handlePrevClick() {
-                this.pageFlag = -1;
-                this.lastId = this.tableData[0].orderNo;
-                this.loadData();
-            },
-            /*翻后页*/
-            handleNextClick() {
-                this.pageFlag = 1;
-                this.lastId = this.tableData[this.tableData.length - 1].orderNo;
-                this.loadData();
             },
             handleDelete(row) {
                 this.open(this.delete, row.orderNo, "此操作将删除该信息, 是否继续?");
