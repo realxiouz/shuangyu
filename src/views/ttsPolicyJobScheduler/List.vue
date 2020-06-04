@@ -29,6 +29,8 @@
         <el-table-column prop="remark" label="备注" align="center"></el-table-column>
         <el-table-column label="操作" fixed="right" align="center" width="330">
           <template slot-scope="scope">
+            <el-button @click="start(scope.row)" type="primary" size="mini">启动</el-button>
+            <el-button @click="stop(scope.row)" type="primary" size="mini">停止</el-button>
             <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
             <el-button @click="removeOne(scope.row.schedulerId)" type="danger" size="mini">删除</el-button>
           </template>
@@ -140,7 +142,9 @@
       jobSchedulerEdit
     },
     methods: {
-      loadData(params) {
+      loadData(params = {}) {
+        params.tagId = 'cd17704040f048c385730e9c6b72b90a';
+        params.tagCode = 'policy';
         if (this.lastId) {
           params.lastId = this.lastId;
         }
@@ -169,6 +173,34 @@
             if (data) {
               this.total = data.data;
             }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      start(row) {
+        this.$store
+          .dispatch("xxlJob/trigger", {
+            jobId: row.jobInfoId,
+            filter: {
+              executorParam: row.jobInfoId
+            }
+          })
+          .then(() => {
+            this.$message({
+              type: "success",
+              message: "启动成功"
+            });
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      stop(row) {
+        this.$store
+          .dispatch("xxlJob/stop", {jobId: row.jobInfoId})
+          .then(() => {
+            this.loadData();
           })
           .catch(error => {
             console.log(error);
@@ -248,9 +280,6 @@
       }
     },
     created() {
-      var params = {};
-      params.tagId = 'cd17704040f048c385730e9c6b72b90a';
-      params.tagCode = 'policy';
       this.loadData(params);
     },
   };
