@@ -38,16 +38,17 @@
         </el-table-column>
       </el-table>
       <el-pagination
+        @size-change="handleSizeChange"
+        @prev-click="handlePrevClick"
+        @next-click="handleNextClick"
         background
-        layout="total,prev,next"
+        layout="total,sizes,prev,next"
         prev-text="上一页"
         next-text="下一页"
         :page-size="pageSize"
         :total="total"
-        @size-change="handleSizeChange"
-        @prev-click="handlePrevClick"
-        @next-click="handleNextClick"
       ></el-pagination>
+
       <!-- 表单对话框 -->
       <el-dialog
         title="添加企业"

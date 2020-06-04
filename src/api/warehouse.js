@@ -1,5 +1,29 @@
 import request from '@/utils/request';
 
+export function getRootPageList(pageFlag, pageSize, filter) {
+  return request({
+    url: `/warehouse/get/root/list/page/${pageFlag}/${pageSize}`,
+    method: 'get',
+    params: filter
+  });
+}
+
+export function getRootTotal(params) {
+  return request({
+    url: `/warehouse/get/root/total`,
+    method: "get",
+    params: params
+  });
+}
+
+export function getAsyncTreeList(pid, filter) {
+  return request({
+    url: `/warehouse/get/async/tree/list/${pid}`,
+    method: `get`,
+    params: filter
+  });
+}
+
 export function addOne(data) {
   return request({
     url: '/warehouse/add/one',
