@@ -95,7 +95,8 @@
       },
       handleClose(idx) {
         this.paramList.splice(idx, 1);
-      },
+      }
+    },
     created() {
       if (this.configId) {
         this.handleGetOne(this.configId);
