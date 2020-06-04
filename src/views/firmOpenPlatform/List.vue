@@ -18,9 +18,8 @@
         <el-table-column label="配置" type="expand">
           <template slot-scope="props">
             <el-row>
-              <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="3" v-for="(item,index) in props.row.configNavs" :v-key="index">
-                <el-button :key="index" type="primary" @click="detailsOnClick(item.uri,props.row)">{{ item.name }}
-                </el-button>
+              <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="3" v-for="(item,index) in props.row.configNavs" :key="index">
+                <el-button  type="primary" @click="detailsOnClick(item.uri,props.row)">{{ item.name }}</el-button>
               </el-col>
             </el-row>
           </template>
