@@ -79,8 +79,8 @@ const actions = {
   },
   removeOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {warehouseCode} = params;
-      removeOne(warehouseCode)
+      const {warehouseId} = params;
+      removeOne(warehouseId)
         .then(response => {
           resolve(response);
         })

@@ -40,9 +40,9 @@ export function updateOne(id, data) {
   });
 }
 
-export function removeOne(warehouseCode) {
+export function removeOne(warehouseId) {
   return request({
-    url: `/warehouse/remove/one/${warehouseCode}`,
+    url: `/warehouse/remove/one/${warehouseId}`,
     method: 'delete'
   });
 }

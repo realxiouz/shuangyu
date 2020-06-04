@@ -229,15 +229,15 @@
             handleDelete(index, row) {
                 this.open(
                     this.remove,
-                    row.warehouseCode,
+                    row.warehouseId,
                     "此操作将删除该仓库信息及所有子仓库信息, 是否继续?"
                 );
             }
             ,
             /*删除企业数据*/
-            remove(params) {
+            remove(warehouseId) {
                 this.$store
-                    .dispatch("warehouse/removeOne", {warehouseCode: params})
+                    .dispatch("warehouse/removeOne", {warehouseId: warehouseId})
                     .then(() => {
                         this.loadData(this.searchForm);
                     })
