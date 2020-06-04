@@ -56,8 +56,8 @@
         </el-table>
         <el-pagination
           @size-change="handleSizeChange"
-          @prev-click="prevClick"
-          @next-click="nextClick"
+          @prev-click="handlePrevClick"
+          @next-click="handleNextClick"
           background
           layout="total,sizes,prev,next"
           prev-text="上一页"
@@ -85,15 +85,31 @@
                     children: "children",
                     hasChildren: "xxx"
                 },
-                lastId: "0",
-                pageFlag: "next",
-                pageSize: 10,
                 dialogVisible: true,
                 propertyId: "",
+                pageFlag: 1,
+                pageSize: 10,
+                lastId: null,
                 total: 0
             };
         },
         methods: {
+            /*翻前页*/
+            handlePrevClick() {
+                this.pageFlag = -1;
+                this.lastId = this.tableData[0].propertyId;
+                this.loadData();
+            },
+            /*翻后页*/
+            handleNextClick() {
+                this.pageFlag = 1;
+                this.lastId = this.tableData[this.tableData.length - 1].propertyId;
+                this.loadData();
+            },
+            handleSizeChange(pageSize) {
+                this.pageSize = pageSize;
+                this.loadData();
+            },
             /*加载类别树*/
             loadTreeData() {
                 this.$store
@@ -115,18 +131,7 @@
                 this.curNode = data;
                 let searchForm = {};
                 searchForm.categoryCode = data.categoryCode;
-                this.lastId = '0';
                 this.loadData(searchForm);
-            },
-            prevClick() {
-                this.pageFlag = "prev";
-                this.lastId = this.tableData[0].propertyId;
-                this.loadData();
-            },
-            nextClick() {
-                this.pageFlag = "next";
-                this.lastId = this.tableData[this.tableData.length - 1].propertyId;
-                this.loadData();
             },
             loadTotal(searchForm) {
                 this.$store
@@ -140,12 +145,14 @@
                         console.log(error);
                     });
             },
-            loadData(searchForm) {
+            loadData(searchForm = {}) {
+                if (this.lastId) {
+                    searchForm.lastId = this.lastId;
+                }
                 this.$store
                     .dispatch("productProperty/getPageList", {
                         pageFlag: this.pageFlag,
                         pageSize: this.pageSize,
-                        lastId: this.lastId,
                         filter: searchForm
                     })
                     .then(data => {
@@ -202,10 +209,6 @@
                         console.error(err);
                     });
             },
-            handleSizeChange(pageSize) {
-                this.pageSize = pageSize;
-                this.loadData();
-            },
             handleSearch(params) {
                 const newParams = {};
                 if (params) {
@@ -214,9 +217,6 @@
                             newParams[key] = params[key];
                         }
                     }
-                }
-                if (Object.keys(newParams).length == 0) {
-                    this.lastId = 0;
                 }
                 this.loadData(newParams);
                 this.$message({

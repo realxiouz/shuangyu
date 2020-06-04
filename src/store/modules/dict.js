@@ -1,4 +1,4 @@
-import {addOne,updateOne,removeOne,getOne,getList,getTotal,getPageList} from '@/api/dict';
+import {addOne, getList, getOne, getPageList, getTotal, removeOne, updateOne} from '@/api/dict';
 
 const actions = {
   addOne({commit}, params) {
@@ -14,9 +14,11 @@ const actions = {
   },
   updateOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      updateOne(params)
+      const {dictId, data} = params;
+      updateOne(dictId, data)
         .then(response => {
-          resolve(response);
+          const {data} = response;
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -52,7 +54,8 @@ const actions = {
       const {filter} = params;
       getTotal(filter)
         .then(response => {
-          resolve(response);
+          const {data} = response;
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -73,10 +76,11 @@ const actions = {
   },
   getPageList({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {pageFlag, pageSize, lastId, filter} = params;
-      getPageList(pageFlag, pageSize, lastId, filter)
+      const {pageFlag, pageSize, filter} = params;
+      getPageList(pageFlag, pageSize, filter)
         .then(response => {
-          resolve(response);
+          const {data} = response;
+          resolve(data);
         })
         .catch(error => {
           reject(error);

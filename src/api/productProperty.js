@@ -17,9 +17,9 @@ export function removeOne(id) {
 }
 
 
-export function getPageList(pageFlag, pageSize, lastId, params) {
+export function getPageList(pageFlag, pageSize, params) {
   return request({
-    url: `/product/property/page/list/${pageFlag}/${pageSize}/${lastId}`,
+    url: `/product/property/page/list/${pageFlag}/${pageSize}`,
     method: 'get',
     params: params
   });

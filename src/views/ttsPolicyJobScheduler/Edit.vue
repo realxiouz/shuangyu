@@ -132,14 +132,14 @@
           data = this.formData;
         } else {
           let xxlJobGroup = {
-            appName: 'owp-provider',
+            appName: 'qunar-tts-provider',
             addressType: 0,
-            title: '官网执行器'
+            title: '去哪儿TTS'
           };
           let xxlJobInfo = {
             jobDesc: this.formData.schedulerName,
             jobCron: this.formData.cron,
-            executorHandler: 'owpStartJobHandler'
+            executorHandler: 'uploadPolicys'
           };
           data.xxlJobInfo = xxlJobInfo;
           data.xxlJobGroup = xxlJobGroup;

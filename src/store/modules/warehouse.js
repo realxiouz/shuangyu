@@ -1,11 +1,63 @@
-import {addOne,updateOne,removeOne,getOne,getList,getTreeList,getTotal,getPageList} from '@/api/warehouse';
+import {
+  addOne,
+  getAsyncTreeList,
+  getList,
+  getOne,
+  getPageList,
+  getRootPageList,
+  getRootTotal,
+  getTotal,
+  getTreeList,
+  removeOne,
+  updateOne
+} from '@/api/warehouse';
 
 const actions = {
+  getRootPageList({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {pageFlag, pageSize, filter} = params;
+      getRootPageList(pageFlag, pageSize, filter)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getAsyncTreeList({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {pid, filter} = params;
+      getAsyncTreeList(pid, filter)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getRootTotal({commit}, params) {
+    const {filter} = params;
+    return new Promise((resolve, reject) => {
+      getRootTotal(filter)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
   addOne({commit}, params) {
     return new Promise((resolve, reject) => {
       addOne(params)
         .then(response => {
-          resolve(response);
+          const {data} = response;
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -14,9 +66,11 @@ const actions = {
   },
   updateOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      updateOne(params)
+      const {id, data} = params;
+      updateOne(id, data)
         .then(response => {
-          resolve(response);
+          const {data} = response;
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -25,8 +79,8 @@ const actions = {
   },
   removeOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {warehouseCode} = params;
-      removeOne(warehouseCode)
+      const {warehouseId} = params;
+      removeOne(warehouseId)
         .then(response => {
           resolve(response);
         })

@@ -1,5 +1,29 @@
 import request from '@/utils/request';
 
+export function getRootPageList(pageFlag, pageSize, filter) {
+  return request({
+    url: `/warehouse/get/root/list/page/${pageFlag}/${pageSize}`,
+    method: 'get',
+    params: filter
+  });
+}
+
+export function getRootTotal(params) {
+  return request({
+    url: `/warehouse/get/root/total`,
+    method: "get",
+    params: params
+  });
+}
+
+export function getAsyncTreeList(pid, filter) {
+  return request({
+    url: `/warehouse/get/async/tree/list/${pid}`,
+    method: `get`,
+    params: filter
+  });
+}
+
 export function addOne(data) {
   return request({
     url: '/warehouse/add/one',
@@ -8,17 +32,17 @@ export function addOne(data) {
   });
 }
 
-export function updateOne(data) {
+export function updateOne(id, data) {
   return request({
-    url: '/warehouse/update/one',
-    method: 'post',
+    url: `/warehouse/update/one/${id}`,
+    method: 'put',
     data
   });
 }
 
-export function removeOne(warehouseCode) {
+export function removeOne(warehouseId) {
   return request({
-    url: `/warehouse/remove/one/${warehouseCode}`,
+    url: `/warehouse/remove/one/${warehouseId}`,
     method: 'delete'
   });
 }
