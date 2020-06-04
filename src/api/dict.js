@@ -8,10 +8,10 @@ export function addOne(data) {
   });
 }
 
-export function updateOne(data) {
+export function updateOne(id, data) {
   return request({
-    url: '/firm/dict/update/one',
-    method: 'post',
+    url: `/firm/dict/update/one/${id}`,
+    method: 'put',
     data
   });
 }
@@ -46,9 +46,9 @@ export function getTotal(filter) {
   });
 }
 
-export function getPageList(pageFlag, pageSize, lastId, filter) {
+export function getPageList(pageFlag, pageSize, filter) {
   return request({
-    url: `/firm/dict/page/list/${pageFlag}/${pageSize}/${lastId}`,
+    url: `/firm/dict/page/list/${pageFlag}/${pageSize}`,
     method: 'get',
     params: filter
   });
