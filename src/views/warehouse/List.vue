@@ -11,7 +11,7 @@
         v-loading="loading"
         size="mini"
         :data="tableData"
-        row-key="code"
+        row-key="warehouseId"
         :load="loadChildren"
         lazy
         :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
@@ -77,7 +77,12 @@
                 pageFlag: 1,
                 pageSize: 10,
                 lastId: null,
-                total: 0
+                total: 0,
+                uploadData: {
+                    tree: null,
+                    treeNode: null,
+                    resolve: null
+                }
             };
         },
         methods: {
@@ -190,7 +195,7 @@
                         //如果添加的顶级企业信息，对某些属性进行初始化
                         formData.level = 0;
                     } else {
-                        formData.pid = this.curNode.warehouseCode;
+                        formData.pid = this.curNode.warehouseId;
                         formData.level = this.curNode.level + 1;
                     }
 
