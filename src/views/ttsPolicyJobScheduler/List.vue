@@ -142,7 +142,9 @@
       jobSchedulerEdit
     },
     methods: {
-      loadData(params = {}) {
+      loadData() {
+        let params = {};
+        this.loading = false;
         params.tagId = 'cd17704040f048c385730e9c6b72b90a';
         params.tagCode = 'policy';
         if (this.lastId) {
@@ -159,10 +161,8 @@
               this.tableData = data.data;
               this.loadTotal(params);
             }
-            this.loading = false;
           })
           .catch(error => {
-            this.loading = false;
             console.log(error);
           });
       },
@@ -280,7 +280,7 @@
       }
     },
     created() {
-      this.loadData(params);
+      this.loadData();
     },
   };
 </script>

@@ -348,13 +348,13 @@ export default new Router({
           component: () => import('@/views/jobConfig/List'),
           meta: {title: '调度参数', icon: 'home'}
         },
-       /* {
-          title: '调度',
-          path: '/job/scheduler/list',
-          name: 'jobSchedulerList',
-          component: () => import('@/views/jobScheduler/List'),
-          meta: {title: '调度', icon: 'home'}
-        },*/
+        /* {
+           title: '调度',
+           path: '/job/scheduler/list',
+           name: 'jobSchedulerList',
+           component: () => import('@/views/jobScheduler/List'),
+           meta: {title: '调度', icon: 'home'}
+         },*/
       ]
     },
     {
@@ -385,13 +385,6 @@ export default new Router({
           name: 'owpList',
           component: () => import('@/views/owp/List'),
           meta: {title: 'owp工厂', icon: 'home'}
-        },
-        {
-          title: '政策上传',
-          path: '/tts/policy/job/scheduler/list',
-          name: 'ttsPolicyJobSchedulerList',
-          component: () => import('@/views/ttsPolicyJobScheduler/List'),
-          meta: {title: '调度', icon: 'home'}
         }
       ]
     },
@@ -469,6 +462,13 @@ export default new Router({
           name: 'qunarOrderConfig',
           component: () => import('@/views/customer/QunarConfig'),
           meta: {title: '客户去哪儿接口管理', icon: 'home'}
+        },
+        {
+          title: '政策上传',
+          path: '/tts/policy/job/scheduler/list',
+          name: 'ttsPolicyJobSchedulerList',
+          component: () => import('@/views/ttsPolicyJobScheduler/List'),
+          meta: {title: '调度', icon: 'home'}
         },
         {
           title: '供应商蜗牛接口管理',
