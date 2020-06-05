@@ -93,8 +93,6 @@
           </template>
         </el-table-column>
         <el-table-column prop="orderNo" label="单号" align="center"></el-table-column>
-        <el-table-column prop="invoiceNo" label="发票号" align="center"></el-table-column>
-        <el-table-column prop="staffName" label="销售员" align="center"></el-table-column>
         <el-table-column prop="orderDate" label="单据日期" align="center">
           <template slot-scope="prop">
             {{initDate(prop.row.orderDate, 'YYYY-MM-DD')}}
@@ -105,21 +103,7 @@
             <span>{{initOrderType(prop.row.orderType)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="warehouseDate" label="出库时间" align="center">
-          <template slot-scope="prop">
-            {{initDate(prop.row.warehouseDate, 'YYYY-MM-DD')}}
-          </template>
-        </el-table-column>
-        <el-table-column prop="tradeNo" label="交易单号" align="center"></el-table-column>
-        <el-table-column prop="totalAmount" label="成交金额" align="center"></el-table-column>
-        <el-table-column prop="receiptAmount" label="实收金额" align="center"></el-table-column>
-        <el-table-column prop="recordDate" label="制单时间" align="center">
-          <template slot-scope="prop">
-            {{initDate(prop.row.recordDate, 'YYYY-MM-DD')}}
-          </template>
-        </el-table-column>
-        <el-table-column prop="recordName" label="制单人姓名" align="center"></el-table-column>
-        <el-table-column label="明细" align="center" width="580">
+        <el-table-column label="明细" align="center" width="800">
           <template slot-scope="scope">
             <el-table :data="scope.row.orderDetails" border size="mini">
               <el-table-column prop="productCode" label="商品编码" align="center"></el-table-column>
@@ -135,6 +119,15 @@
             </el-table>
           </template>
         </el-table-column>
+        <el-table-column prop="totalAmount" label="成交金额" align="center"></el-table-column>
+        <el-table-column prop="receiptAmount" label="实收金额" align="center"></el-table-column>
+        <!--        <el-table-column prop="recordDate" label="制单时间" align="center">
+                  <template slot-scope="prop">
+                    {{initDate(prop.row.recordDate, 'YYYY-MM-DD')}}
+                  </template>
+                </el-table-column>-->
+        <!--  <el-table-column prop="recordName" label="制单人姓名" align="center"></el-table-column>-->
+
         <el-table-column fixed="right" label="操作" align="center" width="160">
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
@@ -278,9 +271,9 @@
             initOrderType(orderType) {
                 switch (orderType) {
                     case 1:
-                        return '销售';
+                        return '销售订单';
                     case 2:
-                        return '采购';
+                        return '采购订单';
                     case 10:
                         return '销售发货单';
                     case 11:
