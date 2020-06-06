@@ -24,17 +24,19 @@
             <el-table :data="scope.row.orderDetails" border size="mini">
               <el-table-column type="expand">
                 <template slot-scope="props">
-                  <el-form label-position="right" :inline="true" label-width="120px" class="demo-table-expand">
-                    <el-row v-if="props.row.productPropertyItems.length >0" :gutter="10"
-                            v-for="(item, index) in props.row.productPropertyItems"
-                            :key="index">
-                      <el-form-item :label="item.name +':'" v-if="item.code != 'flightDate'">
-                        <span>{{ item.value }}</span>
-                      </el-form-item>
-                      <el-form-item :label="item.name +':'" v-if="item.code == 'flightDate'">
-                        <span>    {{initDate(item.value, 'YYYY-MM-DD')}}</span>
-                      </el-form-item>
-                    </el-row>
+                  <el-form label-position="right" :inline="true" label-width="120px">
+                    <div class="detail">
+                      <div v-if="props.row.propertyItems.length >0"
+                           v-for="(item, index) in props.row.propertyItems"
+                           :key="index" >
+                        <el-form-item :label="item.name +':'" v-if="item.code != 'flightDate'">
+                          <span>{{ item.value }}</span>
+                        </el-form-item>
+                        <el-form-item :label="item.name +':'" v-if="item.code == 'flightDate'">
+                          <span>    {{initDate(item.value, 'YYYY-MM-DD')}}</span>
+                        </el-form-item>
+                      </div>
+                    </div>
                   </el-form>
                 </template>
               </el-table-column>
@@ -273,18 +275,9 @@
 </script>
 
 <style>
-  .demo-table-expand {
-    font-size: 0;
+  .detail {
+    display: flex;
+    flex-wrap: wrap;
   }
 
-  .demo-table-expand label {
-    width: 90px;
-    color: #99a9bf;
-  }
-
-  .demo-table-expand .el-form-item {
-    margin-right: 0;
-    margin-bottom: 0;
-    width: 50%;
-  }
 </style>
