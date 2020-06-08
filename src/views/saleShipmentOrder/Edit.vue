@@ -315,7 +315,7 @@
                 };
             },
             loadCustomers() {
-                this.$store.dispatch("firmMerchant/getList", {filter: {types: JSON.stringify([1, 2])}})
+                this.$store.dispatch("firmMerchant/getCustomerList", {})
                     .then(data => {
                         this.customerList = data;
                     })
@@ -342,7 +342,7 @@
                     });
             },
             loadExpress() {
-                this.$store.dispatch("firmMerchant/getList", {filter: {types: JSON.stringify([0])}})
+                this.$store.dispatch("firmMerchant/getSupplierList", {})
                     .then(data => {
                         this.expressList = data;
                     })

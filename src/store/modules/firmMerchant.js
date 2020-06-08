@@ -1,6 +1,7 @@
 import {
   addOne,
   associateUser,
+  getCustomerList,
   getCustomerPageList,
   getCustomerTotal,
   getList,
@@ -149,6 +150,19 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {filter} = params;
       getSupplierList(filter)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getCustomerList({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {filter} = params;
+      getCustomerList(filter)
         .then(response => {
           const {data} = response;
           resolve(data);

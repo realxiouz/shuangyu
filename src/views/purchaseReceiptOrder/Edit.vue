@@ -8,9 +8,11 @@
       <el-row>
         <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
           <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
-            <el-form :rules="rules" :model="formData" label-position="left" label-width="97px" size="mini" style="width: 80%">
+            <el-form :rules="rules" :model="formData" label-position="left" label-width="97px" size="mini"
+                     style="width: 80%">
               <el-form-item label="采购订单号:" prop="parentNo">
-                <el-select v-if="!update" v-model="formData.parentNo" filterable @change="selectedSaleOrder" placeholder="请选择" style="width: 100%">
+                <el-select v-if="!update" v-model="formData.parentNo" filterable @change="selectedSaleOrder"
+                           placeholder="请选择" style="width: 100%">
                   <el-option
                     v-for="item in saleOrderList"
                     :key="item.orderNo"
@@ -21,7 +23,8 @@
                 <span v-if="update">{{formData.parentNo}}</span>
               </el-form-item>
               <el-form-item label="客户:" prop="merchantId">
-                <el-select v-model="formData.merchantId" filterable @change="selectedCustomer" placeholder="请选择" style="width: 100%">
+                <el-select v-model="formData.merchantId" filterable @change="selectedCustomer" placeholder="请选择"
+                           style="width: 100%">
                   <el-option
                     v-for="item in customerList"
                     :key="item.merchantId"
@@ -31,7 +34,8 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="账号:" prop="accountId">
-                <el-select v-model="formData.accountId" filterable :disabled="customerSelected && !update" placeholder="请选择" style="width: 100%">
+                <el-select v-model="formData.accountId" filterable :disabled="customerSelected && !update"
+                           placeholder="请选择" style="width: 100%">
                   <el-option
                     v-for="item in accountList"
                     :key="item.accountId"
@@ -48,7 +52,8 @@
         </el-col>
         <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
           <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
-            <el-form :rules="rules" :model="formData" label-position="left" label-width="97px" size="mini" style="width: 80%">
+            <el-form :rules="rules" :model="formData" label-position="left" label-width="97px" size="mini"
+                     style="width: 80%">
               <el-form-item label="到期期限:" prop="expireDate">
                 <el-date-picker
                   v-model="formData.expireDate"
@@ -118,7 +123,8 @@
             <el-table-column prop="stockQuantity" label="库存" align="center"></el-table-column>
             <el-table-column prop="quantity" label="数量" align="center">
               <template slot-scope="prop">
-                <el-input v-model.number="prop.row.quantity" placeholder="输入单价" @input="testQuantity(prop.row)" size="mini"></el-input>
+                <el-input v-model.number="prop.row.quantity" placeholder="输入单价" @input="testQuantity(prop.row)"
+                          size="mini"></el-input>
                 <span v-if="verifyQuantity(prop.row.quantity)" style="color: #F56C6C">*商品数量必须为数字</span>
                 <span v-if="verifyStockQuantity(prop.row)" style="color: #F56C6C">*商品数量应该小于或等于库存数量</span>
               </template>
@@ -150,7 +156,8 @@
       <el-row>
         <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
           <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
-            <el-form :rules="rules" :model="formData" label-position="left" label-width="97px" size="mini" style="width: 80%">
+            <el-form :rules="rules" :model="formData" label-position="left" label-width="97px" size="mini"
+                     style="width: 80%">
               <el-form-item label="成交金额:">
                 <span id="totalAmount">{{totalAmount}}</span>
               </el-form-item>
@@ -162,9 +169,11 @@
         </el-col>
         <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
           <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
-            <el-form :rules="rules" :model="formData" label-position="left" label-width="97px" size="mini" style="width: 80%">
+            <el-form :rules="rules" :model="formData" label-position="left" label-width="97px" size="mini"
+                     style="width: 80%">
               <el-form-item label="结算账户:" prop="fundAccountId">
-                <el-select v-model="formData.fundAccountId" filterable placeholder="请选择" @change="selectedFundAccount" style="width: 100%">
+                <el-select v-model="formData.fundAccountId" filterable placeholder="请选择" @change="selectedFundAccount"
+                           style="width: 100%">
                   <el-option
                     v-for="item in funAccountList"
                     :key="item.accountId"
@@ -189,7 +198,8 @@
           <div id="footer">
             <span v-show="quantityError" style="color: #F56C6C">商品数量必须为数字</span><br/>
             <span v-show="stockError" style="color: #F56C6C">商品数量应该小于或等于库存数量</span><br/>
-            <el-button :disabled="quantityError || stockError" type="primary" @click="handleSave" size="mini">保 存</el-button>
+            <el-button :disabled="quantityError || stockError" type="primary" @click="handleSave" size="mini">保 存
+            </el-button>
           </div>
         </el-col>
       </el-row>
@@ -315,7 +325,7 @@
                 };
             },
             loadCustomers() {
-                this.$store.dispatch("firmMerchant/getList", {filter: {types: JSON.stringify([1, 2])}})
+                this.$store.dispatch("firmMerchant/getCustomerList", {})
                     .then(data => {
                         this.customerList = data;
                     })
@@ -342,7 +352,7 @@
                     });
             },
             loadExpress() {
-                this.$store.dispatch("firmMerchant/getList", {filter: {types: JSON.stringify([0])}})
+                this.$store.dispatch("firmMerchant/getSupplierList", {})
                     .then(data => {
                         this.expressList = data;
                     })
@@ -350,7 +360,7 @@
                         console.log(error);
                     });
             },
-            loadFundAccount(){
+            loadFundAccount() {
                 this.$store.dispatch("fundAccount/getList", {filter: {}})
                     .then(data => {
                         this.funAccountList = data;
@@ -359,11 +369,11 @@
                         console.log(error);
                     });
             },
-            loadProduct(orderNo){
+            loadProduct(orderNo) {
                 this.$store.dispatch("productOrder/getOne", {orderNo: orderNo})
                     .then(data => {
                         this.formData = data;
-                        if (data.merchantId){
+                        if (data.merchantId) {
                             this.loadAccounts(data.merchantId);
                         }
                     })
@@ -371,11 +381,11 @@
                         console.log(error);
                     });
             },
-            loadOderDetails(orderNo){
+            loadOderDetails(orderNo) {
                 this.$store.dispatch("productOrderDetail/getList", {filter: {orderNo: orderNo}})
                     .then(data => {
                         this.orderDetails = data;
-                        if (0 < data.length){
+                        if (0 < data.length) {
                             data.forEach(item => {
                                 this.productIdList.push(item.productId + item.skuId);
                             });
@@ -385,7 +395,7 @@
                         console.log(error);
                     });
             },
-            loadSaleOrder(parentNo){
+            loadSaleOrder(parentNo) {
                 this.loadOderDetails(parentNo);
                 this.$store.dispatch("productOrder/getOne", {orderNo: parentNo})
                     .then(data => {
@@ -394,7 +404,7 @@
                         this.formData.orderNo = null;
                         this.formData.orderType = 20;
                         this.firmData.warehouseStatus = 1;
-                        if (data.merchantId){
+                        if (data.merchantId) {
                             this.loadAccounts(data.merchantId);
                         }
                     })
@@ -403,7 +413,7 @@
                     });
             },
             //加载可供选择的销售订单
-            loadSaleOrders(){
+            loadSaleOrders() {
                 this.$store.dispatch("productOrder/getList", {filter: {orderType: 2}})
                     .then(data => {
                         this.saleOrderList = data;
@@ -425,7 +435,7 @@
                             }
                         })
                             .then(data => {
-                                if (data.length > 0){
+                                if (data.length > 0) {
                                     this.formData.contactId = data[0].contactId;
                                     this.formData.contactName = customer.firm.fullName;
                                 }
@@ -454,15 +464,15 @@
             selectedPaymode(item) {
                 this.formData.paymentMode = item;
             },
-            selectedFundAccount(item){
+            selectedFundAccount(item) {
                 this.funAccountList.forEach(fundAccount => {
-                    if (item === fundAccount.accountId){
+                    if (item === fundAccount.accountId) {
                         this.formData.accountCode = fundAccount.accountCode;
                         this.formData.accountName = fundAccount.accountName;
                     }
                 });
             },
-            selectedSaleOrder(item){
+            selectedSaleOrder(item) {
                 this.customerSelected = false;
                 this.loadSaleOrder(item);
             },
@@ -485,7 +495,7 @@
             },
             handleConfirm(productSelection) {
                 productSelection.forEach(item => {
-                    if (-1 === this.productIdList.indexOf(item.productId + item.skuId)){
+                    if (-1 === this.productIdList.indexOf(item.productId + item.skuId)) {
                         this.productIdList.push(item.productId + item.skuId);
                         this.orderDetails.push(item);
                     }
@@ -520,7 +530,7 @@
             },
             querySearchAsync(keyword, callBack) {
                 if (keyword) {
-                    this.$store.dispatch("user/getList", {filter: {email:keyword}})
+                    this.$store.dispatch("user/getList", {filter: {email: keyword}})
                         .then(data => {
                             data.forEach(item => {
                                 item.value = item.fullName;
@@ -533,16 +543,16 @@
                     callBack([]);
                 }
             },
-            testQuantity(row){
+            testQuantity(row) {
                 let reg = /^[0-9]*$/;
-                if (!reg.test(row.quantity)){
-                   this.quantityError = true;
-               }else {
-                   this.quantityError = false;
-               }
-                if (row.stockQuantity < row.quantity){
+                if (!reg.test(row.quantity)) {
+                    this.quantityError = true;
+                } else {
+                    this.quantityError = false;
+                }
+                if (row.stockQuantity < row.quantity) {
                     this.stockError = true;
-                }else {
+                } else {
                     this.stockError = false;
                 }
             },
@@ -553,12 +563,12 @@
             goBack() {
                 this.$router.push({path: '/purchase/receipt/order'});
             },
-            computedRowAmount(row){
+            computedRowAmount(row) {
                 row.amount = parseFloat(row.quantity * row.price).toFixed(2);
                 this.computedTotalAmount();
-              return row.amount;
+                return row.amount;
             },
-            computedTotalAmount(){
+            computedTotalAmount() {
                 let _totalAmount = 0;
                 this.orderDetails.forEach(item => {
                     _totalAmount += parseFloat(item.amount);
@@ -578,10 +588,10 @@
                 this.loadSaleOrders();
                 this.loadExpress();
                 const _parentNo = query.parentNo;
-                if (_parentNo){
+                if (_parentNo) {
                     this.update = true;
                     this.loadSaleOrder(_parentNo);
-                }else {
+                } else {
                     const _orderNo = query.orderNo;
                     if (_orderNo) {
                         this.update = true;
@@ -594,20 +604,20 @@
         created() {
             this.initFormData(this.$route.query);
         },
-        computed:{
-            verifyQuantity(){
+        computed: {
+            verifyQuantity() {
                 return function (quantity) {
                     let reg = /^[0-9]*$/;
                     return !reg.test(quantity);
                 }
             },
-            verifyStockQuantity(){
+            verifyStockQuantity() {
                 return function (row) {
                     return row.stockQuantity < row.quantity;
                 }
             },
             formatDate() {
-                return function(format) {
+                return function (format) {
                     return this.initDate(format);
                 };
             },

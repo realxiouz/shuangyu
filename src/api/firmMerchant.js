@@ -87,9 +87,17 @@ export function getList(filter) {
   });
 }
 
+export function getCustomerList(filter) {
+  return request({
+    url: `/firm/merchant/customer/get/list`,
+    method: `get`,
+    params: filter
+  });
+}
+
 export function getSupplierList(filter) {
   return request({
-    url: `supplier/open/auth/get/list`,
+    url: `/firm/merchant/supplier/get/list`,
     method: `get`,
     params: filter
   });
