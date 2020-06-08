@@ -42,7 +42,7 @@
           <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
             <el-form :rules="rules" :model="formData" label-position="left" label-width="97px" size="mini"
                      style="width: 80%">
-              <el-form-item label="发货期限:" prop="expireDate">
+              <el-form-item label="交货期限:" prop="expireDate">
                 <el-date-picker
                   v-model="formData.expireDate"
                   type="date"
@@ -95,7 +95,7 @@
                 <el-input v-model.number="prop.row.quantity" placeholder="输入单价" @input="testQuantity(prop.row)"
                           size="mini"></el-input>
                 <span v-if="verifyQuantity(prop.row.quantity)" style="color: #F56C6C">*商品数量必须为数字</span>
-                <span v-if="verifyStockQuantity(prop.row)" style="color: #F56C6C">*商品数量应该小于或等于库存数量</span>
+                <!--                <span v-if="verifyStockQuantity(prop.row)" style="color: #F56C6C">*商品数量应该小于或等于库存数量</span>-->
               </template>
             </el-table-column>
             <el-table-column prop="unit" label="计量单位" align="center"></el-table-column>
@@ -166,8 +166,8 @@
         <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="16">
           <div id="footer">
             <span v-show="quantityError" style="color: #F56C6C">商品数量必须为数字</span><br/>
-            <span v-show="stockError" style="color: #F56C6C">商品数量应该小于或等于库存数量</span><br/>
-            <el-button :disabled="quantityError || stockError" type="primary" @click="handleSave" size="mini">保 存
+            <!--            <span v-show="stockError" style="color: #F56C6C">商品数量应该小于或等于库存数量</span><br/>-->
+            <el-button :disabled="quantityError " type="primary" @click="handleSave" size="mini">保 存
             </el-button>
           </div>
         </el-col>
