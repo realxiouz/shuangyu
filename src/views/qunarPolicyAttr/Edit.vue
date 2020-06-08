@@ -209,7 +209,7 @@
   };
   export default {
     name: 'edit',
-    props: ["merchantId", "paramId"],
+    props: ["merchantId", "attrId"],
     data() {
       return {
         formData: defaultData(),
@@ -398,8 +398,8 @@
     },
 
     created() {
-      if (this.paramId) {
-        this.getOne(this.paramId);
+      if (this.attrId) {
+        this.getOne(this.attrId);
       }
     }
   }
