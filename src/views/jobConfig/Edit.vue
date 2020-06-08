@@ -83,6 +83,12 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
+            <el-form-item label="排序号" prop="sort">
+              <el-input-number placeholder="排序号" v-model="formData.sort" controls-position="right"
+                               :precision="0"></el-input-number>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
             <el-form-item label="备注" prop="remark">
               <el-input placeholder="备注" v-model="formData.remark"></el-input>
             </el-form-item>
@@ -100,6 +106,11 @@
           <el-col :span="4">
             <el-form-item label="是否禁用" prop="readonly">
               <el-switch v-model="formData.disabled" :active-value=true :inactive-value=false></el-switch>
+            </el-form-item>
+          </el-col>
+          <el-col :span="4">
+            <el-form-item label="前端隐藏" prop="readonly">
+              <el-switch v-model="formData.hidden" :active-value=true :inactive-value=false></el-switch>
             </el-form-item>
           </el-col>
         </el-row>

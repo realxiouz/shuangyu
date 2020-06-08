@@ -3,7 +3,7 @@
     <el-row style="margin-bottom:15px;">
       <el-button type="warning" @click="goBack" size="mini">返回</el-button>
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
-<!--      <param-search @onSearch="handleSearch"></param-search>-->
+      <!--      <param-search @onSearch="handleSearch"></param-search>-->
     </el-row>
     <el-table
       v-loading="loading"
@@ -11,25 +11,40 @@
       :data="tableData"
       style="width: 100%;margin-bottom: 15px;"
     >
-      <el-table-column prop="merchantName" label="客户" align="center" width="150"></el-table-column>
-      <el-table-column prop="merchantDomain" label="客户域名" align="center" width="220"></el-table-column>
-      <el-table-column prop="schedulerName" label="调度任务" width="300" align="center"></el-table-column>
-      <el-table-column prop="paramName" label="参数名称" align="center" width="220"></el-table-column>
-      <el-table-column prop="paramCode" label="参数编码" align="center"></el-table-column>
-      <el-table-column
-        prop="required"
-        label="是否必填"
-        :formatter="formatBoolean"
-        align="center"
-        width="80"
-      ></el-table-column>
-      <el-table-column prop="unit" label="计量单位" align="center" width="150"></el-table-column>
-      <el-table-column prop="defaultValue" label="默认值" align="center" width="150"></el-table-column>
+      <el-table-column prop="merchantName" label="客户" align="center" width="110"></el-table-column>
+      <el-table-column prop="merchantDomain" label="客户域名" align="center" width="110"></el-table-column>
+      <el-table-column prop="schedulerName" label="调度任务" width="110" align="center"></el-table-column>
+      <el-table-column prop="name" label="属性名称" align="center" width="120"></el-table-column>
+      <el-table-column prop="code" label="属性编码" align="center" width="110"></el-table-column>
+      <el-table-column prop="group" label="属性分组" align="center" width="110"></el-table-column>
+      <el-table-column prop="valueType" label="数据类型" align="center" width="110">
+        <template slot-scope="scope">
+          <span v-html="formatValueType(scope.row.valueType)"></span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="value" label="默认值" align="center" width="110"></el-table-column>
+      <el-table-column prop="required" label="是否必填" align="center" width="70">
+        <template slot-scope="scope">
+          <span v-if="scope.row.required">是</span>
+          <span v-else>否</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="readonly" label="是否只读" align="center" width="70">
+        <template slot-scope="scope">
+          <span v-if="scope.row.readonly">是</span>
+          <span v-else>否</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="disabled" label="是否禁用" align="center" width="70">
+        <template slot-scope="scope">
+          <span v-if="scope.row.disabled">是</span>
+          <span v-else>否</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="unit" label="计量单位" align="center" width="70"></el-table-column>
       <el-table-column prop="description" label="描述" align="center" width="150"></el-table-column>
-
-      <el-table-column prop="remark" label="备注" :show-overflow-tooltip="true" width="300"
-                       align="center"></el-table-column>
-      <el-table-column label="操作" align="center" width="250">
+      <el-table-column prop="remark" label="备注" :show-overflow-tooltip="true" align="center"></el-table-column>
+      <el-table-column label="操作" align="center" width="180">
         <template slot-scope="scope">
           <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
           <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
@@ -50,11 +65,12 @@
       :title="isEdit?'编辑政策接口参数信息':'添加政策接口参数信息'"
       :visible.sync="dialogVisible"
       center
-      width="40%"
+      width="55%"
     >
       <param-edit
         v-if="dialogVisible"
-        :merchantId="merchantId"
+        :merchant-id="merchantId"
+        :merchant-domain="merchantDomain"
         :attrId="attrId"
         @onSave="handleSave"
         @onCancel="handleCancel"
@@ -84,7 +100,49 @@
         isEdit: false,
         curNode: {},
         update: false,
-        merchantId: ''
+        merchantId: '',
+        valueTypes: [
+          {
+            value: 0,
+            label: '文本'
+          },
+          {
+            value: 1,
+            label: '开关'
+          },
+          {
+            value: 2,
+            label: '数字'
+          },
+          {
+            value: 3,
+            label: '日期'
+          },
+          {
+            value: 4,
+            label: '日期时间'
+          },
+          {
+            value: 5,
+            label: '时间'
+          },
+          {
+            value: 6,
+            label: '评分'
+          },
+          {
+            value: 7,
+            label: '单选'
+          },
+          {
+            value: 8,
+            label: '多选'
+          },
+          {
+            value: 9,
+            label: '选择器'
+          }
+        ],
       };
     },
     methods: {
@@ -158,51 +216,29 @@
       },
       handleAdd() {
         this.isEdit = false;
-        this.dialogVisible = true;
         this.update = false;
         this.attrId = "";
+        this.dialogVisible = true;
       },
-      handleSave(formData) {
-        formData.merchantId = this.merchantId;
-        formData.merchantDomain = this.merchantDomain;
-        debugger
-        this.$store
-          .dispatch("qunarPolicyAttr/save", formData)
-          .then(() => {
-            this.loadData();
-          })
-          .catch(error => {
-            console.log(error);
-          });
-
+      handleSave() {
         this.dialogVisible = false;
       },
       handleCancel() {
         this.dialogVisible = false;
       },
-      handleAddChild(row) {
-        this.isEdit = false;
-        this.rootNav = false;
-        this.dialogVisible = true;
-        this.attrId = "";
-        this.parentNode = {};
-        this.parentNode.attrId = row.attrId;
-        this.parentNode.level = row.level;
-      },
+
       handleEdit(row) {
         this.isEdit = true;
-        this.dialogVisible = true;
         this.attrId = row.attrId;
+        this.dialogVisible = true;
       },
-      /*对员工进行删除*/
       handleDelete(row) {
         this.open(
           this.delete,
           row.attrId,
-          "此操作将删除该用户的所有信息, 是否继续?"
+          "此操作将删除信息, 是否继续?"
         );
       },
-      /*根据用户ID删除用户*/
       delete(attrId) {
         this.$store
           .dispatch("qunarPolicyAttr/removeOne", attrId)
@@ -232,6 +268,13 @@
               message: "已取消删除"
             });
           });
+      },
+      formatValueType(value) {
+        for (var i = 0; i < this.valueTypes.length; i++) {
+          if (value == this.valueTypes[i].value) {
+            return this.valueTypes[i].label;
+          }
+        }
       }
     },
     created() {
