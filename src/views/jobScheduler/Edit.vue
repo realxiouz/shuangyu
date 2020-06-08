@@ -139,7 +139,7 @@
           let xxlJobInfo = {
             jobDesc: this.formData.schedulerName,
             jobCron:this.formData.cron,
-            executorHandler:'owpStartJobHandler'
+            executorHandler:'owpJobHandler'
           };
           data.xxlJobInfo = xxlJobInfo;
           data.xxlJobGroup = xxlJobGroup;
@@ -167,7 +167,7 @@
         });
       },
       getParams() {
-        if (!this.jobSchedulerId || this.jobSchedulerId == null || this.jobSchedulerId == '') {
+        if (!this.jobSchedulerId || this.jobSchedulerId != null || this.jobSchedulerId != '') {
           let searchForm = {
             tagId: 'ee7e640c3acb409bb01acb4098dd8416',
             tagCode: 'owp'

@@ -139,7 +139,7 @@
           let xxlJobInfo = {
             jobDesc: this.formData.schedulerName,
             jobCron:this.formData.cron,
-            executorHandler:'tgqStartJobHandler'
+            executorHandler:'tgqJobHandler'
           };
           data.xxlJobInfo = xxlJobInfo;
           data.xxlJobGroup = xxlJobGroup;
@@ -167,7 +167,7 @@
         });
       },
       getParams() {
-        if (!this.jobSchedulerId || this.jobSchedulerId == null || this.jobSchedulerId == '') {
+        if (!this.jobSchedulerId || this.jobSchedulerId != null || this.jobSchedulerId != '') {
           let searchForm = {
             tagId: 'd718e77cd1e74892866b230caf2d2483',
             tagCode: 'tgq'

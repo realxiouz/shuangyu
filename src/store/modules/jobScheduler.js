@@ -6,7 +6,10 @@ import {
   getTotal,
   removeOne,
   updateOne,
-  addOneXxl
+  addOneXxl,
+  trigger,
+  start,
+  stop,
 } from "@/api/jobScheduler";
 
 const actions = {
@@ -63,6 +66,42 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {jobSchedulerId} = params;
       getOne(jobSchedulerId)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  trigger({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {jobSchedulerId} = params;
+      trigger(jobSchedulerId)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  start({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {jobSchedulerId} = params;
+      start(jobSchedulerId)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  stop({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {jobSchedulerId} = params;
+      stop(jobSchedulerId)
         .then(response => {
           resolve(response);
         })
