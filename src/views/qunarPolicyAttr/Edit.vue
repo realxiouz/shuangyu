@@ -8,11 +8,6 @@
         </el-form-item>
       </el-row>
       <el-row :gutter="18">
-        <el-form-item label="参数编码" prop="paramCode">
-          <el-input v-model="formData.paramCode"></el-input>
-        </el-form-item>
-      </el-row>
-      <el-row :gutter="18">
         <el-form-item label="数据类型:" prop="valueType">
           <!-- 数据类型（0文本，1开关，2数字，3日期，4日期时间，5时间，6评分，7单选，8多选，9选择器）-->
           <el-select clearable v-model="formData.valueType" placeholder="全部" style="width: 100%"
@@ -190,7 +185,6 @@
         </el-form-item>
       </el-row>
     </el-form>
-
     <div slot="footer" style="text-align:right;">
       <el-button size="mini" type="primary" @click="handleCancel">取消</el-button>
       <el-button size="mini" type="primary" @click="handleSave">保存</el-button>
