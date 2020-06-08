@@ -18,7 +18,7 @@
         </el-col>
         <el-col :span="12" v-for="(item, index) in formData.params" :key="index">
           <el-form-item :label="item.name">
-            <!-- 数据类型（0文本，1开关，2数字，3日期，4日期时间，5时间，6评分，7单选，12多选，9选择器）-->
+            <!-- 数据类型（0文本，1开关，2数字，3日期，4日期时间，5时间，6评分，7单选，8多选，9选择器）-->
             <el-input v-if="item.valueType ==0" v-model="item.value"></el-input>
             <!-- 开关-->
             <el-switch v-if="item.valueType ==1" v-model="item.value"></el-switch>
@@ -46,7 +46,7 @@
               </el-radio>
             </el-radio-group>
             <!-- 多选 非销售属性-->
-            <el-checkbox-group v-if="item.valueType ==12" v-model="item.value">
+            <el-checkbox-group v-if="item.valueType ==8" v-model="item.value">
               <el-checkbox v-for="(value, key) in item.attributes"
                            :key="key"
                            :label="key"
