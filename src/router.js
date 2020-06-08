@@ -874,7 +874,19 @@ export default new Router({
           path: '/product/shipment/order/edit',
           component: () => import('@/views/saleShipmentOrder/Edit'),
           meta: {title: '发货订单', icon: 'home'}
-        }
+        },
+        {
+          title: '采购入库单',
+          path: '/purchase/receipt/order',
+          name: 'purchaseReceiptOrder',
+          component: () => import('@/views/purchaseReceiptOrder/List'),
+          meta: {title: '采购入库单', icon: 'home'}
+        },
+        {
+          path: '/purchase/receipt/order/edit',
+          component: () => import('@/views/purchaseReceiptOrder/Edit'),
+          meta: {title: '入库订单', icon: 'home'}
+        },
       ]
     },
     {
