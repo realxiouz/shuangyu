@@ -167,7 +167,7 @@
         });
       },
       getParams() {
-        if (!this.jobSchedulerId || this.jobSchedulerId == null || this.jobSchedulerId == '') {
+        if (!this.jobSchedulerId || this.jobSchedulerId != null || this.jobSchedulerId != '') {
           let searchForm = {
             tagId: 'cd17704040f048c385730e9c6b72b90a',
             tagCode: 'policy'

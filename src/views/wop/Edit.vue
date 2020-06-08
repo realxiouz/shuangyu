@@ -139,7 +139,7 @@
           let xxlJobInfo = {
             jobDesc: this.formData.schedulerName,
             jobCron:this.formData.cron,
-            executorHandler:'wopStartJobHandler'
+            executorHandler:'wopJobHandler'
           };
           data.xxlJobInfo = xxlJobInfo;
           data.xxlJobGroup = xxlJobGroup;
@@ -167,7 +167,7 @@
         });
       },
       getParams() {
-        if (!this.jobSchedulerId || this.jobSchedulerId == null || this.jobSchedulerId == '') {
+        if (!this.jobSchedulerId || this.jobSchedulerId != null || this.jobSchedulerId != '') {
           let searchForm = {
             tagId: '61886007158a4c40bd0f4f52fe2c6a90',
             tagCode: 'wop'

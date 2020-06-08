@@ -46,6 +46,27 @@ export function getOne(jobSchedulerId) {
   });
 }
 
+export function trigger(jobSchedulerId) {
+  return request({
+    url: `/job/scheduler/trigger/${jobSchedulerId}`,
+    method: 'get'
+  });
+}
+
+export function start(jobSchedulerId) {
+  return request({
+    url: `/job/scheduler/start/${jobSchedulerId}`,
+    method: 'get'
+  });
+}
+
+export function stop(jobSchedulerId) {
+  return request({
+    url: `/job/scheduler/stop/${jobSchedulerId}`,
+    method: 'get'
+  });
+}
+
 export function getList(filter) {
   return request({
     url: '/job/scheduler/list',
