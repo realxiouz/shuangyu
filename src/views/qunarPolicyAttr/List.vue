@@ -55,7 +55,7 @@
       <param-edit
         v-if="dialogVisible"
         :merchantId="merchantId"
-        :paramId="paramId"
+        :attrId="attrId"
         @onSave="handleSave"
         @onCancel="handleCancel"
       ></param-edit>
@@ -78,7 +78,7 @@
         pageSize: 10,
         total: 0,
         dialogVisible: false,
-        paramId: '',
+        attrId: '',
         tableData: [],
         parentNode: {},
         isEdit: false,
@@ -131,13 +131,13 @@
       },
       prevClick() {
         this.pageFlag = "-1";
-        this.lastId = this.tableData[0].paramId;
+        this.lastId = this.tableData[0].attrId;
         this.loadData();
       }
       ,
       nextClick() {
         this.pageFlag = "1";
-        this.lastId = this.tableData[this.tableData.length - 1].paramId;
+        this.lastId = this.tableData[this.tableData.length - 1].attrId;
         this.loadData();
       },
 
@@ -160,7 +160,7 @@
         this.isEdit = false;
         this.dialogVisible = true;
         this.update = false;
-        this.paramId = "";
+        this.attrId = "";
       },
       handleSave(formData) {
         formData.merchantId = this.merchantId;
@@ -184,28 +184,28 @@
         this.isEdit = false;
         this.rootNav = false;
         this.dialogVisible = true;
-        this.paramId = "";
+        this.attrId = "";
         this.parentNode = {};
-        this.parentNode.paramId = row.paramId;
+        this.parentNode.attrId = row.attrId;
         this.parentNode.level = row.level;
       },
       handleEdit(row) {
         this.isEdit = true;
         this.dialogVisible = true;
-        this.paramId = row.paramId;
+        this.attrId = row.attrId;
       },
       /*对员工进行删除*/
       handleDelete(row) {
         this.open(
           this.delete,
-          row.paramId,
+          row.attrId,
           "此操作将删除该用户的所有信息, 是否继续?"
         );
       },
       /*根据用户ID删除用户*/
-      delete(paramId) {
+      delete(attrId) {
         this.$store
-          .dispatch("qunarPolicyAttr/removeOne", paramId)
+          .dispatch("qunarPolicyAttr/removeOne", attrId)
           .then(() => {
             this.loadData();
           })
