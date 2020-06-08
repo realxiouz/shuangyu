@@ -3,13 +3,8 @@
     <el-form ref="form" :rules="rules" :model="formData" label-width="300px" size="mini" align="center">
       <el-row :gutter="18">
         <!--          <el-col :xs="36" :sm="24" :md="24" :lg="18" :xl="18">-->
-        <el-form-item label="参数名称" prop="paramName" align="left">
-          <el-input v-model="formData.paramName"></el-input>
-        </el-form-item>
-      </el-row>
-      <el-row :gutter="18">
-        <el-form-item label="参数编码" prop="paramCode">
-          <el-input v-model="formData.paramCode"></el-input>
+        <el-form-item label="参数名称" prop="name" align="left">
+          <el-input v-model="formData.name"></el-input>
         </el-form-item>
       </el-row>
       <el-row :gutter="18">
@@ -180,8 +175,8 @@
         </el-form-item>
       </el-row>
       <el-row :gutter="18">
-        <el-form-item label="默认值:" prop="defaultValue">
-          <el-input v-model="formData.defaultValue" placeholder="请输入内容"></el-input>
+        <el-form-item label="默认值:" prop="value">
+          <el-input v-model="formData.value" placeholder="请输入内容"></el-input>
         </el-form-item>
       </el-row>
       <el-row :gutter="18">
@@ -190,7 +185,6 @@
         </el-form-item>
       </el-row>
     </el-form>
-
     <div slot="footer" style="text-align:right;">
       <el-button size="mini" type="primary" @click="handleCancel">取消</el-button>
       <el-button size="mini" type="primary" @click="handleSave">保存</el-button>
@@ -202,20 +196,20 @@
     return {
       merchantId: '',
       merchantDomain: '',
-      paramName: "",
+      name: "",
       paramCode: "",
       propertyName: "",
       precision: 0,
       required: true,
       unit: '',
       valueType: '',
-      defaultValue: '',
+      value: '',
       description: ''
     }
   };
   export default {
     name: 'edit',
-    props: ["merchantId", "paramId"],
+    props: ["merchantId", "attrId"],
     data() {
       return {
         formData: defaultData(),
@@ -238,7 +232,7 @@
           schedulerId: [
             {required: true, message: '请选择调度任务', trigger: 'blur'}
           ],
-          paramName: [
+          name: [
             {required: true, message: "参数名称不能为空!", trigger: "blur"}
           ],
           paramCode: [
@@ -249,7 +243,7 @@
               message: "长度在 1到 20 个字符"
             }
           ],
-          defaultValue: [
+          value: [
             {required: true, message: "默认值不能为空！", trigger: "blur"}
           ]
         },
@@ -340,7 +334,7 @@
       getOne(id) {
         if (id) {
           this.$store
-            .dispatch("qunarPolicyParam/getOne", id)
+            .dispatch("qunarPolicyAttr/getOne", id)
             .then(data => {
               if (data) {
                 this.formData = data;
@@ -404,8 +398,8 @@
     },
 
     created() {
-      if (this.paramId) {
-        this.getOne(this.paramId);
+      if (this.attrId) {
+        this.getOne(this.attrId);
       }
     }
   }

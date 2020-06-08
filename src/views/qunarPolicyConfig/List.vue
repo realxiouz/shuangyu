@@ -122,7 +122,7 @@
           });
       },
       handleParams(row) {
-        this.$router.push({path: '/qunarPolicyParam/list', query: {merchantId: row.merchantId}});
+        this.$router.push({path: '/qunarPolicyAttr/list', query: {merchantId: row.merchantId}});
       },
       prevClick() {
         this.pageFlag = "-1";

@@ -177,7 +177,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="10" v-if="formData.valueType ==12">
+        <el-row :gutter="10" v-if="formData.valueType ==8">
           <el-col :span="12">
             <el-form-item label="示例:">
               <el-checkbox v-model="test.checked1">多选框1</el-checkbox>
@@ -300,7 +300,7 @@
             label: '单选'
           },
           {
-            value: 12,
+            value: 8,
             label: '多选'
           },
           {
@@ -356,7 +356,7 @@
             .then(data => {
               if (data.code == 0) {
                 this.formData = data.data;
-                if (this.formData.valueType == 7 || this.formData.valueType == 12 || this.formData.valueType == 9) {
+                if (this.formData.valueType == 7 || this.formData.valueType == 8 || this.formData.valueType == 9) {
                   this.showAddValues = true;
                   this.values = [];
                 } else {
@@ -417,13 +417,13 @@
       },
       handleSave() {
         let valueTypeFlag = false;
-        if (this.formData.valueType == 7 || this.formData.valueType == 12 || this.formData.valueType == 9) {
+        if (this.formData.valueType == 7 || this.formData.valueType == 8 || this.formData.valueType == 9) {
           valueTypeFlag = true;
         }
         if (!valueTypeFlag) {
           this.values = [];
         }
-        if (this.formData.valueType == 12) {
+        if (this.formData.valueType == 8) {
           this.formData.value = [];
         }
         if (this.values && this.values.length > 0) {

@@ -120,7 +120,7 @@
             label: '单选'
           },
           {
-            value: 12,
+            value: 8,
             label: '多选'
           },
           {
