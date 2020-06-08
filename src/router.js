@@ -648,9 +648,9 @@ export default new Router({
         },
         {
           title: '政策接口参数管理',
-          path: '/qunar/policy/param/list',
-          name: 'qunarPolicyParam',
-          component: () => import('@/views/qunarPolicyParam/List'),
+          path: '/qunar/policy/attr/list',
+          name: 'qunarPolicyAttr',
+          component: () => import('@/views/qunarPolicyAttr/List'),
           meta: {title: '政策接口参数管理', icon: 'home'},
         }
       ]

@@ -1,4 +1,4 @@
-import {save, removeOne, getPageList, getTotal, getOne, getApiUrlList,getList} from "@/api/qunarPolicyParam";
+import {save, removeOne, getPageList, getTotal, getOne, getApiUrlList,getList} from "@/api/qunarPolicyAttr";
 import {getToken} from "@/utils/auth";
 
 

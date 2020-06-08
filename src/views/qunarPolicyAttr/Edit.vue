@@ -340,7 +340,7 @@
       getOne(id) {
         if (id) {
           this.$store
-            .dispatch("qunarPolicyParam/getOne", id)
+            .dispatch("qunarPolicyAttr/getOne", id)
             .then(data => {
               if (data) {
                 this.formData = data;

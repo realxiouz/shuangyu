@@ -19,7 +19,7 @@ import staff from "./modules/staff";
 import policyFlag from "./modules/policyFlag";
 import policyFlagParam from "./modules/policyFlagParam";
 import orderRule from "./modules/orderRule";
-import qunarPolicyParam from "./modules/qunarPolicyParam";
+import qunarPolicyAttr from "./modules/qunarPolicyAttr";
 import productMark from "./modules/productMark";
 import fare from "./modules/fare";
 import openApiService from "./modules/openApiService";
@@ -92,7 +92,7 @@ export default new Vuex.Store({
     policyFlag,
     policyFlagParam,
     orderRule,
-    qunarPolicyParam,
+    qunarPolicyAttr,
     productMark,
     fare,
     openApiService,

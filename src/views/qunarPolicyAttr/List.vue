@@ -102,7 +102,7 @@
         }
         params.merchantId = this.merchantId;
         this.$store
-          .dispatch("qunarPolicyParam/getTotal", params)
+          .dispatch("qunarPolicyAttr/getTotal", params)
           .then(data => {
             this.total = data;
           })
@@ -113,7 +113,7 @@
           params.lastId = this.lastId;
         }
         this.$store
-          .dispatch("qunarPolicyParam/getPageList", {
+          .dispatch("qunarPolicyAttr/getPageList", {
             pageFlag: this.pageFlag,
             pageSize: this.pageSize,
             filter: params
@@ -167,7 +167,7 @@
         formData.merchantDomain = this.merchantDomain;
         debugger
         this.$store
-          .dispatch("qunarPolicyParam/save", formData)
+          .dispatch("qunarPolicyAttr/save", formData)
           .then(() => {
             this.loadData();
           })
@@ -205,7 +205,7 @@
       /*根据用户ID删除用户*/
       delete(paramId) {
         this.$store
-          .dispatch("qunarPolicyParam/removeOne", paramId)
+          .dispatch("qunarPolicyAttr/removeOne", paramId)
           .then(() => {
             this.loadData();
           })
