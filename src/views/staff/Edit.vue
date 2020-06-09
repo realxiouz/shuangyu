@@ -317,8 +317,7 @@
                         filter: params
                             ? params
                             : {
-                                deptId: this.curNode.deptId,
-                                staffType: 0
+                                deptId: this.curNode.deptId
                             }
                     })
                     .then(data => {
