@@ -859,11 +859,6 @@ export default new Router({
           meta: {title: '采购入库单', icon: 'home'}
         },
         {
-          path: '/purchase/receipt/order/edit',
-          component: () => import('@/views/purchaseReceiptOrder/Edit'),
-          meta: {title: '入库订单', icon: 'home'}
-        },
-        {
           title: '采购退款单',
           path: '/purchase/return/order',
           name: 'purchaseReturnOrder',
@@ -911,12 +906,61 @@ export default new Router({
           meta: {title: '销售订单', icon: 'home'}
         },
         {
-          title: '发货订单',
+          title: '销售出库单',
           path: '/product/shipment/order',
           name: 'saleShipmentOrder',
           component: () => import('@/views/saleShipmentOrder/List'),
-          meta: {title: '发货订单管理', icon: 'home'}
-        }
+          meta: {title: '销售出库单', icon: 'home'}
+        },
+        {
+          title: '销售退款单',
+          path: '/sale/return/order',
+          name: 'saleReturnOrder',
+          component: () => import('@/views/saleReturnOrder/List'),
+          meta: {title: '销售退款单', icon: 'home'}
+        },
+        {
+          title: '销售退票入库单',
+          path: '/sale/sale/order',
+          name: 'saleReturnOrder',
+          component: () => import('@/views/saleReturnOrder/List'),
+          meta: {title: '销售退票入库单', icon: 'home'}
+        },
+        {
+          title: '销售改签单',
+          path: '/sale/change/order',
+          name: 'saleChangeOrder',
+          component: () => import('@/views/saleChangeOrder/List'),
+          meta: {title: '销售改签单', icon: 'home'}
+        },
+        {
+          title: '销售改签入库单',
+          path: '/sale/change/in/order',
+          name: 'saleChangeInOrder',
+          component: () => import('@/views/saleChangeInOrder/List'),
+          meta: {title: '销售改签入库单', icon: 'home'}
+        },
+        {
+          title: '销售改签出库单',
+          path: '/sale/change/out/order',
+          name: 'saleChangeOutOrder',
+          component: () => import('@/views/saleChangeOutOrder/List'),
+          meta: {title: '销售改签出库单', icon: 'home'}
+        },
+        {
+          title: '其他入库',
+          path: '/other/in/order',
+          name: 'otherInOrder',
+          component: () => import('@/views/otherInOrder/List'),
+          meta: {title: '其他入库', icon: 'home'}
+        },
+        {
+          title: '其他出库',
+          path: '/other/out/order',
+          name: 'otherOutOrder',
+          component: () => import('@/views/otherOutOrder/List'),
+          meta: {title: '其他出库', icon: 'home'}
+        },
       ]
     },
     {
