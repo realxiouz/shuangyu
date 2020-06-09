@@ -246,7 +246,11 @@
             loadOpen() {
                 this.$store.dispatch("firmOpenAuth/getCustomerList", {filters: {}})
                     .then(data => {
-                        this.openData = data;
+                        if (data) {
+                            this.openData = data;
+                        } else {
+                            this.openData = [];
+                        }
                     }).catch(error => {
                     console.log(error);
                 });

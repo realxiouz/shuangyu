@@ -92,9 +92,6 @@
             </el-form>
           </template>
         </el-table-column>
-        <el-table-column prop="orderNo" label="单号" align="center"></el-table-column>
-<!--        <el-table-column prop="invoiceNo" label="发票号" align="center"></el-table-column>-->
-<!--        <el-table-column prop="staffName" label="经办人" align="center"></el-table-column>-->
         <el-table-column prop="orderDate" label="单据日期" align="center">
           <template slot-scope="prop">
             {{initDate(prop.row.orderDate, 'YYYY-MM-DD')}}
@@ -105,12 +102,12 @@
             <span>{{initOrderType(prop.row.orderType)}}</span>
           </template>
         </el-table-column>
-<!--        <el-table-column prop="warehouseDate" label="出库时间" align="center">-->
-<!--          <template slot-scope="prop">-->
-<!--            {{initDate(prop.row.warehouseDate, 'YYYY-MM-DD')}}-->
-<!--          </template>-->
-<!--        </el-table-column>-->
-<!--        <el-table-column prop="tradeNo" label="交易单号" align="center"></el-table-column>-->
+        <el-table-column prop="warehouseDate" label="出库时间" align="center">
+          <template slot-scope="prop">
+            {{initDate(prop.row.warehouseDate, 'YYYY-MM-DD')}}
+          </template>
+        </el-table-column>
+        <el-table-column prop="tradeNo" label="交易单号" align="center"></el-table-column>
         <el-table-column prop="totalAmount" label="成交金额" align="center"></el-table-column>
         <el-table-column prop="receiptAmount" label="实收金额" align="center"></el-table-column>
         <el-table-column prop="recordDate" label="制单时间" align="center">
@@ -194,7 +191,7 @@
                 if (this.lastId) {
                     searchForm.lastId = this.lastId;
                 }
-                searchForm['orderType'] = 200;
+                searchForm['orderType'] = 105;
                 this.$store.dispatch("productOrder/getPageList", {
                     pageFlag: this.pageFlag,
                     pageSize: this.pageSize,
@@ -269,7 +266,7 @@
                     });
             },
             skipDetail(orderNo) {
-                this.$router.push({path: '/product/purchase/order/edit', query: {orderNo: orderNo}});
+                this.$router.push({path: '/product/shipment/order/edit', query: {orderNo: orderNo}});
             },
             initOrderType(orderType) {
                 switch (orderType) {
@@ -322,7 +319,7 @@
                 return "￥" + this.$numeral(amount).format("0.00");
             }
         },
-        mounted() {
+        created() {
             this.loadData();
         },
         components: {

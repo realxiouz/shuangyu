@@ -85,19 +85,14 @@
           });
       },
       clearForm() {
-        this.paramFormData = this.defaultParamForm();
-      },
-      addParams() {
-        this.paramDialogVisible = true;
-      },
-      handleConfirm() {
-
+        this.formData = this.defaultData();
       },
       handleClose(idx) {
         this.paramList.splice(idx, 1);
       }
     },
     created() {
+      this.clearForm();
       if (this.configId) {
         this.handleGetOne(this.configId);
       }

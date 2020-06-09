@@ -8,93 +8,7 @@
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table v-loading="loading" :data="tableData" style="width: 100%;margin-bottom: 15px;" size="mini">
-        <el-table-column type="expand">
-          <template slot-scope="props">
-            <el-form label-position="right" :inline="true" label-width="120px" class="demo-table-expand">
-              <el-form-item label="父单号">
-                <span>{{ props.row.parentNo }}</span>
-              </el-form-item>
-              <el-form-item label="外部单号">
-                <span>{{ props.row.sourceNo }}</span>
-              </el-form-item>
-              <el-form-item label="单号">
-                <span>{{ props.row.orderNo }}</span>
-              </el-form-item>
-              <el-form-item label="客户账号">
-                <span>{{ props.row.merchantId }}</span>
-              </el-form-item>
-              <el-form-item label="联系人">
-                <span>{{ props.row.contactName }}</span>
-              </el-form-item>
-              <el-form-item label="发票号">
-                <span>{{ props.row.invoiceNo }}</span>
-              </el-form-item>
-              <el-form-item label="经办人">
-                <span>{{ props.row.staffName }}</span>
-              </el-form-item>
-              <el-form-item label="到期日期">
-                <span>{{ initDate(props.row.expireDate, 'YYYY-MM-DD') }}</span>
-              </el-form-item>
-              <el-form-item label="单据日期">
-                <span>{{ initDate(props.row.orderDate, 'YYYY-MM-DD') }}</span>
-              </el-form-item>
-              <el-form-item label="单据类型">
-                <span>{{ initOrderType(props.row.orderType) }}</span>
-              </el-form-item>
-              <el-form-item label="仓库编码">
-                <span>{{ props.row.warehouseCode }}</span>
-              </el-form-item>
-              <el-form-item label="仓库名称">
-                <span>{{ props.row.warehouseName }}</span>
-              </el-form-item>
-              <el-form-item label="出入库状态">
-                <span>{{ initWarehouseStatus(props.row.warehouseStatus) }}</span>
-              </el-form-item>
-              <el-form-item label="出入库类型">
-                <span>{{ props.row.warehouseType }}</span>
-              </el-form-item>
-              <el-form-item label="出入库时间">
-                <span>{{ initDate(props.row.warehouseDate, 'YYYY-MM-DD') }}</span>
-              </el-form-item>
-              <el-form-item label="快递号码">
-                <span>{{ props.row.expressNo }}</span>
-              </el-form-item>
-              <el-form-item label="快递公司">
-                <span>{{ props.row.expressName }}</span>
-              </el-form-item>
-              <el-form-item label="快递状态">
-                <span>{{ props.row.expressStatus }}</span>
-              </el-form-item>
-              <el-form-item label="交易单号">
-                <span>{{ props.row.tradeNo }}</span>
-              </el-form-item>
-              <el-form-item label="付款状态">
-                <span>{{ initPaymentStatus(props.row.paymentStatus) }}</span>
-              </el-form-item>
-              <el-form-item label="付款方式">
-                <span>{{ props.row.paymentMode }}</span>
-              </el-form-item>
-              <el-form-item label="成交金额">
-                <span>{{ formatAmount(props.row.totalAmount) }}</span>
-              </el-form-item>
-              <el-form-item label="实收金额">
-                <span>{{ formatAmount(props.row.receiptAmount) }}</span>
-              </el-form-item>
-              <el-form-item label="结算账户">
-                <span>{{ props.row.fundAccountName }}</span>
-              </el-form-item>
-              <el-form-item label="制单人">
-                <span>{{ props.row.recordName }}</span>
-              </el-form-item>
-              <el-form-item label="制单时间">
-                <span>{{ initDate(props.row.recordDate, 'YYYY-MM-DD') }}</span>
-              </el-form-item>
-            </el-form>
-          </template>
-        </el-table-column>
         <el-table-column prop="orderNo" label="单号" align="center"></el-table-column>
-<!--        <el-table-column prop="invoiceNo" label="发票号" align="center"></el-table-column>-->
-<!--        <el-table-column prop="staffName" label="经办人" align="center"></el-table-column>-->
         <el-table-column prop="orderDate" label="单据日期" align="center">
           <template slot-scope="prop">
             {{initDate(prop.row.orderDate, 'YYYY-MM-DD')}}
@@ -105,23 +19,27 @@
             <span>{{initOrderType(prop.row.orderType)}}</span>
           </template>
         </el-table-column>
-<!--        <el-table-column prop="warehouseDate" label="出库时间" align="center">-->
-<!--          <template slot-scope="prop">-->
-<!--            {{initDate(prop.row.warehouseDate, 'YYYY-MM-DD')}}-->
-<!--          </template>-->
-<!--        </el-table-column>-->
-<!--        <el-table-column prop="tradeNo" label="交易单号" align="center"></el-table-column>-->
-        <el-table-column prop="totalAmount" label="成交金额" align="center"></el-table-column>
-        <el-table-column prop="receiptAmount" label="实收金额" align="center"></el-table-column>
-        <el-table-column prop="recordDate" label="制单时间" align="center">
-          <template slot-scope="prop">
-            {{initDate(prop.row.recordDate, 'YYYY-MM-DD')}}
-          </template>
-        </el-table-column>
-        <el-table-column prop="recordName" label="制单人姓名" align="center"></el-table-column>
-        <el-table-column label="明细" align="center" width="580">
+        <el-table-column label="明细" align="center" width="800">
           <template slot-scope="scope">
             <el-table :data="scope.row.orderDetails" border size="mini">
+              <el-table-column type="expand">
+                <template slot-scope="props">
+                  <el-form label-position="right" :inline="true" label-width="120px">
+                    <div class="detail">
+                      <div v-if="props.row.propertyItems.length >0"
+                           v-for="(item, index) in props.row.propertyItems"
+                           :key="index" >
+                        <el-form-item :label="item.name +':'" v-if="item.code != 'flightDate'">
+                          <span>{{ item.value }}</span>
+                        </el-form-item>
+                        <el-form-item :label="item.name +':'" v-if="item.code == 'flightDate'">
+                          <span>    {{initDate(item.value, 'YYYY-MM-DD')}}</span>
+                        </el-form-item>
+                      </div>
+                    </div>
+                  </el-form>
+                </template>
+              </el-table-column>
               <el-table-column prop="productCode" label="商品编码" align="center"></el-table-column>
               <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
               <el-table-column prop="brandName" label="品牌" align="center"></el-table-column>
@@ -135,10 +53,20 @@
             </el-table>
           </template>
         </el-table-column>
+        <el-table-column prop="totalAmount" label="成交金额" align="center"></el-table-column>
+        <el-table-column prop="receiptAmount" label="实收金额" align="center"></el-table-column>
+        <!--        <el-table-column prop="recordDate" label="制单时间" align="center">
+                  <template slot-scope="prop">
+                    {{initDate(prop.row.recordDate, 'YYYY-MM-DD')}}
+                  </template>
+                </el-table-column>-->
+        <!--  <el-table-column prop="recordName" label="制单人姓名" align="center"></el-table-column>-->
+
         <el-table-column fixed="right" label="操作" align="center" width="160">
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
             <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
+            <el-button @click="skipShipmentOrder(scope.row)" type="info" size="mini">配置发货单</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -194,7 +122,7 @@
                 if (this.lastId) {
                     searchForm.lastId = this.lastId;
                 }
-                searchForm['orderType'] = 200;
+                searchForm['orderType'] = 205;
                 this.$store.dispatch("productOrder/getPageList", {
                     pageFlag: this.pageFlag,
                     pageSize: this.pageSize,
@@ -269,14 +197,17 @@
                     });
             },
             skipDetail(orderNo) {
-                this.$router.push({path: '/product/purchase/order/edit', query: {orderNo: orderNo}});
+                this.$router.push({path: '/product/sale/order/edit', query: {orderNo: orderNo}});
+            },
+            skipShipmentOrder(row) {
+                this.$router.push({path: '/product/shipment/order/edit', query: {parentNo: row.orderNo}});
             },
             initOrderType(orderType) {
                 switch (orderType) {
                     case 1:
-                        return '销售';
+                        return '销售订单';
                     case 2:
-                        return '采购';
+                        return '采购订单';
                     case 10:
                         return '销售发货单';
                     case 11:
@@ -320,9 +251,21 @@
                     return "";
                 }
                 return "￥" + this.$numeral(amount).format("0.00");
-            }
+            },
+            computedRowAmount(row) {
+                row.amount = parseFloat(row.quantity * row.price).toFixed(2);
+                this.computedTotalAmount();
+                return row.amount;
+            },
+            computedTotalAmount() {
+                let _totalAmount = 0;
+                this.orderDetails.forEach(item => {
+                    _totalAmount += parseFloat(item.amount);
+                });
+                this.totalAmount = _totalAmount.toFixed(2);
+            },
         },
-        mounted() {
+        created() {
             this.loadData();
         },
         components: {
@@ -332,18 +275,9 @@
 </script>
 
 <style>
-  .demo-table-expand {
-    font-size: 0;
+  .detail {
+    display: flex;
+    flex-wrap: wrap;
   }
 
-  .demo-table-expand label {
-    width: 90px;
-    color: #99a9bf;
-  }
-
-  .demo-table-expand .el-form-item {
-    margin-right: 0;
-    margin-bottom: 0;
-    width: 50%;
-  }
 </style>

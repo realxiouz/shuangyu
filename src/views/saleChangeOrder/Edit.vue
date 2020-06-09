@@ -10,7 +10,7 @@
           <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
             <el-form :rules="rules" :model="formData" label-position="left" label-width="97px" size="mini"
                      style="width: 80%">
-              <el-form-item label="采购订单号:" prop="parentNo">
+              <el-form-item label="销售订单号:" prop="parentNo">
                 <el-select v-if="!update" v-model="formData.parentNo" filterable @change="selectedSaleOrder"
                            placeholder="请选择" style="width: 100%">
                   <el-option
@@ -54,7 +54,7 @@
           <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
             <el-form :rules="rules" :model="formData" label-position="left" label-width="97px" size="mini"
                      style="width: 80%">
-              <el-form-item label="到期期限:" prop="expireDate">
+              <el-form-item label="发货期限:" prop="expireDate">
                 <el-date-picker
                   v-model="formData.expireDate"
                   type="date"
@@ -74,9 +74,9 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="出入库状态:">
-                未入库
+                未出库
               </el-form-item>
-              <el-form-item label="入库时间:" prop="warehouseDate">
+              <el-form-item label="出库时间:" prop="warehouseDate">
                 <el-date-picker
                   v-model="formData.warehouseDate"
                   type="date"
@@ -212,8 +212,7 @@
 </template>
 
 <script>
-    import productDetail from "../productPurchaseOrder/productDetail";
-
+    import productDetail from "../productSaleOrder/productDetail";
 
     export default {
         data() {
@@ -274,8 +273,8 @@
                     expireDate: null,
                     //单据日期
                     orderDate: null,
-                    //200：采购单 ，201 采购入库单，202 采购退款单，203 采购退票出库单，204 采购改签单，205采购改签入库单，206采购改签出库单
-                    orderType: 201,
+                    //单据类型100：销售单，101 销售出库单，102 销售退款单，103销售退票入库单，104销售改签单，105销售改签入库单，106 销售改签出库单，
+                    orderType: 104,
                     //***************
                     //仓库
                     warehouseId: '',
@@ -286,7 +285,7 @@
                     //出入库状态（0：未出库，1：已出库）
                     warehouseStatus: 1,
                     //出入库类型（委外，生产，赠送，销售出库，采购入库）
-                    warehouseType: '采购入库',
+                    warehouseType: '销售出库',
                     //出入库时间
                     warehouseDate: null,
                     //***************
@@ -398,7 +397,6 @@
                         this.formData = data;
                         this.formData.parentNo = data.orderNo;
                         this.formData.orderNo = null;
-                        this.formData.orderType = 20;
                         this.firmData.warehouseStatus = 1;
                         if (data.merchantId) {
                             this.loadAccounts(data.merchantId);
@@ -410,7 +408,7 @@
             },
             //加载可供选择的销售订单
             loadSaleOrders() {
-                this.$store.dispatch("productOrder/getList", {filter: {orderType: 2}})
+                this.$store.dispatch("productOrder/getList", {filter: {orderType: 100}})
                     .then(data => {
                         this.saleOrderList = data;
                     })
@@ -557,7 +555,7 @@
             },
             //跳转回列表页面
             goBack() {
-                this.$router.push({path: '/purchase/receipt/order'});
+                this.$router.push({path: '/product/shipment/order'});
             },
             computedRowAmount(row) {
                 row.amount = parseFloat(row.quantity * row.price).toFixed(2);

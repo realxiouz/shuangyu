@@ -1,8 +1,5 @@
 <template>
   <div class="bigBox">
-    <!--    <div class="searchBox">-->
-    <!--      <config-search @onSearch="handleSearch"></config-search>-->
-    <!--    </div>-->
     <div class="contentBox">
       <el-row style="margin-bottom:15px;margin-left:15px;">
         <el-button type="warning" @click="goBack" size="mini">返回</el-button>
@@ -14,19 +11,17 @@
         :data="tableData"
         style="width: 100%;margin-bottom: 15px;"
       >
-        <el-table-column prop="merchantName" label="客户" width="300" align="center"></el-table-column>
-        <el-table-column prop="merchantDomain" label="客户域名" width="300" align="center"></el-table-column>
-        <el-table-column prop="schedulerName" label="调度任务" width="300" align="center"></el-table-column>
-        <el-table-column prop="user" label="用户名" align="center"></el-table-column>
-        <el-table-column prop="pass" label="密码" align="center"></el-table-column>
-        <el-table-column prop="ip" label="IP" align="center"></el-table-column>
+        <el-table-column prop="merchantName" label="客户" width="250" align="center"></el-table-column>
+        <el-table-column prop="merchantDomain" label="客户域名" width="250" align="center"></el-table-column>
+        <el-table-column prop="user" label="用户名" align="center"  width="250"></el-table-column>
+        <!--<el-table-column prop="pass" label="密码" align="center"  width="250"></el-table-column>-->
+        <el-table-column prop="ip" label="IP" align="center" width="250"></el-table-column>
         <el-table-column prop="callbackUrl" label="回调地址" align="center"></el-table-column>
         <el-table-column prop="remark" label="备注" align="center"></el-table-column>
-        <el-table-column label="操作" fixed="right" align="center" width="350">
+        <el-table-column label="操作" fixed="right" align="center" width="250">
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
             <el-button @click="handleDelete(scope.row,scope.$index)" type="danger" size="small">删除</el-button>
-            <el-button @click="handleParams(scope.row)" type="primary" size="mini">参数配置</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -49,7 +44,6 @@
 </template>
 
 <script>
-  import configSearch from "./Search.vue";
   import configEdit from "./Edit.vue"
 
   function defaultData() {
@@ -59,7 +53,7 @@
   }
 
   export default {
-    name: "openApiList",
+    name: "list",
     data() {
       return {
         loading: false,
@@ -121,9 +115,6 @@
             console.error(err);
           });
       },
-      handleParams(row) {
-        this.$router.push({path: '/qunarPolicyAttr/list', query: {merchantId: row.merchantId}});
-      },
       prevClick() {
         this.pageFlag = "-1";
         this.lastId = this.tableData[0].configId;
@@ -176,43 +167,7 @@
         this.formData = defaultData();
         this.dialogVisible = true;
         this.configId = "";
-      }
-      ,
-      handleSwitch(row) {
-        row.enable = row.enable ? true : false;
-        this.$store
-          .dispatch("qunarPolicyConfig/updateOne", row)
-          .then(() => {
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      }
-      ,
-      handleRemove(id, index, rows) {
-        this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        })
-          .then(() => {
-            this.$store
-              .dispatch("qunarPolicyConfig/removeOne", {configId: id})
-              .then(() => {
-                if (1 === this.tableData.length && !this.deleteForSearch) {
-                  this.prevClick();
-                } else {
-                  this.loadData();
-                }
-                this.deleteForSearch = false;
-                rows.splice(index, 1);
-              });
-          })
-          .catch(err => {
-            console.error(err);
-          });
-      }
-      ,
+      },
       handleSave(formData) {
         var url = "qunarPolicyConfig/addOne";
         if (formData.configId) {
@@ -240,44 +195,7 @@
         params.merchantId = this.merchantId;
         this.loadData(params);
         this.loadTotal(params);
-      }
-      ,
-      clearForm() {
-        this.paramFormData = this.defaultParamForm();
-      }
-      ,
-      addParams() {
-        this.clearForm();
-        this.paramDialogVisible = true;
-      }
-      ,
-      paramDialogCancel() {
-        this.paramDialogVisible = false;
-      }
-      ,
-      handleConfirm() {
-        let exits = true;
-        for (let i = 0; i < this.paramList.length; i++) {
-          if (this.paramList[i].name === this.paramFormData.name) {
-            exits = false;
-            break;
-          }
-        }
-        if (exits) {
-          this.paramList.push(this.paramFormData);
-        }
-        this.paramDialogVisible = false;
-      }
-      ,
-      handleClose(idx) {
-        this.paramList.splice(idx, 1);
-      }
-      ,
-      handleTagClick(idx) {
-        this.clearForm();
-        Object.assign(this.paramFormData, this.paramList[idx]);
-        this.paramDialogVisible = true;
-      }
+      },
     },
     created() {
       this.merchantDomain = this.$route.query.domain;

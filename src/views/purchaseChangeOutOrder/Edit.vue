@@ -10,18 +10,6 @@
           <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
             <el-form :rules="rules" :model="formData" label-position="left" label-width="97px" size="mini"
                      style="width: 80%">
-              <el-form-item label="采购订单号:" prop="parentNo">
-                <el-select v-if="!update" v-model="formData.parentNo" filterable @change="selectedSaleOrder"
-                           placeholder="请选择" style="width: 100%">
-                  <el-option
-                    v-for="item in saleOrderList"
-                    :key="item.orderNo"
-                    :label="item.orderNo"
-                    :value="item.orderNo">
-                  </el-option>
-                </el-select>
-                <span v-if="update">{{formData.parentNo}}</span>
-              </el-form-item>
               <el-form-item label="客户:" prop="merchantId">
                 <el-select v-model="formData.merchantId" filterable @change="selectedCustomer" placeholder="请选择"
                            style="width: 100%">
@@ -54,7 +42,7 @@
           <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
             <el-form :rules="rules" :model="formData" label-position="left" label-width="97px" size="mini"
                      style="width: 80%">
-              <el-form-item label="到期期限:" prop="expireDate">
+              <el-form-item label="发货期限:" prop="expireDate">
                 <el-date-picker
                   v-model="formData.expireDate"
                   type="date"
@@ -74,9 +62,9 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="出入库状态:">
-                未入库
+                未出库
               </el-form-item>
-              <el-form-item label="入库时间:" prop="warehouseDate">
+              <el-form-item label="出库时间:" prop="warehouseDate">
                 <el-date-picker
                   v-model="formData.warehouseDate"
                   type="date"
@@ -214,7 +202,6 @@
 <script>
     import productDetail from "../productPurchaseOrder/productDetail";
 
-
     export default {
         data() {
             return {
@@ -227,7 +214,6 @@
                 productOrderList: [],
                 orderDetails: [],
                 funAccountList: [],
-                saleOrderList: [],
                 dialogVisible: false,
                 //是否对订单详情进行修改或添加
                 detailUpdate: false,
@@ -275,7 +261,7 @@
                     //单据日期
                     orderDate: null,
                     //200：采购单 ，201 采购入库单，202 采购退款单，203 采购退票出库单，204 采购改签单，205采购改签入库单，206采购改签出库单
-                    orderType: 201,
+                    orderType: 206,
                     //***************
                     //仓库
                     warehouseId: '',
@@ -284,9 +270,9 @@
                     //仓库名称
                     warehouseName: '',
                     //出入库状态（0：未出库，1：已出库）
-                    warehouseStatus: 1,
+                    warehouseStatus: 0,
                     //出入库类型（委外，生产，赠送，销售出库，采购入库）
-                    warehouseType: '采购入库',
+                    warehouseType: '销售出库',
                     //出入库时间
                     warehouseDate: null,
                     //***************
@@ -391,33 +377,6 @@
                         console.log(error);
                     });
             },
-            loadSaleOrder(parentNo) {
-                this.loadOderDetails(parentNo);
-                this.$store.dispatch("productOrder/getOne", {orderNo: parentNo})
-                    .then(data => {
-                        this.formData = data;
-                        this.formData.parentNo = data.orderNo;
-                        this.formData.orderNo = null;
-                        this.formData.orderType = 20;
-                        this.firmData.warehouseStatus = 1;
-                        if (data.merchantId) {
-                            this.loadAccounts(data.merchantId);
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            //加载可供选择的销售订单
-            loadSaleOrders() {
-                this.$store.dispatch("productOrder/getList", {filter: {orderType: 2}})
-                    .then(data => {
-                        this.saleOrderList = data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
             selectedCustomer(item) {
                 this.customerSelected = false;
                 this.loadAccounts(item);
@@ -467,10 +426,6 @@
                         this.formData.accountName = fundAccount.accountName;
                     }
                 });
-            },
-            selectedSaleOrder(item) {
-                this.customerSelected = false;
-                this.loadSaleOrder(item);
             },
             handleAddProduct() {
                 this.detailUpdate = false;
@@ -557,7 +512,12 @@
             },
             //跳转回列表页面
             goBack() {
-                this.$router.push({path: '/purchase/receipt/order'});
+                if (this.$router.history.length <= 1) {
+                    this.$router.push({path: '/home'});
+                    return false;
+                } else {
+                    this.$router.go(-1);
+                }
             },
             computedRowAmount(row) {
                 row.amount = parseFloat(row.quantity * row.price).toFixed(2);
@@ -575,30 +535,22 @@
                 let date = new Date();
                 return this.$moment(date).format(format);
             },
-            initFormData(query) {
+            initFormData(orderNo) {
                 this.update = false;
                 this.clearForm();
                 this.loadCustomers();
                 this.loadWarehouses();
                 this.loadFundAccount();
-                this.loadSaleOrders();
                 this.loadExpress();
-                const _parentNo = query.parentNo;
-                if (_parentNo) {
+                if (orderNo) {
                     this.update = true;
-                    this.loadSaleOrder(_parentNo);
-                } else {
-                    const _orderNo = query.orderNo;
-                    if (_orderNo) {
-                        this.update = true;
-                        this.loadProduct(_orderNo);
-                        this.loadOderDetails(_orderNo);
-                    }
+                    this.loadProduct(orderNo);
+                    this.loadOderDetails(orderNo);
                 }
             },
         },
         created() {
-            this.initFormData(this.$route.query);
+            this.initFormData(this.$route.query.orderNo);
         },
         computed: {
             verifyQuantity() {
