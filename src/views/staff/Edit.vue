@@ -57,6 +57,7 @@
           >关联用户
           </el-button>
           <el-button
+            :disabled="scope.row.staffType == 1?true:false"
             size="mini"
             type="primary"
             @click="permissionChange(scope.$index, scope.row)"
