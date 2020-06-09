@@ -273,8 +273,8 @@
                     expireDate: null,
                     //单据日期
                     orderDate: null,
-                    //单据类型（0：其他，1：销售，2：采购，10：销售发货单，11：销售退货单，12：销售变更单，20：采购入库单，21：采购退货单，22：采购变更单）
-                    orderType: 10,
+                    //单据类型100：销售单，101 销售出库单，102 销售退款单，103销售退票入库单，104销售改签单，105销售改签入库单，106 销售改签出库单，
+                    orderType: 106,
                     //***************
                     //仓库
                     warehouseId: '',
@@ -315,12 +315,6 @@
                     fundAccountCode: '',
                     //结算账户名称
                     fundAccountName: '',
-                    //制单人
-                    recordId: '',
-                    //制单时间
-                    recordDate: new Date(),
-                    //制单人姓名
-                    recordName: '',
                     //备注
                     remark: ''
                 };
@@ -403,7 +397,6 @@
                         this.formData = data;
                         this.formData.parentNo = data.orderNo;
                         this.formData.orderNo = null;
-                        this.formData.orderType = 10;
                         this.firmData.warehouseStatus = 1;
                         if (data.merchantId) {
                             this.loadAccounts(data.merchantId);
@@ -415,7 +408,7 @@
             },
             //加载可供选择的销售订单
             loadSaleOrders() {
-                this.$store.dispatch("productOrder/getList", {filter: {orderType: 1}})
+                this.$store.dispatch("productOrder/getList", {filter: {orderType: 100}})
                     .then(data => {
                         this.saleOrderList = data;
                     })
