@@ -212,6 +212,8 @@
 </template>
 
 <script>
+    import productDetail from "../productPurchaseOrder/productDetail";
+
 
     export default {
         data() {
@@ -615,6 +617,9 @@
                     return this.initDate(format);
                 };
             },
+        },
+        components: {
+            productDetail
         }
     };
 </script>
