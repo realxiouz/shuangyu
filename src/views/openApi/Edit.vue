@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-form ref="formData" :model="formData" label-width="100px" size="mini">
-      <input type="hidden" v-model="formData.apiId" />
+      <input type="hidden" v-model="formData.apiId"/>
       <el-form-item label="开放平台:">
         <el-select v-model="formData.openId" placeholder="请选择平台.." @change="handleSelect" style="width: 100%">
           <el-option
@@ -60,113 +60,114 @@
 </template>
 
 <script>
-function defaultData() {
-  return {
-    apiId: "",
-    openId: "",
-    url: "",
-    method: ""
-  };
-}
-export default {
-  name: "apiEdit",
-  data() {
+  function defaultData() {
     return {
-      formData: defaultData(),
+      apiId: "",
+      openId: "",
+      url: "",
+      method: ""
+    };
+  }
+
+  export default {
+    name: "apiEdit",
+    data() {
+      return {
+        formData: defaultData(),
         paramFormData: {},
         paramList: [],
         openList: []
-    };
-  },
-  methods: {
-      defaultParamForm(){
-          return {
-              //标签
-              label: '',
-              //名称
-              name: '',
-              //值
-              value: '',
-              //分组
-              group: '',
-              //标签
-              comment: '',
-              //输入框类型
-              inputType: '',
-              //数据类型
-              dataType: '',
-              //是否只读
-              readonly: false,
-              //禁用
-              disabled: false,
-              //是否必须
-              required: true,
-              //数据
-              data: ''
-          };
+      };
+    },
+    methods: {
+      defaultParamForm() {
+        return {
+          //标签
+          label: '',
+          //名称
+          name: '',
+          //值
+          value: '',
+          //分组
+          group: '',
+          //标签
+          comment: '',
+          //输入框类型
+          inputType: '',
+          //数据类型
+          dataType: '',
+          //是否只读
+          readonly: false,
+          //禁用
+          disabled: false,
+          //是否必须
+          required: true,
+          //数据
+          data: ''
+        };
       },
-    handleSave() {
-      this.$refs["form"].validate(valid => {
-        if (valid) {
-          this.$emit("onSave", this.formData);
+      handleSave() {
+        this.$refs["form"].validate(valid => {
+          if (valid) {
+            this.$emit("onSave", this.formData);
+          }
+        });
+      },
+      handleGetOne(id) {
+        if (id) {
+          this.$store
+            .dispatch("openApiService/getOne", {apiId: id})
+            .then(data => {
+              this.formData = data;
+              this.dialogVisible = true;
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        } else {
+          this.formData = defaultData();
         }
-      });
-    },
-    handleGetOne(id) {
-      if (id) {
-        this.$store
-          .dispatch("openApiService/getOne", { apiId: id })
-          .then(data => {
-            this.formData = data;
-            this.dialogVisible = true;
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      } else {
-        this.formData = defaultData();
-      }
-    },
-      clearForm(){
-          this.paramFormData = this.defaultParamForm();
       },
-      addParams(){
-          this.paramDialogVisible = true;
+      clearForm() {
+        this.paramFormData = this.defaultParamForm();
       },
-      handleCancel(){
-          this.paramDialogVisible = false;
+      addParams() {
+        this.paramDialogVisible = true;
       },
-      handleConfirm(){
+      handleCancel() {
+        this.paramDialogVisible = false;
+      },
+      handleConfirm() {
 
       },
-      handleClose(idx){
-          this.paramList.splice(idx, 1);
+      handleClose(idx) {
+        this.paramList.splice(idx, 1);
       },
       //加载平台信息
       loadOpenParty() {
-          this.$store.dispatch("openPlatform/getList", {filters: {}})
-              .then(data => {
-                  this.openList = data;
-              }).catch(error => {
-              console.log(error);
-          });
+        this.$store.dispatch("openPlatform/getList", {filters: {}})
+          .then(data => {
+            this.openList = data;
+          }).catch(error => {
+          console.log(error);
+        });
       },
-      handleSelect(openId){
-          this.openList.forEach( item => {
-              if (openId === item.openId){
-                  this.formData.openName = item.openName;
-              }
-          })
+      handleSelect(openId) {
+        this.openList.forEach(item => {
+          if (openId === item.openId) {
+            this.formData.openName = item.openName;
+          }
+        })
       }
-  },
-  created() {
-    if (this.apiId) {
-      this.handleGetOne(this.apiId);
-    }
+    },
+    created() {
+      if (this.apiId) {
+        this.handleGetOne(this.apiId);
+      }
       this.loadOpenParty();
-  },
-  props: {
-    apiId: String
-  }
-};
+    },
+    props: {
+      apiId: String
+    }
+  };
 </script>

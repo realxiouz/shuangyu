@@ -94,15 +94,14 @@
       }
     },
     methods: {
-      setFormRules(params){
-        if (params && params.length>0){
+      setFormRules(params) {
+        if (params && params.length > 0) {
           for (let i = 0; i < params.length; i++) {
             let item = params[i];
-            if (item.required){
-              this.rules[item.code]=[{required: true, message: "必填", trigger: "blur"}]
+            if (item.required) {
+              this.rules[item.code] = [{required: true, message: "必填", trigger: "blur"}]
             }
           }
-          console.log(JSON.stringify(this.rules))
         }
       },
       defaultFormData() {
@@ -154,25 +153,25 @@
           data.jobScheduler = this.formData;
           url = "jobScheduler/addOneXxl";
         }
-        this.$refs['form'].validate((valid) => {
-          if (valid) {
-            this.$store
-              .dispatch(url, {
-                jobScheduler: data,
-                jobSchedulerId: this.formData.schedulerId
-              })
-              .then(() => {
-                this.$emit('onSave')
-              })
-              .catch(error => {
-                console.log(error);
-              });
-            this.$message({
-              type: "success",
-              message: "保存成功！"
-            });
-          }
+        /* this.$refs['form'].validate((valid) => {
+           if (valid) {*/
+        this.$store
+          .dispatch(url, {
+            jobScheduler: data,
+            jobSchedulerId: this.formData.schedulerId
+          })
+          .then(() => {
+            this.$emit('onSave')
+          })
+          .catch(error => {
+            console.log(error);
+          });
+        this.$message({
+          type: "success",
+          message: "保存成功！"
         });
+        /* }
+          });*/
       },
       getParams() {
         if (!this.jobSchedulerId || this.jobSchedulerId != null || this.jobSchedulerId != '') {
@@ -221,7 +220,8 @@
         }
         return data;
       },
-    },
+    }
+    ,
     created() {
       this.formData = this.defaultFormData();
       this.getParams();
