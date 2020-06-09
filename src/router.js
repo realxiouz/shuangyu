@@ -887,6 +887,41 @@ export default new Router({
           component: () => import('@/views/purchaseReceiptOrder/Edit'),
           meta: {title: '入库订单', icon: 'home'}
         },
+        {
+          title: '采购退款单',
+          path: '/purchase/return/order',
+          name: 'purchaseReturnOrder',
+          component: () => import('@/views/purchaseReturnOrder/List'),
+          meta: {title: '采购退款单', icon: 'home'}
+        },
+        {
+          title: ' 采购退票出库单',
+          path: '/purchase/return/out/order',
+          name: 'purchaseReturnOutOrder',
+          component: () => import('@/views/purchaseReturnOutOrder/List'),
+          meta: {title: ' 采购退票出库单', icon: 'home'}
+        },
+        {
+          title: '采购改签单',
+          path: '/purchase/change/order',
+          name: 'purchaseChangeOrder',
+          component: () => import('@/views/purchaseChangeOrder/List'),
+          meta: {title: '采购改签单', icon: 'home'}
+        },
+        {
+          title: '采购改签入库单',
+          path: '/purchase/change/in/order',
+          name: 'purchaseChangeInOrder',
+          component: () => import('@/views/purchaseChangeInOrder/List'),
+          meta: {title: '采购改签入库单', icon: 'home'}
+        },
+        {
+          title: '采购改签出库单',
+          path: '/purchase/change/out/order',
+          name: 'purchaseChangeOutOrder',
+          component: () => import('@/views/purchaseChangeOutOrder/List'),
+          meta: {title: '采购改签出库单', icon: 'home'}
+        },
       ]
     },
     {
