@@ -194,7 +194,7 @@
                 if (this.lastId) {
                     searchForm.lastId = this.lastId;
                 }
-                searchForm['orderType'] = 2;
+                searchForm['orderType'] = 200;
                 this.$store.dispatch("productOrder/getPageList", {
                     pageFlag: this.pageFlag,
                     pageSize: this.pageSize,

@@ -200,7 +200,7 @@
 </template>
 
 <script>
-    import productDetail from "./productDetail";
+    import productDetail from "../productPurchaseOrder/productDetail";
 
     export default {
         data() {
