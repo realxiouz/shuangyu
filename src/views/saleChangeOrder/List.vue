@@ -92,9 +92,6 @@
             </el-form>
           </template>
         </el-table-column>
-        <el-table-column prop="orderNo" label="单号" align="center"></el-table-column>
-        <el-table-column prop="invoiceNo" label="发票号" align="center"></el-table-column>
-        <el-table-column prop="staffName" label="经办人" align="center"></el-table-column>
         <el-table-column prop="orderDate" label="单据日期" align="center">
           <template slot-scope="prop">
             {{initDate(prop.row.orderDate, 'YYYY-MM-DD')}}
