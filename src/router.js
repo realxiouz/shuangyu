@@ -921,9 +921,9 @@ export default new Router({
         },
         {
           title: '销售退票入库单',
-          path: '/sale/sale/order',
-          name: 'saleReturnOrder',
-          component: () => import('@/views/saleReturnOrder/List'),
+          path: '/sale/return/in/order',
+          name: 'saleReturnInOrder',
+          component: () => import('@/views/saleReturnInOrder/List'),
           meta: {title: '销售退票入库单', icon: 'home'}
         },
         {
