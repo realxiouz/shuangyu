@@ -3,12 +3,12 @@
     <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
       <el-row :gutter="5">
         <el-col :span="12">
-          <el-form-item label="调度名称" prop="name">
+          <el-form-item label="调度名称" prop="schedulerName">
             <el-input placeholder="调度名称" v-model="formData.schedulerName"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="定时策略">
+          <el-form-item label="定时策略" prop="cron">
             <el-popover v-model="formData.cronPopover">
               <vue-cron @change="changeCron" @close="formData.cronPopover=false" i18n="cn"></vue-cron>
               <el-input slot="reference" @click="formData.cronPopover=true" v-model="formData.cron"
@@ -17,7 +17,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12" v-for="(item, index) in formData.params" :key="index">
-          <el-form-item :label="item.name">
+          <el-form-item :label="item.name" :prop="item.code">
             <!-- 数据类型（0文本，1开关，2数字，3日期，4日期时间，5时间，6评分，7单选，8多选，9选择器）-->
             <el-input v-if="item.valueType ==0" v-model="item.value"></el-input>
             <!-- 开关-->
@@ -84,19 +84,27 @@
       return {
         formData: {},
         rules: {
-          /*productCode: [
-            {required: true, message: "请输入商品编码", trigger: "blur"},
-            {
-              min: 1,
-              max: 20,
-              message: "长度在 1到 20 个字符"
-            },
-
-          ]*/
+          schedulerName: [
+            {required: true, message: "必填", trigger: "blur"}
+          ],
+          cron: [
+            {required: true, message: "必填", trigger: "blur"}
+          ],
         }
       }
     },
     methods: {
+      setFormRules(params){
+        if (params && params.length>0){
+          for (let i = 0; i < params.length; i++) {
+            let item = params[i];
+            if (item.required){
+              this.rules[item.code]=[{required: true, message: "必填", trigger: "blur"}]
+            }
+          }
+          console.log(JSON.stringify(this.rules))
+        }
+      },
       defaultFormData() {
         return {
           params: [],
@@ -179,6 +187,7 @@
             .then(data => {
               if (data) {
                 this.formData.params = data;
+                this.setFormRules(this.formData.params);
               }
             })
             .catch(error => {
@@ -195,6 +204,7 @@
             .then(data => {
               if (data) {
                 this.formData = data.data;
+                this.setFormRules(this.formData.params);
               }
             })
             .catch(error => {
@@ -205,7 +215,7 @@
       getValues(params) {
         let data = {};
         if (params && params.length > 0) {
-          for (var i = 0; i < params.length; i++) {
+          for (let i = 0; i < params.length; i++) {
             data[params[i].code] = params[i].value;
           }
         }
