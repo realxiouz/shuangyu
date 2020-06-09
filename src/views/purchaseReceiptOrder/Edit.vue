@@ -314,12 +314,6 @@
                     fundAccountCode: '',
                     //结算账户名称
                     fundAccountName: '',
-                    //制单人
-                    recordId: '',
-                    //制单时间
-                    recordDate: new Date(),
-                    //制单人姓名
-                    recordName: '',
                     //备注
                     remark: ''
                 };
