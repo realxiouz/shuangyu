@@ -57,12 +57,15 @@
           >关联用户
           </el-button>
           <el-button
+            :disabled="scope.row.staffType == 1?true:false"
             size="mini"
             type="primary"
             @click="permissionChange(scope.$index, scope.row)"
           >编辑
           </el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+          <el-button :disabled="scope.row.staffType == 1?true:false" size="mini" type="danger"
+                     @click="handleDelete(scope.$index, scope.row)">删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -317,8 +320,7 @@
                         filter: params
                             ? params
                             : {
-                                deptId: this.curNode.deptId,
-                                staffType: 0
+                                deptId: this.curNode.deptId
                             }
                     })
                     .then(data => {
