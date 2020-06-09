@@ -73,7 +73,7 @@
   import jobSchedulerEdit from "./Edit";
 
   export default {
-    name: "jobSchedulerList",
+    name: "list",
     data() {
       return {
         dialogVisible: false,

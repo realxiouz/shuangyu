@@ -11,14 +11,14 @@
         :data="tableData"
         style="width: 100%;margin-bottom: 15px;"
       >
-        <el-table-column prop="merchantName" label="客户" width="300" align="center"></el-table-column>
-        <el-table-column prop="merchantDomain" label="客户域名" width="300" align="center"></el-table-column>
-        <el-table-column prop="user" label="用户名" align="center"></el-table-column>
-        <el-table-column prop="pass" label="密码" align="center"></el-table-column>
-        <el-table-column prop="ip" label="IP" align="center"></el-table-column>
+        <el-table-column prop="merchantName" label="客户" width="250" align="center"></el-table-column>
+        <el-table-column prop="merchantDomain" label="客户域名" width="250" align="center"></el-table-column>
+        <el-table-column prop="user" label="用户名" align="center"  width="250"></el-table-column>
+        <!--<el-table-column prop="pass" label="密码" align="center"  width="250"></el-table-column>-->
+        <el-table-column prop="ip" label="IP" align="center" width="250"></el-table-column>
         <el-table-column prop="callbackUrl" label="回调地址" align="center"></el-table-column>
         <el-table-column prop="remark" label="备注" align="center"></el-table-column>
-        <el-table-column label="操作" fixed="right" align="center" width="350">
+        <el-table-column label="操作" fixed="right" align="center" width="250">
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
             <el-button @click="handleDelete(scope.row,scope.$index)" type="danger" size="small">删除</el-button>
