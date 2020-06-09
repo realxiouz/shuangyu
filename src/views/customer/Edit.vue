@@ -55,14 +55,14 @@
           <br><br>
           <p style="font-size: 20px">管理信息</p>
           <hr width="40%" align="left">
-          <el-form :model="firmMerchantForm" label-position="left" label-width="20%" size="mini">
+          <el-form :rules="rules" :model="firmMerchantForm" label-position="left" label-width="20%" size="mini">
             <el-form-item label="标签">
             </el-form-item>
             <el-form-item label="重要性">
               <el-rate v-model="firmMerchantForm.priority" :colors="['#99A9BF', '#F7BA2A', '#FF9900']"/>
             </el-form-item>
-            <el-form-item label="税率">
-              <el-input type="text" v-model="firmMerchantForm.taxRate"></el-input>
+            <el-form-item label="税率" prop="taxRate">
+              <el-input type="text" v-model.number="firmMerchantForm.taxRate"></el-input>
             </el-form-item>
             <el-form-item label="税务登记号">
               <el-input type="text" v-model="firmMerchantForm.taxNo" placeholder="请输入税务登记号.."></el-input>
@@ -173,6 +173,9 @@
                             message: "长度在 1到 20 个字符"
                         }
                     ],
+                  taxRate: [
+                    {type:'number',message: "必须填写数字"}
+                  ],
                 }
             };
         },

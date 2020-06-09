@@ -334,7 +334,7 @@
         @click="handleSaveTicket"
       >保存并贴票
       </el-button>
-      <el-button size="mini" type="primary" @click="handleSave">保存</el-button>
+      <el-button v-if="isSaveShow" size="mini" type="primary" @click="handleSave">保存</el-button>
     </div>
   </div>
 </template>
@@ -351,6 +351,7 @@
   export default {
     name: "handleTicket",
     props: [
+      "orderState",
       "passengerData",
       "flightData",
       "sellAmount",
@@ -365,6 +366,7 @@
         supplierAccountData: [],
         orderType: orderType,
         isWoniuTicket: true,
+        isSaveShow:false,
         formData: {
           arr: this.flightData[0].arr,
           dpt: this.flightData[0].dpt,
@@ -609,6 +611,14 @@
             this.loading = false;
           });
       },
+      //订单状态判断是显示保存按钮
+      saveShow(){
+        if(this.orderState.includes("出票完成") || this.orderState.includes("支付成功") || this.orderState.includes("等待出票")){
+          this.isSaveShow = false;
+        }else{
+          this.isSaveShow = true;
+        }
+      },
       // 判断选中渠道是否是蜗牛
       selectSupplier(value) {
         delete this.formData.userNameType;
@@ -714,6 +724,7 @@
     },
 
     created() {
+      this.saveShow();
       this.getFinance();
       this.getSupplier();
     }
