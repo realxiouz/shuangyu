@@ -840,13 +840,6 @@ export default new Router({
           meta: {title: '商品库存编辑', icon: 'home'}
         },
         {
-          title: '销售订单管理',
-          path: '/product/sale/order',
-          name: 'productSaleOrder',
-          component: () => import('@/views/productSaleOrder/List'),
-          meta: {title: '销售订单管理', icon: 'home'}
-        },
-        {
           title: '采购订单管理',
           path: '/product/purchase/order',
           name: 'productPurchaseOrder',
@@ -857,23 +850,6 @@ export default new Router({
           path: '/product/purchase/order/edit',
           component: () => import('@/views/productPurchaseOrder/Edit'),
           meta: {title: '采购订单', icon: 'home'}
-        },
-        {
-          path: '/product/sale/order/edit',
-          component: () => import('@/views/productSaleOrder/Edit'),
-          meta: {title: '销售订单', icon: 'home'}
-        },
-        {
-          title: '发货订单管理',
-          path: '/product/shipment/order',
-          name: 'saleShipmentOrder',
-          component: () => import('@/views/saleShipmentOrder/List'),
-          meta: {title: '发货订单管理', icon: 'home'}
-        },
-        {
-          path: '/product/shipment/order/edit',
-          component: () => import('@/views/saleShipmentOrder/Edit'),
-          meta: {title: '发货订单', icon: 'home'}
         },
         {
           title: '采购入库单',
@@ -922,6 +898,25 @@ export default new Router({
           component: () => import('@/views/purchaseChangeOutOrder/List'),
           meta: {title: '采购改签出库单', icon: 'home'}
         },
+        {
+          title: '销售订单',
+          path: '/product/sale/order',
+          name: 'productSaleOrder',
+          component: () => import('@/views/productSaleOrder/List'),
+          meta: {title: '销售订单管理', icon: 'home'}
+        },
+        {
+          path: '/product/sale/order/edit',
+          component: () => import('@/views/productSaleOrder/Edit'),
+          meta: {title: '销售订单', icon: 'home'}
+        },
+        {
+          title: '发货订单',
+          path: '/product/shipment/order',
+          name: 'saleShipmentOrder',
+          component: () => import('@/views/saleShipmentOrder/List'),
+          meta: {title: '发货订单管理', icon: 'home'}
+        }
       ]
     },
     {
