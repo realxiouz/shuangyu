@@ -28,7 +28,7 @@
                     <div class="detail">
                       <div v-if="props.row.propertyItems.length >0"
                            v-for="(item, index) in props.row.propertyItems"
-                           :key="index" >
+                           :key="index">
                         <el-form-item :label="item.name +':'" v-if="item.code != 'flightDate'">
                           <span>{{ item.value }}</span>
                         </el-form-item>
@@ -122,7 +122,7 @@
                 if (this.lastId) {
                     searchForm.lastId = this.lastId;
                 }
-                searchForm['orderType'] = 1;
+                searchForm['orderType'] = 200;
                 this.$store.dispatch("productOrder/getPageList", {
                     pageFlag: this.pageFlag,
                     pageSize: this.pageSize,

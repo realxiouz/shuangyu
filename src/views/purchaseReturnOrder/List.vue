@@ -55,13 +55,6 @@
         </el-table-column>
         <el-table-column prop="totalAmount" label="成交金额" align="center"></el-table-column>
         <el-table-column prop="receiptAmount" label="实收金额" align="center"></el-table-column>
-        <!--        <el-table-column prop="recordDate" label="制单时间" align="center">
-                  <template slot-scope="prop">
-                    {{initDate(prop.row.recordDate, 'YYYY-MM-DD')}}
-                  </template>
-                </el-table-column>-->
-        <!--  <el-table-column prop="recordName" label="制单人姓名" align="center"></el-table-column>-->
-
         <el-table-column fixed="right" label="操作" align="center" width="160">
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
@@ -122,7 +115,7 @@
                 if (this.lastId) {
                     searchForm.lastId = this.lastId;
                 }
-                searchForm['orderType'] = 1;
+                searchForm['orderType'] = 102;
                 this.$store.dispatch("productOrder/getPageList", {
                     pageFlag: this.pageFlag,
                     pageSize: this.pageSize,
