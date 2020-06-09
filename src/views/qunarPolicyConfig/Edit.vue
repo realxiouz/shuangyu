@@ -85,7 +85,7 @@
           });
       },
       clearForm() {
-        this.formData = this.defaultParamForm();
+        this.formData = this.defaultData();
       },
       handleClose(idx) {
         this.paramList.splice(idx, 1);
