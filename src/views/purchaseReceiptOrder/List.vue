@@ -8,120 +8,35 @@
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table v-loading="loading" :data="tableData" style="width: 100%;margin-bottom: 15px;" size="mini">
-        <el-table-column type="expand">
-          <template slot-scope="props">
-            <el-form label-position="right" :inline="true" label-width="120px" class="demo-table-expand">
-              <el-form-item label="父单号">
-                <span>{{ props.row.parentNo }}</span>
-              </el-form-item>
-              <el-form-item label="外部单号">
-                <span>{{ props.row.sourceNo }}</span>
-              </el-form-item>
-              <el-form-item label="单号">
-                <span>{{ props.row.orderNo }}</span>
-              </el-form-item>
-              <el-form-item label="客户账号">
-                <span>{{ props.row.merchantId }}</span>
-              </el-form-item>
-              <el-form-item label="联系人">
-                <span>{{ props.row.contactName }}</span>
-              </el-form-item>
-              <el-form-item label="发票号">
-                <span>{{ props.row.invoiceNo }}</span>
-              </el-form-item>
-              <el-form-item label="经办人">
-                <span>{{ props.row.staffName }}</span>
-              </el-form-item>
-              <el-form-item label="到期日期">
-                <span>{{ initDate(props.row.expireDate, 'YYYY-MM-DD') }}</span>
-              </el-form-item>
-              <el-form-item label="单据日期">
-                <span>{{ initDate(props.row.orderDate, 'YYYY-MM-DD') }}</span>
-              </el-form-item>
-              <el-form-item label="单据类型">
-                <span>{{ initOrderType(props.row.orderType) }}</span>
-              </el-form-item>
-              <el-form-item label="仓库编码">
-                <span>{{ props.row.warehouseCode }}</span>
-              </el-form-item>
-              <el-form-item label="仓库名称">
-                <span>{{ props.row.warehouseName }}</span>
-              </el-form-item>
-              <el-form-item label="出入库状态">
-                <span>{{ initWarehouseStatus(props.row.warehouseStatus) }}</span>
-              </el-form-item>
-              <el-form-item label="出入库类型">
-                <span>{{ props.row.warehouseType }}</span>
-              </el-form-item>
-              <el-form-item label="出入库时间">
-                <span>{{ initDate(props.row.warehouseDate, 'YYYY-MM-DD') }}</span>
-              </el-form-item>
-              <el-form-item label="快递号码">
-                <span>{{ props.row.expressNo }}</span>
-              </el-form-item>
-              <el-form-item label="快递公司">
-                <span>{{ props.row.expressName }}</span>
-              </el-form-item>
-              <el-form-item label="快递状态">
-                <span>{{ props.row.expressStatus }}</span>
-              </el-form-item>
-              <el-form-item label="交易单号">
-                <span>{{ props.row.tradeNo }}</span>
-              </el-form-item>
-              <el-form-item label="付款状态">
-                <span>{{ initPaymentStatus(props.row.paymentStatus) }}</span>
-              </el-form-item>
-              <el-form-item label="付款方式">
-                <span>{{ props.row.paymentMode }}</span>
-              </el-form-item>
-              <el-form-item label="成交金额">
-                <span>{{ formatAmount(props.row.totalAmount) }}</span>
-              </el-form-item>
-              <el-form-item label="实收金额">
-                <span>{{ formatAmount(props.row.receiptAmount) }}</span>
-              </el-form-item>
-              <el-form-item label="结算账户">
-                <span>{{ props.row.fundAccountName }}</span>
-              </el-form-item>
-              <el-form-item label="制单人">
-                <span>{{ props.row.recordName }}</span>
-              </el-form-item>
-              <el-form-item label="制单时间">
-                <span>{{ initDate(props.row.recordDate, 'YYYY-MM-DD') }}</span>
-              </el-form-item>
-            </el-form>
-          </template>
-        </el-table-column>
         <el-table-column prop="orderNo" label="单号" align="center"></el-table-column>
-        <el-table-column prop="invoiceNo" label="发票号" align="center"></el-table-column>
-        <el-table-column prop="staffName" label="经办人" align="center"></el-table-column>
         <el-table-column prop="orderDate" label="单据日期" align="center">
           <template slot-scope="prop">
             {{initDate(prop.row.orderDate, 'YYYY-MM-DD')}}
           </template>
         </el-table-column>
-        <el-table-column prop="orderType" label="单据类型" align="center">
-          <template slot-scope="prop">
-            <span>{{initOrderType(prop.row.orderType)}}</span>
-          </template>
+        <el-table-column prop="orderType" :formatter="formatOrderType" label="单据类型" align="center">
         </el-table-column>
-        <el-table-column prop="warehouseDate" label="出库时间" align="center">
-          <template slot-scope="prop">
-            {{initDate(prop.row.warehouseDate, 'YYYY-MM-DD')}}
-          </template>
-        </el-table-column>
-        <el-table-column prop="tradeNo" label="交易单号" align="center"></el-table-column>
-        <el-table-column prop="totalAmount" label="成交金额" align="center"></el-table-column>
-        <el-table-column prop="receiptAmount" label="实收金额" align="center"></el-table-column>
-        <el-table-column prop="recordDate" label="制单时间" align="center">
-          <template slot-scope="prop">
-            {{initDate(prop.row.recordDate, 'YYYY-MM-DD')}}
-          </template>
-        </el-table-column>
-        <el-table-column prop="recordName" label="制单人姓名" align="center"></el-table-column>
-        <el-table-column label="明细" align="center" width="580">
+        <el-table-column label="明细" align="center" width="800">
           <template slot-scope="scope">
             <el-table :data="scope.row.orderDetails" border size="mini">
+              <el-table-column type="expand">
+                <template slot-scope="props">
+                  <el-form label-position="right" :inline="true" label-width="120px">
+                    <div class="detail">
+                      <div v-if="props.row.propertyItems.length >0"
+                           v-for="(item, index) in props.row.propertyItems"
+                           :key="index">
+                        <el-form-item :label="item.name +':'" v-if="item.code != 'flightDate'">
+                          <span>{{ item.value }}</span>
+                        </el-form-item>
+                        <el-form-item :label="item.name +':'" v-if="item.code == 'flightDate'">
+                          <span>    {{initDate(item.value, 'YYYY-MM-DD')}}</span>
+                        </el-form-item>
+                      </div>
+                    </div>
+                  </el-form>
+                </template>
+              </el-table-column>
               <el-table-column prop="productCode" label="商品编码" align="center"></el-table-column>
               <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
               <el-table-column prop="brandName" label="品牌" align="center"></el-table-column>
@@ -135,6 +50,28 @@
             </el-table>
           </template>
         </el-table-column>
+        <el-table-column prop="totalAmount" label="成交金额" align="center"></el-table-column>
+        <el-table-column prop="receiptAmount" label="实收金额" align="center"></el-table-column>
+        <!--        <el-table-column prop="recordDate" label="制单时间" align="center">-->
+        <!--          <template slot-scope="prop">-->
+        <!--            {{initDate(prop.row.recordDate, 'YYYY-MM-DD')}}-->
+        <!--          </template>-->
+        <!--        </el-table-column>-->
+        <!--        <el-table-column prop="recordName" label="制单人姓名" align="center"></el-table-column>-->
+        <el-table-column
+          prop="orderStatus"
+          :formatter="formatOrderStatus"
+          label="确认状态"
+          width="80"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="warehouseStatus"
+          :formatter="formatWarehouseStatus"
+          label="收货状态"
+          width="80"
+          align="center"
+        ></el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="160">
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
@@ -159,6 +96,12 @@
 
 <script>
     import productSearch from "./Search.vue";
+    import {
+        formatOrderStatus,
+        formatOrderType,
+        formatPaymentStatus,
+        formatWarehouseStatus
+    } from "@/utils/productStatus.js";
 
     export default {
         data() {
@@ -174,6 +117,10 @@
             };
         },
         methods: {
+            formatOrderType,
+            formatOrderStatus,
+            formatWarehouseStatus,
+            formatPaymentStatus,
             /*翻前页*/
             handlePrevClick() {
                 this.pageFlag = -1;
