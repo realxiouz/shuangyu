@@ -257,18 +257,9 @@
 </script>
 
 <style>
-  .demo-table-expand {
-    font-size: 0;
+  .detail {
+    display: flex;
+    flex-wrap: wrap;
   }
 
-  .demo-table-expand label {
-    width: 90px;
-    color: #99a9bf;
-  }
-
-  .demo-table-expand .el-form-item {
-    margin-right: 0;
-    margin-bottom: 0;
-    width: 50%;
-  }
 </style>

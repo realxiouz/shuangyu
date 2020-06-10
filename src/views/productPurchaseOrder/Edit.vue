@@ -53,17 +53,17 @@
               <el-form-item label="出入库状态:">
                 未入库
               </el-form-item>
-              <el-form-item label="快递公司:" prop="expressId">
-                <el-select v-model="formData.expressId" @change="selectedExpress" filterable placeholder="请选择"
-                           style="width: 100%">
-                  <el-option
-                    v-for="item in expressList"
-                    :key="item.merchantId"
-                    :label="item.firm.firmName"
-                    :value="item.merchantId">
-                  </el-option>
-                </el-select>
-              </el-form-item>
+<!--              <el-form-item label="快递公司:" prop="expressId">-->
+<!--                <el-select v-model="formData.expressId" @change="selectedExpress" filterable placeholder="请选择"-->
+<!--                           style="width: 100%">-->
+<!--                  <el-option-->
+<!--                    v-for="item in expressList"-->
+<!--                    :key="item.merchantId"-->
+<!--                    :label="item.firm.firmName"-->
+<!--                    :value="item.merchantId">-->
+<!--                  </el-option>-->
+<!--                </el-select>-->
+<!--              </el-form-item>-->
               <el-form-item label="付款方式" prop="paymentMode">
                 <el-autocomplete
                   v-model="formData.paymentMode"
@@ -95,7 +95,6 @@
                 <el-input v-model.number="prop.row.quantity" placeholder="输入单价" @input="testQuantity(prop.row)"
                           size="mini"></el-input>
                 <span v-if="verifyQuantity(prop.row.quantity)" style="color: #F56C6C">*商品数量必须为数字</span>
-                <!--                <span v-if="verifyStockQuantity(prop.row)" style="color: #F56C6C">*商品数量应该小于或等于库存数量</span>-->
               </template>
             </el-table-column>
             <el-table-column prop="unit" label="计量单位" align="center"></el-table-column>
@@ -166,7 +165,6 @@
         <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="16">
           <div id="footer">
             <span v-show="quantityError" style="color: #F56C6C">商品数量必须为数字</span><br/>
-            <!--            <span v-show="stockError" style="color: #F56C6C">商品数量应该小于或等于库存数量</span><br/>-->
             <el-button :disabled="quantityError " type="primary" @click="handleSave" size="mini">保 存
             </el-button>
           </div>
@@ -201,7 +199,6 @@
                 customerSelected: true,
                 update: false,
                 quantityError: false,
-                stockError: false,
                 productIdList: [],
                 totalAmount: 0,
                 rules: {
@@ -479,11 +476,6 @@
                 } else {
                     this.quantityError = false;
                 }
-                if (row.stockQuantity < row.quantity) {
-                    this.stockError = true;
-                } else {
-                    this.stockError = false;
-                }
             },
             clearForm() {
                 this.formData = this.defaultFormData();
@@ -535,11 +527,6 @@
                 return function (quantity) {
                     let reg = /^[0-9]*$/;
                     return !reg.test(quantity);
-                }
-            },
-            verifyStockQuantity() {
-                return function (row) {
-                    return row.stockQuantity < row.quantity;
                 }
             },
             formatDate() {

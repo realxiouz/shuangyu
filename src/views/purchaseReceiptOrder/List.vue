@@ -61,14 +61,14 @@
         <el-table-column
           prop="orderStatus"
           :formatter="formatOrderStatus"
-          label="确认状态"
+          label="状态"
           width="80"
           align="center"
         ></el-table-column>
         <el-table-column
           prop="warehouseStatus"
-          :formatter="formatWarehouseStatus"
-          label="收货状态"
+          :formatter="formatPaymentStatus"
+          label="付款状态"
           width="80"
           align="center"
         ></el-table-column>
@@ -279,18 +279,9 @@
 </script>
 
 <style>
-  .demo-table-expand {
-    font-size: 0;
+  .detail {
+    display: flex;
+    flex-wrap: wrap;
   }
 
-  .demo-table-expand label {
-    width: 90px;
-    color: #99a9bf;
-  }
-
-  .demo-table-expand .el-form-item {
-    margin-right: 0;
-    margin-bottom: 0;
-    width: 50%;
-  }
 </style>
