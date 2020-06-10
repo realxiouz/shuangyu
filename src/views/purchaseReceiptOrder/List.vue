@@ -72,8 +72,11 @@
           width="80"
           align="center"
         ></el-table-column>
-        <el-table-column fixed="right" label="操作" align="center" width="160">
+        <el-table-column fixed="right" label="操作" align="center" width="280">
           <template slot-scope="scope">
+            <el-button v-show="scope.row.orderStatus == 0" @click="handleWarehouse(scope.row)" type="primary"
+                       size="mini">入库
+            </el-button>
             <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
             <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
           </template>
@@ -174,6 +177,16 @@
             handleAdd() {
                 this.skipDetail();
             },
+            handleWarehouse(row) {
+                this.$store
+                    .dispatch("productOrder/inWarehouseOrder", {orderNo: row.orderNo, data: row})
+                    .then(() => {
+                        this.loadData();
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
             handleEdit(row) {
                 this.skipDetail(row.orderNo);
             },
@@ -188,7 +201,6 @@
                             type: "success",
                             message: "删除成功!"
                         });
-                        this.lastId = "blank";
                         if (1 === this.tableData.length) {
                             this.handlePrevClick();
                         } else {
@@ -218,28 +230,6 @@
             skipDetail(orderNo) {
                 this.$router.push({path: '/purchase/receipt/order/edit', query: {orderNo: orderNo}});
             },
-            initOrderType(orderType) {
-                switch (orderType) {
-                    case 1:
-                        return '销售';
-                    case 2:
-                        return '采购';
-                    case 10:
-                        return '销售发货单';
-                    case 11:
-                        return '销售退货单';
-                    case 12:
-                        return '销售变更单';
-                    case 20:
-                        return '采购入库单';
-                    case 21:
-                        return '采购退货单';
-                    case 22:
-                        return '采购变更单';
-                    default:
-                        return '其他';
-                }
-            },
             initDate(dateStr, format) {
                 if (dateStr > 0) {
                     let date = new Date(dateStr);
@@ -248,26 +238,6 @@
                     return "";
                 }
             },
-            initWarehouseStatus(warehouseStatus) {
-                switch (warehouseStatus) {
-                    case 0:
-                        return '未出库';
-                    case 1:
-                        return '已出库';
-                }
-            },
-            initPaymentStatus(paymentStatus) {
-                if (0 === paymentStatus) {
-                    return '未付款';
-                }
-                return '已付款';
-            },
-            formatAmount(amount) {
-                if (!amount) {
-                    return "";
-                }
-                return "￥" + this.$numeral(amount).format("0.00");
-            }
         },
         created() {
             this.loadData();

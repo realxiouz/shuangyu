@@ -74,7 +74,7 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="出入库状态:">
-                未入库
+                <span>{{formData.warehouseStatus ==0?'未入库':'已入库'}}</span>
               </el-form-item>
               <el-form-item label="入库时间:" prop="warehouseDate">
                 <el-date-picker
@@ -99,7 +99,7 @@
                 <el-autocomplete
                   v-model="formData.paymentMode"
                   :fetch-suggestions="querySearchAsync"
-                  placeholder="请输入联系电话"
+                  placeholder="付款方式"
                   @select="selectedPaymode"
                   style="width: 100%">
                 </el-autocomplete>
@@ -198,8 +198,8 @@
             <span v-show="quantityError" style="color: #F56C6C">商品数量必须为数字</span><br/>
             <el-button :disabled="quantityError " type="primary" @click="handleSave" size="mini">保 存
             </el-button>
-            <el-button type="primary" @click="handleReceipt" size="mini">入 库
-            </el-button>
+<!--            <el-button type="primary" @click="handleReceipt" size="mini">入 库-->
+<!--            </el-button>-->
           </div>
         </el-col>
       </el-row>
@@ -475,6 +475,7 @@
                 this.dialogVisible = true;
             },
             handleRemoveProduct(idx, row) {
+                debugger
                 let _detailId = row.detailId;
                 if (_detailId && '' != _detailId) {
                     this.$store.dispatch("orderDetail/removeOne", {detailId: _detailId})
@@ -495,15 +496,6 @@
                     }
                 });
                 this.dialogVisible = false;
-            },
-            handleReceipt() {
-                this.$store
-                    .dispatch('productOrder/updateOne', {productOrder: this.formData, orderDetails: this.orderDetails})
-                    .then(() => {
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
             },
             handleSave() {
                 const dateItem = ['expireDate', 'warehouseDate'];

@@ -51,24 +51,24 @@
                 </el-date-picker>
               </el-form-item>
               <el-form-item label="出入库状态:">
-                未入库
+                <span>{{formData.warehouseStatus ==0?'未入库':'已入库'}}</span>
               </el-form-item>
-<!--              <el-form-item label="快递公司:" prop="expressId">-->
-<!--                <el-select v-model="formData.expressId" @change="selectedExpress" filterable placeholder="请选择"-->
-<!--                           style="width: 100%">-->
-<!--                  <el-option-->
-<!--                    v-for="item in expressList"-->
-<!--                    :key="item.merchantId"-->
-<!--                    :label="item.firm.firmName"-->
-<!--                    :value="item.merchantId">-->
-<!--                  </el-option>-->
-<!--                </el-select>-->
-<!--              </el-form-item>-->
+              <!--              <el-form-item label="快递公司:" prop="expressId">-->
+              <!--                <el-select v-model="formData.expressId" @change="selectedExpress" filterable placeholder="请选择"-->
+              <!--                           style="width: 100%">-->
+              <!--                  <el-option-->
+              <!--                    v-for="item in expressList"-->
+              <!--                    :key="item.merchantId"-->
+              <!--                    :label="item.firm.firmName"-->
+              <!--                    :value="item.merchantId">-->
+              <!--                  </el-option>-->
+              <!--                </el-select>-->
+              <!--              </el-form-item>-->
               <el-form-item label="付款方式" prop="paymentMode">
                 <el-autocomplete
                   v-model="formData.paymentMode"
                   :fetch-suggestions="querySearchAsync"
-                  placeholder="请输入联系电话"
+                  placeholder="付款方式"
                   @select="selectedPaymode"
                   style="width: 100%">
                 </el-autocomplete>

@@ -188,7 +188,6 @@
                             type: "success",
                             message: "删除成功!"
                         });
-                        this.lastId = "blank";
                         if (1 === this.tableData.length) {
                             this.handlePrevClick();
                         } else {
@@ -226,26 +225,6 @@
                     return "";
                 }
             },
-            initWarehouseStatus(warehouseStatus) {
-                switch (warehouseStatus) {
-                    case 0:
-                        return '未出库';
-                    case 1:
-                        return '已出库';
-                }
-            },
-            initPaymentStatus(paymentStatus) {
-                if (0 === paymentStatus) {
-                    return '未付款';
-                }
-                return '已付款';
-            },
-            formatAmount(amount) {
-                if (!amount) {
-                    return "";
-                }
-                return "￥" + this.$numeral(amount).format("0.00");
-            }
         },
         mounted() {
             this.loadData();
