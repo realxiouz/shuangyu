@@ -17,7 +17,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12" v-for="(item, index) in formData.params" :key="index">
-          <el-form-item :label="item.name">
+          <el-form-item :label="item.name" :prop="item.code">
             <!-- 数据类型（0文本，1开关，2数字，3日期，4日期时间，5时间，6评分，7单选，8多选，9选择器）-->
             <el-input v-if="item.valueType ==0" v-model="item.value"></el-input>
             <!-- 开关-->
@@ -79,24 +79,31 @@
 <script>
   export default {
     name: 'edit',
-    props: ["jobSchedulerId", 'updateFlag','copyFlag'],
+    props: ["jobSchedulerId", 'updateFlag', 'copyFlag'],
     data() {
       return {
         formData: {},
         rules: {
-          /*productCode: [
-            {required: true, message: "请输入商品编码", trigger: "blur"},
-            {
-              min: 1,
-              max: 20,
-              message: "长度在 1到 20 个字符"
-            },
-
-          ]*/
+          schedulerName: [
+            {required: true, message: "必填", trigger: "blur"}
+          ],
+          cron: [
+            {required: true, message: "必填", trigger: "blur"}
+          ],
         }
       }
     },
     methods: {
+      setFormRules(params) {
+        if (params && params.length > 0) {
+          for (let i = 0; i < params.length; i++) {
+            let item = params[i];
+            if (item.required) {
+              this.rules[item.code] = [{required: true, message: "必填", trigger: "blur"}]
+            }
+          }
+        }
+      },
       defaultFormData() {
         return {
           params: [],
@@ -133,38 +140,38 @@
         } else {
           let xxlJobGroup = {
             appName: 'wop-provider',
-            addressType:0,
-            title:'wop执行器'
+            addressType: 0,
+            title: 'wop执行器'
           };
           let xxlJobInfo = {
             jobDesc: this.formData.schedulerName,
-            jobCron:this.formData.cron,
-            executorHandler:'wopJobHandler'
+            jobCron: this.formData.cron,
+            executorHandler: 'wopJobHandler'
           };
           data.xxlJobInfo = xxlJobInfo;
           data.xxlJobGroup = xxlJobGroup;
           data.jobScheduler = this.formData;
           url = "jobScheduler/addOneXxl";
         }
-        this.$refs['form'].validate((valid) => {
-          if (valid) {
-            this.$store
-              .dispatch(url, {
-                jobScheduler: data,
-                jobSchedulerId: this.formData.schedulerId
-              })
-              .then(() => {
-                this.$emit('onSave')
-              })
-              .catch(error => {
-                console.log(error);
-              });
-            this.$message({
-              type: "success",
-              message: "保存成功！"
-            });
-          }
+        /*this.$refs['form'].validate((valid) => {
+          if (valid) {*/
+        this.$store
+          .dispatch(url, {
+            jobScheduler: data,
+            jobSchedulerId: this.formData.schedulerId
+          })
+          .then(() => {
+            this.$emit('onSave')
+          })
+          .catch(error => {
+            console.log(error);
+          });
+        this.$message({
+          type: "success",
+          message: "保存成功！"
         });
+        /*   }
+         });*/
       },
       getParams() {
         if (!this.jobSchedulerId || this.jobSchedulerId != null || this.jobSchedulerId != '') {
@@ -179,6 +186,7 @@
             .then(data => {
               if (data) {
                 this.formData.params = data;
+                this.setFormRules(this.formData.params);
               }
             })
             .catch(error => {
@@ -195,7 +203,11 @@
             .then(data => {
               if (data) {
                 this.formData = data.data;
-                if (this.copyFlag){
+                if (!this.formData.params || this.formData.params.length < 1) {
+                  this.getParams();
+                }
+                this.setFormRules(this.formData.params);
+                if (this.copyFlag) {
                   this.formData.schedulerId = '';
                 }
               }
