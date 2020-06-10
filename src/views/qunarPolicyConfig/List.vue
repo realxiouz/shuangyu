@@ -14,7 +14,6 @@
         <el-table-column prop="merchantName" label="客户" width="250" align="center"></el-table-column>
         <el-table-column prop="merchantDomain" label="客户域名" width="250" align="center"></el-table-column>
         <el-table-column prop="user" label="用户名" align="center"  width="250"></el-table-column>
-        <!--<el-table-column prop="pass" label="密码" align="center"  width="250"></el-table-column>-->
         <el-table-column prop="ip" label="IP" align="center" width="250"></el-table-column>
         <el-table-column prop="callbackUrl" label="回调地址" align="center"></el-table-column>
         <el-table-column prop="remark" label="备注" align="center"></el-table-column>
