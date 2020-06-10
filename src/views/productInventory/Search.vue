@@ -7,7 +7,7 @@
             <el-input
               clearable
               @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.propertyName"
+              v-model="formData.productName"
               placeholder="请输入商品名称搜索..."
             ></el-input>
           </el-form-item>
