@@ -51,24 +51,24 @@
                 </el-date-picker>
               </el-form-item>
               <el-form-item label="出入库状态:">
-                未入库
+                <span>{{formData.warehouseStatus ==0?'未入库':'已入库'}}</span>
               </el-form-item>
-              <el-form-item label="快递公司:" prop="expressId">
-                <el-select v-model="formData.expressId" @change="selectedExpress" filterable placeholder="请选择"
-                           style="width: 100%">
-                  <el-option
-                    v-for="item in expressList"
-                    :key="item.merchantId"
-                    :label="item.firm.firmName"
-                    :value="item.merchantId">
-                  </el-option>
-                </el-select>
-              </el-form-item>
+              <!--              <el-form-item label="快递公司:" prop="expressId">-->
+              <!--                <el-select v-model="formData.expressId" @change="selectedExpress" filterable placeholder="请选择"-->
+              <!--                           style="width: 100%">-->
+              <!--                  <el-option-->
+              <!--                    v-for="item in expressList"-->
+              <!--                    :key="item.merchantId"-->
+              <!--                    :label="item.firm.firmName"-->
+              <!--                    :value="item.merchantId">-->
+              <!--                  </el-option>-->
+              <!--                </el-select>-->
+              <!--              </el-form-item>-->
               <el-form-item label="付款方式" prop="paymentMode">
                 <el-autocomplete
                   v-model="formData.paymentMode"
                   :fetch-suggestions="querySearchAsync"
-                  placeholder="请输入联系电话"
+                  placeholder="付款方式"
                   @select="selectedPaymode"
                   style="width: 100%">
                 </el-autocomplete>
@@ -95,7 +95,6 @@
                 <el-input v-model.number="prop.row.quantity" placeholder="输入单价" @input="testQuantity(prop.row)"
                           size="mini"></el-input>
                 <span v-if="verifyQuantity(prop.row.quantity)" style="color: #F56C6C">*商品数量必须为数字</span>
-                <!--                <span v-if="verifyStockQuantity(prop.row)" style="color: #F56C6C">*商品数量应该小于或等于库存数量</span>-->
               </template>
             </el-table-column>
             <el-table-column prop="unit" label="计量单位" align="center"></el-table-column>
@@ -166,7 +165,6 @@
         <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="16">
           <div id="footer">
             <span v-show="quantityError" style="color: #F56C6C">商品数量必须为数字</span><br/>
-            <!--            <span v-show="stockError" style="color: #F56C6C">商品数量应该小于或等于库存数量</span><br/>-->
             <el-button :disabled="quantityError " type="primary" @click="handleSave" size="mini">保 存
             </el-button>
           </div>
@@ -201,7 +199,6 @@
                 customerSelected: true,
                 update: false,
                 quantityError: false,
-                stockError: false,
                 productIdList: [],
                 totalAmount: 0,
                 rules: {
@@ -241,8 +238,8 @@
                     expireDate: null,
                     //单据日期
                     orderDate: null,
-                    //单据类型（0：其他，1：销售，2：采购，10：销售发货单，11：销售退货单，12：销售变更单，20：采购入库单，21：采购退货单，22：采购变更单）
-                    orderType: 2,
+                    //200：采购单 ，201 采购入库单，202 采购退款单，203 采购退票出库单，204 采购改签单，205采购改签入库单，206采购改签出库单
+                    orderType: 200,
                     //***************
                     //仓库
                     warehouseId: '',
@@ -479,11 +476,6 @@
                 } else {
                     this.quantityError = false;
                 }
-                if (row.stockQuantity < row.quantity) {
-                    this.stockError = true;
-                } else {
-                    this.stockError = false;
-                }
             },
             clearForm() {
                 this.formData = this.defaultFormData();
@@ -535,11 +527,6 @@
                 return function (quantity) {
                     let reg = /^[0-9]*$/;
                     return !reg.test(quantity);
-                }
-            },
-            verifyStockQuantity() {
-                return function (row) {
-                    return row.stockQuantity < row.quantity;
                 }
             },
             formatDate() {

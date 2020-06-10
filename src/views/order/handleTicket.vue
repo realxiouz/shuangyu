@@ -613,7 +613,7 @@
       },
       //订单状态判断是显示保存按钮
       saveShow(){
-        if(this.orderState.includes("出票完成") || this.orderState.includes("支付成功") || this.orderState.includes("等待出票")){
+        if(this.orderState.includes("出票中") || this.orderState.includes("支付成功") || this.orderState.includes("等待出票")){
           this.isSaveShow = false;
         }else{
           this.isSaveShow = true;

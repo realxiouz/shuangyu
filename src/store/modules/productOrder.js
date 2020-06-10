@@ -1,9 +1,31 @@
-import {addOne, getList, getOne, getPageList, getTotal, removeOne, updateOne} from '@/api/productOrder';
+import {
+  addOne,
+  getList,
+  getOne,
+  getPageList,
+  getTotal,
+  inWarehouseOrder,
+  removeOne,
+  updateOne
+} from '@/api/productOrder';
 
 const actions = {
   addOne({commit}, params) {
     return new Promise((resolve, reject) => {
       addOne(params)
+        .then(response => {
+          resolve(response.data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+
+  inWarehouseOrder({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {orderNo, data} = params;
+      inWarehouseOrder(orderNo, data)
         .then(response => {
           resolve(response.data);
         })

@@ -10,7 +10,7 @@
           <p style="font-size: 30px; font-weight: bold">客户</p>
           <p style="font-size: 20px">基本信息</p>
           <hr width="40%" align="left">
-          <el-form :rules="rules" :model="firmForm" label-position="left" label-width="20%" size="mini">
+          <el-form :rules="rules" :model="firmForm" ref="firmForm" label-position="left" label-width="20%" size="mini">
             <el-form-item label="客户类型" prop="type">
               <el-select v-model="firmForm.firmType" placeholder="请选择客户类型" @change="selectedCustomerType"
                          style="width: 50%">
@@ -43,7 +43,7 @@
               </el-select>
             </el-form-item>
             <el-form-item label="出生日期">
-              <el-date-picker v-model="firmForm.birthDate" type="date" placeholder="选择日期"/>
+              <el-date-picker v-model="firmForm.birthDate" value-format="timestamp" type="date" placeholder="选择日期"/>
             </el-form-item>
             <el-form-item label="地址" prop="address">
               <el-input type="text" placeholder="请输入地址" v-model="firmForm.address"></el-input>
@@ -55,7 +55,7 @@
           <br><br>
           <p style="font-size: 20px">管理信息</p>
           <hr width="40%" align="left">
-          <el-form :rules="rules" :model="firmMerchantForm" label-position="left" label-width="20%" size="mini">
+          <el-form :rules="rules" :model="firmMerchantForm" ref="firmMerchantForm" label-position="left" label-width="20%" size="mini">
             <el-form-item label="标签">
             </el-form-item>
             <el-form-item label="重要性">
@@ -71,7 +71,7 @@
               <el-input type="text" v-model="firmMerchantForm.paymentType" placeholder="请输入付款方式.."></el-input>
             </el-form-item>
             <el-form-item label="资金账号类型" prop="accountType">
-              <el-select v-model="firmForm.accountType" placeholder="请选择账号类型.." style="width: 50%">
+              <el-select v-model="firmMerchantForm.accountType" placeholder="请选择账号类型.." style="width: 50%">
                 <el-option label="现金" :value="0"></el-option>
                 <el-option label="银行存款" :value="1"></el-option>
                 <el-option label="支付宝" :value="2"></el-option>
@@ -175,7 +175,7 @@
                     ],
                   taxRate: [
                     {type:'number',message: "必须填写数字"}
-                  ],
+                  ]
                 }
             };
         },
@@ -239,7 +239,9 @@
                     //联系人电话
                     financePhone: '',
                     //联系人电子邮箱
-                    financeEmail: ''
+                    financeEmail: '',
+                    //备注
+                    remark:''
                 };
             },
             //加载平台信息
@@ -317,49 +319,72 @@
                     }
                 }
             },
-            addCustomerClick() {
-                let accountList = [];
-                this.openData.forEach(item => {
-                    const _openId = this.firmForm.openId;
-                    if (_openId && _openId == item.openId) {
-                        this.open = item;
-                    }
+          addCustomerClick() {
+            let isValid = false;
+            this.$refs["firmForm"].validate((firmValid) => {
+              if (firmValid) {
+                this.$refs["firmMerchantForm"].validate((merchantValid) => {
+                  if (merchantValid) {
+                    isValid = true;
+                  } else {
+                    isValid = false;
+                    this.$message({
+                      type: "error",
+                      message: "请正确填写!"
+                    });
+                  }
                 });
-                this.accounts.forEach(item => {
-                    item.openId = this.open.openId;
-                    item.openName = this.open.openName;
-                    accountList.push(item);
+              } else {
+                isValid = false;
+                this.$message({
+                  type: "error",
+                  message: "请正确填写!"
                 });
-                if (this.firmForm.biethDate) {
-                    this.firmForm.biethDate = this.firmForm.biethDate.getTime();
+              }
+            });
+            if (isValid) {
+              let accountList = [];
+              this.openData.forEach(item => {
+                const _openId = this.firmForm.openId;
+                if (_openId && _openId == item.openId) {
+                  this.open = item;
                 }
-                this.firmMerchantForm.firm = this.firmForm;
-                this.firmMerchantForm.contacts = this.contacts;
-                this.firmMerchantForm.accounts = accountList;
-                if (this.update) {
-                    this.$store
-                        .dispatch('firmMerchant/updateOne', {
-                            merchantId: this.firmMerchantForm.merchantId,
-                            data: this.firmMerchantForm
-                        })
-                        .then(() => {
-                            this.goBack();
-                        })
-                        .catch(error => {
-                            console.log(error);
-                        });
-                } else {
-                    this.$store
-                        .dispatch('firmMerchant/addOne', this.firmMerchantForm)
-                        .then(() => {
-                            this.goBack();
-                        })
-                        .catch(error => {
-                            console.log(error);
-                        });
-                }
-
-            },
+              });
+              this.accounts.forEach(item => {
+                item.openId = this.open.openId;
+                item.openName = this.open.openName;
+                accountList.push(item);
+              });
+              if (this.firmForm.biethDate) {
+                this.firmForm.biethDate = this.firmForm.biethDate.getTime();
+              }
+              this.firmMerchantForm.firm = this.firmForm;
+              this.firmMerchantForm.contacts = this.contacts;
+              this.firmMerchantForm.accounts = accountList;
+              if (this.update) {
+                this.$store
+                  .dispatch('firmMerchant/updateOne', {
+                    merchantId: this.firmMerchantForm.merchantId,
+                    data: this.firmMerchantForm
+                  })
+                  .then(() => {
+                    this.goBack();
+                  })
+                  .catch(error => {
+                    console.log(error);
+                  });
+              } else {
+                this.$store
+                  .dispatch('firmMerchant/addOne', this.firmMerchantForm)
+                  .then(() => {
+                    this.goBack();
+                  })
+                  .catch(error => {
+                    console.log(error);
+                  });
+              }
+            }
+          },
             goBack() {
                 if (this.$router.history.length <= 1) {
                     this.$router.push({path: '/home'});

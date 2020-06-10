@@ -859,11 +859,21 @@ export default new Router({
           meta: {title: '采购入库单', icon: 'home'}
         },
         {
+          path: '/purchase/receipt/order/edit',
+          component: () => import('@/views/purchaseReceiptOrder/Edit'),
+          meta: {title: '采购入库单', icon: 'home'}
+        },
+        {
           title: '采购退款单',
           path: '/purchase/return/order',
           name: 'purchaseReturnOrder',
           component: () => import('@/views/purchaseReturnOrder/List'),
           meta: {title: '采购退款单', icon: 'home'}
+        },
+        {
+          path: '/purchase/return/order/edit',
+          component: () => import('@/views/purchaseReturnOrder/Edit'),
+          meta: {title: '采购入库单', icon: 'home'}
         },
         {
           title: ' 采购退票出库单',

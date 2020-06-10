@@ -15,7 +15,13 @@ export function updateOne(orderNo, data) {
     data
   });
 }
-
+export function inWarehouseOrder(orderNo, data) {
+  return request({
+    url: `/policy/order/update/warehouse/${orderNo}`,
+    method: 'put',
+    data
+  });
+}
 export function removeOne(orderNo) {
   return request({
     url: `/policy/order/remove/one/${orderNo}`,
