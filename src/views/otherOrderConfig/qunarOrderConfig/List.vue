@@ -1,12 +1,12 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <qunar-order-config-search @onSearch="handleSearch" />
+      <qunar-order-config-search @onSearch="handleSearch" @onExport="handleExport"/>
     </div>
     <div class="contentBox">
-      <el-row style="margin-bottom:15px;margin-left:23px">
+      <!--<el-row style="margin-bottom:15px;margin-left:23px">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
-      </el-row>
+      </el-row>-->
       <el-table
         :data="tableData"
         size="mini"
@@ -97,46 +97,14 @@
 </template>
 
 <script>
-import qunarOrderConfigSearch from "./Search";
+  import qunarOrderConfigSearch from "./Search";
 
-import {
-  formatOrderType,
-  formatVoyageType,
-  formatCategory
-} from "@/utils/status.js";
-import {
-  formatPassengers,
-  formatTicketNo,
-  formatFlightDate,
-  formatFlightNo,
-  formatFlight2,
-  formatFlighCode,
-  formatAmount,
-  formatAmountAndPeople,
-  formatQunarStatus
-} from "@/utils/orderFormdata.js";
-
-export default {
-  name: "qunarOrderConfig",
-  data() {
-    return {
-      loading: true,
-      tableData: [],
-      currentPage: 1,
-      pageSize: 10,
-      total: 0,
-      searchParams: {},
-      dialogVisible: false,
-      logData: {}
-    };
-  },
-  components: {
-    qunarOrderConfigSearch
-  },
-  methods: {
+  import {
     formatOrderType,
     formatVoyageType,
-    formatCategory,
+    formatCategory
+  } from "@/utils/status.js";
+  import {
     formatPassengers,
     formatTicketNo,
     formatFlightDate,
@@ -145,102 +113,157 @@ export default {
     formatFlighCode,
     formatAmount,
     formatAmountAndPeople,
-    formatQunarStatus,
-    handleSizeChange(size) {
-      this.pageSize = size;
-      this.searchParams.pageSize = this.pageSize;
-      this.loadData(this.searchParams);
+    formatQunarStatus
+  } from "@/utils/orderFormdata.js";
+
+  export default {
+    name: "qunarOrderConfig",
+    data() {
+      return {
+        loading: true,
+        tableData: [],
+        currentPage: 1,
+        pageSize: 10,
+        total: 0,
+        searchParams: {},
+        dialogVisible: false,
+        logData: {}
+      };
     },
-    prevClick(page) {
-      this.currentPage = page;
-      this.searchParams.pageSize = this.pageSize;
-      this.searchParams.currentPage = this.currentPage;
-      this.loadData(this.searchParams);
+    components: {
+      qunarOrderConfigSearch
     },
-    nextClick(page) {
-      this.currentPage = page;
-      this.searchParams.pageSize = this.pageSize;
-      this.searchParams.currentPage = this.currentPage;
-      this.loadData(this.searchParams);
-    },
-    loadData(params) {
-      this.$store
-        .dispatch("qunarOrderConfig/getList", { filters: params })
-        .then(data => {
-          if (data) {
-            this.loadTotal(params);
-            this.tableData = data;
-          }
-          this.loading = false;
-        })
-        .catch(error => {
-          this.loading = false;
-          console.log(error);
-        });
-    },
-    loadTotal(params) {
-      this.$store
-        .dispatch("qunarOrderConfig/getTotal", { filters: params })
-        .then(data => {
-          if (data >= 0) {
-            this.total = data;
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    handleSearch(params) {
-      if (!params) {
-        params = {};
-        this.searchParams = params;
-        this.loadData(this.searchParams);
-      } else {
-        const newParams = {};
-        for (let key in params) {
-          if (params[key] && _.isArray(params[key])) {
-            let start = "start" + key.charAt(0).toUpperCase() + key.slice(1);
-            let end = "end" + key.charAt(0).toUpperCase() + key.slice(1);
-            newParams[start] = params[key][0];
-            newParams[end] = params[key][1];
-          } else if (params[key]) {
-            newParams[key] = params[key];
-          }
-        }
-        this.searchParams = newParams;
+    methods: {
+      formatOrderType,
+      formatVoyageType,
+      formatCategory,
+      formatPassengers,
+      formatTicketNo,
+      formatFlightDate,
+      formatFlightNo,
+      formatFlight2,
+      formatFlighCode,
+      formatAmount,
+      formatAmountAndPeople,
+      formatQunarStatus,
+      handleSizeChange(size) {
+        this.pageSize = size;
         this.searchParams.pageSize = this.pageSize;
         this.loadData(this.searchParams);
-        this.$message({
-          type: "success",
-          message: "查询成功！"
-        });
-      }
-    },
-    handleAdd() {},
-    handleSave(formData) {},
-    handleCancel() {
-      this.dialogVisible = false;
-    },
-    handleOrderDetail(row) {
-      let path = "";
-      path = "/qunar/order/detail";
-      this.$router.push({
-        path: path,
-        query: {
-          orderNo: row.orderNo
+      },
+      prevClick(page) {
+        this.currentPage = page;
+        this.searchParams.pageSize = this.pageSize;
+        this.searchParams.currentPage = this.currentPage;
+        this.loadData(this.searchParams);
+      },
+      nextClick(page) {
+        this.currentPage = page;
+        this.searchParams.pageSize = this.pageSize;
+        this.searchParams.currentPage = this.currentPage;
+        this.loadData(this.searchParams);
+      },
+      loadData(params) {
+        this.$store
+          .dispatch("qunarOrderConfig/getList", {filters: params})
+          .then(data => {
+            if (data) {
+              this.loadTotal(params);
+              this.tableData = data;
+            }
+            this.loading = false;
+          })
+          .catch(error => {
+            this.loading = false;
+            console.log(error);
+          });
+      },
+      loadTotal(params) {
+        this.$store
+          .dispatch("qunarOrderConfig/getTotal", {filters: params})
+          .then(data => {
+            if (data >= 0) {
+              this.total = data;
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      handleSearch(params) {
+        if (!params) {
+          params = {};
+          this.searchParams = params;
+          this.loadData(this.searchParams);
+        } else {
+          const newParams = {};
+          for (let key in params) {
+            if (params[key] && _.isArray(params[key])) {
+              let start = "start" + key.charAt(0).toUpperCase() + key.slice(1);
+              let end = "end" + key.charAt(0).toUpperCase() + key.slice(1);
+              newParams[start] = params[key][0];
+              newParams[end] = params[key][1];
+            } else if (params[key]) {
+              newParams[key] = params[key];
+            }
+          }
+          this.searchParams = newParams;
+          this.searchParams.pageSize = this.pageSize;
+          this.loadData(this.searchParams);
+          this.$message({
+            type: "success",
+            message: "查询成功！"
+          });
         }
-      });
-
-    },
-    lookLogInfo(row) {
-      if (row.log) {
-        this.logData = row;
+      },
+      handleExport(params) {
+        if (!params) {
+          params = {};
+          this.searchParams = params;
+          this.loadData(this.searchParams);
+        } else {
+          const newParams = {};
+          for (let key in params) {
+            if (params[key] && _.isArray(params[key])) {
+              let start = "start" + key.charAt(0).toUpperCase() + key.slice(1);
+              let end = "end" + key.charAt(0).toUpperCase() + key.slice(1);
+              newParams[start] = params[key][0];
+              newParams[end] = params[key][1];
+            } else if (params[key]) {
+              newParams[key] = params[key];
+            }
+          }
+          this.searchParams = newParams;
+          this.$store.dispatch("qunarOrderConfig/Export", {filters: this.searchParams})
+            .then(data => {
+          })
+            .catch(error => {
+              console.log(error);
+            });
+        }
+      },
+      handleCancel() {
+        this.dialogVisible = false;
+      },
+      handleOrderDetail(row) {
+        let path = "";
+        path = "/qunar/order/detail";
+        this.$router.push({
+          path: path,
+          query: {
+            orderNo: row.orderNo
+          }
+        });
+      },
+      lookLogInfo(row) {
+        if (row.log) {
+          this.logData = row;
+        }
+        this.dialogVisible = true;
       }
-      this.dialogVisible = true;
+    },
+    created() {
+      this.loadData(this.searchParams);
     }
-  },
-  created() {
-    this.loadData(this.searchParams);
-  }
-};
+  };
 </script>
