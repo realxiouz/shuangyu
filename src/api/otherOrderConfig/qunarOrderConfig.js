@@ -4,11 +4,22 @@ import request from '@/utils/request';
 export function getList(data) {
   return request({
     url: '/qunar/order/get/list',
-    method: 'post',
-    data
+    method: 'get',
+    params: data
   });
 }
 
+// 查询原始单
+export function Export(data) {
+  var myList = new Array();
+  for (var key in data) {
+    myList.push(key + "=" + data[key]);
+  }
+  var paramsStr = "?" + myList.join("&");
+  window.location.href = 'http://39.108.230.74:18901/ota/prod-api/export/TTS/order' + paramsStr;
+  //window.location.href = 'http://localhost:28030/dev-api/export/TTS/order' + paramsStr;
+
+}
 // 查询原始单数量
 export function getTotal(params) {
   return request({

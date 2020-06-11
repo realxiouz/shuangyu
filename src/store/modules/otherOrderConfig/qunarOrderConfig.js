@@ -4,6 +4,7 @@ import {
   exportOrderFile,
   exportOrderNo,
   getList,
+  Export,
   getOne,
   getTotal,
   save
@@ -58,6 +59,13 @@ const actions = {
         .catch(error => {
           reject(error);
         });
+    });
+  },
+  // 导单
+  Export({commit}, params) {
+    const {filters} = params;
+    return new Promise((resolve, reject) => {
+      Export(filters);
     });
   },
   getOne({commit}, params) {
