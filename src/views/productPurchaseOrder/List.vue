@@ -30,7 +30,7 @@
                 <template slot-scope="props">
                   <el-form label-position="right" :inline="true" label-width="120px">
                     <div class="detail">
-                      <div v-if="props.row.propertyItems.length >0"
+                      <div :v-if="props.row.propertyItems.length >0"
                            v-for="(item, index) in props.row.propertyItems"
                            :key="index">
                         <el-form-item :label="item.name +':'" v-if="item.code != 'flightDate'">
@@ -81,7 +81,9 @@
         ></el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="300">
           <template slot-scope="scope">
-            <el-button @click="skipDetail(scope.row.orderNo)" type="primary" size="mini">查看</el-button>
+            <el-button v-show="scope.row.orderStatus != 0" @click="skipDetail(scope.row.orderNo)" type="primary"
+                                       size="mini">查看
+          </el-button>
             <el-button v-show="scope.row.orderStatus == 0" @click="handleEdit(scope.row)" type="primary" size="mini">
               编辑
             </el-button>

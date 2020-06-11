@@ -1,5 +1,4 @@
 import {
-  addOne,
   confirmOrder,
   getList,
   getOne,
@@ -7,13 +6,14 @@ import {
   getTotal,
   inWarehouseOrder,
   removeOne,
+  saveOrder,
   updateOne
 } from '@/api/productOrder';
 
 const actions = {
-  addOne({commit}, params) {
+  saveOrder({commit}, params) {
     return new Promise((resolve, reject) => {
-      addOne(params)
+      saveOrder(params)
         .then(response => {
           resolve(response.data);
         })
@@ -61,8 +61,7 @@ const actions = {
   },
   confirmOrder({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {orderNo} = params;
-      confirmOrder(orderNo)
+      confirmOrder(params)
         .then(response => {
           resolve(response.data);
         })
