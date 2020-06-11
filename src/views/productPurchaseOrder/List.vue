@@ -49,7 +49,6 @@
               <el-table-column prop="brandName" label="品牌" align="center"></el-table-column>
               <el-table-column prop="skuName" label="属性名称" align="center"></el-table-column>
               <el-table-column prop="price" label="单价" align="center"></el-table-column>
-              <el-table-column prop="stockQuantity" label="库存" align="center"></el-table-column>
               <el-table-column prop="quantity" label="数量" align="center"></el-table-column>
               <el-table-column prop="unit" label="计量单位" align="center"></el-table-column>
               <el-table-column prop="amount" label="金额" align="center">
@@ -59,12 +58,6 @@
         </el-table-column>
         <el-table-column prop="totalAmount" label="成交金额" align="center"></el-table-column>
         <el-table-column prop="receiptAmount" label="实收金额" align="center"></el-table-column>
-        <!--        <el-table-column prop="recordDate" label="制单时间" align="center">-->
-        <!--          <template slot-scope="prop">-->
-        <!--            {{initDate(prop.row.recordDate, 'YYYY-MM-DD')}}-->
-        <!--          </template>-->
-        <!--        </el-table-column>-->
-        <!--        <el-table-column prop="recordName" label="制单人姓名" align="center"></el-table-column>-->
         <el-table-column
           prop="orderStatus"
           :formatter="formatOrderStatus"

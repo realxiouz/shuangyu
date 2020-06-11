@@ -49,7 +49,6 @@
               <el-table-column prop="brandName" label="品牌" align="center"></el-table-column>
               <el-table-column prop="skuName" label="属性名称" align="center"></el-table-column>
               <el-table-column prop="price" label="单价" align="center"></el-table-column>
-              <el-table-column prop="stockQuantity" label="库存" align="center"></el-table-column>
               <el-table-column prop="quantity" label="数量" align="center"></el-table-column>
               <el-table-column prop="unit" label="计量单位" align="center"></el-table-column>
               <el-table-column prop="amount" label="金额" align="center">

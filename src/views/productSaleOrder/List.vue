@@ -8,15 +8,19 @@
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table v-loading="loading" :data="tableData" style="width: 100%;margin-bottom: 15px;" size="mini">
-        <el-table-column prop="orderNo" label="单号" align="center"></el-table-column>
+        <el-table-column prop="orderNo" label="单号" align="center">
+          <template slot-scope="scope">
+            <div @click="skipDetail(scope.row.orderNo)">{{scope.row.orderNo}}</div>
+          </template>
+        </el-table-column>
         <el-table-column prop="orderDate" label="单据日期" align="center">
-          <template slot-scope="prop">
-            {{initDate(prop.row.orderDate, 'YYYY-MM-DD')}}
+          <template slot-scope="scope">
+            <div @click="skipDetail(scope.row.orderNo)">{{initDate(scope.row.orderDate, 'YYYY-MM-DD')}}</div>
           </template>
         </el-table-column>
         <el-table-column prop="orderType" label="单据类型" align="center">
-          <template slot-scope="prop">
-            <span>{{initOrderType(prop.row.orderType)}}</span>
+          <template slot-scope="scope">
+            <div @click="skipDetail(scope.row.orderNo)">{{formatOrderType(scope.row)}}</div>
           </template>
         </el-table-column>
         <el-table-column label="明细" align="center" width="800">
@@ -26,7 +30,7 @@
                 <template slot-scope="props">
                   <el-form label-position="right" :inline="true" label-width="120px">
                     <div class="detail">
-                      <div v-if="props.row.propertyItems.length >0"
+                      <div :v-if="props.row.propertyItems.length >0"
                            v-for="(item, index) in props.row.propertyItems"
                            :key="index">
                         <el-form-item :label="item.name +':'" v-if="item.code != 'flightDate'">
@@ -45,7 +49,6 @@
               <el-table-column prop="brandName" label="品牌" align="center"></el-table-column>
               <el-table-column prop="skuName" label="属性名称" align="center"></el-table-column>
               <el-table-column prop="price" label="单价" align="center"></el-table-column>
-              <el-table-column prop="stockQuantity" label="库存" align="center"></el-table-column>
               <el-table-column prop="quantity" label="数量" align="center"></el-table-column>
               <el-table-column prop="unit" label="计量单位" align="center"></el-table-column>
               <el-table-column prop="amount" label="金额" align="center">
@@ -55,13 +58,20 @@
         </el-table-column>
         <el-table-column prop="totalAmount" label="成交金额" align="center"></el-table-column>
         <el-table-column prop="receiptAmount" label="实收金额" align="center"></el-table-column>
-        <!--        <el-table-column prop="recordDate" label="制单时间" align="center">
-                  <template slot-scope="prop">
-                    {{initDate(prop.row.recordDate, 'YYYY-MM-DD')}}
-                  </template>
-                </el-table-column>-->
-        <!--  <el-table-column prop="recordName" label="制单人姓名" align="center"></el-table-column>-->
-
+        <el-table-column
+          prop="orderStatus"
+          :formatter="formatOrderStatus"
+          label="确认状态"
+          width="80"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="warehouseStatus"
+          :formatter="formatWarehouseStatus"
+          label="发货状态"
+          width="80"
+          align="center"
+        ></el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="160">
           <template slot-scope="scope">
             <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
@@ -87,6 +97,12 @@
 
 <script>
     import productSearch from "./Search.vue";
+    import {
+        formatOrderStatus,
+        formatOrderType,
+        formatPaymentStatus,
+        formatWarehouseStatus
+    } from "@/utils/productStatus.js";
 
     export default {
         data() {
@@ -102,6 +118,10 @@
             };
         },
         methods: {
+            formatOrderType,
+            formatOrderStatus,
+            formatWarehouseStatus,
+            formatPaymentStatus,
             /*翻前页*/
             handlePrevClick() {
                 this.pageFlag = -1;
@@ -201,28 +221,6 @@
             },
             skipShipmentOrder(row) {
                 this.$router.push({path: '/product/shipment/order/edit', query: {parentNo: row.orderNo}});
-            },
-            initOrderType(orderType) {
-                switch (orderType) {
-                    case 1:
-                        return '销售订单';
-                    case 2:
-                        return '采购订单';
-                    case 10:
-                        return '销售发货单';
-                    case 11:
-                        return '销售退货单';
-                    case 12:
-                        return '销售变更单';
-                    case 20:
-                        return '采购入库单';
-                    case 21:
-                        return '采购退货单';
-                    case 22:
-                        return '采购变更单';
-                    default:
-                        return '其他';
-                }
             },
             initDate(dateStr, format) {
                 if (dateStr > 0) {

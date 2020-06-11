@@ -100,7 +100,7 @@
               <el-table-column prop="skuName" label="属性名称" align="center"></el-table-column>
               <el-table-column prop="price" label="单价" align="center"></el-table-column>
               <el-table-column prop="stockQuantity" label="库存" align="center"></el-table-column>
-              <el-table-column prop="quantity" label="数量" align="center" width="150">
+              <el-table-column prop="quantity" label="数量" align="center" width="180">
                 <template slot-scope="prop">
                   <el-input-number v-model="prop.row.quantity" :min="1" size="mini"></el-input-number>
                 </template>
