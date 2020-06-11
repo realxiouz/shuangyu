@@ -409,6 +409,7 @@
           @onCancel="onCancel"
           @onSaveTicket="handleSaveTicket"
           @onSave="handleSave"
+          :orderState = "orderDetail_orderState"
           :passengerData="handlePassengersInfo"
           :salesAmountTotal="this.tableData.amount"
           :flightData="flightData"

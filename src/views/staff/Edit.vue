@@ -550,6 +550,7 @@
             clearFormData() {
                 this.formData = this.defaultFormData();
                 this.updateTempData = {};
+                this.$refs['staffForm'].clearValidate();
             },
         },
         computed: {

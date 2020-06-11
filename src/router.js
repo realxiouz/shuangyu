@@ -840,13 +840,6 @@ export default new Router({
           meta: {title: '商品库存编辑', icon: 'home'}
         },
         {
-          title: '销售订单管理',
-          path: '/product/sale/order',
-          name: 'productSaleOrder',
-          component: () => import('@/views/productSaleOrder/List'),
-          meta: {title: '销售订单管理', icon: 'home'}
-        },
-        {
           title: '采购订单管理',
           path: '/product/purchase/order',
           name: 'productPurchaseOrder',
@@ -859,23 +852,6 @@ export default new Router({
           meta: {title: '采购订单', icon: 'home'}
         },
         {
-          path: '/product/sale/order/edit',
-          component: () => import('@/views/productSaleOrder/Edit'),
-          meta: {title: '销售订单', icon: 'home'}
-        },
-        {
-          title: '发货订单管理',
-          path: '/product/shipment/order',
-          name: 'saleShipmentOrder',
-          component: () => import('@/views/saleShipmentOrder/List'),
-          meta: {title: '发货订单管理', icon: 'home'}
-        },
-        {
-          path: '/product/shipment/order/edit',
-          component: () => import('@/views/saleShipmentOrder/Edit'),
-          meta: {title: '发货订单', icon: 'home'}
-        },
-        {
           title: '采购入库单',
           path: '/purchase/receipt/order',
           name: 'purchaseReceiptOrder',
@@ -885,7 +861,115 @@ export default new Router({
         {
           path: '/purchase/receipt/order/edit',
           component: () => import('@/views/purchaseReceiptOrder/Edit'),
-          meta: {title: '入库订单', icon: 'home'}
+          meta: {title: '采购入库单', icon: 'home'}
+        },
+        {
+          title: '采购退款单',
+          path: '/purchase/return/order',
+          name: 'purchaseReturnOrder',
+          component: () => import('@/views/purchaseReturnOrder/List'),
+          meta: {title: '采购退款单', icon: 'home'}
+        },
+        {
+          path: '/purchase/return/order/edit',
+          component: () => import('@/views/purchaseReturnOrder/Edit'),
+          meta: {title: '采购入库单', icon: 'home'}
+        },
+        {
+          title: ' 采购退票出库单',
+          path: '/purchase/return/out/order',
+          name: 'purchaseReturnOutOrder',
+          component: () => import('@/views/purchaseReturnOutOrder/List'),
+          meta: {title: ' 采购退票出库单', icon: 'home'}
+        },
+        {
+          title: '采购改签单',
+          path: '/purchase/change/order',
+          name: 'purchaseChangeOrder',
+          component: () => import('@/views/purchaseChangeOrder/List'),
+          meta: {title: '采购改签单', icon: 'home'}
+        },
+        {
+          title: '采购改签入库单',
+          path: '/purchase/change/in/order',
+          name: 'purchaseChangeInOrder',
+          component: () => import('@/views/purchaseChangeInOrder/List'),
+          meta: {title: '采购改签入库单', icon: 'home'}
+        },
+        {
+          title: '采购改签出库单',
+          path: '/purchase/change/out/order',
+          name: 'purchaseChangeOutOrder',
+          component: () => import('@/views/purchaseChangeOutOrder/List'),
+          meta: {title: '采购改签出库单', icon: 'home'}
+        },
+        {
+          title: '销售订单',
+          path: '/product/sale/order',
+          name: 'productSaleOrder',
+          component: () => import('@/views/productSaleOrder/List'),
+          meta: {title: '销售订单管理', icon: 'home'}
+        },
+        {
+          path: '/product/sale/order/edit',
+          component: () => import('@/views/productSaleOrder/Edit'),
+          meta: {title: '销售订单', icon: 'home'}
+        },
+        {
+          title: '销售出库单',
+          path: '/product/shipment/order',
+          name: 'saleShipmentOrder',
+          component: () => import('@/views/saleShipmentOrder/List'),
+          meta: {title: '销售出库单', icon: 'home'}
+        },
+        {
+          title: '销售退款单',
+          path: '/sale/return/order',
+          name: 'saleReturnOrder',
+          component: () => import('@/views/saleReturnOrder/List'),
+          meta: {title: '销售退款单', icon: 'home'}
+        },
+        {
+          title: '销售退票入库单',
+          path: '/sale/return/in/order',
+          name: 'saleReturnInOrder',
+          component: () => import('@/views/saleReturnInOrder/List'),
+          meta: {title: '销售退票入库单', icon: 'home'}
+        },
+        {
+          title: '销售改签单',
+          path: '/sale/change/order',
+          name: 'saleChangeOrder',
+          component: () => import('@/views/saleChangeOrder/List'),
+          meta: {title: '销售改签单', icon: 'home'}
+        },
+        {
+          title: '销售改签入库单',
+          path: '/sale/change/in/order',
+          name: 'saleChangeInOrder',
+          component: () => import('@/views/saleChangeInOrder/List'),
+          meta: {title: '销售改签入库单', icon: 'home'}
+        },
+        {
+          title: '销售改签出库单',
+          path: '/sale/change/out/order',
+          name: 'saleChangeOutOrder',
+          component: () => import('@/views/saleChangeOutOrder/List'),
+          meta: {title: '销售改签出库单', icon: 'home'}
+        },
+        {
+          title: '其他入库',
+          path: '/other/in/order',
+          name: 'otherInOrder',
+          component: () => import('@/views/otherInOrder/List'),
+          meta: {title: '其他入库', icon: 'home'}
+        },
+        {
+          title: '其他出库',
+          path: '/other/out/order',
+          name: 'otherOutOrder',
+          component: () => import('@/views/otherOutOrder/List'),
+          meta: {title: '其他出库', icon: 'home'}
         },
       ]
     },

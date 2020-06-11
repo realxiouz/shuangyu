@@ -16,10 +16,25 @@ export function updateOne(orderNo, data) {
   });
 }
 
+export function inWarehouseOrder(orderNo, data) {
+  return request({
+    url: `/policy/order/update/warehouse/${orderNo}`,
+    method: 'put',
+    data
+  });
+}
+
 export function removeOne(orderNo) {
   return request({
     url: `/policy/order/remove/one/${orderNo}`,
     method: 'delete'
+  });
+}
+
+export function confirmOrder(orderNo) {
+  return request({
+    url: `/policy/order/confirm/one/${orderNo}`,
+    method: 'put'
   });
 }
 
