@@ -167,6 +167,8 @@
             <span v-show="quantityError" style="color: #F56C6C">商品数量必须为数字</span><br/>
             <el-button :disabled="quantityError " type="primary" @click="handleSave" size="mini">保 存
             </el-button>
+            <el-button :disabled="quantityError " type="primary" @click="confirmOrder" size="mini">确 认
+            </el-button>
           </div>
         </el-col>
       </el-row>
@@ -430,6 +432,13 @@
                     }
                 });
                 this.dialogVisible = false;
+            },
+            confirmOrder() {
+
+                // this.$store.dispatch("orderDetail/removeOne", {orderNo: _detailId})
+                //     .catch(error => {
+                //         console.log(error);
+                //     });
             },
             handleSave() {
                 const dateItem = ['expireDate', 'warehouseDate'];
