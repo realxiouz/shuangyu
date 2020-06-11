@@ -174,42 +174,52 @@
           });*/
       },
       getParams() {
-        if (!this.jobSchedulerId || this.jobSchedulerId != null || this.jobSchedulerId != '') {
-          let searchForm = {
-            tagId: 'cd17704040f048c385730e9c6b72b90a',
-            tagCode: 'policy'
-          }
-          this.$store
-            .dispatch("jobConfig/getList", {
-              filter: searchForm
-            })
-            .then(data => {
-              if (data) {
+        let searchForm = {
+          tagId: 'cd17704040f048c385730e9c6b72b90a',
+          tagCode: 'policy'
+        }
+        this.$store
+          .dispatch("jobConfig/getList", {
+            filter: searchForm
+          })
+          .then(data => {
+            if (data) {
+
+              if (this.jobSchedulerId && this.jobSchedulerId != null && this.jobSchedulerId != '') {
+                this.getData(data);
+              } else {
                 this.formData.params = data;
                 this.setFormRules(this.formData.params);
               }
-            })
-            .catch(error => {
-              console.log(error);
-            });
-        }
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
       },
-      getData() {
-        if (this.jobSchedulerId && this.jobSchedulerId != null && this.jobSchedulerId != '') {
-          this.$store
-            .dispatch("jobScheduler/getOne", {
-              jobSchedulerId: this.jobSchedulerId
-            })
-            .then(data => {
-              if (data) {
-                this.formData = data.data;
-                this.setFormRules(this.formData.params);
+      getData(params) {
+        this.$store
+          .dispatch("jobScheduler/getOne", {
+            jobSchedulerId: this.jobSchedulerId
+          })
+          .then(data => {
+            if (data) {
+              this.formData = data.data;
+              for (let i = 0; i < params.length; i++) {
+                for (let j = 0; j < data.data.params.length; j++) {
+                  if (params[i].code == data.data.params[j].code) {
+                    params[i].value = data.data.params[j].value;
+                    break;
+                  }
+                }
               }
-            })
-            .catch(error => {
-              console.log(error);
-            });
-        }
+              this.formData.params = params;
+              this.setFormRules(this.formData.params);
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
       },
       getValues(params) {
         let data = {};
@@ -225,7 +235,6 @@
     created() {
       this.formData = this.defaultFormData();
       this.getParams();
-      this.getData();
     }
   }
 </script>
