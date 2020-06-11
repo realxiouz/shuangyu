@@ -923,6 +923,11 @@ export default new Router({
           meta: {title: '销售出库单', icon: 'home'}
         },
         {
+          path: '/product/shipment/order/edit',
+          component: () => import('@/views/saleShipmentOrder/Edit'),
+          meta: {title: '销售订单', icon: 'home'}
+        },
+        {
           title: '销售退款单',
           path: '/sale/return/order',
           name: 'saleReturnOrder',

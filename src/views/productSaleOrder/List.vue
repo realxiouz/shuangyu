@@ -25,7 +25,7 @@
         </el-table-column>
         <el-table-column label="明细" align="center" width="800">
           <template slot-scope="scope">
-            <el-table :data="scope.row.orderDetails" border size="mini">
+            <el-table :data="scope.row.orderDetails" border size="mini" @row-click="skipDetail(scope.row.orderNo)">
               <el-table-column type="expand">
                 <template slot-scope="props">
                   <el-form label-position="right" :inline="true" label-width="120px">
@@ -72,11 +72,17 @@
           width="80"
           align="center"
         ></el-table-column>
-        <el-table-column fixed="right" label="操作" align="center" width="160">
+        <el-table-column fixed="right" label="操作" align="center" width="300">
           <template slot-scope="scope">
-            <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
-            <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
-            <el-button @click="skipShipmentOrder(scope.row)" type="info" size="mini">配置发货单</el-button>
+            <el-button v-show="scope.row.orderStatus != 0" @click="skipDetail(scope.row.orderNo)" type="primary"
+                       size="mini">查看
+            </el-button>
+            <el-button v-show="scope.row.orderStatus == 0" @click="handleEdit(scope.row)" type="primary" size="mini">
+              编辑
+            </el-button>
+            <el-button v-show="scope.row.orderStatus == 0" @click="handleDelete(scope.row)" type="danger" size="mini">
+              删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -217,10 +223,7 @@
                     });
             },
             skipDetail(orderNo) {
-                this.$router.push({path: '/product/sale/order/edit', query: {orderNo: orderNo}});
-            },
-            skipShipmentOrder(row) {
-                this.$router.push({path: '/product/shipment/order/edit', query: {parentNo: row.orderNo}});
+                this.$router.push({path: '/product/shipment/order/edit', query: {orderNo: orderNo}});
             },
             initDate(dateStr, format) {
                 if (dateStr > 0) {
