@@ -1,9 +1,45 @@
-import {addOne, getList, getOne, getPageList, getTotal, removeOne, updateOne} from '@/api/productOrder';
+import {
+  confirmOrder,
+  getList,
+  getOne,
+  getPageList,
+  getTotal,
+  inWarehouseOrder,
+  outWarehouseOrder,
+  removeOne,
+  saveOrder,
+  updateOne
+} from '@/api/productOrder';
 
 const actions = {
-  addOne({commit}, params) {
+  saveOrder({commit}, params) {
     return new Promise((resolve, reject) => {
-      addOne(params)
+      saveOrder(params)
+        .then(response => {
+          resolve(response.data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+
+  inWarehouseOrder({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {orderNo, data} = params;
+      inWarehouseOrder(orderNo, data)
+        .then(response => {
+          resolve(response.data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  outWarehouseOrder({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {orderNo, data} = params;
+      outWarehouseOrder(orderNo, data)
         .then(response => {
           resolve(response.data);
         })
@@ -28,6 +64,17 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {orderNo} = params;
       removeOne(orderNo)
+        .then(response => {
+          resolve(response.data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  confirmOrder({commit}, params) {
+    return new Promise((resolve, reject) => {
+      confirmOrder(params)
         .then(response => {
           resolve(response.data);
         })

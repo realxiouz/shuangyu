@@ -58,6 +58,10 @@
           {
             label:"政策",
             value:2
+          },
+          {
+            label:"其他",
+            value:9
           }
         ],
         formRules: {

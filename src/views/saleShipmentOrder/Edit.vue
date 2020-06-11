@@ -5,11 +5,12 @@
         <el-page-header></el-page-header>
       </div>
       <br>
-      <el-row>
-        <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
-          <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
-            <el-form :rules="rules" :model="formData" label-position="left" label-width="97px" size="mini"
-                     style="width: 80%">
+      <el-form :rules="rules" :model="formData" ref="orderForm" :disabled="isUpdate" label-position="left"
+               label-width="97px" size="mini"
+               style="width: 80%">
+        <el-row>
+          <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
+            <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
               <el-form-item label="销售订单号:" prop="parentNo">
                 <el-select v-if="!update" v-model="formData.parentNo" filterable @change="selectedSaleOrder"
                            placeholder="请选择" style="width: 100%">
@@ -47,13 +48,10 @@
               <el-form-item label="联系人姓名:" prop="contactName">
                 <el-input type="text" v-model="formData.contactName" placeholder="请输入联系人姓名"></el-input>
               </el-form-item>
-            </el-form>
+            </el-col>
           </el-col>
-        </el-col>
-        <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
-          <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
-            <el-form :rules="rules" :model="formData" label-position="left" label-width="97px" size="mini"
-                     style="width: 80%">
+          <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
+            <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
               <el-form-item label="发货期限:" prop="expireDate">
                 <el-date-picker
                   v-model="formData.expireDate"
@@ -74,7 +72,7 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="出入库状态:">
-                未出库
+                <span>{{formData.warehouseStatus ==2?'未出库':'已出库'}}</span>
               </el-form-item>
               <el-form-item label="出库时间:" prop="warehouseDate">
                 <el-date-picker
@@ -104,73 +102,65 @@
                   style="width: 100%">
                 </el-autocomplete>
               </el-form-item>
-            </el-form>
+            </el-col>
           </el-col>
-        </el-col>
-      </el-row>
-      <!--productDetailTable-->
-      <el-row>
-        <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="16">
-          <div class="title">
-            <el-button type="primary" size="mini" @click="handleAddProduct">添加商品明细</el-button>
-          </div>
-          <el-table :data="orderDetails" height="250" border size="mini">
-            <el-table-column prop="productCode" label="商品编码" align="center"></el-table-column>
-            <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
-            <el-table-column prop="brandName" label="品牌" align="center"></el-table-column>
-            <el-table-column prop="skuName" label="属性名称" align="center"></el-table-column>
-            <el-table-column prop="price" label="单价" align="center"></el-table-column>
-            <el-table-column prop="stockQuantity" label="库存" align="center"></el-table-column>
-            <el-table-column prop="quantity" label="数量" align="center">
-              <template slot-scope="prop">
-                <el-input v-model.number="prop.row.quantity" placeholder="输入单价" @input="testQuantity(prop.row)"
-                          size="mini"></el-input>
-                <span v-if="verifyQuantity(prop.row.quantity)" style="color: #F56C6C">*商品数量必须为数字</span>
-                <span v-if="verifyStockQuantity(prop.row)" style="color: #F56C6C">*商品数量应该小于或等于库存数量</span>
-              </template>
-            </el-table-column>
-            <el-table-column prop="unit" label="计量单位" align="center"></el-table-column>
-            <el-table-column prop="amount" label="金额" align="center">
-              <template slot-scope="prop">
-                {{computedRowAmount(prop.row)}}
-              </template>
-            </el-table-column>
-            <el-table-column label="操作" align="center">
-              <template slot-scope="scope">
-                <el-button type="danger" size="mini" @click="handleRemoveProduct(scope.$index, scope.row)">删除
-                </el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-        </el-col>
-      </el-row>
-      <!--remark-->
-      <el-row>
-        <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
-          <el-form style="width: 80%; margin-top: 10px">
+        </el-row>
+        <!--productDetailTable-->
+        <el-row>
+          <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="16">
+            <div class="title">
+              <el-button type="primary" size="mini" @click="handleAddProduct">添加商品明细</el-button>
+            </div>
+            <el-table :data="orderDetails" height="250" border size="mini">
+              <el-table-column prop="productCode" label="商品编码" align="center"></el-table-column>
+              <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
+              <el-table-column prop="brandName" label="品牌" align="center"></el-table-column>
+              <el-table-column prop="skuName" label="属性名称" align="center"></el-table-column>
+              <el-table-column prop="price" label="单价" align="center"></el-table-column>
+              <el-table-column prop="stockQuantity" label="库存" align="center"></el-table-column>
+              <el-table-column prop="quantity" label="数量" align="center">
+                <template slot-scope="prop">
+                  <el-input v-model.number="prop.row.quantity" placeholder="输入单价" @input="testQuantity(prop.row)"
+                            size="mini"></el-input>
+                  <span v-if="verifyQuantity(prop.row.quantity)" style="color: #F56C6C">*商品数量必须为数字</span>
+                  <span v-if="verifyStockQuantity(prop.row)" style="color: #F56C6C">*商品数量应该小于或等于库存数量</span>
+                </template>
+              </el-table-column>
+              <el-table-column prop="unit" label="计量单位" align="center"></el-table-column>
+              <el-table-column prop="amount" label="金额" align="center">
+                <template slot-scope="prop">
+                  {{computedRowAmount(prop.row)}}
+                </template>
+              </el-table-column>
+              <el-table-column label="操作" align="center">
+                <template slot-scope="scope">
+                  <el-button type="danger" size="mini" @click="handleRemoveProduct(scope.$index, scope.row)">删除
+                  </el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-col>
+        </el-row>
+        <!--remark-->
+        <el-row>
+          <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
             <el-input type="textarea" v-model="formData.remark" placeholder="暂无备注信息"></el-input>
-          </el-form>
-        </el-col>
-      </el-row>
-      <!--totalAmount/recordInfo-->
-      <el-row>
-        <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
-          <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
-            <el-form :rules="rules" :model="formData" label-position="left" label-width="97px" size="mini"
-                     style="width: 80%">
+          </el-col>
+        </el-row>
+        <!--totalAmount/recordInfo-->
+        <el-row>
+          <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
+            <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
               <el-form-item label="成交金额:">
                 <span id="totalAmount">{{totalAmount}}</span>
               </el-form-item>
               <el-form-item label="实收金额:">
                 {{formData.receiptAmount}}
               </el-form-item>
-            </el-form>
+            </el-col>
           </el-col>
-        </el-col>
-        <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
-          <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
-            <el-form :rules="rules" :model="formData" label-position="left" label-width="97px" size="mini"
-                     style="width: 80%">
+          <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
+            <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
               <el-form-item label="结算账户:" prop="fundAccountId">
                 <el-select v-model="formData.fundAccountId" filterable placeholder="请选择" @change="selectedFundAccount"
                            style="width: 100%">
@@ -188,22 +178,21 @@
               <el-form-item label="制单时间:">
                 {{formatDate("YYYY-MM-DD")}}
               </el-form-item>
-            </el-form>
+            </el-col>
           </el-col>
-        </el-col>
-      </el-row>
-      <!--postButton-->
-      <el-row>
-        <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="16">
-          <div id="footer">
-            <span v-show="quantityError" style="color: #F56C6C">商品数量必须为数字</span><br/>
-            <span v-show="stockError" style="color: #F56C6C">商品数量应该小于或等于库存数量</span><br/>
-            <el-button :disabled="quantityError || stockError" type="primary" @click="handleSave" size="mini">保 存
-            </el-button>
-          </div>
-        </el-col>
-      </el-row>
-
+        </el-row>
+        <!--postButton-->
+        <el-row>
+          <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="16">
+            <div id="footer">
+              <span v-show="quantityError" style="color: #F56C6C">商品数量必须为数字</span><br/>
+              <span v-show="stockError" style="color: #F56C6C">商品数量应该小于或等于库存数量</span><br/>
+              <el-button :disabled="quantityError || stockError" type="primary" @click="handleSave" size="mini">保 存
+              </el-button>
+            </div>
+          </el-col>
+        </el-row>
+      </el-form>
       <el-dialog title="商品明细" :visible.sync="dialogVisible" :close-on-click-modal="false" width="60%">
         <product-detail v-if="dialogVisible" @onCancel="handleCancel" @onConfirm="handleConfirm"></product-detail>
       </el-dialog>

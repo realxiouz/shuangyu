@@ -1,8 +1,16 @@
 import request from '@/utils/request';
 
-export function addOne(data) {
+export function saveOrder(data) {
   return request({
-    url: '/policy/order/add/one',
+    url: '/policy/order/save',
+    method: 'post',
+    data
+  });
+}
+
+export function confirmOrder(data) {
+  return request({
+    url: '/policy/order/confirm/one',
     method: 'post',
     data
   });
@@ -16,6 +24,20 @@ export function updateOne(orderNo, data) {
   });
 }
 
+export function inWarehouseOrder(orderNo, data) {
+  return request({
+    url: `/policy/order/in/warehouse/${orderNo}`,
+    method: 'put',
+    data
+  });
+}
+export function outWarehouseOrder(orderNo, data) {
+  return request({
+    url: `/policy/order/out/warehouse/${orderNo}`,
+    method: 'put',
+    data
+  });
+}
 export function removeOne(orderNo) {
   return request({
     url: `/policy/order/remove/one/${orderNo}`,
