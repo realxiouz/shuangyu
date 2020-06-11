@@ -81,6 +81,9 @@
         ></el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="280">
           <template slot-scope="scope">
+            <el-button v-show="scope.row.orderStatus != 0" @click="skipDetail(scope.row.orderNo)" type="primary"
+                       size="mini">查看
+            </el-button>
             <el-button v-show="scope.row.orderStatus == 0" @click="handleWarehouse(scope.row)" type="primary"
                        size="mini">入库
             </el-button>

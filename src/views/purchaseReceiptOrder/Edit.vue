@@ -5,22 +5,16 @@
         <el-page-header></el-page-header>
       </div>
       <br>
-      <el-row>
-        <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
-          <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
-            <el-form :rules="rules" :model="formData" label-position="left" label-width="97px" size="mini"
-                     style="width: 80%">
+      <el-form ref="orderForm" :disabled="isUpdate" :rules="rules" :model="formData"
+               label-position="left" label-width="97px" size="mini"
+               style="width: 80%">
+        <el-row>
+          <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
+            <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
               <el-form-item label="采购订单号:" prop="parentNo">
-                <el-select v-if="!update" v-model="formData.parentNo" filterable @change="selectedSaleOrder"
+                <el-select v-model="formData.parentNo" filterable @change="selectedSaleOrder"
                            placeholder="请选择" style="width: 100%">
-                  <el-option
-                    v-for="item in saleOrderList"
-                    :key="item.orderNo"
-                    :label="item.orderNo"
-                    :value="item.orderNo">
-                  </el-option>
                 </el-select>
-                <span v-if="update">{{formData.parentNo}}</span>
               </el-form-item>
               <el-form-item label="客户:" prop="merchantId">
                 <el-select v-model="formData.merchantId" filterable @change="selectedCustomer" placeholder="请选择"
@@ -34,7 +28,7 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="账号:" prop="accountId">
-                <el-select v-model="formData.accountId" filterable :disabled="customerSelected && !update"
+                <el-select v-model="formData.accountId" filterable :disabled="customerSelected"
                            placeholder="请选择" style="width: 100%">
                   <el-option
                     v-for="item in accountList"
@@ -47,13 +41,10 @@
               <el-form-item label="联系人姓名:" prop="contactName">
                 <el-input type="text" v-model="formData.contactName" placeholder="请输入联系人姓名"></el-input>
               </el-form-item>
-            </el-form>
+            </el-col>
           </el-col>
-        </el-col>
-        <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
-          <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
-            <el-form :rules="rules" :model="formData" label-position="left" label-width="97px" size="mini"
-                     style="width: 80%">
+          <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
+            <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
               <el-form-item label="到期期限:" prop="expireDate">
                 <el-date-picker
                   v-model="formData.expireDate"
@@ -84,17 +75,6 @@
                   style="width: 100%">
                 </el-date-picker>
               </el-form-item>
-              <!--              <el-form-item label="快递公司:" prop="expressId">-->
-              <!--                <el-select v-model="formData.expressId" @change="selectedExpress" filterable placeholder="请选择"-->
-              <!--                           style="width: 100%">-->
-              <!--                  <el-option-->
-              <!--                    v-for="item in expressList"-->
-              <!--                    :key="item.merchantId"-->
-              <!--                    :label="item.firm.firmName"-->
-              <!--                    :value="item.merchantId">-->
-              <!--                  </el-option>-->
-              <!--                </el-select>-->
-              <!--              </el-form-item>-->
               <el-form-item label="付款方式" prop="paymentMode">
                 <el-autocomplete
                   v-model="formData.paymentMode"
@@ -104,72 +84,63 @@
                   style="width: 100%">
                 </el-autocomplete>
               </el-form-item>
-            </el-form>
+            </el-col>
           </el-col>
-        </el-col>
-      </el-row>
-      <!--productDetailTable-->
-      <el-row>
-        <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="16">
-          <div class="title">
-            <el-button type="primary" size="mini" @click="handleAddProduct">添加商品明细</el-button>
-          </div>
-          <el-table :data="orderDetails" height="250" border size="mini">
-            <el-table-column prop="productCode" label="商品编码" align="center"></el-table-column>
-            <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
-            <el-table-column prop="brandName" label="品牌" align="center"></el-table-column>
-            <el-table-column prop="skuName" label="属性名称" align="center"></el-table-column>
-            <el-table-column prop="price" label="单价" align="center"></el-table-column>
-            <el-table-column prop="stockQuantity" label="库存" align="center"></el-table-column>
-            <el-table-column prop="quantity" label="数量" align="center">
-              <template slot-scope="prop">
-                <el-input v-model.number="prop.row.quantity" placeholder="输入单价" @input="testQuantity(prop.row)"
-                          size="mini"></el-input>
-                <span v-if="verifyQuantity(prop.row.quantity)" style="color: #F56C6C">*商品数量必须为数字</span>
-              </template>
-            </el-table-column>
-            <el-table-column prop="unit" label="计量单位" align="center"></el-table-column>
-            <el-table-column prop="amount" label="金额" align="center">
-              <template slot-scope="prop">
-                {{computedRowAmount(prop.row)}}
-              </template>
-            </el-table-column>
-            <el-table-column label="操作" align="center">
-              <template slot-scope="scope">
-                <el-button type="danger" size="mini" @click="handleRemoveProduct(scope.$index, scope.row)">删除
-                </el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-        </el-col>
-      </el-row>
-      <!--remark-->
-      <el-row>
-        <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
-          <el-form style="width: 80%; margin-top: 10px">
+        </el-row>
+        <!--productDetailTable-->
+        <el-row>
+          <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
+            <div class="title">
+              <el-button type="primary" size="mini" @click="handleAddProduct">添加商品明细</el-button>
+            </div>
+            <el-table :data="orderDetails" height="250" border size="mini">
+              <el-table-column prop="productCode" label="商品编码" align="center"></el-table-column>
+              <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
+              <el-table-column prop="brandName" label="品牌" align="center"></el-table-column>
+              <el-table-column prop="skuName" label="属性名称" align="center"></el-table-column>
+              <el-table-column prop="price" label="单价" align="center"></el-table-column>
+              <el-table-column prop="stockQuantity" label="库存" align="center"></el-table-column>
+              <el-table-column prop="quantity" label="数量" align="center" width="150">
+                <template slot-scope="prop">
+                  <el-input-number v-model="prop.row.quantity" :min="1" size="mini"></el-input-number>
+                </template>
+              </el-table-column>
+              <el-table-column prop="unit" label="计量单位" align="center"></el-table-column>
+              <el-table-column prop="amount" label="金额" align="center">
+                <template slot-scope="prop">
+                  {{computedRowAmount(prop.row)}}
+                </template>
+              </el-table-column>
+              <el-table-column label="操作" align="center">
+                <template slot-scope="scope">
+                  <el-button type="danger" size="mini" @click="handleRemoveProduct(scope.$index, scope.row)">删除
+                  </el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-col>
+        </el-row>
+        <!--remark-->
+        <el-row style="width: 80%; margin-top: 10px">
+          <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
             <el-input type="textarea" v-model="formData.remark" placeholder="暂无备注信息"></el-input>
-          </el-form>
-        </el-col>
-      </el-row>
-      <!--totalAmount/recordInfo-->
-      <el-row>
-        <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
-          <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
-            <el-form :rules="rules" :model="formData" label-position="left" label-width="97px" size="mini"
-                     style="width: 80%">
+          </el-col>
+        </el-row>
+        <!--totalAmount/recordInfo-->
+        <el-row>
+          <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
+            <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
+
               <el-form-item label="成交金额:">
                 <span id="totalAmount">{{totalAmount}}</span>
               </el-form-item>
               <el-form-item label="实收金额:">
                 {{formData.receiptAmount}}
               </el-form-item>
-            </el-form>
+            </el-col>
           </el-col>
-        </el-col>
-        <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
-          <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
-            <el-form :rules="rules" :model="formData" label-position="left" label-width="97px" size="mini"
-                     style="width: 80%">
+          <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
+            <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
               <el-form-item label="结算账户:" prop="fundAccountId">
                 <el-select v-model="formData.fundAccountId" filterable placeholder="请选择" @change="selectedFundAccount"
                            style="width: 100%">
@@ -187,23 +158,21 @@
               <el-form-item label="制单时间:">
                 {{formatDate("YYYY-MM-DD")}}
               </el-form-item>
-            </el-form>
+            </el-col>
           </el-col>
-        </el-col>
-      </el-row>
-      <!--postButton-->
-      <el-row>
-        <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="16">
-          <div id="footer">
-            <span v-show="quantityError" style="color: #F56C6C">商品数量必须为数字</span><br/>
-            <el-button :disabled="quantityError " type="primary" @click="handleSave" size="mini">保 存
-            </el-button>
-<!--            <el-button type="primary" @click="handleReceipt" size="mini">入 库-->
-<!--            </el-button>-->
-          </div>
-        </el-col>
-      </el-row>
-
+        </el-row>
+        <!--postButton-->
+        <el-row>
+          <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="16">
+            <div id="footer">
+              <el-button type="primary" @click="handleSave" size="mini">保 存
+              </el-button>
+              <!--            <el-button type="primary" @click="handleReceipt" size="mini">入 库-->
+              <!--            </el-button>-->
+            </div>
+          </el-col>
+        </el-row>
+      </el-form>
       <el-dialog title="商品明细" :visible.sync="dialogVisible" :close-on-click-modal="false" width="60%">
         <product-detail v-if="dialogVisible" @onCancel="handleCancel" @onConfirm="handleConfirm"></product-detail>
       </el-dialog>
@@ -227,13 +196,11 @@
                 productOrderList: [],
                 orderDetails: [],
                 funAccountList: [],
-                saleOrderList: [],
                 dialogVisible: false,
                 //是否对订单详情进行修改或添加
                 detailUpdate: false,
                 customerSelected: true,
-                update: false,
-                quantityError: false,
+                isUpdate: true,
                 productIdList: [],
                 totalAmount: 0,
                 rules: {
@@ -366,9 +333,14 @@
             loadProduct(orderNo) {
                 this.$store.dispatch("productOrder/getOne", {orderNo: orderNo})
                     .then(data => {
-                        this.formData = data;
-                        if (data.merchantId) {
-                            this.loadAccounts(data.merchantId);
+                        if (data) {
+                            if (data.orderStatus === 0) {
+                                this.isUpdate = false;
+                            }
+                            this.formData = data;
+                            if (data.merchantId) {
+                                this.loadAccounts(data.merchantId);
+                            }
                         }
                     })
                     .catch(error => {
@@ -401,16 +373,6 @@
                         if (data.merchantId) {
                             this.loadAccounts(data.merchantId);
                         }
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            //加载可供选择的销售订单
-            loadSaleOrders() {
-                this.$store.dispatch("productOrder/getList", {filter: {orderType: 2}})
-                    .then(data => {
-                        this.saleOrderList = data;
                     })
                     .catch(error => {
                         console.log(error);
@@ -498,28 +460,32 @@
                 this.dialogVisible = false;
             },
             handleSave() {
-                const dateItem = ['expireDate', 'warehouseDate'];
-                dateItem.forEach(item => {
-                    if (this.formData[item] && 'number' != typeof this.formData[item]) {
-                        this.formData[item] = this.formData[item].getTime();
+                this.$refs['orderForm'].validate((valid) => {
+                    if (valid) {
+                        const dateItem = ['expireDate', 'warehouseDate'];
+                        dateItem.forEach(item => {
+                            if (this.formData[item] && 'number' != typeof this.formData[item]) {
+                                this.formData[item] = this.formData[item].getTime();
+                            }
+                        });
+                        this.formData.totalAmount = parseFloat(document.getElementById('totalAmount').textContent);
+                        this.$store
+                            .dispatch('productOrder/saveOrder', {
+                                productOrder: this.formData,
+                                orderDetails: this.orderDetails
+                            })
+                            .then(() => {
+                                this.goBack();
+                            })
+                            .catch(error => {
+                                console.log(error);
+                            });
+                        this.$message({
+                            type: "success",
+                            message: "保存成功！"
+                        });
                     }
                 });
-                this.formData.totalAmount = parseFloat(document.getElementById('totalAmount').textContent);
-
-                //判断添加还是更新
-                let url = '';
-                if (this.update) {
-                    url = 'productOrder/updateOne';
-                } else {
-                    url = 'productOrder/addOne';
-                }
-                this.$store
-                    .dispatch(url, {productOrder: this.formData, orderDetails: this.orderDetails})
-                    .then(() => {
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
             },
             querySearchAsync(keyword, callBack) {
                 if (keyword) {
@@ -534,14 +500,6 @@
                     });
                 } else {
                     callBack([]);
-                }
-            },
-            testQuantity(row) {
-                let reg = /^[0-9]*$/;
-                if (!reg.test(row.quantity)) {
-                    this.quantityError = true;
-                } else {
-                    this.quantityError = false;
                 }
             },
             clearForm() {
@@ -567,38 +525,24 @@
                 let date = new Date();
                 return this.$moment(date).format(format);
             },
-            initFormData(query) {
-                this.update = false;
+            initFormData(orderNo) {
                 this.clearForm();
                 this.loadCustomers();
                 this.loadWarehouses();
                 this.loadFundAccount();
-                this.loadSaleOrders();
                 this.loadExpress();
-                const _parentNo = query.parentNo;
-                if (_parentNo) {
-                    this.update = true;
-                    this.loadSaleOrder(_parentNo);
+                if (orderNo) {
+                    this.loadProduct(orderNo);
+                    this.loadOderDetails(orderNo);
                 } else {
-                    const _orderNo = query.orderNo;
-                    if (_orderNo) {
-                        this.update = true;
-                        this.loadProduct(_orderNo);
-                        this.loadOderDetails(_orderNo);
-                    }
+                    this.isUpdate = false;
                 }
             },
         },
         created() {
-            this.initFormData(this.$route.query);
+            this.initFormData(this.$route.query.orderNo);
         },
         computed: {
-            verifyQuantity() {
-                return function (quantity) {
-                    let reg = /^[0-9]*$/;
-                    return !reg.test(quantity);
-                }
-            },
             formatDate() {
                 return function (format) {
                     return this.initDate(format);

@@ -82,8 +82,8 @@
         <el-table-column fixed="right" label="操作" align="center" width="300">
           <template slot-scope="scope">
             <el-button v-show="scope.row.orderStatus != 0" @click="skipDetail(scope.row.orderNo)" type="primary"
-                       size="mini">查看
-            </el-button>
+                                       size="mini">查看
+          </el-button>
             <el-button v-show="scope.row.orderStatus == 0" @click="handleEdit(scope.row)" type="primary" size="mini">
               编辑
             </el-button>

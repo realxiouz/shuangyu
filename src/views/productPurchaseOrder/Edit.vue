@@ -23,7 +23,7 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="账号:" prop="accountId">
-                <el-select v-model="formData.accountId" filterable :disabled="customerSelected && !update"
+                <el-select v-model="formData.accountId" filterable :disabled="customerSelected "
                            placeholder="请选择" style="width: 100%">
                   <el-option
                     v-for="item in accountList"
@@ -78,9 +78,6 @@
               <el-table-column prop="quantity" label="数量" align="center" width="200">
                 <template slot-scope="prop">
                   <el-input-number v-model="prop.row.quantity" :min="1" size="mini"></el-input-number>
-                  <!--                  <el-input v-model.number="prop.row.quantity" placeholder="输入单价" @input="testQuantity(prop.row)"-->
-                  <!--                            size="mini"></el-input>-->
-
                 </template>
               </el-table-column>
               <el-table-column prop="unit" label="计量单位" align="center"></el-table-column>
@@ -171,7 +168,6 @@
                 funAccountList: [],
                 dialogVisible: false,
                 customerSelected: true,
-                update: false,
                 isUpdate: true,
                 productIdList: [],
                 totalAmount: 0,
@@ -509,14 +505,12 @@
                 return this.$moment(date).format(format);
             },
             initFormData(orderNo) {
-                this.update = false;
                 this.clearForm();
                 this.loadCustomers();
                 this.loadWarehouses();
                 this.loadFundAccount();
                 this.loadExpress();
                 if (orderNo) {
-                    this.update = true;
                     this.loadProduct(orderNo);
                     this.loadOderDetails(orderNo);
                 } else {
