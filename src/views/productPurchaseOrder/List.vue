@@ -8,17 +8,24 @@
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table v-loading="loading" :data="tableData" style="width: 100%;margin-bottom: 15px;" size="mini">
-        <el-table-column prop="orderNo" label="单号" align="center"></el-table-column>
-        <el-table-column prop="orderDate" label="单据日期" align="center">
-          <template slot-scope="prop">
-            {{initDate(prop.row.orderDate, 'YYYY-MM-DD')}}
+        <el-table-column prop="orderNo" label="单号" align="center">
+          <template slot-scope="scope">
+            <div @click="skipDetail(scope.row.orderNo)">{{scope.row.orderNo}}</div>
           </template>
         </el-table-column>
-        <el-table-column prop="orderType" :formatter="formatOrderType" label="单据类型" align="center">
+        <el-table-column prop="orderDate" label="单据日期" align="center">
+          <template slot-scope="scope">
+            <div @click="skipDetail(scope.row.orderNo)">{{initDate(scope.row.orderDate, 'YYYY-MM-DD')}}</div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="orderType" label="单据类型" align="center">
+          <template slot-scope="scope">
+            <div @click="skipDetail(scope.row.orderNo)">{{formatOrderType(scope.row)}}</div>
+          </template>
         </el-table-column>
         <el-table-column label="明细" align="center" width="800">
           <template slot-scope="scope">
-            <el-table :data="scope.row.orderDetails" border size="mini">
+            <el-table :data="scope.row.orderDetails" border size="mini" @row-click="skipDetail(scope.row.orderNo)">
               <el-table-column type="expand">
                 <template slot-scope="props">
                   <el-form label-position="right" :inline="true" label-width="120px">
@@ -72,10 +79,15 @@
           width="80"
           align="center"
         ></el-table-column>
-        <el-table-column fixed="right" label="操作" align="center" width="160">
+        <el-table-column fixed="right" label="操作" align="center" width="300">
           <template slot-scope="scope">
-            <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
-            <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
+            <el-button @click="skipDetail(scope.row.orderNo)" type="primary" size="mini">查看</el-button>
+            <el-button v-show="scope.row.orderStatus == 0" @click="handleEdit(scope.row)" type="primary" size="mini">
+              编辑
+            </el-button>
+            <el-button v-show="scope.row.orderStatus == 0" @click="handleDelete(scope.row)" type="danger" size="mini">
+              删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>

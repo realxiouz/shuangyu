@@ -1,5 +1,6 @@
 import {
   addOne,
+  confirmOrder,
   getList,
   getOne,
   getPageList,
@@ -50,6 +51,18 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {orderNo} = params;
       removeOne(orderNo)
+        .then(response => {
+          resolve(response.data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  confirmOrder({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {orderNo} = params;
+      confirmOrder(orderNo)
         .then(response => {
           resolve(response.data);
         })
