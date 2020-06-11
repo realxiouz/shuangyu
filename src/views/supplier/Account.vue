@@ -20,7 +20,7 @@
         <el-button type="primary" size="mini" @click="removeSelected">删除</el-button>
       </div>
     </el-col>
-    <el-dialog title="编辑账号" :visible.sync="dialogVisible" :close-on-click-modal="false" width="24%">
+    <el-dialog title="编辑账号" :visible.sync="dialogVisible" :close-on-click-modal="false" @closed="editDialogClosed" width="24%">
       <el-form :model="account" :rules="rules" ref="accountForm" label-position="left" label-width="80px" size="mini">
         <el-form-item label="登录账号" prop="username">
           <el-input v-model="account.username" placeholder="请输入平台账号"></el-input>
@@ -134,6 +134,10 @@
                 this.selectedAccount.forEach(item => {
                     this.handleRemove(this.accounts.indexOf(item), item);
                 })
+            },
+            //编辑窗口关闭结束时执行
+            editDialogClosed(){
+              this.$refs['accountForm'].clearValidate();
             }
         },
     }

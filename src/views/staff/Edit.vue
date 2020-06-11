@@ -110,8 +110,7 @@
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item>
               <el-button size="mini" align="center" @click="userDialogVisible = false">取 消</el-button>
-              <el-button size="mini" align="center" type="primary" @click="handleSaveRelation"
-              >
+              <el-button size="mini" align="center" type="primary" @click="handleSaveRelation">
                 确认关联
               </el-button>
             </el-form-item>
@@ -125,6 +124,7 @@
       width="35%"
       :visible.sync="permissionDialogVisible"
       :close-on-click-modal="false"
+      @closed="staffDialogClosed"
     >
       <el-form ref="staffForm" :model="formData" :rules="rules" size="mini" label-width="120px">
         <!--   企业ID  -->
@@ -448,7 +448,7 @@
                 this.userDialogVisible = false;
                 this.$store
                     .dispatch("staff/relationUser", {userId: this.userData.userId, staffId: this.userData.staffId})
-                    .then(data => {
+                    .then((data) => {
                         if (data) {
                             this.$message({
                                 type: "success",
@@ -550,8 +550,11 @@
             clearFormData() {
                 this.formData = this.defaultFormData();
                 this.updateTempData = {};
-                this.$refs['staffForm'].clearValidate();
             },
+          //员工信息弹出关闭时执行
+          staffDialogClosed(){
+            this.$refs['staffForm'].clearValidate();
+          }
         },
         computed: {
             formatDate() {

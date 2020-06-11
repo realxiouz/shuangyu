@@ -260,8 +260,21 @@
                         userId: this.userData.userId,
                         staffId: this.userData.firmId
                     })
-                    .then(() => {
+                    .then((data) => {
+                      this.userDialogVisible = false;
+                      if(data){
+                        this.$message({
+                          type:"success",
+                          message:"关联成功！"
+                        });
                         this.loadData();
+                      }else{
+                        this.$message({
+                          type:"info",
+                          message:"关联失败！"
+                        });
+                        this.loadData();
+                      }
                     })
                     .catch(error => {
                         console.log(error);

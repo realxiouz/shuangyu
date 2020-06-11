@@ -121,7 +121,8 @@ const actions = {
       const {staffId, userId} = params;
       relationUser(staffId, userId)
         .then(response => {
-          resolve(response);
+          const {data} = response;
+          resolve(data);
         })
         .catch(error => {
           reject(error);

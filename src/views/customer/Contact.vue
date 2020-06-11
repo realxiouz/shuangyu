@@ -28,7 +28,7 @@
         </el-table-column>
       </el-table>
     </el-col>
-    <el-dialog :visible.sync="dialogVisible" :close-on-click-modal="false" width="24%">
+    <el-dialog :visible.sync="dialogVisible" :close-on-click-modal="false" @closed="editDialogClosed" width="24%">
       <el-form :model="contact" :rules="rules" ref="contactForm" label-position="left" label-width="80px" size="mini">
         <el-form-item label="姓名" prop="fullName" size="mini">
           <el-input type="text" v-model="contact.fullName" placeholder="请输入姓名.."></el-input>
@@ -49,7 +49,8 @@
           <el-date-picker
             v-model="contact.birthDate"
             type="date"
-            placeholder="选择日期">
+            placeholder="选择日期"
+            value-format="timestamp">
           </el-date-picker>
         </el-form-item>
         <el-form-item label="身份证号" prop="idCardNo" size="mini">
@@ -161,15 +162,15 @@
             },
             /*初始化列表中的日期格式*/
             formatDate(dateStr, format) {
-                if (dateStr > 0) {
-                    let date = new Date(dateStr);
-                    return this.$moment(date).format(format);
-                } else {
-                    return "";
-                }
+              let date = new Date(dateStr);
+              return this.$moment(date).format(format);
             },
             initGender(gender) {
                 return 0 == gender ? "男" : "女";
+            },
+            //编辑窗口关闭结束时执行
+            editDialogClosed(){
+              this.$refs['contactForm'].clearValidate();
             }
         },
         created() {
