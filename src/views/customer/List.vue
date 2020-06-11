@@ -267,14 +267,13 @@
                           type:"success",
                           message:"关联成功！"
                         });
-                        this.loadData();
                       }else{
                         this.$message({
                           type:"info",
                           message:"关联失败！"
                         });
-                        this.loadData();
                       }
+                      this.loadData();
                     })
                     .catch(error => {
                         console.log(error);
