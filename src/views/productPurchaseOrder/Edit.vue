@@ -410,11 +410,32 @@
                 this.dialogVisible = false;
             },
             confirmOrder() {
-
-                // this.$store.dispatch("orderDetail/removeOne", {orderNo: _detailId})
-                //     .catch(error => {
-                //         console.log(error);
-                //     });
+                this.$refs['orderForm'].validate((valid) => {
+                    if (valid) {
+                        const dateItem = ['expireDate', 'warehouseDate'];
+                        dateItem.forEach(item => {
+                            if (this.formData[item] && 'number' != typeof this.formData[item]) {
+                                this.formData[item] = this.formData[item].getTime();
+                            }
+                        });
+                        this.formData.totalAmount = parseFloat(document.getElementById('totalAmount').textContent);
+                        this.$store
+                            .dispatch('productOrder/confirmOrder', {
+                                productOrder: this.formData,
+                                orderDetails: this.orderDetails
+                            })
+                            .then(() => {
+                                this.goBack();
+                            })
+                            .catch(error => {
+                                console.log(error);
+                            });
+                        this.$message({
+                            type: "success",
+                            message: "确认成功！"
+                        });
+                    }
+                });
             },
             handleSave() {
                 this.$refs['orderForm'].validate((valid) => {
@@ -426,20 +447,21 @@
                             }
                         });
                         this.formData.totalAmount = parseFloat(document.getElementById('totalAmount').textContent);
-                        let url = '';
-                        if (this.update) {
-                            url = 'productOrder/updateOne';
-                        } else {
-                            url = 'productOrder/addOne';
-                        }
                         this.$store
-                            .dispatch(url, {productOrder: this.formData, orderDetails: this.orderDetails})
+                            .dispatch('productOrder/saveOrder', {
+                                productOrder: this.formData,
+                                orderDetails: this.orderDetails
+                            })
                             .then(() => {
                                 this.goBack();
                             })
                             .catch(error => {
                                 console.log(error);
                             });
+                        this.$message({
+                            type: "success",
+                            message: "保存草稿成功！"
+                        });
                     }
                 });
             },
@@ -497,6 +519,8 @@
                     this.update = true;
                     this.loadProduct(orderNo);
                     this.loadOderDetails(orderNo);
+                } else {
+                    this.isUpdate = false;
                 }
             },
         },
