@@ -192,7 +192,7 @@
             },
             handleWarehouse(row) {
                 this.$store
-                    .dispatch("productOrder/inWarehouseOrder", {orderNo: row.orderNo, data: row})
+                    .dispatch("productOrder/outWarehouseOrder", {orderNo: row.orderNo, data: row})
                     .then(() => {
                         this.loadData();
                     })

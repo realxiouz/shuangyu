@@ -5,6 +5,7 @@ import {
   getPageList,
   getTotal,
   inWarehouseOrder,
+  outWarehouseOrder,
   removeOne,
   saveOrder,
   updateOne
@@ -27,6 +28,18 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {orderNo, data} = params;
       inWarehouseOrder(orderNo, data)
+        .then(response => {
+          resolve(response.data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  outWarehouseOrder({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {orderNo, data} = params;
+      outWarehouseOrder(orderNo, data)
         .then(response => {
           resolve(response.data);
         })

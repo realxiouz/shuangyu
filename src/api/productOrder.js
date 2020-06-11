@@ -26,12 +26,18 @@ export function updateOne(orderNo, data) {
 
 export function inWarehouseOrder(orderNo, data) {
   return request({
-    url: `/policy/order/update/warehouse/${orderNo}`,
+    url: `/policy/order/in/warehouse/${orderNo}`,
     method: 'put',
     data
   });
 }
-
+export function outWarehouseOrder(orderNo, data) {
+  return request({
+    url: `/policy/order/out/warehouse/${orderNo}`,
+    method: 'put',
+    data
+  });
+}
 export function removeOne(orderNo) {
   return request({
     url: `/policy/order/remove/one/${orderNo}`,
