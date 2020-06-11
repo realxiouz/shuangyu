@@ -59,7 +59,7 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="出入库状态:">
-                <span>{{formData.warehouseStatus ==0?'未入库':'已入库'}}</span>
+                <span>{{formData.warehouseStatus ==2?'未出库':'已出库'}}</span>
               </el-form-item>
               <el-form-item label="出库时间:" prop="warehouseDate">
                 <el-date-picker
