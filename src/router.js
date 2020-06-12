@@ -925,7 +925,7 @@ export default new Router({
         {
           path: '/product/shipment/order/edit',
           component: () => import('@/views/saleShipmentOrder/Edit'),
-          meta: {title: '销售订单', icon: 'home'}
+          meta: {title: '销售出库单', icon: 'home'}
         },
         {
           title: '销售退款单',

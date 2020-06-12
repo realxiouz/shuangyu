@@ -5,7 +5,8 @@
         <el-page-header></el-page-header>
       </div>
       <br>
-      <el-form ref="orderForm" :rules="rules" :model="formData" label-position="left" label-width="97px" size="mini"
+      <el-form ref="orderForm" :disabled="isUpdate" :rules="rules" :model="formData" label-position="left"
+               label-width="97px" size="mini"
                style="width: 80%">
         <el-row>
           <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
@@ -203,10 +204,9 @@
                 orderDetails: [],
                 funAccountList: [],
                 dialogVisible: false,
-                //是否对订单详情进行修改或添加
-                detailUpdate: false,
                 customerSelected: true,
                 update: false,
+                isUpdate: true,
                 stockError: false,
                 productIdList: [],
                 totalAmount: 0,
@@ -339,9 +339,14 @@
             loadProduct(orderNo) {
                 this.$store.dispatch("productOrder/getOne", {orderNo: orderNo})
                     .then(data => {
-                        this.formData = data;
-                        if (data.merchantId) {
-                            this.loadAccounts(data.merchantId);
+                        if (data) {
+                            if (data.orderStatus === 0) {
+                                this.isUpdate = false;
+                            }
+                            this.formData = data;
+                            if (data.merchantId) {
+                                this.loadAccounts(data.merchantId);
+                            }
                         }
                     })
                     .catch(error => {
@@ -420,7 +425,6 @@
                 });
             },
             handleAddProduct() {
-                this.detailUpdate = false;
                 this.dialogVisible = true;
             },
             handleRemoveProduct(idx, row) {
@@ -555,6 +559,8 @@
                     this.update = true;
                     this.loadProduct(orderNo);
                     this.loadOderDetails(orderNo);
+                } else {
+                    this.isUpdate = false;
                 }
             },
         },

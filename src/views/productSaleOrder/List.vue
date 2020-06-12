@@ -223,7 +223,7 @@
                     });
             },
             skipDetail(orderNo) {
-                this.$router.push({path: '/product/shipment/order/edit', query: {orderNo: orderNo}});
+                this.$router.push({path: '/product/sale/order/edit', query: {orderNo: orderNo}});
             },
             initDate(dateStr, format) {
                 if (dateStr > 0) {

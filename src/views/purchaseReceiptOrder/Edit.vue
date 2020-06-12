@@ -197,8 +197,6 @@
                 orderDetails: [],
                 funAccountList: [],
                 dialogVisible: false,
-                //是否对订单详情进行修改或添加
-                detailUpdate: false,
                 customerSelected: true,
                 isUpdate: true,
                 productIdList: [],
@@ -433,7 +431,6 @@
                 this.loadSaleOrder(item);
             },
             handleAddProduct() {
-                this.detailUpdate = false;
                 this.dialogVisible = true;
             },
             handleRemoveProduct(idx, row) {
