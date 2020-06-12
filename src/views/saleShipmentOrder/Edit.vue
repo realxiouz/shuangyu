@@ -107,7 +107,7 @@
         </el-row>
         <!--productDetailTable-->
         <el-row>
-          <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="16">
+          <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
             <div class="title">
               <el-button type="primary" size="mini" @click="handleAddProduct">添加商品明细</el-button>
             </div>
@@ -118,11 +118,10 @@
               <el-table-column prop="skuName" label="属性名称" align="center"></el-table-column>
               <el-table-column prop="price" label="单价" align="center"></el-table-column>
               <el-table-column prop="stockQuantity" label="库存" align="center"></el-table-column>
-              <el-table-column prop="quantity" label="数量" align="center">
+              <el-table-column prop="quantity" label="数量" align="center" width="150">
                 <template slot-scope="prop">
-                  <el-input v-model.number="prop.row.quantity" placeholder="输入单价" @input="testQuantity(prop.row)"
-                            size="mini"></el-input>
-                  <span v-if="verifyQuantity(prop.row.quantity)" style="color: #F56C6C">*商品数量必须为数字</span>
+                  <el-input-number v-model="prop.row.quantity" :min="1" size="mini"
+                                   @input="testQuantity(prop.row)"></el-input-number>
                   <span v-if="verifyStockQuantity(prop.row)" style="color: #F56C6C">*商品数量应该小于或等于库存数量</span>
                 </template>
               </el-table-column>
@@ -221,6 +220,7 @@
                 detailUpdate: false,
                 customerSelected: true,
                 update: false,
+                isUpdate: true,
                 quantityError: false,
                 stockError: false,
                 productIdList: [],
@@ -356,9 +356,14 @@
             loadProduct(orderNo) {
                 this.$store.dispatch("productOrder/getOne", {orderNo: orderNo})
                     .then(data => {
-                        this.formData = data;
-                        if (data.merchantId) {
-                            this.loadAccounts(data.merchantId);
+                        if (data) {
+                            if (data.orderStatus === 0) {
+                                this.isUpdate = false;
+                            }
+                            this.formData = data;
+                            if (data.merchantId) {
+                                this.loadAccounts(data.merchantId);
+                            }
                         }
                     })
                     .catch(error => {
@@ -373,22 +378,6 @@
                             data.forEach(item => {
                                 this.productIdList.push(item.productId + item.skuId);
                             });
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            loadSaleOrder(parentNo) {
-                this.loadOderDetails(parentNo);
-                this.$store.dispatch("productOrder/getOne", {orderNo: parentNo})
-                    .then(data => {
-                        this.formData = data;
-                        this.formData.parentNo = data.orderNo;
-                        this.formData.orderNo = null;
-                        this.firmData.warehouseStatus = 1;
-                        if (data.merchantId) {
-                            this.loadAccounts(data.merchantId);
                         }
                     })
                     .catch(error => {
@@ -457,7 +446,6 @@
             },
             selectedSaleOrder(item) {
                 this.customerSelected = false;
-                this.loadSaleOrder(item);
             },
             handleAddProduct() {
                 this.detailUpdate = false;
@@ -562,38 +550,26 @@
                 let date = new Date();
                 return this.$moment(date).format(format);
             },
-            initFormData(query) {
+            initFormData(orderNo) {
                 this.update = false;
                 this.clearForm();
                 this.loadCustomers();
                 this.loadWarehouses();
                 this.loadFundAccount();
-                this.loadSaleOrders();
                 this.loadExpress();
-                const _parentNo = query.parentNo;
-                if (_parentNo) {
+                if (orderNo) {
                     this.update = true;
-                    this.loadSaleOrder(_parentNo);
+                    this.loadProduct(orderNo);
+                    this.loadOderDetails(orderNo);
                 } else {
-                    const _orderNo = query.orderNo;
-                    if (_orderNo) {
-                        this.update = true;
-                        this.loadProduct(_orderNo);
-                        this.loadOderDetails(_orderNo);
-                    }
+                    this.isUpdate = false;
                 }
             },
         },
         created() {
-            this.initFormData(this.$route.query);
+            this.initFormData(this.$route.query.orderNo);
         },
         computed: {
-            verifyQuantity() {
-                return function (quantity) {
-                    let reg = /^[0-9]*$/;
-                    return !reg.test(quantity);
-                }
-            },
             verifyStockQuantity() {
                 return function (row) {
                     return row.stockQuantity < row.quantity;
