@@ -9,9 +9,6 @@
       </el-row>
       <el-table v-loading="loading" :data="tableData" style="width: 100%;margin-bottom: 15px;" size="mini">
         <el-table-column prop="orderNo" label="单号" align="center">
-          <template slot-scope="scope">
-            <div @click="skipDetail(scope.row.orderNo)">{{scope.row.orderNo}}</div>
-          </template>
         </el-table-column>
         <el-table-column prop="orderDate" label="单据日期" align="center">
           <template slot-scope="scope">
