@@ -194,7 +194,9 @@
     export default {
         data() {
             return {
-                formData: {},
+                formData: {
+                    orderDetails: []
+                },
                 //选择客户
                 customerList: [],
                 accountList: [],
@@ -459,11 +461,9 @@
                             }
                         });
                         this.formData.totalAmount = parseFloat(document.getElementById('totalAmount').textContent);
+                        this.formData.orderDetails = this.orderDetails;
                         this.$store
-                            .dispatch('productOrder/saveOrder', {
-                                productOrder: this.formData,
-                                orderDetails: this.orderDetails
-                            })
+                            .dispatch('productOrder/saveOrder', this.formData)
                             .then(() => {
                                 this.goBack();
                             })
@@ -487,11 +487,9 @@
                             }
                         });
                         this.formData.totalAmount = parseFloat(document.getElementById('totalAmount').textContent);
+                        this.formData.orderDetails = this.orderDetails;
                         this.$store
-                            .dispatch('productOrder/confirmOrder', {
-                                productOrder: this.formData,
-                                orderDetails: this.orderDetails
-                            })
+                            .dispatch('productOrder/confirmOrder', this.formData)
                             .then(() => {
                                 this.goBack();
                             })
