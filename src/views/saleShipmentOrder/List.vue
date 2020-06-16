@@ -74,7 +74,7 @@
             <el-button v-show="scope.row.orderStatus != 0" @click="skipDetail(scope.row.orderNo)" type="primary"
                        size="mini">查看
             </el-button>
-            <el-button v-show="scope.row.orderStatus == 0" @click="handleWarehouse(scope.row)" type="primary"
+            <el-button v-show="scope.row.warehouseStatus == 2" @click="handleWarehouse(scope.row)" type="primary"
                        size="mini">出库
             </el-button>
             <el-button v-show="scope.row.orderStatus == 0" @click="handleEdit(scope.row)" type="primary" size="mini">
