@@ -145,9 +145,6 @@
                 this.loadData();
             },
             loadData(searchForm = {}) {
-                if (this.lastId) {
-                    searchForm.lastId = this.lastId;
-                }
                 searchForm['orderType'] = 200;
                 this.$store.dispatch("productOrder/getList", {
                     filter: searchForm

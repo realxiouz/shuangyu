@@ -126,9 +126,8 @@
                 searchForm: {},
                 curNode: {},
                 tableData: [],
-                pageFlag: 1,
+                currentPage: 1,
                 pageSize: 10,
-                lastId: null,
                 total: 0
             };
         },
@@ -138,15 +137,19 @@
             formatWarehouseStatus,
             formatPaymentStatus,
             /*翻前页*/
-            handlePrevClick() {
-                this.pageFlag = -1;
-                this.lastId = this.tableData[0].orderNo;
-                this.loadData();
+            handlePrevClick(size) {
+                this.pageSize = size;
+                this.searchForm.pageSize = this.pageSize;
+                this.currentPage = 1;
+                this.searchForm.currentPage = this.currentPage;
+                this.loadData(this.searchParams);
             },
             /*翻后页*/
-            handleNextClick() {
-                this.pageFlag = 1;
-                this.lastId = this.tableData[this.tableData.length - 1].orderNo;
+            handleNextClick(page) {
+                this.currentPage = page;
+                this.searchForm.pageSize = this.pageSize;
+                this.searchForm.currentPage = this.currentPage;
+                this.loadData(this.searchParams);
                 this.loadData();
             },
             handleSizeChange(pageSize) {
@@ -154,13 +157,8 @@
                 this.loadData();
             },
             loadData(searchForm = {}) {
-                if (this.lastId) {
-                    searchForm.lastId = this.lastId;
-                }
                 searchForm['orderType'] = 201;
-                this.$store.dispatch("productOrder/getPageList", {
-                    pageFlag: this.pageFlag,
-                    pageSize: this.pageSize,
+                this.$store.dispatch("productOrder/getList", {
                     filter: searchForm
                 })
                     .then(data => {
