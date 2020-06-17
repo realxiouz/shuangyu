@@ -5,7 +5,7 @@ import request from '@/utils/request';
 // 添加一条数据
 export function addOne(data) {
     return request({
-        url: 'product/feature/add/one',
+        url: '/device/product/feature/add/one',
         method: 'post',
         data
     });
@@ -15,7 +15,7 @@ export function addOne(data) {
 // 获取总条数
 export function getTotal(data) {
     return request({
-        url: "/product/feature/total",
+        url: "/device/product/feature/total",
         method: 'get',
         data
     })
@@ -26,14 +26,14 @@ export function getList(data) {
     const { pageFlag, pageSize, lastId } = data
     const resetParam = lastId ? `?lastId=${lastId}` : ""
     return request({
-        url: `product/feature/page/list/${pageFlag}/${pageSize}${resetParam}`,
+        url: `/device/product/feature/page/list/${pageFlag}/${pageSize}${resetParam}`,
         method: 'get'
     });
 }
 // 删除
 export function delFeatureById(id) {
     return request({
-        url: `product/feature/remove/one/${id}`,
+        url: `/device/product/feature/remove/one/${id}`,
         method: 'delete'
     });
 }
@@ -42,7 +42,7 @@ export function delFeatureById(id) {
 export function editFeatureById(data) {
     console.log(data)
     return request({
-        url: `/product/feature/update/one/${data.featureId}`,
+        url: `/device/product/feature/update/one/${data.featureId}`,
         method: 'post',
         data
     });
