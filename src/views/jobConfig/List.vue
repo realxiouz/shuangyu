@@ -153,7 +153,8 @@
             value: 1
           }
         ],
-        loading: true
+        loading: true,
+        params:{}
       };
     },
     components: {
@@ -161,20 +162,20 @@
       jobConfigEdit
     },
     methods: {
-      loadData(params) {
+      loadData() {
         if (this.lastId) {
-          params.lastId = this.lastId;
+          this.params.lastId = this.lastId;
         }
         this.$store
           .dispatch("jobConfig/getPageList", {
             pageFlag: this.pageFlag,
             pageSize: this.pageSize,
-            filter: params
+            filter: this.params
           })
           .then(data => {
             if (data) {
               this.tableData = data.data;
-              this.loadTotal(params);
+              this.loadTotal(this.params);
             }
             this.loading = false;
           })
@@ -211,10 +212,9 @@
         this.loadData();
       },
       handleSearch(params) {
-        if (Object.keys(params).length == 0) {
-          this.lastId = null;
-        }
-        this.loadData(params);
+        this.lastId = null;
+        this.params = params;
+        this.loadData();
       },
       handleAdd() {
         this.configId = "";

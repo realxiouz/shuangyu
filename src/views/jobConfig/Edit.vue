@@ -377,8 +377,8 @@
                 for (var attr in attributes) {
                   if (attributes[attr] != undefined && attributes[attr] != null && attributes[attr] != '') {
                     let value = {
-                      label: attr,
-                      value: attributes[attr]
+                      label: attributes[attr],
+                      value: attr
                     };
                     this.values.push(value);
                   }
