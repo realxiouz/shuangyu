@@ -190,7 +190,6 @@
                             type: "success",
                             message: "删除成功!"
                         });
-                        this.lastId = "blank";
                         if (1 === this.tableData.length) {
                             this.handlePrevClick();
                         } else {
