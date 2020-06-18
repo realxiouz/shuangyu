@@ -43,6 +43,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="tagName" label="标签" align="center"></el-table-column>
+        <el-table-column prop="sort" label="排序号" align="center"></el-table-column>
         <!--<el-table-column prop="tagCode" label="标签编码" align="center"></el-table-column>
         <el-table-column prop="tagType" label="标签类别" align="center">
           <template slot-scope="scope">
