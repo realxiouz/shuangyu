@@ -3,7 +3,7 @@ import request from '@/utils/request';
 
 export function save(data) {
   return request({
-    url: '/product/inventory/save/one',
+    url: '/policy/product/inventory/save/one',
     method: 'post',
     data
   });
@@ -11,7 +11,7 @@ export function save(data) {
 
 export function updateOne(id, data) {
   return request({
-    url: `/product/inventory/update/one/${id}`,
+    url: `/policy/product/inventory/update/one/${id}`,
     method: "put",
     data
   });
@@ -19,7 +19,7 @@ export function updateOne(id, data) {
 
 export function removeOne(id) {
   return request({
-    url: `/product/inventory/remove/one/${id}`,
+    url: `/policy/product/inventory/remove/one/${id}`,
     method: 'delete'
   });
 }
@@ -27,7 +27,7 @@ export function removeOne(id) {
 
 export function getPageList(pageFlag, pageSize, params) {
   return request({
-    url: `/product/inventory/page/list/${pageFlag}/${pageSize}`,
+    url: `/policy/product/inventory/page/list/${pageFlag}/${pageSize}`,
     method: 'get',
     params: params
   });
@@ -35,7 +35,7 @@ export function getPageList(pageFlag, pageSize, params) {
 
 export function getList(params) {
   return request({
-    url: `/product/inventory/list`,
+    url: `/policy/product/inventory/list`,
     method: 'get',
     params: params
   });
@@ -43,7 +43,7 @@ export function getList(params) {
 
 export function getTotal(params) {
   return request({
-    url: `/product/inventory/total`,
+    url: `/policy/product/inventory/total`,
     method: 'get',
     params: params
   });
@@ -52,7 +52,7 @@ export function getTotal(params) {
 
 export function getOne(id) {
   return request({
-    url: `/product/inventory/one/${id}`,
+    url: `/policy/product/inventory/one/${id}`,
     method: 'get'
   });
 }

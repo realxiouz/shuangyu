@@ -2,7 +2,7 @@ import request from '@/utils/request';
 
 export function getRootPageList(pageFlag, pageSize, filter) {
   return request({
-    url: `/warehouse/get/root/list/page/${pageFlag}/${pageSize}`,
+    url: `/policy/warehouse/get/root/list/page/${pageFlag}/${pageSize}`,
     method: 'get',
     params: filter
   });
@@ -10,7 +10,7 @@ export function getRootPageList(pageFlag, pageSize, filter) {
 
 export function getRootTotal(params) {
   return request({
-    url: `/warehouse/get/root/total`,
+    url: `/policy/warehouse/get/root/total`,
     method: "get",
     params: params
   });
@@ -18,7 +18,7 @@ export function getRootTotal(params) {
 
 export function getAsyncTreeList(pid, filter) {
   return request({
-    url: `/warehouse/get/async/tree/list/${pid}`,
+    url: `/policy/warehouse/get/async/tree/list/${pid}`,
     method: `get`,
     params: filter
   });
@@ -26,7 +26,7 @@ export function getAsyncTreeList(pid, filter) {
 
 export function addOne(data) {
   return request({
-    url: '/warehouse/add/one',
+    url: '/policy/warehouse/add/one',
     method: 'post',
     data
   });
@@ -34,7 +34,7 @@ export function addOne(data) {
 
 export function updateOne(id, data) {
   return request({
-    url: `/warehouse/update/one/${id}`,
+    url: `/policy/warehouse/update/one/${id}`,
     method: 'put',
     data
   });
@@ -42,21 +42,21 @@ export function updateOne(id, data) {
 
 export function removeOne(warehouseId) {
   return request({
-    url: `/warehouse/remove/one/${warehouseId}`,
+    url: `/policy/warehouse/remove/one/${warehouseId}`,
     method: 'delete'
   });
 }
 
 export function getOne(warehouseCode) {
   return request({
-    url: `/warehouse/one/${warehouseCode}`,
+    url: `/policy/warehouse/one/${warehouseCode}`,
     method: 'get'
   });
 }
 
 export function getList(filter) {
   return request({
-    url: `/warehouse/list`,
+    url: `/policy/warehouse/list`,
     method: 'get',
     params: filter
   });
@@ -64,7 +64,7 @@ export function getList(filter) {
 
 export function getTreeList(filter) {
   return request({
-    url: `/warehouse/tree/list`,
+    url: `/policy/warehouse/tree/list`,
     method: 'get',
     params: filter
   });
@@ -72,7 +72,7 @@ export function getTreeList(filter) {
 
 export function getTotal(filter) {
   return request({
-    url: '/warehouse/total',
+    url: '/policy/warehouse/total',
     method: 'get',
     params: filter
   });
@@ -80,7 +80,7 @@ export function getTotal(filter) {
 
 export function getPageList(pageFlag, pageSize, lastId, filter) {
   return request({
-    url: `/warehouse/page/list/${pageFlag}/${pageSize}/${lastId}`,
+    url: `/policy/warehouse/page/list/${pageFlag}/${pageSize}/${lastId}`,
     method: 'get',
     params: filter
   });
