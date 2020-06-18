@@ -16,8 +16,10 @@ export function Export(data) {
     myList.push(key + "=" + data[key]);
   }
   var paramsStr = "?" + myList.join("&");
-  window.location.href = 'http://39.108.230.74:18901/ota/prod-api/export/TTS/order' + paramsStr;
-  //window.location.href = 'http://localhost:28030/dev-api/export/TTS/order' + paramsStr;
+  //本地
+  //window.location.href = 'http://39.108.230.74:18901/ota/prod-api/export/TTS/order' + paramsStr;
+  //服务器
+  window.location.href = 'http://localhost:28030/dev-api/export/TTS/order' + paramsStr;
 
 }
 // 查询原始单数量

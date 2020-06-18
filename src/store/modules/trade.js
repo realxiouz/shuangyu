@@ -1,5 +1,31 @@
-import {getList, getPageList, getTotal} from '@/api/trade';
+import {
+  getOne,
+  removeOne,
+  save,
+  getList,
+  getPageList,
+  getTotal
+} from '@/api/trade';
+import {getToken} from "@/utils/auth";
 
+
+const state = {
+  token: getToken(),
+  name: "",
+  avatar: ""
+};
+
+const mutations = {
+  SET_TOKEN: (state, token) => {
+    state.token = token;
+  },
+  SET_NAME: (state, name) => {
+    state.name = name;
+  },
+  SET_AVATAR: (state, avatar) => {
+    state.avatar = avatar;
+  }
+};
 const actions = {
   getTotal({commit}, params) {
     return new Promise((resolve, reject) => {
@@ -39,10 +65,50 @@ const actions = {
           reject(error);
         });
     });
+  },
+  save({commit}, params) {
+    return new Promise((resolve, reject) => {
+      save(params)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  removeOne({commit}, params) {
+    const {subjectId} = params;
+    return new Promise((resolve, reject) => {
+      removeOne(subjectId)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getOne({commit}, params) {
+    const {subjectId} = params;
+    return new Promise((resolve, reject) => {
+      getOne(subjectId)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
   }
-}
+};
 
 export default {
   namespaced: true,
+  state,
+  mutations,
   actions
 };
