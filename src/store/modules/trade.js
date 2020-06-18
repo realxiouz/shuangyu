@@ -79,9 +79,9 @@ const actions = {
     });
   },
   removeOne({commit}, params) {
-    const {subjectId} = params;
+    const {tradeId} = params;
     return new Promise((resolve, reject) => {
-      removeOne(subjectId)
+      removeOne(tradeId)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -92,9 +92,9 @@ const actions = {
     });
   },
   getOne({commit}, params) {
-    const {subjectId} = params;
+    const {tradeId} = params;
     return new Promise((resolve, reject) => {
-      getOne(subjectId)
+      getOne(tradeId)
         .then(response => {
           const {data} = response;
           resolve(data);

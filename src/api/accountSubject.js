@@ -3,7 +3,7 @@ import request from "@/utils/request";
 
 export function save(data) {
   return request({
-    url: "/subject/save",
+    url: "/finance/account/subject/save",
     method: "post",
     data
   });
@@ -11,14 +11,14 @@ export function save(data) {
 
 export function removeOne(id) {
   return request({
-    url: `/subject/remove/one/${id}`,
+    url: `/finance/account/subject/remove/one/${id}`,
     method: "delete"
   });
 }
 
 export function getPageList(pageFlag, pageSize, lastId, params) {
   return request({
-    url: `/subject/page/list/${pageFlag}/${pageSize}/${lastId}`,
+    url: `/finance/account/subject/page/list/${pageFlag}/${pageSize}/${lastId}`,
     method: "get",
     params: params
   });
@@ -26,7 +26,7 @@ export function getPageList(pageFlag, pageSize, lastId, params) {
 
 export function getTotal(params) {
   return request({
-    url: `/subject/get/root/total`,
+    url: `/finance/account/subject/get/root/total`,
     method: "get",
     params: params
   });
@@ -34,7 +34,7 @@ export function getTotal(params) {
 
 export function getRootPageList(pageFlag, pageSize, filter) {
   return request({
-    url: `/account/subject/get/root/list/page/${pageFlag}/${pageSize}`,
+    url: `/finance/account/subject/get/root/list/page/${pageFlag}/${pageSize}`,
     method: "get",
     params: filter
   });
@@ -42,7 +42,7 @@ export function getRootPageList(pageFlag, pageSize, filter) {
 
 export function getList(params) {
   return request({
-    url: `/subject/list`,
+    url: `/finance/account/subject/list`,
     method: "get",
     params: params
   });
@@ -50,14 +50,14 @@ export function getList(params) {
 
 export function getOne(id) {
   return request({
-    url: `/subject/one/${id}`,
+    url: `/finance/account/subject/one/${id}`,
     method: 'get'
   });
 }
 
 export function getSelectingList(filter) {
   return request({
-    url: `/subject/list/selecting`,
+    url: `/finance/account/subject/list/selecting`,
     method: 'get',
     params: filter
   });
@@ -65,7 +65,7 @@ export function getSelectingList(filter) {
 
 export function getAsyncTreeList(pid, filter) {
   return request({
-    url: `/subject/async/tree/list/${pid}`,
+    url: `/finance/account/subject/async/tree/list/${pid}`,
     method: 'get',
     params: filter
   });
