@@ -182,8 +182,8 @@
                     });
             },
         },
-        mounted() {
-            this.loadData({});
+        created() {
+            this.loadData();
         },
         components: {
             search,
