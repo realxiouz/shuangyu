@@ -200,7 +200,7 @@
         type: Boolean,
         default: false
       },
-      id: {
+      featureId: {
         type: String,
         default: ''
       }
@@ -240,8 +240,7 @@
     watch: {
       visible(val) {
         this.dialogVisible = val;
-        if (!this._.isEmpty(this.id)) {
-          this.formData.featureId = this.id;
+        if (!this._.isEmpty(this.featureId)) {
           this.loadData();
         }
       }
