@@ -42,7 +42,6 @@
           ></el-option>
         </el-select>
       </el-form-item>
-
       <el-form-item label="备注">
         <el-input type="textarea" v-model="formData.remark"></el-input>
       </el-form-item>

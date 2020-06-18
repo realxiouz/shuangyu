@@ -247,7 +247,7 @@
         })
           .then(() => {
             this.$store
-              .dispatch("jobScheduler/start", {jobSchedulerId: schedulerId})
+              .dispatch("jobScheduler/trigger", {jobSchedulerId: schedulerId})
               .then(() => {
                 this.loadData({});
               })

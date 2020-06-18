@@ -4,6 +4,9 @@
       <trade-search @onSearch="loadData"></trade-search>
     </div>
     <div class="contentBox">
+      <el-row style="margin-bottom:15px;margin-left:22px;">
+        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+      </el-row>
       <el-table size="mini" v-loading="loading" :data="tableData" style="width: 100%;margin-bottom:15px;">
         <el-table-column label="序号" type="index" width="50" align="center">
           <template slot-scope="scope">
@@ -47,18 +50,35 @@
         :page-size="pageSize"
         :total="total"
       ></el-pagination>
+      <el-dialog
+        title="交易记录信息"
+        center
+        :visible.sync="dialogVisible"
+        :close-on-click-modal="false"
+        width="30%"
+      >
+        <trade-edit
+          v-if="dialogVisible"
+          @onSave="handleSave"
+          @onCancel="handleCancel"
+          :edit-trade-id="editTradeId"
+          :pid="pid"
+        ></trade-edit>
+      </el-dialog>
     </div>
   </div>
 </template>
 
 <script>
     import tradeSearch from "./Search.vue";
+    import tradeEdit from "./Edit.vue";
 
     export default {
         data() {
             return {
                 loading: true,
                 dialogVisible: false,
+                editTradeId:"",
                 searchParams: {},
                 tableData: [],
                 currentPage: 1,
@@ -67,6 +87,11 @@
             };
         },
         methods: {
+          handleAdd() {
+            this.tradeId = "";
+            this.pid = "";
+            this.dialogVisible = true;
+          },
             loadData(params) {
                 this.$store
                     .dispatch("trade/getList", {
@@ -107,6 +132,17 @@
                     return "";
                 }
             },
+          handleSave(formData) {
+            this.dialogVisible = false;
+            this.$store
+              .dispatch("/trade/save", formData)
+              .then(() => {
+                this.loadData({});
+              })
+              .catch(error => {
+                console.log(error);
+              });
+          },
             handleCancel() {
                 this.dialogVisible = false;
             },
@@ -132,7 +168,8 @@
             this.loadData(this.searchParams);
         },
         components: {
-            tradeSearch
+            tradeSearch,
+            tradeEdit
         }
     };
 </script>
