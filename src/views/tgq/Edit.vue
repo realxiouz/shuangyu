@@ -2,12 +2,12 @@
   <div>
     <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
       <el-row :gutter="5">
-        <el-col :span="12">
+        <el-col :span="8">
           <el-form-item label="名称" prop="name">
             <el-input placeholder="名称" v-model="formData.schedulerName"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="8">
           <el-form-item label="定时策略">
             <el-popover v-model="formData.cronPopover">
               <vue-cron @change="changeCron" @close="formData.cronPopover=false" i18n="cn"></vue-cron>
@@ -16,7 +16,7 @@
             </el-popover>
           </el-form-item>
         </el-col>
-        <el-col :span="12" v-for="(item, index) in formData.params" :key="index">
+        <el-col :span="8" v-for="(item, index) in formData.params" :key="index">
           <el-form-item :label="item.name">
             <!-- 数据类型（0文本，1开关，2数字，3日期，4日期时间，5时间，6评分，7单选，8多选，9选择器）-->
             <el-input v-if="item.valueType ==0" v-model="item.value"></el-input>
