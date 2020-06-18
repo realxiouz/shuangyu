@@ -199,6 +199,10 @@
       visible: {
         type: Boolean,
         default: false
+      },
+      id: {
+        type: String,
+        default: ''
       }
     },
     data() {
@@ -236,6 +240,10 @@
     watch: {
       visible(val) {
         this.dialogVisible = val;
+        if (!this._.isEmpty(this.id)) {
+          this.formData.featureId = this.id;
+          this.loadData();
+        }
       }
     },
     methods: {
@@ -328,6 +336,9 @@
           remark: "", //备注
           sort: "", //排序号
         };
+      },
+      loadData() {
+
       },
       addItem() {
         this.formData.attributes.push({code: "", name: ""});
