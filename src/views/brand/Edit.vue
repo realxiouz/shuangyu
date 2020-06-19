@@ -94,10 +94,10 @@
         watch: {
             visible(val) {
                 this.dialogVisible = val;
-                if (!this._.isEmpty(this.brandId)) {
-                    this.loadData();
-                }else {
+                if (this._.isEmpty(this.brandId)) {
                     this.clearForm();
+                } else {
+                    this.loadData();
                 }
             }
         },
@@ -154,13 +154,8 @@
                 })
             },
             loadData() {
-                if (this.brandId) {
-                    this.handleGetOne(this.brandId);
-                }
-            },
-            handleGetOne(id) {
                 this.$store
-                    .dispatch("brand/getOne", {brandId: id})
+                    .dispatch("brand/getOne", {brandId: this.brandId})
                     .then(data => {
                         this.formData = data;
                     }).catch(error => {
