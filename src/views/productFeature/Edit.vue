@@ -1,186 +1,182 @@
 <template>
   <div class="page-form">
     <el-dialog title="添加" :visible.sync="dialogVisible" @open="handleOpen" @close="handleClose">
-      <el-row type="flex" justify="space-between">
+      <el-form label-position="top" size="mini" :model="formData" ref="featureForm">
         <el-col :span="24">
-          <el-form label-position="top" size="mini" :model="formData" ref="featureForm">
-            <el-col :span="24">
-              <el-form-item label="自定义功能">
-                <el-radio-group v-model="formData.featureType">
-                  <el-radio-button
-                    :label="item.id"
-                    v-for="(item,index) in featureTypes"
-                    :key="index"
-                  >{{item.value}}
-                  </el-radio-button>
-                </el-radio-group>
-              </el-form-item>
-            </el-col>
-            <el-col :span="24">
-              <el-form-item label="功能名称" prop="name">
-                <el-input placeholder="请输入功能名称" v-model="formData.name"/>
-              </el-form-item>
-            </el-col>
-            <el-col :span="24">
-              <el-form-item label="功能编码" prop="code">
-                <el-input placeholder="请输入功能编码" v-model="formData.code"/>
-              </el-form-item>
-            </el-col>
-            <el-col :span="24" v-if="formData.featureType==0">
-              <el-form-item label="数据类型">
-                <el-select v-model="formData.valueType" @change="handleValueTypeChange" style="width: 100%">
-                  <el-option
-                    v-for="(item,index) in valueTypes"
-                    :key="index"
-                    :label="item.value"
-                    :value="item.code"
-                  >{{item.value}}
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="24" v-if="formData.featureType==0 && formData.valueType==2">
-              <el-form-item label="取值范围">
-                <el-col :span="11">
-                  <el-input placeholder="最小值" v-model="formData.min" type="number"></el-input>
-                </el-col>
-                <el-col class="line" :span="2">-</el-col>
-                <el-col :span="11">
-                  <el-input placeholder="最大值" v-model="formData.max" type="number"></el-input>
-                </el-col>
-              </el-form-item>
-            </el-col>
-            <el-col :span="24">
-              <el-form-item label="步长" v-if="formData.featureType==0 && formData.valueType==2" prop="step">
-                <el-input placeholder="请输入步长" v-model="formData.step" type="number"/>
-              </el-form-item>
-            </el-col>
-            <el-col :span="24" v-if="formData.featureType==0 && formData.valueType==2">
-              <el-form-item label="数据单位" prop="unit">
-                <el-select v-model="formData.unit" style="width: 100%">
-                  <el-option
-                    v-for="(item,index) in unitTypes"
-                    :key="index"
-                    :value="item.value"
-                  >{{item.value}}
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="24" v-if="formData.featureType==0 && formData.valueType>6">
-              <el-form-item label="属性项">
-                <el-col :span="24">
-                  <el-row type="flex" justify="space-between">
-                    <el-col :span="9">属性编码
-                      <el-tooltip placement="top-start" effect="light">
-                        <div slot="content">支持整型，取值范围：-2147483648 ~ 2147483647</div>
-                        <i class="el-icon-question"></i>
-                      </el-tooltip>
-                    </el-col>
-                    <el-col :span="2"></el-col>
-                    <el-col :span="9">属性描述
-                      <el-tooltip placement="top" effect="light">
-                        <div slot="content">支持中文、英文大小写、数字下划线<br/>和短划线，必须以中文、英文或数字<br/>开头，不超过20个字符</div>
-                        <i class="el-icon-question"></i>
-                      </el-tooltip>
-                    </el-col>
-                    <el-col :span="4"></el-col>
-                  </el-row>
-                </el-col>
-                <el-col :span="24">
-                  <el-row class="attributes" type="flex" justify="space-between"
-                          v-for="(item,index) in formData.attributes"
-                          :key="index">
-                    <el-col :span="9">
-                      <el-form-item class="attr-item" :key="item.key">
-                        <el-input placeholder="编号" v-model="item.code"/>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="2" class="line">~</el-col>
-                    <el-col :span="9">
-                      <el-form-item :key="item.key">
-                        <el-input placeholder="描述" v-model="item.name"/>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="4" class="line">
-                      <el-link type="primary" @click="delItem(index)">删除</el-link>
-                    </el-col>
-                  </el-row>
-                </el-col>
-                <el-col :span="24">
-                  <el-link type="primary" @click="addItem">+添加属性项</el-link>
-                </el-col>
-              </el-form-item>
-            </el-col>
-            <el-col :span="24" v-if="formData.featureType==0">
-              <el-form-item label="读写类型">
-                <el-radio-group v-model="formData.readwrite">
-                  <el-radio :label="0">读写</el-radio>
-                  <el-radio :label="1">只读</el-radio>
-                </el-radio-group>
-              </el-form-item>
-            </el-col>
-            <el-col :span="24" v-if="formData.featureType==1">
-              <el-form-item label="调用方式">
-                <el-radio-group v-model="formData.callType">
-                  <el-radio :label="0">异步</el-radio>
-                  <el-radio :label="1">同步</el-radio>
-                </el-radio-group>
-              </el-form-item>
-            </el-col>
-            <el-col :span="24" v-if="formData.featureType==1">
-              <el-form-item label="输入参数">
-                <el-row v-for="(param,index) in formData.inputParams" :key="index">
-                  <el-col :span="20">
-                    参数名称：{{param.name}}
-                  </el-col>
-                  <el-col :span="2">
-                    <el-link type="primary" @click="handleUpdateParam(0,index,param)">编辑</el-link>
-                  </el-col>
-                  <el-col :span="2">
-                    <el-link type="primary" @click="handleDeleteParam(0,index)">删除</el-link>
-                  </el-col>
-                </el-row>
-                <el-row>
-                  <el-link type="primary" @click="handleAddParam(0)">+添加参数</el-link>
-                </el-row>
-              </el-form-item>
-            </el-col>
-            <el-col :span="24" v-if="formData.featureType==2">
-              <el-form-item label="事件类型" prop="eventType">
-                <el-radio-group v-model="formData.eventType">
-                  <el-radio :label="0">信息</el-radio>
-                  <el-radio :label="1">告警</el-radio>
-                  <el-radio :label="2">故障</el-radio>
-                </el-radio-group>
-              </el-form-item>
-            </el-col>
-            <el-col :span="24" v-if="formData.featureType==1 || formData.featureType==2">
-              <el-form-item label="输出参数">
-                <el-row v-for="(param,index) in formData.outputParams" :key="index">
-                  <el-col :span="20">
-                    参数名称：{{param.name}}
-                  </el-col>
-                  <el-col :span="2">
-                    <el-link type="primary" @click="handleUpdateParam(1,index,param)">编辑</el-link>
-                  </el-col>
-                  <el-col :span="2">
-                    <el-link type="primary" @click="handleDeleteParam(1,index)">删除</el-link>
-                  </el-col>
-                </el-row>
-                <el-row>
-                  <el-link type="primary" @click="handleAddParam(1)">+添加参数</el-link>
-                </el-row>
-              </el-form-item>
-            </el-col>
-            <el-col :span="24">
-              <el-form-item label="描述">
-                <el-input placeholder="请输入描述" type="textarea" v-model="formData.description"/>
-              </el-form-item>
-            </el-col>
-          </el-form>
+          <el-form-item label="自定义功能">
+            <el-radio-group v-model="formData.featureType">
+              <el-radio-button
+                :label="item.id"
+                v-for="(item,index) in featureTypes"
+                :key="index"
+              >{{item.value}}
+              </el-radio-button>
+            </el-radio-group>
+          </el-form-item>
         </el-col>
-      </el-row>
+        <el-col :span="24">
+          <el-form-item label="功能名称" prop="name">
+            <el-input placeholder="请输入功能名称" v-model="formData.name"/>
+          </el-form-item>
+        </el-col>
+        <el-col :span="24">
+          <el-form-item label="功能编码" prop="code">
+            <el-input placeholder="请输入功能编码" v-model="formData.code"/>
+          </el-form-item>
+        </el-col>
+        <el-col :span="24" v-if="formData.featureType==0">
+          <el-form-item label="数据类型">
+            <el-select v-model="formData.valueType" @change="handleValueTypeChange" style="width: 100%">
+              <el-option
+                v-for="(item,index) in valueTypes"
+                :key="index"
+                :label="item.value"
+                :value="item.code"
+              >{{item.value}}
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="24" v-if="formData.featureType==0 && formData.valueType==2">
+          <el-form-item label="取值范围">
+            <el-col :span="11">
+              <el-input placeholder="最小值" v-model="formData.min" type="number"></el-input>
+            </el-col>
+            <el-col class="line" :span="2">-</el-col>
+            <el-col :span="11">
+              <el-input placeholder="最大值" v-model="formData.max" type="number"></el-input>
+            </el-col>
+          </el-form-item>
+        </el-col>
+        <el-col :span="24">
+          <el-form-item label="步长" v-if="formData.featureType==0 && formData.valueType==2" prop="step">
+            <el-input placeholder="请输入步长" v-model="formData.step" type="number"/>
+          </el-form-item>
+        </el-col>
+        <el-col :span="24" v-if="formData.featureType==0 && formData.valueType==2">
+          <el-form-item label="数据单位" prop="unit">
+            <el-select v-model="formData.unit" style="width: 100%">
+              <el-option
+                v-for="(item,index) in unitTypes"
+                :key="index"
+                :value="item.value"
+              >{{item.value}}
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="24" v-if="formData.featureType==0 && formData.valueType>6">
+          <el-form-item label="属性项">
+            <el-col :span="24">
+              <el-row type="flex" justify="space-between">
+                <el-col :span="9">属性编码
+                  <el-tooltip placement="top-start" effect="light">
+                    <div slot="content">支持整型，取值范围：-2147483648 ~ 2147483647</div>
+                    <i class="el-icon-question"></i>
+                  </el-tooltip>
+                </el-col>
+                <el-col :span="2"></el-col>
+                <el-col :span="9">属性描述
+                  <el-tooltip placement="top" effect="light">
+                    <div slot="content">支持中文、英文大小写、数字下划线<br/>和短划线，必须以中文、英文或数字<br/>开头，不超过20个字符</div>
+                    <i class="el-icon-question"></i>
+                  </el-tooltip>
+                </el-col>
+                <el-col :span="4"></el-col>
+              </el-row>
+            </el-col>
+            <el-col :span="24">
+              <el-row class="attributes" type="flex" justify="space-between"
+                      v-for="(item,index) in formData.attributes"
+                      :key="index">
+                <el-col :span="9">
+                  <el-form-item class="attr-item" :key="item.key">
+                    <el-input placeholder="编号" v-model="item.code"/>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="2" class="line">~</el-col>
+                <el-col :span="9">
+                  <el-form-item :key="item.key">
+                    <el-input placeholder="描述" v-model="item.name"/>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="4" class="line">
+                  <el-link type="primary" @click="delItem(index)">删除</el-link>
+                </el-col>
+              </el-row>
+            </el-col>
+            <el-col :span="24">
+              <el-link type="primary" @click="addItem">+添加属性项</el-link>
+            </el-col>
+          </el-form-item>
+        </el-col>
+        <el-col :span="24" v-if="formData.featureType==0">
+          <el-form-item label="读写类型">
+            <el-radio-group v-model="formData.readwrite">
+              <el-radio :label="0">读写</el-radio>
+              <el-radio :label="1">只读</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-col>
+        <el-col :span="24" v-if="formData.featureType==1">
+          <el-form-item label="调用方式">
+            <el-radio-group v-model="formData.callType">
+              <el-radio :label="0">异步</el-radio>
+              <el-radio :label="1">同步</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-col>
+        <el-col :span="24" v-if="formData.featureType==1">
+          <el-form-item label="输入参数">
+            <el-row v-for="(param,index) in formData.inputParams" :key="index">
+              <el-col :span="20">
+                参数名称：{{param.name}}
+              </el-col>
+              <el-col :span="2">
+                <el-link type="primary" @click="handleUpdateParam(0,index,param)">编辑</el-link>
+              </el-col>
+              <el-col :span="2">
+                <el-link type="primary" @click="handleDeleteParam(0,index)">删除</el-link>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-link type="primary" @click="handleAddParam(0)">+添加参数</el-link>
+            </el-row>
+          </el-form-item>
+        </el-col>
+        <el-col :span="24" v-if="formData.featureType==2">
+          <el-form-item label="事件类型" prop="eventType">
+            <el-radio-group v-model="formData.eventType">
+              <el-radio :label="0">信息</el-radio>
+              <el-radio :label="1">告警</el-radio>
+              <el-radio :label="2">故障</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-col>
+        <el-col :span="24" v-if="formData.featureType==1 || formData.featureType==2">
+          <el-form-item label="输出参数">
+            <el-row v-for="(param,index) in formData.outputParams" :key="index">
+              <el-col :span="20">
+                参数名称：{{param.name}}
+              </el-col>
+              <el-col :span="2">
+                <el-link type="primary" @click="handleUpdateParam(1,index,param)">编辑</el-link>
+              </el-col>
+              <el-col :span="2">
+                <el-link type="primary" @click="handleDeleteParam(1,index)">删除</el-link>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-link type="primary" @click="handleAddParam(1)">+添加参数</el-link>
+            </el-row>
+          </el-form-item>
+        </el-col>
+        <el-col :span="24">
+          <el-form-item label="描述">
+            <el-input placeholder="请输入描述" type="textarea" v-model="formData.description"/>
+          </el-form-item>
+        </el-col>
+      </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible=false">取 消</el-button>
         <el-button type="primary" @click="handleSave">确 定</el-button>
@@ -378,10 +374,3 @@
     },
   };
 </script>
-
-<style>
-  .el-dialog {
-    width: 500px;
-    min-width: 500px;
-  }
-</style>

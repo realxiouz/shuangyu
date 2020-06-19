@@ -17,13 +17,13 @@
       <el-table-column label="描述" prop="description"/>
       <el-table-column label="创建时间" width="180" align="center">
         <template slot-scope="scope">
-          <span>{{formatDate(scope.row.createTime,"YYYY-MM-DD h:mm:ss")}}</span>
+          <span>{{formatDate(scope.row.createTime,"YYYY-MM-DD hh:mm:ss")}}</span>
         </template>
       </el-table-column>
       <el-table-column width="160" label="操作" align="center">
         <template slot-scope="scope">
           <el-button size="mini" @click="handleEdit(scope.row.featureId)">修改</el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(scope.row.featureId)">删除</el-button>
+          <el-button size="mini" type="danger" @click="handleDel(scope.row.featureId)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -118,7 +118,7 @@
         this.featureId = id;
         this.dialogVisible = true;
       },
-      handleDelete(id) {
+      handleDel(id) {
         this.$confirm('确定删除?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
