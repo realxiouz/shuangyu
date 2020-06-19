@@ -1,0 +1,61 @@
+import {saveOne, getPageList, getTotal, removeOne} from '@/api/thingsProject';
+
+const actions = {
+  saveOne({commit}, args) {
+    return new Promise((resolve, reject) => {
+      saveOne(args)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+
+  getPageList({commit}, args) {
+    return new Promise((resolve, reject) => {
+      const {pageFlag, pageSize, params} = args
+      getPageList(pageFlag, pageSize, params)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  removeOne({commit}, args) {
+    return new Promise((resolve, reject) => {
+      const {projectId} = args;
+      removeOne(projectId)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+
+  getTotal({commit}) {
+    return new Promise((resolve, reject) => {
+      getTotal()
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+}
+
+export default {
+  namespaced: true,
+  actions
+};

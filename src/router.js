@@ -812,6 +812,13 @@ export default new Router({
           meta: {title: '设备功能管理', icon: 'home'}
         },
         {
+          title: '项目管理',
+          path: '/things/project/list',
+          name: 'thingsProject',
+          component: () => import('@/views/thingsProject/List'),
+          meta: {title: '设备功能管理', icon: 'home'}
+        },
+        {
           title: '商品功能管理',
           path: '/feature/list',
           name: 'feature',
