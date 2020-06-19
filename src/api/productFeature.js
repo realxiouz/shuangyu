@@ -3,12 +3,19 @@ import request from '@/utils/request';
 
 
 // 添加一条数据
-export function addOne(data) {
+export function saveOne(data) {
     return request({
-        url: '/device/product/feature/add/one',
+        url: '/device/product/feature/save/one',
         method: 'post',
         data
     });
+}
+
+export function getOne(id) {
+  return request({
+    url: `/device/product/feature/${id}`,
+    method: 'get'
+  });
 }
 
 
@@ -31,7 +38,7 @@ export function getList(data) {
     });
 }
 // 删除
-export function delFeatureById(id) {
+export function removeOne(id) {
     return request({
         url: `/device/product/feature/remove/one/${id}`,
         method: 'delete'
@@ -39,7 +46,7 @@ export function delFeatureById(id) {
 }
 
 // 修改
-export function editFeatureById(data) {
+export function updateOne(data) {
     console.log(data)
     return request({
         url: `/device/product/feature/update/one/${data.featureId}`,

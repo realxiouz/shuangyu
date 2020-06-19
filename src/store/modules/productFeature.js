@@ -1,11 +1,11 @@
-import {  addOne, getList,getTotal,delFeatureById,editFeatureById } from '@/api/productFeature';
+import {saveOne, getOne, getList, getTotal, removeOne, updateOne} from '@/api/productFeature';
 
 const actions = {
-  addOne({ commit }, params) {
+  saveOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      addOne(params)
+      saveOne(params)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -13,11 +13,24 @@ const actions = {
         });
     });
   },
-  getList({ commit }, params) {
+  getOne({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {featureId} = params;
+      getOne(featureId)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getList({commit}, params) {
     return new Promise((resolve, reject) => {
       getList(params)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -25,11 +38,12 @@ const actions = {
         });
     });
   },
-  delFeatureById({ commit }, params) {
+  removeOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      delFeatureById(params)
+      const {featureId} = params;
+      removeOne(featureId)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -37,12 +51,12 @@ const actions = {
         });
     });
   },
- 
-  editFeatureById({ commit }, params) {
+
+  updateOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      editFeatureById(params)
+      updateOne(params)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -50,12 +64,12 @@ const actions = {
         });
     });
   },
-  
-  getTotal({ commit }, params) {
+
+  getTotal({commit}, params) {
     return new Promise((resolve, reject) => {
       getTotal(params)
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {

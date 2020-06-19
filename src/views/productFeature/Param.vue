@@ -165,7 +165,6 @@
     watch: {
       visible(val) {
         this.dialogVisible = val;
-        console.log(this.index);
         if (this.index > -1) {
           this.formData = this.paramData;
         } else {

@@ -7,31 +7,20 @@
     <el-table :data="tableData">
       <el-table-column label="功能类别" width="100">
         <template slot-scope="scope">
-          <span style="margin-left: 10px">{{ featureCate[scope.row.featureType].value}}</span>
+          <span v-if="scope.row.featureType==0">属性</span>
+          <span v-else-if="scope.row.featureType==1">服务</span>
+          <span v-else-if="scope.row.featureType==2">事件</span>
         </template>
       </el-table-column>
-
-      <el-table-column label="功能名称" width="100">
+      <el-table-column label="功能名称" width="300" prop="name"/>
+      <el-table-column label="功能编码" width="200" prop="code"/>
+      <el-table-column label="描述" prop="description"/>
+      <el-table-column label="创建时间" width="180" align="center">
         <template slot-scope="scope">
-          <span style="margin-left: 10px">{{scope.row.featureName}}</span>
+          <span>{{formatDate(scope.row.createTime,"YYYY-MM-DD h:mm:ss")}}</span>
         </template>
       </el-table-column>
-
-      <el-table-column label="标识符" width="100">
-        <template slot-scope="scope">
-          <span style="margin-left: 10px">{{scope.row.featureCode}}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="提交时间" width="180">
-        <template slot-scope="scope">
-              <span
-                style="margin-left: 10px"
-              >{{formatDate(scope.row.createTime,"YYYY-MM-DD h:mm:ss")}}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="操作">
+      <el-table-column width="160" label="操作" align="center">
         <template slot-scope="scope">
           <el-button size="mini" @click="handleEdit(scope.row.featureId)">修改</el-button>
           <el-button size="mini" type="danger" @click="handleDelete(scope.row.featureId)">删除</el-button>
@@ -39,15 +28,16 @@
       </el-table-column>
     </el-table>
     <el-pagination
-      @current-change="currentChange"
       background
       layout="total,prev,next"
       prev-text="上一页"
       next-text="下一页"
       :page-size="pageSize"
       :total="total"
+      @prev-click="handlePrev"
+      @next-click="handleNext"
     ></el-pagination>
-    <edit :visible.sync="dialogVisible"/>
+    <edit :visible.sync="dialogVisible" :feature-id="featureId" @refresh="handleRefresh"/>
   </div>
 </template>
 
@@ -59,20 +49,24 @@
     data() {
       return {
         dialogVisible: false,
-        pageFlag: 1,
+        pageFlag: 0,
         pageSize: 10,
         lastId: null,
         total: 0,
         tableData: [],
-        loading: true
+        loading: true,
+        featureId: ''
       };
     },
     methods: {
-      // 新增功能
-      handleAdd() {
-        this.dialogVisible = true;
+      formatDate(dateStr, format) {
+        if (null != dateStr) {
+          const date = new Date(dateStr);
+          return this.$moment(date).format(format);
+        } else {
+          return "";
+        }
       },
-      // 获取列表
       getList() {
         this.$store
           .dispatch("productFeature/getList", {
@@ -89,15 +83,38 @@
           this.total = result;
         });
       },
-      // 获取数据 （列表+条数）
       loadData() {
-        this.pageFlag = 0;
         this.getList();
         this.getTotal();
       },
-      handleSearch() {
+      handleSearch(params) {
+        this.pageFlag = 0;
+        this.lastId = null;
+        this.loadData();
+      },
+      handleRefresh() {
+        this.handleSearch();
+      },
+      handlePrev() {
+        this.pageFlag = -1;
+        if (this.tableData.length > 0) {
+          this.lastId = this.tableData[0].featureId;
+        }
+        this.loadData();
+      },
+      handleNext() {
+        this.pageFlag = 1;
+        if (this.tableData.length > 0) {
+          this.lastId = this.tableData[this.tableData.length - 1].featureId;
+        }
+        this.loadData();
+      },
+      handleAdd() {
+        this.featureId = '';
+        this.dialogVisible = true;
       },
       handleEdit(id) {
+        this.featureId = id;
         this.dialogVisible = true;
       },
       handleDelete(id) {
@@ -106,17 +123,11 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          console.log(id);
+          this.$store.dispatch("productFeature/removeOne", {featureId: id}).then(() => {
+            this.handleRefresh();
+            this.$message({type: "success", message: "删除成功"});
+          });
         });
-      },
-      // 时间格式
-      formatDate(dateStr, format) {
-        if (null != dateStr) {
-          const date = new Date(dateStr);
-          return this.$moment(date).format(format);
-        } else {
-          return "";
-        }
       }
     },
     components: {

@@ -3,7 +3,7 @@
     <el-dialog title="添加" :visible.sync="dialogVisible" @open="handleOpen" @close="handleClose">
       <el-row type="flex" justify="space-between">
         <el-col :span="24">
-          <el-form label-position="top" size="mini" :rules="formRules" :model="formData" ref="featureForm">
+          <el-form label-position="top" size="mini" :model="formData" ref="featureForm">
             <el-col :span="24">
               <el-form-item label="自定义功能">
                 <el-radio-group v-model="formData.featureType">
@@ -183,7 +183,7 @@
       </el-row>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible=false">取 消</el-button>
-        <el-button type="primary">确 定</el-button>
+        <el-button type="primary" @click="handleSave">确 定</el-button>
     </span>
     </el-dialog>
     <param-dialog :visible.sync="paramDialogVisible" :index="paramIndex" :param-type="paramType" :param-data="paramData"
@@ -240,8 +240,12 @@
     watch: {
       visible(val) {
         this.dialogVisible = val;
-        if (!this._.isEmpty(this.featureId)) {
-          this.loadData();
+        if (val) {
+          if (this._.isEmpty(this.featureId)) {
+            this.formData = this.defaultFormData();
+          } else {
+            this.loadData();
+          }
         }
       }
     },
@@ -305,6 +309,18 @@
           this.formData.outputParams.splice(index, 1);
         }
       },
+      handleSave() {
+        this.$store
+          .dispatch("productFeature/saveOne", this.formData)
+          .then(id => {
+            if (!this._.isEmpty(id)) {
+              this.formData.featureId = id;
+            }
+            this.dialogVisible = false;
+            this.$emit('refresh');
+            this.$message({type: "success", message: "保存成功"});
+          });
+      },
       defaultFormData() {
         return {
           featureId: "", //功能id
@@ -337,7 +353,12 @@
         };
       },
       loadData() {
-
+        console.log(this.featureId);
+        this.$store
+          .dispatch("productFeature/getOne", {featureId: this.featureId})
+          .then(result => {
+            this.formData = result;
+          });
       },
       addItem() {
         this.formData.attributes.push({code: "", name: ""});
