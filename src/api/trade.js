@@ -1,6 +1,6 @@
 import request from '@/utils/request';
 
-export function save(data) {
+export function saveOne(data) {
   return request({
     url: "/finance/trade/save/one",
     method: "post",
