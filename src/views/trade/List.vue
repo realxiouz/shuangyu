@@ -37,6 +37,13 @@
         <el-table-column prop="receiptAmount" label="实收金额" align="center"></el-table-column>
         <el-table-column prop="storeId" label="商户门店编号" align="center"></el-table-column>
         <el-table-column prop="terminalId" label="商户机具终端编号" align="center"></el-table-column>
+        <el-table-column label="操作" fixed="right" align="center" width="230">
+          <template slot-scope="scope">
+            <el-button type="success" size="mini" @click="handleAddChild(scope.row.tradeId)">添加</el-button>
+            <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="handleDelete(scope.row.tradeId)" type="danger" size="mini">删除</el-button>
+          </template>
+        </el-table-column>
       </el-table>
       <el-pagination
         @size-change="handleSizeChange"
@@ -63,6 +70,8 @@
           @onCancel="handleCancel"
           :edit-trade-id="editTradeId"
           :pid="pid"
+          :cur-node="curNode"
+          :update="update"
         ></trade-edit>
       </el-dialog>
     </div>
@@ -79,11 +88,14 @@
                 loading: true,
                 dialogVisible: false,
                 editTradeId:"",
+                update: false,
+                curNode: {},
                 searchParams: {},
                 tableData: [],
                 currentPage: 1,
                 pageSize: 10,
                 total: 0,
+
             };
         },
         methods: {
@@ -91,6 +103,8 @@
             this.tradeId = "";
             this.pid = "";
             this.dialogVisible = true;
+            this.curNode = {};
+            this.update = false;
           },
             loadData(params) {
                 this.$store
@@ -123,6 +137,41 @@
                         console.log(error);
                     });
             },
+          delete(tradeId) {
+            this.$store
+              .dispatch("trade/removeOne", {tradeId: tradeId})
+              .then(() => {
+                this.lastId = "blank";
+                if (1 === this.tableData.length) {
+                  this.handlePrevClick();
+                } else {
+                  this.loadData({});
+                }
+              })
+              .catch(error => {
+                console.log(error);
+              });
+          },
+          open(func, data, message) {
+            this.$confirm(message, "提示", {
+              confirmButtonText: "确定",
+              cancelButtonText: "取消",
+              type: "warning"
+            })
+              .then(() => {
+                func(data);
+                this.$message({
+                  type: "success",
+                  message: "删除成功!"
+                });
+              })
+              .catch(() => {
+                this.$message({
+                  type: "info",
+                  message: "已取消删除"
+                });
+              });
+          },
             /*初始化用工列表中的生日日期格式*/
             formatDate(dateStr, format) {
                 if (null != dateStr) {
@@ -135,7 +184,7 @@
           handleSave(formData) {
             this.dialogVisible = false;
             this.$store
-              .dispatch("/trade/save", formData)
+              .dispatch("trade/save", formData)
               .then(() => {
                 this.loadData({});
               })
@@ -163,6 +212,25 @@
                 this.searchParams.currentPage = this.currentPage;
                 this.loadData(this.searchParams);
             },
+          handleAddChild(tradeId) {
+            this.editAccountId = "";
+            this.dialogVisible = true;
+            this.pid = tradeId;
+          },
+          handleEdit(row) {
+            this.tradeId = row.tradeId;
+            this.pid = "";
+            this.dialogVisible = true;
+            this.curNode = row;
+            this.update = true;
+          },
+          handleDelete(tradeId) {
+            this.open(
+              this.delete,
+              tradeId,
+              "此操作将删除交易记录信息, 是否继续?"
+            );
+          }
         },
         created() {
             this.loadData(this.searchParams);

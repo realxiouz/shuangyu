@@ -1,40 +1,52 @@
 <template>
   <div>
-    <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
-      <el-form-item label="品牌编码：" prop="brandCode">
-        <el-input v-model="formData.brandCode" placeholder="请输入品牌编码.."></el-input>
-      </el-form-item>
-      <el-form-item label="品牌名称：" prop="brandName">
-        <el-input v-model="formData.brandName" placeholder="请输入品牌编码.."></el-input>
-      </el-form-item>
-      <el-form-item label="商品类目：" prop="categoryCode">
-        <el-cascader
-          v-model="formData.categoryCode"
-          style="width: 100%;"
-          :options="categoryList"
-          :props="{ label: 'categoryName', value: 'categoryCode' }"
-          @change="selectedCategory">
-        </el-cascader>
-      </el-form-item>
-      <el-form-item label="品牌故事：">
-        <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" v-model="formData.brandStory"
-                  placeholder="请输入品牌故事.."></el-input>
-      </el-form-item>
-      <el-form-item label="描述：">
-        <el-input v-model="formData.description" type="textarea" :autosize="{ minRows: 2, maxRows: 4}"
-                  placeholder="请输入描述.."></el-input>
-      </el-form-item>
-    </el-form>
-    <div style="text-align:right;">
-      <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
-      <el-button type="primary" size="mini" @click="handleConfirm">确 定</el-button>
-    </div>
+    <el-dialog :visible.sync="dialogVisible" @open="handleOpen" @close="handleClose">
+      <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
+        <el-form-item label="品牌编码：" prop="brandCode">
+          <el-input v-model="formData.brandCode" placeholder="请输入品牌编码.."></el-input>
+        </el-form-item>
+        <el-form-item label="品牌名称：" prop="brandName">
+          <el-input v-model="formData.brandName" placeholder="请输入品牌编码.."></el-input>
+        </el-form-item>
+        <el-form-item label="商品类目：" prop="categoryCode">
+          <el-cascader
+            v-model="formData.categoryCode"
+            style="width: 100%;"
+            :options="categoryList"
+            :props="{ label: 'categoryName', value: 'categoryCode' }"
+            @change="selectedCategory">
+          </el-cascader>
+        </el-form-item>
+        <el-form-item label="品牌故事：">
+          <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" v-model="formData.brandStory"
+                    placeholder="请输入品牌故事.."></el-input>
+        </el-form-item>
+        <el-form-item label="描述：">
+          <el-input v-model="formData.description" type="textarea" :autosize="{ minRows: 2, maxRows: 4}"
+                    placeholder="请输入描述.."></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible=false">取 消</el-button>
+        <el-button type="primary" @click="handleConfirm">确 定</el-button>
+       </span>
+
+    </el-dialog>
   </div>
 </template>
 
 <script>
     export default {
-        props: ["curNode", "update"],
+        props: {
+            visible: {
+                type: Boolean,
+                default: false
+            },
+            brandId: {
+                type: String,
+                default: ''
+            }
+        },
         data() {
             const brandCode = (rule, value, callback) => {
                 let reg = /^[0-9a-zA-Z]*$/g;
@@ -45,7 +57,8 @@
                 }
             };
             return {
-                formData: {},
+                formData: this.defaultFormData(),
+                dialogVisible: this.visible,
                 categoryList: [],
                 //用于记录和查找所选中的商品类别
                 tempCategoryList: [],
@@ -77,6 +90,16 @@
                     ]
                 }
             };
+        },
+        watch: {
+            visible(val) {
+                this.dialogVisible = val;
+                if (!this._.isEmpty(this.brandId)) {
+                    this.loadData();
+                }else {
+                    this.clearForm();
+                }
+            }
         },
         methods: {
             /*表单默认加载数据*/
@@ -114,8 +137,8 @@
             clearForm() {
                 this.formData = this.defaultFormData();
             },
-            /*对提交的数据进行类型格式*/
             handleConfirm() {
+                this.dialogVisible = false;
                 this.$emit("onSave", this.formData);
             },
             selectedCategory(selected) {
@@ -130,12 +153,19 @@
                     }
                 })
             },
-            initFormData() {
-                this.clearForm();
-                this.loadCategory();
-                if (this.update) {
-                    Object.assign(this.formData, this.curNode);
+            loadData() {
+                if (this.brandId) {
+                    this.handleGetOne(this.brandId);
                 }
+            },
+            handleGetOne(id) {
+                this.$store
+                    .dispatch("brand/getOne", {brandId: id})
+                    .then(data => {
+                        this.formData = data;
+                    }).catch(error => {
+                    console.log(error);
+                });
             },
             generateTreeData(data) {
                 // 循环遍历json数据
@@ -151,9 +181,21 @@
                 }
                 return data;
             },
+            handleOpen() {
+                this.$emit('update:visible', true);
+            },
+            handleClose() {
+                this.$emit('update:visible', false);
+            }
         },
         created() {
-            this.initFormData();
+            this.loadCategory();
         }
     };
 </script>
+<style>
+  .el-dialog {
+    width: 500px;
+    min-width: 500px;
+  }
+</style>

@@ -2,7 +2,7 @@ import request from '@/utils/request';
 
 export function save(data) {
   return request({
-    url: '/finance/account/save/one',
+    url: '/finance/fund/account/save/one',
     method: 'post',
     data
   });
@@ -10,7 +10,7 @@ export function save(data) {
 
 export function addOne(data) {
   return request({
-    url: '/finance/account/add/one',
+    url: '/finance/fund/account/add/one',
     method: 'post',
     data
   });
@@ -18,7 +18,7 @@ export function addOne(data) {
 
 export function updateOne(data) {
   return request({
-    url: '/finance/account/update/one',
+    url: '/finance/fund/account/update/one',
     method: 'post',
     data
   });
@@ -26,21 +26,21 @@ export function updateOne(data) {
 
 export function removeOne(accountId) {
   return request({
-    url: `/finance/account/remove/one/${accountId}`,
+    url: `/finance/fund/account/remove/one/${accountId}`,
     method: 'delete'
   });
 }
 
 export function getOne(accountId) {
   return request({
-    url: `/finance/account/one/${accountId}`,
+    url: `/finance/fund/account/one/${accountId}`,
     method: 'get'
   });
 }
 
 export function getList(filter) {
   return request({
-    url: `/finance/account/list`,
+    url: `/finance/fund/account/list`,
     method: 'get',
     params: filter
   });
@@ -48,7 +48,7 @@ export function getList(filter) {
 
 export function getTreeList(filter) {
   return request({
-    url: `/finance/account/tree/list`,
+    url: `/finance/fund/account/tree/list`,
     method: 'get',
     params: filter
   });
@@ -56,7 +56,7 @@ export function getTreeList(filter) {
 
 export function getTotal(filter) {
   return request({
-    url: '/finance/account/root/total',
+    url: '/finance/fund/account/get/total',
     method: 'get',
     params: filter
   });
@@ -64,7 +64,7 @@ export function getTotal(filter) {
 
 export function getRootPageList(pageFlag, pageSize, filter) {
   return request({
-    url: `/finance/account/get/root/list/page/${pageFlag}/${pageSize}`,
+    url: `/finance/fund/account/get/list/page/${pageFlag}/${pageSize}`,
     method: 'get',
     params: filter
   });
@@ -73,7 +73,7 @@ export function getRootPageList(pageFlag, pageSize, filter) {
 
 export function getAsyncTreeList(pid, filter) {
   return request({
-    url: `/finance/account/async/tree/list/${pid}`,
+    url: `/finance/fund/account/async/tree/list/${pid}`,
     method: `get`,
     params: filter
   });

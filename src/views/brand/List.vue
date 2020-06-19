@@ -1,60 +1,48 @@
 <template>
-  <div class="bigBox">
-    <div class="searchBox">
-      <brand-search @onSearch="loadData"></brand-search>
-    </div>
-    <div class="contentBox">
-      <el-row style="margin-bottom:15px;margin-left:22px;">
-        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
-      </el-row>
-      <el-table size="mini" v-loading="loading" :data="tableData" style="width: 100%;margin-bottom:15px;">
-        <el-table-column prop="brandCode" label="品牌编码" align="center"></el-table-column>
-        <el-table-column prop="brandName" label="品牌名称" align="center"></el-table-column>
-        <el-table-column prop="categoryName" label="商品类目" align="center"></el-table-column>
-        <el-table-column label="品牌故事" align="center">
-          <template slot-scope="prop">
-            <span style="text-align: left">{{prop.row.brandStory}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="描述" align="center">
-          <template slot-scope="prop">
-            <span style="text-align: left">{{prop.row.description}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作" align="center">
-          <template slot-scope="scope">
-            <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
-            <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-pagination
-        @size-change="handleSizeChange"
-        @prev-click="handlePrevClick"
-        @next-click="handleNextClick"
-        background
-        layout="total,sizes,prev,next"
-        prev-text="上一页"
-        next-text="下一页"
-        :page-size="pageSize"
-        :total="total"
-      ></el-pagination>
-
-      <el-dialog title="品牌信息" center :visible.sync="dialogVisible" :close-on-click-modal="false" width="24%">
-        <brand-edit
-          v-if="dialogVisible"
-          :cur-node="curNode"
-          :update="update"
-          @onSave="handleSave"
-          @onCancel="handleCancel"></brand-edit>
-      </el-dialog>
-    </div>
+  <div class="contentBox">
+    <search @onSearch="loadData"></search>
+    <el-row type="flex" justify="space-between" style="margin-bottom:20px;" align="bottom">
+      <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+    </el-row>
+    <el-table size="mini" v-loading="loading" :data="tableData" style="width: 100%;margin-bottom:15px;">
+      <el-table-column prop="brandCode" label="品牌编码" align="center"></el-table-column>
+      <el-table-column prop="brandName" label="品牌名称" align="center"></el-table-column>
+      <el-table-column prop="categoryName" label="商品类目" align="center"></el-table-column>
+      <el-table-column label="品牌故事" align="center">
+        <template slot-scope="prop">
+          <span style="text-align: left">{{prop.row.brandStory}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="描述" align="center">
+        <template slot-scope="prop">
+          <span style="text-align: left">{{prop.row.description}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" align="center">
+        <template slot-scope="scope">
+          <el-button @click="handleEdit(scope.row.brandId)" type="primary" size="mini">编辑</el-button>
+          <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-pagination
+      @size-change="handleSizeChange"
+      @prev-click="handlePrevClick"
+      @next-click="handleNextClick"
+      background
+      layout="total,sizes,prev,next"
+      prev-text="上一页"
+      next-text="下一页"
+      :page-size="pageSize"
+      :total="total"
+    ></el-pagination>
+    <edit :visible.sync="dialogVisible" :brand-id="brandId" @onSave="handleSave"/>
   </div>
 </template>
 
 <script>
-    import brandSearch from "./Search.vue";
-    import brandEdit from "./Edit.vue";
+    import search from "./Search.vue";
+    import edit from "./Edit.vue";
 
     export default {
         data() {
@@ -65,9 +53,8 @@
                 total: 0,
                 loading: true,
                 dialogVisible: false,
-                update: false,
                 searchForm: {},
-                curNode: {},
+                brandId: "",
                 tableData: []
             };
         },
@@ -100,6 +87,27 @@
                         console.log(error);
                     });
             },
+            handleSave(formData) {
+                if (this.brandId) {
+                    this.$store
+                        .dispatch("brand/updateOne", {brandId: formData.brandId, data: formData})
+                        .then(() => {
+                            this.loadData({});
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                } else {
+                    this.$store
+                        .dispatch("brand/addOne", formData)
+                        .then(() => {
+                            this.loadData({});
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                }
+            },
             loadData(searchForm = {}) {
                 if (this.lastId) {
                     searchForm.lastId = this.lastId;
@@ -122,39 +130,15 @@
                     });
             },
             handleAdd() {
+                this.brandId = "";
                 this.dialogVisible = true;
-                this.curNode = {};
-                this.update = false;
-            },
-            handleSave(formData) {
-                this.dialogVisible = false;
-                if (this.update) {
-                    this.$store
-                        .dispatch("brand/updateOne", {brandId: formData.brandId, data: formData})
-                        .then(() => {
-                            this.loadData({});
-                        })
-                        .catch(error => {
-                            console.log(error);
-                        });
-                } else {
-                    this.$store
-                        .dispatch("brand/addOne", formData)
-                        .then(() => {
-                            this.loadData({});
-                        })
-                        .catch(error => {
-                            console.log(error);
-                        });
-                }
             },
             handleCancel() {
                 this.dialogVisible = false;
             },
-            handleEdit(row) {
+            handleEdit(brandId) {
                 this.dialogVisible = true;
-                this.curNode = row;
-                this.update = true;
+                this.brandId = brandId;
             },
             handleDelete(row) {
                 this.open(
@@ -199,12 +183,12 @@
                     });
             },
         },
-        mounted() {
-            this.loadData({});
+        created() {
+            this.loadData();
         },
         components: {
-            brandSearch,
-            brandEdit
+            search,
+            edit
         }
     };
 </script>

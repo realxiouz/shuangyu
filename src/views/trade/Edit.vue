@@ -81,7 +81,7 @@
 
 <script>
 export default {
-  props: ["tradeId", "pid"],
+  props: ["tradeId", "pid","curNode", "update"],
   data() {
     return {
       formData: {},
@@ -175,15 +175,9 @@ export default {
       switch (category) {
          case 0:
           this.bankAccountShowAble = false;
-          this.expireShowAble = false;
-          this.pointRateShowAble = false;
-          this.amountShowAble = false;
           break;
         default:
           this.bankAccountShowAble = false;
-          this.expireShowAble = false;
-          this.pointRateShowAble = false;
-          this.amountShowAble = false;
           break;
       }
     },
@@ -223,19 +217,15 @@ export default {
       }
       return data;
     },
-    handleSubject(subject) {
-      if (subject) {
-        const code = subject[subject.length - 1];
-        this.formData.subjectId = code;
-        this.formData.subjectCode = code;
-      }
-    },
     initFormData() {
       this.clearForm();
+      if (this.update) {
+        Object.assign(this.formData, this.curNode);
+      }
     }
   },
   created() {
-    this.clearForm();
+    this.initFormData();
     if (this.tradeId) {
       this.handleGetOne(this.tradeId);
     }
