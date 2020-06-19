@@ -21,7 +21,7 @@ export function getTotal(params) {
 // Eterm导单
 export function exportOrder(data) {
   return request({
-    url: '/eterm/order/export',
+    url: '/eterm/export/order',
     method: 'post',
     data
   });

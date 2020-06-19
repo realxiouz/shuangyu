@@ -74,6 +74,7 @@
         @click="handleClear"
       >清空</el-button>
       <!-- <el-button type="primary" size="mini" @click="handleExport">导单</el-button> -->
+      <el-button  icon="el-icon-download" type="primary" size="mini" @click="$emit('onExport', formData)">导单</el-button>
       <el-button type="text" size="mini" @click="handleMore">
         更多
         <i :class="switchIcon"></i>
