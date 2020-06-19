@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page-form">
     <el-dialog title="添加" :visible.sync="dialogVisible" @open="handleOpen" @close="handleClose">
       <el-row type="flex" justify="space-between">
         <el-col :span="24">

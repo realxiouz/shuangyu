@@ -1,10 +1,10 @@
 <template>
-  <div class="contentBox">
-    <search ref="search" @onSearch="handleSearch"/>
-    <el-row type="flex" justify="space-between" style="margin-bottom:20px;" align="bottom">
+  <div class="page">
+    <search class="page-search" ref="search" @onSearch="handleSearch"/>
+    <el-row class="page-tools" type="flex" justify="space-between">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加功能</el-button>
     </el-row>
-    <el-table :data="tableData">
+    <el-table class="page-table" :data="tableData">
       <el-table-column label="功能类别" width="100">
         <template slot-scope="scope">
           <span v-if="scope.row.featureType==0">属性</span>
@@ -28,6 +28,7 @@
       </el-table-column>
     </el-table>
     <el-pagination
+      class="page-footer"
       background
       layout="total,prev,next"
       prev-text="上一页"
