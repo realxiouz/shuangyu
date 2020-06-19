@@ -1,7 +1,7 @@
 import {
   getOne,
   removeOne,
-  save,
+  saveOne,
   getList,
   getPageList,
   getTotal
@@ -29,8 +29,7 @@ const mutations = {
 const actions = {
   getTotal({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {filter} = params;
-      getTotal(filter)
+      getTotal(params)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -40,10 +39,10 @@ const actions = {
         });
     });
   },
+
   getList({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {filter} = params;
-      getList(filter)
+      getList(params)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -66,9 +65,9 @@ const actions = {
         });
     });
   },
-  save({commit}, params) {
+  saveOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      save(params)
+      saveOne(params)
         .then(response => {
           const {data} = response;
           resolve(data);
