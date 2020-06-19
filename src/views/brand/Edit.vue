@@ -57,7 +57,7 @@
                 }
             };
             return {
-                formData: {},
+                formData: this.defaultFormData(),
                 dialogVisible: this.visible,
                 categoryList: [],
                 //用于记录和查找所选中的商品类别
@@ -96,6 +96,8 @@
                 this.dialogVisible = val;
                 if (!this._.isEmpty(this.brandId)) {
                     this.loadData();
+                }else {
+                    this.clearForm();
                 }
             }
         },
@@ -152,23 +154,18 @@
                 })
             },
             loadData() {
-                this.clearForm();
                 if (this.brandId) {
                     this.handleGetOne(this.brandId);
                 }
             },
             handleGetOne(id) {
-                if (id) {
-                    this.$store
-                        .dispatch("brand/getOne", {brandId: id})
-                        .then(data => {
-                            this.formData = data;
-                        }).catch(error => {
-                        console.log(error);
-                    });
-                } else {
-                    this.formData = this.defaultFormData();
-                }
+                this.$store
+                    .dispatch("brand/getOne", {brandId: id})
+                    .then(data => {
+                        this.formData = data;
+                    }).catch(error => {
+                    console.log(error);
+                });
             },
             generateTreeData(data) {
                 // 循环遍历json数据

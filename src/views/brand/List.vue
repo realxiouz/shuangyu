@@ -130,6 +130,7 @@
                     });
             },
             handleAdd() {
+                this.brandId = "";
                 this.dialogVisible = true;
             },
             handleCancel() {
