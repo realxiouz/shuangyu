@@ -2,7 +2,7 @@ import request from '@/utils/request';
 
 export function addOne(data) {
   return request({
-    url: '/open/account/add/one',
+    url: '/third/open/account/add/one',
     method: 'post',
     data
   });
@@ -10,7 +10,7 @@ export function addOne(data) {
 
 export function addMany(data) {
   return request({
-    url: '/open/account/add/many',
+    url: '/third/open/account/add/many',
     method: 'post',
     data
   });
@@ -18,7 +18,7 @@ export function addMany(data) {
 
 export function updateOne(data) {
   return request({
-    url: '/open/account/update/one',
+    url: '/third/open/account/update/one',
     method: 'post',
     data
   });
@@ -26,21 +26,21 @@ export function updateOne(data) {
 
 export function removeOne(openAccountId) {
   return request({
-    url: `/open/account/remove/one/${openAccountId}`,
+    url: `/third/open/account/remove/one/${openAccountId}`,
     method: 'delete'
   });
 }
 
 export function getOne(openAccountId) {
   return request({
-    url: `/open/account/one/${openAccountId}`,
+    url: `/third/open/account/one/${openAccountId}`,
     method: 'get'
   });
 }
 
 export function getList(filter) {
   return request({
-    url: `/open/account/list`,
+    url: `/third/open/account/list`,
     method: 'get',
     params: filter
   });
@@ -48,7 +48,7 @@ export function getList(filter) {
 
 export function getTotal(filter) {
   return request({
-    url: '/open/account/total',
+    url: '/third/open/account/total',
     method: 'get',
     params: filter
   });
@@ -56,7 +56,7 @@ export function getTotal(filter) {
 
 export function getPageList(pageFlag, pageSize, lastId, filter) {
   return request({
-    url: `/open/account/page/list/${pageFlag}/${pageSize}/${lastId}`,
+    url: `/third/open/account/page/list/${pageFlag}/${pageSize}/${lastId}`,
     method: 'get',
     params: filter
   });

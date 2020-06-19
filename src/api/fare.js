@@ -2,7 +2,7 @@ import request from '@/utils/request';
 
 export function addOne(data) {
   return request({
-    url: '/fare/add/one',
+    url: '/flight/fare/add/one',
     method: 'post',
     data
   });
@@ -10,7 +10,7 @@ export function addOne(data) {
 
 export function updateOne(data) {
   return request({
-    url: '/fare/update/one',
+    url: '/flight/fare/update/one',
     method: 'post',
     data
   });
@@ -18,21 +18,21 @@ export function updateOne(data) {
 
 export function removeOne(fareId) {
   return request({
-    url: `/fare/remove/one/${fareId}`,
+    url: `/flight/fare/remove/one/${fareId}`,
     method: 'delete'
   });
 }
 
 export function getOne(fareId) {
   return request({
-    url: `/fare/one/${fareId}`,
+    url: `/flight/fare/one/${fareId}`,
     method: 'get'
   });
 }
 
 export function getList(filter) {
   return request({
-    url: `/fare/list`,
+    url: `/flight/fare/list`,
     method: 'get',
     params: filter
   });
@@ -40,7 +40,7 @@ export function getList(filter) {
 
 export function getTotal(filter) {
   return request({
-    url: '/fare/total',
+    url: '/flight/fare/total',
     method: 'get',
     params: filter
   });
@@ -48,7 +48,7 @@ export function getTotal(filter) {
 
 export function getPageList(pageFlag, pageSize, lastId, filter) {
   return request({
-    url: `/fare/page/list/${pageFlag}/${pageSize}/${lastId}`,
+    url: `/flight/fare/page/list/${pageFlag}/${pageSize}/${lastId}`,
     method: 'get',
     params: filter
   });
