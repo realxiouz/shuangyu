@@ -26,7 +26,7 @@ export function removeOne(merchantId) {
 
 export function getOne(merchantId) {
   return request({
-    url: `/firm/merchant/one/${merchantId}`,
+    url: `/firm/merchant/get/one/${merchantId}`,
     method: `get`
   });
 }
