@@ -3,7 +3,7 @@ import request from "@/utils/request";
 
 export function save(data) {
   return request({
-    url: "/dept/save",
+    url: "/firm/dept/save",
     method: "post",
     data
   });
@@ -11,7 +11,7 @@ export function save(data) {
 
 export function addOne(data) {
   return request({
-    url: `/dept/add/one`,
+    url: `/firm/dept/add/one`,
     method: `post`,
     data
   });
@@ -19,7 +19,7 @@ export function addOne(data) {
 
 export function updateOne(id, data) {
   return request({
-    url: `/dept/update/one/${id}`,
+    url: `/firm/dept/update/one/${id}`,
     method: 'put',
     data
   });
@@ -27,7 +27,7 @@ export function updateOne(id, data) {
 
 export function removeOne(id) {
   return request({
-    url: `/dept/remove/one/${id}`,
+    url: `/firm/dept/remove/one/${id}`,
     method: "delete"
   });
 }
@@ -35,7 +35,7 @@ export function removeOne(id) {
 
 export function getRootPageList(pageFlag, pageSize, filter) {
   return request({
-    url: `/dept/get/root/list/page/${pageFlag}/${pageSize}`,
+    url: `/firm/dept/get/root/list/page/${pageFlag}/${pageSize}`,
     method: 'get',
     params: filter
   });
@@ -43,7 +43,7 @@ export function getRootPageList(pageFlag, pageSize, filter) {
 
 export function getPageList(pageFlag, pageSize, filter) {
   return request({
-    url: `/dept/page/list/${pageFlag}/${pageSize}`,
+    url: `/firm/dept/page/list/${pageFlag}/${pageSize}`,
     method: 'get',
     params: filter
   });
@@ -51,7 +51,7 @@ export function getPageList(pageFlag, pageSize, filter) {
 
 export function getAsyncTreeList(pid, filter) {
   return request({
-    url: `/dept/get/async/tree/list/${pid}`,
+    url: `/firm/dept/get/async/tree/list/${pid}`,
     method: `get`,
     params: filter
   });
@@ -59,7 +59,7 @@ export function getAsyncTreeList(pid, filter) {
 
 export function getTotal(params) {
   return request({
-    url: `/dept/get/total`,
+    url: `/firm/dept/get/total`,
     method: "get",
     params: params
   });
@@ -67,7 +67,7 @@ export function getTotal(params) {
 
 export function getRootTotal(params) {
   return request({
-    url: `/dept/get/root/total`,
+    url: `/firm/dept/get/root/total`,
     method: "get",
     params: params
   });
@@ -75,7 +75,7 @@ export function getRootTotal(params) {
 
 export function getList(params) {
   return request({
-    url: `/dept/list`,
+    url: `/firm/dept/list`,
     method: "get",
     params: params
   });
@@ -83,7 +83,7 @@ export function getList(params) {
 
 export function getTreeList(params) {
   return request({
-    url: `/dept/tree/list`,
+    url: `/firm/dept/tree/list`,
     method: "get",
     params: params
   });
@@ -91,7 +91,7 @@ export function getTreeList(params) {
 
 export function getOne(id) {
   return request({
-    url: `/dept/one/${id}`,
+    url: `/firm/dept/one/${id}`,
     method: 'get'
   });
 }
