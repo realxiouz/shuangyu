@@ -19,7 +19,7 @@ export function addMany(data) {
 export function updateOne(id, data) {
   return request({
     url: `/firm/staff/update/one/${id}`,
-    method: "post",
+    method: "put",
     data
   });
 }
