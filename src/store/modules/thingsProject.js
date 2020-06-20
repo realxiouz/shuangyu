@@ -1,10 +1,10 @@
-import {getOne, saveOne, getPageList, getTotal, removeOne} from '@/api/device';
+import {getOne, saveOne, getList, getPageList, getFirmDataList, getTotal, removeOne} from '@/api/thingsProject';
 
 const actions = {
   getOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {deviceId} = params;
-      getOne(deviceId)
+      const {projectId} = params;
+      getOne(projectId)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -26,7 +26,32 @@ const actions = {
         });
     });
   },
-
+  getList({commit}, args) {
+    return new Promise((resolve, reject) => {
+      const {params} = args
+      getList(params)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getFirmDataList({commit}, args) {
+    return new Promise((resolve, reject) => {
+      const {params} = args
+      getFirmDataList(params)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
   getPageList({commit}, args) {
     return new Promise((resolve, reject) => {
       const {pageFlag, pageSize, params} = args
@@ -42,8 +67,8 @@ const actions = {
   },
   removeOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {deviceId} = args;
-      removeOne(deviceId)
+      const {projectId} = args;
+      removeOne(projectId)
         .then(response => {
           const {data} = response;
           resolve(data);

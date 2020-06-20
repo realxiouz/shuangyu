@@ -1,64 +1,42 @@
 import request from '@/utils/request';
 
 // 添加一条数据
-export function addOne(data) {
+export function saveOne(data) {
   return request({
-    url: 'device/add/one',
+    url: '/device/save/one',
     method: 'post',
     data
   });
 }
 
-// 添加一条数据
-export function addMany(data) {
+export function getOne(id) {
   return request({
-    url: 'device/add/many',
-    method: 'post',
-    data
+    url: `/device/one/${id}`,
+    method: 'get'
   });
 }
 
 // 获取总条数
 export function getTotal() {
   return request({
-    url: "device/total",
+    url: "/device/total",
     method: 'get',
   })
 }
 
-// 获取列表
-export function getList(data) {
-  const { pageFlag, pageSize, lastId } = data
-  const resetParam = lastId ? `?lastId=${lastId}` : ""
+export function getPageList(pageFlag, pageSize, params) {
   return request({
-    url: `device/page/list/${pageFlag}/${pageSize}${resetParam}`,
-    method: 'get'
+    url: `/device/page/list/${pageFlag}/${pageSize}`,
+    method: 'get',
+    params
   });
 }
-// 删除
-export function deleteById(id) {
+
+
+export function removeOne(id) {
   return request({
-    url: `device/remove/one/${id}`,
+    url: `/device/remove/one/${id}`,
     method: 'delete'
-  });
-}
-// 删除ids
-// export function deleteByIds(params) {
-//   return axios.get(`device/remove/many`, {
-//     params: {
-//       ids: params.ids
-//     },
-//     paramsSerializer: params => {
-//       return qs.stringify(params, { indices: false })
-//     }
-//   })
-// }
-// 修改
-export function editById(data) {
-  return request({
-    url: `device/update/one/${data.deviceId}`,
-    method: 'post',
-    data
   });
 }
 

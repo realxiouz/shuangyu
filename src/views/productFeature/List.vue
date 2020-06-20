@@ -1,10 +1,10 @@
 <template>
-  <div class="contentBox">
-    <search ref="search" @onSearch="handleSearch"/>
-    <el-row type="flex" justify="space-between" style="margin-bottom:20px;" align="bottom">
+  <div class="page">
+    <search class="page-search" ref="search" @onSearch="handleSearch"/>
+    <el-row class="page-tools" type="flex" justify="space-between">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加功能</el-button>
     </el-row>
-    <el-table :data="tableData">
+    <el-table class="page-table" :data="tableData">
       <el-table-column label="功能类别" width="100">
         <template slot-scope="scope">
           <span v-if="scope.row.featureType==0">属性</span>
@@ -17,17 +17,18 @@
       <el-table-column label="描述" prop="description"/>
       <el-table-column label="创建时间" width="180" align="center">
         <template slot-scope="scope">
-          <span>{{formatDate(scope.row.createTime,"YYYY-MM-DD h:mm:ss")}}</span>
+          <span>{{formatDate(scope.row.createTime,"YYYY-MM-DD hh:mm:ss")}}</span>
         </template>
       </el-table-column>
       <el-table-column width="160" label="操作" align="center">
         <template slot-scope="scope">
           <el-button size="mini" @click="handleEdit(scope.row.featureId)">修改</el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(scope.row.featureId)">删除</el-button>
+          <el-button size="mini" type="danger" @click="handleDel(scope.row.featureId)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
     <el-pagination
+      class="page-footer"
       background
       layout="total,prev,next"
       prev-text="上一页"
@@ -117,7 +118,7 @@
         this.featureId = id;
         this.dialogVisible = true;
       },
-      handleDelete(id) {
+      handleDel(id) {
         this.$confirm('确定删除?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',

@@ -671,7 +671,13 @@ export default new Router({
           component: () => import('@/views/otherOrderConfig/bspOrderConfig/List'),
           meta: {title: 'BSP 订单管理', icon: 'home'}
         },
-
+        {
+          title: 'BSP订单管理导单',
+          path: '/bsp/order/export',
+          name: 'bspOrderExport',
+          component: () => import('@/views/otherOrderConfig/bspOrderConfig/Export'),
+          meta: {title: 'BSP 导单', icon: 'home'}
+        }
       ]
     },
     {
@@ -803,6 +809,13 @@ export default new Router({
           path: '/device/list',
           name: 'device',
           component: () => import('@/views/device/List'),
+          meta: {title: '设备功能管理', icon: 'home'}
+        },
+        {
+          title: '项目管理',
+          path: '/things/project/list',
+          name: 'thingsProject',
+          component: () => import('@/views/thingsProject/List'),
           meta: {title: '设备功能管理', icon: 'home'}
         },
         {

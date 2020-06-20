@@ -1,7 +1,7 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <bsp-order-config-search @onSearch="handleSearch" />
+      <bsp-order-config-search @onSearch="handleSearch" @onExport="handleExport"/>
     </div>
     <div class="contentBox">
       <el-row style="margin-bottom:15px;margin-left:23px">
@@ -19,8 +19,8 @@
         <el-table-column type="index" align="center"></el-table-column>
         <el-table-column prop="orderNo" label="订单号" width="240" align="center"></el-table-column>
         <el-table-column
-          prop="orderType"
-          :formatter="formatOrderType"
+          prop="status"
+          :formatter="formatStatus"
           width="90"
           label="订单状态"
           align="center"
@@ -35,9 +35,10 @@
         ></el-table-column>
         <el-table-column prop="ticketNo" width="120" label="票号" align="center"></el-table-column>
 
-        <el-table-column label="起飞-到达" width="110" align="center">
+        <el-table-column  label="起飞-到达" width="110" align="center">
           <template slot-scope="scope">
             <span v-html="formatFlight(scope.row)"></span>
+            <!--<span>{{ formatFlight(scope.row)}}</span>-->
           </template>
         </el-table-column>
         <el-table-column prop="constructionFee" label="机建费" width="80" align="center">
@@ -93,7 +94,7 @@
 import bspOrderConfigSearch from "./Search";
 import {
   formatCategory,
-  formatOrderType,
+  formatStatus,
   formatVoyageType
 } from "@/utils/status.js";
 import {
@@ -120,7 +121,7 @@ export default {
   },
   methods: {
     formatCategory,
-    formatOrderType,
+    formatStatus,
     formatVoyageType,
     formatTicketNo,
     formatAmount,
@@ -206,8 +207,34 @@ export default {
         });
       }
     },
+    handleExport(params) {
+      if (!params) {
+        params = {};
+        this.searchParams = params;
+        this.loadData(this.searchParams);
+      } else {
+        const newParams = {};
+        for (let key in params) {
+          if (params[key] && _.isArray(params[key])) {
+            let start = "start" + key.charAt(0).toUpperCase() + key.slice(1);
+            let end = "end" + key.charAt(0).toUpperCase() + key.slice(1);
+            newParams[start] = params[key][0];
+            newParams[end] = params[key][1];
+          } else if (params[key]) {
+            newParams[key] = params[key];
+          }
+        }
+        this.searchParams = newParams;
+        this.$store.dispatch("bspOrderConfig/exportOrder", {filters: this.searchParams})
+          .then(data => {
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }
+    },
     formatDate(dateStr, format) {
-      if (dateStr > 0) {
+      if (dateStr != null) {
         let date = new Date(dateStr);
         return this.$moment(date).format(format);
       } else {
