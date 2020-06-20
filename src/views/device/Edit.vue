@@ -42,21 +42,6 @@
           <el-divider></el-divider>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="企业/单位域名" prop="domain">
-            <el-input v-model="formData.domain" placeholder="请输入企业/单位域名"/>
-          </el-form-item>
-        </el-col>
-        <el-col :span="24">
-          <el-form-item label="企业/单位名称" prop="firmName">
-            <el-input v-model="formData.firmName" placeholder="请输入企业/单位名称"/>
-          </el-form-item>
-        </el-col>
-        <el-col :span="24">
-          <el-form-item label="企业/单位id" prop="firmId">
-            <el-input v-model="formData.firmId" placeholder="请输入企业/单位id"/>
-          </el-form-item>
-        </el-col>
-        <el-col :span="24">
           <el-divider></el-divider>
         </el-col>
         <el-col :span="24">
@@ -106,12 +91,15 @@
         </el-col>
         <el-col :span="24">
           <el-form-item label="项目id" prop="projectId">
-            <el-input v-model="formData.projectId" placeholder="请输入项目id"/>
-          </el-form-item>
-        </el-col>
-        <el-col :span="24">
-          <el-form-item label="项目名称" prop="projectName">
-            <el-input v-model="formData.projectName" placeholder="请输入项目名称"/>
+            <el-select v-model="formData.projectId" @change="handleThingsProjectChange" placeholder="请选择项目"
+                       style="width: 100%;">
+              <el-option
+                v-for="item in thingsProjectData"
+                :key="item.projectId"
+                :label="item.projectName"
+                :value="item.projectId">
+              </el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="24">
@@ -151,7 +139,8 @@
     data() {
       return {
         dialogVisible: false,
-        formData: this.defaultFormData()
+        formData: this.defaultFormData(),
+        thingsProjectData: []
       };
     },
     watch: {
@@ -163,6 +152,7 @@
           } else {
             this.loadData();
           }
+          this.loadThingsProjectData();
         }
       }
     },
@@ -184,6 +174,12 @@
             this.$emit('refresh');
             this.$message({type: "success", message: "保存成功"});
           });
+      },
+      handleThingsProjectChange(val) {
+        let item = this.thingsProjectData.find((i) => {
+          return i.projectId === val
+        });
+        this.formData.projectName = item.projectName;
       },
       defaultFormData() {
         return {
@@ -212,11 +208,17 @@
         };
       },
       loadData() {
-        console.log(this.deviceId);
         this.$store
           .dispatch("device/getOne", {deviceId: this.deviceId})
-          .then(result => {
-            this.formData = result;
+          .then(data => {
+            this.formData = data;
+          });
+      },
+      loadThingsProjectData() {
+        this.$store
+          .dispatch("thingsProject/getFirmDataList", {params: {}})
+          .then(data => {
+            this.thingsProjectData = data;
           });
       }
     }

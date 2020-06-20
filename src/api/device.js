@@ -9,6 +9,13 @@ export function saveOne(data) {
   });
 }
 
+export function getOne(id) {
+  return request({
+    url: `/device/one/${id}`,
+    method: 'get'
+  });
+}
+
 // 获取总条数
 export function getTotal() {
   return request({
@@ -17,7 +24,6 @@ export function getTotal() {
   })
 }
 
-// 获取列表
 export function getPageList(pageFlag, pageSize, params) {
   return request({
     url: `/device/page/list/${pageFlag}/${pageSize}`,

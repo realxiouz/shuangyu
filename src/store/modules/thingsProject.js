@@ -1,6 +1,19 @@
-import {saveOne, getPageList, getTotal, removeOne} from '@/api/thingsProject';
+import {getOne, saveOne, getList, getPageList, getFirmDataList, getTotal, removeOne} from '@/api/thingsProject';
 
 const actions = {
+  getOne({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {projectId} = params;
+      getOne(projectId)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
   saveOne({commit}, args) {
     return new Promise((resolve, reject) => {
       saveOne(args)
@@ -13,7 +26,32 @@ const actions = {
         });
     });
   },
-
+  getList({commit}, args) {
+    return new Promise((resolve, reject) => {
+      const {params} = args
+      getList(params)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getFirmDataList({commit}, args) {
+    return new Promise((resolve, reject) => {
+      const {params} = args
+      getFirmDataList(params)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
   getPageList({commit}, args) {
     return new Promise((resolve, reject) => {
       const {pageFlag, pageSize, params} = args
