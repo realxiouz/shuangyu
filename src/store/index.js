@@ -58,6 +58,7 @@ import pnrjyOrderConfig from "./modules/otherOrderConfig/pnrjyOrderConfig";
 import woniuOrderConfig from "./modules/otherOrderConfig/woniuOrderConfig";
 import productFeature from "./modules/productFeature";
 import device from "./modules/device";
+import deviceData from "./modules/deviceData";
 import thingsProject from "./modules/thingsProject";
 import etermConfig from "./modules/etermConfig";
 import owp from "./modules/owp";
@@ -132,6 +133,7 @@ export default new Vuex.Store({
     woniuOrderConfig,
     productFeature,
     device,
+    deviceData,
     thingsProject,
     etermConfig,
     owp,
