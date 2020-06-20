@@ -9,12 +9,36 @@ export function saveOne(data) {
   });
 }
 
+export function getOne(id) {
+  return request({
+    url: `/device/things/project/one/${id}`,
+    method: 'get'
+  });
+}
+
 // 获取总条数
 export function getTotal() {
   return request({
     url: "/device/things/project/total",
     method: 'get',
   })
+}
+
+// 获取列表
+export function getList(params) {
+  return request({
+    url: `/device/things/project/list`,
+    method: 'get',
+    params
+  });
+}
+
+export function getFirmDataList(params) {
+  return request({
+    url: `/device/things/project/firm/data/list`,
+    method: 'get',
+    params
+  });
 }
 
 // 获取列表

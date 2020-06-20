@@ -19,7 +19,7 @@ export function addMany(data) {
 export function updateOne(id, data) {
   return request({
     url: `/firm/staff/update/one/${id}`,
-    method: "post",
+    method: "put",
     data
   });
 }
@@ -33,14 +33,14 @@ export function removeOne(staffId) {
 
 export function getOne(staffId) {
   return request({
-    url: `/firm/staff/one/${staffId}`,
+    url: `/firm/staff/get/one/${staffId}`,
     method: "get"
   });
 }
 
 export function getList(filter) {
   return request({
-    url: `/firm/staff/list`,
+    url: `/firm/staff/get/list`,
     method: "get",
     params: filter
   });
@@ -48,7 +48,7 @@ export function getList(filter) {
 
 export function getTotal(filter) {
   return request({
-    url: "/firm/staff/total",
+    url: "/firm/staff/get/total",
     method: "get",
     params: filter
   });
@@ -64,16 +64,7 @@ export function getMany(staffIdList) {
 
 export function getPageList(pageFlag, pageSize, lastId, filter) {
   return request({
-    url: `/firm/staff/page/list/${pageFlag}/${pageSize}/${lastId}`,
-    method: "get",
-    params: filter
-  });
-}
-
-/*filter为对用户进行查询所需的条件*/
-export function associateUser(filter) {
-  return request({
-    url: `/firm/staff/associate/user`,
+    url: `/firm/staff/get/list/page/${pageFlag}/${pageSize}/${lastId}`,
     method: "get",
     params: filter
   });

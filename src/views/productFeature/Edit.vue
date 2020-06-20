@@ -1,6 +1,6 @@
 <template>
   <div class="page-form">
-    <el-dialog title="添加" :visible.sync="dialogVisible" @open="handleOpen" @close="handleClose">
+    <el-dialog title="添加" :visible.sync="dialogVisible" @open="handleOpen" @close="handleClose" width="500px">
       <el-form label-position="top" size="mini" :model="formData" ref="featureForm">
         <el-col :span="24">
           <el-form-item label="自定义功能">

@@ -1,10 +1,10 @@
-import {getOne, saveOne, getPageList, getTotal, removeOne} from '@/api/device';
+import {getOne, saveOne, getPageList, getTotal, removeOne} from '@/api/deviceData';
 
 const actions = {
   getOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {deviceId} = params;
-      getOne(deviceId)
+      const {dataId} = params;
+      getOne(dataId)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -42,8 +42,8 @@ const actions = {
   },
   removeOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {deviceId} = args;
-      removeOne(deviceId)
+      const {dataId} = args;
+      removeOne(dataId)
         .then(response => {
           const {data} = response;
           resolve(data);

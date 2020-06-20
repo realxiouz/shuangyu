@@ -20,7 +20,8 @@ export function signInCode(data) {
 export function signOut() {
   return request({
     url: '/admin/user/sign/out',
-    method: 'post'
+    method: 'post',
+    data: {}
   });
 }
 
