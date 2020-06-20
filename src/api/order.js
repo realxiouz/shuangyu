@@ -175,7 +175,7 @@ export function getOrderTree(params) {
 // TTS锁单
 export function lockOrder(orderNo) {
   return request({
-    url: `/qunar/fuwu/lock?orderNo=${orderNo}`,
+    url: `/qunar/tts/fuwu/lock?orderNo=${orderNo}`,
     method: 'get',
   });
 }
@@ -183,7 +183,7 @@ export function lockOrder(orderNo) {
 // TTS解锁单
 export function unLockOrder(orderNo) {
   return request({
-    url: `/qunar/fuwu/unlock?orderNo=${orderNo}`,
+    url: `/qunar/tts/fuwu/unlock?orderNo=${orderNo}`,
     method: 'get',
   });
 }
@@ -191,7 +191,7 @@ export function unLockOrder(orderNo) {
 // 调用出票中
 export function useGoTicket(orderTaskId) {
   return request({
-    url: `/qunar/fuwu/go/ticket?orderTaskId=${orderTaskId}`,
+    url: `/qunar/tts/fuwu/go/ticket?orderTaskId=${orderTaskId}`,
     method: 'get',
   });
 }
@@ -200,7 +200,7 @@ export function useGoTicket(orderTaskId) {
 // 获取消息明细
 export function getMessageDetail(orderNo) {
   return request({
-    url: `/qunar/fuwu/order/massage/detail?orderNo=${orderNo}`,
+    url: `/qunar/tts/fuwu/order/massage/detail?orderNo=${orderNo}`,
     method: 'get',
   });
 }
@@ -217,7 +217,7 @@ export function refundSearch(purchaseOrderNo) {
 // 获取销售退票信息
 export function getRefundHtml(orderNo) {
   return request({
-    url: `/qunar/fuwu/get/refund/html?orderNo=${orderNo}`,
+    url: `/qunar/tts/fuwu/get/refund/html?orderNo=${orderNo}`,
     method: 'get',
   });
 }
@@ -235,7 +235,7 @@ export function refundApply(data) {
 // 确认退票信息
 export function affirmRefund(params) {
   return request({
-    url: `/qunar/fuwu/affirm/refund`,
+    url: `/qunar/tts/fuwu/affirm/refund`,
     method: 'get',
     params: params
 
@@ -246,7 +246,7 @@ export function affirmRefund(params) {
 // 拒绝退款
 export function refundCheckRefuseReason(params) {
   return request({
-    url: `/qunar/fuwu/refund/check/refuse/reason`,
+    url: `/qunar/tts/fuwu/refund/check/refuse/reason`,
     method: 'get',
     params: params
 
@@ -265,7 +265,7 @@ export function changeSearch(params) {
 // 获取销售改签信息
 export function getChangeHtml(orderNo) {
   return request({
-    url: `/qunar/fuwu/get/change/html?orderNo=${orderNo}`,
+    url: `/qunar/tts/fuwu/get/change/html?orderNo=${orderNo}`,
     method: 'get',
   });
 }
@@ -293,7 +293,7 @@ export function changePay(data) {
 // 确认改签(受理改签)
 export function processingChange(data) {
   return request({
-    url: `/qunar/fuwu/processing/change`,
+    url: `/qunar/tts/fuwu/processing/change`,
     method: 'post',
     data: data
 
@@ -314,7 +314,7 @@ export function rejectChange(data) {
 // 自动重填票号
 export function autoRewriteTicket(data) {
   return request({
-    url: `/qunar/fuwu/auto/rewrite/ticket/no`,
+    url: `/qunar/tts/fuwu/auto/rewrite/ticket/no`,
     method: 'post',
     data: data
 
@@ -324,7 +324,7 @@ export function autoRewriteTicket(data) {
 // 重填票号
 export function rewriteTicket(data) {
   return request({
-    url: `/qunar/fuwu/rewrite/ticket/no`,
+    url: `/qunar/tts/fuwu/rewrite/ticket/no`,
     method: 'post',
     data: data
 
