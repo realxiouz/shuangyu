@@ -70,15 +70,6 @@ export function getPageList(pageFlag, pageSize, lastId, filter) {
   });
 }
 
-/*filter为对用户进行查询所需的条件*/
-export function associateUser(filter) {
-  return request({
-    url: `/firm/staff/associate/user`,
-    method: "get",
-    params: filter
-  });
-}
-
 export function getLoginInfo(firmId) {
   return request({
     url: `/firm/staff/login/info`,
