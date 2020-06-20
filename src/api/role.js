@@ -129,7 +129,7 @@ export function getTotal(filter) {
 
 export function getUserRole(flog) {
   return request({
-    url: `/admin/role/get/user/${flog}`,
+    url: `/firm/role/get/user/${flog}`,
     method: 'get'
   });
 }
