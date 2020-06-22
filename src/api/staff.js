@@ -78,11 +78,11 @@ export function getLoginInfo(firmId) {
   });
 }
 
-export function isExist(account) {
+export function isExist(params) {
   return request({
     url: `/firm/staff/exist`,
-    method: "post",
-    params: {account}
+    method: "get",
+    params
   });
 }
 

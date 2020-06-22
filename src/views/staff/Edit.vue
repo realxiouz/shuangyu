@@ -253,7 +253,7 @@
                 } else {
                     this.$store
                         .dispatch("staff/isExist", {
-                            account: this.formData.email
+                            email: this.formData.email
                         })
                         .then(data => {
                             if (data) {
