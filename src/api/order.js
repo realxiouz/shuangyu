@@ -236,7 +236,7 @@ export function refundApply(data) {
 export function affirmRefund(params) {
   return request({
     url: `/qunar/tts/fuwu/affirm/refund`,
-    method: 'get',
+    method: 'post',
     params: params
 
   });

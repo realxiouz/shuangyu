@@ -1283,13 +1283,18 @@
         this.$store
           .dispatch("order/affirmRefund", params)
           .then(data => {
-            if (data.code == 0) {
+            if (data.data.ret) {
               console.log(data);
               this.$message({
                 type: "success",
                 message: "确认退票成功！"
               });
               this.getRefundHtml();
+            }else {
+              this.$message({
+                type: "success",
+                message: data.data.errmsg
+              });
             }
           })
           .catch(error => {
@@ -1900,12 +1905,12 @@
               str += item.value + "|";
             });
             var container = document.querySelector("#js_form_rt");
+            var ticketreturnstatus = "";
             for (let i = 0; i < Array.from(form).length; i++) {
               let name = "rt" + i;
               let _status = container.querySelectorAll(
                 "input[name=" + name + "]"
               );
-              var ticketreturnstatus = "";
               Array.from(_status).forEach(item => {
                 if (item.checked) {
                   ticketreturnstatus += item.value + "|";
@@ -1914,10 +1919,7 @@
             }
 
             let ticketNos = str.substring(0, str.length - 1);
-            let _ticketreturnstatus = ticketreturnstatus.substring(
-              0,
-              ticketreturnstatus.length - 1
-            );
+            let _ticketreturnstatus = ticketreturnstatus.substring(0,ticketreturnstatus.length - 1);
             let params = {
               orderNo: orderNo,
               ticketNos: ticketNos,
