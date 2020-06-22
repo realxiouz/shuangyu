@@ -42,7 +42,7 @@ export function getRootPageList(pageFlag, pageSize, filter) {
 
 export function getList(params) {
   return request({
-    url: `/finance/account/subject/list`,
+    url: `/finance/account/subject/get/list`,
     method: "get",
     params: params
   });
@@ -50,7 +50,7 @@ export function getList(params) {
 
 export function getOne(id) {
   return request({
-    url: `/finance/account/subject/one/${id}`,
+    url: `/finance/account/subject/get/one/${id}`,
     method: 'get'
   });
 }

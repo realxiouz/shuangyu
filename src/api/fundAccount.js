@@ -33,7 +33,7 @@ export function removeOne(accountId) {
 
 export function getOne(accountId) {
   return request({
-    url: `/finance/fund/account/one/${accountId}`,
+    url: `/finance/fund/account/get/one/${accountId}`,
     method: 'get'
   });
 }
