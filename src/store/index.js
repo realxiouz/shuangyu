@@ -5,6 +5,7 @@ import role from "./modules/role";
 import nav from "./modules/nav";
 import airport from "./modules/airport";
 import airline from "./modules/airline";
+import airlineChange from "./modules/airlineChange";
 import refundChangeRule from "./modules/refundChangeRule";
 import flightSegment from "./modules/flightSegment";
 import firm from "./modules/firm";
@@ -79,6 +80,7 @@ export default new Vuex.Store({
     role,
     airport,
     airline,
+    airlineChange,
     nav,
     firm,
     firmMerchant,

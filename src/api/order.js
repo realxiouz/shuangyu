@@ -30,7 +30,7 @@ export function exportOrder(params) {
     myList.push(key + "=" + params[key]);
   }
   var paramsStr = "?" + myList.join("&");
-  window.location.href = 'http://39.108.230.74:18901/ota/prod-api/export/order' + paramsStr;
+  window.location.href = 'http://39.108.230.74:18901/ota/prod-api/order/export' + paramsStr;
   //window.location.href = 'http://192.168.0.135:28021/export/order' + paramsStr;
 }
 
@@ -113,7 +113,7 @@ export function get51FlightPrice(data) {
 // 蜗牛下单
 export function placeAnOpenOrder(data) {
   return request({
-    url: `/qunar/open/place/an/order`,
+    url: `/order/qunar/open/place/an/order`,
     method: 'post',
     data
   });
@@ -130,7 +130,7 @@ export function placeAnFOOrder(data) {
 // 检查是否已经下单
 export function checkOrder(data) {
   return request({
-    url: `/qunar/open/check/order`,
+    url: `/order/qunar/open/check/order`,
     method: 'post',
     data
   });
@@ -149,7 +149,7 @@ export function interceptOrder(data) {
 // 蜗牛支付
 export function openPay(params) {
   return request({
-    url: `/qunar/open/pay`,
+    url: `/order/qunar/open/pay`,
     method: 'get',
     params: params
   });
@@ -167,7 +167,7 @@ export function foPay(params) {
 // 获取采购订单信息
 export function getOrderTree(params) {
   return request({
-    url: `qunar/open/order/get/tree/${params.rootOrderNo}/${params.category}`,
+    url: `/order/purchase/get/tree/${params.rootOrderNo}/${params.category}`,
     method: 'get',
   });
 }
@@ -225,7 +225,7 @@ export function getRefundHtml(orderNo) {
 // 退票申请接口
 export function refundApply(data) {
   return request({
-    url: `/qunar/open/refund/apply`,
+    url: `/order/qunar/open/refund/apply`,
     method: 'post',
     data: data
 
@@ -273,7 +273,7 @@ export function getChangeHtml(orderNo) {
 // 改签申请接口
 export function changeApply(data) {
   return request({
-    url: `/qunar/open/change/apply`,
+    url: `/order/qunar/open/change/apply`,
     method: 'post',
     data: data
 
@@ -283,7 +283,7 @@ export function changeApply(data) {
 // 改签支付接口
 export function changePay(data) {
   return request({
-    url: `/qunar/open/change/pay`,
+    url: `/order/qunar/open/change/pay`,
     method: 'post',
     data: data
 
@@ -333,7 +333,7 @@ export function rewriteTicket(data) {
 // 非蜗牛补单
 export function purchaseOrder(data) {
   return request({
-    url: `/qunar/open/save/purchase/order`,
+    url: `/order/purchase/save`,
     method: 'post',
     data: data
 

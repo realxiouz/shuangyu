@@ -306,6 +306,13 @@ export default new Router({
           name: 'netFare',
           component: () => import('@/views/netFare/List'),
           meta: {title: '净票价信息', icon: 'home'}
+        },
+        {
+          title: '航司迁转信息',
+          path: '/airline/change/list',
+          name: 'airlineChange',
+          component: () => import('@/views/airlineChange/List'),
+          meta: {title: '航司迁转信息', icon: 'home'}
         }
       ]
     },
