@@ -104,7 +104,7 @@ export function getFlightPrice(data) {
 // 51报价搜素
 export function get51FlightPrice(data) {
   return request({
-    url: `/FOBook/get/policy/fareInfo`,
+    url: `/fobook/get/policy/fareInfo`,
     method: 'get',
     params: data
   });
@@ -121,7 +121,7 @@ export function placeAnOpenOrder(data) {
 // 51下单
 export function placeAnFOOrder(data) {
   return request({
-    url: `/FOBook/place/order`,
+    url: `/fobook/place/order`,
     method: 'post',
     data
   });
@@ -158,7 +158,7 @@ export function openPay(params) {
 // 51Book支付
 export function foPay(params) {
   return request({
-    url: `/FOBook/order/pay`,
+    url: `/fobook/order/pay`,
     method: 'get',
     params: params
   });
