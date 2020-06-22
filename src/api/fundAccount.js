@@ -40,7 +40,7 @@ export function getOne(accountId) {
 
 export function getList(filter) {
   return request({
-    url: `/finance/fund/account/list`,
+    url: `/finance/fund/account/get/list`,
     method: 'get',
     params: filter
   });
