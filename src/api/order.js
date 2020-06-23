@@ -92,6 +92,7 @@ export function getOrderFlight(data) {
     data
   });
 }
+
 // 报价搜素
 export function getFlightPrice(data) {
   return request({
@@ -118,6 +119,7 @@ export function placeAnOpenOrder(data) {
     data
   });
 }
+
 // 51下单
 export function placeAnFOOrder(data) {
   return request({
@@ -303,7 +305,7 @@ export function processingChange(data) {
 // 拒绝改签
 export function rejectChange(data) {
   return request({
-    url: `qunar/fuwu/reject/change`,
+    url: `qunar/tts/fuwu/reject/change`,
     method: 'post',
     data: data
 
@@ -330,6 +332,7 @@ export function rewriteTicket(data) {
 
   });
 }
+
 // 非蜗牛补单
 export function purchaseOrder(data) {
   return request({
@@ -343,7 +346,7 @@ export function purchaseOrder(data) {
 // 蜗牛补单
 export function woniuOrder(data) {
   return request({
-    url: `/qunar/open/save/woniu/order`,
+    url: `/order/qunar/open/save/woniu/order`,
     method: 'post',
     data: data
 
@@ -352,7 +355,7 @@ export function woniuOrder(data) {
 
 export function qunarDetailHtml(sourceOrderNo) {
   return request({
-    url: `qunar/fuwu/get/detail/html?orderNo=${sourceOrderNo}`,
+    url: `qunar/tts/fuwu/get/detail/html?orderNo=${sourceOrderNo}`,
     method: 'get'
   });
 
