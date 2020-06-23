@@ -228,7 +228,7 @@ export default {
     },
     loadCount(params) {
       this.$store
-        .dispatch("orderReportTotal/getCount", {
+        .dispatch("orderReportTotal/getTotalSum", {
           filters: params
         })
         .then(data => {

@@ -1,4 +1,4 @@
-import { getList, getCount, getTotal } from "@/api/orderReportTotal";
+import { getList, getTotalSum, getTotal } from "@/api/orderReportTotal";
 import { getToken } from "@/utils/auth";
 
 
@@ -48,10 +48,10 @@ const actions = {
                 });
         });
     },
-    getCount({ commit }, params) {
+    getTotalSum({ commit }, params) {
         const { filters } = params;
         return new Promise((resolve, reject) => {
-            getCount(filters)
+            getTotalSum(filters)
                 .then(response => {
                     const { data } = response;
                     resolve(data);
