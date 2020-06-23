@@ -2,7 +2,7 @@ import request from '@/utils/request';
 
 export function addOne(data) {
   return request({
-    url: '/airline/change/add',
+    url: '/flight/airline/change/add',
     method: 'post',
     data
   });
@@ -10,7 +10,7 @@ export function addOne(data) {
 
 export function saveOne(data) {
   return request({
-    url: '/airline/change/save',
+    url: '/flight/airline/change/save',
     method: 'post',
     data
   });
@@ -18,21 +18,21 @@ export function saveOne(data) {
 
 export function removeOne(airline) {
   return request({
-    url: `/airline/change/remove/${airline}`,
+    url: `/flight/airline/change/remove/${airline}`,
     method: 'delete'
   });
 }
 
 export function getOne(flightId) {
   return request({
-    url: `/airline/change/get/${flightId}`,
+    url: `/flight/airline/change/get/${flightId}`,
     method: 'get'
   });
 }
 
 export function getList(filter) {
   return request({
-    url: `/airline/change/getList`,
+    url: `/flight/airline/change/getList`,
     method: 'get',
     params: filter
   });
