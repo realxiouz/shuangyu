@@ -2,7 +2,7 @@ import request from '@/utils/request';
 
 export function getList(params) {
   return request({
-    url: `/ticket/list`,
+    url: `/order/ticket/list`,
     method: "get",
     params: params
   });
@@ -10,14 +10,14 @@ export function getList(params) {
 
 export function getTotal(params) {
   return request({
-    url: `/ticket/total`,
+    url: `/order/ticket/total`,
     method: 'get',
     params: params
   });
 }
 export function getCount(params) {
   return request({
-    url: `/ticket/count`,
+    url: `/order/ticket/count`,
     method: 'get',
     params: params
   });
