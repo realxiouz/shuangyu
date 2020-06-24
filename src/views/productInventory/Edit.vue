@@ -212,7 +212,6 @@
             if (this.$route.query.inventoryId) {
                 this.handleGetOne(this.$route.query.inventoryId);
             }
-            this.loadBrand();
         }
     };
 </script>
