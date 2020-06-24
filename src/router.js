@@ -111,6 +111,13 @@ export default new Router({
           name: 'productMark',
           component: () => import('@/views/productMark/List'),
           meta: {title: '产品标签管理', icon: 'home'},
+        },
+        {
+          title: '类别管理',
+          path: '/dict/list',
+          name: 'dict',
+          component: () => import('@/views/dict/List'),
+          meta: {title: '类别管理', icon: 'home'}
         }
       ]
     },
@@ -448,13 +455,6 @@ export default new Router({
           name: 'staff',
           component: () => import('@/views/staff/List'),
           meta: {title: '员工管理', icon: 'home'}
-        },
-        {
-          title: '类别管理',
-          path: '/dict/list',
-          name: 'dict',
-          component: () => import('@/views/dict/List'),
-          meta: {title: '类别管理', icon: 'home'}
         },
         {
           title: '应用管理',
