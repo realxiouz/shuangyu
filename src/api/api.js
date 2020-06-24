@@ -95,11 +95,11 @@ export function getOneByFilter(filter) {
   });
 }
 
-export function getMany(data) {
+export function getMany(ids) {
   return request({
     url: `/admin/api/get/many`,
-    method: 'post',
-    data
+    method: 'get',
+    params: ids
   });
 }
 
