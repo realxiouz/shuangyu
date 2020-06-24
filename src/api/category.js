@@ -2,7 +2,7 @@ import request from '@/utils/request';
 
 export function addOne(data) {
   return request({
-    url: '/firm/category/add/one',
+    url: '/admin/category/add/one',
     method: 'post',
     data
   });
@@ -10,7 +10,7 @@ export function addOne(data) {
 
 export function updateOne(id, data) {
   return request({
-    url: `/firm/category/update/one/${id}`,
+    url: `/admin/category/update/one/${id}`,
     method: 'put',
     data
   });
@@ -18,21 +18,21 @@ export function updateOne(id, data) {
 
 export function removeOne(categoryId) {
   return request({
-    url: `/firm/category/remove/one/${categoryId}`,
+    url: `/admin/category/remove/one/${categoryId}`,
     method: 'delete'
   });
 }
 
 export function getOne(categoryId) {
   return request({
-    url: `/firm/category/one/${categoryId}`,
+    url: `/admin/category/one/${categoryId}`,
     method: 'get'
   });
 }
 
 export function getTreeList(filter) {
   return request({
-    url: `/firm/category/tree/list`,
+    url: `/admin/category/tree/list`,
     method: 'get',
     params: filter
   });
@@ -40,7 +40,7 @@ export function getTreeList(filter) {
 
 export function getList(filter) {
   return request({
-    url: `/firm/category/list`,
+    url: `/admin/category/list`,
     method: 'get',
     params: filter
   });
@@ -48,7 +48,7 @@ export function getList(filter) {
 
 export function getTotal(filter) {
   return request({
-    url: '/firm/category/total',
+    url: '/admin/category/total',
     method: 'get',
     params: filter
   });
@@ -56,7 +56,7 @@ export function getTotal(filter) {
 
 export function getPageList(pageFlag, pageSize, lastId, filter) {
   return request({
-    url: `/firm/category/page/list/${pageFlag}/${pageSize}/${lastId}`,
+    url: `/admin/category/page/list/${pageFlag}/${pageSize}/${lastId}`,
     method: 'get',
     params: filter
   });
