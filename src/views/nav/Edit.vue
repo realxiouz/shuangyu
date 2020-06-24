@@ -129,7 +129,7 @@
       /*更新表格数据*/
       tableLoad() {
         this.total = this.curNode.apis.length;
-        this.loadApisTableList(this.curNode.apis);
+        // this.loadApisTableList(this.curNode.apis);
         if (1 === this.tableData.length) {
           this.tableData = [];
         }
