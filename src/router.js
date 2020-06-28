@@ -411,6 +411,13 @@ export default new Router({
       meta: {title: '企业信息', icon: 'home'},
       children: [
         {
+          title: '类别管理',
+          path: '/firm/category/list',
+          name: 'category',
+          component: () => import('@/views/firmCategory/List'),
+          meta: {title: '类别管理', icon: 'home'}
+        },
+        {
           title: '企业管理',
           path: '/firm/list',
           name: 'firmList',
