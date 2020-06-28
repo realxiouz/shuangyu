@@ -81,7 +81,7 @@ export function getSupplierPageList(pageFlag, pageSize, filter) {
 
 export function getList(filter) {
   return request({
-    url: `/firm/merchant/list`,
+    url: `/firm/merchant/get/list`,
     method: `get`,
     params: filter
   });
