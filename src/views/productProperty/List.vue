@@ -67,11 +67,13 @@
         ></el-pagination>
       </el-col>
     </el-row>
+    <edit :visible.sync="dialogVisible" :property-id="propertyId" @refresh="handleRefresh"/>
   </div>
 </template>
 
 <script>
     import search from "./Search";
+    import edit from "./Edit";
 
     export default {
         data() {
@@ -85,7 +87,7 @@
                     children: "children",
                     hasChildren: "xxx"
                 },
-                dialogVisible: true,
+                dialogVisible: false,
                 propertyId: "",
                 pageFlag: 1,
                 pageSize: 10,
@@ -168,26 +170,12 @@
                     });
             },
             handleAdd() {
-                let path = "";
-                path = "/property/config";
-                this.$router.push({
-                    path: path,
-                    query: {
-                        categoryCode: this.curNode.categoryCode,
-                        categoryName: this.curNode.categoryName,
-                        categoryPath: this.curNode.path
-                    }
-                });
+                this.propertyId = '';
+                this.dialogVisible = true;
             },
             handleUpdate(id) {
-                let path = "";
-                path = "/property/config";
-                this.$router.push({
-                    path: path,
-                    query: {
-                        propertyId: id
-                    }
-                });
+                this.propertyId = id;
+                this.dialogVisible = true;
             },
             handleRemove(id, index, rows) {
                 this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
@@ -230,7 +218,8 @@
             this.loadData();
         },
         components: {
-            search
+            search,
+            edit
         }
     };
 </script>

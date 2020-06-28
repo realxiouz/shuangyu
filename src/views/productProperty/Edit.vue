@@ -1,498 +1,375 @@
 <template>
-  <div>
-    <div id="goBack" @click="goBack">
-      <el-page-header></el-page-header>
-    </div>
-    <el-card class="contentBox">
-      <div slot="header">
-        <span>商品属性管理</span>
-      </div>
-      <el-form ref="form" :rules="rules" :model="formData" label-width="130px" size="mini">
-        <el-row :gutter="10">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="商品类目" prop="categoryName">
-              <el-input v-model="formData.categoryName" disabled></el-input>
-            </el-form-item>
-            <!--            <el-form-item label="商品类目">-->
-            <!--              <el-cascader-->
-            <!--                v-model="formData.categoryCode"-->
-            <!--                style="width: 100%;"-->
-            <!--                :options="categoryList"-->
-            <!--                :props="{ label: 'categoryName', value: 'categoryCode' }"-->
-            <!--                filterable-->
-            <!--                @change="handleCategory"-->
-            <!--              >-->
-            <!--              </el-cascader>-->
-            <!--            </el-form-item>-->
-          </el-col>
-        </el-row>
-        <el-row :gutter="10">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="属性编码" prop="code">
-              <el-input v-model="formData.code"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="属性名称" prop="name">
-              <el-input v-model="formData.name"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="属性类型:" prop="valueType">
-              <!-- 数据类型（0文本，1开关，2数字，3日期，4日期时间，5时间，6评分，7单选，8多选，9选择器）-->
-              <el-select clearable v-model="formData.valueType" placeholder="全部" style="width: 100%"
-                         @change="valueTypeChange">
-                <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="是否前端隐藏" prop="hidden">
-              <el-switch v-model="formData.hidden" :active-value=true :inactive-value=false
-              ></el-switch>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10" v-if="valueType ==8">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="是否销售属性" prop="sku">
-              <el-switch v-model="formData.sku" :active-value=true :inactive-value=false
-              ></el-switch>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10" v-if="valueType ==2">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="精度" prop="precision">
-              <el-input v-model="formData.precision" @change="changeNum"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10" v-if="valueType ==0">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="示例:" prop="precision">
-              <el-input v-model="test.input" placeholder="请输入内容"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10" v-if="valueType ==1">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="示例:">
-              <el-switch
-                v-model="test.switchValue"
-              >
-              </el-switch>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10" v-if="valueType ==2">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="示例:">
-              <el-input-number v-model="test.num" :precision="formData.precision"></el-input-number>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10" v-if="valueType ==3">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="示例:">
-              <el-date-picker
-                v-model="test.time1"
-                type="date"
-                placeholder="选择日期">
-              </el-date-picker>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10" v-if="valueType ==4">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="示例:">
-              <el-date-picker
-                v-model="test.time2"
-                type="datetime"
-                placeholder="选择日期时间">
-              </el-date-picker>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10" v-if="valueType ==5">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="示例:">
-              <el-time-select
-                v-model="test.time3"
-                :picker-options="{
-    start: '08:30',
-    step: '00:15',
-    end: '18:30'
-  }"
-                placeholder="选择时间">
-              </el-time-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10" v-if="valueType ==6">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="示例:">
-              <el-rate v-model="test.rateValue"></el-rate>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10" v-if="valueType ==7">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="示例:">
-              <el-radio v-model="test.radio" label="1">单选项1</el-radio>
-              <el-radio v-model="test.radio" label="2">单选项2</el-radio>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10" v-if="valueType ==8">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="示例:">
-              <el-checkbox v-model="test.checked1">多选框1</el-checkbox>
-              <el-checkbox v-model="test.checked2">多选框2</el-checkbox>
-              <el-checkbox v-model="test.checked3">多选框3</el-checkbox>
-              <el-checkbox v-model="test.checked4">多选框4</el-checkbox>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10" v-if="valueType ==9">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="示例:">
-              <el-select
-                style="width: 100%;"
-                clearable
-                collapse-tags
-                v-model="test.selectValue"
-                placeholder="请选择"
-              >
-                <el-option label="选项1" value="0"></el-option>
-                <el-option label="选项2" value="1"></el-option>
-                <el-option label="选项3" value="1"></el-option>
-                <el-option label="选项4" value="1"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <div v-show="showAddValues">
-          <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加属性值</el-button>
-          <el-table
-            :data="attributes"
-            style="width: 100%;margin-bottom: 15px;"
-            size="mini"
-            border
-          >
-            <el-table-column prop="code" label="编码" align="center"></el-table-column>
-            <el-table-column prop="value" label="值" align="center"></el-table-column>
-            <el-table-column label="操作" align="center" width="350">
-              <template slot-scope="scope">
-                <el-button type="primary" size="mini"
-                           @click="valueEdit(scope.row)">编辑
-                </el-button>
-                <el-button type="danger" size="mini"
-                           @click="valueRemove(scope.row.code,scope.$index,attributes)">删除
-                </el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-        </div>
-        <el-dialog title="属性值" :visible.sync="dialogVisible" width="20%">
-          <el-form ref="form" :model="formValue" label-width="90px">
-            <el-form-item label="编码">
-              <el-input v-model="formValue.code"></el-input>
-            </el-form-item>
-            <el-form-item label="值">
-              <el-input v-model="formValue.value"></el-input>
-            </el-form-item>
-          </el-form>
-          <div slot="footer" class="dialog-footer">
-            <el-button @click="valueCancel">取 消</el-button>
-            <el-button type="primary" @click="valueSave">确 定</el-button>
-          </div>
-        </el-dialog>
+  <div class="page-form">
+    <el-dialog title="添加" :visible.sync="dialogVisible" @open="handleOpen" @close="handleClose" width="500px">
+      <el-form label-position="top" size="mini" :model="formData" ref="featureForm">
+        <el-col :span="24">
+          <el-form-item label="自定义功能">
+            <el-radio-group v-model="formData.featureType">
+              <el-radio-button
+                :label="item.id"
+                v-for="(item,index) in featureTypes"
+                :key="index"
+              >{{item.value}}
+              </el-radio-button>
+            </el-radio-group>
+          </el-form-item>
+        </el-col>
+        <el-col :span="24">
+          <el-form-item label="功能名称" prop="name">
+            <el-input placeholder="请输入功能名称" v-model="formData.name"/>
+          </el-form-item>
+        </el-col>
+        <el-col :span="24">
+          <el-form-item label="功能编码" prop="code">
+            <el-input placeholder="请输入功能编码" v-model="formData.code"/>
+          </el-form-item>
+        </el-col>
+        <el-col :span="24" v-if="formData.featureType==0">
+          <el-form-item label="数据类型">
+            <el-select v-model="formData.valueType" @change="handleValueTypeChange" style="width: 100%">
+              <el-option
+                v-for="(item,index) in valueTypes"
+                :key="index"
+                :label="item.value"
+                :value="item.code"
+              >{{item.value}}
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="24" v-if="formData.featureType==0 && formData.valueType==2">
+          <el-form-item label="取值范围">
+            <el-col :span="11">
+              <el-input placeholder="最小值" v-model="formData.min" type="number"></el-input>
+            </el-col>
+            <el-col class="line" :span="2">-</el-col>
+            <el-col :span="11">
+              <el-input placeholder="最大值" v-model="formData.max" type="number"></el-input>
+            </el-col>
+          </el-form-item>
+        </el-col>
+        <el-col :span="24">
+          <el-form-item label="步长" v-if="formData.featureType==0 && formData.valueType==2" prop="step">
+            <el-input placeholder="请输入步长" v-model="formData.step" type="number"/>
+          </el-form-item>
+        </el-col>
+        <el-col :span="24" v-if="formData.featureType==0 && formData.valueType==2">
+          <el-form-item label="数据单位" prop="unit">
+            <el-select v-model="formData.unit" style="width: 100%">
+              <el-option
+                v-for="(item,index) in unitTypes"
+                :key="index"
+                :value="item.value"
+              >{{item.value}}
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="24" v-if="formData.featureType==0 && formData.valueType>6">
+          <el-form-item label="属性项">
+            <el-col :span="24">
+              <el-row type="flex" justify="space-between">
+                <el-col :span="9">属性编码
+                  <el-tooltip placement="top-start" effect="light">
+                    <div slot="content">支持整型，取值范围：-2147483648 ~ 2147483647</div>
+                    <i class="el-icon-question"></i>
+                  </el-tooltip>
+                </el-col>
+                <el-col :span="2"></el-col>
+                <el-col :span="9">属性描述
+                  <el-tooltip placement="top" effect="light">
+                    <div slot="content">支持中文、英文大小写、数字下划线<br/>和短划线，必须以中文、英文或数字<br/>开头，不超过20个字符</div>
+                    <i class="el-icon-question"></i>
+                  </el-tooltip>
+                </el-col>
+                <el-col :span="4"></el-col>
+              </el-row>
+            </el-col>
+            <el-col :span="24">
+              <el-row class="attributes" type="flex" justify="space-between"
+                      v-for="(item,index) in formData.attributes"
+                      :key="index">
+                <el-col :span="9">
+                  <el-form-item class="attr-item" :key="item.key">
+                    <el-input placeholder="编号" v-model="item.code"/>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="2" class="line">~</el-col>
+                <el-col :span="9">
+                  <el-form-item :key="item.key">
+                    <el-input placeholder="描述" v-model="item.name"/>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="4" class="line">
+                  <el-link type="primary" @click="delItem(index)">删除</el-link>
+                </el-col>
+              </el-row>
+            </el-col>
+            <el-col :span="24">
+              <el-link type="primary" @click="addItem">+添加属性项</el-link>
+            </el-col>
+          </el-form-item>
+        </el-col>
+        <el-col :span="24" v-if="formData.featureType==0">
+          <el-form-item label="读写类型">
+            <el-radio-group v-model="formData.readwrite">
+              <el-radio :label="0">读写</el-radio>
+              <el-radio :label="1">只读</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-col>
+        <el-col :span="24" v-if="formData.featureType==1">
+          <el-form-item label="调用方式">
+            <el-radio-group v-model="formData.callType">
+              <el-radio :label="0">异步</el-radio>
+              <el-radio :label="1">同步</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-col>
+        <el-col :span="24" v-if="formData.featureType==1">
+          <el-form-item label="输入参数">
+            <el-row v-for="(param,index) in formData.inputParams" :key="index">
+              <el-col :span="20">
+                参数名称：{{param.name}}
+              </el-col>
+              <el-col :span="2">
+                <el-link type="primary" @click="handleUpdateParam(0,index,param)">编辑</el-link>
+              </el-col>
+              <el-col :span="2">
+                <el-link type="primary" @click="handleDeleteParam(0,index)">删除</el-link>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-link type="primary" @click="handleAddParam(0)">+添加参数</el-link>
+            </el-row>
+          </el-form-item>
+        </el-col>
+        <el-col :span="24" v-if="formData.featureType==2">
+          <el-form-item label="事件类型" prop="eventType">
+            <el-radio-group v-model="formData.eventType">
+              <el-radio :label="0">信息</el-radio>
+              <el-radio :label="1">告警</el-radio>
+              <el-radio :label="2">故障</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-col>
+        <el-col :span="24" v-if="formData.featureType==1 || formData.featureType==2">
+          <el-form-item label="输出参数">
+            <el-row v-for="(param,index) in formData.outputParams" :key="index">
+              <el-col :span="20">
+                参数名称：{{param.name}}
+              </el-col>
+              <el-col :span="2">
+                <el-link type="primary" @click="handleUpdateParam(1,index,param)">编辑</el-link>
+              </el-col>
+              <el-col :span="2">
+                <el-link type="primary" @click="handleDeleteParam(1,index)">删除</el-link>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-link type="primary" @click="handleAddParam(1)">+添加参数</el-link>
+            </el-row>
+          </el-form-item>
+        </el-col>
+        <el-col :span="24">
+          <el-form-item label="描述">
+            <el-input placeholder="请输入描述" type="textarea" v-model="formData.description"/>
+          </el-form-item>
+        </el-col>
       </el-form>
-    </el-card>
-    <div slot="footer" style="text-align:center;">
-      <el-button size="mini" type="primary" @click="handleCancel">取消</el-button>
-      <el-button size="mini" type="primary" @click="handleSave">保存</el-button>
-    </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible=false">取 消</el-button>
+        <el-button type="primary" @click="handleSave">确 定</el-button>
+    </span>
+    </el-dialog>
+    <param-dialog :visible.sync="paramDialogVisible" :index="paramIndex" :param-type="paramType" :param-data="paramData"
+                  @action-param="handleActionParam"/>
   </div>
 </template>
+
 <script>
-    function defaultData() {
-        return {
-            categoryCode: "",
-            categoryName: "",
-            categoryPath: "",
-            code: "",
-            name: "",
-            precision: 0,
-            sku: false,
-            hidden: false,
-            valueType: ''
-        }
-    };
+    import paramDialog from "./Param";
+
     export default {
-        name: 'edit',
+        props: {
+            visible: {
+                type: Boolean,
+                default: false
+            },
+            propertyId: {
+                type: String,
+                default: ''
+            }
+        },
         data() {
-            const categoryCode = (rule, value, callback) => {
-                let reg = /^[0-9a-zA-Z]*$/g;
-                if (reg.test(value)) {
-                    callback();
-                } else {
-                    callback(new Error("只能输入字母或数字！"));
-                }
-            };
             return {
-                formData: defaultData(),
-                dialogVisible: false,
-                showAddValues: false,
-                formValue: {},
-                propertyId: '',
-                valueType: '',
-                test: {},
-                attributes: [],
-                categoryList: [],
-                rules: {
-                    categoryName: [
-                        {required: true, message: "请输入商品类目", trigger: "blur"},
-                    ],
-                    code: [
-                        {required: true, message: "请输入属性编码", trigger: "blur"},
-                        {
-                            min: 1,
-                            max: 20,
-                            message: "长度在 1到 20 个字符"
-                        },
-                        {validator: categoryCode, trigger: 'blur'}
-                    ],
-                    name: [
-                        {required: true, message: "请输入属性标题", trigger: "blur"},
-                        {
-                            min: 1,
-                            max: 20,
-                            message: "长度在 1到 20 个字符"
-                        }
-                    ]
-                    , valueType: [
-                        {required: true, message: "请选择属性类型", trigger: "blur"},
-                    ]
-                },
-                options: [
-                    {
-                        value: 0,
-                        label: '文本'
-                    },
-                    {
-                        value: 1,
-                        label: '开关'
-                    },
-                    {
-                        value: 2,
-                        label: '数字'
-                    },
-                    {
-                        value: 3,
-                        label: '日期'
-                    },
-                    {
-                        value: 4,
-                        label: '日期时间'
-                    },
-                    {
-                        value: 5,
-                        label: '时间'
-                    },
-                    {
-                        value: 6,
-                        label: '评分'
-                    },
-                    {
-                        value: 7,
-                        label: '单选'
-                    },
-                    {
-                        value: 8,
-                        label: '多选'
-                    },
-                    {
-                        value: 9,
-                        label: '选择器'
-                    }]
+                dialogVisible: this.visible,
+                paramDialogVisible: false,
+                paramIndex: -1,
+                paramType: 0,
+                paramData: {},
+                featureTypes: [
+                    {id: 0, value: "属性"},
+                    {id: 1, value: "服务"},
+                    {id: 2, value: "事件"}
+                ],
+                formData: this.defaultFormData(),
+                valueTypes: [
+                    {code: 0, value: '文本'},
+                    {code: 1, value: '开关'},
+                    {code: 2, value: '数字'},
+                    {code: 3, value: '日期'},
+                    {code: 5, value: '时间'},
+                    {code: 6, value: '评分'},
+                    {code: 7, value: '单选'},
+                    {code: 8, value: '多选'},
+                    {code: 9, value: '下拉'}
+                ],
+                unitTypes: [
+                    {value: "无 /", id: 0},
+                    {value: "纳克每升 / ppt", id: 1},
+                    {value: "微克每升 / ppb", id: 2},
+                    {value: "微西每厘米 / uS/cm", id: 3}
+                ]
+            };
+        },
+        watch: {
+            visible(val) {
+                this.dialogVisible = val;
+                if (val) {
+                    if (this._.isEmpty(this.propertyId)) {
+                        this.formData = this.defaultFormData();
+                    } else {
+                        this.loadData();
+                    }
+                }
             }
         },
         methods: {
-            changeNum(value) {
-                if (value > 0) {
-                    this.formData.precision = value;
+            handleValueTypeChange(value) {
+                switch (value) {
+                    case 0:
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        break;
+                    case 6:
+                        break;
+                    case 7:
+                        break;
+                    case 8:
+                        break;
                 }
             },
-            valueTypeChange(value) {
-                this.valueType = value;
-                if (value == 7 || value == 8 || value == 9) {
-                    this.showAddValues = true;
-                } else {
-                    this.showAddValues = false;
+            handleActionParam(param) {
+                if (param) {
+                    if (param.type === 0) {
+                        if (param.index > -1) {
+                            this.formData.inputParams.splice(param.index, 1, param.data);
+                        } else {
+                            this.formData.inputParams.push(param.data);
+                        }
+                    }
+                    if (param.type === 1) {
+                        if (param.index > -1) {
+                            this.formData.outputParams.splice(param.index, 1, param.data);
+                        } else {
+                            this.formData.outputParams.push(param.data);
+                        }
+                    }
                 }
             },
-            //跳转回列表页面
-            goBack() {
-                if (this.$router.history.length <= 1) {
-                    this.$router.push({path: '/home'});
-                    return false;
-                } else {
-                    this.$router.go(-1);
-                }
+            handleAddParam(type) {
+                this.paramDialogVisible = true;
+                this.paramType = type;
+                this.paramIndex = -1;
             },
-            handleCancel() {
-                this.goBack();
+            handleUpdateParam(type, index, param) {
+                this.paramDialogVisible = true;
+                this.paramType = type;
+                this.paramIndex = index;
+                this.paramData = param;
+            },
+            handleDeleteParam(type, index) {
+                if (type === 0) {
+                    this.formData.inputParams.splice(index, 1);
+                }
+                if (type === 1) {
+                    this.formData.outputParams.splice(index, 1);
+                }
             },
             handleSave() {
-                this.$refs['form'].validate((valid) => {
-                    if (valid) {
-                        if (this.attributes.length > 0) {
-                            let map = {};
-                            for (let i = 0, len = this.attributes.length; i < len; i++) {
-                                map[this.attributes[i].code] = this.attributes[i].value;
-                            }
-                            this.formData.attributes = map;
-                        }
-                        this.$store
-                            .dispatch("productProperty/save", {
-                                property: this.formData,
-                                valueList: this.attributes
-                            })
-                            .then(() => {
-                            })
-                            .catch(error => {
-                                console.log(error);
-                            });
-                        this.$message({
-                            type: "success",
-                            message: "保存成功！"
-                        });
-                        this.goBack();
-                    }
-                });
-            },
-            handleGetOne(id) {
-                if (id) {
-                    this.$store
-                        .dispatch("productProperty/getOne", {propertyId: id})
-                        .then(data => {
-                            if (data) {
-                                this.formData = data;
-                                this.valueTypeChange(this.formData.valueType);
-                                if (data.attributes != null) {
-                                    let array = [];
-                                    let map = data.attributes;
-                                    for (let key in map) {
-                                        let data = {};
-                                        data.code = key;
-                                        data.value = map[key];
-                                        array.push(data)
-                                    }
-                                    this.attributes = array;
-                                }
-                            }
-                        }).catch(error => {
-                        console.log(error);
-                    });
-                } else {
-                    this.formData = defaultData();
-                }
-            },
-            valueEdit(rows) {
-                this.formValue = {};
-                this.formValue = rows;
-                this.dialogVisible = true;
-            },
-            valueRemove(id, index, rows) {
-                this.$confirm("此操作将删除该条记录, 是否继续?", "提示", {
-                    confirmButtonText: "确定",
-                    cancelButtonText: "取消",
-                    type: "warning"
-                })
-                    .then(() => {
-                        rows.splice(index, 1);
-                    })
-                    .catch(err => {
-                        console.error(err);
-                    });
-            },
-            handleAdd() {
-                this.dialogVisible = true;
-            },
-            valueCancel() {
-                this.dialogVisible = false;
-            },
-            valueSave() {
-                if (!this.formValue.code || !this.formValue.value) {
-                    this.$message("请填写完整属性信息！")
-                    return false;
-                }
-                this.attributes.push(this.formValue);
-                this.dialogVisible = false;
-                this.formValue = {};
-            },
-            loadTreeData() {
                 this.$store
-                    .dispatch("category/getTreeList", {filter: {categoryType: 9}})
-                    .then(data => {
-                        if (data) {
-                            this.categoryList = this.getTreeData(data.data);
+                    .dispatch("productFeature/saveOne", this.formData)
+                    .then(id => {
+                        if (!this._.isEmpty(id)) {
+                            this.formData.propertyId = id;
                         }
-                        this.loading = false;
-                    })
-                    .catch(error => {
-                        this.loading = false;
-                        console.log(error);
+                        this.dialogVisible = false;
+                        this.$emit('refresh');
+                        this.$message({type: "success", message: "保存成功"});
                     });
             },
-            getTreeData(data) {
-                // 循环遍历json数据
-                for (var i = 0; i < data.length; i++) {
-                    if (data[i].children.length < 1) {
-                        // children若为空数组，则将children设为undefined
-                        data[i].children = undefined;
-                    } else {
-                        // children若不为空数组，则继续 递归调用 本方法
-                        this.getTreeData(data[i].children);
-                    }
-                }
-                return data;
+            defaultFormData() {
+                return {
+                    propertyId: "", //功能id
+                    featureType: 0, //功能类型 0属性，1服务，2事件
+                    productId: "", //商品ID
+                    productName: "", //商品名称
+                    productCode: "", //商品编码
+                    name: "", //功能名称
+                    code: "", //功能编码
+                    max: null,
+                    min: null,
+                    precision: null,
+                    step: null,
+                    unit: '',
+                    inputType: '',
+                    valueType: 2,
+                    required: false,
+                    readonly: false,
+                    readwrite: 0,
+                    attributes: [],
+                    description: "",
+                    callType: 0,
+                    eventType: 0,
+                    input: "",
+                    inputParams: [],
+                    output: "",
+                    outputParams: [],
+                    remark: "", //备注
+                    sort: "", //排序号
+                };
             },
-            handleCategory(category) {
-                if (category) {
-                    let code = category[category.length - 1];
-                    this.formData.categoryCode = code;
-                }
+            loadData() {
+                this.$store
+                    .dispatch("productFeature/getOne", {propertyId: this.propertyId})
+                    .then(result => {
+                        this.formData = result;
+                    });
             },
+            addItem() {
+                this.formData.attributes.push({code: "", name: ""});
+            },
+            delItem(index) {
+                this.formData.attributes.splice(index, 1);
+            },
+            handleOpen() {
+                this.$emit('update:visible', true);
+            },
+            handleClose() {
+                this.$emit('update:visible', false);
+            }
         },
-        created() {
-            if (this.$route.query.propertyId) {
-                this.propertyId = this.$route.query.propertyId;
-                this.handleGetOne(this.$route.query.propertyId);
-            }
-            if (this.$route.query.categoryCode) {
-                this.formData.categoryCode = this.$route.query.categoryCode;
-            }
-            if (this.$route.query.categoryName) {
-                this.formData.categoryName = this.$route.query.categoryName;
-            }
-            if (this.$route.query.categoryPath) {
-                this.formData.categoryPath = this.$route.query.categoryPath;
-            }
-            this.loadTreeData();
-        }
-    }
+        components: {
+            paramDialog
+        },
+    };
 </script>
