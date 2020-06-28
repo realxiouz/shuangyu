@@ -33,6 +33,7 @@ import orderStaff from "./modules/orderStaff";
 import category from "./modules/category";
 import firmCategory from "./modules/firmCategory";
 import dict from "./modules/dict";
+import firmDict from "./modules/firmDict";
 import fundAccount from "./modules/fundAccount";
 import orderTask from "./modules/orderTask"
 import orderReportTotal from "./modules/orderReportTotal"
@@ -110,6 +111,7 @@ export default new Vuex.Store({
     category,
     firmCategory,
     dict,
+    firmDict,
     orderTask,
     fundAccount,
     orderReportTotal,

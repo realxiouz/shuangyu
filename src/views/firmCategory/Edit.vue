@@ -121,7 +121,7 @@
             loadData() {
                 this.loading = true;
                 this.$store
-                    .dispatch("dict/getPageList", {
+                    .dispatch("firmDict/getPageList", {
                         pageFlag: this.pageFlag,
                         pageSize: this.pageSize,
                         filter: {categoryId: this.curNode.categoryId}
@@ -140,7 +140,7 @@
             },
             loadTotal() {
                 this.$store
-                    .dispatch("dict/getTotal", {
+                    .dispatch("firmDict/getTotal", {
                         filter: {categoryId: this.curNode.categoryId}
                     })
                     .then(data => {
@@ -154,7 +154,7 @@
             },
             loadCategory() {
                 this.$store
-                    .dispatch("category/getList", {filter: {categoryType: 0}})
+                    .dispatch("firmCategory/getList", {filter: {categoryType: 0}})
                     .then(data => {
                         this.categoryList = data.data;
                     })
@@ -176,7 +176,7 @@
                 this.dialogVisible = false;
                 if (this.formData.dictId != "") {
                     this.$store
-                        .dispatch("dict/updateOne", {dictId: this.formData.dictId, data: this.formData})
+                        .dispatch("firmDict/updateOne", {dictId: this.formData.dictId, data: this.formData})
                         .then(() => {
                             this.loadData();
                         })
@@ -185,7 +185,7 @@
                         });
                 } else {
                     this.$store
-                        .dispatch("dict/addOne", this.formData)
+                        .dispatch("firmDict/addOne", this.formData)
                         .then(() => {
                             this.loadData();
                         })
@@ -213,7 +213,7 @@
             /*根据字典ID删除字典*/
             delete(dictId) {
                 this.$store
-                    .dispatch("dict/removeOne", {dictId: dictId})
+                    .dispatch("firmDict/removeOne", {dictId: dictId})
                     .then(() => {
                         if (1 === this.tableData.length) {
                             this.handlePrevClick();
