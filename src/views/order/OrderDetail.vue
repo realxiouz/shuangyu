@@ -1400,8 +1400,10 @@
           .dispatch("order/getOrderTree", params)
           .then(data => {
             if (data) {
-              this.orderTree = data;
-              this.getSupplierAccount(data[0].merchantId);
+              if(data && data.length>0){
+                this.orderTree = data;
+                this.getSupplierAccount(data[0].merchantId);
+              }
             }
           })
           .catch(error => {
