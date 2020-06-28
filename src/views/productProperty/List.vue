@@ -113,7 +113,7 @@
             /*加载类别树*/
             loadTreeData() {
                 this.$store
-                    .dispatch("category/getTreeList", {filter: {categoryType: 9}})
+                    .dispatch("firmCategory/getTreeList", {filter: {categoryType: 'PRODUCT'}})
                     .then(data => {
                         if (data) {
                             this.treeData = data.data;
