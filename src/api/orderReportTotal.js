@@ -2,7 +2,7 @@ import request from '@/utils/request';
 
 export function getList(params) {
   return request({
-    url: `/order/total/report/list`,
+    url: `/order/report/total/list`,
     method: "get",
     params: params
   });
@@ -10,7 +10,7 @@ export function getList(params) {
 
 export function getTotal(params) {
   return request({
-    url: `/order/total/report/total`,
+    url: `/order/report/total`,
     method: 'get',
     params: params
   });
