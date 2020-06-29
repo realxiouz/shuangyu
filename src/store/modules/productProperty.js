@@ -1,9 +1,9 @@
-import {getList, getOne, getPageList, getTotal, removeOne, save} from '@/api/productProperty';
+import {getList, getOne, getPageList, getTotal, removeOne, saveOne} from '@/api/productProperty';
 
 const actions = {
-  save({commit}, params) {
+  saveOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      save(params)
+      saveOne(params)
         .then(response => {
           const {data} = response;
           resolve(data);

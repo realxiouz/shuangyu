@@ -1,7 +1,7 @@
 import request from '@/utils/request';
 
 
-export function save(data) {
+export function saveOne(data) {
   return request({
     url: '/policy/product/property/save/one',
     method: 'post',

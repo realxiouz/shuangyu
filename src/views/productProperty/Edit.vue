@@ -1,6 +1,6 @@
 <template>
   <div class="page-form">
-    <el-dialog title="添加" :visible.sync="dialogVisible" @open="handleOpen" @close="handleClose" width="500px">
+    <el-dialog :close-on-click-modal="false" title="添加" :visible.sync="dialogVisible" @open="handleOpen" @close="handleClose" width="500px">
       <el-form label-position="top" size="mini" :model="formData" ref="featureForm">
         <el-col :span="24">
           <el-form-item label="自定义功能">
@@ -307,14 +307,18 @@
             },
             handleSave() {
                 this.$store
-                    .dispatch("productFeature/saveOne", this.formData)
-                    .then(id => {
-                        if (!this._.isEmpty(id)) {
-                            this.formData.propertyId = id;
+                    .dispatch("productProperty/saveOne", this.formData
+                    )
+                    .then(data => {
+                        if (!this._.isEmpty(data)) {
+                            this.formData.propertyId = data;
                         }
                         this.dialogVisible = false;
-                        this.$emit('refresh');
+                        // this.$emit('refresh');
                         this.$message({type: "success", message: "保存成功"});
+                    })
+                    .catch(error => {
+                        console.log(error);
                     });
             },
             defaultFormData() {
@@ -350,7 +354,7 @@
             },
             loadData() {
                 this.$store
-                    .dispatch("productFeature/getOne", {propertyId: this.propertyId})
+                    .dispatch("productProperty/getOne", {propertyId: this.propertyId})
                     .then(result => {
                         this.formData = result;
                     });
