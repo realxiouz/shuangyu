@@ -99,12 +99,16 @@
             </el-col>
           </el-form-item>
         </el-col>
+        <el-col :span="24" v-if="formData.valueType==8">
+          <el-form-item label="是否销售属性">
+            <el-switch v-model="formData.sku" :active-value=true :inactive-value=false
+            ></el-switch>
+          </el-form-item>
+        </el-col>
         <el-col :span="24">
-          <el-form-item label="读写类型">
-            <el-radio-group v-model="formData.readonly">
-              <el-radio :label="0">读写</el-radio>
-              <el-radio :label="1">只读</el-radio>
-            </el-radio-group>
+          <el-form-item label="是否只读">
+            <el-switch v-model="formData.readonly" :active-value=true :inactive-value=false
+            ></el-switch>
           </el-form-item>
         </el-col>
         <el-col :span="24">
@@ -289,6 +293,7 @@
                     inputType: '',
                     valueType: 2,
                     readonly: false,
+                    sku: false,
                     attributes: [],
                     callType: 0,
                     eventType: 0,
