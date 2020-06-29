@@ -78,16 +78,15 @@
               v-if="propertyList[index].valueType ==7"
               v-model="item.value">
               <el-radio v-for="item1 in propertyList[index].values" :key="item1.code"
-                        :label="item1.value">{{item1.value}}
+                        :label="item1.name">{{item1.name}}
               </el-radio>
-
             </el-radio-group>
             <!-- 多选 非销售属性-->
             <el-checkbox-group
               v-if="propertyList[index].valueType ==8 && !propertyList[index].sku"
               v-model="item.value">
               <el-checkbox v-for="item2 in propertyList[index].values" :key="item2.code"
-                           :label="item2.value">{{item2.value}}
+                           :label="item2.name">{{item2.name}}
               </el-checkbox>
             </el-checkbox-group>
             <!--选择器-->
@@ -97,8 +96,8 @@
             >
               <el-option v-for="item3 in propertyList[index].values"
                          :key="item3.code"
-                         :label="item3.value"
-                         :value="item3.value">
+                         :label="item3.name"
+                         :value="item3.name">
               </el-option>
             </el-select>
             <!-- 多选 销售属性-->
@@ -106,7 +105,7 @@
               v-if="propertyList[index].valueType ==8 && propertyList[index].sku"
               v-model="item.value">
               <el-checkbox v-for="item4 in propertyList[index].values" :key="item4.code"
-                           :label="item4.code+','+item4.value" @change="handleSku">{{item4.value}}
+                           :label="item4.code+','+item4.name" @change="handleSku">{{item4.name}}
               </el-checkbox>
             </el-checkbox-group>
           </el-form-item>
@@ -578,7 +577,7 @@
                             this.propertyList = data;
                             for (let i = 0, len = this.propertyList.length; i < len; i++) {
                                 if (this.propertyList[i].valueType > 6) {
-                                    this.propertyList[i].values = this.getValue(this.propertyList[i].attributes);
+                                    this.propertyList[i].values = this.propertyList[i].attributes;
                                 }
                             }
                             this.formData.productPropertyItems = [];
@@ -608,10 +607,7 @@
             getValue(values) {
                 let array = [];
                 for (let key in values) {
-                    let data = {};
-                    data.code = key;
-                    data.value = values[key];
-                    array.push(data)
+                    array.push(values[key])
                 }
                 return array;
             },
