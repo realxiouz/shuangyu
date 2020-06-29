@@ -35,46 +35,11 @@
             <el-input v-model="formData.unit"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="最小订单量" prop="miniOrderQuantity">
-            <el-input-number v-model="formData.miniOrderQuantity"></el-input-number>
-          </el-form-item>
-        </el-col>
       </el-row>
       <el-row :gutter="10">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="规格" prop="specification">
             <el-input v-model="formData.specification"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="税率" prop="taxRate">
-            <el-input v-model="formData.taxRate"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-
-      <el-row :gutter="10">
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="毛利率" prop="grossMargin">
-            <el-input v-model="formData.grossMargin"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="供应商名称" prop="supplierName">
-            <el-input v-model="formData.supplierName"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="10">
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="不可销售" prop="notSaleable">
-            <el-switch v-model="formData.notSaleable" :active-value=true :inactive-value=false></el-switch>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="不可采购" prop="notBuyable">
-            <el-switch v-model="formData.notBuyable" :active-value=true :inactive-value=false></el-switch>
           </el-form-item>
         </el-col>
       </el-row>
