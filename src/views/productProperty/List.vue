@@ -404,7 +404,7 @@
         },
         created() {
             this.loadTreeData();
-            this.loadData();
+            // this.loadData();
         },
         components: {
             search,
