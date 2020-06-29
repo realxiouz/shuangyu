@@ -135,6 +135,18 @@
             propertyId: {
                 type: String,
                 default: ''
+            },
+            categoryCode: {
+                type: String,
+                default: ''
+            },
+            categoryName: {
+                type: String,
+                default: ''
+            },
+            categoryPath: {
+                type: String,
+                default: ''
             }
         },
         data() {
@@ -242,6 +254,9 @@
                 }
             },
             handleSave() {
+                this.formData.categoryCode = this.categoryCode;
+                this.formData.categoryName = this.categoryName;
+                this.formData.categoryPath = this.categoryPath;
                 this.$store
                     .dispatch("productProperty/saveOne", this.formData
                     )
@@ -275,7 +290,6 @@
                     valueType: 2,
                     readonly: false,
                     attributes: [],
-                    remark: "",
                     callType: 0,
                     eventType: 0,
                     input: "",

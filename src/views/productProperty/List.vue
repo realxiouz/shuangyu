@@ -27,9 +27,9 @@
         </el-tree>
       </el-col>
       <el-col :xs="13" :sm="14" :md="15" :lg="16" :xl="16">
-        <search class="page-search" ref="search" @onSearch="handleSearch"/>
+        <!--        <search class="page-search" ref="search" @onSearch="handleSearch"/>-->
         <el-row type="flex" justify="space-between" style="margin-bottom:20px;" align="bottom">
-          <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd" :disabled="dialogVisible">添加属性
+          <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd" :disabled="visible">添加属性
           </el-button>
         </el-row>
         <el-table
@@ -71,7 +71,8 @@
         ></el-pagination>
       </el-col>
     </el-row>
-    <edit :visible.sync="dialogVisible" :property-id="propertyId" @refresh="handleRefresh"/>
+    <edit :visible.sync="dialogVisible" :property-id="propertyId" :category-code="categoryCode"
+          :category-name="categoryName" :category-path="categoryPath" @refresh="handleRefresh"/>
     <el-dialog
       :title="addFlag?'添加类别':'编辑类别信息'"
       :visible.sync="categoryDialogVisible"
@@ -126,6 +127,7 @@
                     children: "children",
                     hasChildren: "xxx"
                 },
+                visible: true,
                 dialogVisible: false,
                 categoryDialogVisible: false,
                 addFlag: false,
@@ -137,7 +139,10 @@
                 pageFlag: 1,
                 pageSize: 10,
                 lastId: null,
-                total: 0
+                total: 0,
+                categoryCode: "",
+                categoryName: "",
+                categoryPath: "",
             };
         },
         methods: {
@@ -173,9 +178,9 @@
                     });
             },
             /*点击部门树时调用*/
-            handleNodeClick(data) {
-                this.dialogVisible = false;
-                this.curNode = data;
+            handleNodeClick(data, node) {
+                this.visible = false;
+                this.curNode = node.data;
                 let searchForm = {};
                 searchForm.categoryCode = data.categoryCode;
                 this.loadData(searchForm);
@@ -216,9 +221,9 @@
             },
             handleAdd() {
                 this.propertyId = '';
-                // this.categoryCode = this.curNode.categoryCode;
-                // this.categoryName = this.curNode.categoryName;
-                // this.categoryPath = this.curNode.path;
+                this.categoryCode = this.curNode.categoryCode;
+                this.categoryName = this.curNode.categoryName;
+                this.categoryPath = this.curNode.path;
                 this.dialogVisible = true;
             },
             handleUpdate(id) {
