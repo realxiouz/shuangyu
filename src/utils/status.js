@@ -229,7 +229,7 @@ export function formatAgeType(row) {
 
 // 	格式化乘机人证件类型:
 export function formatCardType(row) {
-  if (row.cardType === "NI") {
+  if (row.cardType === "NI"||row.cardType ==1) {
     return "身份证";
   } else if (row.cardType === "PP") {
     return "护照";

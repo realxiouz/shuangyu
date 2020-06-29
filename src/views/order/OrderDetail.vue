@@ -2011,7 +2011,7 @@
   }
 
   .el-collapse-item__header {
-    background-color: #fafafa;
+    background-color: #82a3baad;
     height: 35px;
     font-size: 12px;
     flex: 1 0 auto;
