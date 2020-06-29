@@ -47,45 +47,11 @@
             <span>{{formData.unit}}</span>
           </el-form-item>
         </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="最小订单量：">
-            <span>{{formData.miniOrderQuantity}}</span>
-          </el-form-item>
-        </el-col>
       </el-row>
       <el-row :gutter="10">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="规格：">
             <span>{{formData.specification}}</span>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="税率：">
-            <span>{{formData.taxRate}}</span>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="10">
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="毛利率：">
-            <span>{{formData.grossMargin}}</span>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="供应商名称：">
-            <span>{{formData.supplierName}}</span>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="10">
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="不可销售：">
-            <el-switch v-model="formData.notSaleable" :active-value="true" :inactive-value="false" disabled></el-switch>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="不可采购：">
-            <el-switch v-model="formData.notBuyable" :active-value="true" :inactive-value="false" disabled></el-switch>
           </el-form-item>
         </el-col>
       </el-row>
