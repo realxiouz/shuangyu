@@ -162,8 +162,36 @@
                 v-for="(item,index) in props.row.offerPrice.sortPrices"
                 :key="index"
               >
-                <el-col style="text-align:center;line-height:38px;">
+                <el-col style="text-align:center;line-height:38px;line-width: 50px">
                   <span>舱位：{{ item.cabin }}</span>
+                </el-col>
+                <el-col style="text-align:center;line-height:38px;">
+                  <span>域名：{{ item.domain!=undefined?item.domain.split(".")[0]:"" }}</span>
+                </el-col>
+                <el-col style="text-align:center;line-height:38px;">
+                  <span>包装类型：{{ item.prtag }}</span>
+                </el-col>
+                <el-col style="text-align:center;line-height:38px;">
+                  <span>舱位等级：{{ formatCabinType(item.cabinType) }}</span>
+                </el-col>
+                <el-col style="text-align:center;line-height:38px;">
+                  <span>证件类型：{{ formatPriceCardType(item.cardType) }}</span>
+                </el-col>
+                <el-col style="text-align:center;line-height:38px;">
+                  <span>剩余座位数：{{ item.cabinCount }}</span>
+                </el-col>
+                <el-col style="text-align:center;line-height:38px;">
+                  <el-tooltip class="item" effect="dark" placement="top">
+                    <div slot="content">{{ item.returnText }}</div>
+                    <el-button>退票规则</el-button>
+                  </el-tooltip>
+
+                </el-col>
+                <el-col style="text-align:center;line-height:38px;">
+                  <el-tooltip class="item" effect="dark" placement="top">
+                    <div slot="content">{{ item.changeText }}</div>
+                    <el-button>改签规则</el-button>
+                  </el-tooltip>
                 </el-col>
                 <el-col style="text-align:center;line-height:38px;">
                   <span>票面价：{{ formatAmount(item.vppr) }}</span>
@@ -861,6 +889,36 @@
           return "￥0.00";
         }
         return "￥" + this.$numeral(amount).format("0.00");
+      },
+      formatCabinType(val){
+        if (val === 0) {
+          return "经济舱";
+        }
+        if (val === 1) {
+          return "头等舱";
+        }
+        if (val === 2) {
+          return "商务舱";
+        }
+        if (val === 3) {
+          return "经济舱精选";
+        }
+        if (val === 4) {
+          return "经济舱y舱";
+        }
+        if (val === 5) {
+          return "超值头等舱";
+        }
+        return "";
+      },
+      formatPriceCardType(val){
+        if (val === 0) {
+          return "所有证件";
+        }
+        if (val === 1) {
+          return "身份证";
+        }
+        return "";
       },
       formatBoolean(param) {
         if (param) {
