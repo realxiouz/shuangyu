@@ -22,7 +22,8 @@
         <el-table-column prop="description" label="描述" align="center"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="350">
           <template slot-scope="scope">
-            <el-button @click="handleUpdate(scope.row.productId)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="inventoryUpdate(scope.row.productId)" type="primary" size="mini">库存编辑</el-button>
+            <el-button @click="handleUpdate(scope.row.productId)" type="primary" size="mini">商品编辑</el-button>
             <el-button
               @click.native.prevent="handleRemove(scope.row.productId,scope.$index,tableData)"
               type="danger"
@@ -120,6 +121,9 @@
                 this.$router.push({
                     path: path
                 });
+            },
+            inventoryUpdate(id) {
+
             },
             handleUpdate(id) {
                 let path = "";
