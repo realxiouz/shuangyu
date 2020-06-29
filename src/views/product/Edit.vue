@@ -22,7 +22,7 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row v-if="propertyList.length >0" :gutter="10" v-for="(item, index) in formData.productPropertyItems"
+      <el-row :v-if="propertyList.length >0" :gutter="10" v-for="(item, index) in formData.productPropertyItems"
               :key="index">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item :label="item.label">

@@ -42,18 +42,18 @@
             <el-input placeholder="请输入步长" v-model="formData.step" type="number"/>
           </el-form-item>
         </el-col>
-       <!-- <el-col :span="24" v-if="formData.valueType==2">
-          <el-form-item label="数据单位" prop="unit">
-            <el-select v-model="formData.unit" style="width: 100%">
-              <el-option
-                v-for="(item,index) in unitTypes"
-                :key="index"
-                :value="item.value"
-              >{{item.value}}
-              </el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>-->
+        <!-- <el-col :span="24" v-if="formData.valueType==2">
+           <el-form-item label="数据单位" prop="unit">
+             <el-select v-model="formData.unit" style="width: 100%">
+               <el-option
+                 v-for="(item,index) in unitTypes"
+                 :key="index"
+                 :value="item.value"
+               >{{item.value}}
+               </el-option>
+             </el-select>
+           </el-form-item>
+         </el-col>-->
         <el-col :span="24" v-if="formData.valueType>6">
           <el-form-item label="属性项">
             <el-col :span="24">
@@ -264,9 +264,15 @@
                 }
             },
             handleSave() {
-                this.formData.categoryCode = this.categoryCode;
-                this.formData.categoryName = this.categoryName;
-                this.formData.categoryPath = this.categoryPath;
+                if (this.categoryCode) {
+                    this.formData.categoryCode = this.categoryCode;
+                }
+                if (this.categoryName) {
+                    this.formData.categoryName = this.categoryName;
+                }
+                if (this.categoryPath) {
+                    this.formData.categoryPath = this.categoryPath;
+                }
                 this.$store
                     .dispatch("productProperty/saveOne", this.formData
                     )

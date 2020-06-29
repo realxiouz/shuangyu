@@ -228,9 +228,6 @@
             },
             handleUpdate(id) {
                 this.propertyId = id;
-                this.categoryCode = this.curNode.categoryCode;
-                this.categoryName = this.curNode.categoryName;
-                this.categoryPath = this.curNode.path;
                 this.dialogVisible = true;
             },
             handleRemove(id, index, rows) {
