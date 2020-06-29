@@ -464,7 +464,7 @@
                         for (let i = 0, len = this.formData.productPropertyItems.length; i < len; i++) {
                             let propertyItems = {};
                             propertyItems.code = this.formData.productPropertyItems[i].code;
-                            propertyItems.label = this.formData.productPropertyItems[i].label;
+                            propertyItems.name = this.formData.productPropertyItems[i].label;
                             propertyItems.sku = this.formData.productPropertyItems[i].sku;
                             //sku
                             if (this.formData.productPropertyItems[i].sku) {
@@ -489,7 +489,7 @@
                             productPropertyItems.push(propertyItems);
                         }
 
-                        this.dataList[i].productPropertyItems = productPropertyItems;
+                        this.dataList[i].propertyItems = productPropertyItems;
                         this.dataList[i].skuName = skuNames;
                         this.dataList[i].properties = properties;
                     } else {
@@ -509,7 +509,7 @@
                     for (let i = 0, len = this.formData.productPropertyItems.length; i < len; i++) {
                         let propertyItems = {};
                         propertyItems.code = this.formData.productPropertyItems[i].code;
-                        propertyItems.label = this.formData.productPropertyItems[i].label;
+                        propertyItems.name = this.formData.productPropertyItems[i].label;
                         propertyItems.sku = this.formData.productPropertyItems[i].sku;
                         if (this.formData.productPropertyItems[i].sku) {
                             let valueArray = this.formData.productPropertyItems[i].value;
@@ -527,7 +527,7 @@
                         productPropertyItems.push(propertyItems);
                     }
                     this.formData.properties = properties;
-                    this.formData.productPropertyItems = productPropertyItems;
+                    this.formData.propertyItems = productPropertyItems;
                 }
             },
             handleSave() {
