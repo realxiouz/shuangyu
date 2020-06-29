@@ -369,10 +369,7 @@ export default {
       console.log("loadForm");
     },
     loadStaffData(flag) {
-      this.$store
-        .dispatch("staff/getMany", {
-          staffIdList: JSON.stringify(this.staffIdList)
-        })
+      this.$store.dispatch("staff/getMany", this.staffIdList)
         .then(data => {
           if (flag == "1") {
             this.peopleData = data;

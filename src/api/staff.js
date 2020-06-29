@@ -54,11 +54,11 @@ export function getTotal(filter) {
   });
 }
 
-export function getMany(staffIdList) {
+export function getMany(data) {
   return request({
-    url: "/firm/staff/many",
-    method: "get",
-    params: staffIdList
+    url: "/firm/staff/get/many",
+    method: "post",
+    data
   });
 }
 
