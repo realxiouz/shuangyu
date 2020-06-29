@@ -172,7 +172,6 @@
         if (formData.configId) {
           url = "qunarPolicyConfig/updateOne";
         }
-        debugger
         formData.merchantId = this.merchantId;
         formData.merchantDomain = this.merchantDomain;
         this.$store

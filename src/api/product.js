@@ -3,7 +3,7 @@ import request from '@/utils/request';
 
 export function save(data) {
   return request({
-    url: '/policy/product/save/one',
+    url: '/policy/product/save/inventory/one',
     method: 'post',
     data
   });

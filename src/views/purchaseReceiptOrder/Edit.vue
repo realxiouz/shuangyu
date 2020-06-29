@@ -434,7 +434,6 @@
                 this.dialogVisible = true;
             },
             handleRemoveProduct(idx, row) {
-                debugger
                 let _detailId = row.detailId;
                 if (_detailId && '' != _detailId) {
                     this.$store.dispatch("orderDetail/removeOne", {detailId: _detailId})
