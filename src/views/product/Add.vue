@@ -625,7 +625,7 @@
             },
             loadTreeData() {
                 this.$store
-                    .dispatch("category/getTreeList", {filter: {categoryType: 9}})
+                    .dispatch("firmCategory/getTreeList", {filter: {categoryType: 'PRODUCT'}})
                     .then(data => {
                         if (data) {
                             this.categoryList = this.getTreeData(data.data);
