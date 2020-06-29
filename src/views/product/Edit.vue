@@ -22,88 +22,6 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row :v-if="propertyList.length >0" :gutter="10" v-for="(item, index) in formData.productPropertyItems"
-              :key="index">
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item :label="item.label">
-            <!-- 数据类型（0文本，1开关，2数字，3日期，4日期时间，5时间，6评分，7单选，8多选，9选择器）-->
-            <el-input v-if="propertyList[index].valueType ==0"
-                      v-model="item.value"
-            ></el-input>
-            <!-- 开关-->
-            <el-switch v-if="propertyList[index].valueType ==1"
-                       v-model="item.value">
-            </el-switch>
-            <!-- 数字-->
-            <el-input-number v-if="propertyList[index].valueType ==2"
-                             v-model="item.value" :precision="propertyList[index].precision"></el-input-number>
-            <!-- 日期-->
-            <el-date-picker
-              v-if="propertyList[index].valueType ==3"
-              v-model="item.value"
-              type="date"
-              placeholder="选择日期">
-            </el-date-picker>
-            <!-- 日期时间-->
-            <el-date-picker
-              v-if="propertyList[index].valueType ==4"
-              v-model="item.value"
-              type="datetime"
-              placeholder="选择日期时间">
-            </el-date-picker>
-            <!-- 时间-->
-            <el-time-picker
-              v-if="propertyList[index].valueType ==5"
-              arrow-control
-              v-model="item.value"
-              :picker-options="{
-      selectableRange: '00:00:00 - 23:59:00'
-    }"
-            >
-            </el-time-picker>
-            <!-- 评分-->
-            <el-rate
-              v-if="propertyList[index].valueType ==6"
-              v-model="item.value"></el-rate>
-            <!-- 单选-->
-            <el-radio-group
-              v-if="propertyList[index].valueType ==7"
-              v-model="item.value">
-              <el-radio v-for="item1 in propertyList[index].values" :key="item1.code"
-                        :label="item1.value">{{item1.value}}
-              </el-radio>
-
-            </el-radio-group>
-            <!-- 多选 非销售属性-->
-            <el-checkbox-group
-              v-if="propertyList[index].valueType ==8 && !propertyList[index].sku"
-              v-model="item.value">
-              <el-checkbox v-for="item2 in propertyList[index].values" :key="item2.code"
-                           :label="item2.value">{{item2.value}}
-              </el-checkbox>
-            </el-checkbox-group>
-            <!--选择器-->
-            <el-select
-              v-model="item.value"
-              v-if="propertyList[index].valueType ==9">
-              <el-option v-for="item3 in propertyList[index].values"
-                         :key="item3.code"
-                         :label="item3.value"
-                         :value="item3.value">
-              </el-option>
-            </el-select>
-            <!-- 多选 销售属性-->
-            <el-checkbox-group
-              v-if="propertyList[index].valueType ==8 && propertyList[index].sku"
-              v-model="item.value">
-              <el-checkbox v-for="item4 in propertyList[index].values" :key="item4.code"
-                           :label="item4.code+','+item4.value">{{item4.value}}
-              </el-checkbox>
-            </el-checkbox-group>
-
-          </el-form-item>
-        </el-col>
-      </el-row>
       <el-row :gutter="10">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="品牌编码" prop="brandName">
@@ -188,9 +106,7 @@
                 }
             };
             return {
-                formData: {
-                    productPropertyItems: []
-                },
+                formData: {},
                 propertyList: [],
                 categoryList: [],
                 brandList: [],
@@ -288,7 +204,10 @@
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
                         this.$store
-                            .dispatch("product/updateOne", this.formData)
+                            .dispatch("product/updateOne", {
+                                productId: this.$route.query.productId,
+                                data: this.formData
+                            })
                             .then(() => {
                             })
                             .catch(error => {
@@ -309,70 +228,10 @@
                         if (this.formData.skuId == null || this.formData.skuId == "") {
                             let param = {};
                             param.categoryCode = this.formData.categoryCode;
-                            this.loadPropertyList(param);
                         }
                     }).catch(error => {
                     console.log(error);
                 });
-            },
-            loadPropertyList(searchForm) {
-                this.$store
-                    .dispatch("productProperty/getList", {
-                        filter: searchForm
-                    })
-                    .then(data => {
-                            if (data) {
-                                this.propertyList = data;
-                                if (this.propertyList.length > 0) {
-                                    for (let i = 0, len = this.propertyList.length; i < len; i++) {
-                                        if (this.propertyList[i].valueType > 6) {
-                                            this.propertyList[i].values = this.getValueArray(this.propertyList[i].values);
-                                        }
-                                    }
-                                    let properties = this.formData.productPropertyItems;
-                                    this.formData.productPropertyItems = [];
-                                    for (let i = 0, len = data.length; i < len; i++) {
-                                        if (data[i].valueType > 6) {
-                                            this.formData.productPropertyItems.push({
-                                                label: data[i].name,
-                                                code: data[i].code,
-                                                sku: data[i].sku,
-                                                value: this.getValue(data[i].code, properties, [])
-                                            });
-                                        } else {
-                                            this.formData.productPropertyItems.push({
-                                                label: data[i].name,
-                                                code: data[i].code,
-                                                sku: data[i].sku,
-                                                value: this.getValue(data[i].code, properties, '')
-                                            });
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    )
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            getValueArray(values) {
-                let array = [];
-                for (let key in values) {
-                    let data = {};
-                    data.code = key;
-                    data.value = values[key];
-                    array.push(data)
-                }
-                return array;
-            },
-            getValue(code, properties, defaultValue) {
-                for (let i = 0, len = properties.length; i < len; i++) {
-                    if (properties[i].code == code) {
-                        return properties[i].value;
-                    }
-                }
-                return defaultValue;
             },
             //跳转回列表页面
             goBack() {
