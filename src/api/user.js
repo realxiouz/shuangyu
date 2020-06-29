@@ -114,7 +114,7 @@ export function resetPassword(userID) {
 
 export function isExist(filed) {
   return request({
-    url: `/admin/user/exists/${filed}`,
+    url: `/admin/user/exist/${filed}`,
     method: 'get'
   });
 }
