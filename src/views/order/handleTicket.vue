@@ -515,8 +515,10 @@
         if (value == "2") {
           this.radio = "2";
           this.isWoniuTicket = false;
+          this.saveShow();
         } else {
           this.radio = "1";
+          this.isSaveShow = true;
           this.isWoniuTicket = true;
           let userTypeFlag = false;
           for (var i = 0; i < this.supplierAccountData.length; i++) {

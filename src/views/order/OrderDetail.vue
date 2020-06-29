@@ -180,10 +180,8 @@
           </el-table>
           <el-row style="margin-top:20px">
             <el-button
-              v-if="this.tableData.orderType==10"
-              type="primary"
-              @click="goTicket"
-              size="mini"
+              v-if="this.tableData.orderType==10&&(this.tableData.policyCode==''||this.tableData.policyCode=='null'||this.tableData.policyCode.substring(0,3)=='LCK'||this.tableData.policyCode.substring(0,2)=='GL'||this.tableData.policyCode.substring(0,3)=='SZF')"
+                       type="primary" @click="goTicket" size="mini"
             >系统出票
             </el-button>
             <el-button type="primary" v-if="taskType!=2" @click="handleTicket" size="mini">手工出票</el-button>
