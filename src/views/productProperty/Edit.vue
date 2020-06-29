@@ -42,7 +42,7 @@
             <el-input placeholder="请输入步长" v-model="formData.step" type="number"/>
           </el-form-item>
         </el-col>
-        <el-col :span="24" v-if="formData.valueType==2">
+       <!-- <el-col :span="24" v-if="formData.valueType==2">
           <el-form-item label="数据单位" prop="unit">
             <el-select v-model="formData.unit" style="width: 100%">
               <el-option
@@ -53,7 +53,7 @@
               </el-option>
             </el-select>
           </el-form-item>
-        </el-col>
+        </el-col>-->
         <el-col :span="24" v-if="formData.valueType>6">
           <el-form-item label="属性项">
             <el-col :span="24">
@@ -108,6 +108,12 @@
         <el-col :span="24">
           <el-form-item label="是否只读">
             <el-switch v-model="formData.readonly" :active-value=true :inactive-value=false
+            ></el-switch>
+          </el-form-item>
+        </el-col>
+        <el-col :span="24">
+          <el-form-item label="是否前端隐藏">
+            <el-switch v-model="formData.hidden" :active-value=true :inactive-value=false
             ></el-switch>
           </el-form-item>
         </el-col>
@@ -293,6 +299,7 @@
                     inputType: '',
                     valueType: 2,
                     readonly: false,
+                    hidden: false,
                     sku: false,
                     attributes: [],
                     callType: 0,
