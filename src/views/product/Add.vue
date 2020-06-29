@@ -574,7 +574,6 @@
                         filter: searchForm
                     })
                     .then(data => {
-                        debugger
                         if (data) {
                             this.propertyList = data;
                             for (let i = 0, len = this.propertyList.length; i < len; i++) {
