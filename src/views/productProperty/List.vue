@@ -21,9 +21,7 @@
         </el-tree>
       </el-col>
       <el-col :xs="13" :sm="14" :md="15" :lg="16" :xl="16">
-        <!--        <div class="searchBox">-->
-        <!--          <search @onSearch="handleSearch"></search>-->
-        <!--        </div>-->
+        <search class="page-search" ref="search" @onSearch="handleSearch"/>
         <el-row type="flex" justify="space-between" style="margin-bottom:20px;" align="bottom">
           <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd" :disabled="dialogVisible">添加属性
           </el-button>
@@ -196,6 +194,9 @@
                     .catch(err => {
                         console.error(err);
                     });
+            },
+            handleRefresh() {
+                this.handleSearch();
             },
             handleSearch(params) {
                 const newParams = {};
