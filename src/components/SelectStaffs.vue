@@ -85,9 +85,11 @@ export default {
     }
   },
   updated() {
-    this.$nextTick(() => {
-      this.toggleSelection(this.staffData);
-    });
+    if (this.checkboxFlag){
+      this.$nextTick(() => {
+        this.toggleSelection(this.staffData);
+      });
+    }
   },
   created() {
     this.loadData();
