@@ -20,20 +20,6 @@
         <el-table-column prop="unit" label="计量单位" align="center"></el-table-column>
         <el-table-column prop="specification" label="规格" align="center"></el-table-column>
         <el-table-column prop="description" label="描述" align="center"></el-table-column>
-        <el-table-column prop="notSaleable" label="不可销售" align="center">
-          <template slot-scope="scope">
-            <el-switch v-model="scope.row.notSaleable" disabled></el-switch>
-          </template>
-        </el-table-column>
-        <el-table-column prop="taxRate" label="税率" align="center"></el-table-column>
-        <el-table-column prop="miniOrderQuantity" label="最小订单量" align="center"></el-table-column>
-        <el-table-column prop="notBuyable" label="不可采购" align="center">
-          <template slot-scope="scope">
-            <el-switch v-model="scope.row.notBuyable" disabled></el-switch>
-          </template>
-        </el-table-column>
-        <el-table-column prop="grossMargin" label="毛利率" align="center"></el-table-column>
-        <el-table-column prop="supplierName" label="默认供应商名称" align="center"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="350">
           <template slot-scope="scope">
             <el-button @click="handleUpdate(scope.row.productId)" type="primary" size="mini">编辑</el-button>
