@@ -5,6 +5,7 @@
         <el-row style="margin-bottom:20px;">
           <span style="font-weight:700;color:#303133;">商品类目</span>
         </el-row>
+        <el-button type="primary" style="margin-bottom:20px" size="mini" @click="rootAdd">添加</el-button>
         <el-tree
           v-loading="loading"
           node-key="categoryId"
@@ -12,11 +13,16 @@
           :data="treeData"
           :default-expanded-keys="curLine"
           :props="treeProps"
+          :expand-on-click-node="false"
           :highlight-current="true"
-          @node-click="handleNodeClick"
-        >
-          <span class="tree-node" slot-scope="{ node}">
+          @node-click="handleNodeClick">
+          <span class="tree-node" slot-scope="{ node, data }">
             <span>{{ node.data.categoryName }}</span>
+            <span>
+              <el-button type="text" size="mini" @click="nodeAdd(node, data)">添加</el-button>
+              <el-button type="text" size="mini" @click="handleEdit(node, data)">修改</el-button>
+              <el-button type="text" size="mini" @click="removeNode(node, data)">移除</el-button>
+            </span>
           </span>
         </el-tree>
       </el-col>
@@ -66,7 +72,40 @@
       </el-col>
     </el-row>
     <edit :visible.sync="dialogVisible" :property-id="propertyId" @refresh="handleRefresh"/>
+    <el-dialog
+      :title="addFlag?'添加类别':'编辑类别信息'"
+      :visible.sync="categoryDialogVisible"
+      width="33%"
+      center
+      :close-on-click-modal="false"
+    >
+      <el-form :model="formData" label-width="90px" size="mini">
+        <input type="hidden" v-model="formData.categoryId"/>
+        <el-form-item label="类别类型">
+          <el-input type="text" v-model="formData.categoryType" :disabled="true"
+                    placeholder="请输入类别类型.."></el-input>
+        </el-form-item>
+        <el-form-item label="类别编码">
+          <el-input type="text" v-model="formData.categoryCode" @input="toUpperCase" :disabled="update"
+                    placeholder="请输入类别编码.."></el-input>
+        </el-form-item>
+        <el-form-item label="类别名称">
+          <el-input type="text" v-model="formData.categoryName" placeholder="请输入类别名称.."></el-input>
+        </el-form-item>
+        <el-form-item label="排序">
+          <el-input type="text" v-model="formData.sort"></el-input>
+        </el-form-item>
+        <el-form-item label="备注">
+          <el-input type="textarea" :rows="3" v-model="formData.remark" placeholder="请输入备注.."></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button size="mini" @click="handleCancel">取 消</el-button>
+        <el-button size="mini" type="primary" @click="handleSave">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
+
 </template>
 
 <script>
@@ -78,6 +117,8 @@
             return {
                 loading: true,
                 curNode: null,
+                /*类别节点添加编辑表单*/
+                formData: {},
                 tableData: [],
                 treeData: [],
                 curLine: [],
@@ -86,6 +127,12 @@
                     hasChildren: "xxx"
                 },
                 dialogVisible: false,
+                categoryDialogVisible: false,
+                addFlag: false,
+                typeEditAbel: false,
+                update: false,
+                /*判断是否添加的是根类别节点*/
+                root: false,
                 propertyId: "",
                 pageFlag: 1,
                 pageSize: 10,
@@ -169,6 +216,9 @@
             },
             handleAdd() {
                 this.propertyId = '';
+                // this.categoryCode = this.curNode.categoryCode;
+                // this.categoryName = this.curNode.categoryName;
+                // this.categoryPath = this.curNode.path;
                 this.dialogVisible = true;
             },
             handleUpdate(id) {
@@ -213,6 +263,139 @@
                     message: "查询成功！"
                 });
             },
+            /*初始化类别添加表单*/
+            defaultFormData() {
+                return {
+                    categoryId: "",
+                    categoryCode: "",
+                    categoryType: "PRODUCT",
+                    categoryName: "",
+                    icon: "",
+                    title: "",
+                    sort: "",
+                    remark: ""
+                };
+            },
+            /*点击添加节点企业信息*/
+            nodeAdd(idx, node) {
+                this.addFlag = true;
+                this.typeEditAbel = true;
+                this.formData = this.defaultFormData();
+                this.formData.pid = node.categoryId;
+                this.formData.level = node.level + 1;
+                this.formData.categoryType = node.categoryType;
+
+                //添加的导航菜单不是顶级菜单
+                this.root = false;
+                this.categoryDialogVisible = true;
+                this.update = false;
+            },
+            handleEdit(data, node) {
+                this.addFlag = false;
+                this.formData = node;
+                this.categoryDialogVisible = true;
+                this.update = true;
+
+                this.curLine = [];
+                if (null != node.pid) {
+                    this.curLine.push(node.pid);
+                } else {
+                    this.curLine = [];
+                }
+            },
+            /*点击移除导航节点*/
+            removeNode(data, node) {
+                this.curLine = [];
+                if (null != node.pid) {
+                    this.curLine.push(node.pid);
+                } else {
+                    this.curLine = [];
+                }
+                this.open(
+                    this.remove,
+                    node.categoryId,
+                    "此操作将删除该类别及子类别的信息, 是否继续?"
+                );
+            },
+            /*点击取消按钮*/
+            handleCancel() {
+                this.clearForm();
+                this.categoryDialogVisible = false;
+            },
+            /*对导航节点进行存储*/
+            handleSave() {
+                this.categoryDialogVisible = false;
+                this.curLine = [];
+                if (this.formData.categoryId != "") {
+                    this.$store
+                        .dispatch("firmCategory/updateOne", {id: this.formData.categoryId, data: this.formData})
+                        .then(() => {
+                            this.loadTreeData();
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                } else {
+                    this.$store
+                        .dispatch("firmCategory/addOne", this.formData)
+                        .then(data => {
+                            this.curLine.push(data.data);
+                            this.loadTreeData();
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                }
+                this.clearForm();
+            },
+            clearForm() {
+                this.formData = this.defaultFormData();
+            },
+            /*点击添加顶级企业信息*/
+            rootAdd() {
+                this.addFlag = true;
+                this.typeEditAbel = false;
+                this.formData = this.defaultFormData();
+                this.formData.pid = null;
+                this.formData.level = 0;
+                //判断添加的导航是否是顶级导航
+                this.root = true;
+                this.categoryDialogVisible = true;
+                this.update = false;
+            },
+            toUpperCase() {
+                this.formData.categoryCode = this.formData.categoryCode.toUpperCase();
+            },
+            remove(params) {
+                this.$store
+                    .dispatch("firmCategory/removeOne", {categoryId: params})
+                    .then(() => {
+                        this.loadTreeData();
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            open(func, data, message) {
+                this.$confirm(message, "提示", {
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消",
+                    type: "warning"
+                })
+                    .then(() => {
+                        func(data);
+                        this.$message({
+                            type: "success",
+                            message: "删除成功!"
+                        });
+                    })
+                    .catch(() => {
+                        this.$message({
+                            type: "info",
+                            message: "已取消删除"
+                        });
+                    });
+            },
         },
         created() {
             this.loadTreeData();
@@ -224,3 +407,13 @@
         }
     };
 </script>
+<style scoped>
+  .tree-node {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    padding-right: 8px;
+  }
+</style>
