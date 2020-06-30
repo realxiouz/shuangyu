@@ -110,9 +110,9 @@
             }
         },
         methods: {
-            loadData(productId) {
+            loadData() {
                 this.$store
-                    .dispatch("productInventory/getList", {productId: productId})
+                    .dispatch("productInventory/getList", {productId: this.$route.query.productId})
                     .then(data => {
                         this.dataList = data;
                     }).catch(error => {
@@ -189,7 +189,7 @@
         },
         created() {
             if (this.$route.query.productId) {
-                this.loadData(this.$route.query.productId);
+                this.loadData();
             }
         },
         components: {
