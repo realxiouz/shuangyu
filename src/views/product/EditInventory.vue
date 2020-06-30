@@ -70,7 +70,7 @@
           align="center"
           prop="unit"
           label="计量单位"
-          width="180">
+          >
         </el-table-column>
         <el-table-column
           align="center"
@@ -94,9 +94,10 @@
           align="center"
           prop="skuId"
           label="SKU_ID"
-          width="180">
+          >
         </el-table-column>
       </el-table>
+      <br>
       <div slot="footer" style="text-align:center;">
         <el-button size="mini" @click="handleCancel">取 消</el-button>
         <el-button type="primary" size="mini" @click="handleSave">确 定</el-button>
@@ -125,7 +126,6 @@
             handleSave() {
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
-                        this.handleSaveData();
                         this.$store
                             .dispatch("product/save", {
                                 skuList: this.dataList,

@@ -57,6 +57,7 @@
           </el-col>
         </el-row>
       </el-form>
+      <br>
       <div slot="footer" style="text-align:center;">
         <el-button size="mini" @click="handleCancel">取 消</el-button>
         <el-button type="primary" size="mini" @click="handleSave">确 定</el-button>
