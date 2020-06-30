@@ -9,6 +9,14 @@ export function save(data) {
   });
 }
 
+export function addOne(data) {
+  return request({
+    url: '/policy/product/inventory/add/one',
+    method: 'post',
+    data
+  });
+}
+
 export function updateOne(id, data) {
   return request({
     url: `/policy/product/inventory/update/one/${id}`,

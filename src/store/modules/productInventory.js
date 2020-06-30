@@ -1,6 +1,18 @@
-import {getList, getOne, getPageList, getTotal, removeOne, save, updateOne} from '@/api/productInventory';
+import {getList, getOne, getPageList, getTotal, removeOne, save, updateOne,addOne} from '@/api/productInventory';
 
 const actions = {
+  addOne({commit}, params) {
+    return new Promise((resolve, reject) => {
+      addOne(params)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
   save({commit}, params) {
     return new Promise((resolve, reject) => {
       save(params)

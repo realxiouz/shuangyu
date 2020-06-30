@@ -2,6 +2,18 @@
   <div>
     <el-dialog :visible.sync="dialogVisible" @open="handleOpen" @close="handleClose" :close-on-click-modal="false">
       <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
+        <el-form-item label="编号：" prop="productCode">
+          <el-input v-model="formData.productCode" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="名称：" prop="productName">
+          <el-input v-model="formData.productName" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="商品分类：" prop="categoryName">
+          <el-input v-model="formData.categoryName" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="品牌：" prop="brandName">
+          <el-input v-model="formData.brandName" disabled></el-input>
+        </el-form-item>
         <el-form-item label="数量：" prop="quantity">
           <el-input-number v-model="formData.quantity" placeholder="请输入数量.."></el-input-number>
         </el-form-item>
@@ -110,7 +122,11 @@
             },
             handleConfirm() {
                 this.dialogVisible = false;
-                this.$emit("onSave", this.formData);
+                this.$refs['form'].validate((valid) => {
+                    if (valid) {
+                        this.$emit("onSave", this.formData);
+                    }
+                })
             },
             loadData() {
                 this.$store

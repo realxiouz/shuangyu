@@ -120,33 +120,60 @@
                 });
             },
             handleAdd() {
+                this.dialogVisible = true;
             },
             handleUpdate(inventoryId) {
                 this.dialogVisible = true;
                 this.inventoryId = inventoryId;
             },
-            handleRemove() {
-            },
-            handleSave() {
-                this.$refs['form'].validate((valid) => {
-                    if (valid) {
-                        this.$store
-                            .dispatch("product/save", {
-                                skuList: this.dataList,
-                                product: this.formData
-                            })
-                            .then(() => {
-                            })
-                            .catch(error => {
-                                console.log(error);
-                            });
-                        this.$message({
-                            type: "success",
-                            message: "保存成功！"
+            handleRemove(id, index, rows) {
+                this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消",
+                    type: "warning"
+                })
+                    .then(() => {
+                        this.$store.dispatch("productInventory/removeOne", {inventoryId: id}).then(() => {
+                            if (1 === this.tableData.length) {
+                                this.prevClick();
+                            } else {
+                                this.loadData();
+                            }
+                            rows.splice(index, 1);
                         });
-                        this.goBack();
-                    }
-                });
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    });
+            },
+            handleSave(formData) {
+                if (this.inventoryId) {
+                    this.$store
+                        .dispatch("productInventory/updateOne", {inventoryId: formData.inventoryId, data: formData})
+                        .then(() => {
+                            this.loadData();
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                    this.$message({
+                        type: "success",
+                        message: "更新成功！"
+                    });
+                } else {
+                    this.$store
+                        .dispatch("productInventory/addOne", formData)
+                        .then(() => {
+                            this.loadData();
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                    this.$message({
+                        type: "success",
+                        message: "添加成功！"
+                    });
+                }
             },
             handleCancel() {
                 this.goBack();
