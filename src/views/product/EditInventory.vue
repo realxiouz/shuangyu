@@ -5,6 +5,9 @@
         <el-page-header></el-page-header>
       </div>
       <br>
+      <el-row style="margin-bottom:15px;margin-left:40px">
+        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加库存</el-button>
+      </el-row>
       <el-table
         :data="dataList"
         border
@@ -43,65 +46,53 @@
           align="center"
           prop="quantity"
           label="数量"
-          width="200">
-          <template slot-scope="scope">
-            <el-input-number v-model="scope.row.quantity"></el-input-number>
-          </template>
-        </el-table-column>
+        ></el-table-column>
         <el-table-column
           align="center"
           prop="maxStockQuantity"
           label="库存上限"
-          width="200">
-          <template slot-scope="scope">
-            <el-input-number v-model="scope.row.maxStockQuantity"></el-input-number>
-          </template>
-        </el-table-column>
+        ></el-table-column>
         <el-table-column
           align="center"
           prop="minStockQuantity"
           label="库存下限"
-          width="200">
-          <template slot-scope="scope">
-            <el-input-number v-model="scope.row.minStockQuantity"></el-input-number>
-          </template>
-        </el-table-column>
+        ></el-table-column>
         <el-table-column
           align="center"
           prop="unit"
           label="计量单位"
-          >
+        >
         </el-table-column>
         <el-table-column
           align="center"
           prop="cost"
           label="成本"
-          width="200">
-          <template slot-scope="scope">
-            <el-input-number v-model="scope.row.cost" :precision="2" :step="0.1"></el-input-number>
-          </template>
+        >
         </el-table-column>
         <el-table-column
           align="center"
           prop="price"
           label="零售价"
-          width="200">
-          <template slot-scope="scope">
-            <el-input-number v-model="scope.row.price" :precision="2" :step="0.1"></el-input-number>
-          </template>
+        >
         </el-table-column>
         <el-table-column
           align="center"
           prop="skuId"
           label="SKU_ID"
-          >
+        >
+        </el-table-column>
+        <el-table-column fixed="right" label="操作" align="center" width="150">
+          <template slot-scope="scope">
+            <el-button @click="handleUpdate(scope.row.inventoryId)" type="primary" size="mini">编辑</el-button>
+            <el-button
+              @click.native.prevent="handleRemove(scope.row.inventoryId,scope.$index,tableData)"
+              type="danger"
+              size="mini"
+            >删除
+            </el-button>
+          </template>
         </el-table-column>
       </el-table>
-      <br>
-      <div slot="footer" style="text-align:center;">
-        <el-button size="mini" @click="handleCancel">取 消</el-button>
-        <el-button type="primary" size="mini" @click="handleSave">确 定</el-button>
-      </div>
     </div>
   </div>
 </template>
@@ -122,6 +113,12 @@
                     }).catch(error => {
                     console.log(error);
                 });
+            },
+            handleAdd() {
+            },
+            handleUpdate() {
+            },
+            handleRemove() {
             },
             handleSave() {
                 this.$refs['form'].validate((valid) => {
