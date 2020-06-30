@@ -28,7 +28,7 @@ const actions = {
   updateOne({commit}, params) {
     return new Promise((resolve, reject) => {
       const {inventoryId, data} = params;
-      updateOne(productId, data)
+      updateOne(inventoryId, data)
         .then(response => {
           const {data} = response;
           resolve(data);
