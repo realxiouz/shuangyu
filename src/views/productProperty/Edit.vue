@@ -105,9 +105,20 @@
             ></el-switch>
           </el-form-item>
         </el-col>
+        <el-col :span="24" v-if="formData.valueType==8">
+          <el-form-item label="是否多选">
+            <el-switch v-model="formData.multiple" :active-value=true :inactive-value=false
+            ></el-switch>
+          </el-form-item>
+        </el-col>
         <el-col :span="24">
           <el-form-item label="是否只读">
             <el-switch v-model="formData.readonly" :active-value=true :inactive-value=false
+            ></el-switch>
+          </el-form-item>
+        </el-col><el-col :span="24">
+          <el-form-item label="是否必填">
+            <el-switch v-model="formData.required" :active-value=true :inactive-value=false
             ></el-switch>
           </el-form-item>
         </el-col>
@@ -307,6 +318,8 @@
                     readonly: false,
                     hidden: false,
                     sku: false,
+                    multiple: false,
+                    required: false,
                     attributes: [],
                     callType: 0,
                     eventType: 0,

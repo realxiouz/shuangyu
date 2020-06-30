@@ -14,6 +14,18 @@
         <el-form-item label="品牌：" prop="brandName">
           <el-input v-model="formData.brandName" disabled></el-input>
         </el-form-item>
+        <el-form-item :v-if=" formData.propertyItems.length >0 "
+                      v-for="(item, index) in formData.propertyItems" :key="index"
+                      :label="item.name">
+          <!-- 多选 销售属性-->
+          <el-checkbox-group
+            v-if="propertyList[index].valueType ==8 && propertyList[index].sku"
+            v-model="item.value">
+            <el-checkbox v-for="item4 in propertyList[index].attributes" :key="item4.code"
+                         :label="item4.code+','+item4.name" @change="handleSku">{{item4.name}}
+            </el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
         <el-form-item label="数量：" prop="quantity">
           <el-input-number v-model="formData.quantity" placeholder="请输入数量.."></el-input-number>
         </el-form-item>
@@ -53,6 +65,7 @@
         data() {
             return {
                 formData: this.defaultFormData(),
+                propertyList: [],
                 dialogVisible: this.visible,
                 //用于记录和查找所选中的商品类别
                 rules: {
@@ -132,7 +145,14 @@
                 this.$store
                     .dispatch("productInventory/getOne", {inventoryId: this.inventoryId})
                     .then(data => {
-                        this.formData = data;
+                        if (data) {
+                            this.formData = data;
+                            if (this.formData.categoryCode) {
+                                let param = {};
+                                param.categoryCode = this.formData.categoryCode;
+                                this.loadPropertyList(param);
+                            }
+                        }
                     }).catch(error => {
                     console.log(error);
                 });
@@ -142,7 +162,78 @@
             },
             handleClose() {
                 this.$emit('update:visible', false);
-            }
+            },
+            loadPropertyList(searchForm) {
+                this.$store
+                    .dispatch("productProperty/getList", {
+                        filter: searchForm
+                    })
+                    .then(data => {
+                        if (data) {
+                            this.propertyList = data;
+                            let properties = this.formData.propertyItems;
+                            this.formData.propertyItems = [];
+                            for (let i = 0, len = data.length; i < len; i++) {
+                                if (data[i].valueType == 8) {
+                                    this.formData.propertyItems.push({
+                                        name: data[i].name,
+                                        code: data[i].code,
+                                        sku: data[i].sku,
+                                        value: []
+                                    });
+                                }
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            handleSku() {
+                let array = [];
+                for (let i = 0, len = this.formData.propertyItems.length; i < len; i++) {
+                    if (this.formData.propertyItems[i].sku) {
+                        let value = this.formData.propertyItems[i].value;
+                        if (value.length > 0) {
+                            array.push(value);
+                        }
+                    }
+                }
+                this.dataList = [];
+                if (array.length > 0) {
+                    let skuIds = this.calcDescartes(array);
+                    for (let i = 0; i < skuIds.length; i++) {
+                        let row = {};
+                        row.productCode = this.formData.productCode;
+                        row.productName = this.formData.productName;
+                        row.categoryName = this.formData.categoryName;
+                        row.brandName = this.formData.brandName;
+                        row.unit = this.formData.unit;
+                        if (Array.isArray(skuIds[i])) {
+                            let codes = [];
+                            let names = [];
+                            for (let j = 0; j < skuIds[i].length; j++) {
+                                let item1 = skuIds[i][j].split(",");
+                                codes.push(item1[0]);
+                                names.push(item1[1]);
+                            }
+                            row.skuCode = codes;
+                            row.skuName = names.join(" ");
+                            row.skuId = codes.join(",");
+                        } else {
+                            let codes = [];
+                            let item2 = skuIds[i].split(",");
+                            row.skuName = item2[1];
+                            row.skuId = item2[0];
+                            codes.push(item2[0]);
+                            row.skuCode = codes;
+                        }
+                        this.dataList.push(row)
+                    }
+                } else {
+                    this.dataList.push(this.formData);
+                }
+            },
         },
         created() {
             // this.loadCategory();
