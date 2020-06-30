@@ -1,5 +1,10 @@
 <template>
-  <div>
+  <div class="bigBox">
+    <div class="contentBox">
+      <div id="goBack" @click="goBack">
+        <el-page-header></el-page-header>
+      </div>
+      <br>
     <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
       <el-row :gutter="10">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -243,6 +248,7 @@
       <el-button size="mini" @click="handleCancel">取 消</el-button>
       <el-button type="primary" size="mini" @click="handleSave">确 定</el-button>
     </div>
+  </div>
   </div>
 </template>
 <script>

@@ -123,7 +123,14 @@
                 });
             },
             inventoryUpdate(id) {
-
+                let path = "";
+                path = "/inventory/edit";
+                this.$router.push({
+                    path: path,
+                    query: {
+                        productId: id
+                    }
+                });
             },
             handleUpdate(id) {
                 let path = "";

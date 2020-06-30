@@ -812,6 +812,13 @@ export default new Router({
           meta: {title: '添加商品', icon: 'home'}
         },
         {
+          title: '编辑商品库存',
+          path: '/inventory/edit',
+          name: 'InventoryEdit',
+          component: () => import('@/views/product/EditInventory'),
+          meta: {title: '编辑商品库存', icon: 'home'}
+        },
+        {
           title: '商品属性管理',
           path: '/property/list',
           name: 'property',
