@@ -123,7 +123,6 @@
                     skuCode: '',
                     skuName: '',
                     skuId: '',
-                    properties: {},
                     propertyItems: [],
                     //描述
                     description: ''
@@ -171,7 +170,6 @@
                     .then(data => {
                         if (data) {
                             this.propertyList = data;
-                            let properties = this.formData.propertyItems;
                             this.formData.propertyItems = [];
                             for (let i = 0, len = data.length; i < len; i++) {
                                 if (data[i].valueType == 8) {
