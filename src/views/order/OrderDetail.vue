@@ -341,7 +341,7 @@
                 </el-button>
                 <el-button
                   type="primary"
-                  v-show="woniuPerateButton(scope.row) && taskType!='4'"
+                  v-show="woniuPerateButton(scope.row) || taskType=='2' || taskType=='3'"
                   @click="intercept(scope.row)"
                   size="mini"
                 >拦截
