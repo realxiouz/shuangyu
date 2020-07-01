@@ -71,12 +71,12 @@ export default {
     loadData(params) {
       this.$store
         .dispatch("airlineChange/getList", {
-          filter: params
+          params
         })
         .then(data => {
           if (data) {
             this.tableData = data.data;
-            this.loadTotal(data.data.size());
+            //this.loadTotal(data.data.size());
           }
           this.loading = false;
         })
