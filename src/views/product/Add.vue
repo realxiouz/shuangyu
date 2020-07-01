@@ -267,7 +267,6 @@
             return {
                 formData: {
                     productPropertyItems: [],
-                    properties: {},
                 },
                 propertyList: [],
                 categoryList: [],
@@ -321,7 +320,6 @@
             defaultFormData() {
                 return {
                     productPropertyItems: [],
-                    properties: {},
                     productCode: "",
                     productName: "",
                     categoryCode: "",
@@ -431,7 +429,6 @@
                     this.dataList[i].supplierName = this.formData.supplierName;
                     if (this.dataList[i].skuName.length > 0 || this.dataList[i].skuId.length > 0) {
                         let skuNames = this.dataList[i].skuName.split(" ");
-                        const properties = {};
                         const productPropertyItems = [];
                         for (let i = 0, len = this.formData.productPropertyItems.length; i < len; i++) {
                             let propertyItems = {};
@@ -446,7 +443,6 @@
                                         for (let j = 0, len = skuNames.length; j < len; j++) {
                                             let array = map[key].split(",");
                                             if (array[1] == skuNames[j]) {
-                                                properties[this.formData.productPropertyItems[i].code] = skuNames[j];
                                                 propertyItems.value = skuNames[j];
                                             }
                                         }
@@ -455,28 +451,21 @@
 
                             } else {
                                 //非sku
-                                properties[this.formData.productPropertyItems[i].code] = this.formData.productPropertyItems[i].value;
                                 propertyItems.value = this.formData.productPropertyItems[i].value;
                             }
                             productPropertyItems.push(propertyItems);
                         }
-
                         this.dataList[i].propertyItems = productPropertyItems;
                         this.dataList[i].skuName = skuNames;
-                        this.dataList[i].properties = properties;
                     } else {
                         //非sku
                         if (this.formData.productPropertyItems.length > 0) {
-                            const properties = {};
                             for (let i = 0, len = this.formData.productPropertyItems.length; i < len; i++) {
-                                properties[this.formData.productPropertyItems[i].code] = this.formData.productPropertyItems[i].value;
                             }
-                            this.dataList[i].properties = properties;
                         }
                     }
                 }
                 if (this.formData.productPropertyItems.length > 0) {
-                    const properties = {};
                     const productPropertyItems = [];
                     for (let i = 0, len = this.formData.productPropertyItems.length; i < len; i++) {
                         let propertyItems = {};
@@ -490,15 +479,12 @@
                                 let item2 = valueArray[i].split(",");
                                 values[item2[0]] = item2[1];
                             }
-                            properties[this.formData.productPropertyItems[i].code] = values;
                             propertyItems.value = values;
                         } else {
-                            properties[this.formData.productPropertyItems[i].code] = this.formData.productPropertyItems[i].value;
                             propertyItems.value = this.formData.productPropertyItems[i].value;
                         }
                         productPropertyItems.push(propertyItems);
                     }
-                    this.formData.properties = properties;
                     this.formData.propertyItems = productPropertyItems;
                 }
             },
