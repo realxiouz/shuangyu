@@ -111,7 +111,7 @@
                     .dispatch("firmCategory/getTreeList", {filter: {}})
                     .then(data => {
                         if (data) {
-                            this.treeData = data.data;
+                            this.treeData = data;
                         }
                         this.loading = false;
                     })

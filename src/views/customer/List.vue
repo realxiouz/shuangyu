@@ -154,8 +154,9 @@
                     })
                     .then(data => {
                         if (data) {
-                            this.tableData = data;
-                            this.loadTotal(params);
+                            this.tableData = data.rows;
+                            this.total = data.total;
+                            // this.loadTotal(params);
                         }
                         this.loading = false;
                     })

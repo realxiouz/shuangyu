@@ -20,8 +20,7 @@ const actions = {
   addOne({commit}, params) {
     return new Promise((resolve, reject) => {
       addOne(params)
-        .then(response => {
-          const {data} = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -33,8 +32,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {filter} = params;
       getTotal(filter)
-        .then(response => {
-          const {data} = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -46,8 +44,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {merchantId, data} = params;
       updateOne(merchantId, data)
-        .then(response => {
-          const {data} = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -59,8 +56,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {merchantId} = params;
       getOne(merchantId)
-        .then(response => {
-          const {data} = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -72,8 +68,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {pageFlag, pageSize, filter} = params;
       getPageList(pageFlag, pageSize, filter)
-        .then(response => {
-          const {data} = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -85,8 +80,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {pageFlag, pageSize, filter} = params;
       getSupplierPageList(pageFlag, pageSize, filter)
-        .then(response => {
-          const {data} = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -98,8 +92,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {pageFlag, pageSize, filter} = params;
       getCustomerPageList(pageFlag, pageSize, filter)
-        .then(response => {
-          const {data} = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -111,8 +104,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {filter} = params;
       getCustomerTotal(filter)
-        .then(response => {
-          const {data} = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -124,8 +116,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {filter} = params;
       getSupplierTotal(filter)
-        .then(response => {
-          const {data} = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -137,8 +128,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {filter} = params;
       getList(filter)
-        .then(response => {
-          const {data} = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -150,8 +140,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {filter} = params;
       getSupplierList(filter)
-        .then(response => {
-          const {data} = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -163,8 +152,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {filter} = params;
       getCustomerList(filter)
-        .then(response => {
-          const {data} = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -176,8 +164,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {firmId} = params;
       removeOne(firmId)
-        .then(response => {
-          const {data} = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -189,8 +176,7 @@ const actions = {
     const {staffId, userId} = params;
     return new Promise((resolve, reject) => {
       associateUser(staffId, userId)
-        .then(response => {
-          const {data} = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {

@@ -148,25 +148,13 @@
                     })
                     .then(data => {
                         if (data) {
-                            this.tableData = data;
-                            this.loadTotal(params);
+                            this.tableData = data.rows;
+                            this.total = data.total;
                         }
                         this.loading = false;
                     })
                     .catch(error => {
                         this.loading = false;
-                    });
-            },
-            loadTotal(params) {
-                this.$store
-                    .dispatch("role/getTotal", {filter: params})
-                    .then(data => {
-                        if (data >= 0) {
-                            this.total = data;
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error);
                     });
             },
             // 新增或存储新的角色
@@ -212,8 +200,8 @@
                     })
                     .then(data => {
                         if (data) {
-                            this.tableData = data;
-                            this.loadTotal(params);
+                            this.tableData = data.rows;
+                            this.total = data.total;
                         }
                         this.loading = false;
                     })

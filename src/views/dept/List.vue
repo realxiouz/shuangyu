@@ -117,26 +117,19 @@
           })
           .then(data => {
             if (data) {
-              this.tableData = data;
+              this.tableData = data.rows;
+              this.total = data.total;
               this.expandRowKeys = [];
-              this.expandRowKeys.push(data[0].deptId);
-              this.loadTotal(params);
+              data.rows.length && this.expandRowKeys.push(data.rows[0].deptId);
             }
+            
+          })
+          .catch(error => {
+            console.log(error);
+          })
+          .finally(_ => {
             this.loading = false;
           })
-          .catch(error => {
-            console.log(error);
-          });
-      },
-      loadTotal(params) {
-        this.$store
-          .dispatch("dept/getRootTotal", {filter: params})
-          .then(data => {
-            this.total = data;
-          })
-          .catch(error => {
-            console.log(error);
-          });
       },
       loadChildren(tree, treeNode, resolve) {
         // tree为点击那一行的数据

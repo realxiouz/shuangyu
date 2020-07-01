@@ -20,7 +20,7 @@
         <el-table-column prop="apiName" align="left" label="api名称"></el-table-column>
         <el-table-column align="center" label="创建时间">
           <template slot-scope="scope">
-            <span>{{formatDate(scope.row.createTime,'YYYY-MM-DD HH:mm:ss')}}</span>
+            <span>{{scope.row.createTime|time}}</span>
           </template>
         </el-table-column>
 
@@ -226,14 +226,6 @@
                         message: "查询成功！"
                     });
                 });
-            },
-            formatDate(dateStr, format) {
-                if (null != dateStr) {
-                    const date = new Date(dateStr);
-                    return this.$moment(date).format(format);
-                } else {
-                    return "";
-                }
             }
         },
         created() {

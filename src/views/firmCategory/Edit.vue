@@ -128,8 +128,9 @@
                     })
                     .then(data => {
                         if (data) {
-                            this.tableData = data;
-                            this.loadTotal();
+                            this.tableData = data.rows;
+                            this.total = data.total;
+                            // this.loadTotal();
                         }
                         this.loading = false;
                     })

@@ -153,25 +153,13 @@
                     })
                     .then(data => {
                         if (data) {
-                            this.tableData = data;
-                            this.loadTotal(params);
+                            this.tableData = data.rows;
+                            this.total = data.total;
                         }
                         this.loading = false;
                     })
                     .catch(error => {
                         this.loading = false;
-                        console.log(error);
-                    });
-            },
-            loadTotal(params) {
-                this.$store
-                    .dispatch("firmMerchant/getSupplierTotal", {filter: params})
-                    .then(data => {
-                        if (data) {
-                            this.total = data;
-                        }
-                    })
-                    .catch(error => {
                         console.log(error);
                     });
             },
