@@ -1,60 +1,67 @@
 <template>
-  <div>
-    <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
-      <el-row :gutter="10">
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="商品编码" prop="productCode">
-            <el-input v-model="formData.productCode"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="10">
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="商品名称" prop="productName">
-            <el-input v-model="formData.productName"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="10">
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="商品类目" prop="categoryName">
-            <el-input v-model="formData.categoryName" disabled></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="10">
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="品牌编码" prop="brandName">
-            <el-input v-model="formData.brandName" disabled></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="10">
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="计量单位" prop="unit">
-            <el-input v-model="formData.unit"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="10">
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="规格" prop="specification">
-            <el-input v-model="formData.specification"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="10">
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="描述" prop="description">
-            <el-input type="textarea"
-                      :rows="3" v-model="formData.description"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-    </el-form>
-    <div slot="footer" style="text-align:center;">
-      <el-button size="mini" @click="handleCancel">取 消</el-button>
-      <el-button type="primary" size="mini" @click="handleSave">确 定</el-button>
+  <div class="bigBox">
+    <div class="contentBox">
+      <div id="goBack" @click="goBack">
+        <el-page-header></el-page-header>
+      </div>
+      <br>
+      <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
+        <el-row :gutter="10">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="商品编码" prop="productCode">
+              <el-input v-model="formData.productCode"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="10">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="商品名称" prop="productName">
+              <el-input v-model="formData.productName"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="10">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="商品类目" prop="categoryName">
+              <el-input v-model="formData.categoryName" disabled></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="10">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="品牌编码" prop="brandName">
+              <el-input v-model="formData.brandName" disabled></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="10">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="计量单位" prop="unit">
+              <el-input v-model="formData.unit"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="10">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="规格" prop="specification">
+              <el-input v-model="formData.specification"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="10">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="描述" prop="description">
+              <el-input type="textarea"
+                        :rows="3" v-model="formData.description"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <br>
+      <div slot="footer" style="text-align:center;">
+        <el-button size="mini" @click="handleCancel">取 消</el-button>
+        <el-button type="primary" size="mini" @click="handleSave">确 定</el-button>
+      </div>
     </div>
   </div>
 </template>

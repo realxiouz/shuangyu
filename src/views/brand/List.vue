@@ -92,7 +92,7 @@
                     this.$store
                         .dispatch("brand/updateOne", {brandId: formData.brandId, data: formData})
                         .then(() => {
-                            this.loadData({});
+                            this.loadData();
                         })
                         .catch(error => {
                             console.log(error);
