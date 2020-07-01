@@ -168,7 +168,7 @@
                     .dispatch("firmCategory/getTreeList", {filter: {categoryType: 'PRODUCT'}})
                     .then(data => {
                         if (data) {
-                            this.treeData = data.data;
+                            this.treeData = data;
                         }
                         this.loading = false;
                     })
@@ -185,18 +185,18 @@
                 searchForm.categoryCode = data.categoryCode;
                 this.loadData(searchForm);
             },
-            loadTotal(searchForm) {
-                this.$store
-                    .dispatch("productProperty/getTotal", {
-                        filter: searchForm
-                    })
-                    .then(data => {
-                        this.total = data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
+            // loadTotal(searchForm) {
+            //     this.$store
+            //         .dispatch("productProperty/getTotal", {
+            //             filter: searchForm
+            //         })
+            //         .then(data => {
+            //             this.total = data;
+            //         })
+            //         .catch(error => {
+            //             console.log(error);
+            //         });
+            // },
             loadData(searchForm = {}) {
                 if (this.lastId) {
                     searchForm.lastId = this.lastId;
@@ -209,8 +209,9 @@
                     })
                     .then(data => {
                         if (data) {
-                            this.tableData = data;
-                            this.loadTotal(searchForm);
+                            this.tableData = data.rows;
+                            this.total = data.total;
+                            // this.loadTotal(searchForm);
                         }
                         this.loading = false;
                     })

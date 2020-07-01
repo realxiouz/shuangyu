@@ -75,18 +75,18 @@
                 this.pageSize = pageSize;
                 this.loadData();
             },
-            loadTotal(searchForm) {
-                this.$store
-                    .dispatch("brand/getTotal", {
-                        filter: searchForm
-                    })
-                    .then(data => {
-                        this.total = data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
+            // loadTotal(searchForm) {
+            //     this.$store
+            //         .dispatch("brand/getTotal", {
+            //             filter: searchForm
+            //         })
+            //         .then(data => {
+            //             this.total = data;
+            //         })
+            //         .catch(error => {
+            //             console.log(error);
+            //         });
+            // },
             handleSave(formData) {
                 if (this.brandId) {
                     this.$store
@@ -119,8 +119,9 @@
                 })
                     .then(data => {
                         if (data) {
-                            this.tableData = data;
-                            this.loadTotal(searchForm);
+                            this.tableData = data.rows;
+                            this.total = data.total;
+                            // this.loadTotal(searchForm);
                         }
                         this.loading = false;
                     })

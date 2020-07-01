@@ -97,25 +97,12 @@
           })
           .then(data => {
             if (data) {
-              this.tableData = data.data;
-              this.loadTotal(params);
+              this.tableData = data;
             }
             this.loading = false;
           })
           .catch(error => {
             this.loading = false;
-            console.log(error);
-          });
-      },
-      loadTotal(params) {
-        this.$store
-          .dispatch("owp/getTotal", {filter: params})
-          .then(data => {
-            if (data) {
-              this.total = data.data;
-            }
-          })
-          .catch(error => {
             console.log(error);
           });
       },

@@ -78,18 +78,18 @@
                 this.lastId = this.tableData[this.tableData.length - 1].productId;
                 this.loadData();
             },
-            loadTotal(searchForm) {
-                this.$store
-                    .dispatch("product/getTotal", {
-                        filters: searchForm
-                    })
-                    .then(data => {
-                        this.total = data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
+            // loadTotal(searchForm) {
+            //     this.$store
+            //         .dispatch("product/getTotal", {
+            //             filters: searchForm
+            //         })
+            //         .then(data => {
+            //             this.total = data;
+            //         })
+            //         .catch(error => {
+            //             console.log(error);
+            //         });
+            // },
             loadData(searchForm = {}) {
                 if (this.lastId) {
                     searchForm.lastId = this.lastId;
@@ -102,8 +102,9 @@
                     })
                     .then(data => {
                         if (data) {
-                            this.tableData = data;
-                            this.loadTotal(searchForm);
+                            this.tableData = data.rows;
+                            this.total = data.total;
+                            // this.loadTotal(searchForm);
                         }
                         this.loading = false;
                     })

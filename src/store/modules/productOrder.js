@@ -16,7 +16,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       saveOrder(params)
         .then(response => {
-          resolve(response.data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -29,7 +29,7 @@ const actions = {
       const {orderNo, data} = params;
       inWarehouseOrder(orderNo, data)
         .then(response => {
-          resolve(response.data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -41,7 +41,7 @@ const actions = {
       const {orderNo, data} = params;
       outWarehouseOrder(orderNo, data)
         .then(response => {
-          resolve(response.data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -53,7 +53,7 @@ const actions = {
       const {id, data} = params;
       updateOne(id, data)
         .then(response => {
-          resolve(response.data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -65,7 +65,7 @@ const actions = {
       const {orderNo} = params;
       removeOne(orderNo)
         .then(response => {
-          resolve(response.data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -76,7 +76,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       confirmOrder(params)
         .then(response => {
-          resolve(response.data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -88,7 +88,7 @@ const actions = {
       const {orderNo} = params;
       getOne(orderNo)
         .then(response => {
-          resolve(response.data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -100,7 +100,7 @@ const actions = {
       const {filter} = params;
       getTotal(filter)
         .then(response => {
-          resolve(response.data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -112,7 +112,7 @@ const actions = {
       const {filter} = params;
       getList(filter)
         .then(response => {
-          resolve(response.data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -124,7 +124,7 @@ const actions = {
       const {pageFlag, pageSize, filter} = params;
       getPageList(pageFlag, pageSize, filter)
         .then(response => {
-          resolve(response.data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);

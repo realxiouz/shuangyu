@@ -4,8 +4,7 @@ const actions = {
   save({commit}, params) {
     return new Promise((resolve, reject) => {
       save(params)
-        .then(response => {
-          const {data} = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -17,8 +16,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {productId, data} = params;
       updateOne(productId, data)
-        .then(response => {
-          const {data} = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -30,8 +28,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {productId} = params;
       removeOne(productId)
-        .then(response => {
-          const {data} = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -43,8 +40,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {productId} = params;
       getOne(productId)
-        .then(response => {
-          const {data} = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -56,8 +52,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {filter} = params;
       getTotal(filter)
-        .then(response => {
-          const {data} = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -69,8 +64,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {filter} = params;
       getList(filter)
-        .then(response => {
-          const {data} = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -82,8 +76,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {pageFlag, pageSize, filter} = params;
       getPageList(pageFlag, pageSize, filter)
-        .then(response => {
-          const {data} = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {

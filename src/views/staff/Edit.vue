@@ -326,7 +326,7 @@
                     .then(data => {
                         if (data) {
                             if (data) {
-                                this.tableData = data.data;
+                                this.tableData = data;
                             }
                             this.loading = false;
                         }
