@@ -40,11 +40,9 @@ const actions = {
     const {username, password} = userInfo;
     return new Promise((resolve, reject) => {
       signIn({username: username.trim(), password: password})
-        .then(response => {
-          const {data} = response;
-          resolve(response);
-          commit("SET_TOKEN", data.key);
-          resolve();
+        .then(data => {
+          resolve(data);
+          commit("SET_TOKEN", data.token);
         })
         .catch(error => {
           reject(error);
@@ -57,11 +55,9 @@ const actions = {
     const {username, code} = userInfo;
     return new Promise((resolve, reject) => {
       signInCode({username: username.trim(), code: code})
-        .then(response => {
-          const {data} = response;
-          resolve(response);
-          commit("SET_TOKEN", data.key);
-          resolve();
+        .then(data => {
+          resolve(data);
+          commit("SET_TOKEN", data.token);
         })
         .catch(error => {
           reject(error);
@@ -94,8 +90,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {user} = params
       addOne(user)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -106,8 +102,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {userId} = params
       removeOne(userId)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -118,8 +114,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {filter} = params;
       getFirstOne(filter)
-        .then(response => {
-          const {data} = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -131,8 +126,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {userId, data} = params;
       updateOne(userId, data)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -143,8 +138,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {userId} = params;
       getOne(userId)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -155,8 +150,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {filter} = params;
       getList(filter)
-        .then(response => {
-          const {data} = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -164,24 +158,24 @@ const actions = {
         });
     });
   },
-  getTotal({commit}, params) {
-    return new Promise((resolve, reject) => {
-      const {filter} = params;
-      getTotal(filter)
-        .then(response => {
-          resolve(response);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
+  // getTotal({commit}, params) {
+  //   return new Promise((resolve, reject) => {
+  //     const {filter} = params;
+  //     getTotal(filter)
+  //       .then(data => {
+  //         resolve(data);
+  //       })
+  //       .catch(error => {
+  //         reject(error);
+  //       });
+  //   });
+  // },
   getPageList({commit}, params) {
     return new Promise((resolve, reject) => {
       const {pageFlag, pageSize, filter} = params;
       getPageList(pageFlag, pageSize, filter)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -191,8 +185,8 @@ const actions = {
   activation({commit}, params) {
     return new Promise((resolve, reject) => {
       activation(params)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
           commit("SET_TOKEN", "");
           removeToken();
         })
@@ -205,8 +199,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {filed} = params;
       isExist(filed)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject({code: -1, message: error.message});
@@ -217,8 +211,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {userId} = params;
       resetPassword(userId)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -229,8 +223,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {target} = params;
       getVerifyCode(target)
-        .then(response => {
-          const {data} = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {

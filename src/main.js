@@ -13,6 +13,7 @@ import '@/permission';
 import _ from 'lodash';
 import moment from 'moment';
 import numeral from 'numeral';
+import '@/utils/filter'
 
 import VueCron from 'vue-cron';
 Vue.use(VueCron);

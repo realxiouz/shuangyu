@@ -51,7 +51,7 @@
 
       <!-- 表单对话框 -->
       <el-dialog
-        title="添加企业"
+        :title="editFirmId?'编辑企业':'添加企业'"
         center
         :visible.sync="dialogVisible"
         width="33%"
@@ -169,8 +169,9 @@
                     })
                     .then(data => {
                         if (data) {
-                            this.tableData = data;
-                            this.loadTotal(params);
+                            this.tableData = data.rows;
+                            this.total = data.total;
+                            // this.loadTotal(params);
                         }
                         this.loading = false;
                     })
@@ -179,18 +180,18 @@
                         console.log(error);
                     });
             },
-            loadTotal(params) {
-                this.$store
-                    .dispatch("firm/getRootTotal", {filter: params})
-                    .then(data => {
-                        if (data) {
-                            this.total = data.data;
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
+            // loadTotal(params) {
+            //     this.$store
+            //         .dispatch("firm/getRootTotal", {filter: params})
+            //         .then(data => {
+            //             if (data) {
+            //                 this.total = data.data;
+            //             }
+            //         })
+            //         .catch(error => {
+            //             console.log(error);
+            //         });
+            // },
             handleSizeChange(pageSize) {
                 this.pageSize = pageSize;
                 this.loadData();
@@ -231,6 +232,8 @@
                 });
             },
             handleAdd() {
+                this.editFirmId = ''
+                this.pid = ''
                 this.dialogVisible = true;
             },
             //当前选中用户对象

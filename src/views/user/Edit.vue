@@ -129,7 +129,7 @@
           this.$store
             .dispatch("user/getOne", {userId: this.$props.userId})
             .then(data => {
-              this.formData = data.data;
+              this.formData = data;
             })
             .catch(error => {
               console.log(error);

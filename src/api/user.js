@@ -80,13 +80,13 @@ export function getList(filter) {
   });
 }
 
-export function getTotal(filter) {
-  return request({
-    url: `/admin/user/total`,
-    method: 'get',
-    params: filter
-  });
-}
+// export function getTotal(filter) {
+//   return request({
+//     url: `/admin/user/total`,
+//     method: 'get',
+//     params: filter
+//   });
+// }
 
 export function getPageList(pageFlag, pageSize, filter) {
   return request({

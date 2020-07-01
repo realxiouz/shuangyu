@@ -168,9 +168,9 @@ export default new Vuex.Store({
         const {firmId} = params;
         getLoginInfo(firmId)
           .then(response => {
-            const {data} = response;
-            commit("SET_LOGIN_INFO", data);
-            resolve(data);
+            // const {data} = response;
+            commit("SET_LOGIN_INFO", response);
+            resolve(response);
           })
           .catch(error => {
             reject(error);

@@ -25,7 +25,7 @@
         <el-table-column label="出生日期" width="110" align="center">
           <template slot-scope="scope">
             <i v-if="scope.row.birthDate" class="el-icon-time"></i>
-            <span style="margin-left: 10px">{{ formatDate(scope.row.birthDate,'YYYY-MM-DD') }}</span>
+            <span style="margin-left: 10px">{{ scope.row.birthDate | time('YYYY-MM-DD')}}</span>
           </template>
         </el-table-column>
         <el-table-column prop="phone" label="手机号" align="center" width="150"></el-table-column>
@@ -44,7 +44,7 @@
         <el-table-column label="最后登录" width="120" align="center" fixed="right">
           <template slot-scope="scope">
             <i v-if="scope.row.lastLoginTime" class="el-icon-time"></i>
-            <span style="margin-left: 10px">{{ formatDate(scope.row.lastLoginTime,'YYYY-MM-DD HH:mm:ss') }}</span>
+            <span style="margin-left: 10px">{{ scope.row.lastLoginTime | time }}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" fixed="right" align="center" width="280">
@@ -137,8 +137,9 @@ export default {
         })
         .then(data => {
           if (data) {
-            this.tableData = data.data;
-            this.loadTotal(params);
+            this.tableData = data.rows;
+            this.total = data.total;
+            // this.loadTotal(params);
           }
           callback && callback(data);
           this.loading = false;
@@ -148,18 +149,18 @@ export default {
           console.log(error);
         });
     },
-    loadTotal(params) {
-      this.$store
-        .dispatch("user/getTotal", { filter: params })
-        .then(data => {
-          if (data) {
-            this.total = data.data;
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
+    // loadTotal(params) {
+    //   this.$store
+    //     .dispatch("user/getTotal", { filter: params })
+    //     .then(data => {
+    //       if (data) {
+    //         this.total = data.data;
+    //       }
+    //     })
+    //     .catch(error => {
+    //       console.log(error);
+    //     });
+    // },
 
     /*加载所有的角色信息*/
     loadRoles() {
