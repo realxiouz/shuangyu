@@ -359,7 +359,7 @@
             sellOrderNo: this.orderData.orderNo
           }
           console.info("51支付调用"+JSON.stringify(params))
-          //this.foPay(params);
+          this.foPay(params);
           this.payShow = false;
         }
       },
@@ -605,7 +605,7 @@
             console.log(error);
           });
       },
-     /* foPay(params) {
+      foPay(params) {
         this.$store
           .dispatch("order/foPay", params)
           .then(data => {
@@ -626,7 +626,7 @@
           .catch(error => {
             console.log(error);
           });
-      },*/
+      },
       openPay(params) {
         console.info("蜗牛下单参数" + JSON.stringify(params))
         this.$store
