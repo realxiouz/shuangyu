@@ -36,12 +36,13 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="10" v-for="(item, index) in formData.productPropertyItems" :key="index">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item :label="item.label">
+        <el-row :gutter="10" >
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6" v-for="(item, index) in formData.productPropertyItems" :key="index">
+            <el-form-item :label="item.label" :rules="makeRules(propertyList[index])" :prop="propertyList[index].name">
               <!-- 数据类型（0文本，1开关，2数字，3日期，4日期时间，5时间，6评分，7单选，8多选，9选择器）-->
               <el-input v-if="propertyList[index].valueType ==0"
                         v-model="item.value"
+                        :type="propertyList[index].inputType"
               ></el-input>
               <!-- 开关-->
               <el-switch v-if="propertyList[index].valueType ==1"
@@ -596,7 +597,7 @@
                     .dispatch("firmCategory/getTreeList", {filter: {categoryType: 'PRODUCT'}})
                     .then(data => {
                         if (data) {
-                            this.categoryList = this.getTreeData(data.data);
+                            this.categoryList = this.getTreeData(data);
                         }
                         this.loading = false;
                     })
@@ -640,6 +641,14 @@
                 } else {
                     this.$router.go(-1);
                 }
+            },
+
+            makeRules(i) {
+              return [
+                {
+                  required: false, message: '域名不能为空', trigger: 'blur'
+                }
+              ]
             }
         },
         created() {

@@ -73,7 +73,7 @@
         tableData: [],
         loading: true,
         deviceId: '',
-        params: {}
+        params: {},
       };
     },
     methods: {
