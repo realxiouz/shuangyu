@@ -165,7 +165,7 @@
       },
       handleSave() {
         this.$store
-          .dispatch("device/saveOne", this.formData)
+          .dispatch("deviceData/saveOne", this.formData)
           .then(id => {
             if (!this._.isEmpty(id)) {
               this.formData.deviceId = id;
@@ -209,7 +209,7 @@
       },
       loadData() {
         this.$store
-          .dispatch("device/getOne", {deviceId: this.deviceId})
+          .dispatch("deviceData/getOne", {deviceId: this.deviceId})
           .then(data => {
             this.formData = data;
           });
