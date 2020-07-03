@@ -17,9 +17,9 @@ export function getOne(segment) {
 
 export function getPageList(params) {
   return request({
-    url: `/flight/segment/page/list/${params.pageFlag}/${params.pageSize}/${params.lastId}`,
+    url: `/flight/segment/page/list/${params.pageFlag}/${params.pageSize}`,
     method: 'get',
-    params: params.searchForm
+    params: params
   });
 }
 

@@ -48,8 +48,11 @@ export function getTotal(filter) {
 
 export function getPageList(pageFlag, pageSize, lastId, filter) {
   return request({
-    url: `/flight/page/list/${pageFlag}/${pageSize}/${lastId}`,
+    url: `/flight/page/list/${pageFlag}/${pageSize}`,
     method: 'get',
-    params: filter
+    params: {
+      lastId,
+      ...filter
+    }
   });
 }

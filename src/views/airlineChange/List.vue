@@ -75,8 +75,7 @@ export default {
         })
         .then(data => {
           if (data) {
-            this.tableData = data.data;
-            this.loadTotal(data.data.size());
+            this.tableData = data;
           }
           this.loading = false;
         })

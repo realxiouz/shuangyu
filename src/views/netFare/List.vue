@@ -83,9 +83,9 @@ export default {
       update: false,
       deleteForSearch: false,
       searchForm: {},
-      pageFlag: "next",
+      pageFlag: 0,
       pageSize: 10,
-      lastId: "blank",
+      lastId: null,
       total: 0
     };
   },
@@ -105,23 +105,13 @@ export default {
         })
         .then(data => {
           if (data) {
-            this.loadTotal(params);
-            this.tableData = data.data;
+            this.tableData = data.rows;
+            this.total = data.total;
           }
           this.loading = false;
         })
         .catch(error => {
           this.loading = false;
-          console.log(error);
-        });
-    },
-    loadTotal(params) {
-      this.$store
-        .dispatch("netFare/getTotal", { filter: params })
-        .then(data => {
-          this.total = data.data;
-        })
-        .catch(error => {
           console.log(error);
         });
     },
@@ -202,13 +192,13 @@ export default {
     },
     /*前翻页*/
     handlePrevClick() {
-      this.pageFlag = "prev";
+      this.pageFlag = -1;
       this.lastId = this.tableData[0].flightCode;
       this.handleSearch(this.searchForm);
     },
     /*翻后页*/
     handleNextClick() {
-      this.pageFlag = "next";
+      this.pageFlag = 1;
       this.lastId = this.tableData[this.tableData.length - 1].flightCode;
       this.handleSearch(this.searchForm);
     },

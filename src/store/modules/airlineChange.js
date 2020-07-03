@@ -29,8 +29,7 @@ const actions = {
   addOne({commit}, data) {
     return new Promise((resolve, reject) => {
       addOne(data)
-        .then(response => {
-          const { data } = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -41,8 +40,7 @@ const actions = {
   saveOne({commit}, data) {
     return new Promise((resolve, reject) => {
       saveOne(data)
-        .then(response => {
-          const { data } = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -54,8 +52,7 @@ const actions = {
     const { airline } = params;
     return new Promise((resolve, reject) => {
       getOne(airline)
-        .then(response => {
-          const {data} = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -66,8 +63,7 @@ const actions = {
   getList({commit}, params) {
     return new Promise((resolve, reject) => {
       getList(params)
-        .then(response => {
-          const {data} = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -79,8 +75,7 @@ const actions = {
     const { airline } = params;
     return new Promise((resolve, reject) => {
       removeOne(airline)
-        .then(response => {
-          const {data} = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {

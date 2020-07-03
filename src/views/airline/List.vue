@@ -88,8 +88,8 @@ export default {
       showInfo: false,
       isFlights: false,
       tableData: [],
-      lastId: "0",
-      pageFlag: "next",
+      lastId: null,
+      pageFlag: 0,
       pageSize: 10,
       total: 0,
       currentPage: 0,
@@ -129,16 +129,16 @@ export default {
     },
     handleSizeChange(pageSize) {
       this.pageSize = pageSize;
-      this.lastId = "0";
+      this.lastId = null;
       this.loadData();
     },
     prevClick() {
-      this.pageFlag = "prev";
+      this.pageFlag = -1;
       this.lastId = this.tableData[0].airlineCode;
       this.loadData();
     },
     nextClick() {
-      this.pageFlag = "next";
+      this.pageFlag = 1;
       this.lastId = this.tableData[this.tableData.length - 1].airlineCode;
       this.loadData();
     },

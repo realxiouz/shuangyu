@@ -64,8 +64,8 @@ export default {
       deleteForSearch: false,
       curNode: {},
       tableData: [],
-      lastId: "blank",
-      pageFlag: "next",
+      lastId: null,
+      pageFlag: 0,
       pageSize: 10,
       total: 0
     };
@@ -81,8 +81,8 @@ export default {
         })
         .then(data => {
           if (data) {
-            this.loadTotal(params)
-            this.tableData = data.data;
+            this.tableData = data.rows;
+            this.total = data.total;
           }
           this.loading = false;
         })
@@ -91,16 +91,7 @@ export default {
           console.log(error);
         });
     },
-    loadTotal(params) {
-      this.$store
-        .dispatch("airport/getTotal", { filter: params })
-        .then(data => {
-          this.total = data.data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
+    
     search(searchForm) {
       this.deleteForSearch = false;
       if (searchForm.airportName || searchForm.airportCode) {
@@ -161,12 +152,12 @@ export default {
       this.update = true;
     },
     handlePrevClick() {
-      this.pageFlag = "prev";
+      this.pageFlag = -1;
       this.lastId = this.tableData[0].airportCode;
       this.loadData();
     },
     handleNextClick() {
-      this.pageFlag = "next";
+      this.pageFlag = 1;
       this.lastId = this.tableData[this.tableData.length - 1].airportCode;
       this.loadData();
     },

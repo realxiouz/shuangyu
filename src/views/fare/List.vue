@@ -85,9 +85,9 @@ export default {
       /*记录当前进行操作的节点*/
       curNode: {},
       searchForm: {},
-      pageFlag: "next",
+      pageFlag: 0,
       pageSize: 10,
-      lastId: "blank",
+      lastId: null,
       total: 0
     };
   },
@@ -103,8 +103,8 @@ export default {
         })
         .then(data => {
           if (data) {
-            this.loadTotal(params);
-            this.tableData = data.data;
+            this.tableData = data.rows;
+            this.total = data.total;
           }
           this.loading = false;
         })
@@ -195,13 +195,13 @@ export default {
     },
     /*前翻页*/
     handlePrevClick() {
-      this.pageFlag = "prev";
+      this.pageFlag = -1;
       this.lastId = this.tableData[0].fareId;
       this.loadData();
     },
     /*翻后页*/
     handleNextClick() {
-      this.pageFlag = "next";
+      this.pageFlag = 1;
       this.lastId = this.tableData[this.tableData.length - 1].fareId;
       this.loadData();
     },

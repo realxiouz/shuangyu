@@ -17,9 +17,9 @@ export function getOne(airlineCode) {
 
 export function getPageList(params) {
   return request({
-    url:  `/flight/airline/page/list/${params.pageFlag}/${params.pageSize}/${params.lastId}`,
+    url:  `/flight/airline/page/list/${params.pageFlag}/${params.pageSize}`,
     method: 'get',
-    params: params.searchForm
+    params: params
   });
 }
 

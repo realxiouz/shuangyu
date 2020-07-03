@@ -80,7 +80,7 @@ export default {
       airlinesInfo: "",
       tableData: [],
       lastId: "0",
-      pageFlag: "next",
+      pageFlag: 0,
       pageSize: 10,
       total: 0,
       currentPage: 0
@@ -106,8 +106,8 @@ export default {
         })
         .then(data => {
           if (data) {
-            this.loadTotal(params);
-            this.tableData = data;
+            this.tableData = data.rows;
+            this.total = data.total;
           }
           this.loading = false;
         })
@@ -116,28 +116,18 @@ export default {
           console.log(error);
         });
     },
-    loadTotal(params) {
-      this.$store
-        .dispatch("flightSegment/getTotal", params)
-        .then(data => {
-          this.total = data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
     handleSizeChange(pageSize) {
       this.pageSize = pageSize;
-      this.lastId = "0";
+      this.lastId = null;
       this.loadData();
     },
     prevClick() {
-      this.pageFlag = "prev";
+      this.pageFlag = -1;
       this.lastId = this.tableData[0].segment;
       this.loadData();
     },
     nextClick() {
-      this.pageFlag = "next";
+      this.pageFlag = 1;
       this.lastId = this.tableData[this.tableData.length - 1].segment;
       this.loadData();
     },
