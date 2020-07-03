@@ -86,6 +86,14 @@
               <el-input v-model="formData.format" placeholder="输入时间格式,例如YYYY-MM-DD" />
             </el-form-item>
           </el-col>
+          <el-col :span="24" v-if="formData.valueType==3">
+            <el-form-item label="类型">
+              <el-select v-model="formData.inputType" placeholder="选中输入类型">
+                <el-option label="日期" value="date"></el-option>
+                <el-option label="日期时间" value="datetime"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
         </template>
         <el-col :span="24" v-if="formData.valueType>6">
           <el-form-item label="属性项">
