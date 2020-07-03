@@ -102,8 +102,149 @@ export function formatFlighCode(data) {
         data[0].code
     );
 }
+//持续时长
+export function formatDuration(data) {
+  if (!data) {
+    return "";
+  } else {
+    let days = parseInt(data/(1000 * 60 * 60 * 24));
+    let hours = parseInt((data % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    let minutes = parseInt((data % (1000 * 60 * 60)) / (1000 * 60));
+    let seconds = parseInt((data % (1000 * 60)) / 1000);
+    let str = "";
+    if(days>0){
+      str = days+"天"+hours + "时" + minutes + "分钟" + seconds + "秒";
+      return str;
+    }else if (hours > 0) {
+      str = hours + "时" + minutes + "分钟" + seconds + "秒";
+      return str;
+    }else if (minutes > 0) {
+      str = minutes + "分钟" + seconds + "秒";
+      return str;
+    } else {
+      str = seconds + "秒";
+      return str;
+    }
+  }
+}
 
+//格式化订单时限时间,出票任务：显示出票时限，退票和改签任务：显示创建时间+120分钟
+export function formatTimeLimit(row) {
+  if(row.taskType==1){
+    if (!row.deadlineTicketTime || row.deadlineTicketTime.length == 0) {
+      return '';
+    }
+    return this.initDate(row.deadlineTicketTime, "YYYY-MM-DD HH:mm:ss");
+  }else if(row.taskType==2){
+    if (!row.createTime || row.createTime.length == 0) {
+      return '';
+    }
+    return this.$moment(new Date(row.createTime)).add(120,'minutes').format("YYYY-MM-DD HH:mm:ss");
+  }else if(row.taskType==3){
+    if (!row.createTime || row.createTime.length == 0) {
+      return '';
+    }
+    return this.$moment(new Date(row.createTime)).add(120,'minutes').format("YYYY-MM-DD HH:mm:ss");
+  }else{
+    return ''
+  }
 
+}
+//时限时间计算，出票任务：出票时限-当前时间，出票和改签任务：创建时间+120分钟-当前时间
+export function formatDiffTimeLimit(row){
+  if(row.taskType==1) {
+    let deadLinTicketTime = new Date(row.deadlineTicketTime);
+    let nowTime = new Date();
+    let diffMs = this.$moment(deadLinTicketTime).diff(this.$moment(nowTime));
+    let timeLimitStr = this.formatTimeLimitDuration(diffMs);
+    return timeLimitStr;
+  }else if(row.taskType==2){
+    let createTime = new Date(row.createTime);
+    let nowTime = new Date();
+    let diffMs = this.$moment(createTime).add(120,'minutes').diff(this.$moment(nowTime));
+    let timeLimitStr = this.formatTimeLimitDuration(diffMs);
+    return timeLimitStr;
+  }else if(row.taskType==3){
+    let createTime = new Date(row.createTime);
+    let nowTime = new Date();
+    let diffMs = this.$moment(createTime).add(120,'minutes').diff(this.$moment(nowTime));
+    let timeLimitStr = this.formatTimeLimitDuration(diffMs);
+    return timeLimitStr;
+  }
+}
+//时限是否显示风格
+export function formattimeLimitStyle(row){
+  let diffMs = 0;
+  let nowTime = new Date();
+  if(row.taskType==1) {
+    let deadLinTicketTime = new Date(row.deadlineTicketTime);
+    diffMs = this.$moment(deadLinTicketTime).diff(this.$moment(nowTime));
+    if(diffMs>0 && diffMs<this.$moment.duration(60,'minutes')){
+      return '#FF0000';
+    }else if (diffMs>=this.$moment.duration(60,'minutes') && diffMs<this.$moment.duration(120,'minutes')){
+      return '#FF5555';
+    }else if(diffMs>=this.$moment.duration(120,'minutes') && diffMs<this.$moment.duration(240,'minutes')){
+      return '#FF8888';
+    }else if(diffMs>=this.$moment.duration(240,'minutes')){
+      return '#99DD00';
+    }else{
+      return '#AAAAAA';
+    }
+  }else if(row.taskType==2){
+    let createTime = new Date(row.createTime);
+    diffMs = this.$moment(createTime).add(120,'minutes').diff(this.$moment(nowTime));
+    if(diffMs>0 && diffMs<this.$moment.duration(30,'minutes')){
+      return '#FF0000';
+    }else if (diffMs>=this.$moment.duration(30,'minutes') && diffMs<this.$moment.duration(60,'minutes')){
+      return '#FF5555';
+    }else if(diffMs>=this.$moment.duration(60,'minutes') && diffMs<this.$moment.duration(90,'minutes')){
+      return '#FF8888';
+    }else if(diffMs>=this.$moment.duration(90,'minutes')){
+      return '#99DD00';
+    }else{
+      return '#AAAAAA';
+    }
+  }else if(row.taskType==3){
+    let createTime = new Date(row.createTime);
+    diffMs = this.$moment(createTime).add(120,'minutes').diff(this.$moment(nowTime));
+    if(diffMs>0 && diffMs<this.$moment.duration(30,'minutes')){
+      return '#FF0000';
+    }else if (diffMs>=this.$moment.duration(30,'minutes') && diffMs<this.$moment.duration(60,'minutes')){
+      return '#FF5555';
+    }else if(diffMs>=this.$moment.duration(60,'minutes') && diffMs<this.$moment.duration(90,'minutes')){
+      return '#FF8888';
+    }else if(diffMs>=this.$moment.duration(90,'minutes')){
+      return '#99DD00';
+    }else{
+      return '#AAAAAA';
+    }
+  }
+}
+//时限时间计算
+export function formatTimeLimitDuration(data) {
+  if (!data) {
+    return "";
+  } else {
+    let days = parseInt(data/(1000 * 60 * 60 * 24));
+    let hours = parseInt((data % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    let minutes = parseInt((data % (1000 * 60 * 60)) / (1000 * 60));
+    let seconds = parseInt((data % (1000 * 60)) / 1000);
+    let str = "";
+    if(days>0){
+      str = days+"天"+hours + "时";
+      return str;
+    }else if (hours > 0) {
+      str = hours + "时" + minutes + "分钟";
+      return str;
+    }else if (minutes > 0) {
+      str = minutes + "分钟";
+      return str;
+    } else {
+      str = seconds + "秒";
+      return str;
+    }
+  }
+}
 
 // 格式化订单 金额 数据
 export function formatAmount(amount) {
