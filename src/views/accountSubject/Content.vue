@@ -13,7 +13,6 @@
         :data="tableData"
         row-key="code"
         highlight-current-row
-        default-expand-all
         style="width: 100%;margin-bottom:15px"
         size="mini"
         :load="loadChildren"
@@ -95,10 +94,9 @@
         editSubjectId: "",
         pid: "",
         tableData: [],
-        expandRowKeys: [],
         pageFlag: 1,
         pageSize: 10,
-        lastId: "",
+        lastId: "blank",
         total: 0,
         uploadData: {
           tree: null,
@@ -133,11 +131,9 @@
             filter: params
           })
           .then(data => {
-            if (data && data.length > 0) {
-              this.tableData = data;
-              this.expandRowKeys = [];
-              this.expandRowKeys.push(data[0].subjectId);
-              this.loadTotal(params);
+            if (data && data.rows && data.rows.length > 0) {
+              this.tableData = data.rows;
+              this.total = data.total;
             } else {
               this.tableData = [];
             }
@@ -145,18 +141,6 @@
           })
           .catch(error => {
             this.loading = false;
-            console.log(error);
-          });
-      },
-      loadTotal(params) {
-        this.$store
-          .dispatch("accountSubject/getTotal", {
-            filters: params
-          })
-          .then(data => {
-            this.total = data;
-          })
-          .catch(error => {
             console.log(error);
           });
       },
@@ -169,7 +153,13 @@
           .dispatch("accountSubject/getAsyncTreeList", {pid: tree.subjectId, filter: params})
           .then(data => {
             if (data) {
-              resolve(data);
+              let children = [];
+              data.forEach(function(obj){
+                if(obj.attributes){
+                  children.push(obj.attributes);
+                }
+              });
+              resolve(children);
             }
           })
           .catch(error => {
@@ -206,10 +196,6 @@
         this.pid = "";
         this.dialogVisible = true;
       },
-      handleSizeChange(pageSize) {
-        this.pageSize = pageSize;
-        this.loadData();
-      },
       handleRemove(id) {
         this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
           confirmButtonText: "确定",
@@ -224,6 +210,7 @@
                   this.prevClick();
                 } else {
                   this.loadData();
+                  this.loadChildren(this.uploadData.tree, this.uploadData.treeNode, this.uploadData.resolve);
                 }
               });
           })
@@ -236,9 +223,21 @@
       },
       handleSave(formData) {
         formData.category = this.category;
+        let method = "accountSubject/save";
+        let msg = "添加成功！";
+
+        if(formData && formData.subjectId){
+          method = "accountSubject/update";
+          msg = "编辑成功！";
+        }
+
         this.$store
-          .dispatch("accountSubject/save", formData)
+          .dispatch(method, formData)
           .then(() => {
+            this.$message({
+              type: "success",
+              message: msg
+            });
             this.loadData();
             this.loadChildren(this.uploadData.tree, this.uploadData.treeNode, this.uploadData.resolve);
           })

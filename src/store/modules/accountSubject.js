@@ -6,6 +6,7 @@ import {
   getTotal,
   removeOne,
   save,
+  update,
   getSelectingList,
   getAsyncTreeList
 } from "@/api/accountSubject";
@@ -47,6 +48,18 @@ const actions = {
   save({commit}, params) {
     return new Promise((resolve, reject) => {
       save(params)
+        .then(response => {
+          //const { data } = response;
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  update({commit}, params) {
+    return new Promise((resolve, reject) => {
+      update(params)
         .then(response => {
           //const { data } = response;
           resolve(response);

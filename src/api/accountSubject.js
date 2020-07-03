@@ -1,10 +1,17 @@
-import request from "@/utils/request";
-
+import request from '@/utils/request';
 
 export function save(data) {
   return request({
-    url: "/finance/account/subject/save",
-    method: "post",
+    url: `/finance/account/subject/save/one`,
+    method: 'post',
+    data
+  });
+}
+
+export function update(data) {
+  return request({
+    url: `/finance/account/subject/update/one`,
+    method: 'put',
     data
   });
 }
@@ -12,22 +19,14 @@ export function save(data) {
 export function removeOne(id) {
   return request({
     url: `/finance/account/subject/remove/one/${id}`,
-    method: "delete"
+    method: 'delete'
   });
 }
 
 export function getPageList(pageFlag, pageSize, lastId, params) {
   return request({
     url: `/finance/account/subject/page/list/${pageFlag}/${pageSize}/${lastId}`,
-    method: "get",
-    params: params
-  });
-}
-
-export function getTotal(params) {
-  return request({
-    url: `/finance/account/subject/get/root/total`,
-    method: "get",
+    method: 'get',
     params: params
   });
 }
@@ -35,7 +34,7 @@ export function getTotal(params) {
 export function getRootPageList(pageFlag, pageSize, filter) {
   return request({
     url: `/finance/account/subject/get/root/list/page/${pageFlag}/${pageSize}`,
-    method: "get",
+    method: 'get',
     params: filter
   });
 }
@@ -43,7 +42,7 @@ export function getRootPageList(pageFlag, pageSize, filter) {
 export function getList(params) {
   return request({
     url: `/finance/account/subject/get/list`,
-    method: "get",
+    method: 'get',
     params: params
   });
 }
@@ -55,19 +54,10 @@ export function getOne(id) {
   });
 }
 
-export function getSelectingList(filter) {
-  return request({
-    url: `/finance/account/subject/list/selecting`,
-    method: 'get',
-    params: filter
-  });
-}
-
 export function getAsyncTreeList(pid, filter) {
   return request({
-    url: `/finance/account/subject/async/tree/list/${pid}`,
+    url: `/finance/account/subject/get/async/tree/${pid}`,
     method: 'get',
     params: filter
   });
 }
-
