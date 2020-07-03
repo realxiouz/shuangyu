@@ -1,11 +1,11 @@
 <template>
   <div>
-    <el-form :model="formData" ref="form" :rules="rules" label-width="110px" size="mini">
+    <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
       <el-form-item label="仓库编码:" prop="warehouseCode">
         <el-input
           v-model="formData.warehouseCode"
           onkeyup="this.value=this.value.toUpperCase()"
-          :disabled="update"
+          :disabled="codeEnabled"
           placeholder="请输入仓库编码..."
         ></el-input>
       </el-form-item>
@@ -15,7 +15,7 @@
       <el-form-item label="联系人:">
         <el-input v-model="formData.contact" placeholder="请输入联系人..."></el-input>
       </el-form-item>
-      <el-form-item label="联系人电话:">
+      <el-form-item label="联系人电话:" prop="phone">
         <el-input v-model="formData.phone" placeholder="请输入联系人电话..."></el-input>
       </el-form-item>
       <el-form-item label="地址:">
@@ -29,101 +29,123 @@
           v-model="formData.userIds"
           placeholder="请选择"
         >
-          <!--<el-option
-            v-for="item in []"
-            :key="item.userId"
-            :label="item.userName"
-            :value="item.userId"
-          ></el-option>-->
         </el-select>
       </el-form-item>
     </el-form>
     <div style="text-align:right;">
       <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
-      <el-button type="primary" size="mini" @click="handleConfirm">确 定</el-button>
+      <el-button type="primary" size="mini" @click="handleSave">确 定</el-button>
     </div>
   </div>
 </template>
 
 <script>
-export default {
-  props: ["curNode", "update"],
-  data() {
-    const codeValidator = (rule, value, callback) => {
-      let reg = /^[0-9a-zA-Z]*$/g;
-      if (reg.test(value)) {
-        callback();
-      } else {
-        callback(new Error("只能输入字母或数字！"));
-      }
-    };
+  function defaultData() {
     return {
-      formData: {},
-      currencyList: [],
-      subjectList: [],
-      subject: null,
-      rules: {
-        warehouseCode: [
-          { required: true, message: "请输入仓库编码", trigger: "blur" },
-          {
-            min: 1,
-            max: 20,
-            message: "长度在 1到 20 个字符"
-          },
-          { validator: codeValidator, trigger: "blur" }
-        ],
-        warehouseName: [
-          { required: true, message: "请输入仓库名称", trigger: "blur" },
-          {
-            min: 1,
-            max: 20,
-            message: "长度在 1到 20 个字符"
-          }
-        ]
-      }
+      //仓库编码
+      warehouseCode: "",
+      //仓库名称
+      warehouseName: "",
+      //地址
+      address: "",
+      //联系电话
+      phone: "",
+      //联系人
+      contact: "",
+      //库管
+      userIds: []
     };
-  },
-  methods: {
-    /*表单默认加载数据*/
-    defaultFormData() {
+  }
+
+  export default {
+    name: "warehouseEdit",
+    props: ['editWarehouseId', 'pid', 'codeEnabled'],
+    data() {
+      const codeValidator = (rule, value, callback) => {
+        let reg = /^[0-9a-zA-Z]*$/g;
+        if (reg.test(value)) {
+          callback();
+        } else {
+          callback(new Error("只能输入字母或数字！"));
+        }
+      };
+      const phoneValidator = (rule, value, callback) => {
+        if(value){
+          let reg = /^1[3456789]\d{9}$/;
+          if (!reg.test(value)) {
+            callback(new Error("请输入正确的手机号码！"));
+            return;
+          }
+        }
+        callback();
+      };
       return {
-        //仓库编码
-        warehouseCode: "",
-        //仓库名称
-        warehouseName: "",
-        //地址
-        address: "",
-        //联系电话
-        phone: "",
-        //联系人
-        contact: "",
-        //库管
-        userIds: []
+        formData: defaultData(),
+        firmList: [],
+        newDialogVisible: false,
+        rules: {
+          warehouseCode: [
+            {required: true, message: "请输入仓库编码", trigger: "blur"},
+            {
+              min: 1,
+              max: 20,
+              message: "长度在 1到 20 个字符"
+            },
+            {validator: codeValidator, trigger: 'blur'}
+          ],
+          warehouseName: [
+            {required: true, message: "请输入仓库名称", trigger: "blur"},
+            {
+              min: 1,
+              max: 20,
+              message: "长度在 1到 20 个字符"
+            }
+          ],
+          phone: [
+            {required: false, trigger: "blur"},
+            {
+              min: 1,
+              max: 20,
+              message: "长度在 1到 20 个字符"
+            },
+            {validator: phoneValidator, trigger: 'blur'}
+          ]
+        }
       };
     },
-    /*清除表单*/
-    clearForm() {
-      this.formData = this.defaultFormData();
-    },
-    /*对提交的数据进行类型格式*/
-    handleConfirm() {
-      this.$refs["form"].validate(valid => {
-        if (valid) {
-          if (this.formData.warehouseCode && !"" != this.formData.warehouseCode)
-            this.formData.warehouseCode = this.formData.warehouseCode.toUpperCase();
-          this.$emit("onSave", this.formData);
+    methods: {
+      handleGetOne(editWarehouseId) {
+        if (editWarehouseId) {
+          this.$store
+            .dispatch("warehouse/getOne", {editWarehouseId: editWarehouseId})
+            .then(data => {
+              if(data && data.data){
+                this.formData = data.data;
+              }
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        } else {
+          this.formData = defaultData();
         }
-      });
+      },
+      handleSave() {
+        this.$refs["form"].validate(valid => {
+          if (valid) {
+            this.formData.warehouseCode = this.formData.warehouseCode.toUpperCase();
+            this.$emit("onSave", this.formData);
+          }
+        });
+      }
     },
-    initFormData() {
-      this.clearForm();
-      if (this.update) {
-        Object.assign(this.formData, this.curNode);
+    created() {
+      if (this.editWarehouseId) {
+        this.handleGetOne(this.editWarehouseId);
+      }
+      if (this.pid) {
+        this.formData.pid = this.pid;
       }
     }
-  },
-  created() {
-    this.initFormData();
-  }
-};
+  };
 </script>

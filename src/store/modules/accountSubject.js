@@ -3,7 +3,6 @@ import {
   getRootPageList,
   getOne,
   getPageList,
-  getTotal,
   removeOne,
   save,
   update,
@@ -112,20 +111,6 @@ const actions = {
     const {pageFlag, pageSize, lastId, filter} = params;
     return new Promise((resolve, reject) => {
       getPageList(pageFlag, pageSize, lastId, filter)
-        .then(response => {
-          const {data} = response;
-          resolve(data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-
-  getTotal({commit}, params) {
-    const {filters} = params;
-    return new Promise((resolve, reject) => {
-      getTotal(filters)
         .then(response => {
           const {data} = response;
           resolve(data);

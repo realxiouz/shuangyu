@@ -2,10 +2,15 @@
   <div>
     <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
       <el-form-item label="科目编码:" prop="code">
-        <el-input v-model="formData.code"></el-input>
+        <el-input
+          v-model="formData.code"
+          onkeyup="this.value=this.value.toUpperCase()"
+          :disabled="codeEnabled"
+          placeholder="请输入科目编码..."
+        ></el-input>
       </el-form-item>
       <el-form-item label="科目名称:" prop="name">
-        <el-input v-model.number="formData.name"></el-input>
+        <el-input v-model.number="formData.name" placeholder="请输入科目名称..."></el-input>
       </el-form-item>
       <el-form-item label="科目类别:" prop="category">
         <el-select v-model="formData.category" placeholder="请选择科目类别" disabled style="width: 100%">
@@ -65,7 +70,7 @@
 
     export default {
         name: "accountSubjectEdit",
-        props: ['editSubjectId', 'pid', 'category'],
+        props: ['editSubjectId', 'pid', 'category', 'codeEnabled'],
         data() {
             const codeValidator = (rule, value, callback) => {
                 let reg = /^[0-9a-zA-Z]*$/g;
@@ -101,13 +106,10 @@
             };
         },
         methods: {
-            handleChange(value) {
-                this.formData.roles = value;
-            },
-            handleGetOne(id) {
-                if (id) {
+            handleGetOne(subjectId) {
+                if (subjectId) {
                     this.$store
-                        .dispatch("accountSubject/getOne", {subjectId: id})
+                        .dispatch("accountSubject/getOne", {subjectId: subjectId})
                         .then(data => {
                             this.formData = data;
                         })
@@ -122,6 +124,7 @@
                 this.$refs["form"].validate(valid => {
                     if (valid) {
                         this.formData.category = this.category;
+                        this.formData.code = this.formData.code.toUpperCase();
                         this.$emit("onSave", this.formData);
                     }
                 });

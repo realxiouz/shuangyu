@@ -59,7 +59,7 @@
         :total="total"
       ></el-pagination>
       <el-dialog
-        title="会计科目"
+        title="科目管理"
         center
         :visible.sync="dialogVisible"
         width="33%"
@@ -70,6 +70,7 @@
           :editSubjectId="editSubjectId"
           :pid="pid"
           :category="category"
+          :codeEnabled="codeEnabled"
           @onSave="handleSave"
           @onCancel="handleCancel"
         ></accountSubject-edit>
@@ -91,13 +92,14 @@
         loading: true,
         searchForm: {},
         dialogVisible: false,
-        editSubjectId: "",
-        pid: "",
+        editSubjectId: null,
+        pid: null,
         tableData: [],
         pageFlag: 1,
         pageSize: 10,
         lastId: "blank",
         total: 0,
+        codeEnabled: false,
         uploadData: {
           tree: null,
           treeNode: null,
@@ -121,6 +123,9 @@
         this.loadData();
       },
       loadData(params = {}) {
+        if(null != this.category){
+          params.category = this.category;
+        }
         if (this.lastId) {
           params.lastId = this.lastId;
         }
@@ -149,31 +154,35 @@
         this.uploadData.treeNode = treeNode;
         this.uploadData.resolve = resolve;
         let params = {};
-        this.$store
-          .dispatch("accountSubject/getAsyncTreeList", {pid: tree.subjectId, filter: params})
-          .then(data => {
-            if (data) {
-              let children = [];
-              data.forEach(function(obj){
-                if(obj.attributes){
-                  children.push(obj.attributes);
-                }
-              });
-              resolve(children);
-            }
-          })
-          .catch(error => {
-            console.log(error);
-          });
+        if(tree && tree.subjectId){
+          this.$store
+            .dispatch("accountSubject/getAsyncTreeList", {pid: tree.subjectId, filter: params})
+            .then(data => {
+              if (data) {
+                let children = [];
+                data.forEach(function(obj){
+                  if(obj.attributes){
+                    children.push(obj.attributes);
+                  }
+                });
+                resolve(children);
+              }
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        }
       },
       handleAddChild(subjectId) {
         this.pid = subjectId;
-        this.editSubjectId = "";
+        this.editSubjectId = null;
+        this.codeEnabled = false;
         this.dialogVisible = true;
       },
       handleAdd() {
-        this.editSubjectId = "";
-        this.pid = "";
+        this.editSubjectId = null;
+        this.pid = null;
+        this.codeEnabled = false;
         this.dialogVisible = true;
       },
       handleSearch(params) {
@@ -194,9 +203,10 @@
       handleUpdate(subjectId) {
         this.editSubjectId = subjectId;
         this.pid = "";
+        this.codeEnabled = true;
         this.dialogVisible = true;
       },
-      handleRemove(id) {
+      handleRemove(subjectId) {
         this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
@@ -204,7 +214,7 @@
         })
           .then(() => {
             this.$store
-              .dispatch("accountSubject/removeOne", {subjectId: id})
+              .dispatch("accountSubject/removeOne", {subjectId: subjectId})
               .then(() => {
                 if (1 === this.tableData.length) {
                   this.prevClick();
@@ -212,6 +222,10 @@
                   this.loadData();
                   this.loadChildren(this.uploadData.tree, this.uploadData.treeNode, this.uploadData.resolve);
                 }
+                this.$message({
+                  type: "success",
+                  message: "删除成功！"
+                });
               });
           })
           .catch(err => {
@@ -248,7 +262,7 @@
       }
     },
     created() {
-      this.loadData({category: this.category});
+      this.loadData();
     },
     components: {
       accountSubjectSearch,
