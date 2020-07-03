@@ -70,35 +70,23 @@
           <el-col :span="24">
             <el-form-item label="数字类型">
               <el-select v-model="formData.type" placeholder="选中数字类型">
-                <el-option label="Byte" value="Byte"></el-option>
-                <el-option label="Short" value="Short"></el-option>
-                <el-option label="Integer" value="Integer"></el-option>
-                <el-option label="Long" value="Long"></el-option>
-                <el-option label="Float" value="Float"></el-option>
-                <el-option label="Double" value="Double"></el-option>
+                <el-option label="byte" value="byte"></el-option>
+                <el-option label="short" value="short"></el-option>
+                <el-option label="int" value="int"></el-option>
+                <el-option label="long" value="long"></el-option>
+                <el-option label="float" value="float"></el-option>
+                <el-option label="double" value="double"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
         </template>
-        <template v-if="formData.valueType==3||formData.valueType==5">
+        <template v-if="formData.valueType==3||formData.valueType==4">
           <el-col :span="24">
             <el-form-item label="时间格式">
               <el-input v-model="formData.format" placeholder="输入时间格式,例如YYYY-MM-DD" />
             </el-form-item>
           </el-col>
         </template>
-        <!-- <el-col :span="24" v-if="formData.valueType==2">
-           <el-form-item label="数据单位" prop="unit">
-             <el-select v-model="formData.unit" style="width: 100%">
-               <el-option
-                 v-for="(item,index) in unitTypes"
-                 :key="index"
-                 :value="item.value"
-               >{{item.value}}
-               </el-option>
-             </el-select>
-           </el-form-item>
-        </el-col>-->
         <el-col :span="24" v-if="formData.valueType>6">
           <el-form-item label="属性项">
             <el-col :span="24">
@@ -154,14 +142,16 @@
             </el-col>
           </el-form-item>
         </el-col>
-        <el-col :span="24" v-if="formData.valueType==8">
+        <el-col :span="24" v-if="formData.valueType==61">
           <el-form-item label="是否销售属性">
             <el-switch v-model="formData.sku" :active-value="true" :inactive-value="false"></el-switch>
           </el-form-item>
         </el-col>
-        <el-col :span="24" v-if="formData.valueType==8">
+        <el-col :span="24" v-if="formData.valueType==62">
           <el-form-item label="是否多选">
-            <el-switch v-model="formData.multiple" :active-value="true" :inactive-value="false"></el-switch>
+            <el-switch v-model="formData.multiple" :active-value="true" :inactive-value="false"
+             @change="handleMultipleChange"
+            ></el-switch>
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -197,6 +187,7 @@
 
 <script>
 // import paramDialog from "./Param";
+import { PROPERTY_TABLE } from '@/utils/const'
 
 export default {
   props: {
@@ -224,33 +215,10 @@ export default {
   data() {
     return {
       dialogVisible: this.visible,
-      paramDialogVisible: false,
       paramIndex: -1,
       paramType: 0,
-      paramData: {},
-      featureTypes: [
-        { id: 0, value: "属性" },
-        { id: 1, value: "服务" },
-        { id: 2, value: "事件" }
-      ],
       formData: this.defaultFormData(),
-      valueTypes: [
-        { code: 0, value: "文本" },
-        { code: 1, value: "开关" },
-        { code: 2, value: "数字" },
-        { code: 3, value: "日期" },
-        { code: 5, value: "时间" },
-        { code: 6, value: "评分" },
-        { code: 7, value: "单选" },
-        { code: 8, value: "多选" },
-        { code: 9, value: "下拉" }
-      ],
-      unitTypes: [
-        { value: "无 /", id: 0 },
-        { value: "纳克每升 / ppt", id: 1 },
-        { value: "微克每升 / ppb", id: 2 },
-        { value: "微西每厘米 / uS/cm", id: 3 }
-      ]
+      valueTypes: PROPERTY_TABLE
     };
   },
   watch: {
@@ -269,29 +237,31 @@ export default {
     handleValueTypeChange(value) {
       switch (value) {
         case 0:
-          this.formData.type = "String";
+          this.formData.type = "string";
           break;
         case 1:
-          this.formData.type = "Boolean";
+          this.formData.type = "bool";
           break;
         case 2:
-          this.formData.type = "Integer";
+          this.formData.type = "int";
           break;
         case 3:
+        case 4:
+          this.formData.type = "date";
+          break;
         case 5:
-          this.formData.type = "Date";
+          this.formData.type = "float";
           break;
-        case 6:
-          this.formData.type = "Float";
+        case 60:
+          this.formData.type = "string";
           break;
-        case 7:
-          this.formData.type = "String";
+        case 61:
+          this.formData.type = "array";
+          this.formData.multiple = true;
           break;
-        case 8:
-          this.formData.type = "ArrayList";
-          break;
-        case 9:
-          this.formData.type = "String";
+        case 62:
+          this.formData.multiple = false;
+          this.formData.type = "string";
           break;
       }
     },
@@ -311,25 +281,6 @@ export default {
             this.formData.outputParams.push(param.data);
           }
         }
-      }
-    },
-    handleAddParam(type) {
-      this.paramDialogVisible = true;
-      this.paramType = type;
-      this.paramIndex = -1;
-    },
-    handleUpdateParam(type, index, param) {
-      this.paramDialogVisible = true;
-      this.paramType = type;
-      this.paramIndex = index;
-      this.paramData = param;
-    },
-    handleDeleteParam(type, index) {
-      if (type === 0) {
-        this.formData.inputParams.splice(index, 1);
-      }
-      if (type === 1) {
-        this.formData.outputParams.splice(index, 1);
       }
     },
     handleSave() {
@@ -368,7 +319,7 @@ export default {
         unit: "",
         inputType: "",
         valueType: 0,
-        type: "String",
+        type: "string",
         readonly: false,
         hidden: false,
         sku: false,
@@ -403,6 +354,9 @@ export default {
     },
     handleClose() {
       this.$emit("update:visible", false);
+    },
+    handleMultipleChange(val) {
+      this.formData.type = val ? 'array' : 'string'
     }
   },
   components: {
