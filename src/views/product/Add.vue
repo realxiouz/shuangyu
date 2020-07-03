@@ -48,7 +48,7 @@
             <el-form-item
               :prop="'propertyList.' + index + '.value'"
               :label="item.name"
-              :rules="[{ required: true, message: '请输入邮箱地址', trigger: 'blur' }]"
+              :rules="`[{ required: true, message: '请输入'+$item.name, trigger: 'blur' }]`"
             >
               <el-input
                 v-if="item.valueType ==0"
