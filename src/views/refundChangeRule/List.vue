@@ -60,8 +60,8 @@ export default {
       searchForm: {},
       dialogVisible: false,
       tableData: [],
-      lastId: "0",
-      pageFlag: "next",
+      lastId: null,
+      pageFlag: 0,
       pageSize: 10,
       total: 0,
       currentPage: 0
@@ -82,8 +82,8 @@ export default {
         })
         .then(data => {
           if (data) {
-            this.loadTotal(this.searchForm);
-            this.tableData = data;
+            this.tableData = data.rows;
+            this.total = data.total;
           }
             this.loading = false;
 
@@ -93,29 +93,23 @@ export default {
           console.log(error);
         });
     },
-    loadTotal() {
-      this.$store
-        .dispatch("refundChangeRule/getTotal", this.searchForm)
-        .then(data => {
-          this.total = data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
     handleSizeChange(pageSize) {
       this.pageSize = pageSize;
-      this.lastId = "0";
+      this.lastId = null;
       this.loadData();
     },
     prevClick() {
-      this.pageFlag = "prev";
-      this.lastId = this.tableData[0].ruleId;
+      this.pageFlag = -1;
+      if (this.tableData.length > 0) {
+        this.lastId = this.tableData[0].ruleId;
+      }
       this.loadData();
     },
     nextClick() {
-      this.pageFlag = "next";
-      this.lastId = this.tableData[this.tableData.length - 1].ruleId;
+      this.pageFlag = 1;
+      if (this.tableData.length > 0) {
+        this.lastId = this.tableData[this.tableData.length - 1].ruleId;
+      }
       this.loadData();
     },
     removeOne(id) {
@@ -155,7 +149,8 @@ export default {
     },
     handleSearch(params) {
       this.searchForm = params;
-      this.lastId = "0";
+      this.lastId = null;
+      this.pageFlag = 0;
       this.loadData();
     }
   },

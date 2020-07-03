@@ -30,8 +30,8 @@ const actions = {
     const {ruleId} = params;
     return new Promise((resolve, reject) => {
       getOne(ruleId)
-        .then(response => {
-          const {data} = response;
+        .then(data => {
+          
           resolve(data);
         })
         .catch(error => {
@@ -42,8 +42,8 @@ const actions = {
   save({commit}, data) {
     return new Promise((resolve, reject) => {
       save(data)
-        .then(response => {
-          const {data} = response;
+        .then(data => {
+          
           resolve(data);
         })
         .catch(error => {
@@ -62,8 +62,7 @@ const actions = {
     params.searchForm = searchForm;
     return new Promise((resolve, reject) => {
       getPageList(params)
-        .then(response => {
-          const {data} = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -74,8 +73,8 @@ const actions = {
   getTotal({commit}, params) {
     return new Promise((resolve, reject) => {
       getTotal(params)
-        .then(response => {
-          const {data} = response;
+        .then(data => {
+          
           resolve(data);
         })
         .catch(error => {
@@ -87,8 +86,8 @@ const actions = {
     const {ruleId} = params;
     return new Promise((resolve, reject) => {
       removeOne(ruleId)
-        .then(response => {
-          const {data} = response;
+        .then(data => {
+          
           resolve(data);
         })
         .catch(error => {

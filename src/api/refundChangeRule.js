@@ -17,9 +17,9 @@ export function getOne(id) {
 
 export function getPageList(params) {
   return request({
-    url: `/flight/refund/change/rule/page/list/${params.pageFlag}/${params.pageSize}/${params.lastId}`,
+    url: `/flight/refund/change/rule/page/list/${params.pageFlag}/${params.pageSize}`,
     method: 'get',
-    params: params.searchForm
+    params: params
   });
 }
 
