@@ -70,12 +70,12 @@
           <el-col :span="24">
             <el-form-item label="数字类型">
               <el-select v-model="formData.type" placeholder="选中数字类型">
-                <el-option label="byte" value="byte"></el-option>
-                <el-option label="short" value="short"></el-option>
-                <el-option label="int" value="int"></el-option>
-                <el-option label="long" value="long"></el-option>
-                <el-option label="float" value="float"></el-option>
-                <el-option label="double" value="double"></el-option>
+                <el-option label="Byte" value="Byte"></el-option>
+                <el-option label="Short" value="Short"></el-option>
+                <el-option label="Integer" value="Integer"></el-option>
+                <el-option label="Long" value="Long"></el-option>
+                <el-option label="Float" value="Float"></el-option>
+                <el-option label="Double" value="Double"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -237,31 +237,31 @@ export default {
     handleValueTypeChange(value) {
       switch (value) {
         case 0:
-          this.formData.type = "string";
+          this.formData.type = "String";
           break;
         case 1:
-          this.formData.type = "bool";
+          this.formData.type = "Boolean";
           break;
         case 2:
-          this.formData.type = "int";
+          this.formData.type = "Integer";
           break;
         case 3:
         case 4:
-          this.formData.type = "date";
+          this.formData.type = "Date";
           break;
         case 5:
-          this.formData.type = "float";
+          this.formData.type = "Float";
           break;
         case 60:
-          this.formData.type = "string";
+          this.formData.type = "String";
           break;
         case 61:
-          this.formData.type = "array";
+          this.formData.type = "ArrayList";
           this.formData.multiple = true;
           break;
         case 62:
           this.formData.multiple = false;
-          this.formData.type = "string";
+          this.formData.type = "String";
           break;
       }
     },
@@ -319,7 +319,7 @@ export default {
         unit: "",
         inputType: "",
         valueType: 0,
-        type: "string",
+        type: "String",
         readonly: false,
         hidden: false,
         sku: false,
@@ -356,7 +356,7 @@ export default {
       this.$emit("update:visible", false);
     },
     handleMultipleChange(val) {
-      this.formData.type = val ? 'array' : 'string'
+      this.formData.type = val ? 'ArrayList' : 'String'
     }
   },
   components: {
