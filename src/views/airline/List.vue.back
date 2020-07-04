@@ -15,6 +15,7 @@
         size="mini"
         v-loading="loading"
         highlight-current-row
+
       >
         <el-table-column prop="airlineName" width="180" label="航司名称" align="center"></el-table-column>
         <el-table-column prop="airlineCode" width="180" label="航司二字码" align="center"></el-table-column>
@@ -34,14 +35,14 @@
       </el-table>
       <el-pagination
         @size-change="handleSizeChange"
-        @prev-click="handlePrev"
-        @next-click="handleNext"
+        @prev-click="prevClick"
+        @next-click="nextClick"
+        :current-page="currentPage"
         background
         layout="total,sizes,prev,next"
         prev-text="上一页"
         next-text="下一页"
-        :page-size="pageSizes[0]"
-        :page-sizes="pageSizes"
+        :page-size="pageSize"
         :total="total"
       ></el-pagination>
       <el-dialog
@@ -75,20 +76,25 @@
 import airlineSearch from "./Search.vue";
 import airlineEdit from "./Edit.vue";
 import LookLnfo from "./LookLnfo.vue";
-import { MIXIN_TABLE } from "@/utils/mixin";
 
 export default {
   data() {
     return {
+      loading: true,
+      airlineCode: "",
       lookTitle: "",
+      searchForm: {},
+      dialogVisible: false,
       showInfo: false,
       isFlights: false,
+      tableData: [],
+      lastId: null,
+      pageFlag: 0,
+      pageSize: 10,
+      total: 0,
+      currentPage: 0,
       flightsInfo: "",
-      segmentsInfo: "",
-
-      beanIdName: "airlineCode",
-      actionName: 'airline/getPageList',
-      airlineCode: "",
+      segmentsInfo: ""
     };
   },
   components: {
@@ -97,6 +103,45 @@ export default {
     LookLnfo
   },
   methods: {
+    handleAdd() {
+      this.airlineCode = "";
+      this.dialogVisible = true;
+    },
+    loadData(params) {
+      this.$store
+        .dispatch("airline/getPageList", {
+          pageSize: this.pageSize,
+          lastId: this.lastId,
+          pageFlag: this.pageFlag,
+          ...params
+        })
+        .then(data => {
+          if (data) {
+            this.tableData = data.rows;
+            this.total = data.total;
+          }
+          this.loading = false;
+        })
+        .catch(error => {
+          this.loading = false;
+          console.log(error);
+        });
+    },
+    handleSizeChange(pageSize) {
+      this.pageSize = pageSize;
+      this.lastId = null;
+      this.loadData();
+    },
+    prevClick() {
+      this.pageFlag = -1;
+      this.lastId = this.tableData[0].airlineCode;
+      this.loadData();
+    },
+    nextClick() {
+      this.pageFlag = 1;
+      this.lastId = this.tableData[this.tableData.length - 1].airlineCode;
+      this.loadData();
+    },
     removeOne(id) {
       this.$confirm("是否确定删除航司舱位信息?", "提示", {
         confirmButtonText: "确定",
@@ -108,7 +153,7 @@ export default {
             .dispatch("airline/removeOne", { airlineCode: id })
             .then(() => {
               if (1 === this.tableData.length) {
-                this.handlePrev();
+                this.prevClick();
               } else {
                 this.loadData();
               }
@@ -121,6 +166,10 @@ export default {
           console.error(err);
         });
     },
+    handleEdit(row) {
+      this.airlineCode = row.airlineCode;
+      this.dialogVisible = true;
+    },
     handleCancel() {
       this.dialogVisible = false;
       this.showInfo = false;
@@ -128,6 +177,21 @@ export default {
     handleSave() {
       this.dialogVisible = false;
       this.loadData();
+    },
+    handleSearch(params) {
+      const newParams = {};
+      if (params) {
+        for (let key in params) {
+          if (params[key]) {
+            newParams[key] = params[key];
+          }
+        }
+      }
+      this.loadData(newParams);
+      this.$message({
+        type: "success",
+        message: "查询成功！"
+      });
     },
     lookFlights(flights) {
       this.lookTitle = "查看航班信息";
@@ -152,6 +216,8 @@ export default {
       return str.substring(0, str.length - 2);
     }
   },
-  mixins: [MIXIN_TABLE]
+  mounted() {
+    this.loadData();
+  }
 };
 </script>

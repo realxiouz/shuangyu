@@ -35,14 +35,16 @@
         </el-table-column>
       </el-table>
       <el-pagination
+        @size-change="handleSizeChange"
+        @prev-click="handlePrev"
+        @next-click="handleNext"
         background
-        layout="total,prev,next"
+        layout="total,sizes,prev,next"
         prev-text="上一页"
         next-text="下一页"
-        :page-size="pageSize"
+        :page-size="pageSizes[0]"
+        :page-sizes="pageSizes"
         :total="total"
-        @prev-click="prevClick"
-        @next-click="nextClick"
       ></el-pagination>
       <el-dialog
         title="平台信息"
@@ -66,59 +68,19 @@
 <script>
     import openEdit from "./Edit.vue";
     import openSearch from "./Search.vue";
+    import { MIXIN_TABLE } from "@/utils/mixin";
 
     export default {
         name: "List",
         data() {
             return {
-                loading: true,
-                openId: null,
-                dialogVisible: false,
-                pageFlag: "next",
-                pageSize: 10,
-                lastId: "blank",
-                total: 0,
-                tableData: []
+                beanIdName: "openId",
+                actionName: 'open/getPageList',
+                openId: "",
             };
         },
         methods: {
-            handleSearch(formData) {
-                this.deleteForSearch = true;
-                if (!formData || !formData.openName) {
-                    formData = {};
-                }
-                this.$store
-                    .dispatch("open/getPageList", {
-                        pageFlag: this.pageFlag,
-                        pageSize: 10,
-                        lastId: this.lastId,
-                        filters: formData
-                    })
-                    .then(data => {
-                        if (data) {
-                            this.tableData = data;
-                        }
-                        this.loading = false;
-                    })
-                    .catch(error => {
-                        this.loading = false;
-                        console.log(error);
-                    });
-                this.loadTotal(formData);
-            },
-            loadTotal(formData) {
-                if (!formData || !formData.openName) {
-                    formData = {};
-                }
-                this.$store
-                    .dispatch("open/getTotal", {filters: formData})
-                    .then(data => {
-                        this.total = data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
+            
             handleAdd() {
                 this.dialogVisible = true;
                 this.openId = "";
@@ -176,16 +138,6 @@
                     });
                 this.dialogVisible = false;
             },
-            prevClick() {
-                this.pageFlag = "prev";
-                this.lastId = this.tableData[0].openId;
-                this.handleSearch();
-            },
-            nextClick() {
-                this.pageFlag = "next";
-                this.lastId = this.tableData[this.tableData.length - 1].openId;
-                this.handleSearch();
-            },
             initCategory(category) {
                 switch (category) {
                     case 0:
@@ -197,10 +149,6 @@
                 }
             }
         },
-        created() {
-            this.handleSearch();
-            this.loadTotal();
-        },
         computed: {
             formatCategory() {
                 return function (category) {
@@ -211,6 +159,8 @@
         components: {
             openEdit,
             openSearch
-        }
+        },
+        mixins: [MIXIN_TABLE]
+
     };
 </script>

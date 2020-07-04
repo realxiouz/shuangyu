@@ -4,8 +4,8 @@ const actions = {
   addOne({commit}, params) {
     return new Promise((resolve, reject) => {
       addOne(params)
-        .then(response => {
-          const {data} = response;
+        .then(data => {
+          
           resolve(data);
         })
         .catch(error => {
@@ -17,8 +17,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {id, data} = params;
       updateOne(id, data)
-        .then(response => {
-          const {data} = response;
+        .then(data => {
+          
           resolve(data);
         })
         .catch(error => {
@@ -30,8 +30,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {openId} = params;
       removeOne(openId)
-        .then(response => {
-          const {data} = response;
+        .then(data => {
+          
           resolve(data);
         })
         .catch(error => {
@@ -43,8 +43,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {id} = params;
       getOne(id)
-        .then(response => {
-          const {data} = response;
+        .then(data => {
+          
           resolve(data);
         })
         .catch(error => {
@@ -55,10 +55,8 @@ const actions = {
 
   getPageList({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {pageFlag, pageSize, filter} = params;
-      getPageList(pageFlag, pageSize, filter)
-        .then(response => {
-          const {data} = response;
+      getPageList(params)
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -70,8 +68,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {filter} = params;
       getList(filter)
-        .then(response => {
-          const {data} = response;
+        .then(data => {
+          
           resolve(data);
         })
         .catch(error => {
@@ -83,8 +81,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {filter} = params;
       getTotal(filter)
-        .then(response => {
-          const {data} = response;
+        .then(data => {
+          
           resolve(data);
         })
         .catch(error => {

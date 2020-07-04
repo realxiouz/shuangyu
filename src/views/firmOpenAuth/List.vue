@@ -30,13 +30,14 @@
       </el-table>
       <el-pagination
         @size-change="handleSizeChange"
-        @prev-click="prevClick"
-        @next-click="nextClick"
+        @prev-click="handlePrev"
+        @next-click="handleNext"
         background
         layout="total,sizes,prev,next"
         prev-text="上一页"
         next-text="下一页"
-        :page-size="pageSize"
+        :page-size="pageSizes[0]"
+        :page-sizes="pageSizes"
         :total="total"
       ></el-pagination>
       <el-dialog center :visible.sync="dialogVisible" width="30%"
@@ -55,70 +56,20 @@
     import search from "./Search";
     import edit from "./Edit";
     import {formatOpenType} from "@/utils/status.js";
+    import { MIXIN_TABLE } from "@/utils/mixin";
+
 
     export default {
         name: "list",
         data() {
             return {
-                dialogVisible: false,
-                loading: true,
-                tableData: [],
+                beanIdName: "authId",
+                actionName: 'firmOpenAuth/getPageList',
                 authId: "",
-                pageFlag: 1,
-                pageSize: 10,
-                lastId: null,
-                total: 0,
             };
         },
         methods: {
             formatOpenType,
-            prevClick() {
-                this.pageFlag = "prev";
-                this.lastId = this.tableData[0].authId;
-                this.loadData();
-            },
-            nextClick() {
-                this.pageFlag = "next";
-                this.lastId = this.tableData[this.tableData.length - 1].authId;
-                this.loadData();
-            },
-            loadTotal(searchForm) {
-                if (!searchForm || !searchForm.openName) {
-                    searchForm = {};
-                }
-                this.$store
-                    .dispatch("firmOpenAuth/getTotal", {
-                        filters: searchForm
-                    })
-                    .then(data => {
-                        this.total = data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            loadData(searchForm = {}) {
-                if (this.lastId) {
-                    searchForm.lastId = this.lastId;
-                }
-                this.$store
-                    .dispatch("firmOpenAuth/getPageList", {
-                        pageFlag: this.pageFlag,
-                        pageSize: this.pageSize,
-                        filter: searchForm
-                    })
-                    .then(data => {
-                        if (data) {
-                            this.tableData = data;
-                            this.loadTotal(searchForm);
-                        }
-                        this.loading = false;
-                    })
-                    .catch(error => {
-                        this.loading = false;
-                        console.log(error);
-                    });
-            },
             handleCancel() {
                 this.dialogVisible = false;
             },
@@ -139,7 +90,7 @@
                     .then(() => {
                         this.$store.dispatch("firmOpenAuth/removeOne", {authId: id}).then(() => {
                             if (1 === this.tableData.length) {
-                                this.prevClick();
+                                this.handlePrev();
                             } else {
                                 this.loadData();
                             }
@@ -181,32 +132,8 @@
 
                 this.dialogVisible = false;
             },
-            handleSizeChange(pageSize) {
-                this.pageSize = pageSize;
-                this.loadData();
-            },
-            handleSearch(params) {
-                const newParams = {};
-                if (params) {
-                    for (let key in params) {
-                        if (params[key]) {
-                            newParams[key] = params[key];
-                        }
-                    }
-                }
-                if (Object.keys(newParams).length == 0) {
-                    this.lastId = 0;
-                }
-                this.loadData(newParams);
-                this.$message({
-                    type: "success",
-                    message: "查询成功！"
-                });
-            }
         },
-        created() {
-            this.loadData();
-        },
+        mixins: [MIXIN_TABLE],
         components: {
             search,
             edit

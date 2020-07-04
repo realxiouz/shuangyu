@@ -50,15 +50,16 @@
         -->
       </el-table>
       <el-pagination
+        @size-change="handleSizeChange"
+        @prev-click="handlePrev"
+        @next-click="handleNext"
         background
-        layout="total,prev,next"
+        layout="total,sizes,prev,next"
         prev-text="上一页"
         next-text="下一页"
-        :page-size="pageSize"
+        :page-size="pageSizes[0]"
+        :page-sizes="pageSizes"
         :total="total"
-        @size-change="handleSizeChange"
-        @prev-click="handlePrevClick"
-        @next-click="handleNextClick"
       ></el-pagination>
     </div>
   </div>
@@ -67,89 +68,17 @@
 <script>
   import firmEdit from "./Edit";
   import firmSearch from "./Search";
+  import { MIXIN_TABLE } from "@/utils/mixin";
 
   export default {
     data() {
       return {
-        loading: true,
-        //loading:false,
-        tableData: [],
-        //tableData:test,
-        pageFlag: 1,
-        pageSize: 10,
-        lastId: null,
-        total: 0
+        beanIdName: "firmId",
+        actionName: 'firm/getConfigPageList',
+        firmId: "",
       };
     },
     methods: {
-      /*翻前页*/
-      handlePrevClick() {
-        this.pageFlag = -1;
-        this.lastId = this.tableData[0].firmId;
-        this.loadData();
-      },
-      /*翻后页*/
-      handleNextClick() {
-        this.pageFlag = 1;
-        this.lastId = this.tableData[this.tableData.length - 1].firmId;
-        this.loadData();
-      },
-      /*加载列表*/
-      loadData(params = {}) {
-        if (this.lastId) {
-          params.lastId = this.lastId;
-        }
-        this.$store
-          .dispatch("firm/getConfigPageList", {
-            pageFlag: this.pageFlag,
-            pageSize: this.pageSize,
-            filter: params
-          })
-          .then(data => {
-            if (data) {
-              this.tableData = data;
-              this.loadTotal(params);
-            }
-            this.loading = false;
-          })
-          .catch(error => {
-            this.loading = false;
-            console.log(error);
-          });
-      },
-      loadTotal(params) {
-        this.$store
-          .dispatch("firm/getConfigTotal", {filter: params})
-          .then(data => {
-            if (data) {
-              this.total = data.data;
-            }
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      },
-      handleSizeChange(pageSize) {
-        this.pageSize = pageSize;
-        this.loadData();
-      },
-      /*根据关键字进行搜索*/
-      handleSearch(params) {
-        const newParams = {};
-        if (params) {
-          for (let key in params) {
-            if (params[key]) {
-              newParams[key] = params[key];
-            }
-          }
-        }
-        this.loadData(newParams);
-        this.$message({
-          type: "success",
-          message: "查询成功！"
-        });
-      },
-      //点击展开行中的按钮
       detailsOnClick(uri, item) {
         this.$router.push({
           path: uri,
@@ -189,11 +118,10 @@
       }
       //企业名称
     },
-    mounted() {
-      this.loadData();
-    },
     components: {
       firmSearch
-    }
+    },
+    mixins: [MIXIN_TABLE]
+
   };
 </script>

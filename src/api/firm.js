@@ -86,11 +86,12 @@ export function getRootPageList(pageFlag, pageSize, filter) {
   });
 }
 
-export function getConfigPageList(pageFlag,pageSize,filter) {
+export function getConfigPageList(args) {
+  const {pageFlag, pageSize, ...params} = args
   return request({
     url:`/firm/open/config/get/page/list/${pageFlag}/${pageSize}`,
     method: `get`,
-    params: filter
+    params
   });
 }
 

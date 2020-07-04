@@ -15,11 +15,12 @@ export function getOne(airlineCode) {
   });
 }
 
-export function getPageList(params) {
+export function getPageList(args) {
+  const {pageFlag, pageSize, ...params} = args
   return request({
-    url:  `/flight/airline/page/list/${params.pageFlag}/${params.pageSize}`,
+    url:  `/flight/airline/page/list/${pageFlag}/${pageSize}`,
     method: 'get',
-    params: params
+    params
   });
 }
 
@@ -28,14 +29,6 @@ export function getList(params) {
     url: '/flight/airline/list',
     method: 'get',
     params: params.searchForm
-  });
-}
-
-export function getTotal(params) {
-  return request({
-    url: '/flight/airline/total',
-    method: 'get',
-    params:params
   });
 }
 
