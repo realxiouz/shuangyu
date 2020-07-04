@@ -78,7 +78,7 @@ export default {
           pageSize: this.pageSize,
           lastId: this.lastId,
           pageFlag: this.pageFlag,
-          searchForm: this.searchForm
+          ...this.searchForm
         })
         .then(data => {
           if (data) {
@@ -96,6 +96,7 @@ export default {
     handleSizeChange(pageSize) {
       this.pageSize = pageSize;
       this.lastId = null;
+      this.pageFlag = 0;
       this.loadData();
     },
     prevClick() {

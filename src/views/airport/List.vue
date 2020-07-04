@@ -108,8 +108,8 @@ export default {
           .dispatch(url, params)
           .then(data => {
             this.tableData = [];
-            if (data.data) {
-              this.tableData.push(data.data);
+            if (data) {
+              this.tableData.push(data);
             }
             this.total = 1;
           })

@@ -10,7 +10,7 @@ export function addOne(data) {
 
 export function updateOne(data) {
   return request({
-    url: '/flight/update/one',
+    url: '/flight/save',
     method: 'post',
     data
   });

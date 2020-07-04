@@ -9,10 +9,11 @@ export function addOne(data) {
 }
 
 export function updateOne(data) {
+  let { fareId, ...rest } = data
   return request({
-    url: '/flight/fare/update/one',
-    method: 'post',
-    data
+    url: `/flight/fare/update/one/${fareId}`,
+    method: 'put',
+    data: rest
   });
 }
 

@@ -113,16 +113,6 @@ export default {
           console.log(error);
         });
     },
-    loadTotal(params) {
-      this.$store
-        .dispatch("fare/getTotal", { filter: params })
-        .then(data => {
-          this.total = data.data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
     /*输入条件时可进行条件查询*/
     search(params) {
       this.deleteForSearch = true;
@@ -174,12 +164,12 @@ export default {
     },
     /*对员工进行删除*/
     handleDelete(row) {
-      this.open(this.delete, row.fareId, "此操作将删除条票价信息, 是否继续?");
+      this.open(this.delete, row.fareId, `此操作将删除条票价信息${row.fareId}, 是否继续?`);
     },
     /*根据用户ID删除用户*/
     delete(fareID) {
       this.$store
-        .dispatch("fare/removeOne", { fareID: fareID })
+        .dispatch("fare/removeOne", { fareId: fareID })
         .then(() => {
           this.lastId = "blank";
           if (1 === this.tableData.length && !this.deleteForSearch) {

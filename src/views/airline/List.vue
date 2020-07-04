@@ -113,7 +113,7 @@ export default {
           pageSize: this.pageSize,
           lastId: this.lastId,
           pageFlag: this.pageFlag,
-          searchForm: params
+          ...params
         })
         .then(data => {
           if (data) {
