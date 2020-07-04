@@ -37,8 +37,8 @@
       </el-table>
       <!-- 分页组件 -->
       <el-pagination
-        @prev-click="prevClick"
-        @next-click="nextClick"
+        @prev-click="handlePrevClick"
+        @next-click="handleNextClick"
         background
         layout="total,prev,next"
         prev-text="上一页"
@@ -68,177 +68,182 @@
 </template>
 
 <script>
-    import warehouseEdit from "./Edit";
-    import warehouseSearch from "./Search";
+  import warehouseEdit from "./Edit";
+  import warehouseSearch from "./Search";
 
-    export default {
-      name: "warehouseContent",
-        data() {
-            return {
-              loading: true,
-              searchForm: {},
-              dialogVisible: false,
-              editWarehouseId: null,
-              pid: null,
-              tableData: [],
-              pageFlag: 1,
-              pageSize: 10,
-              lastId: "blank",
-              total: 0,
-              codeEnabled: false,
-              uploadData: {
-                tree: null,
-                treeNode: null,
-                resolve: null
-              }
-            };
-        },
-        methods: {
-          prevClick() {
-            this.pageFlag = -1;
-            this.lastId = this.tableData[0].warehouseId;
-            this.loadData();
-          },
-          nextClick() {
-            this.pageFlag = 1;
-            this.lastId = this.tableData[this.tableData.length - 1].warehouseId;
-            this.loadData();
-          },
-          loadData(params = {}) {
-            if (this.lastId) {
-              params.lastId = this.lastId;
+  export default {
+    name: "warehouseContent",
+    data() {
+      return {
+        loading: true,
+        searchForm: {},
+        dialogVisible: false,
+        editWarehouseId: null,
+        pid: null,
+        tableData: [],
+        pageFlag: 1,
+        pageSize: 10,
+        lastId: "blank",
+        total: 0,
+        codeEnabled: false,
+        uploadData: {
+          tree: null,
+          treeNode: null,
+          resolve: null
+        }
+      };
+    },
+    methods: {
+      handlePrevClick() {
+        this.pageFlag = -1;
+        this.lastId = this.tableData[0].warehouseId;
+        this.loadData();
+      },
+      handleNextClick() {
+        this.pageFlag = 1;
+        this.lastId = this.tableData[this.tableData.length - 1].warehouseId;
+        this.loadData();
+      },
+      loadData(params = {}) {
+        if (this.lastId) {
+          params.lastId = this.lastId;
+        }
+        this.$store
+          .dispatch("warehouse/getRootPageList", {
+            pageFlag: this.pageFlag,
+            pageSize: this.pageSize,
+            filter: params
+          })
+          .then(data => {
+            if (data && data.rows && data.rows.length > 0) {
+              this.tableData = data.rows;
+              this.total = data.total;
+            } else {
+              this.tableData = [];
+              this.total = 0;
             }
-            this.$store
-              .dispatch("warehouse/getRootPageList", {
-                pageFlag: this.pageFlag,
-                pageSize: this.pageSize,
-                filter: params
-              })
-              .then(data => {
-                if (data && data.rows && data.rows.length > 0) {
-                  this.tableData = data.rows;
-                  this.total = data.total;
-                } else {
-                  this.tableData = [];
-                }
-                this.loading = false;
-              })
-              .catch(error => {
-                this.loading = false;
-                console.log(error);
-              });
-          },
-          loadChildren(tree, treeNode, resolve) {
-            this.uploadData.tree = tree;
-            this.uploadData.treeNode = treeNode;
-            this.uploadData.resolve = resolve;
-            let params = {};
-            if(tree && tree.warehouseId){
-              this.$store
-                .dispatch("warehouse/getAsyncTreeList", {pid: tree.warehouseId, filter: params})
-                .then(data => {
-                  if (data) {
-                    resolve(data);
-                  }
-                })
-                .catch(error => {
-                  console.log(error);
-                });
-            }
-          },
-          handleAddChild(warehouseId) {
-            this.pid = warehouseId;
-            this.editWarehouseId = "";
-            this.codeEnabled = false;
-            this.dialogVisible = true;
-          },
-          handleAdd() {
-            this.editWarehouseId = "";
-            this.pid = "";
-            this.codeEnabled = false;
-            this.dialogVisible = true;
-          },
-          handleSearch(params) {
-            const newParams = {};
-            if (params) {
-              for (let key in params) {
-                if (params[key]) {
-                  newParams[key] = params[key];
+            this.loading = false;
+          })
+          .catch(error => {
+            this.loading = false;
+            console.log(error);
+          });
+      },
+      loadChildren(tree, treeNode, resolve) {
+        this.uploadData.tree = tree;
+        this.uploadData.treeNode = treeNode;
+        this.uploadData.resolve = resolve;
+        let params = {};
+        if(tree && tree.warehouseId){
+          this.$store
+            .dispatch("warehouse/getAsyncTreeList", {pid: tree.warehouseId, filter: params})
+            .then(data => {
+              if (data) {
+                if(data && data.length > 0){
+                  resolve(data);
+                }else{
+                  window.location.reload();
                 }
               }
-            }
-            this.loadData(newParams);
-            this.$message({
-              type: "success",
-              message: "查询成功！"
-            });
-          },
-          handleUpdate(warehouseId) {
-            this.editWarehouseId = warehouseId;
-            this.pid = "";
-            this.codeEnabled = true;
-            this.dialogVisible = true;
-          },
-          handleRemove(warehouseId) {
-            this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
-              confirmButtonText: "确定",
-              cancelButtonText: "取消",
-              type: "warning"
             })
-              .then(() => {
-                this.$store
-                  .dispatch("warehouse/removeOne", {warehouseId: warehouseId})
-                  .then(() => {
-                    if (1 === this.tableData.length) {
-                      this.prevClick();
-                    } else {
-                      this.loadData();
-                      this.loadChildren(this.uploadData.tree, this.uploadData.treeNode, this.uploadData.resolve);
-                    }
-                    this.$message({
-                      type: "success",
-                      message: "删除成功！"
-                    });
-                  });
-              })
-              .catch(err => {
-                console.error(err);
-              });
-          },
-          handleCancel() {
-            this.dialogVisible = false;
-          },
-          handleSave(formData) {
-            let method = "warehouse/addOne";
-            let msg = "添加成功！";
-
-            if(formData && formData.warehouseId){
-              method = "warehouse/updateOne";
-              msg = "编辑成功！";
+            .catch(error => {
+              console.log(error);
+            });
+        }
+      },
+      handleAddChild(warehouseId) {
+        this.pid = warehouseId;
+        this.editWarehouseId = "";
+        this.codeEnabled = false;
+        this.dialogVisible = true;
+      },
+      handleAdd() {
+        this.editWarehouseId = "";
+        this.pid = "";
+        this.codeEnabled = false;
+        this.dialogVisible = true;
+      },
+      handleSearch(params) {
+        const newParams = {};
+        if (params) {
+          for (let key in params) {
+            if (params[key]) {
+              newParams[key] = params[key];
             }
-
+          }
+        }
+        this.loadData(newParams);
+        this.$message({
+          type: "success",
+          message: "查询成功！"
+        });
+      },
+      handleUpdate(warehouseId) {
+        this.editWarehouseId = warehouseId;
+        this.pid = "";
+        this.codeEnabled = true;
+        this.dialogVisible = true;
+      },
+      handleRemove(warehouseId) {
+        this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
+          .then(() => {
             this.$store
-              .dispatch(method, formData)
+              .dispatch("warehouse/removeOne", {warehouseId: warehouseId})
               .then(() => {
+                if (1 === this.tableData.length) {
+                  this.handlePrevClick();
+                } else {
+                  this.loadData();
+                  this.loadChildren(this.uploadData.tree, this.uploadData.treeNode, this.uploadData.resolve);
+                }
                 this.$message({
                   type: "success",
-                  message: msg
+                  message: "删除成功！"
                 });
-                this.loadData();
-                this.loadChildren(this.uploadData.tree, this.uploadData.treeNode, this.uploadData.resolve);
-              })
-              .catch(error => {
-                console.log(error);
               });
-            this.dialogVisible = false;
-          }
-        },
-        mounted() {
-            this.loadData({});
-        },
-        components: {
-            warehouseEdit,
-            warehouseSearch
+          })
+          .catch(err => {
+            console.error(err);
+          });
+      },
+      handleCancel() {
+        this.dialogVisible = false;
+      },
+      handleSave(formData) {
+        let method = "warehouse/addOne";
+        let msg = "添加成功！";
+
+        if(formData && formData.warehouseId){
+          method = "warehouse/updateOne";
+          msg = "编辑成功！";
         }
-    };
+
+        this.$store
+          .dispatch(method, formData)
+          .then(() => {
+            this.$message({
+              type: "success",
+              message: msg
+            });
+            this.loadData();
+            this.loadChildren(this.uploadData.tree, this.uploadData.treeNode, this.uploadData.resolve);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+        this.dialogVisible = false;
+      }
+    },
+    mounted() {
+      this.loadData({});
+    },
+    components: {
+      warehouseEdit,
+      warehouseSearch
+    }
+  };
 </script>

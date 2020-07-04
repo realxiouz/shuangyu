@@ -101,3 +101,11 @@ export function getConfigTotal(filter) {
     params: filter
   });
 }
+
+export function getSupplierList(filter) {
+  return request({
+    url: `/firm/merchant/supplier/get/list`,
+    method: `get`,
+    params: filter
+  });
+}

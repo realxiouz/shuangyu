@@ -5,8 +5,8 @@
         <el-input
           v-model="formData.code"
           onkeyup="this.value=this.value.toUpperCase()"
-          :disabled="codeEnabled"
           placeholder="请输入科目编码..."
+          :disabled="codeEnabled"
         ></el-input>
       </el-form-item>
       <el-form-item label="科目名称:" prop="name">

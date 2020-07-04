@@ -1,73 +1,40 @@
-import {addOne, getList, getOne, getPageList, getTotal, removeOne, updateOne} from '@/api/currency';
+import {
+  getList,
+  getRootPageList,
+  getOne,
+  getPageList,
+  removeOne,
+  save,
+  update,
+  getAsyncTreeList
+} from "@/api/currency";
+import {getToken} from "@/utils/auth";
+
+
+const state = {
+  token: getToken(),
+  name: "",
+  avatar: ""
+};
+
+const mutations = {
+  SET_TOKEN: (state, token) => {
+    state.token = token;
+  },
+  SET_NAME: (state, name) => {
+    state.name = name;
+  },
+  SET_AVATAR: (state, avatar) => {
+    state.avatar = avatar;
+  }
+};
 
 const actions = {
-  addOne({commit}, params) {
-    return new Promise((resolve, reject) => {
-      addOne(params)
-        .then(response => {
-          const {data} = response;
-          resolve(data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  updateOne({commit}, params) {
-    return new Promise((resolve, reject) => {
-      updateOne(params)
-        .then(response => {
-          const {data} = response;
-          resolve(data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  removeOne({commit}, params) {
-    return new Promise((resolve, reject) => {
-      const {code} = params;
-      removeOne(code)
-        .then(response => {
-          const {data} = response;
-          resolve(data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  getOne({commit}, params) {
-    return new Promise((resolve, reject) => {
-      const {code} = params;
-      getOne(code)
-        .then(response => {
-          const {data} = response;
-          resolve(data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  getTotal({commit}, params) {
-    return new Promise((resolve, reject) => {
-      const {filter} = params;
-      getTotal(filter)
-        .then(response => {
-          const {data} = response;
-          resolve(data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
+  // eslint-disable-next-line no-unused-vars
   getList({commit}, params) {
+    const {filters} = params;
     return new Promise((resolve, reject) => {
-      const {filter} = params;
-      getList(filter)
+      getList(filters)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -77,9 +44,38 @@ const actions = {
         });
     });
   },
-  getPageList({commit}, params) {
+  // eslint-disable-next-line no-unused-vars
+  getRootPageList({commit}, params) {
+    const {pageFlag, pageSize, filter} = params;
     return new Promise((resolve, reject) => {
-      const {pageFlag, pageSize, lastId, filter} = params;
+      getRootPageList(pageFlag, pageSize, filter)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  // eslint-disable-next-line no-unused-vars
+  getOne({commit}, params) {
+    const {currencyId} = params;
+    return new Promise((resolve, reject) => {
+      getOne(currencyId)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  // eslint-disable-next-line no-unused-vars
+  getPageList({commit}, params) {
+    const {pageFlag, pageSize, lastId, filter} = params;
+    return new Promise((resolve, reject) => {
       getPageList(pageFlag, pageSize, lastId, filter)
         .then(response => {
           const {data} = response;
@@ -89,10 +85,66 @@ const actions = {
           reject(error);
         });
     });
+  },
+  // eslint-disable-next-line no-unused-vars
+  removeOne({commit}, params) {
+    const {currencyId} = params;
+    return new Promise((resolve, reject) => {
+      removeOne(currencyId)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  // eslint-disable-next-line no-unused-vars
+  save({commit}, params) {
+    return new Promise((resolve, reject) => {
+      save(params)
+        .then(response => {
+          //const { data } = response;
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  // eslint-disable-next-line no-unused-vars
+  update({commit}, params) {
+    return new Promise((resolve, reject) => {
+      update(params)
+        .then(response => {
+          //const { data } = response;
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  // eslint-disable-next-line no-unused-vars
+  getAsyncTreeList({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {pid, filter} = params;
+      getAsyncTreeList(pid, filter)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
   }
-}
+};
 
 export default {
   namespaced: true,
+  state,
+  mutations,
   actions
 };

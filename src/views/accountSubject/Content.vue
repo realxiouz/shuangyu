@@ -39,18 +39,15 @@
               <el-button @click="handleUpdate(scope.row.subjectId)" type="primary" size="mini">编辑</el-button>
             </span>
             <span v-if="scope.row.deletable" style="margin-left: 10px;">
-              <el-button
-                @click.native.prevent="handleRemove(scope.row.subjectId)"
-                type="danger"
-                size="mini"
+              <el-button @click.native.prevent="handleRemove(scope.row.subjectId)" type="danger" size="mini"
               >删除</el-button>
             </span>
           </template>
         </el-table-column>
       </el-table>
       <el-pagination
-        @prev-click="prevClick"
-        @next-click="nextClick"
+        @prev-click="handlePrevClick"
+        @next-click="handleNextClick"
         background
         layout="total,prev,next"
         prev-text="上一页"
@@ -112,12 +109,12 @@
         return row.balanceDirection === 0 ? "借" : "贷";
       },
       subjectCategory,
-      prevClick() {
+      handlePrevClick() {
         this.pageFlag = -1;
         this.lastId = this.tableData[0].subjectId;
         this.loadData();
       },
-      nextClick() {
+      handleNextClick() {
         this.pageFlag = 1;
         this.lastId = this.tableData[this.tableData.length - 1].subjectId;
         this.loadData();
@@ -129,6 +126,7 @@
         if (this.lastId) {
           params.lastId = this.lastId;
         }
+
         this.$store
           .dispatch("accountSubject/getRootPageList", {
             pageFlag: this.pageFlag,
@@ -141,6 +139,7 @@
               this.total = data.total;
             } else {
               this.tableData = [];
+              this.total = 0;
             }
             this.loading = false;
           })
@@ -158,7 +157,7 @@
           this.$store
             .dispatch("accountSubject/getAsyncTreeList", {pid: tree.subjectId, filter: params})
             .then(data => {
-              if (data) {
+              if (data && data.length > 0) {
                 let children = [];
                 data.forEach(function(obj){
                   if(obj.attributes){
@@ -166,6 +165,8 @@
                   }
                 });
                 resolve(children);
+              }else{
+                window.location.reload();
               }
             })
             .catch(error => {
@@ -202,7 +203,7 @@
       },
       handleUpdate(subjectId) {
         this.editSubjectId = subjectId;
-        this.pid = "";
+        this.pid = null;
         this.codeEnabled = true;
         this.dialogVisible = true;
       },
@@ -217,7 +218,7 @@
               .dispatch("accountSubject/removeOne", {subjectId: subjectId})
               .then(() => {
                 if (1 === this.tableData.length) {
-                  this.prevClick();
+                  this.handlePrevClick();
                 } else {
                   this.loadData();
                   this.loadChildren(this.uploadData.tree, this.uploadData.treeNode, this.uploadData.resolve);

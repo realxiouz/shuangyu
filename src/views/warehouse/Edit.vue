@@ -5,8 +5,8 @@
         <el-input
           v-model="formData.warehouseCode"
           onkeyup="this.value=this.value.toUpperCase()"
-          :disabled="codeEnabled"
           placeholder="请输入仓库编码..."
+          :disabled="codeEnabled"
         ></el-input>
       </el-form-item>
       <el-form-item label="仓库名称:" prop="warehouseName">

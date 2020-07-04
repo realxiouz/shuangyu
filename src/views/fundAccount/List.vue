@@ -9,10 +9,14 @@
       </el-row>
       <el-table
         v-loading="loading"
-        size="mini"
         :data="tableData"
         row-key="accountId"
+        highlight-current-row
+        style="width: 100%;margin-bottom:15px"
+        size="mini"
         :load="loadChildren"
+        fit
+        :indent="40"
         lazy
         :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
       >
@@ -38,15 +42,15 @@
         <el-table-column label="操作" fixed="right" align="center" width="250">
           <template slot-scope="scope">
             <el-button type="success" size="mini" @click="handleAddChild(scope.row.accountId)">添加</el-button>
-            <el-button @click="handleEdit(scope.row.accountId)" type="primary" size="mini">编辑</el-button>
-            <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
+            <el-button @click="handleUpdate(scope.row.accountId)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="handleRemove(scope.row.accountId)" type="danger" size="mini">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
       <el-pagination
-        @prev-click="prevClick"
-        @next-click="nextClick"
-        background
+        @prev-click="handlePrevClick"
+        @next-click="handleNextClick"
+        backgrund
         layout="total,prev,next"
         prev-text="上一页"
         next-text="下一页"
@@ -54,7 +58,7 @@
         :total="total"
       ></el-pagination>
       <el-dialog
-        title="资金账号信息"
+        title="资金账号管理"
         center
         :visible.sync="dialogVisible"
         :close-on-click-modal="false"
@@ -62,10 +66,11 @@
       >
         <fund-account-edit
           v-if="dialogVisible"
+          :editAccountId="editAccountId"
+          :pid="pid"
+          :codeEnabled="codeEnabled"
           @onSave="handleSave"
           @onCancel="handleCancel"
-          :edit-account-id="editAccountId"
-          :pid="pid"
         ></fund-account-edit>
       </el-dialog>
     </div>
@@ -77,25 +82,49 @@
   import fundAccountEdit from "./Edit.vue";
 
   export default {
+    name: "fundAccountContent",
     data() {
       return {
         loading: true,
-        dialogVisible: false,
         searchForm: {},
-        editAccountId: "",
-        pid: "",
+        dialogVisible: false,
+        editAccountId: null,
+        pid: null,
         tableData: [],
         pageFlag: 1,
         pageSize: 10,
-        lastId: "",
-        total: 0
+        lastId: "blank",
+        total: 0,
+        codeEnabled: false,
+        uploadData: {
+          tree: null,
+          treeNode: null,
+          resolve: null
+        }
       };
     },
     methods: {
+      formatBalanceDirection(row) {
+        return row.balanceDirection === 0 ? "借" : "贷";
+      },
+      handlePrevClick() {
+        this.pageFlag = -1;
+        this.lastId = this.tableData[0].accountId;
+        this.loadData();
+      },
+      handleNextClick() {
+        this.pageFlag = 1;
+        this.lastId = this.tableData[this.tableData.length - 1].accountId;
+        this.loadData();
+      },
       loadData(params = {}) {
+        if(null != this.category){
+          params.category = this.category;
+        }
         if (this.lastId) {
           params.lastId = this.lastId;
         }
+
         this.$store
           .dispatch("fundAccount/getRootPageList", {
             pageFlag: this.pageFlag,
@@ -103,120 +132,132 @@
             filter: params
           })
           .then(data => {
-            this.tableData = data;
+            if (data && data.rows && data.rows.length > 0) {
+              this.tableData = data.rows;
+              this.total = data.total;
+            } else {
+              this.tableData = [];
+              this.total = 0;
+            }
             this.loading = false;
-            this.loadTotal(params);
           })
           .catch(error => {
-            console.log(error);
             this.loading = false;
-          });
-      },
-      loadTotal(params) {
-        this.$store
-          .dispatch("fundAccount/getTotal", {
-            filters: params
-          })
-          .then(data => {
-            this.total = data;
-          })
-          .catch(error => {
             console.log(error);
           });
       },
       loadChildren(tree, treeNode, resolve) {
+        this.uploadData.tree = tree;
+        this.uploadData.treeNode = treeNode;
+        this.uploadData.resolve = resolve;
         let params = {};
-        this.$store
-          .dispatch("fundAccount/getAsyncTreeList", {pid: tree.accountId, filter: params})
-          .then(data => {
-            if (data) {
-              resolve(data);
-            }
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      },
-      handleAdd() {
-        this.editAccountId = "";
-        this.pid = "";
-        this.dialogVisible = true;
-      },
-      handleSave(formData) {
-        this.dialogVisible = false;
-        this.$store
-          .dispatch("fundAccount/save", formData)
-          .then(() => {
-            this.loadData({});
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      },
-      handleCancel() {
-        this.dialogVisible = false;
+        if(tree && tree.accountId){
+          this.$store
+            .dispatch("fundAccount/getAsyncTreeList", {pid: tree.accountId, filter: params})
+            .then(data => {
+              if (data && data.length > 0) {
+                let children = [];
+                data.forEach(function(obj){
+                  if(obj.attributes){
+                    children.push(obj.attributes);
+                  }
+                });
+                resolve(children);
+              }else{
+                window.location.reload();
+              }
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        }
       },
       handleAddChild(accountId) {
-        this.editAccountId = "";
-        this.dialogVisible = true;
         this.pid = accountId;
-      },
-      handleEdit(accountId) {
-        this.editAccountId = accountId;
-        this.pid = "";
+        this.editAccountId = null;
+        this.codeEnabled = false;
         this.dialogVisible = true;
       },
-      prevClick() {
-        this.pageFlag = "-1";
-        this.lastId = this.tableData[0].accountId;
-        this.loadData(this.searchForm);
+      handleAdd() {
+        this.editAccountId = null;
+        this.pid = null;
+        this.codeEnabled = false;
+        this.dialogVisible = true;
       },
-      nextClick() {
-        this.pageFlag = "1";
-        this.lastId = this.tableData[this.tableData.length - 1].accountId;
-        this.loadData(this.searchForm);
-      },
-      handleDelete(row) {
-        this.open(
-          this.delete,
-          row.accountId,
-          "此操作将删除该资金账号信息, 是否继续?"
-        );
-      },
-      delete(accountId) {
-        this.$store
-          .dispatch("fundAccount/removeOne", {accountId: accountId})
-          .then(() => {
-            this.lastId = "blank";
-            if (1 === this.tableData.length) {
-              this.handlePrevClick();
-            } else {
-              this.loadData({});
+      handleSearch(params) {
+        const newParams = {};
+        if (params) {
+          for (let key in params) {
+            if (params[key]) {
+              newParams[key] = params[key];
             }
-          })
-          .catch(error => {
-            console.log(error);
-          });
+          }
+        }
+        this.loadData(newParams);
+        this.$message({
+          type: "success",
+          message: "查询成功！"
+        });
       },
-      open(func, data, message) {
-        this.$confirm(message, "提示", {
+      handleUpdate(accountId) {
+        this.editAccountId = accountId;
+        this.pid = null;
+        this.codeEnabled = true;
+        this.dialogVisible = true;
+      },
+      handleRemove(accountId) {
+        this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
         })
           .then(() => {
-            func(data);
+            this.$store
+              .dispatch("fundAccount/removeOne", {accountId: accountId})
+              .then(() => {
+                if (1 === this.tableData.length) {
+                  this.handlePrevClick();
+                } else {
+                  this.loadData();
+                  this.loadChildren(this.uploadData.tree, this.uploadData.treeNode, this.uploadData.resolve);
+                }
+                this.$message({
+                  type: "success",
+                  message: "删除成功！"
+                });
+              });
+          })
+          .catch(err => {
+            console.error(err);
+          });
+      },
+      handleCancel() {
+        this.dialogVisible = false;
+      },
+      handleSave(formData) {
+        formData.category = this.category;
+        let method = "fundAccount/save";
+        let msg = "添加成功！";
+
+        if(formData && formData.accountId){
+          method = "fundAccount/update";
+          msg = "编辑成功！";
+        }
+
+        this.$store
+          .dispatch(method, formData)
+          .then(() => {
             this.$message({
               type: "success",
-              message: "删除成功!"
+              message: msg
             });
+            this.loadData();
+            this.loadChildren(this.uploadData.tree, this.uploadData.treeNode, this.uploadData.resolve);
           })
-          .catch(() => {
-            this.$message({
-              type: "info",
-              message: "已取消删除"
-            });
+          .catch(error => {
+            console.log(error);
           });
+        this.dialogVisible = false;
       },
       initCategory(category) {
         if (0 === category) {
@@ -241,12 +282,19 @@
         }
       }
     },
-    mounted() {
-      this.loadData(this.searchForm);
+    created() {
+      this.loadData();
     },
     components: {
-      fundAccountEdit,
-      fundAccountSearch
+      fundAccountSearch,
+      fundAccountEdit
     }
   };
 </script>
+
+<style>
+  .contentBox {
+    margin-top: -10px;
+    padding-top: 0;
+  }
+</style>
