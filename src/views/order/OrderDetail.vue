@@ -992,7 +992,7 @@
         this.$store
           .dispatch("order/purchaseOrder", params)
           .then(data => {
-            if (data.code == 0) {
+            if (data) {
               this.$message({
                 type: "success",
                 message: "操作成功"
@@ -1015,7 +1015,7 @@
         this.$store
           .dispatch("order/woniuOrder", params)
           .then(data => {
-            if (data.code == 0) {
+            if (data) {
               this.$message({
                 type: "success",
                 message: "操作成功"
@@ -1049,7 +1049,7 @@
         this.$store
           .dispatch("order/refundApply", newParams)
           .then(data => {
-            if (data.code == 0) {
+            if (data) {
               this.$message({
                 type: "success",
                 message: "退票申请成功！"
@@ -1131,7 +1131,7 @@
         this.$store
           .dispatch("order/changeApply", newParams)
           .then(data => {
-            if (data.code == 0) {
+            if (data) {
               this.$message({
                 type: "success",
                 message: "改签申请成功！"
@@ -1164,7 +1164,7 @@
         this.$store
           .dispatch("order/changePay", this.changePayData)
           .then(data => {
-            if (data.code == 0) {
+            if (data) {
               this.$message({
                 type: "success",
                 message: "改签支付成功！"
@@ -1214,7 +1214,7 @@
         this.$store
           .dispatch("order/processingChange", {params: _params})
           .then(data => {
-            if (data.code == 0) {
+            if (data) {
               console.log(data);
               this.$message({
                 type: "success",
@@ -1304,7 +1304,7 @@
         this.$store
           .dispatch("order/refundCheckRefuseReason", params)
           .then(data => {
-            if (data.code == 0) {
+            if (data) {
               console.log(data);
               this.$message({
                 type: "success",
@@ -1610,7 +1610,7 @@
         this.$store
           .dispatch("order/rewriteTicket", params)
           .then(data => {
-            if (data.code == 0) {
+            if (data) {
               this.$message({
                 type: "success",
                 message: "操作成功!"

@@ -396,7 +396,7 @@
         this.$store
           .dispatch("order/placeAnOpenOrder", newParams)
           .then(data => {
-            if (data.code == 0) {
+            if (data) {
               this.payData = data;
               let amountTotal = 0;
               this.passengerData.forEach(item => {
@@ -427,7 +427,7 @@
         this.$store
           .dispatch("order/placeAnFOOrder", foPlaceOrderparams)
           .then(data => {
-            console.info("51下单返回" + JSON.stringify(data) + "--CODE--" + data.code)
+            console.info("51下单返回" + JSON.stringify(data) + "--CODE--" + data)
             if (data) {
               this.FOBookOrderData = data;
               let amountTotal = 0;
@@ -609,7 +609,7 @@
         this.$store
           .dispatch("order/foPay", params)
           .then(data => {
-            if (data.code == 0) {
+            if (data) {
               this.$message({
                 type: "success",
                 message: "支付成功！"
@@ -632,7 +632,7 @@
         this.$store
           .dispatch("order/openPay", params)
           .then(data => {
-            if (data.code == 0) {
+            if (data) {
               this.$message({
                 type: "success",
                 message: "支付成功！"
