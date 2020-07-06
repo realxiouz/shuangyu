@@ -10,8 +10,8 @@ export function addOne(data) {
 
 export function updateOne(data) {
   return request({
-    url: '/flight/fare/net/update/one',
-    method: 'post',
+    url: `/flight/fare/net/update/one/${data.flightCode}`,
+    method: 'PUT',
     data
   });
 }
