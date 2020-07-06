@@ -129,8 +129,8 @@
           this.$store
             .dispatch("owp/getOne", {id: this.owpId})
             .then(data => {
-              if (data.code == 0) {
-                this.formData = data.data;
+              if (data) {
+                this.formData = data;
               }
             })
             .catch(error => {

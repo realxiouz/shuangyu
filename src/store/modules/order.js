@@ -1,46 +1,46 @@
 import {
-  useGoTicket,
-  getRefundHtml,
-  getChangeHtml,
-  changeSearch,
+  affirmRefund,
   changeApply,
   changePay,
-  refundApply,
-  refundSearch,
-  unLockOrder,
-  lockOrder,
-  getOrderTree,
-  getList,
-  getOne,
-  removeOne,
-  save,
-  getTimeCount,
-  getCount,
-  getTotal,
-  getOrderDetail,
-  getOrderMinPrice,
-  getOrderFlight,
-  get51FlightPrice,
-  getFlightPrice,
-  placeAnOpenOrder,
-  placeAnFOOrder,
+  changeSearch,
   checkOrder,
-  openPay,
-  foPay,
-  getMessageDetail,
-  purchaseOrder,
-  woniuOrder,
-  affirmRefund,
-  refundCheckRefuseReason,
-  processingChange,
-  rewriteTicket,
-  interceptOrder,
   exportOrder,
+  foPay,
+  get51FlightPrice,
+  getChangeHtml,
+  getCount,
+  getFlightPrice,
+  getList,
+  getMessageDetail,
+  getOne,
+  getOrderDetail,
+  getOrderFlight,
+  getOrderMinPrice,
+  getOrderTree,
+  getRefundHtml,
+  getTimeCount,
+  getTotal,
+  interceptOrder,
+  lockOrder,
+  openPay,
+  placeAnFOOrder,
+  placeAnOpenOrder,
+  processingChange,
+  purchaseOrder,
   qunarDetailHtml,
+  refundApply,
+  refundCheckRefuseReason,
+  refundSearch,
   rejectChange,
-  updateBspTicketNo
+  removeOne,
+  rewriteTicket,
+  save,
+  unLockOrder,
+  updateBspTicketNo,
+  useGoTicket,
+  woniuOrder
 } from "@/api/order";
-import { getToken } from "@/utils/auth";
+import {getToken} from "@/utils/auth";
 
 
 const state = {
@@ -62,24 +62,22 @@ const mutations = {
 };
 
 const actions = {
-  save({ commit }, params) {
+  save({commit}, params) {
     return new Promise((resolve, reject) => {
       save(params)
-        .then(response => {
-          //const { data } = response;
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getList({ commit }, params) {
-    const { filters } = params;
+  getList({commit}, params) {
+    const {filters} = params;
     return new Promise((resolve, reject) => {
       getList(filters)
-        .then(response => {
-          const { data } = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -87,12 +85,11 @@ const actions = {
         });
     });
   },
-  exportOrder({ commit }, params) {
-    const { filters } = params;
+  exportOrder({commit}, params) {
+    const {filters} = params;
     return new Promise((resolve, reject) => {
       exportOrder(filters)
-        .then(response => {
-          const { data } = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -100,12 +97,11 @@ const actions = {
         });
     });
   },
-  removeOne({ commit }, params) {
-    const { orderNo } = params;
+  removeOne({commit}, params) {
+    const {orderNo} = params;
     return new Promise((resolve, reject) => {
       removeOne(orderNo)
-        .then(response => {
-          const { data } = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -114,12 +110,11 @@ const actions = {
     });
   },
 
-  getTotal({ commit }, params) {
-    const { filters } = params;
+  getTotal({commit}, params) {
+    const {filters} = params;
     return new Promise((resolve, reject) => {
       getTotal(filters)
-        .then(response => {
-          const { data } = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -127,12 +122,12 @@ const actions = {
         });
     });
   },
-  getCount({ commit }, params) {
-    const { filters } = params;
+  getCount({commit}, params) {
+    const {filters} = params;
     return new Promise((resolve, reject) => {
       getCount(filters)
-        .then(response => {
-          const { data } = response;
+        .then(data => {
+
           resolve(data);
         })
         .catch(error => {
@@ -140,12 +135,12 @@ const actions = {
         });
     });
   },
-  getTimeCount({ commit }, params) {
-    const { filters } = params;
+  getTimeCount({commit}, params) {
+    const {filters} = params;
     return new Promise((resolve, reject) => {
       getTimeCount(filters)
-        .then(response => {
-          const { data } = response;
+        .then(data => {
+
           resolve(data);
         })
         .catch(error => {
@@ -153,11 +148,10 @@ const actions = {
         });
     });
   },
-  getOne({ commit }, data) {
+  getOne({commit}, data) {
     return new Promise((resolve, reject) => {
       getOne(data)
-        .then(response => {
-          const { data } = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -165,7 +159,7 @@ const actions = {
         });
     });
   },
-  getOrderDetail({ commit }, data) {
+  getOrderDetail({commit}, data) {
     return new Promise((resolve, reject) => {
       getOrderDetail(data)
         .then(data => {
@@ -176,11 +170,10 @@ const actions = {
         });
     });
   },
-  getOrderMinPrice({ commit }, params) {
+  getOrderMinPrice({commit}, params) {
     return new Promise((resolve, reject) => {
       getOrderMinPrice(params)
-        .then(response => {
-          const { data } = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -188,11 +181,10 @@ const actions = {
         });
     });
   },
-  getOrderFlight({ commit }, params) {
+  getOrderFlight({commit}, params) {
     return new Promise((resolve, reject) => {
       getOrderFlight(params)
-        .then(response => {
-          const { data } = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -200,23 +192,21 @@ const actions = {
         });
     });
   },
-  get51FlightPrice({ commit }, params) {
+  get51FlightPrice({commit}, params) {
     return new Promise((resolve, reject) => {
       get51FlightPrice(params)
-        .then(response => {
-          // const { data } = response;
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getFlightPrice({ commit }, params) {
+  getFlightPrice({commit}, params) {
     return new Promise((resolve, reject) => {
       getFlightPrice(params)
-        .then(response => {
-          const { data } = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -225,11 +215,10 @@ const actions = {
     });
   },
   // 蜗牛下单
-  placeAnOpenOrder({ commit }, params) {
+  placeAnOpenOrder({commit}, params) {
     return new Promise((resolve, reject) => {
       placeAnOpenOrder(params)
-        .then(response => {
-          const { data } = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -238,11 +227,11 @@ const actions = {
     });
   },
   // 51下单
-  placeAnFOOrder({ commit }, params) {
+  placeAnFOOrder({commit}, params) {
     return new Promise((resolve, reject) => {
       placeAnFOOrder(params)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -250,11 +239,10 @@ const actions = {
     });
   },
   // 检查是否已经下单
-  checkOrder({ commit }, params) {
+  checkOrder({commit}, params) {
     return new Promise((resolve, reject) => {
       checkOrder(params)
-        .then(response => {
-          const { data } = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -263,12 +251,11 @@ const actions = {
     });
   },
   // 蜗牛支付
-  openPay({ commit }, params) {
+  openPay({commit}, params) {
     return new Promise((resolve, reject) => {
       openPay(params)
-        .then(response => {
-         // const { data } = response;
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -276,12 +263,11 @@ const actions = {
     });
   },
   // 51Book支付
-  foPay({ commit }, params) {
+  foPay({commit}, params) {
     return new Promise((resolve, reject) => {
       foPay(params)
-        .then(response => {
-          // const { data } = response;
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -289,11 +275,10 @@ const actions = {
     });
   },
   // 拦截蜗牛出票
-  interceptOrder({ commit }, params) {
+  interceptOrder({commit}, params) {
     return new Promise((resolve, reject) => {
       interceptOrder(params)
-        .then(response => {
-          const { data } = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -301,11 +286,10 @@ const actions = {
         });
     });
   },
-  getOrderTree({ commit }, params) {
+  getOrderTree({commit}, params) {
     return new Promise((resolve, reject) => {
       getOrderTree(params)
-        .then(response => {
-          const { data } = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -314,12 +298,11 @@ const actions = {
     });
   },
 
-  lockOrder({ commit }, params) {
+  lockOrder({commit}, params) {
     const orderNo = params;
     return new Promise((resolve, reject) => {
       lockOrder(orderNo)
-        .then(response => {
-          const { data } = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -328,12 +311,11 @@ const actions = {
     });
   },
 
-  unLockOrder({ commit }, params) {
+  unLockOrder({commit}, params) {
     const orderNo = params;
     return new Promise((resolve, reject) => {
       unLockOrder(orderNo)
-        .then(response => {
-          const { data } = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -342,12 +324,11 @@ const actions = {
     });
   },
 
-  useGoTicket({ commit }, params) {
+  useGoTicket({commit}, params) {
     const orderTaskId = params;
     return new Promise((resolve, reject) => {
       useGoTicket(orderTaskId)
-        .then(response => {
-          const { data } = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -357,12 +338,11 @@ const actions = {
   },
 
   // 获取消息明细
-  getMessageDetail({ commit }, params) {
+  getMessageDetail({commit}, params) {
     const orderNo = params;
     return new Promise((resolve, reject) => {
       getMessageDetail(orderNo)
-        .then(response => {
-          const { data } = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -372,12 +352,11 @@ const actions = {
   },
 
   // 退票查询接口
-  refundSearch({ commit }, params) {
+  refundSearch({commit}, params) {
     const purchaseOrderNo = params;
     return new Promise((resolve, reject) => {
       refundSearch(purchaseOrderNo)
-        .then(response => {
-          const { data } = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -387,12 +366,11 @@ const actions = {
   },
 
   // 获取销售退票信息
-  getRefundHtml({ commit }, params) {
+  getRefundHtml({commit}, params) {
     const orderNo = params;
     return new Promise((resolve, reject) => {
       getRefundHtml(orderNo)
-        .then(response => {
-          const { data } = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -401,12 +379,11 @@ const actions = {
     });
   },
   // 退票申请接口
-  refundApply({ commit }, params) {
+  refundApply({commit}, params) {
     return new Promise((resolve, reject) => {
       refundApply(params)
-        .then(response => {
-          //const { data } = response;
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -414,12 +391,11 @@ const actions = {
     });
   },
   // 确认退票信息
-  affirmRefund({ commit }, params) {
+  affirmRefund({commit}, params) {
     return new Promise((resolve, reject) => {
       affirmRefund(params)
-        .then(response => {
-          //const { data } = response;
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -427,12 +403,11 @@ const actions = {
     });
   },
   // 拒绝退款
-  refundCheckRefuseReason({ commit }, params) {
+  refundCheckRefuseReason({commit}, params) {
     return new Promise((resolve, reject) => {
       refundCheckRefuseReason(params)
-        .then(response => {
-          //const { data } = response;
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -441,11 +416,10 @@ const actions = {
   },
 
   // 改签查询接口
-  changeSearch({ commit }, params) {
+  changeSearch({commit}, params) {
     return new Promise((resolve, reject) => {
       changeSearch(params)
-        .then(response => {
-          const { data } = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -455,12 +429,11 @@ const actions = {
   },
 
   // 获取销售改签信息
-  getChangeHtml({ commit }, params) {
+  getChangeHtml({commit}, params) {
     const purchaseOrderNo = params;
     return new Promise((resolve, reject) => {
       getChangeHtml(purchaseOrderNo)
-        .then(response => {
-          const { data } = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -470,12 +443,11 @@ const actions = {
   },
 
   // 改签申请接口
-  changeApply({ commit }, params) {
+  changeApply({commit}, params) {
     return new Promise((resolve, reject) => {
       changeApply(params)
-        .then(response => {
-          //const { data } = response;
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -484,12 +456,11 @@ const actions = {
   },
 
   // 改签支付接口
-  changePay({ commit }, params) {
+  changePay({commit}, params) {
     return new Promise((resolve, reject) => {
       changePay(params)
-        .then(response => {
-          //const { data } = response;
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -498,11 +469,10 @@ const actions = {
   },
 
   // 确认改签
-  processingChange({ commit }, params) {
+  processingChange({commit}, params) {
     return new Promise((resolve, reject) => {
       processingChange(params)
-        .then(response => {
-          const { data } = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -512,11 +482,10 @@ const actions = {
   },
 
   // 拒绝改签
-  rejectChange({ commit }, params) {
+  rejectChange({commit}, params) {
     return new Promise((resolve, reject) => {
       rejectChange(params)
-        .then(response => {
-          const { data } = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
@@ -527,12 +496,11 @@ const actions = {
 
 
   // 重填票号
-  rewriteTicket({ commit }, params) {
+  rewriteTicket({commit}, params) {
     return new Promise((resolve, reject) => {
       rewriteTicket(params)
-        .then(response => {
-          //const { data } = response;
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -540,12 +508,11 @@ const actions = {
     });
   },
   // 非蜗牛补单
-  purchaseOrder({ commit }, params) {
+  purchaseOrder({commit}, params) {
     return new Promise((resolve, reject) => {
       purchaseOrder(params)
-        .then(response => {
-          // const { data } = response;
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -553,34 +520,33 @@ const actions = {
     });
   },
   // 蜗牛补单
-  woniuOrder({ commit }, params) {
+  woniuOrder({commit}, params) {
     return new Promise((resolve, reject) => {
       woniuOrder(params)
-        .then(response => {
-          // const { data } = response;
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  qunarDetailHtml({ commit }, params) {
+  qunarDetailHtml({commit}, params) {
     return new Promise((resolve, reject) => {
       qunarDetailHtml(params.sourceOrderNo)
-        .then(response => {
-          resolve(response.data);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  updateBspTicketNo({ commit }, params) {
+  updateBspTicketNo({commit}, params) {
     return new Promise((resolve, reject) => {
       updateBspTicketNo(params)
-        .then(response => {
-          resolve(response.data);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);

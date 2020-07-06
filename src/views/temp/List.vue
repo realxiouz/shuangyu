@@ -116,7 +116,7 @@
         this.$store
           .dispatch("user/getPageList", { pageFlag: this.pageFlag, pageSize: 1, lastId: this.lastId })
           .then(data => {
-            this.tableData = data.data;
+            this.tableData = data.rows;
           })
           .catch(error => {
             console.log(error);
@@ -126,7 +126,7 @@
         this.$store
           .dispatch("user/getList", { username: keyword })
           .then(data => {
-            this.tableData = data.data;
+            this.tableData = data;
           })
           .catch(error => {
             console.log(error);

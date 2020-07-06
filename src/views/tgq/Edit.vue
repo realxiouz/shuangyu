@@ -194,7 +194,7 @@
             })
             .then(data => {
               if (data) {
-                this.formData = data.data;
+                this.formData = data;
                 if (this.copyFlag){
                   this.formData.schedulerId = '';
                 }

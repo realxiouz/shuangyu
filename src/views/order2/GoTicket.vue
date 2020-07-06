@@ -385,7 +385,7 @@ export default {
                 this.$store
                   .dispatch("order/placeAnOrder", newParams)
                   .then(data => {
-                    if (data.code == 0) {
+                    if (data) {
                       this.payData = data;
                       let amountTotal = 0;
                       this.passengerData.forEach(item => {
@@ -416,7 +416,7 @@ export default {
             this.$store
               .dispatch("order/placeAnOrder", newParams)
               .then(data => {
-                if (data.code == 0) {
+                if (data) {
                   this.payData = data;
                   let amountTotal = 0;
                   this.passengerData.forEach(item => {
@@ -452,7 +452,7 @@ export default {
       this.$store
         .dispatch("order/openPay", params)
         .then(data => {
-          if (data.code == 0) {
+          if (data) {
             this.$message({
               type: "success",
               message: "支付成功！"

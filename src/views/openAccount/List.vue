@@ -76,7 +76,7 @@ export default {
       this.$store
         .dispatch("openAccount/getTotal", { filter: {} })
         .then(data => {
-          this.total = data.data;
+          this.total = data;
         })
         .catch(error => {
           console.log(error);
@@ -90,7 +90,7 @@ export default {
         })
         .then(data => {
           if (data) {
-            this.tableData = data.data;
+            this.tableData = data;
           }
           this.loading = false;
         })
@@ -105,7 +105,7 @@ export default {
       this.$store
         .dispatch("openAccount/getTotal", { filter: params ? params : {} })
         .then(data => {
-          this.total = data.data;
+          this.total = data;
         })
         .catch(error => {
           console.log(error);
@@ -119,7 +119,7 @@ export default {
           filter: params ? params : {}
         })
         .then(data => {
-          this.tableData = data.data;
+          this.tableData = data.rows;
         })
         .catch(error => {
           console.log(error);

@@ -1,11 +1,14 @@
 import {
-  getOne,
-  removeOne,
-  saveOne,
   getList,
+  getRootPageList,
+  getOne,
   getPageList,
-  getTotal
-} from '@/api/trade';
+  removeOne,
+  save,
+  update,
+  getTreeList,
+  getAsyncTreeList
+} from "@/api/trade";
 import {getToken} from "@/utils/auth";
 
 
@@ -26,23 +29,13 @@ const mutations = {
     state.avatar = avatar;
   }
 };
-const actions = {
-  getTotal({commit}, params) {
-    return new Promise((resolve, reject) => {
-      getTotal(params)
-        .then(response => {
-          const {data} = response;
-          resolve(data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
 
+const actions = {
+  // eslint-disable-next-line no-unused-vars
   getList({commit}, params) {
+    const {filters} = params;
     return new Promise((resolve, reject) => {
-      getList(params)
+      getList(filters)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -52,9 +45,38 @@ const actions = {
         });
     });
   },
-  getPageList({commit}, params) {
+  // eslint-disable-next-line no-unused-vars
+  getRootPageList({commit}, params) {
+    const {pageFlag, pageSize, filter} = params;
     return new Promise((resolve, reject) => {
-      const {pageFlag, pageSize, lastId, filter} = params;
+      getRootPageList(pageFlag, pageSize, filter)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  // eslint-disable-next-line no-unused-vars
+  getOne({commit}, params) {
+    const {tradeId} = params;
+    return new Promise((resolve, reject) => {
+      getOne(tradeId)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  // eslint-disable-next-line no-unused-vars
+  getPageList({commit}, params) {
+    const {pageFlag, pageSize, lastId, filter} = params;
+    return new Promise((resolve, reject) => {
       getPageList(pageFlag, pageSize, lastId, filter)
         .then(response => {
           const {data} = response;
@@ -65,18 +87,7 @@ const actions = {
         });
     });
   },
-  saveOne({commit}, params) {
-    return new Promise((resolve, reject) => {
-      saveOne(params)
-        .then(response => {
-          const {data} = response;
-          resolve(data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
+  // eslint-disable-next-line no-unused-vars
   removeOne({commit}, params) {
     const {tradeId} = params;
     return new Promise((resolve, reject) => {
@@ -90,10 +101,51 @@ const actions = {
         });
     });
   },
-  getOne({commit}, params) {
-    const {tradeId} = params;
+  // eslint-disable-next-line no-unused-vars
+  save({commit}, params) {
     return new Promise((resolve, reject) => {
-      getOne(tradeId)
+      save(params)
+        .then(response => {
+          //const { data } = response;
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  // eslint-disable-next-line no-unused-vars
+  update({commit}, params) {
+    return new Promise((resolve, reject) => {
+      update(params)
+        .then(response => {
+          //const { data } = response;
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  // eslint-disable-next-line no-unused-vars
+  getTreeList({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {filter} = params;
+      getTreeList(filter)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  // eslint-disable-next-line no-unused-vars
+  getAsyncTreeList({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {pid, filter} = params;
+      getAsyncTreeList(pid, filter)
         .then(response => {
           const {data} = response;
           resolve(data);

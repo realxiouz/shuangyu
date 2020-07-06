@@ -396,7 +396,7 @@
         this.$store
           .dispatch("order/placeAnOpenOrder", newParams)
           .then(data => {
-            if (data.code == 0) {
+            if (data) {
               this.payData = data;
               let amountTotal = 0;
               this.passengerData.forEach(item => {
@@ -427,9 +427,9 @@
         this.$store
           .dispatch("order/placeAnFOOrder", foPlaceOrderparams)
           .then(data => {
-            console.info("51下单返回" + JSON.stringify(data) + "--CODE--" + data.code)
-            if (data.code == 0) {
-              this.FOBookOrderData = data.data;
+            console.info("51下单返回" + JSON.stringify(data) + "--CODE--" + data)
+            if (data) {
+              this.FOBookOrderData = data;
               let amountTotal = 0;
               this.passengerData.forEach(item => {
                 amountTotal += Number(item.amount);
@@ -609,7 +609,7 @@
         this.$store
           .dispatch("order/foPay", params)
           .then(data => {
-            if (data.code == 0) {
+            if (data) {
               this.$message({
                 type: "success",
                 message: "支付成功！"
@@ -632,7 +632,7 @@
         this.$store
           .dispatch("order/openPay", params)
           .then(data => {
-            if (data.code == 0) {
+            if (data) {
               this.$message({
                 type: "success",
                 message: "支付成功！"
@@ -724,11 +724,11 @@
                   this.$store
                     .dispatch("order/get51FlightPrice", flightPrice51)
                     .then(data => {
-                      if (data.data) {
-                        if (data.data.return.returnCode == "S") {
-                          foflight.barePrice = (Number(data.data.return.flightDataList[0].seatAndPolicyList[0].ticketPrice) - Number(Number(data.data.return.flightDataList[0].seatAndPolicyList[0].ticketPrice) * Number(data.data.return.flightDataList[0].seatAndPolicyList[0].policyList[0].commisionPoint)) - Number(data.data.return.flightDataList[0].seatAndPolicyList[0].policyList[0].param1)).toFixed(2);
-                          foflight.arfTof = Number(data.data.return.flightDataList[0].adultAirportTax) + "/" + Number(data.data.return.flightDataList[0].adultFuelTax);
-                          foflight.allBarePrice = (Number(data.data.return.flightDataList[0].adultAirportTax)+Number(data.data.return.flightDataList[0].adultFuelTax)+Number(foflight.barePrice)).toFixed(2);
+                      if (data) {
+                        if (data.return.returnCode == "S") {
+                          foflight.barePrice = (Number(data.return.flightDataList[0].seatAndPolicyList[0].ticketPrice) - Number(Number(data.return.flightDataList[0].seatAndPolicyList[0].ticketPrice) * Number(data.return.flightDataList[0].seatAndPolicyList[0].policyList[0].commisionPoint)) - Number(data.return.flightDataList[0].seatAndPolicyList[0].policyList[0].param1)).toFixed(2);
+                          foflight.arfTof = Number(data.return.flightDataList[0].adultAirportTax) + "/" + Number(data.return.flightDataList[0].adultFuelTax);
+                          foflight.allBarePrice = (Number(data.return.flightDataList[0].adultAirportTax)+Number(data.return.flightDataList[0].adultFuelTax)+Number(foflight.barePrice)).toFixed(2);
                         }else{
                           foflight.barePrice = "获取失败";
                           foflight.arfTof = "获取失败";
@@ -763,19 +763,19 @@
         this.$store
           .dispatch("order/get51FlightPrice", flightPrice51)
           .then(data => {
-            if (data.data) {
-              if (data.data.return.returnCode == "S") {
+            if (data) {
+              if (data.return.returnCode == "S") {
                 var sortPrices = [];
-                for (let i = 0; i < data.data.return.flightDataList[0].seatAndPolicyList[0].policyList.length; i++) {
+                for (let i = 0; i < data.return.flightDataList[0].seatAndPolicyList[0].policyList.length; i++) {
                   var sortPrice = {
                     source: "51Book",
-                    price: data.data.return.flightDataList[0].seatAndPolicyList[0].policyList[i].adultSettlePrice,
-                    cabin: data.data.return.flightDataList[0].seatAndPolicyList[0].seatCode,
-                    vppr: data.data.return.flightDataList[0].seatAndPolicyList[0].ticketPrice,
-                    policyId: data.data.return.flightDataList[0].seatAndPolicyList[0].policyList[i].policyId,
-                    airportTax: data.data.return.flightDataList[0].adultAirportTax,
-                    fuelTax: data.data.return.flightDataList[0].adultFuelTax,
-                    parPrice: data.data.return.flightDataList[0].seatAndPolicyList[0].ticketPrice
+                    price: data.return.flightDataList[0].seatAndPolicyList[0].policyList[i].adultSettlePrice,
+                    cabin: data.return.flightDataList[0].seatAndPolicyList[0].seatCode,
+                    vppr: data.return.flightDataList[0].seatAndPolicyList[0].ticketPrice,
+                    policyId: data.return.flightDataList[0].seatAndPolicyList[0].policyList[i].policyId,
+                    airportTax: data.return.flightDataList[0].adultAirportTax,
+                    fuelTax: data.return.flightDataList[0].adultFuelTax,
+                    parPrice: data.return.flightDataList[0].seatAndPolicyList[0].ticketPrice
                   };
                   sortPrices.push(sortPrice);
                 }

@@ -202,7 +202,7 @@
             })
             .then(data => {
               if (data) {
-                this.formData = data.data;
+                this.formData = data;
                 if (!this.formData.params || this.formData.params.length < 1) {
                   this.getParams();
                 }

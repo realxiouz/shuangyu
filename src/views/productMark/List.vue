@@ -93,7 +93,7 @@
                     });
                 this.$store.dispatch("productMark/getPageList", {pageFlag: this.pageFlag, pageSize: this.pageSize, lastId: this.lastId,filter: searchForm})
                     .then(data => {
-                        this.tableData = data.data;
+                        this.tableData = data.rows;
                         this.loading = false;
                     })
                     .catch(error => {

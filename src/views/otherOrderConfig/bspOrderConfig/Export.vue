@@ -193,16 +193,16 @@ export default {
               this.formData.sourceOrderNo
             )
             .then(data => {
-              if (data.code == 0) {
+              if (data) {
                 this.$message({
                   type: "success",
-                  message: data.data
+                  message: data
                 });
                 this.loadingOrderNo = false;
               } else {
                 this.$message({
                   type: "warning",
-                  message: data.data
+                  message: data
                 });
                 this.loadingOrderNo = false;
               }

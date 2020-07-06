@@ -1,10 +1,4 @@
-import {
-  getOne,
-  save,
-  getPageList,
-  removeOne,
-  getTotal
-} from '@/api/refundChangeRule';
+import {getOne, getPageList, getTotal, removeOne, save} from '@/api/refundChangeRule';
 import {getToken} from '@/utils/auth';
 
 const state = {
@@ -31,7 +25,6 @@ const actions = {
     return new Promise((resolve, reject) => {
       getOne(ruleId)
         .then(data => {
-          
           resolve(data);
         })
         .catch(error => {
@@ -43,7 +36,6 @@ const actions = {
     return new Promise((resolve, reject) => {
       save(data)
         .then(data => {
-          
           resolve(data);
         })
         .catch(error => {
@@ -74,7 +66,6 @@ const actions = {
     return new Promise((resolve, reject) => {
       getTotal(params)
         .then(data => {
-          
           resolve(data);
         })
         .catch(error => {
@@ -87,7 +78,6 @@ const actions = {
     return new Promise((resolve, reject) => {
       removeOne(ruleId)
         .then(data => {
-          
           resolve(data);
         })
         .catch(error => {
