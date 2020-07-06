@@ -35,12 +35,12 @@
         </el-autocomplete>
       </el-form-item>
       <el-form-item label="币种:">
-        <el-select v-model="formData.currency" style="width: 100%;" placeholder="请选择币种..">
+        <el-select v-model="formData.currencyId" style="width: 100%;" placeholder="请选择币种..">
           <el-option
             v-for="(item,idx) in currencyList"
             :key="idx"
             :label="item.name"
-            :value="item.code"
+            :value="item.currencyId"
           ></el-option>
         </el-select>
       </el-form-item>
@@ -66,11 +66,11 @@
       </el-form-item>
       <el-form-item label="科目名称:">
         <el-cascader
-          v-model="formData.subjectCode"
+          v-model="formData.subjectId"
           style="width: 100%;"
           placeholder="可通过科目名称搜索.."
           :options="subjectList"
-          :props="{ label: 'name', value: 'code' }"
+          :props="{ label: 'name', value: 'subjectId'}"
           filterable
           @change="handleSubject"
         ></el-cascader>
@@ -96,11 +96,9 @@
       otherId: null,
       expire: null,
       pointRate: null,
-      currency: null,
+      currencyId: null,
       amount: null,
-      subjectId: null,
-      subjectCode: null,
-      subjectName: null
+      subjectId: null
     };
   }
 
@@ -183,13 +181,13 @@
             break;
         }
       },
-      loadSupplier() {
+      loadSupplier(params) {
         let that = this;
-
         that.$store
-          .dispatch("firm/getSupplierList", { filter: {} })
+          .dispatch("firm/getSupplierList", { filter: params })
           .then(data => {
             if(data && data.length > 0){
+              that.firmList = [];
               data.forEach(function(obj){
                 if(obj.firm){
                   that.firmList.push({
@@ -238,22 +236,24 @@
         return data;
       },
       handleFirm(queryString, cb){
-        let firms = this.firmList;
-        let results = queryString ? firms.filter(this.createStateFilter(queryString)) : firms;
-
+        let firms = [];
+        if(queryString && queryString.length > 1){
+          this.loadSupplier({firmName: queryString});
+          firms = this.firmList;
+        }
         clearTimeout(this.timeout);
         this.timeout = setTimeout(() => {
-          cb(results);
-        }, 3000 * Math.random());
+          cb(firms);
+        }, 1000);
       },
       handleSelect(item) {
-        console.log(item);
+        if(item && item.id){
+          this.formData.otherId = item.id;
+        }
       },
-      handleSubject(subject) {
-        if (subject) {
-          const code = subject[subject.length - 1];
-          this.formData.subjectId = code;
-          this.formData.subjectCode = code;
+      handleSubject(subjectIdList) {
+        if (subjectIdList) {
+          this.formData.subjectId = subjectIdList[subjectIdList.length - 1];
         }
       },
       handleGetOne(accountId) {
@@ -277,11 +277,6 @@
             this.$emit("onSave", this.formData);
           }
         });
-      },
-      createStateFilter(queryString) {
-        return (state) => {
-          return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
-        };
       }
     },
     created() {
@@ -291,7 +286,6 @@
       if (this.pid) {
         this.formData.pid = this.pid;
       }
-      this.loadSupplier();
       this.loadCurrency();
       this.loadSubject();
     }
@@ -299,12 +293,16 @@
 </script>
 
 <style>
+  .el-autocomplete-suggestion__list{
+    margin: 0 0 18px 0;
+    padding: 0;
+  }
   .el-cascader-menu__list{
     margin: 0 0 20px 0;
     padding: 0;
   }
-  .el-autocomplete-suggestion__list{
-    margin: 0 0 20px 0;
+  .el-cascader__suggestion-list{
+    margin: 0 0 16px 0;
     padding: 0;
   }
 </style>
