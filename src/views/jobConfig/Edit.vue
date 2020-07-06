@@ -365,8 +365,8 @@
           this.$store
             .dispatch("jobConfig/getOne", {jobConfigId: this.jobConfigId})
             .then(data => {
-              if (data.code == 0) {
-                this.formData = data.data;
+              if (data) {
+                this.formData = data;
                 if (this.formData.valueType == 7 || this.formData.valueType == 8 || this.formData.valueType == 9) {
                   this.showAddValues = true;
                   this.values = [];

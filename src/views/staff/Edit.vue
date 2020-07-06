@@ -391,11 +391,11 @@
                     .then(data => {
                         this.loading = false;
                         /*如果请求到的数据roles为null会报错*/
-                        if (!data.data.roles) {
-                            data.data.roles = [];
+                        if (!data.roles) {
+                            data.roles = [];
                         }
-                        this.formData = data.data;
-                        Object.assign(this.updateTempData, data.data);
+                        this.formData = data;
+                        Object.assign(this.updateTempData, data);
                     })
                     .catch(error => {
                         console.log(error);

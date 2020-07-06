@@ -204,11 +204,11 @@
           })
           .then(data => {
             if (data) {
-              this.formData = data.data;
+              this.formData = data;
               for (let i = 0; i < params.length; i++) {
-                for (let j = 0; j < data.data.params.length; j++) {
-                  if (params[i].code == data.data.params[j].code) {
-                    params[i].value = data.data.params[j].value;
+                for (let j = 0; j < data.params.length; j++) {
+                  if (params[i].code == data.params[j].code) {
+                    params[i].value = data.params[j].value;
                     break;
                   }
                 }

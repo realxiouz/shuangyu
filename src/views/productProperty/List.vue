@@ -345,7 +345,7 @@
                     this.$store
                         .dispatch("firmCategory/addOne", this.formData)
                         .then(data => {
-                            this.curLine.push(data.data);
+                            this.curLine.push(data);
                             this.loadTreeData();
                         })
                         .catch(error => {

@@ -58,7 +58,7 @@ export default {
       this.$store
         .dispatch("staff/getList", { filter: {} })
         .then(data => {
-          this.staffList = data.data;
+          this.staffList = data;
         })
         .catch(error => {
           console.log(error);

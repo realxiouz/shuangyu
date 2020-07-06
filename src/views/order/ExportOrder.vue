@@ -146,10 +146,10 @@
         this.$store
           .dispatch("qunarOrderController/orderNonexist", params)
           .then(data => {
-            if (data.code == 0) {
+            if (data) {
               this.$message({
                 type: "success",
-                message: data.data
+                message: data
               });
             } else {
               this.$message({

@@ -158,8 +158,8 @@
         this.$store
           .dispatch("user/getOne", {userId: userId})
           .then(data => {
-            this.formData = data.data;
-            Object.assign(this.initData, data.data);
+            this.formData = data;
+            Object.assign(this.initData, data);
           })
           .catch(error => {
             console.log(error);

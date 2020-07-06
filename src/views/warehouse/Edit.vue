@@ -40,112 +40,112 @@
 </template>
 
 <script>
-  function defaultData() {
-    return {
-      //仓库编码
-      warehouseCode: "",
-      //仓库名称
-      warehouseName: "",
-      //地址
-      address: "",
-      //联系电话
-      phone: "",
-      //联系人
-      contact: "",
-      //库管
-      userIds: []
-    };
-  }
-
-  export default {
-    name: "warehouseEdit",
-    props: ['editWarehouseId', 'pid', 'codeEnabled'],
-    data() {
-      const codeValidator = (rule, value, callback) => {
-        let reg = /^[0-9a-zA-Z]*$/g;
-        if (reg.test(value)) {
-          callback();
-        } else {
-          callback(new Error("只能输入字母或数字！"));
-        }
-      };
-      const phoneValidator = (rule, value, callback) => {
-        if(value){
-          let reg = /^1[3456789]\d{9}$/;
-          if (!reg.test(value)) {
-            callback(new Error("请输入正确的手机号码！"));
-            return;
-          }
-        }
-        callback();
-      };
-      return {
-        formData: defaultData(),
-        firmList: [],
-        newDialogVisible: false,
-        rules: {
-          warehouseCode: [
-            {required: true, message: "请输入仓库编码", trigger: "blur"},
-            {
-              min: 1,
-              max: 20,
-              message: "长度在 1到 20 个字符"
-            },
-            {validator: codeValidator, trigger: 'blur'}
-          ],
-          warehouseName: [
-            {required: true, message: "请输入仓库名称", trigger: "blur"},
-            {
-              min: 1,
-              max: 20,
-              message: "长度在 1到 20 个字符"
-            }
-          ],
-          phone: [
-            {required: false, trigger: "blur"},
-            {
-              min: 1,
-              max: 20,
-              message: "长度在 1到 20 个字符"
-            },
-            {validator: phoneValidator, trigger: 'blur'}
-          ]
-        }
-      };
-    },
-    methods: {
-      handleGetOne(editWarehouseId) {
-        if (editWarehouseId) {
-          this.$store
-            .dispatch("warehouse/getOne", {editWarehouseId: editWarehouseId})
-            .then(data => {
-              if(data && data.data){
-                this.formData = data.data;
-              }
-            })
-            .catch(error => {
-              console.log(error);
-            });
-        } else {
-          this.formData = defaultData();
-        }
-      },
-      handleSave() {
-        this.$refs["form"].validate(valid => {
-          if (valid) {
-            this.formData.warehouseCode = this.formData.warehouseCode.toUpperCase();
-            this.$emit("onSave", this.formData);
-          }
-        });
-      }
-    },
-    created() {
-      if (this.editWarehouseId) {
-        this.handleGetOne(this.editWarehouseId);
-      }
-      if (this.pid) {
-        this.formData.pid = this.pid;
-      }
+    function defaultData() {
+        return {
+            //仓库编码
+            warehouseCode: "",
+            //仓库名称
+            warehouseName: "",
+            //地址
+            address: "",
+            //联系电话
+            phone: "",
+            //联系人
+            contact: "",
+            //库管
+            userIds: []
+        };
     }
-  };
+
+    export default {
+        name: "warehouseEdit",
+        props: ['editWarehouseId', 'pid', 'codeEnabled'],
+        data() {
+            const codeValidator = (rule, value, callback) => {
+                let reg = /^[0-9a-zA-Z]*$/g;
+                if (reg.test(value)) {
+                    callback();
+                } else {
+                    callback(new Error("只能输入字母或数字！"));
+                }
+            };
+            const phoneValidator = (rule, value, callback) => {
+                if (value) {
+                    let reg = /^1[3456789]\d{9}$/;
+                    if (!reg.test(value)) {
+                        callback(new Error("请输入正确的手机号码！"));
+                        return;
+                    }
+                }
+                callback();
+            };
+            return {
+                formData: defaultData(),
+                firmList: [],
+                newDialogVisible: false,
+                rules: {
+                    warehouseCode: [
+                        {required: true, message: "请输入仓库编码", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到 20 个字符"
+                        },
+                        {validator: codeValidator, trigger: 'blur'}
+                    ],
+                    warehouseName: [
+                        {required: true, message: "请输入仓库名称", trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到 20 个字符"
+                        }
+                    ],
+                    phone: [
+                        {required: false, trigger: "blur"},
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "长度在 1到 20 个字符"
+                        },
+                        {validator: phoneValidator, trigger: 'blur'}
+                    ]
+                }
+            };
+        },
+        methods: {
+            handleGetOne(editWarehouseId) {
+                if (editWarehouseId) {
+                    this.$store
+                        .dispatch("warehouse/getOne", {editWarehouseId: editWarehouseId})
+                        .then(data => {
+                            if (data) {
+                                this.formData = data;
+                            }
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                } else {
+                    this.formData = defaultData();
+                }
+            },
+            handleSave() {
+                this.$refs["form"].validate(valid => {
+                    if (valid) {
+                        this.formData.warehouseCode = this.formData.warehouseCode.toUpperCase();
+                        this.$emit("onSave", this.formData);
+                    }
+                });
+            }
+        },
+        created() {
+            if (this.editWarehouseId) {
+                this.handleGetOne(this.editWarehouseId);
+            }
+            if (this.pid) {
+                this.formData.pid = this.pid;
+            }
+        }
+    };
 </script>

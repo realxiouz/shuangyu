@@ -192,7 +192,7 @@
               this.$store
                 .dispatch("nav/addOne", this.formData)
                 .then(data => {
-                  this.curLine.push(data.data);
+                  this.curLine.push(data);
                   this.loadData();
                   this.$message({
                     type: "success",

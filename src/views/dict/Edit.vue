@@ -156,7 +156,7 @@
                 this.$store
                     .dispatch("category/getList", {filter: {categoryType: 0}})
                     .then(data => {
-                        this.categoryList = data.data;
+                        this.categoryList = data;
                     })
                     .catch(error => {
                         console.log(error);

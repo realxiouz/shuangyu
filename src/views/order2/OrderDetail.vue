@@ -1020,7 +1020,7 @@ export default {
               message: "改签申请成功！"
             });
             this.onCancel();
-            this.changePay(data.data);
+            this.changePay(data);
           }
         })
         .catch(error => {

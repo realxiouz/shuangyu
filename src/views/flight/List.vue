@@ -213,16 +213,6 @@ export default {
           console.log(error);
         });
     },
-    loadTotal(params) {
-      this.$store
-        .dispatch("flight/getTotal", { filter: params })
-        .then(data => {
-          this.total = data.data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
     /*输入条件时可进行条件查询*/
     search(params) {
       this.deleteValue = true;

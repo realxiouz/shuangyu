@@ -158,7 +158,7 @@
           })
           .then(data => {
             if (data) {
-              this.tableData = data.data;
+              this.tableData = data;
               this.loadTotal(params);
             }
             this.loading = false;
@@ -173,7 +173,7 @@
           .dispatch("jobScheduler/getTotal", {filter: params})
           .then(data => {
             if (data) {
-              this.total = data.data;
+              this.total = data;
             }
           })
           .catch(error => {

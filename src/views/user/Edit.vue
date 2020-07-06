@@ -68,7 +68,7 @@
               filed: this.formData.email
             })
             .then(data => {
-              if (data.data) {
+              if (data) {
                 callback("该信息已被注册");
               } else {
                 callback();

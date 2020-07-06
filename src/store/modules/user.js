@@ -5,7 +5,6 @@ import {
   getList,
   getOne,
   getPageList,
-  getTotal,
   getVerifyCode,
   isExist,
   removeOne,

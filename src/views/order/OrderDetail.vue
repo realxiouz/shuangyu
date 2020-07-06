@@ -1137,7 +1137,7 @@
                 message: "改签申请成功！"
               });
               this.onCancel();
-              this.changePay(data.data);
+              this.changePay(data);
             }
           })
           .catch(error => {
@@ -1281,7 +1281,7 @@
         this.$store
           .dispatch("order/affirmRefund", params)
           .then(data => {
-            if (data.data.ret) {
+            if (data.ret) {
               console.log(data);
               this.$message({
                 type: "success",
@@ -1291,7 +1291,7 @@
             }else {
               this.$message({
                 type: "success",
-                message: data.data.errmsg
+                message: data.errmsg
               });
             }
           })

@@ -165,7 +165,7 @@
                     this.$store
                         .dispatch("category/addOne", this.formData)
                         .then(data => {
-                            this.curLine.push(data.data);
+                            this.curLine.push(data);
                             this.loadData();
                         })
                         .catch(error => {

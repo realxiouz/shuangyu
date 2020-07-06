@@ -127,7 +127,7 @@
             loadCategory() {
                 this.$store.dispatch("category/getTreeList", {filter: {categoryType: 9}})
                     .then(data => {
-                        this.categoryList = this.generateTreeData(data.data);
+                        this.categoryList = this.generateTreeData(data);
                     })
                     .catch(error => {
                         console.log(error);

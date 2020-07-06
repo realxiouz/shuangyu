@@ -340,7 +340,7 @@
             loadWarehouses() {
                 this.$store.dispatch("warehouse/getList", {filter: {}})
                     .then(data => {
-                        this.warehouseList = data.data;
+                        this.warehouseList = data;
                     })
                     .catch(error => {
                         console.log(error);
