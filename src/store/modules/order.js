@@ -535,7 +535,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       qunarDetailHtml(params.sourceOrderNo)
         .then(data => {
-          resolve(data.data);
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -546,7 +546,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       updateBspTicketNo(params)
         .then(data => {
-          resolve(data.data);
+          resolve(data);
         })
         .catch(error => {
           reject(error);
