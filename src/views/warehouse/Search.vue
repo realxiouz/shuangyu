@@ -72,7 +72,7 @@ export default {
     handleConfirm() {
       let _formData = Object.assign({}, this.formData);
       for (let key in _formData) {
-        if (_formData[key] && "" != _formData[key]) {
+        if (_formData[key] && "" !== _formData[key]) {
           _formData[key] = _formData[key].trim();
         } else {
           _formData[key] = null;

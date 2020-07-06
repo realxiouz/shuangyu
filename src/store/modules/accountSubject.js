@@ -3,10 +3,10 @@ import {
   getRootPageList,
   getOne,
   getPageList,
-  getTotal,
   removeOne,
   save,
-  getSelectingList,
+  update,
+  getTreeList,
   getAsyncTreeList
 } from "@/api/accountSubject";
 import {getToken} from "@/utils/auth";
@@ -31,44 +31,7 @@ const mutations = {
 };
 
 const actions = {
-  getAsyncTreeList({commit}, params) {
-    return new Promise((resolve, reject) => {
-      const {pid, filter} = params;
-      getAsyncTreeList(pid, filter)
-        .then(response => {
-          const {data} = response;
-          resolve(data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  save({commit}, params) {
-    return new Promise((resolve, reject) => {
-      save(params)
-        .then(response => {
-          //const { data } = response;
-          resolve(response);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  getRootPageList({commit}, params) {
-    const {pageFlag, pageSize, filter} = params;
-    return new Promise((resolve, reject) => {
-      getRootPageList(pageFlag, pageSize, filter)
-        .then(response => {
-          const {data} = response;
-          resolve(data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
+  // eslint-disable-next-line no-unused-vars
   getList({commit}, params) {
     const {filters} = params;
     return new Promise((resolve, reject) => {
@@ -82,10 +45,11 @@ const actions = {
         });
     });
   },
-  removeOne({commit}, params) {
-    const {subjectId} = params;
+  // eslint-disable-next-line no-unused-vars
+  getRootPageList({commit}, params) {
+    const {pageFlag, pageSize, filter} = params;
     return new Promise((resolve, reject) => {
-      removeOne(subjectId)
+      getRootPageList(pageFlag, pageSize, filter)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -95,33 +59,7 @@ const actions = {
         });
     });
   },
-  getPageList({commit}, params) {
-    const {pageFlag, pageSize, lastId, filter} = params;
-    return new Promise((resolve, reject) => {
-      getPageList(pageFlag, pageSize, lastId, filter)
-        .then(response => {
-          const {data} = response;
-          resolve(data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-
-  getTotal({commit}, params) {
-    const {filters} = params;
-    return new Promise((resolve, reject) => {
-      getTotal(filters)
-        .then(response => {
-          const {data} = response;
-          resolve(data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
+  // eslint-disable-next-line no-unused-vars
   getOne({commit}, params) {
     const {subjectId} = params;
     return new Promise((resolve, reject) => {
@@ -135,19 +73,88 @@ const actions = {
         });
     });
   },
-  getSelectingList({commit}, params) {
+  // eslint-disable-next-line no-unused-vars
+  getPageList({commit}, params) {
+    const {pageFlag, pageSize, lastId, filter} = params;
+    return new Promise((resolve, reject) => {
+      getPageList(pageFlag, pageSize, lastId, filter)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  // eslint-disable-next-line no-unused-vars
+  removeOne({commit}, params) {
+    const {subjectId} = params;
+    return new Promise((resolve, reject) => {
+      removeOne(subjectId)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  // eslint-disable-next-line no-unused-vars
+  save({commit}, params) {
+    return new Promise((resolve, reject) => {
+      save(params)
+        .then(response => {
+          //const { data } = response;
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  // eslint-disable-next-line no-unused-vars
+  update({commit}, params) {
+    return new Promise((resolve, reject) => {
+      update(params)
+        .then(response => {
+          //const { data } = response;
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  // eslint-disable-next-line no-unused-vars
+  getTreeList({commit}, params) {
     return new Promise((resolve, reject) => {
       const {filter} = params;
-      getSelectingList(filter)
+      getTreeList(filter)
         .then(response => {
-          resolve(response.data);
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  // eslint-disable-next-line no-unused-vars
+  getAsyncTreeList({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {pid, filter} = params;
+      getAsyncTreeList(pid, filter)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   }
-
 };
 
 export default {

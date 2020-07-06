@@ -12,7 +12,8 @@ import {
   saveOne,
   updateOne,
   getConfigPageList,
-  getConfigTotal
+  getConfigTotal,
+  getSupplierList
 } from '@/api/firm';
 
 
@@ -199,6 +200,19 @@ const actions = {
         });
     });
   },
+  getSupplierList({commit}, params) {
+    return new Promise((resolve, reject) => {
+      const {filter} = params;
+      getSupplierList(filter)
+        .then(response => {
+          const {data} = response;
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
 }
 
 export default {

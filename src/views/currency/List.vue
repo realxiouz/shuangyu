@@ -19,14 +19,13 @@
         <el-table-column prop="rate" label="当前比率" align="center"></el-table-column>
         <el-table-column label="是否有效" align="center">
           <template slot-scope="scope">
-            <el-switch v-model="scope.row.active" disabled>
-            </el-switch>
+            <span> {{scope.row.enable ? '有效' : '无效'}}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center" width="180" fixed="right">
           <template slot-scope="scope">
-            <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
-            <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
+            <el-button @click="handleUpdate(scope.row.currencyId)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="handleRemove(scope.row.currencyId)" type="danger" size="mini">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -42,7 +41,7 @@
       ></el-pagination>
 
       <el-dialog
-        title="资金账号信息"
+        title="币种管理"
         center
         :visible.sync="dialogVisible"
         :close-on-click-modal="false"
@@ -50,8 +49,8 @@
       >
         <currency-edit
           v-if="dialogVisible"
-          :cur-node="curNode"
-          :update="update"
+          :editCurrencyId="editCurrencyId"
+          :codeEnabled="codeEnabled"
           @onSave="handleSave"
           @onCancel="handleCancel"
         ></currency-edit>
@@ -61,175 +60,174 @@
 </template>
 
 <script>
-    import currencySearch from "./Search.vue";
-    import currencyEdit from "./Edit.vue";
+  import currencySearch from "./Search.vue";
+  import currencyEdit from "./Edit.vue";
 
-    export default {
-        data() {
-            return {
-                loading: true,
-                dialogVisible: false,
-                update: false,
-                searchForm: {},
-                curNode: {},
-                tableData: [],
-                lastId: "blank",
-                pageFlag: "next",
-                pageSize: 10,
-                total: 0
-            };
-        },
-        methods: {
-            loadData(searchForm) {
-                this.searchForm = searchForm;
-                this.$store.dispatch("currency/getTotal", {filter: searchForm})
-                    .then(data => {
-                        this.total = data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-                this.$store.dispatch("currency/getPageList", {pageFlag: this.pageFlag, pageSize: this.pageSize, lastId: this.lastId,filter: searchForm})
-                    .then(data => {
-                        this.tableData = data;
-                        this.loading = false;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                        this.loading = false;
-                    });
-            },
-            handleAdd() {
-                this.dialogVisible = true;
-                this.curNode = {};
-                this.update = false;
-            },
-            handleSave(formData) {
-                this.dialogVisible = false;
-
-                if (this.update) {
-                    this.$store
-                        .dispatch("currency/updateOne", formData)
-                        .then(() => {
-                            this.loadData({});
-                        })
-                        .catch(error => {
-                            console.log(error);
-                        });
-                } else {
-                    this.$store
-                        .dispatch("currency/addOne", formData)
-                        .then(() => {
-                            this.loadData({});
-                        })
-                        .catch(error => {
-                            if (501 === error.code){
-                                this.$confirm("该币种编码已存在，是否覆盖?", "提示", {
-                                    confirmButtonText: "确定",
-                                    cancelButtonText: "取消",
-                                    type: "warning"
-                                })
-                                    .then(() => {
-                                        this.$store.dispatch("currency/updateOne", formData)
-                                            .then(() => {
-                                                this.loadData({});
-                                            })
-                                            .catch(error => {
-                                                console.log(error);
-                                            });
-                                    })
-                                    .catch(() => {
-                                        this.$message({
-                                            type: "info",
-                                            message: "已取消覆盖!"
-                                        });
-                                    });
-                            }
-                        });
-                }
-            },
-            handleCancel() {
-                this.dialogVisible = false;
-            },
-            handleEdit(row) {
-                this.dialogVisible = true;
-                this.curNode = row;
-                this.update = true;
-            },
-            handlePrevClick() {
-                this.pageFlag = "prev";
-                this.lastId = this.tableData[0].code;
-                this.loadData(this.searchForm);
-            },
-            handleNextClick() {
-                this.pageFlag = "next";
-                this.lastId = this.tableData[this.tableData.length - 1].code;
-                this.loadData(this.searchForm);
-            },
-            handleDelete(row) {
-                this.open(
-                    this.delete,
-                    row.code,
-                    "此操作将删除该资金账号信息, 是否继续?"
-                );
-            },
-            delete(code) {
-                this.$store
-                    .dispatch("currency/removeOne", {code: code})
-                    .then(() => {
-                        this.lastId = "blank";
-                        if (1 === this.tableData.length) {
-                            this.handlePrevClick();
-                        } else {
-                            this.loadData({});
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            open(func, data, message) {
-                this.$confirm(message, "提示", {
-                    confirmButtonText: "确定",
-                    cancelButtonText: "取消",
-                    type: "warning"
-                })
-                    .then(() => {
-                        func(data);
-                        this.$message({
-                            type: "success",
-                            message: "删除成功!"
-                        });
-                    })
-                    .catch(() => {
-                        this.$message({
-                            type: "info",
-                            message: "已取消删除"
-                        });
-                    });
-            },
-            formatAmount(amount) {
-                if (!amount) {
-                    return "0.00";
-                }
-                return this.$numeral(amount).format("0.00");
-            },
-            /*初始化用工列表中的生日日期格式*/
-            formatDate(dateStr, format) {
-                if (null != dateStr) {
-                    const date = new Date(dateStr);
-                    return this.$moment(date).format(format);
-                } else {
-                    return "";
-                }
-            },
-        },
-        mounted() {
-            this.loadData(this.searchForm);
-        },
-        components: {
-            currencySearch,
-            currencyEdit
+  export default {
+    name: "currencyContent",
+    data() {
+      return {
+        loading: true,
+        searchForm: {},
+        dialogVisible: false,
+        editCurrencyId: null,
+        pid: null,
+        tableData: [],
+        pageFlag: 1,
+        pageSize: 10,
+        lastId: "blank",
+        total: 0,
+        codeEnabled: false,
+        uploadData: {
+          tree: null,
+          treeNode: null,
+          resolve: null
         }
-    };
+      };
+    },
+    methods: {
+      handlePrevClick() {
+        this.pageFlag = -1;
+        this.lastId = this.tableData[0].currencyId;
+        this.loadData();
+      },
+      handleNextClick() {
+        this.pageFlag = 1;
+        this.lastId = this.tableData[this.tableData.length - 1].currencyId;
+        this.loadData();
+      },
+      loadData(params = {}) {
+        if (this.lastId) {
+          params.lastId = this.lastId;
+        }
+
+        this.$store
+          .dispatch("currency/getRootPageList", {
+            pageFlag: this.pageFlag,
+            pageSize: this.pageSize,
+            filter: params
+          })
+          .then(data => {
+            if (data && data.rows && data.rows.length > 0) {
+              this.tableData = data.rows;
+              this.total = data.total;
+            } else {
+              this.tableData = [];
+              this.total = 0;
+            }
+            this.loading = false;
+          })
+          .catch(error => {
+            this.loading = false;
+            console.log(error);
+          });
+      },
+      handleAdd() {
+        this.editCurrencyId = null;
+        this.pid = null;
+        this.codeEnabled = false;
+        this.dialogVisible = true;
+      },
+      handleSearch(params) {
+        const newParams = {};
+        if (params) {
+          for (let key in params) {
+            if (params[key]) {
+              newParams[key] = params[key];
+            }
+          }
+        }
+        this.loadData(newParams);
+        this.$message({
+          type: "success",
+          message: "查询成功！"
+        });
+      },
+      handleUpdate(currencyId) {
+        this.editCurrencyId = currencyId;
+        this.pid = null;
+        this.codeEnabled = true;
+        this.dialogVisible = true;
+      },
+      handleRemove(currencyId) {
+        this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
+          .then(() => {
+            this.$store
+              .dispatch("currency/removeOne", {currencyId: currencyId})
+              .then(() => {
+                if (1 === this.tableData.length) {
+                  this.handlePrevClick();
+                } else {
+                  this.loadData();
+                }
+                this.$message({
+                  type: "success",
+                  message: "删除成功！"
+                });
+              });
+          })
+          .catch(err => {
+            console.error(err);
+          });
+      },
+      handleCancel() {
+        this.dialogVisible = false;
+      },
+      handleSave(formData) {
+        let method = "currency/save";
+        let msg = "添加成功！";
+
+        if(formData && formData.currencyId){
+          method = "currency/update";
+          msg = "编辑成功！";
+        }
+
+        this.$store
+          .dispatch(method, formData)
+          .then(() => {
+            this.$message({
+              type: "success",
+              message: msg
+            });
+            this.loadData();
+          })
+          .catch(error => {
+            console.log(error);
+          });
+        this.dialogVisible = false;
+      },
+      formatAmount(amount) {
+        if (!amount) {
+          return "0.00";
+        }
+        return this.$numeral(amount).format("0.00");
+      },
+      formatDate(dateStr, format) {
+        if (null != dateStr) {
+          const date = new Date(dateStr);
+          return this.$moment(date).format(format);
+        } else {
+          return "";
+        }
+      }
+    },
+    created() {
+      this.loadData();
+    },
+    components: {
+      currencySearch,
+      currencyEdit
+    }
+  };
 </script>
+
+<style>
+  .contentBox {
+    margin-top: -10px;
+    padding-top: 0;
+  }
+</style>

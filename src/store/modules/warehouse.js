@@ -5,8 +5,6 @@ import {
   getOne,
   getPageList,
   getRootPageList,
-  getRootTotal,
-  getTotal,
   getTreeList,
   removeOne,
   updateOne
@@ -39,19 +37,6 @@ const actions = {
         });
     });
   },
-  getRootTotal({commit}, params) {
-    const {filter} = params;
-    return new Promise((resolve, reject) => {
-      getRootTotal(filter)
-        .then(response => {
-          const {data} = response;
-          resolve(data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
   addOne({commit}, params) {
     return new Promise((resolve, reject) => {
       addOne(params)
@@ -66,8 +51,20 @@ const actions = {
   },
   updateOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {id, data} = params;
-      updateOne(id, data)
+      updateOne(params)
+        .then(response => {
+          //const { data } = response;
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  removeOne({commit}, params) {
+    const {warehouseId} = params;
+    return new Promise((resolve, reject) => {
+      removeOne(warehouseId)
         .then(response => {
           const {data} = response;
           resolve(data);
@@ -77,34 +74,10 @@ const actions = {
         });
     });
   },
-  removeOne({commit}, params) {
-    return new Promise((resolve, reject) => {
-      const {warehouseId} = params;
-      removeOne(warehouseId)
-        .then(response => {
-          resolve(response);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
   getOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {warehouseCode} = params;
-      getOne(warehouseCode)
-        .then(response => {
-          resolve(response);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  getTotal({commit}, params) {
-    return new Promise((resolve, reject) => {
-      const {filter} = params;
-      getTotal(filter)
+      const {editWarehouseId} = params;
+      getOne(editWarehouseId)
         .then(response => {
           resolve(response);
         })

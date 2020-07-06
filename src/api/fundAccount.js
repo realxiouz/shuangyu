@@ -1,80 +1,63 @@
 import request from '@/utils/request';
 
-export function save(data) {
-  return request({
-    url: '/finance/fund/account/save/one',
-    method: 'post',
-    data
-  });
-}
-
-export function addOne(data) {
-  return request({
-    url: '/finance/fund/account/add/one',
-    method: 'post',
-    data
-  });
-}
-
-export function updateOne(data) {
-  return request({
-    url: '/finance/fund/account/update/one',
-    method: 'post',
-    data
-  });
-}
-
-export function removeOne(accountId) {
-  return request({
-    url: `/finance/fund/account/remove/one/${accountId}`,
-    method: 'delete'
-  });
-}
-
-export function getOne(accountId) {
-  return request({
-    url: `/finance/fund/account/get/one/${accountId}`,
-    method: 'get'
-  });
-}
-
-export function getList(filter) {
+export function getList(params) {
   return request({
     url: `/finance/fund/account/get/list`,
     method: 'get',
-    params: filter
-  });
-}
-
-export function getTreeList(filter) {
-  return request({
-    url: `/finance/fund/account/tree/list`,
-    method: 'get',
-    params: filter
-  });
-}
-
-export function getTotal(filter) {
-  return request({
-    url: '/finance/fund/account/get/total',
-    method: 'get',
-    params: filter
+    params: params
   });
 }
 
 export function getRootPageList(pageFlag, pageSize, filter) {
   return request({
-    url: `/finance/fund/account/get/list/page/${pageFlag}/${pageSize}`,
+    url: `/finance/fund/account/get/root/list/page/${pageFlag}/${pageSize}`,
     method: 'get',
     params: filter
   });
+}
 
+export function getOne(id) {
+  return request({
+    url: `/finance/fund/account/get/one/${id}`,
+    method: 'get'
+  });
+}
+
+export function getPageList(pageFlag, pageSize, lastId, params) {
+  return request({
+    url: `/finance/fund/account/page/list/${pageFlag}/${pageSize}/${lastId}`,
+    method: 'get',
+    params: params
+  });
+}
+
+export function removeOne(id) {
+  return request({
+    url: `/finance/fund/account/remove/one/${id}`,
+    method: 'delete'
+  });
+}
+
+export function save(data) {
+  return request({
+    url: `/finance/fund/account/save/one`,
+    method: 'post',
+    data
+  });
+}
+
+export function update(data) {
+  return request({
+    url: `/finance/fund/account/update/one`,
+    method: 'put',
+    data
+  });
 }
 
 export function getAsyncTreeList(pid, filter) {
   return request({
-    url: `/finance/fund/account/async/tree/list/${pid}`,
-    method: `get`,
+    url: `/finance/fund/account/get/async/tree/${pid}`,
+    method: 'get',
     params: filter
   });
 }

@@ -1,7 +1,6 @@
 <template>
   <div>
-    <el-form :model="formData" label-width="110px" size="mini">
-      <input type="hidden" v-model="formData.accountId" />
+    <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
       <el-form-item label="账号类别:">
         <el-select v-model="formData.category" style="width: 100%;" @change="selectedCategory">
           <el-option label="现金" :value="0"></el-option>
@@ -10,22 +9,30 @@
           <el-option label="优惠券" :value="3"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="供应商:">
-        <el-select v-model="formData.otherId" style="width: 100%;" placeholder="请选择供应商..">
-          <el-option label="现金" :value="0"></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="账号编码:">
+      <el-form-item label="账号编码:" prop="accountCode">
         <el-input v-model="formData.accountCode" placeholder="请输入账号编码.."></el-input>
       </el-form-item>
-      <el-form-item v-if="!bankAccountShowAble" label="账号名称:">
+      <el-form-item v-if="!bankAccountShowAble" label="账号名称:" prop="accountName">
         <el-input v-model="formData.accountName" placeholder="请输入账号名称.."></el-input>
       </el-form-item>
-      <el-form-item v-if="bankAccountShowAble" label="账号名称:">
+      <el-form-item v-if="bankAccountShowAble" label="账号名称:" prop="accountName">
         <el-input v-model="formData.accountName" placeholder="示例：中国工商银行昆明官渡支行"></el-input>
       </el-form-item>
       <el-form-item v-if="bankAccountShowAble" label="银行账号:">
         <el-input v-model="formData.bankAccount" placeholder="请输入完整的银行账号"></el-input>
+      </el-form-item>
+      <el-form-item label="供应商:">
+        <el-autocomplete
+          v-model="state"
+          :fetch-suggestions="handleFirm"
+          placeholder="请输入关键字选择供应商"
+          @select="handleSelect"
+        >
+          <i
+            class="el-icon-search el-input__icon"
+            slot="suffix"
+          ></i>
+        </el-autocomplete>
       </el-form-item>
       <el-form-item label="币种:">
         <el-select v-model="formData.currency" style="width: 100%;" placeholder="请选择币种..">
@@ -49,7 +56,7 @@
         <el-input v-model="formData.pointRate" placeholder="请输入积分兑换比例.."></el-input>
       </el-form-item>
       <el-form-item v-if="amountShowAble" label="金额">
-        <el-input v-model="formData.amount" placeholder="请输入积分兑换比例.."></el-input>
+        <el-input v-model="formData.amount" placeholder="请输入金额.."></el-input>
       </el-form-item>
       <el-form-item label="初始余额:">
         <el-input v-model="formData.initBalance" placeholder="请输入初始余额.."></el-input>
@@ -71,183 +78,233 @@
     </el-form>
     <div style="text-align:right;">
       <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
-      <el-button type="primary" size="mini" @click="handleConfirm">确 定</el-button>
+      <el-button type="primary" size="mini" @click="handleSave">确 定</el-button>
     </div>
   </div>
 </template>
 
 <script>
-export default {
-  props: ["editAccountId", "pid"],
-  data() {
+  function defaultData() {
     return {
-      formData: {},
-      currencyList: [],
-      subjectList: [],
-      //是否显示银行账号
-      bankAccountShowAble: false,
-      //是否显示积分/优惠券有效期
-      expireShowAble: false,
-      //是否显示积分兑换比例
-      pointRateShowAble: false,
-      //是否显示金额
-      amountShowAble: false
+      accountId: null,
+      accountCode: null,
+      accountName: null,
+      bankAccount: null,
+      initBalance: 0,
+      balance: 0,
+      category: 0,
+      otherId: null,
+      expire: null,
+      pointRate: null,
+      currency: null,
+      amount: null,
+      subjectId: null,
+      subjectCode: null,
+      subjectName: null
     };
-  },
-  methods: {
-    /*表单默认加载数据*/
-    defaultFormData() {
+  }
+
+  export default {
+    name: "fundAccountEdit",
+    props: ['editAccountId', 'pid', 'codeEnabled'],
+    data() {
+      const codeValidator = (rule, value, callback) => {
+        let reg = /^[0-9a-zA-Z]*$/g;
+        if (reg.test(value)) {
+          callback();
+        } else {
+          callback(new Error("只能输入字母或数字！"));
+        }
+      };
       return {
-        accountId: "",
-        //账号编码
-        accountCode: "",
-        //账号名称
-        accountName: "",
-        //银行账号
-        bankAccount: null,
-        //初始余额
-        initBalance: 0,
-        //余额
-        balance: 0,
-        //类别(0:现金，1:银行存款，2:积分，3：优惠券)
-        category: 0,
-        //供应商
-        otherId: "",
-        //积分/优惠券有效期
-        expire: null,
-        //积分兑换比例
-        pointRate: null,
-        //币种
-        currency: "",
-        //金额
-        amount: null,
-        //科目id
-        subjectId: "",
-        //科目编码
-        subjectCode: "",
-        //科目名称
-        subjectName: ""
+        formData: defaultData(),
+        state: null,
+        firmList: [],
+        currencyList: [],
+        subjectList: [],
+        bankAccountShowAble: false,
+        expireShowAble: false,
+        pointRateShowAble: false,
+        amountShowAble: false,
+        newDialogVisible: false,
+        rules: {
+          accountCode: [
+            {required: true, message: "请输入账户编码", trigger: "blur"},
+            {
+              min: 1,
+              max: 20,
+              message: "长度在 1到 20 个字符"
+            },
+            {validator: codeValidator, trigger: 'blur'}
+          ],
+          accountName: [
+            {required: true, message: "请输入账户名称", trigger: "blur"},
+            {
+              min: 1,
+              max: 20,
+              message: "长度在 1到 20 个字符"
+            }
+          ]
+        }
       };
     },
-    loadCurrency() {
-      this.$store
-        .dispatch("currency/getList", { filter: {} })
-        .then(data => {
-          this.currencyList = data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    loadSubject() {
-      this.$store
-        .dispatch("accountSubject/getTreeList", { filter: {} })
-        .then(data => {
-          this.subjectList = this.getTreeData(data);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    /*清除表单*/
-    clearForm() {
-      this.formData = this.defaultFormData();
-    },
-    selectedCategory(category) {
-      //显示权限控制
-      switch (category) {
-        case 0:
-          this.bankAccountShowAble = false;
-          this.expireShowAble = false;
-          this.pointRateShowAble = false;
-          this.amountShowAble = false;
-          break;
-        case 1:
-          this.bankAccountShowAble = true;
-          this.expireShowAble = false;
-          this.pointRateShowAble = false;
-          this.amountShowAble = false;
-          break;
-        case 2:
-          this.bankAccountShowAble = false;
-          this.expireShowAble = true;
-          this.pointRateShowAble = true;
-          this.amountShowAble = true;
-          break;
-        case 3:
-          this.bankAccountShowAble = false;
-          this.expireShowAble = true;
-          this.pointRateShowAble = false;
-          this.amountShowAble = false;
-          break;
-        default:
-          this.bankAccountShowAble = false;
-          this.expireShowAble = false;
-          this.pointRateShowAble = false;
-          this.amountShowAble = false;
-          break;
-      }
-    },
-    /*对提交的数据进行类型格式*/
-    handleConfirm() {
-      if (this.formData.expire) {
-        this.formData.expire = this.formData.expire.getTime();
-      }
-      this.$emit("onSave", this.formData);
-    },
-    handleGetOne(id) {
-      if (id) {
-        this.$store
-          .dispatch("fundAccount/getOne", { accountId: id })
+    methods: {
+      selectedCategory(category) {
+        switch (category) {
+          case 0:
+            this.bankAccountShowAble = false;
+            this.expireShowAble = false;
+            this.pointRateShowAble = false;
+            this.amountShowAble = false;
+            break;
+          case 1:
+            this.bankAccountShowAble = true;
+            this.expireShowAble = false;
+            this.pointRateShowAble = false;
+            this.amountShowAble = false;
+            break;
+          case 2:
+            this.bankAccountShowAble = false;
+            this.expireShowAble = true;
+            this.pointRateShowAble = true;
+            this.amountShowAble = true;
+            break;
+          case 3:
+            this.bankAccountShowAble = false;
+            this.expireShowAble = true;
+            this.pointRateShowAble = false;
+            this.amountShowAble = false;
+            break;
+          default:
+            this.bankAccountShowAble = false;
+            this.expireShowAble = false;
+            this.pointRateShowAble = false;
+            this.amountShowAble = false;
+            break;
+        }
+      },
+      loadSupplier() {
+        let that = this;
+
+        that.$store
+          .dispatch("firm/getSupplierList", { filter: {} })
           .then(data => {
-            this.formData = data;
+            if(data && data.length > 0){
+              data.forEach(function(obj){
+                if(obj.firm){
+                  that.firmList.push({
+                    value: obj.firm.firmName,
+                    id: obj.firm.firmId
+                  });
+                }
+              });
+            }
           })
           .catch(error => {
             console.log(error);
           });
-      } else {
-        this.formData = this.defaultFormData();
-      }
-    },
-    getTreeData(data) {
-      // 循环遍历json数据
-      for (var i = 0; i < data.length; i++) {
-        if (data[i].children.length < 1) {
-          // children若为空数组，则将children设为undefined
-          data[i].children = undefined;
-        } else {
-          // children若不为空数组，则继续 递归调用 本方法
-          this.getTreeData(data[i].children);
+      },
+      loadCurrency() {
+        this.$store
+          .dispatch("currency/getList", { filter: {} })
+          .then(data => {
+            this.currencyList = data;
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      loadSubject() {
+        this.$store
+          .dispatch("accountSubject/getTreeList", { filter: {} })
+          .then(data => {
+            this.subjectList = this.getTreeData(data);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      getTreeData(data) {
+        // 循环遍历json数据
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].children.length < 1) {
+            // children若为空数组，则将children设为undefined
+            data[i].children = undefined;
+          } else {
+            // children若不为空数组，则继续 递归调用 本方法
+            this.getTreeData(data[i].children);
+          }
         }
+        return data;
+      },
+      handleFirm(queryString, cb){
+        let firms = this.firmList;
+        let results = queryString ? firms.filter(this.createStateFilter(queryString)) : firms;
+
+        clearTimeout(this.timeout);
+        this.timeout = setTimeout(() => {
+          cb(results);
+        }, 3000 * Math.random());
+      },
+      handleSelect(item) {
+        console.log(item);
+      },
+      handleSubject(subject) {
+        if (subject) {
+          const code = subject[subject.length - 1];
+          this.formData.subjectId = code;
+          this.formData.subjectCode = code;
+        }
+      },
+      handleGetOne(accountId) {
+        if (accountId) {
+          this.$store
+            .dispatch("fundAccount/getOne", {accountId: accountId})
+            .then(data => {
+              this.formData = data;
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        } else {
+          this.formData = defaultData();
+        }
+      },
+      handleSave() {
+        this.$refs["form"].validate(valid => {
+          if (valid) {
+            this.formData.accountCode = this.formData.accountCode.toUpperCase();
+            this.$emit("onSave", this.formData);
+          }
+        });
+      },
+      createStateFilter(queryString) {
+        return (state) => {
+          return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+        };
       }
-      return data;
     },
-    handleSubject(subject) {
-      if (subject) {
-        const code = subject[subject.length - 1];
-        this.formData.subjectId = code;
-        this.formData.subjectCode = code;
+    created() {
+      if (this.editAccountId) {
+        this.handleGetOne(this.editAccountId);
       }
-    },
-    initFormData() {
-      this.clearForm();
+      if (this.pid) {
+        this.formData.pid = this.pid;
+      }
+      this.loadSupplier();
+      this.loadCurrency();
+      this.loadSubject();
     }
-  },
-  created() {
-    this.clearForm();
-    if (this.editAccountId) {
-      this.handleGetOne(this.editAccountId);
-    }
-    if (this.pid) {
-      this.formData.pid = this.pid;
-    }
-    this.loadCurrency();
-    this.loadSubject();
-  }
-};
+  };
 </script>
+
 <style>
-.el-cascader-menu {
-  height: 300px;
-}
+  .el-cascader-menu__list{
+    margin: 0 0 20px 0;
+    padding: 0;
+  }
+  .el-autocomplete-suggestion__list{
+    margin: 0 0 20px 0;
+    padding: 0;
+  }
 </style>

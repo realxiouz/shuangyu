@@ -3,16 +3,6 @@
     <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
       <el-form :model="formData" label-width="110px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="任务名称:">
-            <el-input
-              clearable
-              v-model="formData.taskName"
-              @keyup.enter.native="$emit('onSearch', formData)"
-              placeholder="请输入任务名称搜索..."
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="源单号:">
             <el-input
               clearable
@@ -52,7 +42,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="操作员:">
+          <el-form-item label="操作员:">
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.fullName"
@@ -112,6 +102,16 @@
               v-model="formData.cardNo"
               clearable
               style="width: 100%"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="任务名称:">
+            <el-input
+              clearable
+              v-model="formData.taskName"
+              @keyup.enter.native="$emit('onSearch', formData)"
+              placeholder="请输入任务名称搜索..."
             ></el-input>
           </el-form-item>
         </el-col>
