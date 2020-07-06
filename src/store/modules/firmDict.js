@@ -4,8 +4,8 @@ const actions = {
   addOne({commit}, params) {
     return new Promise((resolve, reject) => {
       addOne(params)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -16,8 +16,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {dictId, data} = params;
       updateOne(dictId, data)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -28,8 +28,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {dictId} = params;
       removeOne(dictId)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -40,8 +40,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {dictId} = params;
       getOne(dictId)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -52,8 +52,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {filter} = params;
       getTotal(filter)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -64,8 +64,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {filter} = params;
       getList(filter)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -76,8 +76,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {pageFlag, pageSize, filter} = params;
       getPageList(pageFlag, pageSize, filter)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);

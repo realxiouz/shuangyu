@@ -5,8 +5,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       saveOne(params)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -18,8 +17,7 @@ const actions = {
       const {featureId} = params;
       getOne(featureId)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -30,8 +28,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       getList(params)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -43,8 +40,7 @@ const actions = {
       const {featureId} = params;
       removeOne(featureId)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -56,8 +52,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       updateOne(params)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -69,14 +64,13 @@ const actions = {
     return new Promise((resolve, reject) => {
       getTotal(params)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
         });
     });
-  },
+  }
 }
 
 export default {

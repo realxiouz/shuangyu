@@ -25,7 +25,6 @@ const actions = {
     return new Promise((resolve, reject) => {
       save(params)
         .then(response => {
-          //const { data } = response;
           resolve(response);
         })
         .catch(error => {
@@ -38,8 +37,7 @@ const actions = {
       const {paramId} = params;
       removeOne(paramId)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -51,8 +49,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       getList(filters)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -64,8 +61,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       getPageList(pageFlag, pageSize, lastId, filters)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -76,8 +72,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       getTotal(params)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -89,8 +84,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       getOne(paramId)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);

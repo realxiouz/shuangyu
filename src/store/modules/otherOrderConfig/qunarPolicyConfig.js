@@ -14,8 +14,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       save(params)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -26,8 +25,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       addOne(params)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -38,8 +36,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       updateOne(params)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -51,8 +48,7 @@ const actions = {
       const {configId} = params;
       removeOne(configId)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -63,8 +59,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       getOne(params)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -76,8 +71,7 @@ const actions = {
       const {filter} = params;
       getTotal(filter)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -89,8 +83,7 @@ const actions = {
       const {filters} = params;
       getList(filters)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -102,8 +95,7 @@ const actions = {
       const {pageFlag, pageSize, filter} = params;
       getPageList(pageFlag, pageSize, filter)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);

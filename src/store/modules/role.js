@@ -22,8 +22,8 @@ const actions = {
   saveOne({commit}, params) {
     return new Promise((resolve, reject) => {
       saveOne(params)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -33,8 +33,8 @@ const actions = {
   addOne({commit}, params) {
     return new Promise((resolve, reject) => {
       addOne(params)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -44,8 +44,8 @@ const actions = {
   addMany({commit}, params) {
     return new Promise((resolve, reject) => {
       addMany(params)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -56,8 +56,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {roleId, data} = params;
       updateOne(roleId, data)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -68,8 +68,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {id, data} = params;
       updateMany(id, data)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -80,8 +80,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {id, data} = params;
       updateManyByFilter(id, data)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -92,8 +92,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {id} = params;
       removeOne(id)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -104,8 +104,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {ids} = params;
       removeMany(ids)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -116,8 +116,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {filter} = params;
       removeManyByFilter(filter)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -128,8 +128,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {id} = params;
       removeRealOne(id)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -140,8 +140,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {id} = params;
       getOne(id)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -152,8 +152,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {filter} = params;
       getOneByFilter(filter)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -164,8 +164,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {ids} = params;
       getMany(ids)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -176,8 +176,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {flog} = params;
       getUserRole(flog)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -188,8 +188,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {filter} = params;
       getList(filter)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -200,8 +200,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {pageFlag, pageSize, filter} = params;
       getPageList(pageFlag, pageSize, filter)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -212,8 +212,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {filter} = params;
       getTotal(filter)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);

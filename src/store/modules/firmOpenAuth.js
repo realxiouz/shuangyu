@@ -4,8 +4,8 @@ const actions = {
   addOne({commit}, params) {
     return new Promise((resolve, reject) => {
       addOne(params)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -16,8 +16,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {id, data} = params;
       updateOne(id, data)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -28,8 +28,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {authId} = params;
       removeOne(authId)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -40,8 +40,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {id} = params;
       getOne(id)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -52,8 +52,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {filter} = params;
       getSupplierList(filter)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -64,8 +64,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {filter} = params;
       getCustomerList(filter)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -75,8 +75,8 @@ const actions = {
   getPageList({commit}, params) {
     return new Promise((resolve, reject) => {
       getPageList(params)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -87,8 +87,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {filter} = params;
       getTotal(filter)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);

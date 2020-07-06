@@ -17,8 +17,7 @@ const actions = {
       const {dictId, data} = params;
       updateOne(dictId, data)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -54,8 +53,7 @@ const actions = {
       const {filter} = params;
       getTotal(filter)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -79,8 +77,7 @@ const actions = {
       const {pageFlag, pageSize, filter} = params;
       getPageList(pageFlag, pageSize, filter)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
