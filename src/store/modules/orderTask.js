@@ -25,8 +25,7 @@ const actions = {
         return new Promise((resolve, reject) => {
             getPageList(filters)
                 .then(response => {
-                    const { data } = response;
-                    resolve(data);
+                    resolve(response);
                 })
                 .catch(error => {
                     reject(error);
@@ -38,8 +37,7 @@ const actions = {
         return new Promise((resolve, reject) => {
             getTotal(filters)
                 .then(response => {
-                    const { data } = response;
-                    resolve(data);
+                    resolve(response);
                 })
                 .catch(error => {
                     reject(error);
@@ -51,8 +49,7 @@ const actions = {
         return new Promise((resolve, reject) => {
             getPendingTotal(filters)
                 .then(response => {
-                    const { data } = response;
-                    resolve(data);
+                    resolve(response);
                 })
                 .catch(error => {
                     reject(error);
@@ -64,8 +61,7 @@ const actions = {
         return new Promise((resolve, reject) => {
             getGroupList(filters)
                 .then(response => {
-                    const { data } = response;
-                    resolve(data);
+                    resolve(response);
                 })
                 .catch(error => {
                     reject(error);
@@ -77,8 +73,7 @@ const actions = {
         return new Promise((resolve, reject) => {
             taskSubmit(params)
                 .then(response => {
-                    const { data } = response;
-                    resolve(data);
+                    resolve(response);
                 })
                 .catch(error => {
                     reject(error);
@@ -91,8 +86,7 @@ const actions = {
         return new Promise((resolve, reject) => {
             taskCancel(params)
                 .then(response => {
-                    const { data } = response;
-                    resolve(data);
+                    resolve(response);
                 })
                 .catch(error => {
                     reject(error);
@@ -105,8 +99,7 @@ const actions = {
         return new Promise((resolve, reject) => {
             taskRemark(params)
                 .then(response => {
-                    const { data } = response;
-                    resolve(data);
+                    resolve(response);
                 })
                 .catch(error => {
                     reject(error);
@@ -118,8 +111,7 @@ const actions = {
         return new Promise((resolve, reject) => {
             taskTransfer(params)
                 .then(response => {
-                    const { data } = response;
-                    resolve(data);
+                    resolve(response);
                 })
                 .catch(error => {
                     reject(error);
@@ -132,8 +124,7 @@ const actions = {
         return new Promise((resolve, reject) => {
             getTaskInfo(taskId)
                 .then(response => {
-                    const { data } = response;
-                    resolve(data);
+                    resolve(response);
                 })
                 .catch(error => {
                     reject(error);
@@ -145,8 +136,7 @@ const actions = {
         return new Promise((resolve, reject) => {
             removeTaskOrder(params)
                 .then(response => {
-                    const { data } = response;
-                    resolve(data);
+                    resolve(response);
                 })
                 .catch(error => {
                     reject(error);

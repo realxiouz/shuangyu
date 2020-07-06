@@ -35,8 +35,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       save(data)
         .then(response => {
-          const { data } = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -47,8 +46,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       saveAndStart(data)
         .then(response => {
-          const { data } = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -67,8 +65,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       getPageList(params)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -80,8 +77,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       getOne(schedulerId)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -93,8 +89,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       start(schedulerId)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -106,8 +101,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       stop(schedulerId)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -126,8 +120,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       getList(params)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -146,8 +139,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       getParamList(params)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -158,8 +150,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       getTotal(params)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -171,8 +162,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       removeOne(schedulerId)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);

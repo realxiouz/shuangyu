@@ -31,9 +31,8 @@ const actions = {
     const { segment } = params;
     return new Promise((resolve, reject) => {
       getOne(segment)
-        .then(data => {
-          
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -62,9 +61,8 @@ const actions = {
     params.searchForm = searchForm;
     return new Promise((resolve, reject) => {
       getPageList(params)
-        .then(data => {
-          
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -82,9 +80,8 @@ const actions = {
     params.searchForm = searchForm;
     return new Promise((resolve, reject) => {
       getList(params)
-        .then(data => {
-          
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -94,9 +91,8 @@ const actions = {
   getTotal({commit}, params) {
     return new Promise((resolve, reject) => {
       getTotal(params)
-        .then(data => {
-          
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -107,9 +103,8 @@ const actions = {
     const { segment } = params;
     return new Promise((resolve, reject) => {
       removeOne(segment)
-        .then(data => {
-          
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);

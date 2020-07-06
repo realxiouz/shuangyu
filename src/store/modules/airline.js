@@ -19,8 +19,8 @@ const actions = {
   save({commit}, data) {
     return new Promise((resolve, reject) => {
       save(data)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -30,8 +30,8 @@ const actions = {
   getPageList({commit}, params) {
     return new Promise((resolve, reject) => {
       getPageList(params)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -42,9 +42,8 @@ const actions = {
     const { airlineCode } = params;
     return new Promise((resolve, reject) => {
       getOne(airlineCode)
-        .then(data => {
-          
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -73,9 +72,8 @@ const actions = {
   getTotal({commit}, params) {
     return new Promise((resolve, reject) => {
       getTotal(params)
-        .then(data => {
-          
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -86,9 +84,8 @@ const actions = {
     const { airlineCode } = params;
     return new Promise((resolve, reject) => {
       removeOne(airlineCode)
-        .then(data => {
-          
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);

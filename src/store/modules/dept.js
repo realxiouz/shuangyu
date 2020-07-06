@@ -36,8 +36,8 @@ const actions = {
   addOne({commit}, params) {
     return new Promise((resolve, reject) => {
       addOne(params)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -48,8 +48,8 @@ const actions = {
     const {id, data} = params;
     return new Promise((resolve, reject) => {
       updateOne(id, data)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -60,8 +60,8 @@ const actions = {
     const {filters} = params;
     return new Promise((resolve, reject) => {
       getTreeList(filters)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -72,8 +72,8 @@ const actions = {
     const {filters} = params;
     return new Promise((resolve, reject) => {
       getList(filters)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -84,8 +84,8 @@ const actions = {
     const {deptId} = params;
     return new Promise((resolve, reject) => {
       removeOne(deptId)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -96,8 +96,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {pageFlag, pageSize, filter} = params;
       getPageList(pageFlag, pageSize, filter)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -108,8 +108,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {pageFlag, pageSize, filter} = params;
       getRootPageList(pageFlag, pageSize, filter)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -120,8 +120,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {pid, filter} = params;
       getAsyncTreeList(pid, filter)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -132,8 +132,8 @@ const actions = {
     const {filter} = params;
     return new Promise((resolve, reject) => {
       getRootTotal(filter)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -144,8 +144,8 @@ const actions = {
     const {filter} = params;
     return new Promise((resolve, reject) => {
       getTotal(filter)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -156,8 +156,8 @@ const actions = {
     const {deptId} = params;
     return new Promise((resolve, reject) => {
       getOne(deptId)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);

@@ -36,8 +36,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       save(data)
         .then(response => {
-          const { data } = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -56,8 +55,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       getPageList(params)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -69,8 +67,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       getOne(staffId)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -82,8 +79,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       setMonitor(staffId)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -102,8 +98,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       getList(params)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -122,8 +117,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       getOnlineList(params)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -134,8 +128,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       staffOnline(params)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -146,8 +139,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       updateStaffOnline(params)
         .then(response => {
-          const { data } = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -158,8 +150,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       getTotal(params)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -171,8 +162,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       removeOne(staffId)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -185,8 +175,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       orderStaffOffline(staffId)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);

@@ -8,8 +8,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       save(params)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -21,15 +20,13 @@ const actions = {
       const {domain} = params;
       getOne(domain)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
         });
     });
   }
-
 }
 
 export default {

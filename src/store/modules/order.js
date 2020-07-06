@@ -65,8 +65,8 @@ const actions = {
   save({commit}, params) {
     return new Promise((resolve, reject) => {
       save(params)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -77,8 +77,8 @@ const actions = {
     const {filters} = params;
     return new Promise((resolve, reject) => {
       getList(filters)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -89,8 +89,8 @@ const actions = {
     const {filters} = params;
     return new Promise((resolve, reject) => {
       exportOrder(filters)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -101,8 +101,8 @@ const actions = {
     const {orderNo} = params;
     return new Promise((resolve, reject) => {
       removeOne(orderNo)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -114,8 +114,8 @@ const actions = {
     const {filters} = params;
     return new Promise((resolve, reject) => {
       getTotal(filters)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -126,9 +126,8 @@ const actions = {
     const {filters} = params;
     return new Promise((resolve, reject) => {
       getCount(filters)
-        .then(data => {
-
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -139,9 +138,8 @@ const actions = {
     const {filters} = params;
     return new Promise((resolve, reject) => {
       getTimeCount(filters)
-        .then(data => {
-
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -151,8 +149,8 @@ const actions = {
   getOne({commit}, data) {
     return new Promise((resolve, reject) => {
       getOne(data)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -162,8 +160,8 @@ const actions = {
   getOrderDetail({commit}, data) {
     return new Promise((resolve, reject) => {
       getOrderDetail(data)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -173,8 +171,8 @@ const actions = {
   getOrderMinPrice({commit}, params) {
     return new Promise((resolve, reject) => {
       getOrderMinPrice(params)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -184,8 +182,8 @@ const actions = {
   getOrderFlight({commit}, params) {
     return new Promise((resolve, reject) => {
       getOrderFlight(params)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -195,8 +193,8 @@ const actions = {
   get51FlightPrice({commit}, params) {
     return new Promise((resolve, reject) => {
       get51FlightPrice(params)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -206,8 +204,8 @@ const actions = {
   getFlightPrice({commit}, params) {
     return new Promise((resolve, reject) => {
       getFlightPrice(params)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -218,8 +216,8 @@ const actions = {
   placeAnOpenOrder({commit}, params) {
     return new Promise((resolve, reject) => {
       placeAnOpenOrder(params)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -230,8 +228,8 @@ const actions = {
   placeAnFOOrder({commit}, params) {
     return new Promise((resolve, reject) => {
       placeAnFOOrder(params)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -242,8 +240,8 @@ const actions = {
   checkOrder({commit}, params) {
     return new Promise((resolve, reject) => {
       checkOrder(params)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -254,8 +252,8 @@ const actions = {
   openPay({commit}, params) {
     return new Promise((resolve, reject) => {
       openPay(params)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -266,8 +264,8 @@ const actions = {
   foPay({commit}, params) {
     return new Promise((resolve, reject) => {
       foPay(params)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -278,8 +276,8 @@ const actions = {
   interceptOrder({commit}, params) {
     return new Promise((resolve, reject) => {
       interceptOrder(params)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -289,8 +287,8 @@ const actions = {
   getOrderTree({commit}, params) {
     return new Promise((resolve, reject) => {
       getOrderTree(params)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -302,8 +300,8 @@ const actions = {
     const orderNo = params;
     return new Promise((resolve, reject) => {
       lockOrder(orderNo)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -315,8 +313,8 @@ const actions = {
     const orderNo = params;
     return new Promise((resolve, reject) => {
       unLockOrder(orderNo)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -328,8 +326,8 @@ const actions = {
     const orderTaskId = params;
     return new Promise((resolve, reject) => {
       useGoTicket(orderTaskId)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -342,8 +340,8 @@ const actions = {
     const orderNo = params;
     return new Promise((resolve, reject) => {
       getMessageDetail(orderNo)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -356,8 +354,8 @@ const actions = {
     const purchaseOrderNo = params;
     return new Promise((resolve, reject) => {
       refundSearch(purchaseOrderNo)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -370,8 +368,8 @@ const actions = {
     const orderNo = params;
     return new Promise((resolve, reject) => {
       getRefundHtml(orderNo)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -382,8 +380,8 @@ const actions = {
   refundApply({commit}, params) {
     return new Promise((resolve, reject) => {
       refundApply(params)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -394,8 +392,8 @@ const actions = {
   affirmRefund({commit}, params) {
     return new Promise((resolve, reject) => {
       affirmRefund(params)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -406,8 +404,8 @@ const actions = {
   refundCheckRefuseReason({commit}, params) {
     return new Promise((resolve, reject) => {
       refundCheckRefuseReason(params)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -419,8 +417,8 @@ const actions = {
   changeSearch({commit}, params) {
     return new Promise((resolve, reject) => {
       changeSearch(params)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -433,8 +431,8 @@ const actions = {
     const purchaseOrderNo = params;
     return new Promise((resolve, reject) => {
       getChangeHtml(purchaseOrderNo)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -446,8 +444,8 @@ const actions = {
   changeApply({commit}, params) {
     return new Promise((resolve, reject) => {
       changeApply(params)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -459,8 +457,8 @@ const actions = {
   changePay({commit}, params) {
     return new Promise((resolve, reject) => {
       changePay(params)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -472,8 +470,8 @@ const actions = {
   processingChange({commit}, params) {
     return new Promise((resolve, reject) => {
       processingChange(params)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -485,8 +483,8 @@ const actions = {
   rejectChange({commit}, params) {
     return new Promise((resolve, reject) => {
       rejectChange(params)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -499,8 +497,8 @@ const actions = {
   rewriteTicket({commit}, params) {
     return new Promise((resolve, reject) => {
       rewriteTicket(params)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -511,8 +509,8 @@ const actions = {
   purchaseOrder({commit}, params) {
     return new Promise((resolve, reject) => {
       purchaseOrder(params)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -523,8 +521,8 @@ const actions = {
   woniuOrder({commit}, params) {
     return new Promise((resolve, reject) => {
       woniuOrder(params)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -534,8 +532,8 @@ const actions = {
   qunarDetailHtml({commit}, params) {
     return new Promise((resolve, reject) => {
       qunarDetailHtml(params.sourceOrderNo)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -545,8 +543,8 @@ const actions = {
   updateBspTicketNo({commit}, params) {
     return new Promise((resolve, reject) => {
       updateBspTicketNo(params)
-        .then(data => {
-          resolve(data);
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);
