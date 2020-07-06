@@ -139,7 +139,6 @@ export default {
           if (data) {
             this.tableData = data.rows;
             this.total = data.total;
-            // this.loadTotal(params);
           }
           callback && callback(data);
           this.loading = false;
@@ -149,19 +148,6 @@ export default {
           console.log(error);
         });
     },
-    // loadTotal(params) {
-    //   this.$store
-    //     .dispatch("user/getTotal", { filter: params })
-    //     .then(data => {
-    //       if (data) {
-    //         this.total = data.data;
-    //       }
-    //     })
-    //     .catch(error => {
-    //       console.log(error);
-    //     });
-    // },
-
     /*加载所有的角色信息*/
     loadRoles() {
       this.$store

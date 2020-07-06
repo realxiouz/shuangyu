@@ -171,7 +171,6 @@
                         if (data) {
                             this.tableData = data.rows;
                             this.total = data.total;
-                            // this.loadTotal(params);
                         }
                         this.loading = false;
                     })
@@ -180,18 +179,7 @@
                         console.log(error);
                     });
             },
-            // loadTotal(params) {
-            //     this.$store
-            //         .dispatch("firm/getRootTotal", {filter: params})
-            //         .then(data => {
-            //             if (data) {
-            //                 this.total = data.data;
-            //             }
-            //         })
-            //         .catch(error => {
-            //             console.log(error);
-            //         });
-            // },
+
             handleSizeChange(pageSize) {
                 this.pageSize = pageSize;
                 this.loadData();
