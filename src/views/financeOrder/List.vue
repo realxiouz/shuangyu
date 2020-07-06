@@ -229,7 +229,7 @@ export default {
         });
     },
     getSummaries(params) {
-      const { columns, data } = params;
+      const { columns } = params;
       const sums = [];
       columns.forEach((item, index) => {
         if (index === 0) {
