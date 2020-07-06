@@ -33,7 +33,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="规则类型:">
+          <el-form-item label="规则类型:">
             <el-select
               style="width: 100%;"
               clearable
@@ -72,7 +72,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="任务类型:">
+          <el-form-item v-show="more" label="任务类型:">
             <el-select style="width: 100%;" clearable v-model="formData.taskType" placeholder="请选择">
               <el-option
                 v-for="item in taskTypeValue"

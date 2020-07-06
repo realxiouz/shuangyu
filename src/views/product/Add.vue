@@ -9,14 +9,14 @@
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="商品编码" prop="productCode">
-              <el-input v-model="formData.productCode" @change="handleUpdate"></el-input>
+              <el-input v-model="formData.productCode"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="商品名称" prop="productName">
-              <el-input v-model="formData.productName" @change="handleUpdate"></el-input>
+              <el-input v-model="formData.productName"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -43,85 +43,88 @@
             :lg="6"
             :xl="6"
             v-for="(item, index) in formData.propertyList"
-            :key="index"
-          >
+            :key="index">
             <el-form-item
               :prop="'propertyList.' + index + '.value'"
               :label="item.name"
-              :rules="`[{ required: true, message: '请输入'+$item.name, trigger: 'blur' }]`"
-            >
+              :rules="[{ required: true, message: '请输入'+item.name, trigger: 'blur' }]">
               <el-input
                 v-if="item.valueType ==0"
                 v-model="item.value"
                 :type="item.inputType"
-              ></el-input>
+                :maxlength="item.length">
+              </el-input>
               <!-- 开关-->
               <el-switch v-if="item.valueType ==1" v-model="item.value"></el-switch>
               <!-- 数字-->
               <el-input-number
                 v-if="item.valueType ==2"
                 v-model="item.value"
-                :precision="item.precision"
-              ></el-input-number>
+                :min="item.min"
+                :max="item.max"
+                :step="item.step"
+                :precision="item.precision"></el-input-number>
               <!-- 日期-->
               <el-date-picker
                 v-if="item.valueType ==3"
                 v-model="item.value"
-                type="date"
-                placeholder="选择日期"
-              ></el-date-picker>
+                :type="item.inputType"
+                :format="item.format"
+                placeholder="选择日期"></el-date-picker>
               <!-- 时间-->
               <el-time-picker
                 v-if="item.valueType ==4"
                 arrow-control
                 v-model="item.value"
-                :picker-options="{
-                  selectableRange: '00:00:00 - 23:59:00'
-                }"
-              ></el-time-picker>
+                :picker-options="{selectableRange: '00:00:00 - 23:59:00' }">
+              </el-time-picker>
               <!-- 评分-->
               <el-rate v-if="item.valueType ==5" v-model="item.value"></el-rate>
               <!-- 单选-->
               <el-radio-group v-if="item.valueType ==60" v-model="item.value">
                 <el-radio
-                  v-for="item1 in item.attributes"
-                  :key="item1.code"
-                  :label="item1.name"
-                >{{item1.name}}
+                  v-for="attr in item.attributes"
+                  :key="attr.code"
+                  :label="attr.name">{{attr.name}}
                 </el-radio>
               </el-radio-group>
               <!-- 多选 非销售属性-->
               <el-checkbox-group
-                v-if="item.valueType ==61 && !item.sku" v-model="item.value"
-              >
+                v-if="item.valueType ==61 && !item.sku" v-model="item.value">
                 <el-checkbox
-                  v-for="item2 in item.attributes"
-                  :key="item2.code"
-                  :label="item2.name"
-                >{{item2.name}}
+                  v-for="attr in item.attributes"
+                  :key="attr.code"
+                  :label="attr.name">{{attr.name}}
                 </el-checkbox>
               </el-checkbox-group>
               <!--选择器-->
-              <el-select v-model="item.value" v-if="item.valueType ==62"
-                         :multiple="item.multiple">
+              <el-select v-model="item.value" v-if="item.valueType ==62" :multiple="item.multiple">
                 <el-option
-                  v-for="(i, inx) in item.attributes"
-                  :key="inx"
-                  :label="i.name"
-                  :value="i.code"
-                ></el-option>
+                  v-for="attr in item.attributes"
+                  :key="attr.code"
+                  :label="attr.name"
+                  :value="attr.code">
+                </el-option>
               </el-select>
+              <!-- 多选 非销售属性-->
+              <el-checkbox-group
+                v-if="item.valueType ==61 && !item.sku"
+                v-model="item.value">
+                <el-checkbox
+                  v-for="attr in item.attributes"
+                  :key="attr.code"
+                  :label="attr.code">{{attr.name}}
+                </el-checkbox>
+              </el-checkbox-group>
               <!-- 多选 销售属性-->
               <el-checkbox-group
                 v-if="item.valueType ==61 && item.sku"
                 v-model="item.value"
-              >
+                @change="handleSku(index)">
                 <el-checkbox
-                  v-for="item4 in item.attributes"
-                  :key="item4.code"
-                  :label="item4.code+','+item4.name"
-                  @change="handleSku"
-                >{{item4.name}}
+                  v-for="attr in item.attributes"
+                  :key="attr.code"
+                  :label="attr.code">{{attr.name}}
                 </el-checkbox>
               </el-checkbox-group>
             </el-form-item>
@@ -132,8 +135,8 @@
             <el-form-item label="品牌编码" prop="brandCode">
               <el-select v-model="formData.brandCode" placeholder="品牌编码" @change="handleBrandName">
                 <el-option
-                  v-for="(item,idx) in brandList"
-                  :key="idx"
+                  v-for="(item,index) in brandList"
+                  :key="index"
                   :label="item.brandName"
                   :value="item.brandCode"
                 ></el-option>
@@ -144,7 +147,7 @@
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="计量单位" prop="unit">
-              <el-input v-model="formData.unit" @change="handleUpdate"></el-input>
+              <el-input v-model="formData.unit"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -164,27 +167,13 @@
         </el-row>
       </el-form>
       <el-table :data="dataList" border style="width: 100%">
-        <el-table-column align="center" prop="productCode" label="编号" width="180"></el-table-column>
-        <el-table-column align="center" prop="productName" label="名称" width="200"></el-table-column>
-        <el-table-column align="center" prop="categoryName" label="商品分类" width="180"></el-table-column>
-        <el-table-column align="center" prop="brandName" label="品牌" width="180"></el-table-column>
-        <el-table-column align="center" prop="skuName" label="属性名称" width="180"></el-table-column>
+        <el-table-column v-for="(item, index) in tableColumns" :key="index" align="center" :prop="item.code"
+                         :label="item.name" width="180"></el-table-column>
         <el-table-column align="center" prop="quantity" label="数量" width="200">
           <template slot-scope="scope">
             <el-input-number v-model="scope.row.quantity"></el-input-number>
           </template>
         </el-table-column>
-        <el-table-column align="center" prop="maxStockQuantity" label="库存上限" width="200">
-          <template slot-scope="scope">
-            <el-input-number v-model="scope.row.maxStockQuantity"></el-input-number>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" prop="minStockQuantity" label="库存下限" width="200">
-          <template slot-scope="scope">
-            <el-input-number v-model="scope.row.minStockQuantity"></el-input-number>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" prop="unit" label="计量单位" width="180"></el-table-column>
         <el-table-column align="center" prop="cost" label="成本" width="200">
           <template slot-scope="scope">
             <el-input-number v-model="scope.row.cost" :precision="2" :step="0.1"></el-input-number>
@@ -222,6 +211,7 @@
         categoryList: [],
         brandList: [],
         dataList: [],
+        tableColumns: [],
         rules: {
           productCode: [
             {required: true, message: "请输入商品编码", trigger: "blur"},
@@ -248,14 +238,6 @@
               message: "长度在 1到20 个字符"
             }
           ],
-          categoryCode: [
-            {required: true, message: "请选择商品类目", trigger: "blur"},
-            {
-              min: 1,
-              max: 20,
-              message: "长度在 1到20 个字符"
-            }
-          ],
           unit: [
             {required: true, message: "请输入计量单位", trigger: "blur"},
             {
@@ -264,26 +246,6 @@
               message: "长度在 1到20 个字符"
             }
           ]
-        },
-
-
-        productForm: {
-          brandCode: '',
-          brandId: '',
-          brandName: '',
-          categoryCode: '',
-          categoryName: '',
-          categoryPath: '',
-          description: '',
-          productCode: '',
-          productId: '',
-          productName: '',
-          propertyItems: [],
-          remark: '',
-          sort: '',
-          specification: '',
-          unit: '',
-
         }
       };
     },
@@ -308,36 +270,30 @@
         };
       },
       handleBrandName(id) {
-        let object = {};
-        object = this.brandList.find(item => {
+        let object = this.brandList.find(item => {
           return item.brandCode === id;
         });
         this.formData.brandName = object.brandName;
-        this.handleUpdate();
       },
-      handleUpdate() {
-        for (let i = 0, len = this.dataList.length; i < len; i++) {
-          this.dataList[i].productCode = this.formData.productCode;
-          this.dataList[i].productName = this.formData.productName;
-          this.dataList[i].categoryName = this.formData.categoryName;
-          this.dataList[i].brandName = this.formData.brandName;
-          this.dataList[i].unit = this.formData.unit;
-        }
-      },
-      handleSku() {
+      handleSku(index) {
+        this.formData.propertyList[index].skuItems = this.getPropertySkuItems(this.formData.propertyList[index]);
+        console.log(this.formData.propertyList[index].skuItems);
         let array = [];
-        for (
-          let i = 0, len = this.formData.productPropertyItems.length;
-          i < len;
-          i++
-        ) {
-          if (this.formData.productPropertyItems[i].sku) {
-            let value = this.formData.productPropertyItems[i].value;
-            if (value.length > 0) {
-              array.push(value);
+        let columns = [];
+        for (let i = 0, len = this.formData.propertyList.length; i < len; i++) {
+          let property = this.formData.propertyList[i];
+          if (property.sku) {
+            let skuItems = property.skuItems;
+            if (skuItems.length > 0) {
+              array.push(skuItems);
+              const {code, name} = property;
+              let column = {code, name};
+              columns.push(column)
             }
           }
         }
+        this.tableColumns = columns;
+        console.log(columns);
         this.dataList = [];
         if (array.length > 0) {
           let skuIds = this.calcDescartes(array);
@@ -349,29 +305,48 @@
             row.brandName = this.formData.brandName;
             row.unit = this.formData.unit;
             if (Array.isArray(skuIds[i])) {
+              let items = [];
               let codes = [];
               let names = [];
               for (let j = 0; j < skuIds[i].length; j++) {
-                let item1 = skuIds[i][j].split(",");
-                codes.push(item1[0]);
-                names.push(item1[1]);
+                let item1 = skuIds[i][j];
+                codes.push(item1.vcode);
+                names.push(item1.vname);
+                let property = this.formData.propertyList.find(p => {
+                  return p.code == item1.code;
+                });
+                let _property = Object.assign({}, property);
+                _property.type = "String";
+                _property.value = item1.vname;
+                items.push(this.getPropertyItem(_property));
+                row[item1.code] = item1.vname;
               }
+              row.propertyItems = items;
               row.skuCode = codes;
               row.skuName = names.join(" ");
-              row.skuId = codes.join(",");
+              row.skuId = codes.join("-");
             } else {
               let codes = [];
-              let item2 = skuIds[i].split(",");
-              row.skuName = item2[1];
-              row.skuId = item2[0];
-              codes.push(item2[0]);
+              let item2 = skuIds[i];
+              row.skuName = item2.vname;
+              row.skuId = item2.vcode;
+              codes.push(item2.vcode);
               row.skuCode = codes;
             }
             this.dataList.push(row);
           }
-        } else {
-          this.dataList.push(this.formData);
         }
+        console.log(this.dataList);
+      },
+      getPropertySkuItems(property) {
+        let items = [];
+        property.value.forEach(code => {
+          let value = property.attributes.find(attr => {
+            return attr.code === code;
+          });
+          items.push({code: property.code, vcode: value.code, vname: value.name});
+        });
+        return items;
       },
       calcDescartes(array) {
         if (array.length < 2) return array[0] || [];
@@ -387,136 +362,57 @@
           return res;
         });
       },
-      handleSaveData() {
-        console.log(this.formData.propertyList);
-        /*var items=[];
-        for()
-        {
-          let item={code:date[i].code,name:1};
-
-          switch (type) {
-            case "Date":
-              item._string=date[i].value;
-              item._date=date[i].value;
-              item._long=date[i].value;
-              break;
+      getPropertyItems(excludeSku) {
+        let items = [];
+        for (let i = 0; i < this.formData.propertyList.length; i++) {
+          let property = this.formData.propertyList[i];
+          let item = this.getPropertyItem(property);
+          if (property.sku === excludeSku) {
+            continue;
           }
           items.push(item)
-        }*/
-        /*for (let i = 0, len = this.dataList.length; i < len; i++) {
-          this.dataList[i].productCode = this.formData.productCode;
-          this.dataList[i].productName = this.formData.productName;
-          this.dataList[i].categoryCode = this.formData.categoryCode;
-          this.dataList[i].categoryName = this.formData.categoryName;
-          this.dataList[i].brandCode = this.formData.brandCode;
-          this.dataList[i].brandName = this.formData.brandName;
-          this.dataList[i].unit = this.formData.unit;
-          this.dataList[i].specification = this.formData.specification;
-          this.dataList[i].description = this.formData.description;
-          this.dataList[i].notSaleable = this.formData.notSaleable;
-          this.dataList[i].notBuyable = this.formData.notBuyable;
-          this.dataList[i].taxRate = this.formData.taxRate;
-          this.dataList[i].grossMargin = this.formData.grossMargin;
-          this.dataList[i].supplierId = this.formData.supplierId;
-          this.dataList[i].supplierName = this.formData.supplierName;
-          if (
-            this.dataList[i].skuName.length > 0 ||
-            this.dataList[i].skuId.length > 0
-          ) {
-            let skuNames = this.dataList[i].skuName.split(" ");
-            const properties = {};
-            const productPropertyItems = [];
-            for (
-              let i = 0, len = this.formData.productPropertyItems.length;
-              i < len;
-              i++
-            ) {
-              let propertyItems = {};
-              propertyItems.code = this.formData.productPropertyItems[i].code;
-              propertyItems.name = this.formData.productPropertyItems[i].label;
-              propertyItems.sku = this.formData.productPropertyItems[i].sku;
-              //sku
-              if (this.formData.productPropertyItems[i].sku) {
-                if (this.formData.productPropertyItems[i].value.length > 0) {
-                  let map = this.formData.productPropertyItems[i].value;
-                  for (let key in map) {
-                    for (let j = 0, len = skuNames.length; j < len; j++) {
-                      let array = map[key].split(",");
-                      if (array[1] == skuNames[j]) {
-                        properties[this.formData.productPropertyItems[i].code] =
-                          skuNames[j];
-                        propertyItems.value = skuNames[j];
-                      }
-                    }
-                  }
-                }
-              } else {
-                //非sku
-                properties[
-                  this.formData.productPropertyItems[i].code
-                  ] = this.formData.productPropertyItems[i].value;
-                propertyItems.value = this.formData.productPropertyItems[i].value;
-              }
-              productPropertyItems.push(propertyItems);
-            }
-
-            this.dataList[i].propertyItems = productPropertyItems;
-            this.dataList[i].skuName = skuNames;
-            this.dataList[i].properties = properties;
-          } else {
-            //非sku
-            if (this.formData.productPropertyItems.length > 0) {
-              const properties = {};
-              for (
-                let i = 0, len = this.formData.productPropertyItems.length;
-                i < len;
-                i++
-              ) {
-                properties[
-                  this.formData.productPropertyItems[i].code
-                  ] = this.formData.productPropertyItems[i].value;
-              }
-              this.dataList[i].properties = properties;
-            }
-          }
         }
-        if (this.formData.productPropertyItems.length > 0) {
-          const properties = {};
-          const productPropertyItems = [];
-          for (
-            let i = 0, len = this.formData.productPropertyItems.length;
-            i < len;
-            i++
-          ) {
-            let propertyItems = {};
-            propertyItems.code = this.formData.productPropertyItems[i].code;
-            propertyItems.name = this.formData.productPropertyItems[i].label;
-            propertyItems.sku = this.formData.productPropertyItems[i].sku;
-            if (this.formData.productPropertyItems[i].sku) {
-              let valueArray = this.formData.productPropertyItems[i].value;
-              let values = {};
-              for (let i = 0, len = valueArray.length; i < len; i++) {
-                let item2 = valueArray[i].split(",");
-                values[item2[0]] = item2[1];
-              }
-              properties[this.formData.productPropertyItems[i].code] = values;
-              propertyItems.value = values;
-            } else {
-              properties[
-                this.formData.productPropertyItems[i].code
-                ] = this.formData.productPropertyItems[i].value;
-              propertyItems.value = this.formData.productPropertyItems[i].value;
-            }
-            productPropertyItems.push(propertyItems);
-          }
-          this.formData.properties = properties;
-          this.formData.propertyItems = productPropertyItems;
-        }*/
+      },
+      getPropertyItem(property) {
+        const {code, name, type, value, sku} = property;
+        let item = {code, name, type, sku, _string: value};
+        switch (property.type) {
+          case "Date":
+            item._string = this.$moment(property.value).format(property.format);
+            item._date = this.$moment(property.value).toDate();
+            item._long = this.$moment(property.value).valueOf();
+            break;
+          case "ArrayList":
+            item._array = property.value;
+            break;
+          case "Boolean":
+            item._bool = property.value;
+            break;
+          case "Byte":
+            item._byte = property.value;
+            break;
+          case "Short":
+            item._short = property.value;
+            break;
+          case "Integer":
+            item._int = property.value;
+            break;
+          case "Long":
+            item._long = property.value;
+            break;
+          case "Float":
+            item._float = property.value;
+            break;
+          case "Double":
+            item._double = property.value;
+            break;
+        }
+        return item;
       },
       handleSave() {
         this.$refs["form"].validate(valid => {
           if (valid) {
-            this.handleSaveData();
+            this.formData.propertyItems = this.getPropertyItems();
             this.$store
               .dispatch("product/save", {
                 skuList: this.dataList,
@@ -534,10 +430,12 @@
             this.goBack();
           }
         });
-      },
+      }
+      ,
       handleCancel() {
         this.goBack();
-      },
+      }
+      ,
       handleGetOne(id) {
         this.$store
           .dispatch("product/getOne", {productId: id})
@@ -550,7 +448,8 @@
           .catch(error => {
             console.log(error);
           });
-      },
+      }
+      ,
       loadPropertyList(searchForm) {
         this.$store
           .dispatch("productProperty/getList", {
@@ -587,14 +486,16 @@
           .catch(error => {
             console.log(error);
           });
-      },
+      }
+      ,
       getValue(values) {
         let array = [];
         for (let key in values) {
           array.push(values[key]);
         }
         return array;
-      },
+      }
+      ,
       loadBrand() {
         this.$store
           .dispatch("brand/getList", {filters: {}})
@@ -604,7 +505,8 @@
           .catch(error => {
             console.log(error);
           });
-      },
+      }
+      ,
       loadTreeData() {
         this.$store
           .dispatch("firmCategory/getTreeList", {
@@ -620,7 +522,8 @@
             this.loading = false;
             console.log(error);
           });
-      },
+      }
+      ,
       getTreeData(data) {
         // 循环遍历json数据
         for (let i = 0, len = data.length; i < len; i++) {
@@ -633,14 +536,14 @@
           }
         }
         return data;
-      },
+      }
+      ,
       handleCategory(category) {
         let labelValue = this.$refs.categoryCascader.getCheckedNodes()[0]
           .pathLabels;
         if (labelValue.length > 0) {
           this.formData.categoryName = labelValue[0];
         }
-        this.handleUpdate();
         if (category) {
           let code = category[category.length - 1];
           this.formData.categoryCode = code;
@@ -648,7 +551,8 @@
           param.categoryCode = code;
           this.loadPropertyList(param);
         }
-      },
+      }
+      ,
       //跳转回列表页面
       goBack() {
         if (this.$router.history.length <= 1) {
@@ -657,51 +561,6 @@
         } else {
           this.$router.go(-1);
         }
-      },
-
-      makeRules(i) {
-        if (!i.required) {
-          return []
-        } else {
-          return [
-            {required: true, message: `必须填写${i.name}字段`, trigger: "blur"}
-          ]
-        }
-      },
-      makePropertyItem(i) {
-        let {code, hidden, name, sku, type,} = i
-        let obj = {code, hidden, name, sku, type}
-        obj[`_${type}`] = this.makeDefaultValByType(type)
-        console.log(obj)
-        return obj
-      },
-      makeDefaultValByType(type) {
-        let d
-        switch (type) {
-          case 'string':
-            d = null
-            break
-          case 'bool':
-            d = false
-            break
-          case 'int':
-          case 'byte':
-          case 'short':
-          case 'long':
-            d = 0
-            break
-          case 'date':
-            d = null
-            break
-          case 'float':
-          case 'double':
-            d = 0.0
-            break
-          case 'array':
-            d = []
-            break
-        }
-        return d
       }
     },
     created() {
@@ -709,10 +568,10 @@
         this.handleGetOne(this.$route.query.productId);
       } else {
         this.formData = this.defaultFormData();
-        this.dataList.push(this.defaultFormData());
       }
       this.loadTreeData();
       this.loadBrand();
     }
-  };
+  }
+  ;
 </script>

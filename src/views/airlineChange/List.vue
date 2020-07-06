@@ -71,7 +71,7 @@ export default {
     loadData(params) {
       this.$store
         .dispatch("airlineChange/getList", {
-          filter: params
+          params
         })
         .then(data => {
           if (data) {

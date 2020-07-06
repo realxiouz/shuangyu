@@ -8,18 +8,10 @@ export function getRootPageList(pageFlag, pageSize, filter) {
   });
 }
 
-export function getRootTotal(params) {
-  return request({
-    url: `/policy/warehouse/get/root/total`,
-    method: "get",
-    params: params
-  });
-}
-
 export function getAsyncTreeList(pid, filter) {
   return request({
     url: `/policy/warehouse/get/async/tree/list/${pid}`,
-    method: `get`,
+    method: 'get',
     params: filter
   });
 }
@@ -32,24 +24,24 @@ export function addOne(data) {
   });
 }
 
-export function updateOne(id, data) {
+export function updateOne(data) {
   return request({
-    url: `/policy/warehouse/update/one/${id}`,
+    url: `/policy/warehouse/update/one`,
     method: 'put',
     data
   });
 }
 
-export function removeOne(warehouseId) {
+export function removeOne(id) {
   return request({
-    url: `/policy/warehouse/remove/one/${warehouseId}`,
+    url: `/policy/warehouse/remove/one/${id}`,
     method: 'delete'
   });
 }
 
-export function getOne(warehouseCode) {
+export function getOne(id) {
   return request({
-    url: `/policy/warehouse/one/${warehouseCode}`,
+    url: `/policy/warehouse/one/${id}`,
     method: 'get'
   });
 }

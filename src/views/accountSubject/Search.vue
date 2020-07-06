@@ -22,6 +22,13 @@
         size="mini"
         @click="handleConfirm"
       >查询</el-button>
+      <el-button
+        icon="el-icon-refresh"
+        class="filter-item"
+        type="primary"
+        size="mini"
+        @click="handleClear"
+      >清空</el-button>
       <el-button type="text" size="mini" @click="handleMore">
         更多
         <i :class="switchIcon"></i>
@@ -35,10 +42,7 @@ export default {
   data() {
     return {
       more: false,
-      formData: {
-        code: null,
-        name: null
-      }
+      formData: {}
     };
   },
 
@@ -52,15 +56,28 @@ export default {
     }
   },
   methods: {
+    initSearchForm() {
+      return {
+        code: null,
+        name: null
+      };
+    },
     handleMore() {
       this.more = !this.more;
     },
+    handleClear() {
+      this.formData = this.initSearchForm();
+    },
     handleConfirm() {
-      if (!this.formData.code || "" === this.formData.code)
-        this.formData.code = null;
-      if (!this.formData.name || "" === this.formData.name)
-        this.formData.name = null;
-      this.$emit("onSearch", this.formData);
+      let _formData = Object.assign({}, this.formData);
+      for (let key in _formData) {
+        if (_formData[key] && "" !== _formData[key]) {
+          _formData[key] = _formData[key].trim();
+        } else {
+          _formData[key] = null;
+        }
+      }
+      this.$emit("onSearch", _formData);
     }
   }
 };

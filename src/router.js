@@ -216,7 +216,7 @@ export default new Router({
           path: '/order/pending/task/list',
           name: 'pendingOrderTask',
           component: () => import('@/views/pendingOrderTask/List'),
-          meta: {title: '待处理订单任务', icon: 'home'}
+          meta: {title: '待处理订单任务', icon: 'home', keepAlive: true}
         },
         {
           title: '总订单任务',

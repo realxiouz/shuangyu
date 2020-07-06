@@ -5,8 +5,6 @@ import {
   getOne,
   getPageList,
   getRootPageList,
-  getRootTotal,
-  getTotal,
   getTreeList,
   removeOne,
   updateOne
@@ -37,18 +35,6 @@ const actions = {
         });
     });
   },
-  getRootTotal({commit}, params) {
-    const {filter} = params;
-    return new Promise((resolve, reject) => {
-      getRootTotal(filter)
-        .then(data => {
-          resolve(data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
   addOne({commit}, params) {
     return new Promise((resolve, reject) => {
       addOne(params)
@@ -62,10 +48,10 @@ const actions = {
   },
   updateOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {id, data} = params;
-      updateOne(id, data)
-        .then(data => {
-          resolve(data);
+      updateOne(params)
+        .then(response => {
+          //const { data } = response;
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -73,10 +59,11 @@ const actions = {
     });
   },
   removeOne({commit}, params) {
+    const {warehouseId} = params;
     return new Promise((resolve, reject) => {
-      const {warehouseId} = params;
       removeOne(warehouseId)
-        .then(data => {
+        .then(response => {
+          const {data} = response;
           resolve(data);
         })
         .catch(error => {
@@ -86,22 +73,10 @@ const actions = {
   },
   getOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {warehouseCode} = params;
-      getOne(warehouseCode)
-        .then(data => {
-          resolve(data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  getTotal({commit}, params) {
-    return new Promise((resolve, reject) => {
-      const {filter} = params;
-      getTotal(filter)
-        .then(data => {
-          resolve(data);
+      const {editWarehouseId} = params;
+      getOne(editWarehouseId)
+        .then(response => {
+          resolve(response);
         })
         .catch(error => {
           reject(error);

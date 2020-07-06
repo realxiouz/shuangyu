@@ -13,7 +13,6 @@
         :data="tableData"
         row-key="code"
         highlight-current-row
-        default-expand-all
         style="width: 100%;margin-bottom:15px"
         size="mini"
         :load="loadChildren"
@@ -40,18 +39,15 @@
               <el-button @click="handleUpdate(scope.row.subjectId)" type="primary" size="mini">编辑</el-button>
             </span>
             <span v-if="scope.row.deletable" style="margin-left: 10px;">
-              <el-button
-                @click.native.prevent="handleRemove(scope.row.subjectId)"
-                type="danger"
-                size="mini"
+              <el-button @click.native.prevent="handleRemove(scope.row.subjectId)" type="danger" size="mini"
               >删除</el-button>
             </span>
           </template>
         </el-table-column>
       </el-table>
       <el-pagination
-        @prev-click="prevClick"
-        @next-click="nextClick"
+        @prev-click="handlePrevClick"
+        @next-click="handleNextClick"
         background
         layout="total,prev,next"
         prev-text="上一页"
@@ -60,7 +56,7 @@
         :total="total"
       ></el-pagination>
       <el-dialog
-        title="会计科目"
+        title="科目管理"
         center
         :visible.sync="dialogVisible"
         width="33%"
@@ -71,6 +67,7 @@
           :editSubjectId="editSubjectId"
           :pid="pid"
           :category="category"
+          :codeEnabled="codeEnabled"
           @onSave="handleSave"
           @onCancel="handleCancel"
         ></accountSubject-edit>
@@ -92,14 +89,14 @@
         loading: true,
         searchForm: {},
         dialogVisible: false,
-        editSubjectId: "",
-        pid: "",
+        editSubjectId: null,
+        pid: null,
         tableData: [],
-        expandRowKeys: [],
         pageFlag: 1,
         pageSize: 10,
-        lastId: "",
+        lastId: "blank",
         total: 0,
+        codeEnabled: false,
         uploadData: {
           tree: null,
           treeNode: null,
@@ -112,20 +109,24 @@
         return row.balanceDirection === 0 ? "借" : "贷";
       },
       subjectCategory,
-      prevClick() {
+      handlePrevClick() {
         this.pageFlag = -1;
         this.lastId = this.tableData[0].subjectId;
         this.loadData();
       },
-      nextClick() {
+      handleNextClick() {
         this.pageFlag = 1;
         this.lastId = this.tableData[this.tableData.length - 1].subjectId;
         this.loadData();
       },
       loadData(params = {}) {
+        if(null != this.category){
+          params.category = this.category;
+        }
         if (this.lastId) {
           params.lastId = this.lastId;
         }
+
         this.$store
           .dispatch("accountSubject/getRootPageList", {
             pageFlag: this.pageFlag,
@@ -133,30 +134,17 @@
             filter: params
           })
           .then(data => {
-            if (data && data.length > 0) {
-              this.tableData = data;
-              this.expandRowKeys = [];
-              this.expandRowKeys.push(data[0].subjectId);
-              this.loadTotal(params);
+            if (data && data.rows && data.rows.length > 0) {
+              this.tableData = data.rows;
+              this.total = data.total;
             } else {
               this.tableData = [];
+              this.total = 0;
             }
             this.loading = false;
           })
           .catch(error => {
             this.loading = false;
-            console.log(error);
-          });
-      },
-      loadTotal(params) {
-        this.$store
-          .dispatch("accountSubject/getTotal", {
-            filters: params
-          })
-          .then(data => {
-            this.total = data;
-          })
-          .catch(error => {
             console.log(error);
           });
       },
@@ -165,25 +153,37 @@
         this.uploadData.treeNode = treeNode;
         this.uploadData.resolve = resolve;
         let params = {};
-        this.$store
-          .dispatch("accountSubject/getAsyncTreeList", {pid: tree.subjectId, filter: params})
-          .then(data => {
-            if (data) {
-              resolve(data);
-            }
-          })
-          .catch(error => {
-            console.log(error);
-          });
+        if(tree && tree.subjectId){
+          this.$store
+            .dispatch("accountSubject/getAsyncTreeList", {pid: tree.subjectId, filter: params})
+            .then(data => {
+              if (data && data.length > 0) {
+                let children = [];
+                data.forEach(function(obj){
+                  if(obj.attributes){
+                    children.push(obj.attributes);
+                  }
+                });
+                resolve(children);
+              }else{
+                window.location.reload();
+              }
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        }
       },
       handleAddChild(subjectId) {
         this.pid = subjectId;
-        this.editSubjectId = "";
+        this.editSubjectId = null;
+        this.codeEnabled = false;
         this.dialogVisible = true;
       },
       handleAdd() {
-        this.editSubjectId = "";
-        this.pid = "";
+        this.editSubjectId = null;
+        this.pid = null;
+        this.codeEnabled = false;
         this.dialogVisible = true;
       },
       handleSearch(params) {
@@ -203,14 +203,11 @@
       },
       handleUpdate(subjectId) {
         this.editSubjectId = subjectId;
-        this.pid = "";
+        this.pid = null;
+        this.codeEnabled = true;
         this.dialogVisible = true;
       },
-      handleSizeChange(pageSize) {
-        this.pageSize = pageSize;
-        this.loadData();
-      },
-      handleRemove(id) {
+      handleRemove(subjectId) {
         this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
@@ -218,13 +215,18 @@
         })
           .then(() => {
             this.$store
-              .dispatch("accountSubject/removeOne", {subjectId: id})
+              .dispatch("accountSubject/removeOne", {subjectId: subjectId})
               .then(() => {
                 if (1 === this.tableData.length) {
-                  this.prevClick();
+                  this.handlePrevClick();
                 } else {
                   this.loadData();
+                  this.loadChildren(this.uploadData.tree, this.uploadData.treeNode, this.uploadData.resolve);
                 }
+                this.$message({
+                  type: "success",
+                  message: "删除成功！"
+                });
               });
           })
           .catch(err => {
@@ -236,9 +238,21 @@
       },
       handleSave(formData) {
         formData.category = this.category;
+        let method = "accountSubject/save";
+        let msg = "添加成功！";
+
+        if(formData && formData.subjectId){
+          method = "accountSubject/update";
+          msg = "编辑成功！";
+        }
+
         this.$store
-          .dispatch("accountSubject/save", formData)
+          .dispatch(method, formData)
           .then(() => {
+            this.$message({
+              type: "success",
+              message: msg
+            });
             this.loadData();
             this.loadChildren(this.uploadData.tree, this.uploadData.treeNode, this.uploadData.resolve);
           })
@@ -249,7 +263,7 @@
       }
     },
     created() {
-      this.loadData({category: this.category});
+      this.loadData();
     },
     components: {
       accountSubjectSearch,

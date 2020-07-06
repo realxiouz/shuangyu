@@ -44,7 +44,7 @@ export default {
     return {
       more: false,
       formData: {
-        bankAccount: null
+        accountName: null
       }
     };
   },
@@ -60,7 +60,7 @@ export default {
   methods: {
     initSearchForm() {
       return {
-        bankAccount: null
+        accountName: null
       };
     },
     handleClear() {
@@ -70,8 +70,8 @@ export default {
       this.more = !this.more;
     },
     handleConfirm() {
-      if (!this.formData.bankAccount || "" === this.formData.bankAccount)
-        this.formData.bankAccount = null;
+      if (!this.formData.accountName || "" === this.formData.accountName)
+        this.formData.accountName = null;
       this.$emit("onSearch", this.formData);
     }
   }

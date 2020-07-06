@@ -46,6 +46,23 @@
         <!-- <el-table-column prop="taskType" :formatter="formatTaskType" label="任务类型" align="center"></el-table-column> -->
         <el-table-column prop="orderNo" label="订单号" width="180" align="center"></el-table-column>
         <el-table-column prop="sourceOrderNo" label="源单号" width="170" align="center"></el-table-column>
+        <el-table-column prop="deadlineTicketTime" label="时限" width="100" align="center">
+          <template slot-scope="scope">
+            <div v-if="scope.row.taskType===1 || scope.row.taskType===2 || scope.row.taskType===3">
+              <el-popover trigger="hover" placement="top">
+                <span>{{ formatTimeLimit(scope.row)}}</span>
+                <el-tag
+                  style="width:80px;"
+                  effect="dark"
+                  slot="reference"
+                  :color="formattimeLimitStyle(scope.row)">
+                  {{ formatDiffTimeLimit(scope.row) }}
+                </el-tag>
+              </el-popover>
+            </div>
+            <div v-else></div>
+          </template>
+        </el-table-column>
         <el-table-column prop="ticketNos" label="票号" width="120" align="center">
           <template slot-scope="scope">
             <span v-html="formatTicketNo(scope.row.ticketNos)"></span>
@@ -80,7 +97,10 @@
         </el-table-column>
         <el-table-column label="起飞-到达" width="90" align="center">
           <template slot-scope="scope">
-            <span v-html="formatFlight(scope.row.flights)"></span>
+            <el-popover trigger="click" placement="top">
+              <span>{{ formatAvh(scope.row.flights)}}</span>
+              <span slot="reference" v-html="formatFlight(scope.row.flights)"></span>
+            </el-popover>
           </template>
         </el-table-column>
         <el-table-column label="政策代码" prop="policyCode" width="180" align="center"></el-table-column>
@@ -106,7 +126,7 @@
         </el-table-column>
         <el-table-column prop="duration" label="持续时长" width="110" align="center">
           <template slot-scope="scope">
-            <span>{{ formatDuration(scope.row.duration,' HH 小时mm 分钟') }}</span>
+            <span>{{ formatDuration(scope.row.duration) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="remark" fixed="right" width="200" label="备注" align="center"></el-table-column>
@@ -127,12 +147,14 @@
         @prev-click="prevClick"
         @next-click="nextClick"
         background
-        layout="total,sizes,prev,next"
+        layout="total,sizes,slot,prev,next"
         prev-text="上一页"
         next-text="下一页"
         :page-size="pageSize"
         :total="total"
-      ></el-pagination>
+      >
+        <span style="font-weight: 400;color:#565656;">第{{ currentPage }}页</span>
+      </el-pagination>
     </div>
     <div>
       <el-dialog
@@ -162,7 +184,12 @@ import {
   formatFlightDate,
   formatFlightNo,
   formatFlight,
-  formatAmount
+  formatAmount,
+  formatDuration,
+  formatTimeLimit,
+  formatDiffTimeLimit,
+  formattimeLimitStyle,
+  formatTimeLimitDuration,
 } from "@/utils/orderFormdata.js";
 
 export default {
@@ -201,6 +228,11 @@ export default {
     formatFlightNo,
     formatFlight,
     formatAmount,
+    formatDuration,
+    formatTimeLimit,
+    formatDiffTimeLimit,
+    formattimeLimitStyle,
+    formatTimeLimitDuration,
     handleSizeChange(size) {
       this.pageSize = size;
       this.searchParams.pageSize = this.pageSize;
@@ -328,25 +360,6 @@ export default {
         return "";
       }
     },
-    formatDuration(data) {
-      if (!data) {
-        return "";
-      } else {
-        let hours = parseInt(data / (1000 * 60 * 60));
-        let minutes = parseInt((data % (1000 * 60 * 60)) / (1000 * 60));
-        let seconds = parseInt((data % (1000 * 60)) / 1000);
-        let str = "";
-        if (hours > 0) {
-          str = hours + " 小时 " + minutes + " 分钟 " + seconds + " 秒 ";
-        }
-        if (minutes > 0) {
-          str = minutes + " 分钟 " + seconds + " 秒 ";
-        } else {
-          str = seconds + " 秒 ";
-        }
-        return str;
-      }
-    },
     // 获得待处理总的数据
     geAllData() {
       let newParams = {};
@@ -412,6 +425,14 @@ export default {
         type: "success",
         message: "查询成功！"
       });
+    },
+    //格式化AVH查询命令
+    formatAvh(flights){
+      let dpt = flights[0].dpt;
+      let arr = flights[0].arr;
+      let flightDate = this.$moment(new Date(flights[0].flightDate)).format('DMMM');
+      let dptTime = flights[0].dptTime.replace(/[^\d]/g,'');
+      return 'AVH/'+dpt+arr+'/'+flightDate+'/'+dptTime;
     }
   },
   created() {

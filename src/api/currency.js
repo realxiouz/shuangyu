@@ -1,54 +1,62 @@
 import request from '@/utils/request';
 
-export function addOne(data) {
+export function getList(params) {
   return request({
-    url: '/finance/currency/add/one',
-    method: 'post',
-    data
+    url: `/finance/currency/get/list`,
+    method: 'get',
+    params: params
   });
 }
 
-export function updateOne(data) {
+export function getRootPageList(pageFlag, pageSize, filter) {
   return request({
-    url: '/finance/currency/update/one',
-    method: 'post',
-    data
+    url: `/finance/currency/get/root/list/page/${pageFlag}/${pageSize}`,
+    method: 'get',
+    params: filter
   });
 }
 
-export function removeOne(code) {
+export function getOne(id) {
   return request({
-    url: `/finance/currency/remove/one/${code}`,
-    method: 'delete'
-  });
-}
-
-export function getOne(code) {
-  return request({
-    url: `/finance/currency/one/${code}`,
+    url: `/finance/currency/get/one/${id}`,
     method: 'get'
   });
 }
 
-export function getList(filter) {
-  return request({
-    url: `/finance/currency/list`,
-    method: 'get',
-    params: filter
-  });
-}
-
-export function getTotal(filter) {
-  return request({
-    url: '/finance/currency/total',
-    method: 'get',
-    params: filter
-  });
-}
-
-export function getPageList(pageFlag, pageSize, lastId, filter) {
+export function getPageList(pageFlag, pageSize, lastId, params) {
   return request({
     url: `/finance/currency/page/list/${pageFlag}/${pageSize}/${lastId}`,
+    method: 'get',
+    params: params
+  });
+}
+
+export function removeOne(id) {
+  return request({
+    url: `/finance/currency/remove/one/${id}`,
+    method: 'delete'
+  });
+}
+
+export function save(data) {
+  return request({
+    url: `/finance/currency/save/one`,
+    method: 'post',
+    data
+  });
+}
+
+export function update(data) {
+  return request({
+    url: `/finance/currency/update/one`,
+    method: 'put',
+    data
+  });
+}
+
+export function getAsyncTreeList(pid, filter) {
+  return request({
+    url: `/finance/currency/get/async/tree/${pid}`,
     method: 'get',
     params: filter
   });

@@ -329,13 +329,8 @@
       // 显示支付弹框
       confirmPay() {
         //判断51还是蜗牛
-        let amountTotal = 0;
-        this.passengerData.forEach(item => {
-          amountTotal += Number(item.amount);
-        });
-        let _profitAndLossValue = (Number(amountTotal) - Number(this.payData.noPayAmount)).toFixed(2);
-        console.info("系统计算利润"+Number(_profitAndLossValue).toFixed(2)+"手工计算利润"+Number(this.profitAndLossValue).toFixed(2));
-        if (Number(_profitAndLossValue).toFixed(2) != Number(this.profitAndLossValue).toFixed(2)) {
+        console.info("系统计算利润"+Number(this.systemProfitAndLossValue).toFixed(2)+"手工计算利润"+Number(this.profitAndLossValue).toFixed(2));
+        if (Number(this.systemProfitAndLossValue).toFixed(2) != Number(this.profitAndLossValue).toFixed(2)) {
           this.$message({
             type: "warning",
             message: "盈亏值计算错误！"
@@ -363,6 +358,7 @@
             orderNo: this.FOBookOrderData.liantuoOrderNo,
             sellOrderNo: this.orderData.orderNo
           }
+          console.info("51支付调用"+JSON.stringify(params))
           this.foPay(params);
           this.payShow = false;
         }

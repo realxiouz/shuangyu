@@ -4,15 +4,21 @@
       <warehouse-search @onSearch="handleSearch"></warehouse-search>
     </div>
     <div class="contentBox">
+      <!-- 按钮组件 -->
       <el-row style="margin-bottom:15px; margin-left:25px;">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
+      <!-- 表格组件 -->
       <el-table
         v-loading="loading"
-        size="mini"
         :data="tableData"
         row-key="warehouseId"
+        highlight-current-row
+        style="width: 100%;margin-bottom:15px"
+        size="mini"
         :load="loadChildren"
+        fit
+        :indent="40"
         lazy
         :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
       >
@@ -23,26 +29,26 @@
         <el-table-column prop="address" label="地址" align="center"></el-table-column>
         <el-table-column label="操作" align="center" fixed="right" width="250">
           <template slot-scope="scope">
-            <el-button type="primary" size="mini" @click="handleAppend(scope.$index, scope.row)">添加</el-button>
-            <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-            <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            <el-button type="success" size="mini" @click="handleAddChild(scope.row.warehouseId)">添加</el-button>
+            <el-button type="primary" size="mini" @click="handleUpdate(scope.row.warehouseId)">编辑</el-button>
+            <el-button type="danger" size="mini" @click="handleRemove(scope.row.warehouseId)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
+      <!-- 分页组件 -->
       <el-pagination
-        @size-change="handleSizeChange"
         @prev-click="handlePrevClick"
         @next-click="handleNextClick"
         background
-        layout="total,sizes,prev,next"
+        layout="total,prev,next"
         prev-text="上一页"
         next-text="下一页"
         :page-size="pageSize"
         :total="total"
       ></el-pagination>
-      <!-- 表单对话框 -->
+      <!-- 模态窗组件 -->
       <el-dialog
-        title="添加企业"
+        title="仓库管理"
         center
         :visible.sync="dialogVisible"
         width="30%"
@@ -50,8 +56,9 @@
       >
         <warehouse-edit
           v-if="dialogVisible"
-          :curNode="curNode"
-          :update="update"
+          :editWarehouseId="editWarehouseId"
+          :pid="pid"
+          :codeEnabled="codeEnabled"
           @onSave="handleSave"
           @onCancel="handleCancel"
         />
@@ -61,226 +68,182 @@
 </template>
 
 <script>
-    import warehouseEdit from "./Edit";
-    import warehouseSearch from "./Search";
+  import warehouseEdit from "./Edit";
+  import warehouseSearch from "./Search";
 
-    export default {
-        data() {
-            return {
-                loading: true,
-                dialogVisible: false,
-                rootNav: false,
-                searchForm: {},
-                tableData: [],
-                curNode: {},
-                update: false,
-                pageFlag: 1,
-                pageSize: 10,
-                lastId: null,
-                total: 0,
-                uploadData: {
-                    tree: null,
-                    treeNode: null,
-                    resolve: null
-                }
-            };
-        },
-        methods: {
-            /*翻前页*/
-            handlePrevClick() {
-                this.pageFlag = -1;
-                this.lastId = this.tableData[0].warehouseId;
-                this.loadData();
-            },
-            /*翻后页*/
-            handleNextClick() {
-                this.pageFlag = 1;
-                this.lastId = this.tableData[this.tableData.length - 1].warehouseId;
-                this.loadData();
-            },
-            handleSizeChange(pageSize) {
-                this.pageSize = pageSize;
-                this.loadData();
-            },
-            /*加载企业列表*/
-            loadData(params = {}) {
-                if (this.lastId) {
-                    params.lastId = this.lastId;
-                }
-                this.$store
-                    .dispatch("warehouse/getRootPageList", {
-                            pageFlag: this.pageFlag,
-                            pageSize: this.pageSize,
-                            filter: params
-                        }
-                    )
-                    .then(data => {
-                        if (data) {
-                            this.tableData = data.rows;
-                            this.total = data.total;
-                            // this.loadTotal(params);
-                        }
-                        this.loading = false;
-                    })
-                    .catch(error => {
-                        this.loading = false;
-                        console.log(error);
-                    });
-            },
-            loadTotal(params) {
-                this.$store
-                    .dispatch("warehouse/getRootTotal", {filter: params})
-                    .then(data => {
-                        if (data) {
-                            this.total = data;
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            loadChildren(tree, treeNode, resolve) {
-                // tree为点击那一行的数据
-                this.uploadData.tree = tree;
-                this.uploadData.treeNode = treeNode;
-                this.uploadData.resolve = resolve;
-                this.$store
-                    .dispatch("warehouse/getAsyncTreeList", {pid: tree.warehouseId, filter: {}})
-                    .then(data => {
-                        if (data) {
-                            resolve(data);
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            handleSearch(params) {
-                const newParams = {};
-                if (params) {
-                    for (let key in params) {
-                        if (params[key]) {
-                            newParams[key] = params[key];
-                        }
-                    }
-                }
-                this.loadData(newParams);
-                this.$message({
-                    type: "success",
-                    message: "查询成功！"
-                });
+  export default {
+    name: "warehouseContent",
+    data() {
+      return {
+        loading: true,
+        searchForm: {},
+        dialogVisible: false,
+        editWarehouseId: null,
+        pid: null,
+        tableData: [],
+        pageFlag: 1,
+        pageSize: 10,
+        lastId: "blank",
+        total: 0,
+        codeEnabled: false,
+        uploadData: {
+          tree: null,
+          treeNode: null,
+          resolve: null
+        }
+      };
+    },
+    methods: {
+      handlePrevClick() {
+        this.pageFlag = -1;
+        this.lastId = this.tableData[0].warehouseId;
+        this.loadData();
+      },
+      handleNextClick() {
+        this.pageFlag = 1;
+        this.lastId = this.tableData[this.tableData.length - 1].warehouseId;
+        this.loadData();
+      },
+      loadData(params = {}) {
+        if (this.lastId) {
+          params.lastId = this.lastId;
+        }
+        this.$store
+          .dispatch("warehouse/getRootPageList", {
+            pageFlag: this.pageFlag,
+            pageSize: this.pageSize,
+            filter: params
+          })
+          .then(data => {
+            if (data && data.rows && data.rows.length > 0) {
+              this.tableData = data.rows;
+              this.total = data.total;
+            } else {
+              this.tableData = [];
+              this.total = 0;
             }
-            ,
-            //添加根节点
-            handleAdd() {
-                this.rootNav = true;
-                this.dialogVisible = true;
-
-                this.curNode = {};
-                this.update = false;
-            },
-            /*企业的添加、编辑保存*/
-            handleSave(formData) {
-                this.dialogVisible = false;
-                if (this.update) {
-                    this.$store
-                        .dispatch("warehouse/updateOne", {id: formData.warehouseId, data: formData})
-                        .then(() => {
-                            this.loadData();
-                        })
-                        .catch(error => {
-                            console.log(error);
-                        });
+            this.loading = false;
+          })
+          .catch(error => {
+            this.loading = false;
+            console.log(error);
+          });
+      },
+      loadChildren(tree, treeNode, resolve) {
+        this.uploadData.tree = tree;
+        this.uploadData.treeNode = treeNode;
+        this.uploadData.resolve = resolve;
+        let params = {};
+        if(tree && tree.warehouseId){
+          this.$store
+            .dispatch("warehouse/getAsyncTreeList", {pid: tree.warehouseId, filter: params})
+            .then(data => {
+              if (data) {
+                if(data && data.length > 0){
+                  resolve(data);
+                }else{
+                  window.location.reload();
+                }
+              }
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        }
+      },
+      handleAddChild(warehouseId) {
+        this.pid = warehouseId;
+        this.editWarehouseId = "";
+        this.codeEnabled = false;
+        this.dialogVisible = true;
+      },
+      handleAdd() {
+        this.editWarehouseId = "";
+        this.pid = "";
+        this.codeEnabled = false;
+        this.dialogVisible = true;
+      },
+      handleSearch(params) {
+        const newParams = {};
+        if (params) {
+          for (let key in params) {
+            if (params[key]) {
+              newParams[key] = params[key];
+            }
+          }
+        }
+        this.loadData(newParams);
+        this.$message({
+          type: "success",
+          message: "查询成功！"
+        });
+      },
+      handleUpdate(warehouseId) {
+        this.editWarehouseId = warehouseId;
+        this.pid = "";
+        this.codeEnabled = true;
+        this.dialogVisible = true;
+      },
+      handleRemove(warehouseId) {
+        this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
+          .then(() => {
+            this.$store
+              .dispatch("warehouse/removeOne", {warehouseId: warehouseId})
+              .then(() => {
+                if (1 === this.tableData.length) {
+                  this.handlePrevClick();
                 } else {
-                    if (this.rootNav) {
-                        //如果添加的顶级企业信息，对某些属性进行初始化
-                        formData.level = 0;
-                    } else {
-                        formData.pid = this.curNode.warehouseId;
-                        formData.level = this.curNode.level + 1;
-                    }
-
-                    this.$store
-                        .dispatch("warehouse/addOne", formData)
-                        .then(() => {
-                            this.loadData({});
-                        })
-                        .catch(error => {
-                            console.log(error);
-                        });
+                  this.loadData();
+                  this.loadChildren(this.uploadData.tree, this.uploadData.treeNode, this.uploadData.resolve);
                 }
-            }
-            ,
-            handleCancel() {
-                this.dialogVisible = false;
-            }
-            ,
-            /*点击添加子节点按钮*/
-            handleAppend(idx, row) {
-                this.rootNav = false;
-                this.dialogVisible = true;
-                this.update = false;
+                this.$message({
+                  type: "success",
+                  message: "删除成功！"
+                });
+              });
+          })
+          .catch(err => {
+            console.error(err);
+          });
+      },
+      handleCancel() {
+        this.dialogVisible = false;
+      },
+      handleSave(formData) {
+        let method = "warehouse/addOne";
+        let msg = "添加成功！";
 
-                this.curNode = row;
-            }
-            ,
-            /*点击编辑*/
-            handleEdit(index, row) {
-                this.curNode = row;
-                this.dialogVisible = true;
-                this.update = true;
-            }
-            ,
-            /*点击删除*/
-            handleDelete(index, row) {
-                this.open(
-                    this.remove,
-                    row.warehouseId,
-                    "此操作将删除该仓库信息及所有子仓库信息, 是否继续?"
-                );
-            }
-            ,
-            /*删除企业数据*/
-            remove(warehouseId) {
-                this.$store
-                    .dispatch("warehouse/removeOne", {warehouseId: warehouseId})
-                    .then(() => {
-                        this.loadData(this.searchForm);
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            }
-            ,
-            open(func, data, message) {
-                this.$confirm(message, "提示", {
-                    confirmButtonText: "确定",
-                    cancelButtonText: "取消",
-                    type: "warning"
-                })
-                    .then(() => {
-                        func(data);
-                        this.$message({
-                            type: "success",
-                            message: "删除成功!"
-                        });
-                    })
-                    .catch(() => {
-                        this.$message({
-                            type: "info",
-                            message: "已取消删除"
-                        });
-                    });
-            }
-        },
-        mounted() {
-            this.loadData({});
+        if(formData && formData.warehouseId){
+          method = "warehouse/updateOne";
+          msg = "编辑成功！";
         }
-        ,
-        components: {
-            warehouseEdit,
-            warehouseSearch
-        }
+
+        this.$store
+          .dispatch(method, formData)
+          .then(() => {
+            this.$message({
+              type: "success",
+              message: msg
+            });
+            this.loadData();
+            this.loadChildren(this.uploadData.tree, this.uploadData.treeNode, this.uploadData.resolve);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+        this.dialogVisible = false;
+      }
+    },
+    mounted() {
+      this.loadData({});
+    },
+    components: {
+      warehouseEdit,
+      warehouseSearch
     }
-    ;
+  };
 </script>
