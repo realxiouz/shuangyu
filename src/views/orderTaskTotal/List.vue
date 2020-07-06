@@ -5,7 +5,7 @@
         <span>
           <el-button @click="geAllData()" type="info" size="mini">
             待处理
-            <el-badge :value="totalCount?totalCount:'0'" :max="99"></el-badge>
+            <el-badge :value="totalCount?totalCount:'0'" ></el-badge>
           </el-button>
         </span>
         <span v-for="item in taskTypeValue" :key="item.value" style="margin-right:5px;">
@@ -13,7 +13,6 @@
             {{item.label}}
             <el-badge
               :value="taskTypeCounts['taskType'+item.value]?taskTypeCounts['taskType'+item.value]:'0'"
-              :max="99"
             ></el-badge>
           </el-button>
         </span>
@@ -347,7 +346,6 @@ export default {
         })
         .then(data => {
           if (data) {
-            let temp = [];
             data.taskTypes.forEach(item => {
               for (let key in item) {
                 if (key == "taskType") {
