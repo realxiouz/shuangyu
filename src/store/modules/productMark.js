@@ -1,4 +1,15 @@
-import {addOne, updateOne, removeOne, getPageList, getTotal, getOne, getFirmList, getFlagList, getList,getListByFlagIds} from "@/api/productMark";
+import {
+  addOne,
+  getFirmList,
+  getFlagList,
+  getList,
+  getListByFlagIds,
+  getOne,
+  getPageList,
+  getTotal,
+  removeOne,
+  updateOne
+} from "@/api/productMark";
 import {getToken} from "@/utils/auth";
 
 
@@ -25,7 +36,6 @@ const actions = {
     return new Promise((resolve, reject) => {
       addOne(params)
         .then(response => {
-          //const { data } = response;
           resolve(response);
         })
         .catch(error => {
@@ -37,7 +47,6 @@ const actions = {
     return new Promise((resolve, reject) => {
       updateOne(params)
         .then(response => {
-          //const { data } = response;
           resolve(response);
         })
         .catch(error => {
@@ -49,8 +58,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       removeOne(thirdId)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -63,8 +71,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       getPageList(pageFlag, pageSize, lastId, filter)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -75,8 +82,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       getTotal(params)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -87,8 +93,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       getOne(params)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -99,8 +104,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       getFirmList(params)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -111,8 +115,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       getFlagList(params)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -124,8 +127,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       getListByFlagIds(flagIds)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -136,8 +138,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       getList(params)
         .then(response => {
-          const {data} = response;
-          resolve(data);
+          resolve(response);
         })
         .catch(error => {
           reject(error);
