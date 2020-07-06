@@ -139,7 +139,7 @@ export default new Router({
           path: '/order/list',
           name: 'order',
           component: () => import('@/views/order/List'),
-          meta: {title: '订单信息', icon: 'home', keepAlive: true}
+          meta: {title: '订单信息', icon: 'home', keepAlive: false}
         },
         {
           title: '订单统计',
@@ -705,7 +705,7 @@ export default new Router({
       children: [
         {
           title: 'Pnrjy 订单管理',
-          path: '/pnrjy/order/list',
+          path: '/pnrjy/order/List',
           name: 'pnrjyOrderList',
           component: () => import('@/views/otherOrderConfig/pnrjyOrderConfig/List'),
           meta: {title: 'Pnrjy 订单管理', icon: 'home'}
@@ -1019,10 +1019,10 @@ export default new Router({
         },
       ]
     },
-    {
-      path: "*",
-      redirect: "/404",
-      hidden: true
-    }
+    // {
+    //   path: "*",
+    //   redirect: "/404",
+    //   hidden: true
+    // }
   ]
 });

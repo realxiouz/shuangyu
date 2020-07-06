@@ -168,8 +168,7 @@ const actions = {
   getOrderDetail({ commit }, data) {
     return new Promise((resolve, reject) => {
       getOrderDetail(data)
-        .then(response => {
-          const { data } = response;
+        .then(data => {
           resolve(data);
         })
         .catch(error => {
