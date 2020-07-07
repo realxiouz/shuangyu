@@ -110,12 +110,12 @@ export default {
     },
     prevClick() {
       this.pageFlag = "prev";
-      this.lastId = this.tableData[0].airlineCode;
+      this.lastId = this.tableData[0].orderRuleId;
       this.loadData();
     },
     nextClick() {
       this.pageFlag = "next";
-      this.lastId = this.tableData[this.tableData.length - 1].airlineCode;
+      this.lastId = this.tableData[this.tableData.length - 1].orderRuleId;
       this.loadData();
     },
     handleSearch(params) {
