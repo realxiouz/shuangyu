@@ -79,9 +79,8 @@ export default {
           filter: {}
         })
         .then(data => {
-          if (data.rows) {
-            this.tableData = data.rows;
-          }
+          console.log(data)
+          this.tableData = data;
           this.loading = false;
         })
         .catch(error => {
