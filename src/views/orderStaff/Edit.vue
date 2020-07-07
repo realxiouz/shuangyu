@@ -47,7 +47,8 @@
             type="primary"
             v-show="scope.row.status==1&&scope.row.monitorFlag!=1"
             @click="offLine(scope.row)"
-          >强制下线</el-button>
+          >强制下线
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -98,163 +99,162 @@
 </template>
 
 <script>
-export default {
-  name: "orderStaffEdit",
-  props: ["curNode", "staffAddVisible"],
-  data() {
-    return {
-      formData: {
-        ownFlags: []
-      },
-      loading: false,
-      dialogVisible: false,
-      logDialogVisible: false,
-      tableData: [],
-      logTableData: [],
-      ownFlags: [
-        { label: "出票", value: 1 },
-        { label: "退票", value: 2 },
-        { label: "改签", value: 3 },
-        { label: "未出票申请退款", value: 4 },
-        { label: "消息", value: 5 },
-        { label: "质检", value: 6 },
-        { label: "补单", value: 11 },
-        { label: "填写单号", value: 12 }
-      ]
-    };
-  },
-  methods: {
-    loadTableData() {
-      this.loading = true;
-      var searchForm = {};
-      if (this.curNode && this.curNode != null) {
-        searchForm = {
-          firmId: this.curNode.firmId,
-          deptId: this.curNode.deptId
-        };
-      } else {
-        searchForm = {};
-      }
-      this.$store
-        .dispatch("orderStaff/getList", {
-          searchForm: searchForm
-        })
-        .then(data => {
-          if (data) {
-            this.tableData = data;
-          }
-          this.loading = false;
-        })
-        .catch(error => {
-          this.loading = false;
-          console.log(error);
-        });
-    },
-    handleFlag(row) {
-      this.dialogVisible = true;
-      this.formData = row;
-    },
-    setMonitor(row) {
-      this.$store
-        .dispatch("orderStaff/setMonitor", {
-          staffId: row.staffId
-        })
-        .then(data => {
-          if (data) {
-            this.loadTableData();
-          }
-          this.loading = false;
-        })
-        .catch(error => {
-          this.loading = false;
-          console.log(error);
-        });
-      this.formData = row;
-    },
-    logSearch(row) {
-      this.logDialogVisible = true;
-      if (row.logs && row.logs != null) {
-        this.logTableData = row.logs;
-      }
-    },
-    offLine(row) {
-      console.log(row.staffId);
-      this.$store
-        .dispatch("orderStaff/orderStaffOffline", { staffId: row.staffId })
-        .then(data => {
-          if (data) {
-            this.$message({
-              type: "success",
-              message: "下线成功！"
-            });
-            this.loadTableData();
+    export default {
+        name: "orderStaffEdit",
+        props: ["curNode", "staffAddVisible"],
+        data() {
+            return {
+                formData: {
+                    ownFlags: []
+                },
+                loading: false,
+                dialogVisible: false,
+                logDialogVisible: false,
+                tableData: [],
+                logTableData: [],
+                ownFlags: [
+                    {label: "出票", value: 1},
+                    {label: "退票", value: 2},
+                    {label: "改签", value: 3},
+                    {label: "未出票申请退款", value: 4},
+                    {label: "消息", value: 5},
+                    {label: "质检", value: 6},
+                    {label: "补单", value: 11},
+                    {label: "填写单号", value: 12}
+                ]
+            };
+        },
+        methods: {
+            loadTableData() {
+                this.loading = true;
+                let searchForm = {};
+                searchForm.staffType = '0';
+                if (this.curNode && this.curNode != null) {
+                    searchForm = {
+                        firmId: this.curNode.firmId,
+                        deptId: this.curNode.deptId,
+                    };
+                }
+                this.$store
+                    .dispatch("orderStaff/getList", {
+                        searchForm: searchForm
+                    })
+                    .then(data => {
+                        if (data) {
+                            this.tableData = data;
+                        }
+                        this.loading = false;
+                    })
+                    .catch(error => {
+                        this.loading = false;
+                        console.log(error);
+                    });
+            },
+            handleFlag(row) {
+                this.dialogVisible = true;
+                this.formData = row;
+            },
+            setMonitor(row) {
+                this.$store
+                    .dispatch("orderStaff/setMonitor", {
+                        staffId: row.staffId
+                    })
+                    .then(data => {
+                        if (data) {
+                            this.loadTableData();
+                        }
+                        this.loading = false;
+                    })
+                    .catch(error => {
+                        this.loading = false;
+                        console.log(error);
+                    });
+                this.formData = row;
+            },
+            logSearch(row) {
+                this.logDialogVisible = true;
+                if (row.logs && row.logs != null) {
+                    this.logTableData = row.logs;
+                }
+            },
+            offLine(row) {
+                console.log(row.staffId);
+                this.$store
+                    .dispatch("orderStaff/orderStaffOffline", {staffId: row.staffId})
+                    .then(data => {
+                        if (data) {
+                            this.$message({
+                                type: "success",
+                                message: "下线成功！"
+                            });
+                            this.loadTableData();
 
-            // console.log(data);
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    handleClose() {
-      this.logDialogVisible = false;
-      this.logTableData = [];
-    },
-    handleSave() {
-      this.dialogVisible = false;
-      this.$store
-        .dispatch("orderStaff/save", this.formData)
-        .then(() => {
-          this.loadTableData();
-          this.formData = {
-            ownFlags: []
-          };
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    handleCancel() {
-      this.dialogVisible = false;
-      this.formData = {
-        ownFlags: []
-      };
-    },
-    initDate(dateStr, format) {
-      if (dateStr && null != dateStr) {
-        let date = new Date(dateStr);
-        return this.$moment(date).format(format);
-      } else {
-        return "";
-      }
-    },
-    clearTableData() {
-      this.tableData = [];
-    },
-    headClass() {
-      return "background:#eef1f6;";
-    },
-  },
-  computed: {
-    formatDate() {
-      return function(dateStr, format) {
-        return this.initDate(dateStr, format);
-      };
-    },
-    initGender() {
-      return function(gender) {
-        return 0 == gender ? "男" : "女";
-      };
-    }
-  },
-  created() {
-    this.loadTableData();
-  },
-  watch: {
-    curNode() {
-      this.clearTableData();
-      this.loadTableData();
-    }
-  }
-};
+                            // console.log(data);
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            handleClose() {
+                this.logDialogVisible = false;
+                this.logTableData = [];
+            },
+            handleSave() {
+                this.dialogVisible = false;
+                this.$store
+                    .dispatch("orderStaff/save", this.formData)
+                    .then(() => {
+                        this.loadTableData();
+                        this.formData = {
+                            ownFlags: []
+                        };
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            handleCancel() {
+                this.dialogVisible = false;
+                this.formData = {
+                    ownFlags: []
+                };
+            },
+            initDate(dateStr, format) {
+                if (dateStr && null != dateStr) {
+                    let date = new Date(dateStr);
+                    return this.$moment(date).format(format);
+                } else {
+                    return "";
+                }
+            },
+            clearTableData() {
+                this.tableData = [];
+            },
+            headClass() {
+                return "background:#eef1f6;";
+            },
+        },
+        computed: {
+            formatDate() {
+                return function (dateStr, format) {
+                    return this.initDate(dateStr, format);
+                };
+            },
+            initGender() {
+                return function (gender) {
+                    return 0 == gender ? "男" : "女";
+                };
+            }
+        },
+        created() {
+            this.loadTableData();
+        },
+        watch: {
+            curNode() {
+                this.clearTableData();
+                this.loadTableData();
+            }
+        }
+    };
 </script>
