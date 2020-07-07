@@ -4,7 +4,6 @@
       <div id="goBack" @click="goBack">
         <el-page-header></el-page-header>
       </div>
-      <br/>
       <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -12,15 +11,38 @@
               <el-input v-model="formData.productCode"></el-input>
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="商品名称" prop="productName">
               <el-input v-model="formData.productName"></el-input>
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row :gutter="10">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="品牌编码" prop="brandCode">
+              <el-select v-model="formData.brandCode" placeholder="品牌编码" @change="handleBrandName">
+                <el-option
+                  v-for="(item,index) in brandList"
+                  :key="index"
+                  :label="item.brandName"
+                  :value="item.brandCode"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="计量单位" prop="unit">
+              <el-input v-model="formData.unit"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="规格" prop="specification">
+              <el-input v-model="formData.specification"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="描述" prop="description">
+              <el-input type="textarea" :rows="3" v-model="formData.description"></el-input>
+            </el-form-item>
+          </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="商品类目" prop="categoryCode">
               <el-cascader
@@ -36,6 +58,76 @@
           </el-col>
         </el-row>
         <el-row :gutter="10">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item
+              prop="notSaleable"
+              label="不可销售"
+              :rules="[]"
+            >
+              <el-switch
+                v-model="formData.notSaleable"
+                active-text=""
+                inactive-text=""
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item
+              prop="notBuyable"
+              label="不可采购"
+              :rules="[]"
+            >
+              <el-switch
+                v-model="formData.notBuyable"
+                active-text=""
+                inactive-text=""
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item
+              prop="taxRate"
+              label="税率"
+              :rules="[]"
+            >
+              <el-input-number v-model="formData.taxRate" :precision="2" :step="0.1" :max="100"/>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item
+              prop="miniOrderQuantity"
+              label="最小订单量"
+              :rules="[]"
+            >
+              <el-input-number v-model="formData.miniOrderQuantity"/>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item
+              prop="grossMargin"
+              label="毛利率"
+              :rules="[]"
+            >
+              <el-input-number v-model="formData.grossMargin"/>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item
+              prop="warehouse"
+              label="仓库"
+              :rules="[]"
+            >
+              <el-cascader
+                ref="warehouseCascader"
+                v-model="formData.warehouse"
+                style="width: 100%;"
+                :options="warehouseData"
+                :props="{ label: 'warehouseName', value: 'warehouseId' }"
+                filterable
+                @change="handleWarehouseChange"
+              ></el-cascader>
+            </el-form-item>
+          </el-col>
           <el-col
             :xs="24"
             :sm="12"
@@ -44,129 +136,125 @@
             :xl="6"
             v-for="(item, index) in formData.propertyList"
             :key="index">
-            <el-form-item
-              :prop="'propertyList.' + index + '.value'"
-              :label="item.name"
-              :rules="[{ required: true, message: '请输入'+item.name, trigger: 'blur' }]">
-              <el-input
-                v-if="item.valueType ==0"
-                v-model="item.value"
-                :type="item.inputType"
-                :maxlength="item.length">
-              </el-input>
-              <!-- 开关-->
-              <el-switch v-if="item.valueType ==1" v-model="item.value"></el-switch>
-              <!-- 数字-->
-              <el-input-number
-                v-if="item.valueType ==2"
-                v-model="item.value"
-                :min="item.min"
-                :max="item.max"
-                :step="item.step"
-                :precision="item.precision"></el-input-number>
-              <!-- 日期-->
-              <el-date-picker
-                v-if="item.valueType ==3"
-                v-model="item.value"
-                :type="item.inputType"
-                :format="item.format"
-                placeholder="选择日期"></el-date-picker>
-              <!-- 时间-->
-              <el-time-picker
-                v-if="item.valueType ==4"
-                arrow-control
-                v-model="item.value"
-                :picker-options="{selectableRange: '00:00:00 - 23:59:00' }">
-              </el-time-picker>
-              <!-- 评分-->
-              <el-rate v-if="item.valueType ==5" v-model="item.value"></el-rate>
-              <!-- 单选-->
-              <el-radio-group v-if="item.valueType ==60" v-model="item.value">
-                <el-radio
-                  v-for="attr in item.attributes"
-                  :key="attr.code"
-                  :label="attr.name">{{attr.name}}
-                </el-radio>
-              </el-radio-group>
-              <!-- 多选 非销售属性-->
-              <el-checkbox-group
-                v-if="item.valueType ==61 && !item.sku" v-model="item.value">
-                <el-checkbox
-                  v-for="attr in item.attributes"
-                  :key="attr.code"
-                  :label="attr.name">{{attr.name}}
-                </el-checkbox>
-              </el-checkbox-group>
-              <!--选择器-->
-              <el-select v-model="item.value" v-if="item.valueType ==62" :multiple="item.multiple">
-                <el-option
-                  v-for="attr in item.attributes"
-                  :key="attr.code"
-                  :label="attr.name"
-                  :value="attr.code">
-                </el-option>
-              </el-select>
-              <!-- 多选 非销售属性-->
-              <el-checkbox-group
-                v-if="item.valueType ==61 && !item.sku"
-                v-model="item.value">
-                <el-checkbox
-                  v-for="attr in item.attributes"
-                  :key="attr.code"
-                  :label="attr.code">{{attr.name}}
-                </el-checkbox>
-              </el-checkbox-group>
-              <!-- 多选 销售属性-->
-              <el-checkbox-group
-                v-if="item.valueType ==61 && item.sku"
-                v-model="item.value"
-                @change="handleSku(index)">
-                <el-checkbox
-                  v-for="attr in item.attributes"
-                  :key="attr.code"
-                  :label="attr.code">{{attr.name}}
-                </el-checkbox>
-              </el-checkbox-group>
-            </el-form-item>
+            <template v-if="item.valueType != 9">
+              <el-form-item
+                :prop="'propertyList.' + index + '.value'"
+                :label="item.name"
+                :rules="[{ required: item.required, message: '请输入'+item.name, trigger: 'blur' }]">
+                <el-input
+                  v-if="item.valueType ==0"
+                  v-model="item.value"
+                  :type="item.inputType"
+                  :maxlength="item.length">
+                </el-input>
+                <!-- 开关-->
+                <el-switch v-if="item.valueType ==1" v-model="item.value"></el-switch>
+                <!-- 数字-->
+                <el-input-number
+                  v-if="item.valueType ==2"
+                  v-model="item.value"
+                  :min="item.min"
+                  :max="item.max"
+                  :step="item.step"
+                  :precision="item.precision"></el-input-number>
+                <!-- 日期-->
+                <el-date-picker
+                  v-if="item.valueType ==3"
+                  v-model="item.value"
+                  :type="item.inputType"
+                  :format="item.format"
+                  placeholder="选择日期"></el-date-picker>
+                <!-- 时间-->
+                <el-time-picker
+                  v-if="item.valueType ==4"
+                  arrow-control
+                  v-model="item.value"
+                  :picker-options="{selectableRange: '00:00:00 - 23:59:00' }">
+                </el-time-picker>
+                <!-- 评分-->
+                <el-rate v-if="item.valueType ==5" v-model="item.value"></el-rate>
+                <!-- 单选-->
+                <el-radio-group v-if="item.valueType ==60" v-model="item.value">
+                  <el-radio
+                    v-for="attr in item.attributes"
+                    :key="attr.code"
+                    :label="attr.name">{{attr.name}}
+                  </el-radio>
+                </el-radio-group>
+                <!-- 多选 非销售属性-->
+                <!-- <el-checkbox-group
+                  v-if="item.valueType ==61 && !item.sku" v-model="item.value">
+                  <el-checkbox
+                    v-for="attr in item.attributes"
+                    :key="attr.code"
+                    :label="attr.name">{{attr.name}}
+                  </el-checkbox>
+                </el-checkbox-group> -->
+                <!--选择器-->
+                <el-select v-model="item.value" v-if="item.valueType ==62" :multiple="item.multiple">
+                  <el-option
+                    v-for="attr in item.attributes"
+                    :key="attr.code"
+                    :label="attr.name"
+                    :value="attr.code">
+                  </el-option>
+                </el-select>
+                <!-- 多选 非销售属性-->
+                <el-checkbox-group
+                  v-if="item.valueType ==61 && !item.sku"
+                  v-model="item.value">
+                  <el-checkbox
+                    v-for="attr in item.attributes"
+                    :key="attr.code"
+                    :label="attr.code">{{attr.name}}
+                  </el-checkbox>
+                </el-checkbox-group>
+                <!-- 多选 销售属性-->
+                <el-checkbox-group
+                  v-if="item.valueType ==61 && item.sku"
+                  v-model="item.value"
+                  @change="handleSku(index)">
+                  <el-checkbox
+                    v-for="attr in item.attributes"
+                    :key="attr.code"
+                    :label="attr.code">{{attr.name}}
+                  </el-checkbox>
+                </el-checkbox-group>
+              </el-form-item>
+            </template>
           </el-col>
-        </el-row>
-        <el-row :gutter="10">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="品牌编码" prop="brandCode">
-              <el-select v-model="formData.brandCode" placeholder="品牌编码" @change="handleBrandName">
-                <el-option
-                  v-for="(item,index) in brandList"
-                  :key="index"
-                  :label="item.brandName"
-                  :value="item.brandCode"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="计量单位" prop="unit">
-              <el-input v-model="formData.unit"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="规格" prop="specification">
-              <el-input v-model="formData.specification"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="描述" prop="description">
-              <el-input type="textarea" :rows="3" v-model="formData.description"></el-input>
-            </el-form-item>
-          </el-col>
+          <template v-if="!formData.sku">
+            <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+              <el-form-item
+                prop="quantity"
+                label="产品数量"
+                :rules="[]"
+              >
+                <el-input-number v-model="formData.quantity"/>
+              </el-form-item>
+            </el-col>
+            <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+              <el-form-item
+                prop="cost"
+                label="成本"
+                :rules="[]"
+              >
+                <el-input-number v-model="formData.cost" :precision="2" :step="0.1"/>
+              </el-form-item>
+            </el-col>
+            <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+              <el-form-item
+                prop="price"
+                label="价格"
+                :rules="[]"
+              >
+                <el-input-number v-model="formData.price" :precision="2" :step="0.1"/>
+              </el-form-item>
+            </el-col>
+          </template>
         </el-row>
       </el-form>
-      <el-table :data="dataList" border style="width: 100%">
+      <el-table :data="dataList" border style="width: 100%" v-if="formData.sku">
         <el-table-column v-for="(item, index) in tableColumns" :key="index" align="center" :prop="item.code"
                          :label="item.name" width="180"></el-table-column>
         <el-table-column align="center" prop="quantity" label="数量" width="200">
@@ -246,7 +334,9 @@
               message: "长度在 1到20 个字符"
             }
           ]
-        }
+        },
+
+        warehouseData: [],
       };
     },
     methods: {
@@ -264,9 +354,8 @@
           brandName: "",
           specification: "",
           description: "",
-          skuName: [],
-          skuCode: [],
-          skuId: ""
+
+          sku: false,
         };
       },
       handleBrandName(id) {
@@ -277,14 +366,13 @@
       },
       handleSku(index) {
         this.formData.propertyList[index].skuItems = this.getPropertySkuItems(this.formData.propertyList[index]);
-        console.log(this.formData.propertyList[index].skuItems);
         let array = [];
         let columns = [];
         for (let i = 0, len = this.formData.propertyList.length; i < len; i++) {
           let property = this.formData.propertyList[i];
           if (property.sku) {
             let skuItems = property.skuItems;
-            if (skuItems.length > 0) {
+            if (skuItems && skuItems.length > 0) {
               array.push(skuItems);
               const {code, name} = property;
               let column = {code, name};
@@ -323,7 +411,7 @@
               }
               row.propertyItems = items;
               row.skuCode = codes;
-              row.skuName = names.join(" ");
+              row.skuName = names;
               row.skuId = codes.join("-");
             } else {
               let codes = [];
@@ -364,18 +452,25 @@
       },
       getPropertyItems(excludeSku) {
         let items = [];
-        for (let i = 0; i < this.formData.propertyList.length; i++) {
-          let property = this.formData.propertyList[i];
-          let item = this.getPropertyItem(property);
+        let mapArr = this.formData.propertyList.filter(i => i.fromMap)
+        let arr = this.formData.propertyList.filter(i => !i.fromMap)
+        let objVal = {}
+        for (let i = 0; i < mapArr.length; i++) {
+          objVal[mapArr[i].code] = mapArr[i].value
+        }
+        for (let i = 0; i < arr.length; i++) {
+          let property = arr[i];
+          let item = this.getPropertyItem(property, objVal);
           if (property.sku === excludeSku) {
             continue;
           }
           items.push(item)
         }
+        return items
       },
-      getPropertyItem(property) {
-        const {code, name, type, value, sku} = property;
-        let item = {code, name, type, sku, _string: value};
+      getPropertyItem(property, objVal = {}) {
+        const {code, name, type, value, sku, hidden} = property;
+        let item = {code, name, type, sku, _string: value + '', hidden};
         switch (property.type) {
           case "Date":
             item._string = this.$moment(property.value).format(property.format);
@@ -406,28 +501,33 @@
           case "Double":
             item._double = property.value;
             break;
+          case "Object":
+            item._object = objVal
+            break
         }
         return item;
       },
       handleSave() {
         this.$refs["form"].validate(valid => {
           if (valid) {
-            this.formData.propertyItems = this.getPropertyItems();
+            this.formData.propertyItems = this.getPropertyItems()
+            delete this.formData.propertyList
             this.$store
               .dispatch("product/save", {
                 skuList: this.dataList,
                 product: this.formData
               })
               .then(() => {
+                this.$message({
+                  type: "success",
+                  message: "保存成功！"
+                });
+                this.goBack();
               })
               .catch(error => {
                 console.log(error);
               });
-            this.$message({
-              type: "success",
-              message: "保存成功！"
-            });
-            this.goBack();
+            
           }
         });
       }
@@ -457,7 +557,17 @@
           })
           .then(data => {
             if (data) {
-
+              for (const d of data) {
+                if (d.valueType==9) {
+                  if (d.type=='Object') {
+                    for (const i of d.attributes) {
+                      let {name, code} = i
+                      let obj = {name, code, inputType: 'text', type: "String", valueType: 0, fromMap: true, required: true}
+                      data.push(obj)
+                    }
+                  }
+                }
+              }
               for (let i = 0, len = data.length; i < len; i++) {
                 switch (data[i].type) {
                   case "ArrayList":
@@ -478,9 +588,17 @@
                   case "Double":
                     data[i].value = 0;
                     break;
+                  case "Object":
+                    break
+                  case "ObjectList":
+                    break
                 }
               }
+
+              
               this.formData.propertyList = data;
+
+              this.formData.sku = data.some(i => i.sku)
             }
           })
           .catch(error => {
@@ -516,10 +634,8 @@
             if (data) {
               this.categoryList = this.getTreeData(data);
             }
-            this.loading = false;
           })
           .catch(error => {
-            this.loading = false;
             console.log(error);
           });
       }
@@ -551,8 +667,13 @@
           param.categoryCode = code;
           this.loadPropertyList(param);
         }
-      }
-      ,
+      },
+      handleWarehouseChange(arr) {
+        this.formData.warehouseId = arr[arr.length - 1]
+        // todo
+        // this.formData.warehouseCode = ''
+        // this.formData.warehouseName = ''
+      },
       //跳转回列表页面
       goBack() {
         if (this.$router.history.length <= 1) {
@@ -561,7 +682,17 @@
         } else {
           this.$router.go(-1);
         }
-      }
+      },
+
+      loadWarehouseData() {
+        this.$store.dispatch('warehouse/getTreeList', {filter:{}})
+        .then(d => {
+          this.warehouseData = this.getTreeData(d)
+        })
+        .finally(_ => {
+
+        })
+      },
     },
     created() {
       if (this.$route.query.productId) {
@@ -571,6 +702,7 @@
       }
       this.loadTreeData();
       this.loadBrand();
+      this.loadWarehouseData()
     }
   }
   ;

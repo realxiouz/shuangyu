@@ -114,7 +114,7 @@
                 this.$store
                     .dispatch("productInventory/getList", {productId: this.$route.query.productId})
                     .then(data => {
-                        this.dataList = data.rows;
+                        this.dataList = data;
                     }).catch(error => {
                     console.log(error);
                 });
