@@ -160,7 +160,7 @@ export default new Router({
           path: '/order/detail',
           name: 'orderDetail',
           component: () => import('@/views/order/OrderDetail'),
-          meta: {title: '订单详情', icon: 'home'}
+          meta: {title: '订单详情', icon: 'home', hidden: true}
         },
         {
           title: '订单详情',

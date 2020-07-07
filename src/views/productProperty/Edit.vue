@@ -162,6 +162,16 @@
             ></el-switch>
           </el-form-item>
         </el-col>
+        <template v-if="formData.valueType==9">
+          <el-col :span="24">
+            <el-form-item label="对象类型">
+              <el-select v-model="formData.type" placeholder="选择类型">
+                <el-option label="对象" value="Object"></el-option>
+                <el-option label="对象数组" value="ObjectList" disabled></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </template>
         <el-col :span="8">
           <el-form-item label="是否只读">
             <el-switch v-model="formData.readonly" :active-value="true" :inactive-value="false"></el-switch>
@@ -270,6 +280,8 @@ export default {
         case 62:
           this.formData.multiple = false;
           this.formData.type = "String";
+        case 9:
+          this.formData.type = "Object";
           break;
       }
     },
