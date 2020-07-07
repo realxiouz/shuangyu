@@ -835,8 +835,17 @@
         this.$store
           .dispatch("order/interceptOrder", params)
           .then(data => {
-            if (data) {
+            if (data.ret&&data.msg=="SUCCESS") {
               console.log(data);
+              this.$message({
+                type: "success",
+                message: "拦截成功！"
+              });
+            }else {
+              this.$message({
+                type: "success",
+                message: "拦截失败！"
+              });
             }
           })
           .catch(error => {
