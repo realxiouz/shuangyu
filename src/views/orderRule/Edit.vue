@@ -192,11 +192,11 @@
             <el-date-picker v-model="formData.dptEndDate" type="date" placeholder="选择日期"></el-date-picker>
           </el-form-item>
         </el-col>
-       <!-- <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6">
-          <el-form-item label="乘客证件类型:" prop="passengerCardType">
-            <el-input v-model="formData.passengerCardType" placeholder="请填写正则表达式"></el-input>
-          </el-form-item>
-        </el-col>-->
+        <!-- <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6">
+           <el-form-item label="乘客证件类型:" prop="passengerCardType">
+             <el-input v-model="formData.passengerCardType" placeholder="请填写正则表达式"></el-input>
+           </el-form-item>
+         </el-col>-->
         <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6">
           <el-form-item label="乘客证件类型:" prop="passengerCardType">
             <el-select v-model="formData.passengerCardType" placeholder="请选择" multiple style="width: 100%">
@@ -262,6 +262,11 @@
         <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6">
           <el-form-item label="订单最大价格:" prop="orderMaxPrice">
             <el-input-number v-model="formData.orderMaxPrice" :step="1"></el-input-number>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+          <el-form-item label="备注:" prop="remark">
+            <el-input v-model="formData.remark"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -377,6 +382,7 @@
       orderMaxPrice: undefined,
       dptStartDate: "",
       dptEndDate: "",
+      remark:""
     };
   }
 
@@ -550,52 +556,52 @@
         for (var attr in this.formData) {
           switch (attr) {
             case "passengerMinCount":
-              if (this.formData[attr] ==null){
+              if (this.formData[attr] == null) {
                 this.formData[attr] = undefined;
               }
               break;
             case"passengerMaxCount":
-              if (this.formData[attr] ==null){
+              if (this.formData[attr] == null) {
                 this.formData[attr] = undefined;
               }
               break;
             case "passengerMinAge":
-              if (this.formData[attr] ==null){
+              if (this.formData[attr] == null) {
                 this.formData[attr] = undefined;
               }
               break;
             case "passengerMaxAge":
-              if (this.formData[attr] ==null){
+              if (this.formData[attr] == null) {
                 this.formData[attr] = undefined;
               }
               break;
             case "passengerMinChildCount":
-              if (this.formData[attr] ==null){
+              if (this.formData[attr] == null) {
                 this.formData[attr] = undefined;
               }
               break;
             case "passengerMaxChildCount":
-              if (this.formData[attr] ==null){
+              if (this.formData[attr] == null) {
                 this.formData[attr] = undefined;
               }
               break;
             case "passengerMinBabyCount":
-              if (this.formData[attr] ==null){
+              if (this.formData[attr] == null) {
                 this.formData[attr] = undefined;
               }
               break;
             case "passengerMaxBabyCount":
-              if (this.formData[attr] ==null){
+              if (this.formData[attr] == null) {
                 this.formData[attr] = undefined;
               }
               break;
             case "orderMinPrice":
-              if (this.formData[attr] ==null){
+              if (this.formData[attr] == null) {
                 this.formData[attr] = undefined;
               }
               break;
             case "orderMaxPrice":
-              if (this.formData[attr] ==null){
+              if (this.formData[attr] == null) {
                 this.formData[attr] = undefined;
               }
               break;
