@@ -71,9 +71,9 @@ const actions = {
   },
   // eslint-disable-next-line no-unused-vars
   getPageList({commit}, params) {
-    const {pageFlag, pageSize, lastId, filter} = params;
+    const {pageFlag, pageSize, filter} = params;
     return new Promise((resolve, reject) => {
-      getPageList(pageFlag, pageSize, lastId, filter)
+      getPageList(pageFlag, pageSize, filter)
         .then(response => {
           resolve(response);
         })
@@ -110,7 +110,8 @@ const actions = {
   // eslint-disable-next-line no-unused-vars
   update({commit}, params) {
     return new Promise((resolve, reject) => {
-      update(params)
+      const {accountId} = params;
+      update(accountId, params)
         .then(response => {
           resolve(response);
         })

@@ -628,11 +628,11 @@
           });
       },
       openPay(params) {
-        console.info("蜗牛下单参数" + JSON.stringify(params))
+        console.info("蜗牛支付参数" + JSON.stringify(params))
         this.$store
           .dispatch("order/openPay", params)
           .then(data => {
-            if (data) {
+            if (data.code==0) {
               this.$message({
                 type: "success",
                 message: "支付成功！"

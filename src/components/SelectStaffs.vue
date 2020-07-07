@@ -33,66 +33,66 @@
   </div>
 </template>
 <script>
-export default {
-  name: "SelectStaff",
-  props: {
-    checkboxFlag: {
-      type: Boolean,
-      required: true
-    },
-    staffData: {
-      type: Array,
-      required: false
-    }
-  },
-  data() {
-    return {
-      staffs: [],
-      total: 0,
-      staffList: []
-    };
-  },
-
-  methods: {
-    loadData() {
-      this.$store
-        .dispatch("staff/getList", { filter: {} })
-        .then(data => {
-          this.staffList = data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    handleSelectionChange(val) {
-      this.staffs = val;
-    },
-    handleCurrentChange(val) {
-      this.staffs = {};
-      this.staffs = val;
-    },
-
-    toggleSelection(rows) {
-      if (rows) {
-        this.staffList.forEach(item => {
-          for (let i = 0; i < rows.length; i++) {
-            if (rows[i].staffId == item.staffId) {
-              this.$refs.staffList.toggleRowSelection(item, true);
+    export default {
+        name: "SelectStaff",
+        props: {
+            checkboxFlag: {
+                type: Boolean,
+                required: true
+            },
+            staffData: {
+                type: Array,
+                required: false
             }
-          }
-        });
-      }
-    }
-  },
-  updated() {
-    if (this.checkboxFlag){
-      this.$nextTick(() => {
-        this.toggleSelection(this.staffData);
-      });
-    }
-  },
-  created() {
-    this.loadData();
-  },
-};
+        },
+        data() {
+            return {
+                staffs: [],
+                total: 0,
+                staffList: []
+            };
+        },
+
+        methods: {
+            loadData() {
+                this.$store
+                    .dispatch("staff/getList", {filter: {'staffType': 0}})
+                    .then(data => {
+                        this.staffList = data;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            handleSelectionChange(val) {
+                this.staffs = val;
+            },
+            handleCurrentChange(val) {
+                this.staffs = {};
+                this.staffs = val;
+            },
+
+            toggleSelection(rows) {
+                if (rows) {
+                    this.staffList.forEach(item => {
+                        for (let i = 0; i < rows.length; i++) {
+                            if (rows[i].staffId == item.staffId) {
+                                this.$refs.staffList.toggleRowSelection(item, true);
+                            }
+                        }
+                    });
+                }
+            }
+        },
+        updated() {
+            if (this.checkboxFlag) {
+                this.$nextTick(() => {
+                    this.toggleSelection(this.staffData);
+                });
+            }
+        },
+        created() {
+            this.loadData();
+        },
+    };
 </script>

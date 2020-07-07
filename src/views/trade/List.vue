@@ -33,7 +33,7 @@
         <el-table-column prop="storeId" label="商户门店编号" align="center"></el-table-column>
         <el-table-column prop="terminalId" label="商户机具终端编号" align="center"></el-table-column>
         <el-table-column label="操作" fixed="right" align="center" width="180">
-          <template slot-scope="scope">
+          <template slot-scope="scope" align="center" width="180" fixed="right">
             <el-button size="mini" type="primary" @click="handleUpdate(scope.row.tradeId)">修改</el-button>
             <el-button size="mini" type="danger" @click="handleRemove(scope.row.tradeId)">删除</el-button>
           </template>
@@ -124,7 +124,7 @@
         }
 
         this.$store
-          .dispatch("trade/getRootPageList", {
+          .dispatch("trade/getPageList", {
             pageFlag: this.pageFlag,
             pageSize: this.pageSize,
             filter: params
@@ -243,11 +243,11 @@
         });
         return currencyName;
       },
-      formatAmount(amount) {
-        if (!amount) {
+      formatAmount(row, column, val) {;
+        if (!val) {
           return "0.00";
         }
-        return this.$numeral(amount).format("0.00");
+        return this.$numeral(val).format("0.00");
       },
       formatDate(dateStr, format) {
         if (null != dateStr) {
