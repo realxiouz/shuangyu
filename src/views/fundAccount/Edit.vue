@@ -10,7 +10,12 @@
         </el-select>
       </el-form-item>
       <el-form-item label="账号编码:" prop="accountCode">
-        <el-input v-model="formData.accountCode" placeholder="请输入账号编码.."></el-input>
+        <el-input
+          v-model="formData.accountCode"
+          onkeyup="this.value=this.value.toUpperCase()"
+          placeholder="请输入账号编码..."
+          :disabled="codeEnabled"
+        ></el-input>
       </el-form-item>
       <el-form-item v-if="!bankAccountShowAble" label="账号名称:" prop="accountName">
         <el-input v-model="formData.accountName" placeholder="请输入账号名称.."></el-input>

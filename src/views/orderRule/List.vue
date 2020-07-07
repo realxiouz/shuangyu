@@ -29,7 +29,8 @@
               @click.native.prevent="removeOne(scope.row.orderRuleId)"
               type="danger"
               size="mini"
-            >删除</el-button>
+            >删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -49,134 +50,133 @@
 </template>
 
 <script>
-import orderRuleSearch from "./Search.vue";
+  import orderRuleSearch from "./Search.vue";
 
-export default {
-  name: "orderRuleList",
-  data() {
-    return {
-      loading: true,
-      orderRuleId: 1,
-      lastId: "0",
-      pageFlag: "next",
-      pageSize: 10,
-      total: 0,
-      dialogVisible: false,
-      searchForm: {},
-      tableData: []
-    };
-  },
-  methods: {
-    handleEdit(row) {
-      this.$router.push({ name: "orderRuleEdit", params: row });
+  export default {
+    name: "orderRuleList",
+    data() {
+      return {
+        loading: true,
+        orderRuleId: 1,
+        lastId: "0",
+        pageFlag: "next",
+        pageSize: 10,
+        total: 0,
+        dialogVisible: false,
+        searchForm: {},
+        tableData: []
+      };
     },
-    handleAdd() {
-      this.$router.push("/order/rule/edit");
-    },
-    loadData() {
-      this.$store
-        .dispatch("orderRule/list", {
-          pageSize: this.pageSize,
-          lastId: this.lastId,
-          pageFlag: this.pageFlag,
-          searchForm: this.searchForm
-        })
-        .then(data => {
-          if (data) {
-            this.loadTotal(this.searchForm);
-            this.tableData = data;
-          }
-          this.loading = false;
-        })
-        .catch(error => {
-          this.loading = false;
-          console.log(error);
-        });
-    },
-    loadTotal() {
-      this.$store
-        .dispatch("orderRule/total", this.searchForm)
-        .then(data => {
-          this.total = data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    handleSizeChange(pageSize) {
-      this.pageSize = pageSize;
-      this.lastId = "0";
-      this.loadData();
-    },
-    prevClick() {
-      this.pageFlag = "prev";
-      this.lastId = this.tableData[0].airlineCode;
-      this.loadData();
-    },
-    nextClick() {
-      this.pageFlag = "next";
-      this.lastId = this.tableData[this.tableData.length - 1].airlineCode;
-      this.loadData();
-    },
-    handleSearch(params) {
-      const newParams = {};
-      if (params) {
-        for (let key in params) {
-          if (params[key]) {
-            newParams[key] = params[key];
+    methods: {
+      handleEdit(row) {
+        this.$router.push({name: "orderRuleEdit", params: row});
+      },
+      handleAdd() {
+        this.$router.push("/order/rule/edit");
+      },
+      loadData() {
+        this.$store
+          .dispatch("orderRule/list", {
+            pageSize: this.pageSize,
+            lastId: this.lastId,
+            pageFlag: this.pageFlag,
+            searchForm: this.searchForm
+          })
+          .then(data => {
+            if (data) {
+              this.loadTotal(this.searchForm);
+              this.tableData = data;
+            }
+            this.loading = false;
+          })
+          .catch(error => {
+            this.loading = false;
+            console.log(error);
+          });
+      },
+      loadTotal() {
+        this.$store
+          .dispatch("orderRule/total", this.searchForm)
+          .then(data => {
+            this.total = data;
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      handleSizeChange(pageSize) {
+        this.pageSize = pageSize;
+        this.lastId = "0";
+        this.loadData();
+      },
+      prevClick() {
+        this.pageFlag = "prev";
+        this.lastId = this.tableData[0].orderRuleId;
+        this.loadData();
+      },
+      nextClick() {
+        this.pageFlag = "next";
+        this.lastId = this.tableData[this.tableData.length - 1].orderRuleId;
+        this.loadData();
+      },
+      handleSearch(params) {
+        const newParams = {};
+        if (params) {
+          for (let key in params) {
+            if (params[key]) {
+              newParams[key] = params[key];
+            }
           }
         }
-      }
-      this.searchForm = newParams;
-      this.loadData(this.searchForm);
-      this.$message({
-        type: "success",
-        message: "查询成功！"
-      });
-    },
-    handleCancel() {
-      this.dialogVisible = false;
-    },
-    handleSave() {
-      this.dialogVisible = false;
-    },
-    removeOne(id) {
-      this.$confirm("是否确定删除派单规则信息?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.$store
-            .dispatch("orderRule/removeOne", id)
-            .then(() => {
-              if (1 === this.tableData.length) {
-                this.prevClick();
-              } else {
-                this.loadData();
-              }
-            })
-            .catch(error => {
-              console.log(error);
-            });
-        })
-        .catch(err => {
-          console.error(err);
+        this.searchForm = newParams;
+        this.loadData(this.searchForm);
+        this.$message({
+          type: "success",
+          message: "查询成功！"
         });
+      },
+      handleCancel() {
+        this.dialogVisible = false;
+      },
+      handleSave() {
+        this.dialogVisible = false;
+      },
+      removeOne(id) {
+        this.$confirm("是否确定删除派单规则信息?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
+          .then(() => {
+            this.$store
+              .dispatch("orderRule/removeOne", id)
+              .then(() => {
+                if (1 === this.tableData.length) {
+                  this.prevClick();
+                } else {
+                  this.loadData();
+                }
+              })
+              .catch(error => {
+                console.log(error);
+              });
+          })
+          .catch(err => {
+            console.error(err);
+          });
+      }
+    },
+    mounted() {
+      this.loadData();
+    },
+    components: {
+      orderRuleSearch
     }
-  },
-  mounted() {
-    this.loadData();
-  },
-  components: {
-    /*orderRuleEdit,*/
-    orderRuleSearch
-  }
-};
+  };
 </script>
 
 <style scoped>
-.line {
-  text-align: center;
-}
+  .line {
+    text-align: center;
+  }
 </style>

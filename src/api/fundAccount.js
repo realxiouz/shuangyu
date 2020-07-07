@@ -23,9 +23,15 @@ export function getOne(id) {
   });
 }
 
-export function getPageList(pageFlag, pageSize, lastId, params) {
+export function getPageList(pageFlag, pageSize, params) {
+  let url;
+  if (params.lastId){
+    url = `/finance/fund/account/get/page/list/${pageFlag}/${pageSize}`;
+  } else {
+    url = `/finance/fund/account/get/page/list/${pageFlag}/${pageSize}/${params.lastId}`;
+  }
   return request({
-    url: `/finance/fund/account/page/list/${pageFlag}/${pageSize}/${lastId}`,
+    url: url,
     method: 'get',
     params: params
   });
@@ -46,9 +52,9 @@ export function save(data) {
   });
 }
 
-export function update(data) {
+export function update(id, data) {
   return request({
-    url: `/finance/fund/account/update/one`,
+    url: `/finance/fund/account/update/one/${id}`,
     method: 'put',
     data
   });

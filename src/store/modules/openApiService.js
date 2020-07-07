@@ -25,7 +25,6 @@ const actions = {
     return new Promise((resolve, reject) => {
       addApi(params)
         .then(response => {
-          //const { data } = response;
           resolve(response);
         })
         .catch(error => {
