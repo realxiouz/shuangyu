@@ -551,10 +551,10 @@
                 this.formData = this.defaultFormData();
                 this.updateTempData = {};
             },
-          //员工信息弹出关闭时执行
-          staffDialogClosed(){
-            this.$refs['staffForm'].clearValidate();
-          }
+            //员工信息弹出关闭时执行
+            staffDialogClosed() {
+                this.$refs['staffForm'].clearValidate();
+            }
         },
         computed: {
             formatDate() {
@@ -570,7 +570,7 @@
         },
         created() {
             this.loadRoles();
-            let params = {};
+            let params = {'staffType': 0};
             this.loadTableData(params);
         },
         watch: {
