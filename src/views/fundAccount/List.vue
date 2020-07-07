@@ -1,7 +1,7 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <fund-account-search @onSearch="loadData"></fund-account-search>
+      <fund-account-search @onSearch="handleSearch"></fund-account-search>
     </div>
     <div class="contentBox">
       <el-row style="margin-bottom:15px;margin-left:22px;">
@@ -20,15 +20,15 @@
         lazy
         :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
       >
-        <el-table-column prop="accountCode" label="账号编码" width="80" align="center"></el-table-column>
-        <el-table-column prop="accountName" label="账号名称" width="180" align="center"></el-table-column>
-        <el-table-column prop="bankAccount" label="银行账号" width="180" align="center"></el-table-column>
-        <el-table-column label="类别" align="center" width="80">
+        <el-table-column prop="accountCode" label="账号编码" align="center"></el-table-column>
+        <el-table-column prop="accountName" label="账号名称" align="center"></el-table-column>
+        <el-table-column prop="bankAccount" label="银行账号" align="center"></el-table-column>
+        <el-table-column label="类别" align="center">
           <template slot-scope="scope">
             <span>{{initCategory(scope.row.category)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="initBalance" label="初始余额" width="100" align="center"></el-table-column>
+        <el-table-column prop="initBalance" label="初始余额" align="center"></el-table-column>
         <el-table-column prop="balance" label="余额" width="100" align="center"></el-table-column>
         <el-table-column label="积分/优惠券有效期" align="center">
           <template slot-scope="prop">
@@ -36,10 +36,10 @@
             <span style="margin-left: 10px">{{ formatDate(prop.row.expire,'YYYY-MM-DD') }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="pointRate" label="积分兑换比例" width="100" align="center"></el-table-column>
+        <el-table-column prop="pointRate" label="积分兑换比例" align="center"></el-table-column>
         <el-table-column prop="amount" label="金额" width="100" align="center"></el-table-column>
         <el-table-column prop="subjectName" label="科目" width="100" align="center"></el-table-column>
-        <el-table-column label="操作" fixed="right" align="center" width="250">
+        <el-table-column label="操作" fixed="right" align="center" width="280">
           <template slot-scope="scope">
             <el-button type="success" size="mini" @click="handleAddChild(scope.row.accountId)">添加</el-button>
             <el-button @click="handleUpdate(scope.row.accountId)" type="primary" size="mini">编辑</el-button>

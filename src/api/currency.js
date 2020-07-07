@@ -8,14 +8,6 @@ export function getList(params) {
   });
 }
 
-export function getRootPageList(pageFlag, pageSize, filter) {
-  return request({
-    url: `/finance/currency/get/root/list/page/${pageFlag}/${pageSize}`,
-    method: 'get',
-    params: filter
-  });
-}
-
 export function getOne(id) {
   return request({
     url: `/finance/currency/get/one/${id}`,
@@ -23,9 +15,15 @@ export function getOne(id) {
   });
 }
 
-export function getPageList(pageFlag, pageSize, lastId, params) {
+export function getPageList(pageFlag, pageSize, params) {
+  let url;
+  if (params.lastId){
+    url = `/finance/currency/get/page/list/${pageFlag}/${pageSize}`;
+  } else {
+    url = `/finance/currency/get/page/list/${pageFlag}/${pageSize}/${params.lastId}`;
+  }
   return request({
-    url: `/finance/currency/page/list/${pageFlag}/${pageSize}/${lastId}`,
+    url: url,
     method: 'get',
     params: params
   });
@@ -46,18 +44,10 @@ export function save(data) {
   });
 }
 
-export function update(data) {
+export function update(id, data) {
   return request({
-    url: `/finance/currency/update/one`,
+    url: `/finance/currency/update/one/${id}`,
     method: 'put',
     data
-  });
-}
-
-export function getAsyncTreeList(pid, filter) {
-  return request({
-    url: `/finance/currency/get/async/tree/${pid}`,
-    method: 'get',
-    params: filter
   });
 }
