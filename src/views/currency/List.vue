@@ -102,7 +102,7 @@
         }
 
         this.$store
-          .dispatch("currency/getRootPageList", {
+          .dispatch("currency/getPageList", {
             pageFlag: this.pageFlag,
             pageSize: this.pageSize,
             filter: params
@@ -200,11 +200,11 @@
           });
         this.dialogVisible = false;
       },
-      formatAmount(amount) {
-        if (!amount) {
+      formatAmount(row, column, val) {;
+        if (!val) {
           return "0.00";
         }
-        return this.$numeral(amount).format("0.00");
+        return this.$numeral(val).format("0.00");
       },
       formatDate(dateStr, format) {
         if (null != dateStr) {
