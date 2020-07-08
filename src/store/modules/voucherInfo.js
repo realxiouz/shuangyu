@@ -1,10 +1,9 @@
 import {
   getOne,
-  saveOne,
-  getList,
+  saveData,
   getPageList,
   removeOne
-} from '@/api/voucherGroup';
+} from '@/api/voucherInfo';
 import {getToken} from "@/utils/auth";
 
 const state = {
@@ -29,8 +28,8 @@ const actions = {
   // eslint-disable-next-line no-unused-vars
   getOne({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const { voucherGroupId } = params;
-      getOne(voucherGroupId)
+      const { voucherInfoId } = params;
+      getOne(voucherInfoId)
         .then(response => {
           resolve(response);
         })
@@ -40,21 +39,9 @@ const actions = {
     });
   },
   // eslint-disable-next-line no-unused-vars
-  saveOne({ commit }, args) {
+  saveData({ commit }, args) {
     return new Promise((resolve, reject) => {
-      saveOne(args)
-        .then(response => {
-          resolve(response);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  // eslint-disable-next-line no-unused-vars
-  getList({ commit }, args) {
-    return new Promise((resolve, reject) => {
-      getList(args)
+      saveData(args)
         .then(response => {
           resolve(response);
         })
@@ -79,8 +66,8 @@ const actions = {
   // eslint-disable-next-line no-unused-vars
   removeOne({ commit }, args) {
     return new Promise((resolve, reject) => {
-      const { voucherGroupId } = args;
-      removeOne(voucherGroupId)
+      const { voucherInfoId } = args;
+      removeOne(voucherInfoId)
         .then(response => {
           resolve(response);
         })
