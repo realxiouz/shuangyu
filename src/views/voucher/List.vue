@@ -12,9 +12,9 @@
       <el-table-column label="商户域名" align="center" prop="merchantDomain" />
       <el-table-column width="160" label="操作" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" type="success" @click="handleRecord(scope.row.voucherInfoId)">分录</el-button>
-          <el-button size="mini" type="primary" @click="handleEdit(scope.row.voucherInfoId)">修改</el-button>
-          <el-button size="mini" type="danger" @click="handleDel(scope.row.voucherInfoId)">删除</el-button>
+          <el-button size="mini" type="success" @click="handleRecord(scope.row.voucherId)">分录</el-button>
+          <el-button size="mini" type="primary" @click="handleEdit(scope.row.voucherId)">修改</el-button>
+          <el-button size="mini" type="danger" @click="handleDel(scope.row.voucherId)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -29,8 +29,8 @@
       @prev-click="handlePrev"
       @next-click="handleNext"
     ></el-pagination>
-    <record :visible.sync="queryVisible" :queryInfoId="queryInfoId" @refresh="handleRefresh"/>
-    <edit :visible.sync="dialogVisible" :editInfoId="editInfoId" @refresh="handleRefresh"/>
+    <record :visible.sync="queryVisible" :queryVoucherId="queryVoucherId" @refresh="handleRefresh"/>
+    <edit :visible.sync="dialogVisible" :editVoucherId="editVoucherId" @refresh="handleRefresh"/>
   </div>
 </template>
 
@@ -50,8 +50,8 @@
         total: 0,
         tableData: [],
         loading: true,
-        queryInfoId: null,
-        editInfoId: null,
+        queryVoucherId: null,
+        editVoucherId: null,
         params: {},
       };
     },
@@ -69,7 +69,7 @@
           this.params.lastId = this.lastId;
         }
         this.$store
-          .dispatch("voucherInfo/getPageList", {
+          .dispatch("voucher/getPageList", {
             pageFlag: this.pageFlag,
             pageSize: this.pageSize,
             lastId: this.lastId,
@@ -100,27 +100,27 @@
       handlePrev() {
         this.pageFlag = -1;
         if (this.tableData.length > 0) {
-          this.lastId = this.tableData[0].voucherInfoId;
+          this.lastId = this.tableData[0].voucherId;
         }
         this.loadData();
       },
       handleNext() {
         this.pageFlag = 1;
         if (this.tableData.length > 0) {
-          this.lastId = this.tableData[this.tableData.length - 1].voucherInfoId;
+          this.lastId = this.tableData[this.tableData.length - 1].voucherId;
         }
         this.loadData();
       },
       handleAdd() {
-        this.editInfoId = null;
+        this.editVoucherId = null;
         this.dialogVisible = true;
       },
       handleRecord(id){
-        this.queryInfoId = id;
+        this.queryVoucherId = id;
         this.queryVisible = true;
       },
       handleEdit(id) {
-        this.editInfoId = id;
+        this.editVoucherId = id;
         this.dialogVisible = true;
       },
       handleDel(id) {
@@ -129,7 +129,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$store.dispatch("voucherInfo/removeOne", {voucherInfoId: id}).then(() => {
+          this.$store.dispatch("voucher/removeOne", {voucherId: id}).then(() => {
             this.handleRefresh();
             this.$message({ type: "success", message: "删除成功" });
           });

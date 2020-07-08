@@ -60,7 +60,7 @@
         type: Boolean,
         default: false
       },
-      editInfoId: {
+      editVoucherId: {
         type: String,
         default: null
       }
@@ -87,7 +87,7 @@
       visible(val) {
         this.dialogVisible = val;
         if (val) {
-          if (this._.isEmpty(this.editInfoId)) {
+          if (this._.isEmpty(this.editVoucherId)) {
             this.formData = this.defaultFormData();
           } else {
             this.loadData();
@@ -107,10 +107,10 @@
         this.$refs["form"].validate(valid => {
           if (valid) {
             this.$store
-              .dispatch("voucherInfo/saveOne", this.formData)
+              .dispatch("voucher/saveOne", this.formData)
               .then(() => {
-                if (!this._.isEmpty(this.editInfoId)) {
-                  this.formData.voucherInfoId = this.editInfoId;
+                if (!this._.isEmpty(this.editVoucherId)) {
+                  this.formData.voucherId = this.editVoucherId;
                 }
                 this.dialogVisible = false;
                 this.$emit('refresh');
@@ -139,7 +139,7 @@
       },
       loadData() {
         this.$store
-          .dispatch("voucherInfo/getOne", {voucherInfoId: this.editInfoId})
+          .dispatch("voucher/getOne", {voucherId: this.editVoucherId})
           .then(data => {
             this.formData = data;
           });
