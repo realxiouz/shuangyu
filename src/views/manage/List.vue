@@ -14,7 +14,15 @@
         </el-form-item>
         <el-form-item label="状态编码">
           <el-select v-model="formData.changeCode" placeholder="请选择状态编码">
-            <el-option label="0401" value="shanghai"></el-option>
+            <el-option label="0101" value="shanghai"></el-option>
+            <el-option label="0102" value="beijing"></el-option>
+            <el-option label="0103" value="shanghai"></el-option>
+            <el-option label="0104" value="beijing"></el-option>
+            <el-option label="0204" value="shanghai"></el-option>
+            <el-option label="0202" value="beijing"></el-option>
+            <el-option label="0201" value="shanghai"></el-option>
+            <el-option label="0301" value="beijing"></el-option>
+            <el-option label="0401" value="beijing"></el-option>
             <el-option label="0402" value="beijing"></el-option>
           </el-select>
         </el-form-item>
