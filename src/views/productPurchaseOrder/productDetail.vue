@@ -118,19 +118,6 @@
                     })
                     .then(data => {
                         this.productList = data;
-                        this.loadTotal(this.filter);
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            loadTotal(searchForm) {
-                this.$store
-                    .dispatch("productInventory/getTotal", {
-                        filters: searchForm
-                    })
-                    .then(data => {
-                        this.total = data;
                     })
                     .catch(error => {
                         console.log(error);

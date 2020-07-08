@@ -458,6 +458,7 @@
         // for (let i = 0; i < mapArr.length; i++) {
         //   objVal[mapArr[i].code] = mapArr[i].value
         // }
+        let arr = this.formData.propertyList
         for (let i = 0; i < arr.length; i++) {
           let property = arr[i];
           let item = this.getPropertyItem(property);
