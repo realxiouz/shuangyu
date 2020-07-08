@@ -14,8 +14,8 @@
       </el-table-column>
       <el-table-column width="160" label="操作" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="handleEdit(scope.row.groupId)">修改</el-button>
-          <el-button size="mini" type="danger" @click="handleDel(scope.row.groupId)">删除</el-button>
+          <el-button size="mini" type="primary" @click="handleEdit(scope.row.voucherGroupId)">修改</el-button>
+          <el-button size="mini" type="danger" @click="handleDel(scope.row.voucherGroupId)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -97,14 +97,14 @@
       handlePrev() {
         this.pageFlag = -1;
         if (this.tableData.length > 0) {
-          this.lastId = this.tableData[0].groupId;
+          this.lastId = this.tableData[0].voucherGroupId;
         }
         this.loadData();
       },
       handleNext() {
         this.pageFlag = 1;
         if (this.tableData.length > 0) {
-          this.lastId = this.tableData[this.tableData.length - 1].groupId;
+          this.lastId = this.tableData[this.tableData.length - 1].voucherGroupId;
         }
         this.loadData();
       },
@@ -122,7 +122,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$store.dispatch("voucherGroup/removeOne", {groupId: id}).then(() => {
+          this.$store.dispatch("voucherGroup/removeOne", {voucherGroupId: id}).then(() => {
             this.handleRefresh();
             this.$message({ type: "success", message: "删除成功" });
           });

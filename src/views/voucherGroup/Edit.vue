@@ -94,7 +94,7 @@
               .dispatch("voucherGroup/saveOne", this.formData)
               .then(() => {
                 if (!this._.isEmpty(this.editGroupId)) {
-                  this.formData.groupId = this.editGroupId;
+                  this.formData.voucherGroupId = this.editGroupId;
                 }
                 this.dialogVisible = false;
                 this.$emit('refresh');
@@ -105,7 +105,7 @@
       },
       defaultFormData() {
         return {
-          groupId: null,
+          voucherGroupId: null,
           name: null,
           title: null,
           defaultFlag: null
@@ -113,7 +113,7 @@
       },
       loadData() {
         this.$store
-          .dispatch("voucherGroup/getOne", {groupId: this.editGroupId})
+          .dispatch("voucherGroup/getOne", {voucherGroupId: this.editGroupId})
           .then(data => {
             this.formData = data;
           });

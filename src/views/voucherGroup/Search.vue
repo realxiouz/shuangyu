@@ -28,9 +28,16 @@
         class="filter-item"
         type="primary"
         size="mini"
-        @click="$emit('onSearch', formData)"
+        @click="handleSearch"
       >查询
       </el-button>
+      <el-button
+        icon="el-icon-refresh"
+        class="filter-item"
+        type="primary"
+        size="mini"
+        @click="handleClear"
+      >清空</el-button>
       <el-button type="text" size="mini" @click="handleMore">
         更多
         <i :class="switchIcon"></i>
@@ -60,6 +67,19 @@
       }
     },
     methods: {
+      initSearchForm() {
+        return {
+          name: null,
+          title: null
+        };
+      },
+      handleSearch() {
+        this.$emit("onSearch", this.formData);
+      },
+      handleClear() {
+        this.formData = this.initSearchForm();
+        this.handleSearch();
+      },
       handleMore() {
         this.more = !this.more;
       }
