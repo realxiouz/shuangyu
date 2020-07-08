@@ -452,15 +452,15 @@
       },
       getPropertyItems(excludeSku) {
         let items = [];
-        let mapArr = this.formData.propertyList.filter(i => i.fromMap)
-        let arr = this.formData.propertyList.filter(i => !i.fromMap)
-        let objVal = {}
-        for (let i = 0; i < mapArr.length; i++) {
-          objVal[mapArr[i].code] = mapArr[i].value
-        }
+        // let mapArr = this.formData.propertyList.filter(i => i.fromMap)
+        // let arr = this.formData.propertyList.filter(i => !i.fromMap)
+        // let objVal = {}
+        // for (let i = 0; i < mapArr.length; i++) {
+        //   objVal[mapArr[i].code] = mapArr[i].value
+        // }
         for (let i = 0; i < arr.length; i++) {
           let property = arr[i];
-          let item = this.getPropertyItem(property, objVal);
+          let item = this.getPropertyItem(property);
           if (property.sku === excludeSku) {
             continue;
           }
@@ -501,9 +501,9 @@
           case "Double":
             item._double = property.value;
             break;
-          case "Object":
-            item._object = objVal
-            break
+          // case "Object":
+          //   item._object = objVal
+          //   break
         }
         return item;
       },
@@ -557,17 +557,17 @@
           })
           .then(data => {
             if (data) {
-              for (const d of data) {
-                if (d.valueType==9) {
-                  if (d.type=='Object') {
-                    for (const i of d.attributes) {
-                      let {name, code} = i
-                      let obj = {name, code, inputType: 'text', type: "String", valueType: 0, fromMap: true, required: true}
-                      data.push(obj)
-                    }
-                  }
-                }
-              }
+              // for (const d of data) {
+              //   if (d.valueType==9) {
+              //     if (d.type=='Object') {
+              //       for (const i of d.attributes) {
+              //         let {name, code} = i
+              //         let obj = {name, code, inputType: 'text', type: "String", valueType: 0, fromMap: true, required: true}
+              //         data.push(obj)
+              //       }
+              //     }
+              //   }
+              // }
               for (let i = 0, len = data.length; i < len; i++) {
                 switch (data[i].type) {
                   case "ArrayList":
@@ -588,10 +588,10 @@
                   case "Double":
                     data[i].value = 0;
                     break;
-                  case "Object":
-                    break
-                  case "ObjectList":
-                    break
+                  // case "Object":
+                  //   break
+                  // case "ObjectList":
+                  //   break
                 }
               }
 
@@ -668,11 +668,12 @@
           this.loadPropertyList(param);
         }
       },
-      handleWarehouseChange(arr) {
-        this.formData.warehouseId = arr[arr.length - 1]
-        // todo
-        // this.formData.warehouseCode = ''
-        // this.formData.warehouseName = ''
+      handleWarehouseChange() {
+        let arr = this.$refs.warehouseCascader.getCheckedNodes()
+        let data = arr.length ? arr[0].data : {}
+        this.formData.warehouseId = data.warehouseId
+        this.formData.warehouseCode = data.warehouseCode
+        this.formData.warehouseName = data.warehouseName
       },
       //跳转回列表页面
       goBack() {

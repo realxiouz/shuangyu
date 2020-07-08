@@ -8,7 +8,7 @@ export const PROPERTY_TABLE = [
   { code: 60, value: "单选" },
   { code: 61, value: "多选" },
   { code: 62, value: "下拉" },
-  { code: 9, value: "对象" },
+  // { code: 9, value: "对象" },
 ]
 
 export const PAGE_SIZES = [10, 20, 50, 100]
