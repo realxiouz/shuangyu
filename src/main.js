@@ -25,7 +25,7 @@ Vue.use(VueCron);
 Vue.prototype._ = _;
 Vue.prototype.$moment = moment;
 Vue.prototype.$numeral = numeral;
-Vue.use(ElementUI, { locale });
+Vue.use(ElementUI, { locale, size: 'mini' });
 Vue.config.productionTip = false;
 
 new Vue({

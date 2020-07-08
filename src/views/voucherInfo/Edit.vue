@@ -1,6 +1,6 @@
 <template>
   <div class="page-form">
-    <el-dialog title="凭证字管理" width="24%" center :visible.sync="dialogVisible" @open="handleOpen" @close="handleClose">
+    <el-dialog title="凭证管理" width="800" center :visible.sync="dialogVisible" @open="handleOpen" @close="handleClose">
       <el-form ref="form" label-width="110px" size="mini" :model="formData" :rules="rules">
         <el-form-item label="凭证字：" prop="voucherGroupId">
           <el-select v-model="formData.voucherGroupId" style="width: 100%;"  placeholder="请选择凭证字">
@@ -19,6 +19,33 @@
           <el-date-picker v-model="formData.date" type="date" placeholder="请选择凭证日期" style="width: 100%;"></el-date-picker>
         </el-form-item>
       </el-form>
+      <el-table :data="tableData">
+        <el-table-column label="凭证字号" width="200">
+          <template slot-scope="scope">
+            <el-input type="textarea" v-model="scope.row.summary"></el-input>
+          </template>
+        </el-table-column>
+        <el-table-column label="会计科目" width="200">
+          <template slot-scope="scope">
+            <el-select v-model="scope.row.subjectId"></el-select>
+          </template>
+        </el-table-column>
+        <el-table-column label="借方金额" width="200">
+          <template slot-scope="scope">
+            <el-input-number v-model="scope.row.borrowAmount"/>
+          </template>
+        </el-table-column>
+        <el-table-column label="贷方金额" width="200">
+          <template slot-scope="scope">
+            <el-input-number v-model="scope.row.loanAmount"/>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <el-button :icon="scope.$index==1?'el-icon-circle-plus-outline':'el-icon-remove-outline'"></el-button>
+          </template>
+        </el-table-column>
+      </el-table>
       <div style="text-align:right;">
         <el-button size="mini" @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" size="mini" @click="handleSave">确 定</el-button>
@@ -45,7 +72,15 @@
         voucherGroupList: [],
         rules: {
 
-        }
+        },
+        tableData: [
+          {
+            summary: '',
+            subjectId: '',
+            borrowAmount: '',
+            loanAmount: '',
+          }
+        ]
       };
     },
     watch: {
