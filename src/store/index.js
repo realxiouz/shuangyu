@@ -15,6 +15,7 @@ import policy from "./modules/policy";
 import app from "./modules/app";
 import api from "./modules/api";
 import order from "./modules/order";
+import manage from "./modules/manage";
 import orderReport from "./modules/orderReport";
 import staff from "./modules/staff";
 import policyFlag from "./modules/policyFlag";
@@ -96,6 +97,7 @@ export default new Vuex.Store({
     app,
     api,
     order,
+    manage,
     orderReport,
     staff,
     policyFlag,
