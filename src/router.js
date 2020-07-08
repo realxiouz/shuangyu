@@ -118,6 +118,13 @@ export default new Router({
           name: 'dict',
           component: () => import('@/views/dict/List'),
           meta: {title: '类别管理', icon: 'home'}
+        },
+        {
+          title: '服务管理',
+          path: '/manage/list',
+          name: 'manage',
+          component: () => import('@/views/manage/List'),
+          meta: {title: '服务管理', icon: 'home'}
         }
       ]
     },
