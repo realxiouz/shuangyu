@@ -746,7 +746,21 @@ export default new Router({
       meta: {title: '财务管理', icon: 'home'},
       children: [
         {
-          title: '资金账号管理',
+          title: '仓库管理',
+          path: '/finance/warehouse/list',
+          name: 'warehouse',
+          component: () => import('@/views/warehouse/List'),
+          meta: {title: '仓库管理', icon: 'home'}
+        },
+        {
+          title: '交易记录',
+          path: '/finance/trade/list',
+          name: 'trade',
+          component: () => import('@/views/trade/List'),
+          meta: {title: '交易记录', icon: 'home'}
+        },
+        {
+          title: '账号管理',
           path: '/finance/fund/account',
           name: 'fundAccount',
           component: () => import('@/views/fundAccount/List'),
@@ -760,25 +774,18 @@ export default new Router({
           meta: {title: '科目管理', icon: 'home'}
         },
         {
-          title: '货币管理',
+          title: '币别管理',
           path: '/finance/currency/list',
           name: 'currency',
           component: () => import('@/views/currency/List'),
           meta: {title: '货币管理', icon: 'home'}
         },
         {
-          title: '仓库管理',
-          path: '/finance/warehouse/list',
-          name: 'warehouse',
-          component: () => import('@/views/warehouse/List'),
-          meta: {title: '仓库管理', icon: 'home'}
-        },
-        {
-          title: '交易记录',
-          path: '/finance/trade/list',
-          name: 'trade',
-          component: () => import('@/views/trade/List'),
-          meta: {title: '交易记录', icon: 'home'}
+          title: '凭证字管理',
+          path: '/finance/voucherGroup/list',
+          name: 'voucherGroup',
+          component: () => import('@/views/voucherGroup/List'),
+          meta: {title: '凭证字管理', icon: 'home'}
         }
       ]
     },

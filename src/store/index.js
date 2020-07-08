@@ -71,7 +71,8 @@ import openPlatform from "./modules/openPlatform";
 import jobTag from "./modules/jobTag";
 import jobConfig from "./modules/jobConfig";
 import jobScheduler from "./modules/jobScheduler";
-import qunarOrderUpdateConfig from "./modules/qunarOrderUpdateConfig"
+import qunarOrderUpdateConfig from "./modules/qunarOrderUpdateConfig";
+import voucherGroup from "./modules/voucherGroup";
 
 import {getLoginInfo} from "@/api/staff";
 
@@ -149,7 +150,8 @@ export default new Vuex.Store({
     jobTag,
     jobConfig,
     jobScheduler,
-    qunarOrderUpdateConfig
+    qunarOrderUpdateConfig,
+    voucherGroup
   },
   state: {
     loginInfo: {}
