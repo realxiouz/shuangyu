@@ -3,33 +3,15 @@ import {
   saveData,
   getPageList,
   removeOne
-} from '@/api/voucherInfo';
+} from '@/api/voucher';
 import {getToken} from "@/utils/auth";
-
-const state = {
-  token: getToken(),
-  name: "",
-  avatar: ""
-};
-
-const mutations = {
-  SET_TOKEN: (state, token) => {
-    state.token = token;
-  },
-  SET_NAME: (state, name) => {
-    state.name = name;
-  },
-  SET_AVATAR: (state, avatar) => {
-    state.avatar = avatar;
-  }
-};
 
 const actions = {
   // eslint-disable-next-line no-unused-vars
   getOne({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const { voucherInfoId } = params;
-      getOne(voucherInfoId)
+      const { voucherId } = params;
+      getOne(voucherId)
         .then(response => {
           resolve(response);
         })
@@ -66,8 +48,8 @@ const actions = {
   // eslint-disable-next-line no-unused-vars
   removeOne({ commit }, args) {
     return new Promise((resolve, reject) => {
-      const { voucherInfoId } = args;
-      removeOne(voucherInfoId)
+      const { voucherId } = args;
+      removeOne(voucherId)
         .then(response => {
           resolve(response);
         })
@@ -80,7 +62,5 @@ const actions = {
 
 export default {
   namespaced: true,
-  state,
-  mutations,
   actions
 };

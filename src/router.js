@@ -789,9 +789,9 @@ export default new Router({
         },
         {
           title: '凭证管理',
-          path: '/finance/voucherInfo/list',
-          name: 'voucherInfo',
-          component: () => import('@/views/voucherInfo/List'),
+          path: '/finance/voucher/list',
+          name: 'voucher',
+          component: () => import('@/views/voucher/List'),
           meta: {title: '凭证管理', icon: 'home'}
         }
       ]

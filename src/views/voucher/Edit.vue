@@ -42,7 +42,11 @@
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button :icon="scope.$index==1?'el-icon-circle-plus-outline':'el-icon-remove-outline'"></el-button>
+            <el-button
+              :type="scope.$index==0?'primary':'danger'"
+              :icon="scope.$index==0?'el-icon-circle-plus-outline':'el-icon-remove-outline'"
+              @click="handle"
+            ></el-button>
           </template>
         </el-table-column>
       </el-table>
