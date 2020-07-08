@@ -200,7 +200,7 @@
           });
         this.dialogVisible = false;
       },
-      formatAmount(row, column, val) {;
+      formatAmount(row, column, val) {
         if (!val) {
           return "0.00";
         }
