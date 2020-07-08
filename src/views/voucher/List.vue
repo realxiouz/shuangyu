@@ -5,12 +5,27 @@
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
     </el-row>
     <el-table class="page-table" :data="tableData">
+      <el-table-column type="expand">
+        <template slot-scope="scope">
+          <el-table :data="scope.row.voucherRecords">
+            <el-table-column prop="summary" label="摘要"/>
+            <el-table-column prop="summary" label="科目"/>
+            <el-table-column label="借方金额">
+              
+            </el-table-column>
+          </el-table>
+        </template>
+      </el-table-column>
       <el-table-column label="凭证字号" align="center" prop="voucherCode" />
       <el-table-column label="制单人" align="center" prop="staffName" />
       <el-table-column label="商户类型" align="center" prop="merchantType" />
       <el-table-column label="商户名称" align="center" prop="merchantName" />
-      <el-table-column label="商户域名" align="center" prop="merchantDomain" />
-      <el-table-column width="160" label="操作" align="center">
+      <el-table-column label="制表日期" align="center">
+        <template slot-scope="scope">
+          {{scope.row.date|time('YYYY-MM-DD')}}
+        </template>
+      </el-table-column>
+      <el-table-column width="300" label="操作" align="center">
         <template slot-scope="scope">
           <el-button size="mini" type="success" @click="handleRecord(scope.row.voucherId)">分录</el-button>
           <el-button size="mini" type="primary" @click="handleEdit(scope.row.voucherId)">修改</el-button>
