@@ -9,7 +9,7 @@ export function getOne(id) {
 
 export function saveData(data) {
   return request({
-    url: '/finance/voucher/info/save/data',
+    url: '/finance/voucher/save',
     method: 'post',
     data
   });
@@ -17,7 +17,7 @@ export function saveData(data) {
 
 export function getPageList(pageFlag, pageSize, params) {
   return request({
-    url: `/finance/voucher/info/get/page/list/${pageFlag}/${pageSize}`,
+    url: `/finance/voucher/get/page/list/${pageFlag}/${pageSize}`,
     method: 'get',
     params
   });
