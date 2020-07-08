@@ -6,6 +6,9 @@
         <el-button style="float: right; padding: 3px 0" type="text" @click="orderNotify">通知</el-button>
       </div>
       <el-form ref="form" :model="form" label-width="80px">
+        <el-form-item label="调用地址">
+          <el-input v-model="formData.notifyUrl"></el-input>
+        </el-form-item>
         <el-form-item label="订单编号">
           <el-input v-model="formData.orderNo"></el-input>
         </el-form-item>
@@ -27,7 +30,8 @@
       return {
         formData: {
           orderNo: "",
-          changeCode: ""
+          changeCode: "",
+          notifyUrl:""
         }
       };
     },
@@ -35,7 +39,7 @@
       // 获得详情
       orderNotify() {
         this.$store
-          .dispatch("manage/notify", {orderNo:this.orderNo,changeCode:this.changeCode})
+          .dispatch("manage/notify", {orderNo:this.orderNo,changeCode:this.changeCode,notifyUrl:this.notifyUrl})
           .then(data => {
             if(data){
               this.$message({
