@@ -1,9 +1,9 @@
-import {getOne, saveOne, getPageList, getTotal, removeOne} from '@/api/deviceData';
+import {getOne, saveOne, getPageList, removeOne} from '@/api/deviceData';
 
 const actions = {
-  getOne({commit}, params) {
+  getOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {dataId} = params;
+      const {dataId} = args;
       getOne(dataId)
         .then(response => {
           resolve(response);
@@ -48,19 +48,7 @@ const actions = {
           reject(error);
         });
     });
-  },
-
-  getTotal({commit}) {
-    return new Promise((resolve, reject) => {
-      getTotal()
-        .then(response => {
-          resolve(response);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
+  }
 }
 
 export default {

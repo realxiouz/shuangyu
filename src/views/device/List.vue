@@ -85,26 +85,20 @@
           return "";
         }
       },
-      getList() {
+      loadData() {
+        if (!this._.isEmpty(this.lastId)) {
+          this.params.lastId = this.lastId;
+        }
         this.$store
           .dispatch("device/getPageList", {
             pageFlag: this.pageFlag,
             pageSize: this.pageSize,
-            lastId: this.lastId,
             params: this.params
           })
-          .then(result => {
-            this.tableData = result;
+          .then(data => {
+            this.tableData = data.rows;
+            this.total = data.total;
           });
-      },
-      getTotal() {
-        this.$store.dispatch("device/getTotal").then(result => {
-          this.total = result;
-        });
-      },
-      loadData() {
-        this.getList();
-        this.getTotal();
       },
       handleSearch(params) {
         this.params = params;

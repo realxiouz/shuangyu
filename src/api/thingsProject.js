@@ -16,14 +16,6 @@ export function getOne(id) {
   });
 }
 
-// 获取总条数
-export function getTotal() {
-  return request({
-    url: "/device/things/project/total",
-    method: 'get',
-  })
-}
-
 // 获取列表
 export function getList(params) {
   return request({

@@ -1,46 +1,47 @@
-import {saveOne, getOne, getList, getTotal, removeOne, updateOne} from '@/api/productFeature';
+import {saveOne, getOne, getPageList, removeOne, updateOne} from '@/api/productFeature';
 
 const actions = {
-  saveOne({commit}, params) {
+  saveOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      saveOne(params)
-        .then(response => {
-          resolve(response);
+      saveOne(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getOne({commit}, params) {
+  getOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {featureId} = params;
+      const {featureId} = args;
       getOne(featureId)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getList({commit}, params) {
+  getPageList({commit}, args) {
     return new Promise((resolve, reject) => {
-      getList(params)
-        .then(response => {
-          resolve(response);
+      const {pageFlag, pageSize, params} = args;
+      getPageList(pageFlag, pageSize, params)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  removeOne({commit}, params) {
+  removeOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {featureId} = params;
+      const {featureId} = args;
       removeOne(featureId)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -48,23 +49,12 @@ const actions = {
     });
   },
 
-  updateOne({commit}, params) {
+  updateOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      updateOne(params)
-        .then(response => {
-          resolve(response);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-
-  getTotal({commit}, params) {
-    return new Promise((resolve, reject) => {
-      getTotal(params)
-        .then(response => {
-          resolve(response);
+      const {featureId, data} = args;
+      updateOne(featureId, data)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);

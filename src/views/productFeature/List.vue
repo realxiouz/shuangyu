@@ -68,27 +68,23 @@
           return "";
         }
       },
-      getList() {
+      loadData() {
+        if (!this._.isEmpty(this.lastId)) {
+          this.params.lastId = this.lastId;
+        }
         this.$store
-          .dispatch("productFeature/getList", {
+          .dispatch("productFeature/getPageList", {
             pageFlag: this.pageFlag,
             pageSize: this.pageSize,
-            lastId: this.lastId
+            params:this.params
           })
-          .then(result => {
-            this.tableData = result;
+          .then(data => {
+            this.tableData = data.rows;
+            this.total = data.total;
           });
       },
-      getTotal() {
-        this.$store.dispatch("productFeature/getTotal").then(result => {
-          this.total = result;
-        });
-      },
-      loadData() {
-        this.getList();
-        this.getTotal();
-      },
       handleSearch(params) {
+        this.params = params;
         this.pageFlag = 0;
         this.lastId = null;
         this.loadData();

@@ -1,12 +1,12 @@
-import {getOne, saveOne, getPageList, getTotal, removeOne} from '@/api/device';
+import {getOne, saveOne, getPageList, removeOne} from '@/api/device';
 
 const actions = {
-  getOne({commit}, params) {
+  getOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {deviceId} = params;
+      const {deviceId} = args;
       getOne(deviceId)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -16,8 +16,8 @@ const actions = {
   saveOne({commit}, args) {
     return new Promise((resolve, reject) => {
       saveOne(args)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -29,8 +29,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {pageFlag, pageSize, params} = args
       getPageList(pageFlag, pageSize, params)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -41,26 +41,14 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {deviceId} = args;
       removeOne(deviceId)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
-  },
-
-  getTotal({commit}) {
-    return new Promise((resolve, reject) => {
-      getTotal()
-        .then(response => {
-          resolve(response);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
+  }
 }
 
 export default {

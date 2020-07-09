@@ -16,14 +16,6 @@ export function getOne(id) {
   });
 }
 
-// 获取总条数
-export function getTotal() {
-  return request({
-    url: "/device/total",
-    method: 'get',
-  })
-}
-
 export function getPageList(pageFlag, pageSize, params) {
   return request({
     url: `/device/page/list/${pageFlag}/${pageSize}`,

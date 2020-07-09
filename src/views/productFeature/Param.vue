@@ -118,7 +118,7 @@
 
 <script>
   export default {
-    name: "param",
+    name: "paramForm",
     props: {
       visible: {
         type: Boolean,
