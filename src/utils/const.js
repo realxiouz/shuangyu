@@ -20,4 +20,13 @@ export const VOUCHCHER_TEMPLATE_TABLE = [
   {value: 5, label: '折旧和摊销'},
 ]
 
+export const VOUCHCHER_TEMPLATE_MAP = {
+  '0': '日常支出',
+  '1': '采购',
+  '2': '销售',
+  '3': '工资',
+  '4': '税金',
+  '5': '折旧和摊销',
+}
+
 export const PAGE_SIZES = [10, 20, 50, 100]

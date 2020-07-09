@@ -29,6 +29,12 @@
           </el-table>
         </template>
       </el-table-column>
+      <el-table-column prop="templateName" label="模板名称"/>
+      <el-table-column label="模板类型">
+        <template v-slot="{row}">
+          {{ tempMap[row.templateType] }}
+        </template>
+      </el-table-column>
       <el-table-column label="凭证字号" align="center" prop="voucherCode" />
       <el-table-column label="制单人" align="center" prop="originatorName" />
       <el-table-column label="制单日期" align="center">
@@ -73,6 +79,7 @@
 
 <script>
 import { MIXIN_TABLE } from "@/utils/mixin";
+import { VOUCHCHER_TEMPLATE_MAP } from "@/utils/const";
 import edit from "./Edit";
 import search from "./Search";
 
@@ -82,7 +89,8 @@ export default {
     return {
       beanIdName: "templateId",
       actionName: "voucherTemplate/getPageList",
-      templateId: ""
+      templateId: "",
+      tempMap: VOUCHCHER_TEMPLATE_MAP,
     };
   },
   methods: {
