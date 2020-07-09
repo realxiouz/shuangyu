@@ -45,7 +45,7 @@
         formData: this.defaultFormData(),
         rules: {
           voucherGroupName: [
-            {required: true, message: "请输入凭证字", trigger: "blur"},
+            {required: true, message: "请输入凭证字", trigger: "change"},
             {
               min: 1,
               max: 1,
@@ -54,7 +54,7 @@
             {validator: chineseValidator, trigger: 'blur'}
           ],
           voucherGroupTitle: [
-            {required: true, message: "请输入标题", trigger: "blur"},
+            {required: true, message: "请输入标题", trigger: "change"},
             {
               min: 1,
               max: 8,

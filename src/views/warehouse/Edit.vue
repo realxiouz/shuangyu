@@ -85,7 +85,7 @@
                 newDialogVisible: false,
                 rules: {
                     warehouseCode: [
-                        {required: true, message: "请输入仓库编码", trigger: "blur"},
+                        {required: true, message: "请输入仓库编码", trigger: "change"},
                         {
                             min: 1,
                             max: 20,
@@ -94,7 +94,7 @@
                         {validator: codeValidator, trigger: 'blur'}
                     ],
                     warehouseName: [
-                        {required: true, message: "请输入仓库名称", trigger: "blur"},
+                        {required: true, message: "请输入仓库名称", trigger: "change"},
                         {
                             min: 1,
                             max: 20,

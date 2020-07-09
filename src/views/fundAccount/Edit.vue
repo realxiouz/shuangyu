@@ -42,7 +42,7 @@
       <el-form-item label="币种:">
         <el-select v-model="formData.currencyId" style="width: 100%;" placeholder="请选择币种..">
           <el-option
-            v-for="(item,idx) in currencyList"
+            v-for="(item, idx) in currencyList"
             :key="idx"
             :label="item.currencyName"
             :value="item.currencyId"
@@ -135,7 +135,7 @@
         newDialogVisible: false,
         rules: {
           accountCode: [
-            {required: true, message: "请输入账户编码", trigger: "blur"},
+            {required: true, message: "请输入账户编码", trigger: "change"},
             {
               min: 1,
               max: 20,
@@ -144,7 +144,7 @@
             {validator: codeValidator, trigger: 'blur'}
           ],
           accountName: [
-            {required: true, message: "请输入账户名称", trigger: "blur"},
+            {required: true, message: "请输入账户名称", trigger: "change"},
             {
               min: 1,
               max: 20,
@@ -244,15 +244,16 @@
         return data;
       },
       handleFirm(queryString, cb){
-        let firms = [];
         if(queryString && queryString.length > 1){
           this.loadSupplier({firmName: queryString});
-          firms = this.firmList;
+          this.timeout = setTimeout(() => {
+            let firms = this.firmList;
+            cb(firms);
+            clearTimeout(this.timeout);
+          }, 1000);
+        }else{
+          cb([]);
         }
-        clearTimeout(this.timeout);
-        this.timeout = setTimeout(() => {
-          cb(firms);
-        }, 1000);
       },
       handleSupplier(item) {
         let that = this;
@@ -266,6 +267,7 @@
         }
       },
       handleSubject(subjectIdList) {
+        console.log();
         let that = this;
         if (subjectIdList) {
           let id = subjectIdList[subjectIdList.length - 1];

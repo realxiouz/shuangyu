@@ -1,11 +1,11 @@
 <template>
   <div class="page-form">
     <el-dialog title="凭证管理" width="800" center :visible.sync="dialogVisible" @open="handleOpen" @close="handleClose">
-      <el-form ref="form" label-width="110px" size="mini" :model="formData">
+      <el-form ref="form" label-width="110px" size="mini" :model="formData" :rules="rules">
         <el-form-item label="凭证字：" prop="voucherGroupId">
           <el-select v-model="formData.voucherGroupId" style="width: 100%;"  placeholder="请选择凭证字">
             <el-option
-              v-for="(item,idx) in voucherGroupList"
+              v-for="(item, idx) in voucherGroupList"
               :key="idx"
               :label="item.voucherGroupName + ' - ' + item.voucherGroupTitle"
               :value="item.voucherGroupId"
@@ -18,9 +18,8 @@
         <el-form-item label="凭证日期:" prop="voucherDate">
           <el-date-picker v-model="formData.voucherDate" value-format="timestamp" type="date" placeholder="请选择凭证日期" style="width: 100%;"></el-date-picker>
         </el-form-item>
-
       </el-form>
-      
+
       <el-table :data="formData.voucherRecords">
         <el-table-column label="摘要" width="200">
           <template slot-scope="scope">
@@ -33,7 +32,7 @@
               <el-option
                 v-for="(i, inx) in subjects"
                 :key="inx"
-                :label="`${i.balanceDirection==0?'借':'贷'}-${i.subjectName}`"
+                :label="`${i.balanceDirection === 0?'借':'贷'}-${i.subjectName}`"
                 :value="i.subjectId"
               />
             </el-select>
@@ -41,12 +40,12 @@
         </el-table-column>
         <el-table-column label="借方金额" width="200">
           <template slot-scope="scope">
-            <el-input-number v-model="scope.row.borrowAmount" :disabled="scope.row.type==1"/>
+            <el-input-number v-model="scope.row.borrowAmount" :disabled="scope.row.type === 1"/>
           </template>
         </el-table-column>
         <el-table-column label="贷方金额" width="200">
           <template slot-scope="scope">
-            <el-input-number v-model="scope.row.loanAmount" :disabled="scope.row.type==0" required/>
+            <el-input-number v-model="scope.row.loanAmount" :disabled="scope.row.type === 0" required/>
           </template>
         </el-table-column>
         <el-table-column label="操作">
@@ -59,7 +58,7 @@
           </template>
           <template slot-scope="scope">
             <el-button
-              v-if="scope.$index>1"
+              v-if="scope.$index > 1"
               type="danger"
               icon="el-icon-remove-outline"
               @click="handleCount(scope.$index)"
@@ -88,12 +87,29 @@
       }
     },
     data() {
+      const numValidator = (rule, value, callback) => {
+        let reg = /^[0-9]*$/g;
+        if (reg.test(value)) {
+          callback();
+        } else {
+          callback(new Error("只能输入数字！"));
+        }
+      };
       return {
         dialogVisible: false,
         formData: this.defaultFormData(),
         voucherGroupList: [],
         rules: {
-
+          voucherGroupId: [
+            {required: true, message: "请选择凭证字", trigger: "change"}
+          ],
+          voucherNum: [
+            {required: true, message: "请输入凭证数", trigger: "change"},
+            {validator: numValidator, trigger: 'blur'}
+          ],
+          voucherDate: [
+            {required: true, message: "请选择凭证日期", trigger: "change"}
+          ]
         },
         subjects: [],
       };
@@ -126,24 +142,55 @@
           lCount += i.loanAmount;
         }
         if (bCount !== lCount) {
-          this.$message.error(`借贷不平衡: 借${bCount},贷${lCount}`)
+          this.$message.error(`借贷不平衡: 借${bCount},贷${lCount}`);
           return
         }
         this.$refs["form"].validate(valid => {
           if (valid) {
-            this.formData.total = lCount;
-            this.$store
-              .dispatch("voucher/saveData", this.formData)
-              .then(() => {
-                if (!this._.isEmpty(this.editVoucherId)) {
-                  this.formData.voucherId = this.editVoucherId;
-                }
-                this.dialogVisible = false;
-                this.$emit('refresh');
-                this.$message({type: "success", message: "保存成功"});
-              });
+            if(this.handleCheck()){
+              this.formData.total = lCount;
+              this.$store
+                .dispatch("voucher/saveData", this.formData)
+                .then(() => {
+                  if (!this._.isEmpty(this.editVoucherId)) {
+                    this.formData.voucherId = this.editVoucherId;
+                  }
+                  this.dialogVisible = false;
+                  this.$emit('refresh');
+                  this.$message({type: "success", message: "保存成功"});
+                });
+            }
           }
         });
+      },
+      handleCheck(){
+        let flag = false;
+        let msg = null;
+        if(this.formData && this.formData.voucherRecords.length > 0){
+          let voucherRecords = this.formData.voucherRecords;
+          voucherRecords.forEach(function(obj){
+            if(!obj.loanAmount && obj.type === 1){
+              flag = true;
+              msg = "请输入贷方金额";
+            }
+            if(!obj.borrowAmount && obj.type === 0){
+              flag = true;
+              msg = "请输入借方金额";
+            }
+            if(!obj.subjectId || !obj.subjectName){
+              flag = true;
+              msg = "请输入科目";
+            }
+            if(!obj.summary){
+              flag = true;
+              msg = "请输入摘要";
+            }
+          });
+        }
+        if(flag){
+          this.$message({type: "warning", message: msg});
+        }
+        return !flag;
       },
       defaultFormData() {
         return {
@@ -152,17 +199,17 @@
           voucherDate: null,
           voucherRecords: [
             {
-              summary: '',
-              subjectId: '',
-              subjectName: '',
+              summary: null,
+              subjectId: null,
+              subjectName: null,
               borrowAmount: 0,
               loanAmount: 0,
               type: 0
             },
             {
-              summary: '',
-              subjectId: '',
-              subjectName: '',
+              summary: null,
+              subjectId: null,
+              subjectName: null,
               borrowAmount: 0,
               loanAmount: 0,
               type: 0
@@ -190,37 +237,37 @@
       handleCount(inx) {
         if ( inx === 0 ) {
           this.formData.voucherRecords.push({
-            summary: '',
-            subjectId: '',
+            summary: null,
+            subjectId: null,
             borrowAmount: 0,
             loanAmount: 0,
-            type: 0,
+            type: 0
           },
           {
-              summary: '',
-              subjectId: '',
-              subjectName: '',
+              summary: null,
+              subjectId: null,
+              subjectName: null,
               borrowAmount: 0,
               loanAmount: 0,
               type: 1
             }
           )
         } else {
-          this.formData.voucherRecords.splice(inx, 1)
+          this.formData.voucherRecords.splice(inx, 1);
         }
       },
       handleSubjectChange(inx, val) {
-        this.formData.voucherRecords[inx].type = this.subjects.find(i => i.subjectId == val).balanceDirection
-        this.formData.voucherRecords[inx].borrowAmount = 0
-        this.formData.voucherRecords[inx].loanAmount = 0
-        this.formData.voucherRecords[inx].subjectName = this.subjects.find(i => i.subjectId == val).subjectName
+        this.formData.voucherRecords[inx].type = this.subjects.find(i => i.subjectId === val).balanceDirection;
+        this.formData.voucherRecords[inx].borrowAmount = 0;
+        this.formData.voucherRecords[inx].loanAmount = 0;
+        this.formData.voucherRecords[inx].subjectName = this.subjects.find(i => i.subjectId === val).subjectName;
       }
     },
     created() {
       this.$store.dispatch('accountSubject/getList', {})
         .then(data => {
-          this.subjects = data
-        })
+          this.subjects = data;
+        });
     }
   };
 </script>

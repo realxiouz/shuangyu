@@ -72,7 +72,7 @@
         newDialogVisible: false,
         rules: {
           currencyCode: [
-            {required: true, message: "请输入币种编码", trigger: "blur"},
+            {required: true, message: "请输入币种编码", trigger: "change"},
             {
               min: 1,
               max: 20,
@@ -81,7 +81,7 @@
             {validator: codeValidator, trigger: 'blur'}
           ],
           currencyName: [
-            {required: true, message: "请输入币种名称", trigger: "blur"},
+            {required: true, message: "请输入币种名称", trigger: "change"},
             {
               min: 1,
               max: 20,

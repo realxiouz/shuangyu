@@ -86,7 +86,7 @@
                 newDialogVisible: false,
                 rules: {
                   subjectCode: [
-                        {required: true, message: "请输入科目编码", trigger: "blur"},
+                        {required: true, message: "请输入科目编码", trigger: "change"},
                         {
                             min: 1,
                             max: 20,
@@ -95,7 +95,7 @@
                         {validator: codeValidator, trigger: 'blur'}
                     ],
                   subjectName: [
-                        {required: true, message: "请输入科目名称", trigger: "blur"},
+                        {required: true, message: "请输入科目名称", trigger: "change"},
                         {
                             min: 1,
                             max: 20,
