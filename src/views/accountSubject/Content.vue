@@ -1,78 +1,76 @@
 <template>
-  <div class="bigBox">
-    <div class="searchBox">
+  <div class="page">
+    <div class="page-search">
       <accountSubject-search @onSearch="handleSearch"></accountSubject-search>
       <el-divider></el-divider>
     </div>
-    <div class="contentBox">
-      <el-row style="margin-bottom:15px; margin-left:30px">
-        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
-      </el-row>
-      <el-table
-        v-loading="loading"
-        :data="tableData"
-        row-key="subjectCode"
-        highlight-current-row
-        style="width: 100%;margin-bottom:15px"
-        size="mini"
-        :load="loadChildren"
-        fit
-        :indent="40"
-        lazy
-        :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
-      >
-        <el-table-column prop="subjectCode" label="科目编码" align="center"></el-table-column>
-        <el-table-column prop="subjectName" label="科目名称" align="center"></el-table-column>
-        <el-table-column prop="category" label="类别" align="center" :formatter="subjectCategory"></el-table-column>
-        <el-table-column
-          prop="balanceDirection"
-          label="余额方向"
-          align="center"
-          :formatter="formatBalanceDirection"
-        ></el-table-column>
-        <el-table-column fixed="right" label="操作" width="280">
-          <template slot-scope="scope">
+    <el-row class="page-tools">
+      <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+    </el-row>
+    <el-table class="page-table"
+              v-loading="loading"
+              :data="tableData"
+              row-key="subjectCode"
+              highlight-current-row
+              style="width: 100%;margin-bottom:15px"
+              size="mini"
+              :load="loadChildren"
+              fit
+              :indent="40"
+              lazy
+              :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+    >
+      <el-table-column prop="subjectCode" label="科目编码" align="center"></el-table-column>
+      <el-table-column prop="subjectName" label="科目名称" align="center"></el-table-column>
+      <el-table-column prop="category" label="类别" align="center" :formatter="subjectCategory"></el-table-column>
+      <el-table-column
+        prop="balanceDirection"
+        label="余额方向"
+        align="center"
+        :formatter="formatBalanceDirection"
+      ></el-table-column>
+      <el-table-column fixed="right" label="操作" width="280">
+        <template slot-scope="scope">
             <span v-if="scope.row.addable" style="margin-left: 10px;">
               <el-button @click="handleAddChild(scope.row.subjectId)" type="success" size="mini">添加</el-button>
             </span>
-            <span v-if="scope.row.editable" style="margin-left: 10px;">
+          <span v-if="scope.row.editable" style="margin-left: 10px;">
               <el-button @click="handleUpdate(scope.row.subjectId)" type="primary" size="mini">编辑</el-button>
             </span>
-            <span v-if="scope.row.deletable" style="margin-left: 10px;">
+          <span v-if="scope.row.deletable" style="margin-left: 10px;">
               <el-button @click.native.prevent="handleRemove(scope.row.subjectId)" type="danger" size="mini"
               >删除</el-button>
             </span>
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-pagination
-        @prev-click="handlePrevClick"
-        @next-click="handleNextClick"
-        background
-        layout="total,prev,next"
-        prev-text="上一页"
-        next-text="下一页"
-        :page-size="pageSize"
-        :total="total"
-      ></el-pagination>
-      <el-dialog
-        title="科目管理"
-        center
-        :visible.sync="dialogVisible"
-        width="33%"
-        :close-on-click-modal="false"
-      >
-        <accountSubject-edit
-          v-if="dialogVisible"
-          :editSubjectId="editSubjectId"
-          :pid="pid"
-          :category="category"
-          :codeEnabled="codeEnabled"
-          @onSave="handleSave"
-          @onCancel="handleCancel"
-        ></accountSubject-edit>
-      </el-dialog>
-    </div>
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-pagination
+      @prev-click="handlePrevClick"
+      @next-click="handleNextClick"
+      background
+      layout="total,prev,next"
+      prev-text="上一页"
+      next-text="下一页"
+      :page-size="pageSize"
+      :total="total"
+    ></el-pagination>
+    <el-dialog
+      title="科目管理"
+      center
+      :visible.sync="dialogVisible"
+      width="33%"
+      :close-on-click-modal="false"
+    >
+      <accountSubject-edit
+        v-if="dialogVisible"
+        :editSubjectId="editSubjectId"
+        :pid="pid"
+        :category="category"
+        :codeEnabled="codeEnabled"
+        @onSave="handleSave"
+        @onCancel="handleCancel"
+      ></accountSubject-edit>
+    </el-dialog>
   </div>
 </template>
 
@@ -120,7 +118,7 @@
         this.loadData();
       },
       loadData(params = {}) {
-        if(null != this.category){
+        if (null != this.category) {
           params.category = this.category;
         }
         if (this.lastId) {
@@ -153,19 +151,19 @@
         this.uploadData.treeNode = treeNode;
         this.uploadData.resolve = resolve;
         let params = {};
-        if(tree && tree.subjectId){
+        if (tree && tree.subjectId) {
           this.$store
             .dispatch("accountSubject/getAsyncTreeList", {pid: tree.subjectId, filter: params})
             .then(data => {
               if (data && data.length > 0) {
                 let children = [];
-                data.forEach(function(obj){
-                  if(obj.attributes){
+                data.forEach(function (obj) {
+                  if (obj.attributes) {
                     children.push(obj.attributes);
                   }
                 });
                 resolve(children);
-              }else{
+              } else {
                 window.location.reload();
               }
             })
@@ -241,7 +239,7 @@
         let method = "accountSubject/save";
         let msg = "添加成功！";
 
-        if(formData && formData.subjectId){
+        if (formData && formData.subjectId) {
           method = "accountSubject/update";
           msg = "编辑成功！";
         }
