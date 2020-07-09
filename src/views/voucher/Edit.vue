@@ -24,7 +24,7 @@
       <el-table :data="formData.voucherRecords">
         <el-table-column label="摘要" width="200">
           <template slot-scope="scope">
-            <el-input type="textarea" v-model="scope.row.summary"></el-input>
+            <el-input type="text" v-model="scope.row.summary" placeholder="输入摘要..."></el-input>
           </template>
         </el-table-column>
         <el-table-column label="会计科目" width="200">
@@ -50,10 +50,18 @@
           </template>
         </el-table-column>
         <el-table-column label="操作">
+          <template slot="header">
+            <el-button
+              type="primary"
+              icon="el-icon-circle-plus-outline"
+              @click="handleCount(0)"
+            ></el-button>
+          </template>
           <template slot-scope="scope">
             <el-button
-              :type="scope.$index==0?'primary':'danger'"
-              :icon="scope.$index==0?'el-icon-circle-plus-outline':'el-icon-remove-outline'"
+              v-if="scope.$index>1"
+              type="danger"
+              icon="el-icon-remove-outline"
               @click="handleCount(scope.$index)"
             ></el-button>
           </template>
@@ -150,6 +158,14 @@
               borrowAmount: 0,
               loanAmount: 0,
               type: 0
+            },
+            {
+              summary: '',
+              subjectId: '',
+              subjectName: '',
+              borrowAmount: 0,
+              loanAmount: 0,
+              type: 0
             }
           ]
         };
@@ -179,7 +195,16 @@
             borrowAmount: 0,
             loanAmount: 0,
             type: 0,
-          })
+          },
+          {
+              summary: '',
+              subjectId: '',
+              subjectName: '',
+              borrowAmount: 0,
+              loanAmount: 0,
+              type: 1
+            }
+          )
         } else {
           this.formData.voucherRecords.splice(inx, 1)
         }
