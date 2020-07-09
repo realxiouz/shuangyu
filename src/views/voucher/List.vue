@@ -24,7 +24,7 @@
         </template>
       </el-table-column>
       <el-table-column label="凭证字号" align="center" prop="voucherCode" />
-      <el-table-column label="制单人" align="center" prop="staffName" />
+      <el-table-column label="制单人" align="center" prop="originatorName" />
       <el-table-column label="制单日期" align="center">
         <template slot-scope="scope">
           {{scope.row.voucherDate|time('YYYY-MM-DD')}}

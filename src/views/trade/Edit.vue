@@ -142,7 +142,7 @@
         newDialogVisible: false,
         rules: {
           tradeNo: [
-            {required: true, message: "请输入交易编号", trigger: "blur"},
+            {required: true, message: "请输入交易编号", trigger: "change"},
             {
               min: 1,
               max: 20,
@@ -151,7 +151,7 @@
             {validator: codeValidator, trigger: 'blur'}
           ],
           outTradeNo: [
-            {required: true, message: "请输入商家订单号", trigger: "blur"},
+            {required: true, message: "请输入商家订单号", trigger: "change"},
             {
               min: 1,
               max: 20,
