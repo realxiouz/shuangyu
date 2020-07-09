@@ -2,11 +2,11 @@
   <div class="page-form">
     <el-dialog title="凭证字管理" width="24%" center :visible.sync="dialogVisible" @open="handleOpen" @close="handleClose">
       <el-form ref="form" label-width="110px" size="mini" :model="formData" :rules="rules">
-        <el-form-item label="凭证字：" prop="name">
-          <el-input v-model="formData.name" placeholder="请输入凭证字" />
+        <el-form-item label="凭证字：" prop="voucherGroupName">
+          <el-input v-model="formData.voucherGroupName" placeholder="请输入凭证字" />
         </el-form-item>
-        <el-form-item label="标题：" prop="title">
-          <el-input v-model="formData.title" placeholder="请输入标题" />
+        <el-form-item label="标题：" prop="voucherGroupTitle">
+          <el-input v-model="formData.voucherGroupTitle" placeholder="请输入标题" />
         </el-form-item>
         <el-form-item label="是否默认：" prop="defaultFlag">
           <el-switch v-model="formData.defaultFlag" @click="handleSwitch"></el-switch>
@@ -44,7 +44,7 @@
         dialogVisible: false,
         formData: this.defaultFormData(),
         rules: {
-          name: [
+          voucherGroupName: [
             {required: true, message: "请输入凭证字", trigger: "blur"},
             {
               min: 1,
@@ -53,7 +53,7 @@
             },
             {validator: chineseValidator, trigger: 'blur'}
           ],
-          title: [
+          voucherGroupTitle: [
             {required: true, message: "请输入标题", trigger: "blur"},
             {
               min: 1,
@@ -106,8 +106,8 @@
       defaultFormData() {
         return {
           voucherGroupId: null,
-          name: null,
-          title: null,
+          voucherGroupName: null,
+          voucherGroupTitle: null,
           defaultFlag: null
         };
       },

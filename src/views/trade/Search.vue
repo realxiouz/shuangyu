@@ -28,7 +28,7 @@
         class="filter-item"
         type="primary"
         size="mini"
-        @click="$emit('onSearch', formData)"
+        @click="handleConfirm"
       >查询
       </el-button>
       <el-button icon="el-icon-refresh" class="filter-item" type="primary" size="mini" @click="handleClear">清空
@@ -47,7 +47,7 @@
       return {
         more: false,
         formData: {
-          propertyName: ""
+          propertyName: null
         }
       };
     },
@@ -72,7 +72,14 @@
       },
       handleClear() {
         this.formData = this.initSearchForm();
+        this.handleConfirm();
       },
+      handleConfirm() {
+        if (!this.formData.propertyName || "" === this.formData.propertyName){
+          this.formData.propertyName = null;
+        }
+        this.$emit("onSearch", this.formData);
+      }
     }
   };
 </script>

@@ -238,7 +238,7 @@
         let currencyName = '';
         this.currencyList.forEach(function(obj){
           if(val === obj.currencyId){
-            currencyName = obj.name;
+            currencyName = obj.currencyName;
           }
         });
         return currencyName;

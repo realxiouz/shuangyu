@@ -34,7 +34,7 @@
           <el-option
             v-for="(item,idx) in currencyList"
             :key="idx"
-            :label="item.name"
+            :label="item.currencyName"
             :value="item.currencyId"
           ></el-option>
         </el-select>
@@ -44,7 +44,7 @@
           <el-option
             v-for="(item,idx) in currencyList"
             :key="idx"
-            :label="item.name"
+            :label="item.currencyName"
             :value="item.currencyId"
           ></el-option>
         </el-select>
@@ -57,7 +57,7 @@
           <el-option
             v-for="(item,idx) in currencyList"
             :key="idx"
-            :label="item.name"
+            :label="item.currencyName"
             :value="item.currencyId"
           ></el-option>
         </el-select>
@@ -109,7 +109,7 @@
       totalAmount: 0,
       discountableAmount: 0,
       tradeCurrency: null,
-      settleCurrency: 0,
+      settleCurrency: null,
       settleAmount: 0,
       payCurrency: null,
       payAmount: 0,

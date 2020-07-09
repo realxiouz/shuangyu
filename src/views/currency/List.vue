@@ -8,8 +8,8 @@
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table size="mini" v-loading="loading" :data="tableData" style="width: 100%;margin-bottom:15px;">
-        <el-table-column prop="code" label="币种" align="center"></el-table-column>
-        <el-table-column prop="name" label="币种名称" align="center"></el-table-column>
+        <el-table-column prop="currencyCode" label="币种" align="center"></el-table-column>
+        <el-table-column prop="currencyName" label="币种名称" align="center"></el-table-column>
         <el-table-column prop="symbol" label="货币符号" align="center"></el-table-column>
         <el-table-column label="日期" align="center">
           <template slot-scope="scope">

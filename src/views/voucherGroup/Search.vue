@@ -7,7 +7,7 @@
             <el-input
               clearable
               @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.name"
+              v-model="formData.voucherGroupName"
             ></el-input>
           </el-form-item>
         </el-col>
@@ -16,7 +16,7 @@
             <el-input
               clearable
               @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.title"
+              v-model="formData.voucherGroupTitle"
             ></el-input>
           </el-form-item>
         </el-col>
@@ -52,8 +52,8 @@
       return {
         more: false,
         formData: {
-          name: null,
-          title: null
+          voucherGroupName: null,
+          voucherGroupTitle: null
         }
       };
     },
@@ -69,8 +69,8 @@
     methods: {
       initSearchForm() {
         return {
-          name: null,
-          title: null
+          voucherGroupName: null,
+          voucherGroupTitle: null
         };
       },
       handleSearch() {

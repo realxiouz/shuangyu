@@ -65,6 +65,7 @@ export default {
     },
     handleClear() {
       this.formData = this.initSearchForm();
+      this.handleConfirm();
     },
     handleMore() {
       this.more = !this.more;

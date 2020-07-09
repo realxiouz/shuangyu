@@ -67,8 +67,8 @@ export default {
     },
     handleClear() {
       this.formData = this.initSearchForm();
+      this.handleConfirm();
     },
-    //trim(),没有值时赋值为null;
     handleConfirm() {
       let _formData = Object.assign({}, this.formData);
       for (let key in _formData) {

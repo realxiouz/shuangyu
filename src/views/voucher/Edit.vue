@@ -7,16 +7,16 @@
             <el-option
               v-for="(item,idx) in voucherGroupList"
               :key="idx"
-              :label="item.name + ' - ' + item.title"
+              :label="item.voucherGroupName + ' - ' + item.voucherGroupTitle"
               :value="item.voucherGroupId"
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="凭证数：" prop="num">
-          <el-input v-model="formData.num" placeholder="请输入凭证数" />
+        <el-form-item label="凭证数：" prop="voucherNum">
+          <el-input v-model="formData.voucherNum" placeholder="请输入凭证数" />
         </el-form-item>
-        <el-form-item label="凭证日期:" prop="date">
-          <el-date-picker v-model="formData.date" value-format="timestamp" type="date" placeholder="请选择凭证日期" style="width: 100%;"></el-date-picker>
+        <el-form-item label="凭证日期:" prop="voucherDate">
+          <el-date-picker v-model="formData.voucherDate" value-format="timestamp" type="date" placeholder="请选择凭证日期" style="width: 100%;"></el-date-picker>
         </el-form-item>
 
       </el-form>
@@ -33,7 +33,7 @@
               <el-option
                 v-for="(i, inx) in subjects"
                 :key="inx"
-                :label="`${i.balanceDirection==0?'借':'贷'}-${i.name}`"
+                :label="`${i.balanceDirection==0?'借':'贷'}-${i.subjectName}`"
                 :value="i.subjectId"
               />
             </el-select>
@@ -111,19 +111,19 @@
         this.$emit('update:visible', false);
       },
       handleSave() {
-        let bCount = 0
-        let lCount = 0
+        let bCount = 0;
+        let lCount = 0;
         for (const i of this.formData.voucherRecords) {
-          bCount += i.borrowAmount
-          lCount += i.loanAmount
+          bCount += i.borrowAmount;
+          lCount += i.loanAmount;
         }
-        if (bCount != lCount) {
+        if (bCount !== lCount) {
           this.$message.error(`借贷不平衡: 借${bCount},贷${lCount}`)
           return
         }
         this.$refs["form"].validate(valid => {
           if (valid) {
-            this.formData.total = lCount
+            this.formData.total = lCount;
             this.$store
               .dispatch("voucher/saveData", this.formData)
               .then(() => {
@@ -140,16 +140,16 @@
       defaultFormData() {
         return {
           voucherGroupId: null,
-          num: null,
-          date: null,
+          voucherNum: null,
+          voucherDate: null,
           voucherRecords: [
             {
               summary: '',
               subjectId: '',
+              subjectName: '',
               borrowAmount: 0,
               loanAmount: 0,
-              type: 0,
-              name: '',
+              type: 0
             }
           ]
         };
@@ -188,7 +188,7 @@
         this.formData.voucherRecords[inx].type = this.subjects.find(i => i.subjectId == val).balanceDirection
         this.formData.voucherRecords[inx].borrowAmount = 0
         this.formData.voucherRecords[inx].loanAmount = 0
-        this.formData.voucherRecords[inx].name = this.subjects.find(i => i.subjectId == val).name
+        this.formData.voucherRecords[inx].subjectName = this.subjects.find(i => i.subjectId == val).subjectName
       }
     },
     created() {

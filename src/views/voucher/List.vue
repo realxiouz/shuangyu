@@ -23,17 +23,15 @@
           </el-table>
         </template>
       </el-table-column>
-      <el-table-column label="凭证字号" align="center" prop="code" />
-      <el-table-column label="凭证数" align="center" prop="num" />
+      <el-table-column label="凭证字号" align="center" prop="voucherCode" />
       <el-table-column label="制单人" align="center" prop="staffName" />
-      <el-table-column label="制表日期" align="center">
+      <el-table-column label="制单日期" align="center">
         <template slot-scope="scope">
-          {{scope.row.date|time('YYYY-MM-DD')}}
+          {{scope.row.voucherDate|time('YYYY-MM-DD')}}
         </template>
       </el-table-column>
       <el-table-column width="300" label="操作" align="center">
         <template slot-scope="scope">
-          <!-- <el-button size="mini" type="success" @click="handleRecord(scope.row.voucherId)">分录</el-button> -->
           <el-button size="mini" type="primary" @click="handleEdit(scope.row.voucherId)">修改</el-button>
           <el-button size="mini" type="danger" @click="handleDel(scope.row.voucherId)">删除</el-button>
         </template>
@@ -50,13 +48,11 @@
       @prev-click="handlePrev"
       @next-click="handleNext"
     ></el-pagination>
-    <!-- <record :visible.sync="queryVisible" :queryVoucherId="queryVoucherId" @refresh="handleRefresh"/> -->
     <edit :visible.sync="dialogVisible" :editVoucherId="editVoucherId" @refresh="handleRefresh"/>
   </div>
 </template>
 
 <script>
-  import record from "./Record";
   import edit from "./Edit";
   import search from "./Search";
 
@@ -128,10 +124,6 @@
         this.editVoucherId = null;
         this.dialogVisible = true;
       },
-      handleRecord(id){
-        this.queryVoucherId = id;
-        this.queryVisible = true;
-      },
       handleEdit(id) {
         this.editVoucherId = id;
         this.dialogVisible = true;
@@ -150,7 +142,6 @@
       }
     },
     components: {
-      record,
       edit,
       search
     },

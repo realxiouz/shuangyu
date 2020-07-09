@@ -31,7 +31,7 @@
           v-model="state"
           :fetch-suggestions="handleFirm"
           placeholder="请输入关键字选择供应商"
-          @select="handleSelect"
+          @select="handleSupplier"
         >
           <i
             class="el-icon-search el-input__icon"
@@ -44,7 +44,7 @@
           <el-option
             v-for="(item,idx) in currencyList"
             :key="idx"
-            :label="item.name"
+            :label="item.currencyName"
             :value="item.currencyId"
           ></el-option>
         </el-select>
@@ -75,7 +75,7 @@
           style="width: 100%;"
           placeholder="可通过科目名称搜索.."
           :options="subjectList"
-          :props="{ label: 'name', value: 'subjectId'}"
+          :props="{ label: 'subjectName', value: 'subjectId'}"
           filterable
           @change="handleSubject"
         ></el-cascader>
@@ -98,12 +98,15 @@
       initBalance: 0,
       balance: 0,
       category: 0,
-      otherId: null,
+      supplierId: null,
+      supplierName: null,
       expire: null,
       pointRate: null,
       currencyId: null,
+      currencyName: null,
       amount: null,
-      subjectId: null
+      subjectId: null,
+      subjectName: null
     };
   }
 
@@ -251,14 +254,27 @@
           cb(firms);
         }, 1000);
       },
-      handleSelect(item) {
+      handleSupplier(item) {
+        let that = this;
         if(item && item.id){
-          this.formData.otherId = item.id;
+          that.firmList.forEach(function(obj){
+            if(item.id === obj.id){
+              that.formData.supplierId = obj.id;
+              that.formData.supplierName = obj.value;
+            }
+          });
         }
       },
       handleSubject(subjectIdList) {
+        let that = this;
         if (subjectIdList) {
-          this.formData.subjectId = subjectIdList[subjectIdList.length - 1];
+          let id = subjectIdList[subjectIdList.length - 1];
+          that.subjectList.forEach(function(obj){
+            if(id === obj.subjectId){
+              that.formData.subjectId = obj.subjectId;
+              that.formData.subjectName = obj.subjectName;
+            }
+          });
         }
       },
       handleGetOne(accountId) {
@@ -276,10 +292,16 @@
         }
       },
       handleSave() {
+        let that = this;
         this.$refs["form"].validate(valid => {
           if (valid) {
-            this.formData.accountCode = this.formData.accountCode.toUpperCase();
-            this.$emit("onSave", this.formData);
+            that.formData.accountCode = this.formData.accountCode.toUpperCase();
+            that.currencyList.forEach(function(obj){
+              if(that.formData.currencyId === obj.currencyId){
+                that.formData.currencyName = obj.currencyName;
+              }
+            });
+            that.$emit("onSave", this.formData);
           }
         });
       }

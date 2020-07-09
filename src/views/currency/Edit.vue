@@ -1,16 +1,16 @@
 <template>
   <div>
     <el-form :model="formData" ref="form" :rules="rules" label-width="110px" size="mini">
-      <el-form-item label="币种编码：" prop="code">
+      <el-form-item label="币种编码：" prop="currencyCode">
         <el-input
-          v-model="formData.code"
+          v-model="formData.currencyCode"
           onkeyup="this.value=this.value.toUpperCase()"
           placeholder="请输入币种编码..."
           :disabled="codeEnabled"
         ></el-input>
       </el-form-item>
-      <el-form-item label="币种名称：" prop="name">
-        <el-input v-model="formData.name" placeholder="示例：人民币"></el-input>
+      <el-form-item label="币种名称：" prop="currencyName">
+        <el-input v-model="formData.currencyName" placeholder="示例：人民币"></el-input>
       </el-form-item>
       <el-form-item label="货币符号：" prop="symbol">
         <el-input v-model="formData.symbol" placeholder="示例：￥"></el-input>
@@ -44,9 +44,9 @@
 <script>
   function defaultData() {
     return {
-      code: "",
-      name: "",
-      symbol: "",
+      currencyCode: null,
+      currencyName: null,
+      symbol: null,
       date: new Date(),
       rate: 1,
       enable: true,
@@ -71,7 +71,7 @@
         firmList: [],
         newDialogVisible: false,
         rules: {
-          code: [
+          currencyCode: [
             {required: true, message: "请输入币种编码", trigger: "blur"},
             {
               min: 1,
@@ -80,7 +80,7 @@
             },
             {validator: codeValidator, trigger: 'blur'}
           ],
-          name: [
+          currencyName: [
             {required: true, message: "请输入币种名称", trigger: "blur"},
             {
               min: 1,
@@ -112,7 +112,7 @@
             if (this.formData.date && "number" != typeof this.formData.date) {
               this.formData.date = this.formData.date.getTime();
             }
-            this.formData.code = this.formData.code.toUpperCase();
+            this.formData.code = this.formData.currencyCode.toUpperCase();
             this.$emit("onSave", this.formData);
           }
         });

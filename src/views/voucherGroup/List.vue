@@ -5,8 +5,8 @@
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
     </el-row>
     <el-table class="page-table" :data="tableData">
-      <el-table-column label="凭证字" align="center" prop="name" />
-      <el-table-column label="标题" align="center" prop="title" />
+      <el-table-column label="凭证字" align="center" prop="voucherGroupName" />
+      <el-table-column label="标题" align="center" prop="voucherGroupTitle" />
       <el-table-column label="是否默认" align="center" prop="defaultFlag">
         <template slot-scope="scope">
           <span> {{scope.row.defaultFlag ? '是' : '否'}}</span>

@@ -11,7 +11,7 @@
       <el-table
         v-loading="loading"
         :data="tableData"
-        row-key="code"
+        row-key="subjectCode"
         highlight-current-row
         style="width: 100%;margin-bottom:15px"
         size="mini"
@@ -21,8 +21,8 @@
         lazy
         :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
       >
-        <el-table-column prop="code" label="科目编码" align="center"></el-table-column>
-        <el-table-column prop="name" label="科目名称" align="center"></el-table-column>
+        <el-table-column prop="subjectCode" label="科目编码" align="center"></el-table-column>
+        <el-table-column prop="subjectName" label="科目名称" align="center"></el-table-column>
         <el-table-column prop="category" label="类别" align="center" :formatter="subjectCategory"></el-table-column>
         <el-table-column
           prop="balanceDirection"

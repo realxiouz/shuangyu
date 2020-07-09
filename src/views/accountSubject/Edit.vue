@@ -1,16 +1,16 @@
 <template>
   <div>
     <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
-      <el-form-item label="科目编码:" prop="code">
+      <el-form-item label="科目编码:" prop="subjectCode">
         <el-input
-          v-model="formData.code"
+          v-model="formData.subjectCode"
           onkeyup="this.value=this.value.toUpperCase()"
           placeholder="请输入科目编码..."
           :disabled="codeEnabled"
         ></el-input>
       </el-form-item>
-      <el-form-item label="科目名称:" prop="name">
-        <el-input v-model.number="formData.name" placeholder="请输入科目名称..."></el-input>
+      <el-form-item label="科目名称:" prop="subjectName">
+        <el-input v-model.number="formData.subjectName" placeholder="请输入科目名称..."></el-input>
       </el-form-item>
       <el-form-item label="科目类别:" prop="category">
         <el-select v-model="formData.category" placeholder="请选择科目类别" disabled style="width: 100%">
@@ -54,13 +54,13 @@
 <script>
     function defaultData() {
         return {
-            code: "",
-            name: "",
+            subjectCode: null,
+            subjectName: null,
             category: 0,
             balanceDirection: 0,
             quantityFinancing: false,
             auxiliaryFinancing: false,
-            cnurrencyFinancing: false,
+            currencyFinancing: false,
             enable: true,
             addable: true,
             editable: true,
@@ -85,7 +85,7 @@
                 firmList: [],
                 newDialogVisible: false,
                 rules: {
-                    code: [
+                  subjectCode: [
                         {required: true, message: "请输入科目编码", trigger: "blur"},
                         {
                             min: 1,
@@ -94,7 +94,7 @@
                         },
                         {validator: codeValidator, trigger: 'blur'}
                     ],
-                    name: [
+                  subjectName: [
                         {required: true, message: "请输入科目名称", trigger: "blur"},
                         {
                             min: 1,
@@ -124,7 +124,7 @@
                 this.$refs["form"].validate(valid => {
                     if (valid) {
                         this.formData.category = this.category;
-                        this.formData.code = this.formData.code.toUpperCase();
+                        this.formData.code = this.formData.subjectCode.toUpperCase();
                         this.$emit("onSave", this.formData);
                     }
                 });

@@ -4,12 +4,12 @@
       <el-form :model="formData" label-width="110px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="科目编码:">
-            <el-input clearable v-model="formData.code" placeholder="请输入科目编码..."></el-input>
+            <el-input clearable v-model="formData.subjectCode" placeholder="请输入科目编码..."></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="科目名称:">
-            <el-input clearable v-model="formData.name" placeholder="请输入科目名称..."></el-input>
+            <el-input clearable v-model="formData.subjectName" placeholder="请输入科目名称..."></el-input>
           </el-form-item>
         </el-col>
       </el-form>
@@ -42,7 +42,10 @@ export default {
   data() {
     return {
       more: false,
-      formData: {}
+      formData: {
+        subjectCode: null,
+        subjectName: null
+      }
     };
   },
 
@@ -58,8 +61,8 @@ export default {
   methods: {
     initSearchForm() {
       return {
-        code: null,
-        name: null
+        subjectCode: null,
+        subjectName: null
       };
     },
     handleMore() {
@@ -67,6 +70,7 @@ export default {
     },
     handleClear() {
       this.formData = this.initSearchForm();
+      this.handleConfirm();
     },
     handleConfirm() {
       let _formData = Object.assign({}, this.formData);
