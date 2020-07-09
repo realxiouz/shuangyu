@@ -2,7 +2,7 @@ import request from '@/utils/request';
 
 export function getOne(id) {
   return request({
-    url: `/finance/voucher/info/get/one/${id}`,
+    url: `/finance/voucher/get/one/${id}`,
     method: 'get'
   });
 }
@@ -25,7 +25,7 @@ export function getPageList(pageFlag, pageSize, params) {
 
 export function removeOne(id) {
   return request({
-    url: `/finance/voucher/info/remove/one/${id}`,
+    url: `/finance/voucher/remove/one/${id}`,
     method: 'delete'
   });
 }

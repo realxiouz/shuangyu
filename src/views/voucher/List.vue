@@ -9,17 +9,23 @@
         <template slot-scope="scope">
           <el-table :data="scope.row.voucherRecords">
             <el-table-column prop="summary" label="摘要"/>
-            <el-table-column prop="summary" label="科目"/>
+            <el-table-column prop="subjectName" label="科目"/>
             <el-table-column label="借方金额">
-              
+              <template slot-scope="scope">
+                {{scope.row.borrowAmount>0?scope.row.borrowAmount:''}}
+              </template>
+            </el-table-column>
+            <el-table-column label="贷方金额">
+              <template slot-scope="scope">
+                {{scope.row.loanAmount>0?scope.row.loanAmount:''}}
+              </template>
             </el-table-column>
           </el-table>
         </template>
       </el-table-column>
-      <el-table-column label="凭证字号" align="center" prop="voucherCode" />
+      <el-table-column label="凭证字号" align="center" prop="code" />
+      <el-table-column label="凭证数" align="center" prop="num" />
       <el-table-column label="制单人" align="center" prop="staffName" />
-      <el-table-column label="商户类型" align="center" prop="merchantType" />
-      <el-table-column label="商户名称" align="center" prop="merchantName" />
       <el-table-column label="制表日期" align="center">
         <template slot-scope="scope">
           {{scope.row.date|time('YYYY-MM-DD')}}
@@ -27,7 +33,7 @@
       </el-table-column>
       <el-table-column width="300" label="操作" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" type="success" @click="handleRecord(scope.row.voucherId)">分录</el-button>
+          <!-- <el-button size="mini" type="success" @click="handleRecord(scope.row.voucherId)">分录</el-button> -->
           <el-button size="mini" type="primary" @click="handleEdit(scope.row.voucherId)">修改</el-button>
           <el-button size="mini" type="danger" @click="handleDel(scope.row.voucherId)">删除</el-button>
         </template>
@@ -44,7 +50,7 @@
       @prev-click="handlePrev"
       @next-click="handleNext"
     ></el-pagination>
-    <record :visible.sync="queryVisible" :queryVoucherId="queryVoucherId" @refresh="handleRefresh"/>
+    <!-- <record :visible.sync="queryVisible" :queryVoucherId="queryVoucherId" @refresh="handleRefresh"/> -->
     <edit :visible.sync="dialogVisible" :editVoucherId="editVoucherId" @refresh="handleRefresh"/>
   </div>
 </template>
@@ -71,14 +77,6 @@
       };
     },
     methods: {
-      formatDate(dateStr, format) {
-        if (null != dateStr) {
-          const date = new Date(dateStr);
-          return this.$moment(date).format(format);
-        } else {
-          return "";
-        }
-      },
       getList() {
         if (this.lastId) {
           this.params.lastId = this.lastId;
