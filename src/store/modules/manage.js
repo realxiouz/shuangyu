@@ -3,8 +3,7 @@ import {notify} from '@/api/manage';
 const actions = {
   notify({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {filter} = params;
-      notify(filter)
+      notify(params)
         .then(response => {
           resolve(response);
         })
