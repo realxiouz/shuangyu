@@ -800,6 +800,13 @@ export default new Router({
           name: 'voucher',
           component: () => import('@/views/voucher/List'),
           meta: {title: '凭证管理', icon: 'home'}
+        },
+        {
+          title: '凭证管理',
+          path: '/finance/voucherTemplate/list',
+          name: 'voucher',
+          component: () => import('@/views/voucherTemplate/List'),
+          meta: {title: '凭证模板', icon: 'home'}
         }
       ]
     },
