@@ -16,16 +16,16 @@
             </el-form-item>
             <el-form-item label="状态编码">
               <el-select v-model="formData.changeCode" placeholder="请选择状态编码" style="width: 100%">
-                <el-option label="0101" value="shanghai"></el-option>
-                <el-option label="0102" value="beijing"></el-option>
-                <el-option label="0103" value="shanghai"></el-option>
-                <el-option label="0104" value="beijing"></el-option>
-                <el-option label="0204" value="shanghai"></el-option>
-                <el-option label="0202" value="beijing"></el-option>
-                <el-option label="0201" value="shanghai"></el-option>
-                <el-option label="0301" value="beijing"></el-option>
-                <el-option label="0401" value="beijing"></el-option>
-                <el-option label="0402" value="beijing"></el-option>
+                <el-option label="0101" value="0101"></el-option>
+                <el-option label="0102" value="0102"></el-option>
+                <el-option label="0103" value="0103"></el-option>
+                <el-option label="0104" value="0104"></el-option>
+                <el-option label="0204" value="0204"></el-option>
+                <el-option label="0202" value="0202"></el-option>
+                <el-option label="0201" value="0201"></el-option>
+                <el-option label="0301" value="0301"></el-option>
+                <el-option label="0401" value="0401"></el-option>
+                <el-option label="0402" value="0402"></el-option>
               </el-select>
             </el-form-item>
           </el-form>
@@ -38,34 +38,38 @@
 </template>
 
 <script>
-  export default {
-    name: "List",
-    data() {
-      return {
-        formData: {
-          orderNo: "",
-          changeCode: "",
-          notifyUrl:""
-        }
-      };
-    },
-    methods: {
-      // 获得详情
-      orderNotify() {
-        this.$store
-          .dispatch("manage/notify", {orderNo:this.orderNo,changeCode:this.changeCode,notifyUrl:this.notifyUrl})
-          .then(data => {
-            if(data){
-              this.$message({
-                type: "success",
-                message: "调用成功！"
-              });
+    export default {
+        name: "List",
+        data() {
+            return {
+                formData: {
+                    orderNo: "",
+                    changeCode: "",
+                    notifyUrl: ""
+                }
+            };
+        },
+        methods: {
+            // 获得详情
+            orderNotify() {
+                this.$store
+                    .dispatch("manage/notify", {
+                        orderNo: this.formData.orderNo,
+                        changeCode: this.formData.changeCode,
+                        notifyUrl: this.formData.notifyUrl
+                    })
+                    .then(data => {
+                        if (data) {
+                            this.$message({
+                                type: "success",
+                                message: "调用成功！"
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
             }
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      }
-    }
-  };
+        }
+    };
 </script>
