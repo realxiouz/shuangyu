@@ -1,6 +1,6 @@
 <template>
   <div class="page-form">
-    <el-dialog title="凭证管理" width="800" center :visible.sync="dialogVisible" @open="handleOpen" @close="handleClose">
+    <el-dialog title="凭证模板管理" width="800" center :visible.sync="dialogVisible" @open="handleOpen" @close="handleClose">
       <el-form ref="form" label-width="110px" size="mini" :model="formData">
         <el-form-item label="凭证字：" prop="voucherGroupId">
           <el-select v-model="formData.voucherGroupId" style="width: 100%;"  placeholder="请选择凭证字">
@@ -18,7 +18,25 @@
         <el-form-item label="凭证日期:" prop="voucherDate">
           <el-date-picker v-model="formData.voucherDate" value-format="timestamp" type="date" placeholder="请选择凭证日期" style="width: 100%;"></el-date-picker>
         </el-form-item>
-
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="模板类型">
+              <el-select v-model="formData.templateType">
+                <el-option
+                  v-for="(i,inx) in templates"
+                  :key="inx"
+                  :label="i.label"
+                  :value="i.value"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="模板名称">
+              <el-input v-model="formData.templateName"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
       
       <el-table :data="formData.voucherRecords">
@@ -76,13 +94,15 @@
   </div>
 </template>
 <script>
+import { VOUCHCHER_TEMPLATE_TABLE } from '@/utils/const'
+
   export default {
     props: {
       visible: {
         type: Boolean,
         default: false
       },
-      editVoucherId: {
+      templateId: {
         type: String,
         default: null
       }
@@ -94,18 +114,18 @@
         voucherGroupList: [],
         rules: {},
         subjects: [],
+        templates: VOUCHCHER_TEMPLATE_TABLE
       };
     },
     watch: {
       visible(val) {
         this.dialogVisible = val;
         if (val) {
-          if (this._.isEmpty(this.editVoucherId)) {
+          if (this._.isEmpty(this.templateId)) {
             this.formData = this.defaultFormData();
           } else {
             this.loadData();
           }
-          this.loadVoucherGroup();
         }
       }
     },
@@ -131,10 +151,10 @@
           if (valid) {
             this.formData.total = lCount;
             this.$store
-              .dispatch("voucher/saveData", this.formData)
+              .dispatch("voucherTemplate/saveData", this.formData)
               .then(() => {
-                if (!this._.isEmpty(this.editVoucherId)) {
-                  this.formData.voucherId = this.editVoucherId;
+                if (!this._.isEmpty(this.templateId)) {
+                  this.formData.templateId = this.templateId;
                 }
                 this.dialogVisible = false;
                 this.$emit('refresh');
@@ -148,6 +168,8 @@
           voucherGroupId: null,
           voucherNum: null,
           voucherDate: null,
+          templateName: '',
+          templateType: '',
           voucherRecords: [
             {
               summary: '',
@@ -180,7 +202,7 @@
       },
       loadData() {
         this.$store
-          .dispatch("voucher/getOne", {voucherId: this.editVoucherId})
+          .dispatch("voucherTemplate/getOne", {templateId: this.templateId})
           .then(data => {
             this.formData = data;
           });
@@ -219,6 +241,8 @@
         .then(data => {
           this.subjects = data
         })
+            this.loadVoucherGroup();
+      
     }
   };
 </script>

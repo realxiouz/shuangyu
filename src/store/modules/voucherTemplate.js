@@ -9,8 +9,7 @@ const actions = {
   // eslint-disable-next-line no-unused-vars
   getOne({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const { voucherId } = params;
-      getOne(voucherId)
+      getOne(params)
         .then(response => {
           resolve(response);
         })

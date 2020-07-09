@@ -47,7 +47,7 @@
           <el-button
             size="mini"
             type="danger"
-            @click="handleDel(scope.row.voucherId)"
+            @click="handleDel(scope.row.templateId)"
             >删除</el-button
           >
         </template>
@@ -68,7 +68,7 @@
     />
     <edit
       :visible.sync="dialogVisible"
-      :editVoucherId="voucherId"
+      :templateId="templateId"
       @refresh="handleRefresh"
     />
   </div>
@@ -83,9 +83,9 @@ export default {
   name: "voucherTemplate",
   data() {
     return {
-      beanIdName: "voucherId",
+      beanIdName: "templateId",
       actionName: "voucherTemplate/getPageList",
-      voucherId: ""
+      templateId: ""
     };
   },
   methods: {
