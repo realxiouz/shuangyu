@@ -21,7 +21,7 @@
 
       </el-form>
       
-      <el-table :data="tableData">
+      <el-table :data="formData.voucherRecords">
         <el-table-column label="摘要" width="200">
           <template slot-scope="scope">
             <el-input type="textarea" v-model="scope.row.summary"></el-input>
@@ -87,15 +87,6 @@
         rules: {
 
         },
-        tableData: [
-          {
-            summary: '',
-            subjectId: '',
-            borrowAmount: 0,
-            loanAmount: 0,
-            type: 0,
-          }
-        ],
         subjects: [],
       };
     },
@@ -122,7 +113,7 @@
       handleSave() {
         let bCount = 0
         let lCount = 0
-        for (const i of this.tableData) {
+        for (const i of this.formData.voucherRecords) {
           bCount += i.borrowAmount
           lCount += i.loanAmount
         }
@@ -132,7 +123,6 @@
         }
         this.$refs["form"].validate(valid => {
           if (valid) {
-            this.formData.voucherRecords = this.tableData
             this.formData.total = lCount
             this.$store
               .dispatch("voucher/saveData", this.formData)
@@ -151,7 +141,17 @@
         return {
           voucherGroupId: null,
           num: null,
-          date: null
+          date: null,
+          voucherRecords: [
+            {
+              summary: '',
+              subjectId: '',
+              borrowAmount: 0,
+              loanAmount: 0,
+              type: 0,
+              name: '',
+            }
+          ]
         };
       },
       loadVoucherGroup() {
@@ -173,7 +173,7 @@
       },
       handleCount(inx) {
         if ( inx === 0 ) {
-          this.tableData.push({
+          this.formData.voucherRecords.push({
             summary: '',
             subjectId: '',
             borrowAmount: 0,
@@ -181,13 +181,14 @@
             type: 0,
           })
         } else {
-          this.tableData.splice(inx, 1)
+          this.formData.voucherRecords.splice(inx, 1)
         }
       },
       handleSubjectChange(inx, val) {
-        this.tableData[inx].type = this.subjects.find(i => i.subjectId == val).balanceDirection
-        this.tableData[inx].borrowAmount = 0
-        this.tableData[inx].loanAmount = 0
+        this.formData.voucherRecords[inx].type = this.subjects.find(i => i.subjectId == val).balanceDirection
+        this.formData.voucherRecords[inx].borrowAmount = 0
+        this.formData.voucherRecords[inx].loanAmount = 0
+        this.formData.voucherRecords[inx].name = this.subjects.find(i => i.subjectId == val).name
       }
     },
     created() {
