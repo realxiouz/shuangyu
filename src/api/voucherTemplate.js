@@ -16,7 +16,8 @@ export function saveData(data) {
   });
 }
 
-export function getPageList(pageFlag, pageSize, params) {
+export function getPageList(args) {
+  const { pageFlag, pageSize, ...params } = args;
   return request({
     url: `/finance/voucher/template/get/page/list/${pageFlag}/${pageSize}`,
     method: 'get',
@@ -24,9 +25,10 @@ export function getPageList(pageFlag, pageSize, params) {
   });
 }
 
-export function removeOne(id) {
+export function removeOne(args) {
+  const { templateId } = args;
   return request({
-    url: `/finance/voucher/template/remove/one/${id}`,
+    url: `/finance/voucher/template/remove/one/${templateId}`,
     method: 'delete'
   });
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="page-form">
-    <el-dialog title="凭证模板管理" width="800" center :visible.sync="dialogVisible" @open="handleOpen" @close="handleClose">
-      <el-form ref="form" label-width="110px" size="mini" :model="formData">
+    <el-dialog :title="templateId?'模板编辑':'模板添加'" width="800" center :visible.sync="dialogVisible" @open="handleOpen" @close="handleClose">
+      <el-form ref="form" label-width="110px" size="mini" :model="formData" :rules="rules">
         <el-form-item label="凭证字：" prop="voucherGroupId">
           <el-select v-model="formData.voucherGroupId" style="width: 100%;"  placeholder="请选择凭证字">
             <el-option
@@ -20,7 +20,7 @@
         </el-form-item>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="模板类型">
+            <el-form-item label="模板类型" prop="templateType">
               <el-select v-model="formData.templateType">
                 <el-option
                   v-for="(i,inx) in templates"
@@ -32,7 +32,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="模板名称">
+            <el-form-item label="模板名称" prop="templateName">
               <el-input v-model="formData.templateName"/>
             </el-form-item>
           </el-col>
@@ -108,11 +108,36 @@ import { VOUCHCHER_TEMPLATE_TABLE } from '@/utils/const'
       }
     },
     data() {
+      const numValidator = (rule, value, callback) => {
+        let reg = /^[0-9]*$/g;
+        if (reg.test(value)) {
+          callback();
+        } else {
+          callback(new Error("只能输入数字！"));
+        }
+      };
       return {
         dialogVisible: false,
         formData: this.defaultFormData(),
         voucherGroupList: [],
-        rules: {},
+        rules: {
+          voucherGroupId: [
+            {required: true, message: "请选择凭证字", trigger: "change"}
+          ],
+          voucherNum: [
+            {required: true, message: "请输入凭证数", trigger: "change"},
+            {validator: numValidator, trigger: 'blur'}
+          ],
+          voucherDate: [
+            {required: true, message: "请选择凭证日期", trigger: "change"}
+          ],
+          templateType: [
+            {required: true, message: "请选择类型", trigger: "change"}
+          ],
+          templateName: [
+            {required: true, message: "填写模板名称", trigger: "change"}
+          ],
+        },
         subjects: [],
         templates: VOUCHCHER_TEMPLATE_TABLE
       };
@@ -241,7 +266,7 @@ import { VOUCHCHER_TEMPLATE_TABLE } from '@/utils/const'
         .then(data => {
           this.subjects = data
         })
-            this.loadVoucherGroup();
+      this.loadVoucherGroup();
       
     }
   };
