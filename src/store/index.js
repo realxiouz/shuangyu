@@ -75,6 +75,7 @@ import jobScheduler from "./modules/jobScheduler";
 import qunarOrderUpdateConfig from "./modules/qunarOrderUpdateConfig";
 import voucherGroup from "./modules/voucherGroup";
 import voucher from "./modules/voucher";
+import voucherTemplate from "./modules/voucherTemplate";
 import voucherRecord from "./modules/voucherRecord";
 
 import {getLoginInfo} from "@/api/staff";
@@ -157,7 +158,8 @@ export default new Vuex.Store({
     qunarOrderUpdateConfig,
     voucherGroup,
     voucher,
-    voucherRecord
+    voucherRecord,
+    voucherTemplate,
   },
   state: {
     loginInfo: {}
