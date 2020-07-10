@@ -75,7 +75,7 @@
                 searchForm: {},
                 curNode: {},
                 tableData: [],
-                lastId: "blank",
+                lastId: null,
                 pageFlag: "next",
                 pageSize: 10,
                 total: 0

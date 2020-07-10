@@ -75,7 +75,7 @@
         tableData: [],
         pageFlag: 1,
         pageSize: 10,
-        lastId: "blank",
+        lastId:  'blank',
         total: 0,
         codeEnabled: false,
         uploadData: {
@@ -100,7 +100,6 @@
         if (this.lastId) {
           params.lastId = this.lastId;
         }
-
         this.$store
           .dispatch("currency/getPageList", {
             pageFlag: this.pageFlag,

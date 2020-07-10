@@ -1,4 +1,4 @@
-import {getList, getOne, getPageList, getTotal, removeOne, save, updateOne,addOne} from '@/api/productInventory';
+import {getList, getOne, getPageList, removeOne, save, updateOne,addOne} from '@/api/productInventory';
 
 const actions = {
   addOne({commit}, params) {
@@ -51,18 +51,6 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {inventoryId} = params;
       getOne(inventoryId)
-        .then(response => {
-          resolve(response);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  getTotal({commit}, params) {
-    return new Promise((resolve, reject) => {
-      const {filter} = params;
-      getTotal(filter)
         .then(response => {
           resolve(response);
         })

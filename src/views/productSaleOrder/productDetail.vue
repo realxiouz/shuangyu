@@ -117,20 +117,10 @@
                         filter: this.searchForm
                     })
                     .then(data => {
-                        this.productList = data;
-                        this.loadTotal(this.searchForm);
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            loadTotal(searchForm) {
-                this.$store
-                    .dispatch("productInventory/getTotal", {
-                        filters: searchForm
-                    })
-                    .then(data => {
-                        this.total = data;
+                      if (data) {
+                        this.productList = data.rows;
+                        this.total = data.total;
+                      }
                     })
                     .catch(error => {
                         console.log(error);

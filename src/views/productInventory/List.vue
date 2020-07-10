@@ -78,18 +78,6 @@
                 this.lastId = this.tableData[this.tableData.length - 1].inventoryId;
                 this.loadData();
             },
-            loadTotal(searchForm) {
-                this.$store
-                    .dispatch("productInventory/getTotal", {
-                        filters: searchForm
-                    })
-                    .then(data => {
-                        this.total = data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
             loadData(searchForm = {}) {
                 if (this.lastId) {
                     searchForm.lastId = this.lastId;
@@ -104,7 +92,6 @@
                         if (data) {
                             this.tableData = data.rows;
                             this.total = data.total;
-                            // this.loadTotal(searchForm);
                         }
                         this.loading = false;
                     })
@@ -171,7 +158,7 @@
         },
         components: {
             search,
-            edit
+          //  edit
         }
     };
 </script>

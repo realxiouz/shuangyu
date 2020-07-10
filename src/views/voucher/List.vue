@@ -63,7 +63,7 @@
         dialogVisible: false,
         pageFlag: 0,
         pageSize: 10,
-        lastId: "blank",
+        lastId: null,
         total: 0,
         tableData: [],
         loading: true,
