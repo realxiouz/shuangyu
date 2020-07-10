@@ -16,16 +16,16 @@
             </el-form-item>
             <el-form-item label="状态编码">
               <el-select v-model="formData.changeCode" placeholder="请选择状态编码" style="width: 100%">
-                <el-option label="0101" value="0101"></el-option>
-                <el-option label="0102" value="0102"></el-option>
-                <el-option label="0103" value="0103"></el-option>
-                <el-option label="0104" value="0104"></el-option>
-                <el-option label="0204" value="0204"></el-option>
-                <el-option label="0202" value="0202"></el-option>
-                <el-option label="0201" value="0201"></el-option>
-                <el-option label="0301" value="0301"></el-option>
-                <el-option label="0401" value="0401"></el-option>
-                <el-option label="0402" value="0402"></el-option>
+                <el-option label="支付成功等待出票(订座成功等待支付)" value="0101"></el-option>
+                <el-option label="支付成功等待出票(未出票申请退款)" value="0102"></el-option>
+                <el-option label="支付成功等待出票(订单取消)" value="0103"></el-option>
+                <el-option label="支付成功等待出票(等待座位确认)" value="0104"></el-option>
+                <el-option label="出票完成" value="0204"></el-option>
+                <el-option label="未出票申请退款(出票中)" value="0202"></el-option>
+                <el-option label="未出票申请退款(支付成功等待出票)" value="0201"></el-option>
+                <el-option label="退票申请中(出票完成)" value="0301"></el-option>
+                <el-option label="改期申请中(出票完成)" value="0401"></el-option>
+                <el-option label="改期申请中(未知)" value="0402"></el-option>
               </el-select>
             </el-form-item>
           </el-form>
