@@ -32,7 +32,7 @@
               <el-option
                 v-for="(i, inx) in subjects"
                 :key="inx"
-                :label="`${i.balanceDirection === 0?'借':'贷'}-${i.subjectName}`"
+                :label="`${i.balanceDirection === 0 ? '借':'贷'}-${i.subjectName}`"
                 :value="i.subjectId"
               />
             </el-select>
@@ -150,7 +150,7 @@
             if(this.handleCheck()){
               this.formData.total = lCount;
               this.$store
-                .dispatch("voucher/saveData", this.formData)
+                .dispatch("voucher/save", this.formData)
                 .then(() => {
                   if (!this._.isEmpty(this.editVoucherId)) {
                     this.formData.voucherId = this.editVoucherId;
@@ -177,7 +177,7 @@
               flag = true;
               msg = "请输入借方金额";
             }
-            if(!obj.subjectId || !obj.subjectName){
+            if(!obj.subjectId || !obj.subjectCode || !obj.subjectName){
               flag = true;
               msg = "请输入科目";
             }
@@ -201,6 +201,7 @@
             {
               summary: null,
               subjectId: null,
+              subjectCode: null,
               subjectName: null,
               borrowAmount: 0,
               loanAmount: 0,
@@ -209,6 +210,7 @@
             {
               summary: null,
               subjectId: null,
+              subjectCode: null,
               subjectName: null,
               borrowAmount: 0,
               loanAmount: 0,
@@ -231,6 +233,18 @@
         this.$store
           .dispatch("voucher/getOne", {voucherId: this.editVoucherId})
           .then(data => {
+            let voucher = data;
+            if(voucher.voucherRecords && voucher.voucherRecords.length > 0){
+              let voucherRecords = voucher.voucherRecords;
+              voucherRecords.forEach(function(voucherRecord){
+                if(voucherRecord.borrowAmount && parseFloat(voucherRecord.borrowAmount) > 0){
+                  voucherRecord.type = 0;
+                }
+                if(voucherRecord.loanAmount && parseFloat(voucherRecord.loanAmount) > 0){
+                  voucherRecord.type = 1;
+                }
+              });
+            }
             this.formData = data;
           });
       },
@@ -246,6 +260,7 @@
           {
               summary: null,
               subjectId: null,
+              subjectCode: null,
               subjectName: null,
               borrowAmount: 0,
               loanAmount: 0,
@@ -260,6 +275,7 @@
         this.formData.voucherRecords[inx].type = this.subjects.find(i => i.subjectId === val).balanceDirection;
         this.formData.voucherRecords[inx].borrowAmount = 0;
         this.formData.voucherRecords[inx].loanAmount = 0;
+        this.formData.voucherRecords[inx].subjectCode = this.subjects.find(i => i.subjectId === val).subjectCode;
         this.formData.voucherRecords[inx].subjectName = this.subjects.find(i => i.subjectId === val).subjectName;
       }
     },

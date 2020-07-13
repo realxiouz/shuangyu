@@ -1,10 +1,11 @@
 <template>
   <div class="page">
     <search class="page-search" ref="search" @onSearch="handleSearch" />
-    <el-row class="page-tools" type="flex" justify="space-between">
+    <el-row class="page-tools" justify="space-between">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+      <el-button icon="el-icon-download" type="primary" size="mini" @click="handleExport">导出</el-button>
     </el-row>
-    <el-table class="page-table" :data="tableData">
+    <el-table class="page-table" :data="tableData" @selection-change="handleSelectionChange">>
       <el-table-column type="expand">
         <template slot-scope="scope">
           <el-table :data="scope.row.voucherRecords">
@@ -23,6 +24,7 @@
           </el-table>
         </template>
       </el-table-column>
+      <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column label="凭证字号" align="center" prop="voucherCode" />
       <el-table-column label="制单人" align="center" prop="originatorName" />
       <el-table-column label="制单日期" align="center">
@@ -55,6 +57,7 @@
 <script>
   import edit from "./Edit";
   import search from "./Search";
+  import { exportMethod } from '@/utils/export';
 
   export default {
     data() {
@@ -69,6 +72,7 @@
         loading: true,
         queryVoucherId: null,
         editVoucherId: null,
+        exportIds: [],
         params: {},
       };
     },
@@ -124,6 +128,13 @@
         this.editVoucherId = null;
         this.dialogVisible = true;
       },
+      handleExport() {
+        if(!this.exportIds || this.exportIds.length < 1){
+          this.$message({ type: "warning", message: "请先选择要导出的凭证！" });
+          return;
+        }
+        exportMethod(this, 'get', '/finance/export/voucher/excel', { ids: this.exportIds }, '凭证文件');
+      },
       handleEdit(id) {
         this.editVoucherId = id;
         this.dialogVisible = true;
@@ -136,8 +147,15 @@
         }).then(() => {
           this.$store.dispatch("voucher/removeOne", {voucherId: id}).then(() => {
             this.handleRefresh();
-            this.$message({ type: "success", message: "删除成功" });
+            this.$message({ type: "success", message: "删除成功！" });
           });
+        });
+      },
+      handleSelectionChange(data) {
+        let that = this;
+        that.exportIds = [];
+        data.forEach(function(obj){
+          that.exportIds.push(obj.voucherId);
         });
       }
     },
@@ -150,3 +168,9 @@
     }
   };
 </script>
+
+<style>
+  .page-tools {
+    margin-bottom: 10px;
+  }
+</style>

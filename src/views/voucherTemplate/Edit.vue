@@ -5,7 +5,7 @@
         <el-form-item label="凭证字：" prop="voucherGroupId">
           <el-select v-model="formData.voucherGroupId" style="width: 100%;"  placeholder="请选择凭证字">
             <el-option
-              v-for="(item,idx) in voucherGroupList"
+              v-for="(item, idx) in voucherGroupList"
               :key="idx"
               :label="item.voucherGroupName + ' - ' + item.voucherGroupTitle"
               :value="item.voucherGroupId"
@@ -23,7 +23,7 @@
             <el-form-item label="模板类型" prop="templateType">
               <el-select v-model="formData.templateType">
                 <el-option
-                  v-for="(i,inx) in templates"
+                  v-for="(i, inx) in templates"
                   :key="inx"
                   :label="i.label"
                   :value="i.value"
@@ -38,7 +38,7 @@
           </el-col>
         </el-row>
       </el-form>
-      
+
       <el-table :data="formData.voucherRecords">
         <el-table-column label="摘要" width="200">
           <template slot-scope="scope">
@@ -51,7 +51,7 @@
               <el-option
                 v-for="(i, inx) in subjects"
                 :key="inx"
-                :label="`${i.balanceDirection==0?'借':'贷'}-${i.subjectName}`"
+                :label="`${i.balanceDirection === 0 ? '借':'贷'}-${i.subjectName}`"
                 :value="i.subjectId"
               />
             </el-select>
@@ -68,7 +68,7 @@
           </template>
         </el-table-column>
         <el-table-column label="操作">
-          <template v-slot:header>
+          <template slot="header">
             <el-button
               type="primary"
               icon="el-icon-circle-plus-outline"
@@ -77,7 +77,7 @@
           </template>
           <template slot-scope="scope">
             <el-button
-              v-if="scope.$index>1"
+              v-if="scope.$index > 1"
               type="danger"
               icon="el-icon-remove-outline"
               @click="handleCount(scope.$index)"
@@ -193,21 +193,23 @@ import { VOUCHCHER_TEMPLATE_TABLE } from '@/utils/const'
           voucherGroupId: null,
           voucherNum: null,
           voucherDate: null,
-          templateName: '',
-          templateType: '',
+          templateName: null,
+          templateType: null,
           voucherRecords: [
             {
-              summary: '',
-              subjectId: '',
-              subjectName: '',
+              summary: null,
+              subjectId: null,
+              subjectCode: null,
+              subjectName: null,
               borrowAmount: 0,
               loanAmount: 0,
               type: 0
             },
             {
-              summary: '',
-              subjectId: '',
-              subjectName: '',
+              summary: null,
+              subjectId: null,
+              subjectCode: null,
+              subjectName: null,
               borrowAmount: 0,
               loanAmount: 0,
               type: 1
@@ -229,22 +231,37 @@ import { VOUCHCHER_TEMPLATE_TABLE } from '@/utils/const'
         this.$store
           .dispatch("voucherTemplate/getOne", {templateId: this.templateId})
           .then(data => {
+            let voucherTemplate = data;
+            if(voucherTemplate.voucherRecords && voucherTemplate.voucherRecords.length > 0){
+              let voucherRecords = voucherTemplate.voucherRecords;
+              voucherRecords.forEach(function(voucherRecord){
+                if(voucherRecord.borrowAmount && parseFloat(voucherRecord.borrowAmount) > 0){
+                  voucherRecord.type = 0;
+                }
+                if(voucherRecord.loanAmount && parseFloat(voucherRecord.loanAmount) > 0){
+                  voucherRecord.type = 1;
+                }
+              });
+            }
             this.formData = data;
           });
       },
       handleCount(inx) {
         if ( inx === 0 ) {
           this.formData.voucherRecords.push({
-            summary: '',
-            subjectId: '',
+            summary: null,
+            subjectId: null,
+            subjectCode: null,
+            subjectName: null,
             borrowAmount: 0,
             loanAmount: 0,
-            type: 0,
+            type: 0
           },
           {
-              summary: '',
-              subjectId: '',
-              subjectName: '',
+              summary: null,
+              subjectId: null,
+              subjectCode: null,
+              subjectName: null,
               borrowAmount: 0,
               loanAmount: 0,
               type: 1
@@ -255,19 +272,19 @@ import { VOUCHCHER_TEMPLATE_TABLE } from '@/utils/const'
         }
       },
       handleSubjectChange(inx, val) {
-        this.formData.voucherRecords[inx].type = this.subjects.find(i => i.subjectId == val).balanceDirection
-        this.formData.voucherRecords[inx].borrowAmount = 0
-        this.formData.voucherRecords[inx].loanAmount = 0
-        this.formData.voucherRecords[inx].subjectName = this.subjects.find(i => i.subjectId == val).subjectName
+        this.formData.voucherRecords[inx].type = this.subjects.find(i => i.subjectId === val).balanceDirection;
+        this.formData.voucherRecords[inx].borrowAmount = 0;
+        this.formData.voucherRecords[inx].loanAmount = 0;
+        this.formData.voucherRecords[inx].subjectCode = this.subjects.find(i => i.subjectId === val).subjectCode;
+        this.formData.voucherRecords[inx].subjectName = this.subjects.find(i => i.subjectId === val).subjectName;
       }
     },
     created() {
       this.$store.dispatch('accountSubject/getList', {})
         .then(data => {
           this.subjects = data
-        })
+        });
       this.loadVoucherGroup();
-      
     }
   };
 </script>
