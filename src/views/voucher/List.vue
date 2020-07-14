@@ -152,11 +152,13 @@
         });
       },
       handleSelectionChange(data) {
-        let that = this;
-        that.exportIds = [];
-        data.forEach(function(obj){
-          that.exportIds.push(obj.voucherId);
-        });
+        if(data && data.length > 0){
+          let that = this;
+          that.exportIds = [];
+          data.forEach(function(obj){
+            that.exportIds.push(obj.voucherId);
+          });
+        }
       }
     },
     components: {
