@@ -2,7 +2,6 @@
   <div class="page">
     <div class="page-search">
       <accountSubject-search @onSearch="handleSearch"></accountSubject-search>
-      <el-divider></el-divider>
     </div>
     <el-row class="page-tools">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
@@ -92,7 +91,7 @@
         tableData: [],
         pageFlag: 1,
         pageSize: 10,
-        lastId: "blank",
+        lastId: null,
         total: 0,
         codeEnabled: false,
         uploadData: {
@@ -271,8 +270,7 @@
 </script>
 
 <style>
-  .contentBox {
-    margin-top: -10px;
-    padding-top: 0;
+  .page-tools {
+    margin-bottom: 10px;
   }
 </style>

@@ -4,9 +4,9 @@
       <trade-search @onSearch="loadData"></trade-search>
     </div>
     <div class="contentBox">
-      <el-row style="margin-bottom:15px;margin-left:22px;">
+<!--      <el-row style="margin-bottom:15px;margin-left:22px;">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
-      </el-row>
+      </el-row>-->
       <el-table size="mini" v-loading="loading" :data="tableData" style="width: 100%;margin-bottom:15px;">
         <el-table-column prop="tradeNo" label="交易编号" align="center"></el-table-column>
         <el-table-column prop="outTradeNo" label="商家订单号" align="center"></el-table-column>
@@ -34,8 +34,9 @@
         <el-table-column prop="terminalId" label="商户机具终端编号" align="center"></el-table-column>
         <el-table-column label="操作" fixed="right" align="center" width="180">
           <template slot-scope="scope" align="center" width="180" fixed="right">
-            <el-button size="mini" type="primary" @click="handleUpdate(scope.row.tradeId)">修改</el-button>
-            <el-button size="mini" type="danger" @click="handleRemove(scope.row.tradeId)">删除</el-button>
+            <el-button size="mini" type="primary" @click="handleUpdate(scope.row.tradeNo)">查看</el-button>
+<!--            <el-button size="mini" type="primary" @click="handleUpdate(scope.row.tradeNo)">修改</el-button>
+            <el-button size="mini" type="danger" @click="handleRemove(scope.row.tradeNo)">删除</el-button>-->
           </template>
         </el-table-column>
       </el-table>
@@ -59,7 +60,7 @@
       >
         <trade-edit
           v-if="dialogVisible"
-          :editTradeId="editTradeId"
+          :editTradeNo="editTradeNo"
           :codeEnabled="codeEnabled"
           @onSave="handleSave"
           @onCancel="handleCancel"
@@ -80,12 +81,12 @@
         loading: true,
         searchForm: {},
         dialogVisible: false,
-        editTradeId: null,
+        editTradeNo: null,
         pid: null,
         tableData: [],
         pageFlag: 1,
         pageSize: 10,
-        lastId: "blank",
+        lastId: null,
         total: 0,
         codeEnabled: false,
         currencyList: [],
@@ -99,12 +100,12 @@
     methods: {
       handlePrevClick() {
         this.pageFlag = -1;
-        this.lastId = this.tableData[0].tradeId;
+        this.lastId = this.tableData[0].tradeNo;
         this.loadData();
       },
       handleNextClick() {
         this.pageFlag = 1;
-        this.lastId = this.tableData[this.tableData.length - 1].tradeId;
+        this.lastId = this.tableData[this.tableData.length - 1].tradeNo;
         this.loadData();
       },
       loadCurrency() {
@@ -145,7 +146,7 @@
           });
       },
       handleAdd() {
-        this.editTradeId = null;
+        this.editTradeNo = null;
         this.pid = null;
         this.codeEnabled = false;
         this.dialogVisible = true;
@@ -165,13 +166,13 @@
           message: "查询成功！"
         });
       },
-      handleUpdate(tradeId) {
-        this.editTradeId = tradeId;
+      handleUpdate(tradeNo) {
+        this.editTradeNo = tradeNo;
         this.pid = null;
         this.codeEnabled = true;
         this.dialogVisible = true;
       },
-      handleRemove(tradeId) {
+      handleRemove(tradeNo) {
         this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
@@ -179,7 +180,7 @@
         })
           .then(() => {
             this.$store
-              .dispatch("trade/removeOne", {tradeId: tradeId})
+              .dispatch("trade/removeOne", {tradeNo: tradeNo})
               .then(() => {
                 if (1 === this.tableData.length) {
                   this.handlePrevClick();
@@ -203,7 +204,7 @@
         let method = "trade/save";
         let msg = "添加成功！";
 
-        if(formData && formData.tradeId){
+        if(formData && formData.tradeNo){
           method = "trade/update";
           msg = "编辑成功！";
         }

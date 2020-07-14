@@ -93,10 +93,10 @@
         <el-input v-model="formData.terminalId" placeholder="请输入商户机具终端编号.."></el-input>
       </el-form-item>
     </el-form>
-    <div style="text-align:right;">
+<!--    <div style="text-align:right;">
       <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
       <el-button type="primary" size="mini" @click="handleSave">确 定</el-button>
-    </div>
+    </div>-->
   </div>
 </template>
 
@@ -126,7 +126,7 @@
   }
 
   export default {
-    props: ["editTradeId", "codeEnabled"],
+    props: ["editTradeNo", "codeEnabled"],
     data() {
       const codeValidator = (rule, value, callback) => {
         let reg = /^[0-9a-zA-Z]*$/g;
@@ -145,8 +145,8 @@
             {required: true, message: "请输入交易编号", trigger: "change"},
             {
               min: 1,
-              max: 20,
-              message: "长度在 1到 20 个字符"
+              max: 30,
+              message: "长度在 1到 30 个字符"
             },
             {validator: codeValidator, trigger: 'blur'}
           ],
@@ -154,8 +154,8 @@
             {required: true, message: "请输入商家订单号", trigger: "change"},
             {
               min: 1,
-              max: 20,
-              message: "长度在 1到 20 个字符"
+              max: 30,
+              message: "长度在 1到 30 个字符"
             },
             {validator: codeValidator, trigger: 'blur'}
           ]
@@ -173,11 +173,11 @@
             console.log(error);
           });
       },
-      handleGetOne(tradeId) {
-        if (tradeId) {
+      handleGetOne(tradeNo) {
+        if (tradeNo) {
           this.$store
-            .dispatch("trade/getOne", {tradeId: tradeId})
-            .then(data => {
+            .dispatch("trade/getOne", {tradeNo: tradeNo})
+            .then(data => { 
               this.formData = data;
             })
             .catch(error => {
@@ -223,8 +223,8 @@
       }
     },
     created() {
-      if (this.editTradeId) {
-        this.handleGetOne(this.editTradeId);
+      if (this.editTradeNo) {
+        this.handleGetOne(this.editTradeNo);
       }
       this.loadCurrency();
     }

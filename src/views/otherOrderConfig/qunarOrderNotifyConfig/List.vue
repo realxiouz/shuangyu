@@ -84,7 +84,7 @@ export default {
       deleteForSearch: false,
       pageFlag: "next",
       pageSize: 10,
-      lastId: "blank",
+      lastId: null,
       total: 0
     };
   },

@@ -43,9 +43,9 @@ const actions = {
   },
   // eslint-disable-next-line no-unused-vars
   getOne({commit}, params) {
-    const {tradeId} = params;
+    const {tradeNo} = params;
     return new Promise((resolve, reject) => {
-      getOne(tradeId)
+      getOne(tradeNo)
         .then(response => {
           resolve(response);
         })
@@ -69,9 +69,9 @@ const actions = {
   },
   // eslint-disable-next-line no-unused-vars
   removeOne({commit}, params) {
-    const {tradeId} = params;
+    const {tradeNo} = params;
     return new Promise((resolve, reject) => {
-      removeOne(tradeId)
+      removeOne(tradeNo)
         .then(response => {
           resolve(response);
         })
@@ -95,8 +95,8 @@ const actions = {
   // eslint-disable-next-line no-unused-vars
   update({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {tradeId} = params;
-      update(tradeId, params)
+      const {tradeNo} = params;
+      update(tradeNo, params)
         .then(response => {
           resolve(response);
         })

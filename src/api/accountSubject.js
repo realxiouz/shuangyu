@@ -24,14 +24,8 @@ export function getOne(id) {
 }
 
 export function getPageList(pageFlag, pageSize, params) {
-  let url;
-  if (params.lastId){
-    url = `/finance/account/subject/get/page/list/${pageFlag}/${pageSize}`;
-  } else {
-    url = `/finance/account/subject/get/page/list/${pageFlag}/${pageSize}/${params.lastId}`;
-  }
   return request({
-    url: url,
+    url: `/finance/account/subject/get/page/list/${pageFlag}/${pageSize}`,
     method: 'get',
     params: params
   });

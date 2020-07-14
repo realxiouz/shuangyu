@@ -7,7 +7,7 @@ export function getOne(id) {
   });
 }
 
-export function saveData(data) {
+export function save(data) {
   return request({
     url: '/finance/voucher/save',
     method: 'post',

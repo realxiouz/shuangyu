@@ -138,7 +138,7 @@ export default {
   data() {
     return {
       loading: true,
-      lastId: "blank",
+      lastId: null,
       pageFlag: "next",
       pageSize: 10,
       total: 0,
@@ -198,7 +198,7 @@ export default {
         .dispatch("openApiService/getPageList", {
           pageFlag: this.pageFlag,
           pageSize: this.pageSize,
-          lastId: "blank",
+          lastId: null,
           filters: params
         })
         .then(data => {

@@ -212,6 +212,7 @@
                 stockError: false,
                 productIdList: [],
                 totalAmount: 0,
+                defaultDate: new Date().getTime(),
                 rules: {
                     contactName: [
                         {required: true, message: "请输入联系人", trigger: "blur"}
@@ -246,9 +247,9 @@
                     invoiceNo: '',
                     //***************
                     //到期日期
-                    expireDate: null,
+                    expireDate: this.defaultDate,
                     //单据日期
-                    orderDate: null,
+                    orderDate: this.defaultDate,
                     //100：销售单，101 销售出库单，102 销售退款单，103销售退票入库单，104销售改签单，105销售改签入库单，106 销售改签出库单，
                     orderType: 100,
                     //***************
@@ -261,7 +262,7 @@
                     //出入库状态（0：未入库，1：已入库，2：未出库，3：已出库）
                     warehouseStatus: 2,
                     //出入库时间
-                    warehouseDate: null,
+                    warehouseDate: this.defaultDate,
                     //***************
                     //快递号码
                     expressNo: '',
@@ -290,7 +291,11 @@
                     //结算账户名称
                     fundAccountName: '',
                     //备注
-                    remark: ''
+                    remark: '',
+                    //订单状态
+                    orderStatus: 0,
+                    //制单时间
+                    recordDate: this.defaultDate
                 };
             },
             loadCustomers() {
