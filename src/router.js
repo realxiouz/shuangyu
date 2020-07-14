@@ -1038,13 +1038,23 @@ export default new Router({
           component: () => import('@/views/otherInOrder/List'),
           meta: {title: '其他入库', icon: 'home'}
         },
+      ]
+    },
+    {
+      title: '微服务',
+      path: '/microService',
+      name: 'microService',
+      component: Layout,
+      redirect: '/microService/list',
+      meta: {title: '微服务管理', icon: 'home'},
+      children: [
         {
-          title: '其他出库',
-          path: '/other/out/order',
-          name: 'otherOutOrder',
-          component: () => import('@/views/otherOutOrder/List'),
-          meta: {title: '其他出库', icon: 'home'}
-        },
+          title: '微服务列表',
+          path: 'list',
+          name: 'microServiceList',
+          component: () => import('@/views/microService/List'),
+          meta: {title: '微服务列表', icon: 'home'}
+        }
       ]
     },
     // {

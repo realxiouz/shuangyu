@@ -58,7 +58,9 @@ export const MIXIN_TABLE = {
       this.loadData();
     },
     handleSearch(params) {
-      console.log(params);
+      for (const key in params) {
+        !params[key] && delete params[key]
+      }
       this.params = params;
       this.pageFlag = 0;
       this.lastId = null;
@@ -79,7 +81,7 @@ export const MIXIN_TABLE = {
       this.dialogVisible = true;
     },
     handleRefresh() {
-        this.handleSearch({})
+      this.handleSearch({})
     }
   },
   created() {
