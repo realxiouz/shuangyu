@@ -1049,11 +1049,16 @@ export default new Router({
       meta: {title: '微服务管理', icon: 'home'},
       children: [
         {
-          title: '微服务列表',
           path: 'list',
           name: 'microServiceList',
           component: () => import('@/views/microService/List'),
           meta: {title: '微服务列表', icon: 'home'}
+        },
+        {
+          path: 'detail',
+          name: 'microServiceDetail',
+          component: () => import('@/views/microService/Detail'),
+          meta: {title: '微服务详情', icon: 'home'}
         }
       ]
     },

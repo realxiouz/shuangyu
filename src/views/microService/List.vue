@@ -13,40 +13,13 @@
     <el-table class="page-table" :data="tableData" v-loading="loading">
       <el-table-column type="expand">
         <template v-slot="{ row }">
-          <el-form label-position="left" label-width="100px" class="demo-table-expand">
-            <el-row>
-              <el-col :span="12">
-                <el-form-item label="启动内存">
-                  <span>{{ row.jvmOptions.xms }}</span>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="最大内存">
-                  <span>{{ row.jvmOptions.xmx }}</span>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="年轻代">
-                  <span>{{ row.jvmOptions.xmn }}</span>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="线程堆栈">
-                  <span>{{ row.jvmOptions.xss }}</span>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="监控端口">
-                  <span>{{ row.jvmOptions.jmxremotePort }}</span>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="启动参数">
-                  <span>{{ row.jvmOptions.jvmString }}</span>
-                </el-form-item>
-              </el-col>
-            </el-row>
-          </el-form>
+          <el-table :data="row.jvmOptions" :height="400" border>
+            <el-table-column width="100" label="分组" prop="group" />
+            <el-table-column label="选项" prop="option" />
+            <el-table-column label="描述" prop="description" />
+            <el-table-column width="100" label="分组" prop="group" />
+            <el-table-column label="值" prop="value" />
+          </el-table>
         </template>
       </el-table-column>
       <el-table-column prop="code" label="服务编码" />
@@ -91,7 +64,6 @@
 
 <script>
 import { MIXIN_TABLE } from "@/utils/mixin";
-import edit from "./Edit";
 import search from "./Search";
 
 export default {
@@ -121,27 +93,21 @@ export default {
             this.$message({ type: "success", message: "删除成功" });
           });
       });
+    },
+    handleAdd() {
+      this.$router.push({
+        path: `/microService/detail`
+      })
+    },
+    handleEdit(i) {
+      this.$router.push({
+        path: `/microService/detail?code=${i.code}`
+      })
     }
   },
   components: {
-    edit,
     search
   },
   mixins: [MIXIN_TABLE]
 };
 </script>
-
-<style scoped>
-.demo-table-expand {
-  font-size: 0;
-}
-.demo-table-expand label {
-  width: 90px;
-  color: #99a9bf;
-}
-.demo-table-expand .el-form-item {
-  margin-right: 0;
-  margin-bottom: 0;
-  width: 50%;
-}
-</style>
