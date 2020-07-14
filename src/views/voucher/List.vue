@@ -8,17 +8,17 @@
     <el-table class="page-table" :data="tableData" @selection-change="handleSelectionChange">>
       <el-table-column type="expand">
         <template slot-scope="scope">
-          <el-table :data="scope.row.voucherRecords">
-            <el-table-column prop="summary" label="摘要"/>
-            <el-table-column prop="subjectName" label="科目"/>
+          <el-table :data="scope.row.voucherRecords" border>
+            <el-table-column prop="summary" label="摘要" />
+            <el-table-column prop="subjectName" label="科目" />
             <el-table-column label="借方金额">
               <template slot-scope="scope">
-                {{scope.row.borrowAmount>0?scope.row.borrowAmount:''}}
+                {{ scope.row.borrowAmount > 0 ? scope.row.borrowAmount : '' }}
               </template>
             </el-table-column>
             <el-table-column label="贷方金额">
               <template slot-scope="scope">
-                {{scope.row.loanAmount>0?scope.row.loanAmount:''}}
+                {{ scope.row.loanAmount > 0 ? scope.row.loanAmount : '' }}
               </template>
             </el-table-column>
           </el-table>
@@ -29,7 +29,7 @@
       <el-table-column label="制单人" align="center" prop="originatorName" />
       <el-table-column label="制单日期" align="center">
         <template slot-scope="scope">
-          {{scope.row.voucherDate|time('YYYY-MM-DD')}}
+          {{ scope.row.voucherDate | time("YYYY-MM-DD") }}
         </template>
       </el-table-column>
       <el-table-column width="300" label="操作" align="center">

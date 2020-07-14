@@ -18,12 +18,12 @@
             <el-table-column prop="subjectName" label="科目" />
             <el-table-column label="借方金额">
               <template slot-scope="scope">
-                {{ scope.row.borrowAmount > 0 ? scope.row.borrowAmount : "" }}
+                {{ scope.row.borrowAmount > 0 ? scope.row.borrowAmount : '' }}
               </template>
             </el-table-column>
             <el-table-column label="贷方金额">
               <template slot-scope="scope">
-                {{ scope.row.loanAmount > 0 ? scope.row.loanAmount : "" }}
+                {{ scope.row.loanAmount > 0 ? scope.row.loanAmount : '' }}
               </template>
             </el-table-column>
           </el-table>
@@ -31,7 +31,7 @@
       </el-table-column>
       <el-table-column prop="templateName" label="模板名称"/>
       <el-table-column label="模板类型">
-        <template v-slot="{row}">
+        <template v-slot="{ row }">
           {{ tempMap[row.templateType] }}
         </template>
       </el-table-column>
