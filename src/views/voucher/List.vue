@@ -57,7 +57,7 @@
 <script>
   import edit from "./Edit";
   import search from "./Search";
-  import { exportMethod } from '@/utils/export';
+  import { exportExcel } from '@/utils/export';
 
   export default {
     data() {
@@ -133,7 +133,7 @@
           this.$message({ type: "warning", message: "请先选择要导出的凭证！" });
           return;
         }
-        exportMethod(this, 'get', '/finance/export/voucher/excel', { ids: this.exportIds }, '凭证文件');
+        exportExcel(this, 'get', '/finance/export/voucher/excel', { ids: this.exportIds }, '凭证文件');
       },
       handleEdit(id) {
         this.editVoucherId = id;

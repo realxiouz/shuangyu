@@ -1,7 +1,7 @@
 import axIos from 'axios';
 
-// 导出公用方法
-export function exportMethod(that, method, url, params, fileName) {
+// 导出excel公用方法
+export function exportExcel(that, method, url, params, fileName) {
   axIos({
     method: method,
     url: `${url}`,
