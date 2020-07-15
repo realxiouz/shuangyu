@@ -189,8 +189,8 @@
                 this.$store
                     .dispatch("productOrder/outWarehouseOrder", {orderNo: row.orderNo, data: row})
                     .then(data => {
+                        this.loadData();
                         if(data){
-                            this.loadData();
                             this.$message({
                                 type: "success",
                                 message: "出库成功!"
