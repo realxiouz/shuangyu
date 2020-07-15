@@ -56,13 +56,12 @@
             <el-table :data="formData.jvmOptions" :height="800" border>
               <el-table-column width="100" label="分组" prop="group" />
               <el-table-column label="选项" prop="option" />
-              <el-table-column label="描述" prop="description" />
-              <el-table-column width="100" label="分组" prop="group" />
               <el-table-column label="值">
                 <template v-slot="{ row }">
                   <el-input v-model="row.value" />
                 </template>
               </el-table-column>
+              <el-table-column label="描述" prop="description" />
             </el-table>
           </el-col>
         </el-row>

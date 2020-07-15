@@ -16,9 +16,8 @@
           <el-table :data="row.jvmOptions" :height="400" border>
             <el-table-column width="100" label="分组" prop="group" />
             <el-table-column label="选项" prop="option" />
-            <el-table-column label="描述" prop="description" />
-            <el-table-column width="100" label="分组" prop="group" />
             <el-table-column label="值" prop="value" />
+            <el-table-column label="描述" prop="description" />
           </el-table>
         </template>
       </el-table-column>
@@ -58,7 +57,6 @@
       :page-size="pageSizes[0]"
       :page-sizes="pageSizes"
     />
-    <edit :visible.sync="dialogVisible" :code="code" @refresh="handleRefresh" />
   </div>
 </template>
 
