@@ -19,7 +19,8 @@ import {getToken, removeToken} from "@/utils/auth";
 const state = {
   token: getToken(),
   name: "",
-  avatar: ""
+  avatar: "",
+  routes: [],
 };
 
 const mutations = {
@@ -31,6 +32,10 @@ const mutations = {
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar;
+  },
+
+  setRoutes(state, routes) {
+    state.routes = routes
   }
 };
 
@@ -171,8 +176,7 @@ const actions = {
   // },
   getPageList({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {pageFlag, pageSize, filter} = params;
-      getPageList(pageFlag, pageSize, filter)
+      getPageList(params)
         .then(response => {
           resolve(response);
         })

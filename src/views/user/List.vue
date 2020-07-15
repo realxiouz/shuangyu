@@ -56,15 +56,18 @@
         </el-table-column>
       </el-table>
       <el-pagination
+        class="page-footer"
         background
-        layout="total,prev,next"
         prev-text="上一页"
         next-text="下一页"
-        :page-size="pageSize"
         :total="total"
-        @prev-click="handlePrevClick"
-        @next-click="handleNextClick"
-      ></el-pagination>
+        @prev-click="handlePrev"
+        @next-click="handleNext"
+        @size-change="handleSizeChange"
+        layout="total,sizes,prev,next"
+        :page-size="pageSizes[0]"
+        :page-sizes="pageSizes"
+      />
       <el-dialog
         :title="userId?'编辑用户信息':'添加新用户'"
         center
@@ -88,6 +91,7 @@
 <script>
 import userForm from "./Edit";
 import userSearch from "./Search";
+import { MIXIN_TABLE } from "@/utils/mixin";
 
 export default {
   name: "userList",
@@ -105,19 +109,11 @@ export default {
   },
   data() {
     return {
-      dialogVisible: false,
       deleteForSearch: false,
-      /*进行编辑当前用户ID*/
+
+      beanIdName: "userId",
+      actionName: "user/getPageList",
       userId: "",
-      /*重置用户密码时记录当前用户节点信息*/
-      curNode: {},
-      pageFlag: 1,
-      pageSize: 10,
-      lastId: null,
-      total: 0,
-      tableData: [],
-      loading: true,
-      roleData: []
     };
   },
   components: {
@@ -125,83 +121,6 @@ export default {
     userSearch
   },
   methods: {
-    loadData(params = {}, callback) {
-      if (this.lastId) {
-        params.lastId = this.lastId;
-      }
-      this.$store
-        .dispatch("user/getPageList", {
-          pageFlag: this.pageFlag,
-          pageSize: this.pageSize,
-          filter: params
-        })
-        .then(data => {
-          if (data) {
-            this.tableData = data.rows;
-            this.total = data.total;
-          }
-          callback && callback(data);
-          this.loading = false;
-        })
-        .catch(error => {
-          this.loading = false;
-          console.log(error);
-        });
-    },
-    /*加载所有的角色信息*/
-    loadRoles() {
-      this.$store
-        .dispatch("role/getList", {})
-        .then(data => {
-          this.roleData = data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-
-    /*根据关键字查询用户列表*/
-    handleSearch(params) {
-      this.deleteForSearch = true;
-      const newParams = {};
-      if (params) {
-        for (let key in params) {
-          // 判断enable不为false
-          if (key == "enable") {
-            newParams[key] = params[key];
-          } else if (params[key]) {
-            newParams[key] = params[key];
-          }
-        }
-      }
-      if (Object.keys(newParams).length == 0) {
-        this.lastId = null;
-      }
-      this.loadData(newParams, () => {
-        this.$message({
-          type: "success",
-          message: "查询成功!"
-        });
-      });
-    },
-    /*添加用户按钮*/
-    handleAdd() {
-      this.dialogVisible = true;
-      this.userId = "";
-    },
-    /*修改是否超级管理员状态*/
-    superSwitch(row) {
-      row.super = row.super ? false : true;
-      this.$store
-        .dispatch("user/updateOne", row)
-        .then(() => {
-          this.loadData();
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    /*修改是否启用状态*/
     enableSwitch(row) {
       row.enable = !row.enable;
       this.$store
@@ -209,7 +128,6 @@ export default {
           userId: row.userId,
           data: {
             enable: row.enable
-            // comment: `备注测试.${Math.random().toFixed(2)}`
           }
         })
         .then(() => {
@@ -223,7 +141,6 @@ export default {
           console.log(error);
         });
     },
-    /*确认重置用户密码*/
     handleResetPwd(row) {
       this.$confirm("此操作将重置该用户的登录密码, 是否继续?", "提示", {
         confirmButtonText: "确定",
@@ -246,12 +163,6 @@ export default {
         })
         .catch(() => {});
     },
-    /*点击用户编辑按钮*/
-    handleEdit(row) {
-      this.dialogVisible = true;
-      this.userId = row.userId;
-    },
-    /*对员工进行删除*/
     handleDelete(row) {
       this.open(
         this.delete,
@@ -259,7 +170,6 @@ export default {
         "此操作将删除该用户的所有信息, 是否继续?"
       );
     },
-    /*根据用户ID删除用户*/
     delete(userId) {
       this.$store
         .dispatch("user/removeOne", { userId: userId })
@@ -276,11 +186,9 @@ export default {
           console.log(error);
         });
     },
-    /*点击弹窗按钮*/
     handleCancel() {
       this.dialogVisible = false;
     },
-    /*添加保存用户*/
     handleSave(formData) {
       this.dialogVisible = false;
       let url = "";
@@ -312,18 +220,6 @@ export default {
           console.log(error);
         });
     },
-    /*翻前页*/
-    handlePrevClick() {
-      this.pageFlag = -1;
-      this.lastId = this.tableData[0].userId;
-      this.loadData();
-    },
-    /*翻后页*/
-    handleNextClick() {
-      this.pageFlag = 1;
-      this.lastId = this.tableData[this.tableData.length - 1].userId;
-      this.loadData();
-    },
     open(func, data, message) {
       this.$confirm(message, "提示", {
         confirmButtonText: "确定",
@@ -343,28 +239,8 @@ export default {
             message: "已取消删除"
           });
         });
-    },
-    /*初始化用工列表中的生日日期格式*/
-    initDate(dateStr, format) {
-      if (dateStr > 0) {
-        let date = new Date(dateStr);
-        return this.$moment(date).format(format);
-      } else {
-        return "";
-      }
     }
   },
-  computed: {
-    formatDate() {
-      return function(dateStr, format) {
-        return this.initDate(dateStr, format);
-      };
-    }
-  },
-  created() {
-    this.loadData();
-  }
+  mixins: [MIXIN_TABLE]
 };
 </script>
-<style>
-</style>

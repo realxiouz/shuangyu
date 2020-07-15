@@ -8,7 +8,6 @@ export function signIn(data) {
   });
 }
 
-// 验证码登录
 export function signInCode(data) {
   return request({
     url: '/admin/user/sign/in/code',
@@ -80,19 +79,12 @@ export function getList(filter) {
   });
 }
 
-// export function getTotal(filter) {
-//   return request({
-//     url: `/admin/user/total`,
-//     method: 'get',
-//     params: filter
-//   });
-// }
-
-export function getPageList(pageFlag, pageSize, filter) {
+export function getPageList(args) {
+  const { pageFlag, pageSize, ...params } = args;
   return request({
     url: `/admin/user/page/list/${pageFlag}/${pageSize}`,
     method: 'get',
-    params: filter
+    params
   });
 }
 
