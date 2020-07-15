@@ -546,25 +546,53 @@ export default new Router({
 
       children: [
         {
-          title: '开放平台',
-          path: '/open/list',
-          name: 'open',
+          title: '开放平台管理',
+          path: '/open/platform/list',
+          name: 'openPlatform',
           component: () => import('@/views/openPlatform/List'),
-          meta: {title: '开放平台', icon: 'home'}
+          meta: {title: '开放平台管理', icon: 'home'}
         },
         {
-          title: '平台授权',
-          path: '/open/auth',
-          name: 'auth',
+          title: '开放平台授权',
+          path: '/firm/open/auth/list',
+          name: 'firmOpenAuth',
           component: () => import('@/views/firmOpenAuth/List'),
-          meta: {title: '平台授权', icon: 'home'}
+          meta: {title: '开放平台授权', icon: 'home'}
         },
         {
-          title: '开放平台API',
-          path: '/openApi/list',
+          title: '开放平台配置',
+          path: '/firm/open/config/list',
+          name: 'firmOpenConfig',
+          component: () => import('@/views/firmOpenConfig/List'),
+          meta: {title: '开放平台配置', icon: 'home'}
+        },
+        {
+          title: '第三方API',
+          path: '/open/api/list',
           name: 'openApi',
           component: () => import('@/views/openApi/List'),
-          meta: {title: '开放平台API', icon: 'home'}
+          meta: {title: '第三方API', icon: 'home'}
+        },
+        {
+          title: '第三方标签',
+          path: '/policy/flag/list',
+          name: 'policyFlag',
+          component: () => import('@/views/policyFlag/List'),
+          meta: {title: '第三方标签', icon: 'home'}
+        },
+        {
+          title: '第三方标签参数',
+          path: '/policy/flag/param/list',
+          name: 'policyFlagParam',
+          component: () => import('@/views/policyFlagParam/List'),
+          meta: {title: '第三方标签参数', icon: 'home'}
+        },
+        {
+          title: '第三方平台账号',
+          path: '/open/account/list',
+          name: 'openAccount',
+          component: () => import('@/views/openAccount/List'),
+          meta: {title: '第三方平台账号', icon: 'home'}
         },
         {
           title: 'TGQ调度',
@@ -577,36 +605,8 @@ export default new Router({
           path: '/tgq/product/edit',
           name: 'tgqProductEdit',
           component: () => import('@/views/tgqProduct/Edit'),
-          props: {default: true, sidebar: false},
+        //  props: {default: true, sidebar: false},
           meta: {title: 'TGQ编辑', icon: 'home'}
-        },
-        {
-          title: '政策标签',
-          path: '/policy/flag/list',
-          name: 'flag',
-          component: () => import('@/views/policyFlag/List'),
-          meta: {title: '政策标签', icon: 'home'}
-        },
-        {
-          title: '标签参数',
-          path: '/policy/flag/param/list',
-          name: 'param',
-          component: () => import('@/views/policyFlagParam/List'),
-          meta: {title: 'Open标签参数', icon: 'home'}
-        },
-        {
-          title: '开放平台账号',
-          path: '/open/account/list',
-          name: 'account',
-          component: () => import('@/views/openAccount/List'),
-          meta: {title: '开放平台账号', icon: 'home'}
-        },
-        {
-          title: '企业开放平台配置',
-          path: '/firm/open/platform/list',
-          name: 'firmOpenPlatformList',
-          component: () => import('@/views/firmOpenPlatform/List'),
-          meta: {title: '企业开放平台配置', icon: 'home'}
         }
       ]
     },
