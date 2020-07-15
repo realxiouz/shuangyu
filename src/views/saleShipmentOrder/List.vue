@@ -188,8 +188,19 @@
             handleWarehouse(row) {
                 this.$store
                     .dispatch("productOrder/outWarehouseOrder", {orderNo: row.orderNo, data: row})
-                    .then(() => {
-                        this.loadData();
+                    .then(data => {
+                        if(data){
+                            this.loadData();
+                            this.$message({
+                                type: "success",
+                                message: "出库成功!"
+                            });
+                        }else {
+                            this.$message({
+                                type: "error",
+                                message: "出库失败!"
+                            });
+                        }
                     })
                     .catch(error => {
                         console.log(error);
