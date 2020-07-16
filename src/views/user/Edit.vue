@@ -1,6 +1,6 @@
 <template>
   <div class="page-form">
-    <el-dialog title="添加" :visible.sync="dialogVisible" @open="handleOpen" @close="handleClose">
+    <el-dialog title="添加" :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
       <el-form size="mini" :model="formData" :rules="formRules">
         <input type="hidden" v-model="formData.userId"/>
         <el-form-item label="昵称" prop="nickName">
@@ -24,7 +24,7 @@
             value-format="timestamp"
           ></el-date-picker>
         </el-form-item>
-        <el-form-item v-if="!isEdit" label="邮箱" prop="email">
+        <el-form-item v-if="!this.keyId" label="邮箱" prop="email">
           <el-input placeholder="请输入您的邮箱" clearable v-model="formData.email"></el-input>
         </el-form-item>
         <el-form-item label="角色:">
@@ -49,28 +49,17 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible=false">取 消</el-button>
-        <el-button type="primary" @click="handleSave">确 定</el-button>
+        <el-button type="primary" @click="onSave">确 定</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
+  import {MIXIN_EDIT} from "@/utils/mixin";
+
   export default {
-    props: {
-      keyId: {
-        type: String,
-        default: null
-      },
-      keyName: {
-        type: String,
-        default: null
-      },
-      visible: {
-        type: Boolean,
-        default: false
-      }
-    },
+    mixins: [MIXIN_EDIT],
     data() {
       var validateEmail = (rule, value, callback) => {
         var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
@@ -95,8 +84,6 @@
       };
 
       return {
-        dialogVisible: false,
-        formData: this.defaultFormData(),
         roleData: [],
         formRules: {
           nickName: {required: true, message: "请输入昵称", trigger: "blur"},
@@ -104,23 +91,14 @@
             {required: true, message: "请输入邮箱", trigger: "blur"},
             {validator: validateEmail, trigger: "blur"}
           ]
+        },
+        actions: {
+          getOne: 'user/getOne',
+          saveOne: 'user/saveOne'
         }
       };
     },
-    watch: {
-      visible(val) {
-        this.dialogVisible = val;
-        if (val) {
-          if (this._.isEmpty(this.keyId)) {
-            this.formData = this.defaultFormData();
-          } else {
-            this.loadData();
-          }
-        }
-      }
-    },
     methods: {
-      /*表单默认加载数据*/
       defaultFormData() {
         return {
           userId: "",
@@ -129,60 +107,11 @@
           gender: 0,
           birthDate: "",
           email: "",
-          remark: ''
+          remark: '',
+          roles:[]
         };
       },
-      handleOpen() {
-        this.$emit('update:visible', true);
-      },
-      handleClose() {
-        this.$emit('update:visible', false);
-      },
-      handleSave() {
-        this.$store
-          .dispatch("user/saveOne", this.formData)
-          .then(() => {
-            this.loadData();
-            if (this.key != "") {
-              this.$message({
-                type: "success",
-                message: "修改成功！"
-              });
-              this.dialogVisible = false;
-            } else {
-              this.$message({
-                type: "success",
-                message: "添加成功！"
-              });
-            }
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      },
-      /*清除表单*/
-      clearForm() {
-        this.formData = this.defaultFormData();
-      },
-      clearRoles() {
-        this.roleData = [];
-      },
-      /*根据用户ID查询用户信息*/
-      loadData() {
-        if (this.userId != "") {
-          this.$store
-            .dispatch("user/getOne", {id: this.$props.keyId})
-            .then(data => {
-              this.formData = data;
-            })
-            .catch(error => {
-              console.log(error);
-            });
-        }
-      },
-      /*加载所有的角色信息*/
       loadRoles() {
-        this.clearRoles();
         this.$store
           .dispatch("role/getList", {})
           .then(data => {
@@ -194,14 +123,7 @@
       }
     },
     created() {
-      this.clearForm();
-      this.loadUser();
       this.loadRoles();
-    },
-    computed: {
-      isEdit() {
-        return this.key != "";
-      }
     }
   };
 </script>

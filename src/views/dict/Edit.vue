@@ -20,7 +20,7 @@
       <el-table-column label="操作" align="center" width="180">
         <template slot-scope="scope">
           <el-button @click="onEdit(scope.row)" type="primary" size="mini">编辑</el-button>
-          <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
+          <el-button @click="onDel(scope.row)" type="danger" size="mini">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -207,7 +207,7 @@
                 Object.assign(this.formData, row);
             },
             /*对字典信息进行删除*/
-            handleDelete(row) {
+            onDel(row) {
                 this.open(this.delete, row.dictId, "此操作将删除该条字典信息, 是否继续?");
             },
             /*根据字典ID删除字典*/

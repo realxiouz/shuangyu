@@ -12,7 +12,8 @@ import {
   signIn,
   signInCode,
   signOut,
-  updateOne
+  updateOne,
+  saveOne
 } from "@/api/user";
 import {getToken, removeToken} from "@/utils/auth";
 
@@ -40,8 +41,8 @@ const mutations = {
 };
 
 const actions = {
-  signIn({commit}, userInfo) {
-    const {username, password} = userInfo;
+  signIn({commit}, args) {
+    const {username, password} = args;
     return new Promise((resolve, reject) => {
       signIn({username: username.trim(), password: password})
         .then(response => {
@@ -55,8 +56,8 @@ const actions = {
   },
 
   // 验证码登录
-  signInCode({commit}, userInfo) {
-    const {username, code} = userInfo;
+  signInCode({commit}, args) {
+    const {username, code} = args;
     return new Promise((resolve, reject) => {
       signInCode({username: username.trim(), code: code})
         .then(response => {
@@ -69,9 +70,10 @@ const actions = {
     });
   },
 
-  signOut({commit, state}) {
+  signOut({commit, args}) {
     return new Promise((resolve, reject) => {
-      signOut(state.token)
+      const {token} = args;
+      signOut(token)
         .then(() => {
           commit("SET_TOKEN", "");
           removeToken();
@@ -90,9 +92,9 @@ const actions = {
     });
   },
 
-  addOne({commit}, params) {
+  addOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {user} = params
+      const {user} = args
       addOne(user)
         .then(response => {
           resolve(response);
@@ -102,9 +104,9 @@ const actions = {
         });
     });
   },
-  removeOne({commit}, params) {
+  removeOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {userId} = params
+      const {userId} = args
       removeOne(userId)
         .then(response => {
           resolve(response);
@@ -114,9 +116,9 @@ const actions = {
         });
     });
   },
-  getFirstOne({commit}, params) {
+  getFirstOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {filter} = params;
+      const {filter} = args;
       getFirstOne(filter)
         .then(response => {
           resolve(response);
@@ -126,10 +128,10 @@ const actions = {
         });
     });
   },
-  updateOne({commit}, params) {
+  updateOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {userId, data} = params;
-      updateOne(userId, data)
+      const {id, data} = args;
+      updateOne(id, data)
         .then(response => {
           resolve(response);
         })
@@ -138,10 +140,9 @@ const actions = {
         });
     });
   },
-  getOne({commit}, params) {
+  saveOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {userId} = params;
-      getOne(userId)
+      saveOne(args)
         .then(response => {
           resolve(response);
         })
@@ -150,9 +151,21 @@ const actions = {
         });
     });
   },
-  getList({commit}, params) {
+  getOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {filter} = params;
+      const {id} = args;
+      getOne(id)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getList({commit}, args) {
+    return new Promise((resolve, reject) => {
+      const {filter} = args;
       getList(filter)
         .then(response => {
           resolve(response);
@@ -162,21 +175,9 @@ const actions = {
         });
     });
   },
-  // getTotal({commit}, params) {
-  //   return new Promise((resolve, reject) => {
-  //     const {filter} = params;
-  //     getTotal(filter)
-  //       .then(response => {
-  //         resolve(response);
-  //       })
-  //       .catch(error => {
-  //         reject(error);
-  //       });
-  //   });
-  // },
-  getPageList({commit}, params) {
+  getPageList({commit}, args) {
     return new Promise((resolve, reject) => {
-      getPageList(params)
+      getPageList(args)
         .then(response => {
           resolve(response);
         })
@@ -185,9 +186,9 @@ const actions = {
         });
     });
   },
-  activation({commit}, params) {
+  activation({commit}, args) {
     return new Promise((resolve, reject) => {
-      activation(params)
+      activation(args)
         .then(response => {
           resolve(response);
           commit("SET_TOKEN", "");
@@ -198,9 +199,9 @@ const actions = {
         });
     });
   },
-  isExist({commit}, params) {
+  isExist({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {filed} = params;
+      const {filed} = args;
       isExist(filed)
         .then(response => {
           resolve(response);
@@ -210,10 +211,10 @@ const actions = {
         });
     });
   },
-  resetPassword({commit}, params) {
+  resetPassword({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {userId} = params;
-      resetPassword(userId)
+      const {id} = args;
+      resetPassword(id)
         .then(response => {
           resolve(response);
         })
@@ -222,9 +223,9 @@ const actions = {
         });
     });
   },
-  getVerifyCode({commit}, params) {
+  getVerifyCode({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {target} = params;
+      const {target} = args;
       getVerifyCode(target)
         .then(response => {
           resolve(response);

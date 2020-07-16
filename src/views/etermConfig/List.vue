@@ -35,7 +35,7 @@
             <el-button @click="onEdit(scope.row)" type="primary" size="mini">编辑</el-button>
             <el-button  v-if = "scope.row.online" @click="offline(scope.row.id)" type="primary" size="mini">下线</el-button>
             <el-button v-else  @click="online(scope.row.id)" type="primary" size="mini">上线</el-button>
-            <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
+            <el-button @click="onDel(scope.row)" type="danger" size="mini">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -125,7 +125,7 @@ export default {
       this.curNode = row;
       this.update = true;
     },
-    handleDelete(row) {
+    onDel(row) {
       this.open(
         this.delete,
         row.id,

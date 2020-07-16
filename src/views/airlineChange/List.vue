@@ -22,7 +22,7 @@
         <el-table-column label="操作" align="center" width="200">
           <template slot-scope="scope">
             <el-button @click="onEdit(scope.row)" type="primary" size="mini">编辑</el-button>
-            <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
+            <el-button @click="onDel(scope.row)" type="danger" size="mini">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -136,7 +136,7 @@ export default {
       this.update = true;
     },
     /*对航司迁转信息进行删除*/
-    handleDelete(row) {
+    onDel(row) {
       this.open(this.delete, row.airline, "此操作将删除航司迁转信息, 是否继续?");
     },
     /*根据航司删除航司迁转信息*/
