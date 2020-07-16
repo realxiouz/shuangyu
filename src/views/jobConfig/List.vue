@@ -1,7 +1,7 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <job-config-search ref="search" @onSearch="handleSearch"></job-config-search>
+      <job-config-search ref="search" @onSearch="onSearch"></job-config-search>
     </div>
     <div class="contentBox">
       <el-row style="margin-bottom:15px; margin-left:38px;">
@@ -53,7 +53,7 @@
         <el-table-column prop="remark" label="备注" align="center"></el-table-column>
         <el-table-column label="操作" fixed="right" align="center" width="330">
           <template slot-scope="scope">
-            <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="onEdit(scope.row)" type="primary" size="mini">编辑</el-button>
             <el-button @click="removeOne(scope.row.configId)" type="danger" size="mini">删除</el-button>
           </template>
         </el-table-column>
@@ -65,7 +65,7 @@
         next-text="下一页"
         :page-size="pageSize"
         :total="total"
-        @size-change="handleSizeChange"
+        @size-change="onSizeChange"
         @prev-click="handlePrevClick"
         @next-click="handleNextClick"
       ></el-pagination>
@@ -185,7 +185,7 @@
             console.log(error);
           });
       },
-      handleSizeChange(pageSize) {
+      onSizeChange(pageSize) {
         this.pageSize = pageSize;
         this.lastId = null;
         this.loadData();
@@ -200,7 +200,7 @@
         this.lastId = this.tableData[this.tableData.length - 1].configId;
         this.loadData();
       },
-      handleSearch(params) {
+      onSearch(params) {
         this.lastId = null;
         this.params = params;
         this.loadData();
@@ -210,7 +210,7 @@
         this.updateFlag = false;
         this.dialogVisible = true;
       },
-      handleEdit(row) {
+      onEdit(row) {
         this.configId = row.configId;
         this.updateFlag = true;
         this.dialogVisible = true;

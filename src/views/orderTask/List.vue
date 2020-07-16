@@ -20,7 +20,7 @@
       </div>
     </div>
     <div class="contentBox">
-      <order-task-search @onSearch="handleSearch" ref="search"></order-task-search>
+      <order-task-search @onSearch="onSearch" ref="search"></order-task-search>
     </div>
     <div class="contentBox">
       <el-row style="margin-bottom:15px;margin-left:40px;">
@@ -150,7 +150,7 @@
       </el-table>
       <el-pagination
         :current-page="currentPage"
-        @size-change="handleSizeChange"
+        @size-change="onSizeChange"
         @prev-click="prevClick"
         @next-click="nextClick"
         background
@@ -241,7 +241,7 @@ export default {
     formatDiffTimeLimit,
     formattimeLimitStyle,
     formatTimeLimitDuration,
-    handleSizeChange(size) {
+    onSizeChange(size) {
       this.pageSize = size;
       this.searchParams.pageSize = this.pageSize;
       this.currentPage = 1;
@@ -417,7 +417,7 @@ export default {
         return true;
       }
     },
-    handleSearch(params) {
+    onSearch(params) {
       let newParams = {};
       if (params) {
         for (let key in params) {

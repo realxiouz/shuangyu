@@ -1,7 +1,7 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <policy-flag-search @onSearch="handleSearch"></policy-flag-search>
+      <policy-flag-search @onSearch="onSearch"></policy-flag-search>
     </div>
     <div class="contentBox">
       <el-row style="margin-bottom:15px; margin-left:10px;">
@@ -56,7 +56,7 @@
             };
         },
         methods: {
-            handleSearch(formData) {
+            onSearch(formData) {
                 if (!formData || !formData.flag) {
                     formData = {};
                 }
@@ -84,7 +84,7 @@
                 this.$store
                     .dispatch("policyFlag/save", formData)
                     .then(() => {
-                        this.handleSearch();
+                        this.onSearch();
                     })
                     .catch(error => {
                         console.log(error);
@@ -122,7 +122,7 @@
             }
         },
         created() {
-            this.handleSearch();
+            this.onSearch();
         },
         components: {
             policyFlagEdit,

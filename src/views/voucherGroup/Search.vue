@@ -28,7 +28,7 @@
         class="filter-item"
         type="primary"
         size="mini"
-        @click="handleSearch"
+        @click="onSearch"
       >查询
       </el-button>
       <el-button
@@ -73,12 +73,12 @@
           voucherGroupTitle: null
         };
       },
-      handleSearch() {
+      onSearch() {
         this.$emit("onSearch", this.formData);
       },
       handleClear() {
         this.formData = this.initSearchForm();
-        this.handleSearch();
+        this.onSearch();
       },
       handleMore() {
         this.more = !this.more;

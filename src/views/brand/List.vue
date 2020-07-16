@@ -20,13 +20,13 @@
       </el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
-          <el-button @click="handleEdit(scope.row.brandId)" type="primary" size="mini">编辑</el-button>
+          <el-button @click="onEdit(scope.row.brandId)" type="primary" size="mini">编辑</el-button>
           <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
     <el-pagination
-      @size-change="handleSizeChange"
+      @size-change="onSizeChange"
       @prev-click="handlePrevClick"
       @next-click="handleNextClick"
       background
@@ -71,7 +71,7 @@
                 this.lastId = this.tableData[this.tableData.length - 1].brandId;
                 this.loadData();
             },
-            handleSizeChange(pageSize) {
+            onSizeChange(pageSize) {
                 this.pageSize = pageSize;
                 this.loadData();
             },
@@ -137,7 +137,7 @@
             handleCancel() {
                 this.dialogVisible = false;
             },
-            handleEdit(brandId) {
+            onEdit(brandId) {
                 this.dialogVisible = true;
                 this.brandId = brandId;
             },

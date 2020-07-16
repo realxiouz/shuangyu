@@ -64,14 +64,14 @@
 
         <el-table-column fixed="right" label="操作" align="center" width="160">
           <template slot-scope="scope">
-            <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="onEdit(scope.row)" type="primary" size="mini">编辑</el-button>
             <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
             <el-button @click="skipShipmentOrder(scope.row)" type="info" size="mini">配置发货单</el-button>
           </template>
         </el-table-column>
       </el-table>
       <el-pagination
-        @size-change="handleSizeChange"
+        @size-change="onSizeChange"
         @prev-click="handlePrevClick"
         @next-click="handleNextClick"
         background
@@ -114,7 +114,7 @@
                 this.lastId = this.tableData[this.tableData.length - 1].orderNo;
                 this.loadData();
             },
-            handleSizeChange(pageSize) {
+            onSizeChange(pageSize) {
                 this.pageSize = pageSize;
                 this.loadData();
             },
@@ -155,7 +155,7 @@
             handleAdd() {
                 this.skipDetail();
             },
-            handleEdit(row) {
+            onEdit(row) {
                 this.skipDetail(row.orderNo);
             },
             handleDelete(row) {

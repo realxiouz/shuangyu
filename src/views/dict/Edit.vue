@@ -19,13 +19,13 @@
       <el-table-column align="center" prop="categoryCode" label="类别编码"></el-table-column>
       <el-table-column label="操作" align="center" width="180">
         <template slot-scope="scope">
-          <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
+          <el-button @click="onEdit(scope.row)" type="primary" size="mini">编辑</el-button>
           <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
     <el-pagination
-      @size-change="handleSizeChange"
+      @size-change="onSizeChange"
       @prev-click="handlePrevClick"
       @next-click="handleNextClick"
       background
@@ -113,7 +113,7 @@
                 this.lastId = this.tableData[this.tableData.length - 1].dictId;
                 this.loadData();
             },
-            handleSizeChange(pageSize) {
+            onSizeChange(pageSize) {
                 this.pageSize = pageSize;
                 this.loadData();
             },
@@ -201,7 +201,7 @@
                 this.clearForm();
             },
             /*点击记录进行编辑*/
-            handleEdit(row) {
+            onEdit(row) {
                 this.isEdit = true;
                 this.dialogVisible = true;
                 Object.assign(this.formData, row);

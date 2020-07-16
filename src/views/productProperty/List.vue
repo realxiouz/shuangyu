@@ -20,14 +20,14 @@
             <span>{{ node.data.categoryName }}</span>
             <span>
               <el-button type="text" size="mini" @click="nodeAdd(node, data)">添加</el-button>
-              <el-button type="text" size="mini" @click="handleEdit(node, data)">修改</el-button>
+              <el-button type="text" size="mini" @click="onEdit(node, data)">修改</el-button>
               <el-button type="text" size="mini" @click="removeNode(node, data)">移除</el-button>
             </span>
           </span>
         </el-tree>
       </el-col>
       <el-col :xs="13" :sm="14" :md="15" :lg="16" :xl="16">
-        <!--        <search class="page-search" ref="search" @onSearch="handleSearch"/>-->
+        <!--        <search class="page-search" ref="search" @onSearch="onSearch"/>-->
         <el-row type="flex" justify="space-between" style="margin-bottom:20px;" align="bottom">
           <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd" :disabled="visible">添加属性
           </el-button>
@@ -59,7 +59,7 @@
           </el-table-column>
         </el-table>
         <el-pagination
-          @size-change="handleSizeChange"
+          @size-change="onSizeChange"
           @prev-click="handlePrevClick"
           @next-click="handleNextClick"
           background
@@ -72,7 +72,7 @@
       </el-col>
     </el-row>
     <edit :visible.sync="dialogVisible" :property-id="propertyId" :category-code="categoryCode"
-          :category-name="categoryName" :category-path="categoryPath" @refresh="handleRefresh"/>
+          :category-name="categoryName" :category-path="categoryPath" @refresh="onRefresh"/>
     <el-dialog
       :title="addFlag?'添加类别':'编辑类别信息'"
       :visible.sync="categoryDialogVisible"
@@ -158,7 +158,7 @@
                 this.lastId = this.tableData[this.tableData.length - 1].propertyId;
                 this.loadData();
             },
-            handleSizeChange(pageSize) {
+            onSizeChange(pageSize) {
                 this.pageSize = pageSize;
                 this.loadData();
             },
@@ -251,10 +251,10 @@
                         console.error(err);
                     });
             },
-            handleRefresh() {
-                this.handleSearch();
+            onRefresh() {
+                this.onSearch();
             },
-            handleSearch(params) {
+            onSearch(params) {
                 const newParams = {};
                 if (params) {
                     for (let key in params) {
@@ -296,7 +296,7 @@
                 this.categoryDialogVisible = true;
                 this.update = false;
             },
-            handleEdit(data, node) {
+            onEdit(data, node) {
                 this.addFlag = false;
                 this.formData = node;
                 this.categoryDialogVisible = true;

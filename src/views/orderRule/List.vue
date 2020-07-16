@@ -1,7 +1,7 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <order-rule-search @onSearch="handleSearch"></order-rule-search>
+      <order-rule-search @onSearch="onSearch"></order-rule-search>
     </div>
     <div class="contentBox">
       <el-row style="margin-bottom:15px; margin-left:30px;">
@@ -24,7 +24,7 @@
         </el-table-column>
         <el-table-column label="操作" align="center" width="180">
           <template slot-scope="scope">
-            <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="onEdit(scope.row)" type="primary" size="mini">编辑</el-button>
             <el-button
               @click.native.prevent="removeOne(scope.row.orderRuleId)"
               type="danger"
@@ -35,7 +35,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
-        @size-change="handleSizeChange"
+        @size-change="onSizeChange"
         @prev-click="prevClick"
         @next-click="nextClick"
         background
@@ -68,7 +68,7 @@
       };
     },
     methods: {
-      handleEdit(row) {
+      onEdit(row) {
         this.$router.push({name: "orderRuleEdit", params: row});
       },
       handleAdd() {
@@ -104,7 +104,7 @@
             console.log(error);
           });
       },
-      handleSizeChange(pageSize) {
+      onSizeChange(pageSize) {
         this.pageSize = pageSize;
         this.lastId = "0";
         this.loadData();
@@ -119,7 +119,7 @@
         this.lastId = this.tableData[this.tableData.length - 1].orderRuleId;
         this.loadData();
       },
-      handleSearch(params) {
+      onSearch(params) {
         const newParams = {};
         if (params) {
           for (let key in params) {

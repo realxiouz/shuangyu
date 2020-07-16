@@ -15,7 +15,7 @@
         class="filter-item"
         type="primary"
         size="mini"
-        @click="handleSearch"
+        @click="onSearch"
       >查询</el-button>
     </el-col>
   </el-row>
@@ -49,7 +49,7 @@ export default {
     handleMore() {
       this.more = !this.more;
     },
-    handleSearch() {
+    onSearch() {
       if (this.formData.airlineCode && "" !== this.formData.airlineCode) {
         this.formData.airlineCode = this.formData.airlineCode.toUpperCase();
       } else {

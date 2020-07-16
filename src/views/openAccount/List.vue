@@ -1,7 +1,7 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <open-account-search @onSearch="handleSearch" />
+      <open-account-search @onSearch="onSearch" />
     </div>
     <div class="contentBox">
       <el-row style="margin-bottom:15px;margin-left:20px">
@@ -15,7 +15,7 @@
         <el-table-column prop="contactPhone" label="联系电话" width="240" align="center"></el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
-            <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="onEdit(scope.row)" type="primary" size="mini">编辑</el-button>
             <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
           </template>
         </el-table-column>
@@ -100,7 +100,7 @@ export default {
         });
     },
     /*输入条件时可进行条件查询*/
-    handleSearch(params) {
+    onSearch(params) {
         this.deleteForSearch = true;
       this.$store
         .dispatch("openAccount/getTotal", { filter: params ? params : {} })
@@ -154,7 +154,7 @@ export default {
       this.dialogVisible = false;
     },
     /*点击记录进行编辑*/
-    handleEdit(row) {
+    onEdit(row) {
       this.dialogVisible = true;
       this.curNode = row;
       this.update = true;

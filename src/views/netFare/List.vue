@@ -1,7 +1,7 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <net-fare-search @onSearch="handleSearch" />
+      <net-fare-search @onSearch="onSearch" />
     </div>
     <div class="contentBox">
       <el-row style="margin-bottom:15px;margin-left:20px">
@@ -33,7 +33,7 @@
         </el-table-column>
         <el-table-column label="操作" align="center" width="150">
           <template slot-scope="scope">
-            <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="onEdit(scope.row)" type="primary" size="mini">编辑</el-button>
             <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
           </template>
         </el-table-column>
@@ -116,7 +116,7 @@ export default {
         });
     },
     /*输入条件时可进行条件查询*/
-    handleSearch(params) {
+    onSearch(params) {
       const newParams = {};
       if (params) {
         for (let key in params) {
@@ -160,7 +160,7 @@ export default {
       this.dialogVisible = false;
     },
     /*点击记录进行编辑*/
-    handleEdit(row) {
+    onEdit(row) {
       this.dialogVisible = true;
       this.curNode = row;
       this.update = true;
@@ -194,13 +194,13 @@ export default {
     handlePrevClick() {
       this.pageFlag = -1;
       this.lastId = this.tableData[0].flightCode;
-      this.handleSearch(this.searchForm);
+      this.onSearch(this.searchForm);
     },
     /*翻后页*/
     handleNextClick() {
       this.pageFlag = 1;
       this.lastId = this.tableData[this.tableData.length - 1].flightCode;
-      this.handleSearch(this.searchForm);
+      this.onSearch(this.searchForm);
     },
     open(func, data, message) {
       this.$confirm(message, "提示", {

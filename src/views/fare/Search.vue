@@ -107,7 +107,7 @@ export default {
       this.more = !this.more;
     },
 
-    handleSearch() {
+    onSearch() {
       if (this.formData.segment && "" != this.formData.segment) {
         this.formData.segment = this.formData.segment.toUpperCase();
       } else {

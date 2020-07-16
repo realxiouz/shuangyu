@@ -1,7 +1,7 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <airline-search @onSearch="handleSearch"></airline-search>
+      <airline-search @onSearch="onSearch"></airline-search>
     </div>
     <div class="contentBox">
       <el-row style="margin-bottom:15px;margin-left:26px;">
@@ -10,7 +10,7 @@
       <el-table
         :data="tableData"
         ref="tableData"
-        @row-dblclick="handleEdit"
+        @row-dblclick="onEdit"
         style="width: 100%;margin-bottom:15px;"
         size="mini"
         v-loading="loading"
@@ -25,7 +25,7 @@
         </el-table-column>
         <el-table-column label="操作" fixed="right" align="center" width="350">
           <template slot-scope="scope">
-            <el-button @click="handleEdit(scope.row)" type="primary" size="small">编辑</el-button>
+            <el-button @click="onEdit(scope.row)" type="primary" size="small">编辑</el-button>
             <el-button @click="lookFlights(scope.row.flights)" type="primary" size="small">查看航班</el-button>
             <el-button @click="lookSegments(scope.row.segments)" type="primary" size="small">查看航段</el-button>
             <el-button @click="removeOne(scope.row.airlineCode)" type="danger" size="small">删除</el-button>
@@ -33,9 +33,9 @@
         </el-table-column>
       </el-table>
       <el-pagination
-        @size-change="handleSizeChange"
-        @prev-click="handlePrev"
-        @next-click="handleNext"
+        @size-change="onSizeChange"
+        @prev-click="onPrev"
+        @next-click="onNext"
         background
         layout="total,sizes,prev,next"
         prev-text="上一页"
@@ -75,7 +75,7 @@
 import airlineSearch from "./Search.vue";
 import airlineEdit from "./Edit.vue";
 import LookLnfo from "./LookLnfo.vue";
-import { MIXIN_TABLE } from "@/utils/mixin";
+import { MIXIN_LIST } from "@/utils/mixin";
 
 export default {
   data() {
@@ -108,7 +108,7 @@ export default {
             .dispatch("airline/removeOne", { airlineCode: id })
             .then(() => {
               if (1 === this.tableData.length) {
-                this.handlePrev();
+                this.onPrev();
               } else {
                 this.loadData();
               }
@@ -152,6 +152,6 @@ export default {
       return str.substring(0, str.length - 2);
     }
   },
-  mixins: [MIXIN_TABLE]
+  mixins: [MIXIN_LIST]
 };
 </script>

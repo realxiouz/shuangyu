@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <search class="page-search" ref="search" @onSearch="handleSearch" />
+    <search class="page-search" ref="search" @onSearch="onSearch" />
     <el-row class="page-tools" justify="space-between">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       <el-button icon="el-icon-download" type="primary" size="mini" @click="handleExport">导出</el-button>
@@ -34,7 +34,7 @@
       </el-table-column>
       <el-table-column width="300" label="操作" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="handleEdit(scope.row.voucherId)">修改</el-button>
+          <el-button size="mini" type="primary" @click="onEdit(scope.row.voucherId)">修改</el-button>
           <el-button size="mini" type="danger" @click="handleDel(scope.row.voucherId)">删除</el-button>
         </template>
       </el-table-column>
@@ -47,10 +47,10 @@
       next-text="下一页"
       :page-size="pageSize"
       :total="total"
-      @prev-click="handlePrev"
-      @next-click="handleNext"
+      @prev-click="onPrev"
+      @next-click="onNext"
     ></el-pagination>
-    <edit :visible.sync="dialogVisible" :editVoucherId="editVoucherId" @refresh="handleRefresh"/>
+    <edit :visible.sync="dialogVisible" :editVoucherId="editVoucherId" @refresh="onRefresh"/>
   </div>
 </template>
 
@@ -101,23 +101,23 @@
       loadData() {
         this.getList();
       },
-      handleSearch(params) {
+      onSearch(params) {
         this.params = params;
         this.pageFlag = 0;
         this.lastId = null;
         this.loadData();
       },
-      handleRefresh() {
-        this.handleSearch();
+      onRefresh() {
+        this.onSearch();
       },
-      handlePrev() {
+      onPrev() {
         this.pageFlag = -1;
         if (this.tableData.length > 0) {
           this.lastId = this.tableData[0].voucherId;
         }
         this.loadData();
       },
-      handleNext() {
+      onNext() {
         this.pageFlag = 1;
         if (this.tableData.length > 0) {
           this.lastId = this.tableData[this.tableData.length - 1].voucherId;
@@ -135,7 +135,7 @@
         }
         exportExcel(this, 'get', '/finance/export/voucher/excel', { ids: this.exportIds }, '凭证文件');
       },
-      handleEdit(id) {
+      onEdit(id) {
         this.editVoucherId = id;
         this.dialogVisible = true;
       },
@@ -146,7 +146,7 @@
           type: 'warning'
         }).then(() => {
           this.$store.dispatch("voucher/removeOne", {voucherId: id}).then(() => {
-            this.handleRefresh();
+            this.onRefresh();
             this.$message({ type: "success", message: "删除成功！" });
           });
         });

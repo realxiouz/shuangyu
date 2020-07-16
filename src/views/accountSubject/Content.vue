@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <div class="page-search">
-      <accountSubject-search @onSearch="handleSearch"></accountSubject-search>
+      <accountSubject-search @onSearch="onSearch"></accountSubject-search>
     </div>
     <el-row class="page-tools">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
@@ -183,7 +183,7 @@
         this.codeEnabled = false;
         this.dialogVisible = true;
       },
-      handleSearch(params) {
+      onSearch(params) {
         const newParams = {};
         if (params) {
           for (let key in params) {

@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <search class="page-search" ref="search" @onSearch="handleSearch"/>
+    <search class="page-search" ref="search" @onSearch="onSearch"/>
     <el-row class="page-tools" type="flex" justify="space-between">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加功能</el-button>
     </el-row>
@@ -22,7 +22,7 @@
       </el-table-column>
       <el-table-column width="160" label="操作" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" @click="handleEdit(scope.row.featureId)">修改</el-button>
+          <el-button size="mini" @click="onEdit(scope.row.featureId)">修改</el-button>
           <el-button size="mini" type="danger" @click="handleDel(scope.row.featureId)">删除</el-button>
         </template>
       </el-table-column>
@@ -35,10 +35,10 @@
       next-text="下一页"
       :page-size="pageSize"
       :total="total"
-      @prev-click="handlePrev"
-      @next-click="handleNext"
+      @prev-click="onPrev"
+      @next-click="onNext"
     ></el-pagination>
-    <edit :visible.sync="dialogVisible" :feature-id="featureId" @refresh="handleRefresh"/>
+    <edit :visible.sync="dialogVisible" :feature-id="featureId" @refresh="onRefresh"/>
   </div>
 </template>
 
@@ -83,23 +83,23 @@
             this.total = data.total;
           });
       },
-      handleSearch(params) {
+      onSearch(params) {
         this.params = params;
         this.pageFlag = 0;
         this.lastId = null;
         this.loadData();
       },
-      handleRefresh() {
-        this.handleSearch();
+      onRefresh() {
+        this.onSearch();
       },
-      handlePrev() {
+      onPrev() {
         this.pageFlag = -1;
         if (this.tableData.length > 0) {
           this.lastId = this.tableData[0].featureId;
         }
         this.loadData();
       },
-      handleNext() {
+      onNext() {
         this.pageFlag = 1;
         if (this.tableData.length > 0) {
           this.lastId = this.tableData[this.tableData.length - 1].featureId;
@@ -110,7 +110,7 @@
         this.featureId = '';
         this.dialogVisible = true;
       },
-      handleEdit(id) {
+      onEdit(id) {
         this.featureId = id;
         this.dialogVisible = true;
       },
@@ -121,7 +121,7 @@
           type: 'warning'
         }).then(() => {
           this.$store.dispatch("productFeature/removeOne", {featureId: id}).then(() => {
-            this.handleRefresh();
+            this.onRefresh();
             this.$message({type: "success", message: "删除成功"});
           });
         });

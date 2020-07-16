@@ -1,8 +1,11 @@
-import { PAGE_SIZES } from '@/utils/const';
+import {PAGE_SIZES} from '@/utils/const';
 
-export const MIXIN_TABLE = {
+export const MIXIN_LIST = {
   data() {
     return {
+      keyId: '',
+      keyName: '',
+      actionName: '',
       dialogVisible: false,
       pageFlag: 0,
       pageSize: PAGE_SIZES[0],
@@ -10,7 +13,6 @@ export const MIXIN_TABLE = {
       total: 0,
       tableData: [],
       loading: false,
-      beanIdName: '',
       pageSizes: PAGE_SIZES,
       params: {}
     };
@@ -41,47 +43,47 @@ export const MIXIN_TABLE = {
           this.loading = false;
         });
     },
-    handlePrev() {
+    onPrev() {
       this.pageFlag = -1;
       if (this.tableData.length > 0) {
-        this.lastId = this.tableData[0][this.beanIdName];
+        this.lastId = this.tableData[0][this.keyName];
       }
       this.loadData();
     },
-    handleNext() {
+    onNext() {
       this.pageFlag = 1;
       if (this.tableData.length > 0) {
-        this.lastId = this.tableData[this.tableData.length - 1][
-          this.beanIdName
-        ];
+        this.lastId = this.tableData[this.tableData.length - 1][this.keyName];
       }
       this.loadData();
     },
-    handleSearch(params) {
-      for (const key in params) {
-        !params[key] && delete params[key]
+    onSearch(params) {
+      if (!params) {
+        for (const key in params) {
+          !params[key] && delete params[key]
+        }
       }
       this.params = params;
       this.pageFlag = 0;
       this.lastId = null;
       this.loadData();
     },
-    handleSizeChange(pageSize) {
+    onSizeChange(pageSize) {
       this.pageSize = pageSize;
       this.lastId = null;
       this.pageFlag = 0;
       this.loadData();
     },
-    handleAdd() {
-      this[this.beanIdName] = '';
+    onAdd() {
+      this.keyId = '';
       this.dialogVisible = true;
     },
-    handleEdit(i) {
-      this[this.beanIdName] = i[this.beanIdName];
+    onEdit(row) {
+      this.keyId = row[this.keyName];
       this.dialogVisible = true;
     },
-    handleRefresh() {
-      this.handleSearch({})
+    onRefresh() {
+      this.onSearch();
     }
   },
   created() {

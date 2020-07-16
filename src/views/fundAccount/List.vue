@@ -1,7 +1,7 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <fund-account-search @onSearch="handleSearch"></fund-account-search>
+      <fund-account-search @onSearch="onSearch"></fund-account-search>
     </div>
     <div class="contentBox">
       <el-row style="margin-bottom:15px;margin-left:22px;">
@@ -176,7 +176,7 @@
         this.codeEnabled = false;
         this.dialogVisible = true;
       },
-      handleSearch(params) {
+      onSearch(params) {
         const newParams = {};
         if (params) {
           for (let key in params) {

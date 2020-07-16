@@ -142,7 +142,7 @@
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="平台账号:">
             <el-input
-              @keyup.enter.native="handleSearch"
+              @keyup.enter.native="onSearch"
               v-model="formData.accountId"
               clearable
               style="width: 100%"
@@ -156,7 +156,7 @@
         type="primary"
         icon="el-icon-search"
         size="mini"
-        @click="handleSearch"
+        @click="onSearch"
       >查询
       </el-button>
       <el-button icon="el-icon-refresh" class="filter-item" type="primary" size="mini" @click="handleClear">清空
@@ -242,7 +242,7 @@
             handleMore() {
                 this.more = !this.more;
             },
-            handleSearch() {
+            onSearch() {
                 this.$refs.form.validate((valid) => {
                     if (valid) {
                         this.$emit('onSearch', this.formData)

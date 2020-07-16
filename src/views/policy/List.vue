@@ -1,7 +1,7 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <policy-search @onSearch="handleSearch"></policy-search>
+      <policy-search @onSearch="onSearch"></policy-search>
     </div>
     <div class="contentBox">
       <el-row style="margin-bottom:15px;margin-left:35px;">
@@ -49,7 +49,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
-        @size-change="handleSizeChange"
+        @size-change="onSizeChange"
         @prev-click="prevClick"
         @next-click="nextClick"
         :current-page="currentPage"
@@ -96,7 +96,7 @@ export default {
     };
   },
   methods: {
-    handleSizeChange: function(size) {
+    onSizeChange: function(size) {
       this.pageSize = size;
       this.loadData(this.searchParams);
     },
@@ -140,7 +140,7 @@ export default {
           console.log(error);
         });
     },
-    handleSearch(params) {
+    onSearch(params) {
       if (!params) {
         params = {};
         this.searchParams = params;
@@ -191,7 +191,7 @@ export default {
           this.$store
             .dispatch("policy/removeOne", { user: user, domain: domain })
             .then(() => {
-              this.handleSearch();
+              this.onSearch();
             });
         })
         .catch(err => {
@@ -210,7 +210,7 @@ export default {
       this.$store
         .dispatch("policy/save", formData)
         .then(() => {
-          this.handleSearch();
+          this.onSearch();
         })
         .catch(error => {
           console.log(error);

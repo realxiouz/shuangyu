@@ -1,7 +1,7 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <job-scheduler-search ref="search" @onSearch="handleSearch"></job-scheduler-search>
+      <job-scheduler-search ref="search" @onSearch="onSearch"></job-scheduler-search>
     </div>
     <div class="contentBox">
       <el-row style="margin-bottom:15px; margin-left:38px;">
@@ -31,7 +31,7 @@
           <template slot-scope="scope">
             <el-button v-if="scope.row.status==1" @click="handleStop(scope.row.schedulerId)" type="primary" size="mini">停止</el-button>
             <el-button v-else @click="handleStart(scope.row.schedulerId)" type="primary" size="mini">启动</el-button>
-            <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="onEdit(scope.row)" type="primary" size="mini">编辑</el-button>
             <el-button @click="removeOne(scope.row.schedulerId)" type="danger" size="mini">删除</el-button>
           </template>
         </el-table-column>
@@ -43,7 +43,7 @@
         next-text="下一页"
         :page-size="pageSize"
         :total="total"
-        @size-change="handleSizeChange"
+        @size-change="onSizeChange"
         @prev-click="handlePrevClick"
         @next-click="handleNextClick"
       ></el-pagination>
@@ -218,7 +218,7 @@
             console.error(err);
           });
       },
-      handleSizeChange(pageSize) {
+      onSizeChange(pageSize) {
         this.pageSize = pageSize;
         this.lastId = null;
         this.loadData();
@@ -233,7 +233,7 @@
         this.lastId = this.tableData[this.tableData.length - 1].schedulerId;
         this.loadData();
       },
-      handleSearch(params) {
+      onSearch(params) {
         if (Object.keys(params).length == 0) {
           this.lastId = null;
         }
@@ -244,7 +244,7 @@
         this.updateFlag = false;
         this.dialogVisible = true;
       },
-      handleEdit(row) {
+      onEdit(row) {
         this.schedulerId = row.schedulerId;
         this.updateFlag = true;
         this.dialogVisible = true;

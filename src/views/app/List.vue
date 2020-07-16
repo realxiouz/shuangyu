@@ -1,7 +1,7 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <app-search @onSearch="handleSearch"></app-search>
+      <app-search @onSearch="onSearch"></app-search>
     </div>
     <div class="contentBox">
       <el-row style="margin-bottom:15px;margin-left:40px">
@@ -32,7 +32,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
-        @size-change="handleSizeChange"
+        @size-change="onSizeChange"
         @prev-click="prevClick"
         @next-click="nextClick"
         background
@@ -183,11 +183,11 @@
                     });
                 this.dialogVisible = false;
             },
-            handleSizeChange(pageSize) {
+            onSizeChange(pageSize) {
                 this.pageSize = pageSize;
                 this.loadData();
             },
-            handleSearch(params) {
+            onSearch(params) {
                 const newParams = {};
                 if (params) {
                     for (let key in params) {

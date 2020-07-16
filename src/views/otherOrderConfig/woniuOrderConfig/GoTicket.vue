@@ -35,7 +35,7 @@
       <el-table-column prop="arr" label="到达地" width="150" align="center"></el-table-column>
       <el-table-column fixed="right" label="操作"  width="180" align="center">
         <template slot-scope="scope">
-          <el-button disabled @click="handleEdit(scope.row)" type="primary" size="mini">查看</el-button>
+          <el-button disabled @click="onEdit(scope.row)" type="primary" size="mini">查看</el-button>
           <el-button disabled @click="handleDelete(scope.row)" type="danger" size="mini">处理</el-button>
         </template>
       </el-table-column>
@@ -61,7 +61,7 @@ export default {
     formatAmount,
     handleSave(formData) {},
     handleCancel() {},
-    handleEdit(row) {},
+    onEdit(row) {},
     handleDelete(row) {},
     formatDate(dateStr, format) {
       if (dateStr > 0) {

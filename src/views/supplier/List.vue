@@ -1,7 +1,7 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <firm-search @onSearch="handleSearch"></firm-search>
+      <firm-search @onSearch="onSearch"></firm-search>
     </div>
     <div class="contentBox">
       <el-row style="margin-bottom:15px; margin-left:25px;">
@@ -27,7 +27,7 @@
         <el-table-column prop="remark" label="备注" align="center"></el-table-column>
         <el-table-column label="操作" align="center" fixed="right" width="350">
           <template slot-scope="scope">
-            <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+            <el-button type="primary" size="mini" @click="onEdit(scope.$index, scope.row)">编辑</el-button>
             <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
             <el-button size="mini" :type="scope.row.staffId?'success':'info'"
                        :disabled="scope.row.staffId?true:false"
@@ -46,7 +46,7 @@
         next-text="下一页"
         :page-size="pageSize"
         :total="total"
-        @size-change="handleSizeChange"
+        @size-change="onSizeChange"
         @prev-click="handlePrevClick"
         @next-click="handleNextClick"
       ></el-pagination>
@@ -136,7 +136,7 @@
                 this.lastId = this.tableData[this.tableData.length - 1].merchantId;
                 this.loadData();
             },
-            handleSizeChange(pageSize) {
+            onSizeChange(pageSize) {
                 this.pageSize = pageSize;
                 this.loadData();
             },
@@ -189,7 +189,7 @@
                     });
             },
             /*根据关键字进行供应商搜索*/
-            handleSearch(params) {
+            onSearch(params) {
                 const newParams = {};
                 if (params) {
                     for (let key in params) {
@@ -207,7 +207,7 @@
             handleAdd() {
                 this.skipDetail();
             },
-            handleEdit(index, row) {
+            onEdit(index, row) {
                 this.skipDetail(row.merchantId);
             },
             handleDelete(index, row) {

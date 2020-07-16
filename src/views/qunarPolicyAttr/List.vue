@@ -3,7 +3,7 @@
     <el-row style="margin-bottom:15px;">
       <el-button type="warning" @click="goBack" size="mini">返回</el-button>
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
-      <!--      <param-search @onSearch="handleSearch"></param-search>-->
+      <!--      <param-search @onSearch="onSearch"></param-search>-->
     </el-row>
     <el-table
       v-loading="loading"
@@ -46,7 +46,7 @@
       <el-table-column prop="remark" label="备注" :show-overflow-tooltip="true" align="center"></el-table-column>
       <el-table-column label="操作" align="center" width="180">
         <template slot-scope="scope">
-          <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
+          <el-button @click="onEdit(scope.row)" type="primary" size="mini">编辑</el-button>
           <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
         </template>
       </el-table-column>
@@ -208,7 +208,7 @@
         }
         return ret;
       },
-      handleSearch(params) {
+      onSearch(params) {
         if (!params.merchantId) {
           params = {};
         }
@@ -227,7 +227,7 @@
         this.dialogVisible = false;
       },
 
-      handleEdit(row) {
+      onEdit(row) {
         this.isEdit = true;
         this.attrId = row.attrId;
         this.dialogVisible = true;

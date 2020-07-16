@@ -11,7 +11,7 @@
         <el-table-column prop="remark" label="备注" align="center"></el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
-            <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+            <el-button type="primary" size="mini" @click="onEdit(scope.$index, scope.row)">编辑</el-button>
             <el-button type="danger" size="mini" @click="handleRemove(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
@@ -114,7 +114,7 @@
                     }
                 });
             },
-            handleEdit(idx, row) {
+            onEdit(idx, row) {
                 this.update = true;
                 this.account = Object.assign({}, row);
                 this.tmpAccount = row;

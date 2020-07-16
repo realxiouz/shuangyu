@@ -1,7 +1,7 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <role-search ref="user" @onSearch="handleSearch"></role-search>
+      <role-search ref="user" @onSearch="onSearch"></role-search>
     </div>
     <div class="contentBox">
       <el-row style="margin-bottom:15px;margin-left:50px;">
@@ -29,7 +29,7 @@
         </el-table-column>
         <el-table-column label="操作" align="center" fixed="right" width="200">
           <template slot-scope="scope">
-            <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="onEdit(scope.row)" type="primary" size="mini">编辑</el-button>
             <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
           </template>
         </el-table-column>
@@ -97,7 +97,7 @@
                         console.log(error);
                     });
             },
-            handleEdit(row) {
+            onEdit(row) {
                 this.dialogVisible = true;
                 this.roleId = row.roleId;
             },
@@ -184,7 +184,7 @@
             handleCancel: function () {
                 this.dialogVisible = false;
             },
-            handleSearch(params) {
+            onSearch(params) {
                 this.deleteForSearch = true;
                 let newParams = {};
                 if (params) {

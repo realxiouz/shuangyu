@@ -27,7 +27,7 @@
         </el-table-column>
         <el-table-column label="操作" align="center" width="180">
           <template slot-scope="scope">
-            <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="onEdit(scope.row)" type="primary" size="mini">编辑</el-button>
             <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
           </template>
         </el-table-column>
@@ -153,7 +153,7 @@
             handleCancel() {
                 this.dialogVisible = false;
             },
-            handleEdit(row) {
+            onEdit(row) {
                 this.dialogVisible = true;
                 this.curNode = row;
                 this.update = true;

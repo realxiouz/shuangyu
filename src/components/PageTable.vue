@@ -10,9 +10,9 @@
         prev-text="上一页"
         next-text="下一页"
         :total="total"
-        @prev-click="handlePrev"
-        @next-click="handleNext"
-        @size-change="handleSizeChange"
+        @prev-click="onPrev"
+        @next-click="onNext"
+        @size-change="onSizeChange"
         layout="total,sizes,prev,next"
         :page-size="pageSizes[0]"
         :page-sizes="pageSizes"
@@ -22,10 +22,10 @@
 </template>
 
 <script>
-import { MIXIN_TABLE } from "@/utils/mixin";
+import { MIXIN_LIST } from "@/utils/mixin";
 
 export default {
-  mixins: [MIXIN_TABLE]
+  mixins: [MIXIN_LIST]
 };
 </script>
 
