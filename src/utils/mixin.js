@@ -22,29 +22,28 @@ export const MIXIN_LIST = {
   },
   methods: {
     loadData() {
-      if (!this.actions.getPageList) {
-        throw new Error('getPageList action is null');
+      if (this.actions.getPageList) {
+        this.loading = true;
+        this.$store
+          .dispatch(this.actions.getPageList, {
+            pageSize: this.pageSize,
+            lastId: this.lastId,
+            pageFlag: this.pageFlag,
+            ...this.params
+          })
+          .then(data => {
+            if (data) {
+              this.tableData = data.rows;
+              this.total = data.total;
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          })
+          .finally(_ => {
+            this.loading = false;
+          });
       }
-      this.loading = true;
-      this.$store
-        .dispatch(this.actions.getPageList, {
-          pageSize: this.pageSize,
-          lastId: this.lastId,
-          pageFlag: this.pageFlag,
-          ...this.params
-        })
-        .then(data => {
-          if (data) {
-            this.tableData = data.rows;
-            this.total = data.total;
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        })
-        .finally(_ => {
-          this.loading = false;
-        });
     },
     onPrev() {
       this.pageFlag = -1;
@@ -87,20 +86,19 @@ export const MIXIN_LIST = {
     },
     onDel(id) {
       if (!this.actions.removeOne) {
-        throw new Error('removeOne action is null');
-      }
-      this.$confirm('确定删除?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.$store.dispatch(this.actions.removeOne, {deviceId: id}).then(() => {
-          this.onRefresh();
-          this.$message({type: "success", message: "删除成功"});
+        this.$confirm('确定删除?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$store.dispatch(this.actions.removeOne, {deviceId: id}).then(() => {
+            this.onRefresh();
+            this.$message({type: "success", message: "删除成功"});
+          });
+        }).catch(error => {
+          console.log(error);
         });
-      }).catch(error => {
-        console.log(error);
-      });
+      }
     },
     onRefresh() {
       this.onSearch();
@@ -158,18 +156,17 @@ export const MIXIN_EDIT = {
     },
     onSave() {
       if (!this.actions.saveOne) {
-        throw new Error('saveOne action is null');
+        this.$store
+          .dispatch(this.actions.saveOne, this.formData)
+          .then(id => {
+            if (!this._.isEmpty(id)) {
+              this.formData[this.keyName] = id;
+            }
+            this.dialogVisible = false;
+            this.$emit('refresh');
+            this.$message({type: "success", message: "保存成功"});
+          });
       }
-      this.$store
-        .dispatch(this.actions.saveOne, this.formData)
-        .then(id => {
-          if (!this._.isEmpty(id)) {
-            this.formData[this.keyName] = id;
-          }
-          this.dialogVisible = false;
-          this.$emit('refresh');
-          this.$message({type: "success", message: "保存成功"});
-        });
     },
     defaultFormData() {
       return {};
@@ -179,17 +176,16 @@ export const MIXIN_EDIT = {
     },
     loadData() {
       if (!this.actions.getOne) {
-        throw new Error('getOne action is null');
-      }
-      if (this.keyId) {
-        this.$store
-          .dispatch(this.actions.getOne, {id: this.keyId})
-          .then(data => {
-            this.formData = data;
-          })
-          .catch(error => {
-            console.log(error);
-          });
+        if (this.keyId) {
+          this.$store
+            .dispatch(this.actions.getOne, {id: this.keyId})
+            .then(data => {
+              this.formData = data;
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        }
       }
     }
   },
