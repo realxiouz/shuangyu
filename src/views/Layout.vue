@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-aside width="auto" v-show="isDisplay">
-      <Sidebar v-loading="loading" :menuList="routes" :collapse="isCollapse"/>
+      <Sidebar :menuList="routes" :collapse="isCollapse"/>
     </el-aside>
     <el-container>
       <el-header style="height:94px;padding:0 0;">
