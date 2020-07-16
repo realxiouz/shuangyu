@@ -58,6 +58,9 @@
         <el-form-item label="排序" prop="sort">
           <el-input type="number" placeholder="请输入导航路由排序(sort)" v-model="formData.sort"></el-input>
         </el-form-item>
+        <el-form-item label="组件" prop="component">
+          <el-input type="text" placeholder="请输入路由组件名称(navName)" v-model="formData.component"></el-input>
+        </el-form-item>
         <el-form-item label="是否启用">
           <el-switch v-model="formData.enable"></el-switch>
         </el-form-item>

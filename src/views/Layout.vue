@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-aside width="auto" v-show="isDisplay">
-      <Sidebar v-loading="loading" :menuList="menus" :collapse="isCollapse"/>
+      <Sidebar v-loading="loading" :menuList="routes" :collapse="isCollapse"/>
     </el-aside>
     <el-container>
       <el-header style="height:94px;padding:0 0;">
@@ -134,6 +134,7 @@
   import Sidebar from "@/components/SideBar.vue";
   import SelectFirms from "@/components/SelectFirms.vue";
   import ScrollPane from "@/components/TagsView/ScrollPane.vue";
+  import {mapState} from 'vuex'
 
   // @ is an alias to /src
   export default {
@@ -164,7 +165,8 @@
       },
       key() {
         return this.$router.path;
-      }
+      },
+      ...mapState('user', ['routes']),
     },
     watch: {
       screenWidth(val) {

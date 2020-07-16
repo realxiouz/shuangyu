@@ -1,28 +1,28 @@
 <template v-if="item.children">
   <el-submenu
     v-if="item.children && item.children.length > 0"
-    :index="item.uri"
+    :index="item.path"
   >
     <template slot="title">
       <i class="el-icon-menu"></i>
-      <span slot="title">{{ item.title }}</span>
+      <span slot="title">{{ item.meta.title }}</span>
     </template>
 
     <template v-for="child in item.children">
       <sidebar-item
         v-if="child.children && child.children.length > 0"
         :item="child"
-        :key="child.navId"
+        :key="child.path"
       />
-      <el-menu-item v-else :key="child.navId" :index="child.uri">
+      <el-menu-item v-else :key="child.path" :index="child.path">
         <i class="el-icon-location"></i>
-        <span slot="title">{{ child.title }}</span>
+        <span slot="title">{{ child.meta.title }}</span>
       </el-menu-item>
     </template>
   </el-submenu>
-  <el-menu-item v-else :index="item.uri">
+  <el-menu-item v-else :index="item.path">
     <i class="el-icon-menu"></i>
-    <span slot="title">{{ item.title }}</span>
+    <span slot="title">{{ item.meta.title }}</span>
   </el-menu-item>
 </template>
 

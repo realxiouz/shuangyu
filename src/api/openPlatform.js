@@ -1,17 +1,16 @@
 import request from '@/utils/request';
 
-
-export function removeOne(id) {
+export function getOne(id) {
   return request({
-    url: `/third/open/platform/remove/one/${id}`,
-    method: 'delete'
+    url: `/third/open/platform/get/one/${id}`,
+    method: 'get'
   });
 }
 
-export function updateOne(id, data) {
+export function saveOne(data) {
   return request({
-    url: `/third/open/platform/update/one/${id}`,
-    method: 'put',
+    url: '/third/open/platform/save/one',
+    method: 'post',
     data
   });
 }
@@ -20,12 +19,11 @@ export function getList(params) {
   return request({
     url: `/third/open/platform/get/list`,
     method: 'get',
-    params: params
+    params
   });
 }
 
-export function getPageList(args) {
-  const { pageFlag, pageSize, ...params } = args
+export function getPageList(pageFlag, pageSize, params) {
   return request({
     url: `/third/open/platform/get/page/list/${pageFlag}/${pageSize}`,
     method: 'get',
@@ -33,25 +31,9 @@ export function getPageList(args) {
   });
 }
 
-export function getTotal(params) {
+export function removeOne(id) {
   return request({
-    url: `/third/open/platform/get/total`,
-    method: 'get',
-    params: params
-  });
-}
-
-export function getOne(id) {
-  return request({
-    url: `/third/open/platform/get/one/${id}`,
-    method: 'get'
-  });
-}
-
-export function addOne(data) {
-  return request({
-    url: "/third/open/platform/add/one",
-    method: "post",
-    data
+    url: `/third/open/platform/remove/one/${id}`,
+    method: 'delete'
   });
 }
