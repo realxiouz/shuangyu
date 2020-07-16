@@ -134,8 +134,11 @@
         </el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="160">
           <template slot-scope="scope">
-            <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
-            <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
+            <el-button v-show="scope.row.warehouseStatus == 2" @click="handleWarehouse(scope.row)" type="primary"
+                       size="mini">入库
+            </el-button>
+            <el-button v-show="scope.row.orderStatus == 0" @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
+            <el-button v-show="scope.row.orderStatus == 0" @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
