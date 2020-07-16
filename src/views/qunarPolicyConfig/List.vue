@@ -20,7 +20,7 @@
         <el-table-column label="操作" fixed="right" align="center" width="250">
           <template slot-scope="scope">
             <el-button @click="onEdit(scope.row)" type="primary" size="mini">编辑</el-button>
-            <el-button @click="handleDelete(scope.row,scope.$index)" type="danger" size="small">删除</el-button>
+            <el-button @click="onDel(scope.row,scope.$index)" type="danger" size="small">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -95,7 +95,7 @@
         this.dialogVisible = true;
         this.configId = row.configId;
       },
-      handleDelete(row) {
+      onDel(row) {
         this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",

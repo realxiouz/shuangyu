@@ -28,7 +28,7 @@
           <template slot-scope="scope">
             <el-button type="primary" size="mini" @click="handleAddChild(scope.row.firmId)">添加子企业</el-button>
             <el-button type="primary" size="mini" @click="onEdit(scope.row.firmId)">编辑</el-button>
-            <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            <el-button type="danger" size="mini" @click="onDel(scope.$index, scope.row)">删除</el-button>
             <el-button size="mini"
                        :type="scope.row.userId?'success':'info'"
                        :disabled="scope.row.userId?true:false"
@@ -326,7 +326,7 @@
                 this.dialogVisible = true;
             },
             /*点击删除*/
-            handleDelete(index, row) {
+            onDel(index, row) {
                 this.open(
                     this.remove,
                     row.firmId,

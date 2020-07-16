@@ -21,7 +21,7 @@
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
           <el-button @click="onEdit(scope.row.brandId)" type="primary" size="mini">编辑</el-button>
-          <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
+          <el-button @click="onDel(scope.row)" type="danger" size="mini">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -141,7 +141,7 @@
                 this.dialogVisible = true;
                 this.brandId = brandId;
             },
-            handleDelete(row) {
+            onDel(row) {
                 this.open(
                     this.delete,
                     row.brandId,
