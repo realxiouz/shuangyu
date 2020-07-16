@@ -15,6 +15,7 @@
           <span style="font-size:larger;margin-left: 15px;font-weight: bolder;">销售单信息</span>
           <span style="font-size: 24px; margin: 0 20px; color: #ff4600;">{{orderDetail_orderState}}</span>
           <span style="color: #F56C6C">{{orderDetail_orderComment}}</span>
+          <el-tag type="primary" v-if="sourceStr">{{sourceStr}}</el-tag>
         </span>
         <div style="padding: 20px">
           <el-row :gutter="20">
@@ -283,7 +284,9 @@
         //订单详情意见及备注
         orderDetail_orderComment: "",
         //订单详情触发定时器
-        detailInfoTimer: null
+        detailInfoTimer: null,
+
+        sourceStr: ''
       };
     },
     components: {},
@@ -461,10 +464,14 @@
               ).textContent;
               let orderComment = el.querySelector(
                 "#j-switch-orderBook > form.j-passenger > div.btn-box.j-ticket-btn > span.light > div"
-              ).textContent;
+              );
               if (orderComment) {
-                this.orderDetail_orderComment = orderComment;
+                this.orderDetail_orderComment = orderComment.textContent;
               }
+
+              let sourceNode = el.querySelectorAll('.e-bkifo-lf')[1].querySelector('.label-info')
+              sourceNode && (this.sourceStr = sourceNode.textContent)
+              this.sourceStr == 'qunar派单' && (this.sourceStr = 'qunar派单(300)')
             }
           })
           .catch(error => {
