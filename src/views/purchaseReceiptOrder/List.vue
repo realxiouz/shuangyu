@@ -86,7 +86,7 @@
             <el-button v-show="scope.row.orderStatus == 0" @click="handleWarehouse(scope.row)" type="primary"
                        size="mini">入库
             </el-button>
-            <el-button v-show="scope.row.orderStatus == 0" @click="handleEdit(scope.row)" type="primary" size="mini">
+            <el-button v-show="scope.row.orderStatus == 0" @click="onEdit(scope.row)" type="primary" size="mini">
               编辑
             </el-button>
             <el-button v-show="scope.row.orderStatus == 0" @click="handleDelete(scope.row)" type="danger" size="mini">
@@ -96,7 +96,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
-        @size-change="handleSizeChange"
+        @size-change="onSizeChange"
         @prev-click="handlePrevClick"
         @next-click="handleNextClick"
         background
@@ -152,7 +152,7 @@
                 this.loadData(this.searchParams);
                 this.loadData();
             },
-            handleSizeChange(pageSize) {
+            onSizeChange(pageSize) {
                 this.pageSize = pageSize;
                 this.loadData();
             },
@@ -198,7 +198,7 @@
                         console.log(error);
                     });
             },
-            handleEdit(row) {
+            onEdit(row) {
                 this.skipDetail(row.orderNo);
             },
             handleDelete(row) {

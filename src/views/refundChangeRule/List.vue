@@ -1,7 +1,7 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <refund-change-rule-search @onSearch="handleSearch"></refund-change-rule-search>
+      <refund-change-rule-search @onSearch="onSearch"></refund-change-rule-search>
     </div>
     <div class="contentBox">
       <el-row style="margin-bottom:15px;margin-left:25px;">
@@ -12,20 +12,20 @@
         size="mini"
         :data="tableData"
         ref="tableData"
-        @row-dblclick="handleEdit"
+        @row-dblclick="onEdit"
         style="width: 100%;margin-bottom:15px;"
       >
         <el-table-column prop="airlineCode" label="航司二字码" align="center"></el-table-column>
         <el-table-column prop="cabin" label="舱位" align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="200">
           <template slot-scope="scope">
-            <el-button @click="handleEdit(scope.row)" type="primary" size="small">编辑</el-button>
+            <el-button @click="onEdit(scope.row)" type="primary" size="small">编辑</el-button>
             <el-button @click="removeOne(scope.row.ruleId)" type="danger" size="small">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
       <el-pagination
-        @size-change="handleSizeChange"
+        @size-change="onSizeChange"
         @prev-click="prevClick"
         @next-click="nextClick"
         :current-page="currentPage"
@@ -93,7 +93,7 @@ export default {
           console.log(error);
         });
     },
-    handleSizeChange(pageSize) {
+    onSizeChange(pageSize) {
       this.pageSize = pageSize;
       this.lastId = null;
       this.pageFlag = 0;
@@ -137,7 +137,7 @@ export default {
           console.error(err);
         });
     },
-    handleEdit(row) {
+    onEdit(row) {
       this.ruleId = row.ruleId;
       this.dialogVisible = true;
     },
@@ -148,7 +148,7 @@ export default {
       this.dialogVisible = false;
       this.loadData();
     },
-    handleSearch(params) {
+    onSearch(params) {
       this.searchForm = params;
       this.lastId = null;
       this.pageFlag = 0;

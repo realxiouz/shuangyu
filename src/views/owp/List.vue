@@ -1,7 +1,7 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <owp-search ref="search" @onSearch="handleSearch"></owp-search>
+      <owp-search ref="search" @onSearch="onSearch"></owp-search>
     </div>
     <div class="contentBox">
       <el-row style="margin-bottom:15px; margin-left:38px;">
@@ -23,7 +23,7 @@
           <template slot-scope="scope">
             <el-button @click="start(scope.row)" type="primary" size="mini">启动</el-button>
             <el-button @click="stop(scope.row)" type="primary" size="mini">停止</el-button>
-            <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="onEdit(scope.row)" type="primary" size="mini">编辑</el-button>
             <el-button @click="handleCopy(scope.row)" type="primary" size="mini">复制</el-button>
             <el-button @click="removeOne(scope.row.id)" type="danger" size="mini">删除</el-button>
           </template>
@@ -36,7 +36,7 @@
         next-text="下一页"
         :page-size="pageSize"
         :total="total"
-        @size-change="handleSizeChange"
+        @size-change="onSizeChange"
         @prev-click="handlePrevClick"
         @next-click="handleNextClick"
       ></el-pagination>
@@ -106,7 +106,7 @@
             console.log(error);
           });
       },
-      handleSizeChange(pageSize) {
+      onSizeChange(pageSize) {
         this.pageSize = pageSize;
         this.lastId = null;
         this.loadData();
@@ -122,7 +122,7 @@
         this.loadData();
       },
 
-      handleSearch(params) {
+      onSearch(params) {
         if (Object.keys(params).length == 0) {
           this.lastId = null;
         }
@@ -133,7 +133,7 @@
         this.updateFlag = false;
         this.id = "";
       },
-      handleEdit(row) {
+      onEdit(row) {
         this.dialogVisible = true;
         this.updateFlag = true;
         this.id = row.id;

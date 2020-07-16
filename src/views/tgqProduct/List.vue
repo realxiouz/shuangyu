@@ -1,7 +1,7 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <tgq-product-search @onSearch="handleSearch"></tgq-product-search>
+      <tgq-product-search @onSearch="onSearch"></tgq-product-search>
     </div>
     <div class="contentBox">
       <el-row style="margin-bottom:15px;margin-left:40px;">
@@ -38,7 +38,7 @@
               type="primary"
               size="mini"
             >启动</el-button>
-            <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="onEdit(scope.row)" type="primary" size="mini">编辑</el-button>
             <el-button @click="handleCopy(scope.row)" type="primary" size="mini">复制</el-button>
             <el-button
               @click.native.prevent="removeOne(scope.row.schedulerId)"
@@ -90,7 +90,7 @@ export default {
           });
       }
     },
-    handleEdit(row) {
+    onEdit(row) {
       if (row.status == 1) {
         this.$confirm("是否确定停止此产品编辑?", "提示", {
           confirmButtonText: "确定",
@@ -139,7 +139,7 @@ export default {
           console.log(error);
         });
     },
-    handleSearch(params) {
+    onSearch(params) {
       this.searchForm = params;
       this.loadData();
     },

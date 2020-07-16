@@ -47,6 +47,14 @@ export function updateOne(userId, data) {
   });
 }
 
+export function saveOne(data) {
+  return request({
+    url: `/admin/user/save/one`,
+    method: 'post',
+    data
+  });
+}
+
 export function updateMany(filter, data) {
   return request({
     url: `/admin/user/update/many`,

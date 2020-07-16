@@ -1,7 +1,7 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <warehouse-search @onSearch="handleSearch"></warehouse-search>
+      <warehouse-search @onSearch="onSearch"></warehouse-search>
     </div>
     <div class="contentBox">
       <!-- 按钮组件 -->
@@ -163,7 +163,7 @@
         this.codeEnabled = false;
         this.dialogVisible = true;
       },
-      handleSearch(params) {
+      onSearch(params) {
         const newParams = {};
         if (params) {
           for (let key in params) {

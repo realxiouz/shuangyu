@@ -19,7 +19,7 @@
         <el-table-column prop="remark" label="备注" align="center"></el-table-column>
         <el-table-column label="操作" fixed="right" align="center" width="250">
           <template slot-scope="scope">
-            <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="onEdit(scope.row)" type="primary" size="mini">编辑</el-button>
             <el-button @click="handleDelete(scope.row,scope.$index)" type="danger" size="small">删除</el-button>
           </template>
         </el-table-column>
@@ -91,7 +91,7 @@
           this.$router.go(-1);
         }
       },
-      handleEdit(row) {
+      onEdit(row) {
         this.dialogVisible = true;
         this.configId = row.configId;
       },
@@ -177,7 +177,7 @@
         this.$store
           .dispatch(url, formData)
           .then(() => {
-            this.handleSearch();
+            this.onSearch();
           })
           .catch(error => {
             console.log(error);
@@ -188,7 +188,7 @@
         this.dialogVisible = false;
       }
       ,
-      handleSearch(params = {}) {
+      onSearch(params = {}) {
         this.deleteForSearch = true;
         params.merchantId = this.merchantId;
         this.loadData(params);
@@ -198,7 +198,7 @@
     created() {
       this.merchantDomain = this.$route.query.domain;
       this.merchantId = this.$route.query.firmId;
-      this.handleSearch();
+      this.onSearch();
     },
     components: {
       configEdit

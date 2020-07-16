@@ -1,7 +1,7 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <firm-search @onSearch="handleSearch"></firm-search>
+      <firm-search @onSearch="onSearch"></firm-search>
     </div>
     <div class="contentBox">
       <el-row style="margin-bottom:15px; margin-left:25px;">
@@ -27,7 +27,7 @@
         <el-table-column label="操作" fixed="right" align="center" width="400">
           <template slot-scope="scope">
             <el-button type="primary" size="mini" @click="handleAddChild(scope.row.firmId)">添加子企业</el-button>
-            <el-button type="primary" size="mini" @click="handleEdit(scope.row.firmId)">编辑</el-button>
+            <el-button type="primary" size="mini" @click="onEdit(scope.row.firmId)">编辑</el-button>
             <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
             <el-button size="mini"
                        :type="scope.row.userId?'success':'info'"
@@ -38,7 +38,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
-        @size-change="handleSizeChange"
+        @size-change="onSizeChange"
         @prev-click="handlePrevClick"
         @next-click="handleNextClick"
         background
@@ -180,7 +180,7 @@
                     });
             },
 
-            handleSizeChange(pageSize) {
+            onSizeChange(pageSize) {
                 this.pageSize = pageSize;
                 this.loadData();
             },
@@ -204,7 +204,7 @@
                 return gender == 0 ? "男" : "女";
             },
             /*根据关键字进行企业搜索*/
-            handleSearch(params) {
+            onSearch(params) {
                 const newParams = {};
                 if (params) {
                     for (let key in params) {
@@ -320,7 +320,7 @@
                 this.dialogVisible = true;
             },
             /*点击编辑*/
-            handleEdit(firmId) {
+            onEdit(firmId) {
                 this.editFirmId = firmId;
                 this.pid = "";
                 this.dialogVisible = true;

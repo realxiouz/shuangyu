@@ -127,7 +127,7 @@
         this.codeEnabled = false;
         this.dialogVisible = true;
       },
-      handleSearch(params) {
+      onSearch(params) {
         const newParams = {};
         if (params) {
           for (let key in params) {

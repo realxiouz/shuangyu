@@ -1,7 +1,7 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <pnrjy-order-config-search @onSearch="handleSearch" />
+      <pnrjy-order-config-search @onSearch="onSearch" />
     </div>
     <div class="contentBox">
       <!-- <el-row style="margin-bottom:15px;margin-left:23px">
@@ -82,13 +82,13 @@
         </el-table-column>
         <el-table-column fixed="right" label="操作" width="180" align="center">
           <template slot-scope="scope">
-            <el-button disabled @click="handleEdit(scope.row)" type="primary" size="mini">查看</el-button>
+            <el-button disabled @click="onEdit(scope.row)" type="primary" size="mini">查看</el-button>
             <el-button disabled @click="handleDelete(scope.row)" type="danger" size="mini">处理</el-button>
           </template>
         </el-table-column>
       </el-table>
       <el-pagination
-        @size-change="handleSizeChange"
+        @size-change="onSizeChange"
         @prev-click="prevClick"
         @next-click="nextClick"
         :current-page="currentPage"
@@ -152,7 +152,7 @@ export default {
     formatAmount,
     formatAmountAndPeople,
     formatQunarStatus,
-    handleSizeChange(size) {
+    onSizeChange(size) {
       this.pageSize = size;
       this.searchParams.pageSize = this.pageSize;
       this.loadData(this.searchParams);
@@ -196,7 +196,7 @@ export default {
           console.log(error);
         });
     },
-    handleSearch(params) {
+    onSearch(params) {
       if (!params) {
         params = {};
         this.searchParams = params;
@@ -242,7 +242,7 @@ export default {
     },
     handleSave(formData) {},
     handleCancel() {},
-    handleEdit(row) {},
+    onEdit(row) {},
     handleDelete(row) {}
   },
   created() {

@@ -1,7 +1,7 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <open-search @onSearch="handleSearch"></open-search>
+      <open-search @onSearch="onSearch"></open-search>
     </div>
     <div class="contentBox">
       <el-row style="margin-bottom:15px; margin-left:40px;">
@@ -35,9 +35,9 @@
         </el-table-column>
       </el-table>
       <el-pagination
-        @size-change="handleSizeChange"
-        @prev-click="handlePrev"
-        @next-click="handleNext"
+        @size-change="onSizeChange"
+        @prev-click="onPrev"
+        @next-click="onNext"
         background
         layout="total,sizes,prev,next"
         prev-text="上一页"
@@ -68,7 +68,7 @@
 <script>
     import openEdit from "./Edit.vue";
     import openSearch from "./Search.vue";
-    import { MIXIN_TABLE } from "@/utils/mixin";
+    import { MIXIN_LIST } from "@/utils/mixin";
 
     export default {
         name: "List",
@@ -125,7 +125,7 @@
                     .then(res => {
                         console.log(res);
                         if (res.code === 0) {
-                            this.handleSearch();
+                            this.onSearch();
                             this.loadTotal();
                             this.$message({
                                 type: "success",
@@ -160,7 +160,7 @@
             openEdit,
             openSearch
         },
-        mixins: [MIXIN_TABLE]
+        mixins: [MIXIN_LIST]
 
     };
 </script>

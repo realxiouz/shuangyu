@@ -17,7 +17,7 @@
         <el-table-column prop="airportCity" label="机场所在城市" align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="200">
           <template slot-scope="scope">
-            <el-button @click="handleEdit(scope.row)" type="primary" size="small">编辑</el-button>
+            <el-button @click="onEdit(scope.row)" type="primary" size="small">编辑</el-button>
             <el-button @click="handleDelete(scope.row)" type="danger" size="small">删除</el-button>
           </template>
         </el-table-column>
@@ -146,7 +146,7 @@ export default {
     handleCancel() {
       this.dialogVisible = false;
     },
-    handleEdit(row) {
+    onEdit(row) {
       this.dialogVisible = true;
       this.curNode = row;
       this.update = true;

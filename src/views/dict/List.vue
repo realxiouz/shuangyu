@@ -17,7 +17,7 @@
             <span>{{ node.data.categoryName }}</span>
             <span>
               <el-button type="text" size="mini" @click="nodeAdd(node, data)">添加</el-button>
-              <el-button type="text" size="mini" @click="handleEdit(node, data)">修改</el-button>
+              <el-button type="text" size="mini" @click="onEdit(node, data)">修改</el-button>
               <el-button type="text" size="mini" @click="removeNode(node, data)">移除</el-button>
             </span>
           </span>
@@ -213,7 +213,7 @@
                     this.dictVisible = true;
                 }
             },
-            handleEdit(data, node) {
+            onEdit(data, node) {
                 this.addFlag = false;
                 this.formData = node;
                 this.dialogVisible = true;

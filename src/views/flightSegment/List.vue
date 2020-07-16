@@ -1,7 +1,7 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <segment-search @onSearch="handleSearch"></segment-search>
+      <segment-search @onSearch="onSearch"></segment-search>
     </div>
     <div class="contentBox">
       <el-row style="margin-bottom:15px;margin-left:10px;">
@@ -12,7 +12,7 @@
         size="mini"
         :data="tableData"
         ref="tableData"
-        @row-dblclick="handleEdit"
+        @row-dblclick="onEdit"
         highlight-current-row
         style="width: 100%;margin-bottom:15px;"
       >
@@ -20,7 +20,7 @@
         <el-table-column prop="arr" label="目的地" align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="350">
           <template slot-scope="scope">
-            <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="onEdit(scope.row)" type="primary" size="mini">编辑</el-button>
             <el-button @click="lookFlights(scope.row.flights)" type="primary" size="small">查看航班</el-button>
             <el-button @click="lookSegments(scope.row.airlines)" type="primary" size="small">查看航司</el-button>
             <el-button @click="removeOne(scope.row.segment)" type="danger" size="mini">删除</el-button>
@@ -28,7 +28,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
-        @size-change="handleSizeChange"
+        @size-change="onSizeChange"
         @prev-click="prevClick"
         @next-click="nextClick"
         :current-page="currentPage"
@@ -116,7 +116,7 @@ export default {
           console.log(error);
         });
     },
-    handleSizeChange(pageSize) {
+    onSizeChange(pageSize) {
       this.pageSize = pageSize;
       this.lastId = null;
       this.loadData();
@@ -156,7 +156,7 @@ export default {
           console.error(err);
         });
     },
-    handleEdit(row) {
+    onEdit(row) {
       this.segment = row.segment;
       this.dialogVisible = true;
     },
@@ -180,7 +180,7 @@ export default {
       this.isFlights = false;
       this.showInfo = true;
     },
-    handleSearch(params) {
+    onSearch(params) {
       const newParams = {};
       if (params) {
         for (let key in params) {

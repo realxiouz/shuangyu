@@ -1,7 +1,7 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <apiSearch @onSearch="handleSearch"></apiSearch>
+      <apiSearch @onSearch="onSearch"></apiSearch>
     </div>
     <div class="contentBox">
       <el-row style="margin-bottom:15px;margin-left:40px;">
@@ -172,7 +172,7 @@
                         console.error(err);
                     });
             },
-            handleSizeChange(pageSize) {
+            onSizeChange(pageSize) {
                 this.pageSize = pageSize;
                 this.loadData();
             },
@@ -205,7 +205,7 @@
             handleCancel() {
                 this.dialogVisible = false;
             },
-            handleSearch(params) {
+            onSearch(params) {
                 const newParams = {};
 
                 if (params) {

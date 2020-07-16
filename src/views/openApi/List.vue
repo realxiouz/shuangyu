@@ -1,7 +1,7 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <apiSearch @onSearch="handleSearch"></apiSearch>
+      <apiSearch @onSearch="onSearch"></apiSearch>
     </div>
     <div class="contentBox">
       <el-row style="margin-bottom:15px;margin-left:15px;">
@@ -289,7 +289,7 @@ export default {
       this.$store
         .dispatch(url, this.formData)
         .then(() => {
-          this.handleSearch();
+          this.onSearch();
         })
         .catch(error => {
           console.log(error);
@@ -305,7 +305,7 @@ export default {
     handleCancel() {
       this.dialogVisible = false;
     },
-    handleSearch(params) {
+    onSearch(params) {
       this.deleteForSearch = true;
       if (!params) {
         params = {};
@@ -363,7 +363,7 @@ export default {
     }
   },
   created() {
-    this.handleSearch();
+    this.onSearch();
   },
   components: {
     apiSearch

@@ -1,7 +1,7 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <firm-search @onSearch="handleSearch"></firm-search>
+      <firm-search @onSearch="onSearch"></firm-search>
     </div>
     <div class="contentBox">
       <!--
@@ -50,9 +50,9 @@
         -->
       </el-table>
       <el-pagination
-        @size-change="handleSizeChange"
-        @prev-click="handlePrev"
-        @next-click="handleNext"
+        @size-change="onSizeChange"
+        @prev-click="onPrev"
+        @next-click="onNext"
         background
         layout="total,sizes,prev,next"
         prev-text="上一页"
@@ -68,7 +68,7 @@
 <script>
   import firmEdit from "./Edit";
   import firmSearch from "./Search";
-  import { MIXIN_TABLE } from "@/utils/mixin";
+  import { MIXIN_LIST } from "@/utils/mixin";
 
   export default {
     data() {
@@ -121,7 +121,7 @@
     components: {
       firmSearch
     },
-    mixins: [MIXIN_TABLE]
+    mixins: [MIXIN_LIST]
 
   };
 </script>

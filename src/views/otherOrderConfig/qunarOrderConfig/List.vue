@@ -1,7 +1,7 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <qunar-order-config-search @onSearch="handleSearch" @onExport="handleExport"/>
+      <qunar-order-config-search @onSearch="onSearch" @onExport="handleExport"/>
     </div>
     <div class="contentBox">
       <!--<el-row style="margin-bottom:15px;margin-left:23px">
@@ -60,7 +60,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
-        @size-change="handleSizeChange"
+        @size-change="onSizeChange"
         @prev-click="prevClick"
         @next-click="nextClick"
         :current-page="currentPage"
@@ -146,7 +146,7 @@
       formatAmount,
       formatAmountAndPeople,
       formatQunarStatus,
-      handleSizeChange(size) {
+      onSizeChange(size) {
         this.pageSize = size;
         this.searchParams.pageSize = this.pageSize;
         this.loadData(this.searchParams);
@@ -190,7 +190,7 @@
             console.log(error);
           });
       },
-      handleSearch(params) {
+      onSearch(params) {
         if (!params) {
           params = {};
           this.searchParams = params;

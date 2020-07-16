@@ -35,7 +35,7 @@
           ></el-input>
         </el-form-item>
         <el-form-item size="mini">
-          <el-button size="mini" type="primary" icon="el-icon-search" @click="handleSearch">搜 索</el-button>
+          <el-button size="mini" type="primary" icon="el-icon-search" @click="onSearch">搜 索</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -55,7 +55,7 @@
       <el-table-column prop="skuId" label="sku" align="center"></el-table-column>
     </el-table>
     <el-pagination
-      @size-change="handleSizeChange"
+      @size-change="onSizeChange"
       @prev-click="handlePrevClick"
       @next-click="handleNextClick"
       background
@@ -99,11 +99,11 @@
                 this.lastId = this.productList[this.productList.length - 1].inventoryId;
                 this.loadProducts();
             },
-            handleSizeChange(pageSize) {
+            onSizeChange(pageSize) {
                 this.pageSize = pageSize;
                 this.loadProducts();
             },
-            handleSearch() {
+            onSearch() {
                 this.loadProducts();
             },
             loadProducts() {

@@ -1,7 +1,7 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <flag-param-search @onSearch="handleSearch"></flag-param-search>
+      <flag-param-search @onSearch="onSearch"></flag-param-search>
     </div>
     <div class="contentBox">
       <el-row style="margin-bottom:15px;margin-left:40px;">
@@ -56,7 +56,7 @@ export default {
     };
   },
   methods: {
-    handleSearch(formatDate) {
+    onSearch(formatDate) {
       if (!formatDate || !formatDate.name) {
         formatDate = {};
       }
@@ -83,7 +83,7 @@ export default {
       this.$store
         .dispatch("policyFlagParam/save", formData)
         .then(() => {
-          this.handleSearch();
+          this.onSearch();
         })
         .catch(error => {
           console.log(error);
@@ -122,7 +122,7 @@ export default {
     }
   },
   created() {
-    this.handleSearch();
+    this.onSearch();
   },
   components: {
     flagParamSearch,

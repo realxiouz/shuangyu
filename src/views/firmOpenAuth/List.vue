@@ -1,7 +1,7 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <search @onSearch="handleSearch"></search>
+      <search @onSearch="onSearch"></search>
     </div>
     <div class="contentBox">
       <el-row style="margin-bottom:15px;margin-left:40px">
@@ -29,9 +29,9 @@
         </el-table-column>
       </el-table>
       <el-pagination
-        @size-change="handleSizeChange"
-        @prev-click="handlePrev"
-        @next-click="handleNext"
+        @size-change="onSizeChange"
+        @prev-click="onPrev"
+        @next-click="onNext"
         background
         layout="total,sizes,prev,next"
         prev-text="上一页"
@@ -56,7 +56,7 @@
     import search from "./Search";
     import edit from "./Edit";
     import {formatOpenType} from "@/utils/status.js";
-    import { MIXIN_TABLE } from "@/utils/mixin";
+    import { MIXIN_LIST } from "@/utils/mixin";
 
 
     export default {
@@ -90,7 +90,7 @@
                     .then(() => {
                         this.$store.dispatch("firmOpenAuth/removeOne", {authId: id}).then(() => {
                             if (1 === this.tableData.length) {
-                                this.handlePrev();
+                                this.onPrev();
                             } else {
                                 this.loadData();
                             }
@@ -133,7 +133,7 @@
                 this.dialogVisible = false;
             },
         },
-        mixins: [MIXIN_TABLE],
+        mixins: [MIXIN_LIST],
         components: {
             search,
             edit

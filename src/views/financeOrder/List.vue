@@ -1,7 +1,7 @@
 <template>
   <div class="bigBox">
     <div class="searchBox">
-      <order-report-search @onSearch="handleSearch"></order-report-search>
+      <order-report-search @onSearch="onSearch"></order-report-search>
     </div>
     <div class="contentBox">
       <el-table
@@ -125,7 +125,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
-        @size-change="handleSizeChange"
+        @size-change="onSizeChange"
         @prev-click="prevClick"
         @next-click="nextClick"
         :current-page="currentPage"
@@ -165,7 +165,7 @@ export default {
     formatStatus,
     formatCategory,
     formatOrderType,
-    handleSizeChange: function(size) {
+    onSizeChange: function(size) {
       this.pageSize = size;
       this.searchParams.pageSize = this.pageSize;
       this.loadData(this.searchParams);
@@ -285,7 +285,7 @@ export default {
     handleAdd() {
       this.dialogVisible = true;
     },
-    handleSearch(params) {
+    onSearch(params) {
       if (!params) {
         params = {};
         this.searchParams = params;

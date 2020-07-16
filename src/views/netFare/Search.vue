@@ -20,7 +20,7 @@
         class="filter-item"
         type="primary"
         size="mini"
-        @click="handleSearch"
+        @click="onSearch"
       >查询</el-button>
       <el-button type="text" size="mini" @click="handleMore">
         更多
@@ -53,7 +53,7 @@ export default {
     handleMore() {
       this.more = !this.more;
     },
-    handleSearch() {
+    onSearch() {
       if (this.formData.flightCode && "" != this.formData.flightCode) {
         this.formData.flightCode = this.formData.flightCode.toUpperCase();
       } else {

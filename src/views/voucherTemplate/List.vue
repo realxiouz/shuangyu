@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <search class="page-search" ref="search" @onSearch="handleSearch" />
+    <search class="page-search" ref="search" @onSearch="onSearch" />
     <el-row class="page-tools" type="flex" justify="space-between">
       <el-button
         icon="el-icon-plus"
@@ -44,7 +44,7 @@
       </el-table-column>
       <el-table-column width="300" label="操作" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="handleEdit(scope.row)"
+          <el-button size="mini" type="primary" @click="onEdit(scope.row)"
             >修改</el-button
           >
           <el-button
@@ -62,9 +62,9 @@
       prev-text="上一页"
       next-text="下一页"
       :total="total"
-      @prev-click="handlePrev"
-      @next-click="handleNext"
-      @size-change="handleSizeChange"
+      @prev-click="onPrev"
+      @next-click="onNext"
+      @size-change="onSizeChange"
       layout="total,sizes,prev,next"
       :page-size="pageSizes[0]"
       :page-sizes="pageSizes"
@@ -72,13 +72,13 @@
     <edit
       :visible.sync="dialogVisible"
       :templateId="templateId"
-      @refresh="handleRefresh"
+      @refresh="onRefresh"
     />
   </div>
 </template>
 
 <script>
-import { MIXIN_TABLE } from "@/utils/mixin";
+import { MIXIN_LIST } from "@/utils/mixin";
 import { VOUCHCHER_TEMPLATE_MAP } from "@/utils/const";
 import edit from "./Edit";
 import search from "./Search";
@@ -103,7 +103,7 @@ export default {
         this.$store
           .dispatch("voucherTemplate/removeOne", { templateId: id })
           .then(() => {
-            this.handleRefresh();
+            this.onRefresh();
             this.$message({ type: "success", message: "删除成功" });
           });
       });
@@ -113,7 +113,7 @@ export default {
     edit,
     search
   },
-  mixins: [MIXIN_TABLE]
+  mixins: [MIXIN_LIST]
 };
 </script>
 

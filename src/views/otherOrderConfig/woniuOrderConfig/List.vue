@@ -6,7 +6,7 @@
           <qunar-order-config-search
             ref="qunarOrderConfigSearch"
             :orderType="orderType"
-            @onSearch="handleSearch"
+            @onSearch="onSearch"
           />
         </div>
         <el-divider></el-divider>
@@ -36,7 +36,7 @@
         </el-tab-pane>
         <el-pagination
           style="margin-left:15px;"
-          @size-change="handleSizeChange"
+          @size-change="onSizeChange"
           @prev-click="prevClick"
           @next-click="nextClick"
           :current-page="currentPage"
@@ -79,7 +79,7 @@ export default {
     qunarOrderConfigSearch
   },
   methods: {
-    handleSizeChange(size) {
+    onSizeChange(size) {
       this.pageSize = size;
       this.searchParams.pageSize = this.pageSize;
       this.searchParams.orderType = this.orderType;
@@ -152,7 +152,7 @@ export default {
           console.log(error);
         });
     },
-    handleSearch(params) {
+    onSearch(params) {
       if (!params) {
         params = {};
         this.searchParams = params;
