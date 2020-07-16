@@ -1,53 +1,88 @@
 <template>
-  <div class="bigBox">
-    <div class="searchBox">
-      <airline-change-search @onSearch="search" />
-    </div>
-    <div class="contentBox">
-      <el-row style="margin-bottom:15px;margin-left:22px;">
-        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
-      </el-row>
-      <el-table v-loading="loading" :data="tableData" style="width: 100%;margin-bottom:15px;">
-        <el-table-column prop="airline" label="航司" align="center"></el-table-column>
-        <el-table-column prop="airlines" label="可迁转航司" align="center"></el-table-column>
-        <el-table-column prop="before" label="非自愿改签之前" align="center"></el-table-column>
-        <el-table-column prop="after" label="非自愿改签之后" align="center"></el-table-column>
-        <el-table-column prop="airline" label="航司" align="center"></el-table-column>
-        <el-table-column label="是否启用" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatEnable(scope.row.enable) }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="remark" label="备注" align="center"></el-table-column>
-        <el-table-column label="操作" align="center" width="200">
-          <template slot-scope="scope">
-            <el-button @click="onEdit(scope.row)" type="primary" size="mini">编辑</el-button>
-            <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-dialog
-        :title="!update?'添加航司迁转信息':'编辑航司迁转信息'"
-        center
-        :visible.sync="dialogVisible"
-        width="33%"
-        :close-on-click-modal="false"
+  <div class="page">
+    <search class="page-search" ref="search" @onSearch="onSearch" />
+    <el-row class="page-tools" style="margin-bottom:15px;margin-left:22px;">
+      <el-button
+        icon="el-icon-plus"
+        type="primary"
+        size="mini"
+        @click="handleAdd"
+        >添加</el-button
       >
-        <airlineChangeEdit
-          v-if="dialogVisible"
-          :curNode="curNode"
-          :update="update"
-          @onSave="handleSave"
-          @onCancel="handleCancel"
-        ></airlineChangeEdit>
-      </el-dialog>
-    </div>
+    </el-row>
+    <el-table
+      class="page-table"
+      v-loading="loading"
+      :data="tableData"
+      style="width: 100%;margin-bottom:15px;"
+    >
+      <el-table-column
+        prop="airline"
+        label="航司"
+        align="center"
+      ></el-table-column>
+      <el-table-column
+        prop="airlines"
+        label="可迁转航司"
+        align="center"
+      ></el-table-column>
+      <el-table-column
+        prop="before"
+        label="非自愿改签之前"
+        align="center"
+      ></el-table-column>
+      <el-table-column
+        prop="after"
+        label="非自愿改签之后"
+        align="center"
+      ></el-table-column>
+      <el-table-column
+        prop="airline"
+        label="航司"
+        align="center"
+      ></el-table-column>
+      <el-table-column label="是否启用" align="center">
+        <template slot-scope="scope">
+          <span>{{ formatEnable(scope.row.enable) }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="remark"
+        label="备注"
+        align="center"
+      ></el-table-column>
+      <el-table-column label="操作" align="center" width="200">
+        <template slot-scope="scope">
+          <el-button @click="onEdit(scope.row)" type="primary" size="mini"
+            >编辑</el-button
+          >
+          <el-button @click="handleDelete(scope.row)" type="danger" size="mini"
+            >删除</el-button
+          >
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-dialog
+      :title="!update ? '添加航司迁转信息' : '编辑航司迁转信息'"
+      center
+      :visible.sync="dialogVisible"
+      width="33%"
+      :close-on-click-modal="false"
+    >
+      <edit
+        v-if="dialogVisible"
+        :curNode="curNode"
+        :update="update"
+        @onSave="handleSave"
+        @onCancel="handleCancel"
+      ></edit>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import airlineChangeSearch from "./Search";
-import airlineChangeEdit from "./Edit";
+import search from "./Search";
+import edit from "./Edit";
 
 export default {
   data() {
@@ -59,12 +94,12 @@ export default {
       curNode: {},
       update: false,
       deleteValue: false,
-      searchForm: {},
+      searchForm: {}
     };
   },
   components: {
-    airlineChangeSearch,
-    airlineChangeEdit
+    search,
+    edit
   },
   methods: {
     /*加载数据列表*/
@@ -137,7 +172,11 @@ export default {
     },
     /*对航司迁转信息进行删除*/
     handleDelete(row) {
-      this.open(this.delete, row.airline, "此操作将删除航司迁转信息, 是否继续?");
+      this.open(
+        this.delete,
+        row.airline,
+        "此操作将删除航司迁转信息, 是否继续?"
+      );
     },
     /*根据航司删除航司迁转信息*/
     delete(flightId) {
@@ -188,7 +227,7 @@ export default {
       }
     },
     formatEnable(enable) {
-      if(enable){
+      if (enable) {
         return "启用";
       }
       return "未启用";

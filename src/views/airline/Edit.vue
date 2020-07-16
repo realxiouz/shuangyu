@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page-form">
     <el-form ref="form" :model="formData" :rules="rules" label-width="110px" size="mini">
       <el-form-item prop="airlineName" label="航司名称:">
         <el-input v-model="formData.airlineName"></el-input>

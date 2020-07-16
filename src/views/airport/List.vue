@@ -1,59 +1,79 @@
 <template>
-  <div class="bigBox">
-    <div class="searchBox">
-      <airport-search @onSearch="search"></airport-search>
-    </div>
-    <div class="contentBox">
-      <el-row style="margin-bottom:15px;margin-left:22px;">
-        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
-      </el-row>
-      <el-table v-loading="loading" :data="tableData" style="width: 100%;margin-bottom:15px;">
-        <el-table-column prop="airportCode" label="三字码" align="center"></el-table-column>
-        <el-table-column label="机场名称" align="center">
-          <template slot-scope="scope">
-            <span>{{ formatAirport(scope.row.airportName) }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="airportCity" label="机场所在城市" align="center"></el-table-column>
-        <el-table-column label="操作" align="center" width="200">
-          <template slot-scope="scope">
-            <el-button @click="onEdit(scope.row)" type="primary" size="small">编辑</el-button>
-            <el-button @click="handleDelete(scope.row)" type="danger" size="small">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-pagination
-        @prev-click="handlePrevClick"
-        @next-click="handleNextClick"
-        background
-        layout="total,prev,next"
-        prev-text="上一页"
-        next-text="下一页"
-        :page-size="pageSize"
-        :total="total"
-      ></el-pagination>
-
-      <el-dialog
-        title="机场信息"
-        center
-        :visible.sync="dialogVisible"
-        :close-on-click-modal="false"
-        width="24%"
+  <div class="page">
+    <search class="page-search" ref="search" @onSearch="onSearch" />
+    <el-row class="page-tools" style="margin-bottom:15px;margin-left:22px;">
+      <el-button
+        icon="el-icon-plus"
+        type="primary"
+        size="mini"
+        @click="handleAdd"
+        >添加</el-button
       >
-        <airport-edit
-          v-if="dialogVisible"
-          :cur-node="curNode"
-          :update="update"
-          @onSave="handleSave"
-          @onCancel="handleCancel"
-        ></airport-edit>
-      </el-dialog>
-    </div>
+    </el-row>
+    <el-table
+      class="page-table"
+      v-loading="loading"
+      :data="tableData"
+      style="width: 100%;margin-bottom:15px;"
+    >
+      <el-table-column
+        prop="airportCode"
+        label="三字码"
+        align="center"
+      ></el-table-column>
+      <el-table-column label="机场名称" align="center">
+        <template slot-scope="scope">
+          <span>{{ formatAirport(scope.row.airportName) }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="airportCity"
+        label="机场所在城市"
+        align="center"
+      ></el-table-column>
+      <el-table-column label="操作" align="center" width="200">
+        <template slot-scope="scope">
+          <el-button @click="onEdit(scope.row)" type="primary" size="small"
+            >编辑</el-button
+          >
+          <el-button @click="handleDelete(scope.row)" type="danger" size="small"
+            >删除</el-button
+          >
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-pagination
+      class="page-footer"
+      @prev-click="handlePrevClick"
+      @next-click="handleNextClick"
+      background
+      layout="total,prev,next"
+      prev-text="上一页"
+      next-text="下一页"
+      :page-size="pageSize"
+      :total="total"
+    ></el-pagination>
+
+    <el-dialog
+      title="机场信息"
+      center
+      :visible.sync="dialogVisible"
+      :close-on-click-modal="false"
+      width="24%"
+    >
+      <edit
+        v-if="dialogVisible"
+        :cur-node="curNode"
+        :update="update"
+        @onSave="handleSave"
+        @onCancel="handleCancel"
+      ></edit>
+    </el-dialog>
   </div>
 </template>
 <script>
-import airportSearch from "./Search.vue";
-import airportEdit from "./Edit.vue";
+import search from "./Search.vue";
+import edit from "./Edit.vue";
 
 export default {
   data() {
@@ -91,7 +111,7 @@ export default {
           console.log(error);
         });
     },
-    
+
     search(searchForm) {
       this.deleteForSearch = false;
       if (searchForm.airportName || searchForm.airportCode) {
@@ -233,8 +253,8 @@ export default {
     }
   },
   components: {
-    airportEdit,
-    airportSearch
+    edit,
+    search
   }
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page">
     <el-tabs type="border-card" @tab-click="handleClick">
       <el-tab-pane label="资产">
         <subject-content v-if="0 === category" :category="category" />

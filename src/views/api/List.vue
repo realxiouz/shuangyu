@@ -1,13 +1,11 @@
 <template>
-  <div class="bigBox">
-    <div class="searchBox">
-      <apiSearch @onSearch="onSearch"></apiSearch>
-    </div>
-    <div class="contentBox">
-      <el-row style="margin-bottom:15px;margin-left:40px;">
+  <div class="page">
+      <search class="page-search" ref="search" @onSearch="onSearch"/>
+      <el-row class="page-tools" style="margin-bottom:15px;margin-left:40px;">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table
+        class="page-table" 
         size="mini"
         v-loading="loading"
         :data="tableData"
@@ -44,6 +42,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
+        class="page-footer"
         background
         layout="total,prev,next"
         prev-text="上一页"
@@ -60,15 +59,14 @@
         width="30%"
         :close-on-click-modal="false"
       >
-        <apiEdit v-if="dialogVisible" :api-id="apiId" @onCancel="handleCancel" @onSave="handleSave"></apiEdit>
+        <edit v-if="dialogVisible" :api-id="apiId" @onCancel="handleCancel" @onSave="handleSave"></edit>
       </el-dialog>
     </div>
-  </div>
 </template>
 
 <script>
-    import apiSearch from "./Search.vue";
-    import apiEdit from "./Edit.vue";
+   import edit from "./Edit";
+  import search from "./Search";
 
     export default {
         name: "apiList",
@@ -84,10 +82,10 @@
                 apiId: ""
             };
         },
-        components: {
-            apiEdit,
-            apiSearch
-        },
+       components: {
+      edit,
+      search
+    },
         methods: {
             /*翻前页*/
             handlePrevClick() {

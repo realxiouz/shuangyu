@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page-form">
     <el-form ref="form" :model="formData" label-width="120px" size="mini">
       <el-form-item label="三字码">
         <el-input type="text" v-model="formData.airportCode" @input="toUpperCase" :disabled="update" maxlength="3"></el-input>

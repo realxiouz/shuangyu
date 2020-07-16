@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page-form">
     <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
       <el-form-item label="Api名称:" prop="apiName">
         <el-input v-model="formData.apiName"></el-input>
