@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <search class="page-search" ref="search" @onSearch="onSearch" />
+    <search class="page-search" ref="search" @onSearch="handleSearch" />
     <el-row class="page-tools" type="flex" justify="space-between">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
     </el-row>
@@ -11,7 +11,7 @@
       <el-table-column label="配置地址" align="center" prop="openUrl" />
       <el-table-column width="160" label="操作" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="onEdit(scope.row.openId)">修改</el-button>
+          <el-button size="mini" type="primary" @click="handleEdit(scope.row.openId)">修改</el-button>
           <el-button size="mini" type="danger" @click="handleDel(scope.row.openId)">删除</el-button>
         </template>
       </el-table-column>
@@ -24,10 +24,10 @@
       next-text="下一页"
       :page-size="pageSize"
       :total="total"
-      @prev-click="onPrev"
-      @next-click="onNext"
+      @prev-click="handlePrev"
+      @next-click="handleNext"
     ></el-pagination>
-    <edit :visible.sync="dialogVisible" :editOpenId="editOpenId" @refresh="onRefresh"/>
+    <edit :visible.sync="dialogVisible" :editOpenId="editOpenId" @refresh="handleRefresh"/>
   </div>
 </template>
 
@@ -51,7 +51,15 @@
     },
     methods: {
       formatOpenType(rows) {
-        console.log(rows);
+        let openTypeDesc = '';
+        if(rows.openType && rows.openType === -1){
+          openTypeDesc = '客户';
+        }else if(rows.openType && rows.openType === 0){
+          openTypeDesc = '客户/供应商';
+        }else if(rows.openType && rows.openType === 1){
+          openTypeDesc = '供应商';
+        }
+        return openTypeDesc;
       },
       getList() {
         if (this.lastId) {
@@ -77,23 +85,23 @@
       loadData() {
         this.getList();
       },
-      onSearch(params) {
+      handleSearch(params) {
         this.params = params;
         this.pageFlag = 0;
         this.lastId = null;
         this.loadData();
       },
-      onRefresh() {
-        this.onSearch();
+      handleRefresh() {
+        this.handleSearch();
       },
-      onPrev() {
+      handlePrev() {
         this.pageFlag = -1;
         if (this.tableData.length > 0) {
           this.lastId = this.tableData[0].openId;
         }
         this.loadData();
       },
-      onNext() {
+      handleNext() {
         this.pageFlag = 1;
         if (this.tableData.length > 0) {
           this.lastId = this.tableData[this.tableData.length - 1].openId;
@@ -104,7 +112,7 @@
         this.editOpenId = null;
         this.dialogVisible = true;
       },
-      onEdit(id) {
+      handleEdit(id) {
         this.editOpenId = id;
         this.dialogVisible = true;
       },
@@ -115,7 +123,7 @@
           type: 'warning'
         }).then(() => {
           this.$store.dispatch("openPlatform/removeOne", {openId: id}).then(() => {
-            this.onRefresh();
+            this.handleRefresh();
             this.$message({ type: "success", message: "删除成功" });
           });
         });

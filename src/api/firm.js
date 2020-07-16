@@ -86,20 +86,18 @@ export function getRootPageList(pageFlag, pageSize, filter) {
   });
 }
 
-export function getConfigPageList(args) {
-  const {pageFlag, pageSize, ...params} = args
+export function getConfigPageList(pageFlag, pageSize, params) {
   return request({
-    url:`/firm/open/config/get/page/list/${pageFlag}/${pageSize}`,
+    url: `/firm/open/config/get/page/list/${pageFlag}/${pageSize}`,
     method: `get`,
     params
   });
 }
 
-export function getConfigTotal(filter) {
+export function getConfigOne(openId) {
   return request({
-    url:`/firm/open/config/get/total`,
-    method: `get`,
-    params: filter
+    url: `/firm/open/config/get/one/${openId}`,
+    method: `get`
   });
 }
 
