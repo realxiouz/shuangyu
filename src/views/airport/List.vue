@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch" />
     <el-row class="page-tools" style="margin-bottom:15px;margin-left:22px;">
@@ -8,6 +9,48 @@
         size="mini"
         @click="handleAdd"
         >添加</el-button
+=======
+  <div class="bigBox">
+    <div class="searchBox">
+      <airport-search @onSearch="search"></airport-search>
+    </div>
+    <div class="contentBox">
+      <el-row style="margin-bottom:15px;margin-left:22px;">
+        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+      </el-row>
+      <el-table v-loading="loading" :data="tableData" style="width: 100%;margin-bottom:15px;">
+        <el-table-column prop="airportCode" label="三字码" align="center"></el-table-column>
+        <el-table-column label="机场名称" align="center">
+          <template slot-scope="scope">
+            <span>{{ formatAirport(scope.row.airportName) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="airportCity" label="机场所在城市" align="center"></el-table-column>
+        <el-table-column label="操作" align="center" width="200">
+          <template slot-scope="scope">
+            <el-button @click="onEdit(scope.row)" type="primary" size="small">编辑</el-button>
+            <el-button @click="onDel(scope.row)" type="danger" size="small">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+        @prev-click="handlePrevClick"
+        @next-click="handleNextClick"
+        background
+        layout="total,prev,next"
+        prev-text="上一页"
+        next-text="下一页"
+        :page-size="pageSize"
+        :total="total"
+      ></el-pagination>
+
+      <el-dialog
+        title="机场信息"
+        center
+        :visible.sync="dialogVisible"
+        :close-on-click-modal="false"
+        width="24%"
+>>>>>>> 537e64131bb45b7ac9b244bfc075c8b117863a84
       >
     </el-row>
     <el-table
@@ -181,7 +224,7 @@ export default {
       this.lastId = this.tableData[this.tableData.length - 1].airportCode;
       this.loadData();
     },
-    handleDelete(row) {
+    onDel(row) {
       this.open(
         this.delete,
         row.airportCode,

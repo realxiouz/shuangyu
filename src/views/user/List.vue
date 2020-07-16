@@ -17,39 +17,43 @@
       <el-table-column prop="fullName" label="姓名" width="120" align="center"></el-table-column>
       <el-table-column label="性别" width="50" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.gender|initGender }}</span>
+          <span>{{ scope.row.gender==0?"男":"女"}}</span>
         </template>
       </el-table-column>
       <el-table-column label="出生日期" width="110" align="center">
         <template slot-scope="scope">
-          <i v-if="scope.row.birthDate" class="el-icon-time"></i>
-          <span style="margin-left: 10px">{{ scope.row.birthDate | time('YYYY-MM-DD')}}</span>
+          <div v-if="scope.row.birthDate">
+            <i class="el-icon-time"></i>
+            <span>{{$moment(scope.row.birthDate).format('YYYY-MM-DD')}}</span>
+          </div>
         </template>
       </el-table-column>
       <el-table-column prop="phone" label="手机号" align="center" width="150"></el-table-column>
       <el-table-column prop="email" label="电子邮箱" align="center" width="200"></el-table-column>
       <el-table-column label="角色权限" align="center" width="180">
         <template slot-scope="scope">
-          <span>{{scope.row.roleNames | roles}}</span>
+          <span>{{scope.row.roleNames.join()}}</span>
         </template>
       </el-table-column>
       <el-table-column label="备注" prop="remark" align="center" :fit='true'></el-table-column>
       <el-table-column label="是否启用" align="center" width="100" fixed="right">
         <template slot-scope="scope">
-          <el-switch :value="scope.row.enable" @change="enableSwitch(scope.row)"></el-switch>
+          <el-switch :value="scope.row.enable" @change="onEnable(scope.row)"></el-switch>
         </template>
       </el-table-column>
       <el-table-column label="最后登录" width="120" align="center" fixed="right">
         <template slot-scope="scope">
-          <i v-if="scope.row.lastLoginTime" class="el-icon-time"></i>
-          <span style="margin-left: 10px">{{ scope.row.lastLoginTime | time }}</span>
+          <div v-if="scope.row.lastLoginTime">
+            <i class="el-icon-time"></i>
+            <span>{{$moment(scope.row.lastLoginTime).format('YYYY-MM-DD hh:mm:ss')}}</span>
+          </div>
         </template>
       </el-table-column>
       <el-table-column label="操作" fixed="right" align="center" width="280">
         <template slot-scope="scope">
-          <el-button @click="handleResetPwd(scope.row)" type="primary" size="mini">重置密码</el-button>
+          <el-button @click="onResetPwd(scope.row)" type="primary" size="mini">重置密码</el-button>
           <el-button @click="onEdit(scope.row)" type="primary" size="mini">编辑</el-button>
-          <el-button @click="handleDelete(scope.row)" type="danger" size="mini">删除</el-button>
+          <el-button @click="onDel(scope.row)" type="danger" size="mini">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -76,25 +80,16 @@
   import {MIXIN_LIST} from "@/utils/mixin";
 
   export default {
-    name: "userList",
-    filters: {
-      roles(roleList) {
-        if (roleList instanceof Array) {
-          return roleList.toString();
-        } else {
-          return "";
-        }
-      },
-      initGender(gender) {
-        return gender == 0 ? "男" : "女";
-      }
-    },
+    mixins: [MIXIN_LIST],
     data() {
       return {
         deleteForSearch: false,
-        keyId: "",
-        keyName: "userId",
-        actionName: "user/getPageList",
+        keyId: '',
+        keyName: 'userId',
+        actions: {
+          getPageList: 'user/getPageList',
+          removeOne: 'user/removeOne'
+        }
       };
     },
     components: {
@@ -102,7 +97,7 @@
       search
     },
     methods: {
-      enableSwitch(row) {
+      onEnable(row) {
         row.enable = !row.enable;
         this.$store
           .dispatch("user/updateOne", {
@@ -122,7 +117,7 @@
             console.log(error);
           });
       },
-      handleResetPwd(row) {
+      onResetPwd(row) {
         this.$confirm("此操作将重置该用户的登录密码, 是否继续?", "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
@@ -144,85 +139,7 @@
           })
           .catch(() => {
           });
-      },
-      handleDelete(row) {
-        this.open(
-          this.delete,
-          row.userId,
-          "此操作将删除该用户的所有信息, 是否继续?"
-        );
-      },
-      delete(userId) {
-        this.$store
-          .dispatch("user/removeOne", {userId: userId})
-          .then(() => {
-            this.lastId = null;
-            if (this.tableData.length === 1 && !this.deleteForSearch) {
-              this.handlePrevClick();
-            } else {
-              this.loadData();
-            }
-            this.deleteForSearch = false;
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      },
-      handleCancel() {
-        this.dialogVisible = false;
-      },
-      handleSave(formData) {
-        this.dialogVisible = false;
-        let url = "";
-        let requestData = {};
-        if (this.userId) {
-          url = "user/updateOne";
-          requestData = {userId: formData.user.userId, data: formData.user};
-        } else {
-          url = "user/addOne";
-          requestData = formData;
-        }
-        this.$store
-          .dispatch(url, requestData)
-          .then(() => {
-            this.loadData();
-            if (this.userId != "") {
-              this.$message({
-                type: "success",
-                message: "修改成功！"
-              });
-            } else {
-              this.$message({
-                type: "success",
-                message: "添加成功！"
-              });
-            }
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      },
-      open(func, data, message) {
-        this.$confirm(message, "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        })
-          .then(() => {
-            func(data);
-            this.$message({
-              type: "success",
-              message: "删除成功!"
-            });
-          })
-          .catch(() => {
-            this.$message({
-              type: "info",
-              message: "已取消删除"
-            });
-          });
       }
-    },
-    mixins: [MIXIN_LIST]
+    }
   };
 </script>

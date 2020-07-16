@@ -64,7 +64,7 @@
           >编辑
           </el-button>
           <el-button :disabled="scope.row.staffType == 1?true:false" size="mini" type="danger"
-                     @click="handleDelete(scope.$index, scope.row)">删除
+                     @click="onDel(scope.$index, scope.row)">删除
           </el-button>
         </template>
       </el-table-column>
@@ -492,7 +492,7 @@
                     });
             },
             /*对员工进行删除*/
-            handleDelete(idx, row) {
+            onDel(idx, row) {
                 this.open(this.delete, row.staffId);
             },
             /*根据对应员工ID*/

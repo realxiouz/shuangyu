@@ -28,7 +28,7 @@
         <el-table-column label="操作" align="center" fixed="right" width="350">
           <template slot-scope="scope">
             <el-button type="primary" size="mini" @click="onEdit(scope.$index, scope.row)">编辑</el-button>
-            <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            <el-button type="danger" size="mini" @click="onDel(scope.$index, scope.row)">删除</el-button>
             <el-button size="mini" :type="scope.row.staffId?'success':'info'"
                        :disabled="scope.row.staffId?true:false"
                        @click="handleAssociate(scope.row)">关联用户
@@ -210,7 +210,7 @@
             onEdit(index, row) {
                 this.skipDetail(row.merchantId);
             },
-            handleDelete(index, row) {
+            onDel(index, row) {
                 this.open(
                     this.remove,
                     row.merchantId,
