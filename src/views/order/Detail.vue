@@ -15,7 +15,6 @@
           <span style="font-size:larger;margin-left: 15px;font-weight: bolder;">销售单信息</span>
           <span style="font-size: 24px; margin: 0 20px; color: #ff4600;">{{orderDetail_orderState}}</span>
           <span style="color: #F56C6C">{{orderDetail_orderComment}}</span>
-          <el-tag type="primary" v-if="sourceStr">{{sourceStr}}</el-tag>
         </span>
         <div style="padding: 20px">
           <el-row :gutter="20">
@@ -60,9 +59,14 @@
                   <span>{{formatDate(tableData.deadlineTicketTime,'YYYY-MM-DD HH:mm:ss')}}</span>
                 </el-form-item>
               </el-col>
-              <el-col :span="24">
+              <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
                 <el-form-item label="政策代码:">
                   <span>{{tableData.policyCode}}</span>
+                </el-form-item>
+              </el-col>
+              <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+                <el-form-item label="订单来源:">
+                  <span>{{sourceStr}}</span>
                 </el-form-item>
               </el-col>
             </el-form>
