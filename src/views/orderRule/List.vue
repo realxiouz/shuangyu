@@ -1,13 +1,11 @@
 <template>
-  <div class="bigBox">
-    <div class="searchBox">
-      <order-rule-search @onSearch="onSearch"></order-rule-search>
-    </div>
-    <div class="contentBox">
-      <el-row style="margin-bottom:15px; margin-left:30px;">
+  <div class="page">
+    <search class="page-search" ref="search" @onSearch="onSearch"/>
+      <el-row class="page-tools" style="margin-bottom:15px; margin-left:30px;">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table
+        class="page-table"
         :data="tableData"
         style="width: 100%;margin-bottom: 15px;"
         default-expand-all
@@ -35,6 +33,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
+        class="page-footer"
         @size-change="onSizeChange"
         @prev-click="prevClick"
         @next-click="nextClick"
@@ -46,11 +45,10 @@
         :total="total"
       ></el-pagination>
     </div>
-  </div>
 </template>
 
 <script>
-  import orderRuleSearch from "./Search.vue";
+  import search from "./Search.vue";
 
   export default {
     name: "orderRuleList",
@@ -170,7 +168,7 @@
       this.loadData();
     },
     components: {
-      orderRuleSearch
+      search
     }
   };
 </script>

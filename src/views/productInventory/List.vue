@@ -1,10 +1,8 @@
 <template>
-  <div class="bigBox">
-    <div class="searchBox">
-      <search @onSearch="onSearch"></search>
-    </div>
-    <div class="contentBox">
+  <div class="page">
+      <search class="page-search" @onSearch="onSearch"></search>
       <el-table
+        class="page-table"
         v-loading="loading"
         :data="tableData"
         style="width: 100%;margin-bottom: 15px;"
@@ -35,6 +33,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
+        class="page-footer"
         @size-change="onSizeChange"
         @prev-click="handlePrevClick"
         @next-click="handleNextClick"
@@ -46,7 +45,6 @@
         :total="total"
       ></el-pagination>
     </div>
-  </div>
 </template>
 <script>
     import search from "./Search";

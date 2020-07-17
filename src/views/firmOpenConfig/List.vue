@@ -1,15 +1,13 @@
 <template>
-  <div class="bigBox">
-    <div class="searchBox">
-      <firm-search @onSearch="onSearch"></firm-search>
-    </div>
-    <div class="contentBox">
+  <div class="page">
+    <search class="page-search" ref="search" @onSearch="onSearch"/>
       <!--
-      <el-row style="margin-bottom:15px; margin-left:25px;">
+      <el-row class="page-tools" style="margin-bottom:15px; margin-left:25px;">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       -->
       <el-table
+      class="page-table"
         highlight-current-row
         v-loading="loading"
         size="mini"
@@ -50,6 +48,7 @@
         -->
       </el-table>
       <el-pagination
+        class="page-footer"
         @size-change="onSizeChange"
         @prev-click="onPrev"
         @next-click="onNext"
@@ -62,12 +61,11 @@
         :total="total"
       ></el-pagination>
     </div>
-  </div>
 </template>
 
 <script>
-  import firmEdit from "./Edit";
-  import firmSearch from "./Search";
+  import edit from "./Edit";
+  import search from "./Search";
   import { MIXIN_LIST } from "@/utils/mixin";
 
   export default {
@@ -119,7 +117,7 @@
       //企业名称
     },
     components: {
-      firmSearch
+      search
     },
     mixins: [MIXIN_LIST]
 

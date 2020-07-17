@@ -1,13 +1,11 @@
 <template>
-  <div class="bigBox">
-    <div class="searchBox">
-      <apiSearch @onSearch="onSearch"></apiSearch>
-    </div>
-    <div class="contentBox">
-      <el-row style="margin-bottom:15px;margin-left:15px;">
+  <div class="page">
+    <search class="page-search" ref="search" @onSearch="onSearch"/>
+      <el-row class="page-tools" style="margin-bottom:15px;margin-left:15px;">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table
+        class="page-table"
         v-loading="loading"
         size="mini"
         :data="tableData"
@@ -33,6 +31,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
+        class="page-footer"
         @prev-click="prevClick"
         @next-click="nextClick"
         background
@@ -118,11 +117,10 @@
         </span>
       </el-dialog>
     </div>
-  </div>
 </template>
 
 <script>
-import apiSearch from "./Search.vue";
+import search from "./Search.vue";
 
 function defaultData() {
   return {

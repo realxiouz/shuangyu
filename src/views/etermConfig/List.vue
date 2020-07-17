@@ -1,13 +1,10 @@
 <template>
-  <div class="bigBox">
-    <div class="searchBox">
-      <eterm-config-search @onSearch="onSearch"/>
-    </div>
-    <div class="contentBox">
-      <el-row style="margin-bottom:15px;margin-left:20px">
+  <div class="page">
+    <search class="page-search" ref="search" @onSearch="onSearch"/>
+      <el-row class="page-tools" style="margin-bottom:15px;margin-left:20px">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
-      <el-table size="mini" v-loading="loading" :data="tableData" style="width: 100%;margin-bottom: 15px;" fit>
+      <el-table class="page-table" size="mini" v-loading="loading" :data="tableData" style="width: 100%;margin-bottom: 15px;" fit>
         <el-table-column prop="etermAccount" label="账号" width="150" align="center"></el-table-column>
         <el-table-column prop="etermAddress" label="地址" width="150" align="center"></el-table-column>
         <el-table-column prop="etermPort" label="端口" width="60" align="center"></el-table-column>
@@ -46,21 +43,20 @@
         :close-on-click-modal="false"
         center
       >
-        <eterm-config-edit
+        <edit
           v-if="dialogVisible"
           :update="update"
           :curNode="curNode"
           @onSave="handleSave"
           @onCancel="handleCancel"
-        ></eterm-config-edit>
+        ></edit>
       </el-dialog>
     </div>
-  </div>
 </template>
 
 <script>
-import etermConfigSearch from "./Search";
-import etermConfigEdit from "./Edit";
+import edit from "./Edit";
+  import search from "./Search";
 
 export default {
   data() {
@@ -187,9 +183,9 @@ export default {
   created() {
     this.loadData();
   },
-  components: {
-    etermConfigSearch,
-    etermConfigEdit
-  }
+   components: {
+      edit,
+      search
+    },
 };
 </script>

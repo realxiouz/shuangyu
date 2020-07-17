@@ -1,10 +1,8 @@
 <template>
-  <div class="bigBox">
-    <div class="contentBox">
-      <order-task-search @onSearch="onSearch"></order-task-search>
-    </div>
-    <div class="contentBox">
+  <div class="page">
+    <search class="page-search" ref="search" @onSearch="onSearch"/>
       <el-table
+        class="page-table"
         :data="tableData"
         ref="tableData"
         style="width: 100%;margin-bottom:15px;"
@@ -118,6 +116,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
+        class="page-footer"
         :current-page="currentPage"
         @size-change="onSizeChange"
         @prev-click="prevClick"
@@ -132,11 +131,10 @@
         <span style="font-weight: 400;color:#565656;">第{{ currentPage }}页</span>
       </el-pagination>
     </div>
-  </div>
 </template>
 
 <script>
-import orderTaskSearch from "./Search.vue";
+import search from "./Search.vue";
 import { formatTaskStatus, formatTaskType } from "@/utils/status.js";
 import {
   formatPassengers,

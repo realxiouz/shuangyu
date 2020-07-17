@@ -1,10 +1,11 @@
 <template>
-  <div>
-    <el-row type="flex" justify="space-between" style="margin-bottom:20px;" align="bottom">
+  <div class="page">
+    <el-row class="page-tools" type="flex" justify="space-between" style="margin-bottom:20px;" align="bottom">
       <span style="font-weight:700;color:#303133;" v-if="!staffAddVisible">{{this.curNode.title}}</span>
       <span></span>
     </el-row>
     <el-table
+      class="page-table"
       highlight-current-row
       v-loading="loading"
       stripe

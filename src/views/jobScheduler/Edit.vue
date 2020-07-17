@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page-form">
     <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
       <el-row :gutter="5">
         <el-col :span="12">

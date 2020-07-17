@@ -1,11 +1,11 @@
 <template>
-  <div class="bigBox">
-    <div class="contentBox">
-      <el-row style="margin-bottom:15px;margin-left:15px;">
+  <div class="page">
+      <el-row class="page-tools" style="margin-bottom:15px;margin-left:15px;">
         <el-button type="warning" @click="goBack" size="mini">返回</el-button>
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table
+        class="page-table"
         v-loading="loading"
         size="mini"
         :data="tableData"
@@ -25,6 +25,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
+        class="page-footer"
         @prev-click="prevClick"
         @next-click="nextClick"
         background
@@ -35,15 +36,14 @@
         :total="total"
       ></el-pagination>
       <el-dialog :title="configId?'编辑配置信息':'添加新角色'" center :visible.sync="dialogVisible" width="30%">
-        <config-edit v-if="dialogVisible" :configId="configId" @onSave="handleSave"
-                     @onCancel="handleCancel"></config-edit>
+        <edit v-if="dialogVisible" :configId="configId" @onSave="handleSave"
+                     @onCancel="handleCancel"></edit>
       </el-dialog>
     </div>
-  </div>
 </template>
 
 <script>
-  import configEdit from "./Edit.vue"
+  import edit from "./Edit.vue"
 
   function defaultData() {
     return {
@@ -201,7 +201,7 @@
       this.onSearch();
     },
     components: {
-      configEdit
+      edit
     }
   };
 </script>

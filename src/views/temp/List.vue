@@ -1,7 +1,7 @@
 <template>
-  <div class="app-container">
-    <user-search ref="user" @onSearch="search" @onAdd="addUser"></user-search>
-    <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;">
+  <div class="page">
+    <search class="page-search" ref="search" @onSearch="onSearch"/>
+    <el-table class="page-table" :data="tableData" style="width: 100%;margin-bottom: 20px;">
       <el-table-column
         prop="nickName"
         label="昵称"
@@ -76,6 +76,7 @@
       </el-table-column>
     </el-table>
     <el-pagination
+      class="page-footer"
       background
       layout="total,prev,next"
       prev-text="上一页"
@@ -86,14 +87,14 @@
       @next-click="nextClick">
     </el-pagination>
     <el-dialog title="用户信息" :visible.sync="dialogVisible" width="30%">
-      <user-edit ref="userForm" :init-user-id="userId" @onSave="handleSave" @onCancel="handleCancel"></user-edit>
+      <edit ref="userForm" :init-user-id="userId" @onSave="handleSave" @onCancel="handleCancel"></edit>
     </el-dialog>
   </div>
 </template>
 
 <script>
-  import userEdit from "./Edit.vue";
-  import userSearch from "./Search.vue";
+   import edit from "./Edit";
+  import search from "./Search";
 
   export default {
     name: "userList",
@@ -187,8 +188,8 @@
       }
     },
     components: {
-      userEdit,
-      userSearch
+      edit,
+      search
     }
   };
 </script>

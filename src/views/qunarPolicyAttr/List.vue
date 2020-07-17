@@ -1,11 +1,12 @@
 <template>
-  <div class="contentBox">
-    <el-row style="margin-bottom:15px;">
+  <div class="page">
+    <el-row class="page-tools" style="margin-bottom:15px;">
       <el-button type="warning" @click="goBack" size="mini">返回</el-button>
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
-      <!--      <param-search @onSearch="onSearch"></param-search>-->
+      <!--      <search class="page-search" ref="search" @onSearch="onSearch"/>-->
     </el-row>
     <el-table
+      class="page-table"
       v-loading="loading"
       size="mini"
       :data="tableData"
@@ -52,6 +53,7 @@
       </el-table-column>
     </el-table>
     <el-pagination
+      class="page-footer"
       @prev-click="prevClick"
       @next-click="nextClick"
       background
@@ -67,21 +69,21 @@
       center
       width="55%"
     >
-      <param-edit
+      <edit
         v-if="dialogVisible"
         :merchant-id="merchantId"
         :merchant-domain="merchantDomain"
         :attrId="attrId"
         @onSave="handleSave"
         @onCancel="handleCancel"
-      ></param-edit>
+      ></edit>
     </el-dialog>
   </div>
 </template>
 
 <script>
-  import paramEdit from "./Edit.vue";
-  // import paramSearch from "./Search.vue"
+  import edit from "./Edit.vue";
+  // import search from "./Search.vue"
 
   export default {
     name: "List",
@@ -283,7 +285,7 @@
       this.loadData();
     },
     components: {
-      paramEdit
+      edit
     }
   };
 </script>

@@ -1,6 +1,6 @@
 <template>
-  <div class="contentBox">
-    <el-row :gutter="20">
+  <div class="page">
+    <el-row class="page-search" :gutter="20">
       <el-col :xs="11" :sm="10" :md="9" :lg="8" :xl="8">
         <el-row style="margin-bottom:20px;">
           <span
@@ -22,14 +22,14 @@
         ></el-tree>
       </el-col>
       <el-col :xs="13" :sm="14" :md="15" :lg="16" :xl="16">
-        <staff-form :cur-node="curNode" :staffAddVisible="staffAddVisible" style="width: 100%"/>
+        <edit :cur-node="curNode" :staffAddVisible="staffAddVisible" style="width: 100%"/>
       </el-col>
     </el-row>
   </div>
 </template>
 
 <script>
-    import staffForm from "./Edit";
+    import edit from "./Edit";
 
     export default {
         data() {
@@ -75,7 +75,7 @@
             this.loadTreeData();
         },
         components: {
-            staffForm
+            edit
         }
     };
 </script>

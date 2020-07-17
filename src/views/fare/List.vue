@@ -1,13 +1,11 @@
 <template>
-  <div class="bigBox">
-    <div class="searchBox">
-      <fare-search @onSearch="search" />
-    </div>
-    <div class="contentBox">
-      <el-row style="margin-bottom:15px; margin-left:50px;">
+  <div class="page">
+    <search class="page-search" ref="search" @onSearch="search"/>
+      <el-row class="page-tools" style="margin-bottom:15px; margin-left:50px;">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table
+      class="page-table"
         v-loading="loading"
         :data="tableData"
         style="width: 100%;margin-bottom: 15px;"
@@ -43,6 +41,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
+        class="page-footer"
         background
         layout="total,sizes,prev,next"
         prev-text="上一页"
@@ -60,20 +59,19 @@
         :close-on-click-modal="false"
         width="30%"
       >
-        <fare-edit
+        <edit
           v-if="dialogVisible"
           :curNode="curNode"
           @onSave="handleSave"
           @onCancel="handleCancel"
-        ></fare-edit>
+        ></edit>
       </el-dialog>
     </div>
-  </div>
 </template>
 
 <script>
-import fareSearch from "./Search";
-import fareEdit from "./Edit";
+import edit from "./Edit";
+  import search from "./Search";
 
 export default {
   data() {
@@ -245,9 +243,9 @@ export default {
       };
     }
   },
-  components: {
-    fareSearch,
-    fareEdit
-  }
+ components: {
+      edit,
+      search
+    },
 };
 </script>

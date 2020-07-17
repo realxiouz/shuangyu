@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page-form">
     <el-form ref="jobTagForm" size="mini" :model="formData" label-width="110px" :rules="formRules">
       <input type="hidden" v-model="formData.tagId"/>
       <el-row :gutter="5">

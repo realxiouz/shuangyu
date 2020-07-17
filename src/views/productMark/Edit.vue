@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page-form">
     <el-form :model="formData" label-width="110px" size="mini">
       <el-form-item label="产品标签">
         <el-input v-model="formData.markId" placeholder="请输入产品标签.." :disabled="update"></el-input>

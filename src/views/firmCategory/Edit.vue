@@ -1,11 +1,12 @@
 <template>
-  <div class="contentBox">
+  <div class="page">
     <el-row type="flex" justify="space-between" style="margin-bottom:20px;" align="bottom">
       <span style="font-weight:700;color:#303133;" v-if="!dictVisible">{{this.curNode.categoryName}}</span>
       <span></span>
       <el-button type="primary" size="mini" @click="handleAdd" :disabled="dictVisible">添加</el-button>
     </el-row>
     <el-table
+      class="page-table"
       v-loading="loading"
       size="mini"
       :data="tableData"
@@ -25,6 +26,7 @@
       </el-table-column>
     </el-table>
     <el-pagination
+      class="page-footer" 
       @size-change="onSizeChange"
       @prev-click="handlePrevClick"
       @next-click="handleNextClick"

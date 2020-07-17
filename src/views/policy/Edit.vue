@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page-form">
     <el-form ref="policyForm"  :model="formData" label-width="120px" size="mini">
       <el-form-item label="政策编码:" prop="policyCode">
         <el-input v-model="formData.policyCode" onkeyup="this.value=this.value.toUpperCase()" placeholder="政策编码.."></el-input>

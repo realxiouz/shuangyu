@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="page-form">
     <el-form ref="form" :rules="rules" :model="formData" label-width="80px" size="mini">
       <el-form-item label="客户">
         <el-select v-model="formData.openId" placeholder="请选择" style="width:30%" @change="selectOpen">

@@ -1,13 +1,10 @@
 <template>
-  <div class="bigBox">
-    <div class="searchBox">
-      <open-account-search @onSearch="onSearch" />
-    </div>
-    <div class="contentBox">
-      <el-row style="margin-bottom:15px;margin-left:20px">
+  <div class="page">
+    <search class="page-search" ref="search" @onSearch="onSearch"/>
+      <el-row class="page-tools" style="margin-bottom:15px;margin-left:20px">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
-      <el-table size="mini" v-loading="loading" :data="tableData" style="width: 100%;margin-bottom: 15px;" fit>
+      <el-table class="page-table" size="mini" v-loading="loading" :data="tableData" style="width: 100%;margin-bottom: 15px;" fit>
         <el-table-column prop="openName" label="平台" width="220" align="center"></el-table-column>
         <el-table-column prop="username" label="账号" width="220" align="center"></el-table-column>
         <el-table-column prop="loginUrl" label="登录地址" width="300" align="center"></el-table-column>
@@ -21,6 +18,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
+        class="page-footer"
         background
         layout="total,prev,next"
         prev-text="上一页"
@@ -38,21 +36,20 @@
         :close-on-click-modal="false"
         center
       >
-        <open-account-edit
+        <edit
           v-if="dialogVisible"
           :curNode="curNode"
           :update="update"
           @onSave="handleSave"
           @onCancel="handleCancel"
-        ></open-account-edit>
+        ></edit>
       </el-dialog>
     </div>
-  </div>
 </template>
 
 <script>
-import openAccountSearch from "./Search";
-import openAccountEdit from "./Edit";
+ import edit from "./Edit";
+  import search from "./Search";
 
 export default {
   data() {

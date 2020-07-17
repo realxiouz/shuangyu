@@ -1,5 +1,5 @@
 <template>
-  <div class="bigBox">
+  <div class="page-form">
     <div class="contentBox">
       <div id="goBack" @click="goBack">
         <el-page-header></el-page-header>

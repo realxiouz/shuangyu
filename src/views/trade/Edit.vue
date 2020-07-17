@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page-form">
     <el-form :model="formData" ref="form" :rules="rules" label-width="200px" size="mini">
       <el-form-item label="交易编号:" prop="tradeNo">
         <el-input v-model="formData.tradeNo"

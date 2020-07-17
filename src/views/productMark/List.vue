@@ -1,13 +1,10 @@
 <template>
-  <div class="bigBox">
-    <div class="searchBox">
-      <product-mark-search @onSearch="loadData"></product-mark-search>
-    </div>
-    <div class="contentBox">
-      <el-row style="margin-bottom:15px;margin-left:22px;">
+  <div class="page">
+    <search class="page-search" ref="search" @onSearch="onSearch"/>
+      <el-row class="page-tools" style="margin-bottom:15px;margin-left:22px;">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
-      <el-table size="mini" v-loading="loading" :data="tableData" style="width: 100%;margin-bottom:15px;">
+      <el-table class="page-table" size="mini" v-loading="loading" :data="tableData" style="width: 100%;margin-bottom:15px;">
         <el-table-column prop="markId" label="产品标签" align="center"></el-table-column>
         <el-table-column prop="openName" label="供应商" align="center"></el-table-column>
         <el-table-column prop="domain" label="供应商域名" align="center"></el-table-column>
@@ -33,6 +30,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
+        class="page-footer"
         @prev-click="handlePrevClick"
         @next-click="handleNextClick"
         background
@@ -50,21 +48,20 @@
         :close-on-click-modal="false"
         width="28%"
       >
-        <product-mark-edit
+        <edit
           v-if="dialogVisible"
           :cur-node="curNode"
           :update="update"
           @onSave="handleSave"
           @onCancel="handleCancel"
-        ></product-mark-edit>
+        ></edit>
       </el-dialog>
     </div>
-  </div>
 </template>
 
 <script>
-    import productMarkSearch from "./Search.vue";
-    import productMarkEdit from "./Edit.vue";
+    import edit from "./Edit";
+  import search from "./Search";
 
     export default {
         data() {
@@ -215,8 +212,8 @@
             this.loadData({});
         },
         components: {
-            productMarkSearch,
-            productMarkEdit
+            edit,
+            search
         }
     };
 </script>

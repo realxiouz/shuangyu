@@ -1,10 +1,8 @@
 <template>
-  <div class="bigBox">
-    <div class="searchBox">
-      <order-report-search @onSearch="onSearch"></order-report-search>
-    </div>
-    <div class="contentBox">
+  <div class="page">
+    <search class="page-search" ref="search" @onSearch="onSearch"/>
       <el-table
+        class="page-table"
         :data="tableData"
         size="mini"
         highlight-current-row
@@ -78,6 +76,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
+        class="page-footer"
         @size-change="onSizeChange"
         @prev-click="prevClick"
         @next-click="nextClick"
@@ -90,10 +89,9 @@
         :total="total"
       ></el-pagination>
     </div>
-  </div>
 </template>
 <script>
-import orderReportSearch from "./Search.vue";
+import search from "./Search.vue";
 import {
   formatOrderStatus,
   formatCategory,
@@ -268,7 +266,7 @@ export default {
     }
   },
   components: {
-    orderReportSearch
+    search
   },
   computed: {
     formatDate() {

@@ -1,13 +1,11 @@
 <template>
-  <div class="bigBox">
-    <div class="searchBox">
-      <flag-param-search @onSearch="onSearch"></flag-param-search>
-    </div>
-    <div class="contentBox">
-      <el-row style="margin-bottom:15px;margin-left:40px;">
+  <div class="page">
+    <search class="page-search" ref="search" @onSearch="onSearch"/>
+      <el-row class="page-tools" style="margin-bottom:15px;margin-left:40px;">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table
+        class="page-table"
         v-loading="loading"
         :data="tableData"
         style="width: 100%;margin-bottom: 20px;"
@@ -29,21 +27,19 @@
         </el-table-column>
       </el-table>
       <el-dialog title="用户信息" center :visible.sync="dialogVisible" width="30%">
-        <flag-param-edit
+        <edit
           v-if="dialogVisible"
           :param-id="paramId"
           @onSave="handleSave"
           @onCancel="handleCancel"
-        ></flag-param-edit>
+        ></edit>
       </el-dialog>
     </div>
-  </div>
 </template>
 
 <script>
-import flagParamSearch from "./Search";
-import flagParamEdit from "./Edit";
-
+import edit from "./Edit";
+import search from "./Search";
 export default {
   name: "flagParamList",
   data() {
@@ -125,8 +121,8 @@ export default {
     this.onSearch();
   },
   components: {
-    flagParamSearch,
-    flagParamEdit
+     edit,
+      search
   }
 };
 </script>

@@ -1,13 +1,11 @@
 <template>
-  <div class="bigBox">
-    <div class="searchBox">
-      <wop-search ref="search" @onSearch="onSearch"></wop-search>
-    </div>
-    <div class="contentBox">
-      <el-row style="margin-bottom:15px; margin-left:38px;">
+  <div class="page">
+    <search class="page-search" ref="search" @onSearch="onSearch"/>
+      <el-row class="page-tools" style="margin-bottom:15px; margin-left:38px;">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table
+        class="page-table"
         highlight-current-row
         v-loading="loading"
         :data="tableData"
@@ -38,6 +36,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
+        class="page-footer"
         background
         layout="total,prev,next"
         prev-text="上一页"
@@ -56,7 +55,7 @@
         ref="job-scheduler-edit"
         :close-on-click-modal="false"
       >
-        <wop-edit
+        <edit
           v-if="dialogVisible"
           ref="form"
           :job-scheduler-id="schedulerId"
@@ -64,15 +63,14 @@
           :copy-flag="copyFlag"
           @onSave="handleSave"
           @onCancel="handleCancel"
-        ></wop-edit>
+        ></edit>
       </el-dialog>
     </div>
-  </div>
 </template>
 
 <script>
-  import wopSearch from "./Search";
-  import wopEdit from "./Edit";
+  import edit from "./Edit";
+  import search from "./Search";
 
   export default {
     name: "wopList",
@@ -139,8 +137,8 @@
       };
     },
     components: {
-      wopSearch,
-      wopEdit
+      edit,
+      search
     },
     methods: {
       loadData(params) {

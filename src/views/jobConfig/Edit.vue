@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page-form">
     <el-form ref="jobConfigForm" size="mini" :model="formData" label-width="110px">
       <input type="hidden" v-model="formData.configId"/>
       <div>

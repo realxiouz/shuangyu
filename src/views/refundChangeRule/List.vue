@@ -1,13 +1,11 @@
 <template>
-  <div class="bigBox">
-    <div class="searchBox">
-      <refund-change-rule-search @onSearch="onSearch"></refund-change-rule-search>
-    </div>
-    <div class="contentBox">
-      <el-row style="margin-bottom:15px;margin-left:25px;">
+  <div class="page">
+    <search class="page-search" ref="search" @onSearch="onSearch"/>
+      <el-row class="page-tools" style="margin-bottom:15px;margin-left:25px;">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table
+        class="page-table"
         v-loading="loading"
         size="mini"
         :data="tableData"
@@ -25,6 +23,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
+        class="page-footer"
         @size-change="onSizeChange"
         @prev-click="prevClick"
         @next-click="nextClick"
@@ -37,20 +36,19 @@
         :total="total"
       ></el-pagination>
       <el-dialog title="退改规则" center :visible.sync="dialogVisible" width="55%">
-        <refund-change-rule-edit
+        <edit
           v-if="dialogVisible"
           :rule-id="ruleId"
           ref="form"
           @onSave="handleSave"
           @onCancel="handleCancel"
-        ></refund-change-rule-edit>
+        ></edit>
       </el-dialog>
     </div>
-  </div>
 </template>
 <script>
-import refundChangeRuleSearch from "./Search.vue";
-import refundChangeRuleEdit from "./Edit.vue";
+import edit from "./Edit";
+  import search from "./Search";
 
 export default {
   data() {
@@ -159,8 +157,8 @@ export default {
     this.loadData();
   },
   components: {
-    refundChangeRuleEdit,
-    refundChangeRuleSearch
+    edit,
+      search
   }
 };
 </script>

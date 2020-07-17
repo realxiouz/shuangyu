@@ -1,10 +1,8 @@
 <template>
-  <div class="bigBox">
-    <div class="searchBox">
-      <order-time-search @onSearch="onSearch"></order-time-search>
-    </div>
-    <div class="contentBox">
+  <div class="page">
+    <search class="page-search" ref="search" @onSearch="onSearch"/>
       <el-table
+        class="page-table"
         :data="countData"
         size="mini"
         highlight-current-row
@@ -29,6 +27,7 @@
         <el-table-column prop="count" label="数量" align="center"></el-table-column>
       </el-table>
       <el-pagination
+        class="page-footer"
         @size-change="onSizeChange"
         @prev-click="prevClick"
         @next-click="nextClick"
@@ -41,10 +40,9 @@
         :total="total"
       ></el-pagination>
     </div>
-  </div>
 </template>
 <script>
-    import orderTimeSearch from "./Search.vue";
+    import search from "./Search.vue";
 
     export default {
         name: "orderTime",
@@ -59,7 +57,7 @@
             };
         },
         components: {
-            orderTimeSearch
+            search
         },
         methods: {
             onSizeChange(size) {

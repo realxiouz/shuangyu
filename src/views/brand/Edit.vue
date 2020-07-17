@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page-form">
     <el-dialog :visible.sync="dialogVisible" @open="handleOpen" @close="handleClose">
       <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
         <el-form-item label="品牌编码：" prop="brandCode">

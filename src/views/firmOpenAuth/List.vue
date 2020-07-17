@@ -1,13 +1,11 @@
 <template>
-  <div class="bigBox">
-    <div class="searchBox">
-      <search @onSearch="onSearch"></search>
-    </div>
-    <div class="contentBox">
-      <el-row style="margin-bottom:15px;margin-left:40px">
+  <div class="page">
+   <search class="page-search" ref="search" @onSearch="onSearch"/>
+      <el-row class="page-tools" style="margin-bottom:15px;margin-left:40px">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table
+        class="page-table"
         v-loading="loading"
         :data="tableData"
         style="width: 100%;margin-bottom: 15px;"
@@ -29,6 +27,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
+        class="page-footer"
         @size-change="onSizeChange"
         @prev-click="onPrev"
         @next-click="onNext"
@@ -50,7 +49,6 @@
         ></edit>
       </el-dialog>
     </div>
-  </div>
 </template>
 <script>
     import search from "./Search";

@@ -1,13 +1,11 @@
 <template>
-  <div class="bigBox">
-    <div class="searchBox">
-      <job-scheduler-search ref="search" @onSearch="onSearch"></job-scheduler-search>
-    </div>
-    <div class="contentBox">
-      <el-row style="margin-bottom:15px; margin-left:38px;">
+  <div class="page">
+    <search class="page-search" ref="search" @onSearch="onSearch"/>
+      <el-row class="page-tools" style="margin-bottom:15px; margin-left:38px;">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table
+        class="page-table"
         highlight-current-row
         v-loading="loading"
         :data="tableData"
@@ -35,6 +33,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
+       class="page-footer"
         background
         layout="total,prev,next"
         prev-text="上一页"
@@ -53,22 +52,21 @@
         ref="job-scheduler-edit"
         :close-on-click-modal="false"
       >
-        <job-scheduler-edit
+        <edit
           v-if="dialogVisible"
           ref="form"
           :job-scheduler-id="schedulerId"
           :update-flag="updateFlag"
           @onSave="handleSave"
           @onCancel="handleCancel"
-        ></job-scheduler-edit>
+        ></edit>
       </el-dialog>
     </div>
-  </div>
 </template>
 
 <script>
-  import jobSchedulerSearch from "./Search";
-  import jobSchedulerEdit from "./Edit";
+   import edit from "./Edit";
+  import search from "./Search";
 
   export default {
     name: "jobSchedulerList",
@@ -135,8 +133,8 @@
       };
     },
     components: {
-      jobSchedulerSearch,
-      jobSchedulerEdit
+      edit,
+      search
     },
     methods: {
       loadData(params) {

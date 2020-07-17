@@ -1,13 +1,10 @@
 <template>
-  <div class="bigBox">
-    <div class="searchBox">
-      <trade-search @onSearch="loadData"></trade-search>
-    </div>
-    <div class="contentBox">
-<!--      <el-row style="margin-bottom:15px;margin-left:22px;">
+  <div class="page">
+    <search class="page-search" ref="search" @onSearch="onSearch"/>
+<!--      <el-row class="page-tools" style="margin-bottom:15px;margin-left:22px;">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>-->
-      <el-table size="mini" v-loading="loading" :data="tableData" style="width: 100%;margin-bottom:15px;">
+      <el-table class="page-table" size="mini" v-loading="loading" :data="tableData" style="width: 100%;margin-bottom:15px;">
         <el-table-column prop="tradeNo" label="交易编号" align="center"></el-table-column>
         <el-table-column prop="outTradeNo" label="商家订单号" align="center"></el-table-column>
         <el-table-column prop="tradeStatus" label="交易状态" align="center" :formatter="formatStatusDirection"></el-table-column>
@@ -41,6 +38,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
+        class="page-footer"
         @prev-click="handlePrevClick"
         @next-click="handleNextClick"
         background
@@ -58,21 +56,20 @@
         :close-on-click-modal="false"
         width="24%"
       >
-        <trade-edit
+        <edit
           v-if="dialogVisible"
           :editTradeNo="editTradeNo"
           :codeEnabled="codeEnabled"
           @onSave="handleSave"
           @onCancel="handleCancel"
-        ></trade-edit>
+        ></edit>
       </el-dialog>
     </div>
-  </div>
 </template>
 
 <script>
-  import tradeSearch from "./Search.vue";
-  import tradeEdit from "./Edit.vue";
+  import edit from "./Edit";
+  import search from "./Search";
 
   export default {
     name: "tradeContent",
@@ -263,8 +260,8 @@
       this.loadCurrency();
     },
     components: {
-      tradeSearch,
-      tradeEdit
+       edit,
+      search
     }
   };
 </script>

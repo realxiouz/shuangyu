@@ -1,6 +1,6 @@
 <template>
-  <div class="contentBox">
-    <el-row :gutter="20">
+  <div class="page">
+    <el-row  :gutter="20">
       <el-col :xs="11" :sm="10" :md="9" :lg="6" :xl="6">
         <el-tree
           v-loading="loading"
@@ -16,13 +16,13 @@
     </el-row>
     <el-divider></el-divider>
     <el-row>
-      <staff-form :curNode="curNode" :staffAddVisible="staffAddVisible" style="width: 100%" />
+      <edit :curNode="curNode" :staffAddVisible="staffAddVisible" style="width: 100%" />
     </el-row>
   </div>
 </template>
 
 <script>
-import staffForm from "./Edit";
+import edit from "./Edit";
 
 export default {
   data() {
@@ -61,7 +61,7 @@ export default {
     this.loadTreeData();
   },
   components: {
-    staffForm
+    edit
   }
 };
 </script>

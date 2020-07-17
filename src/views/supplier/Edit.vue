@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page-form">
     <el-row>
       <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="10">
         <div class="contentBox">

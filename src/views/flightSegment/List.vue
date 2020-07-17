@@ -1,13 +1,11 @@
 <template>
-  <div class="bigBox">
-    <div class="searchBox">
-      <segment-search @onSearch="onSearch"></segment-search>
-    </div>
-    <div class="contentBox">
-      <el-row style="margin-bottom:15px;margin-left:10px;">
+  <div class="page">
+    <search class="page-search" ref="search" @onSearch="onSearch"/>
+      <el-row class="page-tools" style="margin-bottom:15px;margin-left:10px;">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table
+        class="page-table"
         v-loading="loading"
         size="mini"
         :data="tableData"
@@ -28,6 +26,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
+        class="page-footer"
         @size-change="onSizeChange"
         @prev-click="prevClick"
         @next-click="nextClick"
@@ -40,13 +39,13 @@
         :total="total"
       ></el-pagination>
       <el-dialog :title="segment?'编辑航段信息':'添加航段'" center :visible.sync="dialogVisible" width="30%">
-        <segment-edit
+        <edit
           v-if="dialogVisible"
           :segment="segment"
           ref="form"
           @onSave="handleSave"
           @onCancel="handleCancel"
-        ></segment-edit>
+        ></edit>
       </el-dialog>
       <el-dialog :title="lookTitle" center :visible.sync="showInfo" width="30%">
         <look-lnfo
@@ -59,11 +58,10 @@
         ></look-lnfo>
       </el-dialog>
     </div>
-  </div>
 </template>
 <script>
-import segmentSearch from "./Search.vue";
-import segmentEdit from "./Edit.vue";
+import edit from "./Edit";
+  import search from "./Search";
 import LookLnfo from "./LookLnfo.vue";
 
 export default {
@@ -87,8 +85,8 @@ export default {
     };
   },
   components: {
-    segmentEdit,
-    segmentSearch,
+    edit,
+      search,
     LookLnfo
   },
   methods: {

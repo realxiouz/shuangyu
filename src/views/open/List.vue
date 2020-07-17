@@ -1,13 +1,11 @@
 <template>
-  <div class="bigBox">
-    <div class="searchBox">
-      <open-search @onSearch="onSearch"></open-search>
-    </div>
-    <div class="contentBox">
-      <el-row style="margin-bottom:15px; margin-left:40px;">
+  <div class="page">
+    <search class="page-search" ref="search" @onSearch="onSearch"/>
+      <el-row class="page-tools" style="margin-bottom:15px; margin-left:40px;">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table
+        class="page-table"
         v-loading="loading"
         size="mini"
         :data="tableData"
@@ -35,6 +33,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
+         class="page-footer"
         @size-change="onSizeChange"
         @prev-click="onPrev"
         @next-click="onNext"
@@ -53,21 +52,20 @@
         :visible.sync="dialogVisible"
         width="30%"
       >
-        <open-edit
+        <edit
           v-if="dialogVisible"
           ref="thirdForm"
           :open-id="openId"
           @onSave="handleSave"
           @onCancel="handleCancel"
-        ></open-edit>
+        ></edit>
       </el-dialog>
     </div>
-  </div>
 </template>
 
 <script>
-    import openEdit from "./Edit.vue";
-    import openSearch from "./Search.vue";
+   import edit from "./Edit";
+  import search from "./Search";
     import { MIXIN_LIST } from "@/utils/mixin";
 
     export default {

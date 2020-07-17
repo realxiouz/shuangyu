@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page-form">
     <el-form :model="formData" ref="form" :rules="rules" label-width="110px" size="mini">
       <el-form-item label="币种编码：" prop="currencyCode">
         <el-input

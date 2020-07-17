@@ -1,6 +1,5 @@
 <template>
-  <div class="bigBox">
-    <div class="contentBox">
+  <div class="page">
       <div id="goBack" @click="goBack">
         <el-page-header></el-page-header>
       </div>
@@ -97,7 +96,7 @@
         </el-col>
       </el-row>
       <!--productDetailTable-->
-      <el-row>
+      <el-row class="page-tools">
         <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="16">
           <div class="title">
             <el-button type="primary" size="mini" @click="handleAddProduct">添加商品明细</el-button>
@@ -195,7 +194,6 @@
       <el-dialog title="商品明细" :visible.sync="dialogVisible" :close-on-click-modal="false" width="60%">
         <product-detail v-if="dialogVisible" @onCancel="handleCancel" @onConfirm="handleConfirm"></product-detail>
       </el-dialog>
-    </div>
   </div>
 </template>
 

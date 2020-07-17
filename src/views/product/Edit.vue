@@ -1,6 +1,5 @@
 <template>
-  <div class="bigBox">
-    <div class="contentBox">
+  <div class="page-form">
       <div id="goBack" @click="goBack">
         <el-page-header></el-page-header>
       </div>
@@ -62,7 +61,6 @@
         <el-button size="mini" @click="handleCancel">取 消</el-button>
         <el-button type="primary" size="mini" @click="handleSave">确 定</el-button>
       </div>
-    </div>
   </div>
 </template>
 <script>

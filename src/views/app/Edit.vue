@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page-form">
     <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
       <el-form-item label="应用名称" prop="appName">
         <el-input v-model="formData.appName"></el-input>

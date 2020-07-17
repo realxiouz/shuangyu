@@ -1,6 +1,6 @@
 <template>
-  <div class="contentBox">
-    <el-row :gutter="30">
+  <div class="page">
+    <el-row class="page-tools" :gutter="30">
       <el-col :xs="11" :sm="10" :md="9" :lg="8" :xl="8">
         <el-button type="primary" style="margin-bottom:20px" size="mini" @click="rootAdd">添加</el-button>
         <el-tree
@@ -24,7 +24,7 @@
         </el-tree>
       </el-col>
       <el-col :xs="13" :sm="14" :md="15" :lg="16" :xl="16">
-        <nav-edit ref="search" :apiVisible="apiVisible" :curNode="curNode"></nav-edit>
+        <edit ref="search" :apiVisible="apiVisible" :curNode="curNode"></edit>
       </el-col>
     </el-row>
     <!-- 表单对话框 -->
@@ -74,7 +74,7 @@
 </template>
 
 <script>
-  import navEdit from "./Edit";
+  import edit from "./Edit";
 
   export default {
     data() {
@@ -283,7 +283,7 @@
       this.loadData();
     },
     components: {
-      navEdit
+      edit
     }
   };
 </script>

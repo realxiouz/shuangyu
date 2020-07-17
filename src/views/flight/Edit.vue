@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page-form">
     <el-form :model="formData" label-width="120px" size="mini">
       <input type="hidden" v-model="formData.flightId"/>
       <el-form-item label="航司">

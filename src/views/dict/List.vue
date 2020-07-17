@@ -1,7 +1,7 @@
 <template>
-  <div class="contentBox">
-    <el-row :gutter="20">
-      <el-col :xs="11" :sm="10" :md="9" :lg="8" :xl="6">
+  <div class="page">
+    <el-row class="page-tools" :gutter="20">
+      <el-col  :xs="11" :sm="10" :md="9" :lg="8" :xl="6">
         <el-button type="primary" style="margin-bottom:20px" size="mini" @click="rootAdd">添加</el-button>
         <el-tree
           v-loading="loading"
@@ -24,7 +24,7 @@
         </el-tree>
       </el-col>
       <el-col :xs="13" :sm="14" :md="15" :lg="16" :xl="18">
-        <dict-edit :dictVisible="dictVisible" :curNode="curNode"/>
+        <edit :dictVisible="dictVisible" :curNode="curNode"/>
       </el-col>
     </el-row>
     <el-dialog
@@ -63,7 +63,7 @@
 </template>
 
 <script>
-    import dictEdit from "./Edit";
+    import edit from "./Edit";
 
     export default {
         data() {
@@ -257,7 +257,7 @@
             this.loadData();
         },
         components: {
-            dictEdit
+            edit
         }
     };
 </script>

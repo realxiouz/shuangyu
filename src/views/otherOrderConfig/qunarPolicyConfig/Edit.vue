@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page-form">
     <el-form :model="formData" label-width="110px" size="mini">
       <el-form-item label="代理商域名">
         <el-input v-model="formData.domain"></el-input>

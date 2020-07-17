@@ -1,13 +1,11 @@
 <template>
-  <div class="bigBox">
-    <div class="searchBox">
-      <net-fare-search @onSearch="onSearch" />
-    </div>
-    <div class="contentBox">
-      <el-row style="margin-bottom:15px;margin-left:20px">
+  <div class="page">
+    <search class="page-search" ref="search" @onSearch="onSearch"/>
+      <el-row class="page-tools" style="margin-bottom:15px;margin-left:20px">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table
+        class="page-table"
         size="mini"
         v-loading="loading"
         :data="tableData"
@@ -39,6 +37,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
+        class="page-footer"
         background
         layout="total,prev,next"
         prev-text="上一页"
@@ -56,21 +55,20 @@
         :close-on-click-modal="false"
         center
       >
-        <net-fare-edit
+        <edit
           v-if="dialogVisible"
           :curNode="curNode"
           :update="update"
           @onSave="handleSave"
           @onCancel="handleCancel"
-        ></net-fare-edit>
+        ></edit>
       </el-dialog>
     </div>
-  </div>
 </template>
 
 <script>
-import netFareSearch from "./Search";
-import netFareEdit from "./Edit";
+import edit from "./Edit";
+  import search from "./Search";
 
 export default {
   data() {

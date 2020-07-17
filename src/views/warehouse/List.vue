@@ -1,15 +1,11 @@
 <template>
-  <div class="bigBox">
-    <div class="searchBox">
-      <warehouse-search @onSearch="onSearch"></warehouse-search>
-    </div>
-    <div class="contentBox">
-      <!-- 按钮组件 -->
-      <el-row style="margin-bottom:15px; margin-left:25px;">
+  <div class="page">
+    <search class="page-search" ref="search" @onSearch="onSearch"/>
+      <el-row class="page-tools" style="margin-bottom:15px; margin-left:25px;">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
-      <!-- 表格组件 -->
       <el-table
+        class="page-table"
         v-loading="loading"
         :data="tableData"
         row-key="warehouseId"
@@ -37,6 +33,7 @@
       </el-table>
       <!-- 分页组件 -->
       <el-pagination
+        class="page-footer"
         @prev-click="handlePrevClick"
         @next-click="handleNextClick"
         background
@@ -54,7 +51,7 @@
         width="30%"
         :close-on-click-modal="false"
       >
-        <warehouse-edit
+        <edit
           v-if="dialogVisible"
           :editWarehouseId="editWarehouseId"
           :pid="pid"
@@ -64,12 +61,11 @@
         />
       </el-dialog>
     </div>
-  </div>
 </template>
 
 <script>
-  import warehouseEdit from "./Edit";
-  import warehouseSearch from "./Search";
+ import edit from "./Edit";
+  import search from "./Search";
 
   export default {
     name: "warehouseContent",
@@ -242,8 +238,8 @@
       this.loadData({});
     },
     components: {
-      warehouseEdit,
-      warehouseSearch
+      edit,
+      search
     }
   };
 </script>

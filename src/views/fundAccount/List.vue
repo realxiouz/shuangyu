@@ -1,13 +1,11 @@
 <template>
-  <div class="bigBox">
-    <div class="searchBox">
-      <fund-account-search @onSearch="onSearch"></fund-account-search>
-    </div>
-    <div class="contentBox">
-      <el-row style="margin-bottom:15px;margin-left:22px;">
+  <div class="page">
+    <search class="page-search" ref="search" @onSearch="onSearch"/>
+      <el-row class="page-tools" style="margin-bottom:15px;margin-left:22px;">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table
+        class="page-table"
         v-loading="loading"
         :data="tableData"
         row-key="accountId"
@@ -40,6 +38,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
+        class="page-footer"
         @prev-click="handlePrevClick"
         @next-click="handleNextClick"
         backgrund
@@ -56,22 +55,21 @@
         :close-on-click-modal="false"
         width="30%"
       >
-        <fund-account-edit
+        <edit
           v-if="dialogVisible"
           :editAccountId="editAccountId"
           :pid="pid"
           :codeEnabled="codeEnabled"
           @onSave="handleSave"
           @onCancel="handleCancel"
-        ></fund-account-edit>
+        ></edit>
       </el-dialog>
     </div>
-  </div>
 </template>
 
 <script>
-  import fundAccountSearch from "./Search.vue";
-  import fundAccountEdit from "./Edit.vue";
+   import edit from "./Edit";
+  import search from "./Search";
 
   export default {
     name: "fundAccountContent",
@@ -278,8 +276,8 @@
       this.loadData();
     },
     components: {
-      fundAccountSearch,
-      fundAccountEdit
+      edit,
+      search
     }
   };
 </script>

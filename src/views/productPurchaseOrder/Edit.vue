@@ -1,6 +1,5 @@
 <template>
-  <div class="bigBox">
-    <div class="contentBox">
+  <div class="page-form">
       <div id="goBack" @click="goBack">
         <el-page-header></el-page-header>
       </div>
@@ -147,7 +146,6 @@
       <el-dialog title="商品明细" :visible.sync="dialogVisible" :close-on-click-modal="false" width="60%">
         <product-detail v-if="dialogVisible" @onCancel="handleCancel" @onConfirm="handleConfirm"></product-detail>
       </el-dialog>
-    </div>
   </div>
 </template>
 

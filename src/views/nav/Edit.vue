@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page">
     <el-row type="flex" justify="space-between" style="margin-bottom:20px;" align="bottom">
       <span style="font-weight:700;color:#303133;" v-if="!apiVisible">{{this.curNode.title}}</span>
       <span></span>

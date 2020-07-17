@@ -1,13 +1,11 @@
 <template>
-  <div class="bigBox">
-    <div class="searchBox">
-      <firm-search @onSearch="onSearch"></firm-search>
-    </div>
-    <div class="contentBox">
-      <el-row style="margin-bottom:15px; margin-left:25px;">
+  <div class="page">
+    <search class="page-search" ref="search" @onSearch="onSearch"/>
+      <el-row class="page-tools" style="margin-bottom:15px; margin-left:25px;">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table
+        class="page-table"
         highlight-current-row
         v-loading="loading"
         size="mini"
@@ -38,6 +36,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
+        class="page-footer"
         @size-change="onSizeChange"
         @prev-click="handlePrevClick"
         @next-click="handleNextClick"
@@ -57,7 +56,7 @@
         width="33%"
         :close-on-click-modal="false"
       >
-        <firm-edit v-if="dialogVisible" :edit-firm-id="editFirmId"
+        <edit v-if="dialogVisible" :edit-firm-id="editFirmId"
                    :pid="pid" @onSave="handleSave" @onCancel="handleCancel"/>
       </el-dialog>
 
@@ -112,12 +111,11 @@
         </el-form>
       </el-dialog>
     </div>
-  </div>
 </template>
 
 <script>
-    import firmEdit from "./Edit";
-    import firmSearch from "./Search";
+    import edit from "./Edit";
+  import search from "./Search";
 
     export default {
         data() {
@@ -371,8 +369,8 @@
             this.loadData();
         },
         components: {
-            firmEdit,
-            firmSearch
-        }
+      edit,
+      search
+    },
     };
 </script>

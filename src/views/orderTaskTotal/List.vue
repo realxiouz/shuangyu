@@ -1,6 +1,5 @@
 <template>
-  <div class="bigBox">
-    <div class="searchBox">
+  <div class="page">
       <div style="margin-top:10px;">
         <span>
           <el-button @click="geAllData()" type="info" size="mini">
@@ -17,13 +16,9 @@
           </el-button>
         </span>
       </div>
-      <div style="margin-top:15px;">
-        <order-task-search @onSearch="onSearch" ref="search"></order-task-search>
-      </div>
-    </div>
+      <search class="page-search" ref="search" @onSearch="onSearch"/>
 
-    <div class="contentBox">
-      <el-row style="margin-bottom:15px;margin-left:40px;">
+      <el-row class="page-tools" style="margin-bottom:15px;margin-left:40px;">
         <el-button
           :disabled="this.btnTransfer"
           icon="el-icon-document-copy"
@@ -33,6 +28,7 @@
         >批量转单</el-button>
       </el-row>
       <el-table
+        class="page-table"
         highlight-current-row
         :data="tableData"
         ref="tableData"
@@ -148,6 +144,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
+        class="page-footer"
         :current-page="currentPage"
         @size-change="onSizeChange"
         @prev-click="prevClick"
@@ -161,7 +158,6 @@
       >
         <span style="font-weight: 400;color:#565656;">第{{ currentPage }}页</span>
       </el-pagination>
-    </div>
     <div>
       <el-dialog
         title="选择转单员工"
@@ -178,7 +174,7 @@
 </template>
 
 <script>
-import orderTaskSearch from "./Search.vue";
+import search from "./Search.vue";
 import taskSelectStaff from "./selectStaff";
 
 import {
@@ -225,7 +221,7 @@ export default {
     };
   },
   components: {
-    orderTaskSearch,
+    search,
     taskSelectStaff
   },
   methods: {

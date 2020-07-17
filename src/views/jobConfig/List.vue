@@ -1,13 +1,11 @@
 <template>
-  <div class="bigBox">
-    <div class="searchBox">
-      <job-config-search ref="search" @onSearch="onSearch"></job-config-search>
-    </div>
-    <div class="contentBox">
-      <el-row style="margin-bottom:15px; margin-left:38px;">
+  <div class="page">
+    <search class="page-search" ref="search" @onSearch="onSearch"/>
+      <el-row class="page-tools" style="margin-bottom:15px; margin-left:38px;">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table
+        class="page-table"
         highlight-current-row
         v-loading="loading"
         :data="tableData"
@@ -59,6 +57,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
+        class="page-footer"
         background
         layout="total,prev,next"
         prev-text="上一页"
@@ -77,22 +76,21 @@
         ref="job-config-edit"
         :close-on-click-modal="false"
       >
-        <job-config-edit
+        <edit
           v-if="dialogVisible"
           ref="form"
           :job-config-id="configId"
           :update-flag="updateFlag"
           @onSave="handleSave"
           @onCancel="handleCancel"
-        ></job-config-edit>
+        ></edit>
       </el-dialog>
     </div>
-  </div>
 </template>
 
 <script>
-  import jobConfigSearch from "./Search";
-  import jobConfigEdit from "./Edit";
+  import edit from "./Edit";
+  import search from "./Search";
 
   export default {
     name: "jobConfigList",
@@ -159,8 +157,8 @@
       };
     },
     components: {
-      jobConfigSearch,
-      jobConfigEdit
+     edit,
+      search
     },
     methods: {
       loadData() {

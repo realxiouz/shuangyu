@@ -1,13 +1,11 @@
 <template>
-  <div class="bigBox">
-    <div class="searchBox">
-      <flightSearch @onSearch="search" />
-    </div>
-    <div class="contentBox">
+  <div class="page">
+   <search class="page-search" ref="search" @onSearch="onSearch"/>
       <el-row style="margin-bottom:15px; margin-left:50px;">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table
+        class="page-table"
         v-loading="loading"
         :data="tableData"
         highlight-current-row
@@ -137,6 +135,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
+        class="page-footer"
         background
         layout="total,prev,next"
         prev-text="上一页"
@@ -154,21 +153,20 @@
         width="33%"
         :close-on-click-modal="false"
       >
-        <flightEdit
+        <edit
           v-if="dialogVisible"
           :curNode="curNode"
           :update="update"
           @onSave="handleSave"
           @onCancel="handleCancel"
-        ></flightEdit>
+        ></edit>
       </el-dialog>
     </div>
-  </div>
 </template>
 
 <script>
-import flightSearch from "./Search";
-import flightEdit from "./Edit";
+import edit from "./Edit";
+  import search from "./Search";
 
 export default {
   data() {
@@ -187,10 +185,10 @@ export default {
       total: 0
     };
   },
-  components: {
-    flightSearch,
-    flightEdit
-  },
+   components: {
+      edit,
+      search
+    },
   methods: {
     /*加载数据列表*/
     loadData(params) {

@@ -1,13 +1,10 @@
 <template>
-  <div class="bigBox">
-    <div class="searchBox">
-      <product-search @onSearch="loadData"></product-search>
-    </div>
-    <div class="contentBox">
-      <el-row style="margin-bottom:15px;margin-left:40px">
+  <div class="page">
+    <search class="page-search" ref="search" @onSearch="onSearch"/>
+      <el-row class="page-tools" style="margin-bottom:15px;margin-left:40px">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
-      <el-table v-loading="loading" :data="tableData" style="width: 100%;margin-bottom: 15px;" size="mini">
+      <el-table class="page-table" v-loading="loading" :data="tableData" style="width: 100%;margin-bottom: 15px;" size="mini">
         <el-table-column type="expand">
           <template slot-scope="props">
             <el-form label-position="right" :inline="true" label-width="120px" class="demo-table-expand">
@@ -143,6 +140,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
+        class="page-footer"
         @size-change="handleSizeChange"
         @prev-click="handlePrevClick"
         @next-click="handleNextClick"
@@ -154,11 +152,10 @@
         :total="total"
       ></el-pagination>
     </div>
-  </div>
 </template>
 
 <script>
-    import productSearch from "./Search.vue";
+    import search from "./Search.vue";
 
     export default {
         data() {
@@ -324,7 +321,7 @@
             this.loadData();
         },
         components: {
-            productSearch
+            search
         }
     };
 </script>

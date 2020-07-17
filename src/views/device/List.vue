@@ -76,6 +76,10 @@
         params: {},
       };
     },
+     components: {
+      edit,
+      search
+    },
     methods: {
       formatDate(dateStr, format) {
         if (null != dateStr) {
@@ -144,10 +148,7 @@
         });
       }
     },
-    components: {
-      edit,
-      search
-    },
+   
     created() {
       this.loadData();
     }

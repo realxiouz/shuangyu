@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page-form">
     <el-form ref="formData" :rules="formRules" :model="formData" size="mini" label-width="120px">
       <el-form-item label="平台名称" prop="openName">
         <el-input v-model="formData.openName" placeholder="请输入平台名称.."></el-input>

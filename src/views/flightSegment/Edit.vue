@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page-form">
     <el-form ref="form" :model="formData" :rules="rules" label-width="110px" size="mini">
       <el-form-item prop="dpt" label="出发地:">
         <el-input v-bind:disabled="disabled" v-model="formData.dpt"></el-input>

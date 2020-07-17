@@ -1,13 +1,11 @@
 <template>
-  <div class="bigBox">
-    <div class="searchBox">
-      <qunar-order-notify-config-search @onSearch="search" />
-    </div>
-    <div class="contentBox">
-      <el-row style="margin-bottom:15px;margin-left:25px">
+  <div class="page">
+    <search class="page-search" ref="search" @onSearch="onSearch"/>
+      <el-row class="page-tools" style="margin-bottom:15px;margin-left:25px">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table
+        class="page-table"
         v-loading="loading"
         :data="tableData"
         style="width: 100%;margin-bottom: 20px;"
@@ -34,6 +32,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
+        class="page-footer"
         background
         layout="total,prev,next"
         prev-text="上一页"
@@ -51,7 +50,7 @@
         width="30%"
         :close-on-click-modal="false"
       >
-        <qunar-order-notify-config-edit
+        <edit
           v-if="dialogVisible"
           :curNode="curNode"
           :update="update"
@@ -62,12 +61,11 @@
         />
       </el-dialog>
     </div>
-  </div>
 </template>
 
 <script>
-import qunarOrderNotifyConfigSearch from "./Search";
-import qunarOrderNotifyConfigEdit from "./Edit";
+import edit from "./Edit";
+  import search from "./Search";
 
 export default {
   name: "qunarOrderNotifyConfig",
@@ -292,8 +290,8 @@ export default {
     }
   },
   components: {
-    qunarOrderNotifyConfigSearch,
-    qunarOrderNotifyConfigEdit
+     edit,
+      search
   }
 };
 </script>

@@ -1,13 +1,11 @@
 <template>
-  <div class="bigBox">
-    <div class="searchBox">
-      <policy-flag-search @onSearch="onSearch"></policy-flag-search>
-    </div>
-    <div class="contentBox">
-      <el-row style="margin-bottom:15px; margin-left:10px;">
+  <div class="page">
+    <search class="page-search" ref="search" @onSearch="onSearch"/>
+      <el-row class="page-tools" style="margin-bottom:15px; margin-left:10px;">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table
+        class="page-table"
         v-loading="loading"
         :data="tableData"
         style="width: 100%;margin-bottom: 20px;"
@@ -29,20 +27,19 @@
         </el-table-column>
       </el-table>
       <el-dialog title="Open标签" :visible.sync="dialogVisible" width="50%" center :close-on-click-modal="false">
-        <policy-flag-edit
+        <edit
           v-if="dialogVisible"
           :flag-id="flagId"
           @onSave="handleSave"
           @onCancel="handleCancel"
-        ></policy-flag-edit>
+        ></edit>
       </el-dialog>
     </div>
-  </div>
 </template>
 
 <script>
-    import policyFlagSearch from "./Search";
-    import policyFlagEdit from "./Edit";
+     import edit from "./Edit";
+  import search from "./Search";
 
     export default {
         name: "flagList",
@@ -125,8 +122,8 @@
             this.onSearch();
         },
         components: {
-            policyFlagEdit,
-            policyFlagSearch
+            edit,
+            search
         }
     };
 </script>

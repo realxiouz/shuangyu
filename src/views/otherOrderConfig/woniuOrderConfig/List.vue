@@ -1,9 +1,9 @@
 <template>
-  <div class="bigBox">
-    <div>
+  <div class="page">
       <el-tabs v-model="activeName" type="border-card" @tab-click="handleClick">
         <div style="margin-top:10px;">
-          <qunar-order-config-search
+          <search
+            class="page-search"
             ref="qunarOrderConfigSearch"
             :orderType="orderType"
             @onSearch="onSearch"
@@ -35,6 +35,7 @@
           ></change-ticket>
         </el-tab-pane>
         <el-pagination
+          class="page-footer"
           style="margin-left:15px;"
           @size-change="onSizeChange"
           @prev-click="prevClick"
@@ -48,7 +49,6 @@
           :total="total"
         ></el-pagination>
       </el-tabs>
-    </div>
   </div>
 </template>
 
@@ -56,7 +56,7 @@
 import goTicket from "./GoTicket";
 import changeTicket from "./ChangeTicket";
 import refundTicket from "./RefundTicket";
-import qunarOrderConfigSearch from "./Search";
+import search from "./Search";
 
 export default {
   name: "qunarOrderConfig",

@@ -1,13 +1,10 @@
 <template>
-  <div class="bigBox">
-    <div class="searchBox">
-      <policy-search @onSearch="onSearch"></policy-search>
-    </div>
-    <div class="contentBox">
-      <el-row style="margin-bottom:15px;margin-left:35px;">
+  <div class="page">
+    <search class="page-search" ref="search" @onSearch="onSearch"/>
+      <el-row class="page-tools" style="margin-bottom:15px;margin-left:35px;">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
-      <el-table v-loading="loading" :data="tableData" highlight-current-row size="mini" style="width: 100%; margin-bottom:15px" fit>
+      <el-table class="page-table" v-loading="loading" :data="tableData" highlight-current-row size="mini" style="width: 100%; margin-bottom:15px" fit>
         <el-table-column label="序号" type="index" width="60" align="center">
           <template slot-scope="scope">
             <span>{{(currentPage - 1) * pageSize + scope.$index + 1}}</span>
@@ -49,6 +46,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
+        class="page-footer"
         @size-change="onSizeChange"
         @prev-click="prevClick"
         @next-click="nextClick"
@@ -67,19 +65,18 @@
         width="35%"
         :close-on-click-modal="false"
       >
-        <policy-edit
+        <edit
           v-if="dialogVisible"
           :policy-id="policyId"
           @onSave="handleSave"
           @onCancel="handleCancel"
-        ></policy-edit>
+        ></edit>
       </el-dialog>
-    </div>
   </div>
 </template>
 <script>
-import policySearch from "./Search.vue";
-import policyEdit from "./Edit.vue";
+import edit from "./Edit";
+  import search from "./Search";
 
 export default {
   name: "policyList",
@@ -239,8 +236,8 @@ export default {
     }
   },
   components: {
-    policySearch,
-    policyEdit
+    edit,
+      search
   }
 };
 </script>

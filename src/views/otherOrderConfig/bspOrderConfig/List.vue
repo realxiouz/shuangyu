@@ -1,13 +1,11 @@
 <template>
-  <div class="bigBox">
-    <div class="searchBox">
-      <bsp-order-config-search @onSearch="onSearch" @onExport="handleExport"/>
-    </div>
-    <div class="contentBox">
-      <el-row style="margin-bottom:15px;margin-left:23px">
+  <div class="page">
+    <search class="page-search" ref="search" @onSearch="onSearch"/>
+      <el-row class="page-tools" style="margin-bottom:15px;margin-left:23px">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table
+        class="page-table"
         :data="tableData"
         size="mini"
         highlight-current-row
@@ -75,6 +73,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
+        class="page-footer"
         @size-change="onSizeChange"
         @prev-click="prevClick"
         @next-click="nextClick"
@@ -87,11 +86,10 @@
         :total="total"
       ></el-pagination>
     </div>
-  </div>
 </template>
 
 <script>
-import bspOrderConfigSearch from "./Search";
+import search from "./Search";
 import {
   formatCategory,
   formatStatus,
@@ -117,7 +115,7 @@ export default {
     };
   },
   components: {
-    bspOrderConfigSearch
+    search
   },
   methods: {
     formatCategory,

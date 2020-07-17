@@ -1,10 +1,10 @@
 <template>
-  <div class="contentBox">
-    <search @onSearch="loadData"></search>
-    <el-row type="flex" justify="space-between" style="margin-bottom:20px;" align="bottom">
+  <div class="page">
+    <search class="page-search" ref="search" @onSearch="onSearch"/>
+    <el-row class="page-tools" type="flex" justify="space-between" style="margin-bottom:20px;" align="bottom">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
     </el-row>
-    <el-table size="mini" v-loading="loading" :data="tableData" style="width: 100%;margin-bottom:15px;">
+    <el-table class="page-table" size="mini" v-loading="loading" :data="tableData" style="width: 100%;margin-bottom:15px;">
       <el-table-column prop="brandCode" label="品牌编码" align="center"></el-table-column>
       <el-table-column prop="brandName" label="品牌名称" align="center"></el-table-column>
       <el-table-column prop="categoryName" label="商品类目" align="center"></el-table-column>
@@ -26,6 +26,7 @@
       </el-table-column>
     </el-table>
     <el-pagination
+      class="page-footer"
       @size-change="onSizeChange"
       @prev-click="handlePrevClick"
       @next-click="handleNextClick"

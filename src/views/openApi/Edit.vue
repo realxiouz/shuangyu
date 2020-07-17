@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page-form">
     <el-form ref="formData" :model="formData" label-width="100px" size="mini">
       <input type="hidden" v-model="formData.apiId"/>
       <el-form-item label="开放平台:">
