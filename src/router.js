@@ -4,7 +4,7 @@ import Layout from './views/Layout';
 
 Vue.use(Router);
 
-export default new Router({
+const newRoute = _ => new Router({
   routes: [
     {
       title: '首页',
@@ -1071,4 +1071,14 @@ export default new Router({
     //   hidden: true
     // }
   ]
-});
+})
+
+export function resetRoute() {
+  let route = new Router()
+  router.matcher = route.matcher
+}
+
+const router = newRoute()
+
+
+export default router
