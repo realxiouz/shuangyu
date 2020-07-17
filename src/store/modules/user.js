@@ -70,10 +70,10 @@ const actions = {
     });
   },
 
-  signOut({commit, args}) {
+  signOut({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {token} = args;
-      signOut(token)
+      // const {token} = args;
+      signOut(args)
         .then(() => {
           commit("SET_TOKEN", "");
           removeToken();
