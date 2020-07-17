@@ -17,56 +17,81 @@
           </el-form-item>
         </el-col>
         <el-col :span="12" v-for="(item, index) in formData.params" :key="index">
-          <el-form-item :label="item.name" :prop="item.code">
-            <!-- 数据类型（0文本，1开关，2数字，3日期，4日期时间，5时间，6评分，7单选，8多选，9选择器）-->
-            <el-input v-if="item.valueType ==0" v-model="item.value"></el-input>
-            <!-- 开关-->
-            <el-switch v-if="item.valueType ==1" v-model="item.value"></el-switch>
-            <!-- 数字-->
-            <el-input-number v-if="item.valueType ==2" v-model.number="item.value"
-                             :precision="item.precision"></el-input-number>
-            <!-- 日期-->
-            <el-date-picker v-if="item.valueType ==3" v-model="item.value" type="date"
-                            placeholder="选择日期"></el-date-picker>
-            <!-- 日期时间-->
-            <el-date-picker v-if="item.valueType ==4" v-model="item.value" type="datetime"
-                            placeholder="选择日期时间"></el-date-picker>
-            <!-- 时间-->
-            <el-time-picker v-if="item.valueType ==5" arrow-control v-model="item.value"
-                            :picker-options="{selectableRange: '00:00:00 - 23:59:00'}"></el-time-picker>
-            <!-- 评分-->
-            <el-rate v-if="item.valueType ==6" v-model="item.value"></el-rate>
-            <!-- 单选-->
-            <el-radio-group v-if="item.valueType ==7" v-model="item.value">
-              <el-radio v-for="(value, key) in item.attributes"
-                        :key="key"
-                        :label="key"
-                        :value="key">
-                {{value}}
-              </el-radio>
-            </el-radio-group>
-            <!-- 多选 非销售属性-->
-            <el-checkbox-group v-if="item.valueType ==8" v-model="item.value">
-              <el-checkbox v-for="(value, key) in item.attributes"
-                           :key="key"
-                           :label="key"
-                           :value="key"
-              >
-                {{value}}
-              </el-checkbox>
-            </el-checkbox-group>
-            <!--选择器-->
-            <el-select
-              v-model="item.value"
-              v-if="item.valueType ==9"
-            >
-              <el-option v-for="(value, key) in item.attributes"
-                         :key="key"
-                         :label="value"
-                         :value="key">
-              </el-option>
-            </el-select>
-          </el-form-item>
+          <template v-if="item.valueType != 9">
+            <el-form-item
+              :prop="'params.' + index + '.value'"
+              :label="item.name"
+              :rules="[{ required: item.required, message: '请输入'+item.name, trigger: 'blur' }]">
+              <el-input
+                v-if="item.valueType ==0"
+                v-model="item.value"
+                :type="item.inputType"
+                :maxlength="item.length">
+              </el-input>
+              <!-- 开关-->
+              <el-switch v-if="item.valueType ==1" v-model="item.value"></el-switch>
+              <!-- 数字-->
+              <el-input-number
+                v-if="item.valueType ==2"
+                v-model="item.value"
+                :min="item.min"
+                :max="item.max"
+                :step="item.step"
+                :precision="item.precision"></el-input-number>
+              <!-- 日期-->
+              <el-date-picker
+                v-if="item.valueType ==3"
+                v-model="item.value"
+                :type="item.inputType"
+                :format="item.format"
+                placeholder="选择日期"></el-date-picker>
+              <!-- 时间-->
+              <el-time-picker
+                v-if="item.valueType ==4"
+                arrow-control
+                v-model="item.value"
+                :picker-options="{selectableRange: '00:00:00 - 23:59:00' }">
+              </el-time-picker>
+              <!-- 评分-->
+              <el-rate v-if="item.valueType ==5" v-model="item.value"></el-rate>
+              <!-- 单选-->
+              <el-radio-group v-if="item.valueType ==60" v-model="item.value">
+                <el-radio
+                  v-for="attr in item.attributes"
+                  :key="attr.code"
+                  :label="attr.name">{{attr.name}}
+                </el-radio>
+              </el-radio-group>
+              <!-- 多选 非销售属性-->
+              <!-- <el-checkbox-group
+                v-if="item.valueType ==61 && !item.sku" v-model="item.value">
+                <el-checkbox
+                  v-for="attr in item.attributes"
+                  :key="attr.code"
+                  :label="attr.name">{{attr.name}}
+                </el-checkbox>
+              </el-checkbox-group> -->
+              <!--选择器-->
+              <el-select v-model="item.value" v-if="item.valueType ==62" :multiple="item.multiple">
+                <el-option
+                  v-for="attr in item.attributes"
+                  :key="attr.code"
+                  :label="attr.name"
+                  :value="attr.code">
+                </el-option>
+              </el-select>
+              <!-- 多选 非销售属性-->
+              <el-checkbox-group
+                v-if="item.valueType ==61"
+                v-model="item.value">
+                <el-checkbox
+                  v-for="attr in item.attributes"
+                  :key="attr.code"
+                  :label="attr.code">{{attr.name}}
+                </el-checkbox>
+              </el-checkbox-group>
+            </el-form-item>
+          </template>
         </el-col>
       </el-row>
     </el-form>
