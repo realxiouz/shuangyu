@@ -135,7 +135,7 @@
         newDialogVisible: false,
         rules: {
           accountCode: [
-            {required: true, message: "请输入账户编码", trigger: "change"},
+            {required: true, message: "请输入账户编码"},
             {
               min: 1,
               max: 20,
@@ -144,7 +144,7 @@
             {validator: codeValidator, trigger: 'blur'}
           ],
           accountName: [
-            {required: true, message: "请输入账户名称", trigger: "change"},
+            {required: true, message: "请输入账户名称"},
             {
               min: 1,
               max: 20,
@@ -304,6 +304,13 @@
               }
             });
             that.$emit("onSave", this.formData);
+          }else{
+            let timer = window.setTimeout(function(){
+              that.$nextTick(function () {
+                that.$refs['form'].clearValidate();
+                window.clearTimeout(timer);
+              })
+            }, 1000);
           }
         });
       }

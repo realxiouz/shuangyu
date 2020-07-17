@@ -60,10 +60,10 @@
         firmData: [],
         rules: {
           openId: [
-            {required: true, message: "请选择开放平台", trigger: "change"}
+            {required: true, message: "请选择开放平台"}
           ],
           firmId: [
-            {required: true, message: "请选择企业名称", trigger: "change"}
+            {required: true, message: "请选择企业名称"}
           ]
         }
       };
@@ -107,6 +107,14 @@
                 this.$emit('refresh');
                 this.$message({type: "success", message: "保存成功"});
               });
+          }else{
+            let that = this;
+            let timer = window.setTimeout(function(){
+              that.$nextTick(function () {
+                that.$refs['form'].clearValidate();
+                window.clearTimeout(timer);
+              })
+            }, 1000);
           }
         });
       },

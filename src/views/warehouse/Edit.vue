@@ -85,7 +85,7 @@
                 newDialogVisible: false,
                 rules: {
                     warehouseCode: [
-                        {required: true, message: "请输入仓库编码", trigger: "change"},
+                        {required: true, message: "请输入仓库编码"},
                         {
                             min: 1,
                             max: 20,
@@ -94,7 +94,7 @@
                         {validator: codeValidator, trigger: 'blur'}
                     ],
                     warehouseName: [
-                        {required: true, message: "请输入仓库名称", trigger: "change"},
+                        {required: true, message: "请输入仓库名称"},
                         {
                             min: 1,
                             max: 20,
@@ -135,6 +135,14 @@
                     if (valid) {
                         this.formData.warehouseCode = this.formData.warehouseCode.toUpperCase();
                         this.$emit("onSave", this.formData);
+                    }else{
+                      let that = this;
+                      let timer = window.setTimeout(function(){
+                        that.$nextTick(function () {
+                          that.$refs['form'].clearValidate();
+                          window.clearTimeout(timer);
+                        })
+                      }, 1000);
                     }
                 });
             }

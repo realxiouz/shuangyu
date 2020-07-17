@@ -1,55 +1,39 @@
-import request from "@/utils/request";
+import request from '@/utils/request';
 
-export function save(data) {
+export function getOne(id) {
   return request({
-    url: "/qunar/tts/policy/attr/save/one",
-    method: "post",
+    url: `/qunar/tts/policy/attr/get/one/${id}`,
+    method: 'get'
+  });
+}
+
+export function saveOne(data) {
+  return request({
+    url: '/qunar/tts/policy/attr/save/one',
+    method: 'post',
     data
-  });
-}
-
-export function removeOne(paramId) {
-  return request({
-    url: `/qunar/tts/policy/attr/remove/one/${paramId}`,
-    method: "delete"
-  });
-}
-
-export function getOne(paramId) {
-  return request({
-    url: `/qunar/tts/policy/attr/one/${paramId}`,
-    method: `get`
-  });
-}
-
-
-export function getPageList(pageFlag, pageSize, searchForm) {
-  return request({
-    url: `/qunar/tts/policy/attr/page/list/${pageFlag}/${pageSize}`,
-    method: "get",
-    params: searchForm
-  });
-}
-
-export function getTotal(params) {
-  return request({
-    url: `/qunar/tts/policy/attr/total`,
-    method: "get",
-    params: params
   });
 }
 
 export function getList(params) {
   return request({
-    url: `/qunar/tts/policy/attr/list`,
-    method: "get",
-    params: params
+    url: `/qunar/tts/policy/attr/get/list`,
+    method: 'get',
+    params
   });
 }
 
-export function getApiUrlList() {
+export function getPageList(pageFlag, pageSize, params) {
   return request({
-    url: `/qunar/tts/policy/attr/api/url/list`,
-    method: "get"
+    url: `/qunar/tts/policy/attr/get/page/list/${pageFlag}/${pageSize}`,
+    method: 'get',
+    params
+  });
+}
+
+export function removeOne(id) {
+  return request({
+    url: `/qunar/tts/policy/attr/remove/one/${id}`,
+    method: 'delete'
   });
 }

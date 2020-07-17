@@ -101,14 +101,14 @@
         voucherGroupList: [],
         rules: {
           voucherGroupId: [
-            {required: true, message: "请选择凭证字", trigger: "change"}
+            {required: true, message: "请选择凭证字"}
           ],
           voucherNum: [
-            {required: true, message: "请输入凭证数", trigger: "change"},
+            {required: true, message: "请输入凭证数"},
             {validator: numValidator, trigger: 'blur'}
           ],
           voucherDate: [
-            {required: true, message: "请选择凭证日期", trigger: "change"}
+            {required: true, message: "请选择凭证日期"}
           ]
         },
         subjects: [],
@@ -160,6 +160,14 @@
                   this.$message({type: "success", message: "保存成功"});
                 });
             }
+          }else{
+            let that = this;
+            let timer = window.setTimeout(function(){
+              that.$nextTick(function () {
+                that.$refs['form'].clearValidate();
+                window.clearTimeout(timer);
+              })
+            }, 1000);
           }
         });
       },
