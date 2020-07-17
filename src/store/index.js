@@ -77,7 +77,7 @@ import voucherGroup from "./modules/voucherGroup";
 import voucher from "./modules/voucher";
 import voucherTemplate from "./modules/voucherTemplate";
 import voucherRecord from "./modules/voucherRecord";
-import microService from "./modules/microService";
+import microserver from "./modules/microserver";
 
 import {getLoginInfo} from "@/api/staff";
 
@@ -161,7 +161,7 @@ export default new Vuex.Store({
     voucher,
     voucherRecord,
     voucherTemplate,
-    microService,
+    microserver,
   },
   state: {
     loginInfo: {}

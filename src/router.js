@@ -1045,22 +1045,22 @@ const newRoute = _ => new Router({
     // },
     // {
     //   title: '微服务',
-    //   path: '/microService',
-    //   name: 'microService',
+    //   path: '/microserver',
+    //   name: 'microserver',
     //   component: Layout,
-    //   redirect: '/microService/list',
+    //   redirect: '/microserver/list',
     //   meta: {title: '微服务管理', icon: 'home'},
     //   children: [
     //     {
     //       path: 'list',
     //       name: 'microServiceList',
-    //       component: () => import('@/views/microService/List'),
+    //       component: () => import('@/views/microserver/List'),
     //       meta: {title: '微服务列表', icon: 'home'}
     //     },
     //     {
     //       path: 'detail',
     //       name: 'microServiceDetail',
-    //       component: () => import('@/views/microService/Detail'),
+    //       component: () => import('@/views/microserver/Detail'),
     //       meta: {title: '微服务详情', icon: 'home'}
     //     }
     //   ]
