@@ -1,23 +1,37 @@
 import request from '@/utils/request';
 
-
-export function removeOne(id) {
+export function getOne(id) {
   return request({
-    url: `/firm/open/auth/remove/one/${id}`,
-    method: 'delete'
+    url: `/firm/open/auth/get/one/${id}`,
+    method: 'get'
+  });
+}
+
+export function addOne(data) {
+  return request({
+    url: '/firm/open/auth/add/one',
+    method: 'post',
+    data
   });
 }
 
 export function updateOne(id, data) {
   return request({
-    url: `/firm/open/auth/update/one${id}`,
-    method: 'put',
+    url: '/firm/open/auth/update/one${id}',
+    method: 'post',
     data
   });
 }
 
-export function getPageList(args) {
-  const {pageFlag, pageSize, ...params} = args
+export function getList(params) {
+  return request({
+    url: `/firm/open/auth/get/list`,
+    method: 'get',
+    params
+  });
+}
+
+export function getPageList(pageFlag, pageSize, params) {
   return request({
     url: `/firm/open/auth/get/page/list/${pageFlag}/${pageSize}`,
     method: 'get',
@@ -41,25 +55,9 @@ export function getSupplierList(params) {
   });
 }
 
-export function getTotal(params) {
+export function removeOne(id) {
   return request({
-    url: `/firm/open/auth/get/total`,
-    method: 'get',
-    params: params
-  });
-}
-
-export function getOne(id) {
-  return request({
-    url: `/firm/open/auth/get/one/${id}`,
-    method: 'get'
-  });
-}
-
-export function addOne(data) {
-  return request({
-    url: "/firm/open/auth/add/one",
-    method: "post",
-    data
+    url: `/firm/open/auth/remove/one/${id}`,
+    method: 'delete'
   });
 }

@@ -59,9 +59,14 @@
                   <span>{{formatDate(tableData.deadlineTicketTime,'YYYY-MM-DD HH:mm:ss')}}</span>
                 </el-form-item>
               </el-col>
-              <el-col :span="24">
+              <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
                 <el-form-item label="政策代码:">
                   <span>{{tableData.policyCode}}</span>
+                </el-form-item>
+              </el-col>
+              <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+                <el-form-item label="订单来源:">
+                  <span>{{sourceStr}}</span>
                 </el-form-item>
               </el-col>
             </el-form>
@@ -283,7 +288,9 @@
         //订单详情意见及备注
         orderDetail_orderComment: "",
         //订单详情触发定时器
-        detailInfoTimer: null
+        detailInfoTimer: null,
+
+        sourceStr: ''
       };
     },
     components: {},
@@ -461,10 +468,14 @@
               ).textContent;
               let orderComment = el.querySelector(
                 "#j-switch-orderBook > form.j-passenger > div.btn-box.j-ticket-btn > span.light > div"
-              ).textContent;
+              );
               if (orderComment) {
-                this.orderDetail_orderComment = orderComment;
+                this.orderDetail_orderComment = orderComment.textContent;
               }
+
+              let sourceNode = el.querySelectorAll('.e-bkifo-lf')[1].querySelector('.label-info')
+              sourceNode && (this.sourceStr = sourceNode.textContent)
+              this.sourceStr == 'qunar派单' && (this.sourceStr = 'qunar派单(300)')
             }
           })
           .catch(error => {

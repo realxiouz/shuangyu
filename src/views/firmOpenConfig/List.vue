@@ -68,58 +68,93 @@
   import search from "./Search";
   import { MIXIN_LIST } from "@/utils/mixin";
 
+
   export default {
     data() {
       return {
-        beanIdName: "firmId",
-        actionName: 'firm/getConfigPageList',
-        firmId: "",
+        dialogVisible: false,
+        pageFlag: 0,
+        pageSize: 10,
+        lastId: null,
+        total: 0,
+        tableData: [],
+        loading: true,
+        params: {},
       };
     },
     methods: {
-      detailsOnClick(uri, item) {
+      formatFirmName(rows) {
+        let firmName = '';
+        if(rows.firm && rows.firm.firmName){
+          firmName = rows.firm.firmName;
+        }
+        return firmName;
+      },
+      detailsOnClick(configNavUrl, item) {
         this.$router.push({
-          path: uri,
+          path: configNavUrl,
           query: {domain: item.firm.domain, openId: item.openId, firmId: item.firm.firmId}
         });
       },
-      //账户类型格式化值
-      accountTypeFormat(row) {
-        switch (row.accountType) {
-          case 0:
-            return "现金";
-          case 1:
-            return "银行存款";
-          case 2:
-            return "支付宝";
-          case 3:
-            return "微信支付";
-          case 4:
-            return "汇付";
-          case 5:
-            return "易宝";
+      getList() {
+        if (this.lastId) {
+          this.params.lastId = this.lastId;
         }
+        this.$store
+          .dispatch("firm/getConfigPageList", {
+            pageFlag: this.pageFlag,
+            pageSize: this.pageSize,
+            lastId: this.lastId,
+            params: this.params
+          })
+          .then(result => {
+            if (result && result.rows && result.rows.length > 0) {
+              this.tableData = result.rows;
+              this.total = result.total;
+            } else {
+              this.tableData = [];
+              this.total = 0;
+            }
+          });
       },
-      //客户类型格式化值
-      merchantTypeFormat(row) {
-        switch (row.accountType) {
-          case 0:
-            return "现金";
-          case 1:
-            return "银行存款";
-          case 2:
-            return "支付宝";
+      loadData() {
+        this.getList();
+      },
+      handleSearch(params) {
+        this.params = params;
+        this.pageFlag = 0;
+        this.lastId = null;
+        this.loadData();
+      },
+      handleRefresh() {
+        this.handleSearch();
+      },
+      handlePrev() {
+        this.pageFlag = -1;
+        if (this.tableData.length > 0) {
+          this.lastId = this.tableData[0].firmId;
         }
+        this.loadData();
       },
-      firmNameFormat(row) {
-        return row.firm.firmName;
-      }
-      //企业名称
+      handleNext() {
+        this.pageFlag = 1;
+        if (this.tableData.length > 0) {
+          this.lastId = this.tableData[this.tableData.length - 1].firmId;
+        }
+        this.loadData();
+      },
     },
     components: {
       search
     },
-    mixins: [MIXIN_LIST]
-
+    created() {
+      this.loadData();
+    }
   };
 </script>
+
+<style>
+  .page-tools {
+    margin-bottom: 10px;
+  }
+</style>

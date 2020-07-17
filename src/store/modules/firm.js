@@ -12,7 +12,7 @@ import {
   saveOne,
   updateOne,
   getConfigPageList,
-  getConfigTotal,
+  getConfigOne,
   getSupplierList
 } from '@/api/firm';
 
@@ -163,8 +163,9 @@ const actions = {
     });
   },
   getConfigPageList({commit}, params) {
+    const {pageFlag, pageSize, filter} = params;
     return new Promise((resolve, reject) => {
-      getConfigPageList(params)
+      getConfigPageList(pageFlag, pageSize, filter)
         .then(response => {
           resolve(response);
         })
@@ -173,10 +174,10 @@ const actions = {
         });
     });
   },
-  getConfigTotal({commit}, params) {
+  getConfigOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {filter} = params;
-      getConfigTotal(filter)
+      const {openId} = params;
+      getConfigOne(openId)
         .then(response => {
           resolve(response);
         })

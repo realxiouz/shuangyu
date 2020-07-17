@@ -1,100 +1,148 @@
 <template>
-  <div>
-    <el-form ref="form" :rules="rules" :model="formData" label-width="100px" size="mini">
-      <el-form-item label="用户名" prop="user">
-        <el-input v-model="formData.user"></el-input>
-      </el-form-item>
-      <el-form-item label="密码" prop="pass">
-        <el-input v-model="formData.pass"></el-input>
-      </el-form-item>
-      <el-form-item label="IP" prop="ip">
-        <el-input v-model="formData.ip"></el-input>
-      </el-form-item>
-      <el-form-item label="回调地址" prop="callbackUrl">
-        <el-input v-model="formData.callbackUrl"></el-input>
-      </el-form-item>
-      <el-form-item label="备注">
-        <el-input v-model="formData.remark"></el-input>
-      </el-form-item>
-    </el-form>
-    <div slot="footer" class="dialog-footer" style="text-align: right;">
-      <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
-      <el-button size="mini" type="primary" @click="handleSave">确 定</el-button>
-    </div>
+  <div class="page-form">
+    <el-dialog title="政策配置管理" width="24%" center :visible.sync="dialogVisible" @open="handleOpen" @close="handleClose">
+      <el-form ref="form" label-width="110px" size="mini" :model="formData" :rules="rules">
+        <el-form-item label="用户名称:" prop="userName">
+          <el-input v-model="formData.userName" placeholder="请输入用户名称" />
+        </el-form-item>
+        <el-form-item label="用户密码:" prop="password">
+          <el-input v-model="formData.password" placeholder="请输入用户密码" type="password" />
+        </el-form-item>
+        <el-form-item label="IP地址:" prop="ipUrl">
+          <el-input v-model="formData.ipUrl" placeholder="请输入IP地址" />
+        </el-form-item>
+        <el-form-item label="回调地址:" prop="callbackUrl">
+          <el-input v-model="formData.callbackUrl" placeholder="请输入回调地址" />
+        </el-form-item>
+        <el-form-item label="备注:">
+          <el-input v-model="formData.remark" type="textarea" :rows="2"></el-input>
+        </el-form-item>
+      </el-form>
+      <div style="text-align:right;">
+        <el-button size="mini" @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" size="mini" @click="handleSave">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
-  function defaultData() {
-    return {
-      configId: '',
-      merchantId: '',
-      merchantDomain: '',
-      schedulerId: '',
-      user: '',
-      pass: '',
-      ip: '',
-      callbackUrl: '',
-      remark: ''
-    };
-  }
-
   export default {
-    name: "configEdit",
-    props: ["configId"],
+    props: {
+      visible: {
+        type: Boolean,
+        default: false
+      },
+      editConfigId: {
+        type: String,
+        default: null
+      },
+      openId: {
+        type: String,
+        default: null
+      }
+    },
     data() {
       return {
-        formData: defaultData(),
-        merchantList: [],
-        schedulerList: [],
+        dialogVisible: false,
+        formData: this.defaultFormData(),
+        merchant: null,
         rules: {
-          schedulerId: [
-            {required: true, message: '请选择调度任务', trigger: 'blur'}
+          userName: [
+            {required: true, message: "请输入用户名称", trigger: "change"},
+            {
+              min: 1,
+              max: 20,
+              message: "长度 1 到 20 个字符"
+            },
           ],
-          user: [
-            {required: true, message: '请输入用户名', trigger: 'blur'}
+          password: [
+            {required: true, message: "请输入用户密码", trigger: "change"},
+            {
+              min: 1,
+              max: 20,
+              message: "长度 1 到 20 个字符"
+            },
           ],
-          pass: [
-            {required: true, message: '请输入密码', trigger: 'blur'}
-          ],
-          ip: [
-            {required: true, message: '请输入IP', trigger: 'blur'}
+          ipUrl: [
+            {required: true, message: "请输入IP地址", trigger: "change"}
           ],
           callbackUrl: [
-            {required: true, message: '请输入回调地址', trigger: 'blur'}
+            {required: true, message: "请输入回调地址", trigger: "change"}
           ]
         }
       };
     },
+    watch: {
+      visible(val) {
+        this.dialogVisible = val;
+        if (val) {
+          if (this._.isEmpty(this.editConfigId)) {
+            this.formData = this.defaultFormData();
+          } else {
+            this.loadData();
+          }
+          if(this.openId){
+            this.loadMerchant();
+          }
+        }
+      }
+    },
     methods: {
+      handleOpen() {
+        this.$emit('update:visible', true);
+      },
+      handleClose() {
+        this.$emit('update:visible', false);
+      },
+      handleSwitch(){
+        this.defaultFlag = !this.defaultFlag;
+      },
       handleSave() {
-        this.$refs['form'].validate((valid) => {
+        this.$refs["form"].validate(valid => {
+          if(!this.openId){
+            this.$message({type: "warning", message: "开放平台主键丢失"});
+            return;
+          }
+          if(this.merchant){
+            this.formData.merchantId = this.merchant.merchantId;
+          }
           if (valid) {
-            this.$emit("onSave", this.formData);
+            this.$store
+              .dispatch("qunarPolicyConfig/saveOne", this.formData)
+              .then(() => {
+                if (!this._.isEmpty(this.editConfigId)) {
+                  this.formData.policyConfigId = this.editConfigId;
+                }
+                this.dialogVisible = false;
+                this.$emit('refresh');
+                this.$message({type: "success", message: "保存成功"});
+              });
           }
         });
       },
-      handleGetOne(configId) {
+      defaultFormData() {
+        return {
+          policyConfigId: null,
+          userName: null,
+          password: null,
+          ipUrl: null,
+          callbackUrl: null,
+          merchantId: null
+        };
+      },
+      loadMerchant() {
         this.$store
-          .dispatch("qunarPolicyConfig/getOne", configId)
+          .dispatch("firm/getConfigOne", {openId: this.openId})
           .then(data => {
-            this.formData = data;
-            this.dialogVisible = true;
-          })
-          .catch(error => {
-            console.log(error);
+            this.merchant = data;
           });
       },
-      clearForm() {
-        this.formData = this.defaultData();
-      },
-      handleClose(idx) {
-        this.paramList.splice(idx, 1);
-      }
-    },
-    created() {
-      this.clearForm();
-      if (this.configId) {
-        this.handleGetOne(this.configId);
+      loadData() {
+        this.$store
+          .dispatch("qunarPolicyConfig/getOne", {policyConfigId: this.editConfigId})
+          .then(data => {
+            this.formData = data;
+          });
       }
     }
   };

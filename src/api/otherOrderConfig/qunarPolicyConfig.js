@@ -1,6 +1,6 @@
 import request from '@/utils/request';
 
-export function save(data) {
+export function saveOne(data) {
   return request({
     url: '/qunar/tts/policy/config/save/one',
     method: 'post',
@@ -16,39 +16,24 @@ export function addOne(data) {
   });
 }
 
-export function updateOne(data) {
+export function updateOne(id, data) {
   return request({
-    url: '/qunar/tts/policy/config/update/one',
+    url: `/qunar/tts/policy/config/update/one/${id}`,
     method: 'post',
     data
   });
 }
 
-export function removeOne(configId) {
+export function getOne(id) {
   return request({
-    url: `/qunar/tts/policy/config/remove/one/${configId}`,
-    method: 'delete'
-  });
-}
-
-export function getOne(configId) {
-  return request({
-    url: `/qunar/tts/policy/config/one/${configId}`,
+    url: `/qunar/tts/policy/config/get/one/${id}`,
     method: 'get'
   });
 }
 
 export function getList(filter) {
   return request({
-    url: `/qunar/tts/policy/config/list`,
-    method: 'get',
-    params: filter
-  });
-}
-
-export function getTotal(filter) {
-  return request({
-    url: '/qunar/tts/policy/config/total',
+    url: `/qunar/tts/policy/config/get/list`,
     method: 'get',
     params: filter
   });
@@ -56,8 +41,15 @@ export function getTotal(filter) {
 
 export function getPageList(pageFlag, pageSize, filter) {
   return request({
-    url: `/qunar/tts/policy/config/page/list/${pageFlag}/${pageSize}`,
+    url: `/qunar/tts/policy/config/get/page/list/${pageFlag}/${pageSize}`,
     method: 'get',
     params: filter
+  });
+}
+
+export function removeOne(id) {
+  return request({
+    url: `/qunar/tts/policy/config/remove/one/${id}`,
+    method: 'delete'
   });
 }

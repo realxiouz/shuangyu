@@ -3,19 +3,12 @@
     <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
       <el-form :model="formData" label-width="80px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="客户" prop="merchantId">
-            <el-select
-              v-model="formData.merchantId"
-              placeholder="请选择客户.."
-              style="width: 100%"
-            >
-              <el-option
-                v-for="item in openList"
-                :key="item.merchantId"
-                :label="item.firm.firmName"
-                :value="item.merchantId"
-              ></el-option>
-            </el-select>
+          <el-form-item label="用户名称:">
+            <el-input
+              clearable
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.userName"
+            ></el-input>
           </el-form-item>
         </el-col>
       </el-form>
@@ -26,8 +19,16 @@
         class="filter-item"
         type="primary"
         size="mini"
-        @click="$emit('onSearch', formData)"
-      >查询</el-button>
+        @click="handleSearch"
+      >查询
+      </el-button>
+      <el-button
+        icon="el-icon-refresh"
+        class="filter-item"
+        type="primary"
+        size="mini"
+        @click="handleClear"
+      >清空</el-button>
       <el-button type="text" size="mini" @click="handleMore">
         更多
         <i :class="switchIcon"></i>
@@ -35,51 +36,42 @@
     </el-col>
   </el-row>
 </template>
-
 <script>
-export default {
-  name: "openApiSearch",
-  data() {
-    return {
-      more: false,
-      formData: {
-        merchantId: ""
+  export default {
+    name: "search",
+    data() {
+      return {
+        more: false,
+        formData: {
+          userName: null
+        }
+      };
+    },
+    computed: {
+      switchIcon() {
+        if (!this.more) {
+          return "el-icon-arrow-down el-icon--right";
+        } else {
+          return "el-icon-arrow-up el-icon--right";
+        }
+      }
+    },
+    methods: {
+      initSearchForm() {
+        return {
+          userName: null
+        };
       },
-      openList: []
-    };
-  },
-  computed: {
-    switchIcon() {
-      if (!this.more) {
-        return "el-icon-arrow-down el-icon--right";
-      } else {
-        return "el-icon-arrow-up el-icon--right";
+      handleSearch() {
+        this.$emit("onSearch", this.formData);
+      },
+      handleClear() {
+        this.formData = this.initSearchForm();
+        this.handleSearch();
+      },
+      handleMore() {
+        this.more = !this.more;
       }
     }
-  },
-  methods: {
-    handleMore() {
-      this.more = !this.more;
-    },
-    //加载平台信息
-    loadMerchants() {
-      this.$store
-        .dispatch("firmMerchant/getList", {
-          filter: {merchantType: 0}
-        })
-        .then(data => {
-          this.openList = data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    }
-  },
-  created() {
-    this.loadMerchants();
-  }
-};
+  };
 </script>
-
-<style scoped>
-</style>

@@ -143,7 +143,7 @@
                   if (!flag) {
                     this.$router.push({name: "changePassword"});
                   } else {
-                    this.$router.push({path: this.redirect || "/index"});
+                    this.$router.push({path: this.redirect || "/home"});
                   }
                   this.loading = false;
                 })
@@ -157,7 +157,7 @@
               this.$store
                 .dispatch("user/signInCode", params)
                 .then(() => {
-                  this.$router.push({path: this.redirect || "/index"});
+                  this.$router.push({path: this.redirect || "/home"});
                   this.loading = false;
                 })
                 .catch(() => {

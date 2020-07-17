@@ -1,18 +1,18 @@
 import {
+  saveOne,
   addOne,
-  getList,
+  updateOne,
   getOne,
+  getList,
   getPageList,
-  getTotal,
-  removeOne,
-  save,
-  updateOne
+  removeOne
 } from '@/api/otherOrderConfig/qunarPolicyConfig';
 
 const actions = {
-  save({commit}, params) {
+  // eslint-disable-next-line no-unused-vars
+  saveOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      save(params)
+      saveOne(args)
         .then(response => {
           resolve(response);
         })
@@ -21,9 +21,10 @@ const actions = {
         });
     });
   },
-  addOne({commit}, params) {
+  // eslint-disable-next-line no-unused-vars
+  addOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      addOne(params)
+      addOne(args)
         .then(response => {
           resolve(response);
         })
@@ -32,9 +33,11 @@ const actions = {
         });
     });
   },
-  updateOne({commit}, params) {
+  // eslint-disable-next-line no-unused-vars
+  updateOne({commit}, args) {
+    const {policyConfigId} = args;
     return new Promise((resolve, reject) => {
-      updateOne(params)
+      updateOne(policyConfigId, args)
         .then(response => {
           resolve(response);
         })
@@ -43,21 +46,11 @@ const actions = {
         });
     });
   },
-  removeOne({commit}, params) {
-    return new Promise((resolve, reject) => {
-      const {configId} = params;
-      removeOne(configId)
-        .then(response => {
-          resolve(response);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
+  // eslint-disable-next-line no-unused-vars
   getOne({commit}, params) {
+    const {policyConfigId} = params;
     return new Promise((resolve, reject) => {
-      getOne(params)
+      getOne(policyConfigId)
         .then(response => {
           resolve(response);
         })
@@ -66,18 +59,7 @@ const actions = {
         });
     });
   },
-  getTotal({commit}, params) {
-    return new Promise((resolve, reject) => {
-      const {filter} = params;
-      getTotal(filter)
-        .then(response => {
-          resolve(response);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
+  // eslint-disable-next-line no-unused-vars
   getList({commit}, params) {
     return new Promise((resolve, reject) => {
       const {filters} = params;
@@ -90,10 +72,24 @@ const actions = {
         });
     });
   },
+  // eslint-disable-next-line no-unused-vars
   getPageList({commit}, params) {
     return new Promise((resolve, reject) => {
       const {pageFlag, pageSize, filter} = params;
       getPageList(pageFlag, pageSize, filter)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  // eslint-disable-next-line no-unused-vars
+  removeOne({commit}, args) {
+    const {policyConfigId} = args;
+    return new Promise((resolve, reject) => {
+      removeOne(policyConfigId)
         .then(response => {
           resolve(response);
         })

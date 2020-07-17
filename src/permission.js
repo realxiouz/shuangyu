@@ -1,42 +1,38 @@
 import router from './router';
 import store from './store';
 import { Message } from 'element-ui';
-import NProgress from 'nprogress'; // progress bar
-import 'nprogress/nprogress.css'; // progress bar style
-import { getToken } from '@/utils/auth'; // get token from cookie
-//import getPageTitle from "@/utils/get-page-title";
+import NProgress from 'nprogress';
+import 'nprogress/nprogress.css';
+import { getToken } from '@/utils/auth';
+import nav from './store/modules/nav';
 
-NProgress.configure({ showSpinner: false }); // NProgress Configuration
+NProgress.configure({ showSpinner: false });
 
-const whiteList = ['/login']; // no redirect whitelist
+const whiteList = ['/login'];
 
 router.beforeEach(async (to, from, next) => {
-  // start progress bar
   NProgress.start();
-
-  // set page title
-  //document.title = getPageTitle(to.meta.title);
-
-  // determine whether the user has logged in
+  document.title = to.meta.title;
   const hasToken = getToken();
-
   if (hasToken) {
     if (to.path === '/login') {
-      // if is logged in, redirect to the home page
       next({ path: '/' });
       NProgress.done();
     } else {
-      const hasGetUserInfo = store.getters.name;
-      if (hasGetUserInfo) {
+      if (store.state.user.routes.length) {
         next();
       } else {
+        let { navs } = await store.dispatch('getLoginInfo', { firmId: null });
+        let tree = genTree(null, navs.filter(i => i.component));
+        console.log(tree);
+        let routes = genMenus(tree);
+        store.commit('user/setRoutes', routes);
+        router.addRoutes(routes);
         try {
-          // get user info
-         // await store.dispatch('user/getInfo');
-
-          next();
+          next({
+            ...to
+          });
         } catch (error) {
-          // remove token and go to login page to re-login
           await store.dispatch('user/resetToken');
           Message.error(error || 'Has Error');
           next(`/login?redirect=${to.path}`);
@@ -45,13 +41,9 @@ router.beforeEach(async (to, from, next) => {
       }
     }
   } else {
-    /* has no token*/
-
     if (whiteList.indexOf(to.path) !== -1) {
-      // in the free login whitelist, go directly
       next();
     } else {
-      // other pages that do not have permission to access are redirected to the login page.
       next(`/login?redirect=${to.path}`);
       NProgress.done();
     }
@@ -59,6 +51,42 @@ router.beforeEach(async (to, from, next) => {
 });
 
 router.afterEach(() => {
-  // finish progress bar
   NProgress.done();
 });
+
+let _import = path => _ => import(`@/views/${path}.vue`);
+
+function genMenus(arr) {
+  return arr
+    .filter(i => i.component)
+    .map(i => {
+      let { uri, title, icon, navName, component, children, sort } = i;
+      let bean = {
+        path: uri,
+        meta: { title, icon },
+        name: navName,
+        component: _import(component),
+        sort
+      };
+      if (children && children.length) {
+        bean.children = genMenus(children).sort((i, j) => i.sort - j.sort);
+      }
+      return bean;
+    });
+}
+
+function genTree(pid, arr) {
+  let tree = [];
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i].pid === pid) {
+      tree.push(arr[i]);
+    }
+  }
+  if (tree.length > 0) {
+    for (let i = 0; i < tree.length; i++) {
+      let children = genTree(tree[i].navId, arr);
+      tree[i].children = children;
+    }
+  }
+  return tree;
+}
