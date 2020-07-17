@@ -1,5 +1,7 @@
 <template>
   <div class="page-form">
+    <!-- <el-dialog center :title="apiId!=''?'编辑Api信息':'添加Api'" :visible.sync="dialogVisible" @open="onOpen" @close="onClose"> -->
+    <el-dialog :title="keyId!=''?'编辑Api信息':'添加Api'" :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
     <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
       <el-form-item label="Api名称:" prop="apiName">
         <el-input v-model="formData.apiName"></el-input>
@@ -15,12 +17,14 @@
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer" style="text-align: right;">
-      <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
-      <el-button size="mini" type="primary" @click="handleSave">确 定</el-button>
+      <el-button size="mini" @click="dialogVisible=false">取 消</el-button>
+      <el-button size="mini" type="primary" @click="onSave">确 定</el-button>
     </div>
+    </el-dialog>
   </div>
 </template>
 <script>
+import {MIXIN_EDIT} from "@/utils/mixin";
 function defaultData() {
   return {
     apiId: "",
@@ -32,7 +36,7 @@ function defaultData() {
 }
 export default {
   name: "apiEdit",
-
+  mixins: [MIXIN_EDIT],
   data() {
     return {
       formData: defaultData(),
@@ -55,18 +59,16 @@ export default {
           }
         ],
         remark: [{ required: true, message: "请输入备注", trigger: "blur" }],
+      },
+      actions:{
+        getOne: 'api/getOne',
+          saveOne: 'api/saveOne'
       }
     };
   },
 
   methods: {
-    handleSave() {
-      this.$refs["form"].validate(valid => {
-        if (valid) {
-          this.$emit("onSave", this.formData);
-        }
-      });
-    },
+    
     handleGetOne(id) {
       if (id) {
         this.$store

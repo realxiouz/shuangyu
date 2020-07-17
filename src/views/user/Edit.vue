@@ -1,6 +1,6 @@
 <template>
   <div class="page-form">
-    <el-dialog title="添加" :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
+    <el-dialog :title="keyId!=''?'编辑':'添加'" :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
       <el-form size="mini" :model="formData" :rules="formRules">
         <input type="hidden" v-model="formData.userId"/>
         <el-form-item label="昵称" prop="nickName">

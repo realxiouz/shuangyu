@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="page-form">
+    <el-dialog :title="roleId!=''?'编辑角色信息':'添加新角色'" :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
     <el-form ref="form" :model="formData" label-width="110px" size="mini" :rules="formRules">
       <el-form-item label="角色名称:" prop="roleName">
         <el-input v-model="formData.roleName" placeholder="请输入你要添加的角色名称"></el-input>
@@ -28,15 +29,18 @@
         ></el-tree>
       </el-form-item>
     </el-form>
-    <div slot="footer" class="dialog-footer" style="text-align: right;">
-      <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
-      <el-button size="mini" type="primary" @click="handeleSave">确 定</el-button>
-    </div>
+    <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible=false">取 消</el-button>
+        <el-button type="primary" @click="onSave">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+    import {MIXIN_EDIT} from "@/utils/mixin";
     export default {
+        mixins: [MIXIN_EDIT],
         name: "roleEdit",
         props: ["roleId"],
         data() {
@@ -54,21 +58,17 @@
             };
         },
         methods: {
-            handeleSave() {
-                this.$refs["form"].validate(valid => {
-                    if (valid) {
-                        this.formData.navs = this.$refs.tree.getCheckedKeys();
-                        this.$emit("onSave", this.formData);
-                    }
-                });
-            },
             defaultFormData() {
                 return {
                     roleId: "",
                     roleName: "",
                     roleType: "",
                     enable: true,
-                    navs: []
+                    navs: [],
+                    actions: {
+                    getOne: 'user/getOne',
+                    saveOne: 'user/saveOne'
+                    }
                 };
             },
             clearForm() {

@@ -2,7 +2,7 @@
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch"/>
       <el-row class="page-tools" style="margin-bottom:15px;margin-left:50px;">
-        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+        <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
       </el-row>
       <el-table
         class="page-table"
@@ -28,77 +28,49 @@
         <el-table-column label="操作" align="center" fixed="right" width="200">
           <template slot-scope="scope">
             <el-button @click="onEdit(scope.row)" type="primary" size="mini">编辑</el-button>
-            <el-button @click="onDel(scope.row)" type="danger" size="mini">删除</el-button>
+            <el-button  @click="onDel(scope.row)" type="danger" size="mini">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
       <el-pagination
         class="page-footer"
-        @prev-click="prevClick"
-        @next-click="nextClick"
-        background
-        layout="total,prev,next"
-        prev-text="上一页"
-        next-text="下一页"
-        :page-size="pageSize"
-        :total="total"
+      background
+      prev-text="上一页"
+      next-text="下一页"
+      :total="total"
+      @prev-click="onPrev"
+      @next-click="onNext"
+      @size-change="onSizeChange"
+      layout="total,sizes,prev,next"
+      :page-size="pageSizes[0]"
+      :page-sizes="pageSizes"
       ></el-pagination>
-      <el-dialog :title="roleId?'编辑角色信息':'添加新角色'" center :visible.sync="dialogVisible" width="30%"
-                 :close-on-click-modal="false">
-        <edit v-if="dialogVisible" :roleId="roleId" @onSave="onSave" @onCancel="handleCancel"></edit>
-      </el-dialog>
+         <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" @refresh="onRefresh"/>
     </div>
 </template>
 
 <script>
     import edit from "./Edit";
-  import search from "./Search";
+    import search from "./Search";
+    import {MIXIN_LIST} from "@/utils/mixin";
 
     export default {
-        name: "roleList",
+        mixins: [MIXIN_LIST],
         data() {
             return {
                 roleId: "",
                 dialogVisible: false,
-                loading: true,
                 deleteForSearch: false,
-                pageFlag: 1,
-                pageSize: 10,
-                lastId: "",
-                total: 0,
-                tableData: []
+                keyId: '',
+                keyName: 'roleId',
+                 actions: {
+                    getPageList: 'role/getPageList',
+                    removeOne: 'role/removeOne'
+                }
             };
         },
         methods: {
-            /*对员工进行删除*/
-            onDel(row) {
-                this.open(
-                    this.delete,
-                    row.roleId,
-                    "此操作将删除该用户的所有信息, 是否继续?"
-                );
-            },
-            /*根据用户ID删除用户*/
-            delete(roleID) {
-                this.$store
-                    .dispatch("role/removeOne", {id: roleID})
-                    .then(() => {
-                        this.lastId = "0";
-                        if (1 === this.tableData.length && !this.deleteForSearch) {
-                            this.prevClick();
-                        } else {
-                            this.loadData();
-                        }
-                        this.deleteForSearch = false;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            onEdit(row) {
-                this.dialogVisible = true;
-                this.roleId = row.roleId;
-            },
+           
             changeSwitch(row) {
                 row.enable = row.enable ? true : false;
                 this.$store
@@ -117,42 +89,6 @@
                     })
                     .catch(error => {
                         console.log(error);
-                    });
-            },
-            prevClick() {
-                this.pageFlag = -1;
-                this.lastId = this.tableData[0].roleId;
-                this.loadData();
-            },
-            nextClick() {
-                this.pageFlag = 1;
-                this.lastId = this.tableData[this.tableData.length - 1].roleId;
-                this.loadData();
-            },
-            handleAdd() {
-                this.roleId = "";
-                this.dialogVisible = true;
-            },
-            loadData(params) {
-                let filter = {};
-                if (this.lastId) {
-                    filter.lastId = this.lastId;
-                }
-                this.$store
-                    .dispatch("role/getPageList", {
-                        pageFlag: this.pageFlag,
-                        pageSize: this.pageSize,
-                        filter
-                    })
-                    .then(data => {
-                        if (data) {
-                            this.tableData = data.rows;
-                            this.total = data.total;
-                        }
-                        this.loading = false;
-                    })
-                    .catch(error => {
-                        this.loading = false;
                     });
             },
             // 新增或存储新的角色
@@ -179,66 +115,10 @@
                 }
                 this.dialogVisible = false;
             },
-            handleCancel: function () {
-                this.dialogVisible = false;
-            },
-            onSearch(params) {
-                this.deleteForSearch = true;
-                let newParams = {};
-                if (params) {
-                    for (let key in params) {
-                        if (params[key]) {
-                            newParams[key] = params[key];
-                        }
-                    }
-                }
-                this.$store
-                    .dispatch("role/getList", {
-                        filter: newParams
-                    })
-                    .then(data => {
-                        if (data) {
-                            this.tableData = data.rows;
-                            this.total = data.total;
-                        }
-                        this.loading = false;
-                    })
-                    .catch(error => {
-                        this.loading = false;
-                    });
-
-                this.$message({
-                    type: "success",
-                    message: "查询成功!"
-                });
-            },
-            open(func, data, message) {
-                this.$confirm(message, "提示", {
-                    confirmButtonText: "确定",
-                    cancelButtonText: "取消",
-                    type: "warning"
-                })
-                    .then(() => {
-                        func(data);
-                        this.$message({
-                            type: "success",
-                            message: "删除成功!"
-                        });
-                    })
-                    .catch(() => {
-                        this.$message({
-                            type: "info",
-                            message: "已取消删除"
-                        });
-                    });
-            }
-        },
-        created() {
-            this.loadData();
         },
         components: {
             edit,
-      search
+            search
         }
     };
 </script>

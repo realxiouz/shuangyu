@@ -116,7 +116,6 @@ export default {
       isFlights: false,
       flightsInfo: "",
       segmentsInfo: "",
-
       beanIdName: "airlineCode",
       actionName: "airline/getPageList",
       airlineCode: ""

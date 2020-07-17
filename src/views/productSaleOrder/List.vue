@@ -523,7 +523,7 @@
     this.loadData();
   },
   components: {
-    productSearch
+    search
   }
 };
 </script>

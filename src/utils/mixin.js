@@ -77,15 +77,17 @@ export const MIXIN_LIST = {
       this.loadData();
     },
     onAdd() {
+      console.log('add')
       this.keyId = '';
       this.dialogVisible = true;
     },
     onEdit(row) {
       this.keyId = row[this.keyName];
+      console.log(this.keyId)
       this.dialogVisible = true;
     },
     onDel(id) {
-      if (!this.actions.removeOne) {
+      if (this.actions.removeOne) {
         this.$confirm('确定删除?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -155,7 +157,8 @@ export const MIXIN_EDIT = {
       this.$emit('update:visible', false);
     },
     onSave() {
-      if (!this.actions.saveOne) {
+      console.log(this.actions)
+      if (this.actions.saveOne) {
         this.$store
           .dispatch(this.actions.saveOne, this.formData)
           .then(id => {
@@ -175,7 +178,7 @@ export const MIXIN_EDIT = {
       this.formData = this.defaultFormData();
     },
     loadData() {
-      if (!this.actions.getOne) {
+      if (this.actions.getOne) {
         if (this.keyId) {
           this.$store
             .dispatch(this.actions.getOne, {id: this.keyId})
