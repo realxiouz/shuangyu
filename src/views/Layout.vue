@@ -135,6 +135,7 @@
   import SelectFirms from "@/components/SelectFirms.vue";
   import ScrollPane from "@/components/TagsView/ScrollPane.vue";
   import {mapState} from 'vuex'
+  import { resetRoute } from '@/router'
 
   // @ is an alias to /src
   export default {
@@ -250,6 +251,8 @@
           .dispatch("user/signOut")
           .then(() => {
             this.$router.push({path: "/login"});
+            this.$store.commit('user/setRoutes', [])
+            resetRoute()
           })
           .catch(() => {
           });
@@ -320,6 +323,8 @@
     created() {
       this.getLoginInfo(null);
       this.getTag();
+
+      console.log(this.$router)
     },
     beforeDestroy() {
       // 离开页面销毁定时器

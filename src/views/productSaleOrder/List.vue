@@ -54,7 +54,7 @@
               <el-table-column
                 prop="productCode"
                 label="商品编码"
-                align="center"
+                width="200"
               ></el-table-column>
               <el-table-column
                 prop="productName"
@@ -79,15 +79,8 @@
               <el-table-column
                 prop="quantity"
                 label="数量"
-                align="center"
-              ></el-table-column>
-              <el-table-column
-                prop="unit"
-                label="计量单位"
-                align="center"
-              ></el-table-column>
-              <el-table-column prop="amount" label="金额" align="center">
-              </el-table-column>
+                width="60"
+              />
             </el-table>
 
             <el-table
@@ -135,7 +128,7 @@
           width="80"
           align="center"
         ></el-table-column>
-        <el-table-column fixed="right" label="操作" align="center" width="300">
+        <el-table-column fixed="right" label="操作" align="center" width="200">
           <template slot-scope="scope">
             <el-button
               v-show="scope.row.orderStatus != 0"
@@ -187,6 +180,8 @@
         formatWarehouseStatus
     } from "@/utils/productStatus.js";
 
+    import { CARD_TYPES_MAP, AGE_TYPES_MAP } from "@/utils/const";
+
     export default {
         data() {
             return {
@@ -196,7 +191,10 @@
                 tableData: [],
                 currentPage: 1,
                 pageSize: 10,
-                total: 0
+                total: 0,
+
+                cardMap: CARD_TYPES_MAP,
+                ageMap: AGE_TYPES_MAP
             };
         },
         methods: {

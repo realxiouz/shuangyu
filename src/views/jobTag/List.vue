@@ -94,8 +94,8 @@
       };
     },
     components: {
-      jobTagEdit,
-      jobTagSearch
+      edit,
+      search
     },
     methods: {
       loadData(params) {

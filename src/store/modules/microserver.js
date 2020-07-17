@@ -1,4 +1,4 @@
-import { getOne, saveData, getPageList, removeOne } from '@/api/microService';
+import { getOne, saveData, getPageList, removeOne } from '@/api/microserver';
 
 const actions = {
   // eslint-disable-next-line no-unused-vars

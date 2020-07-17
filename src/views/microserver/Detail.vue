@@ -97,7 +97,7 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           this.$store
-            .dispatch("microService/saveData", this.formData)
+            .dispatch("microserver/saveData", this.formData)
             .then(() => {
               this.$message({ type: "success", message: "保存成功" });
               this.handleBack()
@@ -120,7 +120,7 @@ export default {
     loadData() {
       if (this.code) {
         this.$store
-          .dispatch("microService/getOne", { code: this.code })
+          .dispatch("microserver/getOne", { code: this.code })
           .then(data => {
             this.formData = data;
           });

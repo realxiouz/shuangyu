@@ -33,6 +33,11 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
+            <el-form-item label="序号" prop="sort">
+              <el-input-number placeholder="请输入序号" v-model="formData.sort"></el-input-number>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
             <el-form-item label="分组" prop="group">
               <el-input placeholder="分组" v-model="formData.group"></el-input>
             </el-form-item>
@@ -58,15 +63,15 @@
           <template v-if="formData.valueType==0">
             <el-col :span="12">
               <el-form-item label="类型">
-                <el-select v-model="formData.inputType" placeholder="选中输入类型">
+                <el-select v-model="formData.inputType" placeholder="选中输入类型" style="width: 100%">
                   <el-option label="输入框" value="text"></el-option>
                   <el-option label="文本域" value="textarea"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
-            <el-col :span="24">
+            <el-col :span="12">
               <el-form-item label="最大长度">
-                <el-input v-model="formData.length" placeholder="文本最大长度" />
+                <el-input-number v-model="formData.length" placeholder="文本最大长度" />
               </el-form-item>
             </el-col>
           </template>
@@ -82,12 +87,12 @@
                 </el-col>
               </el-form-item>
             </el-col>
-            <el-col :span="24">
+            <el-col :span="12">
               <el-form-item label="步长" prop="step">
-                <el-input placeholder="请输入步长" v-model="formData.step" type="number" />
+                <el-input-number placeholder="请输入步长" v-model="formData.step" type="number" />
               </el-form-item>
             </el-col>
-            <el-col :span="24">
+            <el-col :span="12">
               <el-form-item label="数字类型">
                 <el-select v-model="formData.type" placeholder="选中数字类型">
                   <el-option label="Byte" value="Byte"></el-option>
@@ -101,12 +106,12 @@
             </el-col>
           </template>
           <template v-if="formData.valueType==3||formData.valueType==4">
-            <el-col :span="24">
+            <el-col :span="12">
               <el-form-item label="时间格式">
                 <el-input v-model="formData.format" placeholder="输入时间格式,例如YYYY-MM-DD" />
               </el-form-item>
             </el-col>
-            <el-col :span="24" v-if="formData.valueType==3">
+            <el-col :span="12" v-if="formData.valueType==3">
               <el-form-item label="类型">
                 <el-select v-model="formData.inputType" placeholder="选中输入类型">
                   <el-option label="日期" value="date"></el-option>
@@ -170,7 +175,7 @@
               </el-col>
             </el-form-item>
           </el-col>
-          <el-col :span="24" v-if="formData.valueType==62">
+          <el-col :span="6" v-if="formData.valueType==62">
             <el-form-item label="是否多选">
               <el-switch v-model="formData.multiple" :active-value="true" :inactive-value="false"
                          @change="handleMultipleChange"
@@ -188,8 +193,18 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
+            <el-form-item label="是否禁用">
+              <el-switch v-model="formData.disabled" :active-value="true" :inactive-value="false"></el-switch>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
             <el-form-item label="是否前端隐藏">
               <el-switch v-model="formData.hidden" :active-value="true" :inactive-value="false"></el-switch>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="默认值">
+              <el-input v-model="formData.value" placeholder="默认值" />
             </el-form-item>
           </el-col>
           <el-col :span="24">
@@ -249,7 +264,8 @@
           output: "",
           outputParams: [],
           remark: "",
-          sort: ""
+          sort: "",
+          value:""
         };
       },
       clearForm(){

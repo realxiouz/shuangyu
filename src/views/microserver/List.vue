@@ -69,7 +69,7 @@ export default {
   data() {
     return {
       beanIdName: "code",
-      actionName: "microService/getPageList",
+      actionName: "microserver/getPageList",
       code: "",
       statusMap: {
         '0': '启动',
@@ -85,7 +85,7 @@ export default {
         type: "warning"
       }).then(() => {
         this.$store
-          .dispatch("microService/removeOne", { code: id })
+          .dispatch("microserver/removeOne", { code: id })
           .then(() => {
             this.onRefresh();
             this.$message({ type: "success", message: "删除成功" });
@@ -94,12 +94,12 @@ export default {
     },
     handleAdd() {
       this.$router.push({
-        path: `/microService/detail`
+        path: `/microserver/detail`
       })
     },
     onEdit(i) {
       this.$router.push({
-        path: `/microService/detail?code=${i.code}`
+        path: `/microserver/detail?code=${i.code}`
       })
     }
   },
