@@ -1,6 +1,6 @@
 <template>
   <div class="page-form">
-    <el-dialog :title="roleId!=''?'编辑角色信息':'添加新角色'" :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
+    <el-dialog :title="keyId!=''?'编辑角色信息':'添加新角色'" :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
     <el-form ref="form" :model="formData" label-width="110px" size="mini" :rules="formRules">
       <el-form-item label="角色名称:" prop="roleName">
         <el-input v-model="formData.roleName" placeholder="请输入你要添加的角色名称"></el-input>
@@ -54,6 +54,10 @@
                     roleName: [
                         {required: true, message: "请输入角色名称", trigger: "blur"}
                     ]
+                },
+                actions: {
+                    getOne: 'role/getOne',
+                    saveOne: 'role/saveOne'
                 }
             };
         },
@@ -65,10 +69,7 @@
                     roleType: "",
                     enable: true,
                     navs: [],
-                    actions: {
-                    getOne: 'user/getOne',
-                    saveOne: 'user/saveOne'
-                    }
+                    
                 };
             },
             clearForm() {
@@ -86,19 +87,7 @@
                         console.log(error);
                     });
             },
-            loadData(roleId) {
-                this.$store
-                    .dispatch("role/getOne", {id: roleId})
-                    .then(data => {
-                        this.formData = data;
-                        this.loadNavs();
-                        console.log(data);
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-                this.dialogVisible = true;
-            }
+           
         },
         created() {
             this.clearForm();

@@ -2,7 +2,7 @@
   <div class="page">
    <search class="page-search" ref="search" @onSearch="onSearch"/>
       <el-row style="margin-bottom:15px; margin-left:50px;">
-        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+        <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
       </el-row>
       <el-table
         class="page-table"
@@ -135,54 +135,40 @@
         </el-table-column>
       </el-table>
       <el-pagination
-        class="page-footer"
-        background
-        layout="total,prev,next"
-        prev-text="上一页"
-        next-text="下一页"
-        :page-size="pageSize"
-        :total="total"
-        @prev-click="handlePrevClick"
-        @next-click="handleNextClick"
+       class="page-footer"
+      background
+      prev-text="上一页"
+      next-text="下一页"
+      :total="total"
+      @prev-click="onPrev"
+      @next-click="onNext"
+      @size-change="onSizeChange"
+      layout="total,sizes,prev,next"
+      :page-size="pageSizes[0]"
+      :page-sizes="pageSizes"
       ></el-pagination>
-
-      <el-dialog
-        :title="!update?'添加航班':'编辑航班信息'"
-        center
-        :visible.sync="dialogVisible"
-        width="33%"
-        :close-on-click-modal="false"
-      >
-        <edit
-          v-if="dialogVisible"
-          :curNode="curNode"
-          :update="update"
-          @onSave="handleSave"
-          @onCancel="handleCancel"
-        ></edit>
-      </el-dialog>
+      <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" @refresh="onRefresh"/>
     </div>
 </template>
 
 <script>
 import edit from "./Edit";
-  import search from "./Search";
+import search from "./Search";
+import {MIXIN_LIST} from "@/utils/mixin";
 
 export default {
+  mixins: [MIXIN_LIST],
   data() {
     return {
-      loading: true,
-      dialogVisible: false,
-      tableData: [],
-      /*记录当前进行操作的节点*/
-      curNode: {},
-      update: false,
+      flightId:'',
+      deleteForSearch: false,
       deleteValue: false,
-      searchForm: {},
-      pageFlag: 0,
-      pageSize: 10,
-      lastId: null,
-      total: 0
+      keyId: '',
+      keyName: 'flightId',
+      actions: {
+          getPageList: 'flight/getPageList',
+          removeOne: 'flight/removeOne'
+        }
     };
   },
    components: {
@@ -190,131 +176,6 @@ export default {
       search
     },
   methods: {
-    /*加载数据列表*/
-    loadData(params) {
-      this.$store
-        .dispatch("flight/getPageList", {
-          pageFlag: this.pageFlag,
-          pageSize: this.pageSize,
-          lastId: this.lastId,
-          filter: params
-        })
-        .then(data => {
-          if (data) {
-            this.tableData = data.rows;
-            this.total = data.total;
-          }
-          this.loading = false;
-        })
-        .catch(error => {
-          this.loading = false;
-          console.log(error);
-        });
-    },
-    /*输入条件时可进行条件查询*/
-    search(params) {
-      this.deleteValue = true;
-      const newParams = {};
-      if (params) {
-        for (let key in params) {
-          if (params[key]) {
-            newParams[key] = params[key];
-          }
-        }
-      }
-      this.loadData(newParams);
-      this.$message({
-        type: "success",
-        message: "查询成功！"
-      });
-    },
-    /*添加记录*/
-    handleAdd() {
-      this.dialogVisible = true;
-      this.curNode = {};
-      this.update = false;
-    },
-    /*添加记录时完成数据填写或编辑记录时，点击对数据进行保存*/
-    handleSave(formData) {
-      this.dialogVisible = false;
-      let url = "";
-      if (this.update) {
-        url = "flight/updateOne";
-      } else {
-        url = "flight/addOne";
-      }
-      this.$store
-        .dispatch(url, formData)
-        .then(() => {
-          this.loadData();
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    handleCancel() {
-      this.dialogVisible = false;
-    },
-    /*点击记录进行编辑*/
-    onEdit(row) {
-      this.dialogVisible = true;
-      this.curNode = row;
-      this.update = true;
-    },
-    /*对员工进行删除*/
-    onDel(row) {
-      this.open(this.delete, row.flightId, "此操作将删除条票价信息, 是否继续?");
-    },
-    /*根据用户ID删除用户*/
-    delete(flightId) {
-      this.$store
-        .dispatch("flight/removeOne", { flightId: flightId })
-        .then(() => {
-          this.lastId = "0";
-          if (1 === this.tableData.length && !this.deleteValue) {
-            this.handlePrevClick();
-            this.deleteValue = false;
-          } else {
-            this.loadData();
-            this.deleteValue = false;
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    /*前翻页*/
-    handlePrevClick() {
-      this.pageFlag = -1;
-      this.lastId = this.tableData[0].flightId;
-      this.loadData();
-    },
-    /*翻后页*/
-    handleNextClick() {
-      this.pageFlag = 1;
-      this.lastId = this.tableData[this.tableData.length - 1].flightId;
-      this.loadData();
-    },
-    open(func, data, message) {
-      this.$confirm(message, "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          func(data);
-          this.$message({
-            type: "success",
-            message: "删除成功!"
-          });
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除"
-          });
-        });
-    },
     /*初始化用工列表中的生日日期格式*/
     initDate(dateStr, format) {
       if (dateStr && dateStr > 0) {
@@ -337,9 +198,6 @@ export default {
       }
       return "￥" + this.$numeral(amount).format("0.00");
     }
-  },
-  created() {
-    this.loadData();
   },
   computed: {
     formatDate() {

@@ -22,7 +22,7 @@
         <el-table-column prop="remark" label="备注" align="center" :fit='true'></el-table-column>
         <el-table-column label="是否启用" align="center" fixed="right" width="100">
           <template slot-scope="scope">
-            <el-switch v-model="scope.row.enable" @change="changeSwitch(scope.row)"></el-switch>
+            <el-switch v-model="scope.row.enable" @change="onEnable(scope.row)"></el-switch>
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center" fixed="right" width="200">
@@ -45,7 +45,7 @@
       :page-size="pageSizes[0]"
       :page-sizes="pageSizes"
       ></el-pagination>
-         <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" @refresh="onRefresh"/>
+      <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" @refresh="onRefresh"></edit>
     </div>
 </template>
 
@@ -70,51 +70,7 @@
             };
         },
         methods: {
-           
-            changeSwitch(row) {
-                row.enable = row.enable ? true : false;
-                this.$store
-                    .dispatch("role/updateOne", {
-                        roleId: row.roleId,
-                        data: {
-                            enable: row.enable
-                        }
-                    })
-                    .then(() => {
-                        this.$message({
-                            message: "更新成功",
-                            type: "success"
-                        });
-                        this.loadData();
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            // 新增或存储新的角色
-            onSave(formData) {
-                /** test end **/
-                const isEdit = !!this.roleId;
-                const message = isEdit ? "修改成功！" : "添加成功！";
-                if (isEdit) {
-                    this.$store.dispatch("role/updateOne", {roleId: formData.roleId, data: formData}).then(() => {
-                        this.loadData();
-                        this.$message({
-                            type: "success",
-                            message
-                        });
-                    });
-                } else {
-                    this.$store.dispatch("role/addOne", formData).then(() => {
-                        this.loadData();
-                        this.$message({
-                            type: "success",
-                            message
-                        });
-                    });
-                }
-                this.dialogVisible = false;
-            },
+            
         },
         components: {
             edit,
