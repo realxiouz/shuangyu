@@ -110,7 +110,7 @@ export default {
       tableData: [],
       pageFlag: 1,
       pageSize: 10,
-      lastId: "blank",
+      lastId: null,
       total: 0,
       codeEnabled: false,
       uploadData: {
