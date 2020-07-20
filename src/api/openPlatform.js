@@ -23,7 +23,8 @@ export function getList(params) {
   });
 }
 
-export function getPageList(pageFlag, pageSize, params) {
+export function getPageList(args) {
+  const { pageFlag, pageSize, ...params } = args;
   return request({
     url: `/third/open/platform/get/page/list/${pageFlag}/${pageSize}`,
     method: 'get',

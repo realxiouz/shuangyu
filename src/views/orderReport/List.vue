@@ -177,6 +177,7 @@
 </template>
 <script>
 import search from "./Search.vue";
+import {MIXIN_LIST} from "@/utils/mixin";
 import {
   formatStatus,
   formatCategory,
@@ -192,6 +193,7 @@ import {
   formatAmount
 } from "@/utils/orderFormdata.js";
 export default {
+  mixins: [MIXIN_LIST],
   name: "orderReportList",
   data() {
     return {

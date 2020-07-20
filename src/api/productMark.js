@@ -31,11 +31,12 @@ export function getOne(paramId) {
 }
 
 
-export function getPageList(pageFlag, pageSize, lastId, searchForm) {
+export function getPageList(args) {
+  const {pageFlag, pageSize, lastId, ...params} = args;
   return request({
     url: `/third/product/mark/page/list/${pageFlag}/${pageSize}/${lastId}`,
     method: "get",
-    params: searchForm
+    params
   });
 }
 

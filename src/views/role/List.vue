@@ -61,7 +61,7 @@
                 roleId: "",
                 dialogVisible: false,
                 deleteForSearch: false,
-                keyId: '',
+                // keyId: '',
                 keyName: 'roleId',
                  actions: {
                     getPageList: 'role/getPageList',

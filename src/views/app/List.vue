@@ -6,7 +6,7 @@
         icon="el-icon-plus"
         type="primary"
         size="mini"
-        @click="handleAdd"
+        @click="onAdd"
         >添加</el-button
       >
     </el-row>
@@ -33,14 +33,14 @@
       <el-table-column fixed="right" label="操作" align="center" width="350">
         <template slot-scope="scope">
           <el-button
-            @click="handleUpdate(scope.row.appId)"
+            @click="onEdit(scope.row.appId)"
             type="primary"
             size="mini"
             >编辑</el-button
           >
           <el-button
             @click.native.prevent="
-              handleRemove(scope.row.appId, scope.$index, tableData)
+              onDel(scope.row.appId, scope.$index, tableData)
             "
             type="danger"
             size="mini"
@@ -50,99 +50,45 @@
       </el-table-column>
     </el-table>
     <el-pagination
-      class="page-footer"
-      @size-change="onSizeChange"
-      @prev-click="prevClick"
-      @next-click="nextClick"
+       class="page-footer"
       background
-      layout="total,sizes,prev,next"
       prev-text="上一页"
       next-text="下一页"
-      :page-size="pageSize"
       :total="total"
+      @prev-click="onPrev"
+      @next-click="onNext"
+      @size-change="onSizeChange"
+      layout="total,sizes,prev,next"
+      :page-size="pageSizes[0]"
+      :page-sizes="pageSizes"
     ></el-pagination>
-    <el-dialog
-      :title="appId ? '编辑应用' : '添加新应用'"
-      center
-      :visible.sync="dialogVisible"
-      width="30%"
-    >
-      <edit
-        v-if="dialogVisible"
-        :app-id="appId"
-        @onSave="handleSave"
-        @onCancel="handleCancel"
-      ></edit>
-    </el-dialog>
+    
+      <edit :visible.sync="dialogVisible" :app-id="appId" :key-name="keyName" @refresh="onRefresh"/>
+    
   </div>
 </template>
 <script>
  import edit from "./Edit";
   import search from "./Search";
+  import {MIXIN_LIST} from "@/utils/mixin";
 
 export default {
+  mixins: [MIXIN_LIST],
   name: "appList",
   data() {
     return {
-      lastId: "0",
-      pageFlag: "next",
-      pageSize: 10,
-      dialogVisible: false,
-      loading: true,
-      tableData: [],
+      deleteForSearch: false,
       appId: "",
-      total: 0
+      keyName:'appId',
+      actions: {
+          getPageList: 'app/getPageList',
+          removeOne: 'app/removeOne'
+        }
     };
   },
   methods: {
-    prevClick() {
-      this.pageFlag = "prev";
-      this.lastId = this.tableData[0].appId;
-      this.loadData();
-    },
-    nextClick() {
-      this.pageFlag = "next";
-      this.lastId = this.tableData[this.tableData.length - 1].appId;
-      this.loadData();
-    },
-    loadTotal(searchForm) {
-      if (!searchForm || !searchForm.appName) {
-        searchForm = {};
-      }
-      this.$store
-        .dispatch("app/getTotal", {
-          filters: searchForm
-        })
-        .then(data => {
-          this.total = data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    loadData(searchForm) {
-      if (!searchForm || !searchForm.appName) {
-        searchForm = {};
-      }
-      this.$store
-        .dispatch("app/getPageList", {
-          pageFlag: this.pageFlag,
-          pageSize: this.pageSize,
-          lastId: this.lastId,
-          filter: searchForm
-        })
-        .then(data => {
-          if (data) {
-            this.tableData = data;
-            this.loadTotal(searchForm);
-          }
-          this.loading = false;
-        })
-        .catch(error => {
-          this.loading = false;
-          console.log(error);
-        });
-    },
+    
+   
     handleSwitch(row) {
       row.enable = row.enable ? true : false;
       this.$store
@@ -152,84 +98,6 @@ export default {
           console.log(error);
         });
     },
-    handleCancel() {
-      this.dialogVisible = false;
-    },
-    handleAdd() {
-      this.dialogVisible = true;
-      this.appId = "";
-    },
-    handleUpdate(id) {
-      this.appId = id;
-      this.dialogVisible = true;
-    },
-    handleRemove(id, index, rows) {
-      this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.$store.dispatch("app/removeOne", { appId: id }).then(() => {
-            if (1 === this.tableData.length) {
-              this.prevClick();
-            } else {
-              this.loadData();
-            }
-            rows.splice(index, 1);
-          });
-        })
-        .catch(err => {
-          console.error(err);
-        });
-    },
-    handleSave(formData) {
-      this.$store
-        .dispatch("app/save", formData)
-        .then(() => {
-          this.loadData();
-          if (this.appId != "") {
-            this.$message({
-              type: "success",
-              message: "修改成功！"
-            });
-          } else {
-            this.$message({
-              type: "success",
-              message: "添加成功！"
-            });
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-      this.dialogVisible = false;
-    },
-    onSizeChange(pageSize) {
-      this.pageSize = pageSize;
-      this.loadData();
-    },
-    onSearch(params) {
-      const newParams = {};
-      if (params) {
-        for (let key in params) {
-          if (params[key]) {
-            newParams[key] = params[key];
-          }
-        }
-      }
-      if (Object.keys(newParams).length == 0) {
-        this.lastId = 0;
-      }
-      this.loadData(newParams);
-      this.$message({
-        type: "success",
-        message: "查询成功！"
-      });
-    }
-  },
-  created() {
-    this.loadData();
   },
   components: {
       edit,

@@ -1,5 +1,11 @@
 <template>
   <div class="page-form">
+      <el-dialog
+      :title="appId!='' ? '编辑应用' : '添加新应用'"
+      center
+      :visible.sync="dialogVisible" @open="onOpen" @close="onClose"
+      width="30%"
+    >
     <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
       <el-form-item label="应用名称" prop="appName">
         <el-input v-model="formData.appName"></el-input>
@@ -8,13 +14,15 @@
         <el-switch v-model="formData.enable" :active-value=true :inactive-value=false></el-switch>
       </el-form-item>
     </el-form>
-    <div slot="footer" style="text-align:right;">
-      <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
-      <el-button size="mini" type="primary" @click="handleSave">确 定</el-button>
-    </div>
+    <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible=false">取 消</el-button>
+        <el-button type="primary" @click="onSave">确 定</el-button>
+    </span>
+    </el-dialog>
   </div>
 </template>
 <script>
+    import {MIXIN_EDIT} from "@/utils/mixin";
     function defaultData() {
         return {
             appId: "",
@@ -23,10 +31,15 @@
         }
     };
     export default {
+        mixins: [MIXIN_EDIT],
         name: 'appEdit',
         data() {
             return {
                 formData: defaultData(),
+                actions: {
+                    getOne: 'app/getOne',
+                    saveOne: 'app/save'
+                },
                 rules: {
                     appName: [
                         {required: true, message: "请输入应用名称", trigger: "blur"},
@@ -40,33 +53,10 @@
             }
         },
         methods: {
-            handleSave() {
-                this.$refs['form'].validate((valid) => {
-                    if (valid) {
-                        this.$emit('onSave', this.formData);
-                    }
-                });
-            },
-            handleGetOne(id) {
-                if (id) {
-                    this.$store
-                        .dispatch("app/getOne", {appId: id})
-                        .then(data => {
-                            this.formData = data;
-                            this.dialogVisible = true;
-                        }).catch(error => {
-                        console.log(error);
-                    });
-                } else {
-                    this.formData = defaultData();
-                }
-            },
+           
+            
         },
-        created() {
-            if (this.appId) {
-                this.handleGetOne(this.appId);
-            }
-        },
+        
         props: {
             appId: String,
         }
