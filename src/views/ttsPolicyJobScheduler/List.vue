@@ -283,8 +283,8 @@
       },
       formatValueType(value) {
         for (var i = 0; i < this.valueTypes.length; i++) {
-          if (value == this.valueTypes[i].value) {
-            return this.valueTypes[i].label;
+          if (value == this.valueTypes[i].code) {
+            return this.valueTypes[i].value;
           }
         }
       }
