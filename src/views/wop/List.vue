@@ -20,7 +20,7 @@
       <el-table-column prop="tagCode" label="标签编码" align="center"></el-table-column>-->
       <el-table-column prop="required" label="是否启动" align="center">
         <template slot-scope="scope">
-          <span v-if="scope.row.status">是</span>
+          <span v-if="scope.row.status==1">是</span>
           <span v-else>否</span>
         </template>
       </el-table-column>
@@ -73,6 +73,7 @@
 <script>
   import edit from "./Edit";
   import search from "./Search";
+  import { PROPERTY_TABLE } from '@/utils/const';
 
   export default {
     name: "wopList",
@@ -87,48 +88,7 @@
         total: 0,
         tableData: [],
         copyFlag: false,
-        valueTypes: [
-          {
-            value: 0,
-            label: '文本'
-          },
-          {
-            value: 1,
-            label: '开关'
-          },
-          {
-            value: 2,
-            label: '数字'
-          },
-          {
-            value: 3,
-            label: '日期'
-          },
-          {
-            value: 4,
-            label: '日期时间'
-          },
-          {
-            value: 5,
-            label: '时间'
-          },
-          {
-            value: 6,
-            label: '评分'
-          },
-          {
-            value: 7,
-            label: '单选'
-          },
-          {
-            value: 8,
-            label: '多选'
-          },
-          {
-            value: 9,
-            label: '选择器'
-          }
-        ],
+        valueTypes: PROPERTY_TABLE,
         tagTypes: [
           {
             label: "工厂",
@@ -276,13 +236,6 @@
         for (var i = 0; i < this.tagTypes.length; i++) {
           if (value == this.tagTypes[i].value) {
             return this.tagTypes[i].label;
-          }
-        }
-      },
-      formatValueType(value) {
-        for (var i = 0; i < this.valueTypes.length; i++) {
-          if (value == this.valueTypes[i].value) {
-            return this.valueTypes[i].label;
           }
         }
       }

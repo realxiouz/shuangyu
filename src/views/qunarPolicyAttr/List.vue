@@ -82,7 +82,6 @@
           .dispatch("qunarPolicyAttr/getPageList", {
             pageFlag: this.pageFlag,
             pageSize: this.pageSize,
-            lastId: this.lastId,
             params: this.params
           })
           .then(result => {
