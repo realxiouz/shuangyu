@@ -88,7 +88,7 @@
         formData: this.defaultFormData(),
         rules: {
           openCode: [
-            {required: true, message: "请输入平台编码", trigger: "change"},
+            {required: true, message: "请输入平台编码"},
             {
               min: 1,
               max: 20,
@@ -97,7 +97,7 @@
             {validator: codeValidator, trigger: 'blur'}
           ],
           openName: [
-            {required: true, message: "请输入平台名称", trigger: "change"},
+            {required: true, message: "请输入平台名称"},
             {
               min: 1,
               max: 20,
@@ -105,10 +105,10 @@
             }
           ],
           openType: [
-            {required: true, message: "请选择平台类型", trigger: "change"},
+            {required: true, message: "请选择平台类型"},
           ],
           openUrl: [
-            {required: true, message: "请输入配置地址", trigger: "change"},
+            {required: true, message: "请输入配置地址"},
           ]
         }
       };
@@ -148,6 +148,14 @@
                 this.$emit('refresh');
                 this.$message({type: "success", message: "保存成功"});
               });
+          }else{
+            let that = this;
+            let timer = window.setTimeout(function(){
+              that.$nextTick(function () {
+                that.$refs['form'].clearValidate();
+                window.clearTimeout(timer);
+              })
+            }, 1000);
           }
         });
       },

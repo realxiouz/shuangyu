@@ -48,7 +48,7 @@
         merchant: null,
         rules: {
           userName: [
-            {required: true, message: "请输入用户名称", trigger: "change"},
+            {required: true, message: "请输入用户名称"},
             {
               min: 1,
               max: 20,
@@ -56,7 +56,7 @@
             },
           ],
           password: [
-            {required: true, message: "请输入用户密码", trigger: "change"},
+            {required: true, message: "请输入用户密码"},
             {
               min: 1,
               max: 20,
@@ -64,10 +64,10 @@
             },
           ],
           ipUrl: [
-            {required: true, message: "请输入IP地址", trigger: "change"}
+            {required: true, message: "请输入IP地址"}
           ],
           callbackUrl: [
-            {required: true, message: "请输入回调地址", trigger: "change"}
+            {required: true, message: "请输入回调地址"}
           ]
         }
       };
@@ -81,7 +81,7 @@
           } else {
             this.loadData();
           }
-          if(this.openId){
+          if(this.openId ){
             this.loadMerchant();
           }
         }
@@ -117,6 +117,14 @@
                 this.$emit('refresh');
                 this.$message({type: "success", message: "保存成功"});
               });
+          }else{
+            let that = this;
+            let timer = window.setTimeout(function(){
+              that.$nextTick(function () {
+                that.$refs['form'].clearValidate();
+                window.clearTimeout(timer);
+              })
+            }, 1000);
           }
         });
       },

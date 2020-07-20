@@ -34,6 +34,7 @@ export const MIXIN_LIST = {
           .then(data => {
             if (data) {
               this.tableData = data.rows;
+              console.log(data)
               this.total = data.total;
             }
           })
@@ -82,6 +83,7 @@ export const MIXIN_LIST = {
       this.dialogVisible = true;
     },
     onEdit(row) {
+      console.log('edit')
       this.keyId = row[this.keyName];
       console.log(this.keyId)
       this.dialogVisible = true;

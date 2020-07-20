@@ -1,5 +1,6 @@
 <template>
   <div class="page-form">
+    <el-dialog :title="keyId!=''?'编辑航班信息':'添加航班'" :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
     <el-form :model="formData" label-width="120px" size="mini">
       <input type="hidden" v-model="formData.flightId"/>
       <el-form-item label="航司">
@@ -118,15 +119,18 @@
       </el-form-item>
     </el-form>
 
-    <div slot="footer" class="dialog-footer" style="text-align:right">
-      <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
-      <el-button size="mini" type="primary" @click="handleSave">确 定</el-button>
-    </div>
+    <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible=false">取 消</el-button>
+        <el-button type="primary" @click="onSave">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import {MIXIN_EDIT} from "@/utils/mixin";
     export default {
+      mixins: [MIXIN_EDIT],
         name: 'airportEdit',
         props: ["update", "curNode"],
         data() {
@@ -134,22 +138,10 @@
                 formData: {},
                 airportCode: '',
                 tags: [],
-                /*rules: {
-                  airportName: [
-                    {required: true, message: "请输入机场名称", trigger: "blur"}
-                  ],
-                  airportCity: [
-                    {required: true, message: "请输入机场城市名称", trigger: "blur"}
-                  ],
-                  airportCode: [
-                    {required: true, message: "请输入机场三字码", trigger: "blur"},
-                    {
-                      min: 3,
-                      max: 3,
-                      message: '长度为3字符'
-                    }
-                  ]
-                }*/
+                actions: {
+                  getOne: 'flight/getOne',
+                  saveOne: 'flight/updateOne'
+                }
             }
         },
         methods: {
@@ -196,40 +188,7 @@
                     this.tags.push(this.airportCode.toUpperCase());
                 }
             },
-            handleSave(){
-                //将相应字段转为大写
-                const toUpperCaseList = [
-                    //航司
-                    'airlineCode',
-                    //主航班号
-                    'actFlightCode',
-                    //航班号
-                    'flightCode',
-                    //出发地三字码
-                    'dpt',
-                    //出发机场
-                    'dptAirport',
-                    //出发航楼站
-                    'dptTerminal',
-                    //到达地三字码
-                    'arr',
-                    //到达机场
-                    'arrAirport',
-                    //到达航楼站
-                    'arrTerminal',
-                    //机型
-                    'planeType',
-                    //机型全称
-                    'flightTypeFullName'
-                ];
-                toUpperCaseList.forEach( item => {
-                    this.formData[item] =  this.formData[item].toUpperCase();
-                })
-                this.formData.stopAirportCode = this.tags;
-                this.formData.dptTime = this.formData.dptTime.replace(":","");
-                this.formData.arrTime = this.formData.arrTime.replace(":","");
-                return  this.$emit('onSave', this.formData);
-            },
+           
             selectArrTime(){
                 this.formData.flightTimes = this.computedTime( this.formData.dptTime, this.formData.arrTime);
             },

@@ -1,6 +1,11 @@
-import {save, removeOne, getPageList, getTotal, getOne, getApiUrlList,getList} from "@/api/qunarPolicyAttr";
+import {
+  getOne,
+  saveOne,
+  getList,
+  getPageList,
+  removeOne
+} from '@/api/qunarPolicyAttr';
 import {getToken} from "@/utils/auth";
-
 
 const state = {
   token: getToken(),
@@ -21,9 +26,11 @@ const mutations = {
 };
 
 const actions = {
-  save({commit}, params) {
+  // eslint-disable-next-line no-unused-vars
+  getOne({ commit }, params) {
     return new Promise((resolve, reject) => {
-      save(params)
+      const { policyAttrId } = params;
+      getOne(policyAttrId)
         .then(response => {
           resolve(response);
         })
@@ -32,9 +39,10 @@ const actions = {
         });
     });
   },
-  removeOne({commit}, openId) {
+  // eslint-disable-next-line no-unused-vars
+  saveOne({ commit }, args) {
     return new Promise((resolve, reject) => {
-      removeOne(openId)
+      saveOne(args)
         .then(response => {
           resolve(response);
         })
@@ -43,11 +51,10 @@ const actions = {
         });
     });
   },
-
-  getPageList({commit}, params) {
-    const {pageFlag, pageSize, filter} = params;
+  // eslint-disable-next-line no-unused-vars
+  getList({ commit }, args) {
     return new Promise((resolve, reject) => {
-      getPageList(pageFlag, pageSize, filter)
+      getList(args)
         .then(response => {
           resolve(response);
         })
@@ -56,9 +63,11 @@ const actions = {
         });
     });
   },
-  getTotal({commit}, params) {
+  // eslint-disable-next-line no-unused-vars
+  getPageList({ commit }, args) {
     return new Promise((resolve, reject) => {
-      getTotal(params)
+      const { pageFlag, pageSize, params } = args;
+      getPageList(pageFlag, pageSize, params)
         .then(response => {
           resolve(response);
         })
@@ -67,31 +76,11 @@ const actions = {
         });
     });
   },
-  getOne({commit}, params) {
+  // eslint-disable-next-line no-unused-vars
+  removeOne({ commit }, args) {
     return new Promise((resolve, reject) => {
-      getOne(params)
-        .then(response => {
-          resolve(response);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  getApiUrlList({commit}, params) {
-    return new Promise((resolve, reject) => {
-      getApiUrlList(params)
-        .then(response => {
-          resolve(response);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  getList({commit}, params) {
-    return new Promise((resolve, reject) => {
-      getList(params)
+      const { policyAttrId } = args;
+      removeOne(policyAttrId)
         .then(response => {
           resolve(response);
         })

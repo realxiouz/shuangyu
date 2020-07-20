@@ -86,7 +86,7 @@
                 newDialogVisible: false,
                 rules: {
                   subjectCode: [
-                        {required: true, message: "请输入科目编码", trigger: "change"},
+                        {required: true, message: "请输入科目编码"},
                         {
                             min: 1,
                             max: 20,
@@ -95,7 +95,7 @@
                         {validator: codeValidator, trigger: 'blur'}
                     ],
                   subjectName: [
-                        {required: true, message: "请输入科目名称", trigger: "change"},
+                        {required: true, message: "请输入科目名称"},
                         {
                             min: 1,
                             max: 20,
@@ -126,6 +126,14 @@
                         this.formData.category = this.category;
                         this.formData.code = this.formData.subjectCode.toUpperCase();
                         this.$emit("onSave", this.formData);
+                    }else{
+                      let that = this;
+                      let timer = window.setTimeout(function(){
+                        that.$nextTick(function () {
+                          that.$refs['form'].clearValidate();
+                          window.clearTimeout(timer);
+                        })
+                      }, 1000);
                     }
                 });
             },

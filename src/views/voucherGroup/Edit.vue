@@ -45,7 +45,7 @@
         formData: this.defaultFormData(),
         rules: {
           voucherGroupName: [
-            {required: true, message: "请输入凭证字", trigger: "change"},
+            {required: true, message: "请输入凭证字"},
             {
               min: 1,
               max: 1,
@@ -54,7 +54,7 @@
             {validator: chineseValidator, trigger: 'blur'}
           ],
           voucherGroupTitle: [
-            {required: true, message: "请输入标题", trigger: "change"},
+            {required: true, message: "请输入标题"},
             {
               min: 1,
               max: 8,
@@ -100,6 +100,14 @@
                 this.$emit('refresh');
                 this.$message({type: "success", message: "保存成功"});
               });
+          }else{
+            let that = this;
+            let timer = window.setTimeout(function(){
+              that.$nextTick(function () {
+                that.$refs['form'].clearValidate();
+                window.clearTimeout(timer);
+              })
+            }, 1000);
           }
         });
       },

@@ -15,17 +15,18 @@ router.beforeEach(async (to, from, next) => {
   document.title = to.meta.title;
   const hasToken = getToken();
   if (hasToken) {
-    if (to.path === '/login') {
+    if (to.path.startsWith('/login')) {
       next({ path: '/' });
       NProgress.done();
     } else {
       if (store.state.user.routes.length) {
         next();
       } else {
-        let { navs } = await store.dispatch('getLoginInfo', { firmId: null });
-        let tree = genTree(null, navs.filter(i => i.component));
-        console.log(tree);
-        let routes = genMenus(tree);
+        // let { navs } = await store.dispatch('getLoginInfo', { firmId: null });
+        // let tree = genTree(null, navs.filter(i => i.component));
+        // console.log(tree);
+        // let routes = genMenus(tree);
+        let routes = genMenus(await store.dispatch('nav/getTreeList', {}))
         store.commit('user/setRoutes', routes);
         router.addRoutes(routes);
         try {
