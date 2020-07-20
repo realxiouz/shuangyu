@@ -1,5 +1,12 @@
 <template>
   <div class="page-form">
+    <el-dialog
+        title="资金账号信息"
+        center
+        :visible.sync="dialogVisible"
+        @open="onOpen" @close="onClose"
+        width="28%"
+      >
     <el-form :model="formData" label-width="110px" size="mini">
       <el-form-item label="产品标签">
         <el-input v-model="formData.markId" placeholder="请输入产品标签.." :disabled="update"></el-input>
@@ -29,20 +36,27 @@
       </el-form-item>
     </el-form>
     <div style="text-align:right;">
-      <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
-      <el-button type="primary" size="mini" @click="handleConfirm">确 定</el-button>
+      <el-button size="mini" @click="dialogVisible=false">取 消</el-button>
+      <el-button type="primary" size="mini" @click="onSave">确 定</el-button>
     </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+    import {MIXIN_EDIT} from "@/utils/mixin";
     export default {
+      mixins: [MIXIN_EDIT],
         props: ["curNode", "update"],
         data() {
             return {
                 formData: {},
                 providerList: [],
-                policyFlagList: []
+                policyFlagList: [],
+                actions: {
+                  getOne: 'productMark/getOne',
+                  saveOne: 'productMark/updateOne'
+                }
             };
         },
         methods: {
@@ -90,9 +104,7 @@
                 })
             },
             /*对提交的数据进行类型格式*/
-            handleConfirm() {
-                this.$emit("onSave", this.formData);
-            },
+           
             initFormData() {
                 this.clearForm();
                 this.loadProviders();

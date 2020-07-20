@@ -1,6 +1,6 @@
 <template>
   <div class="page-form">
-    <el-dialog title="开放平台管理" width="24%" center :visible.sync="dialogVisible" @open="handleOpen" @close="handleClose">
+    <el-dialog :title="keyId!=''?'修改开放平台管理':'添加开放平台管理'"  width="24%" center :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
       <el-form ref="form" label-width="110px" size="mini" :model="formData" :rules="rules">
         <el-row>
           <el-form-item label="平台编码：" prop="openCode">
@@ -55,15 +55,17 @@
           </el-col>
         </el-row>
       </el-form>
-      <div style="text-align:right;">
-        <el-button size="mini" @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" size="mini" @click="handleSave">确 定</el-button>
-      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible=false">取 消</el-button>
+        <el-button type="primary" @click="onSave">确 定</el-button>
+      </span>
     </el-dialog>
   </div>
 </template>
 <script>
+  import {MIXIN_EDIT} from "@/utils/mixin";
   export default {
+    mixins: [MIXIN_EDIT],
     props: {
       visible: {
         type: Boolean,
@@ -85,7 +87,11 @@
       };
       return {
         dialogVisible: false,
-        formData: this.defaultFormData(),
+        // formData: this.defaultFormData(),
+        actions: {
+          getOne: 'openPlatform/getOne',
+          saveOne: 'openPlatform/saveOne'
+        },
         rules: {
           openCode: [
             {required: true, message: "请输入平台编码"},
@@ -126,39 +132,6 @@
       }
     },
     methods: {
-      handleOpen() {
-        this.$emit('update:visible', true);
-      },
-      handleClose() {
-        this.$emit('update:visible', false);
-      },
-      handleSwitch(){
-        this.defaultFlag = !this.defaultFlag;
-      },
-      handleSave() {
-        this.$refs["form"].validate(valid => {
-          if (valid) {
-            this.$store
-              .dispatch("openPlatform/saveOne", this.formData)
-              .then(() => {
-                if (!this._.isEmpty(this.editOpenId)) {
-                  this.formData.openId = this.editOpenId;
-                }
-                this.dialogVisible = false;
-                this.$emit('refresh');
-                this.$message({type: "success", message: "保存成功"});
-              });
-          }else{
-            let that = this;
-            let timer = window.setTimeout(function(){
-              that.$nextTick(function () {
-                that.$refs['form'].clearValidate();
-                window.clearTimeout(timer);
-              })
-            }, 1000);
-          }
-        });
-      },
       defaultFormData() {
         return {
           openId: null,
@@ -185,13 +158,7 @@
           this.formData.configNavList.splice(parseInt(index), 1);
         }
       },
-      loadData() {
-        this.$store
-          .dispatch("openPlatform/getOne", {openId: this.editOpenId})
-          .then(data => {
-            this.formData = data;
-          });
-      }
+      
     }
   };
 </script>

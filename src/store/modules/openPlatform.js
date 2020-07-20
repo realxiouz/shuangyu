@@ -66,8 +66,7 @@ const actions = {
   // eslint-disable-next-line no-unused-vars
   getPageList({ commit }, args) {
     return new Promise((resolve, reject) => {
-      const { pageFlag, pageSize, params } = args;
-      getPageList(pageFlag, pageSize, params)
+      getPageList(args)
         .then(response => {
           resolve(response);
         })
