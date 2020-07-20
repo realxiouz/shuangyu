@@ -1,14 +1,14 @@
 <template>
   <div>
-    <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
+    <el-form ref="form"  :model="formData" label-width="110px" size="mini">
       <el-row :gutter="5">
         <el-col :span="12">
-          <el-form-item label="名称" prop="name">
+          <el-form-item label="名称" prop="name" :rules="[{required: true, message: '必填', trigger: 'blur'}]">
             <el-input placeholder="名称" v-model="formData.schedulerName"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="定时策略">
+          <el-form-item label="定时策略" :rules="[{required: true, message: '必填', trigger: 'blur'}]">
             <el-popover v-model="formData.cronPopover">
               <vue-cron @change="changeCron" @close="formData.cronPopover=false" i18n="cn"></vue-cron>
               <el-input slot="reference" @click="formData.cronPopover=true" v-model="formData.cron"
@@ -16,10 +16,10 @@
             </el-popover>
           </el-form-item>
         </el-col>
-        <el-col :span="12" v-for="(item, index) in formData.params" :key="index">
+        <el-col :span="12" v-for="(item, index) in formData.attrList" :key="index">
           <template v-if="item.valueType != 9">
             <el-form-item
-              :prop="'params.' + index + '.value'"
+              :prop="'attrList.' + index + '.value'"
               :label="item.name"
               :rules="[{ required: item.required, message: '请输入'+item.name, trigger: 'blur' }]">
               <el-input
@@ -63,14 +63,14 @@
                 </el-radio>
               </el-radio-group>
               <!-- 多选 非销售属性-->
-              <!-- <el-checkbox-group
-                v-if="item.valueType ==61 && !item.sku" v-model="item.value">
+              <el-checkbox-group
+                v-if="item.valueType ==61" v-model="item.value">
                 <el-checkbox
                   v-for="attr in item.attributes"
                   :key="attr.code"
                   :label="attr.name">{{attr.name}}
                 </el-checkbox>
-              </el-checkbox-group> -->
+              </el-checkbox-group>
               <!--选择器-->
               <el-select v-model="item.value" v-if="item.valueType ==62" :multiple="item.multiple">
                 <el-option
@@ -80,16 +80,16 @@
                   :value="attr.code">
                 </el-option>
               </el-select>
-              <!-- 多选 非销售属性-->
-              <el-checkbox-group
-                v-if="item.valueType ==61"
-                v-model="item.value">
-                <el-checkbox
-                  v-for="attr in item.attributes"
-                  :key="attr.code"
-                  :label="attr.code">{{attr.name}}
-                </el-checkbox>
-              </el-checkbox-group>
+              <!-- &lt;!&ndash; 多选 非销售属性&ndash;&gt;
+               <el-checkbox-group
+                 v-if="item.valueType ==61"
+                 v-model="item.value">
+                 <el-checkbox
+                   v-for="attr in item.attributes"
+                   :key="attr.code"
+                   :label="attr.code">{{attr.name}}
+                 </el-checkbox>
+               </el-checkbox-group>-->
             </el-form-item>
           </template>
         </el-col>
@@ -119,19 +119,10 @@
       }
     },
     methods: {
-      setFormRules(params) {
-        if (params && params.length > 0) {
-          for (let i = 0; i < params.length; i++) {
-            let item = params[i];
-            if (item.required) {
-              this.rules[item.code] = [{required: true, message: "必填", trigger: "blur"}]
-            }
-          }
-        }
-      },
       defaultFormData() {
         return {
           params: [],
+          attrList: [],
           values: {},
           schedulerId: '',
           schedulerName: '',
@@ -151,73 +142,73 @@
         this.formData.cron = val
       },
       handleSave() {
-        let data = {};
-        this.formData.values = this.getValues(this.formData.params);
-        this.formData.status = 0;
-        this.formData.tagId = this.formData.params[0].tagId;
-        this.formData.tagName = this.formData.params[0].tagName;
-        this.formData.tagCode = this.formData.params[0].tagCode;
-        this.formData.tagType = this.formData.params[0].tagType;
-        let url = '';
-        if (this.updateFlag) {
-          url = "jobScheduler/updateOne";
-          data = this.formData;
-        } else {
-          let xxlJobGroup = {
-            appName: 'wop-provider',
-            addressType: 0,
-            title: 'wop执行器'
-          };
-          let xxlJobInfo = {
-            jobDesc: this.formData.schedulerName,
-            jobCron: this.formData.cron,
-            executorHandler: 'wopJobHandler'
-          };
-          data.xxlJobInfo = xxlJobInfo;
-          data.xxlJobGroup = xxlJobGroup;
-          data.jobScheduler = this.formData;
-          url = "jobScheduler/addOneXxl";
+
+        this.$refs['form'].validate((valid) => {
+          if (valid) {
+            let data = {};
+            this.formData.params = this.getValues(this.formData.attrList);
+            this.formData.status = 0;
+            this.formData.tagId = this.formData.attrList[0].tagId;
+            this.formData.tagName = this.formData.attrList[0].tagName;
+            this.formData.tagCode = this.formData.attrList[0].tagCode;
+            this.formData.tagType = this.formData.attrList[0].tagType;
+            delete this.formData.attrList;
+            let url = '';
+            if (this.updateFlag) {
+              url = "jobScheduler/updateOne";
+              data = this.formData;
+            } else {
+              let xxlJobGroup = {
+                appName: 'wop-provider',
+                addressType: 0,
+                title: 'wop执行器'
+              };
+              let xxlJobInfo = {
+                jobDesc: this.formData.schedulerName,
+                jobCron: this.formData.cron,
+                executorHandler: 'wopJobHandler'
+              };
+              data.xxlJobInfo = xxlJobInfo;
+              data.xxlJobGroup = xxlJobGroup;
+              data.jobScheduler = this.formData;
+              url = "jobScheduler/addOneXxl";
+            }
+            this.$store
+              .dispatch(url, {
+                jobScheduler: data,
+                jobSchedulerId: this.formData.schedulerId
+              })
+              .then(() => {
+                this.$emit('onSave')
+              })
+              .catch(error => {
+                console.log(error);
+              });
+            this.$message({
+              type: "success",
+              message: "保存成功！"
+            });
+          }
+        });
+      },
+      getParams() {
+        let searchForm = {
+          tagId: '61886007158a4c40bd0f4f52fe2c6a90',
+          tagCode: 'wop'
         }
-        /*this.$refs['form'].validate((valid) => {
-          if (valid) {*/
         this.$store
-          .dispatch(url, {
-            jobScheduler: data,
-            jobSchedulerId: this.formData.schedulerId
+          .dispatch("jobConfig/getList", {
+            filter: searchForm
           })
-          .then(() => {
-            this.$emit('onSave')
+          .then(data => {
+            if (data) {
+              this.formData.attrList = data;
+              this.getData();
+            }
           })
           .catch(error => {
             console.log(error);
           });
-        this.$message({
-          type: "success",
-          message: "保存成功！"
-        });
-        /*   }
-         });*/
-      },
-      getParams() {
-        if (!this.jobSchedulerId || this.jobSchedulerId != null || this.jobSchedulerId != '') {
-          let searchForm = {
-            tagId: '61886007158a4c40bd0f4f52fe2c6a90',
-            tagCode: 'wop'
-          }
-          this.$store
-            .dispatch("jobConfig/getList", {
-              filter: searchForm
-            })
-            .then(data => {
-              if (data) {
-                this.formData.params = data;
-                this.setFormRules(this.formData.params);
-              }
-            })
-            .catch(error => {
-              console.log(error);
-            });
-        }
       },
       getData() {
         if (this.jobSchedulerId && this.jobSchedulerId != null && this.jobSchedulerId != '') {
@@ -227,11 +218,12 @@
             })
             .then(data => {
               if (data) {
+                let attrList = this.formData.attrList;
                 this.formData = data;
-                if (!this.formData.params || this.formData.params.length < 1) {
-                  this.getParams();
+                this.formData.attrList = attrList;
+                if (this.formData.params && this.formData.params.length > 0) {
+                  this.setValues(this.formData.params);
                 }
-                this.setFormRules(this.formData.params);
                 if (this.copyFlag) {
                   this.formData.schedulerId = '';
                 }
@@ -242,20 +234,107 @@
             });
         }
       },
-      getValues(params) {
-        let data = {};
-        if (params && params.length > 0) {
-          for (var i = 0; i < params.length; i++) {
-            data[params[i].code] = params[i].value;
+      setValues(params) {
+        let attrList = this.formData.attrList;
+        for (let i = 0; i < attrList.length; i++) {
+          for (let j = 0; j < params.length; j++) {
+            if (attrList[i].code == params[j].code) {
+              switch (params[j].type) {
+                case "Date":
+                  attrList[i].value = this.$moment(params[j]._string).toDate();
+                  break;
+                case "ArrayList":
+                  attrList[i].value = params[j]._array;
+                  break;
+                case "Boolean":
+                  attrList[i].value = params[j]._bool;
+                  break;
+                case "Byte":
+                  attrList[i].value = params[j]._byte;
+                  break;
+                case "Short":
+                  attrList[i].value = params[j]._short;
+                  break;
+                case "Integer":
+                  attrList[i].value = params[j]._int;
+                  break;
+                case "Long":
+                  attrList[i].value = params[j]._long;
+                  break;
+                case "Float":
+                  attrList[i].value = params[j]._float;
+                  break;
+                case "Double":
+                  attrList[i].value = params[j]._double;
+                  break;
+                case "String":
+                  attrList[i].value = params[j]._string;
+                  break;
+              }
+            }
           }
         }
-        return data;
+        this.formData.attrList = attrList;
+        return attrList;
+      },
+      getValues(attrList) {
+        let params = [];
+        if (attrList && attrList.length > 0) {
+          for (var i = 0; i < attrList.length; i++) {
+            params.push(this.getPropertyItem(attrList[i]))
+          }
+        }
+        return params;
+      },
+      getPropertyItem(property) {
+        const {code, name, type, value, hidden} = property;
+        let item = {code, name, type, _string: value + '', hidden};
+        switch (property.type) {
+          case "Date":
+            item._string = this.$moment(property.value).format(property.format);
+            item._date = this.$moment(property.value).toDate();
+            item._long = this.$moment(property.value).valueOf();
+            break;
+          case "ArrayList":
+            item._array = property.value;
+            break;
+          case "Boolean":
+            item._bool = property.value;
+            break;
+          case "Byte":
+            item._byte = property.value;
+            break;
+          case "Short":
+            item._short = property.value;
+            break;
+          case "Integer":
+            item._int = property.value;
+            break;
+          case "Long":
+            item._long = property.value;
+            break;
+          case "Float":
+            item._float = property.value;
+            break;
+          case "Double":
+            item._double = property.value;
+            break;
+          case "String":
+            item._string = property.value;
+            break;
+          // case "Object":
+          //   item._object = objVal
+          //   break
+        }
+        return item;
       },
     },
     created() {
       this.formData = this.defaultFormData();
+      //if (!this.jobSchedulerId && this.jobSchedulerId == null && this.jobSchedulerId == '') {
       this.getParams();
-      this.getData();
+      //}
+      //this.getData();
     }
   }
 </script>
