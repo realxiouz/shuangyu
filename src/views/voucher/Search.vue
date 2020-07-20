@@ -6,6 +6,7 @@
           <el-form-item label="凭证字号:">
             <el-input
               clearable
+              placeholder="请输入凭证字号..."
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.voucherCode"
             ></el-input>
@@ -15,6 +16,7 @@
           <el-form-item label="制单人:">
             <el-input
               clearable
+              placeholder="请输入制单人..."
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.originatorName"
             ></el-input>

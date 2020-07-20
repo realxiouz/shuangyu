@@ -6,38 +6,39 @@
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
     </el-row>
     <el-table class="page-table" :data="tableData">
-        <el-table-column label="商户名称" align="center" prop="merchantName" />
-        <el-table-column label="商户域名" align="center" prop="merchantDomain" />
-        <el-table-column label="调度任务" align="center" prop="schedulerName" />
-        <el-table-column label="属性分组" align="center" prop="group" />
-        <el-table-column label="属性编码" align="center" prop="code" />
-        <el-table-column label="属性名称" align="center" prop="name" />
-        <el-table-column label="是否必填" align="center" prop="required">
-          <template slot-scope="scope">
-            <span> {{scope.row.required ? '是' : '否'}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="是否只读" align="center" prop="readonly">
-          <template slot-scope="scope">
-            <span> {{scope.row.readonly ? '是' : '否'}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="是否禁用" align="center" prop="disabled">
-          <template slot-scope="scope">
-            <span> {{scope.row.disabled ? '是' : '否'}}</span>
-          </template>
-        </el-table-column>
+      <el-table-column label="排列序号" align="center" prop="sort" />
+      <el-table-column label="属性分组" align="center" prop="group" />
+      <el-table-column label="属性编码" align="center" prop="code" />
+      <el-table-column label="属性名称" align="center" prop="name" />
+      <el-table-column label="商户名称" align="center" prop="merchantName" />
+      <el-table-column label="商户域名" align="center" prop="merchantDomain" />
+      <el-table-column label="调度任务" align="center" prop="schedulerName" />
+      <el-table-column label="是否必填" align="center" prop="required">
+        <template slot-scope="scope">
+          <span> {{scope.row.required ? '是' : '否'}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="是否只读" align="center" prop="readonly">
+        <template slot-scope="scope">
+          <span> {{scope.row.readonly ? '是' : '否'}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="是否禁用" align="center" prop="disabled">
+        <template slot-scope="scope">
+          <span> {{scope.row.disabled ? '是' : '否'}}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="是否隐藏" align="center" prop="hidden">
         <template slot-scope="scope">
           <span> {{scope.row.hidden ? '是' : '否'}}</span>
         </template>
       </el-table-column>
-        <el-table-column width="160" label="操作" align="center">
-          <template slot-scope="scope">
-            <el-button size="mini" type="primary" @click="onEdit(scope.row.policyAttrId)">修改</el-button>
-            <el-button size="mini" type="danger" @click="handleDel(scope.row.policyAttrId)">删除</el-button>
-          </template>
-        </el-table-column>
+      <el-table-column width="160" label="操作" align="center">
+        <template slot-scope="scope">
+          <el-button size="mini" type="primary" @click="handleEdit(scope.row.policyAttrId)">编辑</el-button>
+          <el-button size="mini" type="danger" @click="handleDel(scope.row.policyAttrId)">删除</el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <el-pagination
       class="page-footer"
@@ -101,6 +102,9 @@
         }
       },
       onSearch(params) {
+        if(!params){
+          params = {};
+        }
         this.params = params;
         this.pageFlag = 0;
         this.lastId = null;
@@ -135,7 +139,7 @@
         this.editPolicyAttrId = null;
         this.dialogVisible = true;
       },
-      onEdit(id) {
+      handleEdit(id) {
         this.editPolicyAttrId = id;
         this.dialogVisible = true;
       },

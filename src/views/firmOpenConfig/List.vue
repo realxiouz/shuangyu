@@ -67,7 +67,6 @@
           .dispatch("firm/getConfigPageList", {
             pageFlag: this.pageFlag,
             pageSize: this.pageSize,
-            lastId: this.lastId,
             params: this.params
           })
           .then(result => {
@@ -84,6 +83,9 @@
         this.getList();
       },
       handleSearch(params) {
+        if(!params){
+          params = {};
+        }
         this.params = params;
         this.pageFlag = 0;
         this.lastId = null;

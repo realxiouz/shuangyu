@@ -6,6 +6,7 @@
           <el-form-item label="凭证字:">
             <el-input
               clearable
+              placeholder="请输入凭证字..."
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.voucherGroupName"
             ></el-input>
@@ -15,6 +16,7 @@
           <el-form-item label="标题:">
             <el-input
               clearable
+              placeholder="请输入标题..."
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.voucherGroupTitle"
             ></el-input>

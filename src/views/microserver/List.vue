@@ -33,7 +33,7 @@
       <el-table-column width="300" label="操作" align="center">
         <template slot-scope="scope">
           <el-button size="mini" type="primary" @click="onEdit(scope.row)"
-            >修改</el-button
+            >编辑</el-button
           >
           <el-button
             size="mini"

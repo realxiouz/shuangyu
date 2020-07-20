@@ -6,6 +6,7 @@
           <el-form-item label="属性分组:">
             <el-input
               clearable
+              placeholder="请输入属性分组搜索..."
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.group"
             ></el-input>
@@ -15,6 +16,7 @@
           <el-form-item label="属性编码:">
             <el-input
               clearable
+              placeholder="请输入属性编码搜索..."
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.code"
             ></el-input>
@@ -24,6 +26,7 @@
           <el-form-item label="属性名称:">
             <el-input
               clearable
+              placeholder="请输入属性名称搜索..."
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.name"
             ></el-input>

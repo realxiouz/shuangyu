@@ -25,7 +25,7 @@
         <el-table-column label="操作" fixed="right" align="center" width="400">
           <template slot-scope="scope">
             <el-button type="primary" size="mini" @click="handleAddChild(scope.row.firmId)">添加子企业</el-button>
-            <el-button type="primary" size="mini" @click="onEdit(scope.row.firmId)">编辑</el-button>
+            <el-button type="primary" size="mini" @click="handleEdit(scope.row.firmId)">编辑</el-button>
             <el-button type="danger" size="mini" @click="onDel(scope.$index, scope.row)">删除</el-button>
             <el-button size="mini"
                        :type="scope.row.userId?'success':'info'"
@@ -318,7 +318,7 @@
                 this.dialogVisible = true;
             },
             /*点击编辑*/
-            onEdit(firmId) {
+          handleEdit(firmId) {
                 this.editFirmId = firmId;
                 this.pid = "";
                 this.dialogVisible = true;

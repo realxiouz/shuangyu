@@ -32,7 +32,7 @@
         <el-table-column label="操作" fixed="right" align="center" width="180">
           <template slot-scope="scope" align="center" width="180" fixed="right">
             <el-button size="mini" type="primary" @click="handleUpdate(scope.row.tradeNo)">查看</el-button>
-<!--            <el-button size="mini" type="primary" @click="handleUpdate(scope.row.tradeNo)">修改</el-button>
+<!--            <el-button size="mini" type="primary" @click="handleUpdate(scope.row.tradeNo)">编辑</el-button>
             <el-button size="mini" type="danger" @click="handleRemove(scope.row.tradeNo)">删除</el-button>-->
           </template>
         </el-table-column>
@@ -129,7 +129,7 @@
           })
           .then(data => {
             if (data && data.rows && data.rows.length > 0) {
-              this.tableData = data.rows;
+              this.tableData = data.rows; console.log(this.tableData);
               this.total = data.total;
             } else {
               this.tableData = [];

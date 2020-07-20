@@ -11,7 +11,7 @@
       <el-table-column label="配置地址" align="center" prop="openUrl" />
       <el-table-column width="160" label="操作" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="handleEdit(scope.row.openId)">修改</el-button>
+          <el-button size="mini" type="primary" @click="handleEdit(scope.row.openId)">编辑</el-button>
           <el-button size="mini" type="danger" @click="handleDel(scope.row.openId)">删除</el-button>
         </template>
       </el-table-column>
@@ -85,6 +85,9 @@
         this.getList();
       },
       handleSearch(params) {
+        if(!params){
+          params = {};
+        }
         this.params = params;
         this.pageFlag = 0;
         this.lastId = null;

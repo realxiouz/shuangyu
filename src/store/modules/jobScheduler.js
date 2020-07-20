@@ -134,10 +134,10 @@ const actions = {
         });
     });
   },
-  getPageList({commit}, params) {
+  getPageList({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {pageFlag, pageSize, filter} = params;
-      getPageList(pageFlag, pageSize, filter)
+      const { pageFlag, pageSize, params } = args;
+      getPageList(pageFlag, pageSize, params)
         .then(response => {
           resolve(response);
         })

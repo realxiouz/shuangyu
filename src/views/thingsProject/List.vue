@@ -11,7 +11,7 @@
       <el-table-column label="备注" prop="description"/>
       <el-table-column width="160" label="操作" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" @click="onEdit(scope.row.projectId)">修改</el-button>
+          <el-button size="mini" @click="onEdit(scope.row.projectId)">编辑</el-button>
           <el-button size="mini" type="danger" @click="handleDel(scope.row.projectId)">删除</el-button>
         </template>
       </el-table-column>

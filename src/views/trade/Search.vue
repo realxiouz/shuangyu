@@ -6,6 +6,7 @@
           <el-form-item label="交易编号:" style="padding-left: 4px">
             <el-input
               clearable
+              placeholder="请输入交易编号..."
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.tradeNo"
             ></el-input>
@@ -15,6 +16,7 @@
           <el-form-item label="商家订单号:">
             <el-input
               clearable
+              placeholder="请输入商家订单号..."
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.outTradeNo"
             ></el-input>
