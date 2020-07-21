@@ -1,6 +1,10 @@
 import {PAGE_SIZES} from '@/utils/const';
 
 export const MIXIN_LIST = {
+  category: {
+    type: Number,
+    default: null
+  },
   data() {
     return {
       keyId: null,
@@ -14,7 +18,6 @@ export const MIXIN_LIST = {
       loading: false,
       pageSizes: PAGE_SIZES,
       params: {},
-      extraParam: {},
       actions: {
         getPageList: null,
         removeOne: null
@@ -24,14 +27,19 @@ export const MIXIN_LIST = {
   methods: {
     loadData() {
       if (this.actions.getPageList) {
+        if (null !== this.category && '' !== this.category) {
+          if (!this.params) {
+            this.params = {};
+          }
+          this.params.category = this.category;
+        }
         this.loading = true;
         this.$store
           .dispatch(this.actions.getPageList, {
             pageSize: this.pageSize,
             lastId: this.lastId,
             pageFlag: this.pageFlag,
-            ...this.params,
-            ...this.extraParam
+            ...this.params
           })
           .then(data => {
             if (data) {
@@ -64,7 +72,7 @@ export const MIXIN_LIST = {
     onSearch(params) {
       if (!params) {
         for (const key in params) {
-          !params[key] && delete params[key]
+          !params[key] && delete params[key];
         }
       }
       this.params = params;
@@ -77,6 +85,10 @@ export const MIXIN_LIST = {
       this.lastId = null;
       this.pageFlag = 0;
       this.loadData();
+    },
+    onAddChild(accountId) {
+      this.pid = accountId;
+      this.dialogVisible = true;
     },
     onAdd() {
       this.keyId = '';
@@ -113,6 +125,14 @@ export const MIXIN_LIST = {
 
 export const MIXIN_EDIT = {
   props: {
+    category: {
+      type: Number,
+      default: null
+    },
+    pid: {
+      type: String,
+      default: null
+    },
     keyId: {
       type: String,
       default: null
@@ -161,6 +181,12 @@ export const MIXIN_EDIT = {
       if (this.actions.saveOne) {
         this.$refs['form'].validate(valid => {
           if (valid) {
+            if (this.pid) {
+              this.formData.pid = this.pid;
+            }
+            if(null !== this.category && '' !== this.category && this.formData.category){
+              this.formData.category = this.category;
+            }
             this.$store
               .dispatch(this.actions.saveOne, this.formData)
               .then(id => {
@@ -196,8 +222,9 @@ export const MIXIN_EDIT = {
       this.formData = this.defaultFormData();
     },
     loadDetail() {
+      this.clearForm();
       if (this.actions.getOne) {
-        if (this.keyId) {
+        if (this.keyId && !this.pid) {
           this.$store
             .dispatch(this.actions.getOne, { [this.keyName]: this.keyId })
             .then(data => {

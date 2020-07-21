@@ -43,7 +43,6 @@
     data() {
       return {
         dialogVisible: false,
-        deleteForSearch: false,
         keyName: 'openId',
         actions: {
           getPageList: 'openPlatform/getPageList',

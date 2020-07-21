@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <search class="page-search" ref="search" @onSearch="handleSearch" />
+    <search class="page-search" ref="search" @onSearch="onSearch" />
     <el-table class="page-table" :data="tableData">
       <el-table-column label="配置" type="expand">
         <template slot-scope="props">
@@ -13,113 +13,51 @@
       </el-table-column>
       <el-table-column label="开放平台编码" align="center" prop="openCode" />
       <el-table-column label="开放平台名称" align="center" prop="openName" />
-      <el-table-column label="企业名称" align="center" prop="firmName" :formatter="formatFirmName" />
+      <el-table-column label="企业名称" align="center" prop="firmName" />
     </el-table>
     <el-pagination
       class="page-footer"
       background
-      layout="total,prev,next"
       prev-text="上一页"
       next-text="下一页"
-      :page-size="pageSize"
       :total="total"
-      @prev-click="handlePrev"
-      @next-click="handleNext"
+      @prev-click="onPrev"
+      @next-click="onNext"
+      @size-change="onSizeChange"
+      layout="total,sizes,prev,next"
+      :page-size="pageSizes[0]"
+      :page-sizes="pageSizes"
     ></el-pagination>
   </div>
 </template>
 
 <script>
   import search from "./Search";
+  import {MIXIN_LIST} from "@/utils/mixin";
 
   export default {
+    mixins: [MIXIN_LIST],
     data() {
       return {
         dialogVisible: false,
-        pageFlag: 0,
-        pageSize: 10,
-        lastId: null,
-        total: 0,
-        tableData: [],
-        loading: true,
-        params: {},
+        keyName: 'firmId',
+        actions: {
+          getPageList: 'firm/getConfigPageList'
+        }
       };
     },
     methods: {
-      formatFirmName(rows) {
-        let firmName = '';
-        if(rows.firm && rows.firm.firmName){
-          firmName = rows.firm.firmName;
-        }
-        return firmName;
-      },
       detailsOnClick(configNavUrl, item) {
-        this.$router.push({
-          path: configNavUrl,
-          query: {domain: item.firm.domain, openId: item.openId, firmId: item.firm.firmId}
-        });
-      },
-      getList() {
-        if (this.lastId) {
-          this.params.lastId = this.lastId;
-        }
-        this.$store
-          .dispatch("firm/getConfigPageList", {
-            pageFlag: this.pageFlag,
-            pageSize: this.pageSize,
-            params: this.params
-          })
-          .then(result => {
-            if (result && result.rows && result.rows.length > 0) {
-              this.tableData = result.rows;
-              this.total = result.total;
-            } else {
-              this.tableData = [];
-              this.total = 0;
-            }
-          });
-      },
-      loadData() {
-        this.getList();
-      },
-      handleSearch(params) {
-        if(!params){
-          params = {};
-        }
-        this.params = params;
-        this.pageFlag = 0;
-        this.lastId = null;
-        this.loadData();
-      },
-      handleRefresh() {
-        this.handleSearch();
-      },
-      handlePrev() {
-        this.pageFlag = -1;
-        if (this.tableData.length > 0) {
-          this.lastId = this.tableData[0].firmId;
-        }
-        this.loadData();
-      },
-      handleNext() {
-        this.pageFlag = 1;
-        if (this.tableData.length > 0) {
-          this.lastId = this.tableData[this.tableData.length - 1].firmId;
-        }
-        this.loadData();
-      },
+        this.$router.push(
+          {
+            path: configNavUrl,
+            query: {domain: item.firm.domain, openId: item.openId, firmId: item.firm.firmId}
+          }
+        );
+      }
     },
     components: {
       search
     },
-    created() {
-      this.loadData();
-    }
   };
 </script>
-
-<style>
-  .page-tools {
-    margin-bottom: 10px;
-  }
-</style>

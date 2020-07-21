@@ -3,22 +3,32 @@
     <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
       <el-form :model="formData" label-width="80px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="开放平台编码:">
+          <el-form-item label="平台编码:">
             <el-input
               clearable
-              placeholder="请输入开放平台编码搜索..."
+              placeholder="请输入平台编码搜索..."
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.openCode"
             ></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="开放平台名称:">
+          <el-form-item label="平台名称:">
             <el-input
               clearable
-              placeholder="请输入开放平台名称搜索..."
+              placeholder="请输入平台名称搜索..."
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.openName"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="企业名称:">
+            <el-input
+              clearable
+              placeholder="请输入企业名称搜索..."
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.firmName"
             ></el-input>
           </el-form-item>
         </el-col>
@@ -55,7 +65,8 @@
         more: false,
         formData: {
           openCode: null,
-          openName: null
+          openName: null,
+          firmName: null
         }
       };
     },
@@ -72,7 +83,8 @@
       initSearchForm() {
         return {
           openCode: null,
-          openName: null
+          openName: null,
+          firmName: null
         };
       },
       handleSearch() {

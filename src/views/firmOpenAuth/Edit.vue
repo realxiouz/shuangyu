@@ -1,12 +1,13 @@
 <template>
   <div class="page-form">
-    <el-dialog title="平台授权管理" width="24%" center :visible.sync="dialogVisible" @open="handleOpen" @close="handleClose">
+    <el-dialog :title="keyId ? '修改平台授权管理' : '添加平台授权管理'"  width="24%" center :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
       <el-form ref="form" label-width="110px" size="mini" :model="formData" :rules="rules">
-        <el-form-item label="开放平台:" prop="openId">
+        <el-form-item label="开放平台：" prop="openId">
           <el-select
             style="width: 100%;"
             v-model="formData.openId"
-            placeholder="请选择"
+            placeholder="请选择开放平台..."
+            filterable
             @change="changeOpenPlatform"
           >
             <el-option
@@ -17,11 +18,12 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="企业名称:" prop="firmId" size="mini">
+        <el-form-item label="企业名称：" prop="firmId">
           <el-select
             style="width: 100%;"
             v-model="formData.firmId"
             placeholder="请选择"
+            filterable
             @change="changeFirm"
           >
             <el-option
@@ -34,30 +36,25 @@
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
-        <el-button size="mini" @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" size="mini" @click="handleSave">确 定</el-button>
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="onSave">确 定</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 <script>
+  import {MIXIN_EDIT} from "@/utils/mixin";
   export default {
-    props: {
-      visible: {
-        type: Boolean,
-        default: false
-      },
-      editAuthId: {
-        type: String,
-        default: null
-      }
-    },
+    mixins: [MIXIN_EDIT],
     data() {
       return {
         dialogVisible: false,
-        formData: this.defaultFormData(),
         openPlatformData: [],
         firmData: [],
+        actions: {
+          getOne: 'firmOpenAuth/getOne',
+          saveOne: 'firmOpenAuth/saveOne'
+        },
         rules: {
           openId: [
             {required: true, message: "请选择开放平台"}
@@ -72,52 +69,12 @@
       visible(val) {
         this.dialogVisible = val;
         if (val) {
-          if (this._.isEmpty(this.editAuthId)) {
-            this.formData = this.defaultFormData();
-          } else {
-            this.loadData();
-          }
           this.loadOpenPlatform();
           this.loadFirm();
         }
       }
     },
     methods: {
-      handleOpen() {
-        this.$emit('update:visible', true);
-      },
-      handleClose() {
-        this.$emit('update:visible', false);
-      },
-      handleSwitch(){
-        this.defaultFlag = !this.defaultFlag;
-      },
-      handleSave() {
-        this.$refs["form"].validate(valid => {
-          if (valid) {
-            let method = 'firmOpenAuth/addOne';
-            if(this.editAuthId){
-              method = 'firmOpenAuth/updateOne';
-              this.formData.authId = this.editAuthId;
-            }
-            this.$store
-              .dispatch(method, this.formData)
-              .then(() => {
-                this.dialogVisible = false;
-                this.$emit('refresh');
-                this.$message({type: "success", message: "保存成功"});
-              });
-          }else{
-            let that = this;
-            let timer = window.setTimeout(function(){
-              that.$nextTick(function () {
-                that.$refs['form'].clearValidate();
-                window.clearTimeout(timer);
-              })
-            }, 1000);
-          }
-        });
-      },
       defaultFormData() {
         return {
           authId: null,
@@ -165,13 +122,6 @@
           })
           .catch(error => {
             console.log(error);
-          });
-      },
-      loadData() {
-        this.$store
-          .dispatch("firmOpenAuth/getOne", {authId: this.editAuthId})
-          .then(data => {
-            this.formData = data;
           });
       }
     }

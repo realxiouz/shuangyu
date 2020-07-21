@@ -4,7 +4,7 @@ import {
   getOne,
   getPageList,
   removeOne,
-  save,
+  saveOne,
   update,
   getAsyncTreeList
 } from "@/api/fundAccount";
@@ -32,9 +32,8 @@ const mutations = {
 const actions = {
   // eslint-disable-next-line no-unused-vars
   getList({commit}, params) {
-    const {filters} = params;
     return new Promise((resolve, reject) => {
-      getList(filters)
+      getList(params)
         .then(response => {
           resolve(response);
         })
@@ -45,9 +44,8 @@ const actions = {
   },
   // eslint-disable-next-line no-unused-vars
   getRootPageList({commit}, params) {
-    const {pageFlag, pageSize, filter} = params;
     return new Promise((resolve, reject) => {
-      getRootPageList(pageFlag, pageSize, filter)
+      getRootPageList(params)
         .then(response => {
           resolve(response);
         })
@@ -58,9 +56,8 @@ const actions = {
   },
   // eslint-disable-next-line no-unused-vars
   getOne({commit}, params) {
-    const {accountId} = params;
     return new Promise((resolve, reject) => {
-      getOne(accountId)
+      getOne(params)
         .then(response => {
           resolve(response);
         })
@@ -71,9 +68,8 @@ const actions = {
   },
   // eslint-disable-next-line no-unused-vars
   getPageList({commit}, params) {
-    const {pageFlag, pageSize, filter} = params;
     return new Promise((resolve, reject) => {
-      getPageList(pageFlag, pageSize, filter)
+      getPageList(params)
         .then(response => {
           resolve(response);
         })
@@ -84,9 +80,8 @@ const actions = {
   },
   // eslint-disable-next-line no-unused-vars
   removeOne({commit}, params) {
-    const {accountId} = params;
     return new Promise((resolve, reject) => {
-      removeOne(accountId)
+      removeOne(params)
         .then(response => {
           resolve(response);
         })
@@ -96,9 +91,9 @@ const actions = {
     });
   },
   // eslint-disable-next-line no-unused-vars
-  save({commit}, params) {
+  saveOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      save(params)
+      saveOne(params)
         .then(response => {
           resolve(response);
         })
@@ -110,8 +105,7 @@ const actions = {
   // eslint-disable-next-line no-unused-vars
   update({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {accountId} = params;
-      update(accountId, params)
+      update(params)
         .then(response => {
           resolve(response);
         })
@@ -123,8 +117,7 @@ const actions = {
   // eslint-disable-next-line no-unused-vars
   getAsyncTreeList({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {pid, filter} = params;
-      getAsyncTreeList(pid, filter)
+      getAsyncTreeList(params)
         .then(response => {
           resolve(response);
         })

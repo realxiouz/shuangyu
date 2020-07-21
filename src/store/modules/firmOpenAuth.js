@@ -1,11 +1,8 @@
 import {
   getOne,
-  addOne,
-  updateOne,
+  saveOne,
   getList,
   getPageList,
-  getCustomerList,
-  getSupplierList,
   removeOne
 } from '@/api/firmOpenAuth';
 import {getToken} from "@/utils/auth";
@@ -32,8 +29,7 @@ const actions = {
   // eslint-disable-next-line no-unused-vars
   getOne({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const { authId } = params;
-      getOne(authId)
+      getOne(params)
         .then(response => {
           resolve(response);
         })
@@ -43,22 +39,9 @@ const actions = {
     });
   },
   // eslint-disable-next-line no-unused-vars
-  addOne({ commit }, args) {
+  saveOne({ commit }, args) {
     return new Promise((resolve, reject) => {
-      addOne(args)
-        .then(response => {
-          resolve(response);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  // eslint-disable-next-line no-unused-vars
-  updateOne({ commit }, args) {
-    return new Promise((resolve, reject) => {
-      const { authId } = args;
-      updateOne(authId, args)
+      saveOne(args)
         .then(response => {
           resolve(response);
         })
@@ -82,8 +65,7 @@ const actions = {
   // eslint-disable-next-line no-unused-vars
   getPageList({ commit }, args) {
     return new Promise((resolve, reject) => {
-      const { pageFlag, pageSize, params } = args;
-      getPageList(pageFlag, pageSize, params)
+      getPageList(args)
         .then(response => {
           resolve(response);
         })
@@ -93,36 +75,9 @@ const actions = {
     });
   },
   // eslint-disable-next-line no-unused-vars
-  getCustomerList({commit}, params) {
-    return new Promise((resolve, reject) => {
-      const {filter} = params;
-      getCustomerList(filter)
-        .then(data => {
-          resolve(data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  // eslint-disable-next-line no-unused-vars
-  getSupplierList({commit}, params) {
-    return new Promise((resolve, reject) => {
-      const {filter} = params;
-      getSupplierList(filter)
-        .then(data => {
-          resolve(data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
-  // eslint-disable-next-line no-unused-vars
   removeOne({ commit }, args) {
     return new Promise((resolve, reject) => {
-      const { authId } = args;
-      removeOne(authId)
+      removeOne(args)
         .then(response => {
           resolve(response);
         })
