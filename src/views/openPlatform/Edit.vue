@@ -4,7 +4,7 @@
       <el-form ref="form" label-width="110px" size="mini" :model="formData" :rules="rules">
         <el-row class="el-row-item">
           <el-form-item label="平台编码：" prop="openCode">
-            <el-input v-model="formData.openCode" placeholder="请输入平台编码" />
+            <el-input v-model="formData.openCode" placeholder="请输入平台编码" :disabled="codeEnable" />
           </el-form-item>
           <el-form-item label="平台名称：" prop="openName">
             <el-input v-model="formData.openName" placeholder="请输入平台名称" />
@@ -79,6 +79,7 @@
       };
       return {
         dialogVisible: false,
+        codeEnable: false,
         actions: {
           getOne: 'openPlatform/getOne',
           saveOne: 'openPlatform/saveOne'
@@ -109,6 +110,15 @@
           ]
         }
       };
+    },
+    watch: {
+      visible(val) {
+        if (val) {
+          if(this.keyId){
+            this.codeEnable = true;
+          }
+        }
+      }
     },
     methods: {
       defaultFormData() {

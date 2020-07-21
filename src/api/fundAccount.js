@@ -8,37 +8,37 @@ export function getList(params) {
   });
 }
 
-export function getRootPageList(pageFlag, pageSize, filter) {
+export function getRootPageList(params) {
   return request({
-    url: `/finance/fund/account/get/root/list/page/${pageFlag}/${pageSize}`,
-    method: 'get',
-    params: filter
-  });
-}
-
-export function getOne(id) {
-  return request({
-    url: `/finance/fund/account/get/one/${id}`,
-    method: 'get'
-  });
-}
-
-export function getPageList(pageFlag, pageSize, params) {
-  return request({
-    url: `/finance/fund/account/get/page/list/${pageFlag}/${pageSize}`,
+    url: `/finance/fund/account/get/root/list/page/${params.pageFlag}/${params.pageSize}`,
     method: 'get',
     params: params
   });
 }
 
-export function removeOne(id) {
+export function getOne(params) {
   return request({
-    url: `/finance/fund/account/remove/one/${id}`,
+    url: `/finance/fund/account/get/one/${params.accountId}`,
+    method: 'get'
+  });
+}
+
+export function getPageList(params) {
+  return request({
+    url: `/finance/fund/account/get/page/list/${params.pageFlag}/${params.pageSize}`,
+    method: 'get',
+    params: params
+  });
+}
+
+export function removeOne(params) {
+  return request({
+    url: `/finance/fund/account/remove/one/${params.accountId}`,
     method: 'delete'
   });
 }
 
-export function save(data) {
+export function saveOne(data) {
   return request({
     url: `/finance/fund/account/save/one`,
     method: 'post',
@@ -46,18 +46,18 @@ export function save(data) {
   });
 }
 
-export function update(id, data) {
+export function update(data) {
   return request({
-    url: `/finance/fund/account/update/one/${id}`,
+    url: `/finance/fund/account/update/one/${data.accountId}`,
     method: 'put',
     data
   });
 }
 
-export function getAsyncTreeList(pid, filter) {
+export function getAsyncTreeList(params) {
   return request({
-    url: `/finance/fund/account/get/async/tree/${pid}`,
+    url: `/finance/fund/account/get/async/tree/${params.pid}`,
     method: 'get',
-    params: filter
+    params: params
   });
 }

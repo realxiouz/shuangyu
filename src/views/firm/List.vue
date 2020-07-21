@@ -160,7 +160,7 @@
                     params.lastId = this.lastId;
                 }
                 this.$store
-                    .dispatch("firm/getRootPageList", {
+                    .dispatch("firm/getPageList", {
                         pageFlag: this.pageFlag,
                         pageSize: this.pageSize,
                         filter: params

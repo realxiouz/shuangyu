@@ -16,11 +16,10 @@ import {
   getSupplierList
 } from '@/api/firm';
 
-
 const actions = {
-  getAsyncTreeList({commit}, params) {
+  getAsyncTreeList({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const {pid, filter} = params;
+      const { pid, filter } = params;
       getAsyncTreeList(pid, filter)
         .then(response => {
           resolve(response);
@@ -30,9 +29,9 @@ const actions = {
         });
     });
   },
-  getList({commit}, params) {
+  getList({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const {filter} = params;
+      const { filter } = params;
       getList(filter)
         .then(response => {
           resolve(response);
@@ -42,9 +41,9 @@ const actions = {
         });
     });
   },
-  getTreeList({commit}, params) {
+  getTreeList({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const {filters} = params;
+      const { filters } = params;
       getTreeList(filters)
         .then(response => {
           resolve(response);
@@ -54,9 +53,9 @@ const actions = {
         });
     });
   },
-  getDealerCustomerList({commit}, params) {
+  getDealerCustomerList({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const {filters} = params;
+      const { filters } = params;
       getDealerCustomerList(filters)
         .then(response => {
           resolve(response);
@@ -66,9 +65,9 @@ const actions = {
         });
     });
   },
-  getRootPageList({commit}, params) {
+  getRootPageList({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const {pageFlag, pageSize, filter} = params;
+      const { pageFlag, pageSize, filter } = params;
       getRootPageList(pageFlag, pageSize, filter)
         .then(response => {
           resolve(response);
@@ -78,9 +77,9 @@ const actions = {
         });
     });
   },
-  getPageList({commit}, params) {
+  getPageList({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const {pageFlag, pageSize, filter} = params;
+      const { pageFlag, pageSize, filter } = params;
       getPageList(pageFlag, pageSize, filter)
         .then(response => {
           resolve(response);
@@ -90,9 +89,9 @@ const actions = {
         });
     });
   },
-  getRootTotal({commit}, params) {
+  getRootTotal({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const {filter} = params;
+      const { filter } = params;
       getRootTotal(filter)
         .then(response => {
           resolve(response);
@@ -102,9 +101,9 @@ const actions = {
         });
     });
   },
-  updateOne({commit}, params) {
+  updateOne({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const {id, data} = params;
+      const { id, data } = params;
       updateOne(id, data)
         .then(response => {
           resolve(response);
@@ -114,9 +113,9 @@ const actions = {
         });
     });
   },
-  removeOne({commit}, params) {
+  removeOne({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const {firmID} = params;
+      const { firmID } = params;
       removeOne(firmID)
         .then(response => {
           resolve(response);
@@ -126,9 +125,9 @@ const actions = {
         });
     });
   },
-  saveOne({commit}, params) {
+  saveOne({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const {firm} = params;
+      const { firm } = params;
       saveOne(firm)
         .then(response => {
           resolve(response);
@@ -138,9 +137,9 @@ const actions = {
         });
     });
   },
-  addOne({commit}, params) {
+  addOne({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const {firm} = params;
+      const { firm } = params;
       addOne(firm)
         .then(response => {
           resolve(response);
@@ -150,9 +149,9 @@ const actions = {
         });
     });
   },
-  getOne({commit}, params) {
+  getOne({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const {firmId} = params;
+      const { firmId } = params;
       getOne(firmId)
         .then(response => {
           resolve(response);
@@ -162,10 +161,9 @@ const actions = {
         });
     });
   },
-  getConfigPageList({commit}, params) {
-    const {pageFlag, pageSize, filter} = params;
+  getConfigPageList({ commit }, params) {
     return new Promise((resolve, reject) => {
-      getConfigPageList(pageFlag, pageSize, filter)
+      getConfigPageList(params)
         .then(response => {
           resolve(response);
         })
@@ -174,9 +172,9 @@ const actions = {
         });
     });
   },
-  getConfigOne({commit}, params) {
+  getConfigOne({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const {openId} = params;
+      const { openId } = params;
       getConfigOne(openId)
         .then(response => {
           resolve(response);
@@ -186,9 +184,9 @@ const actions = {
         });
     });
   },
-  getSupplierList({commit}, params) {
+  getSupplierList({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const {filter} = params;
+      const { filter } = params;
       getSupplierList(filter)
         .then(response => {
           resolve(response);
@@ -198,7 +196,7 @@ const actions = {
         });
     });
   }
-}
+};
 
 export default {
   namespaced: true,
