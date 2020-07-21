@@ -138,7 +138,7 @@ export const MIXIN_EDIT = {
   watch: {
     visible(val) {
       this.dialogVisible = val;
-      if (val) { console.log(this.keyId);
+      if (val) {
         if (this.keyId) {
           this.loadDetail();
         } else {
