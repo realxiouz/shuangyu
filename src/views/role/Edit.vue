@@ -24,7 +24,7 @@
           node-key="menuId"
           ref="tree"
           highlight-current
-          :default-checked-keys="formData.navs"
+          :default-checked-keys="formData.menus"
           :props="{label:'title'}"
         ></el-tree>
       </el-form-item>
@@ -68,7 +68,7 @@
                     roleName: "",
                     roleType: "",
                     enable: true,
-                    navs: [],
+                    menus: [],
                     
                 };
             },
@@ -87,7 +87,24 @@
                         console.log(error);
                     });
             },
-           
+            onSave() {
+              this.$refs["form"].validate(valid => {
+                    if (valid) {
+                        this.formData.menus = this.$refs.tree.getCheckedKeys();
+
+                        this.$store
+                          .dispatch(this.actions.saveOne, this.formData)
+                          .then(id => {
+                            if (!this._.isEmpty(id)) {
+                              this.formData[this.keyName] = id;
+                            }
+                            this.dialogVisible = false;
+                            this.$emit('refresh');
+                            this.$message({ type: 'success', message: '保存成功' });
+                          });
+                    }
+                });
+            },
         },
         created() {
             this.clearForm();
