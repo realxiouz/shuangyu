@@ -185,6 +185,9 @@ export const MIXIN_EDIT = {
               this.formData.pid = this.pid;
             }
             if(null !== this.category && '' !== this.category && this.formData.category){
+              if(!this.formData){
+                this.formData = {};
+              }
               this.formData.category = this.category;
             }
             this.$store
