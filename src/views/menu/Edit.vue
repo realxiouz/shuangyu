@@ -145,7 +145,7 @@
         this.$store
           .dispatch("menu/updateOne", {
             data: {apis: this.transferData},
-            id: this.curNode.navId
+            id: this.curNode.menuId
           })
           .then(() => {
             //对数据列表进行重新加载

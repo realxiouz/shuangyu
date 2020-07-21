@@ -208,7 +208,7 @@
         }
         if (menus.length > 0) {
           for (let i = 0; i < menus.length; i++) {
-            let children = this.buildTree(menus[i].navId, navs);
+            let children = this.buildTree(menus[i].menuId, navs);
             menus[i].children = children;
           }
         }

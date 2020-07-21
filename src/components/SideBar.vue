@@ -11,7 +11,7 @@
         class="el-menu-vertical-demo"
         :default-active="activeMenu"
       >
-        <sidebar-item v-for="menu in menuList" :key="menu.navId" :item="menu" />
+        <sidebar-item v-for="menu in menuList" :key="menu.menuId" :item="menu" />
       </el-menu>
     </el-scrollbar>
   </div>

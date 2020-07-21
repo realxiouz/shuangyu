@@ -5,7 +5,7 @@
         <el-button type="primary" style="margin-bottom:20px" size="mini" @click="rootAdd">添加</el-button>
         <el-tree
           v-loading="treeLoading"
-          node-key="navId"
+          node-key="menuId"
           auto-expand-parent
           :data="treeData"
           :default-expanded-keys="curLine"
@@ -42,7 +42,7 @@
         label-width="110px"
         size="mini"
       >
-        <input type="hidden" v-model="formData.navId"/>
+        <input type="hidden" v-model="formData.menuId"/>
         <el-form-item label="标题" prop="title">
           <el-input type="text" placeholder="请输入导航路由标题(title)" v-model="formData.title"></el-input>
         </el-form-item>
@@ -60,6 +60,13 @@
         </el-form-item>
         <el-form-item label="组件" prop="component">
           <el-input type="text" placeholder="请输入路由组件名称(navName)" v-model="formData.component"></el-input>
+        </el-form-item>
+        <el-form-item label="标签" prop="tags">
+          <el-select v-model="formData.tags" multiple placeholder="选择标签...">
+            <el-option label="导航" value="NAV" />
+            <el-option label="视图" value="VIEW" />
+            <el-option label="事件" value="EVENT" />
+          </el-select>
         </el-form-item>
         <el-form-item label="是否启用">
           <el-switch v-model="formData.enable"></el-switch>
@@ -111,7 +118,8 @@
           uri: [
             {required: true, message: "请输入路由导航路径", trigger: "blur"}
           ],
-          sort: [{required: true, message: "请输入路由排序", trigger: "blur"}]
+          sort: [{required: true, message: "请输入路由排序", trigger: "blur"}],
+          component: [{required: true, message: "请输入组件路径", trigger: "blur"}]
         }
       };
     },
@@ -119,7 +127,7 @@
       /*初始化导航添加表单*/
       defaultFormData() {
         return {
-          navId: "",
+          menuId: "",
           navName: "",
           enable: true,
           uri: "",
@@ -128,7 +136,8 @@
           icon: "",
           title: "",
           sort: "",
-          remark: ""
+          remark: "",
+          tags: []
         };
       },
       /*加载导航树*/
@@ -159,7 +168,7 @@
         this.addFlag = true;
         this.formData = this.defaultFormData();
         //添加的导航菜单不是顶级菜单
-        this.formData.pid = node.navId;
+        this.formData.pid = node.menuId;
         this.formData.level = node.level + 1;
         this.curLine = [];
         this.rootNav = false;
@@ -167,10 +176,10 @@
       },
       /*对导航节点进行存储*/
       handleSave() {
-        if (this.formData.navId != "") {
+        if (this.formData.menuId != "") {
           this.$store
             .dispatch("menu/updateOne", {
-              id: this.formData.navId,
+              id: this.formData.menuId,
               data: this.formData
             })
             .then(() => {
@@ -221,7 +230,7 @@
         }
         this.open(
           this.remove,
-          node.navId,
+          node.menuId,
           "此操作将删除该条导航及子导航信息, 是否继续?"
         );
       },

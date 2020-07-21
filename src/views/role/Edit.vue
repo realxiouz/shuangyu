@@ -21,7 +21,7 @@
           :data="treeData"
           show-checkbox
           default-expand-all
-          node-key="navId"
+          node-key="menuId"
           ref="tree"
           highlight-current
           :default-checked-keys="formData.navs"

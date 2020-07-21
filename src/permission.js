@@ -37,14 +37,14 @@ router.beforeEach(async (to, from, next) => {
             meta: {title: '系统工具', icon: 'home'},
             children: [
               {
-                path: '/nav/list',
-                name: 'nav',
-                component: _import('nav/List'),
+                path: '/menu/list',
+                name: 'MenuList',
+                component: _import('menu/List'),
                 meta: {title: '导航菜单', icon: 'home'}
               },
               {
                 path: '/role/list',
-                name: 'nav',
+                name: 'RoleList',
                 component: _import('role/List'),
                 meta: {title: '角色管理', icon: 'home'}
               }
@@ -123,7 +123,7 @@ function genTree(pid, arr) {
   }
   if (tree.length > 0) {
     for (let i = 0; i < tree.length; i++) {
-      let children = genTree(tree[i].navId, arr);
+      let children = genTree(tree[i].menuId, arr);
       tree[i].children = children;
     }
   }

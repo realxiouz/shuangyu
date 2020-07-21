@@ -27,8 +27,8 @@
       </el-table-column>
       <el-table-column label="操作" align="center" fixed="right" width="200">
         <template slot-scope="scope">
-          <el-button @click="onEdit(scope.row)" type="primary" size="mini">编辑</el-button>
-          <el-button @click="onDel(scope.row)" type="danger" size="mini">删除</el-button>
+          <el-button @click="onEdit(scope.row.roleId)" type="primary" size="mini">编辑</el-button>
+          <el-button @click="onDel(scope.row.roleId)" type="danger" size="mini">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -61,7 +61,7 @@
         roleId: "",
         dialogVisible: false,
         deleteForSearch: false,
-        // keyId: '',
+        keyId: '',
         keyName: 'roleId',
         actions: {
           getPageList: 'role/getPageList',
