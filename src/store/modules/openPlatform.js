@@ -29,8 +29,7 @@ const actions = {
   // eslint-disable-next-line no-unused-vars
   getOne({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const { openId } = params;
-      getOne(openId)
+      getOne(params)
         .then(response => {
           resolve(response);
         })
@@ -78,8 +77,7 @@ const actions = {
   // eslint-disable-next-line no-unused-vars
   removeOne({ commit }, args) {
     return new Promise((resolve, reject) => {
-      const { openId } = args;
-      removeOne(openId)
+      removeOne(args)
         .then(response => {
           resolve(response);
         })

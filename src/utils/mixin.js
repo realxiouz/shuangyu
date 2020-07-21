@@ -14,7 +14,6 @@ export const MIXIN_LIST = {
       loading: false,
       pageSizes: PAGE_SIZES,
       params: {},
-      extraParam: {},
       actions: {
         getPageList: null,
         removeOne: null
@@ -23,7 +22,6 @@ export const MIXIN_LIST = {
   },
   methods: {
     loadData() {
-      console.log(this.actions)
       if (this.actions.getPageList) {
         this.loading = true;
         this.$store
@@ -31,13 +29,11 @@ export const MIXIN_LIST = {
             pageSize: this.pageSize,
             lastId: this.lastId,
             pageFlag: this.pageFlag,
-            ...this.params,
-            ...this.extraParam
+            ...this.params
           })
           .then(data => {
             if (data) {
               this.tableData = data.rows;
-              console.log(data)
               this.total = data.total;
             }
           })
@@ -81,14 +77,11 @@ export const MIXIN_LIST = {
       this.loadData();
     },
     onAdd() {
-      console.log('add')
       this.keyId = '';
       this.dialogVisible = true;
     },
-    onEdit(row) {
-      console.log('edit')
-      this.keyId = row[this.keyName];
-      console.log(this.keyId)
+    onEdit(id) {
+      this.keyId = id;
       this.dialogVisible = true;
     },
     onDel(id) {
@@ -98,7 +91,7 @@ export const MIXIN_LIST = {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$store.dispatch(this.actions.removeOne, {deviceId: id}).then(() => {
+          this.$store.dispatch(this.actions.removeOne, {[this.keyName]: id}).then(() => {
             this.onRefresh();
             this.$message({type: "success", message: "删除成功"});
           });
@@ -145,9 +138,9 @@ export const MIXIN_EDIT = {
   watch: {
     visible(val) {
       this.dialogVisible = val;
-      if (val) {
+      if (val) { console.log(this.keyId);
         if (this.keyId) {
-          this.loadData();
+          this.loadDetail();
         } else {
           this.formData = this.defaultFormData();
         }
@@ -156,37 +149,55 @@ export const MIXIN_EDIT = {
   },
   methods: {
     onOpen() {
+      this.refreshForm(1);
       this.$emit('update:visible', true);
     },
     onClose() {
       this.$emit('update:visible', false);
     },
     onSave() {
-      console.log(this.actions)
       if (this.actions.saveOne) {
-        this.$store
-          .dispatch(this.actions.saveOne, this.formData)
-          .then(id => {
-            if (!this._.isEmpty(id)) {
-              this.formData[this.keyName] = id;
-            }
-            this.dialogVisible = false;
-            this.$emit('refresh');
-            this.$message({type: "success", message: "保存成功"});
-          });
+        this.$refs['form'].validate(valid => {
+          if (valid) {
+            this.$store
+              .dispatch(this.actions.saveOne, this.formData)
+              .then(id => {
+                if (!this._.isEmpty(id)) {
+                  this.formData[this.keyName] = id;
+                }
+                this.dialogVisible = false;
+                this.$emit('refresh');
+                this.$message({ type: 'success', message: '保存成功' });
+              });
+          } else {
+            this.refreshForm(1000);
+          }
+        });
       }
     },
     defaultFormData() {
       return {};
     },
+    refreshForm(time) {
+      if (!time || isNaN(time)) {
+        time = 1000;
+      }
+      let that = this;
+      let timer = window.setTimeout(function(){
+        that.$nextTick(function () {
+          that.$refs['form'].clearValidate();
+          window.clearTimeout(timer);
+        });
+      }, time);
+    },
     clearForm() {
       this.formData = this.defaultFormData();
     },
-    loadData() {
+    loadDetail() {
       if (this.actions.getOne) {
         if (this.keyId) {
           this.$store
-            .dispatch(this.actions.getOne, {id: this.keyId})
+            .dispatch(this.actions.getOne, { [this.keyName]: this.keyId })
             .then(data => {
               this.formData = data;
             })
