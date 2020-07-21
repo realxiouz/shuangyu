@@ -77,6 +77,7 @@
             },
             handleClear(){
                 this.formData = this.initSearchForm();
+                this.$emit("onSearch",this.formData)
             },
             //trim(),没有值时赋值为null;
             handleConfirm(){

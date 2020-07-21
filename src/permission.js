@@ -26,7 +26,14 @@ router.beforeEach(async (to, from, next) => {
         // let tree = genTree(null, navs.filter(i => i.component));
         // console.log(tree);
         // let routes = genMenus(tree);
-        let routes = genMenus(await store.dispatch('nav/getTreeList', {}))
+        let arr = await store.dispatch('nav/getTreeList', {})
+        let routes = genMenus(arr)
+        routes.push({
+          path: '*',
+          component: _import('404'),
+          hidden: true,
+          meta: {title: '404', icon: 'home'}
+        })
         store.commit('user/setRoutes', routes);
         router.addRoutes(routes);
         try {
@@ -34,6 +41,7 @@ router.beforeEach(async (to, from, next) => {
             ...to
           });
         } catch (error) {
+          console.log(error)
           await store.dispatch('user/resetToken');
           Message.error(error || 'Has Error');
           next(`/login?redirect=${to.path}`);
@@ -62,11 +70,18 @@ function genMenus(arr) {
     .filter(i => i.component)
     .map(i => {
       let { uri, title, icon, navName, component, children, sort } = i;
+      let c = null;
+      try {
+        c = _import(component);
+      } catch (error) {
+        console.log('import error', error)
+        c = _import('404');
+      }
       let bean = {
         path: uri,
         meta: { title, icon },
         name: navName,
-        component: _import(component),
+        component: c,
         sort
       };
       if (children && children.length) {

@@ -323,8 +323,6 @@
     created() {
       this.getLoginInfo(null);
       this.getTag();
-
-      console.log(this.$router)
     },
     beforeDestroy() {
       // 离开页面销毁定时器

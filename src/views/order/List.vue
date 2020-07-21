@@ -170,7 +170,7 @@
       };
     },
     components: {
-      orderSearch
+      search
     },
     methods: {
       formatStatus,

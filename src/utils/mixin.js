@@ -14,6 +14,7 @@ export const MIXIN_LIST = {
       loading: false,
       pageSizes: PAGE_SIZES,
       params: {},
+      extraParam: {},
       actions: {
         getPageList: null,
         removeOne: null
@@ -30,7 +31,8 @@ export const MIXIN_LIST = {
             pageSize: this.pageSize,
             lastId: this.lastId,
             pageFlag: this.pageFlag,
-            ...this.params
+            ...this.params,
+            ...this.extraParam
           })
           .then(data => {
             if (data) {
