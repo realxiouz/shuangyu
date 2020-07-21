@@ -89,9 +89,9 @@ const newRoute = _ => new Router({
     //     },
     //     {
     //       title: '导航菜单管理',
-    //       path: '/nav/list',
-    //       name: 'nav',
-    //       component: () => import('@/views/nav/List'),
+    //       path: '/menu/list',
+    //       name: 'menu',
+    //       component: () => import('@/views/menu/List'),
     //       meta: {title: '导航菜单管理', icon: 'home'}
     //     },
     //     {
