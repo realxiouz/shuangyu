@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import user from "./modules/user";
 import role from "./modules/role";
-import nav from "./modules/nav";
+import menu from "./modules/menu";
 import airport from "./modules/airport";
 import airline from "./modules/airline";
 import airlineChange from "./modules/airlineChange";
@@ -89,7 +89,7 @@ export default new Vuex.Store({
     airport,
     airline,
     airlineChange,
-    nav,
+    menu,
     firm,
     firmMerchant,
     policy,

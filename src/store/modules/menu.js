@@ -1,4 +1,4 @@
-import {saveOne, addOne, addMany, updateOne, updateMany, updateManyByFilter, removeOne, removeMany, removeManyByFilter, removeRealOne, getOne, getOneByFilter, getMany, getList, getTreeList, getPageList, getTotal} from '@/api/nav';
+import {saveOne, addOne, addMany, updateOne, updateMany, updateManyByFilter, removeOne, removeMany, removeManyByFilter, removeRealOne, getOne, getOneByFilter, getMany, getList, getTreeList, getPageList, getTotal} from '@/api/menu/';
 
 const actions = {
   saveOne({commit}, params) {

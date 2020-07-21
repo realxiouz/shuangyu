@@ -4,7 +4,7 @@ import { Message } from 'element-ui';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 import { getToken } from '@/utils/auth';
-import nav from './store/modules/nav';
+import menu from './store/modules/menu';
 
 NProgress.configure({ showSpinner: false });
 
@@ -26,7 +26,7 @@ router.beforeEach(async (to, from, next) => {
         // let tree = genTree(null, navs.filter(i => i.component));
         // console.log(tree);
         // let routes = genMenus(tree);
-        let arr = await store.dispatch('nav/getTreeList', {})
+        let arr = await store.dispatch('menu/getTreeList', {})
         let routes = genMenus(arr)
         routes.push({
           path: '*',

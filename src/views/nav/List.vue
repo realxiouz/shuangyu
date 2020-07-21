@@ -134,7 +134,7 @@
       /*加载导航树*/
       loadData() {
         this.$store
-          .dispatch("nav/getTreeList", {filter: {}})
+          .dispatch("menu/getTreeList", {filter: {}})
           .then(data => {
             if (data) {
               this.treeData = data;
@@ -169,7 +169,7 @@
       handleSave() {
         if (this.formData.navId != "") {
           this.$store
-            .dispatch("nav/updateOne", {
+            .dispatch("menu/updateOne", {
               id: this.formData.navId,
               data: this.formData
             })
@@ -193,7 +193,7 @@
           this.$refs.routerForm.validate(valid => {
             if (valid) {
               this.$store
-                .dispatch("nav/addOne", this.formData)
+                .dispatch("menu/addOne", this.formData)
                 .then(data => {
                   this.curLine.push(data);
                   this.loadData();
@@ -228,7 +228,7 @@
       /*移除导航节点*/
       remove(params) {
         this.$store
-          .dispatch("nav/removeOne", {id: params})
+          .dispatch("menu/removeOne", {id: params})
           .then(() => {
             this.loadData();
           })

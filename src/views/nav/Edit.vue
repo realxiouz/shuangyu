@@ -143,7 +143,7 @@
         this.dialogVisible = false;
         this.curNode.apis = this.transferData;
         this.$store
-          .dispatch("nav/updateOne", {
+          .dispatch("menu/updateOne", {
             data: {apis: this.transferData},
             id: this.curNode.navId
           })

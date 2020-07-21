@@ -77,7 +77,7 @@
             },
             loadNavs: function () {
                 this.$store
-                    .dispatch("nav/getTreeList", {filter: {}})
+                    .dispatch("menu/getTreeList", {filter: {}})
                     .then(data => {
                         this.treeData = data;
                         this.loading = false;

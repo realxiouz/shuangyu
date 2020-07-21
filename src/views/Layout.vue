@@ -15,10 +15,10 @@
           >
             <el-col :xs="13" :sm="14" :md="16" :lg="19" :xl="20">
               <div class="grid-content bg-purple">
-                <span class="nav-switch" v-bind:class="switchClass" @click="handleSwitch"/>
+                <span class="menu-switch" v-bind:class="switchClass" @click="handleSwitch"/>
               </div>
               <div class="grid-content bg-purple">
-                <el-breadcrumb class="nav-router" separator="/">
+                <el-breadcrumb class="menu-router" separator="/">
                   <el-breadcrumb-item v-for="item in $route.matched" :key="item.path">
                     <router-link :to="item.path">{{ item.meta.title }}</router-link>
                   </el-breadcrumb-item>
@@ -382,12 +382,12 @@
       right: 50px;
     }
 
-    .nav-switch {
+    .menu-switch {
       display: inline-block;
       font-size: 28px;
     }
 
-    .nav-router {
+    .menu-router {
       padding: 20px;
     }
 
