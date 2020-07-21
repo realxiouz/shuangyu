@@ -22,8 +22,8 @@ router.beforeEach(async (to, from, next) => {
       if (store.state.user.routes.length) {
         next();
       } else {
-        let { navs } = await store.dispatch('getLoginInfo', { firmId: null });
-        let tree = genTree(null, navs);
+        let { menus } = await store.dispatch('getLoginInfo', { firmId: null });
+        let tree = genTree(null, menus);
         let routes = genMenus(tree);
         // let arr = await store.dispatch('menu/getTreeList', {});
         // let routes = genMenus(arr);
