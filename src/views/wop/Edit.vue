@@ -3,7 +3,7 @@
     <el-form ref="form"  :model="formData" label-width="110px" size="mini">
       <el-row :gutter="5">
         <el-col :span="12">
-          <el-form-item label="名称" prop="name" :rules="[{required: true, message: '必填', trigger: 'blur'}]">
+          <el-form-item label="名称" :rules="[{required: true, message: '必填', trigger: 'blur'}]">
             <el-input placeholder="名称" v-model="formData.schedulerName"></el-input>
           </el-form-item>
         </el-col>
@@ -37,14 +37,16 @@
                 :min="item.min"
                 :max="item.max"
                 :step="item.step"
-                :precision="item.precision"></el-input-number>
+                :precision="item.precision"
+                style="width: 100%"></el-input-number>
               <!-- 日期-->
               <el-date-picker
                 v-if="item.valueType ==3"
                 v-model="item.value"
                 :type="item.inputType"
                 :format="item.format"
-                placeholder="选择日期"></el-date-picker>
+                placeholder="选择日期"
+                style="width: 100%"></el-date-picker>
               <!-- 时间-->
               <el-time-picker
                 v-if="item.valueType ==4"
@@ -77,7 +79,8 @@
                   v-for="attr in item.attributes"
                   :key="attr.code"
                   :label="attr.name"
-                  :value="attr.code">
+                  :value="attr.code"
+                  style="width: 100%">
                 </el-option>
               </el-select>
               <!-- &lt;!&ndash; 多选 非销售属性&ndash;&gt;
