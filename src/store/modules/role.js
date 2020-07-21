@@ -90,8 +90,7 @@ const actions = {
   },
   removeOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {id} = params;
-      removeOne(id)
+      removeOne(params)
         .then(response => {
           resolve(response);
         })
@@ -126,8 +125,7 @@ const actions = {
   },
   removeRealOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {id} = params;
-      removeRealOne(id)
+      removeRealOne(params)
         .then(response => {
           resolve(response);
         })

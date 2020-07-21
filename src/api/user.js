@@ -64,7 +64,8 @@ export function updateMany(filter, data) {
   });
 }
 
-export function getOne(userId) {
+export function getOne(args) {
+  let {userId} = args
   return request({
     url: `/admin/user/one/${userId}`,
     method: 'get'

@@ -153,8 +153,7 @@ const actions = {
   },
   getOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {id} = args;
-      getOne(id)
+      getOne(args)
         .then(response => {
           resolve(response);
         })

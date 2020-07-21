@@ -49,8 +49,8 @@
         <el-form-item label="路径" prop="uri">
           <el-input type="text" placeholder="请输入路由导航路径(uri)" v-model="formData.uri"></el-input>
         </el-form-item>
-        <el-form-item label="名称" prop="navName">
-          <el-input type="text" placeholder="请输入路由组件名称(navName)" v-model="formData.navName"></el-input>
+        <el-form-item label="名称" prop="menuName">
+          <el-input type="text" placeholder="请输入路由组件名称(menuName)" v-model="formData.menuName"></el-input>
         </el-form-item>
         <el-form-item label="图标">
           <el-input type="text" placeholder="请输入导航路由图标(icon)" v-model="formData.icon"></el-input>
@@ -59,7 +59,7 @@
           <el-input type="number" placeholder="请输入导航路由排序(sort)" v-model="formData.sort"></el-input>
         </el-form-item>
         <el-form-item label="组件" prop="component">
-          <el-input type="text" placeholder="请输入路由组件名称(navName)" v-model="formData.component"></el-input>
+          <el-input type="text" placeholder="请输入路由组件名称(menuName)" v-model="formData.component"></el-input>
         </el-form-item>
         <el-form-item label="标签" prop="tags">
           <el-select v-model="formData.tags" multiple placeholder="选择标签...">
@@ -112,14 +112,14 @@
           title: [
             {required: true, message: "请输入导航路由标题", trigger: "blur"}
           ],
-          navName: [
+          menuName: [
             {required: true, message: "请输入路由组件名称", trigger: "blur"}
           ],
           uri: [
             {required: true, message: "请输入路由导航路径", trigger: "blur"}
           ],
           sort: [{required: true, message: "请输入路由排序", trigger: "blur"}],
-          component: [{required: true, message: "请输入组件路径", trigger: "blur"}]
+          // component: [{required: true, message: "请输入组件路径", trigger: "blur"}]
         }
       };
     },
@@ -128,7 +128,7 @@
       defaultFormData() {
         return {
           menuId: "",
-          navName: "",
+          menuName: "",
           enable: true,
           uri: "",
           pid: null,

@@ -1,7 +1,7 @@
 <template>
   <div class="page-form">
     <el-dialog :title="keyId!=''?'编辑':'添加'" :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
-      <el-form size="mini" :model="formData" :rules="formRules">
+      <el-form ref="form" :model="formData" :rules="formRules">
         <input type="hidden" v-model="formData.userId"/>
         <el-form-item label="昵称" prop="nickName">
           <el-input placeholder="请输入您的昵称" v-model="formData.nickName"></el-input>
@@ -36,8 +36,8 @@
             placeholder="请选择"
           >
             <el-option
-              v-for="item in roleData"
-              :key="item.roleName"
+              v-for="(item, inx) in roleData"
+              :key="inx"
               :label="item.roleName"
               :value="item.roleId"
             ></el-option>

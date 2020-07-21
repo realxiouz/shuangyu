@@ -23,40 +23,40 @@ router.beforeEach(async (to, from, next) => {
         next();
       } else {
         // let { navs } = await store.dispatch('getLoginInfo', { firmId: null });
-        // let tree = genTree(null, navs.filter(i => i.component));
+        // let tree = genTree(null, navs);
         // console.log(tree);
         // let routes = genMenus(tree);
-        let arr = await store.dispatch('menu/getTreeList', {})
-        let routes = genMenus(arr)
+        let arr = await store.dispatch('menu/getTreeList', {});
+        let routes = genMenus(arr);
         if (process.env.NODE_ENV == 'production') {
           routes.push({
             path: '/admin',
             name: 'Admin',
             component: _import('Layout'),
             hidden: true,
-            meta: {title: '系统工具', icon: 'home'},
+            meta: { title: '系统工具', icon: 'home' },
             children: [
               {
                 path: '/menu/list',
                 name: 'MenuList',
                 component: _import('menu/List'),
-                meta: {title: '导航菜单', icon: 'home'}
+                meta: { title: '导航菜单', icon: 'home' }
               },
               {
                 path: '/role/list',
                 name: 'RoleList',
                 component: _import('role/List'),
-                meta: {title: '角色管理', icon: 'home'}
+                meta: { title: '角色管理', icon: 'home' }
               }
             ]
-          })
+          });
         }
         routes.push({
           path: '*',
           component: _import('404'),
           hidden: true,
-          meta: {title: '404', icon: 'home'}
-        })
+          meta: { title: '404', icon: 'home' }
+        });
         store.commit('user/setRoutes', routes);
         router.addRoutes(routes);
         try {
@@ -64,7 +64,7 @@ router.beforeEach(async (to, from, next) => {
             ...to
           });
         } catch (error) {
-          console.log(error)
+          console.log(error);
           await store.dispatch('user/resetToken');
           Message.error(error || 'Has Error');
           next(`/login?redirect=${to.path}`);
@@ -90,25 +90,27 @@ let _import = path => _ => import(`@/views/${path}.vue`);
 
 function genMenus(arr) {
   return arr
-    .filter(i => i.component)
+    .sort((i, j) => i.sort - j.sort)
     .map(i => {
-      let { uri, title, icon, navName, component, children, sort } = i;
+      let { uri, title, icon, menuName, component, children, sort, tags } = i;
       let c = null;
+      let isNav = (tags || []).findIndex(i => i === 'NAV') > -1;
+      let cPath = isNav ? 'Layout' : component;
       try {
-        c = _import(component);
+        c = _import(cPath);
       } catch (error) {
-        console.log('import error', error)
+        console.log('import error', error);
         c = _import('404');
       }
       let bean = {
         path: uri,
         meta: { title, icon },
-        name: navName,
+        name: menuName,
         component: c,
         sort
       };
       if (children && children.length) {
-        bean.children = genMenus(children).sort((i, j) => i.sort - j.sort);
+        bean.children = genMenus(children);
       }
       return bean;
     });

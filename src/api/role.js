@@ -50,9 +50,10 @@ export function updateManyByFilter(filter, data) {
   });
 }
 
-export function removeOne(id) {
+export function removeOne(args) {
+  const { roleId } = args
   return request({
-    url: `/admin/role/remove/one/${id}`,
+    url: `/admin/role/remove/one/${roleId}`,
     method: 'delete'
   });
 }

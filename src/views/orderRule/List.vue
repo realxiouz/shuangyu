@@ -74,7 +74,7 @@
       },
       loadData() {
         this.$store
-          .dispatch("orderRule/getPageList", {
+          .dispatch("orderRule/list", {
             pageSize: this.pageSize,
             lastId: this.lastId,
             pageFlag: this.pageFlag,
