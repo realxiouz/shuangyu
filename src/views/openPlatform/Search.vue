@@ -6,6 +6,7 @@
           <el-form-item label="平台编码:">
             <el-input
               clearable
+              placeholder="请输入平台编码搜索..."
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.openCode"
             ></el-input>
@@ -15,6 +16,7 @@
           <el-form-item label="平台名称:">
             <el-input
               clearable
+              placeholder="请输入平台名称搜索..."
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.openName"
             ></el-input>

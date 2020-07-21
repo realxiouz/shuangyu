@@ -1,19 +1,19 @@
 <template>
   <div class="page-form">
-    <el-dialog :title="keyId!=''?'修改开放平台管理':'添加开放平台管理'"  width="24%" center :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
+    <el-dialog :title="keyId ? '修改开放平台管理' : '添加开放平台管理'"  width="24%" center :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
       <el-form ref="form" label-width="110px" size="mini" :model="formData" :rules="rules">
-        <el-row>
+        <el-row class="el-row-item">
           <el-form-item label="平台编码：" prop="openCode">
             <el-input v-model="formData.openCode" placeholder="请输入平台编码" />
           </el-form-item>
           <el-form-item label="平台名称：" prop="openName">
             <el-input v-model="formData.openName" placeholder="请输入平台名称" />
           </el-form-item>
-          <el-form-item label="平台类型" prop="openType">
+          <el-form-item label="平台类型：" prop="openType">
             <el-select v-model="formData.openType" placeholder="请选择平台类型" style="width: 100%">
-              <el-option label="客户" :value='-1'></el-option>
-              <el-option label="客户/供应商" :value='0'></el-option>
-              <el-option label="供应商" :value='1'></el-option>
+              <el-option label="客户" :value="-1"></el-option>
+              <el-option label="客户/供应商" :value="0"></el-option>
+              <el-option label="供应商" :value="1"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="配置地址：" prop="openUrl">
@@ -21,44 +21,46 @@
           </el-form-item>
         </el-row>
 
-        <el-row
-          v-for="(configNav, index) in formData.configNavList"
-          :key="configNav.configNavId"
-          id="configNavId"
-          :gutter="10"
-        >
-          <el-col :span="10">
-            <el-form-item label-width="10px">
-              <el-input v-model="configNav.configNavName" placeholder="配置导航名称" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="10">
-            <el-form-item label-width="10px">
-              <el-input v-model="configNav.configNavUrl" placeholder="配置导航地址" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="3">
-            <el-form-item label-width="3px">
-              <el-button
-                v-if="index === 0"
-                type="primary"
-                icon="el-icon-circle-plus-outline"
-                @click="addConfigNav"
-              ></el-button>
-              <el-button
-                v-if="index !== 0"
-                type="danger"
-                icon="el-icon-remove-outline"
-                @click="deleteConfigNav(index)"
-              ></el-button>
-            </el-form-item>
-          </el-col>
+        <el-row class="el-row-item">
+          <el-row
+            id="configNavId"
+            v-for="(configNav, index) in formData.configNavList"
+            :gutter="10"
+            :key="configNav.configNavId"
+          >
+            <el-col :span="10">
+              <el-form-item label-width="12px">
+                <el-input v-model="configNav.configNavName" placeholder="请输入导航名称" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="10">
+              <el-form-item label-width="12px">
+                <el-input v-model="configNav.configNavUrl" placeholder="请输入导航地址" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="4">
+              <el-form-item label-width="6px">
+                <el-button
+                  v-if="index === 0"
+                  type="primary"
+                  icon="el-icon-circle-plus-outline"
+                  @click="addConfigNav"
+                ></el-button>
+                <el-button
+                  v-if="index !== 0"
+                  type="danger"
+                  icon="el-icon-remove-outline"
+                  @click="deleteConfigNav(index)"
+                ></el-button>
+              </el-form-item>
+            </el-col>
+          </el-row>
         </el-row>
       </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible=false">取 消</el-button>
+      <div style="text-align:right;">
+        <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="onSave">确 定</el-button>
-      </span>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -66,16 +68,6 @@
   import {MIXIN_EDIT} from "@/utils/mixin";
   export default {
     mixins: [MIXIN_EDIT],
-    props: {
-      visible: {
-        type: Boolean,
-        default: false
-      },
-      editOpenId: {
-        type: String,
-        default: null
-      }
-    },
     data() {
       const codeValidator = (rule, value, callback) => {
         let reg = /^[0-9a-zA-Z]*$/g;
@@ -87,7 +79,6 @@
       };
       return {
         dialogVisible: false,
-        // formData: this.defaultFormData(),
         actions: {
           getOne: 'openPlatform/getOne',
           saveOne: 'openPlatform/saveOne'
@@ -119,18 +110,6 @@
         }
       };
     },
-    watch: {
-      visible(val) {
-        this.dialogVisible = val;
-        if (val) {
-          if (this._.isEmpty(this.editOpenId)) {
-            this.formData = this.defaultFormData();
-          } else {
-            this.loadData();
-          }
-        }
-      }
-    },
     methods: {
       defaultFormData() {
         return {
@@ -139,11 +118,13 @@
           openName: null,
           openType: null,
           openUrl: null,
-          configNavList: [{
-            configNavId: null,
-            configNavName: null,
-            configNavUrl: null
-          }]
+          configNavList: [
+            {
+              configNavId: null,
+              configNavName: null,
+              configNavUrl: null
+            }
+          ]
         };
       },
       addConfigNav(){
@@ -157,8 +138,16 @@
         if(index){
           this.formData.configNavList.splice(parseInt(index), 1);
         }
-      },
-      
+      }
     }
   };
 </script>
+
+<style>
+  .el-row-item{
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    padding: 20px 20px 0 0;
+  }
+</style>

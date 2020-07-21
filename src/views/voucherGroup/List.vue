@@ -14,7 +14,7 @@
       </el-table-column>
       <el-table-column width="160" label="操作" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="onEdit(scope.row.voucherGroupId)">修改</el-button>
+          <el-button size="mini" type="primary" @click="handleEdit(scope.row.voucherGroupId)">编辑</el-button>
           <el-button size="mini" type="danger" @click="handleDel(scope.row.voucherGroupId)">删除</el-button>
         </template>
       </el-table-column>
@@ -85,6 +85,9 @@
         this.getList();
       },
       onSearch(params) {
+        if(!params){
+          params = {};
+        }
         this.params = params;
         this.pageFlag = 0;
         this.lastId = null;
@@ -111,7 +114,7 @@
         this.editGroupId = null;
         this.dialogVisible = true;
       },
-      onEdit(id) {
+      handleEdit(id) {
         this.editGroupId = id;
         this.dialogVisible = true;
       },

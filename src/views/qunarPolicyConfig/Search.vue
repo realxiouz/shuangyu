@@ -6,6 +6,7 @@
           <el-form-item label="用户名称:">
             <el-input
               clearable
+              placeholder="请输入用户名称搜索..."
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.userName"
             ></el-input>

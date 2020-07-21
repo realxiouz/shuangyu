@@ -230,7 +230,7 @@
         }
       };
       const codeValidator = (rule, value, callback) => {
-        let reg = /^[0-9a-zA-Z]*$/g;
+        let reg = /^[0-9a-zA-Z_]*$/g;
         if (reg.test(value)) {
           callback();
         } else {
@@ -342,16 +342,16 @@
             {required: true, message: "请输入属性分组"},
             {
               min: 1,
-              max: 20,
-              message: "长度在 1到 20 个字符"
+              max: 30,
+              message: "长度在 1到 30 个字符"
             }
           ],
           code: [
             {required: true, message: "请输入属性编码"},
             {
               min: 1,
-              max: 20,
-              message: "长度在 1到 20 个字符"
+              max: 30,
+              message: "长度在 1到 30 个字符"
             },
             {validator: codeValidator, trigger: 'blur'}
           ],
@@ -359,8 +359,8 @@
             {required: true, message: "请输入属性名称"},
             {
               min: 1,
-              max: 20,
-              message: "长度在 1到 20 个字符"
+              max: 30,
+              message: "长度在 1到 30 个字符"
             }
           ],
           valueType: [
@@ -465,19 +465,19 @@
         }
 
         if(this.formData.valueType === 2){
-          if(!this.formData.min){
+          if(null === this.formData.min || '' === this.formData.min){
             flag = false;
             msg = '请输入最小数值';
           }
-          if(!this.formData.max){
+          if(null === this.formData.max || '' === this.formData.max){
             flag = false;
             msg = '请输入最大数值';
           }
-          if(!this.formData.step){
+          if(null === this.formData.step || '' === this.formData.step){
             flag = false;
             msg = '请输入步长数值';
           }
-          if(!this.formData.precision){
+          if(null === this.formData.precision || '' === this.formData.precision){
             flag = false;
             msg = '请输入精度数值';
           }

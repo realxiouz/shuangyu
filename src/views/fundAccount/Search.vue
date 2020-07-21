@@ -7,7 +7,8 @@
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.accountName"
-              placeholder="请输入资金账号.."
+              clearable
+              placeholder="请输入账号名称搜索..."
               size
             ></el-input>
           </el-form-item>

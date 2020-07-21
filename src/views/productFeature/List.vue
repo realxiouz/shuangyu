@@ -22,7 +22,7 @@
       </el-table-column>
       <el-table-column width="160" label="操作" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" @click="onEdit(scope.row.featureId)">修改</el-button>
+          <el-button size="mini" @click="onEdit(scope.row.featureId)">编辑</el-button>
           <el-button size="mini" type="danger" @click="handleDel(scope.row.featureId)">删除</el-button>
         </template>
       </el-table-column>

@@ -83,11 +83,11 @@ export function getTotal(filter) {
   });
 }
 
-export function getPageList(pageFlag, pageSize, filter) {
+export function getPageList(pageFlag, pageSize, params) {
   return request({
     url: `/job/scheduler/page/list/${pageFlag}/${pageSize}`,
     method: 'get',
-    params: filter
+    params: params
   });
 }
 

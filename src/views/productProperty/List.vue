@@ -30,7 +30,7 @@
                 >添加</el-button
               >
               <el-button type="text" size="mini" @click="onEdit(node, data)"
-                >修改</el-button
+                >编辑</el-button
               >
               <el-button type="text" size="mini" @click="removeNode(node, data)"
                 >移除</el-button

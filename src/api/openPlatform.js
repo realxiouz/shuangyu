@@ -1,8 +1,8 @@
 import request from '@/utils/request';
 
-export function getOne(id) {
+export function getOne(params) {
   return request({
-    url: `/third/open/platform/get/one/${id}`,
+    url: `/third/open/platform/get/one/${params.openId}`,
     method: 'get'
   });
 }
@@ -32,9 +32,9 @@ export function getPageList(args) {
   });
 }
 
-export function removeOne(id) {
+export function removeOne(params) {
   return request({
-    url: `/third/open/platform/remove/one/${id}`,
+    url: `/third/open/platform/remove/one/${params.openId}`,
     method: 'delete'
   });
 }

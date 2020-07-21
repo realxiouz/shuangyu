@@ -34,7 +34,7 @@
       </el-table-column>
       <el-table-column width="300" label="操作" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="onEdit(scope.row.voucherId)">修改</el-button>
+          <el-button size="mini" type="primary" @click="handleEdit(scope.row.voucherId)">编辑</el-button>
           <el-button size="mini" type="danger" @click="handleDel(scope.row.voucherId)">删除</el-button>
         </template>
       </el-table-column>
@@ -101,6 +101,9 @@
         this.getList();
       },
       onSearch(params) {
+        if(!params){
+          params = {};
+        }
         this.params = params;
         this.pageFlag = 0;
         this.lastId = null;
@@ -134,7 +137,7 @@
         }
         exportExcel(this, 'get', '/finance/export/voucher/excel', { ids: this.exportIds }, '凭证文件');
       },
-      onEdit(id) {
+      handleEdit(id) {
         this.editVoucherId = id;
         this.dialogVisible = true;
       },

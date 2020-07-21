@@ -1,17 +1,25 @@
 <template>
   <div class="page">
-    <search class="page-search" ref="search" @onSearch="handleSearch" />
+    <search class="page-search" ref="search" @onSearch="onSearch" />
     <el-row class="page-tools" type="flex" justify="space-between">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
     </el-row>
     <el-table class="page-table" :data="tableData">
-      <el-table-column label="开放平台编码" align="center" prop="openCode" />
-      <el-table-column label="开放平台名称" align="center" prop="openName" />
-      <el-table-column label="企业名称" align="center" prop="firmName" />
+      <el-table-column label="调度名称" align="center" prop="schedulerName" />
+      <el-table-column label="xxlJobId" align="center" prop="jobInfoId" />
+      <el-table-column label="时间表达式" align="center" prop="cron" />
+      <el-table-column label="是否启动" align="center" prop="status">
+        <template slot-scope="scope">
+          <span> {{scope.row.status ? '已启动' : '未启动'}}</span>
+        </template>
+      </el-table-column>
       <el-table-column width="160" label="操作" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="handleEdit(scope.row.authId)">编辑</el-button>
-          <el-button size="mini" type="danger" @click="handleDel(scope.row.authId)">删除</el-button>
+          <el-button size="mini" type="primary" @click="handleStart(scope.row.schedulerId)" v-if="scope.row.status === 0">启动</el-button>
+          <el-button size="mini" type="primary" @click="handleStop(scope.row.schedulerId)" v-if="scope.row.status === 1">停止</el-button>
+          <el-button size="mini" type="primary" @click="handleEdit(scope.row.schedulerId)">编辑</el-button>
+          <el-button size="mini" type="primary" @click="handleCopy(scope.row.schedulerId)">复制</el-button>
+          <el-button size="mini" type="danger" @click="handleDel(scope.row.schedulerId)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -23,10 +31,10 @@
       next-text="下一页"
       :page-size="pageSize"
       :total="total"
-      @prev-click="handlePrev"
-      @next-click="handleNext"
+      @prev-click="onPrev"
+      @next-click="onNext"
     ></el-pagination>
-    <edit :visible.sync="dialogVisible" :editAuthId="editAuthId" @refresh="handleRefresh"/>
+    <edit :visible.sync="dialogVisible" :editSchedulerId="editSchedulerId" @refresh="onRefresh"/>
   </div>
 </template>
 
@@ -44,17 +52,26 @@
         total: 0,
         tableData: [],
         loading: true,
-        editAuthId: null,
+        editSchedulerId: null,
         params: {},
       };
     },
     methods: {
+      formatDate(dateStr, format) {
+        if (null != dateStr) {
+          const date = new Date(dateStr);
+          return this.$moment(date).format(format);
+        } else {
+          return "";
+        }
+      },
       getList() {
         if (this.lastId) {
           this.params.lastId = this.lastId;
         }
+        this.params.tagCode = 'policyFactory';
         this.$store
-          .dispatch("firmOpenAuth/getPageList", {
+          .dispatch("jobScheduler/getPageList", {
             pageFlag: this.pageFlag,
             pageSize: this.pageSize,
             params: this.params
@@ -72,7 +89,7 @@
       loadData() {
         this.getList();
       },
-      handleSearch(params) {
+      onSearch(params) {
         if(!params){
           params = {};
         }
@@ -81,29 +98,35 @@
         this.lastId = null;
         this.loadData();
       },
-      handleRefresh() {
-        this.handleSearch();
+      onRefresh() {
+        this.onSearch();
       },
-      handlePrev() {
+      onPrev() {
         this.pageFlag = -1;
         if (this.tableData.length > 0) {
-          this.lastId = this.tableData[0].authId;
+          this.lastId = this.tableData[0].schedulerId;
         }
         this.loadData();
       },
-      handleNext() {
+      onNext() {
         this.pageFlag = 1;
         if (this.tableData.length > 0) {
-          this.lastId = this.tableData[this.tableData.length - 1].authId;
+          this.lastId = this.tableData[this.tableData.length - 1].schedulerId;
         }
         this.loadData();
       },
+      handleStart() {
+        alert("启动");
+      },
+      handleStop() {
+        alert("停止");
+      },
       handleAdd() {
-        this.editAuthId = null;
+        this.editSchedulerId = null;
         this.dialogVisible = true;
       },
       handleEdit(id) {
-        this.editAuthId = id;
+        this.editSchedulerId = id;
         this.dialogVisible = true;
       },
       handleDel(id) {
@@ -112,8 +135,8 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$store.dispatch("firmOpenAuth/removeOne", {authId: id}).then(() => {
-            this.handleRefresh();
+          this.$store.dispatch("jobScheduler/removeOne", {schedulerId: id}).then(() => {
+            this.onRefresh();
             this.$message({ type: "success", message: "删除成功" });
           });
         });

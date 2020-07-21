@@ -3,33 +3,40 @@
     <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
       <el-form :model="formData" label-width="80px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="平台名称:">
+          <el-form-item label="调度名称:">
             <el-input
               clearable
-              placeholder="请输入开放平台编码搜索..."
+              placeholder="请输入调度名称..."
               @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.openCode"
+              v-model="formData.schedulerName"
             ></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="平台名称:">
+          <el-form-item label="xxlJobId:">
             <el-input
               clearable
-              placeholder="请输入平台名称搜索..."
+              placeholder="请输入xxlJobId..."
               @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.openName"
+              v-model="formData.jobInfoId"
             ></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="企业名称:">
-            <el-input
+          <el-form-item label="状态:">
+            <el-select
+              v-model="formData.status"
               clearable
-              placeholder="请输入企业名称搜索..."
-              @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.firmName"
-            ></el-input>
+              placeholder="请选择状态..."
+              style="width: 100%"
+            >
+              <el-option
+                v-for="item in statusList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
       </el-form>
@@ -40,7 +47,7 @@
         class="filter-item"
         type="primary"
         size="mini"
-        @click="handleSearch"
+        @click="onSearch"
       >查询
       </el-button>
       <el-button
@@ -64,10 +71,19 @@
       return {
         more: false,
         formData: {
-          openCode: null,
-          openName: null,
-          firmName: null
-        }
+          schedulerName: null,
+          jobInfoId: null,
+          status: null
+        },
+        statusList:[
+          {
+            label: "已启动",
+            value: 1
+          },{
+            label: "未启动",
+            value: 0
+          }
+        ]
       };
     },
     computed: {
@@ -82,17 +98,17 @@
     methods: {
       initSearchForm() {
         return {
-          openCode: null,
-          openName: null,
-          firmName: null
+          schedulerName: null,
+          jobInfoId: null,
+          status: null
         };
       },
-      handleSearch() {
+      onSearch() {
         this.$emit("onSearch", this.formData);
       },
       handleClear() {
         this.formData = this.initSearchForm();
-        this.handleSearch();
+        this.onSearch();
       },
       handleMore() {
         this.more = !this.more;

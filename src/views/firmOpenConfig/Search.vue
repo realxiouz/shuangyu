@@ -3,20 +3,22 @@
     <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
       <el-form :model="formData" label-width="80px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="凭证字:">
+          <el-form-item label="开放平台编码:">
             <el-input
               clearable
+              placeholder="请输入开放平台编码搜索..."
               @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.voucherGroupName"
+              v-model="formData.openCode"
             ></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="标题:">
+          <el-form-item label="开放平台名称:">
             <el-input
               clearable
+              placeholder="请输入开放平台名称搜索..."
               @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.voucherGroupTitle"
+              v-model="formData.openName"
             ></el-input>
           </el-form-item>
         </el-col>
@@ -52,8 +54,8 @@
       return {
         more: false,
         formData: {
-          voucherGroupName: null,
-          voucherGroupTitle: null
+          openCode: null,
+          openName: null
         }
       };
     },
@@ -69,8 +71,8 @@
     methods: {
       initSearchForm() {
         return {
-          voucherGroupName: null,
-          voucherGroupTitle: null
+          openCode: null,
+          openName: null
         };
       },
       handleSearch() {

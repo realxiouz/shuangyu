@@ -6,15 +6,15 @@
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
     </el-row>
     <el-table class="page-table" :data="tableData">
-      <el-table-column label="商户名称" align="center" prop="merchantName" />
-      <el-table-column label="商户域名" align="center" prop="merchantDomain" />
-      <el-table-column label="用户名称" align="center" prop="userName" />
       <el-table-column label="IP地址" align="center" prop="ipUrl" />
       <el-table-column label="回调地址" align="center" prop="callbackUrl" />
       <el-table-column label="备注" align="center" prop="remark" />
+      <el-table-column label="商户名称" align="center" prop="merchantName" />
+      <el-table-column label="商户域名" align="center" prop="merchantDomain" />
+      <el-table-column label="用户名称" align="center" prop="userName" />
       <el-table-column width="160" label="操作" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="handleEdit(scope.row.policyConfigId)">修改</el-button>
+          <el-button size="mini" type="primary" @click="handleEdit(scope.row.policyConfigId)">编辑</el-button>
           <el-button size="mini" type="danger" @click="handleDel(scope.row.policyConfigId)">删除</el-button>
         </template>
       </el-table-column>
@@ -81,6 +81,9 @@
         }
       },
       handleSearch(params) {
+        if(!params){
+          params = {};
+        }
         this.params = params;
         this.pageFlag = 0;
         this.lastId = null;

@@ -11,8 +11,8 @@
       <el-table-column label="配置地址" align="center" prop="openUrl" />
       <el-table-column width="160" label="操作" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="onEdit(scope.row)">修改</el-button>
-          <el-button size="mini" type="danger" @click="onDel(scope.row)">删除</el-button>
+          <el-button size="mini" type="primary" @click="onEdit(scope.row.openId)">修改</el-button>
+          <el-button size="mini" type="danger" @click="onDel(scope.row.openId)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -42,7 +42,6 @@
     mixins: [MIXIN_LIST],
     data() {
       return {
-        openId:'',
         dialogVisible: false,
         deleteForSearch: false,
         keyName: 'openId',
@@ -64,74 +63,6 @@
         }
         return openTypeDesc;
       },
-
-
-      getList() {
-        if (this.lastId) {
-          this.params.lastId = this.lastId;
-        }
-        this.$store
-          .dispatch("openPlatform/getPageList", {
-            pageFlag: this.pageFlag,
-            pageSize: this.pageSize,
-            params: this.params
-          })
-          .then(result => {
-            if (result && result.rows && result.rows.length > 0) {
-              this.tableData = result.rows;
-              this.total = result.total;
-            } else {
-              this.tableData = [];
-              this.total = 0;
-            }
-          });
-      },
-      loadData() {
-        this.getList();
-      },
-      handleSearch(params) {
-        this.params = params;
-        this.pageFlag = 0;
-        this.lastId = null;
-        this.loadData();
-      },
-      handleRefresh() {
-        this.handleSearch();
-      },
-      handlePrev() {
-        this.pageFlag = -1;
-        if (this.tableData.length > 0) {
-          this.lastId = this.tableData[0].openId;
-        }
-        this.loadData();
-      },
-      handleNext() {
-        this.pageFlag = 1;
-        if (this.tableData.length > 0) {
-          this.lastId = this.tableData[this.tableData.length - 1].openId;
-        }
-        this.loadData();
-      },
-      handleAdd() {
-        this.editOpenId = null;
-        this.dialogVisible = true;
-      },
-      handleEdit(id) {
-        this.editOpenId = id;
-        this.dialogVisible = true;
-      },
-      handleDel(id) {
-        this.$confirm('确定删除?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$store.dispatch("openPlatform/removeOne", {openId: id}).then(() => {
-            this.handleRefresh();
-            this.$message({ type: "success", message: "删除成功" });
-          });
-        });
-      }
     },
     components: {
       edit,
