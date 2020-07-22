@@ -320,7 +320,7 @@
                 };
             },
             loadCustomers() {
-                this.$store.dispatch("firmMerchant/getSupplierList", {})
+                this.$store.dispatch("firmMerchant/getCustomerList", {})
                     .then(data => {
                         this.customerList = data;
                     })
