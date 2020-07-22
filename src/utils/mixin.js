@@ -1,5 +1,5 @@
-import { PAGE_SIZES } from '@/utils/const';
-import { exportExcel } from '@/utils/export';
+import {PAGE_SIZES} from '@/utils/const';
+import {exportExcel} from '@/utils/export';
 
 export const MIXIN_LIST = {
   category: {
@@ -28,6 +28,11 @@ export const MIXIN_LIST = {
     };
   },
   methods: {
+    beforeLoadData(data) {
+      return data;
+    },
+    afterLoadData() {
+    },
     loadData() {
       if (this.actions.getPageList) {
         if (null !== this.category && '' !== this.category) {
@@ -46,8 +51,9 @@ export const MIXIN_LIST = {
           })
           .then(data => {
             if (data) {
-              this.tableData = data.rows;
-              this.total = data.total;
+              let _data = this.beforeLoadData(data)
+              this.tableData = this.beforeLoadData(_data.rows);
+              this.total = _data.total;
             }
           })
           .catch(error => {
@@ -55,6 +61,7 @@ export const MIXIN_LIST = {
           })
           .finally(_ => {
             this.loading = false;
+            this.afterLoadData();
           });
       }
     },
@@ -119,7 +126,7 @@ export const MIXIN_LIST = {
       this.onSearch();
     },
     onSelectionChange(data) {
-      if(data && data.length > 0){
+      if (data && data.length > 0) {
         let that = this;
         for (const key in data) {
           let object = data[key];
@@ -133,18 +140,18 @@ export const MIXIN_LIST = {
     },
     onExport() {
       if (!this.selectIds || this.selectIds.length < 1) {
-        this.$message({ type: 'warning', message: '请先选择要导出的数据！' });
+        this.$message({type: 'warning', message: '请先选择要导出的数据！'});
         return;
       }
       if (!this.actions || !this.actions.exportUrl) {
-        this.$message({ type: 'warning', message: '丢失导出地址！' });
+        this.$message({type: 'warning', message: '丢失导出地址！'});
         return;
       }
       exportExcel(
         this,
         'get',
         this.actions.exportUrl,
-        { ids: this.selectIds },
+        {ids: this.selectIds},
         '导出文件'
       );
     }
@@ -156,10 +163,6 @@ export const MIXIN_LIST = {
 
 export const MIXIN_EDIT = {
   props: {
-    category: {
-      type: Number,
-      default: null
-    },
     pid: {
       type: String,
       default: null
@@ -193,16 +196,16 @@ export const MIXIN_EDIT = {
       this.dialogVisible = val;
       if (val) {
         if (this.keyId) {
-          this.loadDetail();
+          this.loadData();
         } else {
           this.formData = this.defaultFormData();
         }
+        this.$refs['form'].clearValidate();
       }
     }
   },
   methods: {
     onOpen() {
-      this.refreshForm(1);
       this.$emit('update:visible', true);
     },
     onClose() {
@@ -211,11 +214,11 @@ export const MIXIN_EDIT = {
     onSave() {
       if (this.actions.saveOne) {
         this.$refs['form'].validate(valid => {
-          if (valid && this.checkForm()) {
+          if (valid && this.validateOther()) {
             this.$store
               .dispatch(
                 this.actions.saveOne,
-                this.packageFormData(this.formData)
+                this.beforeSave(this.formData)
               )
               .then(id => {
                 if (!this._.isEmpty(id)) {
@@ -223,71 +226,51 @@ export const MIXIN_EDIT = {
                 }
                 this.dialogVisible = false;
                 this.$emit('refresh');
-                this.$message({ type: 'success', message: '保存成功' });
+                this.$message({type: 'success', message: '保存成功'});
+              })
+              .finally(_ => {
+                this.afterSave();
               });
-          } else {
-            this.refreshForm(1000);
           }
         });
       }
     },
-    packageFormData(data) {
-      if (data) {
-        for (const key in data) {
-          if (data[key] instanceof Date) {
-            data[key] = data[key].getTime();
-          }
-        }
-        if (this.pid) {
-          data.pid = this.pid;
-        }
-        if (null !== this.category && '' !== this.category && data.category) {
-          if (!data) {
-            data = {};
-          }
-          data.category = this.category;
-        }
-      }
+    beforeSave(data) {
       return data;
+    },
+    afterSave() {
     },
     defaultFormData() {
       return {};
     },
-    fillFormData(data) {
-      return data;
-    },
-    checkForm() {
+    validateOther() {
       return true;
-    },
-    refreshForm(time) {
-      if (!time || isNaN(time)) {
-        time = 1000;
-      }
-      let that = this;
-      let timer = window.setTimeout(function(){
-        that.$nextTick(function () {
-          that.$refs['form'].clearValidate();
-          window.clearTimeout(timer);
-        });
-      }, time);
     },
     clearForm() {
       this.formData = this.defaultFormData();
     },
-    loadDetail() {
+    loadData() {
       this.clearForm();
       if (this.actions.getOne) {
         if (this.keyId && !this.pid) {
           this.$store
-            .dispatch(this.actions.getOne, { [this.keyName]: this.keyId })
+            .dispatch(this.actions.getOne, {[this.keyName]: this.keyId})
             .then(data => {
-              this.formData = this.fillFormData(data);
+              this.formData = this.beforeLoadData(data);
             })
             .catch(error => {
               console.log(error);
+            })
+            .finally(_ => {
+              this.afterLoadData();
             });
         }
       }
+    },
+    beforeLoadData(data) {
+      return data;
+    },
+    afterLoadData() {
     }
   },
   created() {
