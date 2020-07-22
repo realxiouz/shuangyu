@@ -3,10 +3,15 @@ function genArrByMap(obj) {
   for (const key in obj) {
     arr.push({
       label: obj[key],
-      value: key
+      value: changeTypeToNumber(key)
     });
   }
   return arr;
+}
+
+function changeTypeToNumber(val) {
+  let res = val * 1
+  return isNaN(res) ? val : res;
 }
 
 export const PROPERTY_TABLE = [

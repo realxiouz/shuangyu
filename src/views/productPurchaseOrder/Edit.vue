@@ -5,7 +5,7 @@
       </div>
       <br>
       <el-form :disabled="isUpdate" ref="orderForm" :rules="rules" :model="formData"
-               label-position="left" label-width="97px" size="mini"
+               label-position="left" label-width="97px" 
                style="width: 80%">
         <el-row>
           <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
@@ -65,21 +65,37 @@
         <el-row>
           <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
             <div class="title">
-              <el-button type="primary" size="mini" @click="handleAddProduct">添加商品明细</el-button>
+              <el-button type="primary"  @click="handleAddProduct">添加商品明细</el-button>
             </div>
-            <el-table :data="orderDetails" height="250" border size="mini">
-              <el-table-column prop="productCode" label="商品编码" align="center"></el-table-column>
-              <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
-              <el-table-column prop="brandName" label="品牌" align="center"></el-table-column>
+            <el-table :data="orderDetails" height="250" border >
+              <el-table-column label="商品编码">
+                    <template v-slot="{ row }">
+                        {{ row.product.productCode }}
+                    </template>
+              </el-table-column>
+              <el-table-column label="商品名称" >
+                    <template v-slot="{ row }">
+                        {{ row.product.productName }}
+                    </template>
+              </el-table-column>
+              <el-table-column label="品牌">
+                  <template v-slot="{ row }">
+                        {{ row.product.brandName }}
+                    </template>
+              </el-table-column>
               <el-table-column prop="skuName" label="属性名称" align="center"></el-table-column>
               <el-table-column prop="price" label="单价" align="center"></el-table-column>
               <el-table-column prop="stockQuantity" label="库存" align="center"></el-table-column>
               <el-table-column prop="quantity" label="数量" align="center" width="180">
                 <template slot-scope="prop">
-                  <el-input-number v-model="prop.row.quantity" :min="1" size="mini"></el-input-number>
+                  <el-input-number v-model="prop.row.quantity" :min="1" ></el-input-number>
                 </template>
               </el-table-column>
-              <el-table-column prop="unit" label="计量单位" align="center"></el-table-column>
+              <el-table-column label="计量单位">
+                    <template v-slot="{ row }">
+                        {{ row.product.unit }}
+                    </template>
+              </el-table-column>
               <el-table-column prop="amount" label="金额" align="center">
                 <template slot-scope="prop">
                   {{computedRowAmount(prop.row)}}
@@ -87,12 +103,56 @@
               </el-table-column>
               <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                  <el-button type="danger" size="mini" @click="handleRemoveProduct(scope.$index, scope.row)">删除
+                  <el-button type="danger"  @click="handleRemoveProduct(scope.$index, scope.row)">删除
                   </el-button>
                 </template>
               </el-table-column>
             </el-table>
           </el-col>
+        </el-row>
+        <el-row>
+            <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
+                <el-button>添加乘客</el-button>
+                <el-table :data="passengers" border>
+                    <el-table-column label="乘客类型">
+                        <template v-slot="{ row }">
+                            <el-select v-model="row.ageType">
+                                <el-option v-for="(i,inx) in ageTypes" :key="inx" :label="i.label" :value="i.value" />
+                            </el-select>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="姓名">
+                        <template v-slot="{ row }">
+                            <el-input v-model="row.fullName" />
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="电话">
+                        <template v-slot="{ row }">
+                            <el-input v-model="row.phone" />
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="证件类型">
+                        <template v-slot="{ row }">
+                            <el-select v-model="row.idCardType">
+                                <el-option v-for="(i,inx) in cardTypes" :key="inx" :label="i.label" :value="i.value" />
+                            </el-select>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="证件号">
+                        <template v-slot="{ row }">
+                            <el-input v-model="row.idCardNo" />
+                        </template>
+                    </el-table-column>
+                    <el-table-column>
+                        <template v-slot:header="{}">
+                            <el-button type="primary" @click="onAddPassanger">添加</el-button>
+                        </template>
+                        <template v-slot="{ $index }">
+                            <el-button type="danger" @click="onDelByInx($index)">删除</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-col>
         </el-row>
         <el-row style="width: 80%; margin-top: 10px">
           <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
@@ -135,9 +195,9 @@
         <el-row>
           <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="16">
             <div id="footer">
-              <el-button this.isUpdate type="primary" @click="handleSave" size="mini">保 存
+              <el-button this.isUpdate type="primary" @click="handleSave" >保 存
               </el-button>
-              <el-button type="primary" @click="confirmOrder" size="mini">确 认
+              <el-button type="primary" @click="confirmOrder" >确 认
               </el-button>
             </div>
           </el-col>
@@ -151,6 +211,9 @@
 
 <script>
     import productDetail from "./productDetail";
+    import {mapState} from 'vuex'
+    import { CARD_TYPES_MAP, AGE_TYPES_MAP, AGE_TYPES, CARD_TYPES} from "@/utils/const";
+
 
     export default {
         data() {
@@ -176,10 +239,14 @@
                     // paymentMode: [
                     //     {required: true, message: "请输入付款方式", trigger: "blur"}
                     // ],
-                    fundAccountId: [
-                        {required: true, message: "请选择结算账户", trigger: "blur"}
-                    ]
-                }
+                    // fundAccountId: [
+                    //     {required: true, message: "请选择结算账户", trigger: "blur"}
+                    // ]
+                },
+
+                cardTypes: CARD_TYPES,
+                ageTypes: AGE_TYPES,
+
             };
         },
         methods: {
@@ -249,7 +316,8 @@
                     //结算账户名称
                     fundAccountName: '',
                     //备注
-                    remark: ''
+                    remark: '',
+                    
                 };
             },
             loadCustomers() {
@@ -329,10 +397,13 @@
                     });
             },
             selectedCustomer(item) {
+                console.log(item)
+                this.customerList
                 this.customerSelected = false;
                 this.loadAccounts(item);
                 this.customerList.forEach(customer => {
                     if (item === customer.merchantId) {
+                        this.formData.merchantType = customer.merchantType
                         this.$store.dispatch("firmContact/getList", {
                             filter: {
                                 firmId: item,
@@ -414,6 +485,8 @@
                         });
                         this.formData.totalAmount = parseFloat(document.getElementById('totalAmount').textContent);
                         this.formData.orderDetails =this.orderDetails;
+                        this.formData.passengers = this.passengers
+                        this.formData.orderStatus = 2
                         this.$store
                             .dispatch('productOrder/confirmOrder', this.formData)
                             .then(() => {
@@ -440,6 +513,8 @@
                         });
                         this.formData.totalAmount = parseFloat(document.getElementById('totalAmount').textContent);
                         this.formData.orderDetails =this.orderDetails;
+                        this.formData.passengers = this.passengers
+                        this.formData.orderStatus = 0
                         this.$store
                             .dispatch('productOrder/saveOrder', this.formData)
                             .then(() => {
@@ -511,6 +586,19 @@
                     this.isUpdate = false;
                 }
             },
+            onDelByInx(inx) {
+                console.log(inx)
+                this.passengers.splice(inx, 1)
+            },
+            onAddPassanger() {
+                this.passengers.push({
+                    fullName: '',
+                    ageType: 0,
+                    idCardType: 'NI',
+                    idCardNo: '',
+                    phone: '',
+                })
+            }
         },
         created() {
             this.initFormData(this.$route.query.orderNo);
@@ -521,6 +609,7 @@
                     return this.initDate(format);
                 };
             },
+            ...mapState("ticket", ["passengers"])
         },
         components: {
             productDetail

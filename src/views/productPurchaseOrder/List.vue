@@ -148,9 +148,9 @@
                 })
                     .then(data => {
                         if (data) {
-                            this.tableData = data.rows;
-                            this.total = data.total;
-                            // this.loadTotal(searchForm);
+                            this.tableData = data;
+                            // this.total = data.total;
+                            this.loadTotal(searchForm);
                         }
                         this.loading = false;
                     })

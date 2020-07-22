@@ -3,6 +3,8 @@
     <el-steps :active="step" finish-status="success">
       <el-step title="查询航班信息"></el-step>
       <el-step title="添加乘机人"></el-step>
+      <el-step title="下单"></el-step>
+      <el-step title="支付"></el-step>
     </el-steps>
     <transition-group name="el-zoom-in-top">
       <div v-show="step == 0" :key="0">
@@ -18,17 +20,9 @@
           </el-form-item>
           <el-form-item label="操作">
             <el-button @click="onSearch">搜索</el-button>
+            <el-button @click="$router.push('/product/purchase/order/edit')">补单</el-button>
           </el-form-item>
         </el-form>
-
-        <!-- <el-table :data="list">
-          <el-table-column label="出发">
-            <template v-slot="{ row }">
-              {{ row.dptAirport }} - {{row.arrAirport}}
-            </template>
-          </el-table-column>
-          <el-table-column label="航班" prop="actFlightNum" />
-        </el-table> -->
         <el-table
         row-key="id"
         :data="flightData"

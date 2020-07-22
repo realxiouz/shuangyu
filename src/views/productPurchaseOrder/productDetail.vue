@@ -40,16 +40,35 @@
       </el-form>
     </div>
     <el-table ref="productTable" :data="productList" @selection-change="handleSelectionChange" highlight-current-row
-              size="mini">
+              border>
       <el-table-column type="selection"></el-table-column>
-      <el-table-column prop="productCode" label="商品编码" align="center"></el-table-column>
-      <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
-      <el-table-column prop="categoryName" label="商品类目" align="center"></el-table-column>
-      <el-table-column prop="brandName" label="品牌名称" align="center"></el-table-column>
+      <el-table-column label="商品编码">
+        <template v-slot="{ row }">
+          {{ row.product.productCode }}
+        </template>
+      </el-table-column>
+      <el-table-column label="商品名称">
+        <template v-slot="{ row }">
+          {{ row.product.productName }}
+        </template>
+      </el-table-column>
+      <el-table-column label="商品类目">
+        <template v-slot="{ row }">
+          {{ row.product.categoryName }}
+        </template>
+      </el-table-column>
+      <el-table-column label="品牌名称">
+        <template v-slot="{ row }">
+          {{ row.product.brandName }}
+        </template>
+      </el-table-column>
+      
       <el-table-column prop="quantity" label="数量" align="center"></el-table-column>
-      <el-table-column prop="maxStockQuantity" label="库存上线" align="center"></el-table-column>
-      <el-table-column prop="minStockQuantity" label="库存下线" align="center"></el-table-column>
-      <el-table-column prop="unit" label="计量单位" align="center"></el-table-column>
+      <el-table-column label="计量单位">
+        <template v-slot="{ row }">
+          {{ row.product.unit }}
+        </template>
+      </el-table-column>
       <el-table-column prop="price" label="单价" align="center"></el-table-column>
       <el-table-column prop="skuName" label="属性名称" align="center"></el-table-column>
       <el-table-column prop="skuId" label="sku" align="center"></el-table-column>
@@ -117,7 +136,8 @@
                         filter: this.searchForm
                     })
                     .then(data => {
-                        this.productList = data;
+                        this.productList = data.rows;
+                        this.total = data.total
                     })
                     .catch(error => {
                         console.log(error);
