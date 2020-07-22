@@ -29,8 +29,7 @@ const actions = {
   // eslint-disable-next-line no-unused-vars
   getOne({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const { voucherGroupId } = params;
-      getOne(voucherGroupId)
+      getOne(params)
         .then(response => {
           resolve(response);
         })
@@ -64,10 +63,9 @@ const actions = {
     });
   },
   // eslint-disable-next-line no-unused-vars
-  getPageList({ commit }, args) {
+  getPageList({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const { pageFlag, pageSize, params } = args;
-      getPageList(pageFlag, pageSize, params)
+      getPageList(params)
         .then(response => {
           resolve(response);
         })
@@ -79,8 +77,7 @@ const actions = {
   // eslint-disable-next-line no-unused-vars
   removeOne({ commit }, args) {
     return new Promise((resolve, reject) => {
-      const { voucherGroupId } = args;
-      removeOne(voucherGroupId)
+      removeOne(args)
         .then(response => {
           resolve(response);
         })

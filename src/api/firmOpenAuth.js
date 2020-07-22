@@ -38,3 +38,19 @@ export function removeOne(params) {
     method: 'delete'
   });
 }
+
+export function getCustomerList(params) {
+  return request({
+    url: `/firm/customer/open/auth/get/list`,
+    method: 'get',
+    params: params
+  });
+}
+
+export function getSupplierList(params) {
+  return request({
+    url: `/firm/supplier/open/auth/get/list`,
+    method: 'get',
+    params: params
+  });
+}

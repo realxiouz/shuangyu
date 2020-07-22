@@ -7,9 +7,9 @@ import {
 
 const actions = {
   // eslint-disable-next-line no-unused-vars
-  getOne({ commit }, args) {
+  getOne({ commit }, params) {
     return new Promise((resolve, reject) => {
-      getOne(args)
+      getOne(params)
         .then(response => {
           resolve(response);
         })
@@ -31,9 +31,9 @@ const actions = {
     });
   },
   // eslint-disable-next-line no-unused-vars
-  getPageList({ commit }, args) {
+  getPageList({ commit }, params) {
     return new Promise((resolve, reject) => {
-      getPageList(args)
+      getPageList(params)
         .then(response => {
           resolve(response);
         })

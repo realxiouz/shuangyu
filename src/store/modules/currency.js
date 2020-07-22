@@ -3,7 +3,7 @@ import {
   getOne,
   getPageList,
   removeOne,
-  save,
+  saveOne,
   update
 } from "@/api/currency";
 import {getToken} from "@/utils/auth";
@@ -30,9 +30,8 @@ const mutations = {
 const actions = {
   // eslint-disable-next-line no-unused-vars
   getList({commit}, params) {
-    const {filters} = params;
     return new Promise((resolve, reject) => {
-      getList(filters)
+      getList(params)
         .then(response => {
           resolve(response);
         })
@@ -43,9 +42,8 @@ const actions = {
   },
   // eslint-disable-next-line no-unused-vars
   getOne({commit}, params) {
-    const {currencyId} = params;
     return new Promise((resolve, reject) => {
-      getOne(currencyId)
+      getOne(params)
         .then(response => {
           resolve(response);
         })
@@ -56,9 +54,8 @@ const actions = {
   },
   // eslint-disable-next-line no-unused-vars
   getPageList({commit}, params) {
-    const {pageFlag, pageSize, filter} = params;
     return new Promise((resolve, reject) => {
-      getPageList(pageFlag, pageSize, filter)
+      getPageList(params)
         .then(response => {
           resolve(response);
         })
@@ -68,10 +65,9 @@ const actions = {
     });
   },
   // eslint-disable-next-line no-unused-vars
-  removeOne({commit}, params) {
-    const {currencyId} = params;
+  removeOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      removeOne(currencyId)
+      removeOne(args)
         .then(response => {
           resolve(response);
         })
@@ -81,9 +77,9 @@ const actions = {
     });
   },
   // eslint-disable-next-line no-unused-vars
-  save({commit}, params) {
+  saveOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      save(params)
+      saveOne(args)
         .then(response => {
           resolve(response);
         })
@@ -93,10 +89,9 @@ const actions = {
     });
   },
   // eslint-disable-next-line no-unused-vars
-  update({commit}, params) {
+  update({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {currencyId} = params;
-      update(currencyId, params)
+      update(args)
         .then(response => {
           resolve(response);
         })

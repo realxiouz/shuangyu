@@ -8,29 +8,29 @@ export function getList(params) {
   });
 }
 
-export function getOne(id) {
+export function getOne(params) {
   return request({
-    url: `/finance/currency/get/one/${id}`,
+    url: `/finance/currency/get/one/${params.currencyId}`,
     method: 'get'
   });
 }
 
-export function getPageList(pageFlag, pageSize, params) {
+export function getPageList(params) {
   return request({
-    url: `/finance/currency/get/page/list/${pageFlag}/${pageSize}`,
+    url: `/finance/currency/get/page/list/${params.pageFlag}/${params.pageSize}`,
     method: 'get',
     params: params
   });
 }
 
-export function removeOne(id) {
+export function removeOne(params) {
   return request({
-    url: `/finance/currency/remove/one/${id}`,
+    url: `/finance/currency/remove/one/${params.currencyId}`,
     method: 'delete'
   });
 }
 
-export function save(data) {
+export function saveOne(data) {
   return request({
     url: `/finance/currency/save/one`,
     method: 'post',
@@ -38,9 +38,9 @@ export function save(data) {
   });
 }
 
-export function update(id, data) {
+export function update(data) {
   return request({
-    url: `/finance/currency/update/one/${id}`,
+    url: `/finance/currency/update/one/${data.currencyId}`,
     method: 'put',
     data
   });

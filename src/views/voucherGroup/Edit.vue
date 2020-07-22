@@ -1,6 +1,6 @@
 <template>
   <div class="page-form">
-    <el-dialog title="凭证字管理" width="24%" center :visible.sync="dialogVisible" @open="handleOpen" @close="handleClose">
+    <el-dialog :title="keyId ? '修改凭证字管理' : '添加凭证字管理'"  width="24%" center :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
       <el-form ref="form" label-width="110px" size="mini" :model="formData" :rules="rules">
         <el-form-item label="凭证字：" prop="voucherGroupName">
           <el-input v-model="formData.voucherGroupName" placeholder="请输入凭证字" />
@@ -13,24 +13,16 @@
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
-        <el-button size="mini" @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" size="mini" @click="handleSave">确 定</el-button>
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="onSave">确 定</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 <script>
+  import {MIXIN_EDIT} from "@/utils/mixin";
   export default {
-    props: {
-      visible: {
-        type: Boolean,
-        default: false
-      },
-      editGroupId: {
-        type: String,
-        default: null
-      }
-    },
+    mixins: [MIXIN_EDIT],
     data() {
       const chineseValidator = (rule, value, callback) => {
         let reg = /^[\u4e00-\u9fa5]+$/;
@@ -42,7 +34,11 @@
       };
       return {
         dialogVisible: false,
-        formData: this.defaultFormData(),
+        codeEnable: false,
+        actions: {
+          getOne: 'voucherGroup/getOne',
+          saveOne: 'voucherGroup/saveOne'
+        },
         rules: {
           voucherGroupName: [
             {required: true, message: "请输入凭证字"},
@@ -57,59 +53,17 @@
             {required: true, message: "请输入标题"},
             {
               min: 1,
-              max: 8,
-              message: "长度在 1到 8 个字符"
+              max: 20,
+              message: "长度在 1到 20 个字符"
             },
             {validator: chineseValidator, trigger: 'blur'}
           ]
         }
       };
     },
-    watch: {
-      visible(val) {
-        this.dialogVisible = val;
-        if (val) {
-          if (this._.isEmpty(this.editGroupId)) {
-            this.formData = this.defaultFormData();
-          } else {
-            this.loadData();
-          }
-        }
-      }
-    },
     methods: {
-      handleOpen() {
-        this.$emit('update:visible', true);
-      },
-      handleClose() {
-        this.$emit('update:visible', false);
-      },
       handleSwitch(){
         this.defaultFlag = !this.defaultFlag;
-      },
-      handleSave() {
-        this.$refs["form"].validate(valid => {
-          if (valid) {
-            this.$store
-              .dispatch("voucherGroup/saveOne", this.formData)
-              .then(() => {
-                if (!this._.isEmpty(this.editGroupId)) {
-                  this.formData.voucherGroupId = this.editGroupId;
-                }
-                this.dialogVisible = false;
-                this.$emit('refresh');
-                this.$message({type: "success", message: "保存成功"});
-              });
-          }else{
-            let that = this;
-            let timer = window.setTimeout(function(){
-              that.$nextTick(function () {
-                that.$refs['form'].clearValidate();
-                window.clearTimeout(timer);
-              })
-            }, 1000);
-          }
-        });
       },
       defaultFormData() {
         return {
@@ -118,13 +72,6 @@
           voucherGroupTitle: null,
           defaultFlag: null
         };
-      },
-      loadData() {
-        this.$store
-          .dispatch("voucherGroup/getOne", {voucherGroupId: this.editGroupId})
-          .then(data => {
-            this.formData = data;
-          });
       }
     }
   };

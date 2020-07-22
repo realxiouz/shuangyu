@@ -2,15 +2,15 @@
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch" />
     <el-row class="page-tools" type="flex" justify="space-between">
-      <el-button
-        icon="el-icon-plus"
-        type="primary"
-        size="mini"
-        @click="handleAdd"
-        >添加</el-button
-      >
+      <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
     </el-row>
-    <el-table class="page-table" :data="tableData" v-loading="loading">
+    <el-table
+      class="page-table"
+      size="mini"
+      v-loading="loading"
+      :data="tableData"
+      style="width: 100%;margin-bottom:15px;"
+    >
       <el-table-column type="expand">
         <template slot-scope="scope">
           <el-table :data="scope.row.voucherRecords" border>
@@ -42,17 +42,10 @@
           {{ scope.row.voucherDate | time("YYYY-MM-DD") }}
         </template>
       </el-table-column>
-      <el-table-column width="300" label="操作" align="center">
+      <el-table-column width="160" label="操作" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="handleEdit(scope.row)"
-            >编辑</el-button
-          >
-          <el-button
-            size="mini"
-            type="danger"
-            @click="handleDel(scope.row.templateId)"
-            >删除</el-button
-          >
+          <el-button size="mini" type="primary" @click="onEdit(scope.row.templateId)">修改</el-button>
+          <el-button size="mini" type="danger" @click="onDel(scope.row.templateId)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -68,53 +61,41 @@
       layout="total,sizes,prev,next"
       :page-size="pageSizes[0]"
       :page-sizes="pageSizes"
-    />
-    <edit
-      :visible.sync="dialogVisible"
-      :templateId="templateId"
-      @refresh="onRefresh"
-    />
+    ></el-pagination>
+    <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" @refresh="onRefresh"/>
   </div>
 </template>
 
 <script>
-import { MIXIN_LIST } from "@/utils/mixin";
-import { VOUCHCHER_TEMPLATE_MAP } from "@/utils/const";
-import edit from "./Edit";
-import search from "./Search";
+  import edit from "./Edit";
+  import search from "./Search";
+  import {MIXIN_LIST} from "@/utils/mixin";
+  import { VOUCHCHER_TEMPLATE_MAP } from "@/utils/const";
 
-export default {
-  name: "voucherTemplate",
-  data() {
-    return {
-      beanIdName: "templateId",
-      actionName: "voucherTemplate/getPageList",
-      templateId: "",
-      tempMap: VOUCHCHER_TEMPLATE_MAP,
-    };
-  },
-  methods: {
-    handleDel(id) {
-      this.$confirm("确定删除?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      }).then(() => {
-        this.$store
-          .dispatch("voucherTemplate/removeOne", { templateId: id })
-          .then(() => {
-            this.onRefresh();
-            this.$message({ type: "success", message: "删除成功" });
-          });
-      });
-    }
-  },
-  components: {
-    edit,
-    search
-  },
-  mixins: [MIXIN_LIST]
-};
+  export default {
+    mixins: [MIXIN_LIST],
+    data() {
+      return {
+        dialogVisible: false,
+        keyName: 'templateId',
+        actions: {
+          getPageList: 'voucherTemplate/getPageList',
+          removeOne: 'voucherTemplate/removeOne'
+        },
+        tempMap: VOUCHCHER_TEMPLATE_MAP,
+      };
+    },
+    methods: {
+    },
+    components: {
+      edit,
+      search
+    },
+  };
 </script>
 
-<style></style>
+<style>
+  .page-tools {
+    margin-bottom: 10px;
+  }
+</style>

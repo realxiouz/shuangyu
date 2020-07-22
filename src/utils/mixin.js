@@ -1,4 +1,5 @@
 import {PAGE_SIZES} from '@/utils/const';
+import {exportExcel} from '@/utils/export';
 
 export const MIXIN_LIST = {
   category: {
@@ -9,6 +10,7 @@ export const MIXIN_LIST = {
     return {
       keyId: null,
       keyName: null,
+      selectIds: [],
       dialogVisible: false,
       pageFlag: 0,
       pageSize: PAGE_SIZES[0],
@@ -18,14 +20,19 @@ export const MIXIN_LIST = {
       loading: false,
       pageSizes: PAGE_SIZES,
       params: {},
-      extraParam: {},
       actions: {
         getPageList: null,
-        removeOne: null
+        removeOne: null,
+        exportUrl: null
       }
     };
   },
   methods: {
+    beforeLoadData(data) {
+      return data;
+    },
+    afterLoadData() {
+    },
     loadData() {
       console.log(this.actions)
       if (this.actions.getPageList) {
@@ -41,20 +48,21 @@ export const MIXIN_LIST = {
             pageSize: this.pageSize,
             lastId: this.lastId,
             pageFlag: this.pageFlag,
-            ...this.params,
-            ...this.extraParam
+            ...this.params
           })
           .then(data => {
             if (data) {
-              this.tableData = data.rows;
-              this.total = data.total;
+              let _data = this.beforeLoadData(data)
+              this.tableData = this.beforeLoadData(_data.rows);
+              this.total = _data.total;
             }
           })
           .catch(error => {
             console.log(error);
           })
-          .finally(_ => {
+          .finally(() => {
             this.loading = false;
+            this.afterLoadData();
           });
       }
     },
@@ -75,9 +83,7 @@ export const MIXIN_LIST = {
     },
     onSearch(params) {
       if (!params) {
-        for (const key in params) {
-          !params[key] && delete params[key];
-        }
+        params = {};
       }
       this.params = params;
       this.pageFlag = 0;
@@ -120,6 +126,36 @@ export const MIXIN_LIST = {
     },
     onRefresh() {
       this.onSearch();
+    },
+    onSelectionChange(data) {
+      if (data && data.length > 0) {
+        let that = this;
+        for (const key in data) {
+          let object = data[key];
+          for (const field in object) {
+            if (field === that.keyName) {
+              that.selectIds.push(object[field]);
+            }
+          }
+        }
+      }
+    },
+    onExport() {
+      if (!this.selectIds || this.selectIds.length < 1) {
+        this.$message({type: 'warning', message: '请先选择要导出的数据！'});
+        return;
+      }
+      if (!this.actions || !this.actions.exportUrl) {
+        this.$message({type: 'warning', message: '丢失导出地址！'});
+        return;
+      }
+      exportExcel(
+        this,
+        'get',
+        this.actions.exportUrl,
+        {ids: this.selectIds},
+        '导出文件'
+      );
     }
   },
   created() {
@@ -129,10 +165,6 @@ export const MIXIN_LIST = {
 
 export const MIXIN_EDIT = {
   props: {
-    category: {
-      type: Number,
-      default: null
-    },
     pid: {
       type: String,
       default: null
@@ -166,16 +198,16 @@ export const MIXIN_EDIT = {
       this.dialogVisible = val;
       if (val) {
         if (this.keyId) {
-          this.loadDetail();
+          this.loadData();
         } else {
           this.formData = this.defaultFormData();
         }
+        this.$refs['form'].clearValidate();
       }
     }
   },
   methods: {
     onOpen() {
-      this.refreshForm(1);
       this.$emit('update:visible', true);
     },
     onClose() {
@@ -184,64 +216,63 @@ export const MIXIN_EDIT = {
     onSave() {
       if (this.actions.saveOne) {
         this.$refs['form'].validate(valid => {
-          if (valid) {
-            if (this.pid) {
-              this.formData.pid = this.pid;
-            }
-            if(null !== this.category && '' !== this.category && this.formData.category){
-              if(!this.formData){
-                this.formData = {};
-              }
-              this.formData.category = this.category;
-            }
+          if (valid && this.validateOther()) {
             this.$store
-              .dispatch(this.actions.saveOne, this.formData)
+              .dispatch(
+                this.actions.saveOne,
+                this.beforeSave(this.formData)
+              )
               .then(id => {
                 if (!this._.isEmpty(id)) {
                   this.formData[this.keyName] = id;
                 }
                 this.dialogVisible = false;
                 this.$emit('refresh');
-                this.$message({ type: 'success', message: '保存成功' });
+                this.$message({type: 'success', message: '保存成功'});
+              })
+              .finally(() => {
+                this.afterSave();
               });
-          } else {
-            this.refreshForm(1000);
           }
         });
       }
     },
+    beforeSave(data) {
+      return data;
+    },
+    afterSave() {
+    },
     defaultFormData() {
       return {};
     },
-    refreshForm(time) {
-      if (!time || isNaN(time)) {
-        time = 1000;
-      }
-      let that = this;
-      let timer = window.setTimeout(function(){
-        that.$nextTick(function () {
-          that.$refs['form'].clearValidate();
-          window.clearTimeout(timer);
-        });
-      }, time);
+    validateOther() {
+      return true;
     },
     clearForm() {
       this.formData = this.defaultFormData();
     },
-    loadDetail() {
+    loadData() {
       this.clearForm();
       if (this.actions.getOne) {
         if (this.keyId && !this.pid) {
           this.$store
-            .dispatch(this.actions.getOne, { [this.keyName]: this.keyId })
+            .dispatch(this.actions.getOne, {[this.keyName]: this.keyId})
             .then(data => {
-              this.formData = data;
+              this.formData = this.beforeLoadData(data);
             })
             .catch(error => {
               console.log(error);
+            })
+            .finally(() => {
+              this.afterLoadData();
             });
         }
       }
+    },
+    beforeLoadData(data) {
+      return data;
+    },
+    afterLoadData() {
     }
   },
   created() {

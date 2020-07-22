@@ -1,6 +1,6 @@
 <template>
   <div class="page-form">
-    <el-dialog title="凭证管理" width="800" center :visible.sync="dialogVisible" @open="handleOpen" @close="handleClose">
+    <el-dialog :title="keyId ? '修改凭证管理' : '添加凭证管理'"  width="50%" center :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
       <el-form ref="form" label-width="110px" size="mini" :model="formData" :rules="rules">
         <el-form-item label="凭证字：" prop="voucherGroupId">
           <el-select v-model="formData.voucherGroupId" style="width: 100%;"  placeholder="请选择凭证字">
@@ -30,10 +30,10 @@
           <template slot-scope="scope">
             <el-select v-model="scope.row.subjectId" @change="handleSubjectChange(scope.$index, $event)">
               <el-option
-                v-for="(i, inx) in subjects"
-                :key="inx"
-                :label="`${i.balanceDirection === 0 ? '借':'贷'}-${i.subjectName}`"
-                :value="i.subjectId"
+                v-for="(subject, index) in subjectList"
+                :key="index"
+                :label="`${subject.balanceDirection === 0 ? '借':'贷'} - ${subject.subjectName}`"
+                :value="subject.subjectId"
               />
             </el-select>
           </template>
@@ -67,25 +67,17 @@
         </el-table-column>
       </el-table>
 
-      <div style="text-align:right;" slot="footer">
-        <el-button size="mini" @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" size="mini" @click="handleSave">确 定</el-button>
+      <div style="text-align:right;">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="onSave">确 定</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 <script>
+  import {MIXIN_EDIT} from "@/utils/mixin";
   export default {
-    props: {
-      visible: {
-        type: Boolean,
-        default: false
-      },
-      editVoucherId: {
-        type: String,
-        default: null
-      }
-    },
+    mixins: [MIXIN_EDIT],
     data() {
       const numValidator = (rule, value, callback) => {
         let reg = /^[0-9]*$/g;
@@ -97,8 +89,12 @@
       };
       return {
         dialogVisible: false,
-        formData: this.defaultFormData(),
         voucherGroupList: [],
+        subjectList: [],
+        actions: {
+          getOne: 'voucher/getOne',
+          saveOne: 'voucher/save'
+        },
         rules: {
           voucherGroupId: [
             {required: true, message: "请选择凭证字"}
@@ -110,95 +106,63 @@
           voucherDate: [
             {required: true, message: "请选择凭证日期"}
           ]
-        },
-        subjects: [],
+        }
       };
     },
     watch: {
       visible(val) {
-        this.dialogVisible = val;
         if (val) {
-          if (this._.isEmpty(this.editVoucherId)) {
-            this.formData = this.defaultFormData();
-          } else {
-            this.loadData();
-          }
           this.loadVoucherGroup();
+          this.loadSubject();
         }
       }
     },
     methods: {
-      handleOpen() {
-        this.$emit('update:visible', true);
-      },
-      handleClose() {
-        this.$emit('update:visible', false);
-      },
-      handleSave() {
-        let bCount = 0;
-        let lCount = 0;
-        for (const i of this.formData.voucherRecords) {
-          bCount += i.borrowAmount;
-          lCount += i.loanAmount;
+      handleCount(index) {
+        if ( index === 0 ) {
+          this.formData.voucherRecords.push({
+              summary: null,
+              subjectId: null,
+              borrowAmount: 0,
+              loanAmount: 0,
+              type: 0
+            },
+            {
+              summary: null,
+              subjectId: null,
+              subjectCode: null,
+              subjectName: null,
+              borrowAmount: 0,
+              loanAmount: 0,
+              type: 1
+            }
+          )
+        } else {
+          this.formData.voucherRecords.splice(index, 1);
         }
-        if (bCount !== lCount) {
-          this.$message.error(`借贷不平衡: 借${bCount},贷${lCount}`);
-          return
-        }
-        this.$refs["form"].validate(valid => {
-          if (valid) {
-            if(this.handleCheck()){
-              this.formData.total = lCount;
-              this.$store
-                .dispatch("voucher/save", this.formData)
-                .then(() => {
-                  if (!this._.isEmpty(this.editVoucherId)) {
-                    this.formData.voucherId = this.editVoucherId;
-                  }
-                  this.dialogVisible = false;
-                  this.$emit('refresh');
-                  this.$message({type: "success", message: "保存成功"});
-                });
-            }
-          }else{
-            let that = this;
-            let timer = window.setTimeout(function(){
-              that.$nextTick(function () {
-                that.$refs['form'].clearValidate();
-                window.clearTimeout(timer);
-              })
-            }, 1000);
-          }
-        });
       },
-      handleCheck(){
-        let flag = false;
-        let msg = null;
-        if(this.formData && this.formData.voucherRecords.length > 0){
-          let voucherRecords = this.formData.voucherRecords;
-          voucherRecords.forEach(function(obj){
-            if(!obj.loanAmount && obj.type === 1){
-              flag = true;
-              msg = "请输入贷方金额";
-            }
-            if(!obj.borrowAmount && obj.type === 0){
-              flag = true;
-              msg = "请输入借方金额";
-            }
-            if(!obj.subjectId || !obj.subjectCode || !obj.subjectName){
-              flag = true;
-              msg = "请输入科目";
-            }
-            if(!obj.summary){
-              flag = true;
-              msg = "请输入摘要";
-            }
+      handleSubjectChange(index, val) {
+        this.formData.voucherRecords[index].type = this.subjectList.find(i => i.subjectId === val).balanceDirection;
+        this.formData.voucherRecords[index].borrowAmount = 0;
+        this.formData.voucherRecords[index].loanAmount = 0;
+        this.formData.voucherRecords[index].subjectCode = this.subjectList.find(i => i.subjectId === val).subjectCode;
+        this.formData.voucherRecords[index].subjectName = this.subjectList.find(i => i.subjectId === val).subjectName;
+      },
+      loadVoucherGroup() {
+        this.$store
+          .dispatch("voucherGroup/getList", { filter: {} })
+          .then(data => {
+            this.voucherGroupList = data;
+          })
+          .catch(error => {
+            console.log(error);
           });
-        }
-        if(flag){
-          this.$message({type: "warning", message: msg});
-        }
-        return !flag;
+      },
+      loadSubject(){
+        this.$store.dispatch('accountSubject/getList', {})
+          .then(data => {
+            this.subjectList = data;
+          });
       },
       defaultFormData() {
         return {
@@ -227,71 +191,60 @@
           ]
         };
       },
-      loadVoucherGroup() {
-        this.$store
-          .dispatch("voucherGroup/getList", { filter: {} })
-          .then(data => {
-            this.voucherGroupList = data;
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      },
-      loadData() {
-        this.$store
-          .dispatch("voucher/getOne", {voucherId: this.editVoucherId})
-          .then(data => {
-            let voucher = data;
-            if(voucher.voucherRecords && voucher.voucherRecords.length > 0){
-              let voucherRecords = voucher.voucherRecords;
-              voucherRecords.forEach(function(voucherRecord){
-                if(voucherRecord.borrowAmount && parseFloat(voucherRecord.borrowAmount) > 0){
-                  voucherRecord.type = 0;
-                }
-                if(voucherRecord.loanAmount && parseFloat(voucherRecord.loanAmount) > 0){
-                  voucherRecord.type = 1;
-                }
-              });
+      fillFormData(data){
+        let voucher = data;
+        if(voucher.voucherRecords && voucher.voucherRecords.length > 0){
+          let voucherRecords = voucher.voucherRecords;
+          voucherRecords.forEach(function(voucherRecord){
+            if(voucherRecord.borrowAmount && parseFloat(voucherRecord.borrowAmount) > 0){
+              voucherRecord.type = 0;
             }
-            this.formData = data;
-          });
-      },
-      handleCount(inx) {
-        if ( inx === 0 ) {
-          this.formData.voucherRecords.push({
-            summary: null,
-            subjectId: null,
-            borrowAmount: 0,
-            loanAmount: 0,
-            type: 0
-          },
-          {
-              summary: null,
-              subjectId: null,
-              subjectCode: null,
-              subjectName: null,
-              borrowAmount: 0,
-              loanAmount: 0,
-              type: 1
+            if(voucherRecord.loanAmount && parseFloat(voucherRecord.loanAmount) > 0){
+              voucherRecord.type = 1;
             }
-          )
-        } else {
-          this.formData.voucherRecords.splice(inx, 1);
+          });
         }
+        return voucher;
       },
-      handleSubjectChange(inx, val) {
-        this.formData.voucherRecords[inx].type = this.subjects.find(i => i.subjectId === val).balanceDirection;
-        this.formData.voucherRecords[inx].borrowAmount = 0;
-        this.formData.voucherRecords[inx].loanAmount = 0;
-        this.formData.voucherRecords[inx].subjectCode = this.subjects.find(i => i.subjectId === val).subjectCode;
-        this.formData.voucherRecords[inx].subjectName = this.subjects.find(i => i.subjectId === val).subjectName;
+      checkForm(){
+        let flag = false;
+        let msg = null;
+        if(this.formData && this.formData.voucherRecords.length > 0){
+          let bCount = 0;
+          let lCount = 0;
+          for (const i of this.formData.voucherRecords) {
+            bCount += i.borrowAmount;
+            lCount += i.loanAmount;
+          }
+          if (bCount !== lCount) {
+            flag = true;
+            msg = `借贷不平衡: 借 - ${bCount}，贷 - ${lCount}`;
+          }
+          let voucherRecords = this.formData.voucherRecords;
+          voucherRecords.forEach(function(obj){
+            if(!obj.loanAmount && obj.type === 1){
+              flag = true;
+              msg = "请输入贷方金额";
+            }
+            if(!obj.borrowAmount && obj.type === 0){
+              flag = true;
+              msg = "请输入借方金额";
+            }
+            if(!obj.subjectId || !obj.subjectCode || !obj.subjectName){
+              flag = true;
+              msg = "请输入科目";
+            }
+            if(!obj.summary){
+              flag = true;
+              msg = "请输入摘要";
+            }
+          });
+        }
+        if(flag){
+          this.$message({type: "warning", message: msg});
+        }
+        return !flag;
       }
-    },
-    created() {
-      this.$store.dispatch('accountSubject/getList', {})
-        .then(data => {
-          this.subjects = data;
-        });
     }
   };
 </script>

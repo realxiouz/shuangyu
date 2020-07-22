@@ -1,62 +1,51 @@
 <template>
   <div class="page-form">
-    <el-form :model="formData" ref="form" :rules="rules" label-width="110px" size="mini">
-      <el-form-item label="币种编码：" prop="currencyCode">
-        <el-input
-          v-model="formData.currencyCode"
-          onkeyup="this.value=this.value.toUpperCase()"
-          placeholder="请输入币种编码..."
-          :disabled="codeEnabled"
-        ></el-input>
-      </el-form-item>
-      <el-form-item label="币种名称：" prop="currencyName">
-        <el-input v-model="formData.currencyName" placeholder="示例：人民币"></el-input>
-      </el-form-item>
-      <el-form-item label="货币符号：" prop="symbol">
-        <el-input v-model="formData.symbol" placeholder="示例：￥"></el-input>
-      </el-form-item>
-      <el-form-item label="日期：">
-        <el-date-picker
-          v-model="formData.date"
-          style="width:100%;"
-          type="date"
-          placeholder="选择日期">
-        </el-date-picker>
-      </el-form-item>
-      <el-form-item label="当前比率：">
-        <el-input
-          v-model="formData.rate"
-          v-on:change="formatRate()"
-          placeholder="当前比率.."
-        ></el-input>
-      </el-form-item>
-      <el-form-item label="是否有效：">
-        <el-switch v-model="formData.enable" @click="handleSwitch"></el-switch>
-      </el-form-item>
-    </el-form>
-    <div style="text-align:right;">
-      <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
-      <el-button type="primary" size="mini" @click="handleSave">确 定</el-button>
-    </div>
+    <el-dialog :title="keyId ? '修改币别管理' : '添加币别管理'"  width="24%" center :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
+      <el-form ref="form" label-width="110px" size="mini" :model="formData" :rules="rules">
+        <el-form-item label="币种编码：" prop="currencyCode">
+          <el-input
+            v-model="formData.currencyCode"
+            placeholder="请输入币种编码..."
+            :disabled="codeEnable"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="币种名称：" prop="currencyName">
+          <el-input v-model="formData.currencyName" placeholder="示例：人民币"></el-input>
+        </el-form-item>
+        <el-form-item label="货币符号：" prop="symbol">
+          <el-input v-model="formData.symbol" placeholder="示例：￥"></el-input>
+        </el-form-item>
+        <el-form-item label="日期：">
+          <el-date-picker
+            v-model="formData.date"
+            style="width:100%;"
+            type="date"
+            placeholder="选择日期"
+          >
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="当前比率：">
+          <el-input
+            v-model="formData.rate"
+            v-on:change="formatRate()"
+            placeholder="当前比率.."
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="是否有效：">
+          <el-switch v-model="formData.enable" @click="handleSwitch"></el-switch>
+        </el-form-item>
+      </el-form>
+      <div style="text-align:right;">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="onSave">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
-
 <script>
-  function defaultData() {
-    return {
-      currencyCode: null,
-      currencyName: null,
-      symbol: null,
-      date: new Date(),
-      rate: 1,
-      enable: true,
-      editable: true,
-      deletable: true
-    };
-  }
-
+  import {MIXIN_EDIT} from "@/utils/mixin";
   export default {
-    props: ["editCurrencyId", "codeEnabled"],
+    mixins: [MIXIN_EDIT],
     data() {
       const codeValidator = (rule, value, callback) => {
         let reg = /^[0-9a-zA-Z]*$/g;
@@ -67,9 +56,16 @@
         }
       };
       return {
-        formData: defaultData(),
+        dialogVisible: false,
         firmList: [],
-        newDialogVisible: false,
+        currencyList: [],
+        subjectList: [],
+        subjectTree: [],
+        codeEnable: false,
+        actions: {
+          getOne: 'currency/getOne',
+          saveOne: 'currency/saveOne'
+        },
         rules: {
           currencyCode: [
             {required: true, message: "请输入币种编码"},
@@ -89,45 +85,19 @@
             }
           ]
         }
+      };
+    },
+    watch: {
+      visible(val) {
+        if (val) {
+          this.codeEnable = false;
+          if(this.keyId){
+            this.codeEnable = true;
+          }
+        }
       }
     },
     methods: {
-      handleGetOne(currencyId) {
-        if (currencyId) {
-          this.$store
-            .dispatch("currency/getOne", {currencyId: currencyId})
-            .then(data => {
-              this.formData = data;
-            })
-            .catch(error => {
-              console.log(error);
-            });
-        } else {
-          this.formData = defaultData();
-        }
-      },
-      handleSave() {
-        this.$refs["form"].validate(valid => {
-          if (valid) {
-            if (this.formData.date && "number" != typeof this.formData.date) {
-              this.formData.date = this.formData.date.getTime();
-            }
-            this.formData.code = this.formData.currencyCode.toUpperCase();
-            this.$emit("onSave", this.formData);
-          }else{
-            let that = this;
-            let timer = window.setTimeout(function(){
-              that.$nextTick(function () {
-                that.$refs['form'].clearValidate();
-                window.clearTimeout(timer);
-              })
-            }, 1000);
-          }
-        });
-      },
-      handleSwitch(){
-        this.enable = !this.enable;
-      },
       formatRate(){
         if(isNaN(this.formData.rate)){
           this.formData.rate = 1;
@@ -146,11 +116,22 @@
           return;
         }
         this.formData.rate = parseFloat(this.formData.rate);
-      }
-    },
-    created() {
-      if (this.editCurrencyId) {
-        this.handleGetOne(this.editCurrencyId);
+      },
+      handleSwitch(){
+        this.enable = !this.enable;
+      },
+      defaultFormData() {
+        return {
+          currencyId: null,
+          currencyCode: null,
+          currencyName: null,
+          symbol: null,
+          date: new Date(),
+          rate: 1,
+          enable: true,
+          editable: true,
+          deletable: true
+        };
       }
     }
   };

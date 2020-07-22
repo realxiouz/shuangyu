@@ -1,6 +1,6 @@
 <template>
   <div class="page-form">
-    <el-dialog :title="templateId?'模板编辑':'模板添加'" width="800" center :visible.sync="dialogVisible" @open="handleOpen" @close="handleClose">
+    <el-dialog :title="keyId ? '修改币别管理' : '添加币别管理'"  width="50%" center :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
       <el-form ref="form" label-width="110px" size="mini" :model="formData" :rules="rules">
         <el-form-item label="凭证字：" prop="voucherGroupId">
           <el-select v-model="formData.voucherGroupId" style="width: 100%;"  placeholder="请选择凭证字">
@@ -49,10 +49,10 @@
           <template slot-scope="scope">
             <el-select v-model="scope.row.subjectId" @change="handleSubjectChange(scope.$index, $event)">
               <el-option
-                v-for="(i, inx) in subjects"
-                :key="inx"
-                :label="`${i.balanceDirection === 0 ? '借':'贷'}-${i.subjectName}`"
-                :value="i.subjectId"
+                v-for="(subject, index) in subjectList"
+                :key="index"
+                :label="`${subject.balanceDirection === 0 ? '借':'贷'} - ${subject.subjectName}`"
+                :value="subject.subjectId"
               />
             </el-select>
           </template>
@@ -86,27 +86,18 @@
         </el-table-column>
       </el-table>
 
-      <div style="text-align:right;" slot="footer">
-        <el-button size="mini" @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" size="mini" @click="handleSave">确 定</el-button>
+      <div style="text-align:right;">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="onSave">确 定</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 <script>
-import { VOUCHCHER_TEMPLATE_TABLE } from '@/utils/const'
-
+  import {MIXIN_EDIT} from "@/utils/mixin";
+  import { VOUCHCHER_TEMPLATE_TABLE } from '@/utils/const'
   export default {
-    props: {
-      visible: {
-        type: Boolean,
-        default: false
-      },
-      templateId: {
-        type: String,
-        default: null
-      }
-    },
+    mixins: [MIXIN_EDIT],
     data() {
       const numValidator = (rule, value, callback) => {
         let reg = /^[0-9]*$/g;
@@ -118,8 +109,13 @@ import { VOUCHCHER_TEMPLATE_TABLE } from '@/utils/const'
       };
       return {
         dialogVisible: false,
-        formData: this.defaultFormData(),
+        templates: VOUCHCHER_TEMPLATE_TABLE,
         voucherGroupList: [],
+        subjectList: [],
+        actions: {
+          getOne: 'voucherTemplate/getOne',
+          saveOne: 'voucherTemplate/saveData'
+        },
         rules: {
           voucherGroupId: [
             {required: true, message: "请选择凭证字"}
@@ -136,65 +132,66 @@ import { VOUCHCHER_TEMPLATE_TABLE } from '@/utils/const'
           ],
           templateName: [
             {required: true, message: "填写模板名称"}
-          ],
-        },
-        subjects: [],
-        templates: VOUCHCHER_TEMPLATE_TABLE
+          ]
+        }
       };
     },
     watch: {
       visible(val) {
-        this.dialogVisible = val;
         if (val) {
-          if (this._.isEmpty(this.templateId)) {
-            this.formData = this.defaultFormData();
-          } else {
-            this.loadData();
-          }
+          this.loadVoucherGroup();
+          this.loadSubject();
         }
       }
     },
     methods: {
-      handleOpen() {
-        this.$emit('update:visible', true);
+      loadVoucherGroup() {
+        this.$store
+          .dispatch("voucherGroup/getList", { filter: {} })
+          .then(data => {
+            this.voucherGroupList = data;
+          })
+          .catch(error => {
+            console.log(error);
+          });
       },
-      handleClose() {
-        this.$emit('update:visible', false);
+      loadSubject(){
+        this.$store.dispatch('accountSubject/getList', {})
+          .then(data => {
+            this.subjectList = data;
+          });
       },
-      handleSave() {
-        let bCount = 0;
-        let lCount = 0;
-        for (const i of this.formData.voucherRecords) {
-          bCount += i.borrowAmount;
-          lCount += i.loanAmount;
+      handleCount(index) {
+        if ( index === 0 ) {
+          this.formData.voucherRecords.push({
+              summary: null,
+              subjectId: null,
+              subjectCode: null,
+              subjectName: null,
+              borrowAmount: 0,
+              loanAmount: 0,
+              type: 0
+            },
+            {
+              summary: null,
+              subjectId: null,
+              subjectCode: null,
+              subjectName: null,
+              borrowAmount: 0,
+              loanAmount: 0,
+              type: 1
+            }
+          )
+        } else {
+          this.formData.voucherRecords.splice(index, 1)
         }
-        if (bCount !== lCount) {
-          this.$message.error(`借贷不平衡: 借${bCount},贷${lCount}`)
-          return
-        }
-        this.$refs["form"].validate(valid => {
-          if (valid) {
-            this.formData.total = lCount;
-            this.$store
-              .dispatch("voucherTemplate/saveData", this.formData)
-              .then(() => {
-                if (!this._.isEmpty(this.templateId)) {
-                  this.formData.templateId = this.templateId;
-                }
-                this.dialogVisible = false;
-                this.$emit('refresh');
-                this.$message({type: "success", message: "保存成功"});
-              });
-          }else{
-            let that = this;
-            let timer = window.setTimeout(function(){
-              that.$nextTick(function () {
-                that.$refs['form'].clearValidate();
-                window.clearTimeout(timer);
-              })
-            }, 1000);
-          }
-        });
+      },
+      handleSubjectChange(index, val) {
+        this.formData.voucherRecords[index].type = this.subjectList.find(i => i.subjectId === val).balanceDirection;
+        this.formData.voucherRecords[index].borrowAmount = 0;
+        this.formData.voucherRecords[index].loanAmount = 0;
+        this.formData.voucherRecords[index].subjectCode = this.subjectList.find(i => i.subjectId === val).subjectCode;
+        this.formData.voucherRecords[index].subjectName = this.subjectList.find(i => i.subjectId === val).subjectName;
       },
       defaultFormData() {
         return {
@@ -225,74 +222,60 @@ import { VOUCHCHER_TEMPLATE_TABLE } from '@/utils/const'
           ]
         };
       },
-      loadVoucherGroup() {
-        this.$store
-          .dispatch("voucherGroup/getList", { filter: {} })
-          .then(data => {
-            this.voucherGroupList = data;
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      },
-      loadData() {
-        this.$store
-          .dispatch("voucherTemplate/getOne", {templateId: this.templateId})
-          .then(data => {
-            let voucherTemplate = data;
-            if(voucherTemplate.voucherRecords && voucherTemplate.voucherRecords.length > 0){
-              let voucherRecords = voucherTemplate.voucherRecords;
-              voucherRecords.forEach(function(voucherRecord){
-                if(voucherRecord.borrowAmount && parseFloat(voucherRecord.borrowAmount) > 0){
-                  voucherRecord.type = 0;
-                }
-                if(voucherRecord.loanAmount && parseFloat(voucherRecord.loanAmount) > 0){
-                  voucherRecord.type = 1;
-                }
-              });
+      fillFormData(data){
+        let voucher = data;
+        if(voucher.voucherRecords && voucher.voucherRecords.length > 0){
+          let voucherRecords = voucher.voucherRecords;
+          voucherRecords.forEach(function(voucherRecord){
+            if(voucherRecord.borrowAmount && parseFloat(voucherRecord.borrowAmount) > 0){
+              voucherRecord.type = 0;
             }
-            this.formData = data;
-          });
-      },
-      handleCount(inx) {
-        if ( inx === 0 ) {
-          this.formData.voucherRecords.push({
-            summary: null,
-            subjectId: null,
-            subjectCode: null,
-            subjectName: null,
-            borrowAmount: 0,
-            loanAmount: 0,
-            type: 0
-          },
-          {
-              summary: null,
-              subjectId: null,
-              subjectCode: null,
-              subjectName: null,
-              borrowAmount: 0,
-              loanAmount: 0,
-              type: 1
+            if(voucherRecord.loanAmount && parseFloat(voucherRecord.loanAmount) > 0){
+              voucherRecord.type = 1;
             }
-          )
-        } else {
-          this.formData.voucherRecords.splice(inx, 1)
+          });
         }
+        return voucher;
       },
-      handleSubjectChange(inx, val) {
-        this.formData.voucherRecords[inx].type = this.subjects.find(i => i.subjectId === val).balanceDirection;
-        this.formData.voucherRecords[inx].borrowAmount = 0;
-        this.formData.voucherRecords[inx].loanAmount = 0;
-        this.formData.voucherRecords[inx].subjectCode = this.subjects.find(i => i.subjectId === val).subjectCode;
-        this.formData.voucherRecords[inx].subjectName = this.subjects.find(i => i.subjectId === val).subjectName;
+      checkForm(){
+        let flag = false;
+        let msg = null;
+        if(this.formData && this.formData.voucherRecords.length > 0){
+          let bCount = 0;
+          let lCount = 0;
+          for (const i of this.formData.voucherRecords) {
+            bCount += i.borrowAmount;
+            lCount += i.loanAmount;
+          }
+          if (bCount !== lCount) {
+            flag = true;
+            msg = `借贷不平衡: 借 - ${bCount}，贷 - ${lCount}`;
+          }
+          let voucherRecords = this.formData.voucherRecords;
+          voucherRecords.forEach(function(obj){
+            if(!obj.loanAmount && obj.type === 1){
+              flag = true;
+              msg = "请输入贷方金额";
+            }
+            if(!obj.borrowAmount && obj.type === 0){
+              flag = true;
+              msg = "请输入借方金额";
+            }
+            if(!obj.subjectId || !obj.subjectCode || !obj.subjectName){
+              flag = true;
+              msg = "请输入科目";
+            }
+            if(!obj.summary){
+              flag = true;
+              msg = "请输入摘要";
+            }
+          });
+        }
+        if(flag){
+          this.$message({type: "warning", message: msg});
+        }
+        return !flag;
       }
-    },
-    created() {
-      this.$store.dispatch('accountSubject/getList', {})
-        .then(data => {
-          this.subjects = data
-        });
-      this.loadVoucherGroup();
     }
   };
 </script>

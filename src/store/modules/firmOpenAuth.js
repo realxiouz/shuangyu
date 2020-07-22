@@ -3,7 +3,9 @@ import {
   saveOne,
   getList,
   getPageList,
-  removeOne
+  removeOne,
+  getCustomerList,
+  getSupplierList,
 } from '@/api/firmOpenAuth';
 import {getToken} from "@/utils/auth";
 
@@ -80,6 +82,30 @@ const actions = {
       removeOne(args)
         .then(response => {
           resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  // eslint-disable-next-line no-unused-vars
+  getCustomerList({commit}, params) {
+    return new Promise((resolve, reject) => {
+      getCustomerList(params)
+        .then(data => {
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  // eslint-disable-next-line no-unused-vars
+  getSupplierList({commit}, params) {
+    return new Promise((resolve, reject) => {
+      getSupplierList(params)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
