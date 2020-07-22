@@ -61,6 +61,7 @@
   import edit from "./Edit";
   import search from "./Search";
   import {MIXIN_LIST} from "@/utils/mixin";
+  import {exportExcel} from '@/utils/export';
 
   export default {
     mixins: [MIXIN_LIST],
@@ -71,12 +72,42 @@
         actions: {
           getPageList: 'voucher/getPageList',
           removeOne: 'voucher/removeOne',
-          exportUrl: '/finance/export/voucher/excel'
-        }
+        },
+        selectIds: [],
+        exportUrl: '/finance/export/voucher/excel'
       };
     },
     methods: {
-
+      onSelectionChange(data) {
+        if (data && data.length > 0) {
+          let that = this;
+          for (const key in data) {
+            let object = data[key];
+            for (const field in object) {
+              if (field === that.keyName) {
+                that.selectIds.push(object[field]);
+              }
+            }
+          }
+        }
+      },
+      onExport() {
+        if (!this.selectIds || this.selectIds.length < 1) {
+          this.$message({type: 'warning', message: '请先选择要导出的凭证！'});
+          return;
+        }
+        if (!this.actions || !this.exportUrl) {
+          this.$message({type: 'warning', message: '丢失导出地址！'});
+          return;
+        }
+        exportExcel(
+          this,
+          'get',
+          this.actions.exportUrl,
+          {ids: this.selectIds},
+          '凭证文件'
+        );
+      }
     },
     components: {
       edit,

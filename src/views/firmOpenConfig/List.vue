@@ -13,7 +13,7 @@
       </el-table-column>
       <el-table-column label="开放平台编码" align="center" prop="openCode" />
       <el-table-column label="开放平台名称" align="center" prop="openName" />
-      <el-table-column label="企业名称" align="center" prop="firmName" />
+      <el-table-column label="企业名称" align="center" :formatter="formatFirmName(props.row)" />
     </el-table>
     <el-pagination
       class="page-footer"
@@ -47,6 +47,9 @@
       };
     },
     methods: {
+      formatFirmName(row){
+        console.log(row);
+      },
       detailsOnClick(configNavUrl, item) {
         this.$router.push(
           {

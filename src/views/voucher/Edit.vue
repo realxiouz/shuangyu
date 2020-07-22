@@ -191,7 +191,7 @@
           ]
         };
       },
-      fillFormData(data){
+      beforeLoadData(data){
         let voucher = data;
         if(voucher.voucherRecords && voucher.voucherRecords.length > 0){
           let voucherRecords = voucher.voucherRecords;
@@ -206,7 +206,7 @@
         }
         return voucher;
       },
-      checkForm(){
+      validateOther(){
         let flag = false;
         let msg = null;
         if(this.formData && this.formData.voucherRecords.length > 0){
