@@ -1,4 +1,5 @@
-import {PAGE_SIZES} from '@/utils/const';
+import { PAGE_SIZES } from '@/utils/const';
+import { exportExcel } from '@/utils/export';
 
 export const MIXIN_LIST = {
   category: {
@@ -9,6 +10,7 @@ export const MIXIN_LIST = {
     return {
       keyId: null,
       keyName: null,
+      selectIds: [],
       dialogVisible: false,
       pageFlag: 0,
       pageSize: PAGE_SIZES[0],
@@ -18,10 +20,10 @@ export const MIXIN_LIST = {
       loading: false,
       pageSizes: PAGE_SIZES,
       params: {},
-      extraParam: {},
       actions: {
         getPageList: null,
-        removeOne: null
+        removeOne: null,
+        exportUrl: null
       }
     };
   },
@@ -40,8 +42,7 @@ export const MIXIN_LIST = {
             pageSize: this.pageSize,
             lastId: this.lastId,
             pageFlag: this.pageFlag,
-            ...this.params,
-            ...this.extraParam
+            ...this.params
           })
           .then(data => {
             if (data) {
@@ -73,9 +74,7 @@ export const MIXIN_LIST = {
     },
     onSearch(params) {
       if (!params) {
-        for (const key in params) {
-          !params[key] && delete params[key];
-        }
+        params = {};
       }
       this.params = params;
       this.pageFlag = 0;
@@ -118,6 +117,36 @@ export const MIXIN_LIST = {
     },
     onRefresh() {
       this.onSearch();
+    },
+    onSelectionChange(data) {
+      if(data && data.length > 0){
+        let that = this;
+        for (const key in data) {
+          let object = data[key];
+          for (const field in object) {
+            if (field === that.keyName) {
+              that.selectIds.push(object[field]);
+            }
+          }
+        }
+      }
+    },
+    onExport() {
+      if (!this.selectIds || this.selectIds.length < 1) {
+        this.$message({ type: 'warning', message: '请先选择要导出的数据！' });
+        return;
+      }
+      if (!this.actions || !this.actions.exportUrl) {
+        this.$message({ type: 'warning', message: '丢失导出地址！' });
+        return;
+      }
+      exportExcel(
+        this,
+        'get',
+        this.actions.exportUrl,
+        { ids: this.selectIds },
+        '导出文件'
+      );
     }
   },
   created() {
@@ -182,18 +211,12 @@ export const MIXIN_EDIT = {
     onSave() {
       if (this.actions.saveOne) {
         this.$refs['form'].validate(valid => {
-          if (valid) {
-            if (this.pid) {
-              this.formData.pid = this.pid;
-            }
-            if(null !== this.category && '' !== this.category && this.formData.category){
-              if(!this.formData){
-                this.formData = {};
-              }
-              this.formData.category = this.category;
-            }
+          if (valid && this.checkForm()) {
             this.$store
-              .dispatch(this.actions.saveOne, this.formData)
+              .dispatch(
+                this.actions.saveOne,
+                this.packageFormData(this.formData)
+              )
               .then(id => {
                 if (!this._.isEmpty(id)) {
                   this.formData[this.keyName] = id;
@@ -208,8 +231,33 @@ export const MIXIN_EDIT = {
         });
       }
     },
+    packageFormData(data) {
+      if (data) {
+        for (const key in data) {
+          if (data[key] instanceof Date) {
+            data[key] = data[key].getTime();
+          }
+        }
+        if (this.pid) {
+          data.pid = this.pid;
+        }
+        if (null !== this.category && '' !== this.category && data.category) {
+          if (!data) {
+            data = {};
+          }
+          data.category = this.category;
+        }
+      }
+      return data;
+    },
     defaultFormData() {
       return {};
+    },
+    fillFormData(data) {
+      return data;
+    },
+    checkForm() {
+      return true;
     },
     refreshForm(time) {
       if (!time || isNaN(time)) {
@@ -233,7 +281,7 @@ export const MIXIN_EDIT = {
           this.$store
             .dispatch(this.actions.getOne, { [this.keyName]: this.keyId })
             .then(data => {
-              this.formData = data;
+              this.formData = this.fillFormData(data);
             })
             .catch(error => {
               console.log(error);

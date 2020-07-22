@@ -2,10 +2,11 @@
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch" />
     <el-row class="page-tools" justify="space-between">
-      <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
-      <el-button icon="el-icon-download" type="primary" size="mini" @click="handleExport">导出</el-button>
+      <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
+      <el-button icon="el-icon-download" type="primary" size="mini" @click="onExport">导出</el-button>
     </el-row>
-    <el-table class="page-table" :data="tableData" @selection-change="handleSelectionChange">>
+
+    <el-table class="page-table" :data="tableData" @selection-change="onSelectionChange">>
       <el-table-column type="expand">
         <template slot-scope="scope">
           <el-table :data="scope.row.voucherRecords" border>
@@ -32,144 +33,55 @@
           {{ scope.row.voucherDate | time("YYYY-MM-DD") }}
         </template>
       </el-table-column>
-      <el-table-column width="300" label="操作" align="center">
+      <el-table-column width="160" label="操作" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="handleEdit(scope.row.voucherId)">编辑</el-button>
-          <el-button size="mini" type="danger" @click="handleDel(scope.row.voucherId)">删除</el-button>
+          <el-button size="mini" type="primary" @click="onEdit(scope.row.voucherId)">修改</el-button>
+          <el-button size="mini" type="danger" @click="onDel(scope.row.voucherId)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
     <el-pagination
       class="page-footer"
       background
-      layout="total,prev,next"
       prev-text="上一页"
       next-text="下一页"
-      :page-size="pageSize"
       :total="total"
       @prev-click="onPrev"
       @next-click="onNext"
+      @size-change="onSizeChange"
+      layout="total,sizes,prev,next"
+      :page-size="pageSizes[0]"
+      :page-sizes="pageSizes"
     ></el-pagination>
-    <edit :visible.sync="dialogVisible" :editVoucherId="editVoucherId" @refresh="onRefresh"/>
+    <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" @refresh="onRefresh"/>
   </div>
 </template>
 
 <script>
   import edit from "./Edit";
   import search from "./Search";
-  import { exportExcel } from '@/utils/export';
+  import {MIXIN_LIST} from "@/utils/mixin";
 
   export default {
+    mixins: [MIXIN_LIST],
     data() {
       return {
-        queryVisible: false,
         dialogVisible: false,
-        pageFlag: 0,
-        pageSize: 10,
-        lastId: null,
-        total: 0,
-        tableData: [],
-        loading: true,
-        queryVoucherId: null,
-        editVoucherId: null,
-        exportIds: [],
-        params: {},
+        keyName: 'voucherId',
+        actions: {
+          getPageList: 'voucher/getPageList',
+          removeOne: 'voucher/removeOne',
+          exportUrl: '/finance/export/voucher/excel'
+        }
       };
     },
     methods: {
-      getList() {
-        if (this.lastId) {
-          this.params.lastId = this.lastId;
-        }
-        this.$store
-          .dispatch("voucher/getPageList", {
-            pageFlag: this.pageFlag,
-            pageSize: this.pageSize,
-            params: this.params
-          })
-          .then(result => {
-            if (result && result.rows && result.rows.length > 0) {
-              this.tableData = result.rows;
-              this.total = result.total;
-            } else {
-              this.tableData = [];
-              this.total = 0;
-            }
-          });
-      },
-      loadData() {
-        this.getList();
-      },
-      onSearch(params) {
-        if(!params){
-          params = {};
-        }
-        this.params = params;
-        this.pageFlag = 0;
-        this.lastId = null;
-        this.loadData();
-      },
-      onRefresh() {
-        this.onSearch();
-      },
-      onPrev() {
-        this.pageFlag = -1;
-        if (this.tableData.length > 0) {
-          this.lastId = this.tableData[0].voucherId;
-        }
-        this.loadData();
-      },
-      onNext() {
-        this.pageFlag = 1;
-        if (this.tableData.length > 0) {
-          this.lastId = this.tableData[this.tableData.length - 1].voucherId;
-        }
-        this.loadData();
-      },
-      handleAdd() {
-        this.editVoucherId = null;
-        this.dialogVisible = true;
-      },
-      handleExport() {
-        if(!this.exportIds || this.exportIds.length < 1){
-          this.$message({ type: "warning", message: "请先选择要导出的凭证！" });
-          return;
-        }
-        exportExcel(this, 'get', '/finance/export/voucher/excel', { ids: this.exportIds }, '凭证文件');
-      },
-      handleEdit(id) {
-        this.editVoucherId = id;
-        this.dialogVisible = true;
-      },
-      handleDel(id) {
-        this.$confirm('确定删除?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$store.dispatch("voucher/removeOne", {voucherId: id}).then(() => {
-            this.onRefresh();
-            this.$message({ type: "success", message: "删除成功！" });
-          });
-        });
-      },
-      handleSelectionChange(data) {
-        if(data && data.length > 0){
-          let that = this;
-          that.exportIds = [];
-          data.forEach(function(obj){
-            that.exportIds.push(obj.voucherId);
-          });
-        }
-      }
+
     },
     components: {
       edit,
       search
     },
-    created() {
-      this.loadData();
-    }
   };
 </script>
 

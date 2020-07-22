@@ -1,8 +1,8 @@
 import request from '@/utils/request';
 
-export function getOne(id) {
+export function getOne(params) {
   return request({
-    url: `/finance/voucher/get/one/${id}`,
+    url: `/finance/voucher/get/one/${params.voucherId}`,
     method: 'get'
   });
 }
@@ -15,17 +15,17 @@ export function save(data) {
   });
 }
 
-export function getPageList(pageFlag, pageSize, params) {
+export function getPageList(params) {
   return request({
-    url: `/finance/voucher/get/page/list/${pageFlag}/${pageSize}`,
+    url: `/finance/voucher/get/page/list/${params.pageFlag}/${params.pageSize}`,
     method: 'get',
     params
   });
 }
 
-export function removeOne(id) {
+export function removeOne(data) {
   return request({
-    url: `/finance/voucher/remove/one/${id}`,
+    url: `/finance/voucher/remove/one/${data.voucherId}`,
     method: 'delete'
   });
 }
