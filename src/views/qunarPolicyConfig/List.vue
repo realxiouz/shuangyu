@@ -1,112 +1,74 @@
 <template>
   <div class="page">
-    <search class="page-search" ref="search" @onSearch="handleSearch" />
+    <search class="page-search" ref="search" @onSearch="onSearch" />
     <el-row class="page-tools" justify="space-between">
-      <el-button icon="el-icon-back" type="warning" size="mini" @click="handleBack">返回</el-button>
-      <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+      <el-button icon="el-icon-back" type="warning" size="mini" @click="onBack">返回</el-button>
+      <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
     </el-row>
-    <el-table class="page-table" :data="tableData">
-      <el-table-column label="IP地址" align="center" prop="ipUrl" />
-      <el-table-column label="回调地址" align="center" prop="callbackUrl" />
-      <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="商户名称" align="center" prop="merchantName" />
-      <el-table-column label="商户域名" align="center" prop="merchantDomain" />
+    <el-table
+      class="page-table"
+      size="mini"
+      v-loading="loading"
+      :data="tableData"
+      style="width: 100%;margin-bottom:15px;"
+    >
+      <el-table-column label="企业名称" align="center" prop="firmName" />
+      <el-table-column label="平台名称" align="center" prop="openName" />
       <el-table-column label="用户名称" align="center" prop="userName" />
       <el-table-column width="160" label="操作" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="handleEdit(scope.row.policyConfigId)">编辑</el-button>
-          <el-button size="mini" type="danger" @click="handleDel(scope.row.policyConfigId)">删除</el-button>
+          <el-button size="mini" type="primary" @click="onEdit(scope.row.policyConfigId)">修改</el-button>
+          <el-button size="mini" type="danger" @click="onDel(scope.row.policyConfigId)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
     <el-pagination
       class="page-footer"
       background
-      layout="total,prev,next"
       prev-text="上一页"
       next-text="下一页"
-      :page-size="pageSize"
       :total="total"
-      @prev-click="handlePrev"
-      @next-click="handleNext"
+      @prev-click="onPrev"
+      @next-click="onNext"
+      @size-change="onSizeChange"
+      layout="total,sizes,prev,next"
+      :page-size="pageSizes[0]"
+      :page-sizes="pageSizes"
     ></el-pagination>
-    <edit :visible.sync="dialogVisible" :editConfigId="editConfigId" :openId="openId" @refresh="handleRefresh"/>
+    <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" :firmId="firmId" :openId="openId" @refresh="onRefresh"/>
   </div>
 </template>
 
 <script>
   import edit from "./Edit";
   import search from "./Search";
+  import {MIXIN_LIST} from "@/utils/mixin";
 
   export default {
+    mixins: [MIXIN_LIST],
     data() {
       return {
         dialogVisible: false,
-        pageFlag: 0,
-        pageSize: 10,
-        lastId: null,
-        total: 0,
-        tableData: [],
-        loading: true,
-        editConfigId: null,
-        openId: null,
-        params: {},
+        keyName: 'policyConfigId',
+        actions: {
+          getPageList: 'qunarPolicyConfig/getPageList',
+          removeOne: 'qunarPolicyConfig/removeOne'
+        },
+        params: {
+          firmId: this.fillFirmId(),
+          openId: this.fillOpenId()
+        },
+        firmId: null,
+        openId: null
       };
     },
+    watch: {
+      fill() {
+
+      }
+    },
     methods: {
-      getList() {
-        if (this.lastId) {
-          this.params.lastId = this.lastId;
-        }
-        this.$store
-          .dispatch("qunarPolicyConfig/getPageList", {
-            pageFlag: this.pageFlag,
-            pageSize: this.pageSize,
-            params: this.params
-          })
-          .then(result => {
-            if (result && result.rows && result.rows.length > 0) {
-              this.tableData = result.rows;
-              this.total = result.total;
-            } else {
-              this.tableData = [];
-              this.total = 0;
-            }
-          });
-      },
-      loadData() {
-        this.getList();
-        if(this.$route.query.openId){
-          this.openId = this.$route.query.openId;
-        }
-      },
-      handleSearch(params) {
-        if(!params){
-          params = {};
-        }
-        this.params = params;
-        this.pageFlag = 0;
-        this.lastId = null;
-        this.loadData();
-      },
-      handleRefresh() {
-        this.handleSearch();
-      },
-      handlePrev() {
-        this.pageFlag = -1;
-        if (this.tableData.length > 0) {
-          this.lastId = this.tableData[0].policyConfigId;
-        }
-        this.loadData();
-      },
-      handleNext() {
-        this.pageFlag = 1;
-        if (this.tableData.length > 0) {
-          this.lastId = this.tableData[this.tableData.length - 1].policyConfigId;
-        }
-        this.loadData();
-      },
-      handleBack(){
+      onBack(){
         if (this.$router.history.length <= 1) {
           this.$router.push({path: '/home'});
           return false;
@@ -114,33 +76,24 @@
           this.$router.go(-1);
         }
       },
-      handleAdd() {
-        this.editConfigId = null;
-        this.dialogVisible = true;
+      fillFirmId(){
+        let firmId = null;
+        if(this.$route.params.firmId){
+          firmId = this.$route.params.firmId;
+        }
+        return firmId;
       },
-      handleEdit(id) {
-        this.editConfigId = id;
-        this.dialogVisible = true;
-      },
-      handleDel(id) {
-        this.$confirm('确定删除?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$store.dispatch("qunarPolicyConfig/removeOne", {policyConfigId: id}).then(() => {
-            this.handleRefresh();
-            this.$message({ type: "success", message: "删除成功" });
-          });
-        });
+      fillOpenId(){
+        let openId = null;
+        if(this.$route.params.openId){
+          openId = this.$route.params.openId;
+        }
+        return openId;
       }
     },
     components: {
       edit,
       search
-    },
-    created() {
-      this.loadData();
     }
   };
 </script>

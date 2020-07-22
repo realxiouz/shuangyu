@@ -48,7 +48,6 @@ export default {
       }
     };
   },
-
   computed: {
     switchIcon() {
       if (!this.more) {

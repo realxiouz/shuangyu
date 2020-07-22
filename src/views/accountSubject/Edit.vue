@@ -57,6 +57,10 @@
   export default {
     mixins: [MIXIN_EDIT],
     props: {
+      pid: {
+        type: String,
+        default: ''
+      },
       category: {
         type: Number,
         default: null
@@ -130,6 +134,18 @@
           editable: true,
           deletable: true
         };
+      },
+      beforeSave(data){
+        if (this.pid) {
+          data.pid = this.pid;
+        }
+        if(null !== this.category && '' !== this.category && this.formData.category){
+          if(!data){
+            data = {};
+          }
+          data.category = this.category;
+        }
+        return data;
       }
     }
   };

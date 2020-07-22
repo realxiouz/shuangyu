@@ -1,38 +1,39 @@
 <template>
   <div class="page-form">
-    <el-dialog title="政策配置管理" width="24%" center :visible.sync="dialogVisible" @open="handleOpen" @close="handleClose">
+    <el-dialog :title="keyId ? '修改政策配置管理' : '添加政策配置管理'"  width="24%" center :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
       <el-form ref="form" label-width="110px" size="mini" :model="formData" :rules="rules">
-        <el-form-item label="用户名称:" prop="userName">
-          <el-input v-model="formData.userName" placeholder="请输入用户名称" />
+        <el-form-item label="用户名称:" prop="username">
+          <el-input v-model="formData.username" placeholder="请输入用户名称" />
         </el-form-item>
         <el-form-item label="用户密码:" prop="password">
           <el-input v-model="formData.password" placeholder="请输入用户密码" type="password" />
         </el-form-item>
-        <el-form-item label="IP地址:" prop="ipUrl">
-          <el-input v-model="formData.ipUrl" placeholder="请输入IP地址" />
+        <el-form-item label="IP地址:" prop="ip">
+          <el-input v-model="formData.ip" placeholder="请输入IP地址" />
         </el-form-item>
         <el-form-item label="回调地址:" prop="callbackUrl">
           <el-input v-model="formData.callbackUrl" placeholder="请输入回调地址" />
+        </el-form-item>
+        <el-form-item label="域名地址:" prop="domain">
+          <el-input v-model="formData.domain" placeholder="请输入域名地址" />
         </el-form-item>
         <el-form-item label="备注:">
           <el-input v-model="formData.remark" type="textarea" :rows="2"></el-input>
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
-        <el-button size="mini" @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" size="mini" @click="handleSave">确 定</el-button>
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="onSave">确 定</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 <script>
+  import {MIXIN_EDIT} from "@/utils/mixin";
   export default {
+    mixins: [MIXIN_EDIT],
     props: {
-      visible: {
-        type: Boolean,
-        default: false
-      },
-      editConfigId: {
+      firmId: {
         type: String,
         default: null
       },
@@ -44,10 +45,13 @@
     data() {
       return {
         dialogVisible: false,
-        formData: this.defaultFormData(),
-        merchant: null,
+        codeEnable: false,
+        actions: {
+          getOne: 'qunarPolicyConfig/getOne',
+          saveOne: 'qunarPolicyConfig/saveOne'
+        },
         rules: {
-          userName: [
+          username: [
             {required: true, message: "请输入用户名称"},
             {
               min: 1,
@@ -63,94 +67,53 @@
               message: "长度 1 到 20 个字符"
             },
           ],
-          ipUrl: [
+          ip: [
             {required: true, message: "请输入IP地址"}
           ],
           callbackUrl: [
             {required: true, message: "请输入回调地址"}
+          ],
+          domain: [
+            {required: true, message: "请输入域名地址"}
           ]
         }
       };
     },
-    watch: {
-      visible(val) {
-        this.dialogVisible = val;
-        if (val) {
-          if (this._.isEmpty(this.editConfigId)) {
-            this.formData = this.defaultFormData();
-          } else {
-            this.loadData();
-          }
-          if(this.openId ){
-            this.loadMerchant();
-          }
-        }
-      }
-    },
     methods: {
-      handleOpen() {
-        this.$emit('update:visible', true);
-      },
-      handleClose() {
-        this.$emit('update:visible', false);
-      },
-      handleSwitch(){
-        this.defaultFlag = !this.defaultFlag;
-      },
-      handleSave() {
-        this.$refs["form"].validate(valid => {
-          if(!this.openId){
-            this.$message({type: "warning", message: "开放平台主键丢失"});
-            return;
-          }
-          if(this.merchant){
-            this.formData.merchantId = this.merchant.merchantId;
-          }
-          if (valid) {
-            this.$store
-              .dispatch("qunarPolicyConfig/saveOne", this.formData)
-              .then(() => {
-                if (!this._.isEmpty(this.editConfigId)) {
-                  this.formData.policyConfigId = this.editConfigId;
-                }
-                this.dialogVisible = false;
-                this.$emit('refresh');
-                this.$message({type: "success", message: "保存成功"});
-              });
-          }else{
-            let that = this;
-            let timer = window.setTimeout(function(){
-              that.$nextTick(function () {
-                that.$refs['form'].clearValidate();
-                window.clearTimeout(timer);
-              })
-            }, 1000);
-          }
-        });
-      },
       defaultFormData() {
         return {
           policyConfigId: null,
-          userName: null,
+          username: null,
           password: null,
-          ipUrl: null,
+          ip: null,
           callbackUrl: null,
-          merchantId: null
+          domain: null
         };
       },
-      loadMerchant() {
-        this.$store
-          .dispatch("firm/getConfigOne", {openId: this.openId})
-          .then(data => {
-            this.merchant = data;
-          });
+      validateOther() {
+        let flag = false;
+        let msg = '';
+        if(!this.firmId){
+          flag = true;
+          msg = '丢失企业主键';
+        }
+        if(!this.openId){
+          flag = true;
+          msg = '丢失平台主键';
+        }
+        if(flag){
+          this.$message({type: "warning", message: msg});
+        }
+        return !flag;
       },
-      loadData() {
-        this.$store
-          .dispatch("qunarPolicyConfig/getOne", {policyConfigId: this.editConfigId})
-          .then(data => {
-            this.formData = data;
-          });
+      beforeSave(data){
+        if(this.firmId){
+          data.firmId = this.firmId;
+        }
+        if(this.openId){
+          data.openId = this.openId;
+        }
+        return data;
       }
     }
   };

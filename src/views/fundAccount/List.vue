@@ -51,7 +51,7 @@
       :page-size="pageSizes[0]"
       :page-sizes="pageSizes"
     ></el-pagination>
-    <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" :pid="pid" @refresh="onRefresh"/>
+    <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" :pid="pid" @refresh="handleRefresh"/>
   </div>
 </template>
 
@@ -79,6 +79,10 @@
       };
     },
     methods: {
+      onAddChild(accountId) {
+        this.pid = accountId;
+        this.dialogVisible = true;
+      },
       loadChildren(tree, treeNode, resolve) {
         this.uploadData.tree = tree;
         this.uploadData.treeNode = treeNode;
@@ -117,6 +121,10 @@
         } else {
           return "无";
         }
+      },
+      handleRefresh() {
+        this.onRefresh();
+        this.loadChildren(this.uploadData.tree, this.uploadData.treeNode, this.uploadData.resolve);
       }
     },
     components: {

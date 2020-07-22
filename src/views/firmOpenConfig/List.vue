@@ -6,14 +6,14 @@
         <template slot-scope="props">
           <el-row>
             <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="2" v-for="(item,index) in props.row.configNavList" :key="index">
-              <el-button  type="primary" @click="detailsOnClick(item.configNavUrl, props.row)">{{ item.configNavName }}</el-button>
+              <el-button  type="primary" @click="detailsOnClick(item.configNavName, props.row)">{{ item.configNavName }}</el-button>
             </el-col>
           </el-row>
         </template>
       </el-table-column>
       <el-table-column label="开放平台编码" align="center" prop="openCode" />
       <el-table-column label="开放平台名称" align="center" prop="openName" />
-      <el-table-column label="企业名称" align="center" :formatter="formatFirmName(props.row)" />
+      <el-table-column label="企业名称" align="center" :formatter="formatFirmName" />
     </el-table>
     <el-pagination
       class="page-footer"
@@ -48,13 +48,17 @@
     },
     methods: {
       formatFirmName(row){
-        console.log(row);
+        let firmName = '';
+        if(row && row.firm && row.firm.firmName){
+          firmName = row.firm.firmName;
+        }
+        return firmName;
       },
-      detailsOnClick(configNavUrl, item) {
+      detailsOnClick(configNavName, item) {
         this.$router.push(
           {
-            path: configNavUrl,
-            query: {domain: item.firm.domain, openId: item.openId, firmId: item.firm.firmId}
+            name: configNavName,
+            params: {domain: item.firm.domain, openId: item.openId, firmId: item.firm.firmId}
           }
         );
       }

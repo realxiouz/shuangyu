@@ -35,9 +35,8 @@ const actions = {
   },
   // eslint-disable-next-line no-unused-vars
   updateOne({commit}, args) {
-    const {policyConfigId} = args;
     return new Promise((resolve, reject) => {
-      updateOne(policyConfigId, args)
+      updateOne(args)
         .then(response => {
           resolve(response);
         })
@@ -48,9 +47,8 @@ const actions = {
   },
   // eslint-disable-next-line no-unused-vars
   getOne({commit}, params) {
-    const {policyConfigId} = params;
     return new Promise((resolve, reject) => {
-      getOne(policyConfigId)
+      getOne(params)
         .then(response => {
           resolve(response);
         })
@@ -62,8 +60,7 @@ const actions = {
   // eslint-disable-next-line no-unused-vars
   getList({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {filters} = params;
-      getList(filters)
+      getList(params)
         .then(response => {
           resolve(response);
         })
@@ -75,8 +72,7 @@ const actions = {
   // eslint-disable-next-line no-unused-vars
   getPageList({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {pageFlag, pageSize, filter} = params;
-      getPageList(pageFlag, pageSize, filter)
+      getPageList(params)
         .then(response => {
           resolve(response);
         })
@@ -87,9 +83,8 @@ const actions = {
   },
   // eslint-disable-next-line no-unused-vars
   removeOne({commit}, args) {
-    const {policyConfigId} = args;
     return new Promise((resolve, reject) => {
-      removeOne(policyConfigId)
+      removeOne(args)
         .then(response => {
           resolve(response);
         })

@@ -95,6 +95,12 @@
   import {MIXIN_EDIT} from "@/utils/mixin";
   export default {
     mixins: [MIXIN_EDIT],
+    props: {
+      pid: {
+        type: String,
+        default: ''
+      }
+    },
     data() {
       const codeValidator = (rule, value, callback) => {
         let reg = /^[0-9a-zA-Z]*$/g;
@@ -247,6 +253,12 @@
             }
           });
         }
+      },
+      beforeSave(data){
+        if (this.pid) {
+          data.pid = this.pid;
+        }
+        return data;
       }
     }
   };

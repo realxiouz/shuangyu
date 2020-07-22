@@ -1,6 +1,6 @@
 import request from '@/utils/request';
 
-export function saveOne(data) {
+export function saveOne(data) { console.log(data);
   return request({
     url: '/qunar/tts/policy/config/save/one',
     method: 'post',
@@ -16,40 +16,40 @@ export function addOne(data) {
   });
 }
 
-export function updateOne(id, data) {
+export function updateOne(data) {
   return request({
-    url: `/qunar/tts/policy/config/update/one/${id}`,
+    url: `/qunar/tts/policy/config/update/one/${data.policyConfigId}`,
     method: 'post',
     data
   });
 }
 
-export function getOne(id) {
+export function getOne(params) {
   return request({
-    url: `/qunar/tts/policy/config/get/one/${id}`,
+    url: `/qunar/tts/policy/config/get/one/${params.policyConfigId}`,
     method: 'get'
   });
 }
 
-export function getList(filter) {
+export function getList(params) {
   return request({
     url: `/qunar/tts/policy/config/get/list`,
     method: 'get',
-    params: filter
+    params: params
   });
 }
 
-export function getPageList(pageFlag, pageSize, filter) {
+export function getPageList(params) {
   return request({
-    url: `/qunar/tts/policy/config/get/page/list/${pageFlag}/${pageSize}`,
+    url: `/qunar/tts/policy/config/get/page/list/${params.pageFlag}/${params.pageSize}`,
     method: 'get',
-    params: filter
+    params: params
   });
 }
 
-export function removeOne(id) {
+export function removeOne(data) {
   return request({
-    url: `/qunar/tts/policy/config/remove/one/${id}`,
+    url: `/qunar/tts/policy/config/remove/one/${data.policyConfigId}`,
     method: 'delete'
   });
 }

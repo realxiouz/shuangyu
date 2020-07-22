@@ -32,12 +32,6 @@ export const MIXIN_LIST = {
     },
     loadData() {
       if (this.actions.getPageList) {
-        if (null !== this.category && '' !== this.category) {
-          if (!this.params) {
-            this.params = {};
-          }
-          this.params.category = this.category;
-        }
         this.loading = true;
         this.$store
           .dispatch(this.actions.getPageList, {
@@ -48,7 +42,7 @@ export const MIXIN_LIST = {
           })
           .then(data => {
             if (data) {
-              let _data = this.beforeLoadData(data)
+              let _data = this.beforeLoadData(data);
               this.tableData = this.beforeLoadData(_data.rows);
               this.total = _data.total;
             }
@@ -56,6 +50,7 @@ export const MIXIN_LIST = {
           .catch(error => {
             console.log(error);
           })
+          // eslint-disable-next-line no-unused-vars
           .finally(_ => {
             this.loading = false;
             this.afterLoadData();
@@ -91,10 +86,6 @@ export const MIXIN_LIST = {
       this.pageFlag = 0;
       this.loadData();
     },
-    onAddChild(accountId) {
-      this.pid = accountId;
-      this.dialogVisible = true;
-    },
     onAdd() {
       this.keyId = '';
       this.dialogVisible = true;
@@ -122,7 +113,7 @@ export const MIXIN_LIST = {
       }
     },
     onRefresh() {
-      this.onSearch();
+      this.onSearch(this.params);
     }
   },
   created() {
@@ -132,10 +123,6 @@ export const MIXIN_LIST = {
 
 export const MIXIN_EDIT = {
   props: {
-    pid: {
-      type: String,
-      default: null
-    },
     keyId: {
       type: String,
       default: null
@@ -162,14 +149,17 @@ export const MIXIN_EDIT = {
   },
   watch: {
     visible(val) {
-      this.dialogVisible = val;
+      let that = this;
+      that.dialogVisible = val;
       if (val) {
-        if (this.keyId) {
-          this.loadData();
+        if (that.keyId) {
+          that.loadData();
         } else {
-          this.formData = this.defaultFormData();
+          that.formData = that.defaultFormData();
         }
-        this.$refs['form'].clearValidate();
+        that.$nextTick(function() {
+          that.$refs['form'].clearValidate();
+        });
       }
     }
   },
@@ -181,22 +171,18 @@ export const MIXIN_EDIT = {
       this.$emit('update:visible', false);
     },
     onSave() {
-      console.log(this.actions)
       if (this.actions.saveOne) {
         this.$refs['form'].validate(valid => {
           if (valid && this.validateOther()) {
             this.$store
-              .dispatch(
-                this.actions.saveOne,
-                this.beforeSave(this.formData)
-              )
+              .dispatch(this.actions.saveOne, this.beforeSave(this.formData))
               .then(id => {
                 if (!this._.isEmpty(id)) {
                   this.formData[this.keyName] = id;
                 }
                 this.dialogVisible = false;
                 this.$emit('refresh');
-                this.$message({type: 'success', message: '保存成功'});
+                this.$message({ type: 'success', message: '保存成功' });
               })
               // eslint-disable-next-line no-unused-vars
               .finally(_ => {
@@ -223,7 +209,7 @@ export const MIXIN_EDIT = {
     loadData() {
       this.clearForm();
       if (this.actions.getOne) {
-        if (this.keyId && !this.pid) {
+        if (this.keyId) {
           this.$store
             .dispatch(this.actions.getOne, { [this.keyName]: this.keyId })
             .then(data => {

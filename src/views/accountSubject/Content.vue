@@ -47,7 +47,7 @@
       :page-size="pageSizes[0]"
       :page-sizes="pageSizes"
     ></el-pagination>
-    <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" :pid="pid" :category="category" @refresh="onRefresh"/>
+    <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" :pid="pid" :category="category" @refresh="handleRefresh"/>
   </div>
 </template>
 
@@ -74,6 +74,9 @@
           getPageList: 'accountSubject/getRootPageList',
           removeOne: 'accountSubject/removeOne'
         },
+        params: {
+          category: this.category
+        },
         uploadData: {
           tree: null,
           treeNode: null,
@@ -85,6 +88,10 @@
       subjectCategory,
       formatBalanceDirection(row) {
         return row.balanceDirection === 0 ? "借" : "贷";
+      },
+      onAddChild(subjectId) {
+        this.pid = subjectId;
+        this.dialogVisible = true;
       },
       loadChildren(tree, treeNode, resolve) {
         this.uploadData.tree = tree;
@@ -111,6 +118,10 @@
               console.log(error);
             });
         }
+      },
+      handleRefresh() {
+        this.onRefresh();
+        this.loadChildren(this.uploadData.tree, this.uploadData.treeNode, this.uploadData.resolve);
       }
     },
     components: {
