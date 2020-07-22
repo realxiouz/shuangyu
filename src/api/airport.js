@@ -53,13 +53,11 @@ export function getTotal(filter) {
   });
 }
 
-export function getPageList(pageFlag, pageSize, lastId, filter) {
+export function getPageList(args) {
+  const {pageFlag, pageSize, ...params} = args;
   return request({
     url: `/flight/airport/page/list/${pageFlag}/${pageSize}`,
     method: 'get',
-    params: {
-      lastId,
-      ...filter
-    }
+    params
   });
 }

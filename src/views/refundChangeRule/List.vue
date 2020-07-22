@@ -2,7 +2,7 @@
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch"/>
       <el-row class="page-tools" style="margin-bottom:15px;margin-left:25px;">
-        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+        <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
       </el-row>
       <el-table
         class="page-table"
@@ -17,8 +17,8 @@
         <el-table-column prop="cabin" label="舱位" align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="200">
           <template slot-scope="scope">
-            <el-button @click="onEdit(scope.row)" type="primary" size="small">编辑</el-button>
-            <el-button @click="removeOne(scope.row.ruleId)" type="danger" size="small">删除</el-button>
+            <el-button @click="onEdit(scope.row.ruleId)" type="primary" size="small">编辑</el-button>
+            <el-button @click="onDel(scope.row.ruleId)" type="danger" size="small">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -35,26 +35,27 @@
         :page-size="pageSize"
         :total="total"
       ></el-pagination>
-      <el-dialog title="退改规则" center :visible.sync="dialogVisible" width="55%">
+      
         <edit
-          v-if="dialogVisible"
+          :visible.sync="dialogVisible"
           :rule-id="ruleId"
           ref="form"
-          @onSave="handleSave"
-          @onCancel="handleCancel"
+          @refresh="onRefresh"
         ></edit>
-      </el-dialog>
     </div>
 </template>
 <script>
 import edit from "./Edit";
-  import search from "./Search";
+import search from "./Search";
+import {MIXIN_LIST} from "@/utils/mixin";
 
 export default {
+  mixins: [MIXIN_LIST],
   data() {
     return {
       loading: true,
       ruleId: "",
+      keyId:'',
       searchForm: {},
       dialogVisible: false,
       tableData: [],
@@ -66,10 +67,6 @@ export default {
     };
   },
   methods: {
-    handleAdd() {
-      this.ruleId = "";
-      this.dialogVisible = true;
-    },
     loadData() {
       this.$store
         .dispatch("refundChangeRule/getPageList", {

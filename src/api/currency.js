@@ -15,11 +15,12 @@ export function getOne(params) {
   });
 }
 
-export function getPageList(params) {
+export function getPageList(args) {
+  const {pageFlag, pageSize, ...params} = args;
   return request({
-    url: `/finance/currency/get/page/list/${params.pageFlag}/${params.pageSize}`,
+    url: `/finance/currency/get/page/list/${pageFlag}/${pageSize}`,
     method: 'get',
-    params: params
+    params
   });
 }
 

@@ -1,5 +1,6 @@
 <template>
   <div class="page-form">
+    <el-dialog :title="ruleId!=''?'编辑退改规则':'添加退改规则'" center :visible.sync="dialogVisible" width="55%" @open="onOpen" @close="onClose">
     <el-form ref="form" :model="formData" :rules="verify" label-width="100px" size="mini">
       <el-row>
         <el-col :span="12">
@@ -111,13 +112,15 @@
         </el-col>
       </el-row>
     </el-form>
-    <div slot="footer" class="dialog-footer" style="text-align:right;">
-      <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
-      <el-button size="mini" type="primary" @click="handleSave">确 定</el-button>
-    </div>
+    <span slot="footer" class="dialog-footer">
+      <el-button @click="dialogVisible=false">取 消</el-button>
+      <el-button type="primary" @click="onSave">确 定</el-button>
+    </span>
+    </el-dialog>
   </div>
 </template>
 <script>
+import {MIXIN_EDIT} from "@/utils/mixin";
 function defaultData() {
   return {
     airlineCode: "",
@@ -126,6 +129,7 @@ function defaultData() {
   };
 }
 export default {
+  mixins: [MIXIN_EDIT],
   name: "refundChangeRuleEdit",
   props: {
     ruleId: {

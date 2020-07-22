@@ -330,7 +330,7 @@
                     });
             },
             loadAccounts(merchantId) {
-                this.$store.dispatch("firmAccount/getList", {filter: {merchantId: merchantId}})
+                this.$store.dispatch("firmAccount/getList", {filter: {firmId: merchantId}})
                     .then(data => {
                         this.accountList = data;
                     })

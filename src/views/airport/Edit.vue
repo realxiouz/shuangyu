@@ -1,5 +1,7 @@
 <template>
   <div class="page-form">
+    <el-dialog :title="keyId=''?'编辑机场信息':'添加机场信息'" :visible.sync="dialogVisible" width="24%" @open="onOpen" @close="onClose">
+    <!-- <el-dialog :title="keyId!=''?'编辑角色信息':'添加新角色'" :visible.sync="dialogVisible" @open="onOpen" @close="onClose"> -->
     <el-form ref="form" :model="formData" label-width="120px" size="mini">
       <el-form-item label="三字码">
         <el-input type="text" v-model="formData.airportCode" @input="toUpperCase" :disabled="update" maxlength="3"></el-input>
@@ -24,12 +26,15 @@
     </el-form>
     <div slot="footer" class="dialog-footer" style="text-align:right">
       <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
-      <el-button size="mini" type="primary" @click="handleSave">确 定</el-button>
+      <el-button size="mini" type="primary" @click="onSave">确 定</el-button>
     </div>
+    </el-dialog>
   </div>
 </template>
 <script>
+    import {MIXIN_EDIT} from "@/utils/mixin";
     export default {
+      mixins: [MIXIN_EDIT],
         name: 'airportEdit',
         props: ["update", "curNode"],
         data() {
@@ -37,6 +42,11 @@
                 formData: {},
                 airportName: '',
                 tags: [],
+                keyId:'',
+                actions: {
+                    getOne: 'airport/updateOne',
+                    saveOne: 'airport/addOne'
+                }
                 /*rules: {
                   airportName: [
                     {required: true, message: "请输入机场名称", trigger: "blur"}
