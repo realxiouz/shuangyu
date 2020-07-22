@@ -284,7 +284,7 @@
                 };
             },
             loadCustomers() {
-                this.$store.dispatch("firmMerchant/getCustomerList", {})
+                this.$store.dispatch("firmMerchant/getSupplierList", {})
                     .then(data => {
                         this.customerList = data;
                     })
