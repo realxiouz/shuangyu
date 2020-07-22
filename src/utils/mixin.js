@@ -59,7 +59,7 @@ export const MIXIN_LIST = {
           .catch(error => {
             console.log(error);
           })
-          .finally(_ => {
+          .finally(() => {
             this.loading = false;
             this.afterLoadData();
           });
@@ -228,7 +228,7 @@ export const MIXIN_EDIT = {
                 this.$emit('refresh');
                 this.$message({type: 'success', message: '保存成功'});
               })
-              .finally(_ => {
+              .finally(() => {
                 this.afterSave();
               });
           }
@@ -261,7 +261,7 @@ export const MIXIN_EDIT = {
             .catch(error => {
               console.log(error);
             })
-            .finally(_ => {
+            .finally(() => {
               this.afterLoadData();
             });
         }
