@@ -83,10 +83,9 @@ const actions = {
         });
     });
   },
-  getPageList({commit}, params) {
+  getPageList({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {pageFlag, pageSize, lastId, filter} = params;
-      getPageList(pageFlag, pageSize, lastId, filter)
+      getPageList(args)
         .then(response => {
           resolve(response);
         })

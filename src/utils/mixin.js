@@ -27,6 +27,7 @@ export const MIXIN_LIST = {
   },
   methods: {
     loadData() {
+      console.log(this.actions)
       if (this.actions.getPageList) {
         if (null !== this.category && '' !== this.category) {
           if (!this.params) {
@@ -61,6 +62,7 @@ export const MIXIN_LIST = {
       this.pageFlag = -1;
       if (this.tableData.length > 0) {
         this.lastId = this.tableData[0][this.keyName];
+        
       }
       this.loadData();
     },

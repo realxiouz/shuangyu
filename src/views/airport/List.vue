@@ -6,7 +6,7 @@
         icon="el-icon-plus"
         type="primary"
         size="mini"
-        @click="handleAdd"
+        @click="onAdd"
         >添加</el-button
       >
     </el-row>
@@ -33,10 +33,10 @@
       ></el-table-column>
       <el-table-column label="操作" align="center" width="200">
         <template slot-scope="scope">
-          <el-button @click="onEdit(scope.row)" type="primary" size="small"
+          <el-button @click="onEdit(scope.row.airportCode)" type="primary" size="small"
             >编辑</el-button
           >
-          <el-button @click="handleDelete(scope.row)" type="danger" size="small"
+          <el-button @click="onDel(scope.row.airportCode)" type="danger" size="small"
             >删除</el-button
           >
         </template>
@@ -44,150 +44,66 @@
     </el-table>
     <el-pagination
       class="page-footer"
-      @prev-click="handlePrevClick"
-      @next-click="handleNextClick"
       background
-      layout="total,prev,next"
       prev-text="上一页"
       next-text="下一页"
-      :page-size="pageSize"
       :total="total"
+      @prev-click="onPrev"
+      @next-click="onNext"
+      @size-change="onSizeChange"
+      layout="total,sizes,prev,next"
+      :page-size="pageSizes[0]"
+      :page-sizes="pageSizes"
     ></el-pagination>
 
-    <el-dialog
-      title="机场信息"
-      center
-      :visible.sync="dialogVisible"
-      :close-on-click-modal="false"
-      width="24%"
-    >
-      <edit
-        v-if="dialogVisible"
-        :cur-node="curNode"
-        :update="update"
-        @onSave="handleSave"
-        @onCancel="handleCancel"
-      ></edit>
-    </el-dialog>
+    <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" @refresh="onRefresh"></edit>
+    
   </div>
 </template>
 <script>
 import search from "./Search.vue";
 import edit from "./Edit.vue";
+import {MIXIN_LIST} from "@/utils/mixin";
+
 
 export default {
+  mixins: [MIXIN_LIST],
   data() {
     return {
-      loading: true,
       dialogVisible: false,
-      update: false,
       deleteForSearch: false,
-      curNode: {},
-      tableData: [],
-      lastId: null,
-      pageFlag: 0,
-      pageSize: 10,
-      total: 0
+      airportCode:'',
+      keyName:'airportCode',
+      actions: {
+        getPageList: 'airport/getPageList',
+        removeOne: 'airport/removeOne'
+      }
     };
   },
   methods: {
-    loadData(params) {
-      this.$store
-        .dispatch("airport/getPageList", {
-          pageFlag: this.pageFlag,
-          pageSize: this.pageSize,
-          lastId: this.lastId,
-          filter: params
-        })
-        .then(data => {
-          if (data) {
-            this.tableData = data.rows;
-            this.total = data.total;
-          }
-          this.loading = false;
-        })
-        .catch(error => {
-          this.loading = false;
-          console.log(error);
-        });
-    },
+   
+    // handleSave(formData) {
+    //   this.dialogVisible = false;
 
-    search(searchForm) {
-      this.deleteForSearch = false;
-      if (searchForm.airportName || searchForm.airportCode) {
-        let url = "";
-        let params = {};
-        if (searchForm.airportName) {
-          url = "airport/getOneByAirportName";
-          params = { airportName: searchForm.airportName };
-        } else {
-          url = "airport/getOne";
-          params = { airportCode: searchForm.airportCode };
-        }
-        this.$store
-          .dispatch(url, params)
-          .then(data => {
-            this.tableData = [];
-            if (data) {
-              this.tableData.push(data);
-            }
-            this.total = 1;
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      } else {
-        this.loadData();
-      }
-    },
-    handleAdd() {
-      this.dialogVisible = true;
-      this.curNode = {};
-      this.update = false;
-    },
-    handleSave(formData) {
-      this.dialogVisible = false;
-
-      let url = "";
-      if (this.update) {
-        url = "airport/updateOne";
-      } else {
-        url = "airport/addOne";
-      }
-      this.$store
-        .dispatch(url, formData)
-        .then(() => {
-          this.loadData();
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
+    //   let url = "";
+    //   if (this.update) {
+    //     url = "airport/updateOne";
+    //   } else {
+    //     url = "airport/addOne";
+    //   }
+    //   this.$store
+    //     .dispatch(url, formData)
+    //     .then(() => {
+    //       this.loadData();
+    //     })
+    //     .catch(error => {
+    //       console.log(error);
+    //     });
+    // },
     handleCancel() {
       this.dialogVisible = false;
     },
-    onEdit(row) {
-      this.dialogVisible = true;
-      this.curNode = row;
-      this.update = true;
-    },
-    handlePrevClick() {
-      this.pageFlag = -1;
-      this.lastId = this.tableData[0].airportCode;
-      this.loadData();
-    },
-    handleNextClick() {
-      this.pageFlag = 1;
-      this.lastId = this.tableData[this.tableData.length - 1].airportCode;
-      this.loadData();
-    },
-    handleDelete(row) {
-      this.open(
-        this.delete,
-        row.airportCode,
-        "此操作将删除该三字码数据和机场信息, 是否继续?"
-      );
-    },
+    
     delete(airportCode) {
       this.$store
         .dispatch("airport/removeOne", { airportCode: airportCode })
@@ -241,9 +157,6 @@ export default {
         return "";
       }
     }
-  },
-  created() {
-    this.loadData();
   },
   computed: {
     formatAirport() {

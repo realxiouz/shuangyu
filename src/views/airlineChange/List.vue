@@ -6,7 +6,7 @@
         icon="el-icon-plus"
         type="primary"
         size="mini"
-        @click="handleAdd"
+        @click="onAdd"
         >添加</el-button
       >
     </el-row>
@@ -56,35 +56,30 @@
           <el-button @click="onEdit(scope.row)" type="primary" size="mini"
             >编辑</el-button
           >
-          <el-button @click="handleDelete(scope.row)" type="danger" size="mini"
+          <el-button @click="onDel(scope.row)" type="danger" size="mini"
             >删除</el-button
           >
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog
-      :title="!update ? '添加航司迁转信息' : '编辑航司迁转信息'"
-      center
-      :visible.sync="dialogVisible"
-      width="33%"
-      :close-on-click-modal="false"
-    >
+    
       <edit
-        v-if="dialogVisible"
+        :visible.sync="dialogVisible"
         :curNode="curNode"
         :update="update"
-        @onSave="handleSave"
-        @onCancel="handleCancel"
+        @refresh="onRefresh"
       ></edit>
-    </el-dialog>
+    
   </div>
 </template>
 
 <script>
 import search from "./Search";
 import edit from "./Edit";
+import {MIXIN_LIST} from "@/utils/mixin";
 
 export default {
+  mixins: [MIXIN_LIST],
   data() {
     return {
       loading: true,
@@ -94,7 +89,11 @@ export default {
       curNode: {},
       update: false,
       deleteValue: false,
-      searchForm: {}
+      searchForm: {},
+      actions: {
+        getPageList: 'airlineChange/getList',
+        removeOne: 'airlineChange/removeOne'
+      }
     };
   },
   components: {
