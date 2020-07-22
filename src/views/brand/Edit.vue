@@ -1,6 +1,6 @@
 <template>
   <div class="page-form">
-    <el-dialog :visible.sync="dialogVisible" @open="handleOpen" @close="handleClose">
+    <el-dialog :title="keyId=''?'编辑品牌信息':'添加品牌信息'" :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
       <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
         <el-form-item label="品牌编码：" prop="brandCode">
           <el-input v-model="formData.brandCode" placeholder="请输入品牌编码.."></el-input>
@@ -9,7 +9,8 @@
           <el-input v-model="formData.brandName" placeholder="请输入品牌编码.."></el-input>
         </el-form-item>
         <el-form-item label="商品类目：" prop="categoryCode">
-          <el-cascader
+          <el-cascader 
+          background
             v-model="formData.categoryCode"
             style="width: 100%;"
             :options="categoryList"
@@ -28,7 +29,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible=false">取 消</el-button>
-        <el-button type="primary" @click="handleConfirm">确 定</el-button>
+        <el-button type="primary" @click="onSave">确 定</el-button>
        </span>
 
     </el-dialog>
@@ -36,7 +37,9 @@
 </template>
 
 <script>
+    import {MIXIN_EDIT} from "@/utils/mixin";
     export default {
+        mixins: [MIXIN_EDIT],
         props: {
             visible: {
                 type: Boolean,
@@ -62,6 +65,10 @@
                 categoryList: [],
                 //用于记录和查找所选中的商品类别
                 tempCategoryList: [],
+                actions: {
+                    getOne: 'brand/getOne',
+                    saveOne: 'brand/saveOne'
+                },
                 rules: {
                     brandCode: [
                         {required: true, message: "请输入品牌编码", trigger: "blur"},
@@ -137,10 +144,7 @@
             clearForm() {
                 this.formData = this.defaultFormData();
             },
-            handleConfirm() {
-                this.dialogVisible = false;
-                this.$emit("onSave", this.formData);
-            },
+          
             selectedCategory(selected) {
                 //选取最后的节点
                 const code = selected[selected.length - 1];
@@ -152,15 +156,6 @@
                         this.formData.categoryPath = item.path;
                     }
                 })
-            },
-            loadData() {
-                this.$store
-                    .dispatch("brand/getOne", {brandId: this.brandId})
-                    .then(data => {
-                        this.formData = data;
-                    }).catch(error => {
-                    console.log(error);
-                });
             },
             generateTreeData(data) {
                 // 循环遍历json数据
@@ -176,12 +171,7 @@
                 }
                 return data;
             },
-            handleOpen() {
-                this.$emit('update:visible', true);
-            },
-            handleClose() {
-                this.$emit('update:visible', false);
-            }
+           
         },
         created() {
             this.loadCategory();

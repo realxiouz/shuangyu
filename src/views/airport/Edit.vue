@@ -1,6 +1,6 @@
 <template>
   <div class="page-form">
-    <el-dialog :title="keyId!=''?'编辑机场信息':'添加机场信息'" :visible.sync="dialogVisible" width="24%" @open="onOpen" @close="onClose">
+    <el-dialog :title="keyId=''?'编辑机场信息':'添加机场信息'" :visible.sync="dialogVisible" width="24%" @open="onOpen" @close="onClose">
     <!-- <el-dialog :title="keyId!=''?'编辑角色信息':'添加新角色'" :visible.sync="dialogVisible" @open="onOpen" @close="onClose"> -->
     <el-form ref="form" :model="formData" label-width="120px" size="mini">
       <el-form-item label="三字码">

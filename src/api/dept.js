@@ -33,19 +33,20 @@ export function removeOne(id) {
 }
 
 
-export function getRootPageList(pageFlag, pageSize, filter) {
-  return request({
-    url: `/firm/dept/get/root/list/page/${pageFlag}/${pageSize}`,
-    method: 'get',
-    params: filter
-  });
-}
+// export function getRootPageList(pageFlag, pageSize, filter) {
+//   return request({
+//     url: `/firm/dept/get/root/list/page/${pageFlag}/${pageSize}`,
+//     method: 'get',
+//     params: filter
+//   });
+// }
 
-export function getPageList(pageFlag, pageSize, filter) {
+export function getPageList(args) {
+  const {pageFlag, pageSize, ...params} = args;
   return request({
     url: `/firm/dept/page/list/${pageFlag}/${pageSize}`,
     method: 'get',
-    params: filter
+    params
   });
 }
 

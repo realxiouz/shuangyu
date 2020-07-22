@@ -2,7 +2,7 @@
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch" />
     <el-row class="page-tools" type="flex" justify="space-between">
-      <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+      <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
     </el-row>
     <el-table
       class="page-table"
@@ -42,20 +42,20 @@
       <el-table-column fixed="right" label="操作" width="280">
         <template slot-scope="scope">
           <el-button
-            @click="handleAddChild(scope.row)"
+            @click="onAdd(scope.row.deptId)"
             type="success"
             size="mini"
             >添加子部门</el-button
           >
           <span v-show="0 == scope.row.deptType" style="margin-left: 10px;">
             <el-button
-              @click="handleUpdate(scope.row)"
+              @click="onEdit(scope.row.deptId)"
               type="primary"
               size="mini"
               >编辑</el-button
             >
             <el-button
-              @click.native.prevent="handleRemove(scope.row)"
+              @click.native.prevent="onDel(scope.row.deptId)"
               type="danger"
               size="mini"
               >删除</el-button
@@ -66,102 +66,52 @@
     </el-table>
     <el-pagination
       class="page-footer"
-      @size-change="onSizeChange"
-      @prev-click="handlePrevClick"
-      @next-click="handleNextClick"
       background
-      layout="total,sizes,prev,next"
       prev-text="上一页"
       next-text="下一页"
-      :page-size="pageSize"
       :total="total"
+      @prev-click="onPrev"
+      @next-click="onNext"
+      @size-change="onSizeChange"
+      layout="total,sizes,prev,next"
+      :page-size="pageSizes[0]"
+      :page-sizes="pageSizes"
     ></el-pagination>
-    <el-dialog
-      title="部门信息"
-      center
-      :visible.sync="dialogVisible"
-      width="30%"
-      :close-on-click-modal="false"
-    >
-      <edit
-        v-if="dialogVisible"
-        :editDeptId="editDeptId"
-        :pid="pid"
-        @onSave="handleSave"
-        @onCancel="handleCancel"
-      ></edit>
-    </el-dialog>
+    
+      <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" @refresh="onRefresh"></edit>
+   
   </div>
 </template>
 <script>
-import edit from "./Edit";
+  import edit from "./Edit";
   import search from "./Search";
+  import {MIXIN_LIST} from "@/utils/mixin";
 
 export default {
+  mixins: [MIXIN_LIST],
   name: "dept",
   data() {
     return {
       childrenMaps: new Map(),
-      loading: true,
       handleRowVal: {},
-      searchForm: {},
       dialogVisible: false,
       editDeptId: "",
       pid: "",
+      deptId:'',
+      keyId:'',
+      keyName:'deptId',
       tableData: [],
       expandRowKeys: [],
-      pageFlag: 1,
-      pageSize: 10,
       lastId: null,
-      total: 0
+      total: 0,
+      actions: {
+        getPageList: 'dept/getPageList',
+        removeOne: 'dept/removeOne'
+      }
     };
   },
   methods: {
-    onSizeChange(pageSize) {
-      this.pageSize = pageSize;
-      this.loadData();
-    },
-    /*翻前页*/
-    handlePrevClick() {
-      this.pageFlag = -1;
-      this.lastId = this.tableData[0].deptId;
-      this.loadData();
-    },
-    /*翻后页*/
-    handleNextClick() {
-      this.pageFlag = 1;
-      this.lastId = this.tableData[this.tableData.length - 1].deptId;
-      this.loadData();
-    },
-    handleAdd() {
-        this.editDeptId = '';
-        this.dialogVisible = true;
-      },
-    loadData(params = {}) {
-      if (this.lastId) {
-        params.lastId = this.lastId;
-      }
-      this.$store
-        .dispatch("dept/getRootPageList", {
-          pageFlag: this.pageFlag,
-          pageSize: this.pageSize,
-          filter: params
-        })
-        .then(data => {
-          if (data) {
-            this.tableData = data.rows;
-            this.total = data.total;
-            this.expandRowKeys = [];
-            data.rows.length && this.expandRowKeys.push(data.rows[0].deptId);
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        })
-        .finally(_ => {
-          this.loading = false;
-        });
-    },
+    
     loadChildren(tree, treeNode, resolve) {
       // tree为点击那一行的数据
       // 保存节点信息
@@ -215,89 +165,12 @@ export default {
       this.editDeptId = "";
       this.dialogVisible = true;
     },
-    onSearch(params) {
-      const newParams = {};
-      if (params) {
-        for (let key in params) {
-          if (params[key]) {
-            newParams[key] = params[key];
-          }
-        }
-      }
-      this.loadData(newParams);
-      this.$message({
-        type: "success",
-        message: "查询成功！"
-      });
-    },
-    handleUpdate(row) {
-      this.handleRowVal = row;
-      this.editDeptId = row.deptId;
-      this.pid = "";
-      this.dialogVisible = true;
-    },
-    handleRemove(row) {
-      this.handleRowVal = row;
-      this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.$store
-            .dispatch("dept/removeOne", { deptId: row.deptId })
-            .then(() => {
-              if (1 === this.tableData.length) {
-                this.upDataChildren("remove");
-              } else {
-                this.loadData("{}");
-              }
-            });
-        })
-        .catch(err => {
-          console.error(err);
-        });
-    },
-    handleCancel() {
-      this.dialogVisible = false;
-    },
-    handleSave(formData) {
-      if (formData.deptId) {
-        this.$store
-          .dispatch("dept/updateOne", { id: formData.deptId, data: formData })
-          .then(() => {
-            this.$message({
-              type: "success",
-              message: "部门信息保存成功!"
-            });
-            this.loadData();
-            this.upDataChildren("updata");
-          })
-          .catch(error => {
-            console.log(error);
-          });
-        this.dialogVisible = false;
-      } else {
-        this.$store
-          .dispatch("dept/addOne", formData)
-          .then(() => {
-            this.$message({
-              type: "success",
-              message: "部门信息保存成功!"
-            });
-            this.loadData();
-            this.upDataChildren("add");
-          })
-          .catch(error => {
-            console.log(error);
-          });
-        this.dialogVisible = false;
-      }
-    }
+   
+    
+   
+    
   },
-  created() {
-    this.loadData();
-  },
+  
   components: {
       edit,
       search
