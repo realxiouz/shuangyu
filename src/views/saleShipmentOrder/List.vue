@@ -320,6 +320,7 @@ export default {
 
       let orderDetailsTemp = orderDetails.map( i => {
         delete i.orderNo
+        delete i.detailId
         return i
       })
       this.$store.commit('ticket/setInfo', info)
