@@ -308,10 +308,24 @@ export default {
     },
     onBuyTicket(i) {
       // todo
-      let {passengers, orderDetails} = i
+      let {passengers, orderDetails, parentNo} = i
+      
       let info = this.genTicketInfo(orderDetails[0].propertyItems, ['dpt', 'arr', 'dptTime', 'flightDate', 'flightCode', 'cabin'])
+
+      let passengersTemp = passengers.map(i => {
+        delete i.orderNo
+        delete i.passengerId
+        return i
+      })
+
+      let orderDetailsTemp = orderDetails.map( i => {
+        delete i.orderNo
+        return i
+      })
       this.$store.commit('ticket/setInfo', info)
-      this.$store.commit('ticket/setPassengers', passengers)
+      this.$store.commit('ticket/setPassengers', passengersTemp)
+      this.$store.commit('ticket/setOrderDetails', orderDetails)
+      this.$store.commit('ticket/setParentNo', parentNo)
       this.$router.push({
         path: `/buyTicket/flightInfo`
       });

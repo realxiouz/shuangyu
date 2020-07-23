@@ -42,33 +42,12 @@
     <el-table ref="productTable" :data="productList" @selection-change="handleSelectionChange" highlight-current-row
               border>
       <el-table-column type="selection"></el-table-column>
-      <el-table-column label="商品编码">
-        <template v-slot="{ row }">
-          {{ row.product.productCode }}
-        </template>
-      </el-table-column>
-      <el-table-column label="商品名称">
-        <template v-slot="{ row }">
-          {{ row.product.productName }}
-        </template>
-      </el-table-column>
-      <el-table-column label="商品类目">
-        <template v-slot="{ row }">
-          {{ row.product.categoryName }}
-        </template>
-      </el-table-column>
-      <el-table-column label="品牌名称">
-        <template v-slot="{ row }">
-          {{ row.product.brandName }}
-        </template>
-      </el-table-column>
-      
+      <el-table-column label="商品编码" prop="productCode" />
+      <el-table-column label="商品名称" prop="productName" />
+      <el-table-column label="商品类目" prop="categoryName" />
+      <el-table-column label="品牌名称" prop="brandName" />
       <el-table-column prop="quantity" label="数量" align="center"></el-table-column>
-      <el-table-column label="计量单位">
-        <template v-slot="{ row }">
-          {{ row.product.unit }}
-        </template>
-      </el-table-column>
+      <el-table-column label="计量单位" prop="unit" />
       <el-table-column prop="price" label="单价" align="center"></el-table-column>
       <el-table-column prop="skuName" label="属性名称" align="center"></el-table-column>
       <el-table-column prop="skuId" label="sku" align="center"></el-table-column>
