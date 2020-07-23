@@ -8,7 +8,7 @@
         ref="user-edit"
         @open="onOpen" @close="onClose"
       >
-    <el-form ref="jobTagForm" size="mini" :model="formData" label-width="110px" :rules="formRules">
+    <el-form ref="form" size="mini" :model="formData" label-width="110px" :rules="formRules">
       <input type="hidden" v-model="formData.tagId"/>
       <el-row :gutter="5">
         <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">

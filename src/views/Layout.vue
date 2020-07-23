@@ -228,7 +228,7 @@
                 this.firmId = this.firmData.firmId;
                 this.triggerPendingTotalTimer();
               }
-              this.menus = this.buildTree(null, data.navs);
+              // this.menus = this.buildTree(null, data.navs);
               this.loading = false;
             }
           })

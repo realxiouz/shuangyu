@@ -22,11 +22,11 @@ router.beforeEach(async (to, from, next) => {
       if (store.state.user.routes.length) {
         next();
       } else {
-        let { menus } = await store.dispatch('getLoginInfo', { firmId: null });
-        let tree = genTree(null, menus);
-        let routes = genMenus(tree);
-        // let arr = await store.dispatch('menu/getTreeList', {});
-        // let routes = genMenus(arr);
+        // let { menus } = await store.dispatch('getLoginInfo', { firmId: null });
+        // let tree = genTree(null, menus);
+        // let routes = genMenus(tree);
+        let arr = await store.dispatch('menu/getTreeList', {});
+        let routes = genMenus(arr);
         if (process.env.NODE_ENV == 'production') {
           routes.push({
             path: '/admin',
@@ -58,6 +58,7 @@ router.beforeEach(async (to, from, next) => {
         });
         store.commit('user/setRoutes', routes);
         router.addRoutes(routes);
+        console.log(routes)
         try {
           next({
             ...to

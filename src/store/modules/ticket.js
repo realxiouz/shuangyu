@@ -3,6 +3,8 @@ import { getList, getTotal, getCount } from '@/api/ticket';
 const state = {
     info: {},
     passengers: [],
+    orderDetails: [],
+    parentNo: ''
 };
 
 const mutations = {
@@ -11,7 +13,13 @@ const mutations = {
   },
   setPassengers(state, passengers){
     state.passengers = passengers;
-  }
+  },
+  setOrderDetails(state, orderDetails) {
+    state.orderDetails = orderDetails
+  },
+  setParentNo(state, no) {
+    state.parentNo = no
+  } 
 };
 
 const actions = {

@@ -68,21 +68,9 @@
               <el-button type="primary"  @click="handleAddProduct">添加商品明细</el-button>
             </div>
             <el-table :data="orderDetails" height="250" border >
-              <el-table-column label="商品编码">
-                    <template v-slot="{ row }">
-                        {{ row.product.productCode }}
-                    </template>
-              </el-table-column>
-              <el-table-column label="商品名称" >
-                    <template v-slot="{ row }">
-                        {{ row.product.productName }}
-                    </template>
-              </el-table-column>
-              <el-table-column label="品牌">
-                  <template v-slot="{ row }">
-                        {{ row.product.brandName }}
-                    </template>
-              </el-table-column>
+              <el-table-column label="商品编码" prop="productCode" />
+              <el-table-column label="商品名称" prop="productName" />
+              <el-table-column label="品牌" prop="brandName" />
               <el-table-column prop="skuName" label="属性名称" align="center"></el-table-column>
               <el-table-column prop="price" label="单价" align="center"></el-table-column>
               <el-table-column prop="stockQuantity" label="库存" align="center"></el-table-column>
@@ -91,11 +79,7 @@
                   <el-input-number v-model="prop.row.quantity" :min="1" ></el-input-number>
                 </template>
               </el-table-column>
-              <el-table-column label="计量单位">
-                    <template v-slot="{ row }">
-                        {{ row.product.unit }}
-                    </template>
-              </el-table-column>
+              <el-table-column label="计量单位" prop="unit" />
               <el-table-column prop="amount" label="金额" align="center">
                 <template slot-scope="prop">
                   {{computedRowAmount(prop.row)}}
@@ -387,10 +371,7 @@
             loadOderDetails(orderNo) {
                 this.$store.dispatch("productOrderDetail/getList", {filter: {orderNo: orderNo}})
                     .then(data => {
-                        this.orderDetails = data.map(i => {
-                            i.product = {...i}
-                            return i
-                        });
+                        this.orderDetails = data;
                         if (0 < data.length) {
                             data.forEach(item => {
                                 this.productIdList.push(item.productId + item.skuId);
@@ -488,7 +469,7 @@
                             }
                         });
                         this.formData.totalAmount = parseFloat(document.getElementById('totalAmount').textContent);
-                        this.formData.orderDetails =this.orderDetails.map(i => ({...i,...i.product}));
+                        this.formData.orderDetails =this.orderDetails;
                         this.formData.passengers = this.passengers
                         this.formData.orderStatus = 2
                         this.$store
@@ -516,7 +497,7 @@
                             }
                         });
                         this.formData.totalAmount = parseFloat(document.getElementById('totalAmount').textContent);
-                        this.formData.orderDetails =this.orderDetails.map(i => ({...i,...i.product}))
+                        this.formData.orderDetails =this.orderDetails
                         this.formData.passengers = this.passengers
                         this.formData.orderStatus = 0
                         this.$store
@@ -587,9 +568,15 @@
                 if (orderNo) {
                     this.loadProduct(orderNo);
                     this.loadOderDetails(orderNo);
-                } else {
+                } else if (!!this.$route.query.isAdd)  {
                     this.isUpdate = false;
                     this.passengers = this.$store.state.ticket.passengers
+                    this.orderDetails = this.$store.state.ticket.orderDetails
+                    this.formData.parentNo = this.$store.state.ticket.parentNo
+                } else {
+                    this.passengers = []
+                    this.orderDetails = []
+                    this.isUpdate = false;
                 }
             },
             onDelByInx(inx) {

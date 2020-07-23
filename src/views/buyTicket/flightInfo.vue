@@ -20,7 +20,7 @@
           </el-form-item>
           <el-form-item label="操作">
             <el-button @click="onSearch">搜索</el-button>
-            <el-button @click="$router.push('/product/purchase/order/edit')">补单</el-button>
+            <el-button @click="$router.push('/product/purchase/order/edit?isAdd=1')">补单</el-button>
           </el-form-item>
         </el-form>
         <el-table

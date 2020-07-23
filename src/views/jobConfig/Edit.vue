@@ -1,7 +1,7 @@
 <template>
   <div class="page-form">
     <el-dialog :title="keyId!=''?'编辑调度参数':'添加调度参数'" :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
-    <el-form ref="jobConfigForm" size="mini" :model="formData" label-width="110px">
+    <el-form ref="form" size="mini" :model="formData" label-width="110px">
       <input type="hidden" v-model="formData.configId"/>
       <div>
         <el-row :gutter="5">
