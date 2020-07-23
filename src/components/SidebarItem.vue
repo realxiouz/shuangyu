@@ -1,6 +1,6 @@
 <template v-if="item.children">
   <el-submenu
-    v-if="item.children && item.children.length > 0"
+    v-if="item.children && item.children.length > 0 && !item.hidden"
     :index="item.path"
   >
     <template slot="title">
