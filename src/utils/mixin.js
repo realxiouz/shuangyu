@@ -38,7 +38,8 @@ export const MIXIN_LIST = {
             pageSize: this.pageSize,
             lastId: this.lastId,
             pageFlag: this.pageFlag,
-            ...this.params
+            ...this.params,
+            ...(this.extraParam || {})
           })
           .then(data => {
             if (data) {

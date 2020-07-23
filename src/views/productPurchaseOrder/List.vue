@@ -82,15 +82,16 @@
       </el-table>
       <el-pagination
         class="page-footer"
-        @size-change="onSizeChange"
-        @prev-click="handlePrevClick"
-        @next-click="handleNextClick"
         background
-        layout="total,sizes,prev,next"
         prev-text="上一页"
         next-text="下一页"
-        :page-size="pageSize"
         :total="total"
+        @prev-click="onPrev"
+        @next-click="onNext"
+        @size-change="onSizeChange"
+        layout="total,sizes,prev,next"
+        :page-size="pageSizes[0]"
+        :page-sizes="pageSizes"
       ></el-pagination>
     </div>
 </template>
@@ -104,16 +105,25 @@
         formatWarehouseStatus
     } from "@/utils/productStatus.js";
 
+    import { MIXIN_LIST } from "@/utils/mixin";
+
+
     export default {
+        mixins: [MIXIN_LIST],
         data() {
             return {
-                loading: true,
-                searchForm: {},
-                curNode: {},
-                tableData: [],
-                currentPage: 1,
-                pageSize: 10,
-                total: 0
+                // cardMap: CARD_TYPES_MAP,
+                // ageMap: AGE_TYPES_MAP,
+
+                keyId: "",
+                keyName: "orderNo",
+                actions: {
+                  getPageList: "productOrder/getPageList",
+                  removeOne: "productOrder/removeOne"
+                },
+                extraParam: {
+                  orderType: 200
+                }
             };
         },
         methods: {
@@ -121,98 +131,11 @@
             formatOrderStatus,
             formatWarehouseStatus,
             formatPaymentStatus,
-            /*翻前页*/
-            handlePrevClick(size) {
-                this.pageSize = size;
-                this.searchForm.pageSize = this.pageSize;
-                this.currentPage = 1;
-                this.searchForm.currentPage = this.currentPage;
-                this.loadData(this.searchParams);
-            },
-            /*翻后页*/
-            handleNextClick(page) {
-                this.currentPage = page;
-                this.searchForm.pageSize = this.pageSize;
-                this.searchForm.currentPage = this.currentPage;
-                this.loadData(this.searchParams);
-                this.loadData();
-            },
-            onSizeChange(pageSize) {
-                this.pageSize = pageSize;
-                this.loadData();
-            },
-            loadData(searchForm = {}) {
-                searchForm['orderType'] = 200;
-                this.$store.dispatch("productOrder/getList", {
-                    filter: searchForm
-                })
-                    .then(data => {
-                        if (data) {
-                            this.tableData = data;
-                            // this.total = data.total;
-                            this.loadTotal(searchForm);
-                        }
-                        this.loading = false;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                        this.loading = false;
-                    });
-            },
-            loadTotal(searchForm) {
-                this.$store
-                    .dispatch("productOrder/getTotal", {
-                        filter: searchForm
-                    })
-                    .then(data => {
-                        this.total = data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
             handleAdd() {
                 this.skipDetail();
             },
             onEdit(row) {
                 this.skipDetail(row.orderNo);
-            },
-            onDel(row) {
-                this.open(this.delete, row.orderNo, "此操作将删除该信息, 是否继续?");
-            },
-            delete(orderNo) {
-                this.$store
-                    .dispatch("productOrder/removeOne", {orderNo: orderNo})
-                    .then(() => {
-                        this.$message({
-                            type: "success",
-                            message: "删除成功!"
-                        });
-                        if (1 === this.tableData.length) {
-                            this.handlePrevClick();
-                        } else {
-                            this.loadData();
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            open(func, data, message) {
-                this.$confirm(message, "提示", {
-                    confirmButtonText: "确定",
-                    cancelButtonText: "取消",
-                    type: "warning"
-                })
-                    .then(() => {
-                        func(data);
-                    })
-                    .catch(() => {
-                        this.$message({
-                            type: "info",
-                            message: "已取消删除"
-                        });
-                    });
             },
             skipDetail(orderNo) {
                 this.$router.push({path: '/product/purchase/order/edit', query: {orderNo: orderNo}});
@@ -225,9 +148,6 @@
                     return "";
                 }
             },
-        },
-        mounted() {
-            this.loadData();
         },
         components: {
             search
