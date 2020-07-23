@@ -24,14 +24,13 @@
                 <template slot-scope="props">
                   <el-form label-position="right" :inline="true" label-width="120px">
                     <div class="detail">
-                      <div :v-if="props.row.propertyItems.length >0"
-                           v-for="(item, index) in props.row.propertyItems"
-                           :key="index">
-                        <el-form-item :label="item.name +':'" v-if="item.code != 'flightDate'">
-                          <span>{{ item.value }}</span>
-                        </el-form-item>
-                        <el-form-item :label="item.name +':'" v-if="item.code == 'flightDate'">
-                          <span>    {{initDate(item.value, 'YYYY-MM-DD')}}</span>
+                      <div
+                        :v-if="props.row.propertyItems.length > 0"
+                        v-for="(i, index) in props.row.propertyItems"
+                        :key="index"
+                      >
+                        <el-form-item :label="`${i.name}:`" v-if="!i.hidden">
+                          <span>{{ getValByType(i) }}</span>
                         </el-form-item>
                       </div>
                     </div>
@@ -47,6 +46,26 @@
               <el-table-column prop="unit" label="计量单位" align="center"></el-table-column>
               <el-table-column prop="amount" label="金额" align="center">
               </el-table-column>
+            </el-table>
+
+            <el-table
+              :data="scope.row.passengers"
+              border
+              style="margin-top:10px;"
+            >
+              <el-table-column label="乘客类型" width="70">
+                <template v-slot="{ row }">
+                  <el-tag type="primary">{{ ageMap[row.ageType] }}</el-tag>
+                </template>
+              </el-table-column>
+              <el-table-column label="姓名" prop="fullName" />
+              <el-table-column label="电话" prop="phone" width="120" />
+              <el-table-column label="证件类型" width="90">
+                <template v-slot="{ row }">
+                  <el-tag type="primary">{{ cardMap[row.idCardType] }}</el-tag>
+                </template>
+              </el-table-column>
+              <el-table-column label="证件号" prop="idCardNo" />
             </el-table>
           </template>
         </el-table-column>
@@ -71,10 +90,10 @@
             <el-button v-show="scope.row.orderStatus != 0" @click="skipDetail(scope.row.orderNo)" type="primary"
                                        size="mini">查看
           </el-button>
-            <el-button v-show="scope.row.orderStatus == 0" @click="onEdit(scope.row)" type="primary" size="mini">
+            <el-button v-show="scope.row.orderStatus == 0" @click="onEdit(scope.row.orderNo)" type="primary" size="mini">
               编辑
             </el-button>
-            <el-button v-show="scope.row.orderStatus == 0" @click="onDel(scope.row)" type="danger" size="mini">
+            <el-button v-show="scope.row.orderStatus == 0" @click="onDel(scope.row.orderNo)" type="danger" size="mini">
               删除
             </el-button>
           </template>
@@ -82,15 +101,16 @@
       </el-table>
       <el-pagination
         class="page-footer"
-        @size-change="onSizeChange"
-        @prev-click="handlePrevClick"
-        @next-click="handleNextClick"
         background
-        layout="total,sizes,prev,next"
         prev-text="上一页"
         next-text="下一页"
-        :page-size="pageSize"
         :total="total"
+        @prev-click="onPrev"
+        @next-click="onNext"
+        @size-change="onSizeChange"
+        layout="total,sizes,prev,next"
+        :page-size="pageSizes[0]"
+        :page-sizes="pageSizes"
       ></el-pagination>
     </div>
 </template>
@@ -104,16 +124,26 @@
         formatWarehouseStatus
     } from "@/utils/productStatus.js";
 
+    import { MIXIN_LIST } from "@/utils/mixin";
+    import { CARD_TYPES_MAP, AGE_TYPES_MAP } from "@/utils/const";
+
+
     export default {
+        mixins: [MIXIN_LIST],
         data() {
             return {
-                loading: true,
-                searchForm: {},
-                curNode: {},
-                tableData: [],
-                currentPage: 1,
-                pageSize: 10,
-                total: 0
+                cardMap: CARD_TYPES_MAP,
+                ageMap: AGE_TYPES_MAP,
+
+                keyId: "",
+                keyName: "orderNo",
+                actions: {
+                  getPageList: "productOrder/getPageList",
+                  removeOne: "productOrder/removeOne"
+                },
+                extraParam: {
+                  orderType: 200
+                }
             };
         },
         methods: {
@@ -121,98 +151,11 @@
             formatOrderStatus,
             formatWarehouseStatus,
             formatPaymentStatus,
-            /*翻前页*/
-            handlePrevClick(size) {
-                this.pageSize = size;
-                this.searchForm.pageSize = this.pageSize;
-                this.currentPage = 1;
-                this.searchForm.currentPage = this.currentPage;
-                this.loadData(this.searchParams);
-            },
-            /*翻后页*/
-            handleNextClick(page) {
-                this.currentPage = page;
-                this.searchForm.pageSize = this.pageSize;
-                this.searchForm.currentPage = this.currentPage;
-                this.loadData(this.searchParams);
-                this.loadData();
-            },
-            onSizeChange(pageSize) {
-                this.pageSize = pageSize;
-                this.loadData();
-            },
-            loadData(searchForm = {}) {
-                searchForm['orderType'] = 200;
-                this.$store.dispatch("productOrder/getList", {
-                    filter: searchForm
-                })
-                    .then(data => {
-                        if (data) {
-                            this.tableData = data;
-                            // this.total = data.total;
-                            this.loadTotal(searchForm);
-                        }
-                        this.loading = false;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                        this.loading = false;
-                    });
-            },
-            loadTotal(searchForm) {
-                this.$store
-                    .dispatch("productOrder/getTotal", {
-                        filter: searchForm
-                    })
-                    .then(data => {
-                        this.total = data;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
             handleAdd() {
                 this.skipDetail();
             },
-            onEdit(row) {
-                this.skipDetail(row.orderNo);
-            },
-            onDel(row) {
-                this.open(this.delete, row.orderNo, "此操作将删除该信息, 是否继续?");
-            },
-            delete(orderNo) {
-                this.$store
-                    .dispatch("productOrder/removeOne", {orderNo: orderNo})
-                    .then(() => {
-                        this.$message({
-                            type: "success",
-                            message: "删除成功!"
-                        });
-                        if (1 === this.tableData.length) {
-                            this.handlePrevClick();
-                        } else {
-                            this.loadData();
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            open(func, data, message) {
-                this.$confirm(message, "提示", {
-                    confirmButtonText: "确定",
-                    cancelButtonText: "取消",
-                    type: "warning"
-                })
-                    .then(() => {
-                        func(data);
-                    })
-                    .catch(() => {
-                        this.$message({
-                            type: "info",
-                            message: "已取消删除"
-                        });
-                    });
+            onEdit(orderNo) {
+                this.skipDetail(orderNo);
             },
             skipDetail(orderNo) {
                 this.$router.push({path: '/product/purchase/order/edit', query: {orderNo: orderNo}});
@@ -225,9 +168,32 @@
                     return "";
                 }
             },
-        },
-        mounted() {
-            this.loadData();
+            getValByType(i) {
+              switch (i.type) {
+                case "String":
+                  return i["_string"];
+                case "Boolean":
+                  return i["_bool"];
+                case "ArrayList":
+                  return i["_array"].join(",");
+                case "Double":
+                  return i["_double"];
+                case "Float":
+                  return i["_float"];
+                case "Integer":
+                  return i["_int"];
+                case "Byte":
+                  return i["_byte"];
+                case "Short":
+                  return i["_short"];
+                case "Long":
+                  return i["_long"];
+                case "Date":
+                  return this.$moment(i["_date"]).format(i.format || "YYYY-MM-DD");
+                default:
+                  return i["_string"];
+              }
+            }
         },
         components: {
             search

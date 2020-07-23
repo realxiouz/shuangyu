@@ -14,13 +14,13 @@
         :item="child"
         :key="child.path"
       />
-      <el-menu-item v-else :key="child.path" :index="child.path">
+      <el-menu-item v-else-if="!child.hidden" :key="child.path" :index="child.path">
         <i class="el-icon-location"></i>
         <span slot="title">{{ child.meta.title }}</span>
       </el-menu-item>
     </template>
   </el-submenu>
-  <el-menu-item v-else :index="item.path">
+  <el-menu-item v-else-if="!item.hidden" :index="item.path">
     <i class="el-icon-menu"></i>
     <span slot="title">{{ item.meta.title }}</span>
   </el-menu-item>

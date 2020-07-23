@@ -91,7 +91,7 @@ function genMenus(arr) {
   return arr
     .sort((i, j) => i.sort - j.sort)
     .map(i => {
-      let { uri, title, icon, menuName, component, children, sort, tags } = i;
+      let { uri, title, icon, menuName, component, children, sort, tags, enable } = i;
       let c = null;
       let isNav = (tags || []).findIndex(i => i === 'NAV') > -1;
       let cPath = isNav ? 'Layout' : component;
@@ -106,7 +106,8 @@ function genMenus(arr) {
         meta: { title, icon },
         name: menuName,
         component: c,
-        sort
+        sort,
+        hidden: !enable
       };
       if (children && children.length) {
         bean.children = genMenus(children);

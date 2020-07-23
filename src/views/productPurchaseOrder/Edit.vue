@@ -112,7 +112,6 @@
         </el-row>
         <el-row>
             <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
-                <el-button>添加乘客</el-button>
                 <el-table :data="passengers" border>
                     <el-table-column label="乘客类型">
                         <template v-slot="{ row }">
@@ -247,6 +246,8 @@
                 cardTypes: CARD_TYPES,
                 ageTypes: AGE_TYPES,
 
+                passengers: []
+
             };
         },
         methods: {
@@ -373,6 +374,7 @@
                                 this.isUpdate = false;
                             }
                             this.formData = data;
+                            this.passengers = this.formData.passengers
                             if (data.merchantId) {
                                 this.loadAccounts(data.merchantId);
                             }
@@ -385,7 +387,10 @@
             loadOderDetails(orderNo) {
                 this.$store.dispatch("productOrderDetail/getList", {filter: {orderNo: orderNo}})
                     .then(data => {
-                        this.orderDetails = data;
+                        this.orderDetails = data.map(i => {
+                            i.product = {...i}
+                            return i
+                        });
                         if (0 < data.length) {
                             data.forEach(item => {
                                 this.productIdList.push(item.productId + item.skuId);
@@ -397,7 +402,6 @@
                     });
             },
             selectedCustomer(item) {
-                console.log(item)
                 this.customerList
                 this.customerSelected = false;
                 this.loadAccounts(item);
@@ -484,7 +488,7 @@
                             }
                         });
                         this.formData.totalAmount = parseFloat(document.getElementById('totalAmount').textContent);
-                        this.formData.orderDetails =this.orderDetails;
+                        this.formData.orderDetails =this.orderDetails.map(i => ({...i,...i.product}));
                         this.formData.passengers = this.passengers
                         this.formData.orderStatus = 2
                         this.$store
@@ -512,7 +516,7 @@
                             }
                         });
                         this.formData.totalAmount = parseFloat(document.getElementById('totalAmount').textContent);
-                        this.formData.orderDetails =this.orderDetails;
+                        this.formData.orderDetails =this.orderDetails.map(i => ({...i,...i.product}))
                         this.formData.passengers = this.passengers
                         this.formData.orderStatus = 0
                         this.$store
@@ -547,6 +551,7 @@
             },
             clearForm() {
                 this.formData = this.defaultFormData();
+                
             },
             //跳转回列表页面
             goBack() {
@@ -584,10 +589,10 @@
                     this.loadOderDetails(orderNo);
                 } else {
                     this.isUpdate = false;
+                    this.passengers = this.$store.state.ticket.passengers
                 }
             },
             onDelByInx(inx) {
-                console.log(inx)
                 this.passengers.splice(inx, 1)
             },
             onAddPassanger() {
@@ -609,7 +614,7 @@
                     return this.initDate(format);
                 };
             },
-            ...mapState("ticket", ["passengers"])
+            // ...mapState("ticket", ["passengers"])
         },
         components: {
             productDetail
