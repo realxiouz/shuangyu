@@ -1,6 +1,14 @@
 <template>
   <div class="page-form">
-    <el-form ref="jobTagForm" size="mini" :model="formData" label-width="110px" :rules="formRules">
+    <el-dialog
+        :title="keyId!=''?'编辑':'添加'"
+        center
+        :visible.sync="dialogVisible"
+        width="33%"
+        ref="user-edit"
+        @open="onOpen" @close="onClose"
+      >
+    <el-form ref="form" size="mini" :model="formData" label-width="110px" :rules="formRules">
       <input type="hidden" v-model="formData.tagId"/>
       <el-row :gutter="5">
         <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
@@ -39,17 +47,24 @@
     </el-form>
     <div slot="footer" class="dialog-footer" style="text-align:right;">
       <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
-      <el-button type="primary" size="mini" @click="handleSave">确 定</el-button>
+      <el-button type="primary" size="mini" @click="onSave">确 定</el-button>
     </div>
+    </el-dialog>
   </div>
 </template>
 <script>
+  import {MIXIN_EDIT} from "@/utils/mixin";
   export default {
+    mixins: [MIXIN_EDIT],
     name: 'jobTagEdit',
     props: ["jobTagId", 'updateFlag'],
     data() {
       return {
         formData: {},
+        actions: {
+          getOne: 'jobTag/getOne',
+          saveOne: 'jobTag/updateOne'
+        },
         tagTypes:[
           {
             label:"工厂",
@@ -101,32 +116,6 @@
         }
       },
 
-      handleSave() {
-        var validFlag = false;
-        this.$refs["jobTagForm"].validate(valid => {
-          if (!valid) {
-            validFlag = true;
-            return false;
-          }
-        });
-        if (validFlag) {
-          return;
-        }
-        let url = '';
-        if (this.updateFlag) {
-          url = 'jobTag/updateOne';
-        } else {
-          url = 'jobTag/addOne';
-        }
-        this.$store
-          .dispatch(url, {jobTagId: this.jobTagId,jobTag: this.formData})
-          .then(() => {
-            this.$emit("onSave");
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      }
     },
     computed: {
 

@@ -2,7 +2,7 @@
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch" />
     <el-row class="page-tools" type="flex" justify="space-between">
-      <el-button icon="el-icon-back" type="warning" size="mini" @click="onBack">返回</el-button>
+      <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
     </el-row>
     <el-table
       class="page-table"
@@ -37,7 +37,8 @@
       </el-table-column>
       <el-table-column width="160" label="操作" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="onEdit(scope.row.openPolicyAttrId)">设置</el-button>
+          <el-button size="mini" type="primary" @click="onEdit(scope.row.openPolicyAttrId)">修改</el-button>
+          <el-button size="mini" type="danger" @click="onDel(scope.row.openPolicyAttrId)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -54,7 +55,7 @@
       :page-size="pageSizes[0]"
       :page-sizes="pageSizes"
     ></el-pagination>
-    <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" @refresh="onRefresh"/>
+    <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" :orderSort="orderSort" @refresh="onRefresh"/>
   </div>
 </template>
 
@@ -72,18 +73,16 @@
         actions: {
           getPageList: 'openPolicyAttr/getPageList',
           removeOne: 'openPolicyAttr/removeOne'
-        }
+        },
+        orderSort: 1
       };
     },
     methods: {
-      onBack(){
-        let lastName = localStorage.getItem("lastName");
-        if(lastName){
-          this.$router.push({name: lastName,});
-          localStorage.removeItem("lastName");
-        }else{
-          this.$router.go(-1);
+      beforeLoadData(data){
+        if(data && data.total){
+          this.orderSort = parseInt(data.total) + 1;
         }
+        return data;
       }
     },
     components: {

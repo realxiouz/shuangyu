@@ -2,7 +2,7 @@
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch"/>
       <el-row class="page-tools" style="margin-bottom:15px;margin-left:40px">
-        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+        <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
       </el-row>
       <el-table class="page-table" v-loading="loading" :data="tableData" style="width: 100%;margin-bottom: 15px;" size="mini">
         <el-table-column prop="orderNo" label="单号" align="center"></el-table-column>
@@ -62,81 +62,43 @@
         <el-table-column fixed="right" label="操作" align="center" width="160">
           <template slot-scope="scope">
             <el-button @click="onEdit(scope.row)" type="primary" size="mini">编辑</el-button>
-            <el-button @click="onDel(scope.row)" type="danger" size="mini">删除</el-button>
+            <el-button @click="onDel(scope.row.orderNo)" type="danger" size="mini">删除</el-button>
             <el-button @click="skipShipmentOrder(scope.row)" type="info" size="mini">配置发货单</el-button>
           </template>
         </el-table-column>
       </el-table>
       <el-pagination
         class="page-footer"
-        @size-change="onSizeChange"
-        @prev-click="handlePrevClick"
-        @next-click="handleNextClick"
         background
-        layout="total,sizes,prev,next"
         prev-text="上一页"
         next-text="下一页"
-        :page-size="pageSize"
         :total="total"
+        @prev-click="onPrev"
+        @next-click="onNext"
+        @size-change="onSizeChange"
+        layout="total,sizes,prev,next"
+        :page-size="pageSizes[0]"
+        :page-sizes="pageSizes"
       ></el-pagination>
     </div>
 </template>
 
 <script>
     import search from "./Search.vue";
+    import {MIXIN_LIST} from "@/utils/mixin";
 
     export default {
+        mixins: [MIXIN_LIST],
         data() {
             return {
-                loading: true,
-                searchForm: {},
-                curNode: {},
-                tableData: [],
-                pageFlag: 1,
-                pageSize: 10,
-                lastId: null,
-                total: 0
+                keyName:'orderNo',
+                actions: {
+                    getPageList: 'productOrder/getPageList',
+                    removeOne: 'productOrder/removeOne'
+                }
             };
         },
         methods: {
-            /*翻前页*/
-            handlePrevClick() {
-                this.pageFlag = -1;
-                this.lastId = this.tableData[0].orderNo;
-                this.loadData();
-            },
-            /*翻后页*/
-            handleNextClick() {
-                this.pageFlag = 1;
-                this.lastId = this.tableData[this.tableData.length - 1].orderNo;
-                this.loadData();
-            },
-            onSizeChange(pageSize) {
-                this.pageSize = pageSize;
-                this.loadData();
-            },
-            loadData(searchForm = {}) {
-                if (this.lastId) {
-                    searchForm.lastId = this.lastId;
-                }
-                searchForm['orderType'] = 1;
-                this.$store.dispatch("productOrder/getPageList", {
-                    pageFlag: this.pageFlag,
-                    pageSize: this.pageSize,
-                    filter: searchForm
-                })
-                    .then(data => {
-                        if (data) {
-                            this.tableData = data;
-                            this.loadTotal(searchForm);
-                        }
-                        this.loading = false;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                        this.loading = false;
-                    });
-            },
             loadTotal(searchForm) {
                 this.$store
                     .dispatch("productOrder/getTotal", {
@@ -149,50 +111,13 @@
                         console.log(error);
                     });
             },
-            handleAdd() {
+            onAdd() {
                 this.skipDetail();
             },
             onEdit(row) {
                 this.skipDetail(row.orderNo);
             },
-            onDel(row) {
-                this.open(this.delete, row.orderNo, "此操作将删除该信息, 是否继续?");
-            },
-            delete(orderNo) {
-                this.$store
-                    .dispatch("productOrder/removeOne", {orderNo: orderNo})
-                    .then(() => {
-                        this.$message({
-                            type: "success",
-                            message: "删除成功!"
-                        });
-                        this.lastId = "blank";
-                        if (1 === this.tableData.length) {
-                            this.handlePrevClick();
-                        } else {
-                            this.loadData();
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            open(func, data, message) {
-                this.$confirm(message, "提示", {
-                    confirmButtonText: "确定",
-                    cancelButtonText: "取消",
-                    type: "warning"
-                })
-                    .then(() => {
-                        func(data);
-                    })
-                    .catch(() => {
-                        this.$message({
-                            type: "info",
-                            message: "已取消删除"
-                        });
-                    });
-            },
+           
             skipDetail(orderNo) {
                 this.$router.push({path: '/product/sale/order/edit', query: {orderNo: orderNo}});
             },

@@ -37,3 +37,11 @@ export function removeOne(id) {
     method: 'delete'
   });
 }
+
+export function save(data) {
+  return request({
+    url: '/qunar/tts/policy/attr/save',
+    method: 'post',
+    data
+  });
+}

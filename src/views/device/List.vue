@@ -2,7 +2,7 @@
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch"/>
     <el-row class="page-tools" type="flex" justify="space-between">
-      <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加设备</el-button>
+      <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加设备</el-button>
     </el-row>
     <el-table class="page-table" :data="tableData">
       <el-table-column label="设备编码" width="100" prop="deviceCode"/>
@@ -39,7 +39,7 @@
       <el-table-column width="160" label="操作" align="center">
         <template slot-scope="scope">
           <el-button size="mini" @click="onEdit(scope.row.deviceId)">编辑</el-button>
-          <el-button size="mini" type="danger" @click="handleDel(scope.row.deviceId)">删除</el-button>
+          <el-button size="mini" type="danger" @click="onDel(scope.row.deviceId)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -54,26 +54,28 @@
       @prev-click="onPrev"
       @next-click="onNext"
     ></el-pagination>
-    <edit :visible.sync="dialogVisible" :device-id="deviceId" @refresh="onRefresh"/>
+    <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name='keyName' @refresh="onRefresh"/>
   </div>
 </template>
 
 <script>
   import edit from "./Edit";
   import search from "./Search";
+  import {MIXIN_LIST} from "@/utils/mixin";
 
   export default {
+    mixins: [MIXIN_LIST],
     data() {
       return {
         dialogVisible: false,
-        pageFlag: 0,
-        pageSize: 10,
-        lastId: null,
-        total: 0,
-        tableData: [],
-        loading: true,
+        keyName:'deviceId',
         deviceId: '',
         params: {},
+        validate:'',
+        actions: {
+          getPageList: 'device/getPageList',
+          removeOne: 'device/removeOne'
+        }
       };
     },
      components: {
@@ -89,64 +91,11 @@
           return "";
         }
       },
-      loadData() {
-        if (!this._.isEmpty(this.lastId)) {
-          this.params.lastId = this.lastId;
-        }
-        this.$store
-          .dispatch("device/getPageList", {
-            pageFlag: this.pageFlag,
-            pageSize: this.pageSize,
-            params: this.params
-          })
-          .then(data => {
-            this.tableData = data.rows;
-            this.total = data.total;
-          });
-      },
-      onSearch(params) {
-        this.params = params;
-        this.pageFlag = 0;
-        this.lastId = null;
-        this.loadData();
-      },
-      onRefresh() {
-        this.onSearch();
-      },
-      onPrev() {
-        this.pageFlag = -1;
-        if (this.tableData.length > 0) {
-          this.lastId = this.tableData[0].deviceId;
-        }
-        this.loadData();
-      },
-      onNext() {
-        this.pageFlag = 1;
-        if (this.tableData.length > 0) {
-          this.lastId = this.tableData[this.tableData.length - 1].deviceId;
-        }
-        this.loadData();
-      },
-      handleAdd() {
-        this.deviceId = '';
-        this.dialogVisible = true;
-      },
-      onEdit(id) {
-        this.deviceId = id;
-        this.dialogVisible = true;
-      },
-      handleDel(id) {
-        this.$confirm('确定删除?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$store.dispatch("device/removeOne", {deviceId: id}).then(() => {
-            this.onRefresh();
-            this.$message({type: "success", message: "删除成功"});
-          });
-        });
-      }
+      
+     
+     
+      
+      
     },
    
     created() {

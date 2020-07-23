@@ -15,11 +15,12 @@ export function getOne(segment) {
   });
 }
 
-export function getPageList(params) {
+export function getPageList(args) {
+  const {pageFlag, pageSize, ...params} = args;
   return request({
-    url: `/flight/segment/page/list/${params.pageFlag}/${params.pageSize}`,
+    url: `/flight/segment/page/list/${pageFlag}/${pageSize}`,
     method: 'get',
-    params: params
+    params
   });
 }
 

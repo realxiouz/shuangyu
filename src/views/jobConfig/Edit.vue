@@ -1,6 +1,7 @@
 <template>
   <div class="page-form">
-    <el-form ref="jobConfigForm" size="mini" :model="formData" label-width="110px">
+    <el-dialog :title="keyId!=''?'编辑调度参数':'添加调度参数'" :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
+    <el-form ref="form" size="mini" :model="formData" label-width="110px">
       <input type="hidden" v-model="formData.configId"/>
       <div>
         <el-row :gutter="5">
@@ -215,15 +216,18 @@
         </el-row>
       </div>
     </el-form>
-    <div slot="footer" style="text-align: center">
-      <el-button size="mini" type="primary" @click="handleSave">保存</el-button>
-      <el-button size="mini" @click="$emit('onCancel')">取消</el-button>
-    </div>
+    <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible=false">取 消</el-button>
+        <el-button type="primary" @click="onSave">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
+  import {MIXIN_EDIT} from "@/utils/mixin";
   import { PROPERTY_TABLE } from '@/utils/const'
   export default {
+    mixins: [MIXIN_EDIT],
     name: 'jobConfigEdit',
     props: ["jobConfigId", 'updateFlag'],
     data() {
@@ -231,7 +235,11 @@
         formData: {},
         dialogVisible: false,
         valueTypes: PROPERTY_TABLE,
-        jobTagData: []
+        jobTagData: [],
+        actions: {
+          getOne: 'jobConfig/getOne',
+          saveOne: 'jobConfig/updateOne'
+        }
       }
     },
     methods: {
@@ -340,32 +348,7 @@
           }
         }
       },
-      handleSave() {
-        var validFlag = false;
-        this.$refs["jobConfigForm"].validate(valid => {
-          if (!valid) {
-            validFlag = true;
-            return false;
-          }
-        });
-        if (validFlag) {
-          return;
-        }
-        let url = '';
-        if (this.updateFlag) {
-          url = 'jobConfig/updateOne';
-        } else {
-          url = 'jobConfig/addOne';
-        }
-        this.$store
-          .dispatch(url, {jobConfigId: this.jobConfigId, jobConfig: this.formData})
-          .then(() => {
-            this.$emit("onSave");
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      },
+      
     },
     created() {
       this.clearForm();

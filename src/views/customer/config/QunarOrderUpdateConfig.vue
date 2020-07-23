@@ -135,18 +135,23 @@
             }
         },
         created() {
-            this.merchantDomain = this.$route.query.domain;
-            this.openId = this.$route.query.openId;
-            this.merchantId = this.$route.query.firmId;
-            if (this.firmId) {
-                this.orderData.merchantId = this.firmId;
-            }
-            if (this.openId) {
-                this.orderData.openId = this.openId;
-            }
-            if (this.merchantDomain) {
-                this.loadOrderUpdate(this.merchantDomain);
-            }
+/*          this.merchantDomain = this.$route.query.domain;
+          this.openId = this.$route.query.openId;
+          this.merchantId = this.$route.query.firmId;*/
+
+          this.merchantDomain = localStorage.getItem("domain");
+          this.openId = localStorage.getItem("openId");
+          this.merchantId = localStorage.getItem("firmId");
+
+          if (this.firmId) {
+            this.orderData.merchantId = this.firmId;
+          }
+          if (this.openId) {
+            this.orderData.openId = this.openId;
+          }
+          if (this.merchantDomain) {
+            this.loadOrderUpdate(this.merchantDomain);
+          }
         }
     };
 </script>

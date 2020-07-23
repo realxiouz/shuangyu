@@ -2,7 +2,7 @@
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch"/>
       <el-row class="page-tools" style="margin-bottom:15px; margin-left:25px;">
-        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+        <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
       </el-row>
       <el-table
         class="page-table"
@@ -25,8 +25,8 @@
         <el-table-column label="操作" fixed="right" align="center" width="400">
           <template slot-scope="scope">
             <el-button type="primary" size="mini" @click="handleAddChild(scope.row.firmId)">添加子企业</el-button>
-            <el-button type="primary" size="mini" @click="handleEdit(scope.row.firmId)">编辑</el-button>
-            <el-button type="danger" size="mini" @click="onDel(scope.$index, scope.row)">删除</el-button>
+            <el-button type="primary" size="mini" @click="onEdit(scope.row.firmId)">编辑</el-button>
+            <el-button type="danger" size="mini" @click="onDel(scope.row.firmId)">删除</el-button>
             <el-button size="mini"
                        :type="scope.row.userId?'success':'info'"
                        :disabled="scope.row.userId?true:false"
@@ -36,29 +36,23 @@
         </el-table-column>
       </el-table>
       <el-pagination
-        class="page-footer"
-        @size-change="onSizeChange"
-        @prev-click="handlePrevClick"
-        @next-click="handleNextClick"
-        background
-        layout="total,sizes,prev,next"
-        prev-text="上一页"
-        next-text="下一页"
-        :page-size="pageSize"
-        :total="total"
+       class="page-footer"
+      background
+      prev-text="上一页"
+      next-text="下一页"
+      :total="total"
+      @prev-click="onPrev"
+      @next-click="onNext"
+      @size-change="onSizeChange"
+      layout="total,sizes,prev,next"
+      :page-size="pageSizes[0]"
+      :page-sizes="pageSizes"
       ></el-pagination>
 
       <!-- 表单对话框 -->
-      <el-dialog
-        :title="editFirmId?'编辑企业':'添加企业'"
-        center
-        :visible.sync="dialogVisible"
-        width="33%"
-        :close-on-click-modal="false"
-      >
-        <edit v-if="dialogVisible" :edit-firm-id="editFirmId"
-                   :pid="pid" @onSave="handleSave" @onCancel="handleCancel"/>
-      </el-dialog>
+      
+      <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" @refresh="onRefresh"></edit>
+      
 
       <!-- 员工查询弹窗 -->
       <el-dialog center title="关联用户" width="45%" :visible.sync="userDialogVisible" :close-on-click-modal="false">
@@ -116,72 +110,34 @@
 <script>
     import edit from "./Edit";
   import search from "./Search";
+  import {MIXIN_LIST} from "@/utils/mixin";
 
     export default {
+      mixins: [MIXIN_LIST],
         data() {
             return {
-                loading: true,
                 dialogVisible: false,
                 userDialogVisible: false,
                 pid: "",
                 staffId: "",
                 editFirmId: "",
-                tableData: [],
                 userData: {},
                 //关联用户时用于记录当前选中的用户对象
                 curRow: {},
-                pageFlag: 1,
-                pageSize: 10,
-                lastId: null,
-                total: 0,
+                firmId:'',
+                keyName:'firmId',
                 uploadData: {
                     tree: null,
                     treeNode: null,
                     resolve: null
+                },
+                actions: {
+                  getPageList: 'firm/getPageList',
+                  removeOne: 'firm/removeOne'
                 }
             };
         },
         methods: {
-            /*翻前页*/
-            handlePrevClick() {
-                this.pageFlag = -1;
-                this.lastId = this.tableData[0].firmId;
-                this.loadData();
-            },
-            /*翻后页*/
-            handleNextClick() {
-                this.pageFlag = 1;
-                this.lastId = this.tableData[this.tableData.length - 1].firmId;
-                this.loadData();
-            },
-            /*加载企业列表*/
-            loadData(params = {}) {
-                if (this.lastId) {
-                    params.lastId = this.lastId;
-                }
-                this.$store
-                    .dispatch("firm/getPageList", {
-                        pageFlag: this.pageFlag,
-                        pageSize: this.pageSize,
-                        filter: params
-                    })
-                    .then(data => {
-                        if (data) {
-                            this.tableData = data.rows;
-                            this.total = data.total;
-                        }
-                        this.loading = false;
-                    })
-                    .catch(error => {
-                        this.loading = false;
-                        console.log(error);
-                    });
-            },
-
-            onSizeChange(pageSize) {
-                this.pageSize = pageSize;
-                this.loadData();
-            },
             loadChildren(tree, treeNode, resolve) {
                 // tree为点击那一行的数据
                 this.uploadData.tree = tree;
@@ -201,27 +157,8 @@
             initGender(gender) {
                 return gender == 0 ? "男" : "女";
             },
-            /*根据关键字进行企业搜索*/
-            onSearch(params) {
-                const newParams = {};
-                if (params) {
-                    for (let key in params) {
-                        if (params[key]) {
-                            newParams[key] = params[key];
-                        }
-                    }
-                }
-                this.loadData(newParams);
-                this.$message({
-                    type: "success",
-                    message: "查询成功！"
-                });
-            },
-            handleAdd() {
-                this.editFirmId = ''
-                this.pid = ''
-                this.dialogVisible = true;
-            },
+            
+            
             //当前选中用户对象
             handleRowClick(row) {
                 this.curRow = row;
@@ -273,41 +210,6 @@
                         console.log(error);
                     });
             },
-            /*企业的添加、编辑保存*/
-            handleSave(formData) {
-                this.dialogVisible = false;
-                if (formData.firmId) {
-                    this.$store
-                        .dispatch("firm/updateOne", {id: formData.firmId, data: formData})
-                        .then(() => {
-                            this.$message({
-                                type: "success",
-                                message:
-                                    "企业账号更新成功!"
-                            });
-                            this.loadData();
-                            this.loadChildren(this.uploadData.tree, this.uploadData.treeNode, this.uploadData.resolve);
-                        })
-                        .catch(error => {
-                            console.log(error);
-                        });
-                } else {
-                    this.$store
-                        .dispatch("firm/addOne", {firm: formData})
-                        .then(() => {
-                            this.$message({
-                                type: "success",
-                                message:
-                                    "企业账号已添加成功!"
-                            });
-                            this.loadData();
-                            this.loadChildren(this.uploadData.tree, this.uploadData.treeNode, this.uploadData.resolve);
-                        })
-                        .catch(error => {
-                            console.log(error);
-                        });
-                }
-            },
             handleCancel() {
                 this.dialogVisible = false;
             },
@@ -317,57 +219,9 @@
                 this.editFirmId = "";
                 this.dialogVisible = true;
             },
-            /*点击编辑*/
-          handleEdit(firmId) {
-                this.editFirmId = firmId;
-                this.pid = "";
-                this.dialogVisible = true;
-            },
-            /*点击删除*/
-            onDel(index, row) {
-                this.open(
-                    this.remove,
-                    row.firmId,
-                    "此操作将删除该企业信息及子企业信息, 是否继续?"
-                );
-            },
-            /*删除企业数据*/
-            remove(params) {
-                this.$store
-                    .dispatch("firm/removeOne", {firmID: params})
-                    .then(() => {
-                        this.loadData();
-                        this.loadChildren(this.uploadData.tree, this.uploadData.treeNode, this.uploadData.resolve);
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            open(func, data, message) {
-                this.$confirm(message, "提示", {
-                    confirmButtonText: "确定",
-                    cancelButtonText: "取消",
-                    type: "warning"
-                })
-                    .then(() => {
-                        func(data);
-                        this.loadData();
-                        this.$message({
-                            type: "success",
-                            message: "删除成功!"
-                        });
-                    })
-                    .catch(() => {
-                        this.$message({
-                            type: "info",
-                            message: "已取消删除"
-                        });
-                    });
-            }
+           
         },
-        mounted() {
-            this.loadData();
-        },
+        
         components: {
       edit,
       search

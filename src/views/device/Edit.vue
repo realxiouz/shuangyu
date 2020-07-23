@@ -1,6 +1,6 @@
 <template>
   <div class="page-form">
-    <el-dialog title="添加" :visible.sync="dialogVisible" @open="handleOpen" @close="handleClose">
+    <el-dialog :title="keyId!=''?'编辑':'添加'" :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
       <el-form label-position="top" size="mini" :model="formData" ref="deviceForm">
         <el-col :span="24">
           <el-form-item label="设备名称" prop="deviceName">
@@ -119,13 +119,15 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible=false">取 消</el-button>
-        <el-button type="primary" @click="handleSave">确 定</el-button>
+        <el-button type="primary" @click="onSave">确 定</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 <script>
+  import {MIXIN_EDIT} from "@/utils/mixin";
   export default {
+    mixins: [MIXIN_EDIT],
     props: {
       visible: {
         type: Boolean,
@@ -140,7 +142,12 @@
       return {
         dialogVisible: false,
         formData: this.defaultFormData(),
-        thingsProjectData: []
+        thingsProjectData: [],
+        validate:'',
+        actions: {
+          getOne: 'device/getOne',
+          saveOne: 'device/saveOne'
+        }
       };
     },
     watch: {

@@ -6,7 +6,7 @@
         <template slot-scope="props">
           <el-row>
             <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="2" v-for="(item,index) in props.row.configNavList" :key="index">
-              <el-button  type="primary" @click="detailsOnClick(item.configNavName, props.row)">{{ item.configNavName }}</el-button>
+              <el-button  type="primary" @click="detailsOnClick(item.configNavUrl, props.row)">{{ item.configNavName }}</el-button>
             </el-col>
           </el-row>
         </template>
@@ -54,11 +54,21 @@
         }
         return firmName;
       },
-      detailsOnClick(configNavName, item) {
-        this.$router.push(
+      detailsOnClick(configNavUrl, item) {
+        let lastName = this.$router.history.current.name;
+        localStorage.setItem("lastName", lastName);
+        localStorage.setItem("domain", item.firm.domain);
+        localStorage.setItem("firmId", item.firm.firmId);
+        localStorage.setItem("openId", item.openId);
+/*        this.$router.push(
           {
             name: configNavName,
-            params: {domain: item.firm.domain, openId: item.openId, firmId: item.firm.firmId}
+            params: {domain: item.firm.domain, firmId: item.firm.firmId, openId: item.openId}
+          }
+        );*/
+        this.$router.push(
+          {
+            path: configNavUrl
           }
         );
       }

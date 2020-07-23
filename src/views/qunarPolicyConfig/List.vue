@@ -54,41 +54,32 @@
           getPageList: 'qunarPolicyConfig/getPageList',
           removeOne: 'qunarPolicyConfig/removeOne'
         },
-        params: {
-          firmId: this.fillFirmId(),
-          openId: this.fillOpenId()
-        },
-        firmId: null,
-        openId: null
+        firmId: localStorage.getItem("firmId"),
+        openId: localStorage.getItem("openId"),
+        params: this.fillParams(),
       };
-    },
-    watch: {
-      fill() {
-
-      }
     },
     methods: {
       onBack(){
-        if (this.$router.history.length <= 1) {
-          this.$router.push({path: '/home'});
-          return false;
-        } else {
+        let lastName = localStorage.getItem("lastName");
+        if(lastName){
+          this.$router.push({name: lastName,});
+          localStorage.removeItem("lastName");
+        }else{
           this.$router.go(-1);
         }
       },
-      fillFirmId(){
-        let firmId = null;
-        if(this.$route.params.firmId){
-          firmId = this.$route.params.firmId;
+      fillParams(){
+        let params = {};
+        if(localStorage.getItem("firmId")){
+          params.firmId = localStorage.getItem("firmId");
+       //   params.firmId = this.$route.params.firmId;
         }
-        return firmId;
-      },
-      fillOpenId(){
-        let openId = null;
-        if(this.$route.params.openId){
-          openId = this.$route.params.openId;
+        if(localStorage.getItem("openId")){
+          params.openId = localStorage.getItem("openId");
+        //  params.openId = this.$route.params.openId;
         }
-        return openId;
+        return params;
       }
     },
     components: {

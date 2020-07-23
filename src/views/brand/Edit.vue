@@ -1,6 +1,6 @@
 <template>
   <div class="page-form">
-    <el-dialog :title="keyId=''?'编辑品牌信息':'添加品牌信息'" :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
+    <el-dialog :title="keyId!=''?'编辑品牌信息':'添加品牌信息'" :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
       <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
         <el-form-item label="品牌编码：" prop="brandCode">
           <el-input v-model="formData.brandCode" placeholder="请输入品牌编码.."></el-input>

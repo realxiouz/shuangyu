@@ -3,7 +3,8 @@ import {
   saveOne,
   getList,
   getPageList,
-  removeOne
+  removeOne,
+  save
 } from '@/api/qunarPolicyAttr';
 import {getToken} from "@/utils/auth";
 
@@ -81,6 +82,18 @@ const actions = {
     return new Promise((resolve, reject) => {
       const { policyAttrId } = args;
       removeOne(policyAttrId)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  // eslint-disable-next-line no-unused-vars
+  save({ commit }, args) {
+    return new Promise((resolve, reject) => {
+      save(args)
         .then(response => {
           resolve(response);
         })
