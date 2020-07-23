@@ -15,6 +15,7 @@
       <el-table-column label="平台名称" align="center" prop="openName" />
       <el-table-column label="属性编码" align="center" prop="code" />
       <el-table-column label="属性名称" align="center" prop="name" />
+      <el-table-column label="数据类型" align="center" prop="valueType" :formatter="formatValueType" />
       <el-table-column label="是否必填" align="center" prop="required">
         <template slot-scope="scope">
           <span> {{scope.row.required ? '是' : '否'}}</span>
@@ -72,7 +73,45 @@
         actions: {
           getPageList: 'openPolicyAttr/getPageList',
           removeOne: 'openPolicyAttr/removeOne'
-        }
+        },
+        valueTypes: [
+          {
+            value: 0,
+            label: '文本'
+          },
+          {
+            value: 1,
+            label: '开关'
+          },
+          {
+            value: 2,
+            label: '数字'
+          },
+          {
+            value: 3,
+            label: '日期'
+          },
+          {
+            value: 4,
+            label: '日期时间'
+          },
+          {
+            value: 5,
+            label: '时间'
+          },
+          {
+            value: 6,
+            label: '评分'
+          },
+          {
+            value: 7,
+            label: '单选'
+          },
+          {
+            value: 8,
+            label: '多选'
+          }
+        ],
       };
     },
     methods: {
@@ -84,6 +123,15 @@
         }else{
           this.$router.go(-1);
         }
+      },
+      formatValueType(row){
+        let valueType = '';
+        this.valueTypes.forEach(function(obj){
+          if(row.valueType === obj.value){
+            valueType = obj.label;
+          }
+        });
+        return valueType;
       }
     },
     components: {

@@ -1,8 +1,8 @@
 <template>
   <el-row type="flex" justify="space-between" align="bottom">
     <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
-      <el-form :model="formData" label-width="110px" size="mini">
-        <!--<el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+      <el-form :model="formData" label-width="80px" size="mini">
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="标签类别:">
             <el-select
               v-model="formData.tagType"
@@ -18,17 +18,47 @@
               ></el-option>
             </el-select>
           </el-form-item>
-        </el-col>-->
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="标签编码:">
+            <el-input
+              clearable
+              placeholder="请输入标签编码..."
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.tagCode"
+            ></el-input>
+          </el-form-item>
+        </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="标签名称:">
-            <el-input clearable v-model="formData.tagName" placeholder="标签名称..."></el-input>
+            <el-input
+              clearable
+              placeholder="请输入标签名称..."
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.tagName"
+            ></el-input>
           </el-form-item>
-        </el-col >
-        <!--<el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="标签编码:">
-            <el-input clearable v-model="formData.tagCode" placeholder="标签编码..."></el-input>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="属性编码:">
+            <el-input
+              clearable
+              placeholder="请输入属性编码..."
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.code"
+            ></el-input>
           </el-form-item>
-        </el-col>-->
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="属性名称:">
+            <el-input
+              clearable
+              placeholder="请输入属性名称..."
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.name"
+            ></el-input>
+          </el-form-item>
+        </el-col>
       </el-form>
     </el-col>
     <el-col :xs="8" :sm="6" :md="6" :lg="4" :xl="4" class="search-tools">
@@ -37,9 +67,16 @@
         class="filter-item"
         type="primary"
         size="mini"
-        @click="toSearch"
+        @click="onSearch"
       >查询
       </el-button>
+      <el-button
+        icon="el-icon-refresh"
+        class="filter-item"
+        type="primary"
+        size="mini"
+        @click="handleClear"
+      >清空</el-button>
       <el-button type="text" size="mini" @click="handleMore">
         更多
         <i :class="switchIcon"></i>
@@ -49,19 +86,29 @@
 </template>
 <script>
   export default {
-    name: "jobConfigSearch",
+    name: "search",
     data() {
       return {
         more: false,
         formData: {
-          tagName: "",
-          tagCode: "",
-          tagType: "",
+          tagType: null,
+          tagCode: null,
+          tagName: null,
+          code: null,
+          name: null
         },
         tagTypes:[
           {
             label:"工厂",
             value:1
+          },
+          {
+            label:"政策",
+            value:2
+          },
+          {
+            label:"其他",
+            value:9
           }
         ]
       };
@@ -76,19 +123,25 @@
       }
     },
     methods: {
+      initSearchForm() {
+        return {
+          tagType: null,
+          tagCode: null,
+          tagName: null,
+          code: null,
+          name: null
+        };
+      },
+      onSearch() {
+        this.$emit("onSearch", this.formData);
+      },
+      handleClear() {
+        this.formData = this.initSearchForm();
+        this.onSearch();
+      },
       handleMore() {
         this.more = !this.more;
-      },
-      toSearch() {
-        let data = {};
-        for (var attr in this.formData) {
-          if (this.formData[attr] != null && this.formData[attr] != undefined && this.formData[attr] != '') {
-            data[attr] = this.formData[attr];
-          }
-        }
-        this.$emit("onSearch", data);
-      },
-
+      }
     }
   };
 </script>

@@ -1,68 +1,39 @@
 import request from '@/utils/request';
 
-export function addOne(data) {
+export function getOne(params) {
   return request({
-    url: `/job/tag/add/one`,
+    url: `/job/tag/one/${params.tagId}`,
+    method: 'get'
+  });
+}
+
+export function saveOne(data) {
+  return request({
+    url: '/job/tag/save/one',
     method: 'post',
     data
   });
 }
 
-export function removeOne(jobTagId) {
+export function getList(params) {
   return request({
-    url: `/job/tag/remove/one/${jobTagId}`,
-    method: 'delete'
-  });
-}
-
-export function updateOne(jobTagId, data) {
-  return request({
-    url: `/job/tag/update/one/${jobTagId}`,
-    method: 'put',
-    data
-  });
-}
-
-export function updateMany(filter, data) {
-  return request({
-    url: `/job/tag/update/many`,
-    method: 'put',
-    params: filter,
-    data
-  });
-}
-
-export function getOne(jobTagId) {
-  return request({
-    url: `/job/tag/one/${jobTagId}`,
-    method: 'get'
-  });
-}
-
-export function getList(filter) {
-  return request({
-    url: '/job/tag/list',
-    method: 'get',
-    params: filter
-  });
-}
-
-export function getTotal(filter) {
-  return request({
-    url: `/job/tag/total`,
-    method: 'get',
-    params: filter
-  });
-}
-
-export function getPageList(args) {
-  const {pageFlag, pageSize, ...params} = args;
-  return request({
-    url: `/job/tag/page/list/${pageFlag}/${pageSize}`,
+    url: `/job/tag/list`,
     method: 'get',
     params
   });
 }
 
+export function getPageList(params) {
+  return request({
+    url: `/job/tag/page/list/${params.pageFlag}/${params.pageSize}`,
+    method: 'get',
+    params
+  });
+}
 
-
+export function removeOne(data) {
+  return request({
+    url: `/job/tag/remove/one/${data.tagId}`,
+    method: 'delete'
+  });
+}
