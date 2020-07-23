@@ -78,6 +78,7 @@ import voucher from "./modules/voucher";
 import voucherTemplate from "./modules/voucherTemplate";
 import voucherRecord from "./modules/voucherRecord";
 import microserver from "./modules/microserver";
+import openPolicyAttr from "./modules/openPolicyAttr";
 
 import {getLoginInfo} from "@/api/staff";
 
@@ -162,6 +163,7 @@ export default new Vuex.Store({
     voucherRecord,
     voucherTemplate,
     microserver,
+    openPolicyAttr
   },
   state: {
     loginInfo: {}

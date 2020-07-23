@@ -1,36 +1,27 @@
 <template>
   <div class="page-form">
-    <el-dialog title="政策接口参数管理" width="50%" center :visible.sync="dialogVisible" @open="handleOpen" @close="handleClose">
+    <el-dialog :title="'设置政策参数管理'"  width="50%" center :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
       <el-form ref="form" label-width="110px" size="mini" :model="formData" :rules="rules">
         <el-row class="el-row-item">
           <el-col :span="12">
-            <el-form-item label="排列序号：" prop="sort">
-              <el-input-number v-model="formData.sort" placeholder="请输入排列序号" :min="1" :step="1" style="width: 100%;" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="属性分组：" prop="group">
-              <el-input v-model="formData.group" placeholder="请输入属性分组" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
             <el-form-item label="属性编码：" prop="code">
-              <el-input v-model="formData.code" placeholder="请输入属性编码" />
+              <el-input v-model="formData.code" placeholder="请输入属性编码" :disabled="true" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="属性名称：" prop="name">
-              <el-input v-model="formData.name" placeholder="请输入属性名称" />
+              <el-input v-model="formData.name" placeholder="请输入属性名称" :disabled="true" />
             </el-form-item>
           </el-col>
+        </el-row>
+
+        <el-row class="el-row-item">
           <el-col :span="12">
             <el-form-item label="数据类型：" prop="valueType">
               <el-select
                 v-model="formData.valueType"
-                clearable
-                placeholder="请选择数据类型"
                 style="width: 100%"
-                @change="handleValueType"
+                :disabled="true"
               >
                 <el-option
                   v-for="item in valueTypes"
@@ -41,147 +32,120 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="12" v-if="formData.valueType === 0 && formData.inputType === 'text'">
             <el-form-item label="默认数值：" prop="defaultValue">
               <el-input v-model="formData.defaultValue" placeholder="请输入默认数值" />
             </el-form-item>
           </el-col>
-          <el-col :span="12" v-if="formData.valueType === 0">
-            <el-form-item label="文本类型：" prop="inputType">
-              <el-select
-                v-model="formData.inputType"
-                clearable
-                placeholder="请选择文本类型"
-                style="width: 100%"
-                @change="handleInputType"
+          <el-col :span="12" v-if="formData.valueType === 0 && formData.inputType === 'textarea'">
+            <el-form-item label="默认数值：" prop="defaultValue">
+              <el-input v-model="formData.defaultValue" placeholder="请输入默认数值" type="textarea" :rows="3" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="6" v-if="formData.valueType === 1">
+            <el-form-item label="默认数值：" prop="defaultValue">
+              <el-switch v-model="formData.defaultValue" @click="handleValue"></el-switch>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" v-if="formData.valueType === 2">
+            <el-form-item label="默认数值：" prop="defaultValue">
+              <el-input-number v-model="formData.defaultValue" placeholder="请输入默认数值" :min="formData.min" :max="formData.max" :step="formData.step" :precision="formData.precision" style="width: 100%;" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" v-if="formData.valueType === 3">
+            <el-form-item label="默认数值：" prop="defaultValue">
+              <el-date-picker
+                v-model="formData.defaultValue"
+                :format="formData.format"
+                type="date"
+                placeholder="请选择默认数值"
+                style="width: 100%;"
               >
-                <el-option label="输入框" value="text"></el-option>
-                <el-option label="文本域" value="textarea"></el-option>
+              </el-date-picker>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" v-if="formData.valueType === 4">
+            <el-form-item label="默认数值：" prop="defaultValue">
+              <el-date-picker
+                v-model="formData.defaultValue"
+                :format="formData.format"
+                type="time"
+                placeholder="请选择默认数值"
+                style="width: 100%;"
+              >
+              </el-date-picker>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" v-if="formData.valueType === 5">
+            <el-form-item label="默认数值：" prop="defaultValue">
+              <el-time-picker
+                v-model="formData.defaultValue"
+                :format="formData.format"
+                placeholder="请选择默认数值"
+                style="width: 100%;"
+              >
+              </el-time-picker>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" v-if="formData.valueType === 6">
+            <el-form-item label="默认数值：" prop="defaultValue">
+              <el-input v-model="formData.defaultValue" placeholder="请输入默认数值" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" v-if="formData.valueType === 7">
+            <el-form-item label="默认数值：" prop="defaultValue">
+              <el-select
+                v-model="formData.defaultValue"
+                placeholder="请选择默认数值"
+                style="width: 100%"
+              >
+                <el-option
+                  v-for="item in formData.attributes"
+                  :key="item.code"
+                  :label="item.name"
+                  :value="item.code"
+                ></el-option>
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="12" v-if="formData.valueType === 0">
-            <el-form-item label="文本长度：" prop="length">
-              <el-input-number v-model="formData.length" placeholder="请输入文本长度" :min="0" :step="1" style="width: 100%;" />
+          <el-col :span="12" v-if="formData.valueType === 8">
+            <el-form-item label="默认数值：" prop="defaultValue">
+              <el-select
+                v-model="formData.defaultValue"
+                placeholder="请选择默认数值"
+                style="width: 100%"
+                multiple
+              >
+                <el-option
+                  v-for="item in formData.attributes"
+                  :key="item.code"
+                  :label="item.name"
+                  :value="item.code"
+                ></el-option>
+              </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="12" v-if="formData.valueType === 2">
-            <el-form-item label="最小数值：" prop="min">
-              <el-input-number v-model="formData.min" placeholder="请输入最小数值" :min="0" :step="1" style="width: 100%;" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12" v-if="formData.valueType === 2">
-            <el-form-item label="最大数值：" prop="max">
-              <el-input-number v-model="formData.max" placeholder="请输入最大数值" :min="0" :step="1" style="width: 100%;" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12" v-if="formData.valueType === 2">
-            <el-form-item label="步长数值：" prop="step">
-              <el-input-number v-model="formData.step" placeholder="请输入步长数值" :min="0" :step="1" style="width: 100%;" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12" v-if="formData.valueType === 2">
-            <el-form-item label="精度数值：" prop="precision">
-              <el-input-number v-model="formData.precision" placeholder="请输入精度数值" :min="0" :step="1" style="width: 100%;" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="24" v-if="formData.valueType === 3">
-            <el-form-item label="日期格式：" prop="format">
-              <el-input v-model="formData.format" placeholder="请输入日期格式" readonly disabled />
-            </el-form-item>
-          </el-col>
-          <el-col :span="24" v-if="formData.valueType === 4">
-            <el-form-item label="日期时间格式：" prop="format">
-              <el-input v-model="formData.format" placeholder="请输入日期时间格式" readonly disabled />
-            </el-form-item>
-          </el-col>
-          <el-col :span="24" v-if="formData.valueType === 5">
-            <el-form-item label="时间格式：" prop="format">
-              <el-input v-model="formData.format" placeholder="请输入时间格式" readonly disabled />
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row class="el-row-item" v-if="formData.valueType === 7 || formData.valueType === 8 || formData.valueType === 9">
-          <el-row
-            id="attributeCode"
-            v-for="(attribute, index) in formData.attributes"
-            :gutter="10"
-            :key="attribute.code"
-          >
-            <el-col :span="10">
-              <el-form-item label="标签编码：">
-                <el-input v-model="attribute.code" placeholder="请输入标签编码" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="10">
-              <el-form-item label="标签描述：">
-                <el-input v-model="attribute.name" placeholder="请输入标签描述" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="4">
-              <el-form-item label-width="3px">
-                <el-button
-                  v-if="index === 0"
-                  type="primary"
-                  icon="el-icon-circle-plus-outline"
-                  @click="addAttributes"
-                ></el-button>
-                <el-button
-                  v-if="index !== 0"
-                  type="danger"
-                  icon="el-icon-remove-outline"
-                  @click="deleteAttributes(index)"
-                ></el-button>
-              </el-form-item>
-            </el-col>
-          </el-row>
         </el-row>
 
         <el-row class="el-row-item">
           <el-col :span="6">
             <el-form-item label="是否必填：" prop="required">
-              <el-switch v-model="formData.required" @click="handleRequired"></el-switch>
+              <el-switch v-model="formData.required" :disabled="true"></el-switch>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="是否只读：" prop="readonly">
-              <el-switch v-model="formData.readonly" @click="handleReadonly"></el-switch>
+              <el-switch v-model="formData.readonly" :disabled="true"></el-switch>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="是否禁用：" prop="disabled">
-              <el-switch v-model="formData.disabled" @click="handleDisabled"></el-switch>
+              <el-switch v-model="formData.disabled" :disabled="true"></el-switch>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="是否隐藏：" prop="hidden">
-              <el-switch v-model="formData.hidden" @click="handleHidden"></el-switch>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row class="el-row-item">
-          <el-col :span="24">
-            <el-form-item label="备注内容：" prop="remark">
-              <el-input
-                v-model="formData.remark"
-                type="textarea"
-                placeholder="请输入备注内容"
-                :rows="2"
-                >
-              </el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="24">
-            <el-form-item label="描述内容：" prop="description">
-              <el-input
-                v-model="formData.description"
-                type="textarea"
-                placeholder="请输入描述内容"
-                :rows="2"
-                >
-              </el-input>
+              <el-switch v-model="formData.hidden" :disabled="true"></el-switch>
             </el-form-item>
           </el-col>
         </el-row>
@@ -189,58 +153,35 @@
         <el-row class="el-row-item" v-if="formData.checkPolicyTags">
           <el-col :span="24">
             <el-form-item label="政策类型：" prop="checkedPolicyTags">
-              <el-checkbox :indeterminate="formData.isIndeterminate" v-model="formData.checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-              <el-checkbox-group v-model="formData.checkedPolicyTags" @change="handleCheckedChange">
-                <el-checkbox v-for="checkPolicy in formData.checkPolicyTags" :label="checkPolicy" :key="checkPolicy">{{checkPolicy}}</el-checkbox>
+              <el-checkbox :indeterminate="formData.isIndeterminate" v-model="formData.checkAll" :disabled="true">全选</el-checkbox>
+              <el-checkbox-group v-model="formData.checkedPolicyTags">
+                <el-checkbox v-for="checkPolicy in formData.checkPolicyTags" :label="checkPolicy" :key="checkPolicy" :disabled="true">{{checkPolicy}}</el-checkbox>
               </el-checkbox-group>
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
       <div style="text-align:right;">
-        <el-button size="mini" @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" size="mini" @click="handleSave">确 定</el-button>
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="onSave">确 定</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 <script>
+  import {MIXIN_EDIT} from "@/utils/mixin";
   export default {
-    props: {
-      visible: {
-        type: Boolean,
-        default: false
-      },
-      editPolicyAttrId: {
-        type: String,
-        default: null
-      },
-      openId: {
-        type: String,
-        default: null
-      }
-    },
+    mixins: [MIXIN_EDIT],
     data() {
-      const numberValidator = (rule, value, callback) => {
-        let reg = /^[0-9]*$/g;
-        if (reg.test(value)) {
-          callback();
-        } else {
-          callback(new Error("只能输入数字！"));
-        }
-      };
-      const codeValidator = (rule, value, callback) => {
-        let reg = /^[0-9a-zA-Z_]*$/g;
-        if (reg.test(value)) {
-          callback();
-        } else {
-          callback(new Error("只能输入字母或数字！"));
-        }
-      };
       return {
         dialogVisible: false,
-        formData: this.defaultFormData(),
-        merchant: null,
+        codeEnable: false,
+        actions: {
+          getOne: 'openPolicyAttr/getOne',
+          saveOne: 'qunarPolicyAttr/save'
+        },
+        firmId: null,
+        queryPolicyTags: [],
         backupPolicyTags: [
           {
             value: 'ONE_WAY_GENERAL_POLICY',
@@ -327,89 +268,33 @@
           {
             value: 8,
             label: '多选'
-          },
-          {
-            value: 9,
-            label: '选择器'
           }
         ],
         rules: {
-          sort: [
-            {required: true, message: "请输入排列序号"},
-            {validator: numberValidator, trigger: 'blur'}
-          ],
-          group: [
-            {required: true, message: "请输入属性分组"},
-            {
-              min: 1,
-              max: 30,
-              message: "长度在 1到 30 个字符"
-            }
-          ],
-          code: [
-            {required: true, message: "请输入属性编码"},
-            {
-              min: 1,
-              max: 30,
-              message: "长度在 1到 30 个字符"
-            },
-            {validator: codeValidator, trigger: 'blur'}
-          ],
-          name: [
-            {required: true, message: "请输入属性名称"},
-            {
-              min: 1,
-              max: 30,
-              message: "长度在 1到 30 个字符"
-            }
-          ],
-          valueType: [
-            {required: true, message: "请选择数据类型"}
-          ],
-          checkedPolicyTags: [
-            {required: true, message: "请选择政策类型"}
-          ]
+
         }
       };
     },
-    watch: {
-      visible(val) {
-        this.dialogVisible = val;
-        if (val) {
-          if (this._.isEmpty(this.editPolicyAttrId)) {
-            this.formData = this.defaultFormData();
-          } else {
-            this.loadData();
-          }
-          if(this.openId){
-            this.loadMerchant();
-          }
-        }
-      }
-    },
     methods: {
-      handleValueType(val){
-        if(val){
-          this.formData.valueType = val;
-
-          if(this.formData.valueType === 3){
-            this.formData.format = 'yyyy-MM-dd';
-          }else if(this.formData.valueType === 4){
-            this.formData.format = 'yyyy-MM-dd HH:mm:ss';
-          }else if(this.formData.valueType === 5){
-            this.formData.format = 'HH:mm:ss';
-          }
-        }
+      loadFirm(firmId){
+        this.$store.dispatch('firm/getOne', {firmId: firmId})
+          .then(data => {
+            if(data){
+              this.formData.firmId = data.firmId;
+              this.formData.firmName = data.firmName;
+            }
+          });
       },
-      handleInputType(val){
-        if(val){
-          this.formData.inputType = val;
-        }
+      loadQunarPolicyAttr(){
+        this.$store.dispatch('qunarPolicyAttr/getList', {code: this.formData.code})
+          .then(data => {
+            if(data && data.length > 0 && data[0].defaultValue){
+              this.formData.defaultValue = data[0].defaultValue;
+            }
+          });
       },
-      handleCheckAllChange(flag) {
-        this.formData.checkedPolicyTags = flag ? this.formData.checkPolicyTags : [];
-        this.formData.isIndeterminate = flag;
-        this.handleCheckFill();
+      handleValue(){
+        this.formData.defaultValue = !this.formData.defaultValue;
       },
       handleCheckedChange(val) {
         let checkedCount = val.length;
@@ -431,151 +316,44 @@
           });
         }
       },
-      handleOpen() {
-        this.$emit('update:visible', true);
-      },
-      handleClose() {
-        this.$emit('update:visible', false);
-      },
-      handleRequired(){
-        this.formData.required = !this.formData.required;
-      },
-      handleReadonly(){
-        this.formData.readonly = !this.formData.readonly;
-      },
-      handleDisabled(){
-        this.formData.disabled = !this.formData.disabled;
-      },
-      handleHidden(){
-        this.formData.hidden = !this.formData.hidden;
-      },
-      handleCheckForm(){
-        let flag = true;
-        let msg = '';
-
-        if(this.formData.valueType === 0){
-          if(!this.formData.inputType){
-            flag = false;
-            msg = '请输入文本类型';
-          }
-          if(!this.formData.length){
-            flag = false;
-            msg = '请输入文本长度';
-          }
-        }
-
-        if(this.formData.valueType === 2){
-          if(null === this.formData.min || '' === this.formData.min){
-            flag = false;
-            msg = '请输入最小数值';
-          }
-          if(null === this.formData.max || '' === this.formData.max){
-            flag = false;
-            msg = '请输入最大数值';
-          }
-          if(null === this.formData.step || '' === this.formData.step){
-            flag = false;
-            msg = '请输入步长数值';
-          }
-          if(null === this.formData.precision || '' === this.formData.precision){
-            flag = false;
-            msg = '请输入精度数值';
-          }
-        }
-
-        if(this.formData.valueType === 3){
-          if(!this.formData.format){
-            flag = false;
-            msg = '请输入日期格式';
-          }
-        }
-
-        if(this.formData.valueType === 4){
-          if(!this.formData.format){
-            flag = false;
-            msg = '请输入日期时间格式';
-          }
-        }
-
-        if(this.formData.valueType === 5){
-          if(!this.formData.format){
-            flag = false;
-            msg = '请输入时间格式';
-          }
-        }
-
-        if(this.formData.attributes && this.formData.attributes.length > 0){
-          if(this.formData.valueType === 7 || this.formData.valueType === 8 || this.formData.valueType === 9){
-            let attributes = this.formData.attributes;
-            attributes.forEach(function(obj){
-              if(!obj.name){
-                flag = false;
-                msg = '请输入标签描述';
-              }
-              if(!obj.code){
-                flag = false;
-                msg = '请输入标签编码';
+      beforeLoadData(data){
+        let that = this;
+        data.isIndeterminate = that.defaultFormData().isIndeterminate;
+        data.checkAll = that.defaultFormData().checkAll;
+        data.checkedPolicyTags = that.defaultFormData().checkedPolicyTags;
+        data.checkPolicyTags = that.defaultFormData().checkPolicyTags;
+        if(data && data.policyTags && data.policyTags.length > 0){
+          data.policyTags.forEach(function(value){
+            that.backupPolicyTags.forEach(function(backupPolicyTag){
+              if(value === backupPolicyTag.value){
+                that.queryPolicyTags.push(backupPolicyTag.label);
               }
             });
-          }else{
-            this.formData.attributes = null;
-          }
+          });
         }
-
-        if(!flag){
-          this.$message({type: "warning", message: msg});
+        if(!data.attributes){
+          data.attributes = that.defaultFormData().attributes;
         }
-        return flag;
-      },
-      handleSave() {
-        this.$refs["form"].validate(valid => {
-          if(!this.openId){
-            this.$message({type: "warning", message: "开放平台主键丢失"});
-            return;
-          }
-          if(this.merchant){
-            this.formData.merchantId = this.merchant.merchantId;
-          }
-
-          if (valid && this.handleCheckForm()) {
-            this.$store
-              .dispatch("qunarPolicyAttr/saveOne", this.formData)
-              .then(() => {
-                if (!this._.isEmpty(this.editPolicyAttrId)) {
-                  this.formData.policyAttrId = this.editPolicyAttrId;
-                }
-                this.dialogVisible = false;
-                this.$emit('refresh');
-                this.$message({type: "success", message: "保存成功"});
-              });
-          }else{
-            let that = this;
-            let timer = window.setTimeout(function(){
-              that.$nextTick(function () {
-                that.$refs['form'].clearValidate();
-                window.clearTimeout(timer);
-              });
-            }, 1000);
-          }
-        });
-      },
-      addAttributes(){
-        this.formData.attributes.push({
-          code: null,
-          name: null
-        });
-      },
-      deleteAttributes(index){
-        if(index){
-          this.formData.attributes.splice(parseInt(index), 1);
+        if(data.valueType === 8 && data.defaultValue){
+          data.defaultValue = [data.defaultValue];
         }
+        return data;
+      },
+      afterLoadData(){
+        let firmId = localStorage.getItem("firmId");
+        if(firmId){
+          this.loadFirm(firmId);
+        }
+        this.loadQunarPolicyAttr();
+        this.handleCheckedChange(this.queryPolicyTags);
       },
       defaultFormData() {
         return {
           policyAttrId: null,
-          policyTags: [],
           sort: null,
-          group: null,
+          firmId: null,
+          firmName: null,
+          policyTags: [],
           code: null,
           name: null,
           valueType: null,
@@ -598,7 +376,6 @@
           readonly: false,
           disabled: false,
           hidden: false,
-          description: null,
           merchantId: null,
           isIndeterminate: false,
           checkAll: false,
@@ -618,39 +395,6 @@
             '新包机切位单程'
           ]
         };
-      },
-      loadMerchant() {
-        this.$store
-          .dispatch("firm/getConfigOne", {openId: this.openId})
-          .then(data => {
-            this.merchant = data;
-          });
-      },
-      loadData() {
-        this.$store
-          .dispatch("qunarPolicyAttr/getOne", {policyAttrId: this.editPolicyAttrId})
-          .then(data => {
-            let that = this;
-            let queryPolicyTags = [];
-            data.isIndeterminate = that.defaultFormData().isIndeterminate;
-            data.checkAll = that.defaultFormData().checkAll;
-            data.checkedPolicyTags = that.defaultFormData().checkedPolicyTags;
-            data.checkPolicyTags = that.defaultFormData().checkPolicyTags;
-            if(data && data.policyTags && data.policyTags.length > 0){
-              data.policyTags.forEach(function(value){
-                that.backupPolicyTags.forEach(function(backupPolicyTag){
-                  if(value === backupPolicyTag.value){
-                    queryPolicyTags.push(backupPolicyTag.label);
-                  }
-                });
-              });
-            }
-            if(!data.attributes){
-              data.attributes = that.defaultFormData().attributes;
-            }
-            that.formData = data;
-            that.handleCheckedChange(queryPolicyTags);
-          });
       }
     }
   };
