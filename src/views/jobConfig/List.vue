@@ -2,7 +2,7 @@
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch"/>
       <el-row class="page-tools" style="margin-bottom:15px; margin-left:38px;">
-        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+        <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
       </el-row>
       <el-table
         class="page-table"
@@ -51,68 +51,56 @@
         <el-table-column prop="remark" label="备注" align="center"></el-table-column>
         <el-table-column label="操作" fixed="right" align="center" width="330">
           <template slot-scope="scope">
-            <el-button @click="onEdit(scope.row)" type="primary" size="mini">编辑</el-button>
-            <el-button @click="removeOne(scope.row.configId)" type="danger" size="mini">删除</el-button>
+            <el-button @click="onEdit(scope.row.configId)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="onDel(scope.row.configId)" type="danger" size="mini">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
       <el-pagination
         class="page-footer"
         background
-        layout="total,prev,next"
         prev-text="上一页"
         next-text="下一页"
-        :page-size="pageSize"
         :total="total"
+        @prev-click="onPrev"
+        @next-click="onNext"
         @size-change="onSizeChange"
-        @prev-click="handlePrevClick"
-        @next-click="handleNextClick"
+        layout="total,sizes,prev,next"
+        :page-size="pageSizes[0]"
+        :page-sizes="pageSizes"
       ></el-pagination>
-      <el-dialog
-        :title="updateFlag?'更新':'新增'"
-        center
-        :visible.sync="dialogVisible"
-        width="55%"
-        ref="job-config-edit"
-        :close-on-click-modal="false"
-      >
-        <edit
-          v-if="dialogVisible"
-          ref="form"
-          :job-config-id="configId"
-          :update-flag="updateFlag"
-          @onSave="handleSave"
-          @onCancel="handleCancel"
-        ></edit>
-      </el-dialog>
+      
+        <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" @refresh="onRefresh"></edit>
+      
     </div>
 </template>
 
 <script>
   import edit from "./Edit";
   import search from "./Search";
+  import {MIXIN_LIST} from "@/utils/mixin";
   import { PROPERTY_TABLE } from '@/utils/const';
   export default {
+    mixins: [MIXIN_LIST],
     name: "jobConfigList",
     data() {
       return {
         dialogVisible: false,
-        updateFlag: false,
         configId: "",
-        pageFlag: 1,
-        pageSize: 10,
-        lastId: null,
-        total: 0,
-        tableData: [],
+        keyId:'',
+        keyName:'configId',
         valueTypes: PROPERTY_TABLE,
+        actions: {
+          getPageList: 'jobConfig/getPageList',
+          removeOne: 'jobConfig/removeOne'
+        },
         tagTypes: [
           {
             label: "工厂",
             value: 1
           }
         ],
-        loading: true,
-        params:{}
+       
       };
     },
     components: {
@@ -120,86 +108,7 @@
       search
     },
     methods: {
-      loadData() {
-        if (this.lastId) {
-          this.params.lastId = this.lastId;
-        }
-        this.$store
-          .dispatch("jobConfig/getPageList", {
-            pageFlag: this.pageFlag,
-            pageSize: this.pageSize,
-            filter: this.params
-          })
-          .then(data => {
-            if (data) {
-              this.tableData = data.rows;
-              this.total = data.total;
-            }
-            this.loading = false;
-          })
-          .catch(error => {
-            this.loading = false;
-            console.log(error);
-          });
-      },
-      onSizeChange(pageSize) {
-        this.pageSize = pageSize;
-        this.lastId = null;
-        this.loadData();
-      },
-      handlePrevClick() {
-        this.pageFlag = -1;
-        this.lastId = this.tableData[0].configId;
-        this.loadData();
-      },
-      handleNextClick() {
-        this.pageFlag = 1;
-        this.lastId = this.tableData[this.tableData.length - 1].configId;
-        this.loadData();
-      },
-      onSearch(params) {
-        this.lastId = null;
-        this.params = params;
-        this.loadData();
-      },
-      handleAdd() {
-        this.configId = "";
-        this.updateFlag = false;
-        this.dialogVisible = true;
-      },
-      onEdit(row) {
-        this.configId = row.configId;
-        this.updateFlag = true;
-        this.dialogVisible = true;
-
-      },
-      removeOne(configId) {
-        this.$confirm("是否确定删除?", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        })
-          .then(() => {
-            this.$store
-              .dispatch("jobConfig/removeOne", {jobConfigId: configId})
-              .then(() => {
-                this.loadData();
-              })
-              .catch(error => {
-                console.log(error);
-              });
-          })
-          .catch(err => {
-            console.error(err);
-          });
-      },
-      handleCancel() {
-        this.dialogVisible = false;
-      },
-      handleSave() {
-        this.dialogVisible = false;
-        this.loadData();
-      },
+      
       formatTagType(value) {
         for (var i = 0; i < this.tagTypes.length; i++) {
           if (value == this.tagTypes[i].value) {
@@ -215,9 +124,7 @@
         }
       }
     },
-    created() {
-      this.loadData();
-    },
+    
   };
 </script>
 

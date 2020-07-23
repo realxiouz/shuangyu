@@ -1,5 +1,6 @@
 <template>
   <div class="page-form">
+     <el-dialog :title="keyId!=''?'编辑票价信息':'添加票价信息'" :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
     <el-form :model="formData" label-width="110px" size="mini">
       <input type="hidden" v-model="formData.fareId" />
       <el-form-item label="航段">
@@ -32,19 +33,26 @@
         ></el-date-picker>
       </el-form-item>
     </el-form>
-    <div style="text-align:right;">
-      <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
-      <el-button size="mini" type="primary" @click="handleConfirm">确 定</el-button>
-    </div>
+    <span slot="footer" class="dialog-footer">
+      <el-button @click="dialogVisible=false">取 消</el-button>
+      <el-button type="primary" @click="onSave">确 定</el-button>
+    </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import {MIXIN_EDIT} from "@/utils/mixin";
 export default {
+  mixins: [MIXIN_EDIT],
   props: ["curNode"],
   data() {
     return {
-      formData: {}
+      formData: {},
+      actions: {
+          getOne: 'fare/getOne',
+          saveOne: 'fare/updateOne'
+        }
     };
   },
   methods: {
@@ -59,7 +67,8 @@ export default {
         cabin: "",
         price: null,
         roundTripPrice: null,
-        startDate: null
+        startDate: null,
+        
       };
     },
     /*清除表单*/

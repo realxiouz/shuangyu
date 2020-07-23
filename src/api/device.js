@@ -16,7 +16,8 @@ export function getOne(id) {
   });
 }
 
-export function getPageList(pageFlag, pageSize, params) {
+export function getPageList(args) {
+  const {pageFlag, pageSize, ...params} = args
   return request({
     url: `/device/page/list/${pageFlag}/${pageSize}`,
     method: 'get',

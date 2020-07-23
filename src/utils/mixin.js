@@ -92,6 +92,7 @@ export const MIXIN_LIST = {
     },
     onEdit(id) {
       this.keyId = id;
+      console.log(this.keyId)
       this.dialogVisible = true;
     },
     onDel(id) {
@@ -171,6 +172,7 @@ export const MIXIN_EDIT = {
       this.$emit('update:visible', false);
     },
     onSave() {
+      console.log(this.actions)
       if (this.actions.saveOne) {
         this.$refs['form'].validate(valid => {
           if (valid && this.validateOther()) {
