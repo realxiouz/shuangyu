@@ -1,6 +1,7 @@
 <template>
   <div class="page-form">
-    <el-form ref="policyForm"  :model="formData" label-width="120px" size="mini">
+    <el-dialog :title="keyId!=''?'编辑政策信息':'添加政策'" :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
+    <el-form ref="form"  :model="formData" label-width="120px" size="mini">
       <el-form-item label="政策编码:" prop="policyCode">
         <el-input v-model="formData.policyCode" onkeyup="this.value=this.value.toUpperCase()" placeholder="政策编码.."></el-input>
       </el-form-item>
@@ -90,20 +91,27 @@
       </el-form-item>
     </el-form>
 
-    <div slot="footer" style="text-align:right">
-      <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
-      <el-button size="mini" type="primary" @click="handleConfirm">确 定</el-button>
-    </div>
+    <span slot="footer" class="dialog-footer">
+      <el-button @click="dialogVisible=false">取 消</el-button>
+      <el-button type="primary" @click="onSave">确 定</el-button>
+    </span>
+    </el-dialog>
   </div>
 </template>
 <script>
+  import {MIXIN_EDIT} from "@/utils/mixin";
     export default {
+      mixins: [MIXIN_EDIT],
         name: "policyEdit",
         props: ["policyId"],
         data() {
             return {
                 formData: {},
                 policyFlagList: ["MD", "DOM","TB","NEC"],
+                actions: {
+                  getOne: 'policy/getOne',
+                  saveOne: 'policy/save'
+                },
                 rules: {
                     policyCode: [
                         {required: true, message: "请输入政策编码", trigger: "blur"}
@@ -232,26 +240,7 @@
                     console.log(error);
                 });
             },
-            handleConfirm() {
-                this.$refs['policyForm'].validate((valid) => {
-                    if (valid) {
-                        if (this.formData.sellStartDate){
-                            this.formData.sellStartDate = this.formData.sellStartDate.getTime();
-                        }
-                        if (this.formData.sellEndDate){
-                            this.formData.sellEndDate = this.formData.sellEndDate.getTime();
-                        }
-                        if (this.formData.flightDate){
-                            this.formData.flightDate = this.formData.flightDate.getTime();
-                        }
-                        this.formData.policyCode = this.formData.policyCode.toUpperCase();
-                        this.$emit('onSave', this.formData);
-                    } else {
-                        this.$message({type: "warning", message: "请完整填写数据！"});
-                        return false;
-                    }
-                });
-            },
+            
             clearForm(){
               this.formData = this.defaultFormData();
             },

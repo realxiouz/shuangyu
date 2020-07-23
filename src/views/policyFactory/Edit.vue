@@ -1,6 +1,6 @@
 <template>
   <div class="page-form">
-    <el-dialog title="调度管理" width="40%" center :visible.sync="dialogVisible" @open="handleOpen" @close="handleClose">
+    <el-dialog :title="keyId!=''?'编辑':'添加'" width="40%" center :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
       <el-form ref="form" label-width="110px" size="mini" :model="formData" :rules="rules">
         <el-col :span="12">
           <el-form-item label="调度名称：" prop="schedulerName">
@@ -16,15 +16,17 @@
           </el-form-item>
         </el-col>
       </el-form>
-      <div style="text-align:right;">
-        <el-button size="mini" @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" size="mini" @click="handleSave">确 定</el-button>
-      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible=false">取 消</el-button>
+        <el-button type="primary" @click="onSave">确 定</el-button>
+      </span>
     </el-dialog>
   </div>
 </template>
 <script>
+  import {MIXIN_EDIT} from "@/utils/mixin";
   export default {
+    mixins: [MIXIN_EDIT],
     props: {
       visible: {
         type: Boolean,
@@ -47,6 +49,10 @@
       return {
         dialogVisible: false,
         formData: this.defaultFormData(),
+        actions: {
+          getOne: 'jobScheduler/getOne',
+          saveOne: 'jobScheduler/saveOne'
+        },
         rules: {
           schedulerName: [
             {required: true, message: "请输入调度名称"}
@@ -74,42 +80,13 @@
       handleCron(val) {
         this.formData.cronVal = val
       },
-      handleOpen() {
-        this.$emit('update:visible', true);
-      },
-      handleClose() {
-        this.$emit('update:visible', false);
-      },
+     
       handleSwitch(){
         this.defaultFlag = !this.defaultFlag;
       },
-      handleSave() {
-        this.$refs["form"].validate(valid => {
-          if (valid) {
-            this.$store
-              .dispatch("jobScheduler/saveOne", this.formData)
-              .then(() => {
-                if (!this._.isEmpty(this.editSchedulerId)) {
-                  this.formData.schedulerId = this.editSchedulerId;
-                }
-                this.dialogVisible = false;
-                this.$emit('refresh');
-                this.$message({type: "success", message: "保存成功"});
-              });
-          }else{
-            let that = this;
-            let timer = window.setTimeout(function(){
-              that.$nextTick(function () {
-                that.$refs['form'].clearValidate();
-                window.clearTimeout(timer);
-              })
-            }, 1000);
-          }
-        });
-      },
       defaultFormData() {
         return {
-          schedulerName: null,
+          schedulerName: '',
           cronPopover: false,
           cronVal: null,
           attrList: []
@@ -122,13 +99,7 @@
             console.log(data);
           });
       },
-      loadData() {
-        this.$store
-          .dispatch("jobScheduler/getOne", {schedulerId: this.editSchedulerId})
-          .then(data => {
-            this.formData = data;
-          });
-      }
+      
     }
   };
 </script>

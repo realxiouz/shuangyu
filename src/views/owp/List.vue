@@ -2,7 +2,7 @@
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch"/>
       <el-row class="page-tools" style="margin-bottom:15px; margin-left:38px;">
-        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+        <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
       </el-row>
       <el-table
         class="page-table"
@@ -21,61 +21,50 @@
           <template slot-scope="scope">
             <el-button @click="start(scope.row)" type="primary" size="mini">启动</el-button>
             <el-button @click="stop(scope.row)" type="primary" size="mini">停止</el-button>
-            <el-button @click="onEdit(scope.row)" type="primary" size="mini">编辑</el-button>
-            <el-button @click="handleCopy(scope.row)" type="primary" size="mini">复制</el-button>
-            <el-button @click="removeOne(scope.row.id)" type="danger" size="mini">删除</el-button>
+            <el-button @click="onEdit(scope.row.id)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="onCopy(scope.row)" type="primary" size="mini">复制</el-button>
+            <el-button @click="onDel(scope.row.id)" type="danger" size="mini">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
       <el-pagination
         class="page-footer"
         background
-        layout="total,prev,next"
         prev-text="上一页"
         next-text="下一页"
-        :page-size="pageSize"
         :total="total"
+        @prev-click="onPrev"
+        @next-click="onNext"
         @size-change="onSizeChange"
-        @prev-click="handlePrevClick"
-        @next-click="handleNextClick"
+        layout="total,sizes,prev,next"
+        :page-size="pageSizes[0]"
+        :page-sizes="pageSizes"
       ></el-pagination>
-      <el-dialog
-        :title="updateFlag?'更新':'新增'"
-        center
-        :visible.sync="dialogVisible"
-        width="50%"
-        ref="user-edit"
-        :close-on-click-modal="false"
-      >
-        <edit
-          v-if="dialogVisible"
-          ref="form"
-          :owp-id="id"
-          :update-flag="updateFlag"
-          @onSave="handleSave"
-          @onCancel="handleCancel"
-        ></edit>
-      </el-dialog>
+      
+      <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" @refresh="onRefresh"></edit>
+      
   </div>
 </template>
 
 <script>
   import edit from "./Edit";
   import search from "./Search";
+  import {MIXIN_LIST} from "@/utils/mixin";
 
   export default {
+    mixins: [MIXIN_LIST],
     name: "owpList",
     data() {
       return {
         dialogVisible: false,
+        deleteForSearch: false,
         updateFlag: false,
         id: "",
-        pageFlag: 1,
-        pageSize: 10,
-        lastId: null,
-        total: 0,
-        tableData: [],
-        loading: true
+        keyName:'id',
+        actions: {
+          getPageList: 'owp/getPageList',
+          removeOne: 'owp/removeOne'
+        }
       };
     },
     components: {
@@ -83,90 +72,12 @@
       search
     },
     methods: {
-      loadData(params) {
-        if (this.lastId) {
-          params.lastId = this.lastId;
-        }
-        this.$store
-          .dispatch("owp/getPageList", {
-            pageFlag: this.pageFlag,
-            pageSize: this.pageSize,
-            filter: params
-          })
-          .then(data => {
-            if (data) {
-              this.tableData = data;
-            }
-            this.loading = false;
-          })
-          .catch(error => {
-            this.loading = false;
-            console.log(error);
-          });
-      },
-      onSizeChange(pageSize) {
-        this.pageSize = pageSize;
-        this.lastId = null;
-        this.loadData();
-      },
-      handlePrevClick() {
-        this.pageFlag = -1;
-        this.lastId = this.tableData[0].id;
-        this.loadData();
-      },
-      handleNextClick() {
-        this.pageFlag = 1;
-        this.lastId = this.tableData[this.tableData.length - 1].id;
-        this.loadData();
-      },
-
-      onSearch(params) {
-        if (Object.keys(params).length == 0) {
-          this.lastId = null;
-        }
-        this.loadData(params);
-      },
-      handleAdd() {
-        this.dialogVisible = true;
-        this.updateFlag = false;
-        this.id = "";
-      },
-      onEdit(row) {
-        this.dialogVisible = true;
-        this.updateFlag = true;
-        this.id = row.id;
-      },
-      handleCopy(row) {
+      onCopy(row) {
         this.dialogVisible = true;
         this.updateFlag = false;
         this.id = row.id;
       },
-      removeOne(id) {
-        this.$confirm("是否确定删除?", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        })
-          .then(() => {
-            this.$store
-              .dispatch("owp/removeOne", {id: id})
-              .then(() => {
-                this.loadData();
-              })
-              .catch(error => {
-                console.log(error);
-              });
-          })
-          .catch(err => {
-            console.error(err);
-          });
-      },
-      handleCancel() {
-        this.dialogVisible = false;
-      },
-      handleSave() {
-        this.dialogVisible = false;
-      },
+     
       start(row) {
         this.$store
           .dispatch("xxlJob/trigger", {
@@ -193,9 +104,7 @@
           });
       },
     },
-    created() {
-      this.loadData();
-    },
+    
 
   };
 </script>

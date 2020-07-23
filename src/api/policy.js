@@ -23,11 +23,12 @@ export function updateOne(data) {
   });
 }
 
-export function getList(params) {
+export function getList(args) {
+  const {...params} = args;
   return request({
     url: `/policy/list`,
     method: "get",
-    params: params
+    params
   });
 }
 

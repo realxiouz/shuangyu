@@ -2,7 +2,7 @@
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch"/>
       <el-row class="page-tools" style="margin-bottom:15px;margin-left:35px;">
-        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+        <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
       </el-row>
       <el-table class="page-table" v-loading="loading" :data="tableData" highlight-current-row size="mini" style="width: 100%; margin-bottom:15px" fit>
         <el-table-column label="序号" type="index" width="60" align="center">
@@ -40,91 +40,50 @@
         <el-table-column prop="policySource" label="政策来源" align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="200">
           <template slot-scope="scope">
-            <el-button @click="handleUpdate(scope.row.policyId)" type="primary" size="mini">编辑</el-button>
-            <el-button @click="handleRemove(scope.row.policyId)" type="danger" size="mini">删除</el-button>
+            <el-button @click="onEdit(scope.row.policyId)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="onDel(scope.row.policyId)" type="danger" size="mini">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
       <el-pagination
         class="page-footer"
-        @size-change="onSizeChange"
-        @prev-click="prevClick"
-        @next-click="nextClick"
-        :current-page="currentPage"
         background
-        layout="total,sizes,prev,next"
         prev-text="上一页"
         next-text="下一页"
-        :page-size="pageSize"
         :total="total"
+        @prev-click="onPrev"
+        @next-click="onNext"
+        @size-change="onSizeChange"
+        layout="total,sizes,prev,next"
+        :page-size="pageSizes[0]"
+        :page-sizes="pageSizes"
       ></el-pagination>
-      <el-dialog
-        center
-        title="政策信息"
-        :visible.sync="dialogVisible"
-        width="35%"
-        :close-on-click-modal="false"
-      >
-        <edit
-          v-if="dialogVisible"
-          :policy-id="policyId"
-          @onSave="handleSave"
-          @onCancel="handleCancel"
-        ></edit>
-      </el-dialog>
+     
+        <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" @refresh="onRefresh"></edit>
+      
   </div>
 </template>
 <script>
-import edit from "./Edit";
+  import edit from "./Edit";
   import search from "./Search";
+  import {MIXIN_LIST} from "@/utils/mixin";
 
 export default {
+  mixins: [MIXIN_LIST],
   name: "policyList",
   data() {
     return {
-      loading: true,
-      currentPage: 1,
-      pageSize: 10,
-      total: 0,
-      tableData: [],
       dialogVisible: false,
       policyId: "",
-      searchParams: {}
+      keyName:'policyId',
+      searchParams: {},
+      actions: {
+          getPageList: 'policy/getList',
+          removeOne: 'policy/removeOne'
+        }
     };
   },
   methods: {
-    onSizeChange: function(size) {
-      this.pageSize = size;
-      this.loadData(this.searchParams);
-    },
-    prevClick(page) {
-      this.currentPage = page;
-      this.searchParams.pageSize = this.pageSize;
-      this.searchParams.currentPage = this.currentPage;
-      this.loadData(this.searchParams);
-    },
-    nextClick(page) {
-      this.currentPage = page;
-      this.searchParams.pageSize = this.pageSize;
-      this.searchParams.currentPage = this.currentPage;
-      this.loadData(this.searchParams);
-    },
-    loadData(params) {
-      this.$store
-        .dispatch("policy/getList", {
-          filters: params
-        })
-        .then(data => {
-          if (data) {
-            this.tableData = data;
-          }
-          this.loading = false;
-        })
-        .catch(error => {
-          this.loading = false;
-          console.log(error);
-        });
-    },
     loadTotal(params) {
       this.$store
         .dispatch("policy/getTotal", {
@@ -137,83 +96,6 @@ export default {
           console.log(error);
         });
     },
-    onSearch(params) {
-      if (!params) {
-        params = {};
-        this.searchParams = params;
-        this.loadData(this.searchParams);
-        this.loadTotal(this.searchParams);
-      } else {
-        const newParams = {};
-        if (params.policyCode) {
-          newParams.policyCode = params.policyCode.toLocaleLowerCase();
-        }
-        if (params.airlineCode) {
-          newParams.airlineCode = params.airlineCode.toLocaleLowerCase();
-        }
-        if (params.cabin) {
-          newParams.cabin = params.cabin.toLocaleLowerCase();
-        }
-        if (params.dpt) {
-          newParams.dpt = params.dpt.toLocaleLowerCase();
-        }
-        if (params.arr) {
-          newParams.arr = params.arr.toLocaleLowerCase();
-        }
-        if (params.sellStartDate) {
-          newParams.sellStartDate = params.sellStartDate;
-        }
-        if (params.sellEndDate) {
-          newParams.sellEndDate = params.sellEndDate;
-        }
-        if (params.flightDate) {
-          newParams.flightDate = params.flightDate;
-        }
-        this.searchParams = newParams;
-        this.loadData(this.searchParams);
-        this.loadTotal(this.searchParams);
-      }
-    },
-    handleUpdate(policyId) {
-      this.policyId = policyId;
-      this.dialogVisible = true;
-    },
-    handleRemove(user, domain) {
-      this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.$store
-            .dispatch("policy/removeOne", { user: user, domain: domain })
-            .then(() => {
-              this.onSearch();
-            });
-        })
-        .catch(err => {
-          console.error(err);
-        });
-    },
-    handleCancel() {
-      this.dialogVisible = false;
-    },
-    handleAdd() {
-      this.dialogVisible = true;
-      this.user = "";
-      this.domain = "";
-    },
-    handleSave(formData) {
-      this.$store
-        .dispatch("policy/save", formData)
-        .then(() => {
-          this.onSearch();
-        })
-        .catch(error => {
-          console.log(error);
-        });
-      this.dialogVisible = false;
-    },
     /*初始化用工列表中的生日日期格式*/
     initDate(dateStr, format) {
       if (null != dateStr) {
@@ -225,7 +107,6 @@ export default {
     }
   },
   created() {
-    this.loadData(this.searchParams);
     this.loadTotal();
   },
   computed: {

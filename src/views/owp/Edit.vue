@@ -1,6 +1,14 @@
 <template>
   <div class="page-form">
-    <el-form ref="owpForm" size="mini" :model="formData" label-width="110px" :rules="formRules">
+    <el-dialog
+        :title="updateFlag?'更新':'新增'"
+        center
+        :visible.sync="dialogVisible"
+        width="50%"
+        ref="user-edit"
+        :close-on-click-modal="false"
+      >
+    <el-form ref="form" size="mini" :model="formData" label-width="110px" :rules="formRules">
       <input type="hidden" v-model="formData.id"/>
       <input type="hidden" v-model="formData.jobInfoId"/>
       <el-row :gutter="5">
@@ -80,14 +88,17 @@
         </el-col>
       </el-row>
     </el-form>
-    <div slot="footer" class="dialog-footer" style="text-align:right;">
-      <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
-      <el-button type="primary" size="mini" @click="handleSave">确 定</el-button>
-    </div>
+    <span slot="footer" class="dialog-footer">
+      <el-button @click="dialogVisible=false">取 消</el-button>
+      <el-button type="primary" @click="onSave">确 定</el-button>
+    </span>
+    </el-dialog>
   </div>
 </template>
 <script>
+  import {MIXIN_EDIT} from "@/utils/mixin";
   export default {
+    mixins: [MIXIN_EDIT],
     name: 'owpEdit',
     props: ["owpId", 'updateFlag'],
     data() {
@@ -96,6 +107,10 @@
         formRules: {
           policyCode: {required: true, trigger: "blur"},
           jobCron: {required: true, trigger: "blur"},
+        },
+        actions: {
+          getOne: 'owp/getOne',
+          saveOne: 'owp/updateOne'
         }
       }
     },
@@ -124,41 +139,11 @@
       clearForm() {
         this.formData = this.defaultFormData();
       },
-      loadOwpData() {
-        if (this.owpId && this.owpId != '') {
-          this.$store
-            .dispatch("owp/getOne", {id: this.owpId})
-            .then(data => {
-              if (data) {
-                this.formData = data;
-              }
-            })
-            .catch(error => {
-              console.log(error);
-            });
-        }
-      },
+      
       changeCron(val) {
         this.formData.jobCron = val
       },
-
-      handleSave() {
-        let url = '';
-        if (this.updateFlag) {
-          url = 'owp/updateOne/' + this.formData.id;
-
-        } else {
-          url = 'owp/addOne';
-        }
-        this.$store
-          .dispatch(url, {owpConfig: this.formData})
-          .then(() => {
-            this.$emit("onSave");
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      }
+      
     },
     computed: {
       _inRouters: {

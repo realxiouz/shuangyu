@@ -173,7 +173,6 @@ export const MIXIN_EDIT = {
       this.$emit('update:visible', false);
     },
     onSave() {
-      console.log(this.actions)
       if (this.actions.saveOne) {
         this.$refs['form'].validate(valid => {
           if (valid && this.validateOther()) {
