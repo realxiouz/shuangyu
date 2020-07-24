@@ -6,7 +6,7 @@
         icon="el-icon-plus"
         type="primary"
         size="mini"
-        @click="handleAdd"
+        @click="onAdd"
         >添加</el-button
       >
     </el-row>
@@ -39,7 +39,7 @@
       </el-table-column>
       <el-table-column label="操作" fixed="right" align="center" width="350">
         <template slot-scope="scope">
-          <el-button @click="onEdit(scope.row)" type="primary" size="small"
+          <el-button @click="onEdit(scope.row.airlineCode)" type="primary" size="small"
             >编辑</el-button
           >
           <el-button
@@ -55,7 +55,7 @@
             >查看航段</el-button
           >
           <el-button
-            @click="removeOne(scope.row.airlineCode)"
+            @click="onDel(scope.row.airlineCode)"
             type="danger"
             size="small"
             >删除</el-button
@@ -65,31 +65,20 @@
     </el-table>
     <el-pagination
       class="page-footer"
-      @size-change="onSizeChange"
-      @prev-click="onPrev"
-      @next-click="onNext"
       background
-      layout="total,sizes,prev,next"
       prev-text="上一页"
       next-text="下一页"
+      :total="total"
+      @prev-click="onPrev"
+      @next-click="onNext"
+      @size-change="onSizeChange"
+      layout="total,sizes,prev,next"
       :page-size="pageSizes[0]"
       :page-sizes="pageSizes"
-      :total="total"
     ></el-pagination>
-    <el-dialog
-      :title="airlineCode ? '编辑航司信息' : '添加航司信息'"
-      center
-      :visible.sync="dialogVisible"
-      width="30%"
-    >
-      <edit
-        v-if="dialogVisible"
-        :airline-code="airlineCode"
-        ref="form"
-        @onSave="handleSave"
-        @onCancel="handleCancel"
-      ></edit>
-    </el-dialog>
+   
+    <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" @refresh="onRefresh"></edit>
+    
     <el-dialog :title="lookTitle" center :visible.sync="showInfo" width="30%">
       <look-lnfo
         v-if="showInfo"
@@ -116,9 +105,13 @@ export default {
       isFlights: false,
       flightsInfo: "",
       segmentsInfo: "",
+      keyName:'airlineCode',
       beanIdName: "airlineCode",
-      actionName: "airline/getPageList",
-      airlineCode: ""
+      airlineCode: "",
+      actions: {
+        getPageList: 'airline/getPageList',
+        removeOne: 'airline/removeOne'
+      }
     };
   },
   components: {
@@ -127,41 +120,9 @@ export default {
     LookLnfo
   },
   methods: {
-    removeOne(id) {
-      this.$confirm("是否确定删除航司舱位信息?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.$store
-            .dispatch("airline/removeOne", { airlineCode: id })
-            .then(() => {
-              if (1 === this.tableData.length) {
-                this.onPrev();
-              } else {
-                this.loadData();
-              }
-            })
-            .catch(error => {
-              console.log(error);
-            });
-        })
-        .catch(err => {
-          console.error(err);
-        });
-    },
-    handleCancel() {
-      this.dialogVisible = false;
-      this.showInfo = false;
-    },
     handleSave() {
       this.dialogVisible = false;
       this.loadData();
-    },
-    handleAdd() {
-      this.deviceId = "";
-      this.dialogVisible = true;
     },
     lookFlights(flights) {
       this.lookTitle = "查看航班信息";

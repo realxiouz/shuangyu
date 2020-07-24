@@ -55,27 +55,30 @@ export function getCustomerTotal(filter) {
   });
 }
 
-export function getPageList(pageFlag, pageSize, filter) {
+export function getPageList(args) {
+  const {pageFlag, pageSize, ...params} = args;
   return request({
     url: `/firm/merchant/get/page/list/${pageFlag}/${pageSize}`,
     method: `get`,
-    params: filter
+    params
   });
 }
 
-export function getCustomerPageList(pageFlag, pageSize, filter) {
+export function getCustomerPageList(args) {
+  
   return request({
     url: `/firm/customer/get/page/list/${pageFlag}/${pageSize}`,
     method: `get`,
-    params: filter
+    params
   });
 }
 
-export function getSupplierPageList(pageFlag, pageSize, filter) {
+export function getSupplierPageList(args) {
+  const {pageFlag, pageSize, ...params} = args;
   return request({
     url: `/firm/supplier/get/page/list/${pageFlag}/${pageSize}`,
     method: `get`,
-    params: filter
+    params
   });
 }
 

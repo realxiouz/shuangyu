@@ -32,10 +32,9 @@ const actions = {
         });
     });
   },
-  getList({commit}, params) {
-    const {filters} = params;
+  getList({commit}, args) {
     return new Promise((resolve, reject) => {
-      getList(filters)
+      getList(args)
         .then(response => {
           resolve(response);
         })

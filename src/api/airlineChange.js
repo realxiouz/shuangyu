@@ -30,11 +30,12 @@ export function getOne(flightId) {
   });
 }
 
-export function getList(filter) {
+export function getList(args) {
+  const {...params} = args
   return request({
     url: `/flight/airline/change/getList`,
     method: 'get',
-    params: filter
+    params
   });
 }
 

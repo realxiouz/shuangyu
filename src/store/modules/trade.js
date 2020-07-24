@@ -55,10 +55,9 @@ const actions = {
     });
   },
   // eslint-disable-next-line no-unused-vars
-  getPageList({commit}, params) {
-    const {pageFlag, pageSize, filter} = params;
+  getPageList({commit}, args) {
     return new Promise((resolve, reject) => {
-      getPageList(pageFlag, pageSize, filter)
+      getPageList(args)
         .then(response => {
           resolve(response);
         })

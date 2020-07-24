@@ -17,6 +17,7 @@
   </div>
 </template>
 <script>
+  import {MIXIN_EDIT} from "@/utils/mixin";
   function defaultData() {
     return {
       orderNo: '',
@@ -24,6 +25,7 @@
     };
   };
   export default {
+    mixins: [MIXIN_EDIT],
     name: "orderEdit",
 
     data() {

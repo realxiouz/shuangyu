@@ -64,10 +64,9 @@ const actions = {
         });
     });
   },
-  getPageList({commit}, params) {
+  getPageList({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {pageFlag, pageSize, filter} = params;
-      getPageList(pageFlag, pageSize, filter)
+      getPageList(args)
         .then(response => {
           resolve(response);
         })
@@ -76,10 +75,9 @@ const actions = {
         });
     });
   },
-  getSupplierPageList({commit}, params) {
+  getSupplierPageList({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {pageFlag, pageSize, filter} = params;
-      getSupplierPageList(pageFlag, pageSize, filter)
+      getSupplierPageList(args)
         .then(response => {
           resolve(response);
         })
@@ -88,10 +86,9 @@ const actions = {
         });
     });
   },
-  getCustomerPageList({commit}, params) {
+  getCustomerPageList({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {pageFlag, pageSize, filter} = params;
-      getCustomerPageList(pageFlag, pageSize, filter)
+      getCustomerPageList(args)
         .then(response => {
           resolve(response);
         })

@@ -1,10 +1,11 @@
 import request from '@/utils/request';
 
-export function getPageList(params) {
+export function getPageList(args) {
+  const { ...params } = args;
   return request({
     url: `/order/task/page/list`,
     method: 'get',
-    params: params
+    params
   });
 }
 

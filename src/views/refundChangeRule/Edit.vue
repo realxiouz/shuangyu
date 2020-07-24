@@ -1,6 +1,6 @@
 <template>
   <div class="page-form">
-    <el-dialog :title="ruleId!=''?'编辑退改规则':'添加退改规则'" center :visible.sync="dialogVisible" width="55%" @open="onOpen" @close="onClose">
+    <el-dialog :title="keyId!=''?'编辑退改规则':'添加退改规则'" center :visible.sync="dialogVisible" width="55%" @open="onOpen" @close="onClose">
     <el-form ref="form" :model="formData" :rules="verify" label-width="100px" size="mini">
       <el-row>
         <el-col :span="12">
@@ -143,6 +143,10 @@ export default {
       airlines: [{}],
       cabins: [{}],
       disabled: false,
+      actions: {
+          getOne: 'refundChangeRule/getOne',
+          saveOne: 'refundChangeRule/save'
+        },
       categorys: [
         {
           label: "退票规则",
@@ -195,34 +199,8 @@ export default {
     deleteRuleItem(index) {
       this.formData.rules.splice(index, 1);
     },
-    handleSave() {
-      this.$refs["form"].validate(valid => {
-        if (valid) {
-          this.$store
-            .dispatch("refundChangeRule/save", this.formData)
-            .then(() => {
-              this.$emit("onSave");
-            })
-            .catch(error => {
-              console.log(error);
-            });
-        }
-      });
-    },
-    handleGetOne(id) {
-      if (id) {
-        this.$store
-          .dispatch("refundChangeRule/getOne", { ruleId: id })
-          .then(data => {
-            this.formData = data;
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      } else {
-        this.formData = defaultData();
-      }
-    },
+    
+    
     clearForm() {
       this.formData = defaultData();
     }
