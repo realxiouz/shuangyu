@@ -145,7 +145,6 @@
         this.formData.cron = val
       },
       handleSave() {
-
         this.$refs['form'].validate((valid) => {
           if (valid) {
             let data = {};
@@ -200,9 +199,7 @@
           tagCode: 'wop'
         }
         this.$store
-          .dispatch("jobConfig/getList", {
-            filter: searchForm
-          })
+          .dispatch("jobConfig/getList", searchForm)
           .then(data => {
             if (data) {
               this.formData.attrList = data;
