@@ -105,12 +105,12 @@
               <el-table-column prop="brandName" label="品牌" align="center"></el-table-column>
               <el-table-column prop="skuName" label="属性名称" align="center"></el-table-column>
               <el-table-column prop="price" label="单价" align="center"></el-table-column>
-              <el-table-column prop="stockQuantity" label="库存" align="center"></el-table-column>
+              <!-- <el-table-column prop="stockQuantity" label="库存" align="center"></el-table-column> -->
               <el-table-column prop="quantity" label="数量" align="center" width="150">
                 <template slot-scope="prop">
                   <el-input-number v-model="prop.row.quantity" :min="1" size="mini"
                                    @input="testQuantity(prop.row)"></el-input-number>
-                  <span v-if="verifyStockQuantity(prop.row)" style="color: #F56C6C">*商品数量应该小于或等于库存数量</span>
+                  <!-- <span v-if="verifyStockQuantity(prop.row)" style="color: #F56C6C">*商品数量应该小于或等于库存数量</span> -->
                 </template>
               </el-table-column>
               <el-table-column prop="unit" label="计量单位" align="center"></el-table-column>
@@ -128,6 +128,7 @@
             </el-table>
           </el-col>
         </el-row>
+        <passengers v-model="passengers" />
         <!--remark-->
         <el-row style="width: 80%; margin-top: 10px">
           <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
@@ -190,6 +191,7 @@
 
 <script>
     import productDetail from "./productDetail";
+    import Passengers from "@/components/Passengers";
 
     export default {
         data() {
@@ -220,10 +222,12 @@
                     paymentMode: [
                         {required: true, message: "请输入付款方式", trigger: "blur"}
                     ],
-                    fundAccountId: [
-                        {required: true, message: "请选择结算账户", trigger: "blur"}
-                    ]
-                }
+                    // fundAccountId: [
+                    //     {required: true, message: "请选择结算账户", trigger: "blur"}
+                    // ]
+                },
+
+                passengers: [],
             };
         },
         methods: {
@@ -351,6 +355,7 @@
                                 this.isUpdate = false;
                             }
                             this.formData = data;
+                            this.passengers = this.formData.passengers
                             if (data.merchantId) {
                                 this.loadAccounts(data.merchantId);
                             }
@@ -375,17 +380,19 @@
                     });
             },
             testQuantity(row) {
-                if (row.stockQuantity < row.quantity) {
-                    this.stockError = true;
-                } else {
-                    this.stockError = false;
-                }
+                // if (row.stockQuantity < row.quantity) {
+                //     this.stockError = true;
+                // } else {
+                //     this.stockError = false;
+                // }
+                this.stockError = false;
             },
             selectedCustomer(item) {
                 this.customerSelected = false;
                 this.loadAccounts(item);
                 this.customerList.forEach(customer => {
                     if (item === customer.merchantId) {
+                        this.formData.merchantType = customer.merchantType
                         this.$store.dispatch("firmContact/getList", {
                             filter: {
                                 firmId: item,
@@ -467,6 +474,7 @@
                         });
                         this.formData.totalAmount = parseFloat(document.getElementById('totalAmount').textContent);
                         this.formData.orderDetails = this.orderDetails;
+                        this.formData.passengers = this.passengers
                         this.$store
                             .dispatch('productOrder/saveOrder', this.formData)
                             .then(() => {
@@ -493,6 +501,7 @@
                         });
                         this.formData.totalAmount = parseFloat(document.getElementById('totalAmount').textContent);
                         this.formData.orderDetails = this.orderDetails;
+                        this.formData.passengers = this.passengers
                         this.$store
                             .dispatch('productOrder/confirmOrder', this.formData)
                             .then(() => {
@@ -564,6 +573,8 @@
                     this.loadOderDetails(orderNo);
                 } else {
                     this.isUpdate = false;
+                    this.passengers = []
+                    this.orderDetails = []
                 }
             },
         },
@@ -571,11 +582,11 @@
             this.initFormData(this.$route.query.orderNo);
         },
         computed: {
-            verifyStockQuantity() {
-                return function (row) {
-                    return row.stockQuantity < row.quantity;
-                }
-            },
+            // verifyStockQuantity() {
+            //     return function (row) {
+            //         return row.stockQuantity < row.quantity;
+            //     }
+            // },
             formatDate() {
                 return function (format) {
                     return this.initDate(format);
@@ -583,7 +594,8 @@
             },
         },
         components: {
-            productDetail
+            productDetail,
+            Passengers
         }
     };
 </script>

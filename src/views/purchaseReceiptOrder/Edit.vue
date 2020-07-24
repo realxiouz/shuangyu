@@ -120,6 +120,7 @@
             </el-table>
           </el-col>
         </el-row>
+        <passengers v-model="passengers" />
         <!--remark-->
         <el-row style="width: 80%; margin-top: 10px">
           <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
@@ -182,7 +183,7 @@
 
 <script>
     import productDetail from "../productPurchaseOrder/productDetail";
-
+    import Passengers from "@/components/Passengers";
 
     export default {
         data() {
@@ -208,10 +209,11 @@
                     paymentMode: [
                         {required: true, message: "请输入付款方式", trigger: "blur"}
                     ],
-                    fundAccountId: [
-                        {required: true, message: "请选择结算账户", trigger: "blur"}
-                    ]
-                }
+                    // fundAccountId: [
+                    //     {required: true, message: "请选择结算账户", trigger: "blur"}
+                    // ]
+                },
+                passengers: []
             };
         },
         methods: {
@@ -336,6 +338,7 @@
                                 this.isUpdate = false;
                             }
                             this.formData = data;
+                            this.passengers = this.formData.passengers
                             if (data.merchantId) {
                                 this.loadAccounts(data.merchantId);
                             }
@@ -467,8 +470,9 @@
                         this.formData.totalAmount = parseFloat(document.getElementById('totalAmount').textContent);
                         this.$store
                             .dispatch('productOrder/saveOrder', {
-                                productOrder: this.formData,
-                                orderDetails: this.orderDetails
+                                // productOrder: this.formData,
+                                orderDetails: this.orderDetails,
+                                passengers : this.passengers
                             })
                             .then(() => {
                                 this.goBack();
@@ -532,6 +536,8 @@
                     this.loadOderDetails(orderNo);
                 } else {
                     this.isUpdate = false;
+                    this.passengers = []
+                    this.orderDetails = []
                 }
             },
         },
@@ -546,7 +552,8 @@
             },
         },
         components: {
-            productDetail
+            productDetail,
+            Passengers
         }
     };
 </script>
