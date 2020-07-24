@@ -69,7 +69,7 @@
               <el-date-picker
                 v-model="formData.defaultValue"
                 :format="formData.format"
-                type="time"
+                type="datetime"
                 placeholder="请选择默认数值"
                 style="width: 100%;"
               >
@@ -97,6 +97,7 @@
               <el-select
                 v-model="formData.defaultValue"
                 placeholder="请选择默认数值"
+                clearable
                 style="width: 100%"
               >
                 <el-option

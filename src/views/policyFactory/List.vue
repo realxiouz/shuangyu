@@ -4,21 +4,31 @@
     <el-row class="page-tools" type="flex" justify="space-between">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
     </el-row>
-    <el-table class="page-table" :data="tableData">
-      <el-table-column label="调度名称" align="center" prop="schedulerName" />
-      <el-table-column label="xxlJobId" align="center" prop="jobInfoId" />
-      <el-table-column label="时间表达式" align="center" prop="cron" />
-      <el-table-column label="是否启动" align="center" prop="status">
+    <el-table
+      class="page-table"
+      size="mini"
+      v-loading="loading"
+      :data="tableData"
+      style="width: 100%;margin-bottom:15px;"
+    >
+      <el-table-column prop="firmName" label="企业名称" align="center"></el-table-column>
+      <el-table-column prop="schedulerName" label="调度名称" align="center"></el-table-column>
+      <el-table-column prop="jobInfoId" label="xxlJobId" align="center"></el-table-column>
+      <el-table-column prop="tagType" label="标签类别" align="center">
         <template slot-scope="scope">
-          <span> {{scope.row.status ? '已启动' : '未启动'}}</span>
+          <span v-html="formatTagType(scope.row.tagType)"></span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="tagCode" label="标签编码" align="center"></el-table-column>
+      <el-table-column prop="tagName" label="标签名称" align="center"></el-table-column>
+      <el-table-column label="是否启动" align="center" prop="required">
+        <template slot-scope="scope">
+          <span> {{scope.row.status ? '是' : '否'}}</span>
         </template>
       </el-table-column>
       <el-table-column width="160" label="操作" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="onStart(scope.row.schedulerId)" v-if="scope.row.status === 0">启动</el-button>
-          <el-button size="mini" type="primary" @click="onStop(scope.row.schedulerId)" v-if="scope.row.status === 1">停止</el-button>
-          <el-button size="mini" type="primary" @click="onEdit(scope.row.schedulerId)">编辑</el-button>
-          <el-button size="mini" type="primary" @click="onCopy(scope.row.schedulerId)">复制</el-button>
+          <el-button size="mini" type="primary" @click="onEdit(scope.row.schedulerId)">修改</el-button>
           <el-button size="mini" type="danger" @click="onDel(scope.row.schedulerId)">删除</el-button>
         </template>
       </el-table-column>
@@ -36,7 +46,7 @@
       :page-size="pageSizes[0]"
       :page-sizes="pageSizes"
     ></el-pagination>
-    <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" @refresh="onRefresh"></edit>
+    <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" @refresh="onRefresh"/>
   </div>
 </template>
 
@@ -50,32 +60,42 @@
     data() {
       return {
         dialogVisible: false,
-        schedulerId:'',
-        keyName:'schedulerId',
-        editSchedulerId: null,
+        keyName: 'jobSchedulerId',
         actions: {
           getPageList: 'jobScheduler/getPageList',
           removeOne: 'jobScheduler/removeOne'
-        }
+        },
+        params:{
+          tagCode: "policy"
+        },
+        tagTypes:[
+          {
+            label:"工厂",
+            value:1
+          },
+          {
+            label:"政策",
+            value:2
+          },
+          {
+            label:"其他",
+            value:9
+          }
+        ],
       };
     },
     methods: {
-      formatDate(dateStr, format) {
-        if (null != dateStr) {
-          const date = new Date(dateStr);
-          return this.$moment(date).format(format);
-        } else {
-          return "";
+      formatTagType(value){
+        let tagType = '';
+        if(value){
+          this.tagTypes.forEach(function(obj){
+            if(value === obj.value){
+              tagType = obj.label;
+            }
+          });
         }
+        return tagType;
       },
-      
-      onStart() {
-        alert("启动");
-      },
-      onStop() {
-        alert("停止");
-      },
-     
     },
     components: {
       edit,

@@ -13,30 +13,13 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="xxlJobId:">
+          <el-form-item label="标签名称:">
             <el-input
               clearable
-              placeholder="请输入xxlJobId..."
+              placeholder="请输入标签名称..."
               @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.jobInfoId"
+              v-model="formData.tagName"
             ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="状态:">
-            <el-select
-              v-model="formData.status"
-              clearable
-              placeholder="请选择状态..."
-              style="width: 100%"
-            >
-              <el-option
-                v-for="item in statusList"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              ></el-option>
-            </el-select>
           </el-form-item>
         </el-col>
       </el-form>
@@ -72,18 +55,8 @@
         more: false,
         formData: {
           schedulerName: null,
-          jobInfoId: null,
-          status: null
-        },
-        statusList:[
-          {
-            label: "已启动",
-            value: 1
-          },{
-            label: "未启动",
-            value: 0
-          }
-        ]
+          tagName: null
+        }
       };
     },
     computed: {
@@ -99,8 +72,7 @@
       initSearchForm() {
         return {
           schedulerName: null,
-          jobInfoId: null,
-          status: null
+          tagName: null
         };
       },
       onSearch() {

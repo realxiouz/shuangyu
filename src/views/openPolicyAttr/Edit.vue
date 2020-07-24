@@ -393,6 +393,32 @@
             this.formData.format = 'HH:mm:ss';
           }
         }
+        switch (val) {
+          case 0:
+            this.formData.type = "String";
+            break;
+          case 1:
+            this.formData.type = "Boolean";
+            break;
+          case 2:
+            this.formData.type = "Integer";
+            break;
+          case 3:
+          case 4:
+          case 5:
+            this.formData.type = "Date";
+            break;
+          case 6:
+            this.formData.type = "Float";
+            break;
+          case 7:
+            this.formData.type = "String";
+            break;
+          case 8:
+            this.formData.type = "String";
+            this.formData.multiple = true;
+            break;
+        }
       },
       handleInputType(val){
         if(val){
@@ -558,6 +584,7 @@
           code: null,
           name: null,
           valueType: null,
+          type: "String",
           defaultValue: null,
           inputType: null,
           length: 0,
@@ -577,6 +604,7 @@
           readonly: false,
           disabled: false,
           hidden: false,
+          multiple: false,
           merchantId: null,
           isIndeterminate: false,
           checkAll: false,
