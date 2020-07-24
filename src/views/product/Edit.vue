@@ -57,14 +57,16 @@
         </el-row>
       </el-form>
       <br>
-      <div slot="footer" style="text-align:center;">
-        <el-button size="mini" @click="handleCancel">取 消</el-button>
-        <el-button type="primary" size="mini" @click="handleSave">确 定</el-button>
-      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible=false">取 消</el-button>
+        <el-button type="primary" @click="onSave">确 定</el-button>
+      </span>
   </div>
 </template>
 <script>
+    import {MIXIN_EDIT} from "@/utils/mixin";
     export default {
+        mixins: [MIXIN_EDIT],
         name: 'edit',
         data() {
             const productCode = (rule, value, callback) => {
@@ -80,6 +82,10 @@
                 propertyList: [],
                 categoryList: [],
                 brandList: [],
+                actions: {
+                  getOne: 'product/getOne',
+                  saveOne: 'product/updateOne'
+                },
                 rules: {
                     productCode: [
                         {required: true, message: "请输入商品编码", trigger: "blur"},
@@ -170,39 +176,11 @@
                     return res;
                 });
             },
-            handleSave() {
-                this.$refs['form'].validate((valid) => {
-                    if (valid) {
-                        this.$store
-                            .dispatch("product/updateOne", {
-                                productId: this.$route.query.productId,
-                                data: this.formData
-                            })
-                            .then(() => {
-                            })
-                            .catch(error => {
-                                console.log(error);
-                            });
-                        this.goBack();
-                    }
-                });
-            },
+            
             handleCancel() {
                 this.goBack();
             },
-            handleGetOne(id) {
-                this.$store
-                    .dispatch("product/getOne", {productId: id})
-                    .then(data => {
-                        this.formData = data;
-                        if (this.formData.skuId == null || this.formData.skuId == "") {
-                            let param = {};
-                            param.categoryCode = this.formData.categoryCode;
-                        }
-                    }).catch(error => {
-                    console.log(error);
-                });
-            },
+            
             //跳转回列表页面
             goBack() {
                 if (this.$router.history.length <= 1) {

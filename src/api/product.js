@@ -25,11 +25,12 @@ export function removeOne(id) {
 }
 
 
-export function getPageList(pageFlag, pageSize, params) {
+export function getPageList(args) {
+  const {pageFlag, pageSize, ...params} = args;
   return request({
     url: `/policy/product/page/list/${pageFlag}/${pageSize}`,
     method: 'get',
-    params: params
+    params
   });
 }
 

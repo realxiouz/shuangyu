@@ -23,7 +23,7 @@
             <el-button @click="inventoryUpdate(scope.row.productId)" type="primary" size="mini">库存编辑</el-button>
             <el-button @click="handleUpdate(scope.row.productId)" type="primary" size="mini">商品编辑</el-button>
             <el-button
-              @click.native.prevent="handleRemove(scope.row.productId,scope.$index,tableData)"
+              @click.native.prevent="onDel(scope.row.productId)"
               type="danger"
               size="mini"
             >删除
@@ -33,87 +33,39 @@
       </el-table>
       <el-pagination
         class="page-footer"
-        @size-change="onSizeChange"
-        @prev-click="handlePrevClick"
-        @next-click="handleNextClick"
         background
-        layout="total,sizes,prev,next"
         prev-text="上一页"
         next-text="下一页"
-        :page-size="pageSize"
         :total="total"
+        @prev-click="onPrev"
+        @next-click="onNext"
+        @size-change="onSizeChange"
+        layout="total,sizes,prev,next"
+        :page-size="pageSizes[0]"
+        :page-sizes="pageSizes"
       ></el-pagination>
     </div>
 </template>
 <script>
     import search from "./Search";
     import edit from "./Edit";
+    import {MIXIN_LIST} from "@/utils/mixin";
 
     export default {
+        mixins: [MIXIN_LIST],
         name: "list",
         data() {
             return {
-                pageFlag: 1,
-                pageSize: 10,
-                lastId: null,
-                total: 0,
                 dialogVisible: false,
-                loading: true,
-                tableData: [],
-                productId: ""
+                keyName:'productId',
+                productId: "",
+                actions: {
+                    getPageList: 'product/getPageList',
+                    removeOne: 'product/removeOne'
+                }
             };
         },
         methods: {
-            /*翻前页*/
-            handlePrevClick() {
-                this.pageFlag = -1;
-                this.lastId = this.tableData[0].productId;
-                this.loadData();
-            },
-            /*翻后页*/
-            handleNextClick() {
-                this.pageFlag = 1;
-                this.lastId = this.tableData[this.tableData.length - 1].productId;
-                this.loadData();
-            },
-            // loadTotal(searchForm) {
-            //     this.$store
-            //         .dispatch("product/getTotal", {
-            //             filters: searchForm
-            //         })
-            //         .then(data => {
-            //             this.total = data;
-            //         })
-            //         .catch(error => {
-            //             console.log(error);
-            //         });
-            // },
-            loadData(searchForm = {}) {
-                if (this.lastId) {
-                    searchForm.lastId = this.lastId;
-                }
-                this.$store
-                    .dispatch("product/getPageList", {
-                        pageFlag: this.pageFlag,
-                        pageSize: this.pageSize,
-                        filter: searchForm
-                    })
-                    .then(data => {
-                        if (data) {
-                            this.tableData = data.rows;
-                            this.total = data.total;
-                            // this.loadTotal(searchForm);
-                        }
-                        this.loading = false;
-                    })
-                    .catch(error => {
-                        this.loading = false;
-                        console.log(error);
-                    });
-            },
-            handleCancel() {
-                this.dialogVisible = false;
-            },
             handleAdd() {
                 let path = "";
                 path = "/product/config";
@@ -140,52 +92,7 @@
                         productId: id
                     }
                 });
-            },
-            handleRemove(id, index, rows) {
-                this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
-                    confirmButtonText: "确定",
-                    cancelButtonText: "取消",
-                    type: "warning"
-                })
-                    .then(() => {
-                        this.$store.dispatch("product/removeOne", {productId: id}).then(() => {
-                            if (1 === this.tableData.length) {
-                                this.prevClick();
-                            } else {
-                                this.loadData();
-                            }
-                            rows.splice(index, 1);
-                        });
-                    })
-                    .catch(err => {
-                        console.error(err);
-                    });
-            },
-            onSizeChange(pageSize) {
-                this.pageSize = pageSize;
-                this.loadData();
-            },
-            onSearch(params) {
-                const newParams = {};
-                if (params) {
-                    for (let key in params) {
-                        if (params[key]) {
-                            newParams[key] = params[key];
-                        }
-                    }
-                }
-                if (Object.keys(newParams).length == 0) {
-                    this.lastId = 0;
-                }
-                this.loadData(newParams);
-                this.$message({
-                    type: "success",
-                    message: "查询成功！"
-                });
-            }
-        },
-        created() {
-            this.loadData();
+            }, 
         },
         components: {
             search,

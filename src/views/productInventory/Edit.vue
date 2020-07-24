@@ -95,12 +95,14 @@
       </el-row>
     </el-form>
     <div slot="footer" style="text-align:center;">
-      <el-button size="mini" @click="handleCancel">返 回</el-button>
+      <el-button size="mini" @click="onCancel">返 回</el-button>
     </div>
   </div>
 </template>
 <script>
+    import {MIXIN_EDIT} from "@/utils/mixin";
     export default {
+      mixins: [MIXIN_EDIT],
         name: "edit",
         data() {
             return {
@@ -108,25 +110,13 @@
                     productPropertyItems: []
                 },
                 propertyList: [],
+                actions: {
+                  getOne: 'productInventory/getOne',
+                  saveOne: 'productInventory/saveOne'
+                }
             };
         },
         methods: {
-            handleGetOne(id) {
-                if (id) {
-                    this.$store
-                        .dispatch("productInventory/getOne", {inventoryId: id})
-                        .then(data => {
-                            if (data) {
-                                this.formData = data;
-                                let param = {};
-                                param.categoryCode = this.formData.categoryCode;
-                            }
-                        })
-                        .catch(error => {
-                            console.log(error);
-                        });
-                }
-            },
             //跳转回列表页面
             goBack() {
                 if (this.$router.history.length <= 1) {
@@ -136,7 +126,7 @@
                     this.$router.go(-1);
                 }
             },
-            handleCancel() {
+            onCancel() {
                 this.goBack();
             },
             getValueArray(values) {
