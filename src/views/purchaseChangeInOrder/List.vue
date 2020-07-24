@@ -84,8 +84,10 @@
 
 <script>
     import search from "./Search.vue";
+    import {MIXIN_LIST} from "@/utils/mixin";
 
     export default {
+        mixins: [MIXIN_LIST],
         data() {
             return {
                 loading: true,
@@ -94,7 +96,11 @@
                 tableData: [],
                 currentPage: 1,
                 pageSize: 10,
-                total: 0
+                total: 0,
+                actions: {
+                    getPageList: 'productOrder/getPageList',
+                    removeOne: 'productOrder/removeOne'
+                }
             };
         },
         methods: {
@@ -117,23 +123,6 @@
             onSizeChange(pageSize) {
                 this.pageSize = pageSize;
                 this.loadData();
-            },
-            loadData(searchForm = {}) {
-                searchForm['orderType'] = 205;
-                this.$store.dispatch("productOrder/getList", {
-                    filter: searchForm
-                })
-                    .then(data => {
-                        if (data) {
-                            this.tableData = data;
-                            this.loadTotal(searchForm);
-                        }
-                        this.loading = false;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                        this.loading = false;
-                    });
             },
             loadTotal(searchForm) {
                 this.$store
@@ -260,9 +249,7 @@
                 this.totalAmount = _totalAmount.toFixed(2);
             },
         },
-        created() {
-            this.loadData();
-        },
+       
         components: {
             search
         }

@@ -16,11 +16,12 @@ export function removeOne(id) {
   });
 }
 
-export function getList(params) {
+export function getList(args) {
+  const {...params} = args;
   return request({
     url: `/order/list`,
     method: "get",
-    params: params
+    params
   });
 }
 

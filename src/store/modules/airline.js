@@ -27,9 +27,9 @@ const actions = {
         });
     });
   },
-  getPageList({commit}, params) {
+  getPageList({commit}, args) {
     return new Promise((resolve, reject) => {
-      getPageList(params)
+      getPageList(args)
         .then(response => {
           resolve(response);
         })

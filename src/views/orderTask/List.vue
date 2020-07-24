@@ -146,16 +146,16 @@
       </el-table>
       <el-pagination
         class="page-footer"
-        :current-page="currentPage"
-        @size-change="onSizeChange"
-        @prev-click="prevClick"
-        @next-click="nextClick"
-        background
-        layout="total,sizes,slot,prev,next"
-        prev-text="上一页"
-        next-text="下一页"
-        :page-size="pageSize"
-        :total="total"
+      background
+      prev-text="上一页"
+      next-text="下一页"
+      :total="total"
+      @prev-click="onPrev"
+      @next-click="onNext"
+      @size-change="onSizeChange"
+      layout="total,sizes,prev,next"
+      :page-size="pageSizes[0]"
+      :page-sizes="pageSizes"
       >
         <span style="font-weight: 400;color:#565656;">第{{ currentPage }}页</span>
       </el-pagination>
@@ -177,6 +177,7 @@
 <script>
 import search from "./Search.vue";
 import taskSelectStaff from "./selectStaff";
+import {MIXIN_LIST} from "@/utils/mixin";
 import {
   formatTaskType,
   formatTaskStatus,
@@ -197,26 +198,25 @@ import {
 } from "@/utils/orderFormdata.js";
 
 export default {
+  mixins: [MIXIN_LIST],
   name: "orderTask",
   data() {
     return {
-      loading: true,
       currentPage: 1,
       btnTransfer: true,
       taskStaffDialog: false,
-      tableData: [],
-      pageSize: 10,
       createTime: 0,
       taskId: "blank",
-      total: 0,
       searchParams: {},
-      //otherDataSearch: {},
-      //allDataSearch: {},
       totalCount: 0,
       taskTypeCounts: {},
       selectTask: [],
       timer: null,
-      taskTypeValue: taskTypeValue
+      taskTypeValue: taskTypeValue,
+      actions: {
+        getPageList: 'orderTask/getPageList',
+        removeOne: 'orderTask/removeOne'
+      }
     };
   },
   components: {
@@ -237,42 +237,6 @@ export default {
     formatDiffTimeLimit,
     formattimeLimitStyle,
     formatTimeLimitDuration,
-    onSizeChange(size) {
-      this.pageSize = size;
-      this.searchParams.pageSize = this.pageSize;
-      this.currentPage = 1;
-      this.searchParams.currentPage = this.currentPage;
-      this.loadData(this.searchParams);
-    },
-    prevClick(page) {
-      this.currentPage = page;
-      this.searchParams.pageSize = this.pageSize;
-      this.searchParams.currentPage = this.currentPage;
-      this.loadData(this.searchParams);
-    },
-    nextClick(page) {
-      this.currentPage = page;
-      this.searchParams.pageSize = this.pageSize;
-      this.searchParams.currentPage = this.currentPage;
-      this.loadData(this.searchParams);
-    },
-    loadData(params) {
-      this.$store
-        .dispatch("orderTask/getPageList", {
-          filters: params
-        })
-        .then(data => {
-          if (data) {
-            this.loadTotal(params);
-            this.tableData = data;
-          }
-          this.loading = false;
-        })
-        .catch(error => {
-          this.loading = false;
-          console.log(error);
-        });
-    },
     loadTotal(params) {
       this.$store
         .dispatch("orderTask/getTotal", {
@@ -413,28 +377,9 @@ export default {
         return true;
       }
     },
-    onSearch(params) {
-      let newParams = {};
-      if (params) {
-        for (let key in params) {
-          if (params[key]) {
-            newParams[key] = params[key];
-          }
-        }
-      }
-      newParams.pageSize = this.pageSize;
-      this.currentPage = 1;
-      newParams.currentPage = this.currentPage;
-      this.searchParams = newParams;
-      this.loadData(this.searchParams);
-      this.$message({
-        type: "success",
-        message: "查询成功！"
-      });
-    }
+    
   },
   created() {
-    this.loadData();
     this.loadPendingTotal();
     this.timer = setInterval(() => {
       setTimeout(this.loadPendingTotal, 0);

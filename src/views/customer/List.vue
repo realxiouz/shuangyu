@@ -76,7 +76,7 @@
           <el-button
             type="danger"
             size="mini"
-            @click="onDel(scope.$index, scope.row)"
+            @click="onDel(scope.row.merchantId)"
             >删除</el-button
           >
           <el-button
@@ -95,14 +95,15 @@
     <el-pagination
       class="page-footer"
       background
-      layout="total,prev,next"
       prev-text="上一页"
       next-text="下一页"
-      :page-size="pageSize"
       :total="total"
+      @prev-click="onPrev"
+      @next-click="onNext"
       @size-change="onSizeChange"
-      @prev-click="handlePrevClick"
-      @next-click="handleNextClick"
+      layout="total,sizes,prev,next"
+      :page-size="pageSizes[0]"
+      :page-sizes="pageSizes"
     ></el-pagination>
     <!-- 员工查询弹窗 -->
     <el-dialog
@@ -175,63 +176,27 @@
 
 <script>
 import search from "./Search";
+import {MIXIN_LIST} from "@/utils/mixin";
+
 
 export default {
+  mixins: [MIXIN_LIST],
   data() {
     return {
-      loading: true,
       userDialogVisible: false,
-      tableData: [],
       userData: {},
       //关联用户时用于记录当前选中的用户对象
       curRow: {},
-      pageFlag: 1,
-      pageSize: 10,
-      lastId: null,
-      total: 0
+      keyName:'merchantId',
+      actions: {
+        getPageList: 'firmMerchant/getCustomerPageList',
+        removeOne: 'firmMerchant/removeOne'
+      }
     };
   },
   methods: {
-    /*翻前页*/
-    handlePrevClick() {
-      this.pageFlag = -1;
-      this.lastId = this.tableData[0].merchantId;
-      this.loadData();
-    },
-    /*翻后页*/
-    handleNextClick() {
-      this.pageFlag = 1;
-      this.lastId = this.tableData[this.tableData.length - 1].merchantId;
-      this.loadData();
-    },
-    onSizeChange(pageSize) {
-      this.pageSize = pageSize;
-      this.loadData();
-    },
-    /*加载客户列表1：企业客户，2：个人客户*/
-    loadData(params = {}) {
-      if (this.lastId) {
-        params.lastId = this.lastId;
-      }
-      this.$store
-        .dispatch("firmMerchant/getCustomerPageList", {
-          pageFlag: this.pageFlag,
-          pageSize: this.pageSize,
-          filter: params
-        })
-        .then(data => {
-          if (data) {
-            this.tableData = data.rows;
-            this.total = data.total;
-            // this.loadTotal(params);
-          }
-          this.loading = false;
-        })
-        .catch(error => {
-          this.loading = false;
-          console.log(error);
-        });
-    },
+    
+    
     loadTotal(params) {
       this.$store
         .dispatch("firmMerchant/getCustomerTotal", { filter: params })
@@ -245,21 +210,7 @@ export default {
         });
     },
     /*根据关键字进行客户搜索*/
-    onSearch(params) {
-      const newParams = {};
-      if (params) {
-        for (let key in params) {
-          if (params[key]) {
-            newParams[key] = params[key];
-          }
-        }
-      }
-      this.loadData(newParams);
-      this.$message({
-        type: "success",
-        message: "查询成功！"
-      });
-    },
+   
     handleAdd() {
       this.skipDetail();
     },
@@ -267,14 +218,7 @@ export default {
     onEdit(index, row) {
       this.skipDetail(row.merchantId);
     },
-    /*点击删除*/
-    onDel(index, row) {
-      this.open(
-        this.remove,
-        row.merchantId,
-        "此操作将删除该客户信息及子客户信息, 是否继续?"
-      );
-    },
+   
     handleSupplement(row) {
       this.$router.push({
         path: row.configUri,
@@ -285,17 +229,7 @@ export default {
         }
       });
     },
-    /*删除企业数据*/
-    remove(params) {
-      this.$store
-        .dispatch("firmMerchant/removeOne", { firmId: params })
-        .then(() => {
-          this.loadData();
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
+   
     handleAssociate(row) {
       let params = {};
       params.phone = row.firm.phone;
@@ -351,27 +285,7 @@ export default {
           console.log(error);
         });
     },
-    open(func, data, message) {
-      this.$confirm(message, "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          func(data);
-          this.loadData();
-          this.$message({
-            type: "success",
-            message: "删除成功!"
-          });
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除"
-          });
-        });
-    },
+    
     initGender(gender) {
       return 0 == gender ? "男" : "女";
     },
@@ -382,9 +296,6 @@ export default {
         query: { merchantId: merchantId }
       });
     }
-  },
-  created() {
-    this.loadData();
   },
   components: {
     search

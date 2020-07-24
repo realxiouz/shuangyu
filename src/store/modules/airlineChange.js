@@ -60,9 +60,9 @@ const actions = {
         });
     });
   },
-  getList({commit}, params) {
+  getList({commit}, args) {
     return new Promise((resolve, reject) => {
-      getList(params)
+      getList(args)
         .then(response => {
           resolve(response);
         })

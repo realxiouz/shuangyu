@@ -43,17 +43,17 @@ const actions = {
         });
     });
   },
-  getPageList({commit}, params) {
-    var data = params.searchForm;
-    var searchForm = {};
-    for (var attr in data) {
-      if (data[attr] != null && data[attr] != undefined && data[attr] != '') {
-        searchForm[attr] = data[attr];
-      }
-    }
-    params.searchForm = searchForm;
+  getPageList({commit}, args) {
+    // var data = params.searchForm;
+    // var searchForm = {};
+    // for (var attr in data) {
+    //   if (data[attr] != null && data[attr] != undefined && data[attr] != '') {
+    //     searchForm[attr] = data[attr];
+    //   }
+    // }
+    // params.searchForm = searchForm;
     return new Promise((resolve, reject) => {
-      getPageList(params)
+      getPageList(args)
         .then(response => {
           resolve(response);
         })

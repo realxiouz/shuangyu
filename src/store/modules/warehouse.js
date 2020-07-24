@@ -11,10 +11,9 @@ import {
 } from '@/api/warehouse';
 
 const actions = {
-  getRootPageList({commit}, params) {
+  getRootPageList({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {pageFlag, pageSize, filter} = params;
-      getRootPageList(pageFlag, pageSize, filter)
+      getRootPageList(args)
         .then(response => {
           resolve(response);
         })

@@ -15,11 +15,12 @@ export function getOne(id) {
   });
 }
 
-export function getPageList(pageFlag, pageSize, params) {
+export function getPageList(args) {
+  const {pageFlag, pageSize, ...params} = args;
   return request({
     url: `/finance/trade/get/page/list/${pageFlag}/${pageSize}`,
     method: 'get',
-    params: params
+    params
   });
 }
 

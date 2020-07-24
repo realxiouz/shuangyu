@@ -31,6 +31,7 @@ export const MIXIN_LIST = {
     afterLoadData() {
     },
     loadData() {
+      console.log(this.actions)
       if (this.actions.getPageList) {
         this.loading = true;
         this.$store

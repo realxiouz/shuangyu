@@ -45,7 +45,6 @@
 import {MIXIN_EDIT} from "@/utils/mixin";
 export default {
   mixins: [MIXIN_EDIT],
-  props: ["curNode"],
   data() {
     return {
       formData: {},

@@ -79,31 +79,6 @@ export default {
     };
   },
   methods: {
-   
-    /*添加记录时完成数据填写或编辑记录时，点击对数据进行保存*/
-    handleSave(formData) {
-      this.dialogVisible = false;
-      let url = "";
-      if ("" != formData.fareId) {
-        url = "fare/updateOne";
-      } else {
-        url = "fare/addOne";
-      }
-      this.$store
-        .dispatch(url, formData)
-        .then(() => {
-          this.loadData();
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    handleCancel() {
-      this.dialogVisible = false;
-    },
-    
-   
-    
     /*初始化用工列表中的生日日期格式*/
     initDate(dateStr, format) {
       if (null != dateStr) {

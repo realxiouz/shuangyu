@@ -1,5 +1,6 @@
 <template>
   <div class="page-form">
+     <el-dialog :title="keyId ?'编辑航司信息':'添加航司信息'" :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
     <el-form ref="form" :model="formData" :rules="rules" label-width="110px" size="mini">
       <el-form-item prop="airlineName" label="航司名称:">
         <el-input v-model="formData.airlineName"></el-input>
@@ -11,30 +12,32 @@
         <el-input v-model="_cabins"></el-input>
       </el-form-item>
     </el-form>
-    <div slot="footer" class="dialog-footer" style="text-align:right;">
-      <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
-      <el-button type="primary" size="mini" @click="handleSave">确 定</el-button>
-    </div>
+    <span slot="footer" class="dialog-footer">
+      <el-button @click="dialogVisible=false">取 消</el-button>
+      <el-button type="primary" @click="onSave">确 定</el-button>
+    </span>
+    </el-dialog>
   </div>
 </template>
 <script>
+import {MIXIN_EDIT} from "@/utils/mixin";
 function defaultData() {
   return {
     airlineCode: "",
     airlineName: "",
     cabins: [],
     flights: [],
-    segments: []
+    segments: [],
+    actions: {
+          getOne: 'airline/getOne',
+          saveOne: 'airline/save'
+        }
   };
 }
 export default {
+  mixins: [MIXIN_EDIT],
   name: "airlineEdit",
-  props: {
-    airlineCode: {
-      String,
-      required: true
-    }
-  },
+ 
   data() {
     return {
       formData: defaultData(),
@@ -69,35 +72,7 @@ export default {
     }
   },
   methods: {
-    handleSave() {
-      this.$refs["form"].validate(valid => {
-        if (valid) {
-          this.$store
-            .dispatch("airline/save", this.formData)
-            .then(() => {
-              this.$emit("onSave");
-            })
-            .catch(error => {
-              console.log(error);
-            });
-        }
-      });
-    },
-    handleGetOne(id) {
-      if (id) {
-        this.$store
-          .dispatch("airline/getOne", { airlineCode: id })
-          .then(data => {
-            this.formData = data;
-            this.formData.cabinNames = this.formData.cabins.join(",");
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      } else {
-        this.formData = defaultData();
-      }
-    },
+   
     clearForm() {
       this.formData = defaultData();
     }

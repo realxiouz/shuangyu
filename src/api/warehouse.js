@@ -1,10 +1,11 @@
 import request from '@/utils/request';
 
-export function getRootPageList(pageFlag, pageSize, filter) {
+export function getRootPageList(args) {
+  const {pageFlag, pageSize, ...params} = args;
   return request({
     url: `/policy/warehouse/get/root/list/page/${pageFlag}/${pageSize}`,
     method: 'get',
-    params: filter
+    params
   });
 }
 

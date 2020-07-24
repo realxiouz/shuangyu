@@ -26,7 +26,7 @@
         <el-table-column label="操作" align="center" fixed="right" width="350">
           <template slot-scope="scope">
             <el-button type="primary" size="mini" @click="onEdit(scope.$index, scope.row)">编辑</el-button>
-            <el-button type="danger" size="mini" @click="onDel(scope.$index, scope.row)">删除</el-button>
+            <el-button type="danger" size="mini" @click="onDel(scope.row.merchantId)">删除</el-button>
             <el-button size="mini" :type="scope.row.staffId?'success':'info'"
                        :disabled="scope.row.staffId?true:false"
                        @click="handleAssociate(scope.row)">关联用户
@@ -40,14 +40,15 @@
       <el-pagination
         class="page-footer"
         background
-        layout="total,prev,next"
         prev-text="上一页"
         next-text="下一页"
-        :page-size="pageSize"
         :total="total"
+        @prev-click="onPrev"
+        @next-click="onNext"
         @size-change="onSizeChange"
-        @prev-click="handlePrevClick"
-        @next-click="handleNextClick"
+        layout="total,sizes,prev,next"
+        :page-size="pageSizes[0]"
+        :page-sizes="pageSizes"
       ></el-pagination>
       <!-- 员工查询弹窗 -->
       <!-- 员工查询弹窗 -->
@@ -105,62 +106,23 @@
 
 <script>
     import search from "./Search";
+    import {MIXIN_LIST} from "@/utils/mixin";
 
     export default {
+      mixins: [MIXIN_LIST],
         name: "woniuConfig",
         data() {
             return {
-                loading: true,
                 userDialogVisible: false,
-                tableData: [],
                 userData: [],
-                tmpStaff: {},
-                pageFlag: 1,
-                pageSize: 10,
-                lastId: null,
-                total: 0,
+                keyName:'merchantId',
+                actions: {
+                  getPageList: 'firmMerchant/getSupplierPageList',
+                  removeOne: 'firmMerchant/removeOne'
+                }
             };
         },
         methods: {
-            /*翻前页*/
-            handlePrevClick() {
-                this.pageFlag = -1;
-                this.lastId = this.tableData[0].merchantId;
-                this.loadData();
-            },
-            /*翻后页*/
-            handleNextClick() {
-                this.pageFlag = 1;
-                this.lastId = this.tableData[this.tableData.length - 1].merchantId;
-                this.loadData();
-            },
-            onSizeChange(pageSize) {
-                this.pageSize = pageSize;
-                this.loadData();
-            },
-            /*加载供应商列表*/
-            loadData(params = {}) {
-                if (this.lastId) {
-                    params.lastId = this.lastId;
-                }
-                this.$store
-                    .dispatch("firmMerchant/getSupplierPageList", {
-                        pageFlag: this.pageFlag,
-                        pageSize: this.pageSize,
-                        filter: params
-                    })
-                    .then(data => {
-                        if (data) {
-                            this.tableData = data.rows;
-                            this.total = data.total;
-                        }
-                        this.loading = false;
-                    })
-                    .catch(error => {
-                        this.loading = false;
-                        console.log(error);
-                    });
-            },
             handleAssociate(row) {
                 let params = {};
                 params.phone = row.firm.phone;
@@ -186,44 +148,12 @@
                         console.log(error);
                     });
             },
-            /*根据关键字进行供应商搜索*/
-            onSearch(params) {
-                const newParams = {};
-                if (params) {
-                    for (let key in params) {
-                        if (params[key]) {
-                            newParams[key] = params[key];
-                        }
-                    }
-                }
-                this.loadData(newParams);
-                this.$message({
-                    type: "success",
-                    message: "查询成功！"
-                });
-            },
+           
             handleAdd() {
                 this.skipDetail();
             },
             onEdit(index, row) {
                 this.skipDetail(row.merchantId);
-            },
-            onDel(index, row) {
-                this.open(
-                    this.remove,
-                    row.merchantId,
-                    "此操作将删除该供应商信息, 是否继续?"
-                );
-            },
-            remove(params) {
-                this.$store
-                    .dispatch("firmMerchant/removeOne", {firmId: params})
-                    .then(() => {
-                        this.loadData();
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
             },
             handleSupplement(row) {
                 this.$router.push({
@@ -256,27 +186,7 @@
                         console.log(error);
                     });
             },
-            open(func, data, message) {
-                this.$confirm(message, "提示", {
-                    confirmButtonText: "确定",
-                    cancelButtonText: "取消",
-                    type: "warning"
-                })
-                    .then(() => {
-                        func(data);
-                        this.loadData();
-                        this.$message({
-                            type: "success",
-                            message: "删除成功!"
-                        });
-                    })
-                    .catch(() => {
-                        this.$message({
-                            type: "info",
-                            message: "已取消删除"
-                        });
-                    });
-            },
+            
             initGender(gender) {
                 return 0 == gender ? "男" : "女";
             },
@@ -285,9 +195,7 @@
                 this.$router.push({path: '/supplier/edit', query: {merchantId: merchantId}});
             }
         },
-        mounted() {
-            this.loadData();
-        },
+        
         components: {
             search
         }

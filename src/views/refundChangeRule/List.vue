@@ -24,24 +24,19 @@
       </el-table>
       <el-pagination
         class="page-footer"
-        @size-change="onSizeChange"
-        @prev-click="prevClick"
-        @next-click="nextClick"
-        :current-page="currentPage"
         background
-        layout="total,sizes,prev,next"
         prev-text="上一页"
         next-text="下一页"
-        :page-size="pageSize"
         :total="total"
+        @prev-click="onPrev"
+        @next-click="onNext"
+        @size-change="onSizeChange"
+        layout="total,sizes,prev,next"
+        :page-size="pageSizes[0]"
+        :page-sizes="pageSizes"
       ></el-pagination>
       
-        <edit
-          :visible.sync="dialogVisible"
-          :rule-id="ruleId"
-          ref="form"
-          @refresh="onRefresh"
-        ></edit>
+      <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" @refresh="onRefresh"></edit>
     </div>
 </template>
 <script>
@@ -53,102 +48,26 @@ export default {
   mixins: [MIXIN_LIST],
   data() {
     return {
-      loading: true,
       ruleId: "",
       keyId:'',
+      keyName:'ruleId',
       searchForm: {},
       dialogVisible: false,
-      tableData: [],
-      lastId: null,
-      pageFlag: 0,
-      pageSize: 10,
-      total: 0,
-      currentPage: 0
+      currentPage: 0,
+      actions: {
+          getPageList: 'refundChangeRule/getPageList',
+          removeOne: 'refundChangeRule/removeOne'
+        }
     };
   },
   methods: {
-    loadData() {
-      this.$store
-        .dispatch("refundChangeRule/getPageList", {
-          pageSize: this.pageSize,
-          lastId: this.lastId,
-          pageFlag: this.pageFlag,
-          ...this.searchForm
-        })
-        .then(data => {
-          if (data) {
-            this.tableData = data.rows;
-            this.total = data.total;
-          }
-            this.loading = false;
-
-        })
-        .catch(error => {
-          this.loading = false;
-          console.log(error);
-        });
-    },
-    onSizeChange(pageSize) {
-      this.pageSize = pageSize;
-      this.lastId = null;
-      this.pageFlag = 0;
-      this.loadData();
-    },
-    prevClick() {
-      this.pageFlag = -1;
-      if (this.tableData.length > 0) {
-        this.lastId = this.tableData[0].ruleId;
-      }
-      this.loadData();
-    },
-    nextClick() {
-      this.pageFlag = 1;
-      if (this.tableData.length > 0) {
-        this.lastId = this.tableData[this.tableData.length - 1].ruleId;
-      }
-      this.loadData();
-    },
-    removeOne(id) {
-      this.$confirm("是否确定删除退改规则信息?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.$store
-            .dispatch("refundChangeRule/removeOne", { ruleId: id })
-            .then(() => {
-              if (1 === this.tableData.length) {
-                this.prevClick();
-              } else {
-                this.loadData();
-              }
-            })
-            .catch(error => {
-              console.log(error);
-            });
-        })
-        .catch(err => {
-          console.error(err);
-        });
-    },
-    onEdit(row) {
-      this.ruleId = row.ruleId;
-      this.dialogVisible = true;
-    },
+    
+   
     handleCancel() {
       this.dialogVisible = false;
     },
-    handleSave() {
-      this.dialogVisible = false;
-      this.loadData();
-    },
-    onSearch(params) {
-      this.searchForm = params;
-      this.lastId = null;
-      this.pageFlag = 0;
-      this.loadData();
-    }
+    
+    
   },
   mounted() {
     this.loadData();

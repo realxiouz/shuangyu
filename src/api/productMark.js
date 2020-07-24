@@ -32,9 +32,9 @@ export function getOne(paramId) {
 
 
 export function getPageList(args) {
-  const {pageFlag, pageSize, lastId, ...params} = args;
+  const {pageFlag, pageSize, ...params} = args;
   return request({
-    url: `/third/product/mark/page/list/${pageFlag}/${pageSize}/${lastId}`,
+    url: `/third/product/mark/page/list/${pageFlag}/${pageSize}`,
     method: "get",
     params
   });

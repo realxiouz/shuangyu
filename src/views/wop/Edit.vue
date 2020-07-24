@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form ref="form"  :model="formData" label-width="110px" size="mini">
+    <el-form ref="form" :model="formData" label-width="110px" size="mini">
       <el-row :gutter="5">
         <el-col :span="12">
           <el-form-item label="名称" :rules="[{required: true, message: '必填', trigger: 'blur'}]">
@@ -145,7 +145,6 @@
         this.formData.cron = val
       },
       handleSave() {
-
         this.$refs['form'].validate((valid) => {
           if (valid) {
             let data = {};
@@ -200,9 +199,7 @@
           tagCode: 'wop'
         }
         this.$store
-          .dispatch("jobConfig/getList", {
-            filter: searchForm
-          })
+          .dispatch("jobConfig/getList", searchForm)
           .then(data => {
             if (data) {
               this.formData.attrList = data;

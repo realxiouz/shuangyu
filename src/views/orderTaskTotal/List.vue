@@ -176,6 +176,7 @@
 <script>
 import search from "./Search.vue";
 import taskSelectStaff from "./selectStaff";
+import {MIXIN_LIST} from "@/utils/mixin";
 
 import {
   formatTaskStatus,
@@ -198,6 +199,7 @@ import {
 } from "@/utils/orderFormdata.js";
 
 export default {
+  mixins: [MIXIN_LIST],
   name: "orderTaskTotal",
   data() {
     return {
@@ -217,7 +219,11 @@ export default {
       selectTask: [],
       taskTypeCounts: {},
       timer: null,
-      taskTypeValue: taskTypeValue
+      taskTypeValue: taskTypeValue,
+      actions: {
+        getPageList: 'orderTaskTotal/getPageList',
+        removeOne: 'orderTaskTotal/removeOne'
+      }
     };
   },
   components: {

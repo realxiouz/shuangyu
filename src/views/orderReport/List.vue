@@ -161,17 +161,17 @@
         </el-table-column>
       </el-table>
       <el-pagination
-        class="page-footer"
-        @size-change="onSizeChange"
-        @prev-click="prevClick"
-        @next-click="nextClick"
-        :current-page="currentPage"
+         class="page-footer"
         background
-        layout="total,sizes,prev,next"
         prev-text="上一页"
         next-text="下一页"
-        :page-size="pageSize"
         :total="total"
+        @prev-click="onPrev"
+        @next-click="onNext"
+        @size-change="onSizeChange"
+        layout="total,sizes,prev,next"
+        :page-size="pageSizes[0]"
+        :page-sizes="pageSizes"
       ></el-pagination>
     </div>
 </template>
@@ -197,14 +197,14 @@ export default {
   name: "orderReportList",
   data() {
     return {
-      loading: true,
-      currentPage: 1,
-      pageSize: 10,
-      total: 0,
       dialogVisible: false,
-      tableData: [],
       searchParams: {},
-      count: []
+      count: [],
+      keyName:'deptId',
+      actions: {
+        getPageList: 'orderReport/getList',
+        removeOne: 'orderReport/removeOne'
+      }
     };
   },
   components: {
@@ -220,57 +220,8 @@ export default {
     formatFlightNo,
     formatFlight,
     formatAmount,
-    onSizeChange(size) {
-      this.pageSize = size;
-      this.searchParams.pageSize = this.pageSize;
-      this.currentPage = 1;
-      this.searchParams.currentPage = this.currentPage;
-      this.loadData(this.searchParams);
-    },
-    prevClick(page) {
-      this.currentPage = page;
-      this.searchParams.pageSize = this.pageSize;
-      this.searchParams.currentPage = this.currentPage;
-      this.loadData(this.searchParams);
-    },
-    nextClick(page) {
-      this.currentPage = page;
-      this.searchParams.pageSize = this.pageSize;
-      this.searchParams.currentPage = this.currentPage;
-      this.loadData(this.searchParams);
-    },
-    loadData(params) {
-      this.$store
-        .dispatch("orderReport/getList", {
-          filters: params
-        })
-        .then(data => {
-          if (data) {
-            this.tableData = data;
-            this.loadCount(params);
-            this.loadTotal(params);
-          }
-          this.loading = false;
-        })
-        .catch(error => {
-          this.loading = false;
-          console.log(error);
-        });
-    },
-    loadTotal(params) {
-      this.$store
-        .dispatch("orderReport/getTotal", {
-          filters: params
-        })
-        .then(data => {
-          if (data >= 0) {
-            this.total = data;
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
+    
+    
     loadCount(params) {
       this.$store
         .dispatch("orderReport/getCount", {
@@ -346,34 +297,7 @@ export default {
     handleAdd() {
       this.dialogVisible = true;
     },
-    onSearch(params) {
-      if (!params) {
-        params = {};
-        this.searchParams = params;
-        this.loadData(this.searchParams);
-      } else {
-        const newParams = {};
-        for (let key in params) {
-          if (params[key] && _.isArray(params[key])) {
-            let start = "start" + key.charAt(0).toUpperCase() + key.slice(1);
-            let end = "end" + key.charAt(0).toUpperCase() + key.slice(1);
-            newParams[start] = params[key][0];
-            newParams[end] = params[key][1];
-          } else if (params[key]) {
-            newParams[key] = params[key];
-          }
-        }
-        this.searchParams = newParams;
-        this.searchParams.pageSize = this.pageSize;
-        this.currentPage = 1;
-        this.searchParams.currentPage = this.currentPage;
-        this.loadData(this.searchParams);
-        this.$message({
-          type: "success",
-          message: "查询成功！"
-        });
-      }
-    },
+    
     handleCancel() {
       this.dialogVisible = false;
     },

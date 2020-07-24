@@ -33,20 +33,22 @@
           <template slot-scope="scope" align="center" width="180" fixed="right">
             <el-button size="mini" type="primary" @click="handleUpdate(scope.row.tradeNo)">查看</el-button>
 <!--            <el-button size="mini" type="primary" @click="handleUpdate(scope.row.tradeNo)">编辑</el-button>
-            <el-button size="mini" type="danger" @click="handleRemove(scope.row.tradeNo)">删除</el-button>-->
+            <el-button size="mini" type="danger" @click="onDel(scope.row.tradeNo)">删除</el-button>-->
           </template>
         </el-table-column>
       </el-table>
       <el-pagination
         class="page-footer"
-        @prev-click="handlePrevClick"
-        @next-click="handleNextClick"
         background
-        layout="total,prev,next"
         prev-text="上一页"
         next-text="下一页"
-        :page-size="pageSize"
         :total="total"
+        @prev-click="onPrev"
+        @next-click="onNext"
+        @size-change="onSizeChange"
+        layout="total,sizes,prev,next"
+        :page-size="pageSizes[0]"
+        :page-sizes="pageSizes"
       ></el-pagination>
 
       <el-dialog
@@ -70,41 +72,33 @@
 <script>
   import edit from "./Edit";
   import search from "./Search";
+  import {MIXIN_LIST} from "@/utils/mixin";
 
   export default {
+    mixins: [MIXIN_LIST],
     name: "tradeContent",
     data() {
       return {
-        loading: true,
         searchForm: {},
         dialogVisible: false,
         editTradeNo: null,
-        pid: null,
-        tableData: [],
-        pageFlag: 1,
-        pageSize: 10,
-        lastId: null,
-        total: 0,
         codeEnabled: false,
         currencyList: [],
+        tradeNo:'',
+        keyName:'tradeNo',
         uploadData: {
           tree: null,
           treeNode: null,
           resolve: null
+        },
+        actions: {
+          getPageList: 'trade/getPageList',
+          removeOne: 'trade/removeOne'
         }
       };
     },
     methods: {
-      handlePrevClick() {
-        this.pageFlag = -1;
-        this.lastId = this.tableData[0].tradeNo;
-        this.loadData();
-      },
-      handleNextClick() {
-        this.pageFlag = 1;
-        this.lastId = this.tableData[this.tableData.length - 1].tradeNo;
-        this.loadData();
-      },
+      
       loadCurrency() {
         this.$store
           .dispatch("currency/getList", { filter: {} })
@@ -116,84 +110,15 @@
             console.log(error);
           });
       },
-      loadData(params = {}) {
-        if (this.lastId) {
-          params.lastId = this.lastId;
-        }
-
-        this.$store
-          .dispatch("trade/getPageList", {
-            pageFlag: this.pageFlag,
-            pageSize: this.pageSize,
-            filter: params
-          })
-          .then(data => {
-            if (data && data.rows && data.rows.length > 0) {
-              this.tableData = data.rows; console.log(this.tableData);
-              this.total = data.total;
-            } else {
-              this.tableData = [];
-              this.total = 0;
-            }
-            this.loading = false;
-          })
-          .catch(error => {
-            this.loading = false;
-            console.log(error);
-          });
-      },
-      handleAdd() {
-        this.editTradeNo = null;
-        this.pid = null;
-        this.codeEnabled = false;
-        this.dialogVisible = true;
-      },
-      onSearch(params) {
-        const newParams = {};
-        if (params) {
-          for (let key in params) {
-            if (params[key]) {
-              newParams[key] = params[key];
-            }
-          }
-        }
-        this.loadData(newParams);
-        this.$message({
-          type: "success",
-          message: "查询成功！"
-        });
-      },
+      
+     
       handleUpdate(tradeNo) {
         this.editTradeNo = tradeNo;
         this.pid = null;
         this.codeEnabled = true;
         this.dialogVisible = true;
       },
-      handleRemove(tradeNo) {
-        this.$confirm("此操作将状态改为删除状态, 是否继续?", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        })
-          .then(() => {
-            this.$store
-              .dispatch("trade/removeOne", {tradeNo: tradeNo})
-              .then(() => {
-                if (1 === this.tableData.length) {
-                  this.handlePrevClick();
-                } else {
-                  this.loadData();
-                }
-                this.$message({
-                  type: "success",
-                  message: "删除成功！"
-                });
-              });
-          })
-          .catch(err => {
-            console.error(err);
-          });
-      },
+      
       handleCancel() {
         this.dialogVisible = false;
       },
