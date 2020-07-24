@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form ref="form"  :model="formData" label-width="110px" size="mini">
+    <el-form ref="form" :model="formData" label-width="110px" size="mini">
       <el-row :gutter="5">
         <el-col :span="12">
           <el-form-item label="名称" :rules="[{required: true, message: '必填', trigger: 'blur'}]">
