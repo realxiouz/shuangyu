@@ -1,75 +1,78 @@
 <template>
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch"/>
-      <el-row class="page-tools" style="margin-bottom:15px; margin-left:38px;">
-        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
-      </el-row>
-      <el-table
-        class="page-table"
-        highlight-current-row
-        v-loading="loading"
-        :data="tableData"
-        ref="tableData"
-        style="width: 100%;margin-bottom: 20px;"
-        size="mini"
-      >
-        <el-table-column prop="schedulerName" label="调度名称" align="center"></el-table-column>
-        <el-table-column prop="jobInfoId" label="xxlJobId" align="center"></el-table-column>
-        <el-table-column prop="cron" label="时间表达式" align="center"></el-table-column>
-        <el-table-column prop="tagName" label="标签名称" align="center"></el-table-column>
-        <el-table-column prop="tagCode" label="标签编码" align="center"></el-table-column>
-        <el-table-column prop="required" label="是否启动" align="center">
-          <template slot-scope="scope">
-            <span v-if="scope.row.status">是</span>
-            <span v-else>否</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="remark" label="备注" align="center"></el-table-column>
-        <el-table-column label="操作" fixed="right" align="center" width="330">
-          <template slot-scope="scope">
-            <el-button @click="onEdit(scope.row)" type="primary" size="mini">编辑</el-button>
-            <el-button @click="removeOne(scope.row.schedulerId)" type="danger" size="mini">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-pagination
-       class="page-footer"
-        background
-        layout="total,prev,next"
-        prev-text="上一页"
-        next-text="下一页"
-        :page-size="pageSize"
-        :total="total"
-        @size-change="onSizeChange"
-        @prev-click="handlePrevClick"
-        @next-click="handleNextClick"
-      ></el-pagination>
-      <el-dialog
-        :title="updateFlag?'更新':'新增'"
-        center
-        :visible.sync="dialogVisible"
-        width="55%"
-        ref="job-scheduler-edit"
-        :close-on-click-modal="false"
-      >
-        <edit
-          v-if="dialogVisible"
-          ref="form"
-          :job-scheduler-id="schedulerId"
-          :update-flag="updateFlag"
-          @onSave="handleSave"
-          @onCancel="handleCancel"
-        ></edit>
-      </el-dialog>
-    </div>
+    <el-row class="page-tools" style="margin-bottom:15px; margin-left:38px;">
+      <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+    </el-row>
+    <el-table
+      class="page-table"
+      highlight-current-row
+      v-loading="loading"
+      :data="tableData"
+      ref="tableData"
+      style="width: 100%;margin-bottom: 20px;"
+      size="mini"
+    >
+      <el-table-column prop="schedulerName" label="调度名称" align="center"></el-table-column>
+      <el-table-column prop="jobInfoId" label="xxlJobId" align="center"></el-table-column>
+      <el-table-column prop="cron" label="时间表达式" align="center"></el-table-column>
+      <el-table-column prop="tagName" label="标签名称" align="center"></el-table-column>
+      <el-table-column prop="tagCode" label="标签编码" align="center"></el-table-column>
+      <el-table-column prop="required" label="是否启动" align="center">
+        <template slot-scope="scope">
+          <span v-if="scope.row.status">是</span>
+          <span v-else>否</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="remark" label="备注" align="center"></el-table-column>
+      <el-table-column label="操作" fixed="right" align="center" width="330">
+        <template slot-scope="scope">
+          <el-button @click="onEdit(scope.row)" type="primary" size="mini">编辑</el-button>
+          <el-button @click="removeOne(scope.row.schedulerId)" type="danger" size="mini">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-pagination
+      class="page-footer"
+      background
+      layout="total,prev,next"
+      prev-text="上一页"
+      next-text="下一页"
+      :page-size="pageSize"
+      :total="total"
+      @size-change="onSizeChange"
+      @prev-click="handlePrevClick"
+      @next-click="handleNextClick"
+    ></el-pagination>
+    <el-dialog
+      :title="updateFlag?'更新':'新增'"
+      center
+      :visible.sync="dialogVisible"
+      width="55%"
+      ref="job-scheduler-edit"
+      :close-on-click-modal="false"
+    >
+      <edit
+        v-if="dialogVisible"
+        ref="form"
+        :job-scheduler-id="schedulerId"
+        :update-flag="updateFlag"
+        @onSave="handleSave"
+        @onCancel="handleCancel"
+      ></edit>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
-   import edit from "./Edit";
+  import edit from "./Edit";
   import search from "./Search";
+  import {PROPERTY_TABLE} from '@/utils/const';
+  import {MIXIN_LIST} from "@/utils/mixin";
 
   export default {
     name: "jobSchedulerList",
+    mixins: [MIXIN_LIST],
     data() {
       return {
         dialogVisible: false,
@@ -81,48 +84,7 @@
         tagId: '',
         total: 0,
         tableData: [],
-        valueTypes: [
-          {
-            value: 0,
-            label: '文本'
-          },
-          {
-            value: 1,
-            label: '开关'
-          },
-          {
-            value: 2,
-            label: '数字'
-          },
-          {
-            value: 3,
-            label: '日期'
-          },
-          {
-            value: 4,
-            label: '日期时间'
-          },
-          {
-            value: 5,
-            label: '时间'
-          },
-          {
-            value: 6,
-            label: '评分'
-          },
-          {
-            value: 7,
-            label: '单选'
-          },
-          {
-            value: 8,
-            label: '多选'
-          },
-          {
-            value: 9,
-            label: '选择器'
-          }
-        ],
+        valueTypes: PROPERTY_TABLE,
         tagTypes: [
           {
             label: "工厂",

@@ -70,6 +70,7 @@
   import edit from "./Edit";
   import search from "./Search";
   import {MIXIN_LIST} from "@/utils/mixin";
+  import { PROPERTY_TABLE } from '@/utils/const';
 
   export default {
     mixins: [MIXIN_LIST],
@@ -96,44 +97,7 @@
           }
         ],
         orderSort: 1,
-        valueTypes: [
-          {
-            value: 0,
-            label: '文本'
-          },
-          {
-            value: 1,
-            label: '开关'
-          },
-          {
-            value: 2,
-            label: '数字'
-          },
-          {
-            value: 3,
-            label: '日期'
-          },
-          {
-            value: 4,
-            label: '日期时间'
-          },
-          {
-            value: 5,
-            label: '时间'
-          },
-          {
-            value: 6,
-            label: '评分'
-          },
-          {
-            value: 7,
-            label: '单选'
-          },
-          {
-            value: 8,
-            label: '多选'
-          }
-        ]
+        valueTypes: PROPERTY_TABLE
       };
     },
     methods: {
