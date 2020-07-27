@@ -4,9 +4,8 @@
       <div id="goBack" @click="goBack">
         <el-page-header></el-page-header>
       </div>
-      <br>
       <el-form ref="orderForm" :disabled="isUpdate" :rules="rules" :model="formData" label-position="left"
-               label-width="97px" size="mini"
+               label-width="97px" 
                style="width: 80%">
         <el-row>
           <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
@@ -93,41 +92,7 @@
             </el-col>
           </el-col>
         </el-row>
-        <!--productDetailTable-->
-        <el-row>
-          <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
-            <div class="title">
-              <el-button type="primary" size="mini" @click="handleAddProduct">添加商品明细</el-button>
-            </div>
-            <el-table :data="orderDetails" height="250" border size="mini">
-              <el-table-column prop="productCode" label="商品编码" align="center"></el-table-column>
-              <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
-              <el-table-column prop="brandName" label="品牌" align="center"></el-table-column>
-              <el-table-column prop="skuName" label="属性名称" align="center"></el-table-column>
-              <el-table-column prop="price" label="单价" align="center"></el-table-column>
-              <!-- <el-table-column prop="stockQuantity" label="库存" align="center"></el-table-column> -->
-              <el-table-column prop="quantity" label="数量" align="center" width="150">
-                <template slot-scope="prop">
-                  <el-input-number v-model="prop.row.quantity" :min="1" size="mini"
-                                   @input="testQuantity(prop.row)"></el-input-number>
-                  <!-- <span v-if="verifyStockQuantity(prop.row)" style="color: #F56C6C">*商品数量应该小于或等于库存数量</span> -->
-                </template>
-              </el-table-column>
-              <el-table-column prop="unit" label="计量单位" align="center"></el-table-column>
-              <el-table-column prop="amount" label="金额" align="center">
-                <template slot-scope="prop">
-                  {{computedRowAmount(prop.row)}}
-                </template>
-              </el-table-column>
-              <el-table-column label="操作" align="center">
-                <template slot-scope="scope">
-                  <el-button type="danger" size="mini" @click="handleRemoveProduct(scope.$index, scope.row)">删除
-                  </el-button>
-                </template>
-              </el-table-column>
-            </el-table>
-          </el-col>
-        </el-row>
+        <goods v-model="orderDetails" @total="handleTotal" />
         <passengers v-model="passengers" />
         <!--remark-->
         <el-row style="width: 80%; margin-top: 10px">
@@ -135,12 +100,11 @@
             <el-input type="textarea" v-model="formData.remark" placeholder="暂无备注信息"></el-input>
           </el-col>
         </el-row>
-        <!--totalAmount/recordInfo-->
         <el-row>
           <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
             <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
               <el-form-item label="成交金额:">
-                <span id="totalAmount">{{totalAmount}}</span>
+                {{formData.totalAmount}}
               </el-form-item>
               <el-form-item label="实收金额:">
                 {{formData.receiptAmount}}
@@ -164,7 +128,7 @@
                 {{this.$store.state.loginInfo.fullName}}
               </el-form-item>
               <el-form-item label="制单时间:">
-                {{formatDate("YYYY-MM-DD")}}
+                {{ new Date() | time('YYYY-MM-DD')}}
               </el-form-item>
             </el-col>
           </el-col>
@@ -173,25 +137,22 @@
         <el-row>
           <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="16">
             <div id="footer">
-              <span v-show="stockError" style="color: #F56C6C">商品数量应该小于或等于库存数量</span><br/>
-              <el-button :disabled=" stockError" type="primary" @click="handleSave" size="mini">保 存
+              <el-button type="primary" @click="handleSave" >保 存
               </el-button>
-              <el-button :disabled=" stockError" type="primary" @click="confirmOrder" size="mini">确 认
+              <el-button type="primary" @click="confirmOrder" >确 认
               </el-button>
             </div>
           </el-col>
         </el-row>
       </el-form>
-      <el-dialog title="商品明细" :visible.sync="dialogVisible" :close-on-click-modal="false" width="60%">
-        <product-detail v-if="dialogVisible" @onCancel="handleCancel" @onConfirm="handleConfirm"></product-detail>
-      </el-dialog>
     </div>
   </div>
 </template>
 
 <script>
-    import productDetail from "./productDetail";
+    // import productDetail from "./productDetail";
     import Passengers from "@/components/Passengers";
+    import Goods from "@/components/Goods";
 
     export default {
         data() {
@@ -199,7 +160,6 @@
                 formData: {
                     orderDetails: []
                 },
-                //选择客户
                 customerList: [],
                 accountList: [],
                 warehouseList: [],
@@ -211,9 +171,6 @@
                 customerSelected: true,
                 update: false,
                 isUpdate: true,
-                stockError: false,
-                productIdList: [],
-                totalAmount: 0,
                 defaultDate: new Date().getTime(),
                 rules: {
                     contactName: [
@@ -356,6 +313,7 @@
                             }
                             this.formData = data;
                             this.passengers = this.formData.passengers
+                            this.orderDetails = this.formData.orderDetails
                             if (data.merchantId) {
                                 this.loadAccounts(data.merchantId);
                             }
@@ -364,28 +322,6 @@
                     .catch(error => {
                         console.log(error);
                     });
-            },
-            loadOderDetails(orderNo) {
-                this.$store.dispatch("productOrderDetail/getList", {filter: {orderNo: orderNo}})
-                    .then(data => {
-                        this.orderDetails = data;
-                        if (0 < data.length) {
-                            data.forEach(item => {
-                                this.productIdList.push(item.productId + item.skuId);
-                            });
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            testQuantity(row) {
-                // if (row.stockQuantity < row.quantity) {
-                //     this.stockError = true;
-                // } else {
-                //     this.stockError = false;
-                // }
-                this.stockError = false;
             },
             selectedCustomer(item) {
                 this.customerSelected = false;
@@ -438,31 +374,6 @@
                     }
                 });
             },
-            handleAddProduct() {
-                this.dialogVisible = true;
-            },
-            handleRemoveProduct(idx, row) {
-                let _detailId = row.detailId;
-                if (_detailId && '' != _detailId) {
-                    this.$store.dispatch("orderDetail/removeOne", {detailId: _detailId})
-                        .catch(error => {
-                            console.log(error);
-                        });
-                }
-                this.orderDetails.splice(idx, 1);
-            },
-            handleCancel() {
-                this.dialogVisible = false;
-            },
-            handleConfirm(productSelection) {
-                productSelection.forEach(item => {
-                    if (-1 === this.productIdList.indexOf(item.productId + item.skuId)) {
-                        this.productIdList.push(item.productId + item.skuId);
-                        this.orderDetails.push(item);
-                    }
-                });
-                this.dialogVisible = false;
-            },
             handleSave() {
                 this.$refs['orderForm'].validate((valid) => {
                     if (valid) {
@@ -472,7 +383,7 @@
                                 this.formData[item] = this.formData[item].getTime();
                             }
                         });
-                        this.formData.totalAmount = parseFloat(document.getElementById('totalAmount').textContent);
+                        
                         this.formData.orderDetails = this.orderDetails;
                         this.formData.passengers = this.passengers
                         this.$store
@@ -499,7 +410,6 @@
                                 this.formData[item] = this.formData[item].getTime();
                             }
                         });
-                        this.formData.totalAmount = parseFloat(document.getElementById('totalAmount').textContent);
                         this.formData.orderDetails = this.orderDetails;
                         this.formData.passengers = this.passengers
                         this.$store
@@ -544,22 +454,6 @@
                     this.$router.go(-1);
                 }
             },
-            computedRowAmount(row) {
-                row.amount = parseFloat(row.quantity * row.price).toFixed(2);
-                this.computedTotalAmount();
-                return row.amount;
-            },
-            computedTotalAmount() {
-                let _totalAmount = 0;
-                this.orderDetails.forEach(item => {
-                    _totalAmount += parseFloat(item.amount);
-                });
-                this.totalAmount = _totalAmount.toFixed(2);
-            },
-            initDate(format) {
-                let date = new Date();
-                return this.$moment(date).format(format);
-            },
             initFormData(orderNo) {
                 this.update = false;
                 this.clearForm();
@@ -570,32 +464,22 @@
                 if (orderNo) {
                     this.update = true;
                     this.loadProduct(orderNo);
-                    this.loadOderDetails(orderNo);
                 } else {
                     this.isUpdate = false;
                     this.passengers = []
                     this.orderDetails = []
                 }
             },
+            handleTotal(val) {
+              this.formData.totalAmount = val
+            }
         },
         created() {
             this.initFormData(this.$route.query.orderNo);
         },
-        computed: {
-            // verifyStockQuantity() {
-            //     return function (row) {
-            //         return row.stockQuantity < row.quantity;
-            //     }
-            // },
-            formatDate() {
-                return function (format) {
-                    return this.initDate(format);
-                };
-            },
-        },
         components: {
-            productDetail,
-            Passengers
+            Passengers,
+            Goods,
         }
     };
 </script>
