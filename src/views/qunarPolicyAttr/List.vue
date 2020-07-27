@@ -1,6 +1,6 @@
 <template>
-  <div class="page">
-    <search class="page-search" ref="search" @onSearch="onSearch" />
+  <div class="">
+    <!-- <search class="page-search" ref="search" @onSearch="onSearch" />
     <el-row class="page-tools" type="flex" justify="space-between">
       <el-button icon="el-icon-back" type="warning" size="mini" @click="onBack">返回</el-button>
     </el-row>
@@ -55,7 +55,87 @@
       :page-size="pageSizes[0]"
       :page-sizes="pageSizes"
     ></el-pagination>
-    <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" @refresh="onRefresh"/>
+    <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" @refresh="onRefresh"/> -->
+    <div class="page-back">
+      <el-button-group>
+        <el-button type="primary" @click="handleBack">返回</el-button>
+        <el-button type="primary" @click="handleSave">保存</el-button>
+      </el-button-group>
+    </div>
+    <el-form ref="form" label-width="110px" size="mini" >
+    <el-col >
+        <el-table :data="tableData"  border center>
+          <el-table-column  label="属性名称" prop="name" />
+          <el-table-column label="默认数值" prop="defaultValue">
+            <template slot-scope="scope" prop="defaultValue">
+              <el-input prop="defaultValue" v-if="scope.row.valueType === 0 && scope.row.inputType === 'text'" v-model="scope.row.defaultValue" placeholder="请输入默认数值" />
+              <el-input prop="defaultValue" v-if="scope.row.valueType === 0 && scope.row.inputType === 'textarea'" v-model="scope.row.defaultValue" placeholder="请输入默认数值" type="textarea" :rows="3" />
+              <el-switch prop="defaultValue" v-if="scope.row.valueType === 1" v-model="scope.row.defaultValue" @click="handleValue"></el-switch>
+              <el-input-number prop="defaultValue" v-if="scope.row.valueType === 2" v-model="scope.row.defaultValue" placeholder="请输入默认数值" :min="scope.row.min" :max="scope.row.max" :step="scope.row.step" :precision="scope.row.precision" style="width: 100%;" />
+              <el-date-picker
+                prop="defaultValue"
+                v-if="scope.row.valueType === 3"
+                v-model="scope.row.defaultValue"
+                :format="scope.row.format"
+                type="date"
+                placeholder="请选择默认数值"
+                style="width: 100%;"
+              />
+              <el-date-picker
+                prop="defaultValue"
+                v-if="scope.row.valueType === 4"
+                v-model="scope.row.defaultValue"
+                :format="scope.row.format"
+                type="datetime"
+                placeholder="请选择默认数值"
+                style="width: 100%;"
+              />
+              <el-time-picker
+                prop="defaultValue"
+                v-if="scope.row.valueType === 5"
+                v-model="scope.row.defaultValue"
+                :format="scope.row.format"
+                placeholder="请选择默认数值"
+                style="width: 100%;"
+              />
+              <el-input prop="defaultValue" v-if="scope.row.valueType === 6" v-model="scope.row.defaultValue" placeholder="请输入默认数值" />
+              <el-select
+                prop="defaultValue"
+                v-if="scope.row.valueType === 7"
+                v-model="scope.row.defaultValue"
+                placeholder="请选择默认数值"
+                clearable
+                style="width: 100%"
+              >
+                <el-option
+                  v-for="item in scope.row.attributes"
+                  :key="item.code"
+                  :label="item.name"
+                  :value="item.code"
+                ></el-option>
+              </el-select>
+              <el-select
+                prop="defaultValue"
+                v-if="scope.row.valueType === 8"
+                v-model="scope.row.defaultValue"
+                placeholder="请选择默认数值"
+                style="width: 100%"
+                multiple
+              >
+                <el-option
+                  v-for="item in scope.row.attributes"
+                  :key="item.code"
+                  :label="item.name"
+                  :value="item.code"
+                ></el-option>
+              </el-select>
+            </template>
+              
+          </el-table-column>
+          <el-table-column label="备注" prop="remark" />
+        </el-table>
+      </el-col>
+      </el-form>
   </div>
 </template>
 
@@ -115,6 +195,21 @@
       };
     },
     methods: {
+      handleBack() {
+      this.$router.go(-1)
+    },
+    handleSave() {
+      this.$refs["form"].validate(valid => {
+        if (valid) {
+          this.$store
+            .dispatch("openPolicyAttr/saveOne", this.formData)
+            .then(() => {
+              this.$message({ type: "success", message: "保存成功" });
+              this.handleBack()
+            });
+        }
+      });
+    },
       onBack(){
         let lastName = localStorage.getItem("lastName");
         if(lastName){
