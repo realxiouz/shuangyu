@@ -1,13 +1,9 @@
 <template>
   <div class="page-form">
     <el-dialog :title="'设置政策参数管理'"  width="50%" center :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
-      <el-form ref="form" label-width="110px" size="mini" :model="formData" :rules="rules">
+      <!--<el-form ref="form" label-width="110px" size="mini" :model="formData" :rules="rules">
         <el-row class="el-row-item">
-          <el-col :span="12">
-            <el-form-item label="属性编码：" prop="code">
-              <el-input v-model="formData.code" placeholder="请输入属性编码" :disabled="true" />
-            </el-form-item>
-          </el-col>
+          
           <el-col :span="12">
             <el-form-item label="属性名称：" prop="name">
               <el-input v-model="formData.name" placeholder="请输入属性名称" :disabled="true" />
@@ -164,8 +160,25 @@
       <div style="text-align:right;">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="onSave">确 定</el-button>
-      </div>
+      </div>-->
     </el-dialog>
+    <div class="page-back">
+      <el-button-group>
+        <el-button type="primary" @click="handleBack">返回</el-button>
+        <el-button type="primary" @click="handleSave">保存</el-button>
+      </el-button-group>
+    </div>
+    <el-col :span="24">
+        <el-table :data="formData.jvmOptions"  border center>
+          <el-table-column  label="属性名称" prop="group" />
+          <el-table-column label="默认数值">
+            <template v-slot="{ row }">
+              <el-input v-model="row.value" />
+            </template>
+          </el-table-column>
+          <el-table-column label="备注" prop="description" />
+        </el-table>
+      </el-col>
   </div>
 </template>
 <script>
