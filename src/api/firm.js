@@ -96,6 +96,14 @@ export function getConfigPageList(params) {
   });
 }
 
+export function getConfigList(params) {
+  return request({
+    url: `/firm/open/config/get/list`,
+    method: `get`,
+    params
+  });
+}
+
 export function getConfigOne(openId) {
   return request({
     url: `/firm/open/config/get/one/${openId}`,

@@ -12,6 +12,7 @@ import {
   saveOne,
   updateOne,
   getConfigPageList,
+  getConfigList,
   getConfigOne,
   getSupplierList
 } from '@/api/firm';
@@ -163,6 +164,17 @@ const actions = {
   getConfigPageList({ commit }, params) {
     return new Promise((resolve, reject) => {
       getConfigPageList(params)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getConfigList({ commit }, params) {
+    return new Promise((resolve, reject) => {
+      getConfigList(params)
         .then(response => {
           resolve(response);
         })
