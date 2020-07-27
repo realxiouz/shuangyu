@@ -110,7 +110,7 @@
         dialogVisible: false,
         actions: {
           getOne: 'jobScheduler/getOne',
-          saveOne: this.getJobMethod()
+          saveOne: null
         },
         rules: {
           schedulerName: [
@@ -125,6 +125,7 @@
             {required: true, message: "请选择定时策略"},
           ]
         },
+        jobConfigArray: [],
         cronPopover: false
       };
     },
@@ -132,24 +133,21 @@
       visible(val) {
         if(val){
           this.loadJobConfig();
+          if(this.keyId){
+            this.actions.saveOne = "jobScheduler/updateOne";
+          }else{
+            this.actions.saveOne = "jobScheduler/addOneXxl";
+          }
         }
       }
     },
     methods: {
-      getJobMethod(){
-        let method;
-        if(this.keyId){
-          method = "jobScheduler/updateOne";
-        }else{
-          method = "jobScheduler/addOneXxl";
-        }
-        return method;
-      },
       loadJobConfig(){
         this.$store
           .dispatch("jobConfig/getList", {tagCode: "policy"})
           .then(data => {
             this.formData.jobConfigList = data;
+            this.setValues();
           })
           .catch(error => {
             console.log(error);
@@ -160,12 +158,6 @@
       },
       handleCron(val) {
         this.formData.cron = val
-      },
-      beforeLoadData(data) {
-        if(data){
-          console.log(data);
-        }
-        return data;
       },
       beforeSave(data) {
         let formData = {};
@@ -184,7 +176,7 @@
           let xxlJobGroup = {
             appName: 'policy-provider',
             addressType: 0,
-            title: '政策执行器'
+            title: '政策管理执行器'
           };
           let xxlJobInfo = {
             jobDesc: data.schedulerName,
@@ -199,6 +191,51 @@
           jobScheduler: formData,
           jobSchedulerId: data.schedulerId
         };
+      },
+      beforeLoadData(data) {
+        data.jobConfigList = [];
+        return data;
+      },
+      setValues(){
+        let that = this;
+        that.formData.jobConfigList.forEach(function(jobConfig){
+          that.formData.params.forEach(function(param){
+            if(jobConfig.code === param.code){
+              switch (param.type) {
+                case "Date":
+                  jobConfig.value = that.$moment(param._string).toDate();
+                  break;
+                case "ArrayList":
+                  jobConfig.value = param._array;
+                  break;
+                case "Boolean":
+                  jobConfig.value = param._bool;
+                  break;
+                case "Byte":
+                  jobConfig.value = param._byte;
+                  break;
+                case "Short":
+                  jobConfig.value = param._short;
+                  break;
+                case "Integer":
+                  jobConfig.value = param._int;
+                  break;
+                case "Long":
+                  jobConfig.value = param._long;
+                  break;
+                case "Float":
+                  jobConfig.value = param._float;
+                  break;
+                case "Double":
+                  jobConfig.value = param._double;
+                  break;
+                case "String":
+                  jobConfig.value = param._string;
+                  break;
+              }
+            }
+          });
+        });
       },
       getValues(jobConfigList) {
         let that = this;

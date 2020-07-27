@@ -31,7 +31,6 @@ export const MIXIN_LIST = {
     afterLoadData() {
     },
     loadData() {
-      console.log(this.actions)
       if (this.actions.getPageList) {
         this.loading = true;
         this.$store
@@ -94,7 +93,6 @@ export const MIXIN_LIST = {
     },
     onEdit(id) {
       this.keyId = id;
-      console.log(this.keyId)
       this.dialogVisible = true;
     },
     onDel(id) {
