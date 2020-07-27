@@ -14,7 +14,7 @@
     >
       <el-table-column label="企业名称" align="center" prop="firmName" />
       <el-table-column label="平台名称" align="center" prop="openName" />
-      <el-table-column label="用户名称" align="center" prop="userName" />
+      <el-table-column label="用户账号" align="center" prop="username" />
       <el-table-column width="160" label="操作" align="center">
         <template slot-scope="scope">
           <el-button size="mini" type="primary" @click="onEdit(scope.row.policyConfigId)">修改</el-button>

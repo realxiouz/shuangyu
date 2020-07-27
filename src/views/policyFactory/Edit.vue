@@ -16,6 +16,41 @@
               </el-popover>
             </el-form-item>
           </el-col>
+          <el-col :span="12">
+            <el-form-item label="企业名称：" prop="merchantId">
+              <el-select
+                style="width: 100%;"
+                v-model="formData.merchantId"
+                placeholder="请选择企业"
+                filterable
+                @change="handleFirm"
+              >
+                <el-option
+                  v-for="item in firmData"
+                  :key="item.firm.firmId"
+                  :label="item.firm.firmName"
+                  :value="item.firm.firmId"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="用户账号：" prop="policyConfigId">
+              <el-select
+                style="width: 100%;"
+                v-model="formData.policyConfigId"
+                placeholder="请选择账号"
+                filterable
+              >
+                <el-option
+                  v-for="item in policyConfigData"
+                  :key="item.policyConfigId"
+                  :label="item.username"
+                  :value="item.policyConfigId"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
           <el-col :span="12" v-for="(item, index) in formData.jobConfigList" :key="index">
             <el-form-item :label="item.name + '：'" :prop="'jobConfigList.' + index + '.value'" :rules="[{ required: item.required, message: '请输入' + item.name, trigger: 'change' }]" v-if="item.valueType === 0 && item.inputType === 'text'">
               <el-input v-model="item.value" :placeholder="'请输入' + item.name" />
@@ -122,9 +157,17 @@
             }
           ],
           cron: [
-            {required: true, message: "请选择定时策略"},
+            {required: true, message: "请选择定时策略"}
+          ],
+          merchantId: [
+            {required: true, message: "请选择企业名称"}
+          ],
+          policyConfigId: [
+            {required: true, message: "请选择用户账号"}
           ]
         },
+        firmData: [],
+        policyConfigData: [],
         jobConfigArray: [],
         cronPopover: false
       };
@@ -132,6 +175,7 @@
     watch: {
       visible(val) {
         if(val){
+          this.loadFirm();
           this.loadJobConfig();
           if(this.keyId){
             this.actions.saveOne = "jobScheduler/updateOne";
@@ -142,16 +186,45 @@
       }
     },
     methods: {
-      loadJobConfig(){
+      loadFirm(){
         this.$store
-          .dispatch("jobConfig/getList", {tagCode: "policy"})
+          .dispatch("firm/getConfigList", {})
           .then(data => {
-            this.formData.jobConfigList = data;
-            this.setValues();
+            this.firmData = data;
           })
           .catch(error => {
             console.log(error);
           });
+      },
+      loadQunarPolicyConfig(firmId){
+        this.$store
+          .dispatch("qunarPolicyConfig/getList", {firmId: firmId})
+          .then(data => {
+              this.policyConfigData = data;
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      loadJobConfig(){
+        let that = this;
+        that.$store
+          .dispatch("jobConfig/getList", {tagCode: "policy"})
+          .then(data => {
+            let timer = window.setTimeout(function(){
+              that.formData.jobConfigList = data;
+              that.setValues();
+              window.clearTimeout(timer);
+            }, 300);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      handleFirm(val){
+        if(val){
+          this.loadQunarPolicyConfig(val);
+        }
       },
       handleSwitch(){
         this.defaultFlag = !this.defaultFlag;
@@ -160,39 +233,54 @@
         this.formData.cron = val
       },
       beforeSave(data) {
-        let formData = {};
+        let formObj = {};
         if(null === data.status || '' === data.status){
           data.status = 0
         }
         let tag = this.formData.jobConfigList[0];
-        data.params = this.getValues(data.jobConfigList);
+        let jobConfigArray = data.jobConfigList;
+        jobConfigArray.push({
+          code: "merchantId",
+          name: "授权企业",
+          value: this.formData.merchantId,
+          type: "String"
+        });
+        jobConfigArray.push({
+          code: "policyConfigId",
+          name: "平台配置",
+          value: this.formData.policyConfigId,
+          type: "String"
+        });
+        data.params = this.getValues(jobConfigArray);
         data.tagId = tag.tagId;
         data.tagCode = tag.tagCode;
         data.tagName = tag.tagName;
         data.tagType = tag.tagType;
         if(this.keyId){
-          formData = data;
+          formObj = data;
         }else{
           let xxlJobGroup = {
             appName: 'policy-provider',
             addressType: 0,
-            title: '政策管理执行器'
+            title: '政策执行器'
           };
           let xxlJobInfo = {
             jobDesc: data.schedulerName,
             jobCron: data.cron,
             executorHandler: 'policyJobHandler'
           };
-          formData.xxlJobGroup = xxlJobGroup;
-          formData.xxlJobInfo = xxlJobInfo;
-          formData.jobScheduler = data;
+          formObj.xxlJobGroup = xxlJobGroup;
+          formObj.xxlJobInfo = xxlJobInfo;
+          formObj.jobScheduler = data;
         }
         return {
-          jobScheduler: formData,
+          jobScheduler: formObj,
           jobSchedulerId: data.schedulerId
         };
       },
       beforeLoadData(data) {
+        data.merchantId = null;
+        data.policyConfigId = null;
         data.jobConfigList = [];
         return data;
       },
@@ -200,7 +288,12 @@
         let that = this;
         that.formData.jobConfigList.forEach(function(jobConfig){
           that.formData.params.forEach(function(param){
-            if(jobConfig.code === param.code){
+            if(param.code === 'merchantId'){
+              that.formData.merchantId = param._string;
+              that.loadQunarPolicyConfig(that.formData.merchantId)
+            }else if(param.code === 'policyConfigId'){
+              that.formData.policyConfigId = param._string;
+            }else if(jobConfig.code === param.code){
               switch (param.type) {
                 case "Date":
                   jobConfig.value = that.$moment(param._string).toDate();
@@ -300,6 +393,8 @@
           tagName: null,
           tagCode: null,
           tagType: null,
+          merchantId: null,
+          policyConfigId: null,
           jobConfigList: []
         };
       }

@@ -20,6 +20,7 @@ export const MIXIN_LIST = {
       params: {},
       actions: {
         getPageList: null,
+        getList: null,
         removeOne: null
       }
     };
@@ -38,6 +39,28 @@ export const MIXIN_LIST = {
             pageSize: this.pageSize,
             lastId: this.lastId,
             pageFlag: this.pageFlag,
+            ...this.params,
+            ...(this.extraParam || {})
+          })
+          .then(data => {
+            if (data) {
+              let _data = this.beforeLoadData(data);
+              this.tableData = this.beforeLoadData(_data.rows);
+              this.total = _data.total;
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          })
+          // eslint-disable-next-line no-unused-vars
+          .finally(_ => {
+            this.loading = false;
+            this.afterLoadData();
+          });
+      } else if (this.actions.getList) {
+        this.loading = true;
+        this.$store
+          .dispatch(this.actions.getList, {
             ...this.params,
             ...(this.extraParam || {})
           })
