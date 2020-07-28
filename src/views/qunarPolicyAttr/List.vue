@@ -8,11 +8,11 @@
     </div>
     <el-tabs class="page-tabs" v-model="activeName" type="border-card" @tab-click="handleClick">
       <el-tab-pane label="单程预付政策" name="ONE_WAY_PAY_POLICY">
-        <el-table :data="tableData" border center>
-          <el-table-column label="属性名称" prop="name" />
-          <el-table-column label="默认数值" prop="defaultValue">
+        <el-table height="800" :data="tableData" border center>
+          <el-table-column label="属性名称" prop="name" width="250" center/>
+          <el-table-column label="默认数值" prop="defaultValue" width="500">
             <template slot-scope="scope" prop="defaultValue">
-              <el-input prop="defaultValue" v-if=" scope.row.valueType === 0 && scope.row.inputType === 'text' "  v-model="scope.row.defaultValue" placeholder="请输入默认数值"  />
+              <el-input class="el-input" prop="defaultValue" v-if=" scope.row.valueType === 0 && scope.row.inputType === 'text' "  v-model="scope.row.defaultValue" placeholder="请输入默认数值"  />
               <el-input prop="defaultValue" v-if=" scope.row.valueType === 0 &&  scope.row.inputType === 'textarea' "  v-model="scope.row.defaultValue" placeholder="请输入默认数值" type="textarea" :rows="3" />
               <el-switch prop="defaultValue" v-if="scope.row.valueType === 1" v-model="scope.row.defaultValue" @click="handleValue" ></el-switch>
               <el-input-number
@@ -43,7 +43,7 @@
                 type="datetime"
                 placeholder="请选择默认数值"
                 style="width: 100%;"
-              />
+              /> 
               <el-time-picker
                 prop="defaultValue"
                 v-if="scope.row.valueType === 5"
@@ -89,87 +89,85 @@
         </el-table>
       </el-tab-pane>
       <el-tab-pane label="新包机切位政策" name="NEW_ONE_WAY_CHANGE_POLICY">
-          <el-col>
-            <el-table :data="tableData" border center>
-              <el-table-column label="属性名称" prop="name" />
-              <el-table-column label="默认数值" prop="defaultValue">
-                <template slot-scope="scope" prop="defaultValue">
-                  <el-input prop="defaultValue" v-if=" scope.row.valueType === 0 && scope.row.inputType === 'text' "  v-model="scope.row.defaultValue" placeholder="请输入默认数值"  />
-                  <el-input prop="defaultValue" v-if=" scope.row.valueType === 0 &&  scope.row.inputType === 'textarea' "  v-model="scope.row.defaultValue" placeholder="请输入默认数值" type="textarea" :rows="3" />
-                  <el-switch prop="defaultValue" v-if="scope.row.valueType === 1" v-model="scope.row.defaultValue" @click="handleValue" ></el-switch>
-                  <el-input-number
-                    prop="defaultValue"
-                    v-if="scope.row.valueType === 2"
-                    v-model="scope.row.defaultValue"
-                    placeholder="请输入默认数值"
-                    :min="scope.row.min"
-                    :max="scope.row.max"
-                    :step="scope.row.step"
-                    :precision="scope.row.precision"
-                    style="width: 100%;"
-                  />
-                  <el-date-picker
-                    prop="defaultValue"
-                    v-if="scope.row.valueType === 3"
-                    v-model="scope.row.defaultValue"
-                    :format="scope.row.format"
-                    type="date"
-                    placeholder="请选择默认数值"
-                    style="width: 100%;"
-                  />
-                  <el-date-picker
-                    prop="defaultValue"
-                    v-if="scope.row.valueType === 4"
-                    v-model="scope.row.defaultValue"
-                    :format="scope.row.format"
-                    type="datetime"
-                    placeholder="请选择默认数值"
-                    style="width: 100%;"
-                  />
-                  <el-time-picker
-                    prop="defaultValue"
-                    v-if="scope.row.valueType === 5"
-                    v-model="scope.row.defaultValue"
-                    :format="scope.row.format"
-                    placeholder="请选择默认数值"
-                    style="width: 100%;"
-                  />
-                  <el-input prop="defaultValue" v-if="scope.row.valueType === 6" v-model="scope.row.defaultValue" placeholder="请输入默认数值" />
-                  <el-select
-                    prop="defaultValue"
-                    v-if="scope.row.valueType === 7"
-                    v-model="scope.row.defaultValue"
-                    placeholder="请选择默认数值"
-                    clearable
-                    style="width: 100%"
-                  >
-                    <el-option
-                      v-for="item in scope.row.attributes"
-                      :key="item.code"
-                      :label="item.name"
-                      :value="item.code"
-                    ></el-option>
-                  </el-select>
-                  <el-select
-                    prop="defaultValue"
-                    v-if="scope.row.valueType === 8"
-                    v-model="scope.row.defaultValue"
-                    placeholder="请选择默认数值"
-                    style="width: 100%"
-                    multiple
-                  >
-                    <el-option
-                      v-for="item in scope.row.attributes"
-                      :key="item.code"
-                      :label="item.name"
-                      :value="item.code"
-                    ></el-option>
-                  </el-select>
-                </template>
-              </el-table-column>
-              <el-table-column label="备注" prop="remark" />
-            </el-table>
-          </el-col>
+          <el-table height="800" :data="tableData" border center>
+          <el-table-column label="属性名称" prop="name" width="250" center/>
+          <el-table-column label="默认数值" prop="defaultValue" width="500">
+            <template slot-scope="scope" prop="defaultValue">
+              <el-input class="el-input" prop="defaultValue" v-if=" scope.row.valueType === 0 && scope.row.inputType === 'text' "  v-model="scope.row.defaultValue" placeholder="请输入默认数值"  />
+              <el-input prop="defaultValue" v-if=" scope.row.valueType === 0 &&  scope.row.inputType === 'textarea' "  v-model="scope.row.defaultValue" placeholder="请输入默认数值" type="textarea" :rows="3" />
+              <el-switch prop="defaultValue" v-if="scope.row.valueType === 1" v-model="scope.row.defaultValue" @click="handleValue" ></el-switch>
+              <el-input-number
+                prop="defaultValue"
+                v-if="scope.row.valueType === 2"
+                v-model="scope.row.defaultValue"
+                placeholder="请输入默认数值"
+                :min="scope.row.min"
+                :max="scope.row.max"
+                :step="scope.row.step"
+                :precision="scope.row.precision"
+                style="width: 100%;"
+              />
+              <el-date-picker
+                prop="defaultValue"
+                v-if="scope.row.valueType === 3"
+                v-model="scope.row.defaultValue"
+                :format="scope.row.format"
+                type="date"
+                placeholder="请选择默认数值"
+                style="width: 100%;"
+              />
+              <el-date-picker
+                prop="defaultValue"
+                v-if="scope.row.valueType === 4"
+                v-model="scope.row.defaultValue"
+                :format="scope.row.format"
+                type="datetime"
+                placeholder="请选择默认数值"
+                style="width: 100%;"
+              /> 
+              <el-time-picker
+                prop="defaultValue"
+                v-if="scope.row.valueType === 5"
+                v-model="scope.row.defaultValue"
+                :format="scope.row.format"
+                placeholder="请选择默认数值"
+                style="width: 100%;"
+              />
+              <el-input prop="defaultValue" v-if="scope.row.valueType === 6" v-model="scope.row.defaultValue" placeholder="请输入默认数值" />
+              <el-select
+                prop="defaultValue"
+                v-if="scope.row.valueType === 7"
+                v-model="scope.row.defaultValue"
+                placeholder="请选择默认数值"
+                clearable
+                style="width: 100%"
+              >
+                <el-option
+                  v-for="item in scope.row.attributes"
+                  :key="item.code"
+                  :label="item.name"
+                  :value="item.code"
+                ></el-option>
+              </el-select>
+              <el-select
+                prop="defaultValue"
+                v-if="scope.row.valueType === 8"
+                v-model="scope.row.defaultValue"
+                placeholder="请选择默认数值"
+                style="width: 100%"
+                multiple
+              >
+                <el-option
+                  v-for="item in scope.row.attributes"
+                  :key="item.code"
+                  :label="item.name"
+                  :value="item.code"
+                ></el-option>
+              </el-select>
+            </template>
+          </el-table-column>
+          <el-table-column label="备注" prop="remark" />
+        </el-table>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -248,8 +246,15 @@ export default {
         this.policyType = tab.name;
       },
     handleSave() {
+      let flag = false;
+      let msg = '';
       let formData = new FormData();
       this.tableData.forEach(function(obj) {
+        if(obj.required && !obj.defaultValue){
+          flag = true;
+          msg = obj.name + '是必填项';
+          return;
+        }
         obj.policyTag = "ONE_WAY_PAY_POLICY";
         delete obj.policyTags;
         if(obj.defaultValue && obj.defaultValue.length < 1){
@@ -257,6 +262,10 @@ export default {
         }
         formData.append("qunarPolicyAttrList", JSON.stringify(obj));
       });
+      if(flag){
+        this.$message({ type: 'warning', message: msg });
+        return;
+      }
       this.$store
         .dispatch("qunarPolicyAttr/save", formData)
         .then(id => {
@@ -310,7 +319,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .page-tools {
   margin-bottom: 10px;
 }
