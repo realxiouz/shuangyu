@@ -11,7 +11,6 @@
       :data="tableData"
       style="width: 100%;margin-bottom:15px;"
     >
-      <el-table-column prop="firmName" label="企业名称" align="center"></el-table-column>
       <el-table-column prop="schedulerName" label="调度名称" align="center"></el-table-column>
       <el-table-column prop="jobInfoId" label="xxlJobId" align="center"></el-table-column>
       <el-table-column prop="tagType" label="标签类别" align="center">
