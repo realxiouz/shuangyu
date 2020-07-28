@@ -44,8 +44,8 @@ export const MIXIN_LIST = {
           })
           .then(data => {
             if (data) {
-              let _data = data;
-              this.tableData = this.beforeLoadData(_data.rows);
+              let _data = this.beforeLoadData(data);
+              this.tableData = _data.rows;
               this.total = _data.total;
             }
           })
@@ -66,8 +66,8 @@ export const MIXIN_LIST = {
           })
           .then(data => {
             if (data) { 
-              let _data = data;
-              this.tableData = this.beforeLoadData(_data);
+              let _data = this.beforeLoadData(data);
+              this.tableData = _data;
               this.total = _data.length;
             }
           })
