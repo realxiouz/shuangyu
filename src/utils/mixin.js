@@ -12,6 +12,7 @@ export const MIXIN_LIST = {
       dialogVisible: false,
       pageFlag: 0,
       pageSize: PAGE_SIZES[0],
+      currentPage: 1,
       lastId: null,
       total: 0,
       tableData: [],
@@ -45,7 +46,7 @@ export const MIXIN_LIST = {
           .then(data => {
             if (data) {
               let _data = this.beforeLoadData(data);
-              this.tableData = this.beforeLoadData(_data.rows);
+              this.tableData = _data.rows;
               this.total = _data.total;
             }
           })
@@ -65,10 +66,10 @@ export const MIXIN_LIST = {
             ...(this.extraParam || {})
           })
           .then(data => {
-            if (data) {
+            if (data) { 
               let _data = this.beforeLoadData(data);
-              this.tableData = this.beforeLoadData(_data.rows);
-              this.total = _data.total;
+              this.tableData = _data;
+              this.total = _data.length;
             }
           })
           .catch(error => {
@@ -96,11 +97,11 @@ export const MIXIN_LIST = {
       this.loadData();
     },
     onSearch(params) {
-      if (!params) {
-        params = {};
+      if (params) {
+        this.params = params;
       }
-      this.params = params;
       this.pageFlag = 0;
+      this.currentPage = 1;
       this.lastId = null;
       this.loadData();
     },
@@ -109,6 +110,9 @@ export const MIXIN_LIST = {
       this.lastId = null;
       this.pageFlag = 0;
       this.loadData();
+    },
+    onCurrentChange(currentPage) {
+      this.currentPage = currentPage;
     },
     onAdd() {
       this.keyId = '';
@@ -137,7 +141,7 @@ export const MIXIN_LIST = {
       }
     },
     onRefresh() {
-      this.onSearch(this.params);
+      this.loadData();
     }
   },
   created() {

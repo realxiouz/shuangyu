@@ -43,6 +43,8 @@
       @size-change="onSizeChange"
       @prev-click="handlePrevClick"
       @next-click="handleNextClick"
+      @current-change="onCurrentChange"
+      :current-page.sync="currentPage"
     ></el-pagination>
     <el-dialog
       :title="updateFlag?'更新':'新增'"

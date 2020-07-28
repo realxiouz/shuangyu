@@ -49,6 +49,8 @@
         layout="total,sizes,prev,next"
         :page-size="pageSizes[0]"
         :page-sizes="pageSizes"
+        @current-change="onCurrentChange"
+        :current-page.sync="currentPage"
       ></el-pagination>
       <!-- 员工查询弹窗 -->
       <!-- 员工查询弹窗 -->
