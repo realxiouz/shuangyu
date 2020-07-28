@@ -114,11 +114,6 @@
             label: '多选'
           }
         ],
-        rules:{
-          name:[
-            {required:true,message:'请输入默认数值'}
-          ]
-        }
       };
     },
     methods: {

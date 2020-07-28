@@ -44,7 +44,7 @@ export const MIXIN_LIST = {
           })
           .then(data => {
             if (data) {
-              let _data = this.beforeLoadData(data);
+              let _data = data;
               this.tableData = this.beforeLoadData(_data.rows);
               this.total = _data.total;
             }
@@ -65,10 +65,10 @@ export const MIXIN_LIST = {
             ...(this.extraParam || {})
           })
           .then(data => {
-            if (data) {
-              let _data = this.beforeLoadData(data);
-              this.tableData = this.beforeLoadData(_data.rows);
-              this.total = _data.total;
+            if (data) { 
+              let _data = data;
+              this.tableData = this.beforeLoadData(_data);
+              this.total = _data.length;
             }
           })
           .catch(error => {
