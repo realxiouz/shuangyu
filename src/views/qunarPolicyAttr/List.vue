@@ -8,7 +8,13 @@
     </div>
     <el-tabs class="page-tabs" v-model="activeName" type="border-card" @tab-click="handleClick">
       <el-tab-pane label="单程预付政策" name="ONE_WAY_PAY_POLICY">
-        <el-table height="800" :data="tableData" border center>
+        <el-table :cell-style="rowClass" :header-cell-style="headClass" height="800" :data="tableData" border center>
+          <el-table-column label="是否必填" prop="required"  width="75"  center>
+            <template slot-scope="scope">
+              <font v-if="scope.row.required === true" color="red">是</font>
+              <font v-else-if="scope.row.required === false" >否</font>
+            </template>
+          </el-table-column>
           <el-table-column label="属性名称" prop="name" width="250" center/>
           <el-table-column label="默认数值" prop="defaultValue" width="500">
             <template slot-scope="scope" prop="defaultValue">
@@ -89,7 +95,13 @@
         </el-table>
       </el-tab-pane>
       <el-tab-pane label="新包机切位政策" name="NEW_ONE_WAY_CHANGE_POLICY">
-          <el-table height="800" :data="tableData" border center>
+        <el-table :cell-style="rowClass" :header-cell-style="headClass" height="800" :data="tableData" border center>
+          <el-table-column label="是否必填" prop="required"  width="75" center>
+            <template slot-scope="scope">
+              <font v-if="scope.row.required === true" color="red">是</font>
+              <font v-else-if="scope.row.required === false" >否</font>
+            </template>
+          </el-table-column>
           <el-table-column label="属性名称" prop="name" width="250" center/>
           <el-table-column label="默认数值" prop="defaultValue" width="500">
             <template slot-scope="scope" prop="defaultValue">
@@ -242,7 +254,6 @@ export default {
       this.$router.go(-1);
     },
      handleClick(tab, event) {
-        console.log(tab, event);
         this.policyType = tab.name;
       },
     handleSave() {
@@ -282,6 +293,7 @@ export default {
         this.$router.go(-1);
       }
     },
+    
     formatValueType(row) {
       let valueType = "";
       this.valueTypes.forEach(function(obj) {
@@ -311,6 +323,15 @@ export default {
           })
 
     },
+    rowClass(){
+      return 'text-align:center;'
+    },
+    headClass () {
+      return 'text-align: center;'
+    },
+    changeColor(){
+      return 'color:red'
+    }
   },
   components: {
     edit,
@@ -324,6 +345,13 @@ export default {
   margin-bottom: 10px;
 }
 .page-tabs{
-  margin-top: 10px;
+  /* margin-top: 10px; */
+}
+.el-table{
+  text-align: center !important;
+}
+.page-back{
+  line-height: 50px;
+  margin-left: 10px;
 }
 </style>
