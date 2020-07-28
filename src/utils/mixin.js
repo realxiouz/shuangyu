@@ -100,8 +100,6 @@ export const MIXIN_LIST = {
         params = {};
       }
       this.params = params;
-      this.pageFlag = 0;
-      this.lastId = null;
       this.loadData();
     },
     onSizeChange(pageSize) {
