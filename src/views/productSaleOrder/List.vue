@@ -5,7 +5,7 @@
       <el-button
         icon="el-icon-plus"
         type="primary"
-        size="mini"
+        
         @click="handleAdd"
         >添加</el-button
       >
@@ -15,7 +15,7 @@
       v-loading="loading"
       :data="tableData"
       style="width: 100%;margin-bottom: 15px;"
-      size="mini"
+      
     >
       <el-table-column prop="orderNo" label="单号" align="center">
       </el-table-column>
@@ -38,7 +38,6 @@
           <el-table
             :data="scope.row.orderDetails"
             border
-            size="mini"
             @row-click="skipDetail(scope.row.orderNo)"
           >
             <el-table-column type="expand">
@@ -141,14 +140,14 @@
             v-show="scope.row.orderStatus != 0"
             @click="skipDetail(scope.row.orderNo)"
             type="primary"
-            size="mini"
+            
             >查看
           </el-button>
           <el-button
             v-show="scope.row.orderStatus == 0"
             @click="onEdit(scope.row)"
             type="primary"
-            size="mini"
+            
           >
             编辑
           </el-button>
@@ -156,7 +155,7 @@
             v-show="scope.row.orderStatus == 0"
             @click="onDel(scope.row)"
             type="danger"
-            size="mini"
+            
           >
             删除
           </el-button>
@@ -175,7 +174,7 @@
       layout="total,sizes,prev,next"
       :page-size="pageSizes[0]"
       :page-sizes="pageSizes"
-    ></el-pagination>
+    />
   </div>
 </template>
 
