@@ -61,6 +61,8 @@
       layout="total,sizes,prev,next"
       :page-size="pageSizes[0]"
       :page-sizes="pageSizes"
+       @current-change="onCurrentChange"
+       :current-page.sync="currentPage"
     ></el-pagination>
     
       <edit :visible.sync="dialogVisible" :app-id="appId" :key-name="keyName" @refresh="onRefresh"/>

@@ -32,6 +32,12 @@
             ></el-input>
           </el-form-item>
         </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="是否必填：" label-width="100px">
+            <el-radio v-model="formData.required" label="1">是</el-radio>
+            <el-radio v-model="formData.required" label="0">否</el-radio>
+          </el-form-item>
+        </el-col>
       </el-form>
     </el-col>
     <el-col :xs="8" :sm="6" :md="6" :lg="4" :xl="4" class="search-tools">
@@ -66,7 +72,8 @@
         formData: {
           openName: null,
           code: null,
-          name: null
+          name: null,
+          required: null
         }
       };
     },
@@ -84,7 +91,8 @@
         return {
           openName: null,
           code: null,
-          name: null
+          name: null,
+          required: null
         };
       },
       onSearch() {

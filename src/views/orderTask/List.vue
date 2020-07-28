@@ -156,6 +156,8 @@
       layout="total,sizes,prev,next"
       :page-size="pageSizes[0]"
       :page-sizes="pageSizes"
+        @current-change="onCurrentChange"
+        :current-page.sync="currentPage"
       >
         <span style="font-weight: 400;color:#565656;">第{{ currentPage }}页</span>
       </el-pagination>

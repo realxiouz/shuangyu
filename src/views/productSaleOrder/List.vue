@@ -174,6 +174,8 @@
       layout="total,sizes,prev,next"
       :page-size="pageSizes[0]"
       :page-sizes="pageSizes"
+      @current-change="onCurrentChange"
+      :current-page.sync="currentPage"
     />
   </div>
 </template>

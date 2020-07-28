@@ -78,6 +78,8 @@
         next-text="下一页"
         :page-size="pageSize"
         :total="total"
+        @current-change="onCurrentChange"
+        :current-page.sync="currentPage"
       ></el-pagination>
     </div>
 </template>
