@@ -65,7 +65,7 @@ export function getPageList(args) {
 }
 
 export function getCustomerPageList(args) {
-  
+  const {pageFlag, pageSize, ...params} = args;
   return request({
     url: `/firm/customer/get/page/list/${pageFlag}/${pageSize}`,
     method: `get`,
