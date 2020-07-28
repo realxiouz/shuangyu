@@ -62,11 +62,11 @@
           <el-input type="text" placeholder="请输入路由组件名称(menuName)" v-model="formData.component"></el-input>
         </el-form-item>
         <el-form-item label="标签" prop="tags">
-          <el-select v-model="formData.tags" multiple placeholder="选择标签...">
-            <el-option label="导航" value="NAV" />
-            <el-option label="视图" value="VIEW" />
-            <el-option label="事件" value="EVENT" />
-          </el-select>
+          <el-checkbox-group v-model="formData.tags">
+            <el-checkbox label="NAV">导航</el-checkbox>
+            <el-checkbox label="VIEW">视图</el-checkbox>
+            <el-checkbox label="EVENT">事件</el-checkbox>
+          </el-checkbox-group>
         </el-form-item>
         <el-form-item label="是否启用">
           <el-switch v-model="formData.enable"></el-switch>
@@ -118,7 +118,7 @@
           uri: [
             {required: true, message: "请输入路由导航路径", trigger: "blur"}
           ],
-          sort: [{required: true, message: "请输入路由排序", trigger: "blur"}],
+          // sort: [{required: true, message: "请输入路由排序", trigger: "blur"}],
           // component: [{required: true, message: "请输入组件路径", trigger: "blur"}]
         }
       };
@@ -259,6 +259,7 @@
       onEdit(data, node) {
         this.addFlag = false;
         this.formData = node;
+        !this.formData.tags && (this.formData.tags = [])
         this.dialogVisible = true;
         this.curLine = [];
         if (null != node.pid) {

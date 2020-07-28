@@ -2,9 +2,7 @@
   <div class="page">
     <!-- <search class="page-search" ref="search" @onSearch="onSearch"/> -->
     <el-row class="page-tools" style="margin-bottom:15px;margin-left:40px">
-      <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd"
-        >添加</el-button
-      >
+      <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
     </el-row>
     <el-table
       class="page-table"
@@ -52,8 +50,8 @@
 </template>
 
 <script>
-import { MIXIN_LIST } from "@/utils/mixin";
-import { CARD_TYPES_MAP, AGE_TYPES_MAP } from "@/utils/const";
+import { MIXIN_LIST } from '@/utils/mixin'
+import { CARD_TYPES_MAP, AGE_TYPES_MAP } from '@/utils/const'
 export default {
   mixins: [MIXIN_LIST],
   data() {
@@ -61,19 +59,19 @@ export default {
       cardMap: CARD_TYPES_MAP,
       ageMap: AGE_TYPES_MAP,
 
-      keyId: "",
-      keyName: "orderNo",
+      keyId: '',
+      keyName: 'orderNo',
       actions: {
-        getPageList: "productOrder/getPageList",
-        removeOne: "productOrder/removeOne"
+        getPageList: 'productOrder/getPageList',
+        removeOne: 'productOrder/removeOne'
       },
       extraParam: {
         orderType: -1
       }
-    };
+    }
   },
   created() {
-    this.extraParam.orderType = this.$route.query.orderType || 100;
+    this.extraParam.orderType = this.$route.query.orderType
   },
   methods: {
     onAdd() {
@@ -84,8 +82,16 @@ export default {
         }
       })
     }
+  },
+  watch: {
+    '$route.query.orderType': {
+      handler(val) {
+        this.extraParam.orderType = val
+        this.loadData()
+      }
+    }
   }
-};
+}
 </script>
 
 <style></style>
