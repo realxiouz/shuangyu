@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <!-- <search class="page-search" ref="search" @onSearch="onSearch"/> -->
+    <search class="page-search" ref="search" @onSearch="onSearch"/>
     <el-row class="page-tools" style="margin-bottom:15px;margin-left:40px">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
     </el-row>
@@ -12,10 +12,42 @@
       size="mini"
       border
     >
-      <el-table-column prop="totalAmount" label="成交金额" />
-      <el-table-column label="详情">
-        <template v-slot="{ row }">
-          <el-table :data="row.passengers" border style="margin-top:10px;">
+      <el-table-column prop="orderNo" label="单号" />
+      <el-table-column label="单据日期">
+        <template slot-scope="scope">{{ scope.row.orderDate | time("YYYY-MM-DD") }}</template>
+      </el-table-column>
+      <el-table-column label="单据类型">
+        <template slot-scope="scope">{{ formatOrderType(scope.row) }}</template>
+      </el-table-column>
+      <el-table-column label="明细" width="800">
+        <template slot-scope="scope">
+          <el-table :data="scope.row.orderDetails" border>
+            <el-table-column type="expand">
+              <template slot-scope="props">
+                <el-form label-position="right" :inline="true" label-width="120px">
+                  <div class="detail">
+                    <div
+                      v-if="props.row.propertyItems.length > 0"
+                      v-for="(i, index) in props.row.propertyItems"
+                      :key="index"
+                    >
+                      <el-form-item :label="`${i.name}:`" v-if="!i.hidden">
+                        <span>{{ i | typeVal }}</span>
+                      </el-form-item>
+                    </div>
+                  </div>
+                </el-form>
+              </template>
+            </el-table-column>
+            <el-table-column prop="productCode" label="商品编码" width="200"></el-table-column>
+            <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
+            <el-table-column prop="brandName" label="品牌" align="center"></el-table-column>
+            <el-table-column prop="skuName" label="属性名称" align="center"></el-table-column>
+            <el-table-column prop="price" label="单价" align="center"></el-table-column>
+            <el-table-column prop="quantity" label="数量" width="60" />
+          </el-table>
+
+          <el-table :data="scope.row.passengers" border style="margin-top:10px;">
             <el-table-column label="乘客类型" width="70">
               <template v-slot="{ row }">
                 <el-tag type="primary">{{ ageMap[row.ageType] }}</el-tag>
@@ -32,6 +64,30 @@
           </el-table>
         </template>
       </el-table-column>
+      <el-table-column prop="totalAmount" label="成交金额" />
+      <el-table-column prop="receiptAmount" label="实收金额" />
+      <el-table-column prop="orderStatus" :formatter="formatOrderStatus" label="确认状态" width="80" />
+      <el-table-column
+        prop="warehouseStatus"
+        :formatter="formatWarehouseStatus"
+        label="发货状态"
+        width="80"
+      />
+      <el-table-column fixed="right" label="操作" align="center" width="200">
+        <template slot-scope="scope">
+          <el-button
+            v-show="scope.row.orderStatus != 0"
+            @click="skipDetail(scope.row.orderNo)"
+            type="primary"
+          >查看</el-button>
+          <el-button
+            v-show="scope.row.orderStatus == 0"
+            @click="onEdit(scope.row)"
+            type="primary"
+          >编辑</el-button>
+          <el-button v-show="scope.row.orderStatus == 0" @click="onDel(scope.row)" type="danger">删除</el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <el-pagination
       class="page-footer"
@@ -46,7 +102,6 @@
       :page-size="pageSizes[0]"
       :page-sizes="pageSizes"
       @current-change="onCurrentChange"
-      :current-page.sync="currentPage"
     />
   </div>
 </template>
@@ -54,6 +109,14 @@
 <script>
 import { MIXIN_LIST } from '@/utils/mixin'
 import { CARD_TYPES_MAP, AGE_TYPES_MAP } from '@/utils/const'
+import {
+  formatOrderStatus,
+  formatOrderType,
+  formatPaymentStatus,
+  formatWarehouseStatus
+} from '@/utils/productStatus.js'
+import search from './Search'
+
 export default {
   mixins: [MIXIN_LIST],
   data() {
@@ -76,6 +139,10 @@ export default {
     this.extraParam.orderType = this.$route.query.orderType
   },
   methods: {
+    formatOrderStatus,
+    formatOrderType,
+    formatPaymentStatus,
+    formatWarehouseStatus,
     onAdd() {
       this.$router.push({
         name: 'orderBaseEdit',
@@ -92,8 +159,16 @@ export default {
         this.loadData()
       }
     }
+  },
+  components: {
+    search
   }
 }
 </script>
 
-<style></style>
+<style>
+.detail {
+  display: flex;
+  flex-wrap: wrap;
+}
+</style>

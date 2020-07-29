@@ -1,79 +1,88 @@
 <template>
-  <div>
-    <el-table class="page-table" :data="list" v-loading="loading">
-      <el-table-column type="expand">
-        <template slot-scope="scope">
-          <el-table :data="scope.row.voucherRecords" border>
-            <el-table-column prop="summary" label="摘要" />
-            <el-table-column prop="subjectName" label="科目" />
-            <el-table-column label="借方金额">
-              <template slot-scope="scope">
-                {{ scope.row.borrowAmount > 0 ? scope.row.borrowAmount : "" }}
-              </template>
-            </el-table-column>
-            <el-table-column label="贷方金额">
-              <template slot-scope="scope">
-                {{ scope.row.loanAmount > 0 ? scope.row.loanAmount : "" }}
-              </template>
-            </el-table-column>
-          </el-table>
-        </template>
-      </el-table-column>
-      <el-table-column prop="templateName" label="模板名称" />
-      <el-table-column label="模板类型">
-        <template v-slot="{ row }">
-          {{ tempMap[row.templateType] }}
-        </template>
-      </el-table-column>
-      <el-table-column label="凭证字号" align="center" prop="voucherCode" />
-      <el-table-column label="制单人" align="center" prop="originatorName" />
-      <el-table-column label="制单日期" align="center">
-        <template slot-scope="scope">
-          {{ scope.row.voucherDate | time("YYYY-MM-DD") }}
-        </template>
-      </el-table-column>
-      <el-table-column width="300" label="操作" align="center">
-        <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="onEdit(scope.row)"
-            >修改</el-button
+  <el-row>
+    <el-col :span="24">
+      <el-table
+        :data="list"
+        border
+        size="mini"
+        @selection-change="handleSelectionChange"
+        :max-height="tableHeight"
+        v-bind="$attrs"
+      >
+        <template v-for="(column, index) in columns">
+          <slot name="front-slot"></slot>
+          <el-table-column
+            :key="index"
+            v-if="column.type === 'selection'"
+            type="selection"
+            width="55"
+          ></el-table-column>
+          <el-table-column
+            :key="index"
+            v-else-if="column.type === 'index'"
+            type="index"
+            width="50"
+            label="序号"
+          ></el-table-column>
+          <el-table-column
+            :key="index"
+            v-else
+            align="left"
+            :label="column.title"
+            :width="column.width"
           >
-          <el-button
-            size="mini"
-            type="danger"
-            @click="handleDel(scope.row.templateId)"
-            >删除</el-button
-          >
+            <template slot-scope="scope">
+              <label v-if="!column.hidden">
+                <label v-if="column.type === 'operate'">
+                  <a
+                    href="javascript:void(0)"
+                    class="operate-button"
+                    v-for="(operate, index) in column.operates"
+                    :key="index"
+                    @click="handleClick(operate, scope.row)"
+                  >
+                    {{operate.name}}
+                    &nbsp;&nbsp;
+                  </a>
+                </label>
+                <span v-else>{{scope.row[column.key]}}</span>
+              </label>
+              <label v-if="column.slot">
+                <slot v-if="column.slot" :name="column.slot" :scope="scope"></slot>
+              </label>
+            </template>
+          </el-table-column>
         </template>
-      </el-table-column>
-    </el-table>
-    <el-pagination
-      class="page-footer"
-      background
-      prev-text="上一页"
-      next-text="下一页"
-      :total="total"
-      @prev-click="onPrev"
-      @next-click="onNext"
-      @size-change="onSizeChange"
-      layout="total,sizes,prev,next"
-      :page-size="pageSizes[0]"
-      :page-sizes="pageSizes"
-    />
-  </div>
+        <slot />
+      </el-table>
+    </el-col>
+  </el-row>
 </template>
-
 <script>
 export default {
+  name: "base-table",
   props: {
     list: {
       type: Array,
-      required: true
+      default: () => []
     },
-    loading: {
-        type: Boolean
+    columns: {
+      type: Array,
+      required: true,
+      default: () => []
+    }
+  },
+  data() {
+    return {
+      tableHeight: xxx
+    };
+  },
+  methods: {
+    // 处理点击事件
+    handleClick(action, data) {
+      // emit事件
+      this.$emit(`${action.emitKey}`, data);
     }
   }
 };
 </script>
-
-<style></style>

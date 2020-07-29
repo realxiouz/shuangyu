@@ -15,7 +15,7 @@
         <template slot-scope="scope">
           <div
             @click="skipDetail(scope.row.orderNo)"
-          >{{ initDate(scope.row.orderDate, "YYYY-MM-DD") }}</div>
+          >{{ scope.row.orderDate | time("YYYY-MM-DD") }}</div>
         </template>
       </el-table-column>
       <el-table-column prop="orderType" label="单据类型" align="center">
@@ -40,7 +40,7 @@
                       :key="index"
                     >
                       <el-form-item :label="`${i.name}:`" v-if="!i.hidden">
-                        <span>{{ getValByType(i) }}</span>
+                        <span>{{ i | typeVal }}</span>
                       </el-form-item>
                     </div>
                   </div>
@@ -167,72 +167,6 @@ export default {
         path: '/product/sale/order/edit',
         query: { orderNo: orderNo }
       })
-    },
-    initDate(dateStr, format) {
-      if (dateStr > 0) {
-        const date = new Date(dateStr)
-        return this.$moment(date).format(format)
-      } else {
-        return ''
-      }
-    },
-    initWarehouseStatus(warehouseStatus) {
-      switch (warehouseStatus) {
-        case 0:
-          return '未出库'
-        case 1:
-          return '已出库'
-      }
-    },
-    initPaymentStatus(paymentStatus) {
-      if (paymentStatus === 0) {
-        return '未付款'
-      }
-      return '已付款'
-    },
-    formatAmount(amount) {
-      if (!amount) {
-        return ''
-      }
-      return '￥' + this.$numeral(amount).format('0.00')
-    },
-    computedRowAmount(row) {
-      row.amount = parseFloat(row.quantity * row.price).toFixed(2)
-      this.computedTotalAmount()
-      return row.amount
-    },
-    computedTotalAmount() {
-      let _totalAmount = 0
-      this.orderDetails.forEach(item => {
-        _totalAmount += parseFloat(item.amount)
-      })
-      this.totalAmount = _totalAmount.toFixed(2)
-    },
-    getValByType(i) {
-      switch (i.type) {
-        case 'String':
-          return i['_string']
-        case 'Boolean':
-          return i['_bool']
-        case 'ArrayList':
-          return i['_array'].join(',')
-        case 'Double':
-          return i['_double']
-        case 'Float':
-          return i['_float']
-        case 'Integer':
-          return i['_int']
-        case 'Byte':
-          return i['_byte']
-        case 'Short':
-          return i['_short']
-        case 'Long':
-          return i['_long']
-        case 'Date':
-          return this.$moment(i['_date']).format(i.format || 'YYYY-MM-DD')
-        default:
-          return i['_string']
-      }
     }
   },
   components: {
