@@ -107,9 +107,9 @@ export default {
       isFlights: false,
       flightsInfo: "",
       segmentsInfo: "",
+      airlineCode: "",
       keyName:'airlineCode',
       beanIdName: "airlineCode",
-      airlineCode: "",
       actions: {
         getPageList: 'airline/getPageList',
         removeOne: 'airline/removeOne'

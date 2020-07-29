@@ -1,13 +1,13 @@
 <template>
   <div class="page-form">
     <el-dialog
-        :title="keyId!=''?'编辑净票价信息':'添加净票价'"
+        :title="keyId!='' ?'编辑净票价信息':'添加净票价'"
         :visible.sync="dialogVisible"
         width="30%"
         @open="onOpen" @close="onClose"
         center
       >
-    <el-form :model="formData" label-width="110px" size="mini">
+    <el-form ref="form" :model="formData" label-width="110px" size="mini">
       <el-form-item label="航班号">
         <el-input v-model="formData.flightCode" @input="toUpperCase"></el-input>
       </el-form-item>
@@ -64,7 +64,6 @@
 import {MIXIN_EDIT} from "@/utils/mixin";
 export default {
   mixins: [MIXIN_EDIT],
-  props: ["curNode", "update"],
   data() {
     return {
       formData: {},

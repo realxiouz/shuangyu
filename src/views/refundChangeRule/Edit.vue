@@ -131,12 +131,7 @@ function defaultData() {
 export default {
   mixins: [MIXIN_EDIT],
   name: "refundChangeRuleEdit",
-  props: {
-    ruleId: {
-      String,
-      required: true
-    }
-  },
+  
   data() {
     return {
       formData: defaultData(),

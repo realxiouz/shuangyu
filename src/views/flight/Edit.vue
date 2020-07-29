@@ -1,7 +1,7 @@
 <template>
   <div class="page-form">
     <el-dialog :title="keyId!=''?'编辑航班信息':'添加航班'" :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
-    <el-form :model="formData" label-width="120px" size="mini">
+    <el-form ref="form" :model="formData" label-width="120px" size="mini">
       <input type="hidden" v-model="formData.flightId"/>
       <el-form-item label="航司">
         <el-input type="text" v-model="formData.airlineCode" onkeyup="this.value=this.value.toUpperCase()" maxlength="2" placeholder="航司二字码"></el-input>
@@ -140,7 +140,7 @@ import {MIXIN_EDIT} from "@/utils/mixin";
                 tags: [],
                 actions: {
                   getOne: 'flight/getOne',
-                  saveOne: 'flight/updateOne'
+                  saveOne: 'flight/addOne'
                 }
             }
         },

@@ -67,6 +67,7 @@ export default {
   mixins: [MIXIN_LIST],
   data() {
     return {
+      flightCode:'',
       dialogVisible: false,
       keyName:'flightCode',
       /*记录当前进行操作的节点*/
