@@ -278,6 +278,8 @@
         this.$store.dispatch('firm/getOne', {firmId: firmId})
           .then(data => {
             if(data){
+              console.log("进来了");
+              console.log(data);
               this.formData.firmId = data.firmId;
               this.formData.firmName = data.firmName;
             }

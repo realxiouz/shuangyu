@@ -72,15 +72,7 @@ export default {
       this.handleConfirm();
     },
     handleConfirm() {
-      let _formData = Object.assign({}, this.formData);
-      for (let key in _formData) {
-        if (_formData[key] && "" !== _formData[key]) {
-          _formData[key] = _formData[key].trim();
-        } else {
-          _formData[key] = null;
-        }
-      }
-      this.$emit("onSearch", _formData);
+      this.$emit("onSearch", this.formData);
     }
   }
 };

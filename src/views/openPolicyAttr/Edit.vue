@@ -558,6 +558,7 @@
         data.checkedPolicyTags = that.defaultFormData().checkedPolicyTags;
         data.checkPolicyTags = that.defaultFormData().checkPolicyTags;
         if(data && data.policyTags && data.policyTags.length > 0){
+          that.queryPolicyTags = [];
           data.policyTags.forEach(function(value){
             that.backupPolicyTags.forEach(function(backupPolicyTag){
               if(value === backupPolicyTag.value){

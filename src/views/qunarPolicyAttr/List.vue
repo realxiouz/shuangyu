@@ -2,25 +2,69 @@
   <div class="">
     <div class="page-back">
       <el-button-group>
-        <el-button type="primary" @click="handleBack">返回</el-button>
-        <el-button type="primary" @click="handleSave">保存</el-button>
+        <el-button icon="el-icon-back" type="warning" @click="handleBack"
+          >返回</el-button
+        >
+        <el-button icon="el-icon-plus" type="primary" @click="handleSave"
+          >保存</el-button
+        >
       </el-button-group>
     </div>
-    <el-tabs class="page-tabs" v-model="activeName" type="border-card" @tab-click="handleClick">
+    <el-tabs
+      class="page-tabs"
+      v-model="activeName"
+      type="border-card"
+      @tab-click="handleClick"
+    >
       <el-tab-pane label="单程预付政策" name="ONE_WAY_PAY_POLICY">
-        <el-table :cell-style="rowClass" :header-cell-style="headClass" height="800" :data="tableData" border center>
-          <el-table-column label="是否必填" prop="required"  width="75"  center>
+        <el-table
+          :cell-style="rowClass"
+          :header-cell-style="headClass"
+          height="800"
+          :data="tableData"
+          border
+          center
+        >
+          <el-table-column label="是否必填" prop="required" width="75" center>
             <template slot-scope="scope">
-              <font v-if="scope.row.required === true" color="red">是</font>
-              <font v-else-if="scope.row.required === false" >否</font>
+              <font v-if="scope.row.required === true" class="el-required">是</font>
+              <font v-else-if="scope.row.required === false">否</font>
             </template>
           </el-table-column>
-          <el-table-column label="属性名称" prop="name" width="250" center/>
+          <el-table-column label="属性编码" prop="code" width="150" center>
+            <template slot-scope="scope">
+              <font class="el-code">{{scope.row.code}}</font>
+            </template>
+          </el-table-column>
+          <el-table-column label="属性名称" prop="name" width="250" center />
           <el-table-column label="默认数值" prop="defaultValue" width="500">
             <template slot-scope="scope" prop="defaultValue">
-              <el-input class="el-input" prop="defaultValue" v-if=" scope.row.valueType === 0 && scope.row.inputType === 'text' "  v-model="scope.row.defaultValue" placeholder="请输入默认数值"  />
-              <el-input prop="defaultValue" v-if=" scope.row.valueType === 0 &&  scope.row.inputType === 'textarea' "  v-model="scope.row.defaultValue" placeholder="请输入默认数值" type="textarea" :rows="3" />
-              <el-switch prop="defaultValue" v-if="scope.row.valueType === 1" v-model="scope.row.defaultValue" @click="handleValue" ></el-switch>
+              <el-input
+                class="el-input"
+                prop="defaultValue"
+                v-if="
+                  scope.row.valueType === 0 && scope.row.inputType === 'text'
+                "
+                v-model="scope.row.defaultValue"
+                placeholder="请输入默认数值"
+              />
+              <el-input
+                prop="defaultValue"
+                v-if="
+                  scope.row.valueType === 0 &&
+                    scope.row.inputType === 'textarea'
+                "
+                v-model="scope.row.defaultValue"
+                placeholder="请输入默认数值"
+                type="textarea"
+                :rows="3"
+              />
+              <el-switch
+                prop="defaultValue"
+                v-if="scope.row.valueType === 1"
+                v-model="scope.row.defaultValue"
+                @click="handleValue"
+              ></el-switch>
               <el-input-number
                 prop="defaultValue"
                 v-if="scope.row.valueType === 2"
@@ -49,7 +93,7 @@
                 type="datetime"
                 placeholder="请选择默认数值"
                 style="width: 100%;"
-              /> 
+              />
               <el-time-picker
                 prop="defaultValue"
                 v-if="scope.row.valueType === 5"
@@ -58,7 +102,12 @@
                 placeholder="请选择默认数值"
                 style="width: 100%;"
               />
-              <el-input prop="defaultValue" v-if="scope.row.valueType === 6" v-model="scope.row.defaultValue" placeholder="请输入默认数值" />
+              <el-input
+                prop="defaultValue"
+                v-if="scope.row.valueType === 6"
+                v-model="scope.row.defaultValue"
+                placeholder="请输入默认数值"
+              />
               <el-select
                 prop="defaultValue"
                 v-if="scope.row.valueType === 7"
@@ -95,19 +144,49 @@
         </el-table>
       </el-tab-pane>
       <el-tab-pane label="新包机切位政策" name="NEW_ONE_WAY_CHANGE_POLICY">
-        <el-table :cell-style="rowClass" :header-cell-style="headClass" height="800" :data="tableData" border center>
-          <el-table-column label="是否必填" prop="required"  width="75" center>
+        <el-table
+          :cell-style="rowClass"
+          :header-cell-style="headClass"
+          height="800"
+          :data="tableData"
+          border
+          center
+        >
+          <el-table-column label="是否必填" prop="required" width="75" center>
             <template slot-scope="scope">
               <font v-if="scope.row.required === true" color="red">是</font>
-              <font v-else-if="scope.row.required === false" >否</font>
+              <font v-else-if="scope.row.required === false">否</font>
             </template>
           </el-table-column>
-          <el-table-column label="属性名称" prop="name" width="250" center/>
+          <el-table-column label="属性名称" prop="name" width="250" center />
           <el-table-column label="默认数值" prop="defaultValue" width="500">
             <template slot-scope="scope" prop="defaultValue">
-              <el-input class="el-input" prop="defaultValue" v-if=" scope.row.valueType === 0 && scope.row.inputType === 'text' "  v-model="scope.row.defaultValue" placeholder="请输入默认数值"  />
-              <el-input prop="defaultValue" v-if=" scope.row.valueType === 0 &&  scope.row.inputType === 'textarea' "  v-model="scope.row.defaultValue" placeholder="请输入默认数值" type="textarea" :rows="3" />
-              <el-switch prop="defaultValue" v-if="scope.row.valueType === 1" v-model="scope.row.defaultValue" @click="handleValue" ></el-switch>
+              <el-input
+                class="el-input"
+                prop="defaultValue"
+                v-if="
+                  scope.row.valueType === 0 && scope.row.inputType === 'text'
+                "
+                v-model="scope.row.defaultValue"
+                placeholder="请输入默认数值"
+              />
+              <el-input
+                prop="defaultValue"
+                v-if="
+                  scope.row.valueType === 0 &&
+                    scope.row.inputType === 'textarea'
+                "
+                v-model="scope.row.defaultValue"
+                placeholder="请输入默认数值"
+                type="textarea"
+                :rows="3"
+              />
+              <el-switch
+                prop="defaultValue"
+                v-if="scope.row.valueType === 1"
+                v-model="scope.row.defaultValue"
+                @click="handleValue"
+              ></el-switch>
               <el-input-number
                 prop="defaultValue"
                 v-if="scope.row.valueType === 2"
@@ -136,7 +215,7 @@
                 type="datetime"
                 placeholder="请选择默认数值"
                 style="width: 100%;"
-              /> 
+              />
               <el-time-picker
                 prop="defaultValue"
                 v-if="scope.row.valueType === 5"
@@ -145,7 +224,12 @@
                 placeholder="请选择默认数值"
                 style="width: 100%;"
               />
-              <el-input prop="defaultValue" v-if="scope.row.valueType === 6" v-model="scope.row.defaultValue" placeholder="请输入默认数值" />
+              <el-input
+                prop="defaultValue"
+                v-if="scope.row.valueType === 6"
+                v-model="scope.row.defaultValue"
+                placeholder="请输入默认数值"
+              />
               <el-select
                 prop="defaultValue"
                 v-if="scope.row.valueType === 7"
@@ -186,24 +270,22 @@
 </template>
 
 <script>
-import edit from "./Edit";
-import search from "./Search";
 import { MIXIN_LIST } from "@/utils/mixin";
 
 export default {
   mixins: [MIXIN_LIST],
   data() {
     return {
-      policyType:'ONE_WAY_PAY_POLICY',
       dialogVisible: false,
       keyName: "openPolicyAttrId",
-      activeName:'ONE_WAY_PAY_POLICY',
+      activeName: "ONE_WAY_PAY_POLICY",
       actions: {
-        getList: "openPolicyAttr/getList",
+        getList: "openPolicyAttr/getList"
       },
       params: {
-        policyType: this.policyType
+        policyType: "ONE_WAY_PAY_POLICY"
       },
+      firmId: null,
       valueTypes: [
         {
           value: 0,
@@ -242,47 +324,57 @@ export default {
           label: "多选"
         }
       ],
-      rules:{
-          name:[
-            {required:true,message:'请输入默认数值'}
-          ]
-        }
+      rules: {
+        name: [{ required: true, message: "请输入默认数值" }]
+      }
     };
   },
   methods: {
     handleBack() {
-      this.$router.go(-1);
+      let lastName = localStorage.getItem("lastName");
+      if (lastName) {
+        this.$router.push({ name: lastName });
+        localStorage.removeItem("lastName");
+      } else {
+        this.$router.go(-1);
+      }
     },
-     handleClick(tab, event) {
-        this.policyType = tab.name;
-      },
+    handleClick(tab) {
+      this.params.policyType = tab.name;
+      this.loadData();
+    },
     handleSave() {
-      let flag = false;
-      let msg = '';
+      let that = this;
+      let flag = true;
       let formData = new FormData();
-      this.tableData.forEach(function(obj) {
-        if(obj.required && !obj.defaultValue){
-          flag = true;
-          msg = obj.name + '是必填项';
-          return;
+      that.tableData.forEach(function(obj) {
+        if (flag) {
+          if (
+            obj.required &&
+            (null == obj.defaultValue || "" === obj.defaultValue)
+          ) {
+            flag = false;
+            that.$message({ type: "warning", message: obj.name + "是必填项" });
+            return;
+          }
+          obj.policyTag = that.params.policyType;
+          delete obj.policyTags;
+          if (obj.defaultValue && obj.defaultValue.length < 1) {
+            obj.defaultValue = null;
+          }
+          obj.firmId = null;
+          if (localStorage.getItem("firmId")) {
+            obj.firmId = localStorage.getItem("firmId");
+          }
+          formData.append("qunarPolicyAttrList", JSON.stringify(obj));
         }
-        obj.policyTag = "ONE_WAY_PAY_POLICY";
-        delete obj.policyTags;
-        if(obj.defaultValue && obj.defaultValue.length < 1){
-          obj.defaultValue = null;
-        }
-        formData.append("qunarPolicyAttrList", JSON.stringify(obj));
       });
-      if(flag){
-        this.$message({ type: 'warning', message: msg });
+      if (!flag) {
         return;
       }
-      this.$store
-        .dispatch("qunarPolicyAttr/save", formData)
-        .then(id => {
-          console.log(id);
-          this.$message({ type: 'success', message: '保存成功' });
-        });
+      that.$store.dispatch("qunarPolicyAttr/save", formData).then(() => {
+        that.$message({ type: "success", message: "保存成功" });
+      });
     },
     onBack() {
       let lastName = localStorage.getItem("lastName");
@@ -293,7 +385,7 @@ export default {
         this.$router.go(-1);
       }
     },
-    
+
     formatValueType(row) {
       let valueType = "";
       this.valueTypes.forEach(function(obj) {
@@ -303,57 +395,56 @@ export default {
       });
       return valueType;
     },
-    afterLoadData(){
+    afterLoadData() {
       this.$store
-          .dispatch("qunarPolicyAttr/getList", {
-            ...this.params,
-            ...(this.extraParam || {})
-          })
-          .then(data => {
-            if (data) { 
-                let that = this;
-                that.tableData.forEach(function(openAttr){
-                  data.forEach(function(qunarAttr){
-                    if(openAttr.code === qunarAttr.code){
-                      if(!(parseInt(qunarAttr.valueType) === 2 && qunarAttr.min >= 0 && '0' === qunarAttr.defaultValue)){
-                        openAttr.defaultValue = qunarAttr.defaultValue;
-                      }
-                    }
-                  });
-                });
-            }
-          })
-
+        .dispatch("qunarPolicyAttr/getList", {
+          ...this.params,
+          ...(this.extraParam || {})
+        })
+        .then(data => {
+          if (data) {
+            let that = this;
+            that.tableData.forEach(function(openAttr) {
+              data.forEach(function(qunarAttr) {
+                if (openAttr.code === qunarAttr.code) {
+                  if (
+                    !(
+                      (parseInt(qunarAttr.valueType) === 2 &&
+                        qunarAttr.min >= 0 &&
+                        "0" === qunarAttr.defaultValue) ||
+                      !qunarAttr.defaultValue
+                    )
+                  ) {
+                    openAttr.defaultValue = qunarAttr.defaultValue;
+                  }
+                }
+              });
+            });
+          }
+        });
     },
-    rowClass(){
-      return 'text-align:center;'
+    rowClass() {
+      return "text-align:center;";
     },
-    headClass () {
-      return 'text-align: center;'
-    },
-    changeColor(){
-      return 'color:red'
+    headClass() {
+      return "text-align: center;";
     }
-  },
-  components: {
-    edit,
-    search
   }
 };
 </script>
 
 <style scoped>
-.page-tools {
-  margin-bottom: 10px;
-}
-.page-tabs{
-  /* margin-top: 10px; */
-}
-.el-table{
-  text-align: center !important;
-}
-.page-back{
-  line-height: 50px;
-  margin-left: 10px;
-}
+  .page-back {
+    line-height: 50px;
+    margin-left: 10px;
+  }
+  .page-back button {
+    margin-right: 10px !important;
+  }
+  .el-required{
+    color: #ff0000;
+  }
+  .el-code{
+    color: #0cccff;
+  }
 </style>

@@ -33,6 +33,23 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="政策类型:">
+            <el-select
+              v-model="formData.policyType"
+              clearable
+              placeholder="请选择政策类型"
+              style="width: 100%"
+            >
+              <el-option
+                v-for="item in policyTags"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="是否必填：" label-width="100px">
             <el-radio v-model="formData.required" label="1">是</el-radio>
             <el-radio v-model="formData.required" label="0">否</el-radio>
@@ -73,8 +90,59 @@
           openName: null,
           code: null,
           name: null,
+          policyType: null,
           required: null
-        }
+        },
+        policyTags: [
+          {
+            value: 'ONE_WAY_GENERAL_POLICY',
+            label: '单程普通政策'
+          },
+          {
+            value: 'ONE_WAY_SPECIAL_POLICY',
+            label: '单程特价政策'
+          },
+          {
+            value: 'ONE_WAY_APPLY_POLICY',
+            label: '单程申请政策'
+          },
+          {
+            value: 'ONE_WAY_PAY_POLICY',
+            label: '单程预付政策'
+          },
+          {
+            value: 'ONE_WAY_CHANGE_POLICY',
+            label: '单程包机切位政策'
+          },
+          {
+            value: 'RETURN_SPECIAL_POLICY',
+            label: '往返特价政策'
+          },
+          {
+            value: 'RETURN_PAY_POLICY',
+            label: '往返预付政策'
+          },
+          {
+            value: 'RETURN_GENERAL_POLICY',
+            label: '往返普通政策'
+          },
+          {
+            value: 'RETURN_CHANGE_POLICY',
+            label: '往返包机切位政策'
+          },
+          {
+            value: 'ALL_ONE_WAY_POLICY',
+            label: '所有单程类型'
+          },
+          {
+            value: 'ALL_RETURN_POLICY',
+            label: '所有往返类型'
+          },
+          {
+            value: 'NEW_ONE_WAY_CHANGE_POLICY',
+            label: '新包机切位单程'
+          }
+        ]
       };
     },
     computed: {
@@ -92,6 +160,7 @@
           openName: null,
           code: null,
           name: null,
+          policyType: null,
           required: null
         };
       },

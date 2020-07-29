@@ -1,4 +1,4 @@
-import { PAGE_SIZES } from '@/utils/const'
+import { PAGE_SIZES } from '@/utils/const';
 
 export const MIXIN_LIST = {
   category: {
@@ -24,17 +24,17 @@ export const MIXIN_LIST = {
         getList: null,
         removeOne: null
       }
-    }
+    };
   },
   methods: {
     beforeLoadData(data) {
-      return data
+      return data;
     },
     afterLoadData() {
     },
     loadData() {
       if (this.actions.getPageList) {
-        this.loading = true
+        this.loading = true;
         this.$store
           .dispatch(this.actions.getPageList, {
             pageSize: this.pageSize,
@@ -45,21 +45,21 @@ export const MIXIN_LIST = {
           })
           .then(data => {
             if (data) {
-              const _data = this.beforeLoadData(data)
-              this.tableData = _data.rows
-              this.total = _data.total
+              let _data = this.beforeLoadData(data);
+              this.tableData = _data.rows;
+              this.total = _data.total;
             }
           })
           .catch(error => {
-            console.log(error)
+            console.log(error);
           })
           // eslint-disable-next-line no-unused-vars
           .finally(_ => {
-            this.loading = false
-            this.afterLoadData()
-          })
+            this.loading = false;
+            this.afterLoadData();
+          });
       } else if (this.actions.getList) {
-        this.loading = true
+        this.loading = true;
         this.$store
           .dispatch(this.actions.getList, {
             ...this.params,
@@ -67,60 +67,67 @@ export const MIXIN_LIST = {
           })
           .then(data => {
             if (data) {
-              const _data = this.beforeLoadData(data)
-              this.tableData = _data
-              this.total = _data.length
+              let _data = this.beforeLoadData(data);
+              this.tableData = _data;
+              this.total = _data.length;
             }
           })
           .catch(error => {
-            console.log(error)
+            console.log(error);
           })
           // eslint-disable-next-line no-unused-vars
           .finally(_ => {
-            this.loading = false
-            this.afterLoadData()
-          })
+            this.loading = false;
+            this.afterLoadData();
+          });
       }
     },
     onPrev() {
-      this.pageFlag = -1
+      this.pageFlag = -1;
       if (this.tableData.length > 0) {
-        this.lastId = this.tableData[0][this.keyName]
+        this.lastId = this.tableData[0][this.keyName];
       }
-      this.loadData()
+      this.loadData();
     },
     onNext() {
-      this.pageFlag = 1
+      this.pageFlag = 1;
       if (this.tableData.length > 0) {
-        this.lastId = this.tableData[this.tableData.length - 1][this.keyName]
+        this.lastId = this.tableData[this.tableData.length - 1][this.keyName];
       }
-      this.loadData()
+      this.loadData();
     },
     onSearch(params) {
       if (params) {
-        this.params = params
+        this.params = params;
       }
-      this.pageFlag = 0
-      this.currentPage = 1
-      this.lastId = null
-      this.loadData()
+      let _params = Object.assign({}, this.params);
+      for (let key in _params) {
+        if (!_params[key]) {
+          _params[key] = null;
+        }
+      }
+      this.params = _params;
+      this.pageFlag = 0;
+      this.currentPage = 1;
+      this.lastId = null;
+      this.loadData();
     },
     onSizeChange(pageSize) {
-      this.pageSize = pageSize
-      this.lastId = null
-      this.pageFlag = 0
-      this.loadData()
+      this.pageSize = pageSize;
+      this.lastId = null;
+      this.pageFlag = 0;
+      this.loadData();
     },
     onCurrentChange(currentPage) {
-      this.currentPage = currentPage
+      this.currentPage = currentPage;
     },
     onAdd() {
-      this.keyId = ''
-      this.dialogVisible = true
+      this.keyId = '';
+      this.dialogVisible = true;
     },
     onEdit(id) {
-      this.keyId = id
-      this.dialogVisible = true
+      this.keyId = id;
+      this.dialogVisible = true;
     },
     onDel(id) {
       if (this.actions.removeOne) {
@@ -132,25 +139,22 @@ export const MIXIN_LIST = {
           this.$store
             .dispatch(this.actions.removeOne, { [this.keyName]: id })
             .then(() => {
-              this.onRefresh()
-              this.$message({ type: 'success', message: '删除成功' })
-            })
+              this.onRefresh();
+              this.$message({ type: 'success', message: '删除成功' });
+            });
         }).catch(error => {
-          console.log(error)
-        })
+          console.log(error);
+        });
       }
     },
     onRefresh() {
-      this.loadData()
+      this.loadData();
     }
   },
   created() {
-    this.$nextTick(_ => {
-      this.loadData()
-    })
-    // this.loadData();
+    this.loadData();
   }
-}
+};
 
 export const MIXIN_EDIT = {
   props: {
@@ -176,30 +180,30 @@ export const MIXIN_EDIT = {
         getOne: null,
         saveOne: null
       }
-    }
+    };
   },
   watch: {
     visible(val) {
-      const that = this
-      that.dialogVisible = val
+      let that = this;
+      that.dialogVisible = val;
       if (val) {
         if (that.keyId) {
-          that.loadData()
+          that.loadData();
         } else {
-          that.formData = that.defaultFormData()
+          that.formData = that.defaultFormData();
         }
         that.$nextTick(function() {
-          that.$refs['form'].clearValidate()
-        })
+          that.$refs['form'].clearValidate();
+        });
       }
     }
   },
   methods: {
     onOpen() {
-      this.$emit('update:visible', true)
+      this.$emit('update:visible', true);
     },
     onClose() {
-      this.$emit('update:visible', false)
+      this.$emit('update:visible', false);
     },
     onSave() {
       if (this.actions.saveOne) {
@@ -209,60 +213,60 @@ export const MIXIN_EDIT = {
               .dispatch(this.actions.saveOne, this.beforeSave(this.formData))
               .then(id => {
                 if (!this._.isEmpty(id)) {
-                  this.formData[this.keyName] = id
+                  this.formData[this.keyName] = id;
                 }
-                this.dialogVisible = false
-                this.$emit('refresh')
-                this.$message({ type: 'success', message: '保存成功' })
+                this.dialogVisible = false;
+                this.$emit('refresh');
+                this.$message({ type: 'success', message: '保存成功' });
               })
               // eslint-disable-next-line no-unused-vars
               .finally(_ => {
-                this.afterSave()
-              })
+                this.afterSave();
+              });
           }
-        })
+        });
       }
     },
     beforeSave(data) {
-      return data
+      return data;
     },
     afterSave() {
     },
     defaultFormData() {
-      return {}
+      return {};
     },
     validateOther() {
-      return true
+      return true;
     },
     clearForm() {
-      this.formData = this.defaultFormData()
+      this.formData = this.defaultFormData();
     },
     loadData() {
-      this.clearForm()
+      this.clearForm();
       if (this.actions.getOne) {
         if (this.keyId) {
           this.$store
             .dispatch(this.actions.getOne, { [this.keyName]: this.keyId })
             .then(data => {
-              this.formData = this.beforeLoadData(data)
+              this.formData = this.beforeLoadData(data);
             })
             .catch(error => {
-              console.log(error)
+              console.log(error);
             })
             // eslint-disable-next-line no-unused-vars
             .finally(_ => {
-              this.afterLoadData()
-            })
+              this.afterLoadData();
+            });
         }
       }
     },
     beforeLoadData(data) {
-      return data
+      return data;
     },
     afterLoadData() {
     }
   },
   created() {
-    this.clearForm()
+    this.clearForm();
   }
-}
+};
