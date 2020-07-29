@@ -1,9 +1,6 @@
 <template>
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch" />
-    <el-row class="page-tools" type="flex" justify="space-between">
-      <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
-    </el-row>
     <el-table
       class="page-table"
       v-loading="loading"
@@ -79,9 +76,9 @@
       @current-change="onCurrentChange"
       :current-page.sync="currentPage"
     ></el-pagination>
-    
+
       <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" @refresh="onRefresh"></edit>
-   
+
   </div>
 </template>
 <script>
@@ -113,7 +110,7 @@ export default {
     };
   },
   methods: {
-    
+
     loadChildren(tree, treeNode, resolve) {
       // tree为点击那一行的数据
       // 保存节点信息
@@ -167,12 +164,12 @@ export default {
       this.editDeptId = "";
       this.dialogVisible = true;
     },
-   
-    
-   
-    
+
+
+
+
   },
-  
+
   components: {
       edit,
       search

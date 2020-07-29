@@ -53,10 +53,10 @@
       ></el-table-column>
       <el-table-column label="操作" align="center" width="200">
         <template slot-scope="scope">
-          <el-button @click="onEdit(scope.row)" type="primary" size="mini"
+          <el-button @click="onEdit(scope.row.airline)" type="primary" size="mini"
             >编辑</el-button
           >
-          <el-button @click="handleDelete(scope.row)" type="danger" size="mini"
+          <el-button @click="handleDelete(scope.row.airline)" type="danger" size="mini"
             >删除</el-button
           >
         </template>
@@ -78,14 +78,13 @@ export default {
   data() {
     return {
       dialogVisible: false,
-      /*记录当前进行操作的节点*/
-      curNode: {},
-      keyName:'flightId',
+      airline:'',
+      keyName:'airline',
       update: false,
       deleteValue: false,
       searchForm: {},
       actions: {
-        getPageList: 'airlineChange/getList',
+        getList: 'airlineChange/getList',
         removeOne: 'airlineChange/removeOne'
       }
     };
@@ -96,14 +95,7 @@ export default {
   },
   methods: {
    
-    /*对航司迁转信息进行删除*/
-    handleDelete(row) {
-      this.open(
-        this.delete,
-        row.airline,
-        "此操作将删除航司迁转信息, 是否继续?"
-      );
-    },
+   
     /*初始化用工列表中的生日日期格式*/
     initDate(dateStr, format) {
       if (dateStr && dateStr > 0) {

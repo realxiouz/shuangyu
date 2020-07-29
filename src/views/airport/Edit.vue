@@ -1,10 +1,10 @@
 <template>
   <div class="page-form">
-    <el-dialog :title="keyId=''?'编辑机场信息':'添加机场信息'" :visible.sync="dialogVisible" width="24%" @open="onOpen" @close="onClose">
+    <el-dialog :title="keyId!=''?'编辑机场信息':'添加机场信息'" :visible.sync="dialogVisible" width="24%" @open="onOpen" @close="onClose">
     <!-- <el-dialog :title="keyId!=''?'编辑角色信息':'添加新角色'" :visible.sync="dialogVisible" @open="onOpen" @close="onClose"> -->
     <el-form ref="form" :model="formData" label-width="120px" size="mini">
       <el-form-item label="三字码">
-        <el-input type="text" v-model="formData.airportCode" @input="toUpperCase" :disabled="update" maxlength="3"></el-input>
+        <el-input type="text" v-model="formData.airportCode" @input="toUpperCase"  maxlength="3"></el-input>
       </el-form-item>
 
       <el-form-item label="机场">
@@ -21,13 +21,13 @@
         </el-tag>
       </div>
       <el-form-item prop="airportCity" label="所在城市">
-        <el-input v-model="formData.airportCity" :disabled="update"></el-input>
+        <el-input v-model="formData.airportCity" ></el-input>
       </el-form-item>
     </el-form>
-    <div slot="footer" class="dialog-footer" style="text-align:right">
-      <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
-      <el-button size="mini" type="primary" @click="onSave">确 定</el-button>
-    </div>
+    <span slot="footer" class="dialog-footer">
+      <el-button @click="dialogVisible=false">取 消</el-button>
+      <el-button type="primary" @click="onSave">确 定</el-button>
+    </span>
     </el-dialog>
   </div>
 </template>
@@ -36,15 +36,14 @@
     export default {
       mixins: [MIXIN_EDIT],
         name: 'airportEdit',
-        props: ["update", "curNode"],
         data() {
             return {
                 formData: {},
                 airportName: '',
                 tags: [],
-                keyId:'',
+                update:'',
                 actions: {
-                    getOne: 'airport/updateOne',
+                    getOne: 'airport/getOne',
                     saveOne: 'airport/addOne'
                 }
                 /*rules: {

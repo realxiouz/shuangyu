@@ -1,6 +1,6 @@
 <template>
   <div class="page-form">
-     <el-dialog :title="keyId ?'编辑航司信息':'添加航司信息'" :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
+     <el-dialog :title="keyId!='' ?'编辑航司信息':'添加航司信息'" :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
     <el-form ref="form" :model="formData" :rules="rules" label-width="110px" size="mini">
       <el-form-item prop="airlineName" label="航司名称:">
         <el-input v-model="formData.airlineName"></el-input>
@@ -28,10 +28,6 @@ function defaultData() {
     cabins: [],
     flights: [],
     segments: [],
-    actions: {
-          getOne: 'airline/getOne',
-          saveOne: 'airline/save'
-        }
   };
 }
 export default {
@@ -42,6 +38,10 @@ export default {
     return {
       formData: defaultData(),
       disabled: false,
+      actions: {
+          getOne: 'airline/getOne',
+          saveOne: 'airline/save'
+        },
       rules: {
         airlineName: [
           { required: true, message: "请输入航司名称", trigger: "blur" }

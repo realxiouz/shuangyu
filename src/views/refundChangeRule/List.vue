@@ -51,7 +51,6 @@ export default {
   data() {
     return {
       ruleId: "",
-      keyId:'',
       keyName:'ruleId',
       searchForm: {},
       dialogVisible: false,
@@ -64,15 +63,7 @@ export default {
   },
   methods: {
     
-   
-    handleCancel() {
-      this.dialogVisible = false;
-    },
     
-    
-  },
-  mounted() {
-    this.loadData();
   },
   components: {
     edit,
