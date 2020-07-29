@@ -12,6 +12,7 @@ export const MIXIN_LIST = {
       dialogVisible: false,
       pageFlag: 0,
       pageSize: PAGE_SIZES[0],
+      currentPage: 1,
       lastId: null,
       total: 0,
       tableData: [],
@@ -96,10 +97,12 @@ export const MIXIN_LIST = {
       this.loadData();
     },
     onSearch(params) {
-      if (!params) {
-        params = {};
+      if (params) {
+        this.params = params;
       }
-      this.params = params;
+      this.pageFlag = 0;
+      this.currentPage = 1;
+      this.lastId = null;
       this.loadData();
     },
     onSizeChange(pageSize) {
@@ -107,6 +110,9 @@ export const MIXIN_LIST = {
       this.lastId = null;
       this.pageFlag = 0;
       this.loadData();
+    },
+    onCurrentChange(currentPage) {
+      this.currentPage = currentPage;
     },
     onAdd() {
       this.keyId = '';
@@ -135,7 +141,7 @@ export const MIXIN_LIST = {
       }
     },
     onRefresh() {
-      this.onSearch(this.params);
+      this.loadData();
     }
   },
   created() {

@@ -2,35 +2,25 @@
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch" />
     <el-row class="page-tools" style="margin-bottom:15px;margin-left:40px">
-      <el-button
-        icon="el-icon-plus"
-        type="primary"
-        
-        @click="handleAdd"
-        >添加</el-button
-      >
+      <el-button icon="el-icon-plus" type="primary" @click="handleAdd">添加</el-button>
     </el-row>
     <el-table
       class="page-table"
       v-loading="loading"
       :data="tableData"
       style="width: 100%;margin-bottom: 15px;"
-      
     >
-      <el-table-column prop="orderNo" label="单号" align="center">
-      </el-table-column>
+      <el-table-column prop="orderNo" label="单号" align="center"></el-table-column>
       <el-table-column prop="orderDate" label="单据日期" align="center">
         <template slot-scope="scope">
-          <div @click="skipDetail(scope.row.orderNo)">
-            {{ initDate(scope.row.orderDate, "YYYY-MM-DD") }}
-          </div>
+          <div
+            @click="skipDetail(scope.row.orderNo)"
+          >{{ initDate(scope.row.orderDate, "YYYY-MM-DD") }}</div>
         </template>
       </el-table-column>
       <el-table-column prop="orderType" label="单据类型" align="center">
         <template slot-scope="scope">
-          <div @click="skipDetail(scope.row.orderNo)">
-            {{ formatOrderType(scope.row) }}
-          </div>
+          <div @click="skipDetail(scope.row.orderNo)">{{ formatOrderType(scope.row) }}</div>
         </template>
       </el-table-column>
       <el-table-column label="明细" align="center" width="800">
@@ -42,11 +32,7 @@
           >
             <el-table-column type="expand">
               <template slot-scope="props">
-                <el-form
-                  label-position="right"
-                  :inline="true"
-                  label-width="120px"
-                >
+                <el-form label-position="right" :inline="true" label-width="120px">
                   <div class="detail">
                     <div
                       :v-if="props.row.propertyItems.length > 0"
@@ -61,39 +47,15 @@
                 </el-form>
               </template>
             </el-table-column>
-            <el-table-column
-              prop="productCode"
-              label="商品编码"
-              width="200"
-            ></el-table-column>
-            <el-table-column
-              prop="productName"
-              label="商品名称"
-              align="center"
-            ></el-table-column>
-            <el-table-column
-              prop="brandName"
-              label="品牌"
-              align="center"
-            ></el-table-column>
-            <el-table-column
-              prop="skuName"
-              label="属性名称"
-              align="center"
-            ></el-table-column>
-            <el-table-column
-              prop="price"
-              label="单价"
-              align="center"
-            ></el-table-column>
+            <el-table-column prop="productCode" label="商品编码" width="200"></el-table-column>
+            <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
+            <el-table-column prop="brandName" label="品牌" align="center"></el-table-column>
+            <el-table-column prop="skuName" label="属性名称" align="center"></el-table-column>
+            <el-table-column prop="price" label="单价" align="center"></el-table-column>
             <el-table-column prop="quantity" label="数量" width="60" />
           </el-table>
 
-          <el-table
-            :data="scope.row.passengers"
-            border
-            style="margin-top:10px;"
-          >
+          <el-table :data="scope.row.passengers" border style="margin-top:10px;">
             <el-table-column label="乘客类型" width="70">
               <template v-slot="{ row }">
                 <el-tag type="primary">{{ ageMap[row.ageType] }}</el-tag>
@@ -110,16 +72,8 @@
           </el-table>
         </template>
       </el-table-column>
-      <el-table-column
-        prop="totalAmount"
-        label="成交金额"
-        align="center"
-      ></el-table-column>
-      <el-table-column
-        prop="receiptAmount"
-        label="实收金额"
-        align="center"
-      ></el-table-column>
+      <el-table-column prop="totalAmount" label="成交金额" align="center"></el-table-column>
+      <el-table-column prop="receiptAmount" label="实收金额" align="center"></el-table-column>
       <el-table-column
         prop="orderStatus"
         :formatter="formatOrderStatus"
@@ -140,25 +94,13 @@
             v-show="scope.row.orderStatus != 0"
             @click="skipDetail(scope.row.orderNo)"
             type="primary"
-            
-            >查看
-          </el-button>
+          >查看</el-button>
           <el-button
             v-show="scope.row.orderStatus == 0"
             @click="onEdit(scope.row)"
             type="primary"
-            
-          >
-            编辑
-          </el-button>
-          <el-button
-            v-show="scope.row.orderStatus == 0"
-            @click="onDel(scope.row)"
-            type="danger"
-            
-          >
-            删除
-          </el-button>
+          >编辑</el-button>
+          <el-button v-show="scope.row.orderStatus == 0" @click="onDel(scope.row)" type="danger">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -174,21 +116,23 @@
       layout="total,sizes,prev,next"
       :page-size="pageSizes[0]"
       :page-sizes="pageSizes"
+      @current-change="onCurrentChange"
+      :current-page.sync="currentPage"
     />
   </div>
 </template>
 
 <script>
-import search from "./Search.vue";
+import search from './Search.vue'
 import {
   formatOrderStatus,
   formatOrderType,
   formatPaymentStatus,
   formatWarehouseStatus
-} from "@/utils/productStatus.js";
+} from '@/utils/productStatus.js'
 
-import { CARD_TYPES_MAP, AGE_TYPES_MAP } from "@/utils/const";
-import { MIXIN_LIST } from "@/utils/mixin";
+import { CARD_TYPES_MAP, AGE_TYPES_MAP } from '@/utils/const'
+import { MIXIN_LIST } from '@/utils/mixin'
 
 export default {
   data() {
@@ -196,16 +140,16 @@ export default {
       cardMap: CARD_TYPES_MAP,
       ageMap: AGE_TYPES_MAP,
 
-      keyId: "",
-      keyName: "orderNo",
+      keyId: '',
+      keyName: 'orderNo',
       actions: {
-        getPageList: "productOrder/getPageList",
-        removeOne: "productOrder/removeOne"
+        getPageList: 'productOrder/getPageList',
+        removeOne: 'productOrder/removeOne'
       },
       extraParam: {
         orderType: 100
       }
-    };
+    }
   },
   methods: {
     formatOrderType,
@@ -213,81 +157,81 @@ export default {
     formatWarehouseStatus,
     formatPaymentStatus,
     handleAdd() {
-      this.skipDetail();
+      this.skipDetail()
     },
     onEdit(row) {
-      this.skipDetail(row.orderNo);
+      this.skipDetail(row.orderNo)
     },
     skipDetail(orderNo) {
       this.$router.push({
-        path: "/product/sale/order/edit",
+        path: '/product/sale/order/edit',
         query: { orderNo: orderNo }
-      });
+      })
     },
     initDate(dateStr, format) {
       if (dateStr > 0) {
-        let date = new Date(dateStr);
-        return this.$moment(date).format(format);
+        const date = new Date(dateStr)
+        return this.$moment(date).format(format)
       } else {
-        return "";
+        return ''
       }
     },
     initWarehouseStatus(warehouseStatus) {
       switch (warehouseStatus) {
         case 0:
-          return "未出库";
+          return '未出库'
         case 1:
-          return "已出库";
+          return '已出库'
       }
     },
     initPaymentStatus(paymentStatus) {
-      if (0 === paymentStatus) {
-        return "未付款";
+      if (paymentStatus === 0) {
+        return '未付款'
       }
-      return "已付款";
+      return '已付款'
     },
     formatAmount(amount) {
       if (!amount) {
-        return "";
+        return ''
       }
-      return "￥" + this.$numeral(amount).format("0.00");
+      return '￥' + this.$numeral(amount).format('0.00')
     },
     computedRowAmount(row) {
-      row.amount = parseFloat(row.quantity * row.price).toFixed(2);
-      this.computedTotalAmount();
-      return row.amount;
+      row.amount = parseFloat(row.quantity * row.price).toFixed(2)
+      this.computedTotalAmount()
+      return row.amount
     },
     computedTotalAmount() {
-      let _totalAmount = 0;
+      let _totalAmount = 0
       this.orderDetails.forEach(item => {
-        _totalAmount += parseFloat(item.amount);
-      });
-      this.totalAmount = _totalAmount.toFixed(2);
+        _totalAmount += parseFloat(item.amount)
+      })
+      this.totalAmount = _totalAmount.toFixed(2)
     },
     getValByType(i) {
       switch (i.type) {
-        case "String":
-          return i["_string"];
-        case "Boolean":
-          return i["_bool"];
-        case "ArrayList":
-          return i["_array"].join(",");
-        case "Double":
-          return i["_double"];
-        case "Float":
-          return i["_float"];
-        case "Integer":
-          return i["_int"];
-        case "Byte":
-          return i["_byte"];
-        case "Short":
-          return i["_short"];
-        case "Long":
-          return i["_long"];
-        case "Date":
-          return this.$moment(i["_date"]).format(i.format || "YYYY-MM-DD");
+        case 'String':
+          return i['_string']
+        case 'Boolean':
+          return i['_bool']
+        case 'ArrayList':
+          return i['_array'].join(',')
+        case 'Double':
+          return i['_double']
+        case 'Float':
+          return i['_float']
+        case 'Integer':
+          return i['_int']
+        case 'Byte':
+          return i['_byte']
+        case 'Short':
+          return i['_short']
+        case 'Long':
+          return i['_long']
+        case 'Date':
+          return this.$moment(i['_date']).format(i.format || 'YYYY-MM-DD')
         default:
-          return i["_string"];
+          return i['_string']
       }
     }
   },
@@ -295,7 +239,7 @@ export default {
     search
   },
   mixins: [MIXIN_LIST]
-};
+}
 </script>
 
 <style>

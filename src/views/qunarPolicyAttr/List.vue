@@ -315,7 +315,9 @@ export default {
                 that.tableData.forEach(function(openAttr){
                   data.forEach(function(qunarAttr){
                     if(openAttr.code === qunarAttr.code){
-                      openAttr.defaultValue = qunarAttr.defaultValue;
+                      if(!(parseInt(qunarAttr.valueType) === 2 && qunarAttr.min >= 0 && '0' === qunarAttr.defaultValue)){
+                        openAttr.defaultValue = qunarAttr.defaultValue;
+                      }
                     }
                   });
                 });
