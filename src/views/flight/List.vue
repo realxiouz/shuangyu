@@ -129,8 +129,8 @@
 
         <el-table-column label="操作" align="center" width="180">
           <template slot-scope="scope">
-            <el-button @click="onEdit(scope.row)" type="primary" size="mini">编辑</el-button>
-            <el-button @click="onDel(scope.row)" type="danger" size="mini">删除</el-button>
+            <el-button @click="onEdit(scope.row.flightId)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="onDel(scope.row.flightId)" type="danger" size="mini">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

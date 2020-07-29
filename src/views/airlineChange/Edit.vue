@@ -1,7 +1,7 @@
 <template>
   <div class="page-form">
     <el-dialog :title="keyId!=''?'编辑航司迁移信息':'添加航司迁移信息'" :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
-    <el-form :model="formData" label-width="120px" size="mini">
+    <el-form ref="form" :model="formData" label-width="120px" size="mini">
       <input type="hidden" v-model="formData.flightId"/>
       <el-form-item label="航司">
         <el-input type="text" v-model="formData.airline" onkeyup="this.value=this.value.toUpperCase()" maxlength="2" placeholder="航司"></el-input>
@@ -44,7 +44,7 @@
                 tags: [],
                 actions: {
                   getOne: 'airlineChange/getOne',
-                  saveOne: 'airlineChange/saveOne'
+                  saveOne: 'airlineChange/addOne'
                 },
                 /*rules: {
                   airportName: [
@@ -75,23 +75,6 @@
                   remark: ''
                 };
             },
-
-            handleSave(){
-                //将相应字段转为大写
-                const toUpperCaseList = [
-                    //航司
-                    'airline',
-                    //主航班号
-                    'airlines',
-                ];
-                toUpperCaseList.forEach( item => {
-                    this.formData[item] =  this.formData[item].toUpperCase();
-                })
-                return  this.$emit('onSave', this.formData);
-            },
-            clearForm() {
-                this.formData = this.defaultFormData();
-            }
         },
         created() {
             this.clearForm();

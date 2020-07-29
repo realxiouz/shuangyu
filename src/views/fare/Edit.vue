@@ -1,7 +1,7 @@
 <template>
   <div class="page-form">
      <el-dialog :title="keyId!=''?'编辑票价信息':'添加票价信息'" :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
-    <el-form :model="formData" label-width="110px" size="mini">
+    <el-form ref="form" :model="formData" label-width="110px" size="mini">
       <input type="hidden" v-model="formData.fareId" />
       <el-form-item label="航段">
         <el-input v-model="formData.segment"></el-input>
@@ -48,9 +48,10 @@ export default {
   data() {
     return {
       formData: {},
+      fareId:'',
       actions: {
           getOne: 'fare/getOne',
-          saveOne: 'fare/updateOne'
+          saveOne: 'fare/addOne'
         }
     };
   },
@@ -89,15 +90,7 @@ export default {
       }
       this.$emit("onSave", this.formData);
     },
-    initFormData() {
-      this.clearForm();
-      if ("" != this.curNode.fareId) {
-          Object.assign(this.formData,this.curNode);
-      }
-    }
+    
   },
-  created() {
-    this.initFormData();
-  }
 };
 </script>

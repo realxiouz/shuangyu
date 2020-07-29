@@ -83,65 +83,7 @@ export default {
     };
   },
   methods: {
-   
-    // handleSave(formData) {
-    //   this.dialogVisible = false;
-
-    //   let url = "";
-    //   if (this.update) {
-    //     url = "airport/updateOne";
-    //   } else {
-    //     url = "airport/addOne";
-    //   }
-    //   this.$store
-    //     .dispatch(url, formData)
-    //     .then(() => {
-    //       this.loadData();
-    //     })
-    //     .catch(error => {
-    //       console.log(error);
-    //     });
-    // },
-    handleCancel() {
-      this.dialogVisible = false;
-    },
     
-    delete(airportCode) {
-      this.$store
-        .dispatch("airport/removeOne", { airportCode: airportCode })
-        .then(() => {
-          this.lastId = "blank";
-          if (1 === this.tableData.length && !this.deleteForSearch) {
-            this.handlePrevClick();
-          } else {
-            this.loadData();
-          }
-          this.deleteForSearch = false;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    open(func, data, message) {
-      this.$confirm(message, "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          func(data);
-          this.$message({
-            type: "success",
-            message: "删除成功!"
-          });
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除"
-          });
-        });
-    },
     initAirport(airportList) {
       if (null != airportList && airportList.length < 5) {
         let nameString = "";
