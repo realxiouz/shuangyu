@@ -1,7 +1,7 @@
 <template>
   <div class="page-form">
     <el-dialog
-        :title="keyId!=''?'编辑净票价信息':'添加净票价'"
+        :title="keyId ?'编辑净票价信息':'添加净票价'"
         :visible.sync="dialogVisible"
         width="30%"
         @open="onOpen" @close="onClose"

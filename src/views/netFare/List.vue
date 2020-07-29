@@ -31,8 +31,8 @@
         </el-table-column>
         <el-table-column label="操作" align="center" width="150">
           <template slot-scope="scope">
-            <el-button @click="onEdit(scope.row.flightCode)" type="primary" size="mini">编辑</el-button>
-            <el-button @click="onDel(scope.row.flightCode)" type="danger" size="mini">删除</el-button>
+            <el-button @click="onEdit(scope.row.fareId)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="onDel(scope.row.fareId)" type="danger" size="mini">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -65,6 +65,8 @@ export default {
   mixins: [MIXIN_LIST],
   data() {
     return {
+      flightCode:'',
+      fareId:'',
       dialogVisible: false,
       keyName:'flightCode',
       /*记录当前进行操作的节点*/
