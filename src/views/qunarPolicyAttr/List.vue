@@ -285,7 +285,6 @@ export default {
       params: {
         policyType: "ONE_WAY_PAY_POLICY"
       },
-      firmId: null,
       valueTypes: [
         {
           value: 0,
@@ -362,9 +361,9 @@ export default {
           if (obj.defaultValue && obj.defaultValue.length < 1) {
             obj.defaultValue = null;
           }
-          obj.firmId = null;
+          obj.merchantId = null;
           if (localStorage.getItem("firmId")) {
-            obj.firmId = localStorage.getItem("firmId");
+            obj.merchantId = localStorage.getItem("firmId");
           }
           formData.append("qunarPolicyAttrList", JSON.stringify(obj));
         }
@@ -407,14 +406,9 @@ export default {
             that.tableData.forEach(function(openAttr) {
               data.forEach(function(qunarAttr) {
                 if (openAttr.code === qunarAttr.code) {
-                  if (
-                    !(
-                      (parseInt(qunarAttr.valueType) === 2 &&
-                        qunarAttr.min >= 0 &&
-                        "0" === qunarAttr.defaultValue) ||
-                      !qunarAttr.defaultValue
-                    )
-                  ) {
+                  if (!(parseInt(qunarAttr.valueType) === 2 && qunarAttr.min >= 0 && "0" === qunarAttr.defaultValue)) {
+                    openAttr.defaultValue = qunarAttr.defaultValue;
+                  } else if (!qunarAttr.defaultValue) {
                     openAttr.defaultValue = qunarAttr.defaultValue;
                   }
                 }
