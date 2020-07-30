@@ -1,34 +1,55 @@
 <template>
-  <div class="page">
+  <div class="bigBox">
+    <div class="searchBox">
       <div style="margin-top:10px;">
         <span>
           <el-button @click="geAllData()" type="info" size="mini">
             待处理
-            <el-badge :value="totalCount?totalCount:'0'" :max="99"></el-badge>
+            <el-badge
+              :value="totalCount ? totalCount : '0'"
+              :max="99"
+            ></el-badge>
           </el-button>
         </span>
-        <span v-for="item in taskTypeValue" :key="item.value" style="margin-right:5px;">
-          <el-button style="margin-bottom:10px;" @click="getOtherData(item.value)" type size="mini">
-            {{item.label}}
+        <span
+          v-for="item in taskTypeValue"
+          :key="item.value"
+          style="margin-right:5px;"
+        >
+          <el-button
+            style="margin-bottom:10px;"
+            @click="getOtherData(item.value)"
+            type
+            size="mini"
+          >
+            {{ item.label }}
             <el-badge
-              :value="taskTypeCounts['taskType'+item.value]?taskTypeCounts['taskType'+item.value]:'0'"
+              :value="
+                taskTypeCounts['taskType' + item.value]
+                  ? taskTypeCounts['taskType' + item.value]
+                  : '0'
+              "
               :max="99"
             ></el-badge>
           </el-button>
         </span>
       </div>
-    <search class="page-search" ref="search" @onSearch="onSearch"/>
-      <el-row class="page-tools" style="margin-bottom:15px;margin-left:40px;">
+    </div>
+    <div class="contentBox">
+      <order-task-search @onSearch="onSearch" ref="search"></order-task-search>
+    </div>
+    <div class="contentBox">
+      <el-row style="margin-bottom:15px;margin-left:40px;">
         <el-button
           :disabled="this.btnTransfer"
           icon="el-icon-document-copy"
           type="primary"
           size="mini"
           @click="batchTaskTransfer"
-        >批量转单</el-button>
+          >批量转单</el-button
+        >
       </el-row>
       <el-table
-        class="page-table"
         :data="tableData"
         ref="tableData"
         style="width: 100%;margin-bottom:15px;"
@@ -37,9 +58,18 @@
         v-loading="loading"
         highlight-current-row
       >
-        <el-table-column :selectable="selectable" type="selection" width="55"></el-table-column>
+        <el-table-column
+          :selectable="selectable"
+          type="selection"
+          width="55"
+        ></el-table-column>
         <!--<el-table-column prop="taskNo" label="任务编号" width="110" align="center"></el-table-column>-->
-        <el-table-column prop="taskName" label="任务名称" width="80" align="center"></el-table-column>
+        <el-table-column
+          prop="taskName"
+          label="任务名称"
+          width="80"
+          align="center"
+        ></el-table-column>
         <el-table-column
           prop="taskStatus"
           :formatter="formatTaskStatus"
@@ -47,18 +77,40 @@
           align="center"
         ></el-table-column>
         <!-- <el-table-column prop="taskType" :formatter="formatTaskType" label="任务类型" align="center"></el-table-column> -->
-        <el-table-column prop="orderNo" label="订单号" width="180" align="center"></el-table-column>
-        <el-table-column prop="sourceOrderNo" label="源单号" width="170" align="center"></el-table-column>
-        <el-table-column prop="deadlineTicketTime" label="时限" width="100" align="center">
+        <el-table-column
+          prop="orderNo"
+          label="订单号"
+          width="180"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="sourceOrderNo"
+          label="源单号"
+          width="170"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="deadlineTicketTime"
+          label="时限"
+          width="100"
+          align="center"
+        >
           <template slot-scope="scope">
-            <div v-if="scope.row.taskType===1 || scope.row.taskType===2 || scope.row.taskType===3">
+            <div
+              v-if="
+                scope.row.taskType === 1 ||
+                  scope.row.taskType === 2 ||
+                  scope.row.taskType === 3
+              "
+            >
               <el-popover trigger="hover" placement="top">
-                <span>{{ formatTimeLimit(scope.row)}}</span>
+                <span>{{ formatTimeLimit(scope.row) }}</span>
                 <el-tag
                   style="width:80px;"
                   effect="dark"
                   slot="reference"
-                  :color="formattimeLimitStyle(scope.row)">
+                  :color="formattimeLimitStyle(scope.row)"
+                >
                   {{ formatDiffTimeLimit(scope.row) }}
                 </el-tag>
               </el-popover>
@@ -66,12 +118,22 @@
             <div v-else></div>
           </template>
         </el-table-column>
-        <el-table-column prop="ticketNos" label="票号" width="120" align="center">
+        <el-table-column
+          prop="ticketNos"
+          label="票号"
+          width="120"
+          align="center"
+        >
           <template slot-scope="scope">
             <span v-html="formatTicketNo(scope.row.ticketNos)"></span>
           </template>
         </el-table-column>
-        <el-table-column prop="fullName" label="操作员" width="70" align="center"></el-table-column>
+        <el-table-column
+          prop="fullName"
+          label="操作员"
+          width="70"
+          align="center"
+        ></el-table-column>
         <el-table-column label="乘机人" align="center" width="100">
           <template slot-scope="scope">
             <i v-if="scope.row.passengers"></i>
@@ -79,30 +141,40 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="订单金额" prop="amount" width="100" align="center">
+        <el-table-column
+          label="订单金额"
+          prop="amount"
+          width="100"
+          align="center"
+        >
           <template slot-scope="scope">
-            <span>{{ formatAmount(scope.row.amount)}}</span>
+            <span>{{ formatAmount(scope.row.amount) }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="transactionAmount" label="交易金额" width="80" align="center">
+        <el-table-column
+          prop="transactionAmount"
+          label="交易金额"
+          width="80"
+          align="center"
+        >
           <template slot-scope="scope">
-            <span>{{ formatAmount(scope.row.transactionAmount)}}</span>
+            <span>{{ formatAmount(scope.row.transactionAmount) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="profit" label="利润" width="80" align="center">
           <template slot-scope="scope">
-            <span>{{ formatAmount(scope.row.profit)}}</span>
+            <span>{{ formatAmount(scope.row.profit) }}</span>
           </template>
         </el-table-column>
 
         <el-table-column label="航班号" align="center">
           <template slot-scope="scope">
-            <span>{{ formatFlightNo(scope.row.flights)}}</span>
+            <span>{{ formatFlightNo(scope.row.flights) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="航班日期" width="90" align="center">
           <template slot-scope="scope">
-            <span>{{ formatFlightDate(scope.row.flights)}}</span>
+            <span>{{ formatFlightDate(scope.row.flights) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="起飞-到达" width="90" align="center">
@@ -110,57 +182,83 @@
             <span v-html="formatFlight(scope.row.flights)"></span>
           </template>
         </el-table-column>
-        <el-table-column label="政策代码" prop="policyCode" width="180" align="center"></el-table-column>
-        <el-table-column prop="ruleType" width="80" label="规则类型" align="center">
+        <el-table-column
+          label="政策代码"
+          prop="policyCode"
+          width="180"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="ruleType"
+          width="80"
+          label="规则类型"
+          align="center"
+        >
           <template slot-scope="scope">
-            <span>{{ scope.row.ruleType==0?"系统":"手工"}}</span>
+            <span>{{ scope.row.ruleType == 0 ? "系统" : "手工" }}</span>
           </template>
         </el-table-column>
 
         <el-table-column prop="startTime" label="开始时间" align="center">
           <template slot-scope="scope">
-            <span>{{ formatDate(scope.row.startTime,'YYYY-MM-DD HH:mm:ss') }}</span>
+            <span>{{
+              formatDate(scope.row.startTime, "YYYY-MM-DD HH:mm:ss")
+            }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="endTime" label="结束时间" align="center">
           <template slot-scope="scope">
-            <span>{{ formatDate(scope.row.endTime,'YYYY-MM-DD HH:mm:ss') }}</span>
+            <span>{{
+              formatDate(scope.row.endTime, "YYYY-MM-DD HH:mm:ss")
+            }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="duration" label="持续时长" width="110" align="center">
+        <el-table-column
+          prop="duration"
+          label="持续时长"
+          width="110"
+          align="center"
+        >
           <template slot-scope="scope">
             <span>{{ formatDuration(scope.row.duration) }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="remark" fixed="right" width="200" label="备注" align="center"></el-table-column>
+        <el-table-column
+          prop="remark"
+          fixed="right"
+          width="200"
+          label="备注"
+          align="center"
+        ></el-table-column>
         <el-table-column label="操作" fixed="right" align="center" width="80">
           <template slot-scope="scope">
             <el-button
-              v-show="scope.row.taskStatus!=3"
+              v-show="scope.row.taskStatus != 3"
               type="primary"
               @click="goToDetail(scope.row)"
               size="mini"
-            >处理</el-button>
+              >处理</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
       <el-pagination
-        class="page-footer"
-      background
-      prev-text="上一页"
-      next-text="下一页"
-      :total="total"
-      @prev-click="onPrev"
-      @next-click="onNext"
-      @size-change="onSizeChange"
-      layout="total,sizes,prev,next"
-      :page-size="pageSizes[0]"
-      :page-sizes="pageSizes"
-        @current-change="onCurrentChange"
-        :current-page.sync="currentPage"
+        :current-page="currentPage"
+        @size-change="onSizeChange"
+        @prev-click="prevClick"
+        @next-click="nextClick"
+        background
+        layout="total,sizes,slot,prev,next"
+        prev-text="上一页"
+        next-text="下一页"
+        :page-size="pageSize"
+        :total="total"
       >
-        <span style="font-weight: 400;color:#565656;">第{{ currentPage }}页</span>
+        <span style="font-weight: 400;color:#565656;"
+          >第{{ currentPage }}页</span
+        >
       </el-pagination>
+    </div>
     <div>
       <el-dialog
         title="选择转单员工"
@@ -170,16 +268,19 @@
         :close-on-click-modal="false"
         :destroy-on-close="true"
       >
-        <task-select-staff v-if="taskStaffDialog" @onCancel="onCancel" @onSave="handleConfirm"></task-select-staff>
+        <task-select-staff
+          v-if="taskStaffDialog"
+          @onCancel="onCancel"
+          @onSave="handleConfirm"
+        ></task-select-staff>
       </el-dialog>
     </div>
   </div>
 </template>
 
 <script>
-import search from "./Search.vue";
+import orderTaskSearch from "./Search.vue";
 import taskSelectStaff from "./selectStaff";
-import {MIXIN_LIST} from "@/utils/mixin";
 import {
   formatTaskType,
   formatTaskStatus,
@@ -196,33 +297,34 @@ import {
   formatTimeLimit,
   formatDiffTimeLimit,
   formattimeLimitStyle,
-  formatTimeLimitDuration,
+  formatTimeLimitDuration
 } from "@/utils/orderFormdata.js";
 
 export default {
-  mixins: [MIXIN_LIST],
   name: "orderTask",
   data() {
     return {
+      loading: true,
       currentPage: 1,
       btnTransfer: true,
       taskStaffDialog: false,
+      tableData: [],
+      pageSize: 10,
       createTime: 0,
       taskId: "blank",
+      total: 0,
       searchParams: {},
+      //otherDataSearch: {},
+      //allDataSearch: {},
       totalCount: 0,
       taskTypeCounts: {},
       selectTask: [],
       timer: null,
-      taskTypeValue: taskTypeValue,
-      actions: {
-        getPageList: 'orderTask/getPageList',
-        removeOne: 'orderTask/removeOne'
-      }
+      taskTypeValue: taskTypeValue
     };
   },
   components: {
-    search,
+    orderTaskSearch,
     taskSelectStaff
   },
   methods: {
@@ -239,6 +341,42 @@ export default {
     formatDiffTimeLimit,
     formattimeLimitStyle,
     formatTimeLimitDuration,
+    onSizeChange(size) {
+      this.pageSize = size;
+      this.searchParams.pageSize = this.pageSize;
+      this.currentPage = 1;
+      this.searchParams.currentPage = this.currentPage;
+      this.loadData(this.searchParams);
+    },
+    prevClick(page) {
+      this.currentPage = page;
+      this.searchParams.pageSize = this.pageSize;
+      this.searchParams.currentPage = this.currentPage;
+      this.loadData(this.searchParams);
+    },
+    nextClick(page) {
+      this.currentPage = page;
+      this.searchParams.pageSize = this.pageSize;
+      this.searchParams.currentPage = this.currentPage;
+      this.loadData(this.searchParams);
+    },
+    loadData(params) {
+      this.$store
+        .dispatch("orderTask/getPageList", {
+          filters: params
+        })
+        .then(data => {
+          if (data) {
+            this.loadTotal(params);
+            this.tableData = data;
+          }
+          this.loading = false;
+        })
+        .catch(error => {
+          this.loading = false;
+          console.log(error);
+        });
+    },
     loadTotal(params) {
       this.$store
         .dispatch("orderTask/getTotal", {
@@ -367,8 +505,7 @@ export default {
           taskId: row.taskId,
           taskType: row.taskType,
           remark: row.remark,
-          fullName:row.fullName
-
+          fullName: row.fullName
         }
       });
     },
@@ -379,9 +516,28 @@ export default {
         return true;
       }
     },
-    
+    onSearch(params) {
+      let newParams = {};
+      if (params) {
+        for (let key in params) {
+          if (params[key]) {
+            newParams[key] = params[key];
+          }
+        }
+      }
+      newParams.pageSize = this.pageSize;
+      this.currentPage = 1;
+      newParams.currentPage = this.currentPage;
+      this.searchParams = newParams;
+      this.loadData(this.searchParams);
+      this.$message({
+        type: "success",
+        message: "查询成功！"
+      });
+    }
   },
   created() {
+    this.loadData();
     this.loadPendingTotal();
     this.timer = setInterval(() => {
       setTimeout(this.loadPendingTotal, 0);
