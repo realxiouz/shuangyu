@@ -89,6 +89,7 @@
         keyId: '',
         keyName: 'userId',
         actions: {
+
           getPageList: 'user/getPageList',
           removeOne: 'user/removeOne'
         }

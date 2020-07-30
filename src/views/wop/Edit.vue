@@ -241,7 +241,7 @@
             if (attrList[i].code == params[j].code) {
               switch (params[j].type) {
                 case "Date":
-                  attrList[i].value = this.$moment(params[j]._string).toDate();
+                  attrList[i].value = params[j]._date;
                   break;
                 case "ArrayList":
                   attrList[i].value = params[j]._array;
@@ -322,9 +322,6 @@
           case "String":
             item._string = property.value;
             break;
-          // case "Object":
-          //   item._object = objVal
-          //   break
         }
         return item;
       },

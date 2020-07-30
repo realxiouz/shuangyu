@@ -9,7 +9,6 @@
       highlight-current-row
       v-loading="loading"
       :data="tableData"
-      ref="tableData"
       style="width: 100%;margin-bottom: 20px;"
       size="mini"
     >
@@ -40,14 +39,17 @@
     <el-pagination
       class="page-footer"
       background
-      layout="total,prev,next"
       prev-text="上一页"
       next-text="下一页"
-      :page-size="pageSize"
       :total="total"
+      @prev-click="onPrev"
+      @next-click="onNext"
       @size-change="onSizeChange"
-      @prev-click="handlePrevClick"
-      @next-click="handleNextClick"
+      layout="total,sizes,prev,next"
+      :page-size="pageSizes[0]"
+      :page-sizes="pageSizes"
+      @current-change="onCurrentChange"
+      :current-page.sync="currentPage"
     ></el-pagination>
     <el-dialog
       :title="updateFlag?'更新':'新增'"
@@ -71,22 +73,18 @@
 </template>
 
 <script>
-  import edit from "./Edit";
-  import search from "./Search";
-  import { PROPERTY_TABLE } from '@/utils/const';
+  import edit from "./Edit"
+  import search from "./Search"
+  import {PROPERTY_TABLE} from '@/utils/const'
+  import { MIXIN_LIST } from '@/utils/mixin'
 
   export default {
-    name: "wopList",
+    mixins: [MIXIN_LIST],
     data() {
       return {
         dialogVisible: false,
         updateFlag: false,
         schedulerId: "",
-        pageFlag: 1,
-        pageSize: 10,
-        lastId: null,
-        total: 0,
-        tableData: [],
         copyFlag: false,
         valueTypes: PROPERTY_TABLE,
         tagTypes: [
@@ -95,7 +93,13 @@
             value: 1
           }
         ],
-        loading: true
+        actions: {
+          getPageList: 'jobScheduler/getPageList'
+        },
+        extraParam: {
+          tagCode : 'wop',
+          tagId : '61886007158a4c40bd0f4f52fe2c6a90'
+        }
       };
     },
     components: {
@@ -103,50 +107,6 @@
       search
     },
     methods: {
-      loadData(params) {
-        console.log(JSON.stringify(params));
-        params.tagCode = 'wop';
-        params.tagId = '61886007158a4c40bd0f4f52fe2c6a90';
-        if (this.lastId) {
-          params.lastId = this.lastId;
-        }
-        this.$store
-          .dispatch("jobScheduler/getPageList", {
-            pageFlag: this.pageFlag,
-            pageSize: this.pageSize,
-            filter: params
-          })
-          .then(data => {
-            this.tableData = data.rows;
-            this.total = data.total;
-            this.loading = false;
-          })
-          .catch(error => {
-            this.loading = false;
-            console.log(error);
-          });
-      },
-      onSizeChange(pageSize) {
-        this.pageSize = pageSize;
-        this.lastId = null;
-        this.loadData({});
-      },
-      handlePrevClick() {
-        this.pageFlag = -1;
-        this.lastId = this.tableData[0].schedulerId;
-        this.loadData({});
-      },
-      handleNextClick() {
-        this.pageFlag = 1;
-        this.lastId = this.tableData[this.tableData.length - 1].schedulerId;
-        this.loadData({});
-      },
-      onSearch(params) {
-        if (Object.keys(params).length == 0) {
-          this.lastId = null;
-        }
-        this.loadData(params);
-      },
       handleAdd() {
         this.schedulerId = '';
         this.updateFlag = false;
