@@ -27,29 +27,29 @@ router.beforeEach(async (to, from, next) => {
         let routes = genMenus(tree);
         // let arr = await store.dispatch('menu/getTreeList', {});
         // let routes = genMenus(arr);
-        if (process.env.NODE_ENV == 'production') {
-          routes.push({
-            path: '/admin',
-            name: 'Admin',
-            component: _import('Layout'),
-            hidden: true,
-            meta: { title: '系统工具', icon: 'home' },
-            children: [
-              {
-                path: '/menu/list',
-                name: 'MenuList',
-                component: _import('menu/List'),
-                meta: { title: '导航菜单', icon: 'home' }
-              },
-              {
-                path: '/role/list',
-                name: 'RoleList',
-                component: _import('role/List'),
-                meta: { title: '角色管理', icon: 'home' }
-              }
-            ]
-          });
-        }
+        // if (process.env.NODE_ENV == 'production') {
+        //   routes.push({
+        //     path: '/admin',
+        //     name: 'Admin',
+        //     component: _import('Layout'),
+        //     hidden: true,
+        //     meta: { title: '系统工具', icon: 'home' },
+        //     children: [
+        //       {
+        //         path: '/menu/list',
+        //         name: 'MenuList',
+        //         component: _import('menu/List'),
+        //         meta: { title: '导航菜单', icon: 'home' }
+        //       },
+        //       {
+        //         path: '/role/list',
+        //         name: 'RoleList',
+        //         component: _import('role/List'),
+        //         meta: { title: '角色管理', icon: 'home' }
+        //       }
+        //     ]
+        //   });
+        // }
         routes.push({
           path: '*',
           component: _import('404'),

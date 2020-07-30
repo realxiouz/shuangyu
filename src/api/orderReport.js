@@ -1,10 +1,9 @@
-import request from "@/utils/request";
-
+import request from '@/utils/request';
 
 export function save(data) {
   return request({
-    url: "/order/report/save",
-    method: "post",
+    url: '/order/report/save',
+    method: 'post',
     data
   });
 }
@@ -12,16 +11,16 @@ export function save(data) {
 export function removeOne(id) {
   return request({
     url: `/order/report/remove/one/${id}`,
-    method: "delete"
+    method: 'delete'
   });
 }
 
 export function getList(args) {
-  const {...params} = args;
+  const { filters } = args;
   return request({
     url: `/order/report/list`,
-    method: "get",
-    params
+    method: 'get',
+    params: filters
   });
 }
 
@@ -47,4 +46,3 @@ export function getOne(id) {
     method: 'get'
   });
 }
-
