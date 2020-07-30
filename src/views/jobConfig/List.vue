@@ -117,8 +117,8 @@
       formatValueType(row){
         let valueType = '';
         this.valueTypes.forEach(function(obj){
-          if(row.valueType === obj.value){
-            valueType = obj.label;
+          if(row.valueType === obj.code){
+            valueType = obj.value;
           }
         });
         return valueType;
