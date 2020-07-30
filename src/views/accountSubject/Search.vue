@@ -4,12 +4,12 @@
       <el-form :model="formData" label-width="110px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="科目编码:">
-            <el-input clearable v-model="formData.subjectCode" placeholder="请输入科目编码..."></el-input>
+            <el-input clearable v-model="formData.code" placeholder="请输入科目编码..."></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="科目名称:">
-            <el-input clearable v-model="formData.subjectName" placeholder="请输入科目名称..."></el-input>
+            <el-input clearable v-model="formData.name" placeholder="请输入科目名称..."></el-input>
           </el-form-item>
         </el-col>
       </el-form>
@@ -43,8 +43,8 @@ export default {
     return {
       more: false,
       formData: {
-        subjectCode: null,
-        subjectName: null
+        code: null,
+        name: null
       }
     };
   },
@@ -60,8 +60,8 @@ export default {
   methods: {
     initSearchForm() {
       return {
-        subjectCode: null,
-        subjectName: null
+        code: null,
+        name: null
       };
     },
     handleMore() {

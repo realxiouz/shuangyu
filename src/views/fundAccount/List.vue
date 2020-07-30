@@ -29,7 +29,7 @@
       <el-table-column prop="supplierName" label="供应商" align="center"></el-table-column>
       <el-table-column prop="initBalance" label="初始余额" align="center"></el-table-column>
       <el-table-column prop="balance" label="余额" align="center"></el-table-column>
-      <el-table-column prop="subjectName" label="科目" align="center"></el-table-column>
+      <el-table-column prop="name" label="科目" align="center"></el-table-column>
       <el-table-column width="280" label="操作" align="center">
         <template slot-scope="scope">
           <el-button type="success" size="mini" @click="onAddChild(scope.row.accountId)">添加</el-button>

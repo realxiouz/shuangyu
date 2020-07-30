@@ -78,7 +78,7 @@
             style="width: 100%;"
             placeholder="请选择科目名称.."
             :options="subjectTree"
-            :props="{ label: 'subjectName', value: 'subjectId' }"
+            :props="{ label: 'name', value: 'subjectId' }"
             filterable
             @change="handleSubject"
           ></el-cascader>
@@ -172,7 +172,7 @@
           currencyName: null,
           amount: null,
           subjectId: null,
-          subjectName: null,
+          name: null,
           supplierId: null,
           supplierName: null
         };
@@ -249,7 +249,7 @@
           that.subjectList.forEach(function(obj){
             if(id === obj.subjectId){
               that.formData.subjectId = obj.subjectId;
-              that.formData.subjectName = obj.subjectName;
+              that.formData.name = obj.name;
             }
           });
         }

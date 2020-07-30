@@ -27,8 +27,8 @@
         >
           <el-table-column label="是否必填" prop="required" width="75" center>
             <template slot-scope="scope">
-              <font v-if="scope.row.required === true" class="el-required">是</font>
-              <font v-else-if="scope.row.required === false">否</font>
+              <font v-if="scope.row.required" class="el-required">是</font>
+              <font v-else-if="!scope.row.required">否</font>
             </template>
           </el-table-column>
           <el-table-column label="属性编码" prop="code" width="150" center>
