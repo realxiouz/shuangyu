@@ -69,6 +69,7 @@
 <script>
   import edit from "./Edit";
   import search from "./Search";
+  import { PROPERTY_TABLE } from '@/utils/const';
 
   export default {
     name: "list",
@@ -84,48 +85,7 @@
         tagCode: '',
         total: 0,
         tableData: [],
-        valueTypes: [
-          {
-            value: 0,
-            label: '文本'
-          },
-          {
-            value: 1,
-            label: '开关'
-          },
-          {
-            value: 2,
-            label: '数字'
-          },
-          {
-            value: 3,
-            label: '日期'
-          },
-          {
-            value: 4,
-            label: '日期时间'
-          },
-          {
-            value: 5,
-            label: '时间'
-          },
-          {
-            value: 6,
-            label: '评分'
-          },
-          {
-            value: 7,
-            label: '单选'
-          },
-          {
-            value: 8,
-            label: '多选'
-          },
-          {
-            value: 9,
-            label: '选择器'
-          }
-        ],
+        valueTypes: PROPERTY_TABLE,
         tagTypes: [
           {
             label: "工厂",

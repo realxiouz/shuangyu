@@ -94,23 +94,15 @@
                 placeholder="请选择默认数值"
                 style="width: 100%;"
               />
-              <el-time-picker
-                prop="defaultValue"
-                v-if="scope.row.valueType === 5"
-                v-model="scope.row.defaultValue"
-                :format="scope.row.format"
-                placeholder="请选择默认数值"
-                style="width: 100%;"
-              />
               <el-input
                 prop="defaultValue"
-                v-if="scope.row.valueType === 6"
+                v-if="scope.row.valueType === 5"
                 v-model="scope.row.defaultValue"
                 placeholder="请输入默认数值"
               />
               <el-select
                 prop="defaultValue"
-                v-if="scope.row.valueType === 7"
+                v-if="scope.row.valueType === 60 || scope.row.valueType === 62"
                 v-model="scope.row.defaultValue"
                 placeholder="请选择默认数值"
                 clearable
@@ -125,7 +117,7 @@
               </el-select>
               <el-select
                 prop="defaultValue"
-                v-if="scope.row.valueType === 8"
+                v-if="scope.row.valueType === 61"
                 v-model="scope.row.defaultValue"
                 placeholder="请选择默认数值"
                 style="width: 100%"
@@ -216,23 +208,15 @@
                 placeholder="请选择默认数值"
                 style="width: 100%;"
               />
-              <el-time-picker
-                prop="defaultValue"
-                v-if="scope.row.valueType === 5"
-                v-model="scope.row.defaultValue"
-                :format="scope.row.format"
-                placeholder="请选择默认数值"
-                style="width: 100%;"
-              />
               <el-input
                 prop="defaultValue"
-                v-if="scope.row.valueType === 6"
+                v-if="scope.row.valueType === 5"
                 v-model="scope.row.defaultValue"
                 placeholder="请输入默认数值"
               />
               <el-select
                 prop="defaultValue"
-                v-if="scope.row.valueType === 7"
+                v-if="scope.row.valueType === 60 || scope.row.valueType === 62"
                 v-model="scope.row.defaultValue"
                 placeholder="请选择默认数值"
                 clearable
@@ -247,7 +231,7 @@
               </el-select>
               <el-select
                 prop="defaultValue"
-                v-if="scope.row.valueType === 8"
+                v-if="scope.row.valueType === 61"
                 v-model="scope.row.defaultValue"
                 placeholder="请选择默认数值"
                 style="width: 100%"
@@ -271,7 +255,7 @@
 
 <script>
 import { MIXIN_LIST } from "@/utils/mixin";
-
+import { PROPERTY_TABLE } from '@/utils/const';
 export default {
   mixins: [MIXIN_LIST],
   data() {
@@ -285,44 +269,7 @@ export default {
       params: {
         policyType: "ONE_WAY_PAY_POLICY"
       },
-      valueTypes: [
-        {
-          value: 0,
-          label: "文本"
-        },
-        {
-          value: 1,
-          label: "开关"
-        },
-        {
-          value: 2,
-          label: "数字"
-        },
-        {
-          value: 3,
-          label: "日期"
-        },
-        {
-          value: 4,
-          label: "日期时间"
-        },
-        {
-          value: 5,
-          label: "时间"
-        },
-        {
-          value: 6,
-          label: "评分"
-        },
-        {
-          value: 7,
-          label: "单选"
-        },
-        {
-          value: 8,
-          label: "多选"
-        }
-      ],
+      valueTypes: PROPERTY_TABLE,
       rules: {
         name: [{ required: true, message: "请输入默认数值" }]
       }
@@ -388,8 +335,8 @@ export default {
     formatValueType(row) {
       let valueType = "";
       this.valueTypes.forEach(function(obj) {
-        if (row.valueType === obj.value) {
-          valueType = obj.label;
+        if (row.valueType === obj.code) {
+          valueType = obj.value;
         }
       });
       return valueType;

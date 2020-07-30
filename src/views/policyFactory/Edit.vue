@@ -85,18 +85,9 @@
               </el-date-picker>
             </el-form-item>
             <el-form-item :label="item.name + '：'" :prop="'jobConfigList.' + index + '.value'" :rules="[{ required: item.required, message: '请输入' + item.name, trigger: 'change' }]" v-if="item.valueType === 5">
-              <el-time-picker
-                 v-model="item.value"
-                 :format="item.format"
-                 :placeholder="'请选择' + item.name"
-                 style="width: 100%;"
-              >
-              </el-time-picker>
-            </el-form-item>
-            <el-form-item :label="item.name + '：'" :prop="'jobConfigList.' + index + '.value'" :rules="[{ required: item.required, message: '请输入' + item.name, trigger: 'change' }]" v-if="item.valueType === 6">
               <el-input  v-model="item.value" :placeholder="'请输入' + item.name" />
             </el-form-item>
-            <el-form-item :label="item.name + '：'" :prop="'jobConfigList.' + index + '.value'" :rules="[{ required: item.required, message: '请输入' + item.name, trigger: 'change' }]" v-if="item.valueType === 7">
+            <el-form-item :label="item.name + '：'" :prop="'jobConfigList.' + index + '.value'" :rules="[{ required: item.required, message: '请输入' + item.name, trigger: 'change' }]" v-if="item.valueType === 60 || item.valueType === 62">
               <el-select
                  v-model="item.value"
                  :placeholder="'请选择' + item.name"
@@ -111,7 +102,7 @@
                 ></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item :label="item.name + '：'" :prop="'jobConfigList.' + index + '.value'" :rules="[{ required: item.required, message: '请输入' + item.name, trigger: 'change' }]" v-if="item.valueType === 8">
+            <el-form-item :label="item.name + '：'" :prop="'jobConfigList.' + index + '.value'" :rules="[{ required: item.required, message: '请输入' + item.name, trigger: 'change' }]" v-if="item.valueType === 61">
               <el-select
                  v-model="item.value"
                  :placeholder="'请选择' + item.name"
