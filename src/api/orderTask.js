@@ -1,14 +1,13 @@
 import request from '@/utils/request';
 
 export function getPageList(args) {
-  const { ...params } = args;
+  const { filters } = args;
   return request({
     url: `/order/task/page/list`,
     method: 'get',
-    params
+    params: filters
   });
 }
-
 
 export function getTotal(params) {
   return request({
@@ -34,7 +33,6 @@ export function getGroupList(params) {
   });
 }
 
-
 // 任务提交
 export function taskSubmit(params) {
   return request({
@@ -44,7 +42,6 @@ export function taskSubmit(params) {
   });
 }
 
-
 // 任务取消
 export function taskCancel(params) {
   return request({
@@ -53,7 +50,6 @@ export function taskCancel(params) {
     params: params
   });
 }
-
 
 // 任务备注
 export function taskRemark(params) {
@@ -74,12 +70,11 @@ export function taskTransfer(data) {
   });
 }
 
-
 // 获取任务信息
 export function getTaskInfo(taskId) {
   return request({
     url: `/order/task/get/${taskId}`,
-    method: 'get',
+    method: 'get'
   });
 }
 
@@ -88,7 +83,6 @@ export function getTaskInfo(taskId) {
 export function removeTaskOrder(params) {
   return request({
     url: `/order/task/remove/${params.orderTaskId}/${params.orderId}`,
-    method: "delete"
+    method: 'delete'
   });
 }
-

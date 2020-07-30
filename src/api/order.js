@@ -1,10 +1,9 @@
-import request from "@/utils/request";
-
+import request from '@/utils/request';
 
 export function save(data) {
   return request({
-    url: "/order/save",
-    method: "post",
+    url: '/order/save',
+    method: 'post',
     data
   });
 }
@@ -12,26 +11,27 @@ export function save(data) {
 export function removeOne(id) {
   return request({
     url: `/order/remove/one/${id}`,
-    method: "delete"
+    method: 'delete'
   });
 }
 
 export function getList(args) {
-  const {...params} = args;
+  const { filters } = args;
   return request({
     url: `/order/list`,
-    method: "get",
-    params
+    method: 'get',
+    params: filters
   });
 }
 
 export function exportOrder(params) {
   var myList = new Array();
   for (var key in params) {
-    myList.push(key + "=" + params[key]);
+    myList.push(key + '=' + params[key]);
   }
-  var paramsStr = "?" + myList.join("&");
-  window.location.href = 'http://39.108.230.74:18901/ota/prod-api/order/export' + paramsStr;
+  var paramsStr = '?' + myList.join('&');
+  window.location.href =
+    'http://39.108.230.74:18901/ota/prod-api/order/export' + paramsStr;
   //window.location.href = 'http://192.168.0.135:28021/export/order' + paramsStr;
 }
 
@@ -67,7 +67,6 @@ export function getCount(params) {
     params: params
   });
 }
-
 
 export function getOrderDetail(orderNo) {
   return request({
@@ -139,7 +138,6 @@ export function checkOrder(data) {
   });
 }
 
-
 // 拦截蜗牛出票
 export function interceptOrder(data) {
   return request({
@@ -171,7 +169,7 @@ export function foPay(params) {
 export function getOrderTree(params) {
   return request({
     url: `/order/purchase/get/tree/${params.rootOrderNo}/${params.category}`,
-    method: 'get',
+    method: 'get'
   });
 }
 
@@ -179,7 +177,7 @@ export function getOrderTree(params) {
 export function lockOrder(orderNo) {
   return request({
     url: `/qunar/tts/fuwu/lock?orderNo=${orderNo}`,
-    method: 'get',
+    method: 'get'
   });
 }
 
@@ -187,7 +185,7 @@ export function lockOrder(orderNo) {
 export function unLockOrder(orderNo) {
   return request({
     url: `/qunar/tts/fuwu/unlock?orderNo=${orderNo}`,
-    method: 'get',
+    method: 'get'
   });
 }
 
@@ -195,25 +193,23 @@ export function unLockOrder(orderNo) {
 export function useGoTicket(orderTaskId) {
   return request({
     url: `/qunar/tts/fuwu/go/ticket?orderTaskId=${orderTaskId}`,
-    method: 'get',
+    method: 'get'
   });
 }
-
 
 // 获取消息明细
 export function getMessageDetail(orderNo) {
   return request({
     url: `/qunar/tts/fuwu/order/massage/detail?orderNo=${orderNo}`,
-    method: 'get',
+    method: 'get'
   });
 }
-
 
 // 退票查询接口
 export function refundSearch(purchaseOrderNo) {
   return request({
     url: `/qunar/open/refund/search?purchaseOrderNo=${purchaseOrderNo}`,
-    method: 'get',
+    method: 'get'
   });
 }
 
@@ -221,7 +217,7 @@ export function refundSearch(purchaseOrderNo) {
 export function getRefundHtml(orderNo) {
   return request({
     url: `/qunar/tts/fuwu/get/refund/html?orderNo=${orderNo}`,
-    method: 'get',
+    method: 'get'
   });
 }
 
@@ -231,7 +227,6 @@ export function refundApply(data) {
     url: `/order/qunar/open/refund/apply`,
     method: 'post',
     data: data
-
   });
 }
 
@@ -241,10 +236,8 @@ export function affirmRefund(params) {
     url: `/qunar/tts/fuwu/affirm/refund`,
     method: 'post',
     params: params
-
   });
 }
-
 
 // 拒绝退款
 export function refundCheckRefuseReason(params) {
@@ -252,16 +245,14 @@ export function refundCheckRefuseReason(params) {
     url: `/qunar/tts/fuwu/refund/check/refuse/reason`,
     method: 'get',
     params: params
-
   });
 }
-
 
 // 改签查询接口
 export function changeSearch(params) {
   return request({
     url: `/qunar/open/change/search/${params.purchaseOrderNo}/${params.changeDptDate}`,
-    method: 'get',
+    method: 'get'
   });
 }
 
@@ -269,7 +260,7 @@ export function changeSearch(params) {
 export function getChangeHtml(orderNo) {
   return request({
     url: `/qunar/tts/fuwu/get/change/html?orderNo=${orderNo}`,
-    method: 'get',
+    method: 'get'
   });
 }
 
@@ -279,7 +270,6 @@ export function changeApply(data) {
     url: `/order/qunar/open/change/apply`,
     method: 'post',
     data: data
-
   });
 }
 
@@ -289,7 +279,6 @@ export function changePay(data) {
     url: `/order/qunar/open/change/pay`,
     method: 'post',
     data: data
-
   });
 }
 
@@ -299,7 +288,6 @@ export function processingChange(data) {
     url: `/qunar/tts/fuwu/processing/change`,
     method: 'post',
     data: data
-
   });
 }
 
@@ -309,10 +297,8 @@ export function rejectChange(data) {
     url: `qunar/tts/fuwu/reject/change`,
     method: 'post',
     data: data
-
   });
 }
-
 
 // 自动重填票号
 export function autoRewriteTicket(data) {
@@ -320,7 +306,6 @@ export function autoRewriteTicket(data) {
     url: `/qunar/tts/fuwu/auto/rewrite/ticket/no`,
     method: 'post',
     data: data
-
   });
 }
 
@@ -330,7 +315,6 @@ export function rewriteTicket(data) {
     url: `/qunar/tts/fuwu/rewrite/ticket/no`,
     method: 'post',
     data: data
-
   });
 }
 
@@ -340,7 +324,6 @@ export function purchaseOrder(data) {
     url: `/order/purchase/save`,
     method: 'post',
     data: data
-
   });
 }
 
@@ -350,7 +333,6 @@ export function woniuOrder(data) {
     url: `/order/qunar/open/save/woniu/order`,
     method: 'post',
     data: data
-
   });
 }
 
@@ -359,7 +341,6 @@ export function qunarDetailHtml(sourceOrderNo) {
     url: `qunar/tts/fuwu/get/detail/html?orderNo=${sourceOrderNo}`,
     method: 'get'
   });
-
 }
 
 export function updateBspTicketNo(orderDetails) {
