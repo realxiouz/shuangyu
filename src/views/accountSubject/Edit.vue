@@ -2,15 +2,15 @@
   <div class="page-form">
     <el-dialog :title="keyId && !pid ? '修改科目管理' : '添加科目管理'"  width="30%" center :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
       <el-form ref="form" label-width="110px" size="mini" :model="formData" :rules="rules">
-        <el-form-item label="科目编码:" prop="code">
+        <el-form-item label="科目编码:" prop="subjectCode">
           <el-input
-            v-model="formData.code"
+            v-model="formData.subjectCode"
             placeholder="请输入科目编码..."
             :disabled="codeEnable"
           ></el-input>
         </el-form-item>
-        <el-form-item label="科目名称:" prop="name">
-          <el-input v-model.number="formData.name" placeholder="请输入科目名称..."></el-input>
+        <el-form-item label="科目名称:" prop="subjectName">
+          <el-input v-model.number="formData.subjectName" placeholder="请输入科目名称..."></el-input>
         </el-form-item>
         <el-form-item label="科目类别:" prop="category">
           <el-select v-model="formData.category" placeholder="请选择科目类别" disabled style="width: 100%">
@@ -83,7 +83,7 @@
           saveOne: 'accountSubject/saveOne'
         },
         rules: {
-          code: [
+          subjectCode: [
             {required: true, message: "请输入科目编码"},
             {
               min: 1,
@@ -92,7 +92,7 @@
             },
             {validator: codeValidator, trigger: 'blur'}
           ],
-          name: [
+          subjectName: [
             {required: true, message: "请输入科目名称"},
             {
               min: 1,
@@ -122,8 +122,8 @@
       },
       defaultFormData() {
         return {
-          code: null,
-          name: null,
+          subjectCode: null,
+          subjectName: null,
           category: 0,
           balanceDirection: 0,
           quantityFinancing: false,

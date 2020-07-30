@@ -51,7 +51,7 @@
               <el-option
                 v-for="(subject, index) in subjectList"
                 :key="index"
-                :label="`${subject.balanceDirection === 0 ? '借':'贷'} - ${subject.name}`"
+                :label="`${subject.balanceDirection === 0 ? '借':'贷'} - ${subject.subjectName}`"
                 :value="subject.subjectId"
               />
             </el-select>
@@ -166,8 +166,8 @@
           this.formData.voucherRecords.push({
               summary: null,
               subjectId: null,
-              code: null,
-              name: null,
+              subjectCode: null,
+              subjectName: null,
               borrowAmount: 0,
               loanAmount: 0,
               type: 0
@@ -175,8 +175,8 @@
             {
               summary: null,
               subjectId: null,
-              code: null,
-              name: null,
+              subjectCode: null,
+              subjectName: null,
               borrowAmount: 0,
               loanAmount: 0,
               type: 1
@@ -190,8 +190,8 @@
         this.formData.voucherRecords[index].type = this.subjectList.find(i => i.subjectId === val).balanceDirection;
         this.formData.voucherRecords[index].borrowAmount = 0;
         this.formData.voucherRecords[index].loanAmount = 0;
-        this.formData.voucherRecords[index].code = this.subjectList.find(i => i.subjectId === val).code;
-        this.formData.voucherRecords[index].name = this.subjectList.find(i => i.subjectId === val).name;
+        this.formData.voucherRecords[index].subjectCode = this.subjectList.find(i => i.subjectId === val).subjectCode;
+        this.formData.voucherRecords[index].subjectName = this.subjectList.find(i => i.subjectId === val).subjectName;
       },
       defaultFormData() {
         return {
@@ -204,8 +204,8 @@
             {
               summary: null,
               subjectId: null,
-              code: null,
-              name: null,
+              subjectCode: null,
+              subjectName: null,
               borrowAmount: 0,
               loanAmount: 0,
               type: 0
@@ -213,8 +213,8 @@
             {
               summary: null,
               subjectId: null,
-              code: null,
-              name: null,
+              subjectCode: null,
+              subjectName: null,
               borrowAmount: 0,
               loanAmount: 0,
               type: 1
@@ -261,7 +261,7 @@
               flag = true;
               msg = "请输入借方金额";
             }
-            if(!obj.subjectId || !obj.code || !obj.name){
+            if(!obj.subjectId || !obj.subjectCode || !obj.subjectName){
               flag = true;
               msg = "请输入科目";
             }
