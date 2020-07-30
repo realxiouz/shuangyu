@@ -47,9 +47,9 @@
               >
                 <el-option
                   v-for="item in valueTypes"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
+                  :key="item.code"
+                  :label="item.value"
+                  :value="item.code"
                 ></el-option>
               </el-select>
             </el-form-item>
