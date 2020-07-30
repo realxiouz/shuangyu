@@ -150,6 +150,11 @@
               <font v-else-if="scope.row.required === false">否</font>
             </template>
           </el-table-column>
+          <el-table-column label="属性编码" prop="code" width="150" center>
+            <template slot-scope="scope">
+              <font class="el-code">{{scope.row.code}}</font>
+            </template>
+          </el-table-column>
           <el-table-column label="属性名称" prop="name" width="250" center />
           <el-table-column label="默认数值" prop="defaultValue" width="500">
             <template slot-scope="scope" prop="defaultValue">
