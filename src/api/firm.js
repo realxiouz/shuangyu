@@ -25,9 +25,10 @@ export function addOne(data) {
   });
 }
 
-export function updateOne(id, data) {
+export function updateOne(args) {
+  let {firmId, ...data} = args
   return request({
-    url: `/firm/update/one/${id}`,
+    url: `/firm/update/one/${firmId}`,
     method: 'put',
     data
   });

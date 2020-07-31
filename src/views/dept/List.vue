@@ -38,10 +38,7 @@
       ></el-table-column>
       <el-table-column fixed="right" label="操作" width="280">
         <template slot-scope="scope">
-          <el-button
-            @click="onAdd(scope.row.deptId)"
-            type="success"
-            size="mini"
+          <el-button @click="onAdd(scope.row.deptId)" type="success" size="mini"
             >添加子部门</el-button
           >
           <span v-show="0 == scope.row.deptType" style="margin-left: 10px;">
@@ -77,14 +74,18 @@
       :current-page.sync="currentPage"
     ></el-pagination>
 
-      <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" @refresh="onRefresh"></edit>
-
+    <edit
+      :visible.sync="dialogVisible"
+      :key-id="keyId"
+      :key-name="keyName"
+      @refresh="onRefresh"
+    ></edit>
   </div>
 </template>
 <script>
-  import edit from "./Edit";
-  import search from "./Search";
-  import {MIXIN_LIST} from "@/utils/mixin";
+import edit from "./Edit";
+import search from "./Search";
+import { MIXIN_LIST } from "@/utils/mixin";
 
 export default {
   mixins: [MIXIN_LIST],
@@ -96,21 +97,20 @@ export default {
       dialogVisible: false,
       editDeptId: "",
       pid: "",
-      deptId:'',
-      keyId:'',
-      keyName:'deptId',
+      deptId: "",
+      keyId: "",
+      keyName: "deptId",
       tableData: [],
       expandRowKeys: [],
       lastId: null,
       total: 0,
       actions: {
-        getPageList: 'dept/getPageList',
-        removeOne: 'dept/removeOne'
+        getPageList: "dept/getRootPageList",
+        removeOne: "dept/removeOne"
       }
     };
   },
   methods: {
-
     loadChildren(tree, treeNode, resolve) {
       // tree为点击那一行的数据
       // 保存节点信息
@@ -163,17 +163,13 @@ export default {
       this.pid = row.deptId;
       this.editDeptId = "";
       this.dialogVisible = true;
-    },
-
-
-
-
+    }
   },
 
   components: {
-      edit,
-      search
-    },
+    edit,
+    search
+  }
 };
 </script>
 <style>

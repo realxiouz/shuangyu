@@ -1,17 +1,17 @@
-import request from "@/utils/request";
+import request from '@/utils/request';
 
 export function addOne(data) {
   return request({
-    url: "/firm/staff/add/one",
-    method: "post",
+    url: '/firm/staff/add/one',
+    method: 'post',
     data
   });
 }
 
 export function addMany(data) {
   return request({
-    url: "/firm/staff/add/many",
-    method: "post",
+    url: '/firm/staff/add/many',
+    method: 'post',
     data
   });
 }
@@ -19,7 +19,7 @@ export function addMany(data) {
 export function updateOne(id, data) {
   return request({
     url: `/firm/staff/update/one/${id}`,
-    method: "put",
+    method: 'put',
     data
   });
 }
@@ -27,37 +27,37 @@ export function updateOne(id, data) {
 export function removeOne(staffId) {
   return request({
     url: `/firm/staff/remove/one/${staffId}`,
-    method: "delete"
+    method: 'delete'
   });
 }
 
 export function getOne(staffId) {
   return request({
     url: `/firm/staff/get/one/${staffId}`,
-    method: "get"
+    method: 'get'
   });
 }
 
 export function getList(filter) {
   return request({
     url: `/firm/staff/get/list`,
-    method: "get",
+    method: 'get',
     params: filter
   });
 }
 
 export function getTotal(filter) {
   return request({
-    url: "/firm/staff/get/total",
-    method: "get",
+    url: '/firm/staff/get/total',
+    method: 'get',
     params: filter
   });
 }
 
 export function getMany(data) {
   return request({
-    url: "/firm/staff/get/many",
-    method: "post",
+    url: '/firm/staff/get/many',
+    method: 'post',
     data
   });
 }
@@ -65,7 +65,7 @@ export function getMany(data) {
 export function getPageList(pageFlag, pageSize, lastId, filter) {
   return request({
     url: `/firm/staff/get/list/page/${pageFlag}/${pageSize}/${lastId}`,
-    method: "get",
+    method: 'get',
     params: filter
   });
 }
@@ -73,15 +73,15 @@ export function getPageList(pageFlag, pageSize, lastId, filter) {
 export function getLoginInfo(firmId) {
   return request({
     url: `/firm/staff/login/info`,
-    method: "get",
-    params: {firmId}
+    method: 'get',
+    params: { firmId }
   });
 }
 
 export function isExist(params) {
   return request({
     url: `/firm/staff/exist`,
-    method: "get",
+    method: 'get',
     params
   });
 }
@@ -89,6 +89,13 @@ export function isExist(params) {
 export function relationUser(staffId, userId) {
   return request({
     url: `/firm/staff/relation/user/${staffId}/${userId}`,
-    method: "get"
+    method: 'get'
+  });
+}
+
+export function getMenu() {
+  return request({
+    url: '/admin/menu/auth/tree',
+    method: 'get'
   });
 }

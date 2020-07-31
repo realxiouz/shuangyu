@@ -10,14 +10,13 @@ import {
   getTreeList,
   removeOne,
   updateOne
-} from "@/api/dept";
-import {getToken} from "@/utils/auth";
-
+} from '@/api/dept';
+import { getToken } from '@/utils/auth';
 
 const state = {
   token: getToken(),
-  name: "",
-  avatar: ""
+  name: '',
+  avatar: ''
 };
 
 const mutations = {
@@ -33,7 +32,7 @@ const mutations = {
 };
 
 const actions = {
-  addOne({commit}, params) {
+  addOne({ commit }, params) {
     return new Promise((resolve, reject) => {
       addOne(params)
         .then(response => {
@@ -44,8 +43,8 @@ const actions = {
         });
     });
   },
-  updateOne({commit}, params) {
-    const {id, data} = params;
+  updateOne({ commit }, params) {
+    const { id, data } = params;
     return new Promise((resolve, reject) => {
       updateOne(id, data)
         .then(response => {
@@ -56,8 +55,8 @@ const actions = {
         });
     });
   },
-  getTreeList({commit}, params) {
-    const {filters} = params;
+  getTreeList({ commit }, params) {
+    const { filters } = params;
     return new Promise((resolve, reject) => {
       getTreeList(filters)
         .then(response => {
@@ -68,8 +67,8 @@ const actions = {
         });
     });
   },
-  getList({commit}, params) {
-    const {filters} = params;
+  getList({ commit }, params) {
+    const { filters } = params;
     return new Promise((resolve, reject) => {
       getList(filters)
         .then(response => {
@@ -80,8 +79,8 @@ const actions = {
         });
     });
   },
-  removeOne({commit}, params) {
-    const {deptId} = params;
+  removeOne({ commit }, params) {
+    const { deptId } = params;
     return new Promise((resolve, reject) => {
       removeOne(deptId)
         .then(response => {
@@ -92,7 +91,7 @@ const actions = {
         });
     });
   },
-  getPageList({commit}, args) {
+  getPageList({ commit }, args) {
     return new Promise((resolve, reject) => {
       getPageList(args)
         .then(response => {
@@ -103,10 +102,9 @@ const actions = {
         });
     });
   },
-  getRootPageList({commit}, params) {
+  getRootPageList({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const {pageFlag, pageSize, filter} = params;
-      getRootPageList(pageFlag, pageSize, filter)
+      getRootPageList(params)
         .then(response => {
           resolve(response);
         })
@@ -115,9 +113,9 @@ const actions = {
         });
     });
   },
-  getAsyncTreeList({commit}, params) {
+  getAsyncTreeList({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const {pid, filter} = params;
+      const { pid, filter } = params;
       getAsyncTreeList(pid, filter)
         .then(response => {
           resolve(response);
@@ -127,8 +125,8 @@ const actions = {
         });
     });
   },
-  getRootTotal({commit}, params) {
-    const {filter} = params;
+  getRootTotal({ commit }, params) {
+    const { filter } = params;
     return new Promise((resolve, reject) => {
       getRootTotal(filter)
         .then(response => {
@@ -139,8 +137,8 @@ const actions = {
         });
     });
   },
-  getTotal({commit}, params) {
-    const {filter} = params;
+  getTotal({ commit }, params) {
+    const { filter } = params;
     return new Promise((resolve, reject) => {
       getTotal(filter)
         .then(response => {
@@ -151,8 +149,8 @@ const actions = {
         });
     });
   },
-  getOne({commit}, params) {
-    const {deptId} = params;
+  getOne({ commit }, params) {
+    const { deptId } = params;
     return new Promise((resolve, reject) => {
       getOne(deptId)
         .then(response => {
@@ -163,7 +161,6 @@ const actions = {
         });
     });
   }
-
 };
 
 export default {

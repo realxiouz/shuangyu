@@ -52,9 +52,7 @@
     import {MIXIN_EDIT} from "@/utils/mixin";
     export default {
         mixins: [MIXIN_EDIT],
-        /*当前进行操作的企业节点*/
         props: {
-            editFirmId: String,
             pid: String
         },
         data() {
@@ -87,10 +85,7 @@
                 }
             };
             return {
-                /*所有的可操作的角色信息*/
-                transData: [],
                 formData: {},
-                updateTempData: {},
                 roleData: [],
                 actions: {
                     getOne: 'firm/getOne',
@@ -161,7 +156,6 @@
             },
             clearForm() {
                 this.formData = this.defaultFormData();
-                this.updateTempData = {};
             },
             handleSave() {
                 this.$refs["form"].validate(valid => {
@@ -170,20 +164,6 @@
                         this.$emit("onSave", this.formData);
                     }
                 });
-            },
-            handleGetOne(id) {
-                if (id) {
-                    this.$store
-                        .dispatch("firm/getOne", {firmId: id})
-                        .then(data => {
-                            this.formData = data;
-                        })
-                        .catch(error => {
-                            console.log(error);
-                        });
-                } else {
-                    this.formData = this.defaultFormData();
-                }
             },
             clearRoles() {
                 this.roleData = [];
@@ -199,16 +179,34 @@
                     .catch(error => {
                         console.log(error);
                     });
-            }
+            },
+
+            onSave() {
+                
+                this.$refs['form'].validate(valid => {
+                if (valid ) {
+                    let actionName = this.keyId ? 'firm/updateOne' : 'firm/saveOne'
+                    this.$store
+                    
+                    .dispatch(actionName, this.formData)
+                    .then(id => {
+                        this.dialogVisible = false;
+                        this.$emit('refresh');
+                        this.$message({ type: 'success', message: '保存成功' });
+                    })
+                    // eslint-disable-next-line no-unused-vars
+                    .finally(_ => {
+                        this.afterSave();
+                    });
+                }
+                });
+            },
         },
         created() {
-            if (this.editFirmId) {
-                this.handleGetOne(this.editFirmId);
-            }
             if (this.pid) {
                 this.formData.pid = this.pid;
             }
             this.loadRoles();
-        }
+        },
     };
 </script>

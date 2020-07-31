@@ -104,7 +104,7 @@ const actions = {
   updateOne({ commit }, params) {
     return new Promise((resolve, reject) => {
       const { id, data } = params;
-      updateOne(id, data)
+      updateOne(params)
         .then(response => {
           resolve(response);
         })
@@ -128,7 +128,7 @@ const actions = {
   saveOne({ commit }, params) {
     return new Promise((resolve, reject) => {
       const { firm } = params;
-      saveOne(firm)
+      saveOne(params)
         .then(response => {
           resolve(response);
         })

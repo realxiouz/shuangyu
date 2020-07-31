@@ -39,7 +39,8 @@ export function removeOne(userId) {
   });
 }
 
-export function updateOne(userId, data) {
+export function updateOne(args) {
+  let {userId, data} = args
   return request({
     url: `/admin/user/update/one/${userId}`,
     method: 'put',
