@@ -7,11 +7,30 @@ Vue.use(Router);
 const newRoute = _ => new Router({
   routes: [
     {
+      title: '重定向',
+      path: '/redirect',
+      component: Layout,
+      hidden: true,
+      meta: {title: '重定向', icon: 'home'},
+      children: [
+        {
+          path: '/redirect/:path(.*)',
+          component: () => import('@/views/Redirect')
+        }
+      ]
+    },
+    {
       title: '首页',
       path: '/',
       name: '/',
       component: Layout,
       redirect: '/home',
+      children: [
+        {
+          path: '/home',
+          component: () => import('@/views/Home')
+        }
+      ]
     },
     {
       title: '登录',

@@ -22,6 +22,7 @@ const state = {
   name: "",
   avatar: "",
   routes: [],
+  needGetMenu: true
 };
 
 const mutations = {
@@ -37,6 +38,10 @@ const mutations = {
 
   setRoutes(state, routes) {
     state.routes = routes
+  },
+
+  setNeedGetMenu(state, isNeed) {
+    state.needGetMenu = isNeed
   }
 };
 

@@ -5,6 +5,7 @@ import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 import { getToken } from '@/utils/auth';
 import menu from './store/modules/menu';
+import { resetRoute } from "@/router";
 
 NProgress.configure({ showSpinner: false });
 
@@ -19,37 +20,19 @@ router.beforeEach(async (to, from, next) => {
       next({ path: '/' });
       NProgress.done();
     } else {
-      if (store.state.user.routes.length) {
+      if (!store.state.user.needGetMenu) {
         next();
       } else {
-        let { menus } = await store.dispatch('getLoginInfo', { firmId: null });
-        let tree = genTree(null, menus);
-        let routes = genMenus(tree);
+        // let { menus } = await store.dispatch('getLoginInfo', { firmId: null });
+        // let tree = genTree(null, menus);
+        // let routes = genMenus(tree);
+
+        let m = await store.dispatch('getMenu');
+        let routes = genMenus(m);
+
         // let arr = await store.dispatch('menu/getTreeList', {});
         // let routes = genMenus(arr);
-        // if (process.env.NODE_ENV == 'production') {
-        //   routes.push({
-        //     path: '/admin',
-        //     name: 'Admin',
-        //     component: _import('Layout'),
-        //     hidden: true,
-        //     meta: { title: '系统工具', icon: 'home' },
-        //     children: [
-        //       {
-        //         path: '/menu/list',
-        //         name: 'MenuList',
-        //         component: _import('menu/List'),
-        //         meta: { title: '导航菜单', icon: 'home' }
-        //       },
-        //       {
-        //         path: '/role/list',
-        //         name: 'RoleList',
-        //         component: _import('role/List'),
-        //         meta: { title: '角色管理', icon: 'home' }
-        //       }
-        //     ]
-        //   });
-        // }
+
         routes.push({
           path: '*',
           component: _import('404'),
@@ -58,6 +41,7 @@ router.beforeEach(async (to, from, next) => {
         });
         store.commit('user/setRoutes', routes);
         router.addRoutes(routes);
+        store.commit('user/setNeedGetMenu', false);
         console.log(routes);
         try {
           next({
@@ -101,7 +85,8 @@ function genMenus(arr) {
         children,
         sort,
         tags,
-        enable
+        enable,
+        keepAlive
       } = i;
       let c = null;
       let isNav = (tags || []).findIndex(i => i === 'NAV') > -1;
@@ -114,7 +99,7 @@ function genMenus(arr) {
       }
       let bean = {
         path: uri,
-        meta: { title, icon },
+        meta: { title, icon, keepAlive },
         name: menuName,
         component: c,
         sort,
