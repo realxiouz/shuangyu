@@ -25,8 +25,10 @@
           <span> {{scope.row.status ? '是' : '否'}}</span>
         </template>
       </el-table-column>
-      <el-table-column width="160" label="操作" align="center">
+      <el-table-column width="300" label="操作" align="center">
         <template slot-scope="scope">
+          <el-button size="mini" type="primary" @click="onOperate(scope.row.schedulerId, scope.row.status)">{{scope.row.status === 0 ? '启动' : '停止'}}</el-button>
+          <el-button size="mini" type="primary" @click="onCopy(scope.row.schedulerId)">复制</el-button>
           <el-button size="mini" type="primary" @click="onEdit(scope.row.schedulerId)">修改</el-button>
           <el-button size="mini" type="danger" @click="onDel(scope.row.schedulerId)">删除</el-button>
         </template>
@@ -47,7 +49,7 @@
       @current-change="onCurrentChange"
       :current-page.sync="currentPage"
     ></el-pagination>
-    <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" @refresh="onRefresh"/>
+    <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" :copyFlag="copyFlag" @refresh="onRefresh"/>
   </div>
 </template>
 
@@ -83,6 +85,7 @@
             value:9
           }
         ],
+        copyFlag: false
       };
     },
     methods: {
@@ -97,6 +100,45 @@
         }
         return tagType;
       },
+      onOperate(schedulerId, status){
+        let method;
+        let msg;
+        if(status){
+          method = 'jobScheduler/stop';
+          msg = '是否确定停止？';
+        }else{
+          method = 'jobScheduler/start';
+          msg = '是否确定启动？';
+        }
+        this.$confirm(msg, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: "warning"
+        })
+          .then(() => {
+            this.$store
+              .dispatch(method, {jobSchedulerId: schedulerId})
+              .then(() => {
+                this.onRefresh();
+              })
+              .catch(error => {
+                console.log(error);
+              });
+          })
+          .catch(err => {
+            console.error(err);
+          });
+      },
+      onEdit(id) {
+        this.keyId = id;
+        this.dialogVisible = true;
+        this.copyFlag = false;
+      },
+      onCopy(id){
+        this.keyId = id;
+        this.dialogVisible = true;
+        this.copyFlag = true;
+      }
     },
     components: {
       edit,

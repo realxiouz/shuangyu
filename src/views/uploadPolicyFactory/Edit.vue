@@ -1,6 +1,6 @@
 <template>
   <div class="page-form">
-    <el-dialog :title="keyId ? '修改政策管理' : '添加政策管理'"  width="50%" center :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
+    <el-dialog :title="keyId ? copyFlag ? '复制政策管理' : '修改政策管理' : '添加政策管理'"  width="50%" center :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
       <el-form ref="form" label-width="110px" size="mini" :model="formData" :rules="rules">
         <el-row>
           <el-col :span="12">
@@ -54,19 +54,19 @@
           <el-col :span="12" v-for="(item, index) in formData.jobConfigList" :key="index">
             <el-form-item :label="item.name + '：'" :prop="'jobConfigList.' + index + '.value'" :rules="[{ required: item.required, message: '请输入' + item.name, trigger: 'change' }]" v-if="item.valueType === 0 && item.inputType === 'text'">
               <el-input v-model="item.value" :placeholder="'请输入' + item.name" />
-              <el-aside class="el-aside-red" v-if="item.remark">{{'* ' + item.remark}}</el-aside>
+              <el-aside class="el-aside-red" v-if="item.remark" :title="item.remark">{{'* ' + item.remark}}</el-aside>
             </el-form-item>
             <el-form-item :label="item.name + '：'" :prop="'jobConfigList.' + index + '.value'" :rules="[{ required: item.required, message: '请输入' + item.name, trigger: 'change' }]" v-if="item.valueType === 0 && item.inputType === 'textarea'">
               <el-input v-model="item.value" :placeholder="'请输入' + item.name" type="textarea" :rows="3" />
-              <el-aside class="el-aside-red" v-if="item.remark">{{'* ' + item.remark}}</el-aside>
+              <el-aside class="el-aside-red" v-if="item.remark" :title="item.remark">{{'* ' + item.remark}}</el-aside>
             </el-form-item>
             <el-form-item :label="item.name + '：'" :prop="'jobConfigList.' + index + '.value'" :rules="[{ required: item.required, message: '请输入' + item.name, trigger: 'change' }]" v-if="item.valueType === 1">
               <el-switch v-model="item.value"></el-switch>
-              <el-aside class="el-aside-red" v-if="item.remark">{{'* ' + item.remark}}</el-aside>
+              <el-aside class="el-aside-red" v-if="item.remark" :title="item.remark">{{'* ' + item.remark}}</el-aside>
             </el-form-item>
             <el-form-item :label="item.name + '：'" :prop="'jobConfigList.' + index + '.value'" :rules="[{ required: item.required, message: '请输入' + item.name, trigger: 'change' }]" v-if="item.valueType === 2">
               <el-input-number v-model="item.value" :placeholder="'请输入' + item.name" :min="item.min" :max="item.max" :step="item.step" :precision="item.precision" style="width: 100%;" />
-              <el-aside class="el-aside-red" v-if="item.remark">{{'* ' + item.remark}}</el-aside>
+              <el-aside class="el-aside-red" v-if="item.remark" :title="item.remark">{{'* ' + item.remark}}</el-aside>
             </el-form-item>
             <el-form-item :label="item.name + '：'" :prop="'jobConfigList.' + index + '.value'" :rules="[{ required: item.required, message: '请输入' + item.name, trigger: 'change' }]" v-if="item.valueType === 3">
               <el-date-picker
@@ -77,7 +77,7 @@
                  style="width: 100%;"
               >
               </el-date-picker>
-              <el-aside class="el-aside-red" v-if="item.remark">{{'* ' + item.remark}}</el-aside>
+              <el-aside class="el-aside-red" v-if="item.remark" :title="item.remark">{{'* ' + item.remark}}</el-aside>
             </el-form-item>
             <el-form-item :label="item.name + '：'" :prop="'jobConfigList.' + index + '.value'" :rules="[{ required: item.required, message: '请输入' + item.name, trigger: 'change' }]" v-if="item.valueType === 4">
               <el-date-picker
@@ -88,11 +88,11 @@
                  style="width: 100%;"
               >
               </el-date-picker>
-              <el-aside class="el-aside-red" v-if="item.remark">{{'* ' + item.remark}}</el-aside>
+              <el-aside class="el-aside-red" v-if="item.remark" :title="item.remark">{{'* ' + item.remark}}</el-aside>
             </el-form-item>
             <el-form-item :label="item.name + '：'" :prop="'jobConfigList.' + index + '.value'" :rules="[{ required: item.required, message: '请输入' + item.name, trigger: 'change' }]" v-if="item.valueType === 5">
               <el-input  v-model="item.value" :placeholder="'请输入' + item.name" />
-              <el-aside class="el-aside-red" v-if="item.remark">{{'* ' + item.remark}}</el-aside>
+              <el-aside class="el-aside-red" v-if="item.remark" :title="item.remark">{{'* ' + item.remark}}</el-aside>
             </el-form-item>
             <el-form-item :label="item.name + '：'" :prop="'jobConfigList.' + index + '.value'" :rules="[{ required: item.required, message: '请输入' + item.name, trigger: 'change' }]" v-if="item.valueType === 60 || item.valueType === 62">
               <el-select
@@ -108,7 +108,7 @@
                   :value="attr.code"
                 ></el-option>
               </el-select>
-              <el-aside class="el-aside-red" v-if="item.remark">{{'* ' + item.remark}}</el-aside>
+              <el-aside class="el-aside-red" v-if="item.remark" :title="item.remark">{{'* ' + item.remark}}</el-aside>
             </el-form-item>
             <el-form-item :label="item.name + '：'" :prop="'jobConfigList.' + index + '.value'" :rules="[{ required: item.required, message: '请输入' + item.name, trigger: 'change' }]" v-if="item.valueType === 61">
               <el-select
@@ -124,7 +124,7 @@
                   :value="attr.code"
                 ></el-option>
               </el-select>
-              <el-aside class="el-aside-red" v-if="item.remark">{{'* ' + item.remark}}</el-aside>
+              <el-aside class="el-aside-red" v-if="item.remark" :title="item.remark">{{'* ' + item.remark}}</el-aside>
             </el-form-item>
           </el-col>
         </el-row>
@@ -140,6 +140,12 @@
   import {MIXIN_EDIT} from "@/utils/mixin";
   export default {
     mixins: [MIXIN_EDIT],
+    props: {
+      copyFlag: {
+        type: Boolean,
+        default: false
+      }
+    },
     data() {
       return {
         dialogVisible: false,
@@ -177,7 +183,9 @@
         if(val){
           this.loadFirm();
           this.loadJobConfig();
-          if(this.keyId){
+          if(this.keyId && this.copyFlag){
+            this.actions.saveOne = "jobScheduler/addOneXxl";
+          }else if(this.keyId && !this.copyFlag){
             this.actions.saveOne = "jobScheduler/updateOne";
           }else{
             this.actions.saveOne = "jobScheduler/addOneXxl";
@@ -230,6 +238,7 @@
         this.defaultFlag = !this.defaultFlag;
       },
       handleCron(val) {
+        console.log(val);
         this.formData.cron = val
       },
       beforeSave(data) {
@@ -256,7 +265,10 @@
         data.tagCode = tag.tagCode;
         data.tagName = tag.tagName;
         data.tagType = tag.tagType;
-        if(this.keyId){
+        if(this.copyFlag){
+          data.schedulerId = null;
+        }
+        if(this.keyId && !this.copyFlag){
           formObj = data;
         }else{
           let xxlJobGroup = {
@@ -267,7 +279,7 @@
           let xxlJobInfo = {
             jobDesc: data.schedulerName,
             jobCron: data.cron,
-            executorHandler: 'policyJobHandler'
+            executorHandler: 'uploadPolicyJobHandler'
           };
           formObj.xxlJobGroup = xxlJobGroup;
           formObj.xxlJobInfo = xxlJobInfo;
@@ -410,7 +422,8 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     word-break: break-all;
-    color: #ff0000;
+    color: #0e9aff;
     font-size: 12px;
+    cursor: help;
   }
 </style>
