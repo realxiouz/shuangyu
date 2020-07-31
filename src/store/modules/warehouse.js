@@ -70,8 +70,8 @@ const actions = {
   },
   getOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {editWarehouseId} = params;
-      getOne(editWarehouseId)
+      const {warehouseId} = params;
+      getOne(warehouseId)
         .then(response => {
           resolve(response);
         })

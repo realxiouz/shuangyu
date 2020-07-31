@@ -77,8 +77,10 @@
 
 <script>
     import search from "./Search.vue";
+    import {MIXIN_LIST} from "@/utils/mixin";
 
     export default {
+        mixins: [MIXIN_LIST],
         data() {
             return {
                 loading: true,

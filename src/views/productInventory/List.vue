@@ -66,7 +66,7 @@
         methods: {
             handleUpdate(id) {
                 let path = "";
-                path = "/product/inventory/config";
+                path = "/product/inventory/edit";
                 this.$router.push({
                     path: path,
                     query: {

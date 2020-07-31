@@ -10,6 +10,7 @@
         >
       </el-button-group>
     </div>
+    <search class="page-search" ref="search" @onSearch="onSearch"/>
     <el-tabs
       class="page-tabs"
       v-model="activeName"
@@ -31,6 +32,7 @@
               <font v-else-if="!scope.row.required">否</font>
             </template>
           </el-table-column>
+          <el-table-column label="备注" prop="remark" />
           <el-table-column label="属性编码" prop="code" width="150" center>
             <template slot-scope="scope">
               <font class="el-code">{{scope.row.code}}</font>
@@ -132,7 +134,7 @@
               </el-select>
             </template>
           </el-table-column>
-          <el-table-column label="备注" prop="remark" />
+          
         </el-table>
       </el-tab-pane>
       <el-tab-pane label="新包机切位政策" name="NEW_ONE_WAY_CHANGE_POLICY">
@@ -150,6 +152,7 @@
               <font v-else-if="scope.row.required === false">否</font>
             </template>
           </el-table-column>
+          <el-table-column label="备注" prop="remark" />
           <el-table-column label="属性编码" prop="code" width="150" center>
             <template slot-scope="scope">
               <font class="el-code">{{scope.row.code}}</font>
@@ -251,7 +254,7 @@
               </el-select>
             </template>
           </el-table-column>
-          <el-table-column label="备注" prop="remark" />
+          
         </el-table>
       </el-tab-pane>
     </el-tabs>
@@ -261,6 +264,7 @@
 <script>
 import { MIXIN_LIST } from "@/utils/mixin";
 import { PROPERTY_TABLE } from '@/utils/const';
+import search from "./Search"
 export default {
   mixins: [MIXIN_LIST],
   data() {
@@ -279,6 +283,9 @@ export default {
         name: [{ required: true, message: "请输入默认数值" }]
       }
     };
+  },
+  components: {
+    search
   },
   methods: {
     handleBack() {

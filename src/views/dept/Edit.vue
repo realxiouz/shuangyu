@@ -21,6 +21,7 @@
 </template>
 <script>
     import {MIXIN_EDIT} from "@/utils/mixin";
+    
     function defaultData() {
         return {
             deptName: "",
@@ -32,6 +33,9 @@
     export default {
         mixins: [MIXIN_EDIT],
         name: "deptEdit",
+         props: {
+            pid: String
+        },
         data() {
             return {
                 formData: defaultData(),
@@ -113,7 +117,7 @@
                         this.$emit("onSave", this.formData);
                     }
                 });
-            }
+            },
         },
         created() {
             this.loadFirms();

@@ -115,8 +115,8 @@ const actions = {
   },
   removeOne({ commit }, params) {
     return new Promise((resolve, reject) => {
-      const { firmID } = params;
-      removeOne(firmID)
+      const { firmId } = params;
+      removeOne(firmId)
         .then(response => {
           resolve(response);
         })

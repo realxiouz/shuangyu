@@ -130,6 +130,7 @@ export const MIXIN_LIST = {
       this.dialogVisible = true;
     },
     onDel(id) {
+        console.log(id)
       if (this.actions.removeOne) {
         this.$confirm('确定删除?', '提示', {
           confirmButtonText: '确定',

@@ -34,9 +34,9 @@ export function updateOne(args) {
   });
 }
 
-export function removeOne(firmID) {
+export function removeOne(firmId) {
   return request({
-    url: `/firm/remove/one/${firmID}`,
+    url: `/firm/remove/one/${firmId}`,
     method: `delete`
   });
 }

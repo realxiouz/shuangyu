@@ -1,7 +1,7 @@
 <template>
   <div class="page-form">
     <el-dialog
-      :title="keyId != '' ? '编辑仓库信息' : '添加仓库信息'"
+      :title="keyId!= '' ? '编辑仓库信息' : '添加仓库信息'"
       :visible.sync="dialogVisible"
       @open="onOpen"
       @close="onClose"
@@ -106,6 +106,7 @@ export default {
       callback();
     };
     return {
+    codeEnabled:'',
       formData: defaultData(),
       firmList: [],
       newDialogVisible: false,

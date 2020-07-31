@@ -154,7 +154,7 @@ export default {
     },
     handleAddChild(warehouseId) {
       this.pid = warehouseId;
-      this.editWarehouseId = "";
+      this.warehouseId = "";
       this.codeEnabled = false;
       this.dialogVisible = true;
     },

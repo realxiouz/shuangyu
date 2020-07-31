@@ -56,7 +56,7 @@
           <el-button @click="onEdit(scope.row.airline)" type="primary" size="mini"
             >编辑</el-button
           >
-          <el-button @click="handleDelete(scope.row.airline)" type="danger" size="mini"
+          <el-button @click="onDel(scope.row.airline)" type="danger" size="mini"
             >删除</el-button
           >
         </template>
