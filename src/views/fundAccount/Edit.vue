@@ -277,4 +277,8 @@
     margin: 0 0 16px 0;
     padding: 0;
   }
+  .el-cascader-panel{
+    height: 300px;
+    overflow-y: scroll;
+  }
 </style>
