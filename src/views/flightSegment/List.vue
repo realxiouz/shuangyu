@@ -87,6 +87,10 @@ export default {
     LookLnfo
   },
   methods: {
+      handleCancel() {
+      this.dialogVisible = false;
+      this.showInfo = false;
+    },
     lookFlights(flights) {
       this.lookTitle = "查看航班信息";
       this.flightsInfo = flights;

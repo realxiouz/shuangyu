@@ -45,7 +45,7 @@
       :close-on-click-modal="false"
       center
     >
-      <el-form :model="formData" label-width="110px" size="mini">
+      <el-form ref="form" :model="formData" label-width="110px" size="mini">
         <input type="hidden" v-model="formData.dictId"/>
         <el-form-item label="类别">
           <el-input :placeholder="curNode.categoryName" disabled="disabled"></el-input>

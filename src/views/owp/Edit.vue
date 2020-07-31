@@ -259,7 +259,6 @@
     },
     created() {
       this.clearForm();
-      this.loadOwpData();
     },
   };
 
