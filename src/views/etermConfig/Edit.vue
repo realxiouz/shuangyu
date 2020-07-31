@@ -1,12 +1,16 @@
 <template>
   <div>
-    <el-form :model="formData" label-width="130px" size="mini">
-      <input type="hidden" v-model="formData.firmId"/>
+    <el-form ref="form" :model="formData" label-width="130px" size="mini">
+      <input type="hidden" v-model="formData.firmId" />
       <el-form-item label="账号:">
         <el-input v-model="formData.etermAccount"></el-input>
       </el-form-item>
       <el-form-item v-if="!update" label="密码:">
-        <el-input v-model="formData.etermPassword" type="password" show-password></el-input>
+        <el-input
+          v-model="formData.etermPassword"
+          type="password"
+          show-password
+        ></el-input>
       </el-form-item>
       <el-form-item label="地址:">
         <el-input v-model="formData.etermAddress"></el-input>
@@ -18,12 +22,17 @@
         <el-input v-model="formData.etermOfficeId"></el-input>
       </el-form-item>
       <el-form-item label="Office适用范围:">
-        <el-select v-model="formData.etermOfficeRange" placeholder="请选择Office适用范围.." style="width: 100%">
+        <el-select
+          v-model="formData.etermOfficeRange"
+          placeholder="请选择Office适用范围.."
+          style="width: 100%"
+        >
           <el-option
             v-for="item in etermOfficeRangeList"
             :key="item.value"
             :label="item.label"
-            :value="item.value">
+            :value="item.value"
+          >
           </el-option>
         </el-select>
       </el-form-item>
@@ -31,12 +40,17 @@
         <el-input v-model="formData.etermAirline"></el-input>
       </el-form-item>
       <el-form-item label="账号类型:">
-        <el-select v-model="formData.etermAccountType" placeholder="请选择账号类型.." style="width: 100%">
+        <el-select
+          v-model="formData.etermAccountType"
+          placeholder="请选择账号类型.."
+          style="width: 100%"
+        >
           <el-option
             v-for="item in etermAccountTypeList"
             :key="item.value"
             :label="item.label"
-            :value="item.value">
+            :value="item.value"
+          >
           </el-option>
         </el-select>
       </el-form-item>
@@ -52,84 +66,90 @@
     </el-form>
     <div style="text-align:right;">
       <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
-      <el-button type="primary" size="mini" @click="handleConfirm">确 定</el-button>
+      <el-button type="primary" size="mini" @click="handleConfirm"
+        >确 定</el-button
+      >
     </div>
   </div>
 </template>
 
 <script>
-  export default {
-    props: ["curNode", "update"],
-    data() {
+export default {
+  props: ["curNode", "update"],
+  data() {
+    return {
+      formData: {},
+      firmList: [],
+      etermOfficeRangeList: [
+        {
+          label: "默认",
+          value: "1"
+        },
+        {
+          label: "备选",
+          value: "2"
+        },
+        {
+          label: "政策",
+          value: "3"
+        }
+      ],
+      etermAccountTypeList: [
+        {
+          label: "打票",
+          value: "0"
+        },
+        {
+          label: "订座",
+          value: "1"
+        },
+        {
+          label: "AV",
+          value: "2"
+        }
+      ]
+    };
+  },
+  methods: {
+    defaultFormData() {
       return {
-        formData: {},
-        firmList: [],
-        etermOfficeRangeList: [
-          {
-            label: '默认',
-            value: '1'
-          }, {
-            label: '备选',
-            value: '2'
-          }, {
-            label: '政策',
-            value: '3'
-          }
-        ],
-        etermAccountTypeList: [
-          {
-            label: '打票',
-            value: '0'
-          }, {
-            label: '订座',
-            value: '1'
-          }, {
-            label: 'AV',
-            value: '2'
-          }
-        ],
+        firmId: "",
+        firmName: "",
+        etermAccount: "",
+        etermPassword: "",
+        etermAddress: "",
+        etermPort: "",
+        etermOfficeId: "",
+        etermOfficeRange: "",
+        etermAirline: "",
+        etermAccountType: "",
+        etermSi: "",
+        etermSiPassword: "",
+        etermRemark: ""
       };
     },
-    methods: {
-      defaultFormData() {
-        return {
-          firmId: '',
-          firmName:'',
-          etermAccount: '',
-          etermPassword: '',
-          etermAddress: '',
-          etermPort: '',
-          etermOfficeId: '',
-          etermOfficeRange: '',
-          etermAirline: '',
-          etermAccountType: '',
-          etermSi: '',
-          etermSiPassword: '',
-          etermRemark: ''
-        };
-      },
-      clearForm() {
-        this.formData = this.defaultFormData();
-      },
-      handleConfirm() {
-        this.$store
-          .dispatch("etermConfig/save", {etermConfig:this.formData})
-          .then(() => {
-            this.$emit('onSave');
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      },
-      initFormData() {
-        this.clearForm();
-        if (this.update) {
-          Object.assign(this.formData, this.curNode);
-        }
-      }
+    clearForm() {
+      this.formData = this.defaultFormData();
     },
-    created() {
-      this.initFormData();
+    handleConfirm() {
+      this.$store
+        .dispatch("etermConfig/save", { etermConfig: this.formData })
+        .then(() => {
+          this.$emit("onSave");
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    initFormData() {
+      this.clearForm();
+      if (this.update) {
+        Object.assign(this.formData, this.curNode);
+      }
     }
-  };
+  },
+  created() {
+    this.initFormData();
+  }
+};
 </script>

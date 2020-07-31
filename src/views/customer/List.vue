@@ -217,7 +217,7 @@ export default {
       this.skipDetail();
     },
     /*点击编辑*/
-    onEdit(index, row) {
+    onEdit(index, row) {console.log(index)
       this.skipDetail(row.merchantId);
     },
    
