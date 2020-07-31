@@ -1,7 +1,7 @@
 <template>
   <div class="page-form">
     <el-dialog :title="keyId!=''?'编辑':'添加'" :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
-      <el-form label-position="top" size="mini" :model="formData" ref="deviceForm">
+      <el-form label-position="top" size="mini" :model="formData" ref="form">
         <el-col :span="24">
           <el-form-item label="设备名称" prop="deviceName">
             <el-input v-model="formData.deviceName" placeholder="请输入设备名称"/>

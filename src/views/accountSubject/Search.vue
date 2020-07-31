@@ -38,42 +38,42 @@
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      more: false,
-      formData: {
-        subjectCode: null,
-        subjectName: null
-      }
-    };
-  },
-  computed: {
-    switchIcon() {
-      if (!this.more) {
-        return "el-icon-arrow-down el-icon--right";
-      } else {
-        return "el-icon-arrow-up el-icon--right";
-      }
-    }
-  },
-  methods: {
-    initSearchForm() {
+  export default {
+    data() {
       return {
-        subjectCode: null,
-        subjectName: null
+        more: false,
+        formData: {
+          subjectCode: null,
+          subjectName: null
+        }
       };
     },
-    handleMore() {
-      this.more = !this.more;
+    computed: {
+      switchIcon() {
+        if (!this.more) {
+          return "el-icon-arrow-down el-icon--right";
+        } else {
+          return "el-icon-arrow-up el-icon--right";
+        }
+      }
     },
-    handleClear() {
-      this.formData = this.initSearchForm();
-      this.handleConfirm();
-    },
-    handleConfirm() {
-      this.$emit("onSearch", this.formData);
+    methods: {
+      initSearchForm() {
+        return {
+          subjectCode: null,
+          subjectName: null
+        };
+      },
+      handleMore() {
+        this.more = !this.more;
+      },
+      handleClear() {
+        this.formData = this.initSearchForm();
+        this.handleConfirm();
+      },
+      handleConfirm() {
+        this.$emit("onSearch", this.formData);
+      }
     }
-  }
-};
+  };
 </script>

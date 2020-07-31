@@ -21,9 +21,9 @@
               >
                 <el-option
                   v-for="item in valueTypes"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
+                  :key="item.code"
+                  :label="item.value"
+                  :value="item.code"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -74,21 +74,10 @@
           </el-col>
           <el-col :span="12" v-if="formData.valueType === 5">
             <el-form-item label="默认数值：" prop="defaultValue">
-              <el-time-picker
-                v-model="formData.defaultValue"
-                :format="formData.format"
-                placeholder="请选择默认数值"
-                style="width: 100%;"
-              >
-              </el-time-picker>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12" v-if="formData.valueType === 6">
-            <el-form-item label="默认数值：" prop="defaultValue">
               <el-input v-model="formData.defaultValue" placeholder="请输入默认数值" />
             </el-form-item>
           </el-col>
-          <el-col :span="12" v-if="formData.valueType === 7">
+          <el-col :span="12" v-if="formData.valueType === 60 || formData.valueType === 62">
             <el-form-item label="默认数值：" prop="defaultValue">
               <el-select
                 v-model="formData.defaultValue"
@@ -105,7 +94,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="12" v-if="formData.valueType === 8">
+          <el-col :span="12" v-if="formData.valueType === 61">
             <el-form-item label="默认数值：" prop="defaultValue">
               <el-select
                 v-model="formData.defaultValue"
@@ -168,6 +157,7 @@
 </template>
 <script>
   import {MIXIN_EDIT} from "@/utils/mixin";
+  import { PROPERTY_TABLE } from '@/utils/const';
   export default {
     mixins: [MIXIN_EDIT],
     data() {
@@ -230,44 +220,7 @@
             label: '新包机切位单程'
           }
         ],
-        valueTypes: [
-          {
-            value: 0,
-            label: '文本'
-          },
-          {
-            value: 1,
-            label: '开关'
-          },
-          {
-            value: 2,
-            label: '数字'
-          },
-          {
-            value: 3,
-            label: '日期'
-          },
-          {
-            value: 4,
-            label: '日期时间'
-          },
-          {
-            value: 5,
-            label: '时间'
-          },
-          {
-            value: 6,
-            label: '评分'
-          },
-          {
-            value: 7,
-            label: '单选'
-          },
-          {
-            value: 8,
-            label: '多选'
-          }
-        ],
+        valueTypes: PROPERTY_TABLE,
         rules: {
 
         }

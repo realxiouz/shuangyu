@@ -27,7 +27,126 @@
         >
           <el-table-column label="是否必填" prop="required" width="75" center>
             <template slot-scope="scope">
-              <font v-if="scope.row.required === true" class="el-required">是</font>
+              <font v-if="scope.row.required" class="el-required">是</font>
+              <font v-else-if="!scope.row.required">否</font>
+            </template>
+          </el-table-column>
+          <el-table-column label="属性编码" prop="code" width="150" center>
+            <template slot-scope="scope">
+              <font class="el-code">{{scope.row.code}}</font>
+            </template>
+          </el-table-column>
+          <el-table-column label="属性名称" prop="name" width="250" center />
+          <el-table-column label="默认数值" prop="defaultValue" width="500">
+            <template slot-scope="scope" prop="defaultValue">
+              <el-input
+                class="el-input"
+                prop="defaultValue"
+                v-if="
+                  scope.row.valueType === 0 && scope.row.inputType === 'text'
+                "
+                v-model="scope.row.defaultValue"
+                placeholder="请输入默认数值"
+              />
+              <el-input
+                prop="defaultValue"
+                v-if="
+                  scope.row.valueType === 0 &&
+                    scope.row.inputType === 'textarea'
+                "
+                v-model="scope.row.defaultValue"
+                placeholder="请输入默认数值"
+                type="textarea"
+                :rows="3"
+              />
+              <el-switch
+                prop="defaultValue"
+                v-if="scope.row.valueType === 1"
+                v-model="scope.row.defaultValue"
+                @click="handleValue"
+              ></el-switch>
+              <el-input-number
+                prop="defaultValue"
+                v-if="scope.row.valueType === 2"
+                v-model="scope.row.defaultValue"
+                placeholder="请输入默认数值"
+                :min="scope.row.min"
+                :max="scope.row.max"
+                :step="scope.row.step"
+                :precision="scope.row.precision"
+                style="width: 100%;"
+              />
+              <el-date-picker
+                prop="defaultValue"
+                v-if="scope.row.valueType === 3"
+                v-model="scope.row.defaultValue"
+                :format="scope.row.format"
+                type="date"
+                placeholder="请选择默认数值"
+                style="width: 100%;"
+              />
+              <el-date-picker
+                prop="defaultValue"
+                v-if="scope.row.valueType === 4"
+                v-model="scope.row.defaultValue"
+                :format="scope.row.format"
+                type="datetime"
+                placeholder="请选择默认数值"
+                style="width: 100%;"
+              />
+              <el-input
+                prop="defaultValue"
+                v-if="scope.row.valueType === 5"
+                v-model="scope.row.defaultValue"
+                placeholder="请输入默认数值"
+              />
+              <el-select
+                prop="defaultValue"
+                v-if="scope.row.valueType === 60 || scope.row.valueType === 62"
+                v-model="scope.row.defaultValue"
+                placeholder="请选择默认数值"
+                clearable
+                style="width: 100%"
+              >
+                <el-option
+                  v-for="item in scope.row.attributes"
+                  :key="item.code"
+                  :label="item.name"
+                  :value="item.code"
+                ></el-option>
+              </el-select>
+              <el-select
+                prop="defaultValue"
+                v-if="scope.row.valueType === 61"
+                v-model="scope.row.defaultValue"
+                placeholder="请选择默认数值"
+                style="width: 100%"
+                multiple
+              >
+                <el-option
+                  v-for="item in scope.row.attributes"
+                  :key="item.code"
+                  :label="item.name"
+                  :value="item.code"
+                ></el-option>
+              </el-select>
+            </template>
+          </el-table-column>
+          <el-table-column label="备注" prop="remark" />
+        </el-table>
+      </el-tab-pane>
+      <el-tab-pane label="新包机切位政策" name="NEW_ONE_WAY_CHANGE_POLICY">
+        <el-table
+          :cell-style="rowClass"
+          :header-cell-style="headClass"
+          height="800"
+          :data="tableData"
+          border
+          center
+        >
+          <el-table-column label="是否必填" prop="required" width="75" center>
+            <template slot-scope="scope">
+              <font v-if="scope.row.required === true" color="red">是</font>
               <font v-else-if="scope.row.required === false">否</font>
             </template>
           </el-table-column>
@@ -94,23 +213,15 @@
                 placeholder="请选择默认数值"
                 style="width: 100%;"
               />
-              <el-time-picker
-                prop="defaultValue"
-                v-if="scope.row.valueType === 5"
-                v-model="scope.row.defaultValue"
-                :format="scope.row.format"
-                placeholder="请选择默认数值"
-                style="width: 100%;"
-              />
               <el-input
                 prop="defaultValue"
-                v-if="scope.row.valueType === 6"
+                v-if="scope.row.valueType === 5"
                 v-model="scope.row.defaultValue"
                 placeholder="请输入默认数值"
               />
               <el-select
                 prop="defaultValue"
-                v-if="scope.row.valueType === 7"
+                v-if="scope.row.valueType === 60 || scope.row.valueType === 62"
                 v-model="scope.row.defaultValue"
                 placeholder="请选择默认数值"
                 clearable
@@ -125,129 +236,7 @@
               </el-select>
               <el-select
                 prop="defaultValue"
-                v-if="scope.row.valueType === 8"
-                v-model="scope.row.defaultValue"
-                placeholder="请选择默认数值"
-                style="width: 100%"
-                multiple
-              >
-                <el-option
-                  v-for="item in scope.row.attributes"
-                  :key="item.code"
-                  :label="item.name"
-                  :value="item.code"
-                ></el-option>
-              </el-select>
-            </template>
-          </el-table-column>
-          <el-table-column label="备注" prop="remark" />
-        </el-table>
-      </el-tab-pane>
-      <el-tab-pane label="新包机切位政策" name="NEW_ONE_WAY_CHANGE_POLICY">
-        <el-table
-          :cell-style="rowClass"
-          :header-cell-style="headClass"
-          height="800"
-          :data="tableData"
-          border
-          center
-        >
-          <el-table-column label="是否必填" prop="required" width="75" center>
-            <template slot-scope="scope">
-              <font v-if="scope.row.required === true" color="red">是</font>
-              <font v-else-if="scope.row.required === false">否</font>
-            </template>
-          </el-table-column>
-          <el-table-column label="属性名称" prop="name" width="250" center />
-          <el-table-column label="默认数值" prop="defaultValue" width="500">
-            <template slot-scope="scope" prop="defaultValue">
-              <el-input
-                class="el-input"
-                prop="defaultValue"
-                v-if="
-                  scope.row.valueType === 0 && scope.row.inputType === 'text'
-                "
-                v-model="scope.row.defaultValue"
-                placeholder="请输入默认数值"
-              />
-              <el-input
-                prop="defaultValue"
-                v-if="
-                  scope.row.valueType === 0 &&
-                    scope.row.inputType === 'textarea'
-                "
-                v-model="scope.row.defaultValue"
-                placeholder="请输入默认数值"
-                type="textarea"
-                :rows="3"
-              />
-              <el-switch
-                prop="defaultValue"
-                v-if="scope.row.valueType === 1"
-                v-model="scope.row.defaultValue"
-                @click="handleValue"
-              ></el-switch>
-              <el-input-number
-                prop="defaultValue"
-                v-if="scope.row.valueType === 2"
-                v-model="scope.row.defaultValue"
-                placeholder="请输入默认数值"
-                :min="scope.row.min"
-                :max="scope.row.max"
-                :step="scope.row.step"
-                :precision="scope.row.precision"
-                style="width: 100%;"
-              />
-              <el-date-picker
-                prop="defaultValue"
-                v-if="scope.row.valueType === 3"
-                v-model="scope.row.defaultValue"
-                :format="scope.row.format"
-                type="date"
-                placeholder="请选择默认数值"
-                style="width: 100%;"
-              />
-              <el-date-picker
-                prop="defaultValue"
-                v-if="scope.row.valueType === 4"
-                v-model="scope.row.defaultValue"
-                :format="scope.row.format"
-                type="datetime"
-                placeholder="请选择默认数值"
-                style="width: 100%;"
-              />
-              <el-time-picker
-                prop="defaultValue"
-                v-if="scope.row.valueType === 5"
-                v-model="scope.row.defaultValue"
-                :format="scope.row.format"
-                placeholder="请选择默认数值"
-                style="width: 100%;"
-              />
-              <el-input
-                prop="defaultValue"
-                v-if="scope.row.valueType === 6"
-                v-model="scope.row.defaultValue"
-                placeholder="请输入默认数值"
-              />
-              <el-select
-                prop="defaultValue"
-                v-if="scope.row.valueType === 7"
-                v-model="scope.row.defaultValue"
-                placeholder="请选择默认数值"
-                clearable
-                style="width: 100%"
-              >
-                <el-option
-                  v-for="item in scope.row.attributes"
-                  :key="item.code"
-                  :label="item.name"
-                  :value="item.code"
-                ></el-option>
-              </el-select>
-              <el-select
-                prop="defaultValue"
-                v-if="scope.row.valueType === 8"
+                v-if="scope.row.valueType === 61"
                 v-model="scope.row.defaultValue"
                 placeholder="请选择默认数值"
                 style="width: 100%"
@@ -271,7 +260,7 @@
 
 <script>
 import { MIXIN_LIST } from "@/utils/mixin";
-
+import { PROPERTY_TABLE } from '@/utils/const';
 export default {
   mixins: [MIXIN_LIST],
   data() {
@@ -285,44 +274,7 @@ export default {
       params: {
         policyType: "ONE_WAY_PAY_POLICY"
       },
-      valueTypes: [
-        {
-          value: 0,
-          label: "文本"
-        },
-        {
-          value: 1,
-          label: "开关"
-        },
-        {
-          value: 2,
-          label: "数字"
-        },
-        {
-          value: 3,
-          label: "日期"
-        },
-        {
-          value: 4,
-          label: "日期时间"
-        },
-        {
-          value: 5,
-          label: "时间"
-        },
-        {
-          value: 6,
-          label: "评分"
-        },
-        {
-          value: 7,
-          label: "单选"
-        },
-        {
-          value: 8,
-          label: "多选"
-        }
-      ],
+      valueTypes: PROPERTY_TABLE,
       rules: {
         name: [{ required: true, message: "请输入默认数值" }]
       }
@@ -388,8 +340,8 @@ export default {
     formatValueType(row) {
       let valueType = "";
       this.valueTypes.forEach(function(obj) {
-        if (row.valueType === obj.value) {
-          valueType = obj.label;
+        if (row.valueType === obj.code) {
+          valueType = obj.value;
         }
       });
       return valueType;

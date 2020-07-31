@@ -117,6 +117,7 @@
 </template>
 
 <script>
+  import { PROPERTY_TABLE } from '@/utils/const';
   export default {
     name: "param",
     props: {
@@ -142,17 +143,7 @@
           code: {required: true, message: "请输入参数编码", trigger: "blur"},
           name: {required: true, message: "请输入参数名称", trigger: "blur"}
         },
-        valueTypes: [
-          {code: 0, value: '文本'},
-          {code: 1, value: '开关'},
-          {code: 2, value: '数字'},
-          {code: 3, value: '日期'},
-          {code: 5, value: '时间'},
-          {code: 6, value: '评分'},
-          {code: 7, value: '单选'},
-          {code: 8, value: '多选'},
-          {code: 9, value: '下拉'}
-        ],
+        valueTypes: PROPERTY_TABLE,
         unitTypes: [
           {value: "无 /", id: 0},
           {value: "纳克每升 / ppt", id: 1},

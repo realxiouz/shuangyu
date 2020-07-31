@@ -172,7 +172,7 @@
                             this.propertyList = data;
                             this.formData.propertyItems = [];
                             for (let i = 0, len = data.length; i < len; i++) {
-                                if (data[i].valueType == 8) {
+                                if (data[i].valueType === 61) {
                                     this.formData.propertyItems.push({
                                         name: data[i].name,
                                         code: data[i].code,

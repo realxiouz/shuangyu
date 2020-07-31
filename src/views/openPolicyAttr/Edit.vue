@@ -47,9 +47,9 @@
               >
                 <el-option
                   v-for="item in valueTypes"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
+                  :key="item.code"
+                  :label="item.value"
+                  :value="item.code"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -104,18 +104,13 @@
             </el-form-item>
           </el-col>
           <el-col :span="24" v-if="formData.valueType === 4">
-            <el-form-item label="日期时间格式：" prop="format">
-              <el-input v-model="formData.format" placeholder="请输入日期时间格式" readonly disabled />
-            </el-form-item>
-          </el-col>
-          <el-col :span="24" v-if="formData.valueType === 5">
             <el-form-item label="时间格式：" prop="format">
               <el-input v-model="formData.format" placeholder="请输入时间格式" readonly disabled />
             </el-form-item>
           </el-col>
         </el-row>
 
-        <el-row class="el-row-item" v-if="formData.valueType === 7 || formData.valueType === 8 || formData.valueType === 9">
+        <el-row class="el-row-item" v-if="formData.valueType === 60 || formData.valueType === 61 || formData.valueType === 62">
           <el-row
             id="attributeCode"
             v-for="(attribute, index) in formData.attributes"
@@ -208,6 +203,7 @@
 </template>
 <script>
   import {MIXIN_EDIT} from "@/utils/mixin";
+  import { PROPERTY_TABLE } from '@/utils/const';
   export default {
     mixins: [MIXIN_EDIT],
     props: {
@@ -292,44 +288,7 @@
             label: '新包机切位单程'
           }
         ],
-        valueTypes: [
-          {
-            value: 0,
-            label: '文本'
-          },
-          {
-            value: 1,
-            label: '开关'
-          },
-          {
-            value: 2,
-            label: '数字'
-          },
-          {
-            value: 3,
-            label: '日期'
-          },
-          {
-            value: 4,
-            label: '日期时间'
-          },
-          {
-            value: 5,
-            label: '时间'
-          },
-          {
-            value: 6,
-            label: '评分'
-          },
-          {
-            value: 7,
-            label: '单选'
-          },
-          {
-            value: 8,
-            label: '多选'
-          }
-        ],
+        valueTypes: PROPERTY_TABLE,
         rules: {
           sort: [
             {required: true, message: "请输入排列序号"},
@@ -389,8 +348,6 @@
             this.formData.format = 'yyyy-MM-dd';
           }else if(this.formData.valueType === 4){
             this.formData.format = 'yyyy-MM-dd HH:mm:ss';
-          }else if(this.formData.valueType === 5){
-            this.formData.format = 'HH:mm:ss';
           }
         }
         switch (val) {
@@ -517,19 +474,12 @@
         if(this.formData.valueType === 4){
           if(!this.formData.format){
             flag = false;
-            msg = '请输入日期时间格式';
-          }
-        }
-
-        if(this.formData.valueType === 5){
-          if(!this.formData.format){
-            flag = false;
             msg = '请输入时间格式';
           }
         }
 
         if(this.formData.attributes && this.formData.attributes.length > 0){
-          if(this.formData.valueType === 7 || this.formData.valueType === 8 || this.formData.valueType === 9){
+          if(this.formData.valueType === 60 || this.formData.valueType === 61 || this.formData.valueType === 62){
             let attributes = this.formData.attributes;
             attributes.forEach(function(obj){
               if(!obj.name){

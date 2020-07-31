@@ -104,18 +104,13 @@
             </el-form-item>
           </el-col>
           <el-col :span="24" v-if="formData.valueType === 4">
-            <el-form-item label="日期时间格式：" prop="format">
-              <el-input v-model="formData.format" placeholder="请输入日期时间格式" readonly disabled />
-            </el-form-item>
-          </el-col>
-          <el-col :span="24" v-if="formData.valueType === 5">
             <el-form-item label="时间格式：" prop="format">
               <el-input v-model="formData.format" placeholder="请输入时间格式" readonly disabled />
             </el-form-item>
           </el-col>
         </el-row>
 
-        <el-row class="el-row-item" v-if="formData.valueType === 7 || formData.valueType === 8 || formData.valueType === 9">
+        <el-row class="el-row-item" v-if="formData.valueType === 60 || formData.valueType === 61 || formData.valueType === 62">
           <el-row
             id="attributeCode"
             v-for="(attribute, index) in formData.attributes"
@@ -293,8 +288,6 @@
             this.formData.format = 'yyyy-MM-dd';
           }else if(this.formData.valueType === 4){
             this.formData.format = 'yyyy-MM-dd HH:mm:ss';
-          }else if(this.formData.valueType === 5){
-            this.formData.format = 'HH:mm:ss';
           }
         }
         switch (val) {
@@ -396,19 +389,12 @@
         if(this.formData.valueType === 4){
           if(!this.formData.format){
             flag = false;
-            msg = '请输入日期时间格式';
-          }
-        }
-
-        if(this.formData.valueType === 5){
-          if(!this.formData.format){
-            flag = false;
             msg = '请输入时间格式';
           }
         }
 
         if(this.formData.attributes && this.formData.attributes.length > 0){
-          if(this.formData.valueType === 7 || this.formData.valueType === 8 || this.formData.valueType === 9){
+          if(this.formData.valueType === 60 || this.formData.valueType === 61 || this.formData.valueType === 62){
             let attributes = this.formData.attributes;
             attributes.forEach(function(obj){
               if(!obj.name){
