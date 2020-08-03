@@ -13,7 +13,7 @@
       </el-table-column>
       <el-table-column label="开放平台编码" align="center" prop="openCode" />
       <el-table-column label="开放平台名称" align="center" prop="openName" />
-      <el-table-column label="企业名称" align="center" :formatter="formatFirmName" />
+      <el-table-column label="商户(客户/供应商)名称" align="center" :formatter="formatFirmName" />
     </el-table>
     <el-pagination
       class="page-footer"

@@ -10,7 +10,7 @@
         >
       </el-button-group>
     </div>
-    <search class="page-search" ref="search" @onSearch="onSearch"/>
+    <search class="page-search" ref="search" @onSearch="onSearch" :policyType="params.policyType"/>
     <el-tabs
       class="page-tabs"
       v-model="activeName"
