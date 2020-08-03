@@ -109,6 +109,11 @@
                   <span>{{tableData.policyCode}}</span>
                 </el-form-item>
               </el-col>
+              <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+                <el-form-item label="订单来源:">
+                  <span>{{sourceStr}}</span>
+                </el-form-item>
+              </el-col>
             </el-form>
           </el-row>
           <el-divider content-position="left">航班信息</el-divider>
@@ -695,7 +700,9 @@
         detailInfoTimer: null,
         taskLogData: "", //操作日志数据
         supplierAccountData: [],
-        orderDetailList: []
+        orderDetailList: [],
+
+        sourceStr: '',
       };
     },
     components: {
@@ -1676,6 +1683,10 @@
               if (orderComment) {
                 this.orderDetail_orderComment = orderComment;
               }
+
+              let sourceNode = el.querySelectorAll('.e-bkifo-lf')[1].querySelector('.label-info')
+              sourceNode && (this.sourceStr = sourceNode.textContent)
+              this.sourceStr == 'qunar派单' && (this.sourceStr = 'qunar派单(300)')
             }
           })
           .catch(error => {
