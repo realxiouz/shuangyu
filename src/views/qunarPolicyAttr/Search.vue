@@ -49,13 +49,20 @@
 </template>
 <script>
   export default {
+    props: {
+      policyType: {
+        type: String,
+        default: null
+      }
+    },
     name: "search",
     data() {
       return {
         more: false,
         formData: {
           code: null,
-          name: null
+          name: null,
+          policyType: "ONE_WAY_PAY_POLICY"
         }
       };
     },
@@ -72,10 +79,12 @@
       initSearchForm() {
         return {
           code: null,
-          name: null
+          name: null,
+          policyType: "ONE_WAY_PAY_POLICY"
         };
       },
       onSearch() {
+        this.formData.policyType = this.policyType;
         this.$emit("onSearch", this.formData);
       },
       handleClear() {
