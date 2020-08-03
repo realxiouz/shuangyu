@@ -109,19 +109,14 @@ export default {
           console.log(error);
         });
     },
-    beforeSave(data) {
-      data.menus = this.$refs.tree.getCheckedKeys();
-      return data;
-    },
-
     loadData() {
       this.clearForm();
+      this.$refs.tree && this.$refs.tree.setCheckedKeys([])
       this.$nextTick(_ => {
         this.$store
           .dispatch(this.actions.getOne, { [this.keyName]: this.keyId })
           .then(data => {
-            console.log(data);
-            this.formData = this.beforeLoadData(data);
+            this.formData = data;
           })
           .catch(error => {
             console.log(error);
