@@ -16,8 +16,7 @@ export function saveOne(data) {
   });
 }
 
-export function removeOne(args) {
-  const { airline } = args;
+export function removeOne(airline) {
   return request({
     url: `/flight/airline/change/remove/${airline}`,
     method: 'delete'
