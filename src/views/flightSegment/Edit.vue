@@ -1,6 +1,6 @@
 <template>
   <div class="page-form">
-    <el-dialog :title="keyId!=''?'编辑航段信息':'添加航段信息'" center :visible.sync="dialogVisible" width="30%" @open="onOpen" @close="onClose">
+    <el-dialog :title="keyId ?'编辑航段信息':'添加航段信息'" center :visible.sync="dialogVisible" width="30%" @open="onOpen" @close="onClose">
     <el-form ref="form" :model="formData" :rule="rules" label-width="110px" size="mini">
       <el-form-item prop="dpt" label="出发地:">
         <el-input v-bind:disabled="disabled" v-model="formData.dpt"></el-input>
