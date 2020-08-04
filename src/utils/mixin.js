@@ -1,4 +1,4 @@
-import { PAGE_SIZES } from '@/utils/const';
+import {PAGE_SIZES} from '@/utils/const';
 
 export const MIXIN_LIST = {
   category: {
@@ -98,12 +98,12 @@ export const MIXIN_LIST = {
     },
     onSearch(params) {
       if (params) {
-        this.params = params;
+        this.params = Object.assin({}, this.params, params);
       }
-      let _params = Object.assign({}, this.params);
-      for (let key in _params) {
-        if (!_params[key]) {
-          _params[key] = null;
+      let _params = {};
+      for (let key in this.params) {
+        if (this.params[key]) {
+          _params[key] = val;
         }
       }
       this.params = _params;
@@ -137,10 +137,10 @@ export const MIXIN_LIST = {
           type: 'warning'
         }).then(() => {
           this.$store
-            .dispatch(this.actions.removeOne, { [this.keyName]: id })
+            .dispatch(this.actions.removeOne, {[this.keyName]: id})
             .then(() => {
               this.onRefresh();
-              this.$message({ type: 'success', message: '删除成功' });
+              this.$message({type: 'success', message: '删除成功'});
             });
         }).catch(error => {
           console.log(error);
@@ -192,7 +192,7 @@ export const MIXIN_EDIT = {
         } else {
           that.formData = that.defaultFormData();
         }
-        that.$nextTick(function() {
+        that.$nextTick(function () {
           that.$refs['form'].clearValidate();
         });
       }
@@ -217,7 +217,7 @@ export const MIXIN_EDIT = {
                 }
                 this.dialogVisible = false;
                 this.$emit('refresh');
-                this.$message({ type: 'success', message: '保存成功' });
+                this.$message({type: 'success', message: '保存成功'});
               })
               // eslint-disable-next-line no-unused-vars
               .finally(_ => {
@@ -246,7 +246,7 @@ export const MIXIN_EDIT = {
       if (this.actions.getOne) {
         if (this.keyId) {
           this.$store
-            .dispatch(this.actions.getOne, { [this.keyName]: this.keyId })
+            .dispatch(this.actions.getOne, {[this.keyName]: this.keyId})
             .then(data => {
               this.formData = this.beforeLoadData(data);
             })
