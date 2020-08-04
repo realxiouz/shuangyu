@@ -86,6 +86,12 @@
             @click="handleAssociate(scope.row)"
             >关联用户
           </el-button>
+           <el-button
+            type="primary"
+            size="mini"
+            @click="onConfig(scope.$index, scope.row)"
+            >配置</el-button
+          >
           <!--            <span v-show="scope.row.openId && '' != scope.row.openId">
                         <el-button type="info" size="mini" @click="handleSupplement(scope.row)">配置管理</el-button>
                                     </span>-->
@@ -197,8 +203,6 @@ export default {
     };
   },
   methods: {
-    
-    
     loadTotal(params) {
       this.$store
         .dispatch("firmMerchant/getCustomerTotal", { filter: params })
@@ -295,6 +299,12 @@ export default {
     skipDetail(merchantId) {
       this.$router.push({
         path: "/customer/edit",
+        query: { merchantId: merchantId }
+      });
+    },
+    onConfig(merchantId) {
+      this.$router.push({
+        path: "/customer/config",
         query: { merchantId: merchantId }
       });
     }
