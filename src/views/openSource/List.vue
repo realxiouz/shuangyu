@@ -96,7 +96,7 @@
         actions: {
           getPageList: 'jobScheduler/getPageList'
         },
-        extraParam: {
+        params: {
           tagCode : 'openSource',
           tagId : '42f1907a9eef433fabd8b5a34fa5e931'
         }
