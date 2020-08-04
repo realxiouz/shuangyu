@@ -98,7 +98,7 @@ export const MIXIN_LIST = {
     },
     onSearch(params) {
       if (params) {
-        this.params = Object.assin({}, this.params, params);
+        this.params = Object.assign({}, this.params, params);
       }
       let _params = {};
       for (let key in this.params) {
