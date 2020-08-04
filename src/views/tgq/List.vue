@@ -1,91 +1,89 @@
 <template>
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch"/>
-      <el-row class="page-tools" style="margin-bottom:15px; margin-left:38px;">
-        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
-      </el-row>
-      <el-table
-        class="page-table"
-        highlight-current-row
-        v-loading="loading"
-        :data="tableData"
-        ref="tableData"
-        style="width: 100%;margin-bottom: 20px;"
-        size="mini"
-      >
-        <el-table-column prop="schedulerName" label="名称" align="center"></el-table-column>
-        <el-table-column prop="jobInfoId" label="xxlJobId" align="center"></el-table-column>
-        <el-table-column prop="cron" label="时间表达式" align="center"></el-table-column>
-        <!--<el-table-column prop="tagName" label="标签名称" align="center"></el-table-column>
-        <el-table-column prop="tagCode" label="标签编码" align="center"></el-table-column>-->
-        <el-table-column prop="required" label="是否启动" align="center">
-          <template slot-scope="scope">
-            <span v-if="scope.row.status==1">是</span>
-            <span v-else>否</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="remark" label="备注" align="center"></el-table-column>
-        <el-table-column label="操作" fixed="right" align="center" width="330">
-          <template slot-scope="scope">
-            <el-button v-if="scope.row.status==1" @click="handleStop(scope.row.schedulerId)" type="primary" size="mini">停止</el-button>
-            <el-button v-else @click="handleStart(scope.row.schedulerId)" type="primary" size="mini">启动</el-button>
-            <el-button @click="onEdit(scope.row)" type="primary" size="mini">编辑</el-button>
-            <el-button @click="handleCopy(scope.row)" type="primary" size="mini">复制</el-button>
-            <el-button @click="removeOne(scope.row.schedulerId)" type="danger" size="mini">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-pagination
-        class="page-footer"
-        background
-        layout="total,prev,next"
-        prev-text="上一页"
-        next-text="下一页"
-        :page-size="pageSize"
-        :total="total"
-        @size-change="onSizeChange"
-        @prev-click="handlePrevClick"
-        @next-click="handleNextClick"
-      ></el-pagination>
-      <el-dialog
-        :title="updateFlag?'更新':'新增'"
-        center
-        :visible.sync="dialogVisible"
-        width="55%"
-        ref="job-scheduler-edit"
-        :close-on-click-modal="false"
-      >
-        <edit
-          v-if="dialogVisible"
-          ref="form"
-          :job-scheduler-id="schedulerId"
-          :update-flag="updateFlag"
-          :copy-flag="copyFlag"
-          @onSave="handleSave"
-          @onCancel="handleCancel"
-        ></edit>
-      </el-dialog>
-    </div>
+    <el-row class="page-tools" style="margin-bottom:15px; margin-left:38px;">
+      <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+    </el-row>
+    <el-table
+      class="page-table"
+      highlight-current-row
+      v-loading="loading"
+      :data="tableData"
+      style="width: 100%;margin-bottom: 20px;"
+      size="mini"
+    >
+      <el-table-column prop="schedulerName" label="名称" align="center"></el-table-column>
+      <el-table-column prop="jobInfoId" label="xxlJobId" align="center"></el-table-column>
+      <el-table-column prop="cron" label="时间表达式" align="center"></el-table-column>
+      <el-table-column prop="required" label="是否启动" align="center">
+        <template slot-scope="scope">
+          <span v-if="scope.row.status==1">是</span>
+          <span v-else>否</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="remark" label="备注" align="center"></el-table-column>
+      <el-table-column label="操作" fixed="right" align="center" width="330">
+        <template slot-scope="scope">
+          <el-button v-if="scope.row.status==1" @click="handleStop(scope.row.schedulerId)" type="primary" size="mini">
+            停止
+          </el-button>
+          <el-button v-else @click="handleStart(scope.row.schedulerId)" type="primary" size="mini">启动</el-button>
+          <el-button @click="onEdit(scope.row)" type="primary" size="mini">编辑</el-button>
+          <el-button @click="handleCopy(scope.row)" type="primary" size="mini">复制</el-button>
+          <el-button @click="removeOne(scope.row.schedulerId)" type="danger" size="mini">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-pagination
+      class="page-footer"
+      background
+      prev-text="上一页"
+      next-text="下一页"
+      :total="total"
+      @prev-click="onPrev"
+      @next-click="onNext"
+      @size-change="onSizeChange"
+      layout="total,sizes,prev,next"
+      :page-size="pageSizes[0]"
+      :page-sizes="pageSizes"
+      @current-change="onCurrentChange"
+      :current-page.sync="currentPage"
+    ></el-pagination>
+    <el-dialog
+      :title="updateFlag?'更新':'新增'"
+      center
+      :visible.sync="dialogVisible"
+      width="55%"
+      ref="job-scheduler-edit"
+      :close-on-click-modal="false"
+    >
+      <edit
+        v-if="dialogVisible"
+        ref="form"
+        :job-scheduler-id="schedulerId"
+        :update-flag="updateFlag"
+        :copy-flag="copyFlag"
+        @onSave="handleSave"
+        @onCancel="handleCancel"
+      ></edit>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
-  import edit from "./Edit";
-  import search from "./Search";
-  import { PROPERTY_TABLE } from '@/utils/const';
+  import edit from "./Edit"
+  import search from "./Search"
+  import {PROPERTY_TABLE} from '@/utils/const'
+  import { MIXIN_LIST } from '@/utils/mixin'
 
   export default {
-    name: "tgqList",
+    mixins: [MIXIN_LIST],
     data() {
       return {
         dialogVisible: false,
         updateFlag: false,
         schedulerId: "",
-        pageFlag: 1,
-        pageSize: 10,
-        lastId: null,
-        total: 0,
-        tableData: [],
-        copyFlag:false,
+        copyFlag: false,
         valueTypes: PROPERTY_TABLE,
         tagTypes: [
           {
@@ -93,7 +91,13 @@
             value: 1
           }
         ],
-        loading: true
+        actions: {
+          getPageList: 'jobScheduler/getPageList'
+        },
+        extraParam: {
+          tagCode : 'tgq',
+          tagId : 'd718e77cd1e74892866b230caf2d2483'
+        }
       };
     },
     components: {
@@ -101,64 +105,6 @@
       search
     },
     methods: {
-      loadData(params) {
-        console.log(JSON.stringify(params));
-        params.tagCode = 'tgq';
-        params.tagId = 'd718e77cd1e74892866b230caf2d2483';
-        if (this.lastId) {
-          params.lastId = this.lastId;
-        }
-        this.$store
-          .dispatch("jobScheduler/getPageList", {
-            pageFlag: this.pageFlag,
-            pageSize: this.pageSize,
-            filter: params
-          })
-          .then(data => {
-            if (data) {
-              this.tableData = data;
-              this.loadTotal(params);
-            }
-            this.loading = false;
-          })
-          .catch(error => {
-            this.loading = false;
-            console.log(error);
-          });
-      },
-      loadTotal(params) {
-        this.$store
-          .dispatch("jobScheduler/getTotal", {filter: params})
-          .then(data => {
-            if (data) {
-              this.total = data;
-            }
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      },
-      onSizeChange(pageSize) {
-        this.pageSize = pageSize;
-        this.lastId = null;
-        this.loadData({});
-      },
-      handlePrevClick() {
-        this.pageFlag = -1;
-        this.lastId = this.tableData[0].schedulerId;
-        this.loadData({});
-      },
-      handleNextClick() {
-        this.pageFlag = 1;
-        this.lastId = this.tableData[this.tableData.length - 1].schedulerId;
-        this.loadData({});
-      },
-      onSearch(params) {
-        if (Object.keys(params).length == 0) {
-          this.lastId = null;
-        }
-        this.loadData(params);
-      },
       handleAdd() {
         this.schedulerId = '';
         this.updateFlag = false;
@@ -248,13 +194,6 @@
         for (var i = 0; i < this.tagTypes.length; i++) {
           if (value == this.tagTypes[i].value) {
             return this.tagTypes[i].label;
-          }
-        }
-      },
-      formatValueType(value) {
-        for (var i = 0; i < this.valueTypes.length; i++) {
-          if (value == this.valueTypes[i].code) {
-            return this.valueTypes[i].value;
           }
         }
       }

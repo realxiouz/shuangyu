@@ -35,6 +35,7 @@
         @click="toSearch"
       >查询
       </el-button>
+      <el-button icon="el-icon-refresh" class="filter-item" type="primary" size="mini" @click="handleClear">清空</el-button>
       <el-button type="text" size="mini" @click="handleMore">
         更多
         <i :class="switchIcon"></i>
@@ -48,11 +49,7 @@
     data() {
       return {
         more: false,
-        formData: {
-          schedulerName: "",
-          status: "",
-          tagName: "",
-        },
+        formData: {},
         statusList:[
           {
             label:"启动",
@@ -74,17 +71,32 @@
       }
     },
     methods: {
+      initSearchForm(){
+        return {
+          schedulerName: null,
+          status: null,
+          tagName: null
+        };
+      },
       handleMore() {
         this.more = !this.more;
       },
+      handleClear(){
+        this.formData = this.initSearchForm();
+        this.$emit("onSearch",this.formData)
+      },
       toSearch() {
-        let data = {};
-        for (var attr in this.formData) {
-          if (this.formData[attr] != null && this.formData[attr] != undefined && this.formData[attr] != '') {
-            data[attr] = this.formData[attr];
+        let _formData = Object.assign({}, this.formData);
+        for (let key in _formData){
+          if(_formData[key] && '' != _formData[key]){
+            if ('string' == typeof _formData[key]){
+              _formData[key] = _formData[key].trim();
+            }
+          } else {
+            _formData[key] = null;
           }
         }
-        this.$emit("onSearch", data);
+        this.$emit("onSearch", _formData)
       },
 
     }

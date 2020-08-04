@@ -129,7 +129,7 @@
             }
         },
         created() {
-            this.initFormData(this.$route.query.firmId);
+            this.initFormData(localStorage.getItem("firmId"));
         }
     }
 </script>
