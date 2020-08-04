@@ -143,9 +143,9 @@
       }
     },
     created() {
-      this.domain = this.$route.query.domain;
-      this.openId = this.$route.query.openId;
-      this.firmId = this.$route.query.firmId;
+      this.domain = localStorage.getItem("domain");
+      this.openId = localStorage.getItem("openId");
+      this.firmId = localStorage.getItem("firmId");
       if (this.firmId) {
         this.notifyData.firmId = this.firmId;
       }
