@@ -11,14 +11,21 @@
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="key:" prop="key">
-              <el-input v-model="formData.key" @blur="disabledSave"></el-input>
+              <el-input v-model="formData.key"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="token:" prop="token">
-              <el-input v-model="formData.token" @blur="disabledSave"></el-input>
+              <el-input v-model="formData.token"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="10">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="token:" prop="下单URL">
+              <el-input v-model="formData.placeOrderUrl"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -32,12 +39,6 @@
                 :disabled="isDisable"
               >保存
               </el-button>
-              <!--              <el-button-->
-              <!--                @click="remove()"-->
-              <!--                type="danger"-->
-              <!--                size="mini"-->
-              <!--              >删除-->
-              <!--              </el-button>-->
             </el-form-item>
           </el-col>
         </el-row>
