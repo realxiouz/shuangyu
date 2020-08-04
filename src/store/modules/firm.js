@@ -14,64 +14,65 @@ import {
   getConfigPageList,
   getConfigList,
   getConfigOne,
-  getSupplierList
+  getSupplierList,
+  getSupplierListForOpen
 } from '@/api/firm';
 
 const actions = {
-  getAsyncTreeList({ commit }, params) {
+  getAsyncTreeList({ commit }, args) {
     return new Promise((resolve, reject) => {
-      const { pid, filter } = params;
+      const { pid, filter } = args;
       getAsyncTreeList(pid, filter)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getList({ commit }, params) {
+  getList({ commit }, args) {
     return new Promise((resolve, reject) => {
-      const { filter } = params;
+      const { filter } = args;
       getList(filter)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getTreeList({ commit }, params) {
+  getTreeList({ commit }, args) {
     return new Promise((resolve, reject) => {
-      const { filters } = params;
+      const { filters } = args;
       getTreeList(filters)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getDealerCustomerList({ commit }, params) {
+  getDealerCustomerList({ commit }, args) {
     return new Promise((resolve, reject) => {
-      const { filters } = params;
+      const { filters } = args;
       getDealerCustomerList(filters)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getRootPageList({ commit }, params) {
+  getRootPageList({ commit }, args) {
     return new Promise((resolve, reject) => {
-      const { pageFlag, pageSize, filter } = params;
+      const { pageFlag, pageSize, filter } = args;
       getRootPageList(pageFlag, pageSize, filter)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -80,127 +81,141 @@ const actions = {
   },
   getPageList({ commit }, args) {
     return new Promise((resolve, reject) => {
-      getPageList(args)
-        .then(response => {
-          resolve(response);
+      const { pageFlag, pageSize, ...params } = args;
+      getPageList(pageFlag, pageSize, params)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getRootTotal({ commit }, params) {
+  getRootTotal({ commit }, args) {
     return new Promise((resolve, reject) => {
-      const { filter } = params;
+      const { filter } = args;
       getRootTotal(filter)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  updateOne({ commit }, params) {
+  updateOne({ commit }, args) {
     return new Promise((resolve, reject) => {
-      const { id, data } = params;
-      updateOne(params)
-        .then(response => {
-          resolve(response);
+      const { firmId, data } = args;
+      updateOne(firmId, data)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  removeOne({ commit }, params) {
+  removeOne({ commit }, args) {
     return new Promise((resolve, reject) => {
-      const { firmId } = params;
+      const { firmId } = args;
       removeOne(firmId)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  saveOne({ commit }, params) {
+  saveOne({ commit }, args) {
     return new Promise((resolve, reject) => {
-      const { firm } = params;
-      saveOne(params)
-        .then(response => {
-          resolve(response);
+      const { firm } = args;
+      saveOne(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  addOne({ commit }, params) {
+  addOne({ commit }, args) {
     return new Promise((resolve, reject) => {
-      const { firm } = params;
+      const { firm } = args;
       addOne(firm)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getOne({ commit }, params) {
+  getOne({ commit }, args) {
     return new Promise((resolve, reject) => {
-      const { firmId } = params;
+      const { firmId } = args;
       getOne(firmId)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getConfigPageList({ commit }, params) {
+  getConfigPageList({ commit }, args) {
     return new Promise((resolve, reject) => {
-      getConfigPageList(params)
-        .then(response => {
-          resolve(response);
+      const { pageFlag, pageSize } = args;
+      getConfigPageList(pageFlag, pageSize)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getConfigList({ commit }, params) {
+  getConfigList({ commit }, args) {
     return new Promise((resolve, reject) => {
-      getConfigList(params)
-        .then(response => {
-          resolve(response);
+      getConfigList(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getConfigOne({ commit }, params) {
+  getConfigOne({ commit }, args) {
     return new Promise((resolve, reject) => {
-      const { openId } = params;
+      const { openId } = args;
       getConfigOne(openId)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getSupplierList({ commit }, params) {
+  getSupplierList({ commit }, args) {
     return new Promise((resolve, reject) => {
-      const { filter } = params;
+      const { filter } = args;
       getSupplierList(filter)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getSupplierListForOpen({ commit }, args) {
+    return new Promise((resolve, reject) => {
+      const { hasOpenFlag } = args;
+      getSupplierListForOpen(hasOpenFlag)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);

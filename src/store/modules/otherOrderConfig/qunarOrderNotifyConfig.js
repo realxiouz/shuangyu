@@ -1,93 +1,93 @@
 import {addOne, getList, getOne, getPageList, getTotal, removeOne, save, updateOne} from '@/api/otherOrderConfig/qunarOrderNotifyConfig';
 
 const actions = {
-  save({commit}, params) {
+  save({commit}, args) {
     return new Promise((resolve, reject) => {
-      save(params)
-        .then(response => {
-          resolve(response);
+      save(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  addOne({commit}, params) {
+  addOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      addOne(params)
-        .then(response => {
-          resolve(response);
+      addOne(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  updateOne({commit}, params) {
+  updateOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      updateOne(params)
-        .then(response => {
-          resolve(response);
+      updateOne(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  removeOne({commit}, params) {
+  removeOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {domain} = params;
+      const {domain} = args;
       removeOne(domain)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getOne({commit}, params) {
+  getOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {domain} = params;
+      const {domain} = args;
       getOne(domain)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getTotal({commit}, params) {
+  getTotal({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {filter} = params;
+      const {filter} = args;
       getTotal(filter)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getList({commit}, params) {
+  getList({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {filter} = params;
+      const {filter} = args;
       getList(filter)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getPageList({commit}, params) {
+  getPageList({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {pageFlag, pageSize, lastId, filter} = params;
+      const {pageFlag, pageSize, lastId, filter} = args;
       getPageList(pageFlag, pageSize, lastId, filter)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);

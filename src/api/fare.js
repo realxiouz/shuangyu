@@ -8,8 +8,7 @@ export function addOne(data) {
   });
 }
 
-export function updateOne(data) {
-  let { fareId, ...rest } = data
+export function updateOne(fareId, rest) {
   return request({
     url: `/flight/fare/update/one/${fareId}`,
     method: 'put',
@@ -47,8 +46,7 @@ export function getTotal(filter) {
   });
 }
 
-export function getPageList(args) {
-  const {pageFlag, pageSize, ...params} = args;
+export function getPageList(pageFlag, pageSize, params) {
   return request({
     url: `/flight/fare/page/list/${pageFlag}/${pageSize}`,
     method: 'get',

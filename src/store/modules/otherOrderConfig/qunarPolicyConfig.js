@@ -13,8 +13,8 @@ const actions = {
   saveOne({commit}, args) {
     return new Promise((resolve, reject) => {
       saveOne(args)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -25,8 +25,8 @@ const actions = {
   addOne({commit}, args) {
     return new Promise((resolve, reject) => {
       addOne(args)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -37,8 +37,8 @@ const actions = {
   updateOne({commit}, args) {
     return new Promise((resolve, reject) => {
       updateOne(args)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -46,11 +46,11 @@ const actions = {
     });
   },
   // eslint-disable-next-line no-unused-vars
-  getOne({commit}, params) {
+  getOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      getOne(params)
-        .then(response => {
-          resolve(response);
+      getOne(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -58,11 +58,11 @@ const actions = {
     });
   },
   // eslint-disable-next-line no-unused-vars
-  getList({commit}, params) {
+  getList({commit}, args) {
     return new Promise((resolve, reject) => {
-      getList(params)
-        .then(response => {
-          resolve(response);
+      getList(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -70,11 +70,11 @@ const actions = {
     });
   },
   // eslint-disable-next-line no-unused-vars
-  getPageList({commit}, params) {
+  getPageList({commit}, args) {
     return new Promise((resolve, reject) => {
-      getPageList(params)
-        .then(response => {
-          resolve(response);
+      getPageList(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -85,8 +85,8 @@ const actions = {
   removeOne({commit}, args) {
     return new Promise((resolve, reject) => {
       removeOne(args)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);

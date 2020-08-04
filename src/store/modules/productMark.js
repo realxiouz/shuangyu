@@ -32,22 +32,22 @@ const mutations = {
 };
 
 const actions = {
-  addOne({commit}, params) {
+  addOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      addOne(params)
-        .then(response => {
-          resolve(response);
+      addOne(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  updateOne({commit}, params) {
+  updateOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      updateOne(params)
-        .then(response => {
-          resolve(response);
+      updateOne(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -57,8 +57,8 @@ const actions = {
   removeOne({commit}, thirdId) {
     return new Promise((resolve, reject) => {
       removeOne(thirdId)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -68,76 +68,77 @@ const actions = {
 
   getPageList({commit}, args) {
     return new Promise((resolve, reject) => {
-      getPageList(args)
-        .then(response => {
-          resolve(response);
+      const {pageFlag, pageSize, ...params} = args;
+      getPageList(pageFlag, pageSize, params)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getTotal({commit}, params) {
+  getTotal({commit}, args) {
     return new Promise((resolve, reject) => {
-      getTotal(params)
-        .then(response => {
-          resolve(response);
+      getTotal(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getOne({commit}, params) {
+  getOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      getOne(params)
-        .then(response => {
-          resolve(response);
+      getOne(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getFirmList({commit}, params) {
+  getFirmList({commit}, args) {
     return new Promise((resolve, reject) => {
-      getFirmList(params)
-        .then(response => {
-          resolve(response);
+      getFirmList(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getFlagList({commit}, params) {
+  getFlagList({commit}, args) {
     return new Promise((resolve, reject) => {
-      getFlagList(params)
-        .then(response => {
-          resolve(response);
+      getFlagList(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getListByFlagIds({commit}, params) {
-    const {flagIds} = params;
+  getListByFlagIds({commit}, args) {
+    const {flagIds} = args;
     return new Promise((resolve, reject) => {
       getListByFlagIds(flagIds)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getList({commit}, params) {
+  getList({commit}, args) {
     return new Promise((resolve, reject) => {
-      getList(params)
-        .then(response => {
-          resolve(response);
+      getList(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);

@@ -139,8 +139,8 @@
             }
         },
         created() {
-            this.firmId = this.$route.query.firmId;
-            this.openId = this.$route.query.openId;
+            this.firmId = localStorage.getItem("firmId");
+            this.openId = localStorage.getItem("openId");
             if (this.openId) {
                 this.formData.openId = this.openId;
             }

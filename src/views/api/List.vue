@@ -31,9 +31,9 @@
         </el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="180">
           <template slot-scope="scope">
-            <el-button @click="onEdit(scope.row)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="onEdit(scope.row.apiId)" type="primary" size="mini">编辑</el-button>
             <el-button
-              @click.native.prevent="onDel(scope.row)"
+              @click.native.prevent="onDel(scope.row.apiId)"
               type="danger"
               size="mini"
             >删除

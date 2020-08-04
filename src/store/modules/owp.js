@@ -8,60 +8,60 @@ import {
 } from '@/api/owp';
 
 const actions= {
-  addOne({commit}, params) {
+  addOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {owpConfig} = params
+      const {owpConfig} = args
       addOne(owpConfig)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  removeOne({commit}, params) {
+  removeOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {id} = params
+      const {id} = args
       removeOne(id)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getOne({commit}, params) {
+  getOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {id} = params
+      const {id} = args
       getOne(id)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  updateOne({commit}, params) {
+  updateOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {id, data} = params;
+      const {id, data} = args;
       updateOne(id, data)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getTotal({commit}, params) {
+  getTotal({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {filter} = params;
+      const {filter} = args;
       getTotal(filter)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -70,9 +70,10 @@ const actions= {
   },
   getPageList({commit}, args) {
     return new Promise((resolve, reject) => {
-      getPageList(args)
-        .then(response => {
-          resolve(response);
+      const {pageFlag, pageSize, ...params} = args;
+      getPageList(pageFlag, pageSize, params)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);

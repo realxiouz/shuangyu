@@ -139,7 +139,8 @@ const actions = {
   },
   getOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      getOne(args)
+      const{userId}=args
+      getOne(userId)
         .then(data => {
           resolve(data);
         })

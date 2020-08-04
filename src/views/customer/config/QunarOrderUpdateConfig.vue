@@ -135,10 +135,6 @@
             }
         },
         created() {
-/*          this.merchantDomain = this.$route.query.domain;
-          this.openId = this.$route.query.openId;
-          this.merchantId = this.$route.query.firmId;*/
-
           this.merchantDomain = localStorage.getItem("domain");
           this.openId = localStorage.getItem("openId");
           this.merchantId = localStorage.getItem("firmId");

@@ -31,138 +31,138 @@ const mutations = {
 };
 
 const actions = {
-  save({commit}, data) {
+  save({commit}, args) {
     return new Promise((resolve, reject) => {
-      save(data)
-        .then(response => {
-          resolve(response);
+      save(args)
+        .then(dada => {
+          resolve(dada);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  saveAndStart({commit}, data) {
+  saveAndStart({commit}, args) {
     return new Promise((resolve, reject) => {
-      saveAndStart(data)
-        .then(response => {
-          resolve(response);
+      saveAndStart(args)
+        .then(dada => {
+          resolve(dada);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getPageList({commit}, params) {
-    var data = params.searchForm;
+  getPageList({commit}, args) {
+    var data = args.searchForm;
     var searchForm = {};
     for (var attr in data) {
       if (data[attr] != null && data[attr] != undefined && data[attr] != '') {
         searchForm[attr] = data[attr];
       }
     }
-    params.searchForm = searchForm;
+    args.searchForm = searchForm;
     return new Promise((resolve, reject) => {
-      getPageList(params)
-        .then(response => {
-          resolve(response);
+      getPageList(args)
+        .then(dada => {
+          resolve(dada);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getOne({commit}, params) {
-    const { schedulerId } = params;
+  getOne({commit}, args) {
+    const { schedulerId } = args;
     return new Promise((resolve, reject) => {
       getOne(schedulerId)
-        .then(response => {
-          resolve(response);
+        .then(dada => {
+          resolve(dada);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  start({commit}, params) {
-    const { schedulerId } = params;
+  start({commit}, args) {
+    const { schedulerId } = args;
     return new Promise((resolve, reject) => {
       start(schedulerId)
-        .then(response => {
-          resolve(response);
+        .then(dada => {
+          resolve(dada);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  stop({commit}, params) {
-    const { schedulerId } = params;
+  stop({commit}, args) {
+    const { schedulerId } = args;
     return new Promise((resolve, reject) => {
       stop(schedulerId)
-        .then(response => {
-          resolve(response);
+        .then(dada => {
+          resolve(dada);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getList({commit}, params) {
-    var data = params.searchForm;
+  getList({commit}, args) {
+    var data = args.searchForm;
     var searchForm = {};
     for (var attr in data) {
       if (data[attr] != null && data[attr] != undefined && data[attr] != '') {
         searchForm[attr] = data[attr];
       }
     }
-    params.searchForm = searchForm;
+    args.searchForm = searchForm;
     return new Promise((resolve, reject) => {
-      getList(params)
-        .then(response => {
-          resolve(response);
+      getList(args)
+        .then(dada => {
+          resolve(dada);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getParamList({commit}, params) {
-    var data = params.searchForm;
+  getParamList({commit}, args) {
+    var data = args.searchForm;
     var searchForm = {};
     for (var attr in data) {
       if (data[attr] != null && data[attr] != undefined && data[attr] != '') {
         searchForm[attr] = data[attr];
       }
     }
-    params.searchForm = searchForm;
+    args.searchForm = searchForm;
     return new Promise((resolve, reject) => {
-      getParamList(params)
-        .then(response => {
-          resolve(response);
+      getParamList(args)
+        .then(dada => {
+          resolve(dada);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getTotal({commit}, params) {
+  getTotal({commit}, args) {
     return new Promise((resolve, reject) => {
-      getTotal(params)
-        .then(response => {
-          resolve(response);
+      getTotal(args)
+        .then(dada => {
+          resolve(dada);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  removeOne({commit}, params) {
-    const { schedulerId } = params;
+  removeOne({commit}, args) {
+    const { schedulerId } = args;
     return new Promise((resolve, reject) => {
       removeOne(schedulerId)
-        .then(response => {
-          resolve(response);
+        .then(dada => {
+          resolve(dada);
         })
         .catch(error => {
           reject(error);

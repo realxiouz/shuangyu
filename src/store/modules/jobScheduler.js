@@ -13,36 +13,36 @@ import {
 } from "@/api/jobScheduler";
 
 const actions = {
-  addOne({commit}, params) {
+  addOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {jobScheduler} = params
+      const {jobScheduler} = args
       addOne(jobScheduler)
-        .then(response => {
-          resolve(response);
+        .then(dada => {
+          resolve(dada);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  addOneXxl({commit}, params) {
+  addOneXxl({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {jobScheduler} = params
+      const {jobScheduler} = args
       addOneXxl(jobScheduler)
-        .then(response => {
-          resolve(response);
+        .then(dada => {
+          resolve(dada);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  removeOne({commit}, params) {
+  removeOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {jobSchedulerId} = params
+      const {jobSchedulerId} = args
       removeOne(jobSchedulerId)
-        .then(response => {
-          resolve(response);
+        .then(dada => {
+          resolve(dada);
         })
         .catch(error => {
           reject(error);
@@ -50,84 +50,84 @@ const actions = {
     });
   },
 
-  updateOne({commit}, params) {
+  updateOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {jobSchedulerId, jobScheduler} = params;
+      const {jobSchedulerId, jobScheduler} = args;
       updateOne(jobSchedulerId, jobScheduler)
-        .then(response => {
-          resolve(response);
+        .then(dada => {
+          resolve(dada);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getOne({commit}, params) {
+  getOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {jobSchedulerId} = params;
+      const {jobSchedulerId} = args;
       getOne(jobSchedulerId)
-        .then(response => {
-          resolve(response);
+        .then(dada => {
+          resolve(dada);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  trigger({commit}, params) {
+  trigger({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {jobSchedulerId} = params;
+      const {jobSchedulerId} = args;
       trigger(jobSchedulerId)
-        .then(response => {
-          resolve(response);
+        .then(dada => {
+          resolve(dada);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  start({commit}, params) {
+  start({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {jobSchedulerId} = params;
+      const {jobSchedulerId} = args;
       start(jobSchedulerId)
-        .then(response => {
-          resolve(response);
+        .then(dada => {
+          resolve(dada);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  stop({commit}, params) {
+  stop({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {jobSchedulerId} = params;
+      const {jobSchedulerId} = args;
       stop(jobSchedulerId)
-        .then(response => {
-          resolve(response);
+        .then(dada => {
+          resolve(dada);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getList({commit}, params) {
+  getList({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {filter} = params;
+      const {filter} = args;
       getList(filter)
-        .then(response => {
-          resolve(response);
+        .then(dada => {
+          resolve(dada);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getTotal({commit}, params) {
+  getTotal({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {filter} = params;
+      const {filter} = args;
       getTotal(filter)
-        .then(response => {
-          resolve(response);
+        .then(dada => {
+          resolve(dada);
         })
         .catch(error => {
           reject(error);
@@ -137,8 +137,8 @@ const actions = {
   getPageList({commit}, args) {
     return new Promise((resolve, reject) => {
       getPageList(args)
-        .then(response => {
-          resolve(response);
+        .then(dada => {
+          resolve(dada);
         })
         .catch(error => {
           reject(error);
