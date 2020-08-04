@@ -34,15 +34,17 @@ export const MIXIN_LIST = {
     },
     loadData() {
       if (this.actions.getPageList) {
+        let payload = {
+          pageSize: this.pageSize,
+          pageFlag: this.pageFlag,
+          ...this.params
+        };
+        if (this.lastId) {
+          payload.lastId = this.lastId;
+        }
         this.loading = true;
         this.$store
-          .dispatch(this.actions.getPageList, {
-            pageSize: this.pageSize,
-            lastId: this.lastId,
-            pageFlag: this.pageFlag,
-            ...this.params,
-            ...(this.extraParam || {})
-          })
+          .dispatch(this.actions.getPageList, payload)
           .then(data => {
             if (data) {
               let _data = this.beforeLoadData(data);
@@ -53,7 +55,6 @@ export const MIXIN_LIST = {
           .catch(error => {
             console.log(error);
           })
-          // eslint-disable-next-line no-unused-vars
           .finally(_ => {
             this.loading = false;
             this.afterLoadData();
@@ -62,8 +63,7 @@ export const MIXIN_LIST = {
         this.loading = true;
         this.$store
           .dispatch(this.actions.getList, {
-            ...this.params,
-            ...(this.extraParam || {})
+            ...this.params
           })
           .then(data => {
             if (data) {
@@ -75,7 +75,6 @@ export const MIXIN_LIST = {
           .catch(error => {
             console.log(error);
           })
-          // eslint-disable-next-line no-unused-vars
           .finally(_ => {
             this.loading = false;
             this.afterLoadData();
