@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <search class="page-search" ref="search" @onSearch="onSearch" />
+    <search class="page-search" ref="search" @onSearch="onSearch" :category="category" />
     <el-row class="page-tools" type="flex" justify="space-between">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
     </el-row>
