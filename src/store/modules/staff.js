@@ -172,7 +172,6 @@ const actions = {
       const {firmId} = args;
       getLoginInfo(firmId)
         .then(data => {
-          console.log(data);
           commit("setLoginInfo", data);
           resolve(data);
         })
