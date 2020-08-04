@@ -103,7 +103,7 @@ export const MIXIN_LIST = {
       let _params = {};
       for (let key in this.params) {
         if (this.params[key]) {
-          _params[key] = val;
+          _params[key] = this.params[key];
         }
       }
       this.params = _params;
