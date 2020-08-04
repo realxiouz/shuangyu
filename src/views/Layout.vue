@@ -331,30 +331,30 @@ export default {
     },
     onFirmIdChange(firmId) {
       this.dialogVisible && (this.dialogVisible = false);
-      this.$store.dispatch("getLoginInfo", { firmId }).then(data => {
-        this.$store.commit("user/setRoutes", []);
-        resetRoute();
-        this.$store.commit("user/setNeedGetMenu", true);
+      // this.$store.dispatch("getLoginInfo", { firmId }).then(data => {
+      //   this.$store.commit("user/setRoutes", []);
+      //   resetRoute();
+      //   this.$store.commit("user/setNeedGetMenu", true);
 
-        this.$store.dispatch("getMenu").then(m => {
-          let routes = this.genMenus(m);
-          let _import = path => _ => import(`@/views/${path}.vue`);
-          routes.push({
-            path: "*",
-            component: _import("404"),
-            hidden: true,
-            meta: { title: "404", icon: "home" }
-          });
-          this.$store.commit("user/setRoutes", routes);
-          this.$router.addRoutes(routes);
-          this.$store.commit("user/setNeedGetMenu", false);
-        });
+      //   this.$store.dispatch("getMenu").then(m => {
+      //     let routes = this.genMenus(m);
+      //     let _import = path => _ => import(`@/views/${path}.vue`);
+      //     routes.push({
+      //       path: "*",
+      //       component: _import("404"),
+      //       hidden: true,
+      //       meta: { title: "404", icon: "home" }
+      //     });
+      //     this.$store.commit("user/setRoutes", routes);
+      //     this.$router.addRoutes(routes);
+      //     this.$store.commit("user/setNeedGetMenu", false);
+      //   });
 
-        // const { fullPath } = this.$route;
-        // this.$router.replace({
-        //   path: "/redirect" + fullPath
-        // })
-      });
+      //   // const { fullPath } = this.$route;
+      //   // this.$router.replace({
+      //   //   path: "/redirect" + fullPath
+      //   // })
+      // });
     },
     genMenus(arr) {
       let _import = path => _ => import(`@/views/${path}.vue`);

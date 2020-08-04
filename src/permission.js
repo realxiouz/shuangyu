@@ -23,12 +23,12 @@ router.beforeEach(async (to, from, next) => {
       if (!store.state.user.needGetMenu) {
         next();
       } else {
-        // let { menus } = await store.dispatch('getLoginInfo', { firmId: null });
-        // let tree = genTree(null, menus);
-        // let routes = genMenus(tree);
+        let { menus } = await store.dispatch('getLoginInfo', { firmId: null });
+        let tree = genTree(null, menus);
+        let routes = genMenus(tree);
 
-        let m = await store.dispatch('getMenu');
-        let routes = genMenus(m);
+        // let m = await store.dispatch('getMenu');
+        // let routes = genMenus(m);
 
         // let arr = await store.dispatch('menu/getTreeList', {});
         // let routes = genMenus(arr);
@@ -45,7 +45,8 @@ router.beforeEach(async (to, from, next) => {
         console.log(routes);
         try {
           next({
-            ...to
+            ...to,
+            replace: true
           });
         } catch (error) {
           console.log(error);
