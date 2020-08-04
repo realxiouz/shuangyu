@@ -12,11 +12,11 @@ import {
 } from '@/api/productOrder';
 
 const actions = {
-  saveOrder({commit}, params) {
+  saveOrder({commit}, args) {
     return new Promise((resolve, reject) => {
-      saveOrder(params)
-        .then(response => {
-          resolve(response);
+      saveOrder(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -24,95 +24,95 @@ const actions = {
     });
   },
 
-  inWarehouseOrder({commit}, params) {
+  inWarehouseOrder({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {orderNo, data} = params;
+      const {orderNo, data} = args;
       inWarehouseOrder(orderNo, data)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  outWarehouseOrder({commit}, params) {
+  outWarehouseOrder({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {orderNo, data} = params;
+      const {orderNo, data} = args;
       outWarehouseOrder(orderNo, data)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  updateOne({commit}, params) {
+  updateOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {id, data} = params;
+      const {id, data} = args;
       updateOne(id, data)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  removeOne({commit}, params) {
+  removeOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {orderNo} = params;
+      const {orderNo} = args;
       removeOne(orderNo)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  confirmOrder({commit}, params) {
+  confirmOrder({commit}, args) {
     return new Promise((resolve, reject) => {
-      confirmOrder(params)
-        .then(response => {
-          resolve(response);
+      confirmOrder(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getOne({commit}, params) {
+  getOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {orderNo} = params;
+      const {orderNo} = args;
       getOne(orderNo)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getTotal({commit}, params) {
+  getTotal({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {filter} = params;
+      const {filter} = args;
       getTotal(filter)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getList({commit}, params) {
+  getList({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {filter} = params;
+      const {filter} = args;
       getList(filter)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -121,9 +121,10 @@ const actions = {
   },
   getPageList({commit}, args) {
     return new Promise((resolve, reject) => {
-      getPageList(args)
-        .then(response => {
-          resolve(response);
+      const {pageFlag, pageSize, ...params} = args;
+      getPageList(pageFlag, pageSize, params)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);

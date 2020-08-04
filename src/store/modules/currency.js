@@ -29,11 +29,11 @@ const mutations = {
 
 const actions = {
   // eslint-disable-next-line no-unused-vars
-  getList({commit}, params) {
+  getList({commit}, args) {
     return new Promise((resolve, reject) => {
-      getList(params)
-        .then(response => {
-          resolve(response);
+      getList(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -41,11 +41,11 @@ const actions = {
     });
   },
   // eslint-disable-next-line no-unused-vars
-  getOne({commit}, params) {
+  getOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      getOne(params)
-        .then(response => {
-          resolve(response);
+      getOne(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -55,9 +55,10 @@ const actions = {
   // eslint-disable-next-line no-unused-vars
   getPageList({commit}, args) {
     return new Promise((resolve, reject) => {
-      getPageList(args)
-        .then(response => {
-          resolve(response);
+      const {pageFlag, pageSize, ...params} = args;
+      getPageList(pageFlag, pageSize, params)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -68,8 +69,8 @@ const actions = {
   removeOne({commit}, args) {
     return new Promise((resolve, reject) => {
       removeOne(args)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -80,8 +81,8 @@ const actions = {
   saveOne({commit}, args) {
     return new Promise((resolve, reject) => {
       saveOne(args)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -92,8 +93,8 @@ const actions = {
   update({commit}, args) {
     return new Promise((resolve, reject) => {
       update(args)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);

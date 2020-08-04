@@ -1,6 +1,6 @@
 <template>
   <div class="page-form">
-    <el-dialog :title="keyId!=''?'编辑Api信息':'添加Api'" :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
+    <el-dialog :title="keyId ?'编辑Api信息':'添加Api'" :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
     <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
       <el-form-item label="Api名称:" prop="apiName">
         <el-input v-model="formData.apiName"></el-input>
@@ -27,7 +27,6 @@ import {MIXIN_EDIT} from "@/utils/mixin";
 function defaultData() {
   return {
     apiId: "",
-    apiName: "",
     uri: "",
     enable: true,
     category: ""

@@ -45,7 +45,7 @@
 </template>
 <script>
   export default {
-    name: "wopSearch",
+    name: "openSourceSearch",
     data() {
       return {
         more: false,

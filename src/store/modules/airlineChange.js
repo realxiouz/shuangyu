@@ -26,34 +26,34 @@ const mutations = {
 };
 
 const actions = {
-  addOne({commit}, data) {
+  addOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      addOne(data)
-        .then(response => {
-          resolve(response);
+      addOne(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  saveOne({commit}, data) {
+  saveOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      saveOne(data)
-        .then(response => {
-          resolve(response);
+      saveOne(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getOne({commit}, params) {
-    const { airline } = params;
+  getOne({commit}, args) {
+    const { airline } = args;
     return new Promise((resolve, reject) => {
       getOne(airline)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -63,20 +63,20 @@ const actions = {
   getList({commit}, args) {
     return new Promise((resolve, reject) => {
       getList(args)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  removeOne({commit}, params) {
-    const { airline } = params;
+  removeOne({commit}, args) {
+    const { airline } = args;
     return new Promise((resolve, reject) => {
       removeOne(airline)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);

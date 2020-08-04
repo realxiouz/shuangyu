@@ -39,8 +39,7 @@ export function removeOne(userId) {
   });
 }
 
-export function updateOne(args) {
-  let {userId, data} = args
+export function updateOne(userId, data) {
   return request({
     url: `/admin/user/update/one/${userId}`,
     method: 'put',
@@ -65,8 +64,7 @@ export function updateMany(filter, data) {
   });
 }
 
-export function getOne(args) {
-  let {userId} = args
+export function getOne(userId) {
   return request({
     url: `/admin/user/one/${userId}`,
     method: 'get'

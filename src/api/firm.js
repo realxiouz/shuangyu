@@ -1,7 +1,6 @@
 import request from '@/utils/request';
 
-export function getPageList(args) {
-  const { pageFlag, pageSize, ...params } = args;
+export function getPageList(pageFlag, pageSize, params) {
   return request({
     url: `/firm/page/list/${pageFlag}/${pageSize}`,
     method: `get`,
@@ -25,8 +24,7 @@ export function addOne(data) {
   });
 }
 
-export function updateOne(args) {
-  let {firmId, ...data} = args
+export function updateOne(firmId, data) {
   return request({
     url: `/firm/update/one/${firmId}`,
     method: 'put',
@@ -88,8 +86,7 @@ export function getRootPageList(pageFlag, pageSize, filter) {
   });
 }
 
-export function getConfigPageList(params) {
-  const { pageFlag, pageSize } = params;
+export function getConfigPageList(pageFlag, pageSize) {
   return request({
     url: `/firm/open/config/get/page/list/${pageFlag}/${pageSize}`,
     method: `get`,
@@ -117,5 +114,12 @@ export function getSupplierList(filter) {
     url: `/firm/merchant/supplier/get/list`,
     method: `get`,
     params: filter
+  });
+}
+
+export function getSupplierListForOpen(hasOpenFlag) {
+  return request({
+    url: `/firm/merchant/supplier/get/list/for/open/${hasOpenFlag}`,
+    method: `get`
   });
 }

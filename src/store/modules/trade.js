@@ -29,12 +29,12 @@ const mutations = {
 
 const actions = {
   // eslint-disable-next-line no-unused-vars
-  getList({commit}, params) {
-    const {filters} = params;
+  getList({commit}, args) {
+    const {filters} = args;
     return new Promise((resolve, reject) => {
       getList(filters)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -42,12 +42,12 @@ const actions = {
     });
   },
   // eslint-disable-next-line no-unused-vars
-  getOne({commit}, params) {
-    const {tradeNo} = params;
+  getOne({commit}, args) {
+    const {tradeNo} = args;
     return new Promise((resolve, reject) => {
       getOne(tradeNo)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -57,9 +57,10 @@ const actions = {
   // eslint-disable-next-line no-unused-vars
   getPageList({commit}, args) {
     return new Promise((resolve, reject) => {
-      getPageList(args)
-        .then(response => {
-          resolve(response);
+      const {pageFlag, pageSize, ...params} = args;
+      getPageList(pageFlag, pageSize, params)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -67,12 +68,12 @@ const actions = {
     });
   },
   // eslint-disable-next-line no-unused-vars
-  removeOne({commit}, params) {
-    const {tradeNo} = params;
+  removeOne({commit}, args) {
+    const {tradeNo} = args;
     return new Promise((resolve, reject) => {
       removeOne(tradeNo)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -80,11 +81,11 @@ const actions = {
     });
   },
   // eslint-disable-next-line no-unused-vars
-  save({commit}, params) {
+  save({commit}, args) {
     return new Promise((resolve, reject) => {
-      save(params)
-        .then(response => {
-          resolve(response);
+      save(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -92,12 +93,12 @@ const actions = {
     });
   },
   // eslint-disable-next-line no-unused-vars
-  update({commit}, params) {
+  update({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {tradeNo} = params;
-      update(tradeNo, params)
-        .then(response => {
-          resolve(response);
+      const {tradeNo} = args;
+      update(tradeNo, args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);

@@ -28,12 +28,12 @@ const mutations = {
 
 const actions = {
   // eslint-disable-next-line no-unused-vars
-  getOne({ commit }, params) {
+  getOne({ commit }, args) {
     return new Promise((resolve, reject) => {
-      const { policyAttrId } = params;
+      const { policyAttrId } = args;
       getOne(policyAttrId)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -44,8 +44,8 @@ const actions = {
   saveOne({ commit }, args) {
     return new Promise((resolve, reject) => {
       saveOne(args)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -56,8 +56,8 @@ const actions = {
   getList({ commit }, args) {
     return new Promise((resolve, reject) => {
       getList(args)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -69,8 +69,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const { pageFlag, pageSize, params } = args;
       getPageList(pageFlag, pageSize, params)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -82,8 +82,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const { policyAttrId } = args;
       removeOne(policyAttrId)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -94,8 +94,8 @@ const actions = {
   save({ commit }, args) {
     return new Promise((resolve, reject) => {
       save(args)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);

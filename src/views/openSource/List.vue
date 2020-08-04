@@ -97,8 +97,8 @@
           getPageList: 'jobScheduler/getPageList'
         },
         extraParam: {
-          tagCode : 'wop',
-          tagId : '61886007158a4c40bd0f4f52fe2c6a90'
+          tagCode : 'openSource',
+          tagId : '42f1907a9eef433fabd8b5a34fa5e931'
         }
       };
     },
@@ -201,7 +201,7 @@
       }
     },
     created() {
-      this.loadData({});
+      //this.loadData({});
     },
   };
 </script>

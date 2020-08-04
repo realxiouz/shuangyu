@@ -15,8 +15,7 @@ export function getOne(id) {
   });
 }
 
-export function getPageList(args) {
-  const {pageFlag, pageSize, ...params} = args;
+export function getPageList(pageFlag, pageSize, params) {
   return request({
     url: `/finance/trade/get/page/list/${pageFlag}/${pageSize}`,
     method: 'get',

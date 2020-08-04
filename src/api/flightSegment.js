@@ -15,8 +15,7 @@ export function getOne(segment) {
   });
 }
 
-export function getPageList(args) {
-  const {pageFlag, pageSize, ...params} = args;
+export function getPageList(pageFlag, pageSize, params) {
   return request({
     url: `/flight/segment/page/list/${pageFlag}/${pageSize}`,
     method: 'get',

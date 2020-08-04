@@ -38,7 +38,7 @@
           <el-button
             size="mini"
             type="danger"
-            @click="handleDel(scope.row.code)"
+            @click="onDel(scope.row.code)"
             >删除</el-button
           >
         </template>
@@ -71,7 +71,11 @@ export default {
   data() {
     return {
       beanIdName: "code",
-      actionName: "microserver/getPageList",
+      keyNameL:"code",
+      actions: {
+        getPageList: 'microserver/getPageList',
+        removeOne: 'microserver/removeOne'
+      },
       code: "",
       statusMap: {
         '0': '启动',
@@ -80,20 +84,6 @@ export default {
     };
   },
   methods: {
-    handleDel(id) {
-      this.$confirm("确定删除?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      }).then(() => {
-        this.$store
-          .dispatch("microserver/removeOne", { code: id })
-          .then(() => {
-            this.onRefresh();
-            this.$message({ type: "success", message: "删除成功" });
-          });
-      });
-    },
     handleAdd() {
       this.$router.push({
         path: `/microserver/detail`

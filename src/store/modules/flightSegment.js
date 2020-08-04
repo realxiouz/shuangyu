@@ -27,12 +27,13 @@ const mutations = {
 };
 
 const actions = {
-  getOne({commit}, params) {
-    const { segment } = params;
+  getOne({commit}, args) {
+    const { segment } = args;
     return new Promise((resolve, reject) => {
+      args
       getOne(segment)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -42,8 +43,8 @@ const actions = {
   save({commit}, data) {
     return new Promise((resolve, reject) => {
       save(data)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -51,60 +52,53 @@ const actions = {
     });
   },
   getPageList({commit}, args) {
-    // var data = params.searchForm;
-    // var searchForm = {};
-    // for (var attr in data) {
-    //   if (data[attr] != null && data[attr] != undefined && data[attr] != '') {
-    //     searchForm[attr] = data[attr];
-    //   }
-    // }
-    // params.searchForm = searchForm;
     return new Promise((resolve, reject) => {
-      getPageList(args)
-        .then(response => {
-          resolve(response);
+      const {pageFlag, pageSize, ...params} = args;
+      getPageList(pageFlag, pageSize, params)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getList({commit}, params) {
-    var data = params.searchForm;
+  getList({commit}, args) {
+    var data = args.searchForm;
     var searchForm = {};
     for (var attr in data) {
       if (data[attr] != null && data[attr] != undefined && data[attr] != '') {
         searchForm[attr] = data[attr];
       }
     }
-    params.searchForm = searchForm;
+    args.searchForm = searchForm;
     return new Promise((resolve, reject) => {
-      getList(params)
-        .then(response => {
-          resolve(response);
+      getList(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getTotal({commit}, params) {
+  getTotal({commit}, args) {
     return new Promise((resolve, reject) => {
-      getTotal(params)
-        .then(response => {
-          resolve(response);
+      getTotal(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  removeOne({commit}, params) {
-    const { segment } = params;
+  removeOne({commit}, args) {
+    const { segment } = args;
     return new Promise((resolve, reject) => {
       removeOne(segment)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);

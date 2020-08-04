@@ -6,12 +6,12 @@ import {
 
 const actions = {
   // 查询原始单
-  getList({ commit }, params) {
-    const {filters} = params;
+  getList({ commit }, args) {
+    const {filters} = args;
     return new Promise((resolve, reject) => {
       getList(filters)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -20,12 +20,12 @@ const actions = {
   },
 
   // 查询原始单数量
-  getTotal({ commit }, params) {
-    const {filters} = params;
+  getTotal({ commit }, args) {
+    const {filters} = args;
     return new Promise((resolve, reject) => {
       getTotal(filters)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -34,12 +34,12 @@ const actions = {
   },
 
   //导单 
-  exportOrder({ commit }, params) {
-    // const {orderType, file} = params;
+  exportOrder({ commit }, args) {
+    // const {orderType, file} = args;
     return new Promise((resolve, reject) => {
-      exportOrder(params)
-        .then(response => {
-          resolve(response);
+      exportOrder(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);

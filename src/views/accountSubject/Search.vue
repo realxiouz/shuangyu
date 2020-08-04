@@ -39,12 +39,19 @@
 
 <script>
   export default {
+    props: {
+      category: {
+        type: Number,
+        default: null
+      }
+    },
     data() {
       return {
         more: false,
         formData: {
           subjectCode: null,
-          subjectName: null
+          subjectName: null,
+          category: null
         }
       };
     },
@@ -61,7 +68,8 @@
       initSearchForm() {
         return {
           subjectCode: null,
-          subjectName: null
+          subjectName: null,
+          category: null
         };
       },
       handleMore() {
@@ -72,6 +80,7 @@
         this.handleConfirm();
       },
       handleConfirm() {
+        this.formData.category = this.category;
         this.$emit("onSearch", this.formData);
       }
     }
