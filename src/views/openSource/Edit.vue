@@ -161,14 +161,14 @@
               data = this.formData;
             } else {
               let xxlJobGroup = {
-                appName: 'wop-provider',
+                appName: 'qunar-open-source-provider',
                 addressType: 0,
-                title: 'wop执行器'
+                title: 'openSource'
               };
               let xxlJobInfo = {
                 jobDesc: this.formData.schedulerName,
                 jobCron: this.formData.cron,
-                executorHandler: 'wopJobHandler'
+                executorHandler: 'openSourceJobHandler'
               };
               data.xxlJobInfo = xxlJobInfo;
               data.xxlJobGroup = xxlJobGroup;
@@ -195,8 +195,8 @@
       },
       getParams() {
         let searchForm = {
-          tagId: '61886007158a4c40bd0f4f52fe2c6a90',
-          tagCode: 'wop'
+          tagId: '42f1907a9eef433fabd8b5a34fa5e931',
+          tagCode: 'openSource'
         }
         this.$store
           .dispatch("jobConfig/getList", searchForm)
