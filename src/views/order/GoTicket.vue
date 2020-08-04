@@ -368,6 +368,7 @@
         this.$store
           .dispatch("order/getOrderDetail", this.orderNo)
           .then(data => {
+            console.log(data)
             if (data) {
               this.orderData = data;
             }

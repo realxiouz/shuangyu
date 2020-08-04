@@ -80,6 +80,47 @@
             ></el-input>
           </el-form-item>
         </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="航班号:">
+            <el-input
+              clearable
+              v-model="formData.flightCode"
+              @keyup.enter.native="$emit('onSearch', formData)"
+              placeholder="请输入任务名称搜索..."
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="出发地:">
+            <el-input
+              clearable
+              v-model="formData.dpt"
+              @keyup.enter.native="$emit('onSearch', formData)"
+              placeholder="请输入任务名称搜索..."
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="到达地:">
+            <el-input
+              clearable
+              v-model="formData.arr"
+              @keyup.enter.native="$emit('onSearch', formData)"
+              placeholder="请输入任务名称搜索..."
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="航班日期:">
+            <el-date-picker
+              v-model="formData.flightDate"
+              type="date"
+              value-format="timestamp"
+              placeholder="出发日期">
+            </el-date-picker>
+          </el-form-item>
+        </el-col>
+        
       </el-form>
     </el-col>
     <el-col :xs="8" :sm="6" :md="6" :lg="4" :xl="4" class="search-tools">

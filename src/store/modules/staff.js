@@ -10,130 +10,121 @@ import {
   isExist,
   relationUser,
   removeOne,
-  updateOne
+  updateOne,
+  getLoginInfo
 } from "@/api/staff";
-import {getToken} from "@/utils/auth";
-
 
 const state = {
-  token: getToken(),
-  name: "",
-  avatar: ""
+  loginInfo: {}
 };
 
 const mutations = {
-  SET_TOKEN: (state, token) => {
-    state.token = token;
-  },
-  SET_NAME: (state, name) => {
-    state.name = name;
-  },
-  SET_AVATAR: (state, avatar) => {
-    state.avatar = avatar;
+  setLoginInfo: (state, data) => {
+    state.loginInfo = data;
   }
 };
 
 const actions = {
-  addOne({commit}, params) {
+  addOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      addOne(params)
-        .then(response => {
-          resolve(response);
+      addOne(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  addMany({commit}, params) {
+  addMany({commit}, args) {
     return new Promise((resolve, reject) => {
-      addMany(params)
-        .then(response => {
-          resolve(response);
+      addMany(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  updateOne({commit}, params) {
+  updateOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {id, data} = params;
+      const {id, data} = args;
       updateOne(id, data)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  removeOne({commit}, params) {
+  removeOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {staffId} = params;
+      const {staffId} = args;
       removeOne(staffId)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getOne({commit}, params) {
+  getOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {staffId} = params;
+      const {staffId} = args;
       getOne(staffId)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getTotal({commit}, params) {
+  getTotal({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {filter} = params;
+      const {filter} = args;
       getTotal(filter)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getList({commit}, params) {
+  getList({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {filter} = params;
+      const {filter} = args;
       getList(filter)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  relationUser({commit}, params) {
+  relationUser({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {staffId, userId} = params;
+      const {staffId, userId} = args;
       relationUser(staffId, userId)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getPageList({commit}, params) {
+  getPageList({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {pageFlag, pageSize, lastId, filter} = params;
+      const {pageFlag, pageSize, lastId, filter} = args;
       getPageList(pageFlag, pageSize, lastId, filter)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -141,44 +132,59 @@ const actions = {
     });
   },
   /*filter为对用户进行查询所需的条件*/
-  associateUser({commit}, params) {
+  associateUser({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {filter} = params;
+      const {filter} = args;
       associateUser(filter)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getMany({commit}, params) {
+  getMany({commit}, args) {
     return new Promise((resolve, reject) => {
-      //const {staffIdList} = params;
-      getMany(params)
-        .then(response => {
-          resolve(response);
+      //const {staffIdList} = args;
+      getMany(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  isExist({commit}, params) {
+  isExist({commit}, args) {
     return new Promise((resolve, reject) => {
-      isExist(params)
-        .then(response => {
-          resolve(response);
+      isExist(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
+  getLoginInfo({commit}, args) {
+    return new Promise((resolve, reject) => {
+      const {firmId} = args;
+      getLoginInfo(firmId)
+        .then(data => {
+          commit("setLoginInfo", data);
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
 }
 
 export default {
   namespaced: true,
+  state,
+  mutations,
   actions
 };

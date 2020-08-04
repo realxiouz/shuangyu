@@ -16,7 +16,7 @@
       >
         <el-table-column prop="dpt" label="出发地" align="center"></el-table-column>
         <el-table-column prop="arr" label="目的地" align="center"></el-table-column>
-        <el-table-column label="操作" align="center" width="350">
+        <el-table-column label="操作" align="center" width="360">
           <template slot-scope="scope">
             <el-button @click="onEdit(scope.row.segment)" type="primary" size="mini">编辑</el-button>
             <el-button @click="lookFlights(scope.row.flights)" type="primary" size="small">查看航班</el-button>

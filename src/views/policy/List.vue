@@ -80,7 +80,7 @@ export default {
       keyName:'policyId',
       searchParams: {},
       actions: {
-          getPageList: 'policy/getList',
+          getList: 'policy/getList',
           removeOne: 'policy/removeOne'
         }
     };
@@ -120,7 +120,7 @@ export default {
   },
   components: {
     edit,
-      search
+    search
   }
 };
 </script>

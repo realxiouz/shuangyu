@@ -37,7 +37,7 @@
           <span v-html="formatcabins(scope.row.cabins)"></span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" fixed="right" align="center" width="350">
+      <el-table-column label="操作" fixed="right" align="center" width="360">
         <template slot-scope="scope">
           <el-button @click="onEdit(scope.row.airlineCode)" type="primary" size="small"
             >编辑</el-button
@@ -109,7 +109,6 @@ export default {
       segmentsInfo: "",
       airlineCode: "",
       keyName:'airlineCode',
-      beanIdName: "airlineCode",
       actions: {
         getPageList: 'airline/getPageList',
         removeOne: 'airline/removeOne'
@@ -122,10 +121,6 @@ export default {
     LookLnfo
   },
   methods: {
-    handleSave() {
-      this.dialogVisible = false;
-      this.loadData();
-    },
     lookFlights(flights) {
       this.lookTitle = "查看航班信息";
       this.flightsInfo = flights;

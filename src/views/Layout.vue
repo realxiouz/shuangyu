@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-aside width="auto" v-show="isDisplay">
-      <Sidebar :menuList="routes" :collapse="isCollapse" />
+      <Sidebar :menuList="$store.getters.menus" :collapse="isCollapse"/>
     </el-aside>
     <el-container>
       <el-header style="height:94px;padding:0 0;">
@@ -15,7 +15,7 @@
           >
             <el-col :xs="13" :sm="14" :md="16" :lg="19" :xl="20">
               <div class="grid-content bg-purple">
-                <span class="menu-switch" v-bind:class="switchClass" @click="handleSwitch" />
+                <span class="menu-switch" v-bind:class="switchClass" @click="handleSwitch"/>
               </div>
               <div class="grid-content bg-purple">
                 <el-breadcrumb class="menu-router" separator="/">
@@ -37,18 +37,18 @@
                 </el-button>
               </span>
               <!--              <span-->
-              <!--                v-if="this.$store.state.loginInfo.firm"-->
-              <!--              >{{this.$store.state.loginInfo.firm.firmName}}</span>-->
+              <!--                v-if="$store.getters.firm"-->
+              <!--              >{{$store.getters.firm.firmName}}</span>-->
               <el-select
-                v-if="this.$store.state.loginInfo.firm"
+                v-if="$store.getters.firm"
                 v-model="firmId"
                 size="mini"
                 style="width: 60%"
                 placeholder="切换企业"
-                @change="onFirmIdChange"
+                @change="onFirmChange"
               >
                 <el-option
-                  v-for="item in this.$store.state.loginInfo.firms"
+                  v-for="item in $store.getters.firms"
                   :key="item.firmId"
                   :label="item.firmName"
                   :value="item.firmId"
@@ -58,9 +58,7 @@
             </div>
             <div class="grid-content bg-purple userClass">
               <span style="margin-right:10px; font-size:16px;">
-                {{
-                this.$store.state.loginInfo.fullName
-                }}
+                {{this.$store.getters.fullName}}
               </span>
               <el-dropdown @command="handleCommand">
                 <span class="el-dropdown-link">
@@ -77,22 +75,11 @@
           </el-row>
           <div class="tags-view">
             <scroll-pane ref="scrollPane" class="tags-view-wrapper">
-              <!-- <el-tag
-                class="tags-view-item"
-                @close="handleClose(tag)"
-                v-for="tag in tags"
-                :key="tag.name"
-                :closable="tag.closable"
-                :type="isActive(tag)?'info': tag.type"
-              >
-                <router-link :to="tag.path">{{tag.name}}</router-link>
-              </el-tag>-->
-
               <router-link
                 :class="isActive(tag) ? 'active' : ''"
                 class="tags-view-item"
                 v-for="tag in tags"
-                :key="tag.patn"
+                :key="tag.path"
                 :to="tag.path"
                 tag="span"
               >
@@ -118,438 +105,303 @@
             </div>
           </transition>
         </section>
-        <div>
-          <el-dialog
-            title="请选择一个你的企业"
-            :close-on-click-modal="false"
-            :visible.sync="dialogVisible"
-            :show-close="false"
-            width="30%"
-            center
-          >
-            <select-firms
-              v-if="dialogVisible"
-              ref="selectFirms"
-              :firms="firms"
-              @onSelectFirm="onFirmIdChange"
-            ></select-firms>
-          </el-dialog>
-        </div>
       </el-main>
     </el-container>
   </el-container>
 </template>
 
 <script>
-import Sidebar from "@/components/SideBar.vue";
-import SelectFirms from "@/components/SelectFirms.vue";
-import ScrollPane from "@/components/TagsView/ScrollPane.vue";
-import { mapState } from "vuex";
-import { resetRoute } from "@/router";
+  import Sidebar from "@/components/SideBar.vue";
+  import ScrollPane from "@/components/TagsView/ScrollPane.vue";
+  import {resetRouter} from "@/router";
 
-// @ is an alias to /src
-export default {
-  name: "layout",
-  components: { Sidebar, SelectFirms, ScrollPane },
-  data() {
-    return {
-      dialogVisible: false,
-      isCollapse: false,
-      isDisplay: true,
-      firms: [],
-      firmId: "",
-      firmData: "",
-      tags: [],
-      screenWidth: document.body.clientWidth,
-      menus: [],
-      //待处理任务总量
-      totalCount: 0,
-      //待处理任务总数加载触发定时器
-      pendingTotalTimer: null
-    };
-  },
-  computed: {
-    switchClass() {
-      if (this.isCollapse) return "el-icon-s-unfold";
-      else return "el-icon-s-fold";
-    },
-    key() {
-      return this.$router.path;
-    },
-    ...mapState("user", ["routes"])
-  },
-  watch: {
-    screenWidth(val) {
-      if (val <= 500) {
-        this.isDisplay = false;
-      } else {
-        this.isDisplay = true;
-      }
-      if (val < 760) {
-        this.isCollapse = true;
-      } else {
-        this.isCollapse = false;
-      }
-    },
-    $route() {
-      this.getTag();
-    }
-  },
-  methods: {
-    handleCurrentChange(firmId) {
-      this.getLoginInfo(firmId);
-      // this.$router.go(0);
-    },
-    isActive(route) {
-      return route.path === this.$route.path;
-    },
-    handleSwitch() {
-      if (this.screenWidth > 500) {
-        this.isCollapse = !this.isCollapse;
-      }
-    },
-    buildTree(pid, navs) {
-      let menus = [];
-      for (let i = 0; i < navs.length; i++) {
-        if (navs[i].pid === pid) {
-          menus.push(navs[i]);
-        }
-      }
-      if (menus.length > 0) {
-        for (let i = 0; i < menus.length; i++) {
-          let children = this.buildTree(menus[i].menuId, navs);
-          menus[i].children = children;
-        }
-      }
-      return menus;
-    },
-    getLoginInfo(firmId) {
-      this.dialogVisible = false;
-      this.$store
-        .dispatch("getLoginInfo", { firmId: firmId })
-        .then(data => {
-          if (data.firms.length > 1 && this._.isEmpty(data.staffId)) {
-            this.firms = data.firms;
-            this.dialogVisible = true;
-          } else {
-            this.firmData = data.firm;
-            if (this.firmData && this.firmData.firmId != "") {
-              this.firmId = this.firmData.firmId;
-              this.triggerPendingTotalTimer();
-            }
-            // this.menus = this.buildTree(null, data.navs);
-          }
-
-          // let m = await this.$store.dispatch('getMenu');
-          // let routes = genMenus(m)
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    handleCommand(command) {
-      switch (command) {
-        case "logout":
-          this.handleLogout();
-          break;
-        case "personalEdit":
-          this.skipPersonalEdit();
-          break;
-      }
-    },
-    handleLogout() {
-      this.$store
-        .dispatch("user/signOut")
-        .then(() => {
-          this.$router.push({ path: "/login" });
-          this.$store.commit("user/setRoutes", []);
-          resetRoute();
-        })
-        .catch(() => {});
-    },
-
-    getTag() {
-      let tag = {
-        name: "首页",
-        closable: false,
-        type: "",
-        path: "/home"
+  // @ is an alias to /src
+  export default {
+    name: "layout",
+    components: {Sidebar, ScrollPane},
+    data() {
+      return {
+        dialogVisible: false,
+        isCollapse: false,
+        isDisplay: true,
+        firms: this.$store.getters.firms,
+        firmId: this.$store.getters.firm.firmId,
+        firmData: "",
+        tags: [{
+          name: "首页",
+          closable: false,
+          type: "",
+          path: "/home"
+        }],
+        screenWidth: document.body.clientWidth,
+        //待处理任务总量
+        totalCount: 0,
+        //待处理任务总数加载触发定时器
+        pendingTotalTimer: null
       };
-      let matched = this.$route.matched;
-      matched.forEach(item => {
-        if (item.parent != undefined) {
-          tag = {
-            name: item.meta.title,
-            path: item.path,
-            closable: true,
-            type: "success"
-          };
+    },
+    computed: {
+      switchClass() {
+        if (this.isCollapse) return "el-icon-s-unfold";
+        else return "el-icon-s-fold";
+      },
+      key() {
+        return this.$router.path;
+      }
+    },
+    watch: {
+      screenWidth(val) {
+        if (val <= 500) {
+          this.isDisplay = false;
+        } else {
+          this.isDisplay = true;
+        }
+        if (val < 760) {
+          this.isCollapse = true;
+        } else {
+          this.isCollapse = false;
+        }
+      },
+      $route: function (to) {
+        let tag = {
+          name: to.meta.title,
+          path: to.path,
+          closable: true,
+          type: "success"
         }
         this.tags.push(tag);
-      });
-      let obj = {};
-      this.tags = this.tags.reduce((item, next) => {
-        obj[next.name] ? "" : (obj[next.name] = true && item.push(next));
-        return item;
-      }, []);
+        let obj = {};
+        this.tags = this.tags.reduce((cur, next) => {
+          obj[next.path] ? "" : obj[next.path] = true && cur.push(next);
+          return cur;
+        }, []);
+      }
     },
-    handleClose(tag) {
-      this.tags.splice(this.tags.indexOf(tag), 1);
-      this.$router.push({
-        path: this.tags[this.tags.length - 1].path
-      });
-    },
-    loadPendingTotal() {
-      this.$store
-        .dispatch("orderTask/getTotal", {
-          filters: { taskStatus: "1" }
-        })
-        .then(data => {
-          if (data) {
-            this.totalCount = data;
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    skipOrderDetail() {
-      this.$router.push({ path: "/order/pending/task/list" });
-    },
-    skipPersonalEdit() {
-      this.$router.push({
-        path: "/user/personal/edit",
-        query: { userId: this.$store.state.loginInfo.userId }
-      });
-    },
-    triggerPendingTotalTimer() {
-      //先执行一次，然后触发定时器。
-      this.loadPendingTotal();
-      this.pendingTotalTimer = setInterval(() => {
-        setTimeout(this.loadPendingTotal, 0);
-      }, 60000);
-    },
-    onFirmIdChange(firmId) {
-      this.dialogVisible && (this.dialogVisible = false);
-      this.$store.dispatch("getLoginInfo", { firmId }).then(data => {
-        this.$store.commit("user/setRoutes", []);
-        resetRoute();
-        this.$store.commit("user/setNeedGetMenu", true);
-
-        this.$store.dispatch("getMenu").then(m => {
-          let routes = this.genMenus(m);
-          let _import = path => _ => import(`@/views/${path}.vue`);
-          routes.push({
-            path: "*",
-            component: _import("404"),
-            hidden: true,
-            meta: { title: "404", icon: "home" }
+    methods: {
+      isActive(route) {
+        return route.path === this.$route.path;
+      },
+      handleSwitch() {
+        if (this.screenWidth > 500) {
+          this.isCollapse = !this.isCollapse;
+        }
+      },
+      handleCommand(command) {
+        switch (command) {
+          case "logout":
+            this.handleLogout();
+            break;
+          case "personalEdit":
+            this.skipPersonalEdit();
+            break;
+        }
+      },
+      handleLogout() {
+        this.$store
+          .dispatch("user/signOut")
+          .then(() => {
+            this.$router.push({path: "/login"});
+            this.$store.commit("user/setRoutes", []);
+            resetRouter();
+          })
+          .catch(() => {
           });
-          this.$store.commit("user/setRoutes", routes);
-          this.$router.addRoutes(routes);
-          this.$store.commit("user/setNeedGetMenu", false);
+      },
+      handleClose(tag) {
+        this.tags.splice(this.tags.indexOf(tag), 1);
+        this.$router.push({
+          path: this.tags[this.tags.length - 1].path
         });
-
-        // const { fullPath } = this.$route;
-        // this.$router.replace({
-        //   path: "/redirect" + fullPath
-        // })
-      });
+      },
+      loadPendingTotal() {
+        this.$store
+          .dispatch("orderTask/getTotal", {
+            filters: {taskStatus: "1"}
+          })
+          .then(data => {
+            if (data) {
+              this.totalCount = data;
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      skipOrderDetail() {
+        this.$router.push({path: "/order/pending/task/list"});
+      },
+      skipPersonalEdit() {
+        this.$router.push({
+          path: "/user/personal/edit",
+          query: {userId: this.$store.getters.userId}
+        });
+      },
+      triggerPendingTotalTimer() {
+        //先执行一次，然后触发定时器。
+        this.loadPendingTotal();
+        this.pendingTotalTimer = setInterval(() => {
+          setTimeout(this.loadPendingTotal, 0);
+        }, 60000);
+      },
+      onFirmChange(firmId) {
+        this.$store.dispatch("staff/getLoginInfo", {firmId})
+          .then(() => {
+            resetRouter();
+          });
+      }
     },
-    genMenus(arr) {
-      let _import = path => _ => import(`@/views/${path}.vue`);
-      return arr
-        .sort((i, j) => i.sort - j.sort)
-        .map(i => {
-          let {
-            uri,
-            title,
-            icon,
-            menuName,
-            component,
-            children,
-            sort,
-            tags,
-            enable,
-            keepAlive
-          } = i;
-          let c = null;
-          let isNav = (tags || []).findIndex(i => i === "NAV") > -1;
-          let cPath = isNav ? "Layout" : component;
-          try {
-            c = _import(cPath);
-          } catch (error) {
-            console.log("import error", error);
-            c = _import("404");
-          }
-          let bean = {
-            path: uri,
-            meta: { title, icon, keepAlive },
-            name: menuName,
-            component: c,
-            sort,
-            hidden: !enable
-          };
-          if (children && children.length) {
-            bean.children = this.genMenus(children);
-          }
-          return bean;
-        });
+    created() {
+      this.triggerPendingTotalTimer();
+    },
+    beforeDestroy() {
+      // 离开页面销毁定时器
+      if (this.pendingTotalTimer) {
+        clearInterval(this.pendingTotalTimer);
+      }
+    },
+    mounted() {
+      const _this = this;
+      window.onresize = () => {
+        return (() => {
+          window.screenWidth = document.body.clientWidth;
+          _this.screenWidth = window.screenWidth;
+        })();
+      };
     }
-  },
-  created() {
-    !this.$store.state.loginInfo.fullName && this.getLoginInfo(null);
-    this.getTag();
-  },
-  beforeDestroy() {
-    // 离开页面销毁定时器
-    if (this.pendingTotalTimer) {
-      clearInterval(this.pendingTotalTimer);
-    }
-  },
-  mounted() {
-    const _this = this;
-    window.onresize = () => {
-      return (() => {
-        window.screenWidth = document.body.clientWidth;
-        _this.screenWidth = window.screenWidth;
-      })();
-    };
-  }
-};
+  };
 </script>
 
 <style lang="scss" scoped>
-.el-main {
-  height: 100%;
-  padding: 0;
-  color: #333;
-  background-color: #f0f2f5;
-}
-
-.app-header {
-  height: 94px;
-  overflow: hidden;
-  position: relative;
-  background: #fff;
-  -webkit-box-shadow: 0px 6px 6px rgba(0, 21, 41, 0.08);
-  box-shadow: 0px 6px 6px rgba(0, 21, 41, 0.08);
-
-  .el-page-header {
-    padding-left: 20px;
-    line-height: 32px;
+  .el-main {
+    height: 100%;
+    padding: 0;
+    color: #333;
+    background-color: #f0f2f5;
   }
 
-  .grid-content {
-    height: 40px;
-    display: table-cell;
-    vertical-align: middle;
-  }
+  .app-header {
+    height: 94px;
+    overflow: hidden;
+    position: relative;
+    background: #fff;
+    -webkit-box-shadow: 0px 6px 6px rgba(0, 21, 41, 0.08);
+    box-shadow: 0px 6px 6px rgba(0, 21, 41, 0.08);
 
-  .firmClass {
-    position: absolute;
-    // top: 15px;
-    line-height: 54px;
-    right: 198px;
-  }
+    .el-page-header {
+      padding-left: 20px;
+      line-height: 32px;
+    }
 
-  .userClass {
-    position: absolute;
-    line-height: 54px;
-    right: 50px;
-  }
+    .grid-content {
+      height: 40px;
+      display: table-cell;
+      vertical-align: middle;
+    }
 
-  .menu-switch {
-    display: inline-block;
-    font-size: 28px;
-  }
+    .firmClass {
+      position: absolute;
+      // top: 15px;
+      line-height: 54px;
+      right: 198px;
+    }
 
-  .menu-router {
-    padding: 20px;
-  }
+    .userClass {
+      position: absolute;
+      line-height: 54px;
+      right: 50px;
+    }
 
-  .tags-view {
-    height: 40px;
-    line-height: 40px;
-
-    .tags-view-item {
+    .menu-switch {
       display: inline-block;
-      position: relative;
-      cursor: pointer;
-      height: 26px;
-      line-height: 26px;
-      border: 1px solid #d8dce5;
-      border-radius: 4px;
-      color: #495060;
-      background: #fff;
-      padding: 0 8px;
-      font-size: 12px;
-      margin-left: 5px;
-      margin-top: 4px;
+      font-size: 28px;
+    }
 
-      &:first-of-type {
-        margin-left: 15px;
-      }
+    .menu-router {
+      padding: 20px;
+    }
 
-      &:last-of-type {
-        margin-right: 15px;
-      }
+    .tags-view {
+      height: 40px;
+      line-height: 40px;
 
-      &.active {
-        background-color: #67c23a;
-        color: #fff;
-        border-color: #67c23a;
+      .tags-view-item {
+        display: inline-block;
+        position: relative;
+        cursor: pointer;
+        height: 26px;
+        line-height: 26px;
+        border: 1px solid #d8dce5;
+        border-radius: 4px;
+        color: #495060;
+        background: #fff;
+        padding: 0 8px;
+        font-size: 12px;
+        margin-left: 5px;
+        margin-top: 4px;
 
-        &::before {
-          content: "";
-          background: #fff;
-          display: inline-block;
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          position: relative;
-          margin-right: 2px;
+        &:first-of-type {
+          margin-left: 15px;
+        }
+
+        &:last-of-type {
+          margin-right: 15px;
+        }
+
+        &.active {
+          background-color: #67c23a;
+          color: #fff;
+          border-color: #67c23a;
+
+          &::before {
+            content: "";
+            background: #fff;
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            position: relative;
+            margin-right: 2px;
+          }
         }
       }
     }
   }
-}
 
-.app-main {
-  margin: 15px;
-  // padding: 15px;
-  background-color: #ffffff;
-}
+  .app-main {
+    margin: 15px;
+    // padding: 15px;
+    background-color: #ffffff;
+  }
 
-body .el-container {
-  height: 100%;
-}
+  body .el-container {
+    height: 100%;
+  }
 </style>
 
 <style lang="scss">
-.tags-view-wrapper {
-  .tags-view-item {
-    .el-icon-close {
-      width: 16px;
-      height: 16px;
-      vertical-align: 1px;
-      border-radius: 50%;
-      text-align: center;
-      transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-      transform-origin: 100% 50%;
+  .tags-view-wrapper {
+    .tags-view-item {
+      .el-icon-close {
+        width: 16px;
+        height: 16px;
+        vertical-align: 1px;
+        border-radius: 50%;
+        text-align: center;
+        transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+        transform-origin: 100% 50%;
 
-      &:before {
-        transform: scale(0.6);
-        display: inline-block;
-        vertical-align: -3px;
-        font-size: 17px;
-      }
+        &:before {
+          transform: scale(0.6);
+          display: inline-block;
+          vertical-align: -3px;
+          font-size: 17px;
+        }
 
-      &:hover {
-        background-color: #909399;
-        color: #fff;
+        &:hover {
+          background-color: #909399;
+          color: #fff;
+        }
       }
     }
   }
-}
 </style>

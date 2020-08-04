@@ -83,7 +83,8 @@
                 if (this.curNode.stopAirportCode)
                   this.tags = this.formData.stopAirportCode.concat();
             }
-        }
+        },
+        
     }
 </script>
 
