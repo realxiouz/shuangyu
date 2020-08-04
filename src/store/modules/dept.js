@@ -32,59 +32,59 @@ const mutations = {
 };
 
 const actions = {
-  addOne({ commit }, params) {
+  addOne({ commit }, args) {
     return new Promise((resolve, reject) => {
-      addOne(params)
-        .then(response => {
-          resolve(response);
+      addOne(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  updateOne({ commit }, params) {
-    const { id, data } = params;
+  updateOne({ commit }, args) {
+    const { id, data } = args;
     return new Promise((resolve, reject) => {
       updateOne(id, data)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getTreeList({ commit }, params) {
-    const { filters } = params;
+  getTreeList({ commit }, args) {
+    const { filters } = args;
     return new Promise((resolve, reject) => {
       getTreeList(filters)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getList({ commit }, params) {
-    const { filters } = params;
+  getList({ commit }, args) {
+    const { filters } = args;
     return new Promise((resolve, reject) => {
       getList(filters)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  removeOne({ commit }, params) {
-    const { deptId } = params;
+  removeOne({ commit }, args) {
+    const { deptId } = args;
     return new Promise((resolve, reject) => {
       removeOne(deptId)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -93,68 +93,70 @@ const actions = {
   },
   getPageList({ commit }, args) {
     return new Promise((resolve, reject) => {
-      getPageList(args)
-        .then(response => {
-          resolve(response);
+      const { pageFlag, pageSize, ...params } = args;
+      getPageList(pageFlag, pageSize, params)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getRootPageList({ commit }, params) {
+  getRootPageList({ commit }, args) {
     return new Promise((resolve, reject) => {
-      getRootPageList(params)
-        .then(response => {
-          resolve(response);
+      const { pageFlag, pageSize, ...params } = args;
+      getRootPageList(pageFlag, pageSize, params)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getAsyncTreeList({ commit }, params) {
+  getAsyncTreeList({ commit }, args) {
     return new Promise((resolve, reject) => {
-      const { pid, filter } = params;
+      const { pid, filter } = args;
       getAsyncTreeList(pid, filter)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getRootTotal({ commit }, params) {
-    const { filter } = params;
+  getRootTotal({ commit }, args) {
+    const { filter } = args;
     return new Promise((resolve, reject) => {
       getRootTotal(filter)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getTotal({ commit }, params) {
-    const { filter } = params;
+  getTotal({ commit }, args) {
+    const { filter } = args;
     return new Promise((resolve, reject) => {
       getTotal(filter)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getOne({ commit }, params) {
-    const { deptId } = params;
+  getOne({ commit }, args) {
+    const { deptId } = args;
     return new Promise((resolve, reject) => {
       getOne(deptId)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);

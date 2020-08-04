@@ -46,8 +46,7 @@ export function getTotal(filter) {
   });
 }
 
-export function getPageList(args) {
-  const {pageFlag, pageSize, ...params} = args;
+export function getPageList(pageFlag, pageSize, params) {
   return request({
     url: `/policy/brand/page/list/${pageFlag}/${pageSize}`,
     method: 'get',

@@ -1,11 +1,11 @@
 import {getList, getOne, getTotal, removeOne, save, updateOne} from "@/api/policy";
 
 const actions = {
-  save({commit}, params) {
+  save({commit}, args) {
     return new Promise((resolve, reject) => {
-      save(params)
-        .then(response => {
-          resolve(response);
+      save(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -13,57 +13,58 @@ const actions = {
     });
   },
   getList({commit}, args) {
+    const {filters} = args;
     return new Promise((resolve, reject) => {
-      getList(args)
-        .then(response => {
-          resolve(response);
+      getList(filters)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getTotal({commit}, params) {
-    const {filters} = params;
+  getTotal({commit}, args) {
+    const {filters} = args;
     return new Promise((resolve, reject) => {
       getTotal(filters)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  removeOne({commit}, params) {
-    const {policyId} = params;
+  removeOne({commit}, args) {
+    const {policyId} = args;
     return new Promise((resolve, reject) => {
       removeOne(policyId)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getOne({commit}, params) {
-    const {policyId} = params;
+  getOne({commit}, args) {
+    const {policyId} = args;
     return new Promise((resolve, reject) => {
       getOne(policyId)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  updateOne({commit}, params) {
+  updateOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      updateOne(params)
-        .then(response => {
-          resolve(response);
+      updateOne(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);

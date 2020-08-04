@@ -20,12 +20,12 @@ const mutations = {
 };
 
 const actions = {
-  getOne({commit}, params) {
-    const {ruleId} = params;
+  getOne({commit}, args) {
+    const {ruleId} = args;
     return new Promise((resolve, reject) => {
       getOne(ruleId)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -35,8 +35,8 @@ const actions = {
   save({commit}, data) {
     return new Promise((resolve, reject) => {
       save(data)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -44,41 +44,42 @@ const actions = {
     });
   },
   getPageList({commit}, args) {
-    // var data = params.searchForm;
+    // var data = args.searchForm;
     // var searchForm = {};
     // for (var attr in data) {
     //   if (data[attr] != null && data[attr] != undefined && data[attr] != '') {
     //     searchForm[attr] = data[attr];
     //   }
     // }
-    // params.searchForm = searchForm;
+    // args.searchForm = searchForm;
     return new Promise((resolve, reject) => {
-      getPageList(args)
-        .then(response => {
-          resolve(response);
+      const {pageFlag, pageSize, ...params} = args;
+      getPageList(pageFlag, pageSize, params)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getTotal({commit}, params) {
+  getTotal({commit}, args) {
     return new Promise((resolve, reject) => {
-      getTotal(params)
-        .then(response => {
-          resolve(response);
+      getTotal(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  removeOne({commit}, params) {
-    const {ruleId} = params;
+  removeOne({commit}, args) {
+    const {ruleId} = args;
     return new Promise((resolve, reject) => {
       removeOne(ruleId)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);

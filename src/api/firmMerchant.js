@@ -55,8 +55,7 @@ export function getCustomerTotal(filter) {
   });
 }
 
-export function getPageList(args) {
-  const {pageFlag, pageSize, ...params} = args;
+export function getPageList(pageFlag, pageSize, params) {
   return request({
     url: `/firm/merchant/get/page/list/${pageFlag}/${pageSize}`,
     method: `get`,
@@ -64,8 +63,7 @@ export function getPageList(args) {
   });
 }
 
-export function getCustomerPageList(args) {
-  const {pageFlag, pageSize, ...params} = args;
+export function getCustomerPageList(pageFlag, pageSize, params) {
   return request({
     url: `/firm/customer/get/page/list/${pageFlag}/${pageSize}`,
     method: `get`,
@@ -73,8 +71,7 @@ export function getCustomerPageList(args) {
   });
 }
 
-export function getSupplierPageList(args) {
-  const {pageFlag, pageSize, ...params} = args;
+export function getSupplierPageList(pageFlag, pageSize, params) {
   return request({
     url: `/firm/supplier/get/page/list/${pageFlag}/${pageSize}`,
     method: `get`,

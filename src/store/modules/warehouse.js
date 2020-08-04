@@ -13,103 +13,104 @@ import {
 const actions = {
   getRootPageList({commit}, args) {
     return new Promise((resolve, reject) => {
-      getRootPageList(args)
-        .then(response => {
-          resolve(response);
+      const {pageFlag, pageSize, ...params} = args;
+      getRootPageList(pageFlag, pageSize, params)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getAsyncTreeList({commit}, params) {
+  getAsyncTreeList({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {pid, filter} = params;
+      const {pid, filter} = args;
       getAsyncTreeList(pid, filter)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  addOne({commit}, params) {
+  addOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      addOne(params)
-        .then(response => {
-          resolve(response);
+      addOne(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  updateOne({commit}, params) {
+  updateOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      updateOne(params)
-        .then(response => {
-          resolve(response);
+      updateOne(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  removeOne({commit}, params) {
-    const {warehouseId} = params;
+  removeOne({commit}, args) {
+    const {warehouseId} = args;
     return new Promise((resolve, reject) => {
       removeOne(warehouseId)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getOne({commit}, params) {
+  getOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {warehouseId} = params;
+      const {warehouseId} = args;
       getOne(warehouseId)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getList({commit}, params) {
+  getList({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {filter} = params;
+      const {filter} = args;
       getList(filter)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getTreeList({commit}, params) {
+  getTreeList({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {filter} = params;
+      const {filter} = args;
       getTreeList(filter)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getPageList({commit}, params) {
+  getPageList({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {pageFlag, pageSize, lastId, filter} = params;
+      const {pageFlag, pageSize, lastId, filter} = args;
       getPageList(pageFlag, pageSize, lastId, filter)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);

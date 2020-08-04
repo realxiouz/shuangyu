@@ -50,9 +50,9 @@ export function updateManyByFilter(filter, data) {
   });
 }
 
-export function removeOne(id) {
+export function removeOne(apiId) {
   return request({
-    url: `/admin/api/remove/one/${id}`,
+    url: `/admin/api/remove/one/${apiId}`,
     method: 'delete'
   });
 }
@@ -112,8 +112,7 @@ export function getList(filter) {
 }
 
 
-export function getPageList(args) {
-  const { pageFlag, pageSize, ...params } = args;
+export function getPageList(pageFlag, pageSize, params) {
   return request({
     url: `/admin/api/get/page/list/${pageFlag}/${pageSize}`,
     method: 'get',

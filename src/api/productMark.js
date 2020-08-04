@@ -31,8 +31,7 @@ export function getOne(paramId) {
 }
 
 
-export function getPageList(args) {
-  const {pageFlag, pageSize, ...params} = args;
+export function getPageList(pageFlag, pageSize, params) {
   return request({
     url: `/third/product/mark/page/list/${pageFlag}/${pageSize}`,
     method: "get",

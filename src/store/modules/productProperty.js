@@ -1,71 +1,71 @@
 import {getList, getOne, getPageList, getTotal, removeOne, saveOne} from '@/api/productProperty';
 
 const actions = {
-  saveOne({commit}, params) {
+  saveOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      saveOne(params)
-        .then(response => {
-          resolve(response);
+      saveOne(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  removeOne({commit}, params) {
+  removeOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {propertyId} = params;
+      const {propertyId} = args;
       removeOne(propertyId)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getOne({commit}, params) {
+  getOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {propertyId} = params;
+      const {propertyId} = args;
       getOne(propertyId)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getTotal({commit}, params) {
+  getTotal({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {filter} = params;
+      const {filter} = args;
       getTotal(filter)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getList({commit}, params) {
+  getList({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {filter} = params;
+      const {filter} = args;
       getList(filter)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getPageList({commit}, params) {
+  getPageList({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {pageFlag, pageSize, filter} = params;
+      const {pageFlag, pageSize, filter} = args;
       getPageList(pageFlag, pageSize, filter)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);

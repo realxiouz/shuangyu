@@ -152,7 +152,7 @@
             size="mini"
             >出库
           </el-button>
-          <el-button v-if="" @click="onBuyTicket(scope.row)">购票</el-button>
+          <el-button  @click="onBuyTicket(scope.row)">购票</el-button>
           <el-button
             v-show="scope.row.orderStatus == 0"
             @click="onEdit(scope.row)"

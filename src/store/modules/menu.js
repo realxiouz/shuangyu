@@ -1,201 +1,201 @@
 import {saveOne, addOne, addMany, updateOne, updateMany, updateManyByFilter, removeOne, removeMany, removeManyByFilter, removeRealOne, getOne, getOneByFilter, getMany, getList, getTreeList, getPageList, getTotal} from '@/api/menu/';
 
 const actions = {
-  saveOne({commit}, params) {
+  saveOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      saveOne(params)
-        .then(response => {
-          resolve(response);
+      saveOne(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  addOne({commit}, params) {
+  addOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      addOne(params)
-        .then(response => {
-          resolve(response);
+      addOne(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  addMany({commit}, params) {
+  addMany({commit}, args) {
     return new Promise((resolve, reject) => {
-      addMany(params)
-        .then(response => {
-          resolve(response);
+      addMany(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  updateOne({commit}, params) {
+  updateOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {id, data} = params;
+      const {id, data} = args;
       updateOne(id, data)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  updateMany({commit}, params) {
+  updateMany({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {id, data} = params;
+      const {id, data} = args;
       updateMany(id, data)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  updateManyByFilter({commit}, params) {
+  updateManyByFilter({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {id, data} = params;
+      const {id, data} = args;
       updateManyByFilter(id, data)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  removeOne({commit}, params) {
+  removeOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {id} = params;
+      const {id} = args;
       removeOne(id)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  removeMany({commit}, params) {
+  removeMany({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {ids} = params;
+      const {ids} = args;
       removeMany(ids)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  removeManyByFilter({commit}, params) {
+  removeManyByFilter({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {filter} = params;
+      const {filter} = args;
       removeManyByFilter(filter)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  removeRealOne({commit}, params) {
+  removeRealOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {id} = params;
+      const {id} = args;
       removeRealOne(id)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getOne({commit}, params) {
+  getOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {id} = params;
+      const {id} = args;
       getOne(id)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getOneByFilter({commit}, params) {
+  getOneByFilter({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {filter} = params;
+      const {filter} = args;
       getOneByFilter(filter)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getMany({commit}, params) {
+  getMany({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {ids} = params;
+      const {ids} = args;
       getMany(ids)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getList({commit}, params) {
+  getList({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {filter} = params;
+      const {filter} = args;
       getList(filter)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getTreeList({commit}, params) {
+  getTreeList({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {filter} = params;
+      const {filter} = args;
       getTreeList(filter)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getPageList({commit}, params) {
+  getPageList({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {pageFlag, pageSize, filter} = params;
+      const {pageFlag, pageSize, filter} = args;
       getPageList(pageFlag, pageSize, filter)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getTotal({commit}, params) {
+  getTotal({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {filter} = params;
+      const {filter} = args;
       getTotal(filter)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);

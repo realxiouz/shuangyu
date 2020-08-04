@@ -32,11 +32,11 @@ const mutations = {
 
 const actions = {
   // eslint-disable-next-line no-unused-vars
-  getList({commit}, params) {
+  getList({commit}, args) {
     return new Promise((resolve, reject) => {
-      getList(params)
-        .then(response => {
-          resolve(response);
+      getList(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -44,11 +44,11 @@ const actions = {
     });
   },
   // eslint-disable-next-line no-unused-vars
-  getRootPageList({commit}, params) {
+  getRootPageList({commit}, args) {
     return new Promise((resolve, reject) => {
-      getRootPageList(params)
-        .then(response => {
-          resolve(response);
+      getRootPageList(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -56,11 +56,11 @@ const actions = {
     });
   },
   // eslint-disable-next-line no-unused-vars
-  getOne({commit}, params) {
+  getOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      getOne(params)
-        .then(response => {
-          resolve(response);
+      getOne(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -68,11 +68,11 @@ const actions = {
     });
   },
   // eslint-disable-next-line no-unused-vars
-  getPageList({commit}, params) {
+  getPageList({commit}, args) {
     return new Promise((resolve, reject) => {
-      getPageList(params)
-        .then(response => {
-          resolve(response);
+      getPageList(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -80,11 +80,11 @@ const actions = {
     });
   },
   // eslint-disable-next-line no-unused-vars
-  removeOne({commit}, params) {
+  removeOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      removeOne(params)
-        .then(response => {
-          resolve(response);
+      removeOne(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -92,11 +92,11 @@ const actions = {
     });
   },
   // eslint-disable-next-line no-unused-vars
-  saveOne({commit}, params) {
+  saveOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      saveOne(params)
-        .then(response => {
-          resolve(response);
+      saveOne(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -104,11 +104,11 @@ const actions = {
     });
   },
   // eslint-disable-next-line no-unused-vars
-  update({commit}, params) {
+  update({commit}, args) {
     return new Promise((resolve, reject) => {
-      update(params)
-        .then(response => {
-          resolve(response);
+      update(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -116,11 +116,11 @@ const actions = {
     });
   },
   // eslint-disable-next-line no-unused-vars
-  getTreeList({commit}, params) {
+  getTreeList({commit}, args) {
     return new Promise((resolve, reject) => {
-      getTreeList(params)
-        .then(response => {
-          resolve(response);
+      getTreeList(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -128,11 +128,11 @@ const actions = {
     });
   },
   // eslint-disable-next-line no-unused-vars
-  getAsyncTreeList({commit}, params) {
+  getAsyncTreeList({commit}, args) {
     return new Promise((resolve, reject) => {
-      getAsyncTreeList(params)
-        .then(response => {
-          resolve(response);
+      getAsyncTreeList(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);

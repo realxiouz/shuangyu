@@ -1,7 +1,6 @@
 import request from '@/utils/request';
 
-export function getOne(args) {
-  const { code } = args;
+export function getOne(code) {
   return request({
     url: `/manage/micro/service/get/one/${code}`,
     method: 'get'
@@ -16,8 +15,7 @@ export function saveData(data) {
   });
 }
 
-export function getPageList(args) {
-  const { pageFlag, pageSize, ...params } = args;
+export function getPageList(pageFlag, pageSize, params) {
   return request({
     url: `/manage/micro/service/page/list/${pageFlag}/${pageSize}`,
     method: 'get',
@@ -25,8 +23,7 @@ export function getPageList(args) {
   });
 }
 
-export function removeOne(args) {
-  const { code } = args;
+export function removeOne(code) {
   return request({
     url: `/manage/micro/service/remove/one/${code}`,
     method: 'delete'

@@ -4,9 +4,10 @@ const actions = {
   // eslint-disable-next-line no-unused-vars
   getOne({ commit }, args) {
     return new Promise((resolve, reject) => {
-      getOne(args)
-        .then(response => {
-          resolve(response);
+      const { code } = args;
+      getOne(code)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -17,8 +18,8 @@ const actions = {
   saveData({ commit }, args) {
     return new Promise((resolve, reject) => {
       saveData(args)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -28,9 +29,10 @@ const actions = {
   // eslint-disable-next-line no-unused-vars
   getPageList({ commit }, args) {
     return new Promise((resolve, reject) => {
-      getPageList(args)
-        .then(response => {
-          resolve(response);
+      const { pageFlag, pageSize, ...params } = args;
+      getPageList(pageFlag, pageSize, params)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -40,9 +42,10 @@ const actions = {
   // eslint-disable-next-line no-unused-vars
   removeOne({ commit }, args) {
     return new Promise((resolve, reject) => {
-      removeOne(args)
-        .then(response => {
-          resolve(response);
+      const { code } = args;
+      removeOne(code)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);

@@ -31,8 +31,7 @@ export function removeOne(id) {
   });
 }
 
-export function getRootPageList(args) {
-  const { pageFlag, pageSize, ...params } = args;
+export function getRootPageList(pageFlag, pageSize, params) {
   return request({
     url: `/firm/dept/get/root/list/page/${pageFlag}/${pageSize}`,
     method: 'get',
@@ -40,8 +39,7 @@ export function getRootPageList(args) {
   });
 }
 
-export function getPageList(args) {
-  const { pageFlag, pageSize, ...params } = args;
+export function getPageList(pageFlag, pageSize, params) {
   return request({
     url: `/firm/dept/page/list/${pageFlag}/${pageSize}`,
     method: 'get',

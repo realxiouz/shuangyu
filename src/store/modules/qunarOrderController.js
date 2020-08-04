@@ -1,11 +1,11 @@
 import {orderNonexist} from '@/api/qunarOrderController';
 
 const actions = {
-  orderNonexist({commit}, params) {
+  orderNonexist({commit}, args) {
     return new Promise((resolve, reject) => {
-      orderNonexist(params)
-        .then(response => {
-          resolve(response);
+      orderNonexist(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
