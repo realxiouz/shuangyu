@@ -162,7 +162,8 @@ const actions = {
   },
   getPageList({commit}, args) {
     return new Promise((resolve, reject) => {
-      getPageList(args)
+      const {pageFlag, pageSize, ...params} = args;
+      getPageList(pageFlag, pageSize, params)
         .then(data => {
           resolve(data);
         })

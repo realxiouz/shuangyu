@@ -89,8 +89,7 @@ export function getList(filter) {
   });
 }
 
-export function getPageList(args) {
-  const { pageFlag, pageSize, ...params } = args;
+export function getPageList(pageFlag, pageSize, params) {
   return request({
     url: `/admin/user/page/list/${pageFlag}/${pageSize}`,
     method: 'get',
