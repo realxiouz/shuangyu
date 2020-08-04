@@ -252,7 +252,6 @@ export const MIXIN_EDIT = {
             .catch(error => {
               console.log(error);
             })
-            // eslint-disable-next-line no-unused-vars
             .finally(_ => {
               this.afterLoadData();
             });
