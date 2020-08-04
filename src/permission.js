@@ -1,13 +1,11 @@
 import router from './router';
 import store from './store';
-import { Message } from 'element-ui';
+import {Message} from 'element-ui';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
-import { getToken } from '@/utils/auth';
-import menu from './store/modules/menu';
-import { resetRoute } from "@/router";
+import {getToken} from '@/utils/auth';
 
-NProgress.configure({ showSpinner: false });
+NProgress.configure({showSpinner: false});
 
 const whiteList = ['/login'];
 
@@ -17,44 +15,40 @@ router.beforeEach(async (to, from, next) => {
   const hasToken = getToken();
   if (hasToken) {
     if (to.path.startsWith('/login')) {
-      next({ path: '/' });
+      next({path: '/'});
       NProgress.done();
     } else {
-      if (!store.state.user.needGetMenu) {
-        next();
-      } else {
-        let { menus } = await store.dispatch('getLoginInfo', { firmId: null });
-        let tree = genTree(null, menus);
-        let routes = genMenus(tree);
-
-        // let m = await store.dispatch('getMenu');
-        // let routes = genMenus(m);
-
-        // let arr = await store.dispatch('menu/getTreeList', {});
-        // let routes = genMenus(arr);
-
-        routes.push({
-          path: '*',
-          component: _import('404'),
-          hidden: true,
-          meta: { title: '404', icon: 'home' }
-        });
-        store.commit('user/setRoutes', routes);
-        router.addRoutes(routes);
-        store.commit('user/setNeedGetMenu', false);
-        console.log(routes);
-        try {
-          next({
-            ...to,
-            replace: true
+      try {
+        if (!store.getters.userId) {
+          store.dispatch('staff/getLoginInfo', {firmId: null}).then(data => {
+            if (data.menus) {
+              let routerList = getRouterList(data.menus);
+              router.addRoutes(routerList);
+              router.reload = false;
+            }
+            if (data.firms && !data.staffId) {
+              next({path: `/select/firm`});
+            } else {
+              next({...to, replace: true});
+            }
           });
-        } catch (error) {
-          console.log(error);
-          await store.dispatch('user/resetToken');
-          Message.error(error || 'Has Error');
-          next(`/login?redirect=${to.path}`);
-          NProgress.done();
+        } else {
+          if (router.reload) {
+            let menus = store.getters.menus;
+            let routerList = getRouterList(menus);
+            router.addRoutes(routerList);
+            router.reload = false;
+            next({...to, replace: true});
+          } else {
+            next();
+          }
         }
+      } catch (error) {
+        console.log(error);
+        await store.dispatch('user/resetToken');
+        Message.error(error || 'Has Error');
+        next(`/login?redirect=${to.path}`);
+        NProgress.done();
       }
     }
   } else {
@@ -71,10 +65,13 @@ router.afterEach(() => {
   NProgress.done();
 });
 
-let _import = path => _ => import(`@/views/${path}.vue`);
+function loadComponent(component) {
+  return () => import(`@/views/${component}.vue`);
+}
 
-function genMenus(arr) {
-  return arr
+
+function getRouterList(menus) {
+  return menus
     .sort((i, j) => i.sort - j.sort)
     .map(i => {
       let {
@@ -90,41 +87,23 @@ function genMenus(arr) {
         keepAlive
       } = i;
       let c = null;
-      let isNav = (tags || []).findIndex(i => i === 'NAV') > -1;
-      let cPath = isNav ? 'Layout' : component;
       try {
-        c = _import(cPath);
+        c = loadComponent(component);
       } catch (error) {
         console.log('import error', error);
-        c = _import('404');
+        c = loadComponent('404');
       }
-      let bean = {
+      let r = {
         path: uri,
-        meta: { title, icon, keepAlive },
+        meta: {title, icon, keepAlive},
         name: menuName,
         component: c,
         sort,
         hidden: !enable
       };
       if (children && children.length) {
-        bean.children = genMenus(children);
+        r.children = getRouterList(children);
       }
-      return bean;
+      return r;
     });
-}
-
-function genTree(pid, arr) {
-  let tree = [];
-  for (let i = 0; i < arr.length; i++) {
-    if (arr[i].pid === pid) {
-      tree.push(arr[i]);
-    }
-  }
-  if (tree.length > 0) {
-    for (let i = 0; i < tree.length; i++) {
-      let children = genTree(tree[i].menuId, arr);
-      tree[i].children = children;
-    }
-  }
-  return tree;
 }

@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import getters from './getters';
 import user from './modules/user';
 import role from './modules/role';
 import menu from './modules/menu';
@@ -79,8 +80,6 @@ import voucherTemplate from './modules/voucherTemplate';
 import voucherRecord from './modules/voucherRecord';
 import microserver from './modules/microserver';
 import openPolicyAttr from './modules/openPolicyAttr';
-
-import { getLoginInfo, getMenu } from '@/api/staff';
 
 Vue.use(Vuex);
 export default new Vuex.Store({
@@ -165,43 +164,5 @@ export default new Vuex.Store({
     microserver,
     openPolicyAttr
   },
-  state: {
-    loginInfo: {}
-  },
-  mutations: {
-    SET_LOGIN_INFO: (state, data) => {
-      state.loginInfo = data;
-    },
-    SET_MENUS: (state, array) => {
-      state.menus = array;
-    }
-  },
-  actions: {
-    getLoginInfo({ commit }, params) {
-      return new Promise((resolve, reject) => {
-        const { firmId } = params;
-        getLoginInfo(firmId)
-          .then(response => {
-            // const {data} = response;
-            commit('SET_LOGIN_INFO', response);
-            resolve(response);
-          })
-          .catch(error => {
-            reject(error);
-          });
-      });
-    },
-
-    getMenu({ commit }) {
-      return new Promise((resolve, reject) => {
-        getMenu()
-          .then(response => {
-            resolve(response);
-          })
-          .catch(error => {
-            reject(error);
-          });
-      });
-    }
-  }
+  getters
 });

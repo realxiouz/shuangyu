@@ -18,30 +18,12 @@ import {
 import {getToken, removeToken} from "@/utils/auth";
 
 const state = {
-  token: getToken(),
-  name: "",
-  avatar: "",
-  routes: [],
-  needGetMenu: true
+  token: getToken()
 };
 
 const mutations = {
-  SET_TOKEN: (state, token) => {
+  setToken: (state, token) => {
     state.token = token;
-  },
-  SET_NAME: (state, name) => {
-    state.name = name;
-  },
-  SET_AVATAR: (state, avatar) => {
-    state.avatar = avatar;
-  },
-
-  setRoutes(state, routes) {
-    state.routes = routes
-  },
-
-  setNeedGetMenu(state, isNeed) {
-    state.needGetMenu = isNeed
   }
 };
 
@@ -50,9 +32,9 @@ const actions = {
     const {username, password} = args;
     return new Promise((resolve, reject) => {
       signIn({username: username.trim(), password: password})
-        .then(response => {
-          resolve(response);
-          commit("SET_TOKEN", response.token);
+        .then(data => {
+          resolve(data);
+          commit("setToken", data.token);
         })
         .catch(error => {
           reject(error);
@@ -65,9 +47,9 @@ const actions = {
     const {username, code} = args;
     return new Promise((resolve, reject) => {
       signInCode({username: username.trim(), code: code})
-        .then(response => {
-          resolve(response);
-          commit("SET_TOKEN", response.token);
+        .then(data => {
+          resolve(data);
+          commit("setToken", data.token);
         })
         .catch(error => {
           reject(error);
@@ -80,7 +62,7 @@ const actions = {
       // const {token} = args;
       signOut(args)
         .then(() => {
-          commit("SET_TOKEN", "");
+          commit("setToken", "");
           removeToken();
           resolve();
         })
@@ -92,7 +74,7 @@ const actions = {
 
   resetToken({commit}) {
     return new Promise(resolve => {
-      commit("SET_TOKEN", "");
+      commit("setToken", "");
       resolve();
     });
   },
@@ -101,8 +83,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {user} = args
       addOne(user)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -113,8 +95,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {userId} = args
       removeOne(userId)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -125,8 +107,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {filter} = args;
       getFirstOne(filter)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -136,8 +118,8 @@ const actions = {
   updateOne({commit}, args) {
     return new Promise((resolve, reject) => {
       updateOne(args)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -147,8 +129,8 @@ const actions = {
   saveOne({commit}, args) {
     return new Promise((resolve, reject) => {
       saveOne(args)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -158,8 +140,8 @@ const actions = {
   getOne({commit}, args) {
     return new Promise((resolve, reject) => {
       getOne(args)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -170,8 +152,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {filter} = args;
       getList(filter)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -181,8 +163,8 @@ const actions = {
   getPageList({commit}, args) {
     return new Promise((resolve, reject) => {
       getPageList(args)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -192,9 +174,9 @@ const actions = {
   activation({commit}, args) {
     return new Promise((resolve, reject) => {
       activation(args)
-        .then(response => {
-          resolve(response);
-          commit("SET_TOKEN", "");
+        .then(data => {
+          resolve(data);
+          commit("setToken", "");
           removeToken();
         })
         .catch(error => {
@@ -206,8 +188,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {filed} = args;
       isExist(filed)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject({code: -1, message: error.message});
@@ -218,8 +200,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {id} = args;
       resetPassword(id)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -230,8 +212,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {target} = args;
       getVerifyCode(target)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
