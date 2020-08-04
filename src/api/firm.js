@@ -116,3 +116,10 @@ export function getSupplierList(filter) {
     params: filter
   });
 }
+
+export function getSupplierListForOpen(hasOpenFlag) {
+  return request({
+    url: `/firm/merchant/supplier/get/list/for/open/${hasOpenFlag}`,
+    method: `get`
+  });
+}

@@ -14,7 +14,8 @@ import {
   getConfigPageList,
   getConfigList,
   getConfigOne,
-  getSupplierList
+  getSupplierList,
+  getSupplierListForOpen
 } from '@/api/firm';
 
 const actions = {
@@ -201,6 +202,18 @@ const actions = {
     return new Promise((resolve, reject) => {
       const { filter } = args;
       getSupplierList(filter)
+        .then(data => {
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getSupplierListForOpen({ commit }, args) {
+    return new Promise((resolve, reject) => {
+      const { hasOpenFlag } = args;
+      getSupplierListForOpen(hasOpenFlag)
         .then(data => {
           resolve(data);
         })
