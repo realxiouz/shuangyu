@@ -145,9 +145,9 @@
             }
         },
         created() {
-          this.domain = localStorage.getItem("domain");
+          this.domain = localStorage.getItem("merchantDomain");
           this.openId = localStorage.getItem("openId");
-          this.firmId = localStorage.getItem("firmId");
+          this.firmId = localStorage.getItem("merchantId");
           if (this.firmId) {
             this.orderData.firmId = this.firmId;
           }

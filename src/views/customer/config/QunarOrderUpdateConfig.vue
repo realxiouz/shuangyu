@@ -135,9 +135,9 @@
             }
         },
         created() {
-          this.merchantDomain = localStorage.getItem("domain");
+          this.merchantDomain = localStorage.getItem("merchantDomain");
           this.openId = localStorage.getItem("openId");
-          this.merchantId = localStorage.getItem("firmId");
+          this.merchantId = localStorage.getItem("merchantId");
 
           if (this.firmId) {
             this.orderData.merchantId = this.firmId;

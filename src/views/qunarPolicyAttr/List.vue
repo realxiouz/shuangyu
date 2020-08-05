@@ -321,9 +321,13 @@ export default {
           if (obj.defaultValue && obj.defaultValue.length < 1) {
             obj.defaultValue = null;
           }
-          obj.merchantId = null;
+          obj.firmId = null;
           if (localStorage.getItem("firmId")) {
-            obj.merchantId = localStorage.getItem("firmId");
+            obj.firmId = localStorage.getItem("firmId");
+          }
+          obj.merchantId = null;
+          if (localStorage.getItem("merchantId")) {
+            obj.merchantId = localStorage.getItem("merchantId");
           }
           formData.append("qunarPolicyAttrList", JSON.stringify(obj));
         }

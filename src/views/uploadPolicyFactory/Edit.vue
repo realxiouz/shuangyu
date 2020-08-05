@@ -17,11 +17,11 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="企业名称：" prop="merchantId">
+            <el-form-item label="商户名称：" prop="merchantId">
               <el-select
                 style="width: 100%;"
                 v-model="formData.merchantId"
-                placeholder="请选择企业"
+                placeholder="请选择商户"
                 filterable
                 @change="handleFirm"
               >
@@ -166,7 +166,7 @@
             {required: true, message: "请选择定时策略"}
           ],
           merchantId: [
-            {required: true, message: "请选择企业名称"}
+            {required: true, message: "请选择商户名称"}
           ],
           policyConfigId: [
             {required: true, message: "请选择用户账号"}
@@ -204,9 +204,9 @@
             console.log(error);
           });
       },
-      loadQunarPolicyConfig(firmId){
+      loadQunarPolicyConfig(merchantId){
         this.$store
-          .dispatch("qunarPolicyConfig/getList", {firmId: firmId})
+          .dispatch("qunarPolicyConfig/getList", {merchantId: merchantId})
           .then(data => {
               this.policyConfigData = data;
           })
@@ -231,14 +231,19 @@
       },
       handleFirm(val){
         if(val){
-          this.loadQunarPolicyConfig(val);
+          let that = this;
+          that.firmData.forEach(function(obj){
+            if(obj.merchantId === val){
+              that.formData.firmId = obj.firmId;
+            }
+          });
+          that.loadQunarPolicyConfig(val);
         }
       },
       handleSwitch(){
         this.defaultFlag = !this.defaultFlag;
       },
       handleCron(val) {
-        console.log(val);
         this.formData.cron = val
       },
       beforeSave(data) {
@@ -249,8 +254,14 @@
         let tag = this.formData.jobConfigList[0];
         let jobConfigArray = data.jobConfigList;
         jobConfigArray.push({
+          code: "firmId",
+          name: "企业主键",
+          value: this.formData.firmId,
+          type: "String"
+        });
+        jobConfigArray.push({
           code: "merchantId",
-          name: "授权企业",
+          name: "商户主键",
           value: this.formData.merchantId,
           type: "String"
         });
@@ -291,6 +302,7 @@
         };
       },
       beforeLoadData(data) {
+        data.firmId = null;
         data.merchantId = null;
         data.policyConfigId = null;
         data.jobConfigList = [];
@@ -397,6 +409,7 @@
           schedulerName: null,
           jobInfoId: null,
           firmId: null,
+          merchantId: null,
           firmName: null,
           params: [],
           status: null,
@@ -405,7 +418,6 @@
           tagName: null,
           tagCode: null,
           tagType: null,
-          merchantId: null,
           policyConfigId: null,
           jobConfigList: []
         };

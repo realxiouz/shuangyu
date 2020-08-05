@@ -37,6 +37,10 @@
         type: String,
         default: null
       },
+      merchantId: {
+        type: String,
+        default: null
+      },
       openId: {
         type: String,
         default: null
@@ -97,6 +101,10 @@
           flag = true;
           msg = '丢失企业主键';
         }
+        if(!this.merchantId){
+          flag = true;
+          msg = '丢失商户主键';
+        }
         if(!this.openId){
           flag = true;
           msg = '丢失平台主键';
@@ -109,6 +117,9 @@
       beforeSave(data){
         if(this.firmId){
           data.firmId = this.firmId;
+        }
+        if(this.merchantId){
+          data.merchantId = this.merchantId;
         }
         if(this.openId){
           data.openId = this.openId;

@@ -56,17 +56,13 @@
         }
         return firmName;
       },
-      detailsOnClick(configNavUrl, item) { console.log(item);
-/*        0：供应商，1：企业客户，2：个人客户
-        if(0 === item.merchantType){
-
-        }else if(0 === item.merchantType){
-
-        }*/
+      detailsOnClick(configNavUrl, item) {
         let lastName = this.$router.history.current.name;
         localStorage.setItem("lastName", lastName);
-        localStorage.setItem("domain", item.firm.domain);
-        localStorage.setItem("firmId", item.firm.firmId);
+        localStorage.setItem("firmId", item.firmId);
+        localStorage.setItem("firmDomain", item.firm.domain);
+        localStorage.setItem("merchantId", item.firm.firmId);
+        localStorage.setItem("merchantDomain", item.firm.domain);
         localStorage.setItem("openId", item.openId);
 /*        this.$router.push(
           {

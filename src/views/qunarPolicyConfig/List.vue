@@ -37,7 +37,7 @@
       @current-change="onCurrentChange"
       :current-page.sync="currentPage"
     ></el-pagination>
-    <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" :firmId="firmId" :openId="openId" @refresh="onRefresh"/>
+    <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" :firmId="firmId" :merchantId="merchantId" :openId="openId" @refresh="onRefresh"/>
   </div>
 </template>
 
@@ -57,6 +57,7 @@
           removeOne: 'qunarPolicyConfig/removeOne'
         },
         firmId: localStorage.getItem("firmId"),
+        merchantId: localStorage.getItem("merchantId"),
         openId: localStorage.getItem("openId"),
         params: this.fillParams(),
       };
@@ -76,6 +77,10 @@
         if(localStorage.getItem("firmId")){
           params.firmId = localStorage.getItem("firmId");
        //   params.firmId = this.$route.params.firmId;
+        }
+        if(localStorage.getItem("merchantId")){
+          params.merchantId = localStorage.getItem("merchantId");
+          //   params.merchantId = this.$route.params.merchantId;
         }
         if(localStorage.getItem("openId")){
           params.openId = localStorage.getItem("openId");

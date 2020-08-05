@@ -129,7 +129,7 @@
             }
         },
         created() {
-            this.initFormData(localStorage.getItem("firmId"));
+            this.initFormData(localStorage.getItem("merchantId"));
         }
     }
 </script>

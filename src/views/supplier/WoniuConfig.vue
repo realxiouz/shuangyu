@@ -173,7 +173,7 @@
             }
         },
         created() {
-            this.firmId = localStorage.getItem("firmId");
+            this.firmId = localStorage.getItem("merchantId");
             this.openId = localStorage.getItem("openId");
             if (this.openId) {
                 this.formData.openId = this.openId;

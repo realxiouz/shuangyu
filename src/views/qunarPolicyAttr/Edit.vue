@@ -226,17 +226,6 @@
       };
     },
     methods: {
-      loadFirm(firmId){
-        this.$store.dispatch('firm/getOne', {firmId: firmId})
-          .then(data => {
-            if(data){
-              console.log("进来了");
-              console.log(data);
-              this.formData.firmId = data.firmId;
-              this.formData.firmName = data.firmName;
-            }
-          });
-      },
       loadQunarPolicyAttr(){
         this.$store.dispatch('qunarPolicyAttr/getList', {code: this.formData.code})
           .then(data => {
@@ -292,19 +281,21 @@
         return data;
       },
       afterLoadData(){
-        let firmId = localStorage.getItem("firmId");
-        if(firmId){
-          this.loadFirm(firmId);
-        }
         this.loadQunarPolicyAttr();
         this.handleCheckedChange(this.queryPolicyTags);
+      },
+      beforeSave(data) {
+        data.forEach(function(obj){
+
+        });
+        return data;
       },
       defaultFormData() {
         return {
           policyAttrId: null,
           sort: null,
           firmId: null,
-          firmName: null,
+          merchantId: null,
           policyTags: [],
           code: null,
           name: null,
@@ -328,7 +319,6 @@
           readonly: false,
           disabled: false,
           hidden: false,
-          merchantId: null,
           isIndeterminate: false,
           checkAll: false,
           checkedPolicyTags: [],
