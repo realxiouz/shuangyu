@@ -129,6 +129,8 @@
                         this.dialogVisible = false;
                         this.$emit('refresh');
                         this.$message({ type: 'success', message: '保存成功' });
+                        this.keyId ? this.$emit('updata') : this.$emit('add')
+                        
                     })
                     // eslint-disable-next-line no-unused-vars
                     .finally(_ => {

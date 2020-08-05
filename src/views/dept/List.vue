@@ -38,18 +38,18 @@
       ></el-table-column>
       <el-table-column fixed="right" label="操作" width="280">
         <template slot-scope="scope">
-          <el-button @click="parentId=scope.row.deptId;onAdd()" type="success" size="mini"
+          <el-button @click="handleRowVal=scope.row;parentId=scope.row.deptId;onAdd()" type="success" size="mini"
             >添加子部门</el-button
           >
           <span v-show="0 == scope.row.deptType" style="margin-left: 10px;">
             <el-button
-              @click="onEdit(scope.row.deptId)"
+              @click="handleRowVal=scope.row;parentId=scope.row.deptId;onEdit(scope.row.deptId)"
               type="primary"
               size="mini"
               >编辑</el-button
             >
             <el-button
-              @click.native.prevent="onDel(scope.row.deptId)"
+              @click.native.prevent="handleRowVal=scope.row;onDel(scope.row.deptId)"
               type="danger"
               size="mini"
               >删除</el-button
@@ -78,8 +78,9 @@
       :visible.sync="dialogVisible"
       :key-id="keyId"
       :key-name="keyName"
-      @refresh="onRefresh"
       :pid="parentId"
+      @add="upDataChildren('add')"
+      @updata="upDataChildren('updata')"
     ></edit>
   </div>
 </template>
@@ -166,7 +167,25 @@ export default {
       this.pid = row.deptId;
       this.editDeptId = "";
       this.dialogVisible = true;
-    }
+    },
+    onDel(id) {
+      if (this.actions.removeOne) {
+        this.$confirm('确定删除?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$store
+            .dispatch(this.actions.removeOne, {[this.keyName]: id})
+            .then(() => {
+              this.$message({type: 'success', message: '删除成功'});
+              this.upDataChildren('remove')
+            });
+        }).catch(error => {
+          console.log(error);
+        });
+      }
+    },
   },
 
   components: {

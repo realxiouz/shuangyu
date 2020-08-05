@@ -44,9 +44,9 @@ const actions = {
     });
   },
   updateOne({ commit }, args) {
-    const { id, data } = args;
+    const { deptId, ...data } = args;
     return new Promise((resolve, reject) => {
-      updateOne(id, data)
+      updateOne(deptId, data)
         .then(data => {
           resolve(data);
         })
