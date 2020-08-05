@@ -81,12 +81,22 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item v-show="more" label="政策代码:">
+            <el-input
+              clearable
+              v-model="formData.policyCode"
+              @keyup.enter.native="$emit('onSearch', formData)"
+              placeholder="请输入政策代码搜索..."
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item v-show="more" label="航班号:">
             <el-input
               clearable
               v-model="formData.flightCode"
               @keyup.enter.native="$emit('onSearch', formData)"
-              placeholder="请输入任务名称搜索..."
+              placeholder="请输入航班号搜索..."
             ></el-input>
           </el-form-item>
         </el-col>
@@ -96,7 +106,7 @@
               clearable
               v-model="formData.dpt"
               @keyup.enter.native="$emit('onSearch', formData)"
-              placeholder="请输入任务名称搜索..."
+              placeholder="请输入出发地搜索..."
             ></el-input>
           </el-form-item>
         </el-col>
@@ -106,7 +116,7 @@
               clearable
               v-model="formData.arr"
               @keyup.enter.native="$emit('onSearch', formData)"
-              placeholder="请输入任务名称搜索..."
+              placeholder="请输入到达地搜索..."
             ></el-input>
           </el-form-item>
         </el-col>
