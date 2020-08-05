@@ -165,8 +165,8 @@ const actions = {
   },
   getConfigPageList({ commit }, args) {
     return new Promise((resolve, reject) => {
-      const { pageFlag, pageSize } = args;
-      getConfigPageList(pageFlag, pageSize)
+      const { pageFlag, pageSize, params} = args;
+      getConfigPageList(pageFlag, pageSize, params)
         .then(data => {
           resolve(data);
         })

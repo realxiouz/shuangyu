@@ -89,7 +89,7 @@
            <el-button
             type="primary"
             size="mini"
-            @click="onConfig(scope.$index, scope.row)"
+            @click="onConfig(scope.row.merchantId)"
             >配置</el-button
           >
           <!--            <span v-show="scope.row.openId && '' != scope.row.openId">

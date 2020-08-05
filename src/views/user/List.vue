@@ -13,7 +13,6 @@
       size="mini"
     >
       >
-      <el-table-column prop="username" label="账号" align="center" width="200"></el-table-column>
       <el-table-column prop="nickName" label="昵称" width="120" align="center"></el-table-column>
       <el-table-column prop="fullName" label="姓名" width="120" align="center"></el-table-column>
       <el-table-column label="性别" width="50" align="center">
@@ -94,7 +93,8 @@
 
           getPageList: 'user/getPageList',
           removeOne: 'user/removeOne'
-        }
+        },
+        params: {},
       };
     },
     components: {

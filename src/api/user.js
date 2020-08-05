@@ -1,4 +1,5 @@
 import request from '@/utils/request';
+const qs = require('qs');
 
 export function signIn(data) {
   return request({
@@ -91,7 +92,10 @@ export function getPageList(pageFlag, pageSize, params) {
   return request({
     url: `/admin/user/page/list/${pageFlag}/${pageSize}`,
     method: 'get',
-    params
+    params,
+    paramsSerializer: function(params) {
+      return qs.stringify(params, {arrayFormat: 'comma'})
+    }
   });
 }
 

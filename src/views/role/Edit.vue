@@ -126,6 +126,9 @@ export default {
             this.afterLoadData();
           });
       });
+    },
+    beforeSave(data) {
+      return {...data, menus: this.$refs.tree.getCheckedKeys()}
     }
   },
   created() {
