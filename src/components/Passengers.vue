@@ -85,6 +85,14 @@ export default {
         phone: ""
       });
       this.$emit("input", this.value);
+    },
+    validate() {
+      for (const i of this.value) {
+        if (!i.fullName) {
+          return false
+        }
+      }
+      return true
     }
   }
 };

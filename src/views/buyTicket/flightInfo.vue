@@ -10,10 +10,10 @@
       <div v-show="step == 0" :key="0">
         <el-form :inline="true" label-position="top" :model="form">
           <el-form-item label="出发城市">
-            <el-select v-model="form.dpt"></el-select>
+            <el-input v-model="form.dpt" />
           </el-form-item>
           <el-form-item label="到达城市">
-            <el-select v-model="form.arr"></el-select>
+            <el-input v-model="form.arr" />
           </el-form-item>
           <el-form-item label="出发时间">
             <el-date-picker v-model="form.dptDay"></el-date-picker>
@@ -21,6 +21,7 @@
           <el-form-item label="操作">
             <el-button @click="onSearch">搜索</el-button>
             <el-button @click="$router.push('/product/purchase/order/edit?isAdd=1')">补单</el-button>
+            <el-button @click="step++">下一步</el-button>
           </el-form-item>
         </el-form>
         <el-table
@@ -132,7 +133,7 @@
       
       <el-row v-show="step == 1" :gutter="20" :key="1">
         <el-col :span="16">
-          <el-form>
+          <!-- <el-form>
             <el-row>
               <el-col :span="16">
                 <el-form-item>
@@ -180,14 +181,24 @@
               </template>
             </el-table-column>
             <el-table-column label="证件号" prop="idCardNo" />
-          </el-table>
+          </el-table> -->
+          <el-form :disabled="hasData">
+            <passengers ref="passengers" v-model="ps" />
+          </el-form>
           <el-button-group>
             <el-button @click="step--">上一步</el-button>
-            <el-button @click="onConfirm" :disabled="!selPassengers.length">提交订单</el-button>
+            <el-button @click="onConfirm" :disabled="!ps.length">提交订单</el-button>
           </el-button-group>
         </el-col>
         <el-col :span="8"></el-col>
       </el-row>
+
+      <div v-show="step == 2" :key="2">
+        <el-button @click="step++">下单</el-button>
+      </div>
+      <div v-show="step==3" :key="3">
+        <el-button @click="step=0">支付</el-button>
+      </div>
     </transition-group>
   </div>
 </template>
@@ -195,12 +206,14 @@
 <script>
 import { mapState } from "vuex";
 import { CARD_TYPES_MAP, AGE_TYPES_MAP, AGE_TYPES, CARD_TYPES} from "@/utils/const";
+import Passengers from '@/components/Passengers'
 
 export default {
   created() {
     // this.$store.dispatch("airport/getList", {}).then(r => {
     // });
-    if (this.passengers.length) {
+    this.hasData = this.$route.query.hasData == 1
+    if (this.hasData) {
       let { dpt, arr, dptTime, cabin, flightCode, flightDate } = this.info;
       this.form = {
         arr,
@@ -213,13 +226,15 @@ export default {
 
       this.getOrderFlight(this.form);
     }
+    
+    this.ps = !this.hasData ? [] : this.passengers
   },
   data() {
     return {
       form: {
         arr: "CSX",
         dpt: "LUM",
-        dptDay: "2020-08-03",
+        dptDay: "2020-08-07",
         flightCode: "TV6030",
         dptTime: "16:40"
       },
@@ -240,11 +255,15 @@ export default {
       flightData: [],
       loading: false,
       expandRowKeys: [],
+      hasData: false,
+
+      ps: []
     };
   },
   methods: {
     onSearch() {
-      this.step++
+      this.getOrderFlight(this.form)
+      // this.step++
     },
     searchAirport(airportCode) {
       airportCode &&
@@ -331,7 +350,9 @@ export default {
       this.selPassengers = val
     },
     onConfirm() {
-      
+      if (this.$refs.passengers.validate()) {
+        this.step++
+      }
     },
     deepClone(data) {
         const type = this.judgeType(data);
@@ -462,6 +483,9 @@ export default {
   },
   computed: {
     ...mapState("ticket", ["info", "passengers"])
+  },
+  components: {
+    Passengers
   }
 };
 </script>

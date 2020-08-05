@@ -38,7 +38,7 @@
       ></el-table-column>
       <el-table-column fixed="right" label="操作" width="280">
         <template slot-scope="scope">
-          <el-button @click="onAdd(scope.row.deptId)" type="success" size="mini"
+          <el-button @click="parentId=scope.row.deptId;onAdd()" type="success" size="mini"
             >添加子部门</el-button
           >
           <span v-show="0 == scope.row.deptType" style="margin-left: 10px;">
@@ -79,6 +79,7 @@
       :key-id="keyId"
       :key-name="keyName"
       @refresh="onRefresh"
+      :pid="parentId"
     ></edit>
   </div>
 </template>
@@ -107,7 +108,9 @@ export default {
       actions: {
         getPageList: "dept/getRootPageList",
         removeOne: "dept/removeOne"
-      }
+      },
+
+      parentId: ''
     };
   },
   methods: {

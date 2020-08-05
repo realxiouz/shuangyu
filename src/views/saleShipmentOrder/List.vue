@@ -330,7 +330,7 @@ export default {
       this.$store.commit('ticket/setOrderDetails', orderDetails)
       this.$store.commit('ticket/setParentNo', parentNo)
       this.$router.push({
-        path: `/buyTicket/flightInfo`
+        path: `/buyTicket/flightInfo?hasData=1`
       });
     },
     getValByType(i) {
