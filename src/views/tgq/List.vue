@@ -94,7 +94,7 @@
         actions: {
           getPageList: 'jobScheduler/getPageList'
         },
-        extraParam: {
+        params: {
           tagCode : 'tgq',
           tagId : 'd718e77cd1e74892866b230caf2d2483'
         }

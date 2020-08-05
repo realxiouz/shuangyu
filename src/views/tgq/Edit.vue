@@ -52,7 +52,8 @@
                 v-if="item.valueType ==4"
                 arrow-control
                 v-model="item.value"
-                :picker-options="{selectableRange: '00:00:00 - 23:59:00' }">
+                :picker-options="{selectableRange: '00:00:00 - 23:59:00' }"
+                style="width: 100%">
               </el-time-picker>
               <!-- 评分-->
               <el-rate v-if="item.valueType ==5" v-model="item.value"></el-rate>
@@ -74,7 +75,7 @@
                 </el-checkbox>
               </el-checkbox-group>
               <!--选择器-->
-              <el-select v-model="item.value" v-if="item.valueType ==62" :multiple="item.multiple">
+              <el-select v-model="item.value" v-if="item.valueType ==62" :multiple="item.multiple" style="width: 100%">
                 <el-option
                   v-for="attr in item.attributes"
                   :key="attr.code"
