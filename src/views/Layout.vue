@@ -125,7 +125,7 @@
         isCollapse: false,
         isDisplay: true,
         firms: this.$store.getters.firms,
-        firmId: this.$store.getters.firm.firmId,
+        firmId: this.$store.getters.firm ? this.$store.getters.firm.firmId : "",
         firmData: "",
         tags: [{
           name: "首页",
@@ -200,9 +200,9 @@
         this.$store
           .dispatch("user/signOut")
           .then(() => {
-            this.$router.push({path: "/login"});
-            this.$store.commit("user/setRoutes", []);
             resetRouter();
+            this.$store.commit("staff/setLoginInfo", null);
+            this.$router.push({path: "/login"});
           })
           .catch(() => {
           });

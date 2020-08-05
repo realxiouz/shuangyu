@@ -26,7 +26,7 @@ router.beforeEach(async (to, from, next) => {
               router.addRoutes(routerList);
               router.reload = false;
             }
-            if (data.firms && !data.staffId) {
+            if (data.firms.length > 1 && !data.staffId) {
               next({path: `/select/firm`});
             } else {
               next({...to, replace: true});
