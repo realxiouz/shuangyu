@@ -1,6 +1,6 @@
 <template>
   <div class="home contentBox">
-    <div>订单接口管理</div>
+    <div>政策导入管理</div>
     <div class="page-back">
       <el-button-group>
         <el-button icon="el-icon-back" type="warning" @click="goBack"
