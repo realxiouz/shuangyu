@@ -102,7 +102,7 @@ export const MIXIN_LIST = {
       let _params = {};
       for (let key in this.params) {
         let val = this.params[key];
-        if (val !== "" && val !== null && val !== undefined && !isNaN(val) && /[^\s]/.test(val)) {
+        if (val !== "" && val !== null && val !== undefined && /[^\s]/.test(val)) {
           _params[key] = val;
         }
       }
