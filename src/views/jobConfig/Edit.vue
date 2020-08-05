@@ -116,23 +116,23 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="24" v-if="formData.valueType === 3">
-            <el-form-item label="日期格式：" prop="format">
-              <el-input v-model="formData.format" placeholder="请输入日期格式" readonly disabled />
-            </el-form-item>
-          </el-col>
           <el-col :span="12" v-if="formData.valueType === 3">
-            <el-form-item label="日期类型">
+            <el-form-item label="日期类型：" prop="dateType">
               <el-select
-                v-model="formData.type"
+                v-model="formData.dateType"
                 clearable
                 placeholder="请选择日期类型"
                 style="width: 100%"
-                @change="handleType"
+                @change="handleDateType"
               >
                 <el-option label="日期" value="date"></el-option>
                 <el-option label="日期时间" value="datetime"></el-option>
               </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24" v-if="formData.valueType === 3">
+            <el-form-item label="日期格式：" prop="format">
+              <el-input v-model="formData.format" placeholder="请输入日期格式" readonly disabled />
             </el-form-item>
           </el-col>
           <el-col :span="24" v-if="formData.valueType === 4">
@@ -322,9 +322,10 @@
           this.formData.valueType = val;
 
           if(this.formData.valueType === 3){
+            this.formData.dateType = 'date';
             this.formData.format = 'yyyy-MM-dd';
           }else if(this.formData.valueType === 4){
-            this.formData.format = 'yyyy-MM-dd HH:mm:ss';
+            this.formData.format = 'HH:mm:ss';
           }
         }
         switch (val) {
@@ -366,7 +367,17 @@
       },
       handleType(val){
         if(val){
-          this.formData.inputType = val;
+          this.formData.type = val;
+        }
+      },
+      handleDateType(val){
+        if(val){
+          this.formData.dateType = val;
+          if(val === 'date'){
+            this.formData.format = 'yyyy-MM-dd';
+          }else if(val === 'datetime'){
+            this.formData.format = 'yyyy-MM-dd HH:mm:ss';
+          }
         }
       },
       handleMultipleChange(val) {
@@ -438,7 +449,7 @@
             flag = false;
             msg = '请输入日期格式';
           }
-          if(!this.formData.type){
+          if(!this.formData.dateType){
             flag = false;
             msg = '请选择日期类型';
           }
@@ -480,6 +491,14 @@
         }
         return flag;
       },
+      beforeLoadData(data) {
+        if(data.type === 'Date' && data.format === 'yyyy-MM-dd'){
+          data.dateType = 'date';
+        }else if(data.type === 'Date' && data.format === 'yyyy-MM-dd HH:mm:ss'){
+          data.dateType = 'datetime';
+        }
+        return data;
+      },
       defaultFormData() {
         return {
           tagId: null,
@@ -490,6 +509,7 @@
           code: null,
           name: null,
           valueType: null,
+          dateType: null,
           type: null,
           value: null,
           inputType: null,
