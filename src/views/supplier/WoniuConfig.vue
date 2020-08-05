@@ -24,7 +24,7 @@
         </el-row>
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="token:" prop="下单URL">
+            <el-form-item label="下单URL:" prop="placeOrderUrl">
               <el-input v-model="formData.placeOrderUrl"></el-input>
             </el-form-item>
           </el-col>
@@ -61,6 +61,9 @@
                     ],
                     token: [
                         {required: true, message: "请输入token", trigger: "blur"}
+                    ],
+                    placeOrderUrl:[
+                        {required: true, message: "请输入下单URL", trigger: "blur"}
                     ]
                 }
             }

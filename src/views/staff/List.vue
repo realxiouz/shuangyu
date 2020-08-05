@@ -3,10 +3,10 @@
     <el-row class="page-search" :gutter="20">
       <el-col :xs="11" :sm="10" :md="9" :lg="8" :xl="8">
         <el-row style="margin-bottom:20px;">
-          <span
+          <!-- <span
             style="font-weight:700;color:#303133;"
             v-if="this.$store.state.loginInfo.firm"
-          >{{this.$store.state.loginInfo.firm.firmName}}</span>
+          >{{this.$store.state.loginInfo.firm.firmName}}</span> -->
         </el-row>
 
         <el-tree
@@ -37,6 +37,7 @@
                 staffAddVisible: true,
                 loading: true,
                 curNode: null,
+                firm:'',
                 treeData: [],
                 defaultExpandedKeys: [],
                 treeProps: {
