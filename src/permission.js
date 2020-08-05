@@ -69,10 +69,27 @@ function loadComponent(component) {
   return () => import(`@/views/${component}.vue`);
 }
 
+function routerFilter(menu) {
+  if (menu.children && menu.children.length > 0) {
+    let _children = menu.children.filter(routerFilter);
+    if (_children && _children.length > 0) {
+      menu.hasChildren = true;
+    } else {
+      menu.hasChildren = false;
+    }
+    menu.children = _children;
+  }
+  if (menu.tags && menu.tags.length > 0) {
+    return menu.tags.indexOf("VIEW") > -1;
+  } else {
+    return false;
+  }
+}
 
 function getRouterList(menus) {
   return menus
     .sort((i, j) => i.sort - j.sort)
+    .filter(routerFilter)
     .map(i => {
       let {
         uri,
@@ -99,9 +116,10 @@ function getRouterList(menus) {
         name: menuName,
         component: c,
         sort,
+        tags,
         hidden: !enable
       };
-      if (children && children.length) {
+      if (children && children.length > 0) {
         r.children = getRouterList(children);
       }
       return r;
