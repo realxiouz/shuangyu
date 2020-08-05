@@ -2,7 +2,7 @@ import request from '@/utils/request';
 
 export function save(data) {
   return request({
-    url: '/qunar/open/config/save/one',
+    url: '/qunar/open/config/save',
     method: 'post',
     data
   });

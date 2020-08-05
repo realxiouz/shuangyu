@@ -49,7 +49,7 @@
       @current-change="onCurrentChange"
       :current-page.sync="currentPage"
     ></el-pagination>
-    <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" :pid="pid" :category="category" @refresh="handleRefresh"/>
+    <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" :pid="pid" :category="category" @refresh="onRefresh"/>
   </div>
 </template>
 
@@ -121,8 +121,8 @@
             });
         }
       },
-      handleRefresh() {
-        this.onRefresh();
+      onRefresh() {
+        this.loadData();
         this.loadChildren(this.uploadData.tree, this.uploadData.treeNode, this.uploadData.resolve);
       }
     },

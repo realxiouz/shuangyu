@@ -62,14 +62,13 @@
           </el-col>
           <el-col :span="12" v-if="formData.valueType === 4">
             <el-form-item label="默认数值：" prop="defaultValue">
-              <el-date-picker
+              <el-time-picker
                 v-model="formData.defaultValue"
                 :format="formData.format"
-                type="datetime"
                 placeholder="请选择默认数值"
                 style="width: 100%;"
               >
-              </el-date-picker>
+              </el-time-picker>
             </el-form-item>
           </el-col>
           <el-col :span="12" v-if="formData.valueType === 5">
