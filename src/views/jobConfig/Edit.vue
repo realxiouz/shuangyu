@@ -80,22 +80,22 @@
           </el-col>
           <el-col :span="12" v-if="formData.valueType === 2">
             <el-form-item label="最小数值：" prop="min">
-              <el-input-number v-model="formData.min" placeholder="请输入最小数值" :min="0" :step="1" style="width: 100%;" />
+              <el-input-number v-model="formData.min" placeholder="请输入最小数值" :step="1" style="width: 100%;" />
             </el-form-item>
           </el-col>
           <el-col :span="12" v-if="formData.valueType === 2">
             <el-form-item label="最大数值：" prop="max">
-              <el-input-number v-model="formData.max" placeholder="请输入最大数值" :min="0" :step="1" style="width: 100%;" />
+              <el-input-number v-model="formData.max" placeholder="请输入最大数值" :step="1" style="width: 100%;" />
             </el-form-item>
           </el-col>
           <el-col :span="12" v-if="formData.valueType === 2">
             <el-form-item label="步长数值：" prop="step">
-              <el-input-number v-model="formData.step" placeholder="请输入步长数值" :min="0" :step="1" style="width: 100%;" />
+              <el-input-number v-model="formData.step" placeholder="请输入步长数值" :step="1" style="width: 100%;" />
             </el-form-item>
           </el-col>
           <el-col :span="12" v-if="formData.valueType === 2">
             <el-form-item label="精度数值：" prop="precision">
-              <el-input-number v-model="formData.precision" placeholder="请输入精度数值" :min="0" :step="1" style="width: 100%;" />
+              <el-input-number v-model="formData.precision" placeholder="请输入精度数值" :step="1" style="width: 100%;" />
             </el-form-item>
           </el-col>
           <el-col :span="12" v-if="formData.valueType === 2">
@@ -152,7 +152,7 @@
             id="attributeCode"
             v-for="(attribute, index) in formData.attributes"
             :gutter="10"
-            :key="attribute.code"
+            :key="attribute.id"
           >
             <el-col :span="10">
               <el-form-item label="标签编码：">
@@ -396,7 +396,9 @@
         this.formData.hidden = !this.formData.hidden;
       },
       addAttributes(){
+        let index = this.formData.attributes.length;
         this.formData.attributes.push({
+          id: index + 1,
           code: null,
           name: null
         });
@@ -514,13 +516,14 @@
           value: null,
           inputType: null,
           length: 0,
-          min: 0,
-          max: 0,
-          step: 0,
+          min: -999,
+          max: 1,
+          step: 1,
           precision: 0,
           format: null,
           attributes: [
             {
+              id: 1,
               code: null,
               name: null
             }
