@@ -51,7 +51,7 @@
         formData: {
           subjectCode: null,
           subjectName: null,
-          category: null
+          category: this.category
         }
       };
     },
@@ -69,7 +69,7 @@
         return {
           subjectCode: null,
           subjectName: null,
-          category: null
+          category: this.category
         };
       },
       handleMore() {
@@ -80,7 +80,6 @@
         this.handleConfirm();
       },
       handleConfirm() {
-        this.formData.category = this.category;
         this.$emit("onSearch", this.formData);
       }
     }

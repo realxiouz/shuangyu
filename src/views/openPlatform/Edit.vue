@@ -24,7 +24,7 @@
         <el-row class="el-row-item">
           <el-row
             id="configNavId"
-            v-for="(configNav, index) in formData.configNavList"
+            v-for="(configNav, index) in formData.configNavs"
             :gutter="10"
             :key="configNav.configNavId"
           >
@@ -128,7 +128,7 @@
           openName: null,
           openType: null,
           openUrl: null,
-          configNavList: [
+          configNavs: [
             {
               configNavId: null,
               configNavName: null,
@@ -138,7 +138,7 @@
         };
       },
       addConfigNav(){
-        this.formData.configNavList.push({
+        this.formData.configNavs.push({
           configNavId: null,
           configNavName: null,
           configNavUrl: null
@@ -146,8 +146,20 @@
       },
       deleteConfigNav(index){
         if(index){
-          this.formData.configNavList.splice(parseInt(index), 1);
+          this.formData.configNavs.splice(parseInt(index), 1);
         }
+      },
+      beforeLoadData(data) {
+        if(data && !data.configNavs){
+          data.configNavs = [
+            {
+              configNavId: null,
+              configNavName: null,
+              configNavUrl: null
+            }
+          ]
+        }
+        return data;
       }
     }
   };
