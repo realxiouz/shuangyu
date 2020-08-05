@@ -11,7 +11,7 @@
       <select-firms
         v-if="dialogVisible"
         ref="selectFirms"
-        :firms="$store.state.staff.loginInfo.firms"
+        :firms="$store.getters.firms"
         @onSelectFirm="onFirmIdChange"
       ></select-firms>
     </el-dialog>
