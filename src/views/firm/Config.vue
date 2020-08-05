@@ -1,6 +1,5 @@
 <template>
   <div class="home contentBox">
-    <div>菜单</div>
     <div>
       <transition name="fade-transform" mode="out-in">
         <div>
