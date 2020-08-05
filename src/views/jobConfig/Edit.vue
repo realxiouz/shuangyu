@@ -141,7 +141,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="6" v-if="formData.valueType === 62">
-            <el-form-item label="是否多选">
+            <el-form-item label="是否多选：">
               <el-switch v-model="formData.multiple" :active-value="true" :inactive-value="false" @change="handleMultipleChange"></el-switch>
             </el-form-item>
           </el-col>
@@ -347,6 +347,7 @@
             break;
           case 60:
             this.formData.type = "String";
+            this.formData.multiple = false;
             break;
           case 61:
             this.formData.type = "ArrayList";

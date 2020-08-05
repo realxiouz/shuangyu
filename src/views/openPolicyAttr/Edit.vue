@@ -98,6 +98,38 @@
               <el-input-number v-model="formData.precision" placeholder="请输入精度数值" :min="0" :step="1" style="width: 100%;" />
             </el-form-item>
           </el-col>
+          <el-col :span="12" v-if="formData.valueType === 2">
+            <el-form-item label="数字类型：" prop="type">
+              <el-select
+                v-model="formData.type"
+                clearable
+                placeholder="请选择数字类型"
+                style="width: 100%"
+                @change="handleType"
+              >
+                <el-option label="Byte" value="Byte"></el-option>
+                <el-option label="Short" value="Short"></el-option>
+                <el-option label="Integer" value="Integer"></el-option>
+                <el-option label="Long" value="Long"></el-option>
+                <el-option label="Float" value="Float"></el-option>
+                <el-option label="Double" value="Double"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" v-if="formData.valueType === 3">
+            <el-form-item label="日期类型：" prop="dateType">
+              <el-select
+                v-model="formData.dateType"
+                clearable
+                placeholder="请选择日期类型"
+                style="width: 100%"
+                @change="handleDateType"
+              >
+                <el-option label="日期" value="date"></el-option>
+                <el-option label="日期时间" value="datetime"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
           <el-col :span="24" v-if="formData.valueType === 3">
             <el-form-item label="日期格式：" prop="format">
               <el-input v-model="formData.format" placeholder="请输入日期格式" readonly disabled />
@@ -108,6 +140,11 @@
               <el-input v-model="formData.format" placeholder="请输入时间格式" readonly disabled />
             </el-form-item>
           </el-col>
+          <el-col :span="6" v-if="formData.valueType === 62">
+            <el-form-item label="是否多选：">
+              <el-switch v-model="formData.multiple" :active-value="true" :inactive-value="false" @change="handleMultipleChange"></el-switch>
+            </el-form-item>
+          </el-col>
         </el-row>
 
         <el-row class="el-row-item" v-if="formData.valueType === 60 || formData.valueType === 61 || formData.valueType === 62">
@@ -115,7 +152,7 @@
             id="attributeCode"
             v-for="(attribute, index) in formData.attributes"
             :gutter="10"
-            :key="attribute.code"
+            :key="attribute.id"
           >
             <el-col :span="10">
               <el-form-item label="标签编码：">
@@ -345,9 +382,10 @@
           this.formData.valueType = val;
 
           if(this.formData.valueType === 3){
+            this.formData.dateType = 'date';
             this.formData.format = 'yyyy-MM-dd';
           }else if(this.formData.valueType === 4){
-            this.formData.format = 'yyyy-MM-dd HH:mm:ss';
+            this.formData.format = 'HH:mm:ss';
           }
         }
         switch (val) {
@@ -362,18 +400,24 @@
             break;
           case 3:
           case 4:
-          case 5:
             this.formData.type = "Date";
             break;
-          case 6:
+          case 5:
             this.formData.type = "Float";
             break;
-          case 7:
+          case 60:
+            this.formData.type = "String";
+            this.formData.multiple = false;
+            break;
+          case 61:
+            this.formData.type = "ArrayList";
+            this.formData.multiple = true;
+            break;
+          case 62:
+            this.formData.multiple = false;
             this.formData.type = "String";
             break;
-          case 8:
-            this.formData.type = "String";
-            this.formData.multiple = true;
+          default:
             break;
         }
       },
@@ -381,6 +425,24 @@
         if(val){
           this.formData.inputType = val;
         }
+      },
+      handleType(val){
+        if(val){
+          this.formData.type = val;
+        }
+      },
+      handleDateType(val){
+        if(val){
+          this.formData.dateType = val;
+          if(val === 'date'){
+            this.formData.format = 'yyyy-MM-dd';
+          }else if(val === 'datetime'){
+            this.formData.format = 'yyyy-MM-dd HH:mm:ss';
+          }
+        }
+      },
+      handleMultipleChange(val) {
+        this.formData.type = val ? 'ArrayList' : 'String'
       },
       handleCheckAllChange(flag) {
         this.formData.checkedPolicyTags = flag ? this.formData.checkPolicyTags : [];
@@ -420,7 +482,9 @@
         this.formData.hidden = !this.formData.hidden;
       },
       addAttributes(){
+        let index = this.formData.attributes.length;
         this.formData.attributes.push({
+          id: index + 1,
           code: null,
           name: null
         });
@@ -462,12 +526,20 @@
             flag = false;
             msg = '请输入精度数值';
           }
+          if(!this.formData.type){
+            flag = false;
+            msg = '请选择数字类型';
+          }
         }
 
         if(this.formData.valueType === 3){
           if(!this.formData.format){
             flag = false;
             msg = '请输入日期格式';
+          }
+          if(!this.formData.dateType){
+            flag = false;
+            msg = '请选择日期类型';
           }
         }
 
@@ -494,6 +566,12 @@
           }else{
             this.formData.attributes = null;
           }
+          if(this.formData.valueType === 62){
+            if(null === this.formData.multiple || '' === this.formData.multiple){
+              flag = false;
+              msg = '请选择是否多选';
+            }
+          }
         }
 
         if(!flag){
@@ -503,6 +581,11 @@
       },
       beforeLoadData(data){
         let that = this;
+        if(data.type === 'Date' && data.format === 'yyyy-MM-dd'){
+          data.dateType = 'date';
+        }else if(data.type === 'Date' && data.format === 'yyyy-MM-dd HH:mm:ss'){
+          data.dateType = 'datetime';
+        }
         data.isIndeterminate = that.defaultFormData().isIndeterminate;
         data.checkAll = that.defaultFormData().checkAll;
         data.checkedPolicyTags = that.defaultFormData().checkedPolicyTags;
@@ -535,17 +618,18 @@
           code: null,
           name: null,
           valueType: null,
-          type: "String",
+          type: null,
           defaultValue: null,
           inputType: null,
           length: 0,
-          min: 0,
-          max: 0,
-          step: 0,
+          min: -999,
+          max: 1,
+          step: 1,
           precision: 0,
           format: null,
           attributes: [
             {
+              id: 1,
               code: null,
               name: null
             }

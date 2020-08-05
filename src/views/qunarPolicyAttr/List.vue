@@ -207,7 +207,7 @@
                 placeholder="请选择默认数值"
                 style="width: 100%;"
               />
-              <el-date-picker
+              <el-time-picker
                 prop="defaultValue"
                 v-if="scope.row.valueType === 4"
                 v-model="scope.row.defaultValue"
@@ -215,7 +215,8 @@
                 type="datetime"
                 placeholder="请选择默认数值"
                 style="width: 100%;"
-              />
+              >
+              </el-time-picker>
               <el-input
                 prop="defaultValue"
                 v-if="scope.row.valueType === 5"

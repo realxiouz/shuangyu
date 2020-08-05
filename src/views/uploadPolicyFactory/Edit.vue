@@ -80,14 +80,14 @@
               <el-aside class="el-aside-red" v-if="item.remark" :title="item.remark">{{'* ' + item.remark}}</el-aside>
             </el-form-item>
             <el-form-item :label="item.name + '：'" :prop="'jobConfigList.' + index + '.value'" :rules="[{ required: item.required, message: '请输入' + item.name, trigger: 'change' }]" v-if="item.valueType === 4">
-              <el-date-picker
-                 v-model="item.value"
-                 :format="item.format"
-                 :placeholder="'请选择' + item.name"
-                 type="datetime"
-                 style="width: 100%;"
+              <el-time-picker
+                v-model="item.value"
+                :format="item.format"
+                :placeholder="'请选择' + item.name"
+                type="datetime"
+                style="width: 100%;"
               >
-              </el-date-picker>
+              </el-time-picker>
               <el-aside class="el-aside-red" v-if="item.remark" :title="item.remark">{{'* ' + item.remark}}</el-aside>
             </el-form-item>
             <el-form-item :label="item.name + '：'" :prop="'jobConfigList.' + index + '.value'" :rules="[{ required: item.required, message: '请输入' + item.name, trigger: 'change' }]" v-if="item.valueType === 5">
