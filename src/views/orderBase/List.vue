@@ -12,7 +12,7 @@
       size="mini"
       border
     >
-      <el-table-column prop="orderNo" label="单号" />
+      <!-- <el-table-column prop="orderNo" label="单号" />
       <el-table-column label="单据日期">
         <template slot-scope="scope">{{ scope.row.orderDate | time("YYYY-MM-DD") }}</template>
       </el-table-column>
@@ -72,20 +72,19 @@
         :formatter="formatWarehouseStatus"
         label="发货状态"
         width="80"
-      />
+      /> -->
       <el-table-column fixed="right" label="操作" align="center" width="200">
-        <template slot-scope="scope">
-          <el-button
-            v-show="scope.row.orderStatus != 0"
-            @click="skipDetail(scope.row.orderNo)"
-            type="primary"
-          >查看</el-button>
-          <el-button
-            v-show="scope.row.orderStatus == 0"
-            @click="onEdit(scope.row)"
-            type="primary"
-          >编辑</el-button>
-          <el-button v-show="scope.row.orderStatus == 0" @click="onDel(scope.row)" type="danger">删除</el-button>
+        <template v-slot="{ row, $index}">
+          <template v-if="extraParam.orderType==100"></template>
+          <template v-if="extraParam.orderType==101">
+            <el-button @click="onGoBuy(row)">采购</el-button>
+          </template>
+          <template v-if="extraParam.orderType==102">
+            <el-button @click="intercept(row)">拦截</el-button>
+          </template>
+          <template v-if="extraParam.orderType==103">
+            <el-button @click="onGoBuy(row)">退款</el-button>
+          </template>
         </template>
       </el-table-column>
     </el-table>
@@ -150,7 +149,49 @@ export default {
           orderType: this.extraParam.orderType
         }
       })
-    }
+    },
+    loadData() {
+      this.loading = true
+      setTimeout(_ => {
+        this.tableData = [1]
+        this.total = 1
+        this.loading = false
+      }, 1000)
+    },
+    onGoBuy(i) {
+      this.$router.push({
+        path: `/buyTicket/flightInfo`
+      })
+    },
+    intercept(row) {
+      this.$message.success('调用拦截接口')
+        // let params = {};
+        // let arr = [];
+        // row.orderDetailList.forEach(item => {
+        //   arr.push(item.name);
+        // });
+        // params.orderNo = row.sourceOrderNo;
+        // params.passengerNames = arr;
+        // this.$store
+        //   .dispatch("order/interceptOrder", params)
+        //   .then(data => {
+        //     if (data.ret&&data.msg=="SUCCESS") {
+        //       console.log(data);
+        //       this.$message({
+        //         type: "success",
+        //         message: "拦截成功！"
+        //       });
+        //     }else {
+        //       this.$message({
+        //         type: "success",
+        //         message: "拦截失败！"
+        //       });
+        //     }
+        //   })
+        //   .catch(error => {
+        //     console.log(error);
+        //   });
+      },
   },
   watch: {
     '$route.query.orderType': {

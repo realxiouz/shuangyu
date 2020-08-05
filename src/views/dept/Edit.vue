@@ -13,7 +13,7 @@
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer" style="text-align:right;">
-      <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
+      <el-button size="mini" @click="dialogVisible=false">取 消</el-button>
       <el-button size="mini" type="primary" @click="onSave">确 定</el-button>
     </div>
     </el-dialog>
@@ -118,6 +118,25 @@
                     }
                 });
             },
+            onSave() {
+                this.$refs['form'].validate(valid => {
+                if (valid ) {
+                    let actionName = this.keyId ? 'dept/updateOne' : 'dept/addOne'
+                    this.formData.pid = this.pid
+                    this.$store
+                    .dispatch(actionName, this.formData)
+                    .then(id => {
+                        this.dialogVisible = false;
+                        this.$emit('refresh');
+                        this.$message({ type: 'success', message: '保存成功' });
+                    })
+                    // eslint-disable-next-line no-unused-vars
+                    .finally(_ => {
+                        this.afterSave();
+                    });
+                }
+                });
+            }
         },
         created() {
             this.loadFirms();
