@@ -71,7 +71,28 @@
         }
       };
     },
-    methods: {},
+    methods: {
+      onEnable(row) {
+        row.enable = row.enable ? true : false;
+        this.$store
+            .dispatch("role/updateOne", {
+                roleId: row.roleId,
+                data: {
+                    enable: row.enable
+                }
+            })
+            .then(() => {
+                this.$message({
+                    message: "更新成功",
+                    type: "success"
+                });
+                this.loadData();
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    },
+    },
     components: {
       edit,
       search
