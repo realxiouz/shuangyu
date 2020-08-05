@@ -24,8 +24,29 @@
         </el-row>
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="下单URL:" prop="placeOrderUrl">
+            <el-form-item label="下单接口:" prop="placeOrderUrl">
               <el-input v-model="formData.placeOrderUrl"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="10">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="签约接口:" prop="signUrl">
+              <el-input v-model="formData.signUrl"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="10">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="签约账号:" prop="signAccount">
+              <el-input v-model="formData.signAccount"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="10">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="支付方式:" prop="paymentMode">
+              <el-input v-model="formData.paymentMode"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -62,8 +83,17 @@
                     token: [
                         {required: true, message: "请输入token", trigger: "blur"}
                     ],
-                    placeOrderUrl:[
-                        {required: true, message: "请输入下单URL", trigger: "blur"}
+                    placeOrderUrl: [
+                        {required: true, message: "请输入下单接口", trigger: "blur"}
+                    ],
+                    signUrl: [
+                        {required: true, message: "请输入签约接口", trigger: "blur"}
+                    ],
+                    signAccount: [
+                        {required: true, message: "请输入签约账号", trigger: "blur"}
+                    ],
+                    paymentMode: [
+                        {required: true, message: "请输入支付方式", trigger: "blur"}
                     ]
                 }
             }
