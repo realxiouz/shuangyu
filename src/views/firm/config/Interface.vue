@@ -1,6 +1,6 @@
 <template>
   <div class="home contentBox">
-    <div>订单配置管理</div>
+    <div>订单接口管理</div>
     <div class="page-back">
       <el-button-group>
         <el-button icon="el-icon-back" type="warning" @click="goBack"
@@ -19,13 +19,18 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="安全码：">
-            <el-input placeholder="请输入安全码" />
+          <el-form-item label="用户名:">
+            <el-input placeholder="请输入用户名" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="消息通知地址：">
-            <el-input type="textarea" placeholder="请输入消息通知地址" />
+          <el-form-item label="密码:">
+            <el-input placeholder="请输入密码" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="IP:">
+            <el-input type="textarea" placeholder="请输入IP" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -35,7 +40,7 @@
 
 <script>
 export default {
-  name: "orderConfig"
+  name: "orderInterface"
 };
 </script>
 

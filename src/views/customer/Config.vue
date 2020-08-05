@@ -43,17 +43,17 @@
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="用户名：">
+                <el-form-item label="用户名:">
                   <el-input placeholder="请输入用户名" />
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="密码：">
+                <el-form-item label="密码:">
                   <el-input placeholder="请输入密码" />
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="IP：">
+                <el-form-item label="IP:">
                   <el-input type="textarea" placeholder="请输入IP" />
                 </el-form-item>
               </el-col>
@@ -77,7 +77,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="ip地址：">
+                <el-form-item label="ip地址:">
                   <el-input placeholder="请输入ip地址" />
                 </el-form-item>
               </el-col>
