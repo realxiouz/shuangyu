@@ -5,7 +5,7 @@
       <el-table-column label="配置" type="expand">
         <template slot-scope="props">
           <el-row>
-            <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="2" v-for="(item,index) in props.row.configNavList" :key="index">
+            <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="2" v-for="(item,index) in props.row.configNavs" :key="index">
               <el-button  type="primary" @click="detailsOnClick(item.configNavUrl, props.row)">{{ item.configNavName }}</el-button>
             </el-col>
           </el-row>
@@ -56,7 +56,13 @@
         }
         return firmName;
       },
-      detailsOnClick(configNavUrl, item) {
+      detailsOnClick(configNavUrl, item) { console.log(item);
+/*        0：供应商，1：企业客户，2：个人客户
+        if(0 === item.merchantType){
+
+        }else if(0 === item.merchantType){
+
+        }*/
         let lastName = this.$router.history.current.name;
         localStorage.setItem("lastName", lastName);
         localStorage.setItem("domain", item.firm.domain);
