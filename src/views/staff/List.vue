@@ -29,54 +29,53 @@
 </template>
 
 <script>
-    import edit from "./Edit";
-
-    export default {
-        data() {
-            return {
-                staffAddVisible: true,
-                loading: true,
-                curNode: null,
-                firm:'',
-                treeData: [],
-                defaultExpandedKeys: [],
-                treeProps: {
-                    label: "deptName",
-                    children: "children"
-                }
-            };
-        },
-        methods: {
-            /*获取部门树*/
-            loadTreeData() {
-                this.$store
-                    .dispatch("dept/getTreeList", {
-                        filters: {}
-                    })
-                    .then(data => {
-                        this.defaultExpandedKeys = [];
-                        if (data) {
-                            this.treeData = data;
-                            this.defaultExpandedKeys.push(data[0].deptId);
-                            this.curNode = data[0];
-                        }
-                        this.loading = false;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            /*点击部门树时调用*/
-            handleNodeClick(data) {
-                this.staffAddVisible = false;
-                this.curNode = data;
-            }
-        },
-        created() {
-            this.loadTreeData();
-        },
-        components: {
-            edit
+  import edit from "./Edit";
+  export default {
+    data() {
+      return {
+        staffAddVisible: true,
+        loading: true,
+        curNode: null,
+        firm:'',
+        treeData: [],
+        defaultExpandedKeys: [],
+        treeProps: {
+          label: "deptName",
+          children: "children"
         }
-    };
+      };
+    },
+    methods: {
+      /*获取部门树*/
+      loadTreeData() {
+        this.$store
+          .dispatch("dept/getTreeList", {
+            filters: {}
+          })
+          .then(data => {
+            this.defaultExpandedKeys = [];
+            if (data) {
+              this.treeData = data;
+              this.defaultExpandedKeys.push(data[0].deptId);
+              this.curNode = data[0];
+            }
+            this.loading = false;
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      /*点击部门树时调用*/
+      handleNodeClick(data) {
+        this.staffAddVisible = false;
+        this.curNode = data;
+      }
+    },
+    created() {
+      this.loadTreeData();
+    },
+    components: {
+      edit
+    }
+  };
 </script>

@@ -148,6 +148,7 @@ export default {
     },
     handleSelectionChange(val) {  
       this.formData.configNavs = val
+
     },
     toggleSelection(){
         let that = this; 
