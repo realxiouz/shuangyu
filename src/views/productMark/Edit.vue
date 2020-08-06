@@ -76,7 +76,7 @@
                 };
             },
             loadProviders(){
-                this.$store.dispatch("firm/getList", { filters: {pid: this.$store.state.loginInfo.firm.firmId, type: 1} })
+                this.$store.dispatch("firm/getList", { filters: {pid: this.$store.getters.firm.firmId, type: 1} })
                     .then(data => {
                         this.providerList = data;
                     }).catch(error => {

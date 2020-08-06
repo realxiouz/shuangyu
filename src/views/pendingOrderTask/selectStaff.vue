@@ -41,7 +41,7 @@ export default {
         });
         return;
       }
-      if (this.staffId == this.$store.state.loginInfo.staffId) {
+      if (this.staffId == this.$store.getters.staffId) {
         this.$notify({
           title: "提示",
           message: "不可以自己给自己转单，请选择其他员工。",

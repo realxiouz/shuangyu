@@ -5,8 +5,8 @@
         <el-row style="margin-bottom:20px;">
           <!-- <span
             style="font-weight:700;color:#303133;"
-            v-if="this.$store.state.loginInfo.firm"
-          >{{this.$store.state.loginInfo.firm.firmName}}</span> -->
+            v-if="this.$store.getters.firm"
+          >{{this.$store.getters.firm.firmName}}</span> -->
         </el-row>
 
         <el-tree
