@@ -117,6 +117,7 @@
     watch: {
       visible(val) {
         if (val) {
+          this.codeEnable = false;
           if(this.keyId){
             this.codeEnable = true;
           }

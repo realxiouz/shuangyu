@@ -54,19 +54,15 @@
           <el-col :span="12" v-for="(item, index) in formData.jobConfigList" :key="index">
             <el-form-item :label="item.name + '：'" :prop="'jobConfigList.' + index + '.value'" :rules="[{ required: item.required, message: '请输入' + item.name, trigger: 'change' }]" v-if="item.valueType === 0 && item.inputType === 'text'">
               <el-input v-model="item.value" :placeholder="'请输入' + item.name" />
-              <el-aside class="el-aside-red" v-if="item.remark" :title="item.remark">{{'* ' + item.remark}}</el-aside>
             </el-form-item>
             <el-form-item :label="item.name + '：'" :prop="'jobConfigList.' + index + '.value'" :rules="[{ required: item.required, message: '请输入' + item.name, trigger: 'change' }]" v-if="item.valueType === 0 && item.inputType === 'textarea'">
               <el-input v-model="item.value" :placeholder="'请输入' + item.name" type="textarea" :rows="3" />
-              <el-aside class="el-aside-red" v-if="item.remark" :title="item.remark">{{'* ' + item.remark}}</el-aside>
             </el-form-item>
             <el-form-item :label="item.name + '：'" :prop="'jobConfigList.' + index + '.value'" :rules="[{ required: item.required, message: '请输入' + item.name, trigger: 'change' }]" v-if="item.valueType === 1">
               <el-switch v-model="item.value"></el-switch>
-              <el-aside class="el-aside-red" v-if="item.remark" :title="item.remark">{{'* ' + item.remark}}</el-aside>
             </el-form-item>
             <el-form-item :label="item.name + '：'" :prop="'jobConfigList.' + index + '.value'" :rules="[{ required: item.required, message: '请输入' + item.name, trigger: 'change' }]" v-if="item.valueType === 2">
               <el-input-number v-model="item.value" :placeholder="'请输入' + item.name" :min="item.min" :max="item.max" :step="item.step" :precision="item.precision" style="width: 100%;" />
-              <el-aside class="el-aside-red" v-if="item.remark" :title="item.remark">{{'* ' + item.remark}}</el-aside>
             </el-form-item>
             <el-form-item :label="item.name + '：'" :prop="'jobConfigList.' + index + '.value'" :rules="[{ required: item.required, message: '请输入' + item.name, trigger: 'change' }]" v-if="item.valueType === 3">
               <el-date-picker
@@ -77,7 +73,6 @@
                  style="width: 100%;"
               >
               </el-date-picker>
-              <el-aside class="el-aside-red" v-if="item.remark" :title="item.remark">{{'* ' + item.remark}}</el-aside>
             </el-form-item>
             <el-form-item :label="item.name + '：'" :prop="'jobConfigList.' + index + '.value'" :rules="[{ required: item.required, message: '请输入' + item.name, trigger: 'change' }]" v-if="item.valueType === 4">
               <el-time-picker
@@ -88,13 +83,11 @@
                 style="width: 100%;"
               >
               </el-time-picker>
-              <el-aside class="el-aside-red" v-if="item.remark" :title="item.remark">{{'* ' + item.remark}}</el-aside>
             </el-form-item>
             <el-form-item :label="item.name + '：'" :prop="'jobConfigList.' + index + '.value'" :rules="[{ required: item.required, message: '请输入' + item.name, trigger: 'change' }]" v-if="item.valueType === 5">
               <el-input  v-model="item.value" :placeholder="'请输入' + item.name" />
-              <el-aside class="el-aside-red" v-if="item.remark" :title="item.remark">{{'* ' + item.remark}}</el-aside>
             </el-form-item>
-            <el-form-item :label="item.name + '：'" :prop="'jobConfigList.' + index + '.value'" :rules="[{ required: item.required, message: '请输入' + item.name, trigger: 'change' }]" v-if="item.valueType === 60 || item.valueType === 62">
+            <el-form-item :label="item.name + '：'" :prop="'jobConfigList.' + index + '.value'" :rules="[{ required: item.required, message: '请输入' + item.name, trigger: 'change' }]" v-if="item.valueType === 60 || (item.valueType === 62 && !item.multiple)">
               <el-select
                  v-model="item.value"
                  :placeholder="'请选择' + item.name"
@@ -108,9 +101,8 @@
                   :value="attr.code"
                 ></el-option>
               </el-select>
-              <el-aside class="el-aside-red" v-if="item.remark" :title="item.remark">{{'* ' + item.remark}}</el-aside>
             </el-form-item>
-            <el-form-item :label="item.name + '：'" :prop="'jobConfigList.' + index + '.value'" :rules="[{ required: item.required, message: '请输入' + item.name, trigger: 'change' }]" v-if="item.valueType === 61">
+            <el-form-item :label="item.name + '：'" :prop="'jobConfigList.' + index + '.value'" :rules="[{ required: item.required, message: '请输入' + item.name, trigger: 'change' }]" v-if="item.valueType === 61 || (item.valueType === 62 && item.multiple)">
               <el-select
                  v-model="item.value"
                  :placeholder="'请选择' + item.name"
@@ -124,7 +116,6 @@
                   :value="attr.code"
                 ></el-option>
               </el-select>
-              <el-aside class="el-aside-red" v-if="item.remark" :title="item.remark">{{'* ' + item.remark}}</el-aside>
             </el-form-item>
           </el-col>
         </el-row>
@@ -219,6 +210,13 @@
         that.$store
           .dispatch("jobConfig/getList", {tagCode: "policy"})
           .then(data => {
+            if(data && data.length > 0){
+              data.forEach(function(obj){
+                if(obj.multiple && null != obj.value && '' !== obj.value){
+                  obj.value = [obj.value];
+                }
+              });
+            }
             let timer = window.setTimeout(function(){
               that.formData.jobConfigList = data;
               that.setValues();
@@ -253,25 +251,41 @@
         }
         let tag = this.formData.jobConfigList[0];
         let jobConfigArray = data.jobConfigList;
-        jobConfigArray.push({
-          code: "firmId",
-          name: "企业主键",
-          value: this.formData.firmId,
-          type: "String"
-        });
-        jobConfigArray.push({
-          code: "merchantId",
-          name: "商户主键",
-          value: this.formData.merchantId,
-          type: "String"
-        });
-        jobConfigArray.push({
-          code: "policyConfigId",
-          name: "平台配置",
-          value: this.formData.policyConfigId,
-          type: "String"
-        });
-        data.params = this.getValues(jobConfigArray);
+        if(jobConfigArray && jobConfigArray.length > 0){
+          jobConfigArray.forEach(function(obj){
+            if("firmId" === obj.code){
+              obj.value = this.formData.firmId;
+            }else{
+              jobConfigArray.push({
+                code: "firmId",
+                name: "企业主键",
+                value: this.formData.firmId,
+                type: "String"
+              });
+            }
+            if("merchantId" === obj.code){
+              obj.value = this.formData.merchantId;
+            }else{
+              jobConfigArray.push({
+                code: "merchantId",
+                name: "商户主键",
+                value: this.formData.merchantId,
+                type: "String"
+              });
+            }
+            if("policyConfigId" === obj.code){
+              obj.value = this.formData.policyConfigId;
+            }else{
+              jobConfigArray.push({
+                code: "policyConfigId",
+                name: "平台配置",
+                value: this.formData.policyConfigId,
+                type: "String"
+              });
+            }
+          });
+          data.params = this.getValues(jobConfigArray);
+        }
         data.tagId = tag.tagId;
         data.tagCode = tag.tagCode;
         data.tagName = tag.tagName;
@@ -302,7 +316,6 @@
         };
       },
       beforeLoadData(data) {
-        data.firmId = null;
         data.merchantId = null;
         data.policyConfigId = null;
         data.jobConfigList = [];
@@ -363,8 +376,8 @@
         return params;
       },
       getPropertyItem(property) {
-        const {code, name, type, value, hidden} = property;
-        let item = {code, name, type, _string: value + '', hidden};
+        const {code, name, type, hidden} = property;
+        let item = {code, name, type, hidden};
         switch (property.type) {
           case "Date":
             item._string = this.$moment(property.value).format(property.format);
@@ -425,17 +438,3 @@
     }
   };
 </script>
-
-<style>
-  .el-aside-red{
-    width: 100%;
-    height: auto;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    word-break: break-all;
-    color: #0e9aff;
-    font-size: 12px;
-    cursor: help;
-  }
-</style>

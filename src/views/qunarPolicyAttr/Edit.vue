@@ -76,7 +76,7 @@
               <el-input v-model="formData.defaultValue" placeholder="请输入默认数值" />
             </el-form-item>
           </el-col>
-          <el-col :span="12" v-if="formData.valueType === 60 || formData.valueType === 62">
+          <el-col :span="12" v-if="formData.valueType === 60 || (formData.valueType === 62 && !formData.multiple)">
             <el-form-item label="默认数值：" prop="defaultValue">
               <el-select
                 v-model="formData.defaultValue"
@@ -93,7 +93,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="12" v-if="formData.valueType === 61">
+          <el-col :span="12" v-if="formData.valueType === 61 || (formData.valueType === 62 && formData.multiple)">
             <el-form-item label="默认数值：" prop="defaultValue">
               <el-select
                 v-model="formData.defaultValue"

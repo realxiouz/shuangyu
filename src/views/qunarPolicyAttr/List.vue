@@ -358,6 +358,16 @@ export default {
       });
       return valueType;
     },
+    beforeLoadData(data) {
+      if(data && data.length > 0){
+        data.forEach(function(obj){
+          if(obj.multiple && null != obj.defaultValue && '' !== obj.defaultValue){
+            obj.defaultValue = [obj.defaultValue];
+          }
+        });
+      }
+      return data;
+    },
     afterLoadData() {
       this.$store
         .dispatch("qunarPolicyAttr/getList", {
@@ -365,10 +375,13 @@ export default {
           ...(this.extraParam || {})
         })
         .then(data => {
-          if (data) {
+          if (data && data.length > 0) {
             let that = this;
-            that.tableData.forEach(function(openAttr) {
-              data.forEach(function(qunarAttr) {
+            data.forEach(function(qunarAttr) {
+              if(qunarAttr.multiple && null != qunarAttr.defaultValue && '' !== qunarAttr.defaultValue){
+                qunarAttr.defaultValue = [qunarAttr.defaultValue];
+              }
+              that.tableData.forEach(function(openAttr) {
                 if (openAttr.code === qunarAttr.code) {
                   if (!(parseInt(qunarAttr.valueType) === 2 && qunarAttr.min >= 0 && "0" === qunarAttr.defaultValue)) {
                     openAttr.defaultValue = qunarAttr.defaultValue;
