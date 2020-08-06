@@ -50,6 +50,27 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <el-row :gutter="10">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="联系电话:" prop="contactMob">
+              <el-input v-model="formData.contactMob"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="10">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="联系人:" prop="contact">
+              <el-input v-model="formData.contact"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="10">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="排除域名:" prop="excludeDomain">
+              <el-input v-model="formData.excludeDomain"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
         <el-row>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item>
@@ -94,6 +115,9 @@
                     ],
                     paymentMode: [
                         {required: true, message: "请输入支付方式", trigger: "blur"}
+                    ],
+                    contactMob: [
+                        {required: true, message: "请输入联系电话", trigger: "blur"}
                     ]
                 }
             }
