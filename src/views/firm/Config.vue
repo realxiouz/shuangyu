@@ -1,12 +1,8 @@
 <template>
   <div class="home contentBox">
     <div class="left">
-      <el-tabs :tab-position="tabPosition" style="min-height: 200px;">
-        <el-tab-pane label="订单通知管理"></el-tab-pane>
-        <el-tab-pane label="订单接口管理"></el-tab-pane>
-        <el-tab-pane label="订单更新管理"></el-tab-pane>
-        <el-tab-pane label="政策配置管理"></el-tab-pane>
-        <el-tab-pane label="政策导入管理"></el-tab-pane>
+      <el-tabs :tab-position="tabPosition" style="min-height: 200px;" @tab-click="handleClick">
+        <el-tab-pane v-for="(item,index) in configNavs" :key="index" :label=item.navName></el-tab-pane>
       </el-tabs>
     </div>
     <div class="right" >
@@ -23,14 +19,20 @@
 </template>
 
 <script>
-
+  import {MIXIN_LIST} from "@/utils/mixin";
   export default {
+    mixins: [MIXIN_LIST],
     name: "firmConfig",
     data() {
     return {
+      configNavs: [],
       tabPosition: "left",
       current: 0,
       checked: false,
+      actions: {
+        getList: 'firmOpenAuth/getList',
+      },
+      params:{openId: localStorage.getItem("openId")},
       form: {
         name: "",
         type: [],
@@ -38,6 +40,12 @@
     };
   },
   methods: {
+    beforeLoadData(data){ 
+      if(data && data.length > 0 && data[0].configNavs){
+         this.configNavs = data[0].configNavs;
+      }
+      return data;
+    },
     goBack() {
       let lastName = localStorage.getItem("lastName");
       if (lastName) {
@@ -48,7 +56,11 @@
       }
     },
     handleSave( ) {},
+    handleClick(tab){
+      this.$router.push(this.configNavs[tab.index].navUrl)
+    }
   },
+  
   };
   
 </script>

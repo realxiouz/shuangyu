@@ -17,7 +17,27 @@
 
 <script>
 export default {
-  name: "orderPolicy"
+  name: "orderPolicy",
+  data(){
+    return{
+      form: {
+        name: "",
+        type: [],
+      }
+    }
+  },
+  methods:{
+    goBack() {
+      let lastName = localStorage.getItem("lastName");
+      if (lastName) {
+        this.$router.push({ name: lastName });
+        localStorage.removeItem("lastName");
+      } else {
+        this.$router.go(-1);
+      }
+    },
+    handleSave( ) {},
+  }
 };
 </script>
 
