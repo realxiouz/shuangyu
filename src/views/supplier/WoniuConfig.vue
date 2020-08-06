@@ -99,12 +99,9 @@
             }
         },
         methods: {
-            loadData(firmId) {
-                if (!firmId) {
-                    firmId = this.formData.firmId;
-                }
+            loadData(merchantId, firmId) {
                 this.$store
-                    .dispatch("woniuConfig/getOne", {firmId: firmId})
+                    .dispatch("woniuConfig/getOne", {merchantId: merchantId, firmId: firmId})
                     .then(data => {
                         if (data && data.firmId) {
                             this.formData = data;
@@ -173,14 +170,16 @@
             }
         },
         created() {
-            this.firmId = localStorage.getItem("merchantId");
+            this.merchantId = localStorage.getItem("merchantId");
+            this.firmId = localStorage.getItem("firmId");
             this.openId = localStorage.getItem("openId");
             if (this.openId) {
                 this.formData.openId = this.openId;
             }
-            if (this.firmId) {
+            if (this.firmId && this.merchantId) {
                 this.formData.firmId = this.firmId;
-                this.loadData(this.firmId);
+                this.formData.merchantId = this.merchantId;
+                this.loadData(this.merchantId, this.firmId);
             }
         }
     }
