@@ -172,7 +172,7 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="制单人:">
-                {{this.$store.state.loginInfo.fullName}}
+                {{this.$store.getters.fullName}}
               </el-form-item>
               <el-form-item label="制单时间:">
                 {{formatDate("YYYY-MM-DD")}}

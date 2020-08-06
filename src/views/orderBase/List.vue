@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <search class="page-search" ref="search" @onSearch="onSearch"/>
+    <search class="page-search" ref="search" @onSearch="onSearch" />
     <el-row class="page-tools" style="margin-bottom:15px;margin-left:40px">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
     </el-row>
@@ -72,7 +72,7 @@
         :formatter="formatWarehouseStatus"
         label="发货状态"
         width="80"
-      /> -->
+      />-->
       <el-table-column fixed="right" label="操作" align="center" width="200">
         <template v-slot="{ row, $index}">
           <template v-if="extraParam.orderType==100"></template>
@@ -83,7 +83,7 @@
             <el-button @click="intercept(row)">拦截</el-button>
           </template>
           <template v-if="extraParam.orderType==103">
-            <el-button @click="onGoBuy(row)">退款</el-button>
+            <el-button @click="refundTicket(row)">退款</el-button>
           </template>
         </template>
       </el-table-column>
@@ -102,19 +102,123 @@
       :page-sizes="pageSizes"
       @current-change="onCurrentChange"
     />
+
+    <el-dialog :visible.sync="refundTicketShow" title="退款">
+      <el-form
+        :model="formData"
+        label-width="110px"
+        style="margin-top:15px;"
+      >
+        <el-form-item label="退票原因:" prop="refundCauseId">
+          <el-select
+            clearable
+            v-model="formData.refundCauseId"
+            placeholder="请选择退票原因"
+            style="width: 100%"
+          >
+            <el-option
+              v-for="item in []"
+              :key="item.code"
+              :label="item.msg"
+              :value="item.code"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="退票备注:">
+          <el-input placeholder="请输入退票备注..." v-model="formData.refundCause"></el-input>
+        </el-form-item>
+        <el-row>
+          <el-col :span="8">
+            <el-form-item prop="profit" label="利润金额:">
+              <!--<el-input placeholder="请输入利润金额..." v-model="formData.profit"></el-input>-->
+              <el-input-number
+                v-model="formData.profit"
+                controls-position="right"
+                :precision="2"
+                placeholder="请输入利润金额..."
+                style="width: 100%"
+              ></el-input-number>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="蜗牛手续费:">
+              <span>{{formData.refundFeeInfo}} / 人</span>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="成人可退金额:">
+              <span>{{formData.refundFeeInfo}} / 人</span>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-form-item v-model="formData.refundData" label-width="auto">
+          <label class="el-form-item__label" style="color:#606266; width:110px;">乘车人:</label>
+          <!-- <el-table
+            ref="multipleTable"
+            size="mini"
+            :data="passagersRefund"
+            highlight-current-row
+            @selection-change="handleSelectionChange"
+            fit
+            style="width: 100%;"
+          >
+            <el-table-column type="selection" :selectable="selectable" width="55"></el-table-column>
+            <el-table-column prop="name" label="姓名" align="center"></el-table-column>
+            <el-table-column
+              prop="cardType"
+              :formatter="formatCardType"
+              label="证件类型"
+              align="center"
+            ></el-table-column>
+            <el-table-column prop="cardNo" label="证件号" align="center"></el-table-column>
+            <el-table-column prop="ageType" :formatter="formatAgeType" label="乘机人类型" align="center"></el-table-column>
+            <el-table-column label="价格" prop="amount" align="center">
+              <template slot-scope="scope">
+                <span>{{formatAmount(scope.row.amount)}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="ticketNo" label="票号" align="center"></el-table-column>
+          </el-table> -->
+        </el-form-item>
+
+        <el-form-item label="销售退改说明:">
+          <span v-if="false" v-html="refundChangeRule"></span>
+          <div>
+            <span v-if="false">（销售航班信息：）</span>
+            <span v-if="false" style="color:red;"></span>
+          </div>
+          <div v-if="true">
+            <el-row>
+              <span>退票原因：</span>
+            </el-row>
+            <el-row>
+              <span>实退金额:</span>
+            </el-row>
+          </div>
+        </el-form-item>
+        <el-form-item label="蜗牛退改说明:">
+          <span v-if="false" v-html="this.tgqText"></span>
+          <span v-else>暂无数据</span>
+        </el-form-item>
+      </el-form>
+      <div style="margin-top: 25px;text-align: right;">
+        <el-button size="mini" @click="refundTicketShow=false">取 消</el-button>
+        <el-button size="mini" @click="" type="primary">确定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { MIXIN_LIST } from '@/utils/mixin'
-import { CARD_TYPES_MAP, AGE_TYPES_MAP } from '@/utils/const'
+import { MIXIN_LIST } from "@/utils/mixin";
+import { CARD_TYPES_MAP, AGE_TYPES_MAP } from "@/utils/const";
 import {
   formatOrderStatus,
   formatOrderType,
   formatPaymentStatus,
   formatWarehouseStatus
-} from '@/utils/productStatus.js'
-import search from './Search'
+} from "@/utils/productStatus.js";
+import search from "./Search";
 
 export default {
   mixins: [MIXIN_LIST],
@@ -123,19 +227,22 @@ export default {
       cardMap: CARD_TYPES_MAP,
       ageMap: AGE_TYPES_MAP,
 
-      keyId: '',
-      keyName: 'orderNo',
+      keyId: "",
+      keyName: "orderNo",
       actions: {
-        getPageList: 'productOrder/getPageList',
-        removeOne: 'productOrder/removeOne'
+        getPageList: "productOrder/getPageList",
+        removeOne: "productOrder/removeOne"
       },
       extraParam: {
         orderType: -1
-      }
-    }
+      },
+
+      refundTicketShow: false,
+      formData: {}
+    };
   },
   created() {
-    this.extraParam.orderType = this.$route.query.orderType
+    this.extraParam.orderType = this.$route.query.orderType;
   },
   methods: {
     formatOrderStatus,
@@ -144,67 +251,72 @@ export default {
     formatWarehouseStatus,
     onAdd() {
       this.$router.push({
-        name: 'orderBaseEdit',
+        name: "orderBaseEdit",
         query: {
           orderType: this.extraParam.orderType
         }
-      })
+      });
     },
     loadData() {
-      this.loading = true
+      this.loading = true;
       setTimeout(_ => {
-        this.tableData = [1]
-        this.total = 1
-        this.loading = false
-      }, 1000)
+        this.tableData = [1];
+        this.total = 1;
+        this.loading = false;
+      }, 1000);
     },
     onGoBuy(i) {
       this.$router.push({
         path: `/buyTicket/flightInfo`
-      })
+      });
     },
     intercept(row) {
-      this.$message.success('调用拦截接口')
-        // let params = {};
-        // let arr = [];
-        // row.orderDetailList.forEach(item => {
-        //   arr.push(item.name);
-        // });
-        // params.orderNo = row.sourceOrderNo;
-        // params.passengerNames = arr;
-        // this.$store
-        //   .dispatch("order/interceptOrder", params)
-        //   .then(data => {
-        //     if (data.ret&&data.msg=="SUCCESS") {
-        //       console.log(data);
-        //       this.$message({
-        //         type: "success",
-        //         message: "拦截成功！"
-        //       });
-        //     }else {
-        //       this.$message({
-        //         type: "success",
-        //         message: "拦截失败！"
-        //       });
-        //     }
-        //   })
-        //   .catch(error => {
-        //     console.log(error);
-        //   });
-      },
+      this.$message.success("调用拦截接口");
+      // let params = {};
+      // let arr = [];
+      // row.orderDetailList.forEach(item => {
+      //   arr.push(item.name);
+      // });
+      // params.orderNo = row.sourceOrderNo;
+      // params.passengerNames = arr;
+      // this.$store
+      //   .dispatch("order/interceptOrder", params)
+      //   .then(data => {
+      //     if (data.ret&&data.msg=="SUCCESS") {
+      //       console.log(data);
+      //       this.$message({
+      //         type: "success",
+      //         message: "拦截成功！"
+      //       });
+      //     }else {
+      //       this.$message({
+      //         type: "success",
+      //         message: "拦截失败！"
+      //       });
+      //     }
+      //   })
+      //   .catch(error => {
+      //     console.log(error);
+      //   });
+    },
+    refundTicket(row) {
+      // this.purchaseOrderNo = row.sourceOrderNo;
+      // this.refundData = row;
+      this.refundTicketShow = true;
+    }
   },
   watch: {
-    '$route.query.orderType': {
+    "$route.query.orderType": {
       handler(val) {
-        this.extraParam.orderType = val
-        this.loadData()
+        this.extraParam.orderType = val;
+        this.loadData();
       }
     }
   },
   components: {
     search
   }
-}
+};
 </script>
 
 <style>

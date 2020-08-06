@@ -133,7 +133,7 @@
 
       },
       loadData() {
-        let staffId = this.$store.state.loginInfo.staffId;
+        let staffId = this.$store.getters.staffId
         console.log("staffId:" + staffId);
         if (staffId && staffId != undefined && staffId != null && staffId != '') {
           this.$store

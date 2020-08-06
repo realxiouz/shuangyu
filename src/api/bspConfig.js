@@ -2,15 +2,15 @@ import request from '@/utils/request';
 
 export function addOne(data) {
   return request({
-    url: '/bsp/config/add/one',
+    url: '/qunar/bsp/config/add/one',
     method: 'post',
     data
   });
 }
 
-export function updateOne(data) {
+export function updateOne(id,data) {
   return request({
-    url: '/bsp/config/update/one',
+    url: `/qunar/bsp/config/update/one/${configId}`,
     method: 'post',
     data
   });
@@ -18,29 +18,22 @@ export function updateOne(data) {
 
 export function removeOne(configId) {
   return request({
-    url: `/bsp/config/remove/one/${configId}`,
+    url: `/qunar/bsp/config/remove/one/${configId}`,
     method: 'delete'
   });
 }
 
-export function getOne(merchantId) {
+export function getOne(filter) {
   return request({
-    url: `/bsp/config/one/${merchantId}`,
-    method: 'get'
+    url: `/qunar/bsp/config/one`,
+    method: 'get',
+        params: filter
   });
 }
 
 export function getList(filter) {
   return request({
-    url: `/bsp/config/list`,
-    method: 'get',
-    params: filter
-  });
-}
-
-export function getTotal(filter) {
-  return request({
-    url: '/bsp/config/total',
+    url: `/qunar/bsp/config/list`,
     method: 'get',
     params: filter
   });
@@ -48,7 +41,7 @@ export function getTotal(filter) {
 
 export function getPageList(pageFlag, pageSize, lastId, filter) {
   return request({
-    url: `/bsp/config/page/list/${pageFlag}/${pageSize}/${lastId}`,
+    url: `/qunar/bsp/config/page/list/${pageFlag}/${pageSize}`,
     method: 'get',
     params: filter
   });

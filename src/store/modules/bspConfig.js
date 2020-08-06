@@ -37,8 +37,7 @@ const actions = {
   },
   getOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {merchantId} = args;
-      getOne(merchantId)
+      getOne(args)
         .then(data => {
           resolve(data);
         })

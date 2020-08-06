@@ -157,7 +157,7 @@
                   ></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="制单人:">{{ this.$store.state.loginInfo.fullName }}</el-form-item>
+              <el-form-item label="制单人:">{{ this.$store.getters.fullName }}</el-form-item>
               <el-form-item label="制单时间:">{{ new Date() | time("YYYY-MM-DD") }}</el-form-item>
             </el-col>
           </el-col>

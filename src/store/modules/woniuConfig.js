@@ -48,8 +48,7 @@ const actions = {
   },
   getOne({commit}, params) {
     return new Promise((resolve, reject) => {
-      const {firmId} = params;
-      getOne(firmId)
+      getOne(params)
         .then(response => {
           resolve(response);
         })

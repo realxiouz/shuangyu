@@ -106,7 +106,7 @@ export default {
       let params = { ...this.formData };
       params.staffId = this.staffId;
       params.name = this.name;
-      params.firmId = this.$store.state.loginInfo.firm.firmId;
+      params.firmId = this.$store.getters.firm.firmId;
       if (params.sourceOrderNo == "") {
         this.$notify({
           title: "提示",

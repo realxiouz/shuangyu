@@ -75,7 +75,7 @@
                 </el-checkbox>
               </el-checkbox-group>
               <!--选择器-->
-              <el-select v-model="item.value" v-if="item.valueType ==62" :multiple="item.multiple" style="width: 100%">
+              <el-select v-model="item.value" v-if="item.valueType ==62 && item.code!='merchantId'" :multiple="item.multiple" style="width: 100%">
                 <el-option
                   v-for="attr in item.attributes"
                   :key="attr.code"
@@ -83,6 +83,15 @@
                   :value="attr.code"
                   style="width: 100%">
                 </el-option>
+              </el-select>
+              <el-select v-model="item.value" v-if="item.valueType ==62 && item.code=='merchantId'" :multiple="item.multiple" style="width: 100%">
+                <el-option
+                  v-for="item in customerData"
+                  :key="item.merchantId"
+                  :label="item.firm.firmName"
+                  :value="item.merchantId"
+                  style="width: 100%"
+                ></el-option>
               </el-select>
               <!-- &lt;!&ndash; 多选 非销售属性&ndash;&gt;
                <el-checkbox-group
@@ -112,6 +121,7 @@
     data() {
       return {
         formData: {},
+        customerData: [],
         rules: {
           schedulerName: [
             {required: true, message: "必填", trigger: "blur"}
@@ -145,6 +155,17 @@
       changeCron(val) {
         this.formData.cron = val
       },
+      getCustomer() {
+        this.$store
+          .dispatch("firmMerchant/getCustomerList", {merchantType: 1})
+          .then(data => {
+            this.customerData = data;
+          })
+          .catch(error => {
+            console.log(error);
+            this.loading = false;
+          });
+      },
       handleSave() {
         this.$refs['form'].validate((valid) => {
           if (valid) {
@@ -163,8 +184,8 @@
             } else {
               let xxlJobGroup = {
                 appName: 'tgq-provider',
-                addressType:0,
-                title:'tgq执行器'
+                addressType: 0,
+                title: 'tgq执行器'
               };
               let xxlJobInfo = {
                 jobDesc: this.formData.schedulerName,
@@ -288,6 +309,7 @@
         return params;
       },
       getPropertyItem(property) {
+        console.log(property)
         const {code, name, type, value, hidden} = property;
         let item = {code, name, type, _string: value + '', hidden};
         switch (property.type) {
@@ -330,6 +352,7 @@
     created() {
       this.formData = this.defaultFormData();
       this.getParams();
+      this.getCustomer();
     }
   }
 </script>

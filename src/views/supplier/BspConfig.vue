@@ -4,7 +4,9 @@
       <div @click="goBack" style="margin-bottom: 20px">
         <el-page-header></el-page-header>
       </div>
-      <div style="height: 60px;line-height: 60px;font-size: 24px;border-bottom: 1px solid #ccc;margin-bottom: 20px">BSP账号配置</div>
+      <div style="height: 60px;line-height: 60px;font-size: 24px;border-bottom: 1px solid #ccc;margin-bottom: 20px">
+        BSP账号配置
+      </div>
       <el-row>
         <el-col :xs="24" :sm="15" :md="12" :lg="8" :xl="8">
           <el-form ref="configForm" :model="formData" :rules="rules" label-width="100px" size="mini">
@@ -100,11 +102,11 @@
                     }
                 });
             },
-            initFormData(merchantId){
-                if (merchantId){
-                    this.$store.dispatch('bspConfig/getOne', {merchantId:merchantId})
+            initFormData(merchantId, firmId) {
+                if (merchantId && firmId) {
+                    this.$store.dispatch('bspConfig/getOne', {merchantId: merchantId, firmId: firmId})
                         .then((data) => {
-                            if (data && data.configId){
+                            if (data && data.configId) {
                                 this.update = true;
                                 this.formData = data;
                             } else {
@@ -129,7 +131,7 @@
             }
         },
         created() {
-            this.initFormData(localStorage.getItem("merchantId"));
+            this.initFormData(localStorage.getItem("merchantId"), localStorage.getItem("firmId"));
         }
     }
 </script>
