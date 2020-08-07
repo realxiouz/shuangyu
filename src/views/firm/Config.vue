@@ -1,7 +1,7 @@
 <template>
   <div class="home contentBox">
     <div class="left">
-      <el-tabs :tab-position="tabPosition" style="min-height: 200px;" @tab-click="handleClick">
+      <el-tabs :tab-position="tabPosition" style="min-height:500px" @tab-click="handleClick">
         <el-tab-pane v-for="(item,index) in configNavs" :key="index" :label=item.navName></el-tab-pane>
       </el-tabs>
     </div>
@@ -58,6 +58,7 @@
     handleSave( ) {},
     handleClick(tab){
       this.$router.push(this.configNavs[tab.index].navUrl)
+      console.log(this.configNavs[tab.index].navUrl)
     }
   },
   
@@ -79,12 +80,13 @@
 }
 .left{
   float: left;
+  display: inline-block;
 }
 .right{
   margin-top: -20px;
   margin-left: 150px;
 }
 .contentBox{
-  min-height: 260px;
+  min-height: 500px;
 }
 </style>
