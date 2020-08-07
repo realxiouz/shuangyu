@@ -201,8 +201,8 @@ const actions = {
   },
   resetPassword({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {id} = args;
-      resetPassword(id)
+      const {userId} = args;
+      resetPassword(userId)
         .then(data => {
           resolve(data);
         })
