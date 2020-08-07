@@ -6,6 +6,13 @@
       <el-row>
         <el-button
           type="primary"
+          size="mini"
+          @click="adjustStaff"
+          :disabled="staffAddVisible"
+        >调整部门
+        </el-button>
+        <el-button
+          type="primary"
           icon="el-icon-plus"
           size="mini"
           @click="searchStaff"
@@ -325,6 +332,9 @@
                     .catch(error => {
                         console.log(error);
                     });
+            },
+            adjustStaff(){
+
             },
             searchStaff() {
                 this.searchDialogVisible = true;
