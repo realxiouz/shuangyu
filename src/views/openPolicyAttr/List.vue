@@ -58,7 +58,7 @@
       @current-change="onCurrentChange"
       :current-page.sync="currentPage"
     ></el-pagination>
-    <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" :orderSort="orderSort" @refresh="onRefresh"/>
+    <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" @refresh="onRefresh"/>
   </div>
 </template>
 
@@ -77,7 +77,6 @@
           getPageList: 'openPolicyAttr/getPageList',
           removeOne: 'openPolicyAttr/removeOne'
         },
-        orderSort: 1,
         valueTypes: PROPERTY_TABLE,
       };
     },
@@ -90,12 +89,6 @@
           }
         });
         return valueType;
-      },
-      beforeLoadData(data){
-        if(data && data.total){
-          this.orderSort = parseInt(data.total) + 1;
-        }
-        return data;
       }
     },
     components: {

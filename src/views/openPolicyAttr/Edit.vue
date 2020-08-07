@@ -243,12 +243,6 @@
   import { PROPERTY_TABLE } from '@/utils/const';
   export default {
     mixins: [MIXIN_EDIT],
-    props: {
-      orderSort: {
-        type: Number,
-        default: 1
-      }
-    },
     data() {
       const numberValidator = (rule, value, callback) => {
         let reg = /^[0-9]*$/g;
@@ -614,7 +608,7 @@
           openId: null,
           openName: null,
           policyTags: [],
-          sort: this.orderSort,
+          sort: null,
           code: null,
           name: null,
           valueType: null,
