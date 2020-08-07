@@ -85,6 +85,9 @@
           <template v-if="extraParam.orderType==103">
             <el-button @click="refundTicket(row)">退款</el-button>
           </template>
+          <template v-if="extraParam.orderType==106">
+            <el-button @click="changeTicket(row)">改签</el-button>
+          </template>
         </template>
       </el-table-column>
     </el-table>
@@ -206,6 +209,10 @@
         <el-button size="mini" @click="" type="primary">确定</el-button>
       </div>
     </el-dialog>
+
+    <el-dialog :visible.sync="changeTicketShow" title="改签">
+      <change-ticket />
+    </el-dialog>
   </div>
 </template>
 
@@ -219,6 +226,8 @@ import {
   formatWarehouseStatus
 } from "@/utils/productStatus.js";
 import search from "./Search";
+
+import ChangeTicket from './changeTicket'
 
 export default {
   mixins: [MIXIN_LIST],
@@ -238,6 +247,7 @@ export default {
       },
 
       refundTicketShow: false,
+      changeTicketShow: false,
       formData: {}
     };
   },
@@ -303,7 +313,10 @@ export default {
       // this.purchaseOrderNo = row.sourceOrderNo;
       // this.refundData = row;
       this.refundTicketShow = true;
-    }
+    },
+    changeTicket(row) {
+      this.changeTicketShow = true
+    } 
   },
   watch: {
     "$route.query.orderType": {
@@ -314,7 +327,8 @@ export default {
     }
   },
   components: {
-    search
+    search,
+    ChangeTicket,
   }
 };
 </script>
