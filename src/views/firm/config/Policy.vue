@@ -1,5 +1,5 @@
 <template>
-  <div class="page" >
+  <div class="page" style="margin-top:10px">
     <search class="page-search" ref="search" @onSearch="onSearch" />
     <el-row class="page-tools"  justify="space-between">
       <el-button icon="el-icon-back" type="warning" size="mini" @click="onBack">返回</el-button>

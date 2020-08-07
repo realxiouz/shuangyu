@@ -80,7 +80,6 @@
 }
 .left{
   float: left;
-  display: inline-block;
 }
 .right{
   margin-top: -20px;
