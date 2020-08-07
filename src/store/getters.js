@@ -30,11 +30,8 @@ const getters = {
   menus: state => {
     if (state.staff.loginInfo) {
       if (state.staff.loginInfo.menus && state.staff.loginInfo.menus.length > 0) {
-        console.log(state.staff.loginInfo.menus);
         let _menus = JSON.parse(JSON.stringify(state.staff.loginInfo.menus));
-        return _menus
-          .sort((i, j) => i.sort - j.sort)
-          .filter(menuFilter);
+        return _menus.filter(menuFilter);
       }
     }
     return [];

@@ -117,7 +117,8 @@ const actions = {
   },
   updateOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      updateOne(args)
+      let {userId, data} = args
+      updateOne(userId, data)
         .then(data => {
           resolve(data);
         })
@@ -200,8 +201,8 @@ const actions = {
   },
   resetPassword({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {id} = args;
-      resetPassword(id)
+      const {userId} = args;
+      resetPassword(userId)
         .then(data => {
           resolve(data);
         })

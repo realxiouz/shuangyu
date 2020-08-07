@@ -15,6 +15,17 @@ import {
   getLoginInfo
 } from "@/api/staff";
 
+function treeSort(arry) {
+  if (arry && arry.length > 0) {
+    arry.forEach(i => {
+      if (i.children && i.children.length > 0) {
+        treeSort(i.children);
+      }
+    });
+    arry.sort((i, j) => i.sort - j.sort);
+  }
+}
+
 const state = {
   loginInfo: {}
 };
@@ -185,7 +196,7 @@ const actions = {
       const {firmId} = args;
       getLoginInfo(firmId)
         .then(data => {
-          console.log(data.menus);
+          treeSort(data.menus)
           commit("setLoginInfo", data);
           resolve(data);
         })

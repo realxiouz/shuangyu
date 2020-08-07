@@ -93,7 +93,6 @@ function routerFilter(menu) {
 
 function routerBuilder(menus) {
   return menus
-    .sort((i, j) => i.sort - j.sort)
     .map(i => {
       let {
         uri,

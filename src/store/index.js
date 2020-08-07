@@ -80,6 +80,7 @@ import voucherTemplate from './modules/voucherTemplate';
 import voucherRecord from './modules/voucherRecord';
 import microserver from './modules/microserver';
 import openPolicyAttr from './modules/openPolicyAttr';
+import dispatchRule from './modules/dispatchRule';
 
 Vue.use(Vuex);
 export default new Vuex.Store({
@@ -162,7 +163,8 @@ export default new Vuex.Store({
     voucherRecord,
     voucherTemplate,
     microserver,
-    openPolicyAttr
+    openPolicyAttr,
+    dispatchRule,
   },
   getters
 });
