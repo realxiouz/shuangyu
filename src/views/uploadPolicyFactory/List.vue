@@ -13,6 +13,7 @@
     >
       <el-table-column prop="schedulerName" label="调度名称" align="center"></el-table-column>
       <el-table-column prop="jobInfoId" label="xxlJobId" align="center"></el-table-column>
+      <el-table-column prop="cron" label="定时策略" align="center"></el-table-column>
       <el-table-column prop="tagType" label="标签类别" align="center">
         <template slot-scope="scope">
           <span v-html="formatTagType(scope.row.tagType)"></span>
