@@ -117,7 +117,8 @@ const actions = {
   },
   updateOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      updateOne(args)
+      let {userId, data} = args
+      updateOne(userId, data)
         .then(data => {
           resolve(data);
         })
