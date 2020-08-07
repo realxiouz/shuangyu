@@ -11,6 +11,7 @@ import {
   relationUser,
   removeOne,
   updateOne,
+  updateMany,
   getLoginInfo
 } from "@/api/staff";
 
@@ -51,6 +52,18 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {id, data} = args;
       updateOne(id, data)
+        .then(data => {
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  updateMany({commit}, args) {
+    const { ids, data } = args;
+    return new Promise((resolve, reject) => {
+      updateMany(ids, data)
         .then(data => {
           resolve(data);
         })

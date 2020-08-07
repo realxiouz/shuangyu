@@ -24,6 +24,14 @@ export function updateOne(id, data) {
   });
 }
 
+export function updateMany(ids, data) {
+  return request({
+    url: `/firm/staff/update/many?ids=` + ids,
+    method: 'put',
+    data
+  });
+}
+
 export function removeOne(staffId) {
   return request({
     url: `/firm/staff/remove/one/${staffId}`,
