@@ -172,6 +172,7 @@ const actions = {
       const {firmId} = args;
       getLoginInfo(firmId)
         .then(data => {
+          console.log(data.menus);
           commit("setLoginInfo", data);
           resolve(data);
         })
