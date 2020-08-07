@@ -1,6 +1,6 @@
 <template>
   <div class="page-form">
-    <el-dialog :title="keyId ? '修改开放平台管理' : '添加开放平台管理'"  width="24%" center :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
+    <el-dialog :title="keyId ? '修改开放平台管理' : '添加开放平台管理'"  width="50%" center :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
       <el-form ref="form" label-width="110px" size="mini" :model="formData" :rules="rules">
         <el-row class="el-row-item">
           <el-form-item label="平台编码：" prop="openCode">
@@ -16,9 +16,7 @@
               <el-option label="供应商" :value="1"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="配置地址：" prop="openUrl">
-            <el-input v-model="formData.openUrl" placeholder="请输入配置地址" />
-          </el-form-item>
+         
         </el-row>
 
         <el-row class="el-row-item">
@@ -28,17 +26,22 @@
             :gutter="10"
             :key="configNav.configNavId"
           >
-            <el-col :span="10">
+            <el-col :span="7">
               <el-form-item label-width="12px">
-                <el-input v-model="configNav.configNavName" placeholder="请输入导航名称" />
+                <el-input v-model="configNav.navName" placeholder="请输入导航名称" />
               </el-form-item>
             </el-col>
-            <el-col :span="10">
+            <el-col :span="7">
               <el-form-item label-width="12px">
-                <el-input v-model="configNav.configNavUrl" placeholder="请输入导航地址" />
+                <el-input  v-model="configNav.navUrl" placeholder="请输入导航地址" />
               </el-form-item>
             </el-col>
-            <el-col :span="4">
+            <el-col :span="7">
+              <el-form-item label-width="12px">
+                <el-input autosize type="textarea"  v-model="configNav.remark" placeholder="请输入备注" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="3">
               <el-form-item label-width="6px">
                 <el-button
                   v-if="index === 0"
@@ -114,6 +117,7 @@
     watch: {
       visible(val) {
         if (val) {
+          this.codeEnable = false;
           if(this.keyId){
             this.codeEnable = true;
           }
@@ -127,21 +131,23 @@
           openCode: null,
           openName: null,
           openType: null,
-          openUrl: null,
           configNavs: [
             {
-              configNavId: null,
-              configNavName: null,
-              configNavUrl: null
+              navId: null,
+              navName: null,
+              navUrl: null,
+              remark:null
             }
           ]
         };
       },
       addConfigNav(){
         this.formData.configNavs.push({
-          configNavId: null,
-          configNavName: null,
-          configNavUrl: null
+          navId: null,
+          navName: null,
+          navUrl: null,
+          remark:null
+          
         });
       },
       deleteConfigNav(index){
@@ -153,9 +159,10 @@
         if(data && !data.configNavs){
           data.configNavs = [
             {
-              configNavId: null,
-              configNavName: null,
-              configNavUrl: null
+              navId: null,
+              navName: null,
+              navUrl: null,
+              remark:null
             }
           ]
         }

@@ -23,16 +23,8 @@
       </el-row>
     </el-row>
     <!-- 员工列表 -->
-    <el-table
-      highlight-current-row
-      v-loading="loading"
-      stripe
-      size="mini"
-      style="width: 100%;"
-      fit
-      :data="tableData"
-    >
-      <el-table-column prop="nickName" label="昵称" width="150" align="center"></el-table-column>
+    <el-table highlight-current-row v-loading="loading" stripe size="mini" style="width: 100%;" fit :data="tableData"> 
+      <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column prop="fullName" label="姓名" width="100" align="center"></el-table-column>
       <el-table-column prop="gender" label="性别" width="80" align="center">
         <template slot-scope="scope">
@@ -47,12 +39,11 @@
       </el-table-column>
       <el-table-column prop="phone" label="手机号" align="center"></el-table-column>
       <el-table-column prop="email" label="电子邮箱" align="center"></el-table-column>
-      <el-table-column label="操作" width="240" align="center">
+      <el-table-column label="操作" width="260" align="center">
         <template slot-scope="scope">
           <el-button
             size="mini"
             :type="scope.row.userId?'success':'info'"
-            :disabled="scope.row.userId?true:false"
             @click="handleAssociate(scope.row)"
           >关联用户
           </el-button>
@@ -554,7 +545,9 @@
             //员工信息弹出关闭时执行
             staffDialogClosed() {
                 this.$refs['staffForm'].clearValidate();
-            }
+            },
+            
+            
         },
         computed: {
             formatDate() {

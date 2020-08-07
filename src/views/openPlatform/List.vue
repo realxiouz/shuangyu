@@ -8,7 +8,6 @@
       <el-table-column label="平台编码" align="center" prop="openCode" />
       <el-table-column label="平台名称" align="center" prop="openName" />
       <el-table-column label="平台类型" align="center" prop="openType" :formatter="formatOpenType" />
-      <el-table-column label="配置地址" align="center" prop="openUrl" />
       <el-table-column width="160" label="操作" align="center">
         <template slot-scope="scope">
           <el-button size="mini" type="primary" @click="onEdit(scope.row.openId)">修改</el-button>

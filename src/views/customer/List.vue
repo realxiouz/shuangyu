@@ -32,6 +32,11 @@
         sortable
       ></el-table-column>
       <el-table-column
+        prop="openName"
+        label="开放平台"
+        align="center"
+      ></el-table-column>
+      <el-table-column
         prop="firm.fullName"
         label="联系人"
         align="center"
@@ -89,7 +94,7 @@
            <el-button
             type="primary"
             size="mini"
-            @click="onConfig(scope.row.merchantId)"
+            @click="onConfig(scope.row)"
             >配置</el-button
           >
           <!--            <span v-show="scope.row.openId && '' != scope.row.openId">
@@ -195,6 +200,7 @@ export default {
       userData: {},
       //关联用户时用于记录当前选中的用户对象
       curRow: {},
+      openId:'',
       keyName:'merchantId',
       actions: {
         getPageList: 'firmMerchant/getCustomerPageList',
@@ -302,11 +308,25 @@ export default {
         query: { merchantId: merchantId }
       });
     },
-    onConfig(merchantId) {
-      this.$router.push({
-        path: "/customer/config",
-        query: { merchantId: merchantId }
-      });
+    onConfig(row) {
+      if(row.openId){
+        this.$router.push({
+          path: "/firm/config"
+        });
+        localStorage.setItem("openId", row.openId);
+      }else{
+        this.$confirm('请先选择开放平台, 才能进行配置操作，是否去选择开放平台?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$router.push({
+            path: "/customer/edit?merchantId=" + row.merchantId
+          });
+        }).catch(() => {
+              
+        });
+      }
     }
   },
   components: {
