@@ -39,7 +39,6 @@ export function removeOne(id) {
 }
 
 export function save(data) {
-  console.log(data);
   return request({
     url: '/qunar/tts/policy/attr/save',
     method: 'post',

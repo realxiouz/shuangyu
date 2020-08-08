@@ -68,6 +68,7 @@
               <el-date-picker
                  v-model="item.value"
                  :format="item.format"
+                 :value-format="item.format"
                  :placeholder="'请选择' + item.name"
                  type="date"
                  style="width: 100%;"
@@ -78,8 +79,8 @@
               <el-time-picker
                 v-model="item.value"
                 :format="item.format"
+                :value-format="item.format"
                 :placeholder="'请选择' + item.name"
-                type="datetime"
                 style="width: 100%;"
               >
               </el-time-picker>
