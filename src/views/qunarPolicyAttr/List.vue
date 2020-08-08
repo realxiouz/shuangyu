@@ -28,8 +28,8 @@
         >
           <el-table-column label="是否必填" prop="required" width="75" center>
             <template slot-scope="scope">
-              <font v-if="scope.row.required" class="el-required">是</font>
-              <font v-else-if="!scope.row.required">否</font>
+              <font v-if="scope.row.required === true" color="red">是</font>
+              <font v-else-if="scope.row.required === false">否</font>
             </template>
           </el-table-column>
           <el-table-column label="备注" prop="remark" />
@@ -83,19 +83,21 @@
                 v-if="scope.row.valueType === 3"
                 v-model="scope.row.defaultValue"
                 :format="scope.row.format"
+                :value-format="scope.row.format"
                 type="date"
                 placeholder="请选择默认数值"
                 style="width: 100%;"
               />
-              <el-date-picker
+              <el-time-picker
                 prop="defaultValue"
                 v-if="scope.row.valueType === 4"
                 v-model="scope.row.defaultValue"
                 :format="scope.row.format"
-                type="datetime"
+                :value-format="scope.row.format"
                 placeholder="请选择默认数值"
                 style="width: 100%;"
-              />
+              >
+              </el-time-picker>
               <el-input
                 prop="defaultValue"
                 v-if="scope.row.valueType === 5"
@@ -134,7 +136,6 @@
               </el-select>
             </template>
           </el-table-column>
-          
         </el-table>
       </el-tab-pane>
       <el-tab-pane label="新包机切位政策" name="NEW_ONE_WAY_CHANGE_POLICY">
@@ -203,6 +204,7 @@
                 v-if="scope.row.valueType === 3"
                 v-model="scope.row.defaultValue"
                 :format="scope.row.format"
+                :value-format="scope.row.format"
                 type="date"
                 placeholder="请选择默认数值"
                 style="width: 100%;"
@@ -212,7 +214,7 @@
                 v-if="scope.row.valueType === 4"
                 v-model="scope.row.defaultValue"
                 :format="scope.row.format"
-                type="datetime"
+                :value-format="scope.row.format"
                 placeholder="请选择默认数值"
                 style="width: 100%;"
               >
@@ -255,7 +257,6 @@
               </el-select>
             </template>
           </el-table-column>
-          
         </el-table>
       </el-tab-pane>
     </el-tabs>
