@@ -2,7 +2,7 @@
   <div class="page">
     <!-- <search class="page-search" ref="search" @onSearch="onSearch"/> -->
       <el-row class="page-tools" style="margin-bottom:15px; margin-left:30px;">
-        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
+        <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
       </el-row>
       <el-table
         class="page-table"
@@ -55,9 +55,15 @@
     },
     methods: {
       onEdit(row) {
-        this.$router.push({name: "orderRuleNewEdit", params: row});
+        // this.$router.push({name: "orderRuleNewEdit", params: row});
+        this.$router.push({
+          name: 'orderRuleNewEdit',
+          query: {
+            orderRuleId: row.orderRuleId,
+          }
+        })
       },
-      handleAdd() {
+      onAdd() {
         this.$router.push({name: 'orderRuleNewEdit'});
       },
       loadData() {

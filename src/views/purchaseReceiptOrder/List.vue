@@ -154,7 +154,7 @@
                   getPageList: "productOrder/getPageList",
                   removeOne: "productOrder/removeOne"
                 },
-                extraParam: {
+                params: {
                   orderType: 201
                 }
             };

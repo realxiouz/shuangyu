@@ -1,18 +1,18 @@
-import { save, getList, removeOne} from '@/api/dispatchRule';
+import {getOne, save, getList, removeOne} from '@/api/dispatchRule';
 
 const actions = {
-  // getOne({commit}, args) {
-  //   return new Promise((resolve, reject) => {
-  //     const {deviceId} = args;
-  //     getOne(deviceId)
-  //       .then(data => {
-  //         resolve(data);
-  //       })
-  //       .catch(error => {
-  //         reject(error);
-  //       });
-  //   });
-  // },
+  getOne({commit}, args) {
+    return new Promise((resolve, reject) => {
+      const {orderRuleId} = args;
+      getOne(orderRuleId)
+        .then(data => {
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
   save({commit}, args) {
     return new Promise((resolve, reject) => {
       save(args)

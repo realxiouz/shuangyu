@@ -645,8 +645,30 @@
           this.loadStaffData("0");
         }
       }
-
-      
+    },
+    watch: {
+      '$route.query.orderRuleId': {
+        handler(val) {
+          if (val) {
+            this.$store.dispatch('dispatchRule/getOne', {
+              orderRuleId: val
+            }).then(data => {
+              this.formData = data
+              if (this.formData.principal) {
+                this.staffIdList = [];
+                this.staffIdList.push(this.formData.principal);
+                this.loadStaffData("1");
+              }
+              if (this.formData.staffs && this.formData.staffs.length > 0) {
+                this.staffIdList = [];
+                this.staffIdList = this.formData.staffs;
+                this.loadStaffData("0");
+              }
+            })
+          }
+        },
+        immediate: true
+      }
     },
     components: {
       selectStaff

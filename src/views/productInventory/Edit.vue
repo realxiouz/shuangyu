@@ -113,10 +113,27 @@
                 actions: {
                   getOne: 'productInventory/getOne',
                   saveOne: 'productInventory/saveOne'
-                }
+                },
+                rules: {},
             };
         },
         methods: {
+          handleGetOne(id) {
+                if (id) {
+                    this.$store
+                        .dispatch("productInventory/getOne", {inventoryId: id})
+                        .then(data => {
+                            if (data) {
+                                this.formData = data;
+                                let param = {};
+                                param.categoryCode = this.formData.categoryCode;
+                            }
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                }
+            },
             //跳转回列表页面
             goBack() {
                 if (this.$router.history.length <= 1) {

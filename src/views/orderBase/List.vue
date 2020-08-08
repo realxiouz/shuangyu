@@ -12,7 +12,7 @@
       size="mini"
       border
     >
-      <!-- <el-table-column prop="orderNo" label="单号" />
+      <el-table-column prop="orderNo" label="单号" />
       <el-table-column label="单据日期">
         <template slot-scope="scope">{{ scope.row.orderDate | time("YYYY-MM-DD") }}</template>
       </el-table-column>
@@ -72,22 +72,33 @@
         :formatter="formatWarehouseStatus"
         label="发货状态"
         width="80"
-      />-->
+      />
       <el-table-column fixed="right" label="操作" align="center" width="200">
         <template v-slot="{ row, $index}">
-          <template v-if="extraParam.orderType==100"></template>
-          <template v-if="extraParam.orderType==101">
+          <el-button @click="onEdit(row)">查看</el-button>
+          <template v-if="params.orderType==100"></template>
+          <template v-if="params.orderType==101">
+            <el-button @click="onWarehouse(row)">出库</el-button>
             <el-button @click="onGoBuy(row)">采购</el-button>
           </template>
-          <template v-if="extraParam.orderType==102">
+          <template v-if="params.orderType==102">
             <el-button @click="intercept(row)">拦截</el-button>
           </template>
-          <template v-if="extraParam.orderType==103">
+          <template v-if="params.orderType==103">
             <el-button @click="refundTicket(row)">退款</el-button>
           </template>
-          <template v-if="extraParam.orderType==106">
+          <template v-if="params.orderType==104">
             <el-button @click="changeTicket(row)">改签</el-button>
+            <el-button @click="changeTicket(row)">退改</el-button>
           </template>
+          <template v-if="params.orderType==105">
+            <el-button @click="refundTicket(row)">入库</el-button>
+          </template>
+          <template v-if="params.orderType==106">
+            <el-button @click="changeTicket(row)">出库</el-button>
+            <el-button @click="onGoBuy(row)">采购</el-button>
+          </template>
+
         </template>
       </el-table-column>
     </el-table>
@@ -242,7 +253,7 @@ export default {
         getPageList: "productOrder/getPageList",
         removeOne: "productOrder/removeOne"
       },
-      extraParam: {
+      params: {
         orderType: -1
       },
 
@@ -252,7 +263,7 @@ export default {
     };
   },
   created() {
-    this.extraParam.orderType = this.$route.query.orderType;
+    this.params.orderType = this.$route.query.orderType;
   },
   methods: {
     formatOrderStatus,
@@ -263,17 +274,33 @@ export default {
       this.$router.push({
         name: "orderBaseEdit",
         query: {
-          orderType: this.extraParam.orderType
+          orderType: this.params.orderType
         }
       });
     },
-    loadData() {
-      this.loading = true;
-      setTimeout(_ => {
-        this.tableData = [1];
-        this.total = 1;
-        this.loading = false;
-      }, 1000);
+    onEdit(i) {
+      this.$router.push({
+        name: "orderBaseEdit",
+        query: {
+          orderType: this.params.orderType,
+          orderNo: i.orderNo
+        }
+      });
+    },
+    // loadData() {
+    //   this.loading = true;
+    //   setTimeout(_ => {
+    //     this.tableData = [1];
+    //     this.total = 1;
+    //     this.loading = false;
+    //   }, 1000);
+    // },
+    onWarehouse(i) {
+      // this.$store
+      //   .dispatch("productOrder/outWarehouseOrder", {
+      //     orderNo: i.orderNo,
+      //     data: i
+      //   })
     },
     onGoBuy(i) {
       this.$router.push({
@@ -321,7 +348,7 @@ export default {
   watch: {
     "$route.query.orderType": {
       handler(val) {
-        this.extraParam.orderType = val;
+        this.params.orderType = val;
         this.loadData();
       }
     }

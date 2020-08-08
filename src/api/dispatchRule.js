@@ -1,5 +1,12 @@
 import request from '@/utils/request';
 
+export function getOne(orderRuleId) {
+  return request({
+    url: `/dispatch/rule/${orderRuleId}`,
+    method: 'get',
+  });
+}
+
 export function save(data) {
   return request({
     url: '/dispatch/rule/save',

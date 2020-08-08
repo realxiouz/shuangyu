@@ -179,7 +179,7 @@ export default {
         getPageList: "productOrder/getPageList",
         removeOne: "productOrder/removeOne"
       },
-      extraParam: {
+      params: {
         orderType: 104
       }
     };
