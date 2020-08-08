@@ -103,15 +103,18 @@
       },
       onOperate(schedulerId, status){
         let method;
+        let confirm;
         let msg;
         if(status){
           method = 'jobScheduler/stop';
-          msg = '是否确定停止？';
+          confirm = '是否确定停止？';
+          msg = '停止成功';
         }else{
           method = 'jobScheduler/start';
-          msg = '是否确定启动？';
+          confirm = '是否确定启动？';
+          msg = '启动成功';
         }
-        this.$confirm(msg, '提示', {
+        this.$confirm(confirm, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: "warning"
@@ -120,6 +123,7 @@
             this.$store
               .dispatch(method, {jobSchedulerId: schedulerId})
               .then(() => {
+                this.$message({ type: "success", message: msg });
                 this.onRefresh();
               })
               .catch(error => {

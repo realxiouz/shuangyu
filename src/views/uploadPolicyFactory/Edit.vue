@@ -247,30 +247,31 @@
       },
       beforeSave(data) {
         let formObj = {};
+        let that = this;
         if(null === data.status || '' === data.status){
           data.status = 0
         }
-        let tag = this.formData.jobConfigList[0];
+        let tag = that.formData.jobConfigList[0];
         let jobConfigArray = data.jobConfigList;
         if(jobConfigArray && jobConfigArray.length > 0){
           jobConfigArray.forEach(function(obj){
             if("firmId" === obj.code){
-              obj.value = this.formData.firmId;
+              obj.value = that.formData.firmId;
             }else{
               jobConfigArray.push({
                 code: "firmId",
                 name: "企业主键",
-                value: this.formData.firmId,
+                value: that.formData.firmId,
                 type: "String"
               });
             }
             if("merchantId" === obj.code){
-              obj.value = this.formData.merchantId;
+              obj.value = that.formData.merchantId;
             }else{
               jobConfigArray.push({
                 code: "merchantId",
                 name: "商户主键",
-                value: this.formData.merchantId,
+                value: that.formData.merchantId,
                 type: "String"
               });
             }
@@ -280,21 +281,21 @@
               jobConfigArray.push({
                 code: "policyConfigId",
                 name: "平台配置",
-                value: this.formData.policyConfigId,
+                value: that.formData.policyConfigId,
                 type: "String"
               });
             }
           });
-          data.params = this.getValues(jobConfigArray);
+          data.params = that.getValues(jobConfigArray);
         }
         data.tagId = tag.tagId;
         data.tagCode = tag.tagCode;
         data.tagName = tag.tagName;
         data.tagType = tag.tagType;
-        if(this.copyFlag){
+        if(that.copyFlag){
           data.schedulerId = null;
         }
-        if(this.keyId && !this.copyFlag){
+        if(that.keyId && !that.copyFlag){
           formObj = data;
         }else{
           let xxlJobGroup = {
