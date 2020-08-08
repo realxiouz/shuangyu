@@ -331,6 +331,9 @@ export default {
             obj.merchantId = localStorage.getItem("merchantId");
           }
           formData.append("qunarPolicyAttrList", JSON.stringify(obj));
+          if (that.tableData.length === 1) {
+            formData.append("qunarPolicyAttrList", "");
+          }
         }
       });
       if (!flag) {
