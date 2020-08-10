@@ -44,10 +44,11 @@
       size="mini"
       style="width: 100%;"
       fit
+      :selectable="selectable"
       :data="tableData"
       @selection-change="handleSelectionChange"
     >
-      <el-table-column type="selection" :selectable="selectable"  width="55" ></el-table-column>
+      <el-table-column type="selection" :selectable="selectable"   width="55" ></el-table-column>
       <el-table-column
         prop="fullName"
         label="姓名"
@@ -365,6 +366,7 @@
         :data="treeData"
         :props="treeProps"
         :default-expanded-keys="defaultExpandedKeys"
+        :default-checked-keys="defaultChecked"
         :highlight-current="true"
         :expand-on-click-node="false"
         default-expand-all
@@ -511,11 +513,7 @@ export default {
       this.loading = true;
       this.$store
         .dispatch("staff/getList", {
-          filter: params
-            ? params
-            : {
-                deptId: this.curNode.deptId
-              }
+          filter: params? params : { deptId: this.curNode.deptId }
         })
         .then(data => {
           if (data) {
@@ -543,12 +541,7 @@ export default {
     },
     //保存调整部门
     departmentSave() {
-      if (
-        this.staffIds &&
-        this.staffIds.length > 0 &&
-        this.deptIds &&
-        this.deptIds.length > 0
-      ) {
+      if (this.staffIds && this.staffIds.length > 0 && this.deptIds && this.deptIds.length > 0 ) {
         this.$store
           .dispatch("staff/updateMany", {
             ids: this.staffIds,
@@ -560,6 +553,7 @@ export default {
             //数据保存成功后可以关闭弹窗
             this.departmentDialogVisible = false;
             this.loadTableData()
+            this.$refs.tree.setCheckedKeys([])
           })
           .catch(error => {
             console.log(error);
