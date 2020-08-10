@@ -65,9 +65,7 @@
       <el-table-column label="出生日期" width="150" align="center">
         <template slot-scope="scope">
           <i class="el-icon-time"></i>
-          <span style="margin-left: 10px">{{
-            formatDate(scope.row.birthDate, "YYYY-MM-DD")
-          }}</span>
+          <span style="margin-left: 10px">{{ formatDate(scope.row.birthDate, "YYYY-MM-DD") }}</span>
         </template>
       </el-table-column>
       <el-table-column
