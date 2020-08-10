@@ -71,6 +71,20 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <el-row :gutter="10">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="蜗牛登录账号:" prop="userName">
+              <el-input v-model="formData.userName"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="10">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="蜗牛登录账号密码:" prop="password">
+              <el-input v-model="formData.password"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
         <el-row>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item>
@@ -118,6 +132,12 @@
                     ],
                     contactMob: [
                         {required: true, message: "请输入联系电话", trigger: "blur"}
+                    ],
+                    userName: [
+                        {required: true, message: "请输入蜗牛登录账号", trigger: "blur"}
+                    ],
+                    password: [
+                        {required: true, message: "请输入蜗牛登录密码", trigger: "blur"}
                     ]
                 }
             }
