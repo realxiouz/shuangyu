@@ -26,7 +26,6 @@
       label-width="110px"
       size="mini"
       :rules="formRules"
-      style="margin-top:-400px"
     >
       <el-row :gutter="15">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -82,7 +81,6 @@
       :model="formData"
       label-width="110px"
       size="mini"
-      style="margin-top:-400px"
     >
       <el-row>
         <el-form-item label="选择文件:" prop="file">

@@ -1,5 +1,10 @@
 <template>
   <div class="page">
+    <el-row>
+        <el-col :span="5">
+          <el-button style="margin-bottom:10px" type="warning" @click="goBack" size="mini">返回</el-button>
+        </el-col>
+      </el-row>
     <search class="page-search" ref="search" @onSearch="onSearch"/>
       <!--<el-row class="page-tools" style="margin-bottom:15px;margin-left:23px">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
@@ -188,6 +193,9 @@
             console.log(error);
           });
       },
+      goBack() {
+      this.$router.go(-1);
+    },
       onSearch(params) {
         if (!params) {
           params = {};

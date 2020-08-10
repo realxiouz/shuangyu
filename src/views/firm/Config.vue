@@ -1,20 +1,22 @@
 <template>
   <div class="home contentBox">
-    <div class="left">
-      <el-tabs :tab-position="tabPosition" style="min-height:500px" @tab-click="handleClick">
-        <el-tab-pane v-for="(item,index) in configNavs" :key="index" :label=item.navName></el-tab-pane>
-      </el-tabs>
-    </div>
-    <div class="right" >
-      <transition name="fade-transform" mode="out-in">
-        <div>
-          <keep-alive>
-            <router-view v-if="$route.meta.keepAlive"></router-view>
-          </keep-alive>
-          <router-view v-if="!$route.meta.keepAlive"></router-view>
-        </div>
-      </transition>
-    </div>
+    <el-row>
+      <el-col :xs="11" :sm="10" :md="9" :lg="8" :xl="2" >
+        <el-tabs :tab-position="tabPosition" style="min-height: 200px;" @tab-click="handleClick">
+          <el-tab-pane v-for="(item,index) in configNavs" :key="index" :label=item.navName></el-tab-pane>
+        </el-tabs>
+      </el-col>
+      <el-col :xs="13" :sm="14" :md="15" :lg="16" :xl="21">
+        <transition name="fade-transform" mode="out-in">
+          <div>
+            <keep-alive>
+              <router-view v-if="$route.meta.keepAlive"></router-view>
+            </keep-alive>
+            <router-view v-if="!$route.meta.keepAlive"></router-view>
+          </div>
+        </transition>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -55,10 +57,8 @@
         this.$router.go(-1);
       }
     },
-    handleSave( ) {},
     handleClick(tab){
       this.$router.push(this.configNavs[tab.index].navUrl)
-      console.log(this.configNavs[tab.index].navUrl)
     }
   },
   
@@ -66,26 +66,4 @@
   
 </script>
 <style scoped>
-.el-row-item {
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  margin-bottom: 20px;
-  padding: 20px 20px 0 0;
-  width: 870px;
-  margin-left: 20px;
-}
-.page-back {
-  margin-bottom: 20px;
-  margin-left: 20px;
-}
-.left{
-  float: left;
-}
-.right{
-  margin-top: -20px;
-  margin-left: 150px;
-}
-.contentBox{
-  min-height: 500px;
-}
 </style>

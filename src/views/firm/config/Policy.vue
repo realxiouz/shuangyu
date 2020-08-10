@@ -1,16 +1,16 @@
 <template>
   <div class="page" style="margin-top:10px">
-    <search class="page-search" ref="search" @onSearch="onSearch" />
     <el-row class="page-tools"  justify="space-between">
       <el-button icon="el-icon-back" type="warning" size="mini" @click="onBack">返回</el-button>
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
     </el-row>
+    <search class="page-search" ref="search" @onSearch="onSearch" />
     <el-table
       class="page-table"
       size="mini"
       v-loading="loading"
       :data="tableData"
-      style="width: 100%;margin-bottom:15px; margin-top:-400px"
+      style="width: 100%;"
     >
       <el-table-column label="企业名称" align="center" prop="firmName" />
       <el-table-column label="平台名称" align="center" prop="openName" />
