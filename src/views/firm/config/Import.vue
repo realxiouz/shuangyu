@@ -26,8 +26,8 @@
           border
           center
         >
-          <el-table-column label="属性名称" prop="name" width="250" center />
-          <el-table-column label="默认数值" prop="defaultValue" width="500">
+          <el-table-column label="属性名称" prop="name" width="250" align="center" />
+          <el-table-column label="默认数值" prop="defaultValue" width="500" align="center">
             <template slot-scope="scope" prop="defaultValue">
               <el-input
                 class="el-input"
@@ -122,7 +122,7 @@
               </el-select>
             </template>
           </el-table-column>
-          <el-table-column label="是否必填" prop="required" width="75" center>
+          <el-table-column label="是否必填" prop="required" width="75" align="center">
             <template slot-scope="scope">
               <font v-if="scope.row.required" class="el-required">是</font>
               <font v-else-if="!scope.row.required">否</font>
@@ -142,8 +142,8 @@
           center
         >
           
-          <el-table-column label="属性名称" prop="name" width="250" center />
-          <el-table-column label="默认数值" prop="defaultValue" width="500">
+          <el-table-column label="属性名称" prop="name" width="250" align="center" />
+          <el-table-column label="默认数值" prop="defaultValue" width="500" align="center">
             <template slot-scope="scope" prop="defaultValue">
               <el-input
                 class="el-input"
@@ -239,13 +239,13 @@
               </el-select>
             </template>
           </el-table-column>
-          <el-table-column label="是否必填" prop="required" width="75" center>
+          <el-table-column label="是否必填" prop="required" width="75" align="center">
             <template slot-scope="scope">
               <font v-if="scope.row.required === true" color="red">是</font>
               <font v-else-if="scope.row.required === false">否</font>
             </template>
           </el-table-column>
-          <el-table-column label="备注" prop="remark" />
+          <el-table-column label="备注" prop="remark"/>
           
         </el-table>
       </el-tab-pane>
@@ -386,12 +386,7 @@ export default {
           }
         });
     },
-    rowClass() {
-      return "text-align:center;";
-    },
-    headClass() {
-      return "text-align: center;";
-    }
+   
   }
 };
 </script>
