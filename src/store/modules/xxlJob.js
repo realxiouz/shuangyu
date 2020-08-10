@@ -6,36 +6,36 @@ import {
 
 
 const actions = {
-  start({commit}, params) {
+  start({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {jobId} = params
+      const {jobId} = args
       start(jobId)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  stop({commit}, params) {
+  stop({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {jobId} = params
+      const {jobId} = args
       stop(jobId)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  trigger({commit}, params) {
+  trigger({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {jobId,filter} = params
+      const {jobId,filter} = args
       trigger(jobId,filter)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);

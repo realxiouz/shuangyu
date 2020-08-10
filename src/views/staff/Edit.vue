@@ -48,7 +48,7 @@
       :data="tableData"
       @selection-change="handleSelectionChange"
     >
-      <el-table-column type="selection" :selectable="selectable"   width="55" ></el-table-column>
+      <el-table-column type="selection" :selectable="selectable" width="55" ></el-table-column>
       <el-table-column
         prop="fullName"
         label="姓名"
@@ -82,7 +82,15 @@
         <template slot-scope="scope">
           <el-button
             size="mini"
-            :type="scope.row.userId ? 'success' : 'info'"
+            v-if="scope.row.userId"
+            type="success"
+            @click="handleAssociate(scope.row)"
+            >查看用户
+          </el-button>
+          <el-button
+            v-else
+            size="mini"
+            type="info"
             @click="handleAssociate(scope.row)"
             >关联用户
           </el-button>
@@ -413,6 +421,7 @@ export default {
       permissionDialogVisible: false,
       searchDialogVisible: false,
       departmentDialogVisible: false,
+      defaultChecked:false,
       tableData: [],
       treeData: [],
       userData: {},
@@ -718,17 +727,41 @@ export default {
             this.userData = data;
             this.userData.staffId = row.staffId;
             this.userDialogVisible = true;
-          } else {
-            this.userData = {};
-            this.$message({
-              type: "info",
-              message: "没有可关联的用户!"
-            });
-          }
+          } else if(row.userId){
+              this.$confirm("关联用户可能已被删除，请重新关联用户", "提示", {
+              confirmButtonText: "重新关联",
+              cancelButtonText: "取消",
+              type: "warning"
+              }).then(()=>{
+                 this.$store
+                  .dispatch("user/getFirstOne", {
+                    filter: params
+                  })
+                  .then(data => {
+                    if (data) {
+                      this.userData = data;
+                      this.userData.staffId = row.staffId;
+                      this.userDialogVisible = true;
+                    } else {
+                      this.userData = {};
+                      this.$message({
+                        type: "info",
+                        message: "没有可关联的用户!"
+                      });
+                    }
+                  });
+                })
+              }else{
+                this.userData = {};
+                this.$message({
+                  type: "info",
+                  message: "没有可关联的用户!"
+                });
+              } 
         })
         .catch(error => {
           console.log(error);
-        });
+      });
     },
     /*对员工进行删除*/
     onDel(idx, row) {

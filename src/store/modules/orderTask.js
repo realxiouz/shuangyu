@@ -23,44 +23,44 @@ const actions = {
     getPageList({ commit }, args) {
         return new Promise((resolve, reject) => {
             getPageList(args)
-                .then(response => {
-                    resolve(response);
+                .then(data => {
+                    resolve(data);
                 })
                 .catch(error => {
                     reject(error);
                 });
         });
     },
-    getTotal({ commit }, params) {
-        const { filters } = params;
+    getTotal({ commit }, args) {
+        const { filters } = args;
         return new Promise((resolve, reject) => {
             getTotal(filters)
-                .then(response => {
-                    resolve(response);
+                .then(data => {
+                    resolve(data);
                 })
                 .catch(error => {
                     reject(error);
                 });
         });
     },
-    getPendingTotal({ commit }, params) {
-        const { filters } = params;
+    getPendingTotal({ commit }, args) {
+        const { filters } = args;
         return new Promise((resolve, reject) => {
             getPendingTotal(filters)
-                .then(response => {
-                    resolve(response);
+                .then(data => {
+                    resolve(data);
                 })
                 .catch(error => {
                     reject(error);
                 });
         });
     },
-    getGroupList({ commit }, params) {
-        const { filters } = params;
+    getGroupList({ commit }, args) {
+        const { filters } = args;
         return new Promise((resolve, reject) => {
             getGroupList(filters)
-                .then(response => {
-                    resolve(response);
+                .then(data => {
+                    resolve(data);
                 })
                 .catch(error => {
                     reject(error);
@@ -68,11 +68,11 @@ const actions = {
         });
     },
     // 任务提交
-    taskSubmit({ commit }, params) {
+    taskSubmit({ commit }, args) {
         return new Promise((resolve, reject) => {
-            taskSubmit(params)
-                .then(response => {
-                    resolve(response);
+            taskSubmit(args)
+                .then(data => {
+                    resolve(data);
                 })
                 .catch(error => {
                     reject(error);
@@ -81,11 +81,11 @@ const actions = {
     },
 
     // 任务取消
-    taskCancel({ commit }, params) {
+    taskCancel({ commit }, args) {
         return new Promise((resolve, reject) => {
-            taskCancel(params)
-                .then(response => {
-                    resolve(response);
+            taskCancel(args)
+                .then(data => {
+                    resolve(data);
                 })
                 .catch(error => {
                     reject(error);
@@ -94,11 +94,11 @@ const actions = {
     },
 
     // 任务备注
-    taskRemark({ commit }, params) {
+    taskRemark({ commit }, args) {
         return new Promise((resolve, reject) => {
-            taskRemark(params)
-                .then(response => {
-                    resolve(response);
+            taskRemark(args)
+                .then(data => {
+                    resolve(data);
                 })
                 .catch(error => {
                     reject(error);
@@ -106,11 +106,11 @@ const actions = {
         });
     },
     // 批量转单
-    taskTransfer({ commit }, params) {
+    taskTransfer({ commit }, args) {
         return new Promise((resolve, reject) => {
-            taskTransfer(params)
-                .then(response => {
-                    resolve(response);
+            taskTransfer(args)
+                .then(data => {
+                    resolve(data);
                 })
                 .catch(error => {
                     reject(error);
@@ -122,8 +122,8 @@ const actions = {
     getTaskInfo({ commit }, taskId) {
         return new Promise((resolve, reject) => {
             getTaskInfo(taskId)
-                .then(response => {
-                    resolve(response);
+                .then(data => {
+                    resolve(data);
                 })
                 .catch(error => {
                     reject(error);
@@ -131,11 +131,11 @@ const actions = {
         });
     },
 
-    removeTaskOrder({ commit }, params) {
+    removeTaskOrder({ commit }, args) {
         return new Promise((resolve, reject) => {
-            removeTaskOrder(params)
-                .then(response => {
-                    resolve(response);
+            removeTaskOrder(args)
+                .then(data => {
+                    resolve(data);
                 })
                 .catch(error => {
                     reject(error);

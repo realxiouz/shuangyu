@@ -23,12 +23,12 @@ const mutations = {
 };
 
 const actions = {
-  getList({ commit }, params) {
-    const { filters } = params;
+  getList({ commit }, args) {
+    const { filters } = args;
     return new Promise((resolve, reject) => {
       getList(filters)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -36,24 +36,24 @@ const actions = {
     });
   },
 
-  getTotal({ commit }, params) {
-    const { filters } = params;
+  getTotal({ commit }, args) {
+    const { filters } = args;
     return new Promise((resolve, reject) => {
       getTotal(filters)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getCount({ commit }, params) {
-    const { filters } = params;
+  getCount({ commit }, args) {
+    const { filters } = args;
     return new Promise((resolve, reject) => {
       getCount(filters)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);

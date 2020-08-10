@@ -21,46 +21,46 @@ const mutations = {
 };
 
 const actions = {
-  addApi({ commit }, params) {
+  addApi({ commit }, args) {
     return new Promise((resolve, reject) => {
-      addApi(params)
-        .then(response => {
-          resolve(response);
+      addApi(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getList({ commit }, params) {
+  getList({ commit }, args) {
     return new Promise((resolve, reject) => {
-      const {filter} = params;
+      const {filter} = args;
       getList(filter)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getPageList({commit}, params){
-    const {pageFlag, pageSize, lastId, openName} = params;
+  getPageList({commit}, args){
+    const {pageFlag, pageSize, lastId, openName} = args;
     return new Promise((resolve, reject) => {
       getPageList(pageFlag, pageSize, lastId, openName)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getTotal({commit}, params) {
+  getTotal({commit}, args) {
     return new Promise((resolve, reject) => {
-      getTotal(params)
-        .then(response => {
-          resolve(response);
+      getTotal(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -70,30 +70,30 @@ const actions = {
   removeOne({commit}, openId) {
     return new Promise((resolve, reject) => {
       removeOne(openId)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  updateOne({commit}, params){
+  updateOne({commit}, args){
     return new Promise((resolve, reject) => {
-      updateOne(params)
-        .then(response => {
-          resolve(response);
+      updateOne(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getOne({commit}, params) {
+  getOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      getOne(params)
-        .then(response => {
-          resolve(response);
+      getOne(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);

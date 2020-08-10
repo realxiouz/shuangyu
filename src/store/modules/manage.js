@@ -1,11 +1,11 @@
 import {notify} from '@/api/manage';
 
 const actions = {
-  notify({commit}, params) {
+  notify({commit}, args) {
     return new Promise((resolve, reject) => {
-      notify(params)
-        .then(response => {
-          resolve(response);
+      notify(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);

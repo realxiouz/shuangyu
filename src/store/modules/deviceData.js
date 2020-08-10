@@ -5,8 +5,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {dataId} = args;
       getOne(dataId)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -16,8 +16,8 @@ const actions = {
   saveOne({commit}, args) {
     return new Promise((resolve, reject) => {
       saveOne(args)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -29,8 +29,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {pageFlag, pageSize, params} = args
       getPageList(pageFlag, pageSize, params)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -41,8 +41,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {dataId} = args;
       removeOne(dataId)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);

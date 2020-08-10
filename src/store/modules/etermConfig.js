@@ -1,24 +1,24 @@
 import { save, removeOne, online, offline, getList } from "@/api/etermConfig";
 
 const actions = {
-  save({ commit }, params) {
+  save({ commit }, args) {
     return new Promise((resolve, reject) => {
-      const { etermConfig } = params
+      const { etermConfig } = args
       save(etermConfig)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  removeOne({ commit }, params) {
+  removeOne({ commit }, args) {
     return new Promise((resolve, reject) => {
-      const { id } = params
+      const { id } = args
       removeOne(id)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -26,12 +26,12 @@ const actions = {
     });
   },
 
-  online({ commit }, params) {
+  online({ commit }, args) {
     return new Promise((resolve, reject) => {
-      const { id } = params
+      const { id } = args
       online(id)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -39,12 +39,12 @@ const actions = {
     });
   },
 
-  offline({ commit }, params) {
+  offline({ commit }, args) {
     return new Promise((resolve, reject) => {
-      const { id } = params
+      const { id } = args
       offline(id)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -52,12 +52,12 @@ const actions = {
     });
   },
 
-  getList({ commit }, params) {
+  getList({ commit }, args) {
     return new Promise((resolve, reject) => {
-      const { filter } = params;
+      const { filter } = args;
       getList(filter)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);

@@ -2,12 +2,12 @@ import { getList, getTotal } from '@/api/otherOrderConfig/woniuOrderConfig';
 
 const actions = {
   // 获取蜗牛原始单
-  getList({ commit }, params) {
-    const { filters } = params;
+  getList({ commit }, args) {
+    const { filters } = args;
     return new Promise((resolve, reject) => {
       getList(filters)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -15,12 +15,12 @@ const actions = {
     });
   },
   // 查询原始单数量
-  getTotal({ commit }, params) {
-    const { filters } = params;
+  getTotal({ commit }, args) {
+    const { filters } = args;
     return new Promise((resolve, reject) => {
       getTotal(filters)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);

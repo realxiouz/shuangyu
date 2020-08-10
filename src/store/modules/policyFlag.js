@@ -21,70 +21,70 @@ const mutations = {
 };
 
 const actions = {
-  save({commit}, params) {
+  save({commit}, args) {
     return new Promise((resolve, reject) => {
-      save(params)
-        .then(response => {
-          resolve(response);
+      save(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  removeOne({commit}, params) {
+  removeOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {flagId} = params;
+      const {flagId} = args;
       removeOne(flagId)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getList({commit}, params) {
-    const {filters} = params;
+  getList({commit}, args) {
+    const {filters} = args;
     return new Promise((resolve, reject) => {
       getList(filters)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getPageList({commit}, params) {
-    const {pageFlag, pageSize, lastId, filters} = params;
+  getPageList({commit}, args) {
+    const {pageFlag, pageSize, lastId, filters} = args;
     return new Promise((resolve, reject) => {
       getPageList(pageFlag, pageSize, lastId, filters)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getTotal({commit}, params) {
+  getTotal({commit}, args) {
     return new Promise((resolve, reject) => {
-      getTotal(params)
-        .then(response => {
-          resolve(response);
+      getTotal(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getOne({commit}, params) {
-    const {flagId} = params;
+  getOne({commit}, args) {
+    const {flagId} = args;
     return new Promise((resolve, reject) => {
       getOne(flagId)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);

@@ -21,11 +21,11 @@ const mutations = {
 };
 
 const actions = {
-  save({commit}, params) {
+  save({commit}, args) {
     return new Promise((resolve, reject) => {
-      save(params)
-        .then(response => {
-          resolve(response);
+      save(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -35,20 +35,20 @@ const actions = {
   getList({commit}, args) {
     return new Promise((resolve, reject) => {
       getList(args)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  removeOne({commit}, params) {
-    const {orderNo} = params;
+  removeOne({commit}, args) {
+    const {orderNo} = args;
     return new Promise((resolve, reject) => {
       removeOne(orderNo)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -56,24 +56,24 @@ const actions = {
     });
   },
 
-  getTotal({commit}, params) {
-    const {filters} = params;
+  getTotal({commit}, args) {
+    const {filters} = args;
     return new Promise((resolve, reject) => {
       getTotal(filters)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getCount({commit}, params) {
-    const {filters} = params;
+  getCount({commit}, args) {
+    const {filters} = args;
     return new Promise((resolve, reject) => {
       getCount(filters)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -83,8 +83,8 @@ const actions = {
   getOne({commit}, data) {
     return new Promise((resolve, reject) => {
       getOne(data)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);

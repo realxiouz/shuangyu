@@ -20,36 +20,36 @@ const mutations = {
 };
 
 const actions = {
-    getPageList({ commit }, params) {
-        const { filters } = params;
+    getPageList({ commit }, args) {
+        const { filters } = args;
         return new Promise((resolve, reject) => {
             getPageList(filters)
-                .then(response => {
-                    resolve(response);
+                .then(data => {
+                    resolve(data);
                 })
                 .catch(error => {
                     reject(error);
                 });
         });
     },
-    getTotal({ commit }, params) {
-        const { filters } = params;
+    getTotal({ commit }, args) {
+        const { filters } = args;
         return new Promise((resolve, reject) => {
             getTotal(filters)
-                .then(response => {
-                    resolve(response);
+                .then(data => {
+                    resolve(data);
                 })
                 .catch(error => {
                     reject(error);
                 });
         });
     },
-    getPendingTotal({ commit }, params) {
-        const { filters } = params;
+    getPendingTotal({ commit }, args) {
+        const { filters } = args;
         return new Promise((resolve, reject) => {
             getPendingTotal(filters)
-                .then(response => {
-                    resolve(response);
+                .then(data => {
+                    resolve(data);
                 })
                 .catch(error => {
                     reject(error);

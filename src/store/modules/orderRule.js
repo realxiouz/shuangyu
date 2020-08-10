@@ -20,41 +20,41 @@ const mutations = {
 };
 
 const actions = {
-  save({commit}, params) {
+  save({commit}, args) {
     return new Promise((resolve, reject) => {
-      saveOrderRule(params)
-        .then(response => {
-          resolve(response);
+      saveOrderRule(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  list({commit}, params) {
-    var data= params.searchForm;
+  list({commit}, args) {
+    var data= args.searchForm;
     var searchForm = {};
     for (var attr in data){
       if (data[attr]!=null && data[attr]!=undefined && data[attr]!=''){
         searchForm[attr] = data[attr];
       }
     }
-    params.searchForm = searchForm;
+    args.searchForm = searchForm;
     return new Promise((resolve, reject) => {
-      getOrderRulePageList(params)
-        .then(response => {
-          resolve(response);
+      getOrderRulePageList(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  total({commit}, params) {
+  total({commit}, args) {
     return new Promise((resolve, reject) => {
-      getOrderRuleTotal(params)
-        .then(response => {
-          resolve(response);
+      getOrderRuleTotal(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -64,8 +64,8 @@ const actions = {
   removeOne({commit}, data) {
     return new Promise((resolve, reject) => {
       removeOrderRule(data)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);

@@ -32,137 +32,137 @@ const mutations = {
 };
 
 const actions = {
-  save({commit}, data) {
+  save({commit}, args) {
     return new Promise((resolve, reject) => {
-      save(data)
-        .then(response => {
-          resolve(response);
+      save(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getPageList({commit}, params) {
-    var data = params.searchForm;
+  getPageList({commit}, args) {
+    var data = args.searchForm;
     var searchForm = {};
     for (var attr in data) {
       if (data[attr] != null && data[attr] != undefined && data[attr] != '') {
         searchForm[attr] = data[attr];
       }
     }
-    params.searchForm = searchForm;
+    args.searchForm = searchForm;
     return new Promise((resolve, reject) => {
-      getPageList(params)
-        .then(response => {
-          resolve(response);
+      getPageList(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getOne({commit}, params) {
-    const {staffId} = params;
+  getOne({commit}, args) {
+    const {staffId} = args;
     return new Promise((resolve, reject) => {
       getOne(staffId)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  setMonitor({commit}, params) {
-    const {staffId} = params;
+  setMonitor({commit}, args) {
+    const {staffId} = args;
     return new Promise((resolve, reject) => {
       setMonitor(staffId)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getList({commit}, params) {
-    var data = params.searchForm;
+  getList({commit}, args) {
+    var data = args.searchForm;
     var searchForm = {};
     for (var attr in data) {
       if (data[attr] != null && data[attr] != undefined && data[attr] != '') {
         searchForm[attr] = data[attr];
       }
     }
-    params.searchForm = searchForm;
+    args.searchForm = searchForm;
     return new Promise((resolve, reject) => {
-      getList(params)
-        .then(response => {
-          resolve(response);
+      getList(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getOnlineList({commit}, params) {
-    var data = params.searchForm;
+  getOnlineList({commit}, args) {
+    var data = args.searchForm;
     var searchForm = {};
     for (var attr in data) {
       if (data[attr] != null && data[attr] != undefined && data[attr] != '') {
         searchForm[attr] = data[attr];
       }
     }
-    params.searchForm = searchForm;
+    args.searchForm = searchForm;
     return new Promise((resolve, reject) => {
-      getOnlineList(params)
-        .then(response => {
-          resolve(response);
+      getOnlineList(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  staffOnline({commit}, params) {
+  staffOnline({commit}, args) {
     return new Promise((resolve, reject) => {
-      staffOnline(params)
-        .then(response => {
-          resolve(response);
+      staffOnline(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  updateStaffOnline({commit}, params) {
+  updateStaffOnline({commit}, args) {
     return new Promise((resolve, reject) => {
-      updateStaffOnline(params)
-        .then(response => {
-          resolve(response);
+      updateStaffOnline(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  getTotal({commit}, params) {
+  getTotal({commit}, args) {
     return new Promise((resolve, reject) => {
-      getTotal(params)
-        .then(response => {
-          resolve(response);
+      getTotal(args)
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
   },
-  removeOne({commit}, params) {
-    const {staffId} = params;
+  removeOne({commit}, args) {
+    const {staffId} = args;
     return new Promise((resolve, reject) => {
       removeOne(staffId)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -170,12 +170,12 @@ const actions = {
     });
   },
   // 强制下线
-  orderStaffOffline({commit}, params) {
-    const {staffId} = params;
+  orderStaffOffline({commit}, args) {
+    const {staffId} = args;
     return new Promise((resolve, reject) => {
       orderStaffOffline(staffId)
-        .then(response => {
-          resolve(response);
+        .then(data => {
+          resolve(data);
         })
         .catch(error => {
           reject(error);
