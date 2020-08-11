@@ -18,18 +18,13 @@
       lazy
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
     >
-      <el-table-column label="类别" align="center">
-        <template slot-scope="scope">
-          <span>{{formatCategory(scope.row.category)}}</span>
-        </template>
-      </el-table-column>
+      <el-table-column prop="category" label="账号类别" align="center" :formatter="formatCategory"></el-table-column>
       <el-table-column prop="accountCode" label="账号编码" align="center"></el-table-column>
       <el-table-column prop="accountName" label="账号名称" align="center"></el-table-column>
-      <el-table-column prop="bankAccount" label="银行账号" align="center"></el-table-column>
-      <el-table-column prop="supplierName" label="供应商" align="center"></el-table-column>
+      <el-table-column prop="subjectName" label="科目名称" align="center"></el-table-column>
+      <el-table-column prop="currencyName" label="币种名称" align="center"></el-table-column>
       <el-table-column prop="initBalance" label="初始余额" align="center"></el-table-column>
       <el-table-column prop="balance" label="余额" align="center"></el-table-column>
-      <el-table-column prop="subjectName" label="科目" align="center"></el-table-column>
       <el-table-column width="280" label="操作" align="center">
         <template slot-scope="scope">
           <el-button type="success" size="mini" @click="onAddChild(scope.row.accountId)">添加</el-button>
@@ -111,14 +106,14 @@
             });
         }
       },
-      formatCategory(category) {
-        if (0 === category) {
+      formatCategory(row) {
+        if (0 === row.category) {
           return "现金";
-        } else if (1 === category) {
+        } else if (1 === row.category) {
           return "银行存款";
-        } else if (2 === category) {
+        } else if (2 === row.category) {
           return "积分";
-        } else if (3 === category) {
+        } else if (3 === row.category) {
           return "优惠券";
         } else {
           return "无";
