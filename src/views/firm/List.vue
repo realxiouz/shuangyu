@@ -101,7 +101,7 @@
             <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
               <el-form-item>
                 <el-button size="mini" align="center" @click="userDialogVisible = false">取 消</el-button>
-                <el-button size="mini" align="center" type="primary"   @click="handleSaveRelation">确认关联</el-button>
+                <el-button size="mini" align="center" type="primary" v-if="relevance"  @click="handleSaveRelation">确认关联</el-button>
               </el-form-item>
             </el-col>
           </el-row>
@@ -123,6 +123,7 @@
                 userDialogVisible: false,
                 pid: "",
                 staffId: "",
+                relevance:false,
                 editFirmId: "",
                 userData: {},
                 //关联用户时用于记录当前选中的用户对象
@@ -193,12 +194,13 @@
                 params.phone = row.phone;
                 params.email = row.email;
                 this.$store
-                    .dispatch("user/getFirstOne", {
+                    .dispatch("firm/getUserOne", {
                         filter: params
                     })
                     .then(data => {
                         if (data) {
                             this.userData = data;
+                            console.log(this.userData)
                             this.userData.firmId = row.firmId;
                             this.userDialogVisible = true;
                         }else if(row.userId){
