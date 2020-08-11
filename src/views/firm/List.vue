@@ -201,7 +201,6 @@
                             this.userData = data;
                             this.userData.firmId = row.firmId;
                             this.userDialogVisible = true;
-                           
                         }else if(row.userId){
                           this.$confirm("关联用户可能已被删除，请重新关联用户", "提示", {
                             confirmButtonText: "重新关联",

@@ -70,7 +70,7 @@
             <el-form-item label="付款方式">
               <el-input type="text" v-model="firmMerchantForm.paymentType" placeholder="请输入付款方式.."></el-input>
             </el-form-item>
-            <el-form-item label="资金账号类型" prop="accountType">
+            <el-form-item label="资金账号" prop="accountType">
               <el-select v-model="firmMerchantForm.accountType" placeholder="请选择账号类型.." style="width: 50%">
                 <el-option label="现金" :value="0"></el-option>
                 <el-option label="银行存款" :value="1"></el-option>
@@ -79,9 +79,6 @@
                 <el-option label="汇付" :value="4"></el-option>
                 <el-option label="易宝" :value="5"></el-option>
               </el-select>
-            </el-form-item>
-            <el-form-item label="资金账号">
-              <el-input type="text" v-model="firmMerchantForm.bankAccount" placeholder="请输入资金账号.."></el-input>
             </el-form-item>
             <el-form-item label="账号名称">
               <el-input type="text" v-model="firmMerchantForm.bankName" placeholder="请输入账号名称.."></el-input>
