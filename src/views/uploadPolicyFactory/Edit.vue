@@ -254,38 +254,45 @@
         let tag = that.formData.jobConfigList[0];
         let jobConfigArray = data.jobConfigList;
         if(jobConfigArray && jobConfigArray.length > 0){
+          let firmIdFlag = true;
+          let merchantIdFlag = true;
+          let policyConfigIdFlag = true;
           jobConfigArray.forEach(function(obj){
             if("firmId" === obj.code){
               obj.value = that.formData.firmId;
-            }else{
-              jobConfigArray.push({
-                code: "firmId",
-                name: "企业主键",
-                value: that.formData.firmId,
-                type: "String"
-              });
-            }
-            if("merchantId" === obj.code){
+              firmIdFlag = false;
+            }else if("merchantId" === obj.code){
               obj.value = that.formData.merchantId;
-            }else{
-              jobConfigArray.push({
-                code: "merchantId",
-                name: "商户主键",
-                value: that.formData.merchantId,
-                type: "String"
-              });
-            }
-            if("policyConfigId" === obj.code){
-              obj.value = this.formData.policyConfigId;
-            }else{
-              jobConfigArray.push({
-                code: "policyConfigId",
-                name: "平台配置",
-                value: that.formData.policyConfigId,
-                type: "String"
-              });
+              merchantIdFlag = false;
+            }else if("policyConfigId" === obj.code){
+              obj.value = that.formData.policyConfigId;
+              policyConfigIdFlag = false;
             }
           });
+          if(firmIdFlag){
+            jobConfigArray.push({
+              code: "firmId",
+              name: "企业主键",
+              value: that.formData.firmId,
+              type: "String"
+            });
+          }
+          if(merchantIdFlag){
+            jobConfigArray.push({
+              code: "merchantId",
+              name: "商户主键",
+              value: that.formData.merchantId,
+              type: "String"
+            });
+          }
+          if(policyConfigIdFlag){
+            jobConfigArray.push({
+              code: "policyConfigId",
+              name: "平台配置",
+              value: that.formData.policyConfigId,
+              type: "String"
+            });
+          }
           data.params = that.getValues(jobConfigArray);
         }
         data.tagId = tag.tagId;
