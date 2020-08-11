@@ -141,8 +141,13 @@
           center
         >
           
-          <el-table-column label="属性名称" prop="name" width="250" align="center" />
-          <el-table-column label="" prop="defaultValue" width="500" align="center">
+          <el-table-column label="名称" width="180" align="right">
+            <template slot-scope="scope">
+              <span v-if="scope.row.required" class="el-required">*</span>
+              <span>{{scope.row.name}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="值" prop="defaultValue" width="500" align="center">
             <template slot-scope="scope" prop="defaultValue">
               <el-input
                 class="el-input"
@@ -236,12 +241,6 @@
                   :value="item.code"
                 ></el-option>
               </el-select>
-            </template>
-          </el-table-column>
-          <el-table-column label="是否必填" prop="required" width="75" align="center">
-            <template slot-scope="scope">
-              <font v-if="scope.row.required === true" color="red">是</font>
-              <font v-else-if="scope.row.required === false">否</font>
             </template>
           </el-table-column>
           <el-table-column label="备注" prop="remark"/>
