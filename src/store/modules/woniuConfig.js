@@ -1,4 +1,4 @@
-import {addOne, getList, getOne, removeOne, save, updateOne} from '@/api/woniuConfig';
+import {addOne, getList, getOne, removeOne, save, updateOne, getSignList} from '@/api/woniuConfig';
 
 const actions = {
   save({commit}, args) {
@@ -68,8 +68,21 @@ const actions = {
           reject(error);
         });
     });
+  },
+  getSignList({commit}, args) {
+    return new Promise((resolve, reject) => {
+      const {filter} = args;
+      getSignList(filter)
+        .then(data => {
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
   }
 }
+
 
 export default {
   namespaced: true,

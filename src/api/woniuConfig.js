@@ -47,3 +47,11 @@ export function getList(filter) {
   });
 }
 
+export function getSignList(filter) {
+  return request({
+    url: `/qunar/open/sign/up`,
+    method: 'get',
+    params: filter
+  });
+}
+

@@ -546,7 +546,7 @@ export default {
         });
       }
     },
-    //保存调整部门
+    //保存部门调整
     departmentSave() {
       if (this.staffIds && this.staffIds.length > 0 && this.deptIds && this.deptIds.length > 0 ) {
         this.$store
@@ -689,6 +689,7 @@ export default {
         }
       });
     },
+    /*关联用户确认*/
     handleSaveRelation() {
       this.userDialogVisible = false;
       this.$store
@@ -714,6 +715,7 @@ export default {
           console.log(error);
         });
     },
+    /*点击关联用户/查看用户*/
     handleAssociate(row) {
       let params = {};
       params.phone = row.phone;
