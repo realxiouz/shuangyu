@@ -35,7 +35,7 @@
         </el-row>
         <el-row >
           <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="7">
-            <el-form-item label="签约账号:" prop="account">
+            <el-form-item label="签约账号:" prop="signedAccount">
               <el-input v-model="signData.signedAccount" ></el-input>
             </el-form-item>
           </el-col>
