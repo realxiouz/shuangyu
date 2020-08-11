@@ -26,8 +26,13 @@
           border
           center
         >
-          <el-table-column label="属性名称" prop="name" width="250" align="center" />
-          <el-table-column label="默认数值" prop="defaultValue" width="500" align="center">
+          <el-table-column label="名称" width="180" align="right">
+            <template slot-scope="scope">
+              <span v-if="scope.row.required" class="el-required">*</span>
+              <span>{{scope.row.name}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="值" prop="defaultValue" width="500" align="center">
             <template slot-scope="scope" prop="defaultValue">
               <el-input
                 class="el-input"
@@ -36,7 +41,7 @@
                   scope.row.valueType === 0 && scope.row.inputType === 'text'
                 "
                 v-model="scope.row.defaultValue"
-                placeholder="请输入默认数值"
+                placeholder="请输入"
               />
               <el-input
                 prop="defaultValue"
@@ -45,7 +50,7 @@
                     scope.row.inputType === 'textarea'
                 "
                 v-model="scope.row.defaultValue"
-                placeholder="请输入默认数值"
+                placeholder="请输入"
                 type="textarea"
                 :rows="3"
               />
@@ -59,7 +64,7 @@
                 prop="defaultValue"
                 v-if="scope.row.valueType === 2"
                 v-model="scope.row.defaultValue"
-                placeholder="请输入默认数值"
+                placeholder="请输入"
                 :min="scope.row.min"
                 :max="scope.row.max"
                 :step="scope.row.step"
@@ -72,7 +77,7 @@
                 v-model="scope.row.defaultValue"
                 :format="scope.row.format"
                 type="date"
-                placeholder="请选择默认数值"
+                placeholder="请选择"
                 style="width: 100%;"
               />
               <el-date-picker
@@ -81,20 +86,20 @@
                 v-model="scope.row.defaultValue"
                 :format="scope.row.format"
                 type="datetime"
-                placeholder="请选择默认数值"
+                placeholder="请选择"
                 style="width: 100%;"
               />
               <el-input
                 prop="defaultValue"
                 v-if="scope.row.valueType === 5"
                 v-model="scope.row.defaultValue"
-                placeholder="请输入默认数值"
+                placeholder="请输入"
               />
               <el-select
                 prop="defaultValue"
                 v-if="scope.row.valueType === 60 || scope.row.valueType === 62"
                 v-model="scope.row.defaultValue"
-                placeholder="请选择默认数值"
+                placeholder="请选择"
                 clearable
                 style="width: 100%"
               >
@@ -109,7 +114,7 @@
                 prop="defaultValue"
                 v-if="scope.row.valueType === 61"
                 v-model="scope.row.defaultValue"
-                placeholder="请选择默认数值"
+                placeholder="请选择"
                 style="width: 100%"
                 multiple
               >
@@ -120,12 +125,6 @@
                   :value="item.code"
                 ></el-option>
               </el-select>
-            </template>
-          </el-table-column>
-          <el-table-column label="是否必填" prop="required" width="75" align="center">
-            <template slot-scope="scope">
-              <font v-if="scope.row.required" class="el-required">是</font>
-              <font v-else-if="!scope.row.required">否</font>
             </template>
           </el-table-column>
           <el-table-column label="备注" prop="remark" />
@@ -143,7 +142,7 @@
         >
           
           <el-table-column label="属性名称" prop="name" width="250" align="center" />
-          <el-table-column label="默认数值" prop="defaultValue" width="500" align="center">
+          <el-table-column label="" prop="defaultValue" width="500" align="center">
             <template slot-scope="scope" prop="defaultValue">
               <el-input
                 class="el-input"
@@ -152,7 +151,7 @@
                   scope.row.valueType === 0 && scope.row.inputType === 'text'
                 "
                 v-model="scope.row.defaultValue"
-                placeholder="请输入默认数值"
+                placeholder="请输入"
               />
               <el-input
                 prop="defaultValue"
@@ -161,7 +160,7 @@
                     scope.row.inputType === 'textarea'
                 "
                 v-model="scope.row.defaultValue"
-                placeholder="请输入默认数值"
+                placeholder="请输入"
                 type="textarea"
                 :rows="3"
               />
@@ -175,7 +174,7 @@
                 prop="defaultValue"
                 v-if="scope.row.valueType === 2"
                 v-model="scope.row.defaultValue"
-                placeholder="请输入默认数值"
+                placeholder="请输入"
                 :min="scope.row.min"
                 :max="scope.row.max"
                 :step="scope.row.step"
@@ -188,7 +187,7 @@
                 v-model="scope.row.defaultValue"
                 :format="scope.row.format"
                 type="date"
-                placeholder="请选择默认数值"
+                placeholder="请选择"
                 style="width: 100%;"
               />
               <el-time-picker
@@ -197,7 +196,7 @@
                 v-model="scope.row.defaultValue"
                 :format="scope.row.format"
                 type="datetime"
-                placeholder="请选择默认数值"
+                placeholder="请选择"
                 style="width: 100%;"
               >
               </el-time-picker>
@@ -205,13 +204,13 @@
                 prop="defaultValue"
                 v-if="scope.row.valueType === 5"
                 v-model="scope.row.defaultValue"
-                placeholder="请输入默认数值"
+                placeholder="请输入"
               />
               <el-select
                 prop="defaultValue"
                 v-if="scope.row.valueType === 60 || scope.row.valueType === 62"
                 v-model="scope.row.defaultValue"
-                placeholder="请选择默认数值"
+                placeholder="请选择"
                 clearable
                 style="width: 100%"
               >
@@ -226,7 +225,7 @@
                 prop="defaultValue"
                 v-if="scope.row.valueType === 61"
                 v-model="scope.row.defaultValue"
-                placeholder="请选择默认数值"
+                placeholder="请选择"
                 style="width: 100%"
                 multiple
               >
@@ -272,7 +271,7 @@ export default {
       },
       valueTypes: PROPERTY_TABLE,
       rules: {
-        name: [{ required: true, message: "请输入默认数值" }]
+        name: [{ required: true, message: "请输入" }]
       }
     };
   },
