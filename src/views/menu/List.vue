@@ -17,6 +17,8 @@
           :default-expanded-keys="curLine"
           :props="treeProps"
           @node-click="handleNodeClick"
+          draggable
+          @node-drag-end="onDragEnd"
         >
           <span class="tree-node" slot-scope="{ node, data }">
             <span>{{ node.data.title }}</span>
@@ -336,7 +338,29 @@ export default {
             message: "已取消删除"
           });
         });
-    }
+    },
+    onDragEnd(draggingNode, dropNode, dropType) {
+      let pid = null
+      if (dropType == 'inner') {
+        pid = dropNode.data.menuId
+      } else if (dropType == 'before' || dropType == 'after') {
+        pid = dropNode.data.pid
+      }
+      if (pid == draggingNode.data.pid) {
+        return
+      }
+      this.$store
+        .dispatch("menu/updateOne", {
+          id: draggingNode.data.menuId,
+          data: {...draggingNode.data, pid},
+        }).then(data => {
+          this.loadData()
+          this.$message({
+            type: "success",
+            message: "修改成功！"
+          })
+        })
+    },
   },
   created() {
     this.loadData();

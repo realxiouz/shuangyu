@@ -185,7 +185,7 @@
           </el-table>
           <el-row style="margin-top:20px">
             <el-button
-              v-if="this.tableData.orderType==10&&(this.tableData.policyCode==''||this.tableData.policyCode=='null'||this.tableData.policyCode.substring(0,3)=='LCK'||this.tableData.policyCode.substring(0,2)=='GL'||this.tableData.policyCode.substring(0,3)=='SZF')"
+              v-if="this.tableData.orderType==10&&(this.tableData.policyCode==''||this.tableData.policyCode=='null'||this.tableData.policyCode.substring(0,3)=='LCK'||this.tableData.policyCode.substring(0,2)=='GL'||this.tableData.policyCode.substring(0,3)=='SZF'||this.tableData.policyCode.substring(0,3)=='CKG')"
                        type="primary" @click="goTicket" size="mini"
             >系统出票
             </el-button>
