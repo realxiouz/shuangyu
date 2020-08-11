@@ -70,18 +70,10 @@
             <el-form-item label="付款方式">
               <el-input type="text" v-model="firmMerchantForm.paymentType" placeholder="请输入付款方式.."></el-input>
             </el-form-item>
-            <el-form-item label="资金账号类型" prop="accountType">
-              <el-select v-model="firmMerchantForm.accountType" placeholder="请选择账号类型.." style="width: 50%">
-                <el-option label="现金" :value="0"></el-option>
-                <el-option label="银行存款" :value="1"></el-option>
-                <el-option label="支付宝" :value="2"></el-option>
-                <el-option label="微信支付" :value="3"></el-option>
-                <el-option label="汇付" :value="4"></el-option>
-                <el-option label="易宝" :value="5"></el-option>
+            <el-form-item label="资金账号" >
+              <el-select v-model="firmMerchantForm.accountCode" placeholder="请选择资金账号.." style="width: 50%" @change="changeAccount">
+                <el-option v-for="item in accountData" :key="item.accountCode" :label="item.accountName" :value="item.accountCode"></el-option>
               </el-select>
-            </el-form-item>
-            <el-form-item label="资金账号">
-              <el-input type="text" v-model="firmMerchantForm.bankAccount" placeholder="请输入资金账号.."></el-input>
             </el-form-item>
             <el-form-item label="账号名称">
               <el-input type="text" v-model="firmMerchantForm.bankName" placeholder="请输入账号名称.."></el-input>
@@ -151,6 +143,7 @@
                 firmForm: {},
                 firmMerchantForm: {},
                 openData: [],
+                accountData:[],
                 tagList: [],
                 contacts: [],
                 accounts: [],
@@ -244,6 +237,19 @@
                     remark:''
                 };
             },
+            //获取资金账号
+            loadCapitalAccount(){
+              this.$store.dispatch("fundAccount/getList",{})
+                  .then(data => {
+                    if(data){
+                      this.accountData = data;
+                    }else{
+                      this.accountData = [];
+                    }
+                  }).catch(error => {
+                    console.log(error)
+                })
+            },
             //加载平台信息
             loadOpen() {
                 this.$store.dispatch("firmOpenAuth/getCustomerList", {filters: {}})
@@ -308,6 +314,17 @@
                     this.loadContacts(merchantId);
                 }
             },
+            changeAccount(code){
+              for (let i = 0, len = this.accountData.length; i < len; i++) {
+                    if (code == this.accountData[i].accountCode) {
+                        this.firmMerchantForm.accountName = this.accountData[i].accountName;
+                        this.firmMerchantForm.accountId = this.accountData[i].accountId;
+                        this.firmMerchantForm.accountCode = this.accountData[i].accountCode;
+                        this.firmForm.accountId = this.accountData[i].accountId;
+                        break;
+                    }
+                }
+            },
             changeOpen(code) {
                 for (let i = 0, len = this.openData.length; i < len; i++) {
                     if (code == this.openData[i].openCode) {
@@ -319,72 +336,72 @@
                     }
                 }
             },
-          addCustomerClick() {
-            let isValid = false;
-            this.$refs["firmForm"].validate((firmValid) => {
-              if (firmValid) {
-                this.$refs["firmMerchantForm"].validate((merchantValid) => {
-                  if (merchantValid) {
-                    isValid = true;
-                  } else {
-                    isValid = false;
-                    this.$message({
-                      type: "error",
-                      message: "请正确填写!"
-                    });
-                  }
-                });
-              } else {
-                isValid = false;
-                this.$message({
-                  type: "error",
-                  message: "请正确填写!"
-                });
-              }
-            });
-            if (isValid) {
-              let accountList = [];
-              this.openData.forEach(item => {
-                const _openId = this.firmForm.openId;
-                if (_openId && _openId == item.openId) {
-                  this.open = item;
+            addCustomerClick() {
+              let isValid = false;
+              this.$refs["firmForm"].validate((firmValid) => {
+                if (firmValid) {
+                  this.$refs["firmMerchantForm"].validate((merchantValid) => {
+                    if (merchantValid) {
+                      isValid = true;
+                    } else {
+                      isValid = false;
+                      this.$message({
+                        type: "error",
+                        message: "请正确填写!"
+                      });
+                    }
+                  });
+                } else {
+                  isValid = false;
+                  this.$message({
+                    type: "error",
+                    message: "请正确填写!"
+                  });
                 }
               });
-              this.accounts.forEach(item => {
-                item.openId = this.open.openId;
-                item.openName = this.open.openName;
-                accountList.push(item);
-              });
-              if (this.firmForm.biethDate) {
-                this.firmForm.biethDate = this.firmForm.biethDate.getTime();
+              if (isValid) {
+                let accountList = [];
+                this.openData.forEach(item => {
+                  const _openId = this.firmForm.openId;
+                  if (_openId && _openId == item.openId) {
+                    this.open = item;
+                  }
+                });
+                this.accounts.forEach(item => {
+                  item.openId = this.open.openId;
+                  item.openName = this.open.openName;
+                  accountList.push(item);
+                });
+                if (this.firmForm.biethDate) {
+                  this.firmForm.biethDate = this.firmForm.biethDate.getTime();
+                }
+                this.firmMerchantForm.firm = this.firmForm;
+                this.firmMerchantForm.contacts = this.contacts;
+                this.firmMerchantForm.accounts = accountList;
+                if (this.update) {
+                  this.$store
+                    .dispatch('firmMerchant/updateOne', {
+                      merchantId: this.firmMerchantForm.merchantId,
+                      data: this.firmMerchantForm
+                    })
+                    .then(() => {
+                      this.goBack();
+                    })
+                    .catch(error => {
+                      console.log(error);
+                    });
+                } else {
+                  this.$store
+                    .dispatch('firmMerchant/addOne', this.firmMerchantForm)
+                    .then(() => {
+                      this.goBack();
+                    })
+                    .catch(error => {
+                      console.log(error);
+                    });
+                }
               }
-              this.firmMerchantForm.firm = this.firmForm;
-              this.firmMerchantForm.contacts = this.contacts;
-              this.firmMerchantForm.accounts = accountList;
-              if (this.update) {
-                this.$store
-                  .dispatch('firmMerchant/updateOne', {
-                    merchantId: this.firmMerchantForm.merchantId,
-                    data: this.firmMerchantForm
-                  })
-                  .then(() => {
-                    this.goBack();
-                  })
-                  .catch(error => {
-                    console.log(error);
-                  });
-              } else {
-                this.$store
-                  .dispatch('firmMerchant/addOne', this.firmMerchantForm)
-                  .then(() => {
-                    this.goBack();
-                  })
-                  .catch(error => {
-                    console.log(error);
-                  });
-              }
-            }
-          },
+            },
             goBack() {
                 if (this.$router.history.length <= 1) {
                     this.$router.push({path: '/home'});
@@ -396,6 +413,7 @@
         },
         created() {
             this.initFormData(this.$route.query.merchantId);
+            this.loadCapitalAccount()
         },
         components: {
             otherContact,

@@ -70,7 +70,7 @@
         name: 'edit',
         data() {
             const productCode = (rule, value, callback) => {
-                let reg = /^[0-9a-zA-Z]*$/g;
+                let reg = /^[0-9a-zA-Z_]*$/g;
                 if (reg.test(value)) {
                     callback();
                 } else {

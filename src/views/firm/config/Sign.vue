@@ -22,21 +22,21 @@
         label-width="130px"
         size="mini"
       >
-        <el-row :gutter="15">
+        <el-row >
           <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="7">
             <el-form-item  label="签约银行:" prop="bankCode">
-              <el-select  placeholder="请选择签约银行">
-                <el-option label="ALIPAY_SN   支付宝" value="ALIPAY   支付宝"></el-option>
-                <el-option label="PNRPAY_SN  汇付" value="ALIPAY   支付宝"></el-option>
-                <el-option label="TENPAY_SN 财付通余额代扣" value="ALIPAY   支付宝"></el-option>
+              <el-select v-model="signData.bankCode"  placeholder="请选择签约银行">
+                <el-option label="ALIPAY_SN   支付宝" :value="1"></el-option>
+                <el-option label="PNRPAY_SN  汇付" :value="2"></el-option>
+                <el-option label="TENPAY_SN 财付通余额代扣" :value="3"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="15">
+        <el-row >
           <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="7">
-            <el-form-item label="签约账号:" prop="account">
-              <el-input v-model="signData.securityCode" ></el-input>
+            <el-form-item label="签约账号:" prop="signedAccount">
+              <el-input v-model="signData.signedAccount" ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -60,12 +60,8 @@
     },
     methods: {
       loadSign(bankCode,signedAccount){
-        if(!bankCode&&!signedAccount){
-          bankCode = this.signData.bankCode
-          signedAccount - this.signData.signedAccount
-        }
         this.$store
-          .dispatch("woniuConfig/getSignList",{filter:{}})
+          .dispatch("woniuConfig/getSignList",{bankCode:this.signData.bankCode,signedAccount:this.signData.signedAccount})
           .then(data => {
             console.log(data)
           });

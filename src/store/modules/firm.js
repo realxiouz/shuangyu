@@ -15,10 +15,25 @@ import {
   getConfigList,
   getConfigOne,
   getSupplierList,
-  getSupplierListForOpen
+  getSupplierListForOpen,
+  getUserOne
 } from '@/api/firm';
 
+
 const actions = {
+  getUserOne({commit}, args) {
+    return new Promise((resolve, reject) => {
+      const {filter} = args;
+      getUserOne(filter)
+        .then(data => {
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+
   getAsyncTreeList({ commit }, args) {
     return new Promise((resolve, reject) => {
       const { pid, filter } = args;

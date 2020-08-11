@@ -1,4 +1,11 @@
 import request from '@/utils/request';
+export function getUserOne(filter) {
+  return request({
+    url: '/firm/user/get/first/one',
+    method: 'get',
+    params: filter
+  });
+}
 
 export function getPageList(pageFlag, pageSize, params) {
   return request({

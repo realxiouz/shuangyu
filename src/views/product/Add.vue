@@ -287,7 +287,7 @@ export default {
   name: 'Add',
   data() {
     const productCode = (rule, value, callback) => {
-      const reg = /^[0-9a-zA-Z]*$/g
+      const reg = /^[0-9a-zA-Z_]*$/g
       if (reg.test(value)) {
         callback()
       } else {
