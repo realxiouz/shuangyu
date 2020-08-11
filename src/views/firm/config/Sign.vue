@@ -22,7 +22,7 @@
         label-width="130px"
         size="mini"
       >
-        <el-row :gutter="15">
+        <el-row >
           <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="7">
             <el-form-item  label="签约银行:" prop="bankCode">
               <el-select v-model="signData.bankCode"  placeholder="请选择签约银行">
@@ -33,9 +33,9 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="15">
+        <el-row >
           <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="7">
-            <el-form-item label="签约账号:" prop="signedAccount">
+            <el-form-item label="签约账号:" prop="account">
               <el-input v-model="signData.signedAccount" ></el-input>
             </el-form-item>
           </el-col>
