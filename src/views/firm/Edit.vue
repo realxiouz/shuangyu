@@ -182,14 +182,13 @@
             },
 
             onSave() {
-                
                 this.$refs['form'].validate(valid => {
                 if (valid ) {
                     let actionName = this.keyId ? 'firm/updateOne' : 'firm/saveOne'
                     this.$store
-                    
                     .dispatch(actionName, this.formData)
                     .then(id => {
+                      console.log(id)
                         this.dialogVisible = false;
                         this.$emit('refresh');
                         this.$message({ type: 'success', message: '保存成功' });

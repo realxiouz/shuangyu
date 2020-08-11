@@ -168,7 +168,6 @@
                 align="center"
                 type="primary"
                 @click="handleSaveRelation"
-                v-if="!userData.userId"
               >
                 确认关联
               </el-button>

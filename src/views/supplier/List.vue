@@ -27,8 +27,10 @@
           <template slot-scope="scope">
             <el-button type="primary" size="mini" @click="onEdit(scope.$index, scope.row)">编辑</el-button>
             <el-button type="danger" size="mini" @click="onDel(scope.row.merchantId)">删除</el-button>
-            <el-button size="mini" :type="scope.row.staffId?'success':'info'"
-                       :disabled="scope.row.staffId?true:false"
+            <el-button size="mini" v-if="scope.row.staffId" type="success"
+                       @click="handleAssociate(scope.row)">查看用户
+            </el-button>
+            <el-button size="mini" v-else type="info"
                        @click="handleAssociate(scope.row)">关联用户
             </el-button>
 <!--            <span v-show="scope.row.openId && '' != scope.row.openId">
@@ -138,7 +140,31 @@
                             this.userData = data;
                             this.userData.firmId = row.firm.firmId;
                             this.userDialogVisible = true;
-                        } else {
+                        } else if(row.staffId){
+                          this.$confirm("关联用户可能已被删除，请重新关联用户", "提示", {
+                          confirmButtonText: "重新关联",
+                          cancelButtonText: "取消",
+                          type: "warning"
+                          }).then(()=>{
+                            this.$store
+                            .dispatch("user/getFirstOne",{
+                              filter: params
+                            })
+                            .then(data => {
+                                if(data){
+                                this.userData = data;
+                                this.userData.firmId = row.firm.firmId;
+                                this.userDialogVisible = true;
+                              }else{
+                                this.userData = {};
+                                this.$message({
+                                    type: "info",
+                                    message: "没有可关联的用户!"
+                                });
+                              }
+                            })
+                          })
+                        }else {
                             this.userData = {};
                             this.$message({
                                 type: "info",

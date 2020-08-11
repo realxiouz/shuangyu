@@ -27,9 +27,12 @@
             <el-button type="primary" size="mini" @click="handleAddChild(scope.row.firmId)">添加子企业</el-button>
             <el-button type="primary" size="mini" @click="onEdit(scope.row.firmId)">编辑</el-button>
             <el-button type="danger" size="mini" @click="onDel(scope.row.firmId)">删除</el-button>
-            <el-button size="mini"
-                       :type="scope.row.userId?'success':'info'"
-                       :disabled="scope.row.userId?true:false"
+            <el-button size="mini" v-if="scope.row.userId"
+                       type="success"
+                       @click="handleAssociate(scope.row)">查看用户
+            </el-button>
+            <el-button size="mini" v-else
+                       type="info"
                        @click="handleAssociate(scope.row)">关联用户
             </el-button>
           </template>
@@ -98,9 +101,7 @@
             <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
               <el-form-item>
                 <el-button size="mini" align="center" @click="userDialogVisible = false">取 消</el-button>
-                <el-button size="mini" align="center" type="primary" @click="handleSaveRelation">
-                  确认关联
-                </el-button>
+                <el-button size="mini" align="center" type="primary"   @click="handleSaveRelation">确认关联</el-button>
               </el-form-item>
             </el-col>
           </el-row>
@@ -200,7 +201,32 @@
                             this.userData = data;
                             this.userData.firmId = row.firmId;
                             this.userDialogVisible = true;
-                        } else {
+                           
+                        }else if(row.userId){
+                          this.$confirm("关联用户可能已被删除，请重新关联用户", "提示", {
+                            confirmButtonText: "重新关联",
+                            cancelButtonText: "取消",
+                            type: "warning"
+                          }).then(()=>{
+                            this.$store
+                              .dispatch("user/getFirstOne",{
+                                filter: params
+                              })
+                              .then(data=>{
+                                if(data){
+                                  this.userData = data;
+                                  this.userData.firmId = row.firmId;
+                                  this.userDialogVisible = true;
+                                }else{
+                                  this.userData = {};
+                                  this.$message({
+                                      type: "info",
+                                      message: "没有可关联的用户!"
+                                  });
+                                }
+                              })
+                          })
+                        }else {
                             this.userData = {};
                             this.$message({
                                 type: "info",
