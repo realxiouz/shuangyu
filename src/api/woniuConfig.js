@@ -47,9 +47,9 @@ export function getList(filter) {
   });
 }
 
-export function getSignList(filter) {
+export function getSignList(bankCode,signedAccount) {
   return request({
-    url: `/qunar/open/sign/up`,
+    url: `/qunar/open/sign/up/${bankCode}/${signedAccount}`,
     method: 'get',
     params: filter
   });

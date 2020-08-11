@@ -24,11 +24,11 @@
       >
         <el-row :gutter="15">
           <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="7">
-            <el-form-item label="签约银行:" prop="bank">
+            <el-form-item  label="签约银行:" prop="bankCode">
               <el-select  placeholder="请选择签约银行">
-                <el-option label="ALIPAY   支付宝" value="ALIPAY   支付宝"></el-option>
-                <el-option label="PNRPAY  汇付" value="ALIPAY   支付宝"></el-option>
-                <el-option label="TENPAY 财付通余额代扣" value="ALIPAY   支付宝"></el-option>
+                <el-option label="ALIPAY_SN   支付宝" value="ALIPAY   支付宝"></el-option>
+                <el-option label="PNRPAY_SN  汇付" value="ALIPAY   支付宝"></el-option>
+                <el-option label="TENPAY_SN 财付通余额代扣" value="ALIPAY   支付宝"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -53,13 +53,17 @@
         dialogVisible: false,
         isDisable: false,
         signRules: {
-          bank: [{required: true, message: "请选择签约银行", trigger: "blur"}],
-          account: [{required: true, message: "请输入签约账号", trigger: "blur"}]
+          bankCode: [{required: true, message: "请选择签约银行", trigger: "blur"}],
+          signedAccount: [{required: true, message: "请输入签约账号", trigger: "blur"}]
         },
       };
     },
     methods: {
-      loadSign(){
+      loadSign(bankCode,signedAccount){
+        if(!bankCode&&!signedAccount){
+          bankCode = this.signData.bankCode
+          signedAccount - this.signData.signedAccount
+        }
         this.$store
           .dispatch("woniuConfig/getSignList",{filter:{}})
           .then(data => {

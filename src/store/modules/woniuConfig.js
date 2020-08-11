@@ -71,8 +71,8 @@ const actions = {
   },
   getSignList({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {filter} = args;
-      getSignList(filter)
+      const {bankCode,signedAccount} = args;
+      getSignList(bankCode,signedAccount)
         .then(data => {
           resolve(data);
         })
