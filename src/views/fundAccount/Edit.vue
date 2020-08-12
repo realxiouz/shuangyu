@@ -3,11 +3,13 @@
     <el-dialog :title="keyId && !pid ? '修改账号管理' : '添加账号管理'"  width="24%" center :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
       <el-form ref="form" label-width="110px" size="mini" :model="formData" :rules="rules">
         <el-form-item label="账号类别:" prop="category">
-          <el-select v-model="formData.category" placeholder="请选择账号类别" style="width: 100%;">
-            <el-option label="现金" :value="0"></el-option>
-            <el-option label="银行存款" :value="1"></el-option>
-            <el-option label="积分" :value="2"></el-option>
-            <el-option label="优惠券" :value="3"></el-option>
+          <el-select v-model="formData.category" style="width: 100%;" placeholder="请选择账号类别" @change="handleCurrency">
+            <el-option
+              v-for="(item, idx) in categoryList"
+              :key="idx"
+              :label="item.value"
+              :value="item.code"
+            ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="账号编码:" prop="accountCode">
@@ -47,17 +49,17 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="积分有效期:" v-if="formData.category === 2">
+        <el-form-item label="积分有效期:" v-if="formData.category === 6">
           <el-date-picker v-model="formData.expire" style="width:100%" type="date" placeholder="选择日期"></el-date-picker>
           <span style="color: #ff8aac;">有效期至选择日期零点(00:00:00)</span>
         </el-form-item>
-        <el-form-item label="积分兑换比例:" v-if="formData.category === 2">
+        <el-form-item label="积分兑换比例:" v-if="formData.category === 6">
           <el-input v-model="formData.pointRate" placeholder="请输入积分兑换比例"></el-input>
         </el-form-item>
-        <el-form-item label="积分金额:" v-if="formData.category === 2">
+        <el-form-item label="积分金额:" v-if="formData.category === 6">
           <el-input v-model="formData.amount" placeholder="请输入积分金额"></el-input>
         </el-form-item>
-        <el-form-item label="优惠券有效期:" v-if="formData.category === 3">
+        <el-form-item label="优惠券有效期:" v-if="formData.category === 7">
           <el-date-picker v-model="formData.expire" style="width:100%" type="date" placeholder="请输入优惠券有效期"></el-date-picker>
           <span style="color: #ff8aac;">有效期至选择日期零点(00:00:00)</span>
         </el-form-item>
@@ -77,6 +79,8 @@
 </template>
 <script>
   import {MIXIN_EDIT} from "@/utils/mixin";
+  import {CATEGORY_MAP} from '@/utils/const'
+
   export default {
     mixins: [MIXIN_EDIT],
     props: {
@@ -96,6 +100,7 @@
       };
       return {
         dialogVisible: false,
+        categoryList: CATEGORY_MAP,
         subjectList: [],
         subjectTree: [],
         currencyList: [],
