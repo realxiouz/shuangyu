@@ -1,4 +1,4 @@
-import {saveOne, addOne, addMany, updateOne, updateMany, updateManyByFilter, removeOne, removeMany, removeManyByFilter, removeRealOne, getOne, getOneByFilter, getMany, getList, getTreeList, getPageList, getTotal} from '@/api/menu/';
+import {saveOne, addOne, addMany, updateOne, updateMany, updateManyByFilter, removeOne, removeMany, removeManyByFilter, removeRealOne, getOne, getOneByFilter, getMany, getList, getTreeList, getPageList, nodeDragDrop} from '@/api/menu/';
 
 const actions = {
   saveOne({commit}, args) {
@@ -190,10 +190,9 @@ const actions = {
         });
     });
   },
-  getTotal({commit}, args) {
+  nodeDragDrop({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {filter} = args;
-      getTotal(filter)
+      nodeDragDrop(args)
         .then(data => {
           resolve(data);
         })
