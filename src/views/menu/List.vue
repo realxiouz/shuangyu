@@ -24,7 +24,6 @@
           <span class="tree-node" slot-scope="{ node, data }">
             <span>{{ node.data.title }}</span>
             <span>
-              <span>{{ node.data.sort }}&nbsp;&nbsp;&nbsp;</span>
               <el-button type="text" size="mini" @click="nodeAdd(node, data)"
               >添加</el-button
               >
