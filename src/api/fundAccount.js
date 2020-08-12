@@ -61,3 +61,12 @@ export function getAsyncTreeList(params) {
     params: params
   });
 }
+
+export function getTreeList(params) {
+  return request({
+    url: `/finance/fund/account/get/tree/list`,
+    method: 'get',
+    params: params
+  });
+}
+

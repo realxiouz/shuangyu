@@ -183,6 +183,7 @@
                 align="center"
                 type="primary"
                 @click="handleSaveRelation"
+                v-if="relevance"
               >
                 确认关联
               </el-button>
@@ -207,6 +208,7 @@ export default {
       userData: {},
       //关联用户时用于记录当前选中的用户对象
       curRow: {},
+      relevance:false,
       openId:'',
       keyName:'merchantId',
       actions: {
@@ -254,7 +256,7 @@ export default {
       params.phone = row.firm.phone;
       params.email = row.firm.email;
       this.$store
-        .dispatch("user/getFirstOne", {
+        .dispatch("firm/getUserOne", {
           filter: params
         })
         .then(data => {
@@ -269,7 +271,7 @@ export default {
                 type: "warning"
               }).then(()=>{
                 this.$store
-                  .dispatch("user/getFirstOne",{
+                  .dispatch("firm/getUserOne",{
                     filter: params
                   })
                   .then(data => {
@@ -340,10 +342,16 @@ export default {
     },
     onConfig(row) {
       if(row.openId){
+        let lastName = this.$router.history.current.name;
+        localStorage.setItem("lastName", lastName);
+        localStorage.setItem("firmId", row.firmId);
+        localStorage.setItem("firmDomain", row.domain);
+        localStorage.setItem("merchantId", row.firm.firmId);
+        localStorage.setItem("merchantDomain", row.firm.domain);
+        localStorage.setItem("openId", row.openId);
         this.$router.push({
           path: "/firm/config"
         });
-        localStorage.setItem("openId", row.openId);
       }else{
         this.$confirm('请先选择开放平台, 才能进行配置操作，是否去选择开放平台?', '提示', {
           confirmButtonText: '确定',

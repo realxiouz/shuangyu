@@ -56,6 +56,7 @@
   import edit from "./Edit";
   import search from "./Search";
   import {MIXIN_LIST} from "@/utils/mixin";
+  import {CATEGORY_MAP} from '@/utils/const'
 
   export default {
     mixins: [MIXIN_LIST],
@@ -72,7 +73,8 @@
           tree: null,
           treeNode: null,
           resolve: null
-        }
+        },
+        categoryList: CATEGORY_MAP
       };
     },
     methods: {
@@ -107,17 +109,16 @@
         }
       },
       formatCategory(row) {
-        if (0 === row.category) {
-          return "现金";
-        } else if (1 === row.category) {
-          return "银行存款";
-        } else if (2 === row.category) {
-          return "积分";
-        } else if (3 === row.category) {
-          return "优惠券";
-        } else {
-          return "无";
+        let that = this;
+        let categoryName = '';
+        if(row && null != row.category && '' !== row.category && that.categoryList && that.categoryList.length > 0){
+          that.categoryList.forEach(function(obj){
+            if(row.category === obj.code){
+              categoryName = obj.value;
+            }
+          });
         }
+        return categoryName;
       },
       handleRefresh() {
         this.onRefresh();

@@ -210,7 +210,7 @@
                             type: "warning"
                           }).then(()=>{
                             this.$store
-                              .dispatch("user/getFirstOne",{
+                              .dispatch("firm/getUserOne",{
                                 filter: params
                               })
                               .then(data=>{
