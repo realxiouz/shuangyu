@@ -176,7 +176,6 @@
           });
       },
       handleCurrentChange(val) {
-        // this.staffs = [];
         this.orderStaff = {};
         this.orderStaff = val;
         console.log(this.orderStaff);
