@@ -1,48 +1,47 @@
 import request from '@/utils/request';
 
-
-export function removeOne(id) {
+export function getList(params) {
   return request({
-    url: `/firm/app/remove/one/${id}`,
+    url: `/firm/app/get/list`,
+    method: 'get',
+    params: params
+  });
+}
+
+export function getOne(params) {
+  return request({
+    url: `/firm/app/get/one/${params.appId}`,
+    method: 'get'
+  });
+}
+
+export function getPageList(pageFlag, pageSize, params) {
+  return request({
+    url: `/firm/app/get/page/list/${pageFlag}/${pageSize}`,
+    method: 'get',
+    params
+  });
+}
+
+export function removeOne(params) {
+  return request({
+    url: `/firm/app/remove/one/${params.appId}`,
     method: 'delete'
   });
 }
 
-export function updateOne(data) {
+export function saveOne(data) {
   return request({
-    url: '/firm/app/update/one',
+    url: `/firm/app/save/one`,
     method: 'post',
     data
   });
 }
 
-export function getPageList(pageFlag, pageSize, lastId, params) {
+export function update(data) {
   return request({
-    url: `/firm/app/page/list/${pageFlag}/${pageSize}/${lastId}`,
-    method: 'get',
-    params: params
-  });
-}
-
-export function getTotal(params) {
-  return request({
-    url: `/firm/app/total`,
-    method: 'get',
-    params: params
-  });
-}
-
-export function save(data) {
-  return request({
-    url: '/firm/app/save',
-    method: 'post',
+    url: `/firm/app/update/one/${data.appId}`,
+    method: 'put',
     data
-  });
-}
-
-export function getOne(id) {
-  return request({
-    url: `/firm/app/one/${id}`,
-    method: 'get'
   });
 }

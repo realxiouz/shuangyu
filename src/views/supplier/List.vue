@@ -182,7 +182,7 @@
                 this.skipDetail();
             },
             onEdit(index, row) {
-                this.skipDetail(row.merchantId);
+              this.skipDetail(row.firm.firmId);
             },
             handleSupplement(row) {
                 this.$router.push({
@@ -221,7 +221,8 @@
             },
             /*跳转到供应商编辑页面，merchantId用于编辑记录时进行查找。*/
             skipDetail(merchantId) {
-                this.$router.push({path: '/supplier/edit', query: {merchantId: merchantId}});
+                this.$router.push({path: '/supplier/edit'});
+                localStorage.setItem("merchantId", merchantId);
             }
         },
         

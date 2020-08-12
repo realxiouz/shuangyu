@@ -55,7 +55,7 @@
           <br><br>
           <p style="font-size: 20px">管理信息</p>
           <hr width="40%" align="left">
-          <el-form :rules="rules" :model="firmMerchantForm" ref="firmMerchantForm" label-position="left" label-width="20%" size="mini">
+          <el-form :model="firmMerchantForm" ref="firmMerchantForm" label-position="left" label-width="20%" size="mini">
             <el-form-item label="标签">
             </el-form-item>
             <el-form-item label="重要性">
@@ -97,13 +97,13 @@
               <el-input type="textarea" v-model="firmMerchantForm.remark"></el-input>
             </el-form-item>
             <el-form-item label="开放平台">
-              <el-select v-model="firmMerchantForm.openCode" placeholder="请选择平台" style="width: 50%"
+              <el-select v-model="firmMerchantForm.openId" placeholder="请选择平台" style="width: 50%"
                          @change="changeOpen">
                 <el-option :value=null>&nbsp;- -</el-option>
                 <el-option v-for="item in openData"
-                           :key="item.openCode"
+                           :key="item.openId"
                            :label="item.openName"
-                           :value="item.openCode">
+                           :value="item.openId">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -266,8 +266,8 @@
                 return data;
               },
             //加载平台信息
-            loadOpen() {
-                this.$store.dispatch("firmOpenAuth/getCustomerList", {filters: {}})
+            loadOpen(merchantId) {
+                this.$store.dispatch("firmOpenAuth/getCustomerList", {firmId: merchantId})
                     .then(data => {
                         if (data) {
                             this.openData = data;
@@ -278,16 +278,16 @@
                     console.log(error);
                 });
             },
-            loadContacts(firmId) {
-                this.$store.dispatch("firmContact/getList", {filter: {firmId: firmId}})
+            loadContacts(merchantId) {
+                this.$store.dispatch("firmContact/getList", {filter: {firmId: merchantId}})
                     .then(data => {
                         this.contacts = data;
                     }).catch(error => {
                     console.log(error);
                 });
             },
-            loadAccounts(firmId) {
-                this.$store.dispatch("firmAccount/getList", {filter: {firmId: firmId}})
+            loadAccounts(merchantId) {
+                this.$store.dispatch("firmAccount/getList", {filter: {firmId: merchantId}})
                     .then(data => {
                         this.accounts = data;
                     }).catch(error => {
@@ -320,14 +320,16 @@
             },
             initFormData(merchantId) {
                 this.clearForm();
-                this.loadOpen();
-                if (merchantId) {
-                    this.update = true;
-                    this.loadCustomer(merchantId);
-                    this.loadOther(merchantId);
-                    this.loadAccounts(merchantId);
-                    this.loadContacts(merchantId);
+                if(merchantId){
+                  this.update = true;
+                  this.loadCustomer(merchantId);
+                  this.loadOther(merchantId);
+                  this.loadAccounts(merchantId);
+                  this.loadContacts(merchantId);
+                  this.loadOpen(merchantId);
                 }
+              this.firmForm = this.defaultFirmFormData();
+              this.firmMerchantForm = this.defaultMerchantFormData();
             },
             changeAccount(accountIdList){
               let that = this;
@@ -350,12 +352,12 @@
                     }
                 }
             },
-            changeOpen(code) {
+            changeOpen(openId) {
                 for (let i = 0, len = this.openData.length; i < len; i++) {
-                    if (code == this.openData[i].openCode) {
-                        this.firmMerchantForm.openName = this.openData[i].openName;
+                    if (openId === this.openData[i].openId) {
                         this.firmMerchantForm.openId = this.openData[i].openId;
                         this.firmMerchantForm.openCode = this.openData[i].openCode;
+                        this.firmMerchantForm.openName = this.openData[i].openName;
                         this.firmForm.openId = this.openData[i].openId;
                         break;
                     }
@@ -440,7 +442,7 @@
             }
         },
         created() {
-            this.initFormData(this.$route.query.merchantId);
+            this.initFormData(localStorage.getItem("merchantId"));
             this.loadAccountList();
             this.loadAccountTree();
         },

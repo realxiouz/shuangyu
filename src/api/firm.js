@@ -32,6 +32,8 @@ export function addOne(data) {
 }
 
 export function updateOne(firmId, data) {
+  console.log(firmId);
+  console.log(data);
   return request({
     url: `/firm/update/one/${firmId}`,
     method: 'put',

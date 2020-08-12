@@ -1,4 +1,11 @@
-import {getOne, getPageList, getTotal, removeOne, save, updateOne} from "@/api/app";
+import {
+  getList,
+  getOne,
+  getPageList,
+  removeOne,
+  saveOne,
+  update
+} from "@/api/app";
 import {getToken} from "@/utils/auth";
 
 
@@ -21,9 +28,10 @@ const mutations = {
 };
 
 const actions = {
-  updateOne({commit}, args) {
+  // eslint-disable-next-line no-unused-vars
+  getList({commit}, args) {
     return new Promise((resolve, reject) => {
-      updateOne(args)
+      getList(args)
         .then(data => {
           resolve(data);
         })
@@ -32,9 +40,10 @@ const actions = {
         });
     });
   },
-  save({commit}, args) {
+  // eslint-disable-next-line no-unused-vars
+  getOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      save(args)
+      getOne(args)
         .then(data => {
           resolve(data);
         })
@@ -43,22 +52,11 @@ const actions = {
         });
     });
   },
-  removeOne({commit}, args) {
-    const {appId} = args;
-    return new Promise((resolve, reject) => {
-      removeOne(appId)
-        .then(data => {
-          resolve(data);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  },
+  // eslint-disable-next-line no-unused-vars
   getPageList({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {pageFlag, pageSize, lastId, filter} = args;
-      getPageList(pageFlag, pageSize, lastId, filter)
+      const {pageFlag, pageSize, ...params} = args;
+      getPageList(pageFlag, pageSize, params)
         .then(data => {
           resolve(data);
         })
@@ -67,11 +65,10 @@ const actions = {
         });
     });
   },
-
-  getTotal({commit}, args) {
-    const {filters} = args;
+  // eslint-disable-next-line no-unused-vars
+  removeOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      getTotal(filters)
+      removeOne(args)
         .then(data => {
           resolve(data);
         })
@@ -80,10 +77,22 @@ const actions = {
         });
     });
   },
-  getOne({commit}, args) {
-    const {appId} = args;
+  // eslint-disable-next-line no-unused-vars
+  saveOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      getOne(appId)
+      saveOne(args)
+        .then(data => {
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  // eslint-disable-next-line no-unused-vars
+  update({commit}, args) {
+    return new Promise((resolve, reject) => {
+      update(args)
         .then(data => {
           resolve(data);
         })
@@ -92,7 +101,6 @@ const actions = {
         });
     });
   }
-
 };
 
 export default {
