@@ -108,6 +108,27 @@ export default {
     toUpperCase() {
       this.formData.flightCode = this.formData.flightCode.toUpperCase();
     },
+    onSave() {
+      this.$refs['form'].validate(valid => {
+        if (valid ) {
+            let actionName = this.keyId ? 'netFare/updateOne' : 'netFare/addOne'
+            this.$store
+            .dispatch(actionName, this.formData)
+            .then(id => {
+              console.log(this.formData)
+                this.dialogVisible = false;
+                this.$emit('refresh');
+                this.$message({ type: 'success', message: '保存成功' });
+                this.keyId ? this.$emit('updata') : this.$emit('add')
+
+            })
+            // eslint-disable-next-line no-unused-vars
+            .finally(_ => {
+                this.afterSave();
+            });
+        }
+      });
+    }
     
   },
   created() {

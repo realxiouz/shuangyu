@@ -77,7 +77,7 @@
             },
             inventoryUpdate(id) {
                 let path = "";
-                path = "/inventory/edit";
+                path = "/product/inventory/edit";
                 this.$router.push({
                     path: path,
                     query: {

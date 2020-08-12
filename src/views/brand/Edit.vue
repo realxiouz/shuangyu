@@ -134,6 +134,7 @@
             loadCategory() {
                 this.$store.dispatch("category/getTreeList", {filter: {categoryType: 9}})
                     .then(data => {
+                        console.log(data)
                         this.categoryList = this.generateTreeData(data);
                     })
                     .catch(error => {
@@ -182,5 +183,19 @@
   .el-dialog {
     width: 500px;
     min-width: 500px;
+  }
+  .el-cascader-menu__list{
+    margin: 0 0 20px 0;
+    padding: 0;
+  }
+
+  .el-cascader__suggestion-list{
+    margin: 0 0 16px 0;
+    padding: 0;
+  }
+
+  .el-cascader-panel{
+    height: 300px;
+    overflow-y: scroll;
   }
 </style>

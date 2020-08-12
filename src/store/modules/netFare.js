@@ -14,7 +14,8 @@ const actions = {
   },
   updateOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      updateOne(args)
+      const {flightCode} = args;
+      updateOne(flightCode)
         .then(data => {
           resolve(data);
         })
