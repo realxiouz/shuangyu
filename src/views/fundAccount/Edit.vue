@@ -49,17 +49,17 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="积分有效期:" v-if="formData.category === 2">
+        <el-form-item label="积分有效期:" v-if="formData.category === 6">
           <el-date-picker v-model="formData.expire" style="width:100%" type="date" placeholder="选择日期"></el-date-picker>
           <span style="color: #ff8aac;">有效期至选择日期零点(00:00:00)</span>
         </el-form-item>
-        <el-form-item label="积分兑换比例:" v-if="formData.category === 2">
+        <el-form-item label="积分兑换比例:" v-if="formData.category === 6">
           <el-input v-model="formData.pointRate" placeholder="请输入积分兑换比例"></el-input>
         </el-form-item>
-        <el-form-item label="积分金额:" v-if="formData.category === 2">
+        <el-form-item label="积分金额:" v-if="formData.category === 6">
           <el-input v-model="formData.amount" placeholder="请输入积分金额"></el-input>
         </el-form-item>
-        <el-form-item label="优惠券有效期:" v-if="formData.category === 3">
+        <el-form-item label="优惠券有效期:" v-if="formData.category === 7">
           <el-date-picker v-model="formData.expire" style="width:100%" type="date" placeholder="请输入优惠券有效期"></el-date-picker>
           <span style="color: #ff8aac;">有效期至选择日期零点(00:00:00)</span>
         </el-form-item>
