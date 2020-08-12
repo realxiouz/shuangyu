@@ -183,6 +183,7 @@
                 align="center"
                 type="primary"
                 @click="handleSaveRelation"
+                v-if="relevance"
               >
                 确认关联
               </el-button>
@@ -207,6 +208,7 @@ export default {
       userData: {},
       //关联用户时用于记录当前选中的用户对象
       curRow: {},
+      relevance:false,
       openId:'',
       keyName:'merchantId',
       actions: {
@@ -254,7 +256,7 @@ export default {
       params.phone = row.firm.phone;
       params.email = row.firm.email;
       this.$store
-        .dispatch("user/getFirstOne", {
+        .dispatch("firm/getUserOne", {
           filter: params
         })
         .then(data => {
@@ -269,7 +271,7 @@ export default {
                 type: "warning"
               }).then(()=>{
                 this.$store
-                  .dispatch("user/getFirstOne",{
+                  .dispatch("firm/getUserOne",{
                     filter: params
                   })
                   .then(data => {

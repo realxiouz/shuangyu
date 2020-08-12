@@ -68,21 +68,20 @@
             <el-form-item label="付款方式">
               <el-input type="text" v-model="firmMerchantForm.paymentType" placeholder="请输入付款方式.."></el-input>
             </el-form-item>
-            <el-form-item label="资金账号类型">
-              <el-select v-model="firmMerchantForm.accountType" placeholder="请选择账号类型.." style="width: 50%">
-                <el-option label="现金" :value="0"></el-option>
-                <el-option label="银行存款" :value="1"></el-option>
-                <el-option label="支付宝" :value="2"></el-option>
-                <el-option label="微信支付" :value="3"></el-option>
-                <el-option label="汇付" :value="4"></el-option>
-                <el-option label="易宝" :value="5"></el-option>
-              </el-select>
+            <el-form-item label="资金账号:" prop="accountId">
+              <el-cascader
+                v-model="firmMerchantForm.accountId"
+                style="width: 100%;"
+                placeholder="请选择资金账号"
+                :options="accountData"
+                :props="{ label: 'accountName', value: 'accountId' }"
+                filterable
+                @change="changeAccount"
+              ></el-cascader>
             </el-form-item>
-            <el-form-item label="资金账号">
-              <el-input type="text" v-model="firmMerchantForm.bankAccount" placeholder="请输入资金账号.."></el-input>
-            </el-form-item>
-            <el-form-item label="账号名称">
-              <el-input type="text" v-model="firmMerchantForm.bankName" placeholder="请输入账号名称.."></el-input>
+            
+            <el-form-item label="银行账号" v-if="bankShow">
+              <el-input type="text"  v-model="bankAccount" placeholder="请输入银行账号.." disabled></el-input>
             </el-form-item>
             <el-form-item label="收款人户名">
               <el-input type="text" v-model="firmMerchantForm.accountName" placeholder="请输入收款人户名.."></el-input>
@@ -149,9 +148,13 @@
                 firmForm: {},
                 firmMerchantForm: {},
                 openData: [],
+                accountList:[],
+                accountData:[],
                 tagList: [],
                 contacts: [],
                 accounts: [],
+                bankAccount: null,
+                bankShow:false,
                 update: false,
                 open: {},
                 rules: {
@@ -226,12 +229,8 @@
                     paymentType: '',
                     //资金账号类型(0:现金，1:银行存款，2:支付宝，3：微信支付，4：汇付，5：易宝)
                     accountType: 0,
-                    //银行账号
-                    bankAccount: '',
-                    //银行名称
-                    bankName: '',
-                    //收款人户名
-                    accountName: '',
+                    //资金账号
+                    accountId:'',
                     //财务联系人
                     financeName: '',
                     //联系人电话
@@ -242,6 +241,34 @@
                     remark:''
                 };
             },
+            //获取资金账号列表数据
+            loadAccountList(){
+              this.$store.dispatch("fundAccount/getList",{ filter: {} })
+                  .then(data => {
+                    this.accountList = data;
+                  }).catch(error => {
+                    console.log(error)
+                })
+            },
+            //获取资金账号树形数据
+            loadAccountTree(){
+              this.$store.dispatch("fundAccount/getTreeList",{ filter: {} })
+                  .then(data => {
+                    this.accountData = this.getTreeData(data)
+                  }).catch(error => {
+                    console.log(error)
+                })
+            },
+             getTreeData(data) {
+                for (let i = 0; i < data.length; i++) {
+                  if (data[i].children.length < 1) {
+                    data[i].children = undefined;
+                  } else {
+                    this.getTreeData(data[i].children);
+                  }
+                }
+                return data;
+              },
             //加载平台信息
             loadOpen() {
                 this.$store.dispatch("firmOpenAuth/getSupplierList", {filters: {}})
@@ -287,6 +314,27 @@
                     console.log(error);
                 });
             },
+            changeAccount(accountIdList){
+              let that = this;
+              if (accountIdList) {
+                let id = accountIdList[accountIdList.length - 1];
+                that.accountList.forEach(function(obj){
+                  if(id === obj.accountId){
+                    that.firmMerchantForm.accountId = obj.accountId;
+                  }
+                });
+              }
+              for (let i = 0, len = this.accountData.length; i < len; i++) {
+                    if (accountIdList == this.accountData[i].accountId) {
+                      if(this.accountData[i].category==1){
+                        console.log(this.accountData[i])
+                        this.bankShow = true
+                      }else if(this.accountList[i].category==0){
+                        this.bankShow = false
+                      }
+                    }
+                }
+            },
             changeOpen(code) {
                 for (let i = 0, len = this.openData.length; i < len; i++) {
                     if (code == this.openData[i].openCode) {
@@ -314,6 +362,7 @@
                     this.loadContacts(merchantId);
                 }
             },
+            //点击保存
             addSupplierClick() {
               let isValid = false;
               this.$refs["firmForm"].validate((firmValid)=>{
@@ -394,6 +443,8 @@
         },
         created() {
             this.initFormData(this.$route.query.merchantId);
+            this.loadAccountList();
+            this.loadAccountTree();
         },
         components: {
             otherContact,
@@ -434,5 +485,19 @@
   .title button {
     height: 80%;
     float: right;
+  }
+  .el-cascader-menu__list{
+    margin: 0 0 20px 0;
+    padding: 0;
+  }
+
+  .el-cascader__suggestion-list{
+    margin: 0 0 16px 0;
+    padding: 0;
+  }
+
+  .el-cascader-panel{
+    height: 300px;
+    overflow-y: scroll;
   }
 </style>

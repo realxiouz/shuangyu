@@ -167,6 +167,7 @@
                 size="mini"
                 align="center"
                 type="primary"
+                v-if="relevance"
                 @click="handleSaveRelation"
               >
                 确认关联
@@ -416,6 +417,7 @@ export default {
     };
     return {
       loading: "",
+      relevance:false,
       dialogVisible: false,
       permissionDialogVisible: false,
       searchDialogVisible: false,
@@ -720,7 +722,7 @@ export default {
       params.phone = row.phone;
       params.email = row.email;
       this.$store
-        .dispatch("user/getFirstOne", {
+        .dispatch("firm/getUserOne", {
           filter: params
         })
         .then(data => {
@@ -735,7 +737,7 @@ export default {
               type: "warning"
               }).then(()=>{
                  this.$store
-                  .dispatch("user/getFirstOne", {
+                  .dispatch("firm/getUserOne", {
                     filter: params
                   })
                   .then(data => {

@@ -97,7 +97,7 @@
             <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
               <el-form-item>
                 <el-button size="mini" align="center" @click="userDialogVisible = false">取 消</el-button>
-                <el-button size="mini" align="center" type="primary" @click="handleSaveRelation">
+                <el-button size="mini" align="center" type="primary" v-if="relevance" @click="handleSaveRelation">
                   确认关联
                 </el-button>
               </el-form-item>
@@ -119,6 +119,7 @@
             return {
                 userDialogVisible: false,
                 userData: [],
+                relevance:false,
                 keyName:'merchantId',
                 actions: {
                   getPageList: 'firmMerchant/getSupplierPageList',
@@ -132,7 +133,7 @@
                 params.phone = row.firm.phone;
                 params.email = row.firm.email;
                 this.$store
-                    .dispatch("user/getFirstOne", {
+                    .dispatch("firm/getUserOne", {
                         filter: params
                     })
                     .then(data => {
@@ -147,7 +148,7 @@
                           type: "warning"
                           }).then(()=>{
                             this.$store
-                            .dispatch("user/getFirstOne",{
+                            .dispatch("firm/getUserOne",{
                               filter: params
                             })
                             .then(data => {
