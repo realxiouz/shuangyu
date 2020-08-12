@@ -76,7 +76,8 @@ export const CATEGORY_MAP = [
   { code: 4, value: '汇付' },
   { code: 5, value: '易宝' },
   { code: 6, value: '积分' },
-  { code: 7, value: '优惠券' }
+  { code: 7, value: '优惠券' },
+  { code: 8, value: '财付通' }
 ];
 
 export const CATEGORY_TYPES = genArrByMap(CATEGORY_MAP);
