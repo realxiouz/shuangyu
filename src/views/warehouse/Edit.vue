@@ -86,6 +86,7 @@ function defaultData() {
 export default {
   mixins: [MIXIN_EDIT],
   name: "warehouseEdit",
+  props: ['editWarehouseId', 'pid', 'codeEnabled'],
   data() {
     const codeValidator = (rule, value, callback) => {
       let reg = /^[0-9a-zA-Z_]*$/g;
@@ -106,7 +107,6 @@ export default {
       callback();
     };
     return {
-    codeEnabled:'',
       formData: defaultData(),
       firmList: [],
       newDialogVisible: false,
@@ -145,6 +145,9 @@ export default {
     };
   },
   methods: {
+    afterSave(){
+      console.log(this.formData)
+    },
     handleGetOne(editWarehouseId) {
       if (editWarehouseId) {
         this.$store

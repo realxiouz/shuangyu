@@ -84,6 +84,9 @@
                     this.tags.push(this.airportName);
                 }
             },
+            afterSave() {
+              console.log(this.formData)
+            },
             handleSave(){
                 this.formData.airportName = this.tags;
                 return  this.$emit('onSave', this.formData);
