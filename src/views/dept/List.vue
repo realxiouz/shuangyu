@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <search class="page-search" ref="search" @onSearch="onSearch" />
+    <!-- <search class="page-search" ref="search" @onSearch="onSearch" /> -->
     <el-table
       class="page-table"
       v-loading="loading"

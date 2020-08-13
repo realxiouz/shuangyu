@@ -5,12 +5,12 @@
       <el-form-item label="部门名称:" prop="deptName">
         <el-input v-model="formData.deptName"></el-input>
       </el-form-item>
-      <el-form-item label="钉钉Id:">
+      <!-- <el-form-item label="钉钉Id:" prop="ddId">
         <el-input v-model.number="formData.ddId"></el-input>
       </el-form-item>
-      <el-form-item label="钉钉父节点:">
+      <el-form-item label="钉钉父节点:" prop="ddParentIdId">
         <el-input v-model.number="formData.ddParentIdId"></el-input>
-      </el-form-item>
+      </el-form-item> -->
     </el-form>
     <div slot="footer" class="dialog-footer" style="text-align:right;">
       <el-button size="mini" @click="dialogVisible=false">取 消</el-button>
