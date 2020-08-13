@@ -85,9 +85,6 @@
             <el-form-item label="银行账号" v-if="bankShow">
               <el-input type="text"  v-model="bankAccount" placeholder="请输入银行账号.." disabled></el-input>
             </el-form-item>
-            <el-form-item label="收款人户名">
-              <el-input type="text" v-model="firmMerchantForm.accountName" placeholder="请输入收款人户名.."></el-input>
-            </el-form-item>
             <el-form-item label="财务联系人">
               <el-input type="text" v-model="firmMerchantForm.financeName" placeholder="请输入财务联系人.."></el-input>
             </el-form-item>
@@ -285,10 +282,6 @@
                     taxRate: 0,
                     //税务登记号
                     taxNo: '',
-                    //付款方式
-                    paymentType: '',
-                    //资金账号类型(0:现金，1:银行存款，2:支付宝，3：微信支付，4：汇付，5：易宝)
-                    accountType: 0,
                     //资金账号
                     accountId:'',
                     //财务联系人
