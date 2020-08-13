@@ -319,8 +319,8 @@
                 this.firmMerchantForm.merchantType = item;
             },
             initFormData(merchantId) {
-                this.clearForm();console.log(merchantId);
-                if(merchantId){ console.log("进来了");
+                this.clearForm();
+                if(merchantId){
                   this.update = true;
                   this.loadCustomer(merchantId);
                   this.loadOther(merchantId);
