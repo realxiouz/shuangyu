@@ -138,6 +138,16 @@
                 }
             };
         },
+      watch: {
+        visible(val) {
+          if (val) {
+            if (this.pid) {
+              this.formData.pid = this.pid;
+            }
+            this.loadRoles();
+          }
+        }
+      },
         methods: {
             defaultFormData() {
                 return {
@@ -180,33 +190,20 @@
                         console.log(error);
                     });
             },
-
             onSave() {
                 this.$refs['form'].validate(valid => {
                 if (valid ) {
                     let actionName = this.keyId ? 'firm/updateOne' : 'firm/saveOne';
-                    console.log(actionName);
-                    console.log(this.formData);
-/*                    this.$store
+                    this.$store
                     .dispatch(actionName, this.formData)
                     .then(() => {
                         this.dialogVisible = false;
                         this.$emit('refresh');
                         this.$message({ type: 'success', message: '保存成功' });
-                    })
-                    // eslint-disable-next-line no-unused-vars
-                    .finally(_ => {
-                        this.afterSave();
-                    });*/
+                    });
                 }
                 });
             },
-        },
-        created() {console.log(this.pid);
-            if (this.pid) {
-                this.formData.pid = this.pid;
-            }
-            this.loadRoles();
-        },
+        }
     };
 </script>

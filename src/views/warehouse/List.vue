@@ -94,7 +94,7 @@
       :visible.sync="dialogVisible"
       :key-id="keyId"
       :key-name="keyName"
-      :codeEnabled="codeEnabled"
+      :pid="pid"
       @refresh="onRefresh"
     />
   </div>
@@ -113,6 +113,7 @@ export default {
       searchForm: {},
       dialogVisible: false,
       editWarehouseId: null,
+      pid: null,
       codeEnabled: false,
       keyName: "warehouseId",
       actions: {
@@ -152,18 +153,18 @@ export default {
           });
       }
     },
+    afterLoadData() {
+      this.loadChildren(this.uploadData.tree, this.uploadData.treeNode, this.uploadData.resolve);
+    },
     handleAddChild(warehouseId) {
       this.pid = warehouseId;
-      this.warehouseId = "";
-      this.codeEnabled = false;
+      this.keyId = null;
       this.dialogVisible = true;
     },
-
     handleCancel() {
       this.dialogVisible = false;
     }
   },
-
   components: {
     edit,
     search

@@ -120,6 +120,12 @@
       handleSwitch(){
         this.enable = !this.enable;
       },
+      beforeSave(data) {
+        if(data.date){
+          data.date = new Date(data.date).getTime();
+        }
+        return data;
+      },
       defaultFormData() {
         return {
           currencyId: null,

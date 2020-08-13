@@ -16,7 +16,6 @@
         <el-form-item label="仓库编码:" prop="warehouseCode">
           <el-input
             v-model="formData.warehouseCode"
-            onkeyup="this.value=this.value.toUpperCase()"
             placeholder="请输入仓库编码..."
             :disabled="codeEnabled"
           ></el-input>
@@ -86,7 +85,12 @@ function defaultData() {
 export default {
   mixins: [MIXIN_EDIT],
   name: "warehouseEdit",
-  props: ['editWarehouseId', 'pid', 'codeEnabled'],
+  props: {
+    pid: {
+      type: String,
+      default: null
+    }
+  },
   data() {
     const codeValidator = (rule, value, callback) => {
       let reg = /^[0-9a-zA-Z_]*$/g;
@@ -107,12 +111,13 @@ export default {
       callback();
     };
     return {
-      formData: defaultData(),
+      codeEnabled: false,
+      formData: null,
       firmList: [],
       newDialogVisible: false,
       actions: {
         getOne: "warehouse/getOne",
-        saveOne: "warehouse/updateOne"
+        saveOne: "warehouse/saveOne"
       },
       rules: {
         warehouseCode: [
@@ -144,50 +149,23 @@ export default {
       }
     };
   },
-  methods: {
-    afterSave(){
-      console.log(this.formData)
-    },
-    handleGetOne(editWarehouseId) {
-      if (editWarehouseId) {
-        this.$store
-          .dispatch("warehouse/getOne", { editWarehouseId: editWarehouseId })
-          .then(data => {
-            if (data) {
-              this.formData = data;
-            }
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      } else {
+  watch: {
+    visible(val) {
+      if (val) {
         this.formData = defaultData();
-      }
-    },
-    handleSave() {
-      this.$refs["form"].validate(valid => {
-        if (valid) {
-          this.formData.warehouseCode = this.formData.warehouseCode.toUpperCase();
-          this.$emit("onSave", this.formData);
-        } else {
-          let that = this;
-          let timer = window.setTimeout(function() {
-            that.$nextTick(function() {
-              that.$refs["form"].clearValidate();
-              window.clearTimeout(timer);
-            });
-          }, 1000);
+        if (this.pid) {
+          this.formData.pid = this.pid;
         }
-      });
+        if(this.keyId){
+          this.codeEnabled = true;
+        }else{
+          this.codeEnabled = false;
+        }
+      }
     }
   },
-  created() {
-    if (this.editWarehouseId) {
-      this.handleGetOne(this.editWarehouseId);
-    }
-    if (this.pid) {
-      this.formData.pid = this.pid;
-    }
+  methods: {
+
   }
 };
 </script>

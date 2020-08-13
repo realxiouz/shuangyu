@@ -77,3 +77,11 @@ export function getPageList(pageFlag, pageSize, lastId, filter) {
     params: filter
   });
 }
+
+export function saveOne(data) {
+  return request({
+    url: `/policy/warehouse/save/one`,
+    method: 'post',
+    data
+  });
+}

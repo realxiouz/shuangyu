@@ -184,7 +184,13 @@ export default {
     },
     // 返回
     goBack() {
-      this.$router.go(-1);
+      let lastName = localStorage.getItem("lastName");
+      if(lastName){
+        this.$router.push({name: lastName,});
+        localStorage.removeItem("lastName");
+      }else{
+        this.$router.go(-1);
+      }
     },
     // 格式化日期
     initDate(dateStr, format) {

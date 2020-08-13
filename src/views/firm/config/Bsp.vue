@@ -1,8 +1,15 @@
 <template>
   <div class="contentBox">
     <el-main>
-      <div @click="goBack" style="margin-bottom: 20px">
-        <el-page-header></el-page-header>
+      <div class="page-back">
+        <el-button-group>
+          <el-button icon="el-icon-back" type="warning" @click="handleBack"
+            >返回</el-button
+          >
+          <el-button icon="el-icon-plus" type="primary" @click="handleConfirm"
+            >保存</el-button
+          >
+        </el-button-group>
       </div>
       <div style="height: 60px;line-height: 60px;font-size: 24px;border-bottom: 1px solid #ccc;margin-bottom: 20px">
         BSP账号配置
@@ -25,18 +32,12 @@
           </el-form>
         </el-col>
       </el-row>
-      <el-row>
-        <el-col :xs="24" :sm="15" :md="12" :lg="8" :xl="8">
-          <el-button type="primary" @click="handleConfirm" size="mini" style="float: right">保 存</el-button>
-        </el-col>
-      </el-row>
     </el-main>
   </div>
 </template>
 
 <script>
     export default {
-        name: "bspConfig",
         data() {
             return {
                 //是否是编辑状态
@@ -122,14 +123,15 @@
                 }
             },
             //跳转回列表页面
-            goBack() {
-                if (this.$router.history.length <= 1) {
-                    this.$router.push({path: '/home'});
-                    return false;
-                } else {
-                    this.$router.go(-1);
-                }
-            }
+            handleBack() {
+              let lastName = localStorage.getItem("lastName");
+              if (lastName) {
+                this.$router.push({ name: lastName });
+                localStorage.removeItem("lastName");
+              } else {
+                this.$router.go(-1);
+              }
+            },
         },
         created() {
             this.initFormData(localStorage.getItem("merchantId"), localStorage.getItem("firmId"));

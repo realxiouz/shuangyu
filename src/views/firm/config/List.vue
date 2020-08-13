@@ -194,8 +194,14 @@
           });
       },
       goBack() {
-      this.$router.go(-1);
-    },
+        let lastName = localStorage.getItem("lastName");
+        if(lastName){
+          this.$router.push({name: lastName,});
+          localStorage.removeItem("lastName");
+        }else{
+          this.$router.go(-1);
+        }
+      },
       onSearch(params) {
         if (!params) {
           params = {};

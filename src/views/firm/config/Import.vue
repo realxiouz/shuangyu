@@ -19,8 +19,6 @@
     >
       <el-tab-pane label="单程预付政策" name="ONE_WAY_PAY_POLICY">
         <el-table
-          :cell-style="rowClass"
-          :header-cell-style="headClass"
           height="800"
           :data="tableData"
           border
@@ -133,8 +131,6 @@
       </el-tab-pane>
       <el-tab-pane label="新包机切位政策" name="NEW_ONE_WAY_CHANGE_POLICY">
         <el-table
-          :cell-style="rowClass"
-          :header-cell-style="headClass"
           height="800"
           :data="tableData"
           border

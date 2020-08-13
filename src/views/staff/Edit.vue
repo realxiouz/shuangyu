@@ -371,8 +371,6 @@
         node-key="deptId"
         :data="treeData"
         :props="treeProps"
-        :default-expanded-keys="defaultExpandedKeys"
-        :default-checked-keys="defaultChecked"
         :highlight-current="true"
         :expand-on-click-node="false"
         default-expand-all
@@ -560,6 +558,7 @@ export default {
           .then(res => {
             //数据保存成功后可以关闭弹窗
             this.departmentDialogVisible = false;
+            this.staffIds=[]
             this.loadTableData()
             this.$refs.tree.setCheckedKeys([])
           })
