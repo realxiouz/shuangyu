@@ -76,7 +76,7 @@ export default {
     goTicket,
     changeTicket,
     refundTicket,
-    qunarOrderConfigSearch
+    search
   },
   methods: {
     onSizeChange(size) {

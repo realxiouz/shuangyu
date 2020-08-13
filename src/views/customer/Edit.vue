@@ -11,33 +11,33 @@
           <p style="font-size: 20px">基本信息</p>
           <hr width="40%" align="left">
           <el-form :rules="rules" :model="firmForm" ref="firmForm" label-position="left" label-width="20%" size="mini">
-            <el-form-item label="客户类型" prop="type">
+            <el-form-item label="客户类型" prop="firmType">
               <el-select v-model="firmForm.firmType" placeholder="请选择客户类型" @change="selectedCustomerType"
                          style="width: 50%">
-                <el-option label="企业" :value=1></el-option>
-                <el-option label="个人" :value=2></el-option>
+                <el-option label="企业" :value="1"></el-option>
+                <el-option label="个人" :value="2"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="名称" prop="firmName">
-              <el-input type="text" placeholder="请输入客户名称" v-model="firmForm.firmName"></el-input>
-            </el-form-item>
-            <el-form-item label="编码" prop="firmCode">
+            <el-form-item label="客户编码" prop="firmCode">
               <el-input type="text" placeholder="请输入客户代码" v-model="firmForm.firmCode"></el-input>
             </el-form-item>
-            <el-form-item label="域名" prop="domain">
-              <el-input type="text" placeholder="请输入域名" v-model="firmForm.domain"></el-input>
+            <el-form-item label="客户名称" prop="firmName">
+              <el-input type="text" placeholder="请输入客户名称" v-model="firmForm.firmName"></el-input>
             </el-form-item>
-            <el-form-item label="主要联系人" prop="fullName">
-              <el-input type="text" placeholder="请输入联系人" v-model="firmForm.fullName"></el-input>
+            <el-form-item label="客户域名" prop="domain">
+              <el-input type="text" placeholder="请输入客户域名" v-model="firmForm.domain"></el-input>
             </el-form-item>
-            <el-form-item label="联系人电话" prop="phone">
-              <el-input type="text" v-model="firmForm.phone" placeholder="请输入联系人电话"></el-input>
+            <el-form-item label="联系人员" prop="fullName">
+              <el-input type="text" placeholder="请输入联系人员" v-model="firmForm.fullName"></el-input>
             </el-form-item>
-            <el-form-item label="电子邮箱" prop="email">
-              <el-input type="text" v-model="firmForm.email" placeholder="请输入联系人电子邮箱"></el-input>
+            <el-form-item label="联系电话" prop="phone">
+              <el-input type="text" v-model="firmForm.phone" placeholder="请输入联系电话"></el-input>
             </el-form-item>
-            <el-form-item label="性别" prop="gender">
-              <el-select v-model="firmForm.gender" placeholder="请选择性别.." style="width: 50%">
+            <el-form-item label="联系邮箱" prop="email">
+              <el-input type="text" v-model="firmForm.email" placeholder="请输入联系邮箱"></el-input>
+            </el-form-item>
+            <el-form-item label="客户性别">
+              <el-select v-model="firmForm.gender" placeholder="请选择客户性别" style="width: 50%">
                 <el-option label="男" :value="0"></el-option>
                 <el-option label="女" :value="1"></el-option>
               </el-select>
@@ -45,10 +45,10 @@
             <el-form-item label="出生日期">
               <el-date-picker v-model="firmForm.birthDate" value-format="timestamp" type="date" placeholder="选择日期"/>
             </el-form-item>
-            <el-form-item label="地址" prop="address">
+            <el-form-item label="客户地址">
               <el-input type="text" placeholder="请输入地址" v-model="firmForm.address"></el-input>
             </el-form-item>
-            <el-form-item label="官网链接" prop="officialUrl">
+            <el-form-item label="官网链接">
               <el-input type="text" placeholder="请输入官网" v-model="firmForm.officialUrl"></el-input>
             </el-form-item>
           </el-form>
@@ -61,7 +61,7 @@
             <el-form-item label="重要性">
               <el-rate v-model="firmMerchantForm.priority" :colors="['#99A9BF', '#F7BA2A', '#FF9900']"/>
             </el-form-item>
-            <el-form-item label="税率" prop="taxRate">
+            <el-form-item label="税率">
               <el-input type="text" v-model.number="firmMerchantForm.taxRate"></el-input>
             </el-form-item>
             <el-form-item label="税务登记号">
@@ -97,13 +97,13 @@
               <el-input type="textarea" v-model="firmMerchantForm.remark"></el-input>
             </el-form-item>
             <el-form-item label="开放平台">
-              <el-select v-model="firmMerchantForm.openCode" placeholder="请选择平台" style="width: 50%"
+              <el-select v-model="firmMerchantForm.openId" placeholder="请选择平台" style="width: 50%"
                          @change="changeOpen">
                 <el-option :value=null>&nbsp;- -</el-option>
                 <el-option v-for="item in openData"
-                           :key="item.openCode"
+                           :key="item.openId"
                            :label="item.openName"
-                           :value="item.openCode">
+                           :value="item.openId">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -142,6 +142,34 @@
 
     export default {
         data() {
+          const codeValidator = (rule, value, callback) => {
+            let reg = /^[0-9a-zA-Z_]*$/g;
+            if (reg.test(value)) {
+              callback();
+            } else {
+              callback(new Error("只能输入字母或数字！"));
+            }
+          };
+          const validateMobile = (rule, value, callback) => {
+            let mobile_mode = /^1[34578]\d{9}$/;
+            if (!value) {
+              callback(new Error("请输入手机号"));
+            } else if (!mobile_mode.test(value)) {
+              callback(new Error("您输入的手机号码格式不正确"));
+            } else {
+              callback();
+            }
+          };
+          const validateEmail = (rule, value, callback) => {
+            let email_mode = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+            if (!value) {
+              callback(new Error("请输入邮箱号"));
+            } else if (!email_mode.test(value)) {
+              callback(new Error("您输入的邮箱格式错误！"));
+            } else {
+              callback();
+            }
+          };
             return {
                 firmForm: {},
                 firmMerchantForm: {},
@@ -156,25 +184,55 @@
                 update: false,
                 open: {},
                 rules: {
-                    firmName: [
-                        {required: true, message: "请输入客户名称", trigger: "blur"},
-                        {
-                            min: 1,
-                            max: 20,
-                            message: "长度在 1到 20 个字符"
-                        }
-                    ],
-                    firmCode: [
-                        {required: true, message: "请输入客户代码", trigger: "blur"},
-                        {
-                            min: 1,
-                            max: 20,
-                            message: "长度在 1到 20 个字符"
-                        }
-                    ],
-                  taxRate: [
-                    {type:'number',message: "必须填写数字"}
-                  ]
+                  firmType: [
+                    {required: true, message: "请选择客户类型", trigger: "change"},
+                  ],
+                  firmCode: [
+                    {required: true, message: "请输入客户代码", trigger: "change"},
+                    {
+                      min: 1,
+                      max: 20,
+                      message: "长度在 1到 20 个字符"
+                    },
+                    {validator: codeValidator, trigger: 'blur'}
+                  ],
+                  firmName: [
+                    {required: true, message: "请输入客户名称", trigger: "change"},
+                    {
+                      min: 1,
+                      max: 20,
+                      message: "长度在 1到 20 个字符"
+                    }
+                  ],
+                  domain: [
+                    {required: true, message: "请输入客户域名", trigger: "change"}
+                  ],
+                  fullName: [
+                    {required: true, message: "请输入联系人员", trigger: "change"},
+                    {
+                      min: 1,
+                      max: 20,
+                      message: "长度在 1到 20 个字符"
+                    }
+                  ],
+                  phone: [
+                    {required: true, message: "请输入联系电话", trigger: "change"},
+                    {
+                      min: 1,
+                      max: 20,
+                      message: "长度在 1到 20 个字符"
+                    },
+                    {validator: validateMobile, trigger: 'blur'}
+                  ],
+                  email: [
+                    {required: true, message: "请输入联系邮箱", trigger: "change"},
+                    {
+                      min: 1,
+                      max: 20,
+                      message: "长度在 1到 20 个字符"
+                    },
+                    {validator: validateEmail, trigger: 'blur'}
+                  ],
                 }
             };
         },
@@ -241,7 +299,9 @@
             loadAccountList(){
               this.$store.dispatch("fundAccount/getList",{ filter: {} })
                   .then(data => {
-                    this.accountList = data;
+                    if(data){
+                      this.accountList = data;
+                    }
                   }).catch(error => {
                     console.log(error)
                 })
@@ -250,24 +310,28 @@
             loadAccountTree(){
               this.$store.dispatch("fundAccount/getTreeList",{ filter: {} })
                   .then(data => {
-                    this.accountData = this.getTreeData(data)
+                    if(data){
+                      this.accountData = this.getTreeData(data);
+                    }
                   }).catch(error => {
                     console.log(error)
                 })
             },
              getTreeData(data) {
-                for (let i = 0; i < data.length; i++) {
-                  if (data[i].children.length < 1) {
-                    data[i].children = undefined;
-                  } else {
-                    this.getTreeData(data[i].children);
+                if(data){
+                  for (let i = 0; i < data.length; i++) {
+                    if (data[i].children.length < 1) {
+                      data[i].children = undefined;
+                    } else {
+                      this.getTreeData(data[i].children);
+                    }
                   }
                 }
                 return data;
               },
             //加载平台信息
-            loadOpen() {
-                this.$store.dispatch("firmOpenAuth/getCustomerList", {filters: {}})
+            loadOpen(merchantId) {
+                this.$store.dispatch("firmOpenAuth/getCustomerList", {firmId: merchantId})
                     .then(data => {
                         if (data) {
                             this.openData = data;
@@ -278,18 +342,22 @@
                     console.log(error);
                 });
             },
-            loadContacts(firmId) {
-                this.$store.dispatch("firmContact/getList", {filter: {firmId: firmId}})
+            loadContacts(merchantId) {
+                this.$store.dispatch("firmContact/getList", {filter: {firmId: merchantId}})
                     .then(data => {
+                      if(data){
                         this.contacts = data;
+                      }
                     }).catch(error => {
                     console.log(error);
                 });
             },
-            loadAccounts(firmId) {
-                this.$store.dispatch("firmAccount/getList", {filter: {firmId: firmId}})
+            loadAccounts(merchantId) {
+                this.$store.dispatch("firmAccount/getList", {filter: {firmId: merchantId}})
                     .then(data => {
+                      if(data){
                         this.accounts = data;
+                      }
                     }).catch(error => {
                     console.log(error);
                 });
@@ -297,7 +365,9 @@
             loadOther(merchantId) {
                 this.$store.dispatch("firmMerchant/getOne", {merchantId: merchantId})
                     .then(data => {
+                      if(data){
                         this.firmMerchantForm = data;
+                      }
                     }).catch(error => {
                     console.log(error);
                 });
@@ -305,7 +375,9 @@
             loadCustomer(merchantId) {
                 this.$store.dispatch("firm/getOne", {firmId: merchantId})
                     .then(data => {
-                        this.firmForm = data;
+                        if(data){
+                          this.firmForm = data;
+                        }
                     }).catch(error => {
                     console.log(error);
                 });
@@ -320,13 +392,13 @@
             },
             initFormData(merchantId) {
                 this.clearForm();
-                this.loadOpen();
-                if (merchantId) {
-                    this.update = true;
-                    this.loadCustomer(merchantId);
-                    this.loadOther(merchantId);
-                    this.loadAccounts(merchantId);
-                    this.loadContacts(merchantId);
+                if(merchantId){
+                  this.update = true;
+                  this.loadCustomer(merchantId);
+                  this.loadOther(merchantId);
+                  this.loadAccounts(merchantId);
+                  this.loadContacts(merchantId);
+                  this.loadOpen(merchantId);
                 }
             },
             changeAccount(accountIdList){
@@ -336,26 +408,21 @@
                 that.accountList.forEach(function(obj){
                   if(id === obj.accountId){
                     that.firmMerchantForm.accountId = obj.accountId;
+                    if(1 === obj.category){
+                      that.bankShow = true
+                    }else{
+                      that.bankShow = false
+                    }
                   }
                 });
               }
-              for (let i = 0, len = this.accountData.length; i < len; i++) {
-                    if (accountIdList == this.accountData[i].accountId) {
-                      if(this.accountData[i].category==1){
-                        console.log(this.accountData[i])
-                        this.bankShow = true
-                      }else if(this.accountList[i].category==0){
-                        this.bankShow = false
-                      }
-                    }
-                }
             },
-            changeOpen(code) {
+            changeOpen(openId) {
                 for (let i = 0, len = this.openData.length; i < len; i++) {
-                    if (code == this.openData[i].openCode) {
-                        this.firmMerchantForm.openName = this.openData[i].openName;
+                    if (openId === this.openData[i].openId) {
                         this.firmMerchantForm.openId = this.openData[i].openId;
                         this.firmMerchantForm.openCode = this.openData[i].openCode;
+                        this.firmMerchantForm.openName = this.openData[i].openName;
                         this.firmForm.openId = this.openData[i].openId;
                         break;
                     }
@@ -364,25 +431,14 @@
             
             //点击保存
             addCustomerClick() {
-              let isValid = false;
+              let isValid = true;
               this.$refs["firmForm"].validate((firmValid) => {
-                if (firmValid) {
-                  this.$refs["firmMerchantForm"].validate((merchantValid) => {
-                    if (merchantValid) {
-                      isValid = true;
-                    } else {
-                      isValid = false;
-                      this.$message({
-                        type: "error",
-                        message: "请正确填写!"
-                      });
-                    }
-                  });
-                } else {
+                if (!firmValid) {
                   isValid = false;
-                  this.$message({
-                    type: "error",
-                    message: "请正确填写!"
+                  this.$refs["firmMerchantForm"].validate((merchantValid) => {
+                    if (!merchantValid) {
+                      isValid = false;
+                    }
                   });
                 }
               });
@@ -405,7 +461,6 @@
                 this.firmMerchantForm.firm = this.firmForm;
                 this.firmMerchantForm.contacts = this.contacts;
                 this.firmMerchantForm.accounts = accountList;
-                console.log(this.firmMerchantForm)
                 if (this.update) {
                   this.$store
                     .dispatch('firmMerchant/updateOne', {
@@ -428,6 +483,11 @@
                       console.log(error);
                     });
                 }
+              }else{
+                this.$message({
+                  type: "warning",
+                  message: "请检查必填项数据"
+                });
               }
             },
             goBack() {
@@ -440,7 +500,11 @@
             }
         },
         created() {
-            this.initFormData(this.$route.query.merchantId);
+            let merchantId = null;
+            if(localStorage.getItem("merchantId") && "undefined" !== localStorage.getItem("merchantId")){
+              merchantId = localStorage.getItem("merchantId")
+            }
+            this.initFormData(merchantId);
             this.loadAccountList();
             this.loadAccountTree();
         },

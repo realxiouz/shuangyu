@@ -5,7 +5,7 @@
       <el-form ref="form" label-width="110px" size="mini" :model="formData" :rules="rules" >
         <el-form-item label="企业名称：" prop="firmId">
           <el-select style="width: 100%;" v-model="formData.firmId" placeholder="请选择企业..." clearable filterable @change="changeFirm">
-            <el-option v-for="item in firmData" :key="item.firmId" :label="item.firmName" :value="item.firmId" ></el-option>
+            <el-option v-for="item in firmData" :key="item.firm.firmId" :label="item.firm.firmName" :value="item.firm.firmId" ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="开放平台：" prop="openId">
@@ -109,8 +109,8 @@ export default {
     changeFirm(firmId) {
       let that = this;
       that.firmData.forEach(function(obj) {
-        if (obj.firmId === firmId) {
-          that.formData.firmName = obj.firmName;
+        if (obj.firm.firmId === firmId) {
+          that.formData.firmName = obj.firm.firmName;
         }
       });
     },
@@ -129,7 +129,7 @@ export default {
     },
     loadFirm() {
       this.$store
-        .dispatch("firm/getList", {})
+        .dispatch("firmMerchant/getList", {})
         .then(data => {
           this.firmData = data;
         })

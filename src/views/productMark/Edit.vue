@@ -7,7 +7,7 @@
         @open="onOpen" @close="onClose"
         width="28%"
       >
-    <el-form :model="formData" label-width="110px" size="mini">
+    <el-form ref="form" :model="formData" label-width="110px" size="mini">
       <el-form-item label="产品标签">
         <el-input v-model="formData.markId" placeholder="请输入产品标签.." :disabled="update"></el-input>
       </el-form-item>

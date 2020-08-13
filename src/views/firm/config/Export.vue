@@ -192,13 +192,14 @@ export default {
       this.fileList = fileList.slice(-1);
     },
     goBack() {
-        if (this.$router.history.length <= 1) {
-          this.$router.push({path: "/home"});
-          return false;
-        } else {
-          this.$router.go(-1);
-        }
-      },
+      let lastName = localStorage.getItem("lastName");
+      if(lastName){
+        this.$router.push({name: lastName,});
+        localStorage.removeItem("lastName");
+      }else{
+        this.$router.go(-1);
+      }
+    },
 
     // 根据原始单号导单
     exportOrderNo() {

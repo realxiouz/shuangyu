@@ -7,7 +7,8 @@ import {
   getRootPageList,
   getTreeList,
   removeOne,
-  updateOne
+  updateOne,
+  saveOne
 } from '@/api/warehouse';
 
 const actions = {
@@ -109,6 +110,17 @@ const actions = {
     return new Promise((resolve, reject) => {
       const {pageFlag, pageSize, lastId, filter} = args;
       getPageList(pageFlag, pageSize, lastId, filter)
+        .then(data => {
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  saveOne({commit}, args) {
+    return new Promise((resolve, reject) => {
+      saveOne(args)
         .then(data => {
           resolve(data);
         })

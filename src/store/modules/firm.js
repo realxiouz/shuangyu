@@ -84,8 +84,8 @@ const actions = {
   },
   getRootPageList({ commit }, args) {
     return new Promise((resolve, reject) => {
-      const { pageFlag, pageSize, filter } = args;
-      getRootPageList(pageFlag, pageSize, filter)
+      const { pageFlag, pageSize, ...params } = args;
+      getRootPageList(pageFlag, pageSize, params)
         .then(data => {
           resolve(data);
         })
@@ -120,8 +120,8 @@ const actions = {
   },
   updateOne({ commit }, args) {
     return new Promise((resolve, reject) => {
-      const { firmId, data } = args;
-      updateOne(firmId, data)
+      const { firmId } = args;
+      updateOne(firmId, args)
         .then(data => {
           resolve(data);
         })

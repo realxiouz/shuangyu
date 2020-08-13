@@ -102,11 +102,8 @@
             type="primary"
             size="mini"
             @click="onConfig(scope.row)"
-            >配置</el-button
-          >
-          <!--            <span v-show="scope.row.openId && '' != scope.row.openId">
-                        <el-button type="info" size="mini" @click="handleSupplement(scope.row)">配置管理</el-button>
-                                    </span>-->
+            >配置</el-button>
+          
         </template>
       </el-table-column>
     </el-table>
@@ -236,10 +233,9 @@ export default {
       this.skipDetail();
     },
     /*点击编辑*/
-    onEdit(index, row) {console.log(index)
-      this.skipDetail(row.merchantId);
+    onEdit(index, row) {
+      this.skipDetail(row.firm.firmId);
     },
-   
     handleSupplement(row) {
       this.$router.push({
         path: row.configUri,
@@ -331,14 +327,13 @@ export default {
     },
     
     initGender(gender) {
-      return 0 == gender ? "男" : "女";
+      return 0 === gender ? "男" : "女";
     },
-    /*跳转到供应商编辑页面，merchantId用于编辑记录时进行查找。*/
     skipDetail(merchantId) {
       this.$router.push({
-        path: "/customer/edit",
-        query: { merchantId: merchantId }
+        path: "/customer/edit"
       });
+      localStorage.setItem("merchantId", merchantId);
     },
     onConfig(row) {
       if(row.openId){
@@ -361,8 +356,6 @@ export default {
           this.$router.push({
             path: "/customer/edit?merchantId=" + row.merchantId
           });
-        }).catch(() => {
-              
         });
       }
     }

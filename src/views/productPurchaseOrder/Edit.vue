@@ -454,7 +454,9 @@
                         this.formData.orderStatus = 0
                         this.$store
                             .dispatch('productOrder/saveOrder', this.formData)
+                            
                             .then(() => {
+                              console.log(this.formData)
                                 this.goBack();
                             })
                             .catch(error => {

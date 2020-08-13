@@ -33,9 +33,11 @@
             <el-button size="mini" v-else type="info"
                        @click="handleAssociate(scope.row)">关联用户
             </el-button>
-<!--            <span v-show="scope.row.openId && '' != scope.row.openId">
-            <el-button type="info" size="mini" @click="handleSupplement(scope.row)">配置管理</el-button>
-                        </span>-->
+            <el-button
+            type="primary"
+            size="mini"
+            @click="onConfig(scope.row)"
+            >配置</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -119,6 +121,7 @@
             return {
                 userDialogVisible: false,
                 userData: [],
+                openId:'',
                 relevance:false,
                 keyName:'merchantId',
                 actions: {
@@ -182,7 +185,7 @@
                 this.skipDetail();
             },
             onEdit(index, row) {
-                this.skipDetail(row.merchantId);
+              this.skipDetail(row.firm.firmId);
             },
             handleSupplement(row) {
                 this.$router.push({
@@ -217,11 +220,38 @@
             },
             
             initGender(gender) {
-                return 0 == gender ? "男" : "女";
+                return 0 === gender ? "男" : "女";
             },
             /*跳转到供应商编辑页面，merchantId用于编辑记录时进行查找。*/
             skipDetail(merchantId) {
-                this.$router.push({path: '/supplier/edit', query: {merchantId: merchantId}});
+                this.$router.push({path: '/supplier/edit'});
+                localStorage.setItem("merchantId", merchantId);
+            },
+            onConfig(row) {
+              if(row.openId){
+                let lastName = this.$router.history.current.name;
+                localStorage.setItem("lastName", lastName);
+                localStorage.setItem("firmId", row.firmId);
+                localStorage.setItem("firmDomain", row.domain);
+                localStorage.setItem("merchantId", row.firm.firmId);
+                localStorage.setItem("merchantDomain", row.firm.domain);
+                localStorage.setItem("openId", row.openId);
+                 this.$router.push({
+                   path: "/firm/config"
+                 });
+              }else{
+                this.$confirm('请先选择开放平台, 才能进行配置操作，是否去选择开放平台?', '提示', {
+                  confirmButtonText: '确定',
+                  cancelButtonText: '取消',
+                  type: 'warning'
+                }).then(() => {
+                  this.$router.push({
+                    path: "/supplier/edit?merchantId=" + row.merchantId
+                  });
+                }).catch(() => {
+
+                });
+              }
             }
         },
         
