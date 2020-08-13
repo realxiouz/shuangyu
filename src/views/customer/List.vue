@@ -327,9 +327,8 @@ export default {
     },
     
     initGender(gender) {
-      return 0 == gender ? "男" : "女";
+      return 0 === gender ? "男" : "女";
     },
-    /*跳转到供应商编辑页面，merchantId用于编辑记录时进行查找。*/
     skipDetail(merchantId) {
       this.$router.push({
         path: "/customer/edit"

@@ -305,7 +305,9 @@
             loadAccountList(){
               this.$store.dispatch("fundAccount/getList",{ filter: {} })
                   .then(data => {
-                    this.accountList = data;
+                    if(data){
+                      this.accountList = data;
+                    }
                   }).catch(error => {
                     console.log(error)
                 })
@@ -314,17 +316,21 @@
             loadAccountTree(){
               this.$store.dispatch("fundAccount/getTreeList",{ filter: {} })
                   .then(data => {
-                    this.accountData = this.getTreeData(data)
+                    if(data){
+                      this.accountData = this.getTreeData(data);
+                    }
                   }).catch(error => {
                     console.log(error)
                 })
             },
              getTreeData(data) {
-                for (let i = 0; i < data.length; i++) {
-                  if (data[i].children.length < 1) {
-                    data[i].children = undefined;
-                  } else {
-                    this.getTreeData(data[i].children);
+                if(data){
+                  for (let i = 0; i < data.length; i++) {
+                    if (data[i].children.length < 1) {
+                      data[i].children = undefined;
+                    } else {
+                      this.getTreeData(data[i].children);
+                    }
                   }
                 }
                 return data;
@@ -345,7 +351,9 @@
             loadContacts(firmId) {
                 this.$store.dispatch("firmContact/getList", {filter: {firmId: firmId}})
                     .then(data => {
-                        this.contacts = data;
+                        if(data){
+                          this.contacts = data;
+                        }
                     }).catch(error => {
                     console.log(error);
                 });
@@ -353,7 +361,9 @@
             loadAccounts(firmId) {
                 this.$store.dispatch("firmAccount/getList", {filter: {firmId: firmId}})
                     .then(data => {
-                        this.accounts = data;
+                       if(data){
+                         this.accounts = data;
+                       }
                     }).catch(error => {
                     console.log(error);
                 });
@@ -361,7 +371,9 @@
             loadOther(merchantId) {
                 this.$store.dispatch("firmMerchant/getOne", {merchantId: merchantId})
                     .then(data => {
-                        this.firmMerchantForm = data;
+                        if(data){
+                          this.firmMerchantForm = data;
+                        }
                     }).catch(error => {
                     console.log(error);
                 });
@@ -369,7 +381,9 @@
             loadSupplier(merchantId) {
                 this.$store.dispatch("firm/getOne", {firmId: merchantId})
                     .then(data => {
-                        this.firmForm = data;
+                        if(data){
+                          this.firmForm = data;
+                        }
                     }).catch(error => {
                     console.log(error);
                 });
