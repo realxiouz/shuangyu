@@ -102,11 +102,8 @@
             type="primary"
             size="mini"
             @click="onConfig(scope.row)"
-            >配置</el-button
-          >
-          <!--            <span v-show="scope.row.openId && '' != scope.row.openId">
-                        <el-button type="info" size="mini" @click="handleSupplement(scope.row)">配置管理</el-button>
-                                    </span>-->
+            >配置</el-button>
+          
         </template>
       </el-table-column>
     </el-table>

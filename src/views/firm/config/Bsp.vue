@@ -36,7 +36,6 @@
 
 <script>
     export default {
-        name: "bspConfig",
         data() {
             return {
                 //是否是编辑状态
