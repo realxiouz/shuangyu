@@ -74,6 +74,7 @@
             label="属性名称"
             align="center"
           ></el-table-column>
+          <el-table-column label="属性类型" prop="type" />
           <el-table-column
             prop="code"
             label="属性编码"
@@ -218,7 +219,10 @@ export default {
       total: 0,
       categoryCode: "",
       categoryName: "",
-      categoryPath: ""
+      categoryPath: "",
+
+
+      selCategoryCode: ''
     };
   },
   methods: {
@@ -255,26 +259,13 @@ export default {
           console.log(error);
         });
     },
-    /*点击部门树时调用*/
     handleNodeClick(data, node) {
       this.visible = false;
       this.curNode = node.data;
-      let searchForm = {};
-      searchForm.categoryCode = data.categoryCode;
-      this.loadData(searchForm);
+      this.lastId = null
+      this.selCategoryCode = data.categoryCode
+      this.loadData();
     },
-    // loadTotal(searchForm) {
-    //     this.$store
-    //         .dispatch("productProperty/getTotal", {
-    //             filter: searchForm
-    //         })
-    //         .then(data => {
-    //             this.total = data;
-    //         })
-    //         .catch(error => {
-    //             console.log(error);
-    //         });
-    // },
     loadData(searchForm = {}) {
       if (this.lastId) {
         searchForm.lastId = this.lastId;
@@ -283,7 +274,7 @@ export default {
         .dispatch("productProperty/getPageList", {
           pageFlag: this.pageFlag,
           pageSize: this.pageSize,
-          filter: searchForm
+          filter: {...searchForm, categoryCode: this.selCategoryCode}
         })
         .then(data => {
           if (data) {
@@ -488,7 +479,6 @@ export default {
   },
   created() {
     this.loadTreeData();
-    // this.loadData();
   },
   components: {
     search,

@@ -182,7 +182,7 @@
             </el-table-column>
             <el-table-column label="证件号" prop="idCardNo" />
           </el-table> -->
-          <el-form :disabled="hasData">
+          <el-form :disabled="orderNo">
             <passengers ref="passengers" v-model="ps" />
           </el-form>
           <el-button-group>
@@ -212,31 +212,29 @@ export default {
   created() {
     // this.$store.dispatch("airport/getList", {}).then(r => {
     // });
-    this.hasData = this.$route.query.hasData == 1
-    if (this.hasData) {
-      let { dpt, arr, dptTime, cabin, flightCode, flightDate } = this.info;
+    this.orderNo = this.$route.query.orderNo
+    if (this.orderNo) {
+      let { dpt, arr, dptTime, flightCode, flightDate } = this.info;
       this.form = {
         arr,
         dpt,
-        dptDay: flightDate,
+        flightDate,
         dptTime,
-        flightCode,
-        cabin
+        flightNo: flightCode,
       };
-
-      this.getOrderFlight(this.form);
+      this.getData()
     }
-    
-    this.ps = !this.hasData ? [] : this.passengers
+    this.ps = !this.orderNo ? [] : this.passengers
   },
   data() {
     return {
       form: {
-        arr: "CSX",
-        dpt: "LUM",
-        dptDay: "2020-08-07",
-        flightCode: "TV6030",
-        dptTime: "16:40"
+        arr: "",
+        dpt: "",
+        dptTime: '',
+        flightDate: '',
+        flightNo: '',
+        merchantId: '',
       },
       formPassenger: {
         fullName: '',
@@ -255,15 +253,14 @@ export default {
       flightData: [],
       loading: false,
       expandRowKeys: [],
-      hasData: false,
+      orderNo: false,
 
       ps: []
     };
   },
   methods: {
     onSearch() {
-      this.getOrderFlight(this.form)
-      // this.step++
+      this.getData()
     },
     searchAirport(airportCode) {
       airportCode &&
@@ -273,22 +270,11 @@ export default {
         });
     },
     getData() {
-      this.$store.dispatch("order/getOrderFlight", this.form).then(r => {
-        r && (this.list = r)
-          console.log(this.list)
-      });
-      this.$store
-        .dispatch("order/get51FlightPrice", {
-          arrCode: this.form.arr,
-          depCode: this.form.dpt,
-          dataTime: this.form.dptDay,
-          flightNo: this.form.flightCode,
-          cabin: this.form.cabin
-        })
-        .then(r => {
-          // r && (this.list = r)
-          // console.log(this.list)
-        });
+      let actionName = this.orderNo ? 'policyProduct/getListByNo' : 'policyProduct/getList'
+      let payload = this.orderNo ? {sellerOrderNo: this.orderNo} : this.form
+      this.$store.dispatch(actionName, payload).then(data => {
+
+      })
     },
     getOrderFlight(flightInfo) {
         this.$store

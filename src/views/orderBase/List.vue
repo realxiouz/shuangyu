@@ -303,8 +303,27 @@ export default {
       //   })
     },
     onGoBuy(i) {
+      let {passengers, orderDetails, parentNo} = i
+      
+      let info = this.genTicketInfo(orderDetails[0].propertyItems, ['dpt', 'arr', 'dptTime', 'flightDate', 'flightCode', 'cabin'])
+
+      let passengersTemp = passengers.map(i => {
+        delete i.orderNo
+        delete i.passengerId
+        return i
+      })
+
+      let orderDetailsTemp = orderDetails.map( i => {
+        delete i.orderNo
+        delete i.detailId
+        return i
+      })
+      this.$store.commit('ticket/setInfo', info)
+      this.$store.commit('ticket/setPassengers', passengersTemp)
+      this.$store.commit('ticket/setOrderDetails', orderDetails)
+      this.$store.commit('ticket/setParentNo', parentNo)
       this.$router.push({
-        path: `/buyTicket/flightInfo`
+        path: `/buyTicket/flightInfo?orderNo=${i.orderNo}`
       });
     },
     intercept(row) {
@@ -343,7 +362,44 @@ export default {
     },
     changeTicket(row) {
       this.changeTicketShow = true
-    } 
+    },
+    genTicketInfo(arrParent, attrArr) {
+      let obj = {}
+      for (const i of arrParent) {
+          for(const j of attrArr) {
+              if (i.code == j) {
+                  obj[j] = this.getValByType(i)
+              }
+          }
+      }
+      return obj
+    },
+    getValByType(i) {
+      switch (i.type) {
+        case "String":
+          return i["_string"];
+        case "Boolean":
+          return i["_bool"];
+        case "ArrayList":
+          return i["_array"].join(",");
+        case "Double":
+          return i["_double"];
+        case "Float":
+          return i["_float"];
+        case "Integer":
+          return i["_int"];
+        case "Byte":
+          return i["_byte"];
+        case "Short":
+          return i["_short"];
+        case "Long":
+          return i["_long"];
+        case "Date":
+          return this.$moment(i["_date"]).format(i.format || "YYYY-MM-DD");
+        default:
+          return i["_string"];
+      }
+    },
   },
   watch: {
     "$route.query.orderType": {

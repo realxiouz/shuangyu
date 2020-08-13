@@ -62,6 +62,7 @@
                   type="date"
                   placeholder="选择日期"
                   style="width: 100%"
+                  value-format="timestamp"
                 ></el-date-picker>
               </el-form-item>
               <el-form-item label="仓库:" prop="warehouseId">
@@ -93,6 +94,7 @@
                   type="date"
                   placeholder="选择日期"
                   style="width: 100%"
+                  value-format="timestamp"
                 ></el-date-picker>
               </el-form-item>
               <el-form-item label="快递公司:" prop="expressId">
@@ -409,12 +411,12 @@ export default {
     handleSave() {
       this.$refs['orderForm'].validate(valid => {
         if (valid) {
-          const dateItem = ['expireDate', 'warehouseDate']
-          dateItem.forEach(item => {
-            if (this.formData[item] && typeof this.formData[item] !== 'number') {
-              this.formData[item] = this.formData[item].getTime()
-            }
-          })
+          // const dateItem = ['expireDate', 'warehouseDate']
+          // dateItem.forEach(item => {
+          //   if (this.formData[item] && typeof this.formData[item] !== 'number') {
+          //     this.formData[item] = this.formData[item].getTime()
+          //   }
+          // })
           this.formData.orderDetails = this.orderDetails
           this.formData.passengers = this.passengers
           this.$store
@@ -435,12 +437,12 @@ export default {
     confirmOrder() {
       this.$refs['orderForm'].validate(valid => {
         if (valid) {
-          const dateItem = ['expireDate', 'warehouseDate']
-          dateItem.forEach(item => {
-            if (this.formData[item] && typeof this.formData[item] !== 'number') {
-              this.formData[item] = this.formData[item].getTime()
-            }
-          })
+          // const dateItem = ['expireDate', 'warehouseDate']
+          // dateItem.forEach(item => {
+          //   if (this.formData[item] && typeof this.formData[item] !== 'number') {
+          //     this.formData[item] = this.formData[item].getTime()
+          //   }
+          // })
           this.formData.orderDetails = this.orderDetails
           this.formData.passengers = this.passengers
           this.$store
@@ -514,6 +516,10 @@ export default {
     this.loadWarehouses()
     this.loadFundAccount()
     this.loadExpress()
+
+    this.$store.dispatch('firmMerchant/getList', {filter:{}}).then(data => {
+
+    })
 
     this.formData.orderType = this.$route.query.orderType - 0
     this.orderNo = this.$route.query.orderNo

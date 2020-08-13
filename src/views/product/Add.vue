@@ -7,7 +7,7 @@
       <el-steps :active="step" finish-status="success">
         <el-step title="基础属性"></el-step>
         <el-step title="类目属性"></el-step>
-        <el-step title="销售属性"></el-step>
+        <el-step title="sku属性"></el-step>
       </el-steps>
       <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
         <el-row :gutter="10" v-show="step==0">
@@ -133,7 +133,7 @@
             :md="12"
             :lg="6"
             :xl="6"
-            v-for="(item, index) in formData.propertyList.filter(i => !i.sku)"
+            v-for="(item, index) in formData.propertyList"
             :key="index">
             <template v-if="item.valueType != 9">
               <el-form-item
@@ -231,91 +231,11 @@
                 label="价格"
                 :rules="[]"
               >
-                <el-input-number v-model="formData.price" :precision="2" :step="0.1"/>
+                <el-input-number v-model="formData.productPrice" :precision="2" :step="0.1"/>
               </el-form-item>
             </el-col>
           </template>
-          <template v-else>
-            <el-col
-            :xs="24"
-            :sm="12"
-            :md="12"
-            :lg="6"
-            :xl="6"
-            v-for="(item, index) in formData.propertyList.filter(i => i.sku)"
-            :key="index">
-            <template v-if="item.valueType != 9">
-              <el-form-item
-                :prop="'propertyList.' + index + '.value'"
-                :label="item.name"
-                :rules="[{ required: item.required, message: '请输入'+item.name, trigger: 'blur' }]">
-                <el-input
-                  v-if="item.valueType ==0"
-                  v-model="item.value"
-                  :type="item.inputType"
-                  :maxlength="item.length">
-                </el-input>
-                <el-switch v-if="item.valueType ==1" v-model="item.value"></el-switch>
-                <el-input-number
-                  v-if="item.valueType ==2"
-                  v-model="item.value"
-                  :min="item.min"
-                  :max="item.max"
-                  :step="item.step"
-                  :precision="item.precision"></el-input-number>
-                <el-date-picker
-                  v-if="item.valueType ==3"
-                  v-model="item.value"
-                  :type="item.inputType"
-                  :format="item.format"
-                  placeholder="选择日期"></el-date-picker>
-                <el-time-picker
-                  v-if="item.valueType ==4"
-                  arrow-control
-                  v-model="item.value"
-                  :picker-options="{selectableRange: '00:00:00 - 23:59:00' }">
-                </el-time-picker>
-                <el-rate v-if="item.valueType ==5" v-model="item.value"></el-rate>
-                <el-radio-group v-if="item.valueType ==60" v-model="item.value">
-                  <el-radio
-                    v-for="attr in item.attributes"
-                    :key="attr.code"
-                    :label="attr.name">{{attr.name}}
-                  </el-radio>
-                </el-radio-group>
-                <el-select v-model="item.value" v-if="item.valueType ==62" :multiple="item.multiple">
-                  <el-option
-                    v-for="attr in item.attributes"
-                    :key="attr.code"
-                    :label="attr.name"
-                    :value="attr.code">
-                  </el-option>
-                </el-select>
-                <el-checkbox-group
-                  v-if="item.valueType ==61 && !item.sku"
-                  v-model="item.value">
-                  <el-checkbox
-                    v-for="attr in item.attributes"
-                    :key="attr.code"
-                    :label="attr.code">{{attr.name}}
-                  </el-checkbox>
-                </el-checkbox-group>
-                <el-checkbox-group
-                  v-if="item.valueType ==61 && item.sku"
-                  v-model="item.value"
-                  @change="handleSku(index)">
-                  <el-checkbox
-                    v-for="attr in item.attributes"
-                    :key="attr.code"
-                    :label="attr.code">{{attr.name}}
-                  </el-checkbox>
-                </el-checkbox-group>
-              </el-form-item>
-            </template>
-          </el-col>
-          </template>
-
-          <el-table :data="dataList" border style="width: 100%" v-if="formData.sku">
+          <el-table v-else :data="dataList" border style="width: 100%">
             <el-table-column v-for="(item, index) in tableColumns" :key="index" align="center" :prop="item.code"
                             :label="item.name" width="180"></el-table-column>
             <el-table-column align="center" prop="quantity" label="数量" width="200">
