@@ -220,14 +220,14 @@
             },
             
             initGender(gender) {
-                return 0 == gender ? "男" : "女";
+                return 0 === gender ? "男" : "女";
             },
             /*跳转到供应商编辑页面，merchantId用于编辑记录时进行查找。*/
             skipDetail(merchantId) {
                 this.$router.push({path: '/supplier/edit'});
                 localStorage.setItem("merchantId", merchantId);
             },
-            onConfig(row) {console.log(row);
+            onConfig(row) {
               if(row.openId){
                 let lastName = this.$router.history.current.name;
                 localStorage.setItem("lastName", lastName);
