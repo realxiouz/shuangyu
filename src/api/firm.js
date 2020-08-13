@@ -87,11 +87,11 @@ export function getAsyncTreeList(pid, filter) {
   });
 }
 
-export function getRootPageList(pageFlag, pageSize, filter) {
+export function getRootPageList(pageFlag, pageSize, params) {
   return request({
     url: `/firm/get/root/list/page/${pageFlag}/${pageSize}`,
     method: `get`,
-    params: filter
+    params: params
   });
 }
 

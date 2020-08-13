@@ -55,9 +55,7 @@
       ></el-pagination>
 
       <!-- 表单对话框 -->
-      
       <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" :pid="pid" @refresh="onRefresh"></edit>
-      
 
       <!-- 员工查询弹窗 -->
       <el-dialog center title="关联用户" width="45%" :visible.sync="userDialogVisible" :close-on-click-modal="false">
@@ -136,7 +134,7 @@
                     resolve: null
                 },
                 actions: {
-                  getPageList: 'firm/getPageList',
+                  getPageList: 'firm/getRootPageList',
                   removeOne: 'firm/removeOne'
                 }
             };
@@ -161,8 +159,6 @@
             initGender(gender) {
                 return gender == 0 ? "男" : "女";
             },
-            
-            
             //当前选中用户对象
             handleRowClick(row) {
                 this.curRow = row;
@@ -200,7 +196,6 @@
                     .then(data => {
                         if (data) {
                             this.userData = data;
-                            console.log(this.userData)
                             this.userData.firmId = row.firmId;
                             this.userDialogVisible = true;
                         }else if(row.userId){
@@ -247,10 +242,8 @@
                 this.pid = firmId;
                 this.editFirmId = "";
                 this.dialogVisible = true;
-            },
-           
+            }
         },
-        
         components: {
       edit,
       search

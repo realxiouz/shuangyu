@@ -50,7 +50,7 @@
         return data;
       },
       afterLoadData() {
-        if(this.configNavs.length>0) {
+        if(this.configNavs.length > 0 && this.configNavs[0].navUrl) {
           this.$router.push(this.configNavs[0].navUrl);
         }
       },
