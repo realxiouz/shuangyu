@@ -65,7 +65,7 @@
     methods: {
       onBack(){
         let lastName = localStorage.getItem("lastName");
-        if(lastName){
+        if(lastName && "undefined" !== lastName){
           this.$router.push({name: lastName,});
           localStorage.removeItem("lastName");
         }else{
@@ -74,15 +74,15 @@
       },
       fillParams(){
         let params = {};
-        if(localStorage.getItem("firmId")){
+        if(localStorage.getItem("firmId") && "undefined" !== localStorage.getItem("firmId")){
           params.firmId = localStorage.getItem("firmId");
        //   params.firmId = this.$route.params.firmId;
         }
-        if(localStorage.getItem("merchantId")){
+        if(localStorage.getItem("merchantId") && "undefined" !== localStorage.getItem("merchantId")){
           params.merchantId = localStorage.getItem("merchantId");
           //   params.merchantId = this.$route.params.merchantId;
         }
-        if(localStorage.getItem("openId")){
+        if(localStorage.getItem("openId") && "undefined" !== localStorage.getItem("openId")){
           params.openId = localStorage.getItem("openId");
         //  params.openId = this.$route.params.openId;
         }
