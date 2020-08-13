@@ -56,7 +56,7 @@
 
       <!-- 表单对话框 -->
       
-      <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" @refresh="onRefresh"></edit>
+      <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" :pid="pid" @refresh="onRefresh"></edit>
       
 
       <!-- 员工查询弹窗 -->
