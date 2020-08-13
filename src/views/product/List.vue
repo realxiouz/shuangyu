@@ -18,6 +18,11 @@
         <el-table-column prop="unit" label="计量单位" align="center"></el-table-column>
         <el-table-column prop="specification" label="规格" align="center"></el-table-column>
         <el-table-column prop="description" label="描述" align="center"></el-table-column>
+        <el-table-column label="库存">
+          <template v-slot="{row}">
+            {{row.stock ||'todo'}}
+          </template>
+        </el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="350">
           <template slot-scope="scope">
             <el-button @click="inventoryUpdate(scope.row.productId)" type="primary" size="mini">库存编辑</el-button>
@@ -86,14 +91,20 @@
                 });
             },
             handleUpdate(id) {
-                let path = "";
-                path = "/product/edit";
+                // let path = "";
+                // path = "/product/edit";
+                // this.$router.push({
+                //     path: path,
+                //     query: {
+                //         productId: id
+                //     }
+                // });
                 this.$router.push({
-                    path: path,
-                    query: {
-                        productId: id
-                    }
-                });
+                  path: '/product/config',
+                  query: {
+                    productId: id
+                  }
+                })
             }, 
         },
         components: {

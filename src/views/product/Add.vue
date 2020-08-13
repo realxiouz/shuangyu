@@ -4,8 +4,26 @@
       <div id="goBack" @click="goBack">
         <el-page-header></el-page-header>
       </div>
+      <el-steps :active="step" finish-status="success">
+        <el-step title="基础属性"></el-step>
+        <el-step title="类目属性"></el-step>
+        <el-step title="销售属性"></el-step>
+      </el-steps>
       <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
-        <el-row :gutter="10">
+        <el-row :gutter="10" v-show="step==0">
+          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+            <el-form-item label="商品类目" prop="categoryCode">
+              <el-cascader
+                ref="categoryCascader"
+                v-model="formData.categoryCode"
+                style="width: 100%;"
+                :options="categoryList"
+                :props="{ label: 'categoryName', value: 'categoryCode' }"
+                filterable
+                @change="handleCategory"
+              ></el-cascader>
+            </el-form-item>
+          </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="商品编码" prop="productCode">
               <el-input v-model="formData.productCode"></el-input>
@@ -44,31 +62,12 @@
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item label="商品类目" prop="categoryCode">
-              <el-cascader
-                ref="categoryCascader"
-                v-model="formData.categoryCode"
-                style="width: 100%;"
-                :options="categoryList"
-                :props="{ label: 'categoryName', value: 'categoryCode' }"
-                filterable
-                @change="handleCategory"
-              ></el-cascader>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10">
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item
               prop="notSaleable"
               label="不可销售"
               :rules="[]"
             >
-              <el-switch
-                v-model="formData.notSaleable"
-                active-text=""
-                inactive-text=""
-              />
+              <el-switch v-model="formData.notSaleable" />
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -78,10 +77,7 @@
               :rules="[]"
             >
               <el-switch
-                v-model="formData.notBuyable"
-                active-text=""
-                inactive-text=""
-              />
+                v-model="formData.notBuyable" />
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -128,13 +124,16 @@
               ></el-cascader>
             </el-form-item>
           </el-col>
+          
+        </el-row>
+        <el-row :gutter="10" v-show="step==1">
           <el-col
             :xs="24"
             :sm="12"
             :md="12"
             :lg="6"
             :xl="6"
-            v-for="(item, index) in formData.propertyList"
+            v-for="(item, index) in formData.propertyList.filter(i => !i.sku)"
             :key="index">
             <template v-if="item.valueType != 9">
               <el-form-item
@@ -147,9 +146,7 @@
                   :type="item.inputType"
                   :maxlength="item.length">
                 </el-input>
-                <!-- 开关-->
                 <el-switch v-if="item.valueType ==1" v-model="item.value"></el-switch>
-                <!-- 数字-->
                 <el-input-number
                   v-if="item.valueType ==2"
                   v-model="item.value"
@@ -157,23 +154,19 @@
                   :max="item.max"
                   :step="item.step"
                   :precision="item.precision"></el-input-number>
-                <!-- 日期-->
                 <el-date-picker
                   v-if="item.valueType ==3"
                   v-model="item.value"
                   :type="item.inputType"
                   :format="item.format"
                   placeholder="选择日期"></el-date-picker>
-                <!-- 时间-->
                 <el-time-picker
                   v-if="item.valueType ==4"
                   arrow-control
                   v-model="item.value"
                   :picker-options="{selectableRange: '00:00:00 - 23:59:00' }">
                 </el-time-picker>
-                <!-- 评分-->
                 <el-rate v-if="item.valueType ==5" v-model="item.value"></el-rate>
-                <!-- 单选-->
                 <el-radio-group v-if="item.valueType ==60" v-model="item.value">
                   <el-radio
                     v-for="attr in item.attributes"
@@ -181,16 +174,6 @@
                     :label="attr.name">{{attr.name}}
                   </el-radio>
                 </el-radio-group>
-                <!-- 多选 非销售属性-->
-                <!-- <el-checkbox-group
-                  v-if="item.valueType ==61 && !item.sku" v-model="item.value">
-                  <el-checkbox
-                    v-for="attr in item.attributes"
-                    :key="attr.code"
-                    :label="attr.name">{{attr.name}}
-                  </el-checkbox>
-                </el-checkbox-group> -->
-                <!--选择器-->
                 <el-select v-model="item.value" v-if="item.valueType ==62" :multiple="item.multiple">
                   <el-option
                     v-for="attr in item.attributes"
@@ -199,7 +182,6 @@
                     :value="attr.code">
                   </el-option>
                 </el-select>
-                <!-- 多选 非销售属性-->
                 <el-checkbox-group
                   v-if="item.valueType ==61 && !item.sku"
                   v-model="item.value">
@@ -209,7 +191,6 @@
                     :label="attr.code">{{attr.name}}
                   </el-checkbox>
                 </el-checkbox-group>
-                <!-- 多选 销售属性-->
                 <el-checkbox-group
                   v-if="item.valueType ==61 && item.sku"
                   v-model="item.value"
@@ -223,6 +204,8 @@
               </el-form-item>
             </template>
           </el-col>
+        </el-row>
+        <el-row :gutter="10" v-show="step==2">
           <template v-if="!formData.sku">
             <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
               <el-form-item
@@ -252,32 +235,112 @@
               </el-form-item>
             </el-col>
           </template>
+          <template v-else>
+            <el-col
+            :xs="24"
+            :sm="12"
+            :md="12"
+            :lg="6"
+            :xl="6"
+            v-for="(item, index) in formData.propertyList.filter(i => i.sku)"
+            :key="index">
+            <template v-if="item.valueType != 9">
+              <el-form-item
+                :prop="'propertyList.' + index + '.value'"
+                :label="item.name"
+                :rules="[{ required: item.required, message: '请输入'+item.name, trigger: 'blur' }]">
+                <el-input
+                  v-if="item.valueType ==0"
+                  v-model="item.value"
+                  :type="item.inputType"
+                  :maxlength="item.length">
+                </el-input>
+                <el-switch v-if="item.valueType ==1" v-model="item.value"></el-switch>
+                <el-input-number
+                  v-if="item.valueType ==2"
+                  v-model="item.value"
+                  :min="item.min"
+                  :max="item.max"
+                  :step="item.step"
+                  :precision="item.precision"></el-input-number>
+                <el-date-picker
+                  v-if="item.valueType ==3"
+                  v-model="item.value"
+                  :type="item.inputType"
+                  :format="item.format"
+                  placeholder="选择日期"></el-date-picker>
+                <el-time-picker
+                  v-if="item.valueType ==4"
+                  arrow-control
+                  v-model="item.value"
+                  :picker-options="{selectableRange: '00:00:00 - 23:59:00' }">
+                </el-time-picker>
+                <el-rate v-if="item.valueType ==5" v-model="item.value"></el-rate>
+                <el-radio-group v-if="item.valueType ==60" v-model="item.value">
+                  <el-radio
+                    v-for="attr in item.attributes"
+                    :key="attr.code"
+                    :label="attr.name">{{attr.name}}
+                  </el-radio>
+                </el-radio-group>
+                <el-select v-model="item.value" v-if="item.valueType ==62" :multiple="item.multiple">
+                  <el-option
+                    v-for="attr in item.attributes"
+                    :key="attr.code"
+                    :label="attr.name"
+                    :value="attr.code">
+                  </el-option>
+                </el-select>
+                <el-checkbox-group
+                  v-if="item.valueType ==61 && !item.sku"
+                  v-model="item.value">
+                  <el-checkbox
+                    v-for="attr in item.attributes"
+                    :key="attr.code"
+                    :label="attr.code">{{attr.name}}
+                  </el-checkbox>
+                </el-checkbox-group>
+                <el-checkbox-group
+                  v-if="item.valueType ==61 && item.sku"
+                  v-model="item.value"
+                  @change="handleSku(index)">
+                  <el-checkbox
+                    v-for="attr in item.attributes"
+                    :key="attr.code"
+                    :label="attr.code">{{attr.name}}
+                  </el-checkbox>
+                </el-checkbox-group>
+              </el-form-item>
+            </template>
+          </el-col>
+          </template>
+
+          <el-table :data="dataList" border style="width: 100%" v-if="formData.sku">
+            <el-table-column v-for="(item, index) in tableColumns" :key="index" align="center" :prop="item.code"
+                            :label="item.name" width="180"></el-table-column>
+            <el-table-column align="center" prop="quantity" label="数量" width="200">
+              <template slot-scope="scope">
+                <el-input-number v-model="scope.row.quantity"></el-input-number>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" prop="cost" label="成本" width="200">
+              <template slot-scope="scope">
+                <el-input-number v-model="scope.row.cost" :precision="2" :step="0.1"></el-input-number>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" prop="price" label="零售价" width="200">
+              <template slot-scope="scope">
+                <el-input-number v-model="scope.row.price" :precision="2" :step="0.1"></el-input-number>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" prop="skuId" label="SKU_ID" width="180"></el-table-column>
+          </el-table>
         </el-row>
       </el-form>
-      <el-table :data="dataList" border style="width: 100%" v-if="formData.sku">
-        <el-table-column v-for="(item, index) in tableColumns" :key="index" align="center" :prop="item.code"
-                         :label="item.name" width="180"></el-table-column>
-        <el-table-column align="center" prop="quantity" label="数量" width="200">
-          <template slot-scope="scope">
-            <el-input-number v-model="scope.row.quantity"></el-input-number>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" prop="cost" label="成本" width="200">
-          <template slot-scope="scope">
-            <el-input-number v-model="scope.row.cost" :precision="2" :step="0.1"></el-input-number>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" prop="price" label="零售价" width="200">
-          <template slot-scope="scope">
-            <el-input-number v-model="scope.row.price" :precision="2" :step="0.1"></el-input-number>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" prop="skuId" label="SKU_ID" width="180"></el-table-column>
-      </el-table>
-      <br/>
-      <div slot="footer" style="text-align:center;">
-        <el-button size="mini" @click="handleCancel">取 消</el-button>
-        <el-button type="primary" size="mini" @click="handleSave">确 定</el-button>
+      <div style="text-align:center;">
+        <el-button size="mini" @click="step--" v-if="step>0">上一步</el-button>
+        <el-button size="mini" @click="onNext" v-if="step<2">下一步</el-button>
+        <el-button type="primary" size="mini" v-if="step==2" @click="handleSave" >确 定</el-button>
       </div>
     </div>
   </div>
@@ -336,7 +399,9 @@ export default {
         ]
       },
 
-      warehouseData: []
+      warehouseData: [],
+
+      step: 0,
     }
   },
   methods: {
@@ -452,12 +517,6 @@ export default {
     },
     getPropertyItems(excludeSku) {
       const items = []
-      // let mapArr = this.formData.propertyList.filter(i => i.fromMap)
-      // let arr = this.formData.propertyList.filter(i => !i.fromMap)
-      // let objVal = {}
-      // for (let i = 0; i < mapArr.length; i++) {
-      //   objVal[mapArr[i].code] = mapArr[i].value
-      // }
       const arr = this.formData.propertyList
       for (let i = 0; i < arr.length; i++) {
         const property = arr[i]
@@ -531,68 +590,103 @@ export default {
         }
       })
     },
-    handleCancel() {
-      this.goBack()
+    onNext() {
+      if(this.step == 0) {
+        if (!this.formData.categoryCode) {
+          this.$message.warning('必须选择商品类目')
+          return
+        }
+      }
+      this.step++
     },
     handleGetOne(id) {
       this.$store
         .dispatch('product/getOne', { productId: id })
         .then(data => {
-          this.formData = data
+          
           const param = {}
-          param.categoryCode = this.formData.categoryCode
-          this.loadPropertyList(param)
+          param.categoryCode = data.categoryCode
+          this.loadPropertyList(param, data.propertyItems)
+          this.$nextTick(_ => {
+            this.formData = {...this.formData, ...data}
+          })
         })
         .catch(error => {
           console.log(error)
         })
     },
-    loadPropertyList(searchForm) {
+    getValueByType(i, arr) {
+      let bean
+      if (arr && arr.length) {
+        bean = arr.find(bean => bean.code == i.code)
+      }
+      switch(i.type) {
+        case "String":
+          i.value = (bean && bean._string) || ''
+          break
+        case "Boolean":
+          i.value = (bean && bean._bool) || false
+            break
+        case 'ArrayList':
+          i.value = (bean && bean._array) || []
+          break
+        case 'Date':
+          i.value = (bean && bean._date) || ''
+          break
+        case 'Byte':
+          i.value = (bean && bean._byte) || 0
+          break
+        case 'Short':
+          i.value = (bean && bean._short) || 0
+          break
+        case 'Integer':
+          i.value = (bean && bean._int) || 0
+          break
+        case 'Long':
+          i.value = (bean && bean._long) || 0
+          break
+        case 'Float':
+          i.value = (bean && bean._float) || 0
+          break
+        case 'Double':
+          i.value = (bean && bean._double) || 0
+          break
+        default:
+          i.value = undefined
+      } 
+      return i
+    },
+    loadPropertyList(searchForm, arr=[]) {
       this.$store
         .dispatch('productProperty/getList', {
           filter: searchForm
         })
         .then(data => {
           if (data) {
-            // for (const d of data) {
-            //   if (d.valueType==9) {
-            //     if (d.type=='Object') {
-            //       for (const i of d.attributes) {
-            //         let {name, code} = i
-            //         let obj = {name, code, inputType: 'text', type: "String", valueType: 0, fromMap: true, required: true}
-            //         data.push(obj)
-            //       }
-            //     }
+            // for (let i = 0, len = data.length; i < len; i++) {
+            //   switch (data[i].type) {
+            //     case 'ArrayList':
+            //       data[i].value = []
+            //       break
+            //     case 'String':
+            //     case 'Date':
+            //       data[i].value = ''
+            //       break
+            //     case 'Boolean':
+            //       data[i].value = false
+            //       break
+            //     case 'Byte':
+            //     case 'Short':
+            //     case 'Integer':
+            //     case 'Long':
+            //     case 'Float':
+            //     case 'Double':
+            //       data[i].value = 0
+            //       break
             //   }
             // }
-            for (let i = 0, len = data.length; i < len; i++) {
-              switch (data[i].type) {
-                case 'ArrayList':
-                  data[i].value = []
-                  break
-                case 'String':
-                case 'Date':
-                  data[i].value = ''
-                  break
-                case 'Boolean':
-                  data[i].value = false
-                  break
-                case 'Byte':
-                case 'Short':
-                case 'Integer':
-                case 'Long':
-                case 'Float':
-                case 'Double':
-                  data[i].value = 0
-                  break
-                  // case "Object":
-                  //   break
-                  // case "ObjectList":
-                  //   break
-              }
-            }
 
-            this.formData.propertyList = data
+            this.formData.propertyList = data.map(i => this.getValueByType(i, arr))
 
             this.formData.sku = data.some(i => i.sku)
           }
