@@ -130,27 +130,13 @@
                     })
                     .then(data => {
                         if (data) {
-                            this.tableData = data;
-                            this.loadTotal();
+                          this.tableData = data.rows;
+                          this.total = data.total;
                         }
                         this.loading = false;
                     })
                     .catch(error => {
                         this.loading = false;
-                        console.log(error);
-                    });
-            },
-            loadTotal() {
-                this.$store
-                    .dispatch("dict/getTotal", {
-                        filter: {categoryId: this.curNode.categoryId}
-                    })
-                    .then(data => {
-                        if (data) {
-                            this.total = data;
-                        }
-                    })
-                    .catch(error => {
                         console.log(error);
                     });
             },

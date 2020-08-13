@@ -1,7 +1,14 @@
 <template>
-  <div class="bigBox">
-    <div id="goBack" @click="goBack">
-      <el-page-header></el-page-header>
+  <div class="">
+    <div class="page-back">
+      <el-button-group>
+        <el-button icon="el-icon-back" type="warning" @click="goBack"
+          >返回</el-button
+        >
+        <el-button icon="el-icon-plus" @click="save()" type="primary" size="mini"
+                :disabled="isDisable"
+              >保存 </el-button>
+      </el-button-group>
     </div>
     <el-card class="contentBox">
       <div slot="header">
@@ -82,19 +89,6 @@
           <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
             <el-form-item label="蜗牛登录账号密码:" prop="password">
               <el-input v-model="formData.password"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-            <el-form-item>
-              <el-button
-                @click="save()"
-                type="primary"
-                size="mini"
-                :disabled="isDisable"
-              >保存
-              </el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -202,13 +196,15 @@
             },
             //跳转回列表页面
             goBack() {
-                if (this.$router.history.length <= 1) {
-                    this.$router.push({path: '/home'});
-                    return false;
-                } else {
-                    this.$router.go(-1);
-                }
+              let lastName = localStorage.getItem("lastName");
+              if(lastName){
+                this.$router.push({name: lastName,});
+                localStorage.removeItem("lastName");
+              }else{
+                this.$router.go(-1);
+              }
             },
+            
             disabledSave() {
                 this.isDisable = false;
             }

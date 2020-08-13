@@ -270,8 +270,8 @@
                 return data;
               },
             //加载平台信息
-            loadOpen() {
-                this.$store.dispatch("firmOpenAuth/getSupplierList", {filters: {}})
+            loadOpen(merchantId) {
+                this.$store.dispatch("firmOpenAuth/getSupplierList", {firmId: merchantId})
                     .then(data => {
                         if (data) {
                             this.openData = data;
@@ -351,15 +351,15 @@
                 this.firmMerchantForm = this.defaultMerchantFormData();
                 this.openData = [];
             },
-            initFormData(merchantId) {
+            initFormData(merchantId) { console.log(merchantId);
                 this.clearForm();
-                this.loadOpen();
                 if (merchantId) {
                     this.update = true;
                     this.loadSupplier(merchantId);
                     this.loadOther(merchantId);
                     this.loadAccounts(merchantId);
                     this.loadContacts(merchantId);
+                    this.loadOpen(merchantId);
                 }
             },
             //点击保存
@@ -442,7 +442,7 @@
             }
         },
         created() {
-            this.initFormData(this.$route.query.merchantId);
+            this.initFormData(localStorage.getItem("merchantId"));
             this.loadAccountList();
             this.loadAccountTree();
         },

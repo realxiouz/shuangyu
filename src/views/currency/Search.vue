@@ -72,10 +72,12 @@ export default {
       this.more = !this.more;
     },
     handleConfirm() {
-      if (!this.formData.code || "" === this.formData.code)
+      if (!this.formData.code || "" === this.formData.code){
         this.formData.code = null;
-      if (!this.formData.name || "" === this.formData.name)
+      }
+      if (!this.formData.name || "" === this.formData.name){
         this.formData.name = null;
+      }
       this.$emit("onSearch", this.formData);
     }
   }

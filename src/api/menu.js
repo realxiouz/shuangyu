@@ -127,10 +127,10 @@ export function getPageList(pageFlag, pageSize, filter) {
   });
 }
 
-export function getTotal(filter) {
+export function nodeDragDrop(data) {
   return request({
-    url: `/admin/menu/get/total`,
-    method: 'get',
-    params: filter
+    url: `/admin/menu/tree/node/drag/drop`,
+    method: 'post',
+    data
   });
 }

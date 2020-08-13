@@ -185,7 +185,7 @@
                 this.skipDetail();
             },
             onEdit(index, row) {
-                this.skipDetail(row.merchantId);
+              this.skipDetail(row.firm.firmId);
             },
             handleSupplement(row) {
                 this.$router.push({
@@ -224,20 +224,21 @@
             },
             /*跳转到供应商编辑页面，merchantId用于编辑记录时进行查找。*/
             skipDetail(merchantId) {
-                this.$router.push({path: '/supplier/edit', query: {merchantId: merchantId}});
+                this.$router.push({path: '/supplier/edit'});
+                localStorage.setItem("merchantId", merchantId);
             },
             onConfig(row) {console.log(row);
               if(row.openId){
-                // let lastName = this.$router.history.current.name;
-                // localStorage.setItem("lastName", lastName);
-                // localStorage.setItem("firmId", row.firmId);
-                // localStorage.setItem("firmDomain", row.domain);
-                // localStorage.setItem("merchantId", row.firm.firmId);
-                // localStorage.setItem("merchantDomain", row.firm.domain);
-                // localStorage.setItem("openId", row.openId);
-                //  this.$router.push({
-                //    path: "/firm/config"
-                //  });
+                let lastName = this.$router.history.current.name;
+                localStorage.setItem("lastName", lastName);
+                localStorage.setItem("firmId", row.firmId);
+                localStorage.setItem("firmDomain", row.domain);
+                localStorage.setItem("merchantId", row.firm.firmId);
+                localStorage.setItem("merchantDomain", row.firm.domain);
+                localStorage.setItem("openId", row.openId);
+                 this.$router.push({
+                   path: "/firm/config"
+                 });
               }else{
                 this.$confirm('请先选择开放平台, 才能进行配置操作，是否去选择开放平台?', '提示', {
                   confirmButtonText: '确定',

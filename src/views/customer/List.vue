@@ -233,10 +233,9 @@ export default {
       this.skipDetail();
     },
     /*点击编辑*/
-    onEdit(index, row) {console.log(index)
-      this.skipDetail(row.merchantId);
+    onEdit(index, row) {
+      this.skipDetail(row.firm.firmId);
     },
-   
     handleSupplement(row) {
       this.$router.push({
         path: row.configUri,
@@ -333,9 +332,9 @@ export default {
     /*跳转到供应商编辑页面，merchantId用于编辑记录时进行查找。*/
     skipDetail(merchantId) {
       this.$router.push({
-        path: "/customer/edit",
-        query: { merchantId: merchantId }
+        path: "/customer/edit"
       });
+      localStorage.setItem("merchantId", merchantId);
     },
     onConfig(row) {
       if(row.openId){

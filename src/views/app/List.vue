@@ -1,21 +1,15 @@
 <template>
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch" />
-    <el-row class="page-tools" style="margin-bottom:15px;margin-left:40px">
-      <el-button
-        icon="el-icon-plus"
-        type="primary"
-        size="mini"
-        @click="onAdd"
-        >添加</el-button
-      >
+    <el-row class="page-tools" type="flex" justify="space-between">
+      <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
     </el-row>
     <el-table
       class="page-table"
+      size="mini"
       v-loading="loading"
       :data="tableData"
-      style="width: 100%;margin-bottom: 15px;"
-      size="mini"
+      style="width: 100%;margin-bottom:15px;"
     >
       <el-table-column
         prop="appName"
@@ -24,33 +18,18 @@
       ></el-table-column>
       <el-table-column label="是否启用" align="center">
         <template slot-scope="scope">
-          <el-switch
-            v-model="scope.row.enable"
-            @change="handleSwitch(scope.row)"
-          ></el-switch>
+          <span> {{ scope.row.enable ? "是" : "否" }}</span>
         </template>
       </el-table-column>
-      <el-table-column fixed="right" label="操作" align="center" width="350">
+      <el-table-column width="160" label="操作" align="center">
         <template slot-scope="scope">
-          <el-button
-            @click="onEdit(scope.row.appId)"
-            type="primary"
-            size="mini"
-            >编辑</el-button
-          >
-          <el-button
-            @click.native.prevent="
-              onDel(scope.row.appId, scope.$index, tableData)
-            "
-            type="danger"
-            size="mini"
-            >删除
-          </el-button>
+          <el-button size="mini" type="primary" @click="onEdit(scope.row.appId)">修改</el-button>
+          <el-button size="mini" type="danger" @click="onDel(scope.row.appId)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
     <el-pagination
-       class="page-footer"
+      class="page-footer"
       background
       prev-text="上一页"
       next-text="下一页"
@@ -61,49 +40,42 @@
       layout="total,sizes,prev,next"
       :page-size="pageSizes[0]"
       :page-sizes="pageSizes"
-       @current-change="onCurrentChange"
-       :current-page.sync="currentPage"
+      @current-change="onCurrentChange"
+      :current-page.sync="currentPage"
     ></el-pagination>
-    
-      <edit :visible.sync="dialogVisible" :app-id="appId" :key-name="keyName" @refresh="onRefresh"/>
-    
+    <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" @refresh="onRefresh"/>
   </div>
 </template>
+
 <script>
- import edit from "./Edit";
+  import edit from "./Edit";
   import search from "./Search";
   import {MIXIN_LIST} from "@/utils/mixin";
 
-export default {
-  mixins: [MIXIN_LIST],
-  name: "appList",
-  data() {
-    return {
-      deleteForSearch: false,
-      appId: "",
-      keyName:'appId',
-      actions: {
+  export default {
+    mixins: [MIXIN_LIST],
+    data() {
+      return {
+        dialogVisible: false,
+        keyName: 'appId',
+        actions: {
           getPageList: 'app/getPageList',
           removeOne: 'app/removeOne'
         }
-    };
-  },
-  methods: {
-    
-   
-    handleSwitch(row) {
-      row.enable = row.enable ? true : false;
-      this.$store
-        .dispatch("app/updateOne", row)
-        .then(() => {})
-        .catch(error => {
-          console.log(error);
-        });
+      };
     },
-  },
-  components: {
+    methods: {
+
+    },
+    components: {
       edit,
       search
     },
-};
+  };
 </script>
+
+<style>
+  .page-tools {
+    margin-bottom: 10px;
+  }
+</style>
