@@ -187,13 +187,9 @@
                     let actionName = this.keyId ? 'firm/updateOne' : 'firm/saveOne';
                     console.log(actionName);
                     console.log(this.formData);
-/*                    this.$store
+/*                  this.$store
                     .dispatch(actionName, this.formData)
-<<<<<<< HEAD
                     .then(id => {
-=======
-                    .then(() => {
->>>>>>> 6d0f08d30ed9b28f7519a25c5f4aa7b08aab460f
                         this.dialogVisible = false;
                         this.$emit('refresh');
                         this.$message({ type: 'success', message: '保存成功' });
