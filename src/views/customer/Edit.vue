@@ -55,7 +55,7 @@
           <br><br>
           <p style="font-size: 20px">管理信息</p>
           <hr width="40%" align="left">
-          <el-form :model="firmMerchantForm" ref="firmMerchantForm" label-position="left" label-width="20%" size="mini">
+          <el-form :rules="rules" :model="firmMerchantForm" ref="firmMerchantForm" label-position="left" label-width="20%" size="mini">
             <el-form-item label="标签">
             </el-form-item>
             <el-form-item label="重要性">
@@ -319,8 +319,8 @@
                 this.firmMerchantForm.merchantType = item;
             },
             initFormData(merchantId) {
-                this.clearForm();
-                if(merchantId){
+                this.clearForm();console.log(merchantId);
+                if(merchantId){ console.log("进来了");
                   this.update = true;
                   this.loadCustomer(merchantId);
                   this.loadOther(merchantId);
@@ -434,7 +434,11 @@
             }
         },
         created() {
-            this.initFormData(localStorage.getItem("merchantId"));
+            let merchantId = null;
+            if(localStorage.getItem("merchantId") && "undefined" !== localStorage.getItem("merchantId")){
+              merchantId = localStorage.getItem("merchantId")
+            }
+            this.initFormData(merchantId);
             this.loadAccountList();
             this.loadAccountTree();
         },

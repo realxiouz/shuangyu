@@ -437,7 +437,11 @@
             }
         },
         created() {
-            this.initFormData(localStorage.getItem("merchantId"));
+          let merchantId = null;
+          if(localStorage.getItem("merchantId") && "undefined" !== localStorage.getItem("merchantId")){
+            merchantId = localStorage.getItem("merchantId")
+          }
+            this.initFormData(merchantId);
             this.loadAccountList();
             this.loadAccountTree();
         },

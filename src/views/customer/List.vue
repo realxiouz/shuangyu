@@ -357,8 +357,6 @@ export default {
           this.$router.push({
             path: "/customer/edit?merchantId=" + row.merchantId
           });
-        }).catch(() => {
-              
         });
       }
     }
