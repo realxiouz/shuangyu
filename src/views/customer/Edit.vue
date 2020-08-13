@@ -328,8 +328,6 @@
                   this.loadContacts(merchantId);
                   this.loadOpen(merchantId);
                 }
-              this.firmForm = this.defaultFirmFormData();
-              this.firmMerchantForm = this.defaultMerchantFormData();
             },
             changeAccount(accountIdList){
               let that = this;
@@ -338,19 +336,14 @@
                 that.accountList.forEach(function(obj){
                   if(id === obj.accountId){
                     that.firmMerchantForm.accountId = obj.accountId;
+                    if(1 === obj.category){
+                      that.bankShow = true
+                    }else{
+                      that.bankShow = false
+                    }
                   }
                 });
               }
-              for (let i = 0, len = this.accountData.length; i < len; i++) {
-                    if (accountIdList == this.accountData[i].accountId) {
-                      if(this.accountData[i].category==1){
-                        console.log(this.accountData[i])
-                        this.bankShow = true
-                      }else if(this.accountList[i].category==0){
-                        this.bankShow = false
-                      }
-                    }
-                }
             },
             changeOpen(openId) {
                 for (let i = 0, len = this.openData.length; i < len; i++) {
@@ -407,7 +400,6 @@
                 this.firmMerchantForm.firm = this.firmForm;
                 this.firmMerchantForm.contacts = this.contacts;
                 this.firmMerchantForm.accounts = accountList;
-                console.log(this.firmMerchantForm)
                 if (this.update) {
                   this.$store
                     .dispatch('firmMerchant/updateOne', {

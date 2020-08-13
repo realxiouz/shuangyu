@@ -321,23 +321,18 @@
                 that.accountList.forEach(function(obj){
                   if(id === obj.accountId){
                     that.firmMerchantForm.accountId = obj.accountId;
+                    if(1 === obj.category){
+                      that.bankShow = true
+                    }else{
+                      that.bankShow = false
+                    }
                   }
                 });
               }
-              for (let i = 0, len = this.accountData.length; i < len; i++) {
-                    if (accountIdList == this.accountData[i].accountId) {
-                      if(this.accountData[i].category==1){
-                        console.log(this.accountData[i])
-                        this.bankShow = true
-                      }else if(this.accountList[i].category==0){
-                        this.bankShow = false
-                      }
-                    }
-                }
             },
             changeOpen(code) {
                 for (let i = 0, len = this.openData.length; i < len; i++) {
-                    if (code == this.openData[i].openCode) {
+                    if (code === this.openData[i].openCode) {
                         this.firmMerchantForm.openName = this.openData[i].openName;
                         this.firmMerchantForm.openId = this.openData[i].openId;
                         this.firmMerchantForm.openCode = this.openData[i].openCode;
@@ -351,7 +346,7 @@
                 this.firmMerchantForm = this.defaultMerchantFormData();
                 this.openData = [];
             },
-            initFormData(merchantId) { console.log(merchantId);
+            initFormData(merchantId) {
                 this.clearForm();
                 if (merchantId) {
                     this.update = true;
