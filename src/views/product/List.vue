@@ -25,7 +25,7 @@
         </el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="350">
           <template slot-scope="scope">
-            <el-button @click="inventoryUpdate(scope.row.productId)" type="primary" size="mini">库存编辑</el-button>
+            <!-- <el-button @click="inventoryUpdate(scope.row.productId)" type="primary" size="mini">库存编辑</el-button> -->
             <el-button @click="handleUpdate(scope.row.productId)" type="primary" size="mini">商品编辑</el-button>
             <el-button
               @click.native.prevent="onDel(scope.row.productId)"

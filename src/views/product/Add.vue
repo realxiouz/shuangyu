@@ -21,6 +21,7 @@
                 :props="{ label: 'categoryName', value: 'categoryCode' }"
                 filterable
                 @change="handleCategory"
+                :disabled="!!$route.query.productId"
               ></el-cascader>
             </el-form-item>
           </el-col>
@@ -227,7 +228,7 @@
             </el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
               <el-form-item
-                prop="price"
+                prop="productPrice"
                 label="价格"
                 :rules="[]"
               >
@@ -529,6 +530,7 @@ export default {
           this.loadPropertyList(param, data.propertyItems)
           this.$nextTick(_ => {
             this.formData = {...this.formData, ...data}
+            this.dataList = data.skuList
           })
         })
         .catch(error => {
