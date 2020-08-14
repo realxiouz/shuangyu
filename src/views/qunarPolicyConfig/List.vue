@@ -66,7 +66,7 @@
       onBack(){
         let lastName = localStorage.getItem("lastName");
         if(lastName && "undefined" !== lastName){
-          this.$router.push({name: lastName,});
+          this.$router.push({name: lastName});
           localStorage.removeItem("lastName");
         }else{
           this.$router.go(-1);
