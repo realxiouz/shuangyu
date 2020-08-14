@@ -227,10 +227,11 @@
             v-model="formData.phone"
             maxlength="11"
             show-word-limit
+            :disabled="isRelation"
           ></el-input>
         </el-form-item>
         <el-form-item label="邮箱:" prop="email">
-          <el-input v-model="formData.email"></el-input>
+          <el-input v-model="formData.email" :disabled="isRelation"></el-input>
         </el-form-item>
         <el-form-item label="角色:" prop="roles">
           <el-select
@@ -421,6 +422,7 @@ export default {
       searchDialogVisible: false,
       departmentDialogVisible: false,
       defaultChecked:false,
+      isRelation:true,
       tableData: [],
       treeData: [],
       userData: {},
@@ -633,6 +635,11 @@ export default {
             data.roles = [];
           }
           this.formData = data;
+          if(!this.formData.userId){
+            this.isRelation = false
+          }else{
+            this.isRelation = true
+          }
           Object.assign(this.updateTempData, data);
         })
         .catch(error => {
