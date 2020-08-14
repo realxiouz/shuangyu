@@ -9,14 +9,14 @@
           <el-input v-model="formData.brandName" placeholder="请输入品牌编码.."></el-input>
         </el-form-item>
         <el-form-item label="商品类目：" prop="categoryCode">
-          <el-cascader 
-          background
+          <el-cascader
+            ref="categoryCascader"
             v-model="formData.categoryCode"
             style="width: 100%;"
             :options="categoryList"
             :props="{ label: 'categoryName', value: 'categoryCode' }"
-            @change="selectedCategory">
-          </el-cascader>
+            @change="handleCategory"
+            />
         </el-form-item>
         <el-form-item label="品牌故事：">
           <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" v-model="formData.brandStory"
@@ -87,14 +87,14 @@
                             message: "长度在 1到 20 个字符"
                         }
                     ],
-                    categoryCode: [
-                        {required: true, message: "请输入品牌名称", trigger: "blur"},
-                        {
-                            min: 1,
-                            max: 20,
-                            message: "长度在 1到 20 个字符"
-                        }
-                    ]
+                    // categoryCode: [
+                    //     {required: true, message: "请输入品牌名称", trigger: "blur"},
+                    //     {
+                    //         min: 1,
+                    //         max: 20,
+                    //         message: "长度在 1到 20 个字符"
+                    //     }
+                    // ]
                 }
             };
         },
@@ -132,7 +132,9 @@
                 };
             },
             loadCategory() {
-                this.$store.dispatch("category/getTreeList", {filter: {categoryType: 9}})
+                this.$store.dispatch('firmCategory/getTreeList', {
+                    filter: { categoryType: 'PRODUCT' }
+                    })
                     .then(data => {
                         console.log(data)
                         this.categoryList = this.generateTreeData(data);
@@ -145,7 +147,17 @@
             clearForm() {
                 this.formData = this.defaultFormData();
             },
-          
+            handleCategory(category) {
+                const labelValue = this.$refs.categoryCascader.getCheckedNodes()[0]
+                    .pathLabels
+                if (labelValue.length > 0) {
+                    this.formData.categoryName = labelValue[0]
+                }
+                if (category) {
+                    const code = category[category.length - 1]
+                    this.formData.categoryCode = code
+                }
+            },
             selectedCategory(selected) {
                 //选取最后的节点
                 const code = selected[selected.length - 1];
@@ -172,7 +184,22 @@
                 }
                 return data;
             },
-           
+           onSave() {
+            this.$refs['form'].validate(valid => {
+                if (valid ) {
+                    let actionName = this.keyId ? 'brand/updateOne' : 'brand/addOne'
+                    this.$store
+                    .dispatch(actionName, this.formData)
+                    .then(id => {
+                        this.dialogVisible = false;
+                        this.$emit('refresh');
+                        this.$message({ type: 'success', message: '保存成功' });
+                    })
+                    .finally(_ => {
+                    });
+                }
+                });
+           },
         },
         created() {
             this.loadCategory();

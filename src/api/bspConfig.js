@@ -2,7 +2,7 @@ import request from '@/utils/request';
 
 export function addOne(data) {
   return request({
-    url: '/qunar/bsp/config/add/one',
+    url: '/eterm/bsp/config/add/one',
     method: 'post',
     data
   });
@@ -10,7 +10,7 @@ export function addOne(data) {
 
 export function updateOne(id,data) {
   return request({
-    url: `/qunar/bsp/config/update/one/${configId}`,
+    url: `/eterm/bsp/config/update/one/${configId}`,
     method: 'post',
     data
   });
@@ -18,14 +18,14 @@ export function updateOne(id,data) {
 
 export function removeOne(configId) {
   return request({
-    url: `/qunar/bsp/config/remove/one/${configId}`,
+    url: `/eterm/bsp/remove/one/${configId}`,
     method: 'delete'
   });
 }
 
 export function getOne(filter) {
   return request({
-    url: `/qunar/bsp/config/one`,
+    url: `/eterm/bsp/config/one`,
     method: 'get',
         params: filter
   });
@@ -33,7 +33,7 @@ export function getOne(filter) {
 
 export function getList(filter) {
   return request({
-    url: `/qunar/bsp/config/list`,
+    url: `/eterm/bsp/config/list`,
     method: 'get',
     params: filter
   });
@@ -41,7 +41,7 @@ export function getList(filter) {
 
 export function getPageList(pageFlag, pageSize, lastId, filter) {
   return request({
-    url: `/qunar/bsp/config/page/list/${pageFlag}/${pageSize}`,
+    url: `/eterm/bsp/config/page/list/${pageFlag}/${pageSize}`,
     method: 'get',
     params: filter
   });

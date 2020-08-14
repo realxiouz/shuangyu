@@ -30,13 +30,13 @@
               <el-input type="text" v-model="firmForm.email" placeholder="请输入联系邮箱"></el-input>
             </el-form-item>
             <el-form-item label="供应商性别">
-              <el-select v-model="firmForm.gender" placeholder="请选择供应商性别" style="width: 50%">
+              <el-select v-model="firmForm.gender" placeholder="请选择供应商性别" style="width: 100%">
                 <el-option label="男" :value="0"></el-option>
                 <el-option label="女" :value="1"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="出生日期">
-              <el-date-picker v-model="firmForm.birthDate" value-format="timestamp" type="date" placeholder="选择日期"/>
+              <el-date-picker v-model="firmForm.birthDate" value-format="timestamp" type="date" placeholder="选择日期" style="width: 100%"/>
             </el-form-item>
             <el-form-item label="供应商地址">
               <el-input type="text" placeholder="请输入供应商地址" v-model="firmForm.address"></el-input>
@@ -72,7 +72,7 @@
               <el-input type="textarea" v-model="firmMerchantForm.remark" placeholder="请输入备注.."></el-input>
             </el-form-item>
             <el-form-item label="开放平台">
-              <el-select v-model="firmMerchantForm.openCode" placeholder="请选择平台" style="width: 50%"
+              <el-select v-model="firmMerchantForm.openCode" placeholder="请选择平台" style="width: 100%"
                          @change="changeOpen">
                 <el-option :value=null>&nbsp;- -</el-option>
                 <el-option v-for="item in openData"

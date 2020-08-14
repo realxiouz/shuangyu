@@ -243,9 +243,11 @@
                 v-model="payData.bankCode"
                 placeholder="请选择支付方式"
               >
+                <el-option label="PPM代扣" value="PNRPAY" :disabled="defaultAli"></el-option>
                 <el-option label="支付宝" value="ALIPAY"></el-option>
-                <!--<el-option label="汇付" value="PNRPAY"></el-option>-->
-                <el-option label="余额代扣" value="QUNARPAY"></el-option>
+                <!-- <el-option label="支付宝" value="ALIPAY"></el-option>
+                <el-option label="汇付" value="PNRPAY"></el-option>
+                <el-option label="余额代扣" value="QUNARPAY"></el-option> -->
               </el-select>
             </el-form-item>
           </el-form>
@@ -300,11 +302,15 @@
           sellOrderNo: ""
         },
         FOBookOrderData: {},
-        expandRowKeys: []
+        expandRowKeys: [],
+
+        defaultAli: true //sio skq ali 
       };
     },
     created() {
       this.getOrderDetail();
+      let sourceOrderNo = this.passengerData[0].sourceOrderNo
+      this.defaultAli = sourceOrderNo.startsWith('sio') || sourceOrderNo.startsWith('skq')
     },
     computed: {
       formatDate() {
@@ -410,6 +416,7 @@
                 message: "预定成功！"
               });
               this.source = "OPEN";
+              this.payData.bankCode = this.defaultAli ? 'ALIPAY' : 'PNRPAY'
               this.payShow = true;
             } else {
               this.payShow = false;
@@ -442,6 +449,7 @@
                 message: "预定成功！"
               });
               this.source = "51Book";
+              this.payData.bankCode = this.defaultAli ? 'ALIPAY' : 'PNRPAY'
               this.payShow = true;
             } else {
               this.payShow = false;
