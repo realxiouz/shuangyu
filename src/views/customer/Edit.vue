@@ -19,7 +19,7 @@
               </el-select>
             </el-form-item>
             <el-form-item label="客户编码" prop="firmCode">
-              <el-input type="text" placeholder="请输入客户代码" v-model="firmForm.firmCode"></el-input>
+              <el-input type="text" placeholder="请输入客户编码" v-model="firmForm.firmCode"></el-input>
             </el-form-item>
             <el-form-item label="客户名称" prop="firmName">
               <el-input type="text" placeholder="请输入客户名称" v-model="firmForm.firmName"></el-input>
@@ -46,10 +46,10 @@
               <el-date-picker v-model="firmForm.birthDate" value-format="timestamp" type="date" placeholder="选择日期"/>
             </el-form-item>
             <el-form-item label="客户地址">
-              <el-input type="text" placeholder="请输入地址" v-model="firmForm.address"></el-input>
+              <el-input type="text" placeholder="请输入客户地址" v-model="firmForm.address"></el-input>
             </el-form-item>
             <el-form-item label="官网链接">
-              <el-input type="text" placeholder="请输入官网" v-model="firmForm.officialUrl"></el-input>
+              <el-input type="text" placeholder="请输入官网链接" v-model="firmForm.officialUrl"></el-input>
             </el-form-item>
           </el-form>
           <br><br>
@@ -188,7 +188,7 @@
                     {required: true, message: "请选择客户类型", trigger: "change"},
                   ],
                   firmCode: [
-                    {required: true, message: "请输入客户代码", trigger: "change"},
+                    {required: true, message: "请输入客户编码", trigger: "change"},
                     {
                       min: 1,
                       max: 20,
