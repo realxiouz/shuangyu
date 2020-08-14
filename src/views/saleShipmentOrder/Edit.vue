@@ -268,6 +268,8 @@
                     orderDate: null,
                     //单据类型100：销售单，101 销售出库单，102 销售退款单，103销售退票入库单，104销售改签单，105销售改签入库单，106 销售改签出库单，
                     orderType: 101,
+                    //销售单
+                    orderCategory: 0,
                     //***************
                     //仓库
                     warehouseId: '',
@@ -489,7 +491,7 @@
                 this.formData.totalAmount = parseFloat(document.getElementById('totalAmount').textContent);
                 this.formData.orderDetails = this.orderDetails;
                         this.formData.passengers = this.passengers
-                
+
                 this.$store
                     .dispatch('productOrder/saveOrder', this.formatData)
                     .then(() => {

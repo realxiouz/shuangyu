@@ -4,10 +4,12 @@
       <div class="page-back">
         <el-button-group>
           <el-button icon="el-icon-back" type="warning" @click="handleBack"
-            >返回</el-button
+          >返回
+          </el-button
           >
           <el-button icon="el-icon-plus" type="primary" @click="handleConfirm"
-            >保存</el-button
+          >保存
+          </el-button
           >
         </el-button-group>
       </div>
@@ -23,11 +25,23 @@
             <el-form-item label="端口号:" prop="port">
               <el-input v-model="formData.port" placeholder="请输入访问端口号.."></el-input>
             </el-form-item>
+            <el-form-item label="OFFICE:" prop="officeNo">
+              <el-input v-model="formData.officeNo" placeholder="请输入OFFICE.."></el-input>
+            </el-form-item>
+            <el-form-item label="工作号:" prop="jobNumber">
+              <el-input v-model="formData.jobNumber" placeholder="请输入工作号，多个用/分隔"></el-input>
+            </el-form-item>
             <el-form-item label="登录账号:" prop="username">
               <el-input v-model="formData.username" placeholder="请输入登录账号.."></el-input>
             </el-form-item>
             <el-form-item label="登录密码:" prop="password">
               <el-input v-model="formData.password" show-password placeholder="请输入登录密码.."></el-input>
+            </el-form-item>
+            <el-form-item label="联系人:" prop="contactName">
+              <el-input v-model="formData.contactName" placeholder="请输入联系人.."></el-input>
+            </el-form-item>
+            <el-form-item label="联系人电话:" prop="contactPhone">
+              <el-input v-model="formData.contactPhone" placeholder="请输入联系人电话.."></el-input>
             </el-form-item>
           </el-form>
         </el-col>
@@ -55,6 +69,18 @@
                     ],
                     password: [
                         {required: true, message: '请输入密码', trigger: 'blur'}
+                    ],
+                    contactName: [
+                        {required: true, message: '请输入联系人', trigger: 'blur'}
+                    ],
+                    contactPhone: [
+                        {required: true, message: '请输入联系人电话', trigger: 'blur'}
+                    ],
+                    officeNo: [
+                        {required: true, message: '请输入OFFICE', trigger: 'blur'}
+                    ],
+                    jobNumber: [
+                        {required: true, message: '请输入工作号，多个用/分隔', trigger: 'blur'}
                     ]
                 }
             }
@@ -124,13 +150,13 @@
             },
             //跳转回列表页面
             handleBack() {
-              let lastName = localStorage.getItem("lastName");
-              if (lastName) {
-                this.$router.push({ name: lastName });
-                localStorage.removeItem("lastName");
-              } else {
-                this.$router.go(-1);
-              }
+                let lastName = localStorage.getItem("lastName");
+                if (lastName) {
+                    this.$router.push({name: lastName});
+                    localStorage.removeItem("lastName");
+                } else {
+                    this.$router.go(-1);
+                }
             },
         },
         created() {

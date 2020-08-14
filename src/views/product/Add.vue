@@ -6,7 +6,7 @@
       </div>
       <el-steps :active="step" finish-status="success">
         <el-step title="基础属性"></el-step>
-        <el-step title="类目属性"></el-step>
+        <el-step title="商品属性"></el-step>
         <!-- <el-step title="sku属性"></el-step> -->
       </el-steps>
       <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
@@ -128,84 +128,112 @@
           
         </el-row>
         <div :gutter="10" v-show="step==1">
+          <el-divider content-position="left">类目属性</el-divider>
           <el-row>
-          <el-col
-            :xs="24"
-            :sm="12"
-            :md="12"
-            :lg="6"
-            :xl="6"
-            v-for="(item, index) in formData.propertyList"
-            :key="index">
-            <template v-if="item.valueType != 9">
-              <el-form-item
-                :prop="'propertyList.' + index + '.value'"
-                :label="item.name"
-                :rules="[{ required: item.required, message: '请输入'+item.name, trigger: 'blur' }]">
-                <el-input
-                  v-if="item.valueType ==0"
-                  v-model="item.value"
-                  :type="item.inputType"
-                  :maxlength="item.length">
-                </el-input>
-                <el-switch v-if="item.valueType ==1" v-model="item.value"></el-switch>
-                <el-input-number
-                  v-if="item.valueType ==2"
-                  v-model="item.value"
-                  :min="item.min"
-                  :max="item.max"
-                  :step="item.step"
-                  :precision="item.precision"></el-input-number>
-                <el-date-picker
-                  v-if="item.valueType ==3"
-                  v-model="item.value"
-                  :type="item.inputType"
-                  :format="item.format"
-                  placeholder="选择日期"></el-date-picker>
-                <el-time-picker
-                  v-if="item.valueType ==4"
-                  arrow-control
-                  v-model="item.value"
-                  :picker-options="{selectableRange: '00:00:00 - 23:59:00' }">
-                </el-time-picker>
-                <el-rate v-if="item.valueType ==5" v-model="item.value"></el-rate>
-                <el-radio-group v-if="item.valueType ==60" v-model="item.value">
-                  <el-radio
-                    v-for="attr in item.attributes"
-                    :key="attr.code"
-                    :label="attr.name">{{attr.name}}
-                  </el-radio>
-                </el-radio-group>
-                <el-select v-model="item.value" v-if="item.valueType ==62" :multiple="item.multiple">
-                  <el-option
-                    v-for="attr in item.attributes"
-                    :key="attr.code"
-                    :label="attr.name"
-                    :value="attr.code">
-                  </el-option>
-                </el-select>
-                <el-checkbox-group
-                  v-if="item.valueType ==61 && !item.sku"
-                  v-model="item.value">
-                  <el-checkbox
-                    v-for="attr in item.attributes"
-                    :key="attr.code"
-                    :label="attr.code">{{attr.name}}
-                  </el-checkbox>
-                </el-checkbox-group>
-                <el-checkbox-group
-                  v-if="item.valueType ==61 && item.sku"
-                  v-model="item.value"
-                  @change="handleSku(index)">
-                  <el-checkbox
-                    v-for="attr in item.attributes"
-                    :key="attr.code"
-                    :label="attr.code">{{attr.name}}
-                  </el-checkbox>
-                </el-checkbox-group>
-              </el-form-item>
-            </template>
-          </el-col>
+            <el-col
+              :xs="24"
+              :sm="12"
+              :md="12"
+              :lg="6"
+              :xl="6"
+              v-for="(item, index) in formData.otherPropertyList"
+              :key="index">
+              <template v-if="item.valueType != 9">
+                <el-form-item
+                  :prop="'otherPropertyList.' + index + '.value'"
+                  :label="item.name"
+                  :rules="[{ required: item.required, message: '请输入'+item.name, trigger: 'blur' }]">
+                  <el-input
+                    v-if="item.valueType ==0"
+                    v-model="item.value"
+                    :type="item.inputType"
+                    :maxlength="item.length">
+                  </el-input>
+                  <el-switch v-if="item.valueType ==1" v-model="item.value"></el-switch>
+                  <el-input-number
+                    v-if="item.valueType ==2"
+                    v-model="item.value"
+                    :min="item.min"
+                    :max="item.max"
+                    :step="item.step"
+                    :precision="item.precision"></el-input-number>
+                  <el-date-picker
+                    v-if="item.valueType ==3"
+                    v-model="item.value"
+                    :type="item.inputType"
+                    :format="item.format"
+                    placeholder="选择日期"></el-date-picker>
+                  <el-time-picker
+                    v-if="item.valueType ==4"
+                    arrow-control
+                    v-model="item.value"
+                    :picker-options="{selectableRange: '00:00:00 - 23:59:00' }">
+                  </el-time-picker>
+                  <el-rate v-if="item.valueType ==5" v-model="item.value"></el-rate>
+                  <el-radio-group v-if="item.valueType ==60" v-model="item.value">
+                    <el-radio
+                      v-for="attr in item.attributes"
+                      :key="attr.code"
+                      :label="attr.name">{{attr.name}}
+                    </el-radio>
+                  </el-radio-group>
+                  <el-select v-model="item.value" v-if="item.valueType ==62" :multiple="item.multiple">
+                    <el-option
+                      v-for="attr in item.attributes"
+                      :key="attr.code"
+                      :label="attr.name"
+                      :value="attr.code">
+                    </el-option>
+                  </el-select>
+                  <el-checkbox-group
+                    v-if="item.valueType ==61 && !item.sku"
+                    v-model="item.value">
+                    <el-checkbox
+                      v-for="attr in item.attributes"
+                      :key="attr.code"
+                      :label="attr.code">{{attr.name}}
+                    </el-checkbox>
+                  </el-checkbox-group>
+                  <el-checkbox-group
+                    v-if="item.valueType ==61 && item.sku"
+                    v-model="item.value"
+                    @change="handleSku(index)">
+                    <el-checkbox
+                      v-for="attr in item.attributes"
+                      :key="attr.code"
+                      :label="attr.code">{{attr.name}}
+                    </el-checkbox>
+                  </el-checkbox-group>
+                </el-form-item>
+              </template>
+            </el-col>
+          </el-row>
+          <el-divider content-position="left">sku属性</el-divider>
+          <el-row>
+            <el-col
+              :xs="24"
+              :sm="12"
+              :md="12"
+              :lg="6"
+              :xl="6"
+              v-for="(item, index) in formData.skuPropertyList"
+              :key="index">
+                <el-form-item
+                  :prop="'skuPropertyList.' + index + '.value'"
+                  :label="item.name"
+                  :rules="[{ required: item.required, message: '请输入'+item.name, trigger: 'blur' }]">
+                  <el-checkbox-group
+                    v-if="item.valueType ==61 && item.sku"
+                    v-model="item.value"
+                    @change="handleSku(index)">
+                    <el-checkbox
+                      v-for="attr in item.attributes"
+                      :key="attr.code"
+                      :label="attr.code">{{attr.name}}
+                    </el-checkbox>
+                  </el-checkbox-group>
+                </el-form-item>
+            </el-col>
           </el-row>
           <el-row v-if="!formData.sku">
             <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -374,6 +402,7 @@ export default {
       warehouseData: [],
 
       step: 0,
+
     }
   },
   methods: {
@@ -392,7 +421,9 @@ export default {
         specification: '',
         description: '',
 
-        sku: false
+        sku: false,
+        otherPropertyList: [],
+        skuPropertyList: [],
       }
     },
     handleBrandName(id) {
@@ -402,11 +433,11 @@ export default {
       this.formData.brandName = object.brandName
     },
     handleSku(index) {
-      this.formData.propertyList[index].skuItems = this.getPropertySkuItems(this.formData.propertyList[index])
+      this.formData.skuPropertyList[index].skuItems = this.getPropertySkuItems(this.formData.skuPropertyList[index])
       const array = []
       const columns = []
-      for (let i = 0, len = this.formData.propertyList.length; i < len; i++) {
-        const property = this.formData.propertyList[i]
+      for (let i = 0, len = this.formData.skuPropertyList.length; i < len; i++) {
+        const property = this.formData.skuPropertyList[i]
         if (property.sku) {
           const skuItems = property.skuItems
           if (skuItems && skuItems.length > 0) {
@@ -437,7 +468,7 @@ export default {
               const item1 = skuIds[i][j]
               codes.push(item1.vcode)
               names.push(item1.vname)
-              const property = this.formData.propertyList.find(p => {
+              const property = this.formData.skuPropertyList.find(p => {
                 return p.code == item1.code
               })
               const _property = Object.assign({}, property)
@@ -489,7 +520,8 @@ export default {
     },
     getPropertyItems(excludeSku) {
       const items = []
-      const arr = this.formData.propertyList
+      // const arr = this.formData.propertyList
+      const arr = [...this.formData.skuPropertyList, ...this.formData.otherPropertyList]
       for (let i = 0; i < arr.length; i++) {
         const property = arr[i]
         const item = this.getPropertyItem(property)
@@ -575,7 +607,6 @@ export default {
       this.$store
         .dispatch('product/getOne', { productId: id })
         .then(data => {
-          
           const param = {}
           param.categoryCode = data.categoryCode
           this.loadPropertyList(param, data.propertyItems)
@@ -636,44 +667,19 @@ export default {
         })
         .then(data => {
           if (data) {
-            // for (let i = 0, len = data.length; i < len; i++) {
-            //   switch (data[i].type) {
-            //     case 'ArrayList':
-            //       data[i].value = []
-            //       break
-            //     case 'String':
-            //     case 'Date':
-            //       data[i].value = ''
-            //       break
-            //     case 'Boolean':
-            //       data[i].value = false
-            //       break
-            //     case 'Byte':
-            //     case 'Short':
-            //     case 'Integer':
-            //     case 'Long':
-            //     case 'Float':
-            //     case 'Double':
-            //       data[i].value = 0
-            //       break
-            //   }
-            // }
+            let all = data.map(i => this.getValueByType(i, arr))
 
-            this.formData.propertyList = data.map(i => this.getValueByType(i, arr))
-
+            this.formData.skuPropertyList = all.filter(i => i.sku)
+            this.formData.otherPropertyList = all.filter(i => !i.sku)
+            console.log(this.formData.otherPropertyList)
             this.formData.sku = data.some(i => i.sku)
+            // this.formData.propertyList = data.map(i => this.getValueByType(i, arr))
+            // this.formData.sku = data.some(i => i.sku)
           }
         })
         .catch(error => {
           console.log(error)
         })
-    },
-    getValue(values) {
-      const array = []
-      for (const key in values) {
-        array.push(values[key])
-      }
-      return array
     },
     loadBrand() {
       this.$store
@@ -733,7 +739,6 @@ export default {
       this.formData.warehouseCode = data.warehouseCode
       this.formData.warehouseName = data.warehouseName
     },
-    // 跳转回列表页面
     goBack() {
       if (this.$router.history.length <= 1) {
         this.$router.push({ path: '/home' })
@@ -742,14 +747,10 @@ export default {
         this.$router.go(-1)
       }
     },
-
     loadWarehouseData() {
       this.$store.dispatch('warehouse/getTreeList', { filter: {}})
         .then(d => {
           this.warehouseData = this.getTreeData(d)
-        })
-        .finally(_ => {
-
         })
     }
   },

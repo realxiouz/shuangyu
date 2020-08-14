@@ -251,6 +251,8 @@
                     warehouseName: '',
                     //出入库状态（0：未出库，1：已出库）
                     warehouseStatus: 1,
+                    //采购单
+                    orderCategory: 1,
                     //出入库类型（委外，生产，赠送，销售出库，采购入库）
                     warehouseType: '采购入库',
                     //出入库时间
