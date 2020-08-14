@@ -18,7 +18,7 @@ const mutations = {
 const actions = {
   save({commit}, args) {
     return new Promise((resolve, reject) => {
-      save(data)
+      save(args)
         .then(data => {
           resolve(data);
         })

@@ -8,9 +8,9 @@ export function addOne(data) {
   });
 }
 
-export function updateOne(data) {
+export function updateOne(airportCode,data) {
   return request({
-    url: '/flight/airport/update/one',
+    url: `/flight/airport/update/one/${airportCode}`,
     method: 'post',
     data
   });
