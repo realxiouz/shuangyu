@@ -5,7 +5,7 @@
         <el-page-header></el-page-header>
       </div>
       <el-form ref="orderForm" :disabled="isUpdate" :rules="rules" :model="formData" label-position="left"
-               label-width="97px" 
+               label-width="97px"
                style="width: 80%">
         <el-row>
           <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
@@ -222,6 +222,8 @@
                     warehouseName: '',
                     //出入库状态（0：未入库，1：已入库，2：未出库，3：已出库）
                     warehouseStatus: 2,
+                    //销售单
+                    orderCategory: 0,
                     //出入库时间
                     warehouseDate: this.defaultDate,
                     //***************
@@ -383,7 +385,7 @@
                                 this.formData[item] = this.formData[item].getTime();
                             }
                         });
-                        
+
                         this.formData.orderDetails = this.orderDetails;
                         this.formData.passengers = this.passengers
                         this.$store
