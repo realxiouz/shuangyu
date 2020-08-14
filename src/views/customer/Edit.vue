@@ -61,10 +61,10 @@
           <hr width="40%" align="left">
           <el-form :rules="rules" :model="firmMerchantForm" ref="firmMerchantForm" label-position="left" label-width="20%" size="mini">
             <el-form-item label="银行名称">
-              <el-input type="text" v-model.number="firmMerchantForm.merchantAccountName"></el-input>
+              <el-input type="text" v-model.number="firmMerchantForm.merchantAccountName" placeholder="请输入银行名称.."></el-input>
             </el-form-item>
             <el-form-item label="银行账号">
-              <el-input type="text" v-model.number="firmMerchantForm.merchantBankAccount"></el-input>
+              <el-input type="text" v-model.number="firmMerchantForm.merchantBankAccount" placeholder="请输入银行账号.."></el-input>
             </el-form-item>
             <el-form-item label="税率">
               <el-input type="text" v-model.number="firmMerchantForm.taxRate"></el-input>
