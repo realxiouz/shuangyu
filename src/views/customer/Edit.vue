@@ -12,8 +12,7 @@
           <hr width="40%" align="left">
           <el-form :rules="rules" :model="firmForm" ref="firmForm" label-position="left" label-width="20%" size="mini">
             <el-form-item label="客户类型" prop="firmType">
-              <el-select v-model="firmForm.firmType" placeholder="请选择客户类型" @change="selectedCustomerType"
-                         style="width: 50%">
+              <el-select v-model="firmForm.firmType" placeholder="请选择客户类型" @change="selectedCustomerType" style="width: 100%">
                 <el-option label="企业" :value="1"></el-option>
                 <el-option label="个人" :value="2"></el-option>
               </el-select>
@@ -37,13 +36,13 @@
               <el-input type="text" v-model="firmForm.email" placeholder="请输入联系邮箱"></el-input>
             </el-form-item>
             <el-form-item label="客户性别">
-              <el-select v-model="firmForm.gender" placeholder="请选择客户性别" style="width: 50%">
+              <el-select v-model="firmForm.gender" placeholder="请选择客户性别" style="width: 100%">
                 <el-option label="男" :value="0"></el-option>
                 <el-option label="女" :value="1"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="出生日期">
-              <el-date-picker v-model="firmForm.birthDate" value-format="timestamp" type="date" placeholder="选择日期"/>
+              <el-date-picker v-model="firmForm.birthDate" value-format="timestamp" type="date" placeholder="选择日期" style="width: 100%"/>
             </el-form-item>
             <el-form-item label="客户地址">
               <el-input type="text" placeholder="请输入客户地址" v-model="firmForm.address"></el-input>
@@ -97,7 +96,7 @@
               <el-input type="textarea" v-model="firmMerchantForm.remark"></el-input>
             </el-form-item>
             <el-form-item label="开放平台">
-              <el-select v-model="firmMerchantForm.openId" placeholder="请选择平台" style="width: 50%"
+              <el-select v-model="firmMerchantForm.openId" placeholder="请选择平台" style="width: 100%"
                          @change="changeOpen">
                 <el-option :value=null>&nbsp;- -</el-option>
                 <el-option v-for="item in openData"

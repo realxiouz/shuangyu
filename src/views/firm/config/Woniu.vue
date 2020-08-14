@@ -49,7 +49,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="登录密码：" prop="password">
-              <el-input v-model="formData.password" placeholder="请输入登录密码" />
+              <el-input v-model="formData.password" type="password" placeholder="请输入登录密码" />
             </el-form-item>
           </el-col>
           <el-col :span="12">

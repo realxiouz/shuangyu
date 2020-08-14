@@ -189,7 +189,7 @@
       loadFirm(){
         this.$store
           .dispatch("firm/getConfigList", {})
-          .then(data => {
+          .then(data => { console.log(data);
             this.firmData = data;
           })
           .catch(error => {
