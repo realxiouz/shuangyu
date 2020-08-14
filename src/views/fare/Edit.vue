@@ -90,6 +90,27 @@ export default {
       }
       this.$emit("onSave", this.formData);
     },
+
+    onSave() {
+      this.$refs['form'].validate(valid => {
+      if (valid ) {
+          let actionName = this.keyId ? 'fare/updateOne' : 'fare/addOne'
+          this.$store
+          .dispatch(actionName, this.formData)
+          .then(id => {
+              this.dialogVisible = false;
+              this.$emit('refresh');
+              this.$message({ type: 'success', message: '保存成功' });
+              this.keyId ? this.$emit('updata') : this.$emit('add')
+              
+          })
+          // eslint-disable-next-line no-unused-vars
+          .finally(_ => {
+              this.afterSave();
+          });
+      }
+      });
+    }
     
   },
 };

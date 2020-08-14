@@ -8,11 +8,11 @@ export function addOne(data) {
   });
 }
 
-export function updateOne(fareId, rest) {
+export function updateOne(fareId, data) {
   return request({
     url: `/flight/fare/update/one/${fareId}`,
     method: 'put',
-    data: rest
+    data
   });
 }
 

@@ -52,7 +52,7 @@
           <p style="font-size: 20px">财务信息</p>
           <hr width="40%" align="left">
           <el-form :rules="rules" :model="firmMerchantForm" ref="firmMerchantForm" label-position="left" label-width="20%" size="mini">
-           
+            
             <el-form-item label="税率">
               <el-input type="text" v-model.number="firmMerchantForm.taxRate" placeholder="请输入税率.."></el-input>
             </el-form-item>
