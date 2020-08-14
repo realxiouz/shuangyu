@@ -194,7 +194,7 @@ export default {
     goBack() {
       let lastName = localStorage.getItem("lastName");
       if(lastName){
-        this.$router.push({name: lastName,});
+        this.$router.push({name: lastName});
         localStorage.removeItem("lastName");
       }else{
         this.$router.go(-1);

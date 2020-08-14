@@ -75,84 +75,34 @@
               formData: null,
               rules: {
                 key: [
-                  {required: true, message: "请输入配置标识"},
-                  {
-                    min: 1,
-                    max: 20,
-                    message: "长度在 1到 20 个字符"
-                  }
+                  {required: true, message: "请输入配置标识"}
                 ],
                 token: [
-                  {required: true, message: "请输入授权凭证"},
-                  {
-                    min: 1,
-                    max: 20,
-                    message: "长度在 1到 20 个字符"
-                  }
+                  {required: true, message: "请输入授权凭证"}
                 ],
                 placeOrderUrl: [
-                  {required: true, message: "请输入下单地址"},
-                  {
-                    min: 1,
-                    max: 20,
-                    message: "长度在 1到 20 个字符"
-                  }
+                  {required: true, message: "请输入下单地址"}
                 ],
                 signUrl: [
-                  {required: true, message: "签约接口地址"},
-                  {
-                    min: 1,
-                    max: 20,
-                    message: "长度在 1到 20 个字符"
-                  }
+                  {required: true, message: "签约接口地址"}
                 ],
                 contactMob: [
-                  {required: true, message: "联系电话"},
-                  {
-                    min: 1,
-                    max: 20,
-                    message: "长度在 1到 20 个字符"
-                  }
+                  {required: true, message: "联系电话"}
                 ],
                 contact: [
-                  {required: true, message: "联系电话"},
-                  {
-                    min: 1,
-                    max: 20,
-                    message: "长度在 1到 20 个字符"
-                  }
+                  {required: true, message: "联系电话"}
                 ],
                 userName: [
-                  {required: true, message: "登录账号"},
-                  {
-                    min: 1,
-                    max: 20,
-                    message: "长度在 1到 20 个字符"
-                  }
+                  {required: true, message: "登录账号"}
                 ],
                 password: [
-                  {required: true, message: "登录密码"},
-                  {
-                    min: 1,
-                    max: 20,
-                    message: "长度在 1到 20 个字符"
-                  }
+                  {required: true, message: "登录密码"}
                 ],
                 exTrack: [
-                  {required: true, message: "报价类型"},
-                  {
-                    min: 1,
-                    max: 500,
-                    message: "长度在 1到 500 个字符"
-                  }
+                  {required: true, message: "报价类型"}
                 ],
                 excludeDomain: [
-                  {required: true, message: "排除域名"},
-                  {
-                    min: 1,
-                    max: 500,
-                    message: "长度在 1到 500 个字符"
-                  }
+                  {required: true, message: "排除域名"}
                 ],
               }
             }
@@ -173,7 +123,7 @@
         goBack() {
           let lastName = localStorage.getItem("lastName");
           if (lastName && "undefined" !== lastName) {
-            this.$router.push({name: lastName,});
+            this.$router.push({name: lastName});
             localStorage.removeItem("lastName");
           } else {
             this.$router.go(-1);
