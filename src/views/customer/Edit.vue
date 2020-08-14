@@ -50,38 +50,21 @@
             <el-form-item label="官网链接">
               <el-input type="text" placeholder="请输入官网链接" v-model="firmForm.officialUrl"></el-input>
             </el-form-item>
-          </el-form>
-          <br><br>
-          <p style="font-size: 20px">管理信息</p>
-          <hr width="40%" align="left">
-          <el-form :rules="rules" :model="firmMerchantForm" ref="firmMerchantForm" label-position="left" label-width="20%" size="mini">
-            <el-form-item label="标签">
-            </el-form-item>
             <el-form-item label="重要性">
               <el-rate v-model="firmMerchantForm.priority" :colors="['#99A9BF', '#F7BA2A', '#FF9900']"/>
             </el-form-item>
+          </el-form>
+          
+
+          <br><br>
+          <p style="font-size: 20px">财务信息</p>
+          <hr width="40%" align="left">
+          <el-form :rules="rules" :model="firmMerchantForm" ref="firmMerchantForm" label-position="left" label-width="20%" size="mini">
             <el-form-item label="税率">
               <el-input type="text" v-model.number="firmMerchantForm.taxRate"></el-input>
             </el-form-item>
             <el-form-item label="税务登记号">
               <el-input type="text" v-model="firmMerchantForm.taxNo" placeholder="请输入税务登记号.."></el-input>
-            </el-form-item>
-            <el-form-item label="付款方式">
-              <el-input type="text" v-model="firmMerchantForm.paymentType" placeholder="请输入付款方式.."></el-input>
-            </el-form-item>
-            <el-form-item label="资金账号:" prop="accountId">
-              <el-cascader
-                v-model="firmMerchantForm.accountId"
-                style="width: 100%;"
-                placeholder="请选择资金账号"
-                :options="accountData"
-                :props="{ label: 'accountName', value: 'accountId' }"
-                filterable
-                @change="changeAccount"
-              ></el-cascader>
-            </el-form-item>
-            <el-form-item label="银行账号" v-if="bankShow">
-              <el-input type="text"  v-model="bankAccount" placeholder="请输入银行账号.." disabled></el-input>
             </el-form-item>
             <el-form-item label="财务联系人">
               <el-input type="text" v-model="firmMerchantForm.financeName" placeholder="请输入财务联系人.."></el-input>
@@ -106,6 +89,32 @@
                 </el-option>
               </el-select>
             </el-form-item>
+          </el-form>
+
+          <br><br>
+          <p style="font-size: 20px">结算信息</p>
+          <hr width="40%" align="left">
+          <el-form :rules="rules" :model="firmMerchantForm" ref="firmMerchantForm" label-position="left" label-width="20%" size="mini">
+            <el-form-item label="付款方式">
+              <el-select v-model="firmMerchantForm.paymentType" placeholder="请选择付款方式" style="width: 50%" >
+                <el-option label="DAIKOU 余额" :value="0"></el-option>
+                <el-option label="OUTDAIKOU 第三方" :value="1"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="结算账号" prop="accountId">
+              <el-cascader
+                v-model="firmMerchantForm.accountId"
+                style="width: 100%;"
+                placeholder="请选择结算账号"
+                :options="accountData"
+                :props="{ label: 'accountName', value: 'accountId' }"
+                filterable
+                @change="changeAccount"
+              ></el-cascader>
+            </el-form-item>
+            <el-form-item label="银行账号" v-if="bankShow">
+              <el-input type="text"  v-model="bankAccount" placeholder="请输入银行账号.." disabled></el-input>
+            </el-form-item> 
           </el-form>
         </div>
       </el-col>

@@ -269,6 +269,8 @@ export default {
         warehouseName: "",
         //出入库状态（0：未入库，1：已入库，2：未出库，3：已出库）
         warehouseStatus: 2,
+          //销售单
+          orderCategory: 0,
         //出入库时间
         warehouseDate: this.defaultDate,
         //***************

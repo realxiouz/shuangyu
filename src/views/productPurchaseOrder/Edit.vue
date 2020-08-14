@@ -1,152 +1,152 @@
 <template>
   <div class="page-form">
-      <div id="goBack" @click="goBack">
-        <el-page-header></el-page-header>
-      </div>
-      <br>
-      <el-form :disabled="isUpdate" ref="orderForm" :rules="rules" :model="formData"
-               label-position="left" label-width="97px" 
-               style="width: 80%">
-        <el-row>
-          <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
-            <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
-              <el-form-item label="供应商:" prop="merchantId">
-                <el-select v-model="formData.merchantId" filterable @change="selectedCustomer" placeholder="请选择"
-                           style="width: 100%">
-                  <el-option
-                    v-for="item in customerList"
-                    :key="item.merchantId"
-                    :label="item.firm.firmName"
-                    :value="item.merchantId">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="账号:" prop="accountId">
-                <el-select v-model="formData.accountId" filterable :disabled="customerSelected "
-                           placeholder="请选择" style="width: 100%">
-                  <el-option
-                    v-for="item in accountList"
-                    :key="item.accountId"
-                    :label="item.username"
-                    :value="item.accountId">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="联系人姓名:" prop="contactName">
-                <el-input type="text" v-model="formData.contactName" placeholder="请输入联系人姓名"></el-input>
-              </el-form-item>
-            </el-col>
+    <div id="goBack" @click="goBack">
+      <el-page-header></el-page-header>
+    </div>
+    <br>
+    <el-form :disabled="isUpdate" ref="orderForm" :rules="rules" :model="formData"
+             label-position="left" label-width="97px"
+             style="width: 80%">
+      <el-row>
+        <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
+          <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
+            <el-form-item label="供应商:" prop="merchantId">
+              <el-select v-model="formData.merchantId" filterable @change="selectedCustomer" placeholder="请选择"
+                         style="width: 100%">
+                <el-option
+                  v-for="item in customerList"
+                  :key="item.merchantId"
+                  :label="item.firm.firmName"
+                  :value="item.merchantId">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="账号:" prop="accountId">
+              <el-select v-model="formData.accountId" filterable :disabled="customerSelected "
+                         placeholder="请选择" style="width: 100%">
+                <el-option
+                  v-for="item in accountList"
+                  :key="item.accountId"
+                  :label="item.username"
+                  :value="item.accountId">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="联系人姓名:" prop="contactName">
+              <el-input type="text" v-model="formData.contactName" placeholder="请输入联系人姓名"></el-input>
+            </el-form-item>
           </el-col>
-          <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
-            <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
-              <el-form-item label="交货期限:" prop="expireDate">
-                <el-date-picker
-                  v-model="formData.expireDate"
-                  type="date"
-                  placeholder="选择日期"
-                  style="width: 100%">
-                </el-date-picker>
-              </el-form-item>
-              <el-form-item label="出入库状态:">
-                <span>{{formData.warehouseStatus ==0?'未入库':'已入库'}}</span>
-              </el-form-item>
-              <el-form-item label="付款方式" prop="paymentMode">
-                <el-autocomplete
-                  v-model="formData.paymentMode"
-                  :fetch-suggestions="querySearchAsync"
-                  placeholder="付款方式"
-                  @select="selectedPaymode"
-                  style="width: 100%">
-                </el-autocomplete>
-              </el-form-item>
-            </el-col>
+        </el-col>
+        <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
+          <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
+            <el-form-item label="交货期限:" prop="expireDate">
+              <el-date-picker
+                v-model="formData.expireDate"
+                type="date"
+                placeholder="选择日期"
+                style="width: 100%">
+              </el-date-picker>
+            </el-form-item>
+            <el-form-item label="出入库状态:">
+              <span>{{formData.warehouseStatus ==0?'未入库':'已入库'}}</span>
+            </el-form-item>
+            <el-form-item label="付款方式" prop="paymentMode">
+              <el-autocomplete
+                v-model="formData.paymentMode"
+                :fetch-suggestions="querySearchAsync"
+                placeholder="付款方式"
+                @select="selectedPaymode"
+                style="width: 100%">
+              </el-autocomplete>
+            </el-form-item>
           </el-col>
-        </el-row>
-        <el-row>
-          <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
-            <div class="title">
-              <el-button type="primary"  @click="handleAddProduct">添加商品明细</el-button>
-            </div>
-            <el-table :data="orderDetails" height="250" border >
-              <el-table-column label="商品编码" prop="productCode" />
-              <el-table-column label="商品名称" prop="productName" />
-              <el-table-column label="品牌" prop="brandName" />
-              <el-table-column prop="skuName" label="属性名称" align="center"></el-table-column>
-              <el-table-column prop="price" label="单价" align="center"></el-table-column>
-              <el-table-column prop="stockQuantity" label="库存" align="center"></el-table-column>
-              <el-table-column prop="quantity" label="数量" align="center" width="180">
-                <template slot-scope="prop">
-                  <el-input-number v-model="prop.row.quantity" :min="1" ></el-input-number>
-                </template>
-              </el-table-column>
-              <el-table-column label="计量单位" prop="unit" />
-              <el-table-column prop="amount" label="金额" align="center">
-                <template slot-scope="prop">
-                  {{computedRowAmount(prop.row)}}
-                </template>
-              </el-table-column>
-              <el-table-column label="操作" align="center">
-                <template slot-scope="scope">
-                  <el-button type="danger"  @click="handleRemoveProduct(scope.$index, scope.row)">删除
-                  </el-button>
-                </template>
-              </el-table-column>
-            </el-table>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
+          <div class="title">
+            <el-button type="primary" @click="handleAddProduct">添加商品明细</el-button>
+          </div>
+          <el-table :data="orderDetails" height="250" border>
+            <el-table-column label="商品编码" prop="productCode"/>
+            <el-table-column label="商品名称" prop="productName"/>
+            <el-table-column label="品牌" prop="brandName"/>
+            <el-table-column prop="skuName" label="属性名称" align="center"></el-table-column>
+            <el-table-column prop="price" label="单价" align="center"></el-table-column>
+            <el-table-column prop="stockQuantity" label="库存" align="center"></el-table-column>
+            <el-table-column prop="quantity" label="数量" align="center" width="180">
+              <template slot-scope="prop">
+                <el-input-number v-model="prop.row.quantity" :min="1"></el-input-number>
+              </template>
+            </el-table-column>
+            <el-table-column label="计量单位" prop="unit"/>
+            <el-table-column prop="amount" label="金额" align="center">
+              <template slot-scope="prop">
+                {{computedRowAmount(prop.row)}}
+              </template>
+            </el-table-column>
+            <el-table-column label="操作" align="center">
+              <template slot-scope="scope">
+                <el-button type="danger" @click="handleRemoveProduct(scope.$index, scope.row)">删除
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-col>
+      </el-row>
+      <passengers v-model="passengers"/>
+      <el-row style="width: 80%; margin-top: 10px">
+        <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
+          <el-input type="textarea" v-model="formData.remark" placeholder="暂无备注信息"></el-input>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
+          <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
+            <el-form-item label="成交金额:">
+              <span id="totalAmount">{{totalAmount}}</span>
+            </el-form-item>
+            <el-form-item label="实付金额:">
+              {{formData.receiptAmount}}
+            </el-form-item>
           </el-col>
-        </el-row>
-        <passengers v-model="passengers" />
-        <el-row style="width: 80%; margin-top: 10px">
-          <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
-            <el-input type="textarea" v-model="formData.remark" placeholder="暂无备注信息"></el-input>
+        </el-col>
+        <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
+          <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
+            <el-form-item label="结算账户:" prop="fundAccountId">
+              <el-select v-model="formData.fundAccountId" filterable placeholder="请选择" @change="selectedFundAccount"
+                         style="width: 100%">
+                <el-option
+                  v-for="item in funAccountList"
+                  :key="item.accountId"
+                  :label="item.accountName"
+                  :value="item.accountId">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="制单人:">
+              {{this.$store.getters.fullName}}
+            </el-form-item>
+            <el-form-item label="制单时间:">
+              {{formatDate("YYYY-MM-DD")}}
+            </el-form-item>
           </el-col>
-        </el-row>
-        <el-row>
-          <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
-            <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
-              <el-form-item label="成交金额:">
-                <span id="totalAmount">{{totalAmount}}</span>
-              </el-form-item>
-              <el-form-item label="实付金额:">
-                {{formData.receiptAmount}}
-              </el-form-item>
-            </el-col>
-          </el-col>
-          <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
-            <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
-              <el-form-item label="结算账户:" prop="fundAccountId">
-                <el-select v-model="formData.fundAccountId" filterable placeholder="请选择" @change="selectedFundAccount"
-                           style="width: 100%">
-                  <el-option
-                    v-for="item in funAccountList"
-                    :key="item.accountId"
-                    :label="item.accountName"
-                    :value="item.accountId">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="制单人:">
-                {{this.$store.getters.fullName}}
-              </el-form-item>
-              <el-form-item label="制单时间:">
-                {{formatDate("YYYY-MM-DD")}}
-              </el-form-item>
-            </el-col>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="16">
-            <div id="footer">
-              <el-button this.isUpdate type="primary" @click="handleSave" >保 存
-              </el-button>
-              <el-button type="primary" @click="confirmOrder" >确 认
-              </el-button>
-            </div>
-          </el-col>
-        </el-row>
-      </el-form>
-      <el-dialog title="商品明细" :visible.sync="dialogVisible" :close-on-click-modal="false" width="60%">
-        <product-detail v-if="dialogVisible" @onCancel="handleCancel" @onConfirm="handleConfirm"></product-detail>
-      </el-dialog>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="16">
+          <div id="footer">
+            <el-button this.isUpdate type="primary" @click="handleSave">保 存
+            </el-button>
+            <el-button type="primary" @click="confirmOrder">确 认
+            </el-button>
+          </div>
+        </el-col>
+      </el-row>
+    </el-form>
+    <el-dialog title="商品明细" :visible.sync="dialogVisible" :close-on-click-modal="false" width="60%">
+      <product-detail v-if="dialogVisible" @onCancel="handleCancel" @onConfirm="handleConfirm"></product-detail>
+    </el-dialog>
   </div>
 </template>
 
@@ -221,6 +221,8 @@
                     warehouseName: '',
                     //出入库状态（0：未出库，1：已出库）
                     warehouseStatus: 0,
+                    //采购单
+                    orderCategory: 1,
                     //出入库类型（委外，生产，赠送，销售出库，采购入库）
                     warehouseType: '销售出库',
                     //出入库时间
@@ -254,7 +256,7 @@
                     fundAccountName: '',
                     //备注
                     remark: '',
-                    
+
                 };
             },
             loadCustomers() {
@@ -421,7 +423,7 @@
                             }
                         });
                         this.formData.totalAmount = parseFloat(document.getElementById('totalAmount').textContent);
-                        this.formData.orderDetails =this.orderDetails;
+                        this.formData.orderDetails = this.orderDetails;
                         this.formData.passengers = this.passengers
                         this.formData.orderStatus = 2
                         this.$store
@@ -449,14 +451,14 @@
                             }
                         });
                         this.formData.totalAmount = parseFloat(document.getElementById('totalAmount').textContent);
-                        this.formData.orderDetails =this.orderDetails
+                        this.formData.orderDetails = this.orderDetails
                         this.formData.passengers = this.passengers
                         this.formData.orderStatus = 0
                         this.$store
                             .dispatch('productOrder/saveOrder', this.formData)
-                            
+
                             .then(() => {
-                              console.log(this.formData)
+                                console.log(this.formData)
                                 this.goBack();
                             })
                             .catch(error => {
@@ -486,7 +488,7 @@
             },
             clearForm() {
                 this.formData = this.defaultFormData();
-                
+
             },
             //跳转回列表页面
             goBack() {
@@ -522,7 +524,7 @@
                 if (orderNo) {
                     this.loadProduct(orderNo);
                     this.loadOderDetails(orderNo);
-                } else if (!!this.$route.query.isAdd)  {
+                } else if (!!this.$route.query.isAdd) {
                     this.isUpdate = false;
                     this.passengers = this.$store.state.ticket.passengers
                     this.orderDetails = this.$store.state.ticket.orderDetails
