@@ -52,7 +52,12 @@
           <p style="font-size: 20px">财务信息</p>
           <hr width="40%" align="left">
           <el-form :rules="rules" :model="firmMerchantForm" ref="firmMerchantForm" label-position="left" label-width="20%" size="mini">
-            
+            <el-form-item label="银行名称">
+              <el-input type="text" v-model.number="firmMerchantForm.merchantAccountName"></el-input>
+            </el-form-item>
+            <el-form-item label="银行账号">
+              <el-input type="text" v-model.number="firmMerchantForm.merchantBankAccount"></el-input>
+            </el-form-item>
             <el-form-item label="税率">
               <el-input type="text" v-model.number="firmMerchantForm.taxRate" placeholder="请输入税率.."></el-input>
             </el-form-item>
@@ -385,6 +390,9 @@
                 that.accountList.forEach(function(obj){
                   if(id === obj.accountId){
                     that.firmMerchantForm.accountId = obj.accountId;
+                    that.firmMerchantForm.accountCode = obj.accountCode;
+                    that.firmMerchantForm.accountName = obj.accountName;
+                    that.firmMerchantForm.bankAccount = obj.bankAccount;
                     if(1 === obj.category){
                       that.bankShow = true
                     }else{
