@@ -11,21 +11,14 @@
           <p style="font-size: 20px">基本信息</p>
           <hr width="40%" align="left">
           <el-form :rules="rules" :model="firmForm" ref="firmForm" label-position="left" label-width="20%" size="mini">
-            <el-form-item label="客户类型" prop="firmType">
-              <el-select v-model="firmForm.firmType" placeholder="请选择客户类型" @change="selectedCustomerType"
-                         style="width: 50%">
-                <el-option label="企业" :value="1"></el-option>
-                <el-option label="个人" :value="2"></el-option>
-              </el-select>
+            <el-form-item label="供应商编码" prop="firmCode">
+              <el-input type="text" placeholder="请输入供应商编码" v-model="firmForm.firmCode"></el-input>
             </el-form-item>
-            <el-form-item label="客户编码" prop="firmCode">
-              <el-input type="text" placeholder="请输入客户代码" v-model="firmForm.firmCode"></el-input>
+            <el-form-item label="供应商名称" prop="firmName">
+              <el-input type="text" placeholder="请输入供应商名称" v-model="firmForm.firmName"></el-input>
             </el-form-item>
-            <el-form-item label="客户名称" prop="firmName">
-              <el-input type="text" placeholder="请输入客户名称" v-model="firmForm.firmName"></el-input>
-            </el-form-item>
-            <el-form-item label="客户域名" prop="domain">
-              <el-input type="text" placeholder="请输入客户域名" v-model="firmForm.domain"></el-input>
+            <el-form-item label="供应商域名" prop="domain">
+              <el-input type="text" placeholder="请输入供应商域名" v-model="firmForm.domain"></el-input>
             </el-form-item>
             <el-form-item label="联系人员" prop="fullName">
               <el-input type="text" placeholder="请输入联系人员" v-model="firmForm.fullName"></el-input>
@@ -36,20 +29,20 @@
             <el-form-item label="联系邮箱" prop="email">
               <el-input type="text" v-model="firmForm.email" placeholder="请输入联系邮箱"></el-input>
             </el-form-item>
-            <el-form-item label="客户性别">
-              <el-select v-model="firmForm.gender" placeholder="请选择客户性别" style="width: 50%">
+            <el-form-item label="供应商性别">
+              <el-select v-model="firmForm.gender" placeholder="请选择供应商性别" style="width: 100%">
                 <el-option label="男" :value="0"></el-option>
                 <el-option label="女" :value="1"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="出生日期">
-              <el-date-picker v-model="firmForm.birthDate" value-format="timestamp" type="date" placeholder="选择日期"/>
+              <el-date-picker v-model="firmForm.birthDate" value-format="timestamp" type="date" placeholder="选择日期" style="width: 100%"/>
             </el-form-item>
-            <el-form-item label="客户地址">
-              <el-input type="text" placeholder="请输入地址" v-model="firmForm.address"></el-input>
+            <el-form-item label="供应商地址">
+              <el-input type="text" placeholder="请输入供应商地址" v-model="firmForm.address"></el-input>
             </el-form-item>
             <el-form-item label="官网链接">
-              <el-input type="text" placeholder="请输入官网" v-model="firmForm.officialUrl"></el-input>
+              <el-input type="text" placeholder="请输入官网链接" v-model="firmForm.officialUrl"></el-input>
             </el-form-item>
           </el-form>
           <br><br>
@@ -98,7 +91,7 @@
               <el-input type="textarea" v-model="firmMerchantForm.remark" placeholder="请输入备注.."></el-input>
             </el-form-item>
             <el-form-item label="开放平台">
-              <el-select v-model="firmMerchantForm.openCode" placeholder="请选择平台" style="width: 50%"
+              <el-select v-model="firmMerchantForm.openCode" placeholder="请选择平台" style="width: 100%"
                          @change="changeOpen">
                 <el-option :value=null>&nbsp;- -</el-option>
                 <el-option v-for="item in openData"
@@ -185,11 +178,8 @@
                 update: false,
                 open: {},
               rules: {
-                firmType: [
-                  {required: true, message: "请选择客户类型", trigger: "change"},
-                ],
                 firmCode: [
-                  {required: true, message: "请输入客户代码", trigger: "change"},
+                  {required: true, message: "请输入供应商编码", trigger: "change"},
                   {
                     min: 1,
                     max: 20,
@@ -198,7 +188,7 @@
                   {validator: codeValidator, trigger: 'blur'}
                 ],
                 firmName: [
-                  {required: true, message: "请输入客户名称", trigger: "change"},
+                  {required: true, message: "请输入供应商名称", trigger: "change"},
                   {
                     min: 1,
                     max: 20,
@@ -206,7 +196,7 @@
                   }
                 ],
                 domain: [
-                  {required: true, message: "请输入客户域名", trigger: "change"}
+                  {required: true, message: "请输入供应商域名", trigger: "change"}
                 ],
                 fullName: [
                   {required: true, message: "请输入联系人员", trigger: "change"},

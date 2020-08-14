@@ -402,6 +402,9 @@ export default {
     handleAdd() {
       this.dialogVisible = true;
     },
+    handleUpdate(){
+
+    },
     onSearch(params) {
       if (!params) {
         params = {};

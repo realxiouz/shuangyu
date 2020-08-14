@@ -11,9 +11,6 @@
       :data="tableData"
       style="width: 100%;margin-bottom:15px;"
     >
-      <el-table-column prop="schedulerName" label="调度名称" align="center"></el-table-column>
-      <el-table-column prop="jobInfoId" label="xxlJobId" align="center"></el-table-column>
-      <el-table-column prop="cron" label="定时策略" align="center"></el-table-column>
       <el-table-column prop="tagType" label="标签类别" align="center">
         <template slot-scope="scope">
           <span v-html="formatTagType(scope.row.tagType)"></span>
@@ -21,6 +18,9 @@
       </el-table-column>
       <el-table-column prop="tagCode" label="标签编码" align="center"></el-table-column>
       <el-table-column prop="tagName" label="标签名称" align="center"></el-table-column>
+      <el-table-column prop="schedulerName" label="调度名称" align="center"></el-table-column>
+      <el-table-column prop="jobInfoId" label="xxlJobId" align="center"></el-table-column>
+      <el-table-column prop="cron" label="定时策略" align="center"></el-table-column>
       <el-table-column label="是否启动" align="center" prop="required">
         <template slot-scope="scope">
           <span> {{scope.row.status ? '是' : '否'}}</span>
