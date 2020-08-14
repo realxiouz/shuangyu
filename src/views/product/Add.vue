@@ -7,7 +7,7 @@
       <el-steps :active="step" finish-status="success">
         <el-step title="基础属性"></el-step>
         <el-step title="类目属性"></el-step>
-        <el-step title="sku属性"></el-step>
+        <!-- <el-step title="sku属性"></el-step> -->
       </el-steps>
       <el-form ref="form" :rules="rules" :model="formData" label-width="110px" size="mini">
         <el-row :gutter="10" v-show="step==0">
@@ -127,7 +127,8 @@
           </el-col>
           
         </el-row>
-        <el-row :gutter="10" v-show="step==1">
+        <div :gutter="10" v-show="step==1">
+          <el-row>
           <el-col
             :xs="24"
             :sm="12"
@@ -205,8 +206,58 @@
               </el-form-item>
             </template>
           </el-col>
-        </el-row>
-        <el-row :gutter="10" v-show="step==2">
+          </el-row>
+          <el-row v-if="!formData.sku">
+            <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+              <el-form-item
+                prop="quantity"
+                label="产品数量"
+                :rules="[]"
+              >
+                <el-input-number v-model="formData.quantity"/>
+              </el-form-item>
+            </el-col>
+            <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+              <el-form-item
+                prop="cost"
+                label="成本"
+                :rules="[]"
+              >
+                <el-input-number v-model="formData.cost" :precision="2" :step="0.1"/>
+              </el-form-item>
+            </el-col>
+            <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+              <el-form-item
+                prop="productPrice"
+                label="价格"
+                :rules="[]"
+              >
+                <el-input-number v-model="formData.productPrice" :precision="2" :step="0.1"/>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-table v-else :data="dataList" border style="width: 100%">
+            <el-table-column v-for="(item, index) in tableColumns" :key="index" align="center" :prop="item.code"
+                            :label="item.name" width="180"></el-table-column>
+            <el-table-column align="center" prop="quantity" label="数量" width="200">
+              <template slot-scope="scope">
+                <el-input-number v-model="scope.row.quantity"></el-input-number>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" prop="cost" label="成本" width="200">
+              <template slot-scope="scope">
+                <el-input-number v-model="scope.row.cost" :precision="2" :step="0.1"></el-input-number>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" prop="price" label="零售价" width="200">
+              <template slot-scope="scope">
+                <el-input-number v-model="scope.row.price" :precision="2" :step="0.1"></el-input-number>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" prop="skuId" label="SKU_ID" width="180"></el-table-column>
+          </el-table>
+        </div>
+        <!-- <el-row :gutter="10" v-show="step==2">
           <template v-if="!formData.sku">
             <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
               <el-form-item
@@ -256,12 +307,12 @@
             </el-table-column>
             <el-table-column align="center" prop="skuId" label="SKU_ID" width="180"></el-table-column>
           </el-table>
-        </el-row>
+        </el-row> -->
       </el-form>
-      <div style="text-align:center;">
+      <div style="text-align:center;margin-top:10px;">
         <el-button size="mini" @click="step--" v-if="step>0">上一步</el-button>
-        <el-button size="mini" @click="onNext" v-if="step<2">下一步</el-button>
-        <el-button type="primary" size="mini" v-if="step==2" @click="handleSave" >确 定</el-button>
+        <el-button size="mini" @click="onNext" v-if="step<1">下一步</el-button>
+        <el-button type="primary" size="mini" v-if="step==1" @click="handleSave" >确 定</el-button>
       </div>
     </div>
   </div>

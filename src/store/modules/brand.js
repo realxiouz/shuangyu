@@ -14,7 +14,7 @@ const actions = {
   },
   updateOne({commit}, args) {
     return new Promise((resolve, reject) => {
-      const {brandId, data} = args;
+      const {brandId, ...data} = args;
       updateOne(brandId, data)
         .then(data => {
           resolve(data);
