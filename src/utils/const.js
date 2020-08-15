@@ -69,15 +69,15 @@ export const AGE_TYPES_MAP = {
 export const AGE_TYPES = genArrByMap(AGE_TYPES_MAP);
 
 export const CATEGORY_MAP = [
-  { code: 0, value: '现金' },
-  { code: 1, value: '银行存款' },
-  { code: 2, value: '支付宝' },
-  { code: 3, value: '微信支付' },
-  { code: 4, value: '汇付' },
-  { code: 5, value: '易宝' },
-  { code: 6, value: '积分' },
-  { code: 7, value: '优惠券' },
-  { code: 8, value: '财付通' }
+  { code: 'Cash', value: '现金' },
+  { code: 'Bank', value: '银行存款' },
+  { code: 'Alipay', value: '支付宝' },
+  { code: 'Wechat', value: '微信支付' },
+  { code: 'Remittance', value: '汇付' },
+  { code: 'YeePay', value: '易宝' },
+  { code: 'Integral', value: '积分' },
+  { code: 'Coupon', value: '优惠券' },
+  { code: 'TenPay', value: '财付通' }
 ];
 
 export const CATEGORY_TYPES = genArrByMap(CATEGORY_MAP);
