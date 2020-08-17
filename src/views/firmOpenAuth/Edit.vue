@@ -1,7 +1,7 @@
 <template>
   <div class="page-form">
     <el-dialog
-      :title="keyId ? '修改平台授权管理' : '添加平台授权管理'" width="50%" center :visible.sync="dialogVisible" @open="onOpen" @close="onClose" >
+      :title="keyId ? '修改平台授权管理' : '添加平台授权管理'" width="30%" :visible.sync="dialogVisible" @open="onOpen" @close="onClose" >
       <el-form ref="form" label-width="110px" size="mini" :model="formData" :rules="rules" >
         <el-form-item label="企业名称：" prop="firmId">
           <el-select style="width: 100%;" v-model="formData.firmId" placeholder="请选择企业..." clearable filterable @change="changeFirm">

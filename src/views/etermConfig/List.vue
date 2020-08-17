@@ -1,10 +1,10 @@
 <template>
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch"/>
-      <el-row class="page-tools" style="margin-bottom:15px;margin-left:20px">
+      <el-row class="page-tools" type="flex" justify="space-between">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
-      <el-table class="page-table" size="mini" v-loading="loading" :data="tableData" style="width: 100%;margin-bottom: 15px;" fit>
+      <el-table class="page-table" size="mini" v-loading="loading" :data="tableData" style="width: 100%;" fit>
         <el-table-column prop="etermAccount" label="账号" width="150" align="center"></el-table-column>
         <el-table-column prop="etermAddress" label="地址" width="150" align="center"></el-table-column>
         <el-table-column prop="etermPort" label="端口" width="60" align="center"></el-table-column>
@@ -29,10 +29,10 @@
         <el-table-column prop="etermRemark" label="备注" align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="240">
           <template slot-scope="scope">
-            <el-button @click="onEdit(scope.row)" type="primary" size="mini">编辑</el-button>
-            <el-button  v-if = "scope.row.online" @click="offline(scope.row.id)" type="primary" size="mini">下线</el-button>
-            <el-button v-else  @click="online(scope.row.id)" type="primary" size="mini">上线</el-button>
-            <el-button @click="onDel(scope.row)" type="danger" size="mini">删除</el-button>
+            <el-button @click="onEdit(scope.row)" type="text" size="mini" class="btn-primary">编辑</el-button>
+            <el-button  v-if = "scope.row.online" @click="offline(scope.row.id)" type="text" size="mini" class="btn-primary">下线</el-button>
+            <el-button v-else  @click="online(scope.row.id)" type="text" size="mini" class="btn-primary">上线</el-button>
+            <el-button @click="onDel(scope.row)" type="text" size="mini" class="btn-danger">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

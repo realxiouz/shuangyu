@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch"/>
-      <el-row class="page-tools" style="margin-bottom:15px;margin-left:20px">
+      <el-row class="page-tools" >
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
       </el-row>
       <el-table
@@ -9,7 +9,7 @@
         size="mini"
         v-loading="loading"
         :data="tableData"
-        style="width: 100%;margin-bottom: 15px;"
+        style="width: 100%;"
         fit
       >
         <el-table-column prop="flightCode" label="航班号" width="300" align="center"></el-table-column>
@@ -31,8 +31,8 @@
         </el-table-column>
         <el-table-column label="操作" align="center" width="200">
           <template slot-scope="scope">
-            <el-button @click="onEdit(scope.row.flightCode)" type="primary" size="mini">编辑</el-button>
-            <el-button @click="onDel(scope.row.flightCode)" type="danger" size="mini">删除</el-button>
+            <el-button @click="onEdit(scope.row.flightCode)" type="text" size="mini" class="btn-primary">编辑</el-button>
+            <el-button @click="onDel(scope.row.flightCode)" type="text" size="mini" class="btn-danger">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

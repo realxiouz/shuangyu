@@ -1,6 +1,5 @@
 <template>
   <div class="page">
-    <search class="page-search" ref="search" @onSearch="onSearch" :category="category"/>
     <el-row class="page-tools" type="flex" justify="space-between">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
     </el-row>
@@ -28,9 +27,9 @@
       ></el-table-column>
       <el-table-column width="280" label="操作" align="center">
         <template slot-scope="scope">
-          <el-button type="text" class="btn-success" size="mini" @click="onAddChild(scope.row.subjectId)">添加</el-button>
-          <el-button type="text" class="btn-primary" size="mini" @click="onEdit(scope.row.subjectId)">修改</el-button>
-          <el-button type="text" class="btn-danger" size="mini" @click="onDel(scope.row.subjectId)">删除</el-button>
+          <el-button type="text" size="mini" class="btn-primary" @click="onAddChild(scope.row.subjectId)">添加</el-button>
+          <el-button type="text" size="mini" class="btn-primary" @click="onEdit(scope.row.subjectId)">修改</el-button>
+          <el-button type="text" size="mini" class="btn-danger" @click="onDel(scope.row.subjectId)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -56,7 +55,6 @@
 
 <script>
   import edit from "./Edit";
-  import search from "./Search";
   import {subjectCategory} from "@/utils/status.js";
   import {MIXIN_LIST} from "@/utils/mixin";
 
@@ -129,7 +127,6 @@
     },
     components: {
       edit,
-      search
     }
   };
 </script>

@@ -20,8 +20,8 @@
       </el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
-          <el-button @click="onEdit(scope.row.brandId)" style="border:none;color:#409EFF">编辑</el-button>
-          <el-button @click="onDel(scope.row.brandId)" style="border:none;color:#F56C6C">删除</el-button>
+          <el-button @click="onEdit(scope.row.brandId)" type="text" size="mini" class="btn-primary">编辑</el-button>
+          <el-button @click="onDel(scope.row.brandId)" type="text" size="mini" class="btn-danger">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

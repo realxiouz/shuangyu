@@ -1,6 +1,6 @@
 <template>
   <div class="page-form">
-     <el-dialog :title="keyId!=''?'编辑票价信息':'添加票价信息'" :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
+     <el-dialog :title="keyId!=''?'编辑票价信息':'添加票价信息'" width="30%" :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
     <el-form ref="form" :model="formData" label-width="110px" size="mini">
       <input type="hidden" v-model="formData.fareId" />
       <el-form-item label="航段">

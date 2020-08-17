@@ -33,10 +33,10 @@
       ></el-table-column>
       <el-table-column label="操作" align="center" width="200">
         <template slot-scope="scope">
-          <el-button @click="onEdit(scope.row.airportCode)" style="border:none;color:#409EFF"
+          <el-button @click="onEdit(scope.row.airportCode)" type="text" size="mini" class="btn-primary"
             >编辑</el-button
           >
-          <el-button @click="onDel(scope.row.airportCode)" style="border:none;color:#F56C6C"
+          <el-button @click="onDel(scope.row.airportCode)" type="text" size="mini" class="btn-danger"
             >删除</el-button
           >
         </template>

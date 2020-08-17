@@ -1,7 +1,7 @@
 <template>
   <el-row type="flex" justify="space-between" align="bottom">
     <el-col :xs="16" :sm="17" :md="18" :lg="19" :xl="20">
-      <el-form label-width="60px" size="mini">
+      <el-form label-width="80px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="应用名称:">
             <el-input v-model="formData.appName" placeholder="请输入应用名称搜索..."></el-input>

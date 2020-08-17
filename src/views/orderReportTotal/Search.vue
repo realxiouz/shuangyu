@@ -1,7 +1,7 @@
 <template>
   <el-row type="flex" class="row-bg" justify="space-between" align="bottom">
     <el-col :xs="16" :sm="17" :md="18" :lg="19" :xl="20">
-      <el-form :model="formData" label-width="110px" size="mini">
+      <el-form :model="formData" label-width="80px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="订单号:">
             <el-input
@@ -23,7 +23,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="订单类型:">
+          <el-form-item label-width="80px" label="订单类型:">
             <el-select clearable v-model="formData.orderType" placeholder="全部" style="width: 100%">
               <el-option
                 v-for="item in orderType"
@@ -35,7 +35,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="订单分类:">
+          <el-form-item label-width="80px" v-show="more" label="订单分类:">
             <el-select
               style="width: 100%;"
               clearable
@@ -110,7 +110,7 @@
         </el-col>
 
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="销售出票单号:">
+          <el-form-item label-width="100px" v-show="more" label="销售出票单号:">
             <el-input
               clearable
               @keyup.enter.native="$emit('onSearch', formData)"
@@ -120,7 +120,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="乘机人证件号:">
+          <el-form-item label-width="100px" v-show="more" label="乘机人证件号:">
             <el-input clearable v-model="formData.cardNo" style="width: 100%"></el-input>
           </el-form-item>
         </el-col>
