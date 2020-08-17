@@ -1,12 +1,12 @@
 <template>
   <div class="home contentBox">
     <el-row>
-      <el-col :xs="11" :sm="10" :md="9" :lg="8" :xl="2">
+      <el-col class="el-col-left">
         <el-tabs :tab-position="tabPosition" style="min-height: 200px;" @tab-click="handleClick">
           <el-tab-pane v-for="(item,index) in configNavs" :key="index" :label=item.navName></el-tab-pane>
         </el-tabs>
       </el-col>
-      <el-col :xs="13" :sm="14" :md="15" :lg="16" :xl="21">
+      <el-col class="el-col-right">
         <transition name="fade-transform" mode="out-in">
           <div>
             <keep-alive>
@@ -71,5 +71,16 @@
   };
 
 </script>
-<style scoped>
+
+<style>
+  .el-col-left{
+    width: 20%;
+    height: auto;
+    float: left;
+  }
+  .el-col-right{
+    width: 80%;
+    height: auto;
+    float: left;
+  }
 </style>

@@ -95,7 +95,7 @@ export default {
             if (obj.openId === openId) {
               that.formData.openCode = obj.openCode;
               that.formData.openName = obj.openName;
-              that.configNavData = obj.configNavs
+              that.configNavData = obj.configNavs;
               if(that.selConfigNav){
                   that.toggleSelection();
               }

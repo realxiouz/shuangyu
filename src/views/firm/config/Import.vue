@@ -250,7 +250,7 @@
 <script>
 import { MIXIN_LIST } from "@/utils/mixin";
 import { PROPERTY_TABLE } from '@/utils/const';
-import search from "../../qunarPolicyAttr/Search";
+import search from "./qunarPolicyAttr/Search";
 export default {
   mixins: [MIXIN_LIST],
   data() {

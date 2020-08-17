@@ -1,24 +1,24 @@
 <template>
-  <div class="page" style="margin-top:10px">
-    <el-row class="page-tools"  justify="space-between">
+  <div class="page">
+    <search class="page-search" ref="search" @onSearch="onSearch" />
+    <el-row class="page-tools" justify="space-between">
       <el-button icon="el-icon-back" type="warning" size="mini" @click="onBack">返回</el-button>
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
     </el-row>
-    <search class="page-search" ref="search" @onSearch="onSearch" />
     <el-table
       class="page-table"
       size="mini"
       v-loading="loading"
       :data="tableData"
-      style="width: 100%;"
+      style="width: 100%;margin-bottom:15px;"
     >
       <el-table-column label="企业名称" align="center" prop="firmName" />
       <el-table-column label="平台名称" align="center" prop="openName" />
-      <el-table-column label="用户账号" align="center" prop="username" />
+      <el-table-column label="用户账号" align="center" prop="user" />
       <el-table-column width="160" label="操作" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="onEdit(scope.row.policyConfigId)">修改</el-button>
-          <el-button size="mini" type="danger" @click="onDel(scope.row.policyConfigId)">删除</el-button>
+          <el-button size="mini" type="primary" @click="onEdit(scope.row.foConfigId)">修改</el-button>
+          <el-button size="mini" type="danger" @click="onDel(scope.row.foConfigId)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -42,8 +42,8 @@
 </template>
 
 <script>
-  import edit from "./qunarPolicyConfig/Edit";
-  import search from "./qunarPolicyConfig/Search";
+  import edit from "./Edit";
+  import search from "./Search";
   import {MIXIN_LIST} from "@/utils/mixin";
 
   export default {
@@ -51,10 +51,10 @@
     data() {
       return {
         dialogVisible: false,
-        keyName: 'policyConfigId',
+        keyName: 'foConfigId',
         actions: {
-          getPageList: 'qunarPolicyConfig/getPageList',
-          removeOne: 'qunarPolicyConfig/removeOne'
+          getPageList: 'qunarFinanceOrderConfig/getPageList',
+          removeOne: 'qunarFinanceOrderConfig/removeOne'
         },
         firmId: localStorage.getItem("firmId"),
         merchantId: localStorage.getItem("merchantId"),
@@ -65,7 +65,7 @@
     methods: {
       onBack(){
         let lastName = localStorage.getItem("lastName");
-        if(lastName){
+        if(lastName && "undefined" !== lastName){
           this.$router.push({name: lastName});
           localStorage.removeItem("lastName");
         }else{
@@ -74,15 +74,15 @@
       },
       fillParams(){
         let params = {};
-        if(localStorage.getItem("firmId")){
+        if(localStorage.getItem("firmId") && "undefined" !== localStorage.getItem("firmId")){
           params.firmId = localStorage.getItem("firmId");
        //   params.firmId = this.$route.params.firmId;
         }
-        if(localStorage.getItem("merchantId")){
+        if(localStorage.getItem("merchantId") && "undefined" !== localStorage.getItem("merchantId")){
           params.merchantId = localStorage.getItem("merchantId");
           //   params.merchantId = this.$route.params.merchantId;
         }
-        if(localStorage.getItem("openId")){
+        if(localStorage.getItem("openId") && "undefined" !== localStorage.getItem("openId")){
           params.openId = localStorage.getItem("openId");
         //  params.openId = this.$route.params.openId;
         }
