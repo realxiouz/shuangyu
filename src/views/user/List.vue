@@ -29,12 +29,12 @@
       <el-table-column prop="phone" label="手机号" align="center" width="150"></el-table-column>
       <el-table-column prop="email" label="电子邮箱" align="center" width="200"></el-table-column>
       
-      <el-table-column label="角色权限" align="center" width="180">
+      <el-table-column label="角色权限" align="left" width="180">
         <template slot-scope="scope">
           <span>{{scope.row.roleNames.join()}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="备注" prop="remark" align="center" :fit='true'></el-table-column>
+      <el-table-column label="备注" prop="remark" align="left" :fit='true'></el-table-column>
       <el-table-column label="是否启用" align="center" width="100" fixed="right">
         <template slot-scope="scope">
           <el-switch :value="scope.row.enable" @change="onEnable(scope.row)"></el-switch>

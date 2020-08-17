@@ -78,22 +78,27 @@ div:focus {
   .page-table {
 
     .btn-success {
+      font-size: 13px;
       color: #67C23A;
     }
 
     .btn-primary {
+      font-size: 13px;
       color: #409EFF;
     }
 
     .btn-warning {
+      font-size: 13px;
       color: #E6A23C;
     }
 
     .btn-danger {
+      font-size: 13px;
       color: #F56C6C;
     }
 
     .btn-info {
+      font-size: 13px;
       color: #909399;
     }
 
@@ -121,5 +126,11 @@ div:focus {
 
 .input-with-select .el-input__inner {
   height: 30px;
+}
+
+.el-table {
+  .el-table__header {
+    font-size: 14px;
+  }
 }
 
