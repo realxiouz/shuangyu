@@ -70,7 +70,7 @@
           removeOne: 'jobScheduler/removeOne'
         },
         params:{
-          tagCode: "policy"
+          tagCode: "uploadPolicy"
         },
         tagTypes:[
           {
