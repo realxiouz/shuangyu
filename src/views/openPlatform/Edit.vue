@@ -1,6 +1,6 @@
 <template>
   <div class="page-form">
-    <el-dialog :title="keyId ? '修改开放平台管理' : '添加开放平台管理'"  width="50%" center :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
+    <el-dialog :title="keyId ? '修改开放平台管理' : '添加开放平台管理'"  width="45%"  :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
       <el-form ref="form" label-width="110px" size="mini" :model="formData" :rules="rules">
         <el-row class="el-row-item">
           <el-form-item label="平台编码：" prop="openCode">

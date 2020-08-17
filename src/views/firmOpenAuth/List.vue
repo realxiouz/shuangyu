@@ -10,8 +10,8 @@
       <el-table-column label="企业名称" align="center" prop="firmName" />
       <el-table-column width="160" label="操作" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="onEdit(scope.row.authId)">修改</el-button>
-          <el-button size="mini" type="danger" @click="onDel(scope.row.authId)">删除</el-button>
+          <el-button type="text" size="mini" class="btn-primary" @click="onEdit(scope.row.authId)">修改</el-button>
+          <el-button type="text" size="mini" class="btn-danger" @click="onDel(scope.row.authId)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

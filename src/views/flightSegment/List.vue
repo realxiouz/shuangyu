@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch"/>
-      <el-row class="page-tools" style="margin-bottom:15px;margin-left:10px;">
+      <el-row class="page-tools" >
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
       </el-row>
       <el-table
@@ -12,16 +12,16 @@
         ref="tableData"
         @row-dblclick="onEdit"
         highlight-current-row
-        style="width: 100%;margin-bottom:15px;"
+        style="width: 100%;"
       >
         <el-table-column prop="dpt" label="出发地" align="center"></el-table-column>
         <el-table-column prop="arr" label="目的地" align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="360">
           <template slot-scope="scope">
-            <el-button @click="onEdit(scope.row.segment)" type="primary" size="mini">编辑</el-button>
-            <el-button @click="lookFlights(scope.row.flights)" type="primary" size="small">查看航班</el-button>
-            <el-button @click="lookSegments(scope.row.airlines)" type="primary" size="small">查看航司</el-button>
-            <el-button @click="onDel(scope.row.segment)" type="danger" size="mini">删除</el-button>
+            <el-button @click="onEdit(scope.row.segment)" type="text" size="mini" class="btn-primary">编辑</el-button>
+            <el-button @click="lookFlights(scope.row.flights)" type="text" size="mini" class="btn-primary">查看航班</el-button>
+            <el-button @click="lookSegments(scope.row.airlines)" type="text" size="mini" class="btn-primary">查看航司</el-button>
+            <el-button @click="onDel(scope.row.segment)" type="text" size="mini" class="btn-danger">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

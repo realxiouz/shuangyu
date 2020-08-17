@@ -6,7 +6,7 @@
         :data="tableData"
         size="mini"
         highlight-current-row
-        style="width: 100%;margin-bottom:15px"
+        style="width: 100%;"
         v-loading="loading"
         show-summary
         max-height="650"
@@ -108,8 +108,8 @@
         </el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="150">
           <template slot-scope="scope">
-            <el-button @click="handleUpdate(scope.row.deptId)" type="primary" size="mini">编辑</el-button>
-            <el-button @click.native.prevent="handleRemove(scope.row.deptId)" size="mini">查看</el-button>
+            <el-button @click="handleUpdate(scope.row.deptId)" type="text" size="mini" class="btn-primary">编辑</el-button>
+            <el-button @click.native.prevent="handleRemove(scope.row.deptId)" type="text" size="mini" class="btn-danger">查看</el-button>
           </template>
         </el-table-column>
       </el-table>

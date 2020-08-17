@@ -1,5 +1,6 @@
 <template>
   <div class="page">
+    <search class="page-search" ref="search" @onSearch="onSearch" :category="category"/>
     <el-tabs type="border-card" @tab-click="handleClick">
       <el-tab-pane label="资产">
         <subject-content v-if="0 === category" :category="category" />
@@ -22,6 +23,7 @@
 
 <script>
 import subjectContent from "./Content.vue";
+  import search from "./Search";
 export default {
   data() {
     return {
@@ -34,7 +36,8 @@ export default {
     }
   },
   components: {
-    subjectContent
+    subjectContent,
+    search
   }
 };
 </script>

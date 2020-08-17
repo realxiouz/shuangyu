@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch"/>
-      <el-row class="page-tools" style="margin-bottom:15px;margin-left:15px;">
+      <el-row class="page-tools" >
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table
@@ -9,7 +9,7 @@
         v-loading="loading"
         size="mini"
         :data="tableData"
-        style="width: 100%;margin-bottom: 15px;"
+        style="width: 100%;"
       >
         <el-table-column prop="third.firmName" label="开放平台" width="300" align="center"></el-table-column>
         <el-table-column prop="url" label="url" width="300" align="center"></el-table-column>
@@ -21,11 +21,10 @@
         </el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="180">
           <template slot-scope="scope">
-            <el-button @click="handleUpdate(scope.row.apiId)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="handleUpdate(scope.row.apiId)" type="text" size="mini" class="btn-primary">编辑</el-button>
             <el-button
               @click.native.prevent="handleRemove(scope.row.apiId,scope.$index,tableData)"
-              type="danger"
-              size="mini"
+              type="text" size="mini" class="btn-danger"
             >删除</el-button>
           </template>
         </el-table-column>
@@ -43,7 +42,6 @@
       ></el-pagination>
       <el-dialog
         title="OpenApi信息"
-        center
         :visible.sync="dialogVisible"
         width="33%"
         :close-on-click-modal="false"

@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <el-row type="flex" justify="space-between" style="margin-bottom:20px;" align="bottom">
+    <el-row type="flex" justify="space-between" style="margin-bottom:10px;" align="bottom">
       <span style="font-weight:700;color:#303133;" v-if="!apiVisible">{{this.curNode.title}}</span>
       <span></span>
       <el-button type="primary" size="mini" @click="apisEdit" :disabled="apiVisible">添加</el-button>
@@ -12,7 +12,7 @@
       tooltip-effect="dark"
       highlight-current-row
       size="mini"
-      style="width: 100%;margin-bottom:15px"
+      style="width: 100%;"
     >
       <el-table-column prop="apiName" label="API名称" align="left"></el-table-column>
       <el-table-column prop="category" label="类别" align="center"></el-table-column>
@@ -23,6 +23,7 @@
       </el-table-column>
     </el-table>
     <el-pagination
+    class="page-footer"
       background
       layout="total,prev,next"
       prev-text="上一页"

@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch"/>
-      <el-row class="page-tools" style="margin-bottom:15px; margin-left:40px;">
+      <el-row class="page-tools" >
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table
@@ -9,7 +9,7 @@
         v-loading="loading"
         size="mini"
         :data="tableData"
-        style="width: 100%;margin-bottom: 15px;"
+        style="width: 100%;"
       >
         <el-table-column prop="openName" label="平台名称" align="center"></el-table-column>
         <el-table-column prop="contactPerson" label="联系人" align="center"></el-table-column>
@@ -22,11 +22,10 @@
         </el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
-            <el-button @click="handleUpdate(scope.row)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="handleUpdate(scope.row)" type="text" size="mini" class="btn-primary">编辑</el-button>
             <el-button
               @click="handRemove(scope.row,scope.$index,tableData)"
-              type="danger"
-              size="mini"
+              type="text" size="mini" class="btn-danger"
             >删除
             </el-button>
           </template>
@@ -50,7 +49,6 @@
       <el-dialog
         title="平台信息"
         :close-on-click-modal="false"
-        center
         :visible.sync="dialogVisible"
         width="30%"
       >

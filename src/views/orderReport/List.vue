@@ -6,7 +6,7 @@
       :data="tableData"
       size="mini"
       highlight-current-row
-      style="width: 100%;margin-bottom:15px"
+      style="width: 100%;"
       v-loading="loading"
       show-summary
       :summary-method="getSummaries"
@@ -209,8 +209,7 @@
           > -->
           <el-button
             @click.native.prevent="handleRemove(scope.row.deptId)"
-            type="danger"
-            size="mini"
+            type="text" size="mini" class="btn-danger"
             >删除</el-button
           >
         </template>
