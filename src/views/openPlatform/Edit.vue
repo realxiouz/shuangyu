@@ -156,7 +156,7 @@
         }
       },
       beforeLoadData(data) {
-        if(data && !data.configNavs){
+        if(!data || !data.configNavs){
           data.configNavs = [
             {
               navId: null,

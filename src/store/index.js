@@ -30,7 +30,6 @@ import openAccount from './modules/openAccount';
 import tgqProduct from './modules/tgqProduct';
 import qunarOrderConfig from './modules/otherOrderConfig/qunarOrderConfig';
 import qunarOrderNotifyConfig from './modules/otherOrderConfig/qunarOrderNotifyConfig';
-import qunarPolicyConfig from './modules/otherOrderConfig/qunarPolicyConfig';
 import orderStaff from './modules/orderStaff';
 import category from './modules/category';
 import firmCategory from './modules/firmCategory';
@@ -79,9 +78,11 @@ import voucher from './modules/voucher';
 import voucherTemplate from './modules/voucherTemplate';
 import voucherRecord from './modules/voucherRecord';
 import microserver from './modules/microserver';
+import qunarPolicyConfig from './modules/qunarPolicyConfig';
 import openPolicyAttr from './modules/openPolicyAttr';
 import dispatchRule from './modules/dispatchRule';
 import policyProduct from './modules/policyProduct';
+import qunarFinanceOrderConfig from './modules/qunarFinanceOrderConfig';
 
 Vue.use(Vuex);
 export default new Vuex.Store({
@@ -115,7 +116,6 @@ export default new Vuex.Store({
     tgqProduct,
     qunarOrderConfig,
     qunarOrderNotifyConfig,
-    qunarPolicyConfig,
     orderStaff,
     category,
     firmCategory,
@@ -164,9 +164,11 @@ export default new Vuex.Store({
     voucherRecord,
     voucherTemplate,
     microserver,
+    qunarPolicyConfig,
     openPolicyAttr,
     dispatchRule,
     policyProduct,
+    qunarFinanceOrderConfig
   },
   getters
 });
