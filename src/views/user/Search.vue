@@ -1,8 +1,7 @@
 <template>
   <el-row type="flex" justify="space-between" align="bottom">
     <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
-      <el-form :model="formData" label-width="110px" size="mini">
-
+      <el-form :model="formData" label-width="60px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="昵称:">
             <el-input clearable v-model="formData.nickName" placeholder="请输入昵称..."></el-input>
@@ -14,12 +13,12 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="手机号:">
+          <el-form-item label-width="75px" label="手机号:">
             <el-input clearable v-model="formData.phone" placeholder="请输入手机号..."></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="电子邮箱:">
+          <el-form-item label-width="90px" label="电子邮箱:">
             <el-input clearable v-model="formData.email" placeholder="请输入电子邮箱..."></el-input>
           </el-form-item>
         </el-col>
