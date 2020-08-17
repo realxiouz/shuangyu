@@ -60,15 +60,19 @@ div:focus {
 }
 
 .page {
-  padding: 15px;
-  background-color: #fff;
+  background-color: #f0f2f5;
 
   .page-search {
-
+    padding-top: 18px;
+    padding-left: 15px;
+    padding-right: 15px;
+    background-color: #ffffff;
   }
 
   .page-tools {
-
+    margin-top: 15px;
+    padding: 15px;
+    background-color: #ffffff;
   }
 
   .page-table {
@@ -80,23 +84,10 @@ div:focus {
   }
 
   .page-footer {
-
+    padding: 20px;
+    text-align: right;
+    background-color: #ffffff;
   }
-}
-
-.searchBox {
-  padding: 15px;
-  background-color: #fff;
-}
-
-.contentBox {
-  padding: 15px;
-  margin-top: 15px;
-  background-color: #fff;
-}
-
-.bigBox {
-  background-color: #f0f2f5;
 }
 
 .input-with-select .el-input-group__prepend {

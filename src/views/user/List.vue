@@ -9,10 +9,8 @@
       highlight-current-row
       v-loading="loading"
       :data="tableData"
-      style="width: 100%;margin-bottom: 20px;"
       size="mini"
     >
-      >
       <el-table-column prop="nickName" label="昵称" width="120" align="center"></el-table-column>
       <el-table-column prop="fullName" label="姓名" width="120" align="center"></el-table-column>
       <el-table-column label="性别" width="50" align="center">
