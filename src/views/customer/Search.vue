@@ -6,10 +6,60 @@
           <el-form-item label="客户名称：">
             <el-input
               clearable
-              @keyup.enter.native="handleConfirm"
+              @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.firmName"
               placeholder="请输入客户名称搜索..."
             ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="客户代码：">
+            <el-input
+              clearable
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.firmCode"
+              placeholder="请输入客户代码搜索..."
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="联系人：">
+            <el-input
+              clearable
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.fullName"
+              placeholder="请输入联系人搜索..."
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="联系人电话：">
+            <el-input
+              clearable
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.phone"
+              placeholder="请输入联系人电话搜索..."
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="邮箱：">
+            <el-input
+              clearable
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.email"
+              placeholder="请输入联系人电话搜索..."
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="重要性：">
+             <el-rate
+             clearable
+            @keyup.enter.native="$emit('onSearch', formData)"
+            v-model="formData.priority"
+            :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
+          />
           </el-form-item>
         </el-col>
       </el-form>
@@ -20,7 +70,7 @@
         class="filter-item"
         type="primary"
         size="mini"
-        @click="handleConfirm"
+        @click="$emit('onSearch', formData)"
       >查询</el-button>
       <el-button type="text" size="mini" @click="handleMore">
         更多
@@ -36,7 +86,13 @@ export default {
     return {
       more: false,
       formData: {
-        firmName: null
+        firmName: null,
+        firmCode: null,
+        fullName: null,
+        phone:null,
+        email:null,
+        priority:null
+
       }
     };
   },
@@ -54,12 +110,12 @@ export default {
     handleMore() {
       this.more = !this.more;
     },
-      handleConfirm(){
-        if ("" == this.formData.firmName){
-            this.formData.firmName = null;
-        }
-          this.$emit('onSearch', this.formData)
-      }
+    handleSearch(){
+      // if ("" == this.formData.firmName){
+      //     this.formData.firmName = null;
+      // }
+        this.$emit("onSearch", this.formData);
+    }
   }
 };
 </script>

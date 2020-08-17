@@ -12,6 +12,46 @@
             ></el-input>
           </el-form-item>
         </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="企业代码：">
+            <el-input
+              clearable
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.firmCode"
+              placeholder="请输入企业代码搜索.."
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="联系人：">
+            <el-input
+              clearable
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.fullName"
+              placeholder="请输入联系人搜索.."
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="联系人电话：">
+            <el-input
+              clearable
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.phone"
+              placeholder="请输入联系人电话搜索.."
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="邮箱：">
+            <el-input
+              clearable
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.email"
+              placeholder="请输入邮箱搜索.."
+            ></el-input>
+          </el-form-item>
+        </el-col>
       </el-form>
     </el-col>
     <el-col :xs="8" :sm="6" :md="6" :lg="4" :xl="4" class="search-tools">
@@ -36,7 +76,11 @@ export default {
     return {
       more: false,
       formData: {
-        firmName: ""
+        firmName: "",
+        firmCode:"",
+        fullName:'',
+        phone:'',
+        email:''
       }
     };
   },

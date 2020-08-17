@@ -213,6 +213,26 @@ import {MIXIN_EDIT} from "@/utils/mixin";
                 else
                     return "" + Math.floor(tmpTime / 60) + ":" + tmpTime % 60;
             },
+            onSave() {
+              this.$refs['form'].validate(valid => {
+              if (valid ) {
+                  let actionName = this.keyId ? 'flight/updateOne' : 'flight/addOne'
+                  this.$store
+                  .dispatch(actionName, this.formData)
+                  .then(id => {
+                      this.dialogVisible = false;
+                      this.$emit('refresh');
+                      this.$message({ type: 'success', message: '保存成功' });
+                      this.keyId ? this.$emit('updata') : this.$emit('add')
+
+                  })
+                  // eslint-disable-next-line no-unused-vars
+                  .finally(_ => {
+                      this.afterSave();
+                  });
+              }
+              });
+            },
             clearForm() {
                 this.formData = this.defaultFormData();
             },

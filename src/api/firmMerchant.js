@@ -75,7 +75,7 @@ export function getSupplierPageList(pageFlag, pageSize, params) {
   return request({
     url: `/firm/supplier/get/page/list/${pageFlag}/${pageSize}`,
     method: `get`,
-    params
+    params:params
   });
 }
 
