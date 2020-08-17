@@ -1,6 +1,6 @@
 <template>
   <div class="page-form">
-    <el-dialog :title="keyId!=''?'编辑航司迁移信息':'添加航司迁移信息'" :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
+    <el-dialog :title="keyId!=''?'编辑航司迁移信息':'添加航司迁移信息'" width="40%" :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
     <el-form ref="form" :model="formData" label-width="120px" size="mini">
       <input type="hidden" v-model="formData.flightId"/>
       <el-form-item label="航司">

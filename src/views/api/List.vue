@@ -1,7 +1,7 @@
 <template>
   <div class="page">
       <search class="page-search" ref="search" @onSearch="onSearch"/>
-      <el-row class="page-tools" style="margin-bottom:15px;margin-left:40px;">
+      <el-row class="page-tools">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
       </el-row>
       <el-table
@@ -9,7 +9,7 @@
         size="mini"
         v-loading="loading"
         :data="tableData"
-        style="width: 100%;margin-bottom: 15px;"
+        style="width: 100%;"
         :header-cell-style="{'text-align':'center'}"
         fit
       >
@@ -31,11 +31,10 @@
         </el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="180">
           <template slot-scope="scope">
-            <el-button @click="onEdit(scope.row.apiId)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="onEdit(scope.row.apiId)" style="border:none;color:#409EFF">编辑</el-button>
             <el-button
               @click.native.prevent="onDel(scope.row.apiId)"
-              type="danger"
-              size="mini"
+              style="border:none;color:#F56C6C"
             >删除
             </el-button>
           </template>

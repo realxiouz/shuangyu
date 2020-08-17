@@ -1,10 +1,10 @@
 <template>
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch"/>
-    <el-row class="page-tools" type="flex" justify="space-between" style="margin-bottom:20px;" align="bottom">
+    <el-row class="page-tools" type="flex" justify="space-between" align="bottom">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
     </el-row>
-    <el-table class="page-table" size="mini" v-loading="loading" :data="tableData" style="width: 100%;margin-bottom:15px;">
+    <el-table class="page-table" size="mini" v-loading="loading" :data="tableData" style="width: 100%;">
       <el-table-column prop="brandCode" label="品牌编码" align="center"></el-table-column>
       <el-table-column prop="brandName" label="品牌名称" align="center"></el-table-column>
       <el-table-column prop="categoryName" label="商品类目" align="center"></el-table-column>
@@ -20,8 +20,8 @@
       </el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
-          <el-button @click="onEdit(scope.row.brandId)" type="primary" size="mini">编辑</el-button>
-          <el-button @click="onDel(scope.row.brandId)" type="danger" size="mini">删除</el-button>
+          <el-button @click="onEdit(scope.row.brandId)" style="border:none;color:#409EFF">编辑</el-button>
+          <el-button @click="onDel(scope.row.brandId)" style="border:none;color:#F56C6C">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

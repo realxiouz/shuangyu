@@ -9,7 +9,7 @@
               :data="tableData"
               row-key="subjectCode"
               highlight-current-row
-              style="width: 100%;margin-bottom:15px"
+              style="width: 100%;"
               size="mini"
               :load="loadChildren"
               fit
@@ -28,9 +28,9 @@
       ></el-table-column>
       <el-table-column width="280" label="操作" align="center">
         <template slot-scope="scope">
-          <el-button type="success" size="mini" @click="onAddChild(scope.row.subjectId)">添加</el-button>
-          <el-button size="mini" type="primary" @click="onEdit(scope.row.subjectId)">修改</el-button>
-          <el-button size="mini" type="danger" @click="onDel(scope.row.subjectId)">删除</el-button>
+          <el-button style="border:none;color:#67C23A"  @click="onAddChild(scope.row.subjectId)">添加</el-button>
+          <el-button style="border:none;color:#409EFF"  @click="onEdit(scope.row.subjectId)">修改</el-button>
+          <el-button style="border:none;color:#F56C6C"  @click="onDel(scope.row.subjectId)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
