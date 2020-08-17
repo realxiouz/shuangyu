@@ -1,6 +1,7 @@
 <template>
   <div class="page">
     <el-row class="page-search" :gutter="20">
+      
       <el-col :xs="11" :sm="10" :md="9" :lg="8" :xl="8">
         <el-row style="margin-bottom:20px;">
           <!-- <span
@@ -30,7 +31,9 @@
 
 <script>
   import edit from "./Edit";
+  import {MIXIN_LIST} from "@/utils/mixin";
   export default {
+    mixins: [MIXIN_LIST],
     data() {
       return {
         staffAddVisible: true,

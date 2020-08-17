@@ -1,4 +1,5 @@
 import {PAGE_SIZES} from '@/utils/const';
+import { Alert } from 'element-ui';
 
 export const MIXIN_LIST = {
   category: {

@@ -1,5 +1,8 @@
 <template>
   <div>
+    <el-row>
+      <search class="page-search" ref="search" @onSearch="searchStaffList"/>
+    </el-row>
     <el-row
       type="flex"
       justify="space-between"
@@ -9,7 +12,6 @@
       <span style="font-weight:700;color:#303133;" v-if="!staffAddVisible">{{
         this.curNode.deptName
       }}</span>
-      <span></span>
       <el-row>
         <el-button
           type="primary"
@@ -386,6 +388,7 @@
 </template>
 
 <script>
+import search from "./Search";
 export default {
   name: "staffEdit",
   props: ["curNode", "staffAddVisible"],
@@ -454,6 +457,24 @@ export default {
     };
   },
   methods: {
+     searchStaffList(params){
+       this.$store
+        .dispatch("staff/getList", {
+          filter: params? params : { deptId: this.curNode.deptId }
+        })
+        .then(data => {
+          if (data) {
+            console.log(data);
+             if (data) {
+               this.tableData = data;
+             }
+             this.loading = false;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     defaultFormData() {
       return {
         staffId: "",
@@ -860,6 +881,9 @@ export default {
       this.clearTableData();
       this.loadTableData();
     }
+  },
+  components: {
+    search
   }
 };
 </script>

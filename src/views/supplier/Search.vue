@@ -91,7 +91,7 @@ export default {
         fullName:'',
         phone:'',
         email:'',
-        priority:''
+        priority:null
       }
     };
   },
