@@ -1,6 +1,6 @@
 <template>
   <div class="page-form">
-    <el-dialog :title="keyId ? copyFlag ? '复制政策管理' : '修改政策管理' : '添加政策管理'"  width="50%" center :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
+    <el-dialog :title="keyId ? copyFlag ? '复制财务导单管理' : '修改财务导单管理' : '添加财务导单管理'"  width="50%" center :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
       <el-form ref="form" label-width="110px" size="mini" :model="formData" :rules="rules">
         <el-row>
           <el-col :span="12">
@@ -35,18 +35,18 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="用户账号：" prop="policyConfigId">
+            <el-form-item label="用户账号：" prop="foConfigId">
               <el-select
                 style="width: 100%;"
-                v-model="formData.policyConfigId"
+                v-model="formData.foConfigId"
                 placeholder="请选择账号"
                 filterable
               >
                 <el-option
-                  v-for="item in policyConfigData"
-                  :key="item.policyConfigId"
-                  :label="item.username"
-                  :value="item.policyConfigId"
+                  v-for="item in financeOrderConfigData"
+                  :key="item.foConfigId"
+                  :label="item.user"
+                  :value="item.foConfigId"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -160,12 +160,12 @@
           merchantId: [
             {required: true, message: "请选择商户名称"}
           ],
-          policyConfigId: [
+          foConfigId: [
             {required: true, message: "请选择用户账号"}
           ]
         },
         firmData: [],
-        policyConfigData: [],
+        financeOrderConfigData: [],
         jobConfigArray: [],
         cronPopover: false
       };
@@ -189,18 +189,18 @@
       loadFirm(){
         this.$store
           .dispatch("firm/getConfigList", {})
-          .then(data => { console.log(data);
+          .then(data => {
             this.firmData = data;
           })
           .catch(error => {
             console.log(error);
           });
       },
-      loadQunarPolicyConfig(merchantId){
+      loadQunarFinanceOrderConfig(merchantId){
         this.$store
-          .dispatch("qunarPolicyConfig/getList", {merchantId: merchantId})
+          .dispatch("qunarFinanceOrderConfig/getList", {merchantId: merchantId})
           .then(data => {
-              this.policyConfigData = data;
+              this.financeOrderConfigData = data;
           })
           .catch(error => {
             console.log(error);
@@ -209,7 +209,7 @@
       loadJobConfig(){
         let that = this;
         that.$store
-          .dispatch("jobConfig/getList", {tagCode: "uploadPolicy"})
+          .dispatch("jobConfig/getList", {tagCode: "financeOrder"})
           .then(data => {
             if(data && data.length > 0){
               data.forEach(function(obj){
@@ -219,7 +219,11 @@
               });
             }
             let timer = window.setTimeout(function(){
-              that.formData.jobConfigList = data;
+              if(data && data.length > 0){
+                that.formData.jobConfigList = data;
+              }else{
+                that.formData.jobConfigList = that.formData.params;
+              }
               that.setValues();
               window.clearTimeout(timer);
             }, 300);
@@ -231,12 +235,14 @@
       handleFirm(val){
         if(val){
           let that = this;
+          that.formData.foConfigId = null;
+          that.financeOrderConfigData = null;
           that.firmData.forEach(function(obj){
             if(obj.merchantId === val){
               that.formData.firmId = obj.firmId;
             }
           });
-          that.loadQunarPolicyConfig(val);
+          that.loadQunarFinanceOrderConfig(val);
         }
       },
       handleSwitch(){
@@ -251,12 +257,28 @@
         if(null === data.status || '' === data.status){
           data.status = 0
         }
-        let tag = that.formData.jobConfigList[0];
-        let jobConfigArray = data.jobConfigList;
+        let tag;
+        if(that.formData.jobConfigList && that.formData.jobConfigList.length > 0){
+          tag = that.formData.jobConfigList[0];
+        }else{
+          tag = {
+            tagId: "finance_order_" + 1,
+            tagName: "financeOrder",
+            tagCode: "financeOrder",
+            tagType: 1,
+            value: null
+          };
+        }
+        let jobConfigArray;
+        let firmIdFlag = true;
+        let merchantIdFlag = true;
+        let foConfigIdFlag = true;
+        if(data.jobConfigList && data.jobConfigList.length){
+          jobConfigArray = data.jobConfigList;
+        }else{
+          jobConfigArray = [];
+        }
         if(jobConfigArray && jobConfigArray.length > 0){
-          let firmIdFlag = true;
-          let merchantIdFlag = true;
-          let policyConfigIdFlag = true;
           jobConfigArray.forEach(function(obj){
             if("firmId" === obj.code){
               obj.value = that.formData.firmId;
@@ -264,35 +286,37 @@
             }else if("merchantId" === obj.code){
               obj.value = that.formData.merchantId;
               merchantIdFlag = false;
-            }else if("policyConfigId" === obj.code){
-              obj.value = that.formData.policyConfigId;
-              policyConfigIdFlag = false;
+            }else if("foConfigId" === obj.code){
+              obj.value = that.formData.foConfigId;
+              foConfigIdFlag = false;
             }
           });
-          if(firmIdFlag){
-            jobConfigArray.push({
-              code: "firmId",
-              name: "企业主键",
-              value: that.formData.firmId,
-              type: "String"
-            });
-          }
-          if(merchantIdFlag){
-            jobConfigArray.push({
-              code: "merchantId",
-              name: "商户主键",
-              value: that.formData.merchantId,
-              type: "String"
-            });
-          }
-          if(policyConfigIdFlag){
-            jobConfigArray.push({
-              code: "policyConfigId",
-              name: "平台配置",
-              value: that.formData.policyConfigId,
-              type: "String"
-            });
-          }
+        }
+        if(firmIdFlag){
+          jobConfigArray.push({
+            code: "firmId",
+            name: "企业主键",
+            value: that.formData.firmId,
+            type: "String"
+          });
+        }
+        if(merchantIdFlag){
+          jobConfigArray.push({
+            code: "merchantId",
+            name: "商户主键",
+            value: that.formData.merchantId,
+            type: "String"
+          });
+        }
+        if(foConfigIdFlag){
+          jobConfigArray.push({
+            code: "foConfigId",
+            name: "平台配置",
+            value: that.formData.foConfigId,
+            type: "String"
+          });
+        }
+        if(jobConfigArray && jobConfigArray.length > 0){
           data.params = that.getValues(jobConfigArray);
         }
         data.tagId = tag.tagId;
@@ -306,14 +330,14 @@
           formObj = data;
         }else{
           let xxlJobGroup = {
-            appName: 'policy-provider',
+            appName: 'finance-order-provider',
             addressType: 0,
-            title: '政策执行器'
+            title: '财务导单执行器'
           };
           let xxlJobInfo = {
             jobDesc: data.schedulerName,
             jobCron: data.cron,
-            executorHandler: 'uploadPolicyJobHandler'
+            executorHandler: 'financeOrderJobHandler'
           };
           formObj.xxlJobGroup = xxlJobGroup;
           formObj.xxlJobInfo = xxlJobInfo;
@@ -326,7 +350,7 @@
       },
       beforeLoadData(data) {
         data.merchantId = null;
-        data.policyConfigId = null;
+        data.foConfigId = null;
         data.jobConfigList = [];
         return data;
       },
@@ -336,9 +360,9 @@
           that.formData.params.forEach(function(param){
             if(param.code === 'merchantId'){
               that.formData.merchantId = param._string;
-              that.loadQunarPolicyConfig(that.formData.merchantId)
-            }else if(param.code === 'policyConfigId'){
-              that.formData.policyConfigId = param._string;
+              that.loadQunarFinanceOrderConfig(that.formData.merchantId);
+            }else if(param.code === 'foConfigId'){
+              that.formData.foConfigId = param._string;
             }else if(jobConfig.code === param.code){
               switch (param.type) {
                 case "Date":
@@ -440,7 +464,7 @@
           tagName: null,
           tagCode: null,
           tagType: null,
-          policyConfigId: null,
+          foConfigId: null,
           jobConfigList: []
         };
       }
