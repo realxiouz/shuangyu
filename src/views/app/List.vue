@@ -75,7 +75,4 @@
 </script>
 
 <style>
-  .page-tools {
-    margin-bottom: 10px;
-  }
 </style>
