@@ -209,7 +209,7 @@
       loadJobConfig(){
         let that = this;
         that.$store
-          .dispatch("jobConfig/getList", {tagCode: "policy"})
+          .dispatch("jobConfig/getList", {tagCode: "uploadPolicy"})
           .then(data => {
             if(data && data.length > 0){
               data.forEach(function(obj){

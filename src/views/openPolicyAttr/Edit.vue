@@ -354,7 +354,30 @@
         }
       };
     },
+    watch: {
+      visible(val) {
+        if (val) {
+          if(!this.keyId){
+            this.loadListSort();
+          }
+          this.loadOpenData();
+        }
+      }
+    },
     methods: {
+      loadListSort(){
+        this.$store
+          .dispatch("openPolicyAttr/getList", {})
+          .then(data => {
+            if(data && data.length > 0){
+              let index = data.length - 1;
+              this.formData.sort = data[index].sort + 1;
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
       loadOpenData(){
         this.$store.dispatch('openPlatform/getList', {})
           .then(data => {
@@ -654,9 +677,6 @@
           ]
         };
       }
-    },
-    created() {
-      this.loadOpenData();
     }
   };
 </script>
