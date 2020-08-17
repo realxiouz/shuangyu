@@ -8,7 +8,7 @@
         text-color="#bfcbd9"
         active-text-color="#409EFF"
         :collapse="collapse"
-        class="el-menu-vertical-demo"
+        class="el-menu-vertical"
         :default-active="activeMenu"
       >
         <sidebar-item v-for="menu in menuList" :key="menu.menuId" :item="menu" />
@@ -56,8 +56,8 @@ export default {
     background-color: #304156;
   }
 }
-.el-menu-vertical-demo:not(.el-menu--collapse) {
-  width: 200px;
+.el-menu-vertical:not(.el-menu--collapse) {
+  width: 216px;
   min-height: 400px;
 }
 </style>
