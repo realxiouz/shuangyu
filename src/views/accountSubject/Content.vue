@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <search class="page-search" ref="search" @onSearch="onSearch" :category="category" />
+    <search class="page-search" ref="search" @onSearch="onSearch" :category="category"/>
     <el-row class="page-tools" type="flex" justify="space-between">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
     </el-row>
@@ -28,9 +28,9 @@
       ></el-table-column>
       <el-table-column width="280" label="操作" align="center">
         <template slot-scope="scope">
-          <el-button style="border:none;color:#67C23A"  @click="onAddChild(scope.row.subjectId)">添加</el-button>
-          <el-button style="border:none;color:#409EFF"  @click="onEdit(scope.row.subjectId)">修改</el-button>
-          <el-button style="border:none;color:#F56C6C"  @click="onDel(scope.row.subjectId)">删除</el-button>
+          <el-button type="text" class="btn-success" size="mini" @click="onAddChild(scope.row.subjectId)">添加</el-button>
+          <el-button type="text" class="btn-primary" size="mini" @click="onEdit(scope.row.subjectId)">修改</el-button>
+          <el-button type="text" class="btn-danger" size="mini" @click="onDel(scope.row.subjectId)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -49,7 +49,8 @@
       @current-change="onCurrentChange"
       :current-page.sync="currentPage"
     ></el-pagination>
-    <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" :pid="pid" :category="category" @refresh="onRefresh"/>
+    <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" :pid="pid" :category="category"
+          @refresh="onRefresh"/>
   </div>
 </template>
 
@@ -100,19 +101,19 @@
         this.uploadData.treeNode = treeNode;
         this.uploadData.resolve = resolve;
         let params = {};
-        if(tree && tree.subjectId){
+        if (tree && tree.subjectId) {
           this.$store
             .dispatch("accountSubject/getAsyncTreeList", {pid: tree.subjectId, filter: params})
             .then(data => {
               if (data && data.length > 0) {
                 let children = [];
-                data.forEach(function(obj){
-                  if(obj.attributes){
+                data.forEach(function (obj) {
+                  if (obj.attributes) {
                     children.push(obj.attributes);
                   }
                 });
                 resolve(children);
-              }else{
+              } else {
                 window.location.reload();
               }
             })

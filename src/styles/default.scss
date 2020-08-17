@@ -64,18 +64,38 @@ div:focus {
 
   .page-search {
     padding-top: 18px;
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: 18px;
+    padding-right: 18px;
     background-color: #ffffff;
   }
 
   .page-tools {
     margin-top: 15px;
-    padding: 15px;
+    padding: 18px;
     background-color: #ffffff;
   }
 
   .page-table {
+
+    .btn-success {
+      color: #67C23A;
+    }
+
+    .btn-primary {
+      color: #409EFF;
+    }
+
+    .btn-warning {
+      color: #E6A23C;
+    }
+
+    .btn-danger {
+      color: #F56C6C;
+    }
+
+    .btn-info {
+      color: #909399;
+    }
 
   }
 
@@ -84,7 +104,7 @@ div:focus {
   }
 
   .page-footer {
-    padding: 20px;
+    padding: 18px;
     text-align: right;
     background-color: #ffffff;
   }

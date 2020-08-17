@@ -40,7 +40,7 @@
           <el-switch :value="scope.row.enable" @change="onEnable(scope.row)"></el-switch>
         </template>
       </el-table-column>
-      <el-table-column label="最后登录" width="120" align="center" fixed="right">
+      <el-table-column label="最后登录" width="150" align="center" fixed="right">
         <template slot-scope="scope">
           <div v-if="scope.row.lastLoginTime">
             <i class="el-icon-time"></i>
@@ -50,9 +50,9 @@
       </el-table-column>
       <el-table-column label="操作" fixed="right" align="center" width="280">
         <template slot-scope="scope">
-          <el-button @click="onResetPwd(scope.row)" type="primary" size="mini">重置密码</el-button>
-          <el-button @click="onEdit(scope.row.userId)" type="primary" size="mini">编辑</el-button>
-          <el-button @click="onDel(scope.row.userId)" type="danger" size="mini">删除</el-button>
+          <el-button @click="onEdit(scope.row.userId)" type="text" size="mini" class="btn-primary">编辑</el-button>
+          <el-button @click="onResetPwd(scope.row)" type="text" size="mini" class="btn-primary">重置密码</el-button>
+          <el-button @click="onDel(scope.row.userId)" type="text" size="mini" class="btn-danger">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
