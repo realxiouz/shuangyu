@@ -262,9 +262,9 @@
           tag = that.formData.jobConfigList[0];
         }else{
           tag = {
-            tagId: "finance_order_" + 1,
-            tagName: "financeOrder",
-            tagCode: "financeOrder",
+            tagId: "upload_policy_" + 1,
+            tagName: "uploadPolicy",
+            tagCode: "uploadPolicy",
             tagType: 1,
             value: null
           };
