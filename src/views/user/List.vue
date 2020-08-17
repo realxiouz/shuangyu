@@ -40,7 +40,7 @@
           <el-switch :value="scope.row.enable" @change="onEnable(scope.row)"></el-switch>
         </template>
       </el-table-column>
-      <el-table-column label="最后登录" width="120" align="center" fixed="right">
+      <el-table-column label="最后登录" width="150" align="center" fixed="right">
         <template slot-scope="scope">
           <div v-if="scope.row.lastLoginTime">
             <i class="el-icon-time"></i>
