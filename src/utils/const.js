@@ -78,7 +78,8 @@ export const CATEGORY_MAP = [
   { code: 'YEEPAY', value: '易宝' },
   { code: 'INTEGRAL', value: '积分' },
   { code: 'COUPON', value: '优惠券' },
-  { code: 'TENPAY', value: '财付通' }
+  { code: 'TENPAY', value: '财付通' },
+  { code: 'QUNARPAY', value: '商户余额代扣' }
 ];
 
 export const CATEGORY_TYPES = genArrByMap(CATEGORY_MAP);
