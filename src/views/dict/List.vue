@@ -31,7 +31,6 @@
       :title="addFlag?'添加类别':'编辑类别信息'"
       :visible.sync="dialogVisible"
       width="33%"
-      center
       :close-on-click-modal="false"
     >
       <el-form :model="formData" label-width="90px" size="mini">
@@ -54,7 +53,7 @@
           <el-input type="textarea" :rows="3" v-model="formData.remark" placeholder="请输入备注.."></el-input>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <div slot="footer" class="dialog-footer" style="text-align:right">
         <el-button size="mini" @click="handleCancel">取 消</el-button>
         <el-button size="mini" type="primary" @click="handleSave">确 定</el-button>
       </div>

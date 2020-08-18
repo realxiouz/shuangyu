@@ -1,7 +1,7 @@
 <template>
   <div class="page" style="margin-top:10px">
     <el-row class="page-tools"  justify="space-between">
-      <el-button icon="el-icon-back" type="warning" size="mini" @click="onBack">返回</el-button>
+      <!-- <el-button icon="el-icon-back" type="warning" size="mini" @click="onBack">返回</el-button> -->
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
     </el-row>
     <search class="page-search" ref="search" @onSearch="onSearch" />
@@ -17,8 +17,8 @@
       <el-table-column label="用户账号" align="center" prop="username" />
       <el-table-column width="160" label="操作" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="onEdit(scope.row.policyConfigId)">修改</el-button>
-          <el-button size="mini" type="danger" @click="onDel(scope.row.policyConfigId)">删除</el-button>
+          <el-button type="text" size="mini" class="btn-primary" @click="onEdit(scope.row.policyConfigId)">修改</el-button>
+          <el-button type="text" size="mini" class="btn-danger" @click="onDel(scope.row.policyConfigId)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

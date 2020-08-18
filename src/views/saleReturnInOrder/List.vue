@@ -1,10 +1,10 @@
 <template>
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch"/>
-      <el-row class="page-tools" style="margin-bottom:15px;margin-left:40px">
+      <el-row class="page-tools">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
       </el-row>
-      <el-table class="page-table" v-loading="loading" :data="tableData" style="width: 100%;margin-bottom: 15px;" size="mini">
+      <el-table class="page-table" v-loading="loading" :data="tableData" style="width: 100%;" size="mini">
         <el-table-column prop="orderNo" label="单号" align="center"></el-table-column>
       <el-table-column prop="orderDate" label="单据日期" align="center">
         <template slot-scope="scope">
@@ -85,11 +85,10 @@
       ></el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="160">
           <template slot-scope="scope">
-            <el-button v-show="scope.row.warehouseStatus == 2" @click="handleWarehouse(scope.row)" type="primary"
-                       size="mini">入库
+            <el-button v-show="scope.row.orderStatus == 0" @click="handleEdit(scope.row.orderNo)" type="text" size="mini">编辑</el-button>
+            <el-button v-show="scope.row.warehouseStatus == 2" @click="handleWarehouse(scope.row)" type="text" size="mini">入库
             </el-button>
-            <el-button v-show="scope.row.orderStatus == 0" @click="handleEdit(scope.row.orderNo)" type="primary" size="mini">编辑</el-button>
-            <el-button v-show="scope.row.orderStatus == 0" @click="onDel(scope.row.orderNo)" type="danger" size="mini">删除</el-button>
+            <el-button v-show="scope.row.orderStatus == 0" @click="onDel(scope.row.orderNo)" type="text" size="mini" class="btn-danger">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

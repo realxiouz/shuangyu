@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <el-row type="flex" justify="space-between" style="margin-bottom:20px;" align="bottom">
+    <el-row class="page-tools" type="flex" justify="space-between"  align="bottom">
       <span style="font-weight:700;color:#303133;" v-if="!dictVisible">{{this.curNode.categoryName}}</span>
       <span></span>
       <el-button type="primary" size="mini" @click="handleAdd" :disabled="dictVisible">添加</el-button>
@@ -43,7 +43,6 @@
       :visible.sync="dialogVisible"
       width="30%"
       :close-on-click-modal="false"
-      center
     >
       <el-form :model="formData" label-width="110px" size="mini">
         <input type="hidden" v-model="formData.dictId"/>
@@ -66,7 +65,7 @@
           <el-input type="textarea" :rows="3" placeholder="请输入备注(remark)" v-model="formData.remark"></el-input>
         </el-form-item>
       </el-form>
-      <span slot="footer" class="dialog-footer">
+      <span slot="footer" class="dialog-footer" style="text-align:right">
         <el-button @click="handleCancel">取 消</el-button>
         <el-button type="primary" @click="handleSave">确 定</el-button>
       </span>

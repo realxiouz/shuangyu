@@ -1,70 +1,87 @@
 <template>
   <div class="">
-    <div class="page-back">
-      <el-button-group>
-        <el-button icon="el-icon-back" type="warning" @click="goBack">返回</el-button>
-        <el-button icon="el-icon-plus" @click="save()" type="primary" size="mini">保存</el-button>
-      </el-button-group>
-    </div>
-    <el-card class="contentBox">
-      <div slot="header">
-        <span>蜗牛配置管理</span>
+      <div style="width:500px;height: 60px;line-height: 60px;font-size: 24px;border-bottom: 1px solid #ccc;margin-bottom: 20px">
+        蜗牛配置管理
       </div>
-      <el-form ref="form" :rules="rules" :model="formData" label-width="130px" size="mini">
-        <el-row class="el-row-item">
-          <el-col :span="12">
+      <el-form ref="form" :rules="rules" :model="formData" label-width="100px" size="mini">
+        <el-row :gutter="15">
+          <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="7">
             <el-form-item label="配置标识：" prop="key">
               <el-input v-model="formData.key" placeholder="请输入配置标识" />
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+        </el-row>
+          
+          <el-row :gutter="15">
+          <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="7">
             <el-form-item label="授权凭证：" prop="token">
               <el-input v-model="formData.token" placeholder="请输入授权凭证" />
             </el-form-item>
-          </el-col>
-          <el-col :span="12">
+         </el-col>
+        </el-row>
+          <el-row :gutter="15">
+          <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="7">
             <el-form-item label="下单地址：" prop="placeOrderUrl">
               <el-input v-model="formData.placeOrderUrl" placeholder="请输入下单地址" />
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+        </el-row>
+          <el-row :gutter="15">
+          <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="7">
             <el-form-item label="签约地址：" prop="signUrl">
               <el-input v-model="formData.signUrl" placeholder="请输入签约地址" />
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+        </el-row>
+          <el-row :gutter="15">
+          <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="7">
             <el-form-item label="联系电话：" prop="contactMob">
               <el-input v-model="formData.contactMob" placeholder="请输入联系电话" />
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+        </el-row>
+          <el-row :gutter="15">
+          <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="7">
             <el-form-item label="联系人员：" prop="contact">
               <el-input v-model="formData.contact" placeholder="请输入联系人员" />
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+        </el-row>
+          <el-row :gutter="15">
+          <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="7">
             <el-form-item label="登录账号：" prop="userName">
               <el-input v-model="formData.userName" placeholder="请输入登录账号" />
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+        </el-row>
+          <el-row :gutter="15">
+          <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="7">
             <el-form-item label="登录密码：" prop="password">
               <el-input v-model="formData.password" type="password" placeholder="请输入登录密码" />
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+        </el-row>
+          <el-row :gutter="15">
+          <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="7">
             <el-form-item label="报价类型：" prop="exTrack">
               <el-input v-model="formData.exTrack" type="textarea" :rows="3" placeholder="请输入报价类型" />
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+        </el-row>
+          <el-row :gutter="15">
+          <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="7">
             <el-form-item label="排除域名：" prop="excludeDomain">
               <el-input v-model="formData.excludeDomain" type="textarea" :rows="3" placeholder="请输入排除域名" />
             </el-form-item>
           </el-col>
         </el-row>
+        <div class="page-back">
+      <el-button-group>
+        <!-- <el-button icon="el-icon-back" type="warning" @click="goBack">返回</el-button> -->
+        <el-button icon="el-icon-plus" @click="save()" type="primary" size="mini">保存</el-button>
+      </el-button-group>
+    </div>
       </el-form>
-    </el-card>
   </div>
 </template>
 <script>

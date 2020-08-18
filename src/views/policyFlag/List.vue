@@ -1,32 +1,31 @@
 <template>
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch"/>
-      <el-row class="page-tools" style="margin-bottom:15px; margin-left:10px;">
+      <el-row class="page-tools" >
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table
         class="page-table"
         v-loading="loading"
         :data="tableData"
-        style="width: 100%;margin-bottom: 20px;"
+        style="width: 100%;"
         size="mini"
       >
         <el-table-column prop="flagId" label="标签id" align="center"></el-table-column>
         <el-table-column prop="openName" label="客户" align="center"></el-table-column>
-        <el-table-column prop="remark" label="备注" align="center"></el-table-column>
+        <el-table-column prop="remark" label="备注" align="left"></el-table-column>
         <el-table-column label="操作" align="center" width="180">
           <template slot-scope="scope">
-            <el-button @click="handleUpdate(scope.row.flagId)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="handleUpdate(scope.row.flagId)" type="text" size="mini" class="btn-primary">编辑</el-button>
             <el-button
               @click="handleRemove(scope.row,scope.$index,tableData)"
-              type="danger"
-              size="mini"
+              type="text" size="mini" class="btn-danger"
             >删除
             </el-button>
           </template>
         </el-table-column>
       </el-table>
-      <el-dialog title="Open标签" :visible.sync="dialogVisible" width="50%" center :close-on-click-modal="false">
+      <el-dialog title="Open标签" :visible.sync="dialogVisible" width="50%" :close-on-click-modal="false">
         <edit
           v-if="dialogVisible"
           :flag-id="flagId"

@@ -1,12 +1,13 @@
 <template>
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch"/>
+    <el-row class="page-tools"></el-row>
       <el-table
         class="page-table"
         :data="tableData"
         size="mini"
         highlight-current-row
-        style="width: 100%;margin-bottom:15px"
+        style="width: 100%;"
         v-loading="loading"
         show-summary
         :summary-method="getSummaries"
@@ -63,14 +64,12 @@
             <el-button
               disabled
               @click="handleUpdate(scope.row.deptId)"
-              type="primary"
-              size="mini"
+              type="text" size="mini" class="btn-primary"
             >编辑</el-button>
             <el-button
               disabled
               @click.native.prevent="handleRemove(scope.row.deptId)"
-              type="danger"
-              size="mini"
+              type="text" size="mini" class="btn-danger"
             >删除</el-button>
           </template>
         </el-table-column>

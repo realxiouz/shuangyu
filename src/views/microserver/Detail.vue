@@ -1,13 +1,13 @@
 <template>
   <div>
-    <div class="page-back">
+    <div class="page-back" style="margin-left:15px">
       <el-button-group>
         <el-button type="primary" @click="handleBack">返回</el-button>
-        <el-button type="primary" @click="handleSave">保存</el-button>
+        <!-- <el-button type="primary" @click="handleSave">保存</el-button> -->
       </el-button-group>
     </div>
     <div class="form-wrap">
-      <el-form ref="form" label-width="110px" size="mini" :model="formData">
+      <el-form ref="form" label-width="90px" size="mini" :model="formData">
         <el-row>
           <el-col :span="12">
             <el-form-item
@@ -53,7 +53,7 @@
           </el-col>
 
           <el-col :span="24">
-            <el-table :data="formData.jvmOptions" :height="800" border>
+            <el-table :data="formData.jvmOptions" :height="800" border style="margin-left:10px">
               <el-table-column width="100" label="分组" prop="group" />
               <el-table-column label="选项" prop="option" />
               <el-table-column label="值">
@@ -65,6 +65,10 @@
             </el-table>
           </el-col>
         </el-row>
+        <el-button-group style="margin-left:15px;margin-top:15px">
+        <!-- <el-button type="primary" @click="handleBack">返回</el-button> -->
+        <el-button type="primary" @click="handleSave">保存</el-button>
+      </el-button-group>
       </el-form>
     </div>
   </div>

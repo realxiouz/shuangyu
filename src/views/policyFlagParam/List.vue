@@ -1,32 +1,31 @@
 <template>
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch"/>
-      <el-row class="page-tools" style="margin-bottom:15px;margin-left:40px;">
+      <el-row class="page-tools">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table
         class="page-table"
         v-loading="loading"
         :data="tableData"
-        style="width: 100%;margin-bottom: 20px;"
+        style="width: 100%;"
         size="mini"
       >
         <el-table-column prop="openName" label="平台" align="center"></el-table-column>
         <el-table-column prop="label" label="参数标签" align="center"></el-table-column>
         <el-table-column prop="name" label="参数名称" align="center"></el-table-column>
-        <el-table-column prop="remark" label="备注" align="center"></el-table-column>
+        <el-table-column prop="remark" label="备注" align="left"></el-table-column>
         <el-table-column label="操作" align="center" width="180">
           <template slot-scope="scope">
-            <el-button @click="handleUpdate(scope.row.paramId)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="handleUpdate(scope.row.paramId)" type="text" size="mini" class="btn-primary">编辑</el-button>
             <el-button
               @click="handleRemove(scope.row,scope.$index,tableData)"
-              type="danger"
-              size="mini"
+              type="text" size="mini" class="btn-danger"
             >删除</el-button>
           </template>
         </el-table-column>
       </el-table>
-      <el-dialog title="用户信息" center :visible.sync="dialogVisible" width="30%">
+      <el-dialog title="用户信息" :visible.sync="dialogVisible" width="30%">
         <edit
           v-if="dialogVisible"
           :param-id="paramId"

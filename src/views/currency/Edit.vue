@@ -1,6 +1,6 @@
 <template>
   <div class="page-form">
-    <el-dialog :title="keyId ? '修改币别管理' : '添加币别管理'"  width="24%" center :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
+    <el-dialog :title="keyId ? '修改币别管理' : '添加币别管理'"  width="24%"  :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
       <el-form ref="form" label-width="110px" size="mini" :model="formData" :rules="rules">
         <el-form-item label="币种编码：" prop="currencyCode">
           <el-input

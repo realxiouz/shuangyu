@@ -1,20 +1,8 @@
 <template>
   <div class="bigBox">
-    
-    <el-card class="contentBox">
-      <div slot="header">
-        <span>去哪儿订单通知接口</span>
+      <div style="width:800px;height: 60px;line-height: 60px;font-size: 24px;border-bottom: 1px solid #ccc;margin-bottom: 20px">
+        订单通知管理
       </div>
-      <div class="page-back">
-      <el-button-group>
-        <el-button icon="el-icon-back" type="warning" @click="goBack"
-          >返回</el-button
-        >
-        <el-button icon="el-icon-plus" type="primary" :disabled="isDisable" @click="saveNotify()"
-          >保存</el-button
-        >
-      </el-button-group>
-    </div>
       <el-form
         ref="notifyForm"
         :rules="notifyRules"
@@ -65,9 +53,18 @@
             </span>
           </el-col>
         </el-row>
+        <div class="page-back">
+      <el-button-group>
+        <!-- <el-button icon="el-icon-back" type="warning" @click="goBack"
+          >返回</el-button
+        > -->
+        <el-button icon="el-icon-plus" type="primary" :disabled="isDisable" @click="saveNotify()"
+          >保存</el-button
+        >
+      </el-button-group>
+    </div>
         
       </el-form>
-    </el-card>
   </div>
 </template>
 <script>

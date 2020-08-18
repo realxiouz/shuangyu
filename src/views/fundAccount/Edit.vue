@@ -1,6 +1,6 @@
 <template>
   <div class="page-form">
-    <el-dialog :title="keyId && !pid ? '修改账号管理' : '添加账号管理'"  width="24%" center :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
+    <el-dialog :title="keyId && !pid ? '修改账号管理' : '添加账号管理'"  width="24%" :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
       <el-form ref="form" label-width="110px" size="mini" :model="formData" :rules="rules">
         <el-form-item label="账号类别:" prop="category">
           <el-select v-model="formData.category" style="width: 100%;" placeholder="请选择账号类别" @change="handleCurrency">

@@ -11,7 +11,7 @@
       <el-table-column label="产品名称" width="200" prop="productName"/>
       <el-table-column label="客户名称" width="100" prop="merchantName"/>
       <el-table-column label="项目名称" width="100" prop="projectName"/>
-      <el-table-column label="备注" prop="description"/>
+      <el-table-column label="备注" align="left" prop="description"/>
       <el-table-column width="160" label="操作" align="center">
         <template slot-scope="scope">
           <el-button type="text" size="mini" class="btn-primary" @click="onEdit(scope.row.dataId)">编辑</el-button>

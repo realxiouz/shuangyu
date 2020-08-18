@@ -1,7 +1,7 @@
 <template>
   <el-row type="flex" class="row-bg" justify="space-between" align="bottom">
     <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
-      <el-form ref="form" :model="formData" :rules="formRules" label-width="110px" size="mini">
+      <el-form ref="form" :model="formData" :rules="formRules" label-width="80px" size="mini">
         <!-- <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="交易时间:">
             <el-col>
@@ -64,7 +64,7 @@
           </el-form-item>
         </el-col>-->
         <el-col :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
-          <el-form-item prop="startFinishTime" label="业务完结时间:">
+          <el-form-item prop="startFinishTime" label-width="110px" label="业务完结时间:">
             <el-row type="flex" justify="space-between">
               <el-col :span="11">
                 <el-date-picker
@@ -92,7 +92,7 @@
         </el-col>
 
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="条件:">
+          <el-form-item label-width="60px" label="条件:">
             <el-radio-group v-model="formData.dateRange" style="width: 100%">
               <el-select
                 style="width: 100%;"

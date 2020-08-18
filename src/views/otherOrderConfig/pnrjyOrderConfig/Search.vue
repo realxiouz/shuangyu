@@ -1,7 +1,7 @@
 <template>
   <el-row type="flex" justify="space-between" align="bottom">
     <el-col :xs="14" :sm="15" :md="16" :lg="17" :xl="18">
-      <el-form :model="formData" label-width="110px" size="mini">
+      <el-form :model="formData" label-width="70px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="订单号:">
             <el-input
@@ -23,7 +23,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="订单状态:">
+          <el-form-item label-width="80px" label="订单状态:">
             <el-select clearable v-model="formData.orderType" placeholder="全部" style="width: 100%">
               <el-option label="出票" value="10"></el-option>
               <el-option label="退票" value="20"></el-option>
@@ -32,7 +32,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="是否异常:">
+          <el-form-item label-width="80px" label="是否异常:">
             <el-select clearable v-model="formData.normal" placeholder="请选择" style="width: 100%">
               <el-option label="正常" value="true"></el-option>
               <el-option label="异常" value="false"></el-option>
@@ -61,7 +61,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="交易时间:">
+          <el-form-item label-width="80px" v-show="more" label="交易时间:">
               <el-date-picker
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
@@ -86,7 +86,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item v-show="more" label="航程类型:">
+          <el-form-item label-width="80px" v-show="more" label="航程类型:">
             <el-select
               style="width: 100%;"
               clearable

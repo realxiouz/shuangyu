@@ -1,5 +1,5 @@
 <template>
-  <div class="page-search" style="margin-top:10px">
+  <div class="page" style="margin-top:10px">
       <div >
         <span>
           <el-button @click="geAllData()" type="info" size="mini">
@@ -34,8 +34,8 @@
         </span>
     </div>
     <order-task-search class="page-search" @onSearch="onSearch" ref="search"></order-task-search>
-    <div class="contentBox">
-      <el-row style="margin-bottom:15px;margin-left:10px;">
+    
+      <el-row class="page-tools" >
         <el-button
           :disabled="this.btnTransfer"
           icon="el-icon-document-copy"
@@ -46,9 +46,10 @@
         >
       </el-row>
       <el-table
+      class="page-table"
         :data="tableData"
         ref="tableData"
-        style="width: 100%;margin-bottom:15px;"
+        style="width: 100%;"
         @selection-change="handleSelectionChange"
         size="mini"
         v-loading="loading"
@@ -224,38 +225,36 @@
           fixed="right"
           width="200"
           label="备注"
-          align="center"
+          align="left"
         ></el-table-column>
         <el-table-column label="操作" fixed="right" align="center" width="80">
           <template slot-scope="scope">
             <el-button
               v-show="scope.row.taskStatus != 3"
-              type="primary"
+             type="text" size="mini" class="btn-primary"
               @click="goToDetail(scope.row)"
-              size="mini"
               >处理</el-button
             >
           </template>
         </el-table-column>
       </el-table>
       <el-pagination
-        class="page-footer"
-        :current-page="currentPage"
-        @size-change="onSizeChange"
-        @prev-click="prevClick"
-        @next-click="nextClick"
-        background
-        layout="total,sizes,slot,prev,next"
-        prev-text="上一页"
-        next-text="下一页"
-        :page-size="pageSize"
-        :total="total"
-      >
+      class="page-footer"
+      @size-change="onSizeChange"
+      @prev-click="prevClick"
+      @next-click="nextClick"
+      :current-page="currentPage"
+      background
+      layout="total,sizes,prev,next"
+      prev-text="上一页"
+      next-text="下一页"
+      :page-size="pageSize"
+      :total="total"
+    >
         <span style="font-weight: 400;color:#565656;"
           >第{{ currentPage }}页</span
         >
       </el-pagination>
-    </div>
     <div>
       <el-dialog
         title="选择转单员工"
@@ -556,10 +555,6 @@ export default {
   }
 };
 </script>
-<style scoped>
-.item {
-  margin-top: 10px;
-  margin-right: 40px;
-  padding-right: 10px;
-}
+<style >
+
 </style>

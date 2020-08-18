@@ -1,6 +1,7 @@
 <template>
-  <div class="contentBox">
+  <div class="page">
     <el-table
+    class="page-table"
       :data="tableData"
       size="mini"
       highlight-current-row
@@ -62,8 +63,8 @@
 
       <el-table-column fixed="right" label="操作" width="180" align="center">
         <template slot-scope="scope">
-          <el-button disabled @click="onEdit(scope.row)" type="primary" size="mini">查看</el-button>
-          <el-button disabled @click="onDel(scope.row)" type="danger" size="mini">处理</el-button>
+          <el-button disabled @click="onEdit(scope.row)" type="text" size="mini" class="btn-primary">查看</el-button>
+          <el-button disabled @click="onDel(scope.row)" type="text" size="mini" class="btn-danger">处理</el-button>
         </template>
       </el-table-column>
     </el-table>

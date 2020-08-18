@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <el-row :gutter="20">
+    <el-row class="page-tools" :gutter="20">
       <el-col :xs="11" :sm="10" :md="9" :lg="8" :xl="8">
         <el-row style="margin-bottom:20px;">
           <span style="font-weight:700;color:#303133;">商品类目</span>
@@ -94,16 +94,14 @@
             <template slot-scope="scope">
               <el-button
                 @click="handleUpdate(scope.row.propertyId)"
-                type="primary"
-                size="mini"
+                type="text" size="mini" class="btn-primary"
                 >编辑</el-button
               >
               <el-button
                 @click.native.prevent="
                   handleRemove(scope.row.propertyId, scope.$index, tableData)
                 "
-                type="danger"
-                size="mini"
+                type="text" size="mini" class="btn-danger"
                 >删除
               </el-button>
             </template>
@@ -135,7 +133,6 @@
       :title="addFlag ? '添加类别' : '编辑类别信息'"
       :visible.sync="categoryDialogVisible"
       width="33%"
-      center
       :close-on-click-modal="false"
     >
       <el-form :model="formData" label-width="90px" size="mini">

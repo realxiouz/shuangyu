@@ -1,10 +1,10 @@
 <template>
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch"/>
-      <el-row class="page-tools" style="margin-bottom:15px;margin-left:40px">
+      <el-row class="page-tools">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
-      <el-table class="page-table" v-loading="loading" :data="tableData" style="width: 100%;margin-bottom: 15px;" size="mini">
+      <el-table class="page-table" v-loading="loading" :data="tableData" style="width: 100%" size="mini">
         <el-table-column type="expand">
           <template slot-scope="props">
             <el-form label-position="right" :inline="true" label-width="120px" class="demo-table-expand">
@@ -131,8 +131,8 @@
         </el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="160">
           <template slot-scope="scope">
-            <el-button @click="onEdit(scope.row)" type="primary" size="mini">编辑</el-button>
-            <el-button @click="onDel(scope.row)" type="danger" size="mini">删除</el-button>
+            <el-button @click="onEdit(scope.row)" type="text" size="mini" class="btn-primary">编辑</el-button>
+            <el-button @click="onDel(scope.row)" type="text" size="mini" class="btn-danger">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

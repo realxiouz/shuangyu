@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch"/>
-      <el-row class="page-tools" style="margin-bottom:15px; margin-left:38px;">
+      <el-row class="page-tools" >
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
       </el-row>
       <el-table
@@ -10,7 +10,7 @@
         v-loading="loading"
         :data="tableData"
         ref="tableData"
-        style="width: 100%;margin-bottom: 20px;"
+        style="width: 100%;"
         size="mini"
       >
         <el-table-column prop="policyCode" label="政策前缀" align="center"></el-table-column>
@@ -19,11 +19,11 @@
         <el-table-column prop="endDate" label="旅行结束日期" align="center"></el-table-column>
         <el-table-column label="操作" fixed="right" align="center" width="330">
           <template slot-scope="scope">
-            <el-button @click="start(scope.row)" type="primary" size="mini">启动</el-button>
-            <el-button @click="stop(scope.row)" type="primary" size="mini">停止</el-button>
-            <el-button @click="onEdit(scope.row.id)" type="primary" size="mini">编辑</el-button>
-            <el-button @click="onCopy(scope.row)" type="primary" size="mini">复制</el-button>
-            <el-button @click="onDel(scope.row.id)" type="danger" size="mini">删除</el-button>
+            <el-button @click="onEdit(scope.row.id)" type="text" size="mini" class="btn-primary">编辑</el-button>
+            <el-button @click="start(scope.row)" type="text" size="mini" class="btn-primary">启动</el-button>
+            <el-button @click="stop(scope.row)" type="text" size="mini" class="btn-primary">停止</el-button>
+            <el-button @click="onCopy(scope.row)" type="text" size="mini" class="btn-primary">复制</el-button>
+            <el-button @click="onDel(scope.row.id)" type="text" size="mini" class="btn-danger">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

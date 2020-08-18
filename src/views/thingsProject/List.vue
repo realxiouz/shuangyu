@@ -8,11 +8,11 @@
       <el-table-column label="项目名称" width="300" prop="projectName"/>
       <el-table-column label="企业名称" width="100" prop="firmName"/>
       <el-table-column label="客户名称" width="100" prop="merchantName"/>
-      <el-table-column label="备注" prop="description"/>
+      <el-table-column label="备注" align="left" prop="description"/>
       <el-table-column width="160" label="操作" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" @click="onEdit(scope.row.projectId)">编辑</el-button>
-          <el-button size="mini" type="danger" @click="handleDel(scope.row.projectId)">删除</el-button>
+          <el-button type="text" size="mini" class="btn-primary" @click="onEdit(scope.row.projectId)">编辑</el-button>
+          <el-button type="text" size="mini" class="btn-danger" @click="handleDel(scope.row.projectId)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

@@ -1,19 +1,19 @@
 <template>
   <el-row type="flex" justify="space-between" align="bottom">
     <el-col :xs="24" :sm="18" :md="18" :lg="20" :xl="20">
-      <el-form label-width="110px" size="mini" @keydown.enter.native="handleConfirm">
+      <el-form label-width="70px" size="mini" @keydown.enter.native="handleConfirm">
         <el-col :xs="24" :sm="18" :md="12" :lg="6" :xl="6">
           <el-form-item label="订单号:">
             <el-input v-model="formData.orderNo" placeholder="订单号.." clearable></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="18" :md="12" :lg="6" :xl="6">
-          <el-form-item label="经办人姓名:">
+          <el-form-item label-width="100px" label="经办人姓名:">
             <el-input v-model="formData.staffName" placeholder="经办人姓名.." clearable></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="18" :md="12" :lg="6" :xl="6">
-          <el-form-item label="单据日期:">
+          <el-form-item label-width="80px" label="单据日期:">
             <el-date-picker
               v-model="formData.orderDate"
               type="date"
@@ -23,7 +23,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="18" :md="12" :lg="6" :xl="6">
-          <el-form-item label="客户:">
+          <el-form-item label-width="60px" label="客户:">
             <el-input v-model="formData.merchantId" placeholder="客户.." clearable></el-input>
           </el-form-item>
         </el-col>

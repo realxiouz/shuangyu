@@ -26,7 +26,7 @@
             <span v-else>离线</span>
           </template>
         </el-table-column>
-        <el-table-column prop="etermRemark" label="备注" align="center"></el-table-column>
+        <el-table-column prop="etermRemark" label="备注" align="left"></el-table-column>
         <el-table-column label="操作" align="center" width="240">
           <template slot-scope="scope">
             <el-button @click="onEdit(scope.row)" type="text" size="mini" class="btn-primary">编辑</el-button>
@@ -41,7 +41,6 @@
         :visible.sync="dialogVisible"
         width="40%"
         :close-on-click-modal="false"
-        center
       >
         <edit
           v-if="dialogVisible"

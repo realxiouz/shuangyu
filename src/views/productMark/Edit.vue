@@ -2,7 +2,6 @@
   <div class="page-form">
     <el-dialog
         title="资金账号信息"
-        center
         :visible.sync="dialogVisible"
         @open="onOpen" @close="onClose"
         width="28%"

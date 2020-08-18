@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch"/>
-    <el-row class="page-tools" style="margin-bottom:15px; margin-left:38px;">
+    <el-row class="page-tools" >
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
     </el-row>
     <el-table
@@ -9,7 +9,7 @@
       highlight-current-row
       v-loading="loading"
       :data="tableData"
-      style="width: 100%;margin-bottom: 20px;"
+      style="width: 100%;"
       size="mini"
     >
       <el-table-column prop="schedulerName" label="名称" align="center"></el-table-column>
@@ -21,16 +21,16 @@
           <span v-else>否</span>
         </template>
       </el-table-column>
-      <el-table-column prop="remark" label="备注" align="center"></el-table-column>
+      <el-table-column prop="remark" label="备注" align="left"></el-table-column>
       <el-table-column label="操作" fixed="right" align="center" width="330">
         <template slot-scope="scope">
-          <el-button v-if="scope.row.status==1" @click="handleStop(scope.row.schedulerId)" type="primary" size="mini">
+          <el-button @click="onEdit(scope.row)" type="text" size="mini" class="btn-primary">编辑</el-button>
+          <el-button v-if="scope.row.status==1" @click="handleStop(scope.row.schedulerId)"type="text" size="mini" class="btn-primary">
             停止
           </el-button>
-          <el-button v-else @click="handleStart(scope.row.schedulerId)" type="primary" size="mini">启动</el-button>
-          <el-button @click="onEdit(scope.row)" type="primary" size="mini">编辑</el-button>
-          <el-button @click="handleCopy(scope.row)" type="primary" size="mini">复制</el-button>
-          <el-button @click="removeOne(scope.row.schedulerId)" type="danger" size="mini">删除</el-button>
+          <el-button v-else @click="handleStart(scope.row.schedulerId)" type="text" size="mini" class="btn-primary">启动</el-button>
+          <el-button @click="handleCopy(scope.row)"type="text" size="mini" class="btn-primary">复制</el-button>
+          <el-button @click="removeOne(scope.row.schedulerId)"type="text" size="mini" class="btn-danger">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -51,7 +51,6 @@
     ></el-pagination>
     <el-dialog
       :title="updateFlag?'更新':'新增'"
-      center
       :visible.sync="dialogVisible"
       width="55%"
       ref="job-scheduler-edit"

@@ -1,10 +1,10 @@
 <template>
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch"/>
-      <el-row class="page-tools" style="margin-bottom:15px;margin-left:22px;">
+      <el-row class="page-tools" >
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
       </el-row>
-      <el-table class="page-table" size="mini" v-loading="loading" :data="tableData" style="width: 100%;margin-bottom:15px;">
+      <el-table class="page-table" size="mini" v-loading="loading" :data="tableData" style="width: 100%;">
         <el-table-column prop="markId" label="产品标签" align="center"></el-table-column>
         <el-table-column prop="openName" label="供应商" align="center"></el-table-column>
         <el-table-column prop="domain" label="供应商域名" align="center"></el-table-column>
@@ -24,8 +24,8 @@
         </el-table-column>
         <el-table-column label="操作" align="center" width="180">
           <template slot-scope="scope">
-            <el-button @click="onEdit(scope.row)" type="primary" size="mini">编辑</el-button>
-            <el-button @click="onDel(scope.row)" type="danger" size="mini">删除</el-button>
+            <el-button @click="onEdit(scope.row)" type="text" size="mini" class="btn-primary">编辑</el-button>
+            <el-button @click="onDel(scope.row)" type="text" size="mini" class="btn-danger">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

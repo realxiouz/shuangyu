@@ -1,6 +1,6 @@
 <template>
   <div class="page-form">
-    <el-dialog :title="keyId ? '修改应用管理' : '添加应用管理'"  width="24%" center :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
+    <el-dialog :title="keyId ? '修改应用管理' : '添加应用管理'"  width="24%" :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
       <el-form ref="form" label-width="110px" size="mini" :model="formData" :rules="rules">
         <el-form-item label="应用名称：" prop="appName">
           <el-input v-model="formData.appName" placeholder="请输入应用名称"></el-input>

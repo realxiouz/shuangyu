@@ -2,7 +2,7 @@
   <div class="page">
     <el-row class="page-search" :gutter="20">
       
-      <el-col :xs="11" :sm="10" :md="9" :lg="8" :xl="8">
+      <el-col  :xs="11" :sm="10" :md="9" :lg="8" :xl="8">
         <el-row style="margin-bottom:20px;">
           <!-- <span
             style="font-weight:700;color:#303133;"

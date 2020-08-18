@@ -146,14 +146,13 @@
         <el-table-column prop="user" label="用户名称" width="200" align="center"></el-table-column>
         <el-table-column prop="ip" label="IP地址" width="220" align="center"></el-table-column>
         <el-table-column prop="callbackUrl" label="回调地址" width="220" align="center"></el-table-column>
-        <el-table-column prop="remark" label="备注" align="center"></el-table-column>
+        <el-table-column prop="remark" label="备注" align="left"></el-table-column>
         <el-table-column prop="airlineCode" align="center" label="操作" width="200">
           <template slot-scope="scope">
-            <el-button @click="policyEdit(scope.row)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="policyEdit(scope.row)" type="text" size="mini" class="btn-primary">编辑</el-button>
             <el-button
               @click="policyRemove(scope.row,scope.$index,policyData)"
-              type="danger"
-              size="mini"
+              type="text" size="mini" class="btn-danger"
             >删除
             </el-button>
           </template>

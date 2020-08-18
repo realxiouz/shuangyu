@@ -1,6 +1,6 @@
 <template>
   <div class="page-form">
-    <el-dialog :title="keyId ? copyFlag ? '复制政策管理' : '修改政策管理' : '添加政策管理'"  width="50%" center :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
+    <el-dialog :title="keyId ? copyFlag ? '复制政策管理' : '修改政策管理' : '添加政策管理'"  width="50%"  :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
       <el-form ref="form" label-width="110px" size="mini" :model="formData" :rules="rules">
         <el-row>
           <el-col :span="12">
@@ -167,7 +167,9 @@
         firmData: [],
         policyConfigData: [],
         jobConfigArray: [],
-        cronPopover: false
+        cronPopover: false,
+        editMerchantId: null,
+        editPolicyConfigId: null
       };
     },
     watch: {
@@ -190,17 +192,29 @@
         this.$store
           .dispatch("firm/getConfigList", {})
           .then(data => {
-            this.firmData = data;
+            if(data && data.length > 0){
+              this.firmData = data;
+            }
           })
           .catch(error => {
             console.log(error);
           });
       },
       loadQunarPolicyConfig(merchantId){
+        this.formData.policyConfigId = null;
+        this.policyConfigData = null;
+        if(this.firmData && this.firmData.length > 0 && this.editMerchantId){
+          this.formData.merchantId = this.editMerchantId;
+        }
         this.$store
           .dispatch("qunarPolicyConfig/getList", {merchantId: merchantId})
           .then(data => {
+            if(data && data.length > 0){
               this.policyConfigData = data;
+            }
+            if(this.policyConfigData && this.policyConfigData.length > 0 && this.editPolicyConfigId){
+              this.formData.policyConfigId = this.editPolicyConfigId;
+            }
           })
           .catch(error => {
             console.log(error);
@@ -235,8 +249,8 @@
       handleFirm(val){
         if(val){
           let that = this;
-          that.formData.policyConfigId = null;
-          that.policyConfigData = null;
+          that.editMerchantId = null;
+          that.editPolicyConfigId = null;
           that.firmData.forEach(function(obj){
             if(obj.merchantId === val){
               that.formData.firmId = obj.firmId;
@@ -359,10 +373,10 @@
         that.formData.jobConfigList.forEach(function(jobConfig){
           that.formData.params.forEach(function(param){
             if(param.code === 'merchantId'){
-              that.formData.merchantId = param._string;
-              that.loadQunarPolicyConfig(that.formData.merchantId);
+              that.editMerchantId = param._string;
+              that.loadQunarPolicyConfig(that.editMerchantId);
             }else if(param.code === 'policyConfigId'){
-              that.formData.policyConfigId = param._string;
+              that.editPolicyConfigId = param._string;
             }else if(jobConfig.code === param.code){
               switch (param.type) {
                 case "Date":

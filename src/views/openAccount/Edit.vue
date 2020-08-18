@@ -1,6 +1,6 @@
 <template>
   <div class="page-form">
-    <el-form :model="formData" label-width="110px" size="mini">
+    <el-form :model="formData" width="45%" label-width="110px" size="mini">
       <input type="hidden" v-model="formData.accountId"/>
       <el-form-item label="平台:">
         <el-select v-model="formData.openId" placeholder="请选择平台.." @change="handleSelect" style="width: 100%">

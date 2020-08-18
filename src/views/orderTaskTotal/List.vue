@@ -18,7 +18,7 @@
       </div>
       <search class="page-search" ref="search" @onSearch="onSearch"/>
 
-      <el-row class="page-tools" style="margin-bottom:15px;margin-left:40px;">
+      <el-row class="page-tools" >
         <el-button
           :disabled="this.btnTransfer"
           icon="el-icon-document-copy"
@@ -32,7 +32,7 @@
         highlight-current-row
         :data="tableData"
         ref="tableData"
-        style="width: 100%;margin-bottom:15px;"
+        style="width: 100%;"
         size="mini"
         v-loading="loading"
         @selection-change="handleSelectionChange"
@@ -130,15 +130,14 @@
             <span>{{ formatDuration(scope.row.duration) }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="remark" fixed="right" width="200" label="备注" align="center"></el-table-column>
+        <el-table-column prop="remark" fixed="right" width="200" label="备注" align="left"></el-table-column>
 
         <el-table-column label="操作" fixed="right" align="center" width="80">
           <template slot-scope="scope">
             <el-button
-              type="primary"
+              type="text" size="mini" class="btn-primary"
               v-show="scope.row.taskStatus!=3"
               @click="goToDetail(scope.row)"
-              size="mini"
             >处理</el-button>
           </template>
         </el-table-column>
@@ -163,7 +162,6 @@
     <div>
       <el-dialog
         title="选择转单员工"
-        center
         :visible.sync="taskStaffDialog"
         width="33%"
         :close-on-click-modal="false"

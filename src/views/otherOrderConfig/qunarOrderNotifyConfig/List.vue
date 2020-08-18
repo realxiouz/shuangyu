@@ -1,14 +1,14 @@
 <template>
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch"/>
-      <el-row class="page-tools" style="margin-bottom:15px;margin-left:25px">
+      <el-row class="page-tools" >
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table
         class="page-table"
         v-loading="loading"
         :data="tableData"
-        style="width: 100%;margin-bottom: 20px;"
+        style="width: 100%;"
         sizi="mini"
       >
         <el-table-column prop="domain" label="代理商域名" width="260" align="center"></el-table-column>
@@ -26,8 +26,8 @@
         <el-table-column prop="url" label="地址" align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="180">
           <template slot-scope="scope">
-            <el-button @click="onEdit(scope.row)" type="primary" size="mini">编辑</el-button>
-            <el-button @click="onDel(scope.row)" type="danger" size="mini">删除</el-button>
+            <el-button @click="onEdit(scope.row)" type="text" size="mini" class="btn-primary">编辑</el-button>
+            <el-button @click="onDel(scope.row)" type="text" size="mini" class="btn-danger">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -46,7 +46,6 @@
       <el-dialog
         title="第三方平台账号信息"
         :visible.sync="dialogVisible"
-        center
         width="30%"
         :close-on-click-modal="false"
       >

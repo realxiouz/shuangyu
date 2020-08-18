@@ -6,7 +6,7 @@
         :data="countData"
         size="mini"
         highlight-current-row
-        style="width: 100%;margin-bottom:15px"
+        style="width: 100%;"
         v-loading="loading"
         fit
       >

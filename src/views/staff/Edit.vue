@@ -6,13 +6,12 @@
     <el-row
       type="flex"
       justify="space-between"
-      style="margin-bottom:20px;"
       align="bottom"
     >
       <span style="font-weight:700;color:#303133;" v-if="!staffAddVisible">{{
         this.curNode.deptName
       }}</span>
-      <el-row>
+      <el-row class="page-tools">
         <el-button
           type="primary"
           size="mini"
@@ -83,30 +82,26 @@
       <el-table-column label="操作" width="260" align="center">
         <template slot-scope="scope">
           <el-button
-            size="mini"
+            :disabled="scope.row.staffType == 1 ? true : false"
+            type="text" size="mini" class="btn-primary"
+            @click="permissionChange(scope.$index, scope.row)"
+            >编辑
+          </el-button>
+          <el-button
+            type="text" size="mini" class="btn-primary"
             v-if="scope.row.userId"
-            type="success"
             @click="handleAssociate(scope.row)"
             >查看用户
           </el-button>
           <el-button
             v-else
-            size="mini"
-            type="info"
+            type="text" size="mini" class="btn-primary"
             @click="handleAssociate(scope.row)"
             >关联用户
           </el-button>
           <el-button
             :disabled="scope.row.staffType == 1 ? true : false"
-            size="mini"
-            type="primary"
-            @click="permissionChange(scope.$index, scope.row)"
-            >编辑
-          </el-button>
-          <el-button
-            :disabled="scope.row.staffType == 1 ? true : false"
-            size="mini"
-            type="danger"
+           type="text" size="mini" class="btn-danger"
             @click="onDel(scope.$index, scope.row)"
             >删除
           </el-button>

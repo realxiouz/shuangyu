@@ -35,7 +35,7 @@
       <el-table-column label="企业名称" width="100" prop="firmName"/>
       <el-table-column label="客户名称" width="100" prop="merchantName"/>
       <el-table-column label="项目名称" width="100" prop="projectName"/>
-      <el-table-column label="备注" prop="description"/>
+      <el-table-column label="备注" align="left" prop="description"/>
       <el-table-column width="160" label="操作" align="center">
         <template slot-scope="scope">
           <el-button type="text" size="mini" class="btn-primary" @click="onEdit(scope.row.deviceId)">编辑</el-button>
