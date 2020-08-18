@@ -12,7 +12,7 @@
         </span>
       </div>
     <search class="page-search" ref="search" @onSearch="onSearch"/>
-      <el-row class="page-tools" style="margin-bottom:15px;margin-left:40px;">
+      <el-row class="page-tools" >
         <el-button
           :disabled="this.btnTransfer"
           icon="el-icon-document-copy"
@@ -25,7 +25,7 @@
         class="page-table"
         :data="tableData"
         ref="tableData"
-        style="width: 100%;margin-bottom:15px;"
+        style="width: 100%;"
         @selection-change="handleSelectionChange"
         size="mini"
         v-loading="loading"
@@ -129,10 +129,9 @@
         <el-table-column label="操作" fixed="right" align="center" width="80">
           <template slot-scope="scope">
             <el-button
-              type="primary"
+              type="text" size="mini" class="btn-danger"
               v-show="scope.row.taskStatus!=3"
               @click="goToDetail(scope.row)"
-              size="mini"
             >处理</el-button>
           </template>
         </el-table-column>

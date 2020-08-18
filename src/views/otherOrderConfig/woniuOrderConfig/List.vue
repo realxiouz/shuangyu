@@ -1,15 +1,8 @@
 <template>
   <div class="page">
+    <search class="page-search" ref="qunarOrderConfigSearch" :orderType="orderType" @onSearch="onSearch" />
       <el-tabs v-model="activeName" type="border-card" @tab-click="handleClick">
-        <div style="margin-top:10px;">
-          <search
-            class="page-search"
-            ref="qunarOrderConfigSearch"
-            :orderType="orderType"
-            @onSearch="onSearch"
-          />
-        </div>
-        <el-divider></el-divider>
+        
         <el-tab-pane label="出票订单" name="goTicket">
           <go-ticket
             v-if="orderType==10"

@@ -9,7 +9,7 @@
       size="mini"
       v-loading="loading"
       :data="tableData"
-      style="width: 100%;margin-bottom:15px;"
+      style="width: 100%;"
     >
       <el-table-column prop="tagType" label="标签类别" align="center">
         <template slot-scope="scope">
@@ -28,10 +28,10 @@
       </el-table-column>
       <el-table-column width="300" label="操作" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="onOperate(scope.row.schedulerId, scope.row.status)">{{scope.row.status === 0 ? '启动' : '停止'}}</el-button>
-          <el-button size="mini" type="primary" @click="onCopy(scope.row.schedulerId)">复制</el-button>
-          <el-button size="mini" type="primary" @click="onEdit(scope.row.schedulerId)">修改</el-button>
-          <el-button size="mini" type="danger" @click="onDel(scope.row.schedulerId)">删除</el-button>
+          <el-button type="text" size="mini" class="btn-primary" @click="onOperate(scope.row.schedulerId, scope.row.status)">{{scope.row.status === 0 ? '启动' : '停止'}}</el-button>
+          <el-button type="text" size="mini" class="btn-primary" @click="onEdit(scope.row.schedulerId)">修改</el-button>
+          <el-button type="text" size="mini" class="btn-primary" @click="onCopy(scope.row.schedulerId)">复制</el-button>
+          <el-button type="text" size="mini" class="btn-danger" @click="onDel(scope.row.schedulerId)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

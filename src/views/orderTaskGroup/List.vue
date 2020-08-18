@@ -1,11 +1,11 @@
 <template>
   <div class="page">
-    <search class="page-search" ref="search" @onSearch="onSearch" />
+    <search class="page-search" style="margin-bottom:10px" ref="search" @onSearch="onSearch" />
     <el-table
       class="page-table"
       :data="tableData"
       ref="tableData"
-      style="width: 100%;margin-bottom:15px;"
+      style="width: 100%;"
       size="mini"
       v-loading="loading"
     >
@@ -175,9 +175,8 @@
         <template slot-scope="scope">
           <el-button
             v-show="scope.row.taskStatus != 3"
-            type="primary"
+            type="text" size="mini" class="btn-primary"
             @click="goToDetail(scope.row)"
-            size="mini"
             >处理</el-button
           >
         </template>

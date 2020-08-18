@@ -1,7 +1,7 @@
 <template>
   <el-row type="flex" justify="space-between" align="bottom">
     <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
-      <el-form :model="formData" label-width="110px" size="mini">
+      <el-form :model="formData" label-width="80px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="产品标签">
             <el-input
@@ -12,7 +12,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="供应商域名">
+          <el-form-item label-width="100px" label="供应商域名">
             <el-input
               clearable
               v-model="formData.domain"

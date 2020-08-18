@@ -8,7 +8,7 @@
       class="page-table"
       v-loading="loading"
       :data="tableData"
-      style="width:100%;margin-bottom:15px;"
+      style="width:100%;"
       size="mini"
     >
       <el-table-column prop="roleName" label="角色名称" align="left" width="200"></el-table-column>
@@ -27,8 +27,8 @@
       </el-table-column>
       <el-table-column label="操作" align="center" fixed="right" width="200">
         <template slot-scope="scope">
-          <el-button @click="onEdit(scope.row.roleId)" type="primary" size="mini">编辑</el-button>
-          <el-button @click="onDel(scope.row.roleId)" type="danger" size="mini">删除</el-button>
+          <el-button @click="onEdit(scope.row.roleId)" type="text" size="mini" class="btn-primary">编辑</el-button>
+          <el-button @click="onDel(scope.row.roleId)" type="text" size="mini" class="btn-danger">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

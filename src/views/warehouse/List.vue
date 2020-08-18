@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch" />
-    <el-row class="page-tools" style="margin-bottom:15px; margin-left:25px;">
+    <el-row class="page-tools" >
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd"
         >添加</el-button
       >
@@ -12,7 +12,7 @@
       :data="tableData"
       row-key="warehouseId"
       highlight-current-row
-      style="width: 100%;margin-bottom:15px"
+      style="width: 100%;"
       size="mini"
       :load="loadChildren"
       fit
@@ -52,20 +52,17 @@
       <el-table-column label="操作" align="center" fixed="right" width="250">
         <template slot-scope="scope">
           <el-button
-            type="success"
-            size="mini"
-            @click="handleAddChild(scope.row.warehouseId)"
-            >添加</el-button
-          >
-          <el-button
-            type="primary"
-            size="mini"
+            type="text" size="mini" class="btn-primary"
             @click="onEdit(scope.row.warehouseId)"
             >编辑</el-button
           >
           <el-button
-            type="danger"
-            size="mini"
+            type="text" size="mini" class="btn-primary"
+            @click="handleAddChild(scope.row.warehouseId)"
+            >添加</el-button
+          >
+          <el-button
+            type="text" size="mini" class="btn-danger"
             @click="onDel(scope.row.warehouseId)"
             >删除</el-button
           >

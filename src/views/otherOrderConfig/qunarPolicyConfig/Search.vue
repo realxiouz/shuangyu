@@ -1,7 +1,7 @@
 <template>
   <el-row type="flex" justify="space-between" align="bottom">
     <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
-      <el-form label-width="110px" :model="formData" size="mini">
+      <el-form label-width="100px" :model="formData" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="代理商域名:">
             <el-input placeholder="请输入代理商域名搜索..." v-model="formData.keyword" style="width: 100%"></el-input>

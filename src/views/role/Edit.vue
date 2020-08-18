@@ -5,6 +5,7 @@
       :visible.sync="dialogVisible"
       @open="onOpen"
       @close="onClose"
+      width="40%"
     >
       <el-form
         ref="form"

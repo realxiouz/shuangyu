@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch"/>
-      <el-row class="page-tools" style="margin-bottom:15px; margin-left:25px;">
+      <el-row class="page-tools" >
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
       </el-row>
       <el-table
@@ -25,19 +25,18 @@
         <el-table-column prop="remark" label="备注" align="center"></el-table-column>
         <el-table-column label="操作" align="center" fixed="right" width="350">
           <template slot-scope="scope">
-            <el-button type="primary" size="mini" @click="onEdit(scope.$index, scope.row)">编辑</el-button>
-            <el-button type="danger" size="mini" @click="onDel(scope.row.merchantId)">删除</el-button>
-            <el-button size="mini" v-if="scope.row.staffId" type="success"
+            <el-button type="text" size="mini" class="btn-primary" @click="onEdit(scope.$index, scope.row)">编辑</el-button>
+            <el-button type="text" size="mini" class="btn-primary" v-if="scope.row.staffId" 
                        @click="handleAssociate(scope.row)">查看用户
             </el-button>
-            <el-button size="mini" v-else type="info"
+            <el-button type="text" size="mini" class="btn-primary" v-else 
                        @click="handleAssociate(scope.row)">关联用户
             </el-button>
             <el-button
-            type="primary"
-            size="mini"
+            type="text" size="mini" class="btn-primary"
             @click="onConfig(scope.row)"
             >配置</el-button>
+            <el-button type="text" size="mini" class="btn-danger" @click="onDel(scope.row.merchantId)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

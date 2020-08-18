@@ -1,6 +1,6 @@
 <template>
   <div class="page-form">
-    <el-dialog :title="keyId ? '修改凭证字管理' : '添加凭证字管理'"  width="24%" center :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
+    <el-dialog :title="keyId ? '修改凭证字管理' : '添加凭证字管理'"  width="24%" :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
       <el-form ref="form" label-width="110px" size="mini" :model="formData" :rules="rules">
         <el-form-item label="凭证字：" prop="voucherGroupName">
           <el-input v-model="formData.voucherGroupName" placeholder="请输入凭证字" />

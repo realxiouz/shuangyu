@@ -1,9 +1,9 @@
 <template>
   <el-row type="flex" justify="space-between" align="bottom">
     <el-col :xs="14" :sm="15" :md="16" :lg="17" :xl="18">
-      <el-form :model="formData" label-width="110px" size="mini">
+      <el-form :model="formData" label-width="80px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="订单号:">
+          <el-form-item label-width="70px" label="订单号:">
             <el-input
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.orderNo"

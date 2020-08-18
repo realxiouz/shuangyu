@@ -1,6 +1,6 @@
 <template>
   <div class="page-form">
-    <el-dialog :title="keyId!=''?'编辑退改规则':'添加退改规则'" center :visible.sync="dialogVisible" width="55%" @open="onOpen" @close="onClose">
+    <el-dialog :title="keyId!=''?'编辑退改规则':'添加退改规则'" :visible.sync="dialogVisible" width="55%" @open="onOpen" @close="onClose">
     <el-form ref="form" :model="formData" :rules="verify" label-width="100px" size="mini">
       <el-row>
         <el-col :span="12">

@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch" />
-    <el-row class="page-tools" style="margin-bottom:15px;margin-left:40px">
+    <el-row class="page-tools" >
       <el-button icon="el-icon-plus" type="primary" @click="onAdd"
         >添加</el-button
       >
@@ -10,7 +10,7 @@
       class="page-table"
       v-loading="loading"
       :data="tableData"
-      style="width: 100%;margin-bottom: 15px;"
+      style="width: 100%;"
     >
       <el-table-column prop="orderNo" label="单号" align="center">
       </el-table-column>
@@ -131,8 +131,8 @@
       ></el-table-column>
       <el-table-column fixed="right" label="操作" align="center" width="200">
         <template slot-scope="scope">
-          <el-button @click="onEdit(scope.row.orderNo)" type="primary">编辑</el-button>
-          <el-button @click="onDel(scope.row.orderNo)" type="danger">删除</el-button>
+          <el-button @click="onEdit(scope.row.orderNo)" type="text" size="mini" class="btn-primary">编辑</el-button>
+          <el-button @click="onDel(scope.row.orderNo)" type="text" size="mini" class="btn-danger">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

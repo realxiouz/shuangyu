@@ -1,14 +1,14 @@
 <template>
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch"/>
-      <el-row class="page-tools" style="margin-bottom:15px;margin-left:40px">
+      <el-row class="page-tools">
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加商品</el-button>
       </el-row>
       <el-table
         class="page-table"
         v-loading="loading"
         :data="tableData"
-        style="width: 100%;margin-bottom: 15px;"
+        style="width: 100%;"
         size="mini"
       >
         <el-table-column prop="productCode" label="商品编码" align="center"></el-table-column>
@@ -26,11 +26,10 @@
         <el-table-column fixed="right" label="操作" align="center" width="350">
           <template slot-scope="scope">
             <!-- <el-button @click="inventoryUpdate(scope.row.productId)" type="primary" size="mini">库存编辑</el-button> -->
-            <el-button @click="handleUpdate(scope.row.productId)" type="primary" size="mini">商品编辑</el-button>
+            <el-button @click="handleUpdate(scope.row.productId)" type="text" size="mini" class="btn-primary">商品编辑</el-button>
             <el-button
               @click.native.prevent="onDel(scope.row.productId)"
-              type="danger"
-              size="mini"
+              type="text" size="mini" class="btn-danger"
             >删除
             </el-button>
           </template>

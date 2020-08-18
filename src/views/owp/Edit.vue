@@ -2,7 +2,6 @@
   <div class="page-form">
     <el-dialog
         :title="updateFlag?'更新':'新增'"
-        center
         :visible.sync="dialogVisible"
         width="50%"
         ref="user-edit"

@@ -1,7 +1,8 @@
 <template>
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch"/>
-    <el-table class="page-table" :data="tableData" style="width: 100%;margin-bottom: 20px;">
+    <el-row class="page-tools"></el-row>
+    <el-table class="page-table" :data="tableData" style="width: 100%;">
       <el-table-column
         prop="nickName"
         label="昵称"
@@ -69,9 +70,9 @@
         align="center"
         width="350">
         <template slot-scope="scope">
-          <el-button @click="resetPwd(scope.row)" type="primary" size="mini">重置密码</el-button>
-          <el-button @click="edit(scope.row)" type="primary" size="mini">编辑</el-button>
-          <el-button @click="delete(scope.row)" type="danger" size="mini">删除</el-button>
+          <el-button @click="edit(scope.row)" type="text" size="mini" class="btn-primary">编辑</el-button>
+          <el-button @click="resetPwd(scope.row)" type="text" size="mini" class="btn-primary">重置密码</el-button>
+          <el-button @click="delete(scope.row)" type="text" size="mini" class="btn-danger">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

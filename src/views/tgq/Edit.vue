@@ -108,7 +108,7 @@
         </el-col>
       </el-row>
     </el-form>
-    <div slot="footer" style="text-align:center;">
+    <div slot="footer" style="text-align:right;">
       <el-button type="primary" size="mini" @click="handleSave">确 定</el-button>
       <el-button size="mini" @click="$emit('onCancel')">取 消</el-button>
     </div>

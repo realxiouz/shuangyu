@@ -1,10 +1,10 @@
 <template>
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch"/>
-<!--      <el-row class="page-tools" style="margin-bottom:15px;margin-left:22px;">
-        <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button>
-      </el-row>-->
-      <el-table class="page-table" size="mini" v-loading="loading" :data="tableData" style="width: 100%;margin-bottom:15px;">
+     <el-row class="page-tools" >
+        <!-- <el-button icon="el-icon-plus" type="primary" size="mini" @click="handleAdd">添加</el-button> -->
+      </el-row>
+      <el-table class="page-table" size="mini" v-loading="loading" :data="tableData" style="width: 100%;">
         <el-table-column prop="tradeNo" label="交易编号" align="center"></el-table-column>
         <el-table-column prop="outTradeNo" label="商家订单号" align="center"></el-table-column>
         <el-table-column prop="tradeStatus" label="交易状态" align="center" :formatter="formatStatusDirection"></el-table-column>
@@ -31,7 +31,7 @@
         <el-table-column prop="terminalId" label="商户机具终端编号" align="center"></el-table-column>
         <el-table-column label="操作" fixed="right" align="center" width="180">
           <template slot-scope="scope" align="center" width="180" fixed="right">
-            <el-button size="mini" type="primary" @click="handleUpdate(scope.row.tradeNo)">查看</el-button>
+            <el-button  type="text" size="mini" class="btn-primary" @click="handleUpdate(scope.row.tradeNo)">查看</el-button>
 <!--            <el-button size="mini" type="primary" @click="handleUpdate(scope.row.tradeNo)">编辑</el-button>
             <el-button size="mini" type="danger" @click="onDel(scope.row.tradeNo)">删除</el-button>-->
           </template>
@@ -55,7 +55,6 @@
 
       <el-dialog
         title="交易记录管理"
-        center
         :visible.sync="dialogVisible"
         :close-on-click-modal="false"
         width="24%"
