@@ -25,7 +25,7 @@
             <span>{{ node.data.title }}</span>
             
             <span>
-              <span>{{ node.data.uri }}</span>
+              <span>{{ node.data.uri }}</span>&nbsp;&nbsp;&nbsp;
               <span>{{ node.data.component }}</span>
               <span>
                 <el-switch disabled :value="node.data.enable" @change="enableSwitch(scope.row)"></el-switch>
