@@ -39,12 +39,20 @@
                 </el-form>
               </template>
             </el-table-column>
-            <el-table-column prop="productCode" label="商品编码" width="200"></el-table-column>
-            <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
-            <el-table-column prop="brandName" label="品牌" align="center"></el-table-column>
-            <el-table-column prop="skuName" label="属性名称" align="center"></el-table-column>
-            <el-table-column prop="price" label="单价" align="center"></el-table-column>
+            <el-table-column prop="productCode" label="商品编码" width="200" />
+            <el-table-column prop="productName" label="商品名称" align="center" />
+            <el-table-column prop="brandName" label="品牌" align="center" />
+            <el-table-column prop="skuName" label="属性名称" align="center" />
+            <el-table-column prop="price" label="单价" align="center" />
             <el-table-column prop="quantity" label="数量" width="60" />
+            <el-table-column label="库存" width="60">
+              <template v-slot="{row}" >
+                <el-link type="primary"
+                 :disabled="row.inventoryQuantity==0&&false"
+                 @click.stop="onOrderRoot(scope.row)"
+                >{{row.inventoryQuantity}}</el-link>
+              </template>
+            </el-table-column>
           </el-table>
 
           <el-table :data="scope.row.passengers" border style="margin-top:10px;">
@@ -400,6 +408,18 @@ export default {
           return i["_string"];
       }
     },
+    onOrderRoot(i) {
+      if (!i.rootOrderNo) {
+        this.$message.error('rootOrderNo 为空')
+        return
+      }
+      this.$router.push({
+        name: 'orderRoot',
+        query: {
+          rootNo: i.rootOrderNo
+        }
+      })
+    }
   },
   watch: {
     "$route.query.orderType": {
