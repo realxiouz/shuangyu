@@ -1,7 +1,7 @@
 <template>
   <el-row type="flex" justify="space-between" align="bottom">
     <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
-      <el-form :model="formData" label-width="110px" size="mini">
+      <el-form :model="formData" label-width="90px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="客户名称：">
             <el-input
@@ -33,7 +33,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="联系人电话：">
+          <el-form-item label-width="100px" label="联系人电话：">
             <el-input
               clearable
               @keyup.enter.native="$emit('onSearch', formData)"
@@ -42,7 +42,7 @@
             ></el-input>
           </el-form-item>
         </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+        <el-col v-if="more" :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="邮箱：">
             <el-input
               clearable
@@ -52,7 +52,7 @@
             ></el-input>
           </el-form-item>
         </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+        <el-col v-if="more" :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="重要性：">
              <el-rate
              clearable

@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch" />
-    <el-row class="page-tools" style="margin-bottom:15px;margin-left:26px;">
+    <el-row class="page-tools" >
       <el-button
         icon="el-icon-plus"
         type="primary"
@@ -15,7 +15,7 @@
       :data="tableData"
       ref="tableData"
       @row-dblclick="onEdit"
-      style="width: 100%;margin-bottom:15px;"
+      style="width: 100%;"
       size="mini"
       v-loading="loading"
       highlight-current-row
@@ -39,25 +39,19 @@
       </el-table-column>
       <el-table-column label="操作" fixed="right" align="center" width="360">
         <template slot-scope="scope">
-          <el-button @click="onEdit(scope.row.airlineCode)" type="primary" size="small"
+          <el-button type="text" size="mini" class="btn-primary" @click="onEdit(scope.row.airlineCode)"
             >编辑</el-button
           >
-          <el-button
+          <el-button type="text" size="mini" class="btn-primary"
             @click="lookFlights(scope.row.flights)"
-            type="primary"
-            size="small"
             >查看航班</el-button
           >
-          <el-button
+          <el-button type="text" size="mini" class="btn-primary"
             @click="lookSegments(scope.row.segments)"
-            type="primary"
-            size="small"
             >查看航段</el-button
           >
-          <el-button
+          <el-button type="text" size="mini" class="btn-danger"
             @click="onDel(scope.row.airlineCode)"
-            type="danger"
-            size="small"
             >删除</el-button
           >
         </template>

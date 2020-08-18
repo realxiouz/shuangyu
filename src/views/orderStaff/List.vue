@@ -1,7 +1,7 @@
 <template>
-  <div class="page">
-    <el-row  :gutter="20">
-      <el-col :xs="11" :sm="10" :md="9" :lg="6" :xl="6">
+  <div  class="page">
+    <el-row class="page-tools" :gutter="20">
+      <el-col :xl="4">
         <el-tree
           v-loading="loading"
           :data="treeData"
@@ -12,12 +12,12 @@
           @node-click="handleNodeClick"
         ></el-tree>
       </el-col>
-      <el-col :xs="13" :sm="14" :md="15" :lg="18" :xl="18"></el-col>
+      <el-col :xl="18">
+        <edit :curNode="curNode" :staffAddVisible="staffAddVisible" style="width: 100%" />
+      </el-col>
     </el-row>
-    <el-divider></el-divider>
-    <el-row>
-      <edit :curNode="curNode" :staffAddVisible="staffAddVisible" style="width: 100%" />
-    </el-row>
+    
+    
   </div>
 </template>
 

@@ -10,8 +10,8 @@
       <el-table-column label="平台类型" align="center" prop="openType" :formatter="formatOpenType" />
       <el-table-column width="160" label="操作" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="onEdit(scope.row.openId)">修改</el-button>
-          <el-button size="mini" type="danger" @click="onDel(scope.row.openId)">删除</el-button>
+          <el-button type="text" size="mini" class="btn-primary" @click="onEdit(scope.row.openId)">修改</el-button>
+          <el-button type="text" size="mini" class="btn-danger" @click="onDel(scope.row.openId)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -72,7 +72,4 @@
 </script>
 
 <style>
-  .page-tools {
-    margin-bottom: 10px;
-  }
 </style>

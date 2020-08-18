@@ -1,15 +1,13 @@
 <template>
-  <div class="bigBox">
-    <div class="searchBox">
-      <order-search @onSearch="handleSearch"></order-search>
-    </div>
-    <div class="contentBox">
+  <div class="page">
+    <order-search class="page-search" @onSearch="handleSearch"></order-search>
       <el-table
+        class="page-table"
         :data="tableData"
         size="mini"
         highlight-current-row
         max-height="650"
-        style="width: 100%;margin-bottom:15px"
+        style="width: 100%;"
         v-loading="loading"
         fit
         show-summary
@@ -183,13 +181,11 @@
           <template slot-scope="scope">
             <el-button
               @click="handleOrderDetail(scope.row)"
-              type="primary"
-              size="mini"
+              type="text" size="mini" class="btn-primary"
               >查看</el-button
             >
             <el-button
-              type="danger"
-              size="mini"
+              type="text" size="mini" class="btn-danger"
               @click="handleRemove(scope.row.orderNo)"
               >删除</el-button
             >
@@ -197,6 +193,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
+      class="page-footer"
         @size-change="handleSizeChange"
         @prev-click="prevClick"
         @next-click="nextClick"
@@ -208,7 +205,6 @@
         :page-size="pageSize"
         :total="total"
       ></el-pagination>
-    </div>
   </div>
 </template>
 

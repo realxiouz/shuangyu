@@ -10,7 +10,7 @@
       :data="tableData"
       row-key="accountId"
       highlight-current-row
-      style="width: 100%;margin-bottom:15px"
+      style="width: 100%;"
       size="mini"
       :load="loadChildren"
       fit
@@ -27,9 +27,9 @@
       <el-table-column prop="balance" label="余额" align="center"></el-table-column>
       <el-table-column width="280" label="操作" align="center">
         <template slot-scope="scope">
-          <el-button type="success" size="mini" @click="onAddChild(scope.row.accountId)">添加</el-button>
-          <el-button size="mini" type="primary" @click="onEdit(scope.row.accountId)">修改</el-button>
-          <el-button size="mini" type="danger" @click="onDel(scope.row.accountId)">删除</el-button>
+          <el-button type="text" size="mini" class="btn-primary" @click="onAddChild(scope.row.accountId)">添加</el-button>
+          <el-button type="text" size="mini" class="btn-primary" @click="onEdit(scope.row.accountId)">修改</el-button>
+          <el-button type="text" size="mini" class="btn-danger" @click="onDel(scope.row.accountId)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -133,7 +133,4 @@
 </script>
 
 <style>
-  .page-tools {
-    margin-bottom: 10px;
-  }
 </style>

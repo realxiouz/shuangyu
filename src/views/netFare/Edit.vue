@@ -5,7 +5,6 @@
         :visible.sync="dialogVisible"
         width="30%"
         @open="onOpen" @close="onClose"
-        center
       >
     <el-form ref="form" :model="formData" label-width="110px" size="mini">
       <el-form-item label="航班号">

@@ -2,7 +2,7 @@
   <div class="page">
     <el-row class="page-tools" :gutter="20">
       <el-col :xs="11" :sm="10" :md="9" :lg="8" :xl="6">
-        <el-button type="primary" style="margin-bottom:20px" size="mini" @click="rootAdd">添加</el-button>
+        <el-button type="primary" size="mini" @click="rootAdd">添加</el-button>
         <el-tree
           v-loading="loading"
           node-key="categoryId"

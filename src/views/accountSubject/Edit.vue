@@ -1,6 +1,6 @@
 <template>
   <div class="page-form">
-    <el-dialog :title="keyId && !pid ? '修改科目管理' : '添加科目管理'"  width="30%" center :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
+    <el-dialog :title="keyId && !pid ? '修改科目管理' : '添加科目管理'"  width="30%"  :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
       <el-form ref="form" label-width="110px" size="mini" :model="formData" :rules="rules">
         <el-form-item label="科目编码:" prop="subjectCode">
           <el-input

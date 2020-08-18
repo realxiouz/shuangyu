@@ -9,7 +9,7 @@
       size="mini"
       v-loading="loading"
       :data="tableData"
-      style="width: 100%;margin-bottom:15px;"
+      style="width: 100%;"
     >
       <el-table-column
         prop="appName"
@@ -23,8 +23,8 @@
       </el-table-column>
       <el-table-column width="160" label="操作" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="onEdit(scope.row.appId)">修改</el-button>
-          <el-button size="mini" type="danger" @click="onDel(scope.row.appId)">删除</el-button>
+          <el-button type="text" size="mini" class="btn-primary" @click="onEdit(scope.row.appId)">修改</el-button>
+          <el-button type="text" size="mini" class="btn-danger" @click="onDel(scope.row.appId)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -75,7 +75,4 @@
 </script>
 
 <style>
-  .page-tools {
-    margin-bottom: 10px;
-  }
 </style>

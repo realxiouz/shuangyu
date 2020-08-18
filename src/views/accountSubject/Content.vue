@@ -1,6 +1,5 @@
 <template>
   <div class="page">
-    <search class="page-search" ref="search" @onSearch="onSearch" :category="category" />
     <el-row class="page-tools" type="flex" justify="space-between">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
     </el-row>
@@ -9,7 +8,7 @@
               :data="tableData"
               row-key="subjectCode"
               highlight-current-row
-              style="width: 100%;margin-bottom:15px"
+              style="width: 100%;"
               size="mini"
               :load="loadChildren"
               fit
@@ -28,9 +27,9 @@
       ></el-table-column>
       <el-table-column width="280" label="操作" align="center">
         <template slot-scope="scope">
-          <el-button type="success" size="mini" @click="onAddChild(scope.row.subjectId)">添加</el-button>
-          <el-button size="mini" type="primary" @click="onEdit(scope.row.subjectId)">修改</el-button>
-          <el-button size="mini" type="danger" @click="onDel(scope.row.subjectId)">删除</el-button>
+          <el-button type="text" size="mini" class="btn-primary" @click="onAddChild(scope.row.subjectId)">添加</el-button>
+          <el-button type="text" size="mini" class="btn-primary" @click="onEdit(scope.row.subjectId)">修改</el-button>
+          <el-button type="text" size="mini" class="btn-danger" @click="onDel(scope.row.subjectId)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -49,13 +48,13 @@
       @current-change="onCurrentChange"
       :current-page.sync="currentPage"
     ></el-pagination>
-    <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" :pid="pid" :category="category" @refresh="onRefresh"/>
+    <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" :pid="pid" :category="category"
+          @refresh="onRefresh"/>
   </div>
 </template>
 
 <script>
   import edit from "./Edit";
-  import search from "./Search";
   import {subjectCategory} from "@/utils/status.js";
   import {MIXIN_LIST} from "@/utils/mixin";
 
@@ -100,19 +99,19 @@
         this.uploadData.treeNode = treeNode;
         this.uploadData.resolve = resolve;
         let params = {};
-        if(tree && tree.subjectId){
+        if (tree && tree.subjectId) {
           this.$store
             .dispatch("accountSubject/getAsyncTreeList", {pid: tree.subjectId, filter: params})
             .then(data => {
               if (data && data.length > 0) {
                 let children = [];
-                data.forEach(function(obj){
-                  if(obj.attributes){
+                data.forEach(function (obj) {
+                  if (obj.attributes) {
                     children.push(obj.attributes);
                   }
                 });
                 resolve(children);
-              }else{
+              } else {
                 window.location.reload();
               }
             })
@@ -128,13 +127,9 @@
     },
     components: {
       edit,
-      search
     }
   };
 </script>
 
 <style>
-  .page-tools {
-    margin-bottom: 10px;
-  }
 </style>

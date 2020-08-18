@@ -1,9 +1,5 @@
 <template>
   <div class="page">
-    <el-row class="page-tools" type="flex" justify="space-between" style="margin-bottom:20px;" align="bottom">
-      <span style="font-weight:700;color:#303133;" v-if="!staffAddVisible">{{this.curNode.title}}</span>
-      <span></span>
-    </el-row>
     <el-table
       class="page-table"
       highlight-current-row
@@ -38,14 +34,13 @@
           <span v-else>{{ formatDate(scope.row.offlineTime,'YYYY-MM-DD HH:mm:ss') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="left" width="400" fixed="right">
+      <el-table-column label="操作" align="left" width="500" >
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="handleFlag(scope.row)">配置标签</el-button>
-          <el-button size="mini" type="primary" @click="setMonitor(scope.row)">设为班长</el-button>
-          <el-button size="mini" type="primary" @click="logSearch(scope.row)">查看日志</el-button>
+          <el-button type="text" size="mini" class="btn-primary" @click="handleFlag(scope.row)">配置标签</el-button>
+          <el-button type="text" size="mini" class="btn-primary" @click="setMonitor(scope.row)">设为班长</el-button>
+          <el-button type="text" size="mini" class="btn-primary" @click="logSearch(scope.row)">查看日志</el-button>
           <el-button
-            size="mini"
-            type="primary"
+            type="text" size="mini" class="btn-danger"
             v-show="scope.row.status==1&&scope.row.monitorFlag!=1"
             @click="offLine(scope.row)"
           >强制下线

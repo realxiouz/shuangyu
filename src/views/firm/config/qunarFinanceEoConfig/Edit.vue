@@ -1,6 +1,6 @@
 <template>
   <div class="page-form">
-    <el-dialog :title="keyId ? '修改政策配置管理' : '添加政策配置管理'"  width="24%" center :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
+    <el-dialog :title="keyId ? '修改财务导单管理' : '添加财务导单管理'"  width="24%" center :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
       <el-form ref="form" label-width="110px" size="mini" :model="formData" :rules="rules">
         <el-form-item label="用户账号:" prop="user">
           <el-input v-model="formData.user" placeholder="请输入用户名称" />
@@ -45,8 +45,8 @@
         dialogVisible: false,
         codeEnable: false,
         actions: {
-          getOne: 'qunarFinanceOrderConfig/getOne',
-          saveOne: 'qunarFinanceOrderConfig/saveOne'
+          getOne: 'qunarFinanceEoConfig/getOne',
+          saveOne: 'qunarFinanceEoConfig/saveOne'
         },
         rules: {
           user: [

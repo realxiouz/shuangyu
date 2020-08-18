@@ -189,7 +189,7 @@
       loadFirm(){
         this.$store
           .dispatch("firm/getConfigList", {})
-          .then(data => { console.log(data);
+          .then(data => {
             this.firmData = data;
           })
           .catch(error => {
@@ -219,7 +219,11 @@
               });
             }
             let timer = window.setTimeout(function(){
-              that.formData.jobConfigList = data;
+              if(data && data.length > 0){
+                that.formData.jobConfigList = data;
+              }else{
+                that.formData.jobConfigList = that.formData.params;
+              }
               that.setValues();
               window.clearTimeout(timer);
             }, 300);
@@ -231,6 +235,8 @@
       handleFirm(val){
         if(val){
           let that = this;
+          that.formData.policyConfigId = null;
+          that.policyConfigData = null;
           that.firmData.forEach(function(obj){
             if(obj.merchantId === val){
               that.formData.firmId = obj.firmId;
@@ -251,12 +257,28 @@
         if(null === data.status || '' === data.status){
           data.status = 0
         }
-        let tag = that.formData.jobConfigList[0];
-        let jobConfigArray = data.jobConfigList;
+        let tag;
+        if(that.formData.jobConfigList && that.formData.jobConfigList.length > 0){
+          tag = that.formData.jobConfigList[0];
+        }else{
+          tag = {
+            tagId: "upload_policy_" + 1,
+            tagName: "uploadPolicy",
+            tagCode: "uploadPolicy",
+            tagType: 1,
+            value: null
+          };
+        }
+        let jobConfigArray;
+        let firmIdFlag = true;
+        let merchantIdFlag = true;
+        let policyConfigIdFlag = true;
+        if(data.jobConfigList && data.jobConfigList.length){
+          jobConfigArray = data.jobConfigList;
+        }else{
+          jobConfigArray = [];
+        }
         if(jobConfigArray && jobConfigArray.length > 0){
-          let firmIdFlag = true;
-          let merchantIdFlag = true;
-          let policyConfigIdFlag = true;
           jobConfigArray.forEach(function(obj){
             if("firmId" === obj.code){
               obj.value = that.formData.firmId;
@@ -269,30 +291,32 @@
               policyConfigIdFlag = false;
             }
           });
-          if(firmIdFlag){
-            jobConfigArray.push({
-              code: "firmId",
-              name: "企业主键",
-              value: that.formData.firmId,
-              type: "String"
-            });
-          }
-          if(merchantIdFlag){
-            jobConfigArray.push({
-              code: "merchantId",
-              name: "商户主键",
-              value: that.formData.merchantId,
-              type: "String"
-            });
-          }
-          if(policyConfigIdFlag){
-            jobConfigArray.push({
-              code: "policyConfigId",
-              name: "平台配置",
-              value: that.formData.policyConfigId,
-              type: "String"
-            });
-          }
+        }
+        if(firmIdFlag){
+          jobConfigArray.push({
+            code: "firmId",
+            name: "企业主键",
+            value: that.formData.firmId,
+            type: "String"
+          });
+        }
+        if(merchantIdFlag){
+          jobConfigArray.push({
+            code: "merchantId",
+            name: "商户主键",
+            value: that.formData.merchantId,
+            type: "String"
+          });
+        }
+        if(policyConfigIdFlag){
+          jobConfigArray.push({
+            code: "policyConfigId",
+            name: "平台配置",
+            value: that.formData.policyConfigId,
+            type: "String"
+          });
+        }
+        if(jobConfigArray && jobConfigArray.length > 0){
           data.params = that.getValues(jobConfigArray);
         }
         data.tagId = tag.tagId;
@@ -336,7 +360,7 @@
           that.formData.params.forEach(function(param){
             if(param.code === 'merchantId'){
               that.formData.merchantId = param._string;
-              that.loadQunarPolicyConfig(that.formData.merchantId)
+              that.loadQunarPolicyConfig(that.formData.merchantId);
             }else if(param.code === 'policyConfigId'){
               that.formData.policyConfigId = param._string;
             }else if(jobConfig.code === param.code){

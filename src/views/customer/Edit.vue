@@ -2,7 +2,6 @@
   <div class="page-form">
     <el-row>
       <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="10">
-        <div class="contentBox">
           <div id="goBack" @click="goBack">
             <el-page-header></el-page-header>
           </div>
@@ -122,13 +121,12 @@
               <el-input type="text"  v-model="bankAccount" placeholder="请输入银行账号.." disabled></el-input>
             </el-form-item> 
           </el-form>
-        </div>
       </el-col>
     </el-row>
     <el-row>
       <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="24">
         <div id="tabs">
-          <el-tabs type="border-card" ref="tabs">
+          <el-tabs type="border" ref="tabs">
             <el-tab-pane label="联系人">
               <other-contact :contacts="contacts"/>
             </el-tab-pane>

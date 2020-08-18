@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <el-row type="flex" justify="space-between" style="margin-bottom:20px;" align="bottom">
+    <el-row type="flex" justify="space-between" align="bottom">
       <span style="font-weight:700;color:#303133;" v-if="!dictVisible">{{this.curNode.categoryName}}</span>
       <span></span>
       <el-button type="primary" size="mini" @click="handleAdd" :disabled="dictVisible">添加</el-button>
@@ -20,8 +20,8 @@
       <el-table-column align="center" prop="categoryCode" label="类别编码"></el-table-column>
       <el-table-column label="操作" align="center" width="180">
         <template slot-scope="scope">
-          <el-button @click="onEdit(scope.row)" type="primary" size="mini">编辑</el-button>
-          <el-button @click="onDel(scope.row)" type="danger" size="mini">删除</el-button>
+          <el-button @click="onEdit(scope.row)" type="text" size="mini" class="btn-primary">编辑</el-button>
+          <el-button @click="onDel(scope.row)" type="text" size="mini" class="btn-danger">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
