@@ -95,8 +95,8 @@
           <el-form :rules="rules" :model="firmMerchantForm" ref="firmMerchantForm" label-position="left" label-width="20%" size="mini">
             <el-form-item label="付款方式">
               <el-select v-model="firmMerchantForm.paymentType" placeholder="请选择付款方式" style="width: 100%" >
-                <el-option label="DAIKOU 余额" :value="0"></el-option>
-                <el-option label="OUTDAIKOU 第三方" :value="1"></el-option>
+                <el-option label="DAIKOU 余额" :value="'DAIKOU'"></el-option>
+                <el-option label="OUTDAIKOU 第三方" :value="'OUTDAIKOU'"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="结算账号" prop="accountId">
