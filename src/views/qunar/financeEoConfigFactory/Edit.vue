@@ -167,7 +167,9 @@
         firmData: [],
         financeEoConfigData: [],
         jobConfigArray: [],
-        cronPopover: false
+        cronPopover: false,
+        editMerchantId: null,
+        editFoConfigId: null
       };
     },
     watch: {
@@ -190,17 +192,29 @@
         this.$store
           .dispatch("firm/getConfigList", {})
           .then(data => {
-            this.firmData = data;
+            if(data && data.length > 0){
+              this.firmData = data;
+            }
           })
           .catch(error => {
             console.log(error);
           });
       },
       loadQunarFinanceEoConfig(merchantId){
+        this.formData.foConfigId = null;
+        this.financeEoConfigData = null;
+        if(this.firmData && this.firmData.length > 0 && this.editMerchantId){
+          this.formData.merchantId = this.editMerchantId;
+        }
         this.$store
           .dispatch("qunarFinanceEoConfig/getList", {merchantId: merchantId})
           .then(data => {
+            if(data && data.length > 0){
               this.financeEoConfigData = data;
+            }
+            if(this.financeEoConfigData && this.financeEoConfigData.length > 0 && this.editFoConfigId){
+              this.formData.foConfigId = this.editFoConfigId;
+            }
           })
           .catch(error => {
             console.log(error);
@@ -235,8 +249,8 @@
       handleFirm(val){
         if(val){
           let that = this;
-          that.formData.foConfigId = null;
-          that.financeEoConfigData = null;
+          that.editMerchantId = null;
+          that.editFoConfigId = null;
           that.firmData.forEach(function(obj){
             if(obj.merchantId === val){
               that.formData.firmId = obj.firmId;
@@ -359,10 +373,10 @@
         that.formData.jobConfigList.forEach(function(jobConfig){
           that.formData.params.forEach(function(param){
             if(param.code === 'merchantId'){
-              that.formData.merchantId = param._string;
-              that.loadQunarFinanceEoConfig(that.formData.merchantId);
+              that.editMerchantId = param._string;
+              that.loadQunarFinanceEoConfig(that.editMerchantId);
             }else if(param.code === 'foConfigId'){
-              that.formData.foConfigId = param._string;
+              that.editFoConfigId = param._string;
             }else if(jobConfig.code === param.code){
               switch (param.type) {
                 case "Date":
