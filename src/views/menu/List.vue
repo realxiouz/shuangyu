@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <el-row class="page-tools" :gutter="30">
-      <el-col :xs="11" :sm="10" :md="9" :lg="8" :xl="8">
+      <el-col :xs="11" :sm="10" :md="9" :lg="8" :xl="13" style="border-right:1px solid #cccccc">
         <el-button
           type="primary"
           style="margin-bottom:20px"
@@ -23,25 +23,31 @@
         >
           <span class="tree-node" slot-scope="{ node, data }">
             <span>{{ node.data.title }}</span>
+            
             <span>
+              <span>{{ node.data.uri }}</span>
+              <span>{{ node.data.component }}</span>
+              <span>
+                <el-switch disabled :value="node.data.enable" @change="enableSwitch(scope.row)"></el-switch>
+              </span>
               <span v-for="tag in node.data.tags" :key="tag">
                 <el-tag v-if="tag=='NAV'">导航</el-tag>
                 <el-tag v-else-if="tag=='VIEW'">视图</el-tag>
               </span>
-              <el-button type="text" size="mini" @click="nodeAdd(node, data)"
+              <el-button type="text" size="mini" class="btn-primary" @click="nodeAdd(node, data)"
               >添加</el-button
               >
-              <el-button type="text" size="mini" @click="onEdit(node, data)"
+              <el-button type="text" size="mini" class="btn-primary" @click="onEdit(node, data)"
               >编辑</el-button
               >
-              <el-button type="text" size="mini" @click="removeNode(node, data)"
+              <el-button type="text" size="mini" style="color:#F56C6C"  @click="removeNode(node, data)"
               >移除</el-button
               >
             </span>
           </span>
         </el-tree>
       </el-col>
-      <el-col :xs="13" :sm="14" :md="15" :lg="16" :xl="16">
+      <el-col :xs="13" :sm="14" :md="15" :lg="16" :xl="10">
         <edit ref="search" :apiVisible="apiVisible" :curNode="curNode"></edit>
       </el-col>
     </el-row>
@@ -368,7 +374,7 @@
   };
 </script>
 
-<style scoped>
+<style >
   .tree-node {
     flex: 1;
     display: flex;
