@@ -16,7 +16,7 @@
               lazy
               :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
     >
-      <el-table-column prop="subjectCode" label="科目编码" align="center"></el-table-column>
+      <el-table-column prop="subjectCode" label="科目编码" align="left"></el-table-column>
       <el-table-column prop="subjectName" label="科目名称" align="center"></el-table-column>
       <el-table-column prop="category" label="类别" align="center" :formatter="subjectCategory"></el-table-column>
       <el-table-column

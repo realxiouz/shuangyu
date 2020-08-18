@@ -14,7 +14,7 @@
         <el-table-column prop="openName" label="平台" align="center"></el-table-column>
         <el-table-column prop="label" label="参数标签" align="center"></el-table-column>
         <el-table-column prop="name" label="参数名称" align="center"></el-table-column>
-        <el-table-column prop="remark" label="备注" align="center"></el-table-column>
+        <el-table-column prop="remark" label="备注" align="left"></el-table-column>
         <el-table-column label="操作" align="center" width="180">
           <template slot-scope="scope">
             <el-button @click="handleUpdate(scope.row.paramId)" type="text" size="mini" class="btn-primary">编辑</el-button>

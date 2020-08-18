@@ -18,7 +18,7 @@
       lazy
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
     >
-      <el-table-column prop="category" label="账号类别" align="center" :formatter="formatCategory"></el-table-column>
+      <el-table-column prop="category" label="账号类别" align="left" :formatter="formatCategory"></el-table-column>
       <el-table-column prop="accountCode" label="账号编码" align="center"></el-table-column>
       <el-table-column prop="accountName" label="账号名称" align="center"></el-table-column>
       <el-table-column prop="subjectName" label="科目名称" align="center"></el-table-column>

@@ -19,7 +19,7 @@
           <span v-else-if="scope.row.roleType==-1">默认</span>
         </template>
       </el-table-column>
-      <el-table-column prop="remark" label="备注" align="center" :fit='true'></el-table-column>
+      <el-table-column prop="remark" label="备注" align="left" :fit='true'></el-table-column>
       <el-table-column label="是否启用" align="center" fixed="right" width="100">
         <template slot-scope="scope">
           <el-switch v-model="scope.row.enable" @change="onEnable(scope.row)"></el-switch>

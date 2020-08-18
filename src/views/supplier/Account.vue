@@ -8,7 +8,7 @@
         <el-table-column type="selection"></el-table-column>
         <el-table-column prop="username" label="登录账号" align="center"></el-table-column>
         <el-table-column prop="password" label="登录密码" show-password align="center"></el-table-column>
-        <el-table-column prop="remark" label="备注" align="center"></el-table-column>
+        <el-table-column prop="remark" label="备注" align="left"></el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
             <el-button type="primary" size="mini" @click="onEdit(scope.$index, scope.row)">编辑</el-button>

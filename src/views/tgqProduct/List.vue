@@ -15,7 +15,7 @@
       >
         <el-table-column prop="cron" label="时间表达式" width="150" align="center"></el-table-column>
         <el-table-column prop="schedulerName" label="调度名称" align="center"></el-table-column>
-        <el-table-column prop="remark" label="备注" align="center"></el-table-column>
+        <el-table-column prop="remark" label="备注" align="left"></el-table-column>
         <el-table-column prop="status" label="调度程序状态" width="120" align="center">
           <template slot-scope="scope">
             <span v-if="scope.row.status==1" style="color: green">启动</span>

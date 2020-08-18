@@ -23,7 +23,7 @@
       <el-table-column
         prop="warehouseCode"
         label="仓库编码"
-        align="center"
+        align="left"
         width="180"
       ></el-table-column>
       <el-table-column
@@ -47,7 +47,7 @@
       <el-table-column
         prop="address"
         label="地址"
-        align="center"
+        align="left"
       ></el-table-column>
       <el-table-column label="操作" align="center" fixed="right" width="250">
         <template slot-scope="scope">

@@ -1,13 +1,13 @@
 <template>
   <div class="page">
     <!-- <search class="page-search" ref="search" @onSearch="onSearch"/> -->
-      <el-row class="page-tools" style="margin-bottom:15px; margin-left:30px;">
+      <el-row class="page-tools" >
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
       </el-row>
       <el-table
         class="page-table"
         :data="tableData"
-        style="width: 100%;margin-bottom: 15px;"
+        style="width: 100%;"
         default-expand-all
         size="mini"
         v-loading="loading"

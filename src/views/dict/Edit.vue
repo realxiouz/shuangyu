@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <el-row type="flex" justify="space-between" style="margin-bottom:20px;" align="bottom">
+    <el-row class="page-tools" type="flex" justify="space-between"  align="bottom">
       <span style="font-weight:700;color:#303133;" v-if="!dictVisible">{{this.curNode.categoryName}}</span>
       <span></span>
       <el-button type="primary" size="mini" @click="handleAdd" :disabled="dictVisible">添加</el-button>

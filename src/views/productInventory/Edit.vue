@@ -94,7 +94,7 @@
         </el-col>
       </el-row>
     </el-form>
-    <div slot="footer" style="text-align:center;">
+    <div slot="footer" style="text-align:right;">
       <el-button size="mini" @click="onCancel">返 回</el-button>
     </div>
   </div>

@@ -25,7 +25,7 @@
         <el-table-column prop="user" label="用户名" width="100" align="center"></el-table-column>
         <el-table-column prop="ip" label="IP" width="200" align="center"></el-table-column>
         <el-table-column prop="callbackUrl" label="回调地址" align="center"></el-table-column>
-        <el-table-column prop="remark" label="备注" align="center"></el-table-column>
+        <el-table-column prop="remark" label="备注" align="left"></el-table-column>
         <el-table-column label="操作" align="center" width="180">
           <template slot-scope="scope">
             <el-button @click="onEdit(scope.row)" type="text" size="mini" class="btn-primary">编辑</el-button>

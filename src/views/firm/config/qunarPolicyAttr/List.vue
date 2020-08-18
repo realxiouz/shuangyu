@@ -22,7 +22,7 @@
               <font v-else-if="scope.row.required === false">否</font>
             </template>
           </el-table-column>
-          <el-table-column label="备注" prop="remark" />
+          <el-table-column label="备注" align="left" prop="remark" />
           <el-table-column label="属性编码" prop="code" width="150" center>
             <template slot-scope="scope">
               <font class="el-code">{{scope.row.code}}</font>
@@ -143,7 +143,7 @@
               <font v-else-if="scope.row.required === false">否</font>
             </template>
           </el-table-column>
-          <el-table-column label="备注" prop="remark" />
+          <el-table-column label="备注" align="left" prop="remark" />
           <el-table-column label="属性编码" prop="code" width="150" center>
             <template slot-scope="scope">
               <font class="el-code">{{scope.row.code}}</font>

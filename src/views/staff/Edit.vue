@@ -11,7 +11,7 @@
       <span style="font-weight:700;color:#303133;" v-if="!staffAddVisible">{{
         this.curNode.deptName
       }}</span>
-      <el-row>
+      <el-row class="page-tools">
         <el-button
           type="primary"
           size="mini"

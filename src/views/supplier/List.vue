@@ -22,7 +22,7 @@
             <el-rate v-model="scope.row.priority" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" disabled/>
           </template>
         </el-table-column>
-        <el-table-column prop="remark" label="备注" align="center"></el-table-column>
+        <el-table-column prop="remark" label="备注" align="left"></el-table-column>
         <el-table-column label="操作" align="center" fixed="right" width="350">
           <template slot-scope="scope">
             <el-button type="text" size="mini" class="btn-primary" @click="onEdit(scope.$index, scope.row)">编辑</el-button>

@@ -18,7 +18,7 @@
           <el-table-column type="selection" width="50"></el-table-column>
           <el-table-column prop="navName" label="导航名称" width="300" align="center"></el-table-column>
           <el-table-column prop="navUrl" label="导航地址" width="300" align="center"> </el-table-column>
-          <el-table-column prop="remark" label="备注" show-overflow-tooltip></el-table-column>
+          <el-table-column prop="remark" label="备注" align="left" show-overflow-tooltip></el-table-column>
         </el-table>
 
       </el-form>
