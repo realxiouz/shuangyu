@@ -24,6 +24,10 @@
           <span class="tree-node" slot-scope="{ node, data }">
             <span>{{ node.data.title }}</span>
             <span>
+              <span v-for="tag in node.data.tags" :key="tag">
+                <el-tag v-if="tag=='NAV'">导航</el-tag>
+                <el-tag v-else-if="tag=='VIEW'">视图</el-tag>
+              </span>
               <el-button type="text" size="mini" @click="nodeAdd(node, data)"
               >添加</el-button
               >
