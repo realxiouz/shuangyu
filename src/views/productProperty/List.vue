@@ -32,7 +32,7 @@
               <el-button type="text" size="mini" @click="onEdit(node, data)"
                 >编辑</el-button
               >
-              <el-button type="text" size="mini" @click="removeNode(node, data)"
+              <el-button type="text" size="mini" style="color:#F56C6C" @click="removeNode(node, data)"
                 >移除</el-button
               >
             </span>
