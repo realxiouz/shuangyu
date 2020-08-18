@@ -75,7 +75,7 @@
    
     <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" @refresh="onRefresh"></edit>
     
-    <el-dialog :title="lookTitle" center :visible.sync="showInfo" width="30%">
+    <el-dialog :title="lookTitle" :visible.sync="showInfo" width="30%">
       <look-lnfo
         v-if="showInfo"
         :flights="flightsInfo"

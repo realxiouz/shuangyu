@@ -46,7 +46,6 @@
       :title="addFlag ? '添加导航菜单' : '编辑导航菜单信息'"
       :visible.sync="dialogVisible"
       width="30%"
-      center
       :close-on-click-modal="false"
     >
       <el-form

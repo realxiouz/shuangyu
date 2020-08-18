@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <el-row type="flex" justify="space-between" align="bottom">
+    <el-row class="page-tools" type="flex" justify="space-between" align="bottom">
       <span style="font-weight:700;color:#303133;" v-if="!dictVisible">{{this.curNode.categoryName}}</span>
       <span></span>
       <el-button type="primary" size="mini" @click="handleAdd" :disabled="dictVisible">添加</el-button>
@@ -12,7 +12,7 @@
       :data="tableData"
       fit
       highlight-current-row
-      style="width: 100%;margin-bottom: 20px;"
+      style="width: 100%;"
     >
       <el-table-column prop="name" align="center" label="字典名称"></el-table-column>
       <el-table-column prop="key" align="center" label="字典键"></el-table-column>

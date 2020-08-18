@@ -41,7 +41,6 @@
         :visible.sync="dialogVisible"
         width="40%"
         :close-on-click-modal="false"
-        center
       >
         <edit
           v-if="dialogVisible"

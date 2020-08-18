@@ -1,15 +1,15 @@
 <template>
-  <div class="page-form">
-    <el-row>
+  <div class="page">
+    <el-row class="page-tools">
       <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="10">
           <div id="goBack" @click="goBack">
             <el-page-header></el-page-header>
           </div>
           <br>
-          <p style="font-size: 30px; font-weight: bold">客户</p>
-          <p style="font-size: 20px">基本信息</p>
-          <hr width="40%" align="left">
-          <el-form :rules="rules" :model="firmForm" ref="firmForm" label-position="left" label-width="20%" size="mini">
+          <p style="font-size: 30px; font-weight: bold ;padding-left:15px">客户</p>
+          <p style="font-size: 20px;padding-left:15px">基本信息</p>
+          <hr  align="left">
+          <el-form :rules="rules" :model="firmForm" ref="firmForm" label-position="right" label-width="90px" size="mini">
             <el-form-item label="客户类型" prop="firmType">
               <el-select v-model="firmForm.firmType" placeholder="请选择客户类型" @change="selectedCustomerType" style="width: 100%">
                 <el-option label="企业" :value="1"></el-option>
@@ -56,9 +56,9 @@
           
 
           <br><br>
-          <p style="font-size: 20px">财务信息</p>
-          <hr width="40%" align="left">
-          <el-form :rules="rules" :model="firmMerchantForm" ref="firmMerchantForm" label-position="left" label-width="20%" size="mini">
+          <p style="font-size: 20px;padding-left:15px">财务信息</p>
+          <hr align="left">
+          <el-form :rules="rules" :model="firmMerchantForm" ref="firmMerchantForm" label-position="right" label-width="15%" size="mini">
             <el-form-item label="银行名称">
               <el-input type="text" v-model.number="firmMerchantForm.merchantAccountName" placeholder="请输入银行名称.."></el-input>
             </el-form-item>
@@ -97,9 +97,9 @@
           </el-form>
 
           <br><br>
-          <p style="font-size: 20px">结算信息</p>
-          <hr width="40%" align="left">
-          <el-form :rules="rules" :model="firmMerchantForm" ref="firmMerchantForm" label-position="left" label-width="20%" size="mini">
+          <p style="font-size: 20px;padding-left:15px">结算信息</p>
+          <hr  align="left">
+          <el-form :rules="rules" :model="firmMerchantForm" ref="firmMerchantForm" label-position="right" label-width="90px" size="mini">
             <el-form-item label="付款方式">
               <el-select v-model="firmMerchantForm.paymentType" placeholder="请选择付款方式" style="width: 100%" >
                 <el-option label="DAIKOU 余额" :value="'DAIKOU'"></el-option>
@@ -123,7 +123,7 @@
           </el-form>
       </el-col>
     </el-row>
-    <el-row>
+    <el-row class="page-tools">
       <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="24">
         <div id="tabs">
           <el-tabs type="border" ref="tabs">
@@ -138,7 +138,7 @@
         </div>
       </el-col>
     </el-row>
-    <el-row>
+    <el-row class="page-search">
       <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="16">
         <div id="footer">
           <el-button type="primary" @click="addCustomerClick" size="mini">保 存</el-button>
@@ -548,10 +548,11 @@
     height: 60px;
     padding-top: 20px;
     overflow: hidden;
+    margin-left: 20px;
   }
 
   #footer button {
-    float: right;
+    /* float: right; */
   }
 
   .title {

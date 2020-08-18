@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <el-row type="flex" justify="space-between" style="margin-bottom:10px;" align="bottom">
+    <el-row class="page-tools" type="flex" justify="space-between" align="bottom">
       <span style="font-weight:700;color:#303133;" v-if="!apiVisible">{{this.curNode.title}}</span>
       <span></span>
       <el-button type="primary" size="mini" @click="apisEdit" :disabled="apiVisible">添加</el-button>
@@ -35,7 +35,6 @@
 
     <el-dialog
       title="编辑"
-      center
       :visible.sync="dialogVisible"
       width="33%"
       :close-on-click-modal="false"

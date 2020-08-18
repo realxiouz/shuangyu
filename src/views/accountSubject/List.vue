@@ -24,7 +24,9 @@
 <script>
 import subjectContent from "./Content.vue";
   import search from "./Search";
+import { MIXIN_LIST } from "@/utils/mixin";
 export default {
+  mixins: [MIXIN_LIST],
   data() {
     return {
       category: 0

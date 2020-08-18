@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-steps :active="step" finish-status="success">
+    <el-steps :active="step" finish-status="success" style="margin-bottom:20px;">
       <el-step title="查询航班信息"></el-step>
       <el-step title="添加乘机人"></el-step>
       <el-step title="下单"></el-step>
@@ -8,7 +8,7 @@
     </el-steps>
     <transition-group name="el-zoom-in-top">
       <div v-show="step == 0" :key="0">
-        <el-form :inline="true" label-position="top" :model="form">
+        <el-form :inline="true" label-position="top" :model="form" style="margin-bottom:20px;margin-left:15px">
           <el-form-item label="出发城市">
             <el-input v-model="form.dpt" />
           </el-form-item>

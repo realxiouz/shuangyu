@@ -1,6 +1,6 @@
 <template>
   <div class="page-form">
-    <el-dialog :title="keyId!=''?'编辑':'添加'" :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
+    <el-dialog :title="keyId!=''?'编辑设备信息':'添加设备信息'" width="40%" :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
       <el-form label-position="top" size="mini" :model="formData" ref="form">
         <el-col :span="24">
           <el-form-item label="设备名称" prop="deviceName">
