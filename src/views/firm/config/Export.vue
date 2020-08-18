@@ -1,16 +1,9 @@
 <template>
   <div class="contentBox">
-    <div class="page-back">
-      <el-button-group>
-        <el-button icon="el-icon-back" type="warning" @click="goBack"
-          >返回</el-button
-        >
-        <el-button icon="el-icon-plus" type="primary" @click="saveNotify()"
-          >保存</el-button
-        >
-      </el-button-group>
-    </div>
-    <el-row style="margin-bottom:20px; margin-left:20px;">
+    <div style="width:550px;height: 60px;line-height: 60px;font-size: 24px;border-bottom: 1px solid #ccc;margin-bottom: 20px">
+        去哪儿导单
+      </div>
+    <el-row style="margin-bottom:20px; ">
       <el-radio-group v-model="radio">
         <el-radio :label="1">原始单号导单</el-radio>
         <!-- <el-radio :label="2">lastId增量导单</el-radio> -->
@@ -23,12 +16,12 @@
       v-if="radio==1"
       ref="formData1"
       :model="formData"
-      label-width="110px"
+      label-width="70px"
       size="mini"
       :rules="formRules"
     >
       <el-row :gutter="15">
-        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="5">
           <el-form-item label="源单号:" prop="sourceOrderNo">
             <el-input v-model="formData.sourceOrderNo" clearable></el-input>
           </el-form-item>
@@ -79,7 +72,7 @@
       :rules="formRules"
       ref="formData3"
       :model="formData"
-      label-width="110px"
+      label-width="80px"
       size="mini"
     >
       <el-row>
@@ -110,6 +103,14 @@
         </el-form-item>
       </el-row>
     </el-form>
+    <el-button-group>
+        <!-- <el-button icon="el-icon-back" type="warning" @click="goBack"
+          >返回</el-button
+        > -->
+        <el-button icon="el-icon-plus" type="primary" @click="saveNotify()"
+          >保存</el-button
+        >
+      </el-button-group>
   </div>
 </template>
 <script>

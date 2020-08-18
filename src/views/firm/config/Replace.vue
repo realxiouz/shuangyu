@@ -1,60 +1,59 @@
 <template>
   <div class="bigBox">
     
-    <el-card class="contentBox">
-      <div slot="header">
-        <span>订单更新接口账号</span>
+      <div style="width:700px;height: 60px;line-height: 60px;font-size: 24px;border-bottom: 1px solid #ccc;margin-bottom: 20px">
+        订单更新管理
       </div>
-      <div class="page-back">
+      
+      <el-form
+        ref="orderForm"
+        :rules="orderRules"
+        :model="orderData"
+        label-width="70px"
+        size="mini"
+      >
+        <el-row :gutter="15">
+          <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="5">
+            <el-form-item label="域名:" prop="merchantDomain">
+              <el-input v-model="orderData.merchantDomain" disabled></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="5">
+            <span>代理商TTS域名,系统自动读取。</span>
+          </el-col>
+        </el-row>
+        <el-row :gutter="15">
+          <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="5">
+            <el-form-item label="用户名:" prop="user">
+              <el-input v-model="orderData.user" @blur="disabledOrder"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="5">
+            <span>代理商自己定义的非中文的用户名。</span>
+          </el-col>
+        </el-row>
+        <el-row :gutter="15">
+          <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="5">
+            <el-form-item label="密码:" prop="pass">
+              <el-input v-model="orderData.pass" show-password @blur="disabledOrder"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="5">
+            <span>代理商自己定义的密码。</span>
+          </el-col>
+        </el-row>
+        <div class="page-back">
       <el-button-group>
-        <el-button icon="el-icon-back" type="warning" @click="goBack"
+        <!-- <el-button icon="el-icon-back" type="warning" @click="goBack"
           >返回</el-button
-        >
+        > -->
         <el-button icon="el-icon-plus" type="primary"  @click="saveOrder()" :disabled="isOrderUpdateDisable"
           >保存</el-button
         >
       </el-button-group>
     </div>
-      <el-form
-        ref="orderForm"
-        :rules="orderRules"
-        :model="orderData"
-        label-width="130px"
-        size="mini"
-      >
-        <el-row :gutter="15">
-          <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="7">
-            <el-form-item label="域名:" prop="merchantDomain">
-              <el-input v-model="orderData.merchantDomain" disabled></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="7">
-            <span>代理商TTS域名,系统自动读取。</span>
-          </el-col>
-        </el-row>
-        <el-row :gutter="15">
-          <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="7">
-            <el-form-item label="用户名:" prop="user">
-              <el-input v-model="orderData.user" @blur="disabledOrder"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="7">
-            <span>代理商自己定义的非中文的用户名。</span>
-          </el-col>
-        </el-row>
-        <el-row :gutter="15">
-          <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="7">
-            <el-form-item label="密码:" prop="pass">
-              <el-input v-model="orderData.pass" show-password @blur="disabledOrder"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="7">
-            <span>代理商自己定义的密码。</span>
-          </el-col>
-        </el-row>
         
       </el-form>
-    </el-card>
 
   </div>
 </template>

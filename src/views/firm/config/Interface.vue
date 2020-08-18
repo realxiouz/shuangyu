@@ -1,24 +1,14 @@
 <template>
   <div class="bigBox">
-    <el-card class="contentBox">
-      <div slot="header">
-        <span>去哪儿订单接口账号</span>
+      <div style="width:800px;height: 60px;line-height: 60px;font-size: 24px;border-bottom: 1px solid #ccc;margin-bottom: 20px">
+        订单接口管理
       </div>
-      <div class="page-back">
-      <el-button-group>
-        <el-button icon="el-icon-back" type="warning" @click="goBack"
-          >返回</el-button
-        >
-        <el-button icon="el-icon-plus" type="primary"  :disabled="isOrderDisable" @click="saveOrder()"
-          >保存</el-button
-        >
-      </el-button-group>
-    </div>
+      
       <el-form
         ref="orderForm"
         :rules="orderRules"
         :model="orderData"
-        label-width="130px"
+        label-width="70px"
         size="mini"
       >
         <el-row :gutter="15">
@@ -61,8 +51,17 @@
             <span>代理商用于导出导入的服务器IP地址,多个IP时一行一个。</span>
           </el-col>
         </el-row>
+        <div class="page-back">
+      <el-button-group>
+        <!-- <el-button icon="el-icon-back" type="warning" @click="goBack"
+          >返回</el-button
+        > -->
+        <el-button icon="el-icon-plus" type="primary"  :disabled="isOrderDisable" @click="saveOrder()"
+          >保存</el-button
+        >
+      </el-button-group>
+    </div>
       </el-form>
-    </el-card>
 
   </div>
 </template>

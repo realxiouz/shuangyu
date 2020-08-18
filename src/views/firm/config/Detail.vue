@@ -1,12 +1,10 @@
 <template>
   <div class="bigBox">
-    <el-card class="contentBox">
-      <el-row>
+      <!-- <el-row>
         <el-col :span="5">
           <el-button type="warning" @click="goBack" size="mini">返回</el-button>
         </el-col>
-      </el-row>
-    </el-card>
+      </el-row> -->
     <el-collapse v-model="activeNames">
       <el-collapse-item name="1">
         <span class="collapse-title" slot="title">

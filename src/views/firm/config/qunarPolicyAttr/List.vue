@@ -1,16 +1,6 @@
 <template>
   <div class="">
-    <div class="page-back">
-      <el-button-group>
-        <el-button icon="el-icon-back" type="warning" @click="handleBack"
-          >返回</el-button
-        >
-        <el-button icon="el-icon-plus" type="primary" @click="handleSave"
-          >保存</el-button
-        >
-      </el-button-group>
-    </div>
-    <search class="page-search" ref="search" @onSearch="onSearch" :policyType="params.policyType"/>
+    <search class="page-search" style="margin-top:5px" ref="search" @onSearch="onSearch" :policyType="params.policyType"/>
     <el-tabs
       class="page-tabs"
       v-model="activeName"
@@ -260,6 +250,16 @@
         </el-table>
       </el-tab-pane>
     </el-tabs>
+    <div class="page-back">
+      <el-button-group>
+        <!-- <el-button icon="el-icon-back" type="warning" @click="handleBack"
+          >返回</el-button
+        > -->
+        <el-button icon="el-icon-plus" type="primary" @click="handleSave"
+          >保存</el-button
+        >
+      </el-button-group>
+    </div>
   </div>
 </template>
 

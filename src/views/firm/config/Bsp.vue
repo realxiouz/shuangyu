@@ -1,23 +1,11 @@
 <template>
   <div class="contentBox">
     <el-main>
-      <div class="page-back">
-        <el-button-group>
-          <el-button icon="el-icon-back" type="warning" @click="handleBack"
-          >返回
-          </el-button
-          >
-          <el-button icon="el-icon-plus" type="primary" @click="handleConfirm"
-          >保存
-          </el-button
-          >
-        </el-button-group>
-      </div>
-      <div style="height: 60px;line-height: 60px;font-size: 24px;border-bottom: 1px solid #ccc;margin-bottom: 20px">
+      <div style="width:550px;height: 60px;line-height: 60px;font-size: 24px;border-bottom: 1px solid #ccc;margin-bottom: 20px">
         BSP账号配置
       </div>
       <el-row>
-        <el-col :xs="24" :sm="15" :md="12" :lg="8" :xl="8">
+        <el-col :xs="24" :sm="15" :md="12" :lg="8" :xl="7">
           <el-form ref="configForm" :model="formData" :rules="rules" label-width="100px" size="mini">
             <el-form-item label="访问地址:" prop="loginUrl">
               <el-input v-model="formData.loginUrl" placeholder="请输入访问地址.."></el-input>
@@ -46,6 +34,18 @@
           </el-form>
         </el-col>
       </el-row>
+      <div class="page-back">
+        <el-button-group>
+          <!-- <el-button icon="el-icon-back" type="warning" @click="handleBack"
+          >返回
+          </el-button
+          > -->
+          <el-button icon="el-icon-plus" type="primary" @click="handleConfirm"
+          >保存
+          </el-button
+          >
+        </el-button-group>
+      </div>
     </el-main>
   </div>
 </template>

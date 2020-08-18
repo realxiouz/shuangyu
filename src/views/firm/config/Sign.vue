@@ -1,25 +1,14 @@
 <template>
   <div class="bigBox">
-    
-    <el-card class="contentBox">
-      <div slot="header">
-        <span>第三方账户签约</span>
+     <div style="width:550px;height: 60px;line-height: 60px;font-size: 24px;border-bottom: 1px solid #ccc;margin-bottom: 20px">
+        第三方账户签约
       </div>
-      <div class="page-back">
-      <el-button-group>
-        <el-button icon="el-icon-back" type="warning" @click="goBack"
-          >返回</el-button
-        >
-        <el-button icon="el-icon-plus" type="primary" :disabled="isDisable" @click="saveSign()"
-          >保存</el-button
-        >
-      </el-button-group>
-    </div>
+      
       <el-form
         ref="signForm"
         :rules="signRules"
         :model="signData"
-        label-width="130px"
+        label-width="90px"
         size="mini"
       >
         <el-row >
@@ -34,14 +23,23 @@
           </el-col>
         </el-row>
         <el-row >
-          <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="7">
+          <el-col :xs="24" :sm="12" :md="10" :lg="9" :xl="6">
             <el-form-item label="签约账号:" prop="signedAccount">
               <el-input v-model="signData.signedAccount" ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
-    </el-card>
+      <div class="page-back">
+      <el-button-group>
+        <!-- <el-button icon="el-icon-back" type="warning" @click="goBack"
+          >返回</el-button
+        > -->
+        <el-button icon="el-icon-plus" type="primary" :disabled="isDisable" @click="saveSign()"
+          >保存</el-button
+        >
+      </el-button-group>
+    </div>
   </div>
 </template>
 <script>

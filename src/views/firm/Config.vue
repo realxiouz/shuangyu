@@ -2,8 +2,8 @@
   <div class="home contentBox">
     <el-row>
       <el-col class="el-col-left">
-        <el-tabs :tab-position="tabPosition" style="min-height: 200px;" @tab-click="handleClick">
-          <el-tab-pane v-for="(item,index) in configNavs" :key="index" :label=item.navName></el-tab-pane>
+        <el-tabs :tab-position="tabPosition" style="min-height: 200px;"  @tab-click="handleClick">
+          <el-tab-pane v-for="(item,index) in configNavs" :key="index"  :label=item.navName></el-tab-pane>
         </el-tabs>
       </el-col>
       <el-col class="el-col-right">
@@ -74,12 +74,12 @@
 
 <style>
   .el-col-left{
-    width: 20%;
+    width: 10%;
     height: auto;
     float: left;
   }
   .el-col-right{
-    width: 80%;
+    width: 90%;
     height: auto;
     float: left;
   }
