@@ -9,181 +9,12 @@
         :disabled="isUpdate"
         :rules="rules"
         :model="formData"
-        label-position="top"
+        label-position="left"
         label-width="97px"
         size="mini"
-        style="width: 100%"
+        style="width: 80%"
       >
-        <div style="margin-top:15px;padding:15px;">
-          <el-divider>订单信息</el-divider>
-          <el-row :gutter="30">
-            <el-col :span="8">
-              <el-form-item label="订单类型:">
-                <el-tag>{{this.formData.orderType|orderType}}</el-tag>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="客户:" prop="merchantId">
-                <el-select
-                  v-model="formData.merchantId"
-                  filterable
-                  @change="selectedCustomer"
-                  placeholder="请选择"
-                  style="width: 100%"
-                >
-                  <el-option
-                    v-for="item in customerList"
-                    :key="item.merchantId"
-                    :label="item.firm.firmName"
-                    :value="item.merchantId"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="账号:" prop="accountId">
-                <el-select
-                  v-model="formData.accountId"
-                  filterable
-                  :disabled="customerSelected && !update"
-                  placeholder="请选择"
-                  style="width: 100%"
-                >
-                  <el-option
-                    v-for="item in accountList"
-                    :key="item.accountId"
-                    :label="item.username"
-                    :value="item.accountId"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="联系人姓名:" prop="contactName">
-                <el-input type="text" v-model="formData.contactName" placeholder="请输入联系人姓名"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="发货期限:" prop="expireDate">
-                <el-date-picker
-                  v-model="formData.expireDate"
-                  type="date"
-                  placeholder="选择日期"
-                  style="width: 100%"
-                  value-format="timestamp"
-                ></el-date-picker>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="仓库:" prop="warehouseId">
-                <el-select
-                  v-model="formData.warehouseId"
-                  filterable
-                  placeholder="请选择"
-                  @change="selectedWarehouse"
-                  style="width: 100%"
-                >
-                  <el-option
-                    v-for="item in warehouseList"
-                    :key="item.warehouseCode"
-                    :label="item.warehouseName"
-                    :value="item.warehouseCode"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="出入库状态:">
-                <span>
-                  {{
-                  formData.warehouseStatus == 2 ? "未出库" : "已出库"
-                  }}
-                </span>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="出库时间:" prop="warehouseDate">
-                <el-date-picker
-                  v-model="formData.warehouseDate"
-                  type="date"
-                  placeholder="选择日期"
-                  style="width: 100%"
-                  value-format="timestamp"
-                ></el-date-picker>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="快递公司:" prop="expressId">
-                <el-select
-                  v-model="formData.expressId"
-                  @change="selectedExpress"
-                  filterable
-                  placeholder="请选择"
-                  style="width: 100%"
-                >
-                  <el-option
-                    v-for="item in expressList"
-                    :key="item.merchantId"
-                    :label="item.firm.firmName"
-                    :value="item.merchantId"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="付款方式" prop="paymentMode">
-                <el-input
-                  v-model="formData.paymentMode"
-                  :fetch-suggestions="querySearchAsync"
-                  placeholder="付款方式"
-                  @select="selectedPaymode"
-                  style="width: 100%"
-                />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="成交金额:">
-                {{ formData.totalAmount }}
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="实收金额:">{{ formData.receiptAmount }}</el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="结算账户:" prop="fundAccountId">
-                <el-select
-                  v-model="formData.fundAccountId"
-                  filterable
-                  placeholder="请选择"
-                  @change="selectedFundAccount"
-                  style="width: 100%"
-                >
-                  <el-option
-                    v-for="item in funAccountList"
-                    :key="item.accountId"
-                    :label="item.accountName"
-                    :value="item.accountId"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="制单人:">{{ this.$store.getters.fullName }}</el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="制单时间:">{{ new Date() | time("YYYY-MM-DD") }}</el-form-item>
-            </el-col>
-          </el-row>
-        </div>
-        <div style="margin-top:15px;padding:15px;">
-          <el-divider>商品信息</el-divider>
-          <goods v-model="orderDetails" @total="handleTotal"/>
-        </div>
-        <div style="margin-top:15px;padding:15px;">
-          <el-divider>乘客信息</el-divider>
-          <passengers v-model="passengers" />
-        </div>
-        <!-- <el-row>
+        <el-row>
           <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
             <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
               <el-form-item label="客户:" prop="merchantId">
@@ -293,10 +124,10 @@
               </el-form-item>
             </el-col>
           </el-col>
-        </el-row> -->
-        <!-- <goods v-model="orderDetails" @total="handleTotal"/>
-        <passengers v-model="passengers" /> -->
-        <!-- <el-row style="width: 80%; margin-top: 10px">
+        </el-row>
+        <goods v-model="orderDetails" @total="handleTotal"/>
+        <passengers v-model="passengers" />
+        <el-row style="width: 80%; margin-top: 10px">
           <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
             <el-input type="textarea" v-model="formData.remark" placeholder="暂无备注信息"></el-input>
           </el-col>
@@ -332,7 +163,7 @@
               <el-form-item label="制单时间:">{{ new Date() | time("YYYY-MM-DD") }}</el-form-item>
             </el-col>
           </el-col>
-        </el-row> -->
+        </el-row>
         <el-row>
           <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="16">
             <div id="footer">

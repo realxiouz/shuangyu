@@ -88,7 +88,14 @@
               align="center"
             ></el-table-column>
             <el-table-column prop="quantity" label="数量" width="60" />
-            <el-table-column prop="inventoryQuantity" label="库存" width="60" />
+            <el-table-column label="库存" width="60">
+              <template v-slot="{row}" >
+                <el-link type="primary"
+                 :disabled="row.inventoryQuantity==0&&false"
+                 @click.stop="onOrderRoot(scope.row)"
+                >{{row.inventoryQuantity}}</el-link>
+              </template>
+            </el-table-column>
           </el-table>
 
           <el-table
@@ -369,6 +376,18 @@ export default {
             }
         }
         return obj
+    },
+    onOrderRoot(i) {
+      if (!i.rootOrderNo) {
+        this.$message.error('rootOrderNo 为空')
+        return
+      }
+      this.$router.push({
+        name: 'orderRoot',
+        query: {
+          rootNo: i.rootOrderNo
+        }
+      })
     }
   },
   components: {

@@ -8,8 +8,11 @@ import {
   outWarehouseOrder,
   removeOne,
   saveOrder,
-  updateOne
+  updateOne,
+  getPurchaseList,
+  getSellList
 } from '@/api/productOrder';
+import { resolve, reject } from 'core-js/fn/promise';
 
 const actions = {
   saveOrder({commit}, args) {
@@ -130,7 +133,28 @@ const actions = {
           reject(error);
         });
     });
-  }
+  },
+
+  getSellList(_ , args) {
+    return new Promise((resolve, reject) => {
+      const { rootOrderNo } = args
+      getSellList(rootOrderNo).then(data => [
+        resolve(data)
+      ]).catch(error => {
+        reject(error)
+      })
+    })
+  },
+  getPurchaseList(_ , args) {
+    return new Promise((resolve, reject) => {
+      const { rootOrderNo } = args
+      getPurchaseList(rootOrderNo).then(data => [
+        resolve(data)
+      ]).catch(error => {
+        reject(error)
+      })
+    })
+  },
 }
 
 export default {

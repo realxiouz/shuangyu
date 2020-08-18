@@ -208,7 +208,7 @@
               </template>
             </el-col>
           </el-row>
-          <el-divider content-position="left">sku属性</el-divider>
+          <el-divider content-position="left">销售属性</el-divider>
           <el-row>
             <el-col
               :xs="24"
