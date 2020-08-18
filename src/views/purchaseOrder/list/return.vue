@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <search class="page-search" ref="search" @onSearch="onSearch" />
+    <!-- <search class="page-search" ref="search" @onSearch="onSearch" /> -->
     <el-row class="page-tools" >
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
     </el-row>
@@ -230,7 +230,7 @@
     </el-dialog>
 
     <el-dialog :visible.sync="changeTicketShow" title="改签">
-      <change-ticket />
+      <!-- <change-ticket /> -->
     </el-dialog>
   </div>
 </template>
@@ -244,9 +244,9 @@ import {
   formatPaymentStatus,
   formatWarehouseStatus
 } from "@/utils/productStatus.js";
-import search from "./Search";
+// import search from "./Search";
 
-import ChangeTicket from './changeTicket'
+// import ChangeTicket from './changeTicket'
 
 export default {
   mixins: [MIXIN_LIST],
@@ -262,7 +262,7 @@ export default {
         removeOne: "productOrder/removeOne"
       },
       params: {
-        orderType: -1
+        orderType: 202
       },
 
       refundTicketShow: false,
@@ -271,7 +271,7 @@ export default {
     };
   },
   created() {
-    this.params.orderType = this.$route.query.orderType;
+    // this.params.orderType = this.$route.query.orderType;
   },
   methods: {
     formatOrderStatus,
@@ -421,17 +421,17 @@ export default {
       })
     }
   },
-  watch: {
-    "$route.query.orderType": {
-      handler(val) {
-        this.params.orderType = val;
-        this.loadData();
-      }
-    }
-  },
+//   watch: {
+//     "$route.query.orderType": {
+//       handler(val) {
+//         this.params.orderType = val;
+//         this.loadData();
+//       }
+//     }
+//   },
   components: {
-    search,
-    ChangeTicket,
+    // search,
+    // ChangeTicket,
   }
 };
 </script>

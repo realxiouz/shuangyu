@@ -75,3 +75,18 @@ export function getPageList(pageFlag, pageSize, params) {
     params
   });
 }
+
+export function getPurchaseList(rootOrderNo) {
+  return request({
+    url: `/policy/order/all/purchase/${rootOrderNo}`,
+    method: 'get'
+  })
+}
+
+export function getSellList(rootOrderNo) {
+  return request({
+    url: `/policy/order/all/sell/${rootOrderNo}`,
+    method: 'get'
+  })
+}
+

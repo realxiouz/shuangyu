@@ -23,14 +23,14 @@ module.exports = {
   publicPath: '/',
   outputDir: 'dist',
   assetsDir: 'static',
-  lintOnSave: process.env.NODE_ENV === 'development',
+  lintOnSave: false, //process.env.NODE_ENV === 'development',
   productionSourceMap: false,
   devServer: {
     port: port,
     open: true,
     overlay: {
       warnings: false,
-      errors: true
+      errors: false,
     },
     proxy: {
       // change xxx-api/login => mock/login

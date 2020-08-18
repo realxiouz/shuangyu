@@ -436,8 +436,8 @@ export default {
     }
   },
   created() {
-    this.loadData();
-    this.loadPendingTotal();
+    // this.loadData();
+    // this.loadPendingTotal();
     this.timer = setInterval(() => {
       setTimeout(this.loadPendingTotal, 0);
     }, 60000);

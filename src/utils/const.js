@@ -83,3 +83,27 @@ export const CATEGORY_MAP = [
 ];
 
 export const CATEGORY_TYPES = genArrByMap(CATEGORY_MAP);
+
+export const ORDER_TYPES_MAP = {
+  1: '其他入库',
+  2: '其他出库',
+  100: '销售单',
+  101: '销售出库单',
+  102: '销售退款单',
+  103: '销售退票入库单',
+  104: '销售改签入库单',
+  105: '销售改签出库单',
+  200: '采购单',
+  201: '采购入库单',
+  202: '采购退款单',
+  203: '采购退票出库单',
+  204: '采购改签出库单',
+  205: '采购改签入库单'
+}
+
+export const ORDER_STATUS_MAP = {
+  0: '草稿',
+  1: '已完成',
+  2: '已确认',
+  3: '已作废',
+}
