@@ -70,7 +70,7 @@
           removeOne: 'jobScheduler/removeOne'
         },
         params:{
-          tagCode: "financeOrder"
+          tagCode: "financeEo"
         },
         tagTypes:[
           {

@@ -1,7 +1,7 @@
 <template>
   <el-row type="flex" justify="space-between" align="bottom">
     <el-col :xs="16" :sm="17" :md="18" :lg="19" :xl="20">
-      <el-form label-width="110px" size="mini">
+      <el-form label-width="80px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="币种编码:">
             <el-input v-model="formData.currencyCode" placeholder="请输入币种编码搜索..."></el-input>

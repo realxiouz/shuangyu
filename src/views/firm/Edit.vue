@@ -1,6 +1,6 @@
 <template>
   <div class="page-form">
-    <el-dialog :title="keyId!=''?'编辑企业':'添加企业'" :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
+    <el-dialog :title="keyId!=''?'编辑企业':'添加企业'" width="30%" :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
     <el-form ref="form" :rules="formRules" :model="formData" label-width="110px" size="mini">
       <el-form-item label="企业名称" prop="firmName">
         <el-input type="text" placeholder="请输入企业名称" v-model="formData.firmName"></el-input>

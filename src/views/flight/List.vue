@@ -1,7 +1,7 @@
 <template>
   <div class="page">
    <search class="page-search" ref="search" @onSearch="onSearch"/>
-      <el-row style="margin-bottom:15px; margin-left:50px;">
+      <el-row class="page-tools" >
         <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
       </el-row>
       <el-table
@@ -9,7 +9,7 @@
         v-loading="loading"
         :data="tableData"
         highlight-current-row
-        style="width: 100%;margin-bottom: 15px;"
+        style="width: 100%;"
         size="mini"
       >
         <el-table-column type="expand">
@@ -129,8 +129,8 @@
 
         <el-table-column label="操作" align="center" width="180">
           <template slot-scope="scope">
-            <el-button @click="onEdit(scope.row.flightId)" type="primary" size="mini">编辑</el-button>
-            <el-button @click="onDel(scope.row.flightId)" type="danger" size="mini">删除</el-button>
+            <el-button @click="onEdit(scope.row.flightId)" type="text" size="mini" class="btn-primary">编辑</el-button>
+            <el-button @click="onDel(scope.row.flightId)" type="text" size="mini" class="btn-danger">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

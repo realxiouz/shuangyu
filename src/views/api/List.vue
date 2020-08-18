@@ -31,10 +31,10 @@
         </el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="180">
           <template slot-scope="scope">
-            <el-button @click="onEdit(scope.row.apiId)" style="border:none;color:#409EFF">编辑</el-button>
+            <el-button @click="onEdit(scope.row.apiId)" type="text" size="mini" class="btn-primary">编辑</el-button>
             <el-button
               @click.native.prevent="onDel(scope.row.apiId)"
-              style="border:none;color:#F56C6C"
+              type="text" size="mini" class="btn-danger"
             >删除
             </el-button>
           </template>

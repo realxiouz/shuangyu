@@ -39,18 +39,18 @@
       </el-table-column>
       <el-table-column label="操作" fixed="right" align="center" width="360">
         <template slot-scope="scope">
-          <el-button style="border:none;color:#409EFF" @click="onEdit(scope.row.airlineCode)"
+          <el-button type="text" size="mini" class="btn-primary" @click="onEdit(scope.row.airlineCode)"
             >编辑</el-button
           >
-          <el-button style="border:none;color:#67C23A"
+          <el-button type="text" size="mini" class="btn-primary"
             @click="lookFlights(scope.row.flights)"
             >查看航班</el-button
           >
-          <el-button style="border:none;color:#67C23A"
+          <el-button type="text" size="mini" class="btn-primary"
             @click="lookSegments(scope.row.segments)"
             >查看航段</el-button
           >
-          <el-button style="border:none;color:#F56C6C"
+          <el-button type="text" size="mini" class="btn-danger"
             @click="onDel(scope.row.airlineCode)"
             >删除</el-button
           >

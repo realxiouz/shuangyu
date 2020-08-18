@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form ref="form" :model="formData" label-width="130px" size="mini">
+    <el-form ref="form" :model="formData" label-width="110px" size="mini">
       <input type="hidden" v-model="formData.firmId" />
       <el-form-item label="账号:">
         <el-input v-model="formData.etermAccount"></el-input>

@@ -7,7 +7,7 @@
       :data="tableData"
       row-key="deptId"
       highlight-current-row
-      style="width: 100%;margin-bottom:15px"
+      style="width: 100%"
       size="mini"
       fit
       :expand-row-keys="expandRowKeys"
@@ -38,20 +38,18 @@
       ></el-table-column>
       <el-table-column fixed="right" label="操作" width="280">
         <template slot-scope="scope">
-          <el-button @click="handleRowVal=scope.row;parentId=scope.row.deptId;onAdd()" type="success" size="mini"
+          <el-button @click="handleRowVal=scope.row;parentId=scope.row.deptId;onAdd()" type="text" size="mini" class="btn-primary"
             >添加子部门</el-button
           >
           <span v-show="0 == scope.row.deptType" style="margin-left: 10px;">
             <el-button
               @click="handleRowVal=scope.row;parentId=scope.row.deptId;onEdit(scope.row.deptId)"
-              type="primary"
-              size="mini"
+              type="text" size="mini" class="btn-primary"
               >编辑</el-button
             >
             <el-button
               @click.native.prevent="handleRowVal=scope.row;onDel(scope.row.deptId)"
-              type="danger"
-              size="mini"
+             type="text" size="mini" class="btn-danger"
               >删除</el-button
             >
           </span>

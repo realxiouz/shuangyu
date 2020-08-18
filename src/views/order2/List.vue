@@ -7,7 +7,7 @@
         size="mini"
         highlight-current-row
         max-height="650"
-        style="width: 100%;margin-bottom:15px"
+        style="width: 100%;"
         v-loading="loading"
         fit
         show-summary
@@ -117,8 +117,8 @@
         </el-table-column>
         <el-table-column fixed="right" label="操作" align="center" width="150">
           <template slot-scope="scope">
-            <el-button @click="handleOrderDetail(scope.row)" type="primary" size="mini">查看</el-button>
-            <el-button type="danger" size="mini" @click="handleRemove(scope.row.orderNo)">删除</el-button>
+            <el-button @click="handleOrderDetail(scope.row)" type="text" size="mini" class="btn-primary">查看</el-button>
+            <el-button type="text" size="mini" class="btn-danger" @click="handleRemove(scope.row.orderNo)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

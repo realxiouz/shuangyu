@@ -1,7 +1,6 @@
 <template>
-  <div class="bigBox">
-    <div class="searchBox">
-      <div style="margin-top:10px;">
+  <div class="page-search" style="margin-top:10px">
+      <div >
         <span>
           <el-button @click="geAllData()" type="info" size="mini">
             待处理
@@ -33,13 +32,10 @@
             ></el-badge>
           </el-button>
         </span>
-      </div>
     </div>
+    <order-task-search class="page-search" @onSearch="onSearch" ref="search"></order-task-search>
     <div class="contentBox">
-      <order-task-search @onSearch="onSearch" ref="search"></order-task-search>
-    </div>
-    <div class="contentBox">
-      <el-row style="margin-bottom:15px;margin-left:40px;">
+      <el-row style="margin-bottom:15px;margin-left:10px;">
         <el-button
           :disabled="this.btnTransfer"
           icon="el-icon-document-copy"
@@ -243,6 +239,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
+        class="page-footer"
         :current-page="currentPage"
         @size-change="onSizeChange"
         @prev-click="prevClick"

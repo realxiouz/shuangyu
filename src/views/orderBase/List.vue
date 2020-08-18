@@ -1,14 +1,14 @@
 <template>
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch" />
-    <el-row class="page-tools" style="margin-bottom:15px;margin-left:40px">
+    <el-row class="page-tools" >
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
     </el-row>
     <el-table
       class="page-table"
       v-loading="loading"
       :data="tableData"
-      style="width: 100%;margin-bottom: 15px;"
+      style="width: 100%;"
       size="mini"
       border
     >
@@ -75,28 +75,28 @@
       />
       <el-table-column fixed="right" label="操作" align="center" width="200">
         <template v-slot="{ row, $index}">
-          <el-button @click="onEdit(row)">查看</el-button>
+          <el-button @click="onEdit(row)" type="text" size="mini" class="btn-primary">查看</el-button>
           <template v-if="params.orderType==100"></template>
           <template v-if="params.orderType==101">
-            <el-button @click="onWarehouse(row)">出库</el-button>
-            <el-button @click="onGoBuy(row)">采购</el-button>
+            <el-button @click="onWarehouse(row)" type="text" size="mini" class="btn-primary">出库</el-button>
+            <el-button @click="onGoBuy(row)" type="text" size="mini" class="btn-primary">采购</el-button>
           </template>
           <template v-if="params.orderType==102">
-            <el-button @click="intercept(row)">拦截</el-button>
+            <el-button @click="intercept(row)" type="text" size="mini" class="btn-primary">拦截</el-button>
           </template>
           <template v-if="params.orderType==103">
-            <el-button @click="refundTicket(row)">退款</el-button>
+            <el-button @click="refundTicket(row)" type="text" size="mini" class="btn-primary">退款</el-button>
           </template>
           <template v-if="params.orderType==104">
-            <el-button @click="changeTicket(row)">改签</el-button>
-            <el-button @click="changeTicket(row)">退改</el-button>
+            <el-button @click="changeTicket(row)" type="text" size="mini" class="btn-primary">改签</el-button>
+            <el-button @click="changeTicket(row)" type="text" size="mini" class="btn-primary">退改</el-button>
           </template>
           <template v-if="params.orderType==105">
-            <el-button @click="refundTicket(row)">入库</el-button>
+            <el-button @click="refundTicket(row)" type="text" size="mini" class="btn-primary">入库</el-button>
           </template>
           <template v-if="params.orderType==106">
-            <el-button @click="changeTicket(row)">出库</el-button>
-            <el-button @click="onGoBuy(row)">采购</el-button>
+            <el-button @click="changeTicket(row)" type="text" size="mini" class="btn-primary">出库</el-button>
+            <el-button @click="onGoBuy(row)" type="text" size="mini" class="btn-primary">采购</el-button>
           </template>
 
         </template>

@@ -43,7 +43,7 @@
                 filterable
               >
                 <el-option
-                  v-for="item in financeOrderConfigData"
+                  v-for="item in financeEoConfigData"
                   :key="item.foConfigId"
                   :label="item.user"
                   :value="item.foConfigId"
@@ -165,7 +165,7 @@
           ]
         },
         firmData: [],
-        financeOrderConfigData: [],
+        financeEoConfigData: [],
         jobConfigArray: [],
         cronPopover: false
       };
@@ -196,11 +196,11 @@
             console.log(error);
           });
       },
-      loadQunarFinanceOrderConfig(merchantId){
+      loadQunarFinanceEoConfig(merchantId){
         this.$store
-          .dispatch("qunarFinanceOrderConfig/getList", {merchantId: merchantId})
+          .dispatch("qunarFinanceEoConfig/getList", {merchantId: merchantId})
           .then(data => {
-              this.financeOrderConfigData = data;
+              this.financeEoConfigData = data;
           })
           .catch(error => {
             console.log(error);
@@ -209,7 +209,7 @@
       loadJobConfig(){
         let that = this;
         that.$store
-          .dispatch("jobConfig/getList", {tagCode: "financeOrder"})
+          .dispatch("jobConfig/getList", {tagCode: "financeEo"})
           .then(data => {
             if(data && data.length > 0){
               data.forEach(function(obj){
@@ -236,13 +236,13 @@
         if(val){
           let that = this;
           that.formData.foConfigId = null;
-          that.financeOrderConfigData = null;
+          that.financeEoConfigData = null;
           that.firmData.forEach(function(obj){
             if(obj.merchantId === val){
               that.formData.firmId = obj.firmId;
             }
           });
-          that.loadQunarFinanceOrderConfig(val);
+          that.loadQunarFinanceEoConfig(val);
         }
       },
       handleSwitch(){
@@ -262,9 +262,9 @@
           tag = that.formData.jobConfigList[0];
         }else{
           tag = {
-            tagId: "finance_order_" + 1,
-            tagName: "financeOrder",
-            tagCode: "financeOrder",
+            tagId: "finance_eo_" + 1,
+            tagName: "financeEo",
+            tagCode: "financeEo",
             tagType: 1,
             value: null
           };
@@ -330,14 +330,14 @@
           formObj = data;
         }else{
           let xxlJobGroup = {
-            appName: 'finance-order-provider',
+            appName: 'finance-eo-provider',
             addressType: 0,
             title: '财务导单执行器'
           };
           let xxlJobInfo = {
             jobDesc: data.schedulerName,
             jobCron: data.cron,
-            executorHandler: 'financeOrderJobHandler'
+            executorHandler: 'financeEoJobHandler'
           };
           formObj.xxlJobGroup = xxlJobGroup;
           formObj.xxlJobInfo = xxlJobInfo;
@@ -360,7 +360,7 @@
           that.formData.params.forEach(function(param){
             if(param.code === 'merchantId'){
               that.formData.merchantId = param._string;
-              that.loadQunarFinanceOrderConfig(that.formData.merchantId);
+              that.loadQunarFinanceEoConfig(that.formData.merchantId);
             }else if(param.code === 'foConfigId'){
               that.formData.foConfigId = param._string;
             }else if(jobConfig.code === param.code){

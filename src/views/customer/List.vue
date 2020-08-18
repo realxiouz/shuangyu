@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <search class="page-search" ref="search" @onSearch="onSearch" />
-    <el-row class="page-tools" style="margin-bottom:15px; margin-left:25px;">
+    <el-row class="page-tools" >
       <el-button
         icon="el-icon-plus"
         type="primary"
@@ -73,36 +73,31 @@
       <el-table-column label="操作" fixed="right" align="center" width="340">
         <template slot-scope="scope">
           <el-button
-            type="primary"
-            size="mini"
+            type="text" size="mini" class="btn-primary"
             @click="onEdit(scope.$index, scope.row)"
             >编辑</el-button
           >
           <el-button
-            type="danger"
-            size="mini"
-            @click="onDel(scope.row.merchantId)"
-            >删除</el-button
-          >
-          <el-button
             v-if="scope.row.staffId"
-            size="mini"
-            type='success'
+            type="text" size="mini" class="btn-primary"
             @click="handleAssociate(scope.row)"
             >查看用户
           </el-button>
           <el-button
             v-else
-            size="mini"
-            type='info'
+            type="text" size="mini" class="btn-primary"
             @click="handleAssociate(scope.row)"
             >关联用户
           </el-button>
            <el-button
-            type="primary"
-            size="mini"
+            type="text" size="mini" class="btn-primary"
             @click="onConfig(scope.row)"
             >配置</el-button>
+            <el-button
+            type="text" size="mini" class="btn-danger"
+            @click="onDel(scope.row.merchantId)"
+            >删除</el-button
+          >
           
         </template>
       </el-table-column>

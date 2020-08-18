@@ -2,6 +2,7 @@
   <div class="page-form">
     <el-dialog
       title="添加"
+      width="30%"
       :visible.sync="dialogVisible"
       @open="handleOpen"
       @close="handleClose"

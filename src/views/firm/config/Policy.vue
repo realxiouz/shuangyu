@@ -1,16 +1,16 @@
 <template>
-  <div class="page">
-    <search class="page-search" ref="search" @onSearch="onSearch" />
-    <el-row class="page-tools" justify="space-between">
+  <div class="page" style="margin-top:10px">
+    <el-row class="page-tools"  justify="space-between">
       <el-button icon="el-icon-back" type="warning" size="mini" @click="onBack">返回</el-button>
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
     </el-row>
+    <search class="page-search" ref="search" @onSearch="onSearch" />
     <el-table
       class="page-table"
       size="mini"
       v-loading="loading"
       :data="tableData"
-      style="width: 100%;margin-bottom:15px;"
+      style="width: 100%;"
     >
       <el-table-column label="企业名称" align="center" prop="firmName" />
       <el-table-column label="平台名称" align="center" prop="openName" />
@@ -42,8 +42,8 @@
 </template>
 
 <script>
-  import edit from "./Edit";
-  import search from "./Search";
+  import edit from "./qunarPolicyConfig/Edit";
+  import search from "./qunarPolicyConfig/Search";
   import {MIXIN_LIST} from "@/utils/mixin";
 
   export default {
@@ -65,7 +65,7 @@
     methods: {
       onBack(){
         let lastName = localStorage.getItem("lastName");
-        if(lastName && "undefined" !== lastName){
+        if(lastName){
           this.$router.push({name: lastName});
           localStorage.removeItem("lastName");
         }else{
@@ -74,15 +74,15 @@
       },
       fillParams(){
         let params = {};
-        if(localStorage.getItem("firmId") && "undefined" !== localStorage.getItem("firmId")){
+        if(localStorage.getItem("firmId")){
           params.firmId = localStorage.getItem("firmId");
        //   params.firmId = this.$route.params.firmId;
         }
-        if(localStorage.getItem("merchantId") && "undefined" !== localStorage.getItem("merchantId")){
+        if(localStorage.getItem("merchantId")){
           params.merchantId = localStorage.getItem("merchantId");
           //   params.merchantId = this.$route.params.merchantId;
         }
-        if(localStorage.getItem("openId") && "undefined" !== localStorage.getItem("openId")){
+        if(localStorage.getItem("openId")){
           params.openId = localStorage.getItem("openId");
         //  params.openId = this.$route.params.openId;
         }

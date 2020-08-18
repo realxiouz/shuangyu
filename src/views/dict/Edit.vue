@@ -12,7 +12,7 @@
       :data="tableData"
       fit
       highlight-current-row
-      style="width: 100%;margin-bottom: 20px;"
+      style="width: 100%;"
     >
       <el-table-column prop="name" align="center" label="字典名称"></el-table-column>
       <el-table-column prop="key" align="center" label="字典键"></el-table-column>
@@ -20,8 +20,8 @@
       <el-table-column align="center" prop="categoryCode" label="类别编码"></el-table-column>
       <el-table-column label="操作" align="center" width="180">
         <template slot-scope="scope">
-          <el-button @click="onEdit(scope.row)" type="primary" size="mini">编辑</el-button>
-          <el-button @click="onDel(scope.row)" type="danger" size="mini">删除</el-button>
+          <el-button @click="onEdit(scope.row)" type="text" size="mini" class="btn-primary">编辑</el-button>
+          <el-button @click="onDel(scope.row)" type="text" size="mini" class="btn-danger">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
