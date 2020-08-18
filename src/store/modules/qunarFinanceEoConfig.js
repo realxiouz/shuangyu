@@ -6,7 +6,7 @@ import {
   getList,
   getPageList,
   removeOne
-} from '@/api/qunarFinanceOrderConfig';
+} from '@/api/qunarFinanceEoConfig';
 
 const actions = {
   // eslint-disable-next-line no-unused-vars

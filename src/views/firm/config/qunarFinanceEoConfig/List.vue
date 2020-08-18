@@ -53,8 +53,8 @@
         dialogVisible: false,
         keyName: 'foConfigId',
         actions: {
-          getPageList: 'qunarFinanceOrderConfig/getPageList',
-          removeOne: 'qunarFinanceOrderConfig/removeOne'
+          getPageList: 'qunarFinanceEoConfig/getPageList',
+          removeOne: 'qunarFinanceEoConfig/removeOne'
         },
         firmId: localStorage.getItem("firmId"),
         merchantId: localStorage.getItem("merchantId"),

@@ -45,8 +45,8 @@
         dialogVisible: false,
         codeEnable: false,
         actions: {
-          getOne: 'qunarFinanceOrderConfig/getOne',
-          saveOne: 'qunarFinanceOrderConfig/saveOne'
+          getOne: 'qunarFinanceEoConfig/getOne',
+          saveOne: 'qunarFinanceEoConfig/saveOne'
         },
         rules: {
           user: [
