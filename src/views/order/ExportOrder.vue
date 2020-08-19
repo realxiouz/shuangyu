@@ -1,9 +1,9 @@
 <template>
-  <div class="contentBox">
-    <el-row style="margin-bottom:15px; margin-left:38px;">
+  <div class="page">
+    <el-row class="page-tools">
       <el-button icon="el-icon-plus" @click="exportOrder" type="primary" size="mini">导入</el-button>
     </el-row>
-    <el-form ref="formData" :model="formData" label-width="110px" size="mini">
+    <el-form class="page-search" ref="formData" :model="formData" label-width="70px" size="mini">
       <el-row>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="订单号:">
@@ -11,7 +11,7 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="订单状态:">
+          <el-form-item label-width="80px" label="订单状态:">
             <el-select
               v-model="formData.orderType"
               clearable
@@ -51,7 +51,6 @@
     <div>
       <el-dialog
         title="选择派遣人"
-        center
         :visible.sync="staffDialog"
         width="33%"
         :close-on-click-modal="false"
