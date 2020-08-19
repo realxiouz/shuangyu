@@ -17,34 +17,34 @@
           :data="treeData"
           :default-expanded-keys="curLine"
           :props="treeProps"
+          :expand-on-click-node="false"
           @node-click="handleNodeClick"
           draggable
           @node-drop="onNodeDrop"
         >
-          <span class="tree-node" slot-scope="{ node, data }">
-            <span>{{ node.data.title }}</span>
-            
-            <span>
-              <span>{{ node.data.uri }}</span>&nbsp;&nbsp;&nbsp;
-              <span>{{ node.data.component }}</span>
-              <span>
+          <el-row type="flex" justify="space-between" slot-scope="{ node, data }">
+            <el-col :span="6">{{ node.data.title }}</el-col>
+            <el-col :span="18">
+              <el-row>
+              <el-col>{{ node.data.uri }}</el-col>
+              <el-col>{{ node.data.component }}</el-col>
+              <el-col>
                 <el-switch disabled :value="node.data.enable" @change="enableSwitch(scope.row)"></el-switch>
-              </span>
-              <span v-for="tag in node.data.tags" :key="tag">
-                <el-tag v-if="tag=='NAV'">导航</el-tag>
-                <el-tag v-else-if="tag=='VIEW'">视图</el-tag>
-              </span>
-              <el-button type="text" size="mini" class="btn-primary" @click="nodeAdd(node, data)"
-              >添加</el-button
-              >
-              <el-button type="text" size="mini" class="btn-primary" @click="onEdit(node, data)"
-              >编辑</el-button
-              >
-              <el-button type="text" size="mini" style="color:#F56C6C"  @click="removeNode(node, data)"
-              >移除</el-button
-              >
-            </span>
-          </span>
+              </el-col>
+              <el-col>
+                <div v-for="tag in node.data.tags" :key="tag">
+                  <el-tag v-if="tag=='NAV'">导航</el-tag>
+                  <el-tag v-else-if="tag=='VIEW'">视图</el-tag>
+                </div>
+              </el-col>
+              <el-col>
+                <el-button type="text" size="mini" class="btn-primary" @click="nodeAdd(node, data)">添加</el-button>
+                <el-button type="text" size="mini" class="btn-primary" @click="onEdit(node, data)">编辑</el-button>
+                <el-button type="text" size="mini" style="color:#F56C6C" @click="removeNode(node, data)">移除</el-button>
+              </el-col>
+              </el-row>
+            </el-col>
+          </el-row>
         </el-tree>
       </el-col>
       <el-col :xs="13" :sm="14" :md="15" :lg="16" :xl="10">
@@ -374,7 +374,7 @@
   };
 </script>
 
-<style >
+<style>
   .tree-node {
     flex: 1;
     display: flex;
