@@ -105,55 +105,6 @@
 
     <el-row v-show="step == 1" :gutter="20" >
       <el-col :span="16">
-        <!-- <el-form>
-          <el-row>
-            <el-col :span="16">
-              <el-form-item>
-                <el-input v-model="formPassenger.fullName" placeholder="填写乘客姓名" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item>
-                <el-select v-model="formPassenger.ageType">
-                  <el-option v-for="i in ageTypes" :key="i.value" :label="i.label" :value="i.value" placeholder="乘客类型"  />
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item>
-                <el-select v-model="formPassenger.idCardType">
-                  <el-option v-for="i in cardTypes" :key="i.value" :label="i.label" :value="i.value" placeholder="证件类型"  />
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="16">
-              <el-form-item>
-                <el-input v-model="formPassenger.idCardNo" placeholder="填写乘客证件号" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="16">
-              <el-form-item>
-                <el-input v-model="formPassenger.phone" placeholder="乘客电话" />
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </el-form>
-        <el-table :data="passengers" border style="margin-top:10px;" @selection-change="onPassengerChange">
-          <el-table-column label="选择" type="selection" />
-          <el-table-column label="乘客类型" width="70">
-            <template v-slot="{ row }">
-              <el-tag type="primary">{{ ageMap[row.ageType] }}</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column label="姓名" prop="fullName" />
-          <el-table-column label="电话" prop="phone" width="120" />
-          <el-table-column label="证件类型" width="90">
-            <template v-slot="{ row }">
-              <el-tag type="primary">{{ cardMap[row.idCardType] }}</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column label="证件号" prop="idCardNo" />
-        </el-table>-->
         <el-form :disabled="!!orderNo">
           <passengers ref="passengers" v-model="ps" />
         </el-form>
@@ -176,12 +127,6 @@
 
 <script>
 import { mapState } from "vuex";
-import {
-  CARD_TYPES_MAP,
-  AGE_TYPES_MAP,
-  AGE_TYPES,
-  CARD_TYPES
-} from "@/utils/const";
 import Passengers from "@/components/Passengers";
 
 export default {
@@ -215,18 +160,15 @@ export default {
         phone: ""
       },
       step: 0,
-      ageMap: AGE_TYPES_MAP,
-      cardMap: CARD_TYPES_MAP,
       selPassengers: [],
-      ageTypes: AGE_TYPES,
-      cardTypes: CARD_TYPES,
 
       flightData: [],
       loading: false,
       expandRowKeys: [],
-      orderNo: false,
+      orderNo: '',
 
-      ps: []
+      ps: [],
+      merchantId: '',
     };
   },
   methods: {
@@ -251,6 +193,7 @@ export default {
       }
     },
     expandChange(row, expanded) {
+      this.merchantId = row.supplierId
       this.getPrice(row)
     },
     getPrice(row) {
@@ -307,7 +250,8 @@ export default {
       let data = {
         ...this.orderItem,
         parentNo: this.parentNo,
-        passengers: this.ps
+        passengers: this.ps,
+        merchantId: this.merchantId,
       }
       this.$store.dispatch('policyProduct/order', data).then(data => {
         
