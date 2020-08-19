@@ -22,7 +22,7 @@
           draggable
           @node-drop="onNodeDrop"
         >
-          <el-row type="flex" style="width:100%"  justify="space-between" slot-scope="{ node, data }">
+          <el-row type="flex" style="width:100%" class="tree-node"  justify="space-between" slot-scope="{ node, data }">
             <el-col  :span="4">{{ node.data.title }}</el-col>
             <el-col :span="20"  type="flex" justify="end" :gutter="6">
               <el-col :span="7" style="text-align:right">{{ node.data.uri }}</el-col>
@@ -394,11 +394,6 @@
 
 <style>
   .tree-node {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 14px;
-    padding-right: 8px;
+  line-height: 30px;
   }
 </style>

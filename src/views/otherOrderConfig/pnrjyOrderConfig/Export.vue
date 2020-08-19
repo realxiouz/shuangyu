@@ -1,6 +1,6 @@
 <template>
-  <div class="contentBox">
-    <el-form :rules="formRules" ref="formData" :model="formData" label-width="110px" size="mini">
+  <div class="page">
+    <el-form class="page-tools" :rules="formRules" ref="formData" :model="formData" label-width="110px" size="mini">
       <el-row>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
           <el-form-item label="导单类型:" prop="orderType">

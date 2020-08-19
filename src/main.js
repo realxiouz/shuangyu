@@ -24,8 +24,8 @@ Vue.prototype.$numeral = numeral;
 Vue.use(ElementUI, { locale, size: 'mini' });
 Vue.config.productionTip = false;
 
-import Card from '@/components/Card'
-Vue.component('Card', Card)
+// import Card from '@/components/Card'
+// Vue.component('Card', Card)
 
 new Vue({
   router,
