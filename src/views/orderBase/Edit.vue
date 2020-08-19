@@ -6,7 +6,7 @@
       </div>
       <el-form
         ref="orderForm"
-        :disabled="isUpdate"
+        :disabled="canNotEdit"
         :rules="rules"
         :model="formData"
         label-position="top"
@@ -98,11 +98,7 @@
             </el-col>
             <el-col :span="8">
               <el-form-item label="出入库状态:">
-                <span>
-                  {{
-                  formData.warehouseStatus == 2 ? "未出库" : "已出库"
-                  }}
-                </span>
+                <el-tag>{{formData.warehouseStatus|warehouseStatus}}</el-tag>
               </el-form-item>
             </el-col>
             <el-col :span="8">
@@ -188,7 +184,7 @@
         </card>
         <card title="订单操作">
           <el-button-group>
-            <el-button type="primary" @click="handleSave">保 存</el-button>
+            <el-button type="primary" @click="handleSave" v-if="formData.orderStatus=='DRAFT'">保 存</el-button>
             <el-button type="primary" @click="confirmOrder">确 认</el-button>
           </el-button-group>
         </card>
@@ -373,7 +369,7 @@ export default {
       funAccountList: [],
       customerSelected: true,
       update: false,
-      isUpdate: true,
+      canNotEdit: true, //只有草稿可以编辑整个表单
       productIdList: [],
       defaultDate: new Date().getTime(),
       rules: {
@@ -389,7 +385,6 @@ export default {
       },
 
       passengers: [],
-      orderType: ''
     }
   },
   methods: {
@@ -417,7 +412,7 @@ export default {
         // 单据日期
         orderDate: this.defaultDate,
         // 100：销售单，101 销售出库单，102 销售退款单，103销售退票入库单，104销售改签单，105销售改签入库单，106 销售改签出库单，
-        orderType: 100,
+        orderType: '',
         //* **************
         // 仓库
         warehouseId: '',
@@ -426,7 +421,7 @@ export default {
         // 仓库名称
         warehouseName: '',
         // 出入库状态（0：未入库，1：已入库，2：未出库，3：已出库）
-        warehouseStatus: 2,
+        warehouseStatus: 'NO_OUT',
         // 出入库时间
         warehouseDate: this.defaultDate,
         //* **************
@@ -442,7 +437,7 @@ export default {
         // 交易单号
         tradeNo: '',
         // 付款状态（0：未付款，1：已付款）
-        paymentStatus: 0,
+        paymentStatus: 'NO_PAY',
         // 付款方式
         paymentMode: '',
         // 成交金额
@@ -459,7 +454,7 @@ export default {
         // 备注
         remark: '',
         // 订单状态
-        orderStatus: 0,
+        orderStatus: 'DRAFT',
         // 制单时间
         recordDate: this.defaultDate
       }
@@ -519,8 +514,8 @@ export default {
         .dispatch('productOrder/getOne', { orderNo: orderNo })
         .then(data => {
           if (data) {
-            if (data.orderStatus === 0) {
-              this.isUpdate = false
+            if (data.orderStatus === 'DRAFT') {
+              this.canNotEdit = false
             }
             this.formData = data
             this.passengers = this.formData.passengers
@@ -678,7 +673,7 @@ export default {
         this.update = true
         this.loadProduct(orderNo)
       } else {
-        this.isUpdate = false
+        this.canNotEdit = false
         this.passengers = []
         this.orderDetails = []
       }
@@ -699,16 +694,18 @@ export default {
 
     })
 
-    this.formData.orderType = this.$route.query.orderType - 0
     this.orderNo = this.$route.query.orderNo
     this.update = false
     if (this.orderNo) {
-      this.update = true
       this.loadProduct(this.orderNo)
       this.update = true
     } else {
-      this.isUpdate = false
+      this.canNotEdit = false
     }
+
+    this.formData = this.defaultFormData()
+    this.formData.orderType = this.$route.query.orderType
+    console.log(this.formData)
   },
   components: {
     Goods,
