@@ -104,7 +104,7 @@
                 v-model="firmMerchantForm.accountId"
                 style="width: 100%;"
                 placeholder="请选择结算账号"
-                :options="accountData"
+                :options="accountData" 
                 :props="{ label: 'accountName', value: 'accountId' }"
                 filterable
                 @change="changeAccount"
@@ -538,9 +538,6 @@
     overflow: hidden;
   }
 
-  #footer button {
-    /* float: right; */
-  }
 
   .title {
     font-size: 24px;
