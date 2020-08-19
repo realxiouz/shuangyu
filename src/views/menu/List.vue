@@ -28,7 +28,7 @@
               <el-col :span="7" style="text-align:right">{{ node.data.uri }}</el-col>
               <el-col :span="7" style="text-align:right">{{ node.data.component }}</el-col>
               <el-col :span="2" style="text-align:right">
-                <el-switch disabled :value="node.data.enable" @change="enableSwitch(scope.row)"></el-switch>
+                <el-switch :value="node.data.enable" @change="enableSwitch(node)"></el-switch>
               </el-col>
               <el-col :span="4">
                 <el-col style="text-align:right;width:40%;" v-for="tag in node.data.tags" :key="tag" >
@@ -208,6 +208,27 @@
           })
           .catch(error => {
             this.treeLoading = false;
+            console.log(error);
+          });
+      },
+      // /*修改是否启用状态*/
+      enableSwitch(node) {
+        node.data.enable = node.data.enable ? false : true;
+        this.formData = node.data
+        console.log(this.formData)
+        this.$store
+          .dispatch("menu/updateOne", {
+            id:this.formData.menuId,
+            data:this.formData
+          })
+          .then(() => {
+            this.loadData();
+            this.$message({
+                type: "success",
+                message: "修改成功！"
+              });
+          })
+          .catch(error => {
             console.log(error);
           });
       },
