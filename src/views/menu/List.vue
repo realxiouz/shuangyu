@@ -215,7 +215,6 @@
       enableSwitch(node) {
         node.data.enable = node.data.enable ? false : true;
         this.formData = node.data
-        console.log(this.formData)
         this.$store
           .dispatch("menu/updateOne", {
             id:this.formData.menuId,
