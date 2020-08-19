@@ -1,5 +1,5 @@
 <template>
-  <div class="bigBox">
+  <div class="page">
     <div class="contentBox">
       <div id="goBack" @click="goBack">
         <el-page-header></el-page-header>
@@ -14,12 +14,16 @@
         size="mini"
         style="width: 100%"
       >
-        <div style="margin-top:15px;padding:15px;">
-          <el-divider>订单信息</el-divider>
+        <card title="订单信息">
           <el-row :gutter="30">
             <el-col :span="8">
               <el-form-item label="订单类型:">
                 <el-tag>{{this.formData.orderType|orderType}}</el-tag>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="订单状态:">
+                <el-tag>{{this.formData.orderStatus|orderStatus}}</el-tag>
               </el-form-item>
             </el-col>
             <el-col :span="8">
@@ -174,15 +178,20 @@
               <el-form-item label="制单时间:">{{ new Date() | time("YYYY-MM-DD") }}</el-form-item>
             </el-col>
           </el-row>
-        </div>
-        <div style="margin-top:15px;padding:15px;">
-          <el-divider>商品信息</el-divider>
+        </card>
+        
+        <card title="商品信息">
           <goods v-model="orderDetails" @total="handleTotal"/>
-        </div>
-        <div style="margin-top:15px;padding:15px;">
-          <el-divider>乘客信息</el-divider>
+        </card>
+        <card title="乘客信息">
           <passengers v-model="passengers" />
-        </div>
+        </card>
+        <card title="订单操作">
+          <el-button-group>
+            <el-button type="primary" @click="handleSave">保 存</el-button>
+            <el-button type="primary" @click="confirmOrder">确 认</el-button>
+          </el-button-group>
+        </card>
         <!-- <el-row>
           <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
             <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
@@ -333,14 +342,14 @@
             </el-col>
           </el-col>
         </el-row> -->
-        <el-row>
+        <!-- <el-row>
           <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="16">
             <div id="footer">
               <el-button type="primary" @click="handleSave">保 存</el-button>
               <el-button type="primary" @click="confirmOrder">确 认</el-button>
             </div>
           </el-col>
-        </el-row>
+        </el-row> -->
       </el-form>
     </div>
   </div>

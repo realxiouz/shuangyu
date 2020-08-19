@@ -18,15 +18,14 @@ import '@/utils/filter'
 import VueCron from 'vue-cron';
 Vue.use(VueCron);
 
-// import { mockXHR } from '../mock';
-// if (process.env.NODE_ENV === 'development') {
-//   mockXHR();
-// }
 Vue.prototype._ = _;
 Vue.prototype.$moment = moment;
 Vue.prototype.$numeral = numeral;
 Vue.use(ElementUI, { locale, size: 'mini' });
 Vue.config.productionTip = false;
+
+import Card from '@/components/Card'
+Vue.component('Card', Card)
 
 new Vue({
   router,
