@@ -262,7 +262,7 @@ export default {
         removeOne: "productOrder/removeOne"
       },
       params: {
-        orderType: 102
+        orderType: 'SALE_REFUND'
       },
 
       refundTicketShow: false,

@@ -4,6 +4,25 @@
       <div id="goBack" @click="goBack">
         <el-page-header></el-page-header>
       </div>
+      <card title="单据操作">
+        <template v-if="formData.orderType=='SALE'">
+          <el-button
+            @click="onSaleOut"
+            v-if="formData.orderStatus=='CONFIRM'"
+            type="primary"
+          >出库单</el-button>
+          <template v-if="formData.orderStatus=='FINISH'">
+            <el-button
+              @click="onSaleRefund"
+              type="primary"
+            >退</el-button>
+            <el-button
+              @click="onSaleChange"
+              type="primary"
+            >改</el-button>
+          </template>
+        </template>
+      </card>
       <el-form
         ref="orderForm"
         :disabled="canNotEdit"
@@ -14,6 +33,7 @@
         size="mini"
         style="width: 100%"
       >
+        
         <card title="订单信息">
           <el-row :gutter="30">
             <el-col :span="8">
@@ -595,15 +615,15 @@ export default {
           this.$store
             .dispatch('productOrder/saveOrder', this.formData)
             .then(() => {
+              this.$message({
+                type: 'success',
+                message: '保存草稿成功！'
+              })
               this.goBack()
             })
             .catch(error => {
               console.log(error)
             })
-          this.$message({
-            type: 'success',
-            message: '保存草稿成功！'
-          })
         }
       })
     },
@@ -622,14 +642,14 @@ export default {
             .dispatch('productOrder/confirmOrder', this.formData)
             .then(() => {
               this.goBack()
+              this.$message({
+                type: 'success',
+              })
             })
             .catch(error => {
               console.log(error)
             })
-          this.$message({
-            type: 'success',
-            message: '确认成功！'
-          })
+          
         }
       })
     },
@@ -680,7 +700,22 @@ export default {
     },
     handleTotal(val) {
       this.formData.totalAmount = val
-    }
+    },
+    onSaleOut() {
+      this.$router.push({
+        name: 'orderBaseList',
+        query: {
+          orderType: 'SALE_OUT',
+
+        }
+      })
+    },
+    onSaleRefund() {
+
+    },
+    onSaleChange() {
+
+    },
   },
   created() {
     // this.initFormData(this.$route.query.orderNo);
