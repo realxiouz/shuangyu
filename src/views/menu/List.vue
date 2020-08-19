@@ -23,20 +23,19 @@
           @node-drop="onNodeDrop"
         >
           <el-row type="flex" style="width:100%" class="tree-node"  justify="space-between" slot-scope="{ node, data }">
-            <el-col  :span="4">{{ node.data.title }}</el-col>
-            <el-col :span="20"  type="flex" justify="end" :gutter="6">
-              <el-col :span="7" style="text-align:right">{{ node.data.uri }}</el-col>
-              <el-col :span="7" style="text-align:right">{{ node.data.component }}</el-col>
-              <el-col :span="2" style="text-align:right">
+            <el-col  :span="10">{{ node.data.title }}</el-col>
+            <el-col :span="10"  type="flex" justify="end">
+              <el-col :span="5">
                 <el-switch :value="node.data.enable" @change="enableSwitch(node)"></el-switch>
               </el-col>
-              <el-col :span="4">
-                <el-col style="text-align:right;width:40%;" v-for="tag in node.data.tags" :key="tag" >
+              <el-col :span="11">
+                <el-col style="width:30%;" v-for="tag in node.data.tags" :key="tag" >
                   <el-tag  v-if="tag=='NAV'">导航</el-tag>
                   <el-tag v-else-if="tag=='VIEW'">视图</el-tag>
+                  <el-tag v-else-if="tag=='EVENT'">事件</el-tag>
                 </el-col>
               </el-col>
-              <el-col :span="3"  style="text-align:right">
+              <el-col :span="8"  >
                 <el-button type="text" size="mini" class="btn-primary" @click="nodeAdd(node, data)">添加</el-button>
                 <el-button type="text" size="mini" class="btn-primary" @click="onEdit(node, data)">编辑</el-button>
                 <el-button type="text" size="mini" style="color:#F56C6C" @click="removeNode(node, data)">移除</el-button>
