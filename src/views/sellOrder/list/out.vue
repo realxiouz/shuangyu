@@ -17,7 +17,7 @@
         <template slot-scope="scope">{{ scope.row.orderDate | time("YYYY-MM-DD") }}</template>
       </el-table-column>
       <el-table-column label="单据类型">
-        <template slot-scope="scope">{{ formatOrderType(scope.row) }}</template>
+        <template v-slot="{row}">{{ row.orderType|orderType }}</template>
       </el-table-column>
       <el-table-column label="明细" width="800">
         <template slot-scope="scope">
@@ -268,7 +268,7 @@ export default {
         removeOne: "productOrder/removeOne"
       },
       params: {
-        orderType: 'SALE'
+        orderType: 'SELL'
       },
 
       refundTicketShow: false,

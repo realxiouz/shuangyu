@@ -5,21 +5,20 @@
         <el-page-header></el-page-header>
       </div>
       <card title="单据操作">
-        <template v-if="formData.orderType=='SALE'">
+        <template v-if="formData.orderType=='SELL'">
           <el-button
-            @click="onSaleOut"
-            v-if="formData.orderStatus=='CONFIRM'"
+            @click="onGoSellOut"
+            v-if="formData.orderStatus=='CONFIRMED'"
             type="primary"
           >出库单</el-button>
-          <template v-if="formData.orderStatus=='FINISH'">
-            <el-button
-              @click="onSaleRefund"
-              type="primary"
-            >退</el-button>
-            <el-button
-              @click="onSaleChange"
-              type="primary"
-            >改</el-button>
+          <template v-if="formData.orderStatus=='COMPLETED'">
+            <el-button @click="onSellRefund" type="primary">退</el-button>
+            <el-button @click="onSellChange" type="primary">改</el-button>
+          </template>
+        </template>
+        <template v-if="formData.orderType=='SELL_OUT'">
+          <template v-if="formData.orderStatus=='CONFIRMED'">
+            <el-button type="primary" @click="onSellOut">出库</el-button>
           </template>
         </template>
       </card>
@@ -33,7 +32,6 @@
         size="mini"
         style="width: 100%"
       >
-        
         <card title="订单信息">
           <el-row :gutter="30">
             <el-col :span="8">
@@ -162,9 +160,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="成交金额:">
-                {{ formData.totalAmount }}
-              </el-form-item>
+              <el-form-item label="成交金额:">{{ formData.totalAmount }}</el-form-item>
             </el-col>
             <el-col :span="8">
               <el-form-item label="实收金额:">{{ formData.receiptAmount }}</el-form-item>
@@ -195,16 +191,16 @@
             </el-col>
           </el-row>
         </card>
-        
+
         <card title="商品信息">
-          <goods v-model="orderDetails" @total="handleTotal"/>
+          <goods v-model="orderDetails" @total="handleTotal" />
         </card>
         <card title="乘客信息">
           <passengers v-model="passengers" />
         </card>
         <card title="订单操作">
           <el-button-group>
-            <el-button type="primary" @click="handleSave" v-if="formData.orderStatus=='DRAFT'">保 存</el-button>
+            <el-button type="primary" @click="onSave" v-if="formData.orderStatus=='DRAFT'">保 存</el-button>
             <el-button type="primary" @click="confirmOrder">确 认</el-button>
           </el-button-group>
         </card>
@@ -318,9 +314,9 @@
               </el-form-item>
             </el-col>
           </el-col>
-        </el-row> -->
+        </el-row>-->
         <!-- <goods v-model="orderDetails" @total="handleTotal"/>
-        <passengers v-model="passengers" /> -->
+        <passengers v-model="passengers" />-->
         <!-- <el-row style="width: 80%; margin-top: 10px">
           <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
             <el-input type="textarea" v-model="formData.remark" placeholder="暂无备注信息"></el-input>
@@ -357,23 +353,23 @@
               <el-form-item label="制单时间:">{{ new Date() | time("YYYY-MM-DD") }}</el-form-item>
             </el-col>
           </el-col>
-        </el-row> -->
+        </el-row>-->
         <!-- <el-row>
           <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="16">
             <div id="footer">
-              <el-button type="primary" @click="handleSave">保 存</el-button>
+              <el-button type="primary" @click="onSave">保 存</el-button>
               <el-button type="primary" @click="confirmOrder">确 认</el-button>
             </div>
           </el-col>
-        </el-row> -->
+        </el-row>-->
       </el-form>
     </div>
   </div>
 </template>
 
 <script>
-import Goods from '@/components/Goods'
-import Passengers from '@/components/Passengers'
+import Goods from "@/components/Goods";
+import Passengers from "@/components/Passengers";
 
 export default {
   data() {
@@ -394,169 +390,169 @@ export default {
       defaultDate: new Date().getTime(),
       rules: {
         contactName: [
-          { required: true, message: '请输入联系人', trigger: 'blur' }
+          { required: true, message: "请输入联系人", trigger: "blur" }
         ],
         paymentMode: [
-          { required: true, message: '请输入付款方式', trigger: 'blur' }
+          { required: true, message: "请输入付款方式", trigger: "blur" }
         ]
         // fundAccountId: [
         //     {required: true, message: "请选择结算账户", trigger: "blur"}
         // ]
       },
 
-      passengers: [],
-    }
+      passengers: []
+    };
   },
   methods: {
     defaultFormData() {
       return {
         // 单号
-        orderNo: '',
+        orderNo: "",
         // 父单号
-        parentNo: '',
+        parentNo: "",
         // 外部单号
-        sourceNo: '',
+        sourceNo: "",
         // 商户(客户/供应商)
-        merchantId: '',
+        merchantId: "",
         // 客户/供应商账号
-        accountId: '',
+        accountId: "",
         // 联系人ID
-        contactId: '',
+        contactId: "",
         // 联系人姓名
-        contactName: '',
+        contactName: "",
         // 发票号
-        invoiceNo: '',
+        invoiceNo: "",
         //* **************
         // 到期日期
         expireDate: this.defaultDate,
         // 单据日期
         orderDate: this.defaultDate,
         // 100：销售单，101 销售出库单，102 销售退款单，103销售退票入库单，104销售改签单，105销售改签入库单，106 销售改签出库单，
-        orderType: '',
+        orderType: "",
         //* **************
         // 仓库
-        warehouseId: '',
+        warehouseId: "",
         // 仓库编码
-        warehouseCode: '',
+        warehouseCode: "",
         // 仓库名称
-        warehouseName: '',
+        warehouseName: "",
         // 出入库状态（0：未入库，1：已入库，2：未出库，3：已出库）
-        warehouseStatus: 'NO_OUT',
+        warehouseStatus: "OUT",
         // 出入库时间
         warehouseDate: this.defaultDate,
         //* **************
         // 快递号码
-        expressNo: '',
+        expressNo: "",
         // 快递公司ID
-        expressId: '',
+        expressId: "",
         // 快递公司名称
-        expressName: '',
+        expressName: "",
         // 快递状态
         expressStatus: 0,
         //* **************
         // 交易单号
-        tradeNo: '',
+        tradeNo: "",
         // 付款状态（0：未付款，1：已付款）
-        paymentStatus: 'NO_PAY',
+        paymentStatus: "0",
         // 付款方式
-        paymentMode: '',
+        paymentMode: "",
         // 成交金额
         totalAmount: 0,
         // 实收金额
         receiptAmount: 0,
         //* **************
         // 结算账户
-        fundAccountId: '',
+        fundAccountId: "",
         // 结算账户编码
-        fundAccountCode: '',
+        fundAccountCode: "",
         // 结算账户名称
-        fundAccountName: '',
+        fundAccountName: "",
         // 备注
-        remark: '',
+        remark: "",
         // 订单状态
-        orderStatus: 'DRAFT',
+        orderStatus: "DRAFT",
         // 制单时间
         recordDate: this.defaultDate
-      }
+      };
     },
     loadCustomers() {
       this.$store
-        .dispatch('firmMerchant/getCustomerList', {})
+        .dispatch("firmMerchant/getCustomerList", {})
         .then(data => {
-          this.customerList = data
+          this.customerList = data;
         })
         .catch(error => {
-          console.log(error)
-        })
+          console.log(error);
+        });
     },
     loadAccounts(merchantId) {
       this.$store
-        .dispatch('firmAccount/getList', { filter: { firmId: merchantId }})
+        .dispatch("firmAccount/getList", { filter: { firmId: merchantId } })
         .then(data => {
-          this.accountList = data
+          this.accountList = data;
         })
         .catch(error => {
-          console.log(error)
-        })
+          console.log(error);
+        });
     },
     loadWarehouses() {
       this.$store
-        .dispatch('warehouse/getList', { filter: {}})
+        .dispatch("warehouse/getList", { filter: {} })
         .then(data => {
-          this.warehouseList = data
+          this.warehouseList = data;
         })
         .catch(error => {
-          console.log(error)
-        })
+          console.log(error);
+        });
     },
     loadExpress() {
       this.$store
-        .dispatch('firmMerchant/getSupplierList', {})
+        .dispatch("firmMerchant/getSupplierList", {})
         .then(data => {
-          this.expressList = data
+          this.expressList = data;
         })
         .catch(error => {
-          console.log(error)
-        })
+          console.log(error);
+        });
     },
     loadFundAccount() {
       this.$store
-        .dispatch('fundAccount/getList', { filter: {}})
+        .dispatch("fundAccount/getList", { filter: {} })
         .then(data => {
-          this.funAccountList = data
+          this.funAccountList = data;
         })
         .catch(error => {
-          console.log(error)
-        })
+          console.log(error);
+        });
     },
     loadProduct(orderNo) {
       this.$store
-        .dispatch('productOrder/getOne', { orderNo: orderNo })
+        .dispatch("productOrder/getOne", { orderNo: orderNo })
         .then(data => {
           if (data) {
-            if (data.orderStatus === 'DRAFT') {
-              this.canNotEdit = false
+            if (data.orderStatus === "DRAFT") {
+              this.canNotEdit = false;
             }
-            this.formData = data
-            this.passengers = this.formData.passengers
-            this.orderDetails = this.formData.orderDetails
+            this.formData = data;
+            this.passengers = this.formData.passengers;
+            this.orderDetails = this.formData.orderDetails;
             if (data.merchantId) {
-              this.loadAccounts(data.merchantId)
+              this.loadAccounts(data.merchantId);
             }
           }
         })
         .catch(error => {
-          console.log(error)
-        })
+          console.log(error);
+        });
     },
     selectedCustomer(item) {
-      this.customerSelected = false
-      this.loadAccounts(item)
+      this.customerSelected = false;
+      this.loadAccounts(item);
       this.customerList.forEach(customer => {
         if (item === customer.merchantId) {
-          this.formData.merchantType = customer.merchantType
+          this.formData.merchantType = customer.merchantType;
           this.$store
-            .dispatch('firmContact/getList', {
+            .dispatch("firmContact/getList", {
               filter: {
                 firmId: item,
                 phone: customer.firm.phone,
@@ -565,186 +561,205 @@ export default {
             })
             .then(data => {
               if (data.length > 0) {
-                this.formData.contactId = data[0].contactId
-                this.formData.contactName = customer.firm.fullName
+                this.formData.contactId = data[0].contactId;
+                this.formData.contactName = customer.firm.fullName;
               }
             })
             .catch(error => {
-              console.log(error)
-            })
+              console.log(error);
+            });
         }
-      })
+      });
     },
     selectedWarehouse(item) {
       this.warehouseList.forEach(warehouse => {
         if (item === warehouse.warehouseId) {
-          this.formData.warehouseCode = warehouse.warehouseCode
-          this.formData.warehouseName = warehouse.warehouseName
+          this.formData.warehouseCode = warehouse.warehouseCode;
+          this.formData.warehouseName = warehouse.warehouseName;
         }
-      })
+      });
     },
     selectedExpress(item) {
       this.expressList.forEach(express => {
         if (item === express.merchantId) {
-          this.formData.expressName = express.firmName
+          this.formData.expressName = express.firmName;
         }
-      })
+      });
     },
     selectedPaymode(item) {
-      this.formData.paymentMode = item
+      this.formData.paymentMode = item;
     },
     selectedFundAccount(item) {
       this.funAccountList.forEach(fundAccount => {
         if (item === fundAccount.accountId) {
-          this.formData.accountCode = fundAccount.accountCode
-          this.formData.accountName = fundAccount.accountName
+          this.formData.accountCode = fundAccount.accountCode;
+          this.formData.accountName = fundAccount.accountName;
         }
-      })
+      });
     },
-    handleSave() {
-      this.$refs['orderForm'].validate(valid => {
+    onSave() {
+      this.$refs["orderForm"].validate(valid => {
         if (valid) {
-          // const dateItem = ['expireDate', 'warehouseDate']
-          // dateItem.forEach(item => {
-          //   if (this.formData[item] && typeof this.formData[item] !== 'number') {
-          //     this.formData[item] = this.formData[item].getTime()
-          //   }
-          // })
-          this.formData.orderDetails = this.orderDetails
-          this.formData.passengers = this.passengers
+          this.formData.orderDetails = this.orderDetails;
+          this.formData.passengers = this.passengers;
+
+          // 生成orderCategory
+          if (!this.formData.orderNo) {
+            this.formData.orderCategory = this.formData.orderType.startsWith("SELL") ? 0 : 1
+          }
           this.$store
-            .dispatch('productOrder/saveOrder', this.formData)
+            .dispatch("productOrder/saveOrder", this.formData)
             .then(() => {
               this.$message({
-                type: 'success',
-                message: '保存草稿成功！'
-              })
-              this.goBack()
+                type: "success",
+                message: "保存草稿成功！"
+              });
+              this.goBack();
             })
             .catch(error => {
-              console.log(error)
-            })
+              console.log(error);
+            });
         }
-      })
+      });
     },
     confirmOrder() {
-      this.$refs['orderForm'].validate(valid => {
+      this.$refs["orderForm"].validate(valid => {
         if (valid) {
-          // const dateItem = ['expireDate', 'warehouseDate']
-          // dateItem.forEach(item => {
-          //   if (this.formData[item] && typeof this.formData[item] !== 'number') {
-          //     this.formData[item] = this.formData[item].getTime()
-          //   }
-          // })
-          this.formData.orderDetails = this.orderDetails
-          this.formData.passengers = this.passengers
+          this.formData.parentNo = this.formData.orderNo;
+          this.formData.orderNo = null;
+          this.formData.orderDetails = this.orderDetails;
+          this.formData.passengers = this.passengers;
+
+          // 生成orderCategory
+          if (!this.formData.orderNo) {
+            this.formData.orderCategory = this.formData.orderType.startsWith("SELL") ? 0 : 1
+          }
           this.$store
-            .dispatch('productOrder/confirmOrder', this.formData)
+            .dispatch("productOrder/confirmOrder", this.formData)
             .then(() => {
-              this.goBack()
+              this.goBack();
               this.$message({
-                type: 'success',
-              })
+                type: "success"
+              });
             })
             .catch(error => {
-              console.log(error)
-            })
-          
+              console.log(error);
+            });
         }
-      })
+      });
     },
     querySearchAsync(keyword, callBack) {
       if (keyword) {
         this.$store
-          .dispatch('user/getList', { filter: { email: keyword }})
+          .dispatch("user/getList", { filter: { email: keyword } })
           .then(data => {
             data.forEach(item => {
-              item.value = item.fullName
-            })
-            callBack(data)
+              item.value = item.fullName;
+            });
+            callBack(data);
           })
           .catch(error => {
-            console.log(error)
-          })
+            console.log(error);
+          });
       } else {
-        callBack([])
+        callBack([]);
       }
     },
     clearForm() {
-      this.formData = this.defaultFormData()
+      this.formData = this.defaultFormData();
     },
     goBack() {
       if (this.$router.history.length <= 1) {
-        this.$router.push({ path: '/home' })
-        return false
+        this.$router.push({ path: "/home" });
+        return false;
       } else {
-        this.$router.go(-1)
+        this.$router.go(-1);
       }
     },
 
     initFormData(orderNo) {
-      this.update = false
-      this.clearForm()
-      this.loadCustomers()
-      this.loadWarehouses()
-      this.loadFundAccount()
-      this.loadExpress()
+      this.update = false;
+      this.clearForm();
+      this.loadCustomers();
+      this.loadWarehouses();
+      this.loadFundAccount();
+      this.loadExpress();
       if (orderNo) {
-        this.update = true
-        this.loadProduct(orderNo)
+        this.update = true;
+        this.loadProduct(orderNo);
       } else {
-        this.canNotEdit = false
-        this.passengers = []
-        this.orderDetails = []
+        this.canNotEdit = false;
+        this.passengers = [];
+        this.orderDetails = [];
       }
     },
     handleTotal(val) {
-      this.formData.totalAmount = val
+      this.formData.totalAmount = val;
     },
-    onSaleOut() {
+    onGoSellOut() {
       this.$router.push({
-        name: 'orderBaseList',
+        name: "orderBaseList",
         query: {
-          orderType: 'SALE_OUT',
-
+          orderType: "SELL_OUT",
+          parentNo: this.formData.orderNo
         }
-      })
+      });
     },
-    onSaleRefund() {
-
-    },
-    onSaleChange() {
-
-    },
+    onSellRefund() {},
+    onSellChange() {},
+    onSellOut() {
+      this.$store
+        .dispatch("productOrder/outWarehouseOrder", {
+          orderNo: row.orderNo,
+          data: row
+        })
+        .then(data => {
+          this.loadData();
+          if (data) {
+            this.$message({
+              type: "success",
+              message: "出库成功!"
+            });
+          } else {
+            this.$message({
+              type: "error",
+              message: "出库失败!"
+            });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
   },
   created() {
     // this.initFormData(this.$route.query.orderNo);
 
-    this.loadCustomers()
-    this.loadWarehouses()
-    this.loadFundAccount()
-    this.loadExpress()
+    this.loadCustomers();
+    this.loadWarehouses();
+    this.loadFundAccount();
+    this.loadExpress();
 
-    this.$store.dispatch('firmMerchant/getList', {filter:{}}).then(data => {
+    this.$store
+      .dispatch("firmMerchant/getList", { filter: {} })
+      .then(data => {});
 
-    })
-
-    this.orderNo = this.$route.query.orderNo
-    this.update = false
+    this.orderNo = this.$route.query.orderNo;
+    this.update = false;
     if (this.orderNo) {
-      this.loadProduct(this.orderNo)
-      this.update = true
+      this.loadProduct(this.orderNo);
+      this.update = true;
     } else {
-      this.canNotEdit = false
+      this.canNotEdit = false;
     }
 
-    this.formData = this.defaultFormData()
-    this.formData.orderType = this.$route.query.orderType
-    console.log(this.formData)
+    this.formData = this.defaultFormData();
+    this.formData.orderType = this.$route.query.orderType;
+    console.log(this.formData);
   },
   components: {
     Goods,
     Passengers
   }
-}
+};
 </script>

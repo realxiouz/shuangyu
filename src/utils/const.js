@@ -87,30 +87,32 @@ export const CATEGORY_TYPES = genArrByMap(CATEGORY_MAP);
 export const ORDER_TYPES_MAP = {
   'OTHER_IN': '其他入库',
   'OTHER_OUT': '其他出库',
-  'SALE': '销售单',
-  'SALE_OUT': '销售出库单',
-  'SALE_REFUND': '销售退款单',
-  'SALE_REFUND_IN': '销售退票入库单',
-  'SALE_CHANGE_IN': '销售改签入库单',
-  'SALE_CHANGE_OUT': '销售改签出库单',
-  'PURCHASE': '采购单',
-  'PURCHASE_IN': '采购入库单',
-  'PURCHASE_REFUND': '采购退款单',
-  'PURCHASE_REFUND_OUT': '采购退票出库单',
-  'PURCHASE_CHANGE_OUT': '采购改签出库单',
-  'PURCHASE_CHANGE_IN': '采购改签入库单'
+  'SELL': '销售单',
+  'SELL_OUT': '销售出库单',
+  'SELL_REFUND': '销售退款单',
+  'SELL_REFUND_IN': '销售退票入库单',
+  'SELL_CHANGE_IN': '销售改签入库单',
+  'SELL_CHANGE_OUT': '销售改签出库单',
+  'BUY': '采购单',
+  'BUY_IN': '采购入库单',
+  'BUY_REFUND': '采购退款单',
+  'BUY_REFUND_OUT': '采购退票出库单',
+  'BUY_CHANGE_OUT': '采购改签出库单',
+  'BUY_CHANGE_IN': '采购改签入库单'
 }
 
 export const ORDER_STATUS_MAP = {
   'DRAFT': '草稿',
-  'FINISH': '已完成',
-  'CONFIRM': '已确认',
-  'CANCEL': '已作废',
+  'COMPLETED': '已完成',
+  'CONFIRMED': '已确认',
+  'INVALID': '已作废',
+  'DISALLOW': '驳回',
+  'CLOSED': '已关闭',
 }
 
 export const WAREHOUSE_STATUS_MAP = {
-  'NO_IN ': '未入库',
-  'YES_IN': '已入库',
-  'NO_OUT': '未出库',
-  'YES_OUT': '已出库',
+  'IN ': '未入库',
+  'IN_OK': '已入库',
+  'OUT': '未出库',
+  'OUT_OK': '已出库',
 }

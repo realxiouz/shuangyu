@@ -153,7 +153,9 @@ export const MIXIN_LIST = {
     }
   },
   created() {
-    this.loadData();
+    this.$nextTick(_ => {
+      this.loadData();
+    })
   }
 };
 
