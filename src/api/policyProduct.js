@@ -23,3 +23,11 @@ export function searchFlightPrice(params) {
     params
   })
 }
+
+export function order(data) {
+  return request({
+    url: `/policy/order`,
+    method: 'post',
+    data
+  })
+}
