@@ -277,7 +277,7 @@
         }else{
           tag = {
             tagId: "finance_eo_" + 1,
-            tagName: "financeEo",
+            tagName: "财务导单",
             tagCode: "financeEo",
             tagType: 1,
             value: null
