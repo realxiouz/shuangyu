@@ -90,3 +90,11 @@ export function getSellList(rootOrderNo) {
   })
 }
 
+export function orderRefund(data) {
+  return request({
+    url: `/policy/order/return/one`,
+    method: 'post',
+    data
+  })
+}
+

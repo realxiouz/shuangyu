@@ -6,11 +6,9 @@
       </div>
       <card title="单据操作">
         <template v-if="formData.orderType=='SELL'">
-          <el-button
-            @click="onGoSellOut"
-            v-if="formData.orderStatus=='CONFIRMED'"
-            type="primary"
-          >出库单</el-button>
+          <template v-if="formData.orderStatus=='CONFIRMED'">
+            <el-button @click="onGoSellOut" type="primary">出库单</el-button>
+          </template>
           <template v-if="formData.orderStatus=='COMPLETED'">
             <el-button @click="onSellRefund" type="primary">退</el-button>
             <el-button @click="onSellChange" type="primary">改</el-button>
@@ -19,6 +17,17 @@
         <template v-if="formData.orderType=='SELL_OUT'">
           <template v-if="formData.orderStatus=='CONFIRMED'">
             <el-button type="primary" @click="onSellOut">出库</el-button>
+          </template>
+        </template>
+        <template v-if="formData.orderType=='BUY'">
+          <template v-if="formData.orderStatus=='CONFIRMED'">
+            <el-button @click="onGoBuyIn" type="primary">入库单</el-button>
+          </template>
+          
+        </template>
+        <template v-if="formData.orderType=='BUY_IN'">
+          <template v-if="formData.orderStatus=='CONFIRMED'">
+            <el-button type="primary" @click="onBuyIn">入库</el-button>
           </template>
         </template>
       </card>
@@ -705,21 +714,52 @@ export default {
         }
       });
     },
-    onSellRefund() {},
+    onSellRefund() {
+      // productOrder/refundOrder
+    },
     onSellChange() {},
     onSellOut() {
+
       this.$store
         .dispatch("productOrder/outWarehouseOrder", {
-          orderNo: row.orderNo,
-          data: row
+          orderNo: this.formData.orderNo,
+          data: this.formData
         })
         .then(data => {
-          this.loadData();
           if (data) {
+            this.$message.success('出库成功');
+            this.goBack();
+          } else {
             this.$message({
-              type: "success",
-              message: "出库成功!"
+              type: "error",
+              message: "出库失败!"
             });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    onGoBuyIn() {
+      this.$router.push({
+        name: "orderBaseList",
+        query: {
+          orderType: "BUY_IN",
+          parentNo: this.formData.orderNo
+        }
+      });
+    },
+    onBuyIn() {
+      
+      this.$store
+        .dispatch("productOrder/inWarehouseOrder", {
+          orderNo: this.formData.orderNo,
+          data: this.formData
+        })
+        .then(data => {
+          if (data) {
+            this.$message.success('入库成功');
+            this.goBack();
           } else {
             this.$message({
               type: "error",

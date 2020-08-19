@@ -10,7 +10,8 @@ import {
   saveOrder,
   updateOne,
   getPurchaseList,
-  getSellList
+  getSellList,
+  orderRefund
 } from '@/api/productOrder';
 import { resolve, reject } from 'core-js/fn/promise';
 
@@ -155,6 +156,15 @@ const actions = {
       })
     })
   },
+  orderRefund(_, args) {
+    return new Promise((resolve, reject) => {
+      orderRefund(args).then(data => [
+        resolve(data)
+      ]).catch(error => {
+        reject(error)
+      })
+    })
+  }
 }
 
 export default {
