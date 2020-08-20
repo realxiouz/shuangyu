@@ -57,6 +57,11 @@
           <el-button type="primary" @click="onSellOut">出库</el-button>
         </template>
       </template>
+      <template v-if="formData.orderType=='BUY_CHANGE_OUT'">
+        <template v-if="formData.orderStatus=='CONFIRMED'">
+          <el-button type="primary" @click="onGoBuyChangeIn">改签入库单</el-button>
+        </template>
+      </template>
       
     </card>
     <el-form
@@ -877,6 +882,15 @@ export default {
         name: "orderBaseList",
         query: {
           orderType: "SELL_CHANGE_OUT",
+          parentNo: this.formData.parentNo
+        }
+      });
+    },
+    onGoBuyChangeIn() {
+      this.$router.push({
+        name: "orderBaseList",
+        query: {
+          orderType: "BUY_CHANGE_IN",
           parentNo: this.formData.parentNo
         }
       });
