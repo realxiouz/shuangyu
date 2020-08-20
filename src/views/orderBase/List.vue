@@ -119,6 +119,11 @@
               <el-button type="text" @click="onSellOut(row)">出库</el-button>
             </template>
           </template>
+          <template v-if="row.orderType=='SELL_CHANGE_IN'">
+            <template v-if="row.orderStatus=='CONFIRMED'">
+              <el-button type="text" @click="onBuyIn(row)">入库</el-button>
+            </template>
+          </template>
           
           <template v-if="row.orderType=='BUY_IN'">
             <template v-if="row.orderStatus=='CONFIRMED'">
@@ -128,6 +133,11 @@
           <template v-if="row.orderType=='BUY_CHANGE_IN'">
             <template v-if="row.orderStatus=='CONFIRMED'">
               <el-button type="text" @click="onBuyIn(row)">入库</el-button>
+            </template>
+          </template>
+          <template v-if="row.orderType=='BUY_CHANGE_OUT'">
+            <template v-if="row.orderStatus=='CONFIRMED'">
+              <el-button type="text" @click="onSellOut(row)">出库</el-button>
             </template>
           </template>
         </template>

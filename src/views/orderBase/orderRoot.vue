@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <card title="采购">
-      <el-table :data="leftData" border>
+      <el-table :data="leftData" border v-loading="leftLoading">
         <el-table-column prop="orderNo" label="单号" />
         <el-table-column label="单据日期">
           <template slot-scope="scope">{{ scope.row.orderDate | time("YYYY-MM-DD") }}</template>
@@ -70,7 +70,7 @@
       </el-table>
     </card>
     <card title="销售">
-      <el-table :data="rightData" border>
+      <el-table :data="rightData" border v-loading="rightLoading">
         <el-table-column prop="orderNo" label="单号" />
         <el-table-column label="单据日期">
           <template slot-scope="scope">{{ scope.row.orderDate | time("YYYY-MM-DD") }}</template>
@@ -147,7 +147,9 @@ export default {
   data() {
     return {
       leftData: [],
-      rightData: []
+      rightData: [],
+      leftLoading: false,
+      rightLoading: false,
     };
   },
   methods: {
@@ -156,22 +158,30 @@ export default {
       this.getRightData();
     },
     getLeftData() {
+      this.leftLoading = true
       this.$store
         .dispatch("productOrder/getPurchaseList", {
           rootOrderNo: this.$route.query.rootNo
         })
         .then(data => {
           this.leftData = data;
-        });
+        })
+        .finally(_ => {
+          this.leftLoading = false
+        })
     },
     getRightData() {
+      this.rightLoading = true
       this.$store
         .dispatch("productOrder/getSellList", {
           rootOrderNo: this.$route.query.rootNo
         })
         .then(data => {
           this.rightData = data;
-        });
+        })
+        .finally(_ => {
+          this.rightLoading = false
+        })
     },
     onShowPassenger() {
       console.log("show passengers");
