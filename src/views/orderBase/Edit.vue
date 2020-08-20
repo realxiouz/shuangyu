@@ -836,7 +836,7 @@ export default {
         this.formData.warehouseStatus = 'OUT'
       } else {
         this.formData.orderCategory = 1
-        this.formData.warehouseStatus = 'in'
+        this.formData.warehouseStatus = 'IN'
       }
     }
     console.log(this.formData);
