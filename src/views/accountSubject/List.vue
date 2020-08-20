@@ -1,6 +1,5 @@
 <template>
   <div class="page">
-    <search class="page-search" ref="search" @onSearch="onSearch" :category="category"/>
     <el-tabs type="border-card" @tab-click="handleClick">
       <el-tab-pane label="资产">
         <subject-content v-if="0 === category" :category="category" />
@@ -22,24 +21,22 @@
 </template>
 
 <script>
-import subjectContent from "./Content.vue";
-  import search from "./Search";
-import { MIXIN_LIST } from "@/utils/mixin";
-export default {
-  mixins: [MIXIN_LIST],
-  data() {
-    return {
-      category: 0
-    };
-  },
-  methods: {
-    handleClick(item) {
-      this.category = parseInt(item.index);
+  import subjectContent from "./Content.vue";
+  import {MIXIN_LIST} from "@/utils/mixin";
+  export default {
+    mixins: [MIXIN_LIST],
+    data() {
+      return {
+        category: 0
+      };
+    },
+    methods: {
+      handleClick(item) {
+        this.category = parseInt(item.index);
+      }
+    },
+    components: {
+      subjectContent
     }
-  },
-  components: {
-    subjectContent,
-    search
-  }
-};
+  };
 </script>
