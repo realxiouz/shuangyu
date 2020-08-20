@@ -111,7 +111,7 @@ export const ORDER_STATUS_MAP = {
 }
 
 export const WAREHOUSE_STATUS_MAP = {
-  'IN ': '未入库',
+  'IN': '未入库',
   'IN_OK': '已入库',
   'OUT': '未出库',
   'OUT_OK': '已出库',
