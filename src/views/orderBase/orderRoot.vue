@@ -1,53 +1,15 @@
 <template>
   <div class="page">
-    <el-row :gutter="30">
-      <el-col :span="12">
-        <el-divider>采购</el-divider>
-        <el-tree
-          :data="leftData"
-          :props="dataProp"
-        >
-          <template v-slot="{data}">
-            <div style="display:flex;justify-content:space-between;align-items:center;flex:1">
-              <div>
-                <el-tag>{{data.orderType | orderType}}</el-tag>
-                <el-tag>{{data.orderStatus | orderStatus}}</el-tag>
-              </div>
-              <div>
-                <template v-if="data.orderType==100||data.orderType==200">
-                  <el-button type="text" @click="onReturn(data)">退</el-button>
-                  <el-button type="text" @click="onChange(data)">改</el-button>
-                </template> 
-                <el-button type="text" @click="onDetail(data)">详情</el-button>
-              </div>
-            </div>
-          </template>
-        </el-tree>
-      </el-col>
-      <el-col :span="12">
-        <el-divider>销售</el-divider>
-        <el-tree
-          :data="rightData"
-          :props="dataProp"
-        >
-          <template v-slot="{data}">
-            <div style="display:flex;justify-content:space-between;align-items:center;flex:1">
-              <div>
-                <el-tag>{{data.orderType | orderType}}</el-tag>
-                <el-tag>{{data.orderStatus | orderStatus}}</el-tag>
-              </div>
-              <div>
-                <template v-if="data.orderType==100||data.orderType==200">
-                  <el-button type="text" @click="onDetail(data)">退</el-button>
-                  <el-button type="text" @click="onDetail(data)">改</el-button>
-                </template> 
-                <el-button type="text" @click="onDetail(data)">详情</el-button>
-              </div>
-            </div>
-          </template>
-        </el-tree>
-      </el-col>
-    </el-row>
+    <card title="采购">
+      <el-table :data="leftData">
+
+      </el-table>
+    </card>
+    <card title="销售">
+      <el-table :data="leftData">
+
+      </el-table>
+    </card>
   </div>
 </template>
 
@@ -58,10 +20,6 @@ export default {
     return {
       leftData: [],
       rightData: [],
-      dataProp: {
-        label: 'label',
-        children: 'children'
-      },
     }
   },
   methods: {

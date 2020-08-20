@@ -11,7 +11,7 @@
         </template>
         <template v-if="formData.orderStatus=='COMPLETED'">
           <el-button @click="onShowSellRefund" type="primary">退</el-button>
-          <el-button @click="onSellChange" type="primary">改</el-button>
+          <el-button @click="onShowSellChange" type="primary">改</el-button>
           <el-button @click="onGoSellOut" type="primary">出库单</el-button>
         </template>
       </template>
@@ -31,7 +31,7 @@
         </template>
         <template v-if="formData.orderStatus=='COMPLETED'">
           <el-button @click="onShowSellRefund" type="primary">退</el-button>
-          <el-button @click="onSellChange" type="primary">改</el-button>
+          <el-button @click="onShowSellChange" type="primary">改</el-button>
           <el-button @click="onGoBuyIn" type="primary">入库单</el-button>
         </template>
         
@@ -42,7 +42,7 @@
         </template>
         <!-- <template v-if="formData.orderStatus=='COMPLETED'">
           <el-button @click="onShowSellRefund" type="primary">退</el-button>
-          <el-button @click="onSellChange" type="primary">改</el-button>
+          <el-button @click="onShowSellChange" type="primary">改</el-button>
           <el-button @click="onGoSellOut" type="primary">出库单</el-button>
         </template> -->
       </template>
@@ -401,7 +401,7 @@
     </el-dialog>
 
     <el-dialog :visible.sync="showChange" title="改签">
-      <refund ref="refund" :ps="psRefund" @refund="comfirmRefund"/>
+      <change ref="change" :ps="psChange" :goods="goodsChange" @changeOrder="comfirmChange"/>
     </el-dialog>
   </div>
 </template>
@@ -410,6 +410,7 @@
 import Goods from "@/components/Goods";
 import Passengers from "@/components/Passengers";
 import Refund from './refund'
+import Change from './change'
 
 export default {
   data() {
@@ -445,6 +446,8 @@ export default {
       showRefund: false,
       psRefund: [], //可供选择退款人员列表
       showChange: false, //
+      psChange: [],
+      goodsChange: [],
     };
   },
   methods: {
@@ -776,7 +779,24 @@ export default {
           this.goBack()
         })
     },
-    onSellChange() {},
+    onShowSellChange() {
+      this.psChange = JSON.parse(JSON.stringify(this.formData.passengers))
+      this.goodsChange = JSON.parse(JSON.stringify(this.formData.orderDetails))
+      this.showChange = true
+    },
+    comfirmChange(val) {
+      let data = {
+        ...this.formData,
+        ...val
+      }
+      data.parentNo = data.orderNo;
+      data.orderNo = null;
+      this.$store.dispatch('productOrder/orderChange', data)
+        .then(data => {
+          this.$message.success('改签成功')
+          this.goBack()
+        })
+    },
     onSellOut() {
 
       this.$store
@@ -881,6 +901,7 @@ export default {
     Goods,
     Passengers,
     Refund,
+    Change,
   },
   watch: {
     '$route.query': {
