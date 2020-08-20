@@ -53,6 +53,18 @@
                 >{{row.inventoryQuantity}}</el-link>
               </template>
             </el-table-column>
+            <template v-if="
+              scope.row.orderType=='SELL_CHANGE_OUT'||
+              scope.row.orderType=='SELL_CHANGE_IN'||
+              scope.row.orderType=='BUY_CHANGE_IN'||
+              scope.row.orderType=='BUY_CHANGE_OUT'
+            ">
+              <el-table-column label="类型">
+                <template v-slot="{row}">
+                  <el-tag>{{row.changeFlag?'改签单':'原单'}}</el-tag>
+                </template>
+              </el-table-column>
+            </template>
           </el-table>
 
           <el-table :data="scope.row.passengers" border style="margin-top:10px;">
@@ -102,21 +114,22 @@
               <el-button type="text" @click="onBuyIn(row)">入库</el-button>
             </template>
           </template>
-          <template v-if="params.orderType==103">
-            <el-button @click="refundTicket(row)" type="text" size="mini" class="btn-primary">退款</el-button>
+          <template v-if="row.orderType=='SELL_CHANGE_OUT'">
+            <template v-if="row.orderStatus=='CONFIRMED'">
+              <el-button type="text" @click="onSellOut(row)">出库</el-button>
+            </template>
           </template>
-          <template v-if="params.orderType==104">
-            <el-button @click="changeTicket(row)" type="text" size="mini" class="btn-primary">改签</el-button>
-            <el-button @click="changeTicket(row)" type="text" size="mini" class="btn-primary">退改</el-button>
+          
+          <template v-if="row.orderType=='BUY_IN'">
+            <template v-if="row.orderStatus=='CONFIRMED'">
+              <el-button type="text" @click="onBuyIn(row)">入库</el-button>
+            </template>
           </template>
-          <template v-if="params.orderType==105">
-            <el-button @click="refundTicket(row)" type="text" size="mini" class="btn-primary">入库</el-button>
+          <template v-if="row.orderType=='BUY_CHANGE_IN'">
+            <template v-if="row.orderStatus=='CONFIRMED'">
+              <el-button type="text" @click="onBuyIn(row)">入库</el-button>
+            </template>
           </template>
-          <template v-if="params.orderType==106">
-            <el-button @click="changeTicket(row)" type="text" size="mini" class="btn-primary">出库</el-button>
-            <el-button @click="onGoBuy(row)" type="text" size="mini" class="btn-primary">采购</el-button>
-          </template>
-
         </template>
       </el-table-column>
     </el-table>
@@ -248,12 +261,7 @@
 <script>
 import { MIXIN_LIST } from "@/utils/mixin";
 import { CARD_TYPES_MAP, AGE_TYPES_MAP } from "@/utils/const";
-import {
-  formatOrderStatus,
-  formatOrderType,
-  formatPaymentStatus,
-  formatWarehouseStatus
-} from "@/utils/productStatus.js";
+
 import search from "./Search";
 
 import ChangeTicket from './changeTicket'
@@ -286,10 +294,6 @@ export default {
     this.params.parentNo = this.$route.query.parentNo
   },
   methods: {
-    formatOrderStatus,
-    formatOrderType,
-    formatPaymentStatus,
-    formatWarehouseStatus,
     onAdd() {
       this.$router.push({
         name: "orderBaseEdit",
