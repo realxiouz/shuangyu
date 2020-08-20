@@ -139,7 +139,49 @@
                 <el-col :span="3" class="info-text">精品特惠</el-col>
                 <el-col :span="3" class="info-text">经济舱</el-col>
                 <el-col :span="2" class="info-text">Q舱</el-col>
-                <el-col :span="2" style="color:#409EFF">退改签规则</el-col>
+                <el-col :span="3" style="color:#409EFF">
+                  <el-tooltip placement="bottom" effect="light" >
+                    <div slot="content" style="width：600px">
+                      <el-row>退改签规则<span>(以下为成人退改签规则说明)</span></el-row>
+                        <el-row type="flex" justify="start" style="width:500px;margin-top:10px;border-bottom:1px solid #cccccc;padding-bottom:5px">
+                          <el-col :span="9">退改签时间点</el-col>
+                          <el-col :span="5">退票扣费</el-col>
+                          <el-col :span="5">改期加收手续费</el-col>
+                          <el-col :span="6">签转</el-col>
+                        </el-row>
+                        <el-row style="width:500px;margin-top:10px;border-bottom:1px solid #cccccc;padding-bottom:5px">
+                        <el-row type="flex" justify="start" style="width:500px;margin-top:10px;">
+                          <el-col :span="9">2020年08月14日 11:30前</el-col>
+                          <el-col :span="5">￥168/人</el-col>
+                          <el-col :span="5">￥83/人</el-col>
+                          <el-col :span="6"></el-col>
+                        </el-row>
+                        <el-row type="flex" justify="start" style="width:500px;margin-top:10px;">
+                          <el-col :span="9">2020年08月18日 11:30前</el-col>
+                          <el-col :span="5">￥333/人</el-col>
+                          <el-col :span="5">￥165/人</el-col>
+                          <el-col :span="6">不可签转</el-col>
+                        </el-row>
+                        <el-row type="flex" justify="start" style="width:500px;margin-top:10px;">
+                          <el-col :span="9">2020年08月21日 7:30前</el-col>
+                          <el-col :span="5">￥498/人</el-col>
+                          <el-col :span="5">￥330/人</el-col>
+                          <el-col :span="6"></el-col>
+                        </el-row>
+                        <el-row type="flex" justify="start" style="width:500px;margin-top:10px;">
+                          <el-col :span="9">2020年08月21日 7:30后</el-col>
+                          <el-col :span="5">￥663/人</el-col>
+                          <el-col :span="5">￥495/人</el-col>
+                          <el-col :span="6"></el-col>
+                        </el-row>
+                      </el-row>
+                      <el-row>
+                        <el-col>附加说明</el-col>
+                        <el-col>舱位(Q):票面￥1650</el-col>
+                      </el-row>
+                    </div>
+                    <el-col style="color:#409EFF">退改签规则</el-col>
+                  </el-tooltip></el-col>
                 <el-col :span="2" >
                   <el-tooltip placement="bottom" effect="light">
                     <div slot="content">手提行李：1件,5kg,20*40*55CM;托运行李：20KG,40*60*100CM;<br/>婴儿票行李:可以免费托运10KG,可免费托运一辆折叠式婴儿车或摇篮</div>
@@ -185,15 +227,6 @@ export default {
 <style >
 .el-form-item-list{
   height: 10px;
-}
-.el-menu.el-menu--horizontal{
-  border-bottom: none;
-}
-.el-menu--horizontal>.el-menu-item.is-active{
-  border-bottom: none;
-}
-.el-menu--horizontal>.el-submenu.is-active .el-submenu__title{
-  border-bottom: none;
 }
 .el-collapse{
   border-top: none;
