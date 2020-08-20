@@ -5,7 +5,6 @@
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
     </el-row>
     <el-table class="page-table" highlight-current-row v-loading="loading">
-      <el-table-column label="会员idid"  align="center"></el-table-column>
       <el-table-column label="会员编号" align="center"></el-table-column>
       <el-table-column label="会员名称"  align="center"></el-table-column>
       <el-table-column label="类型"  align="center"></el-table-column>

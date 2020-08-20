@@ -1,14 +1,44 @@
 <template>
   <el-row type="flex" justify="space-between" align="bottom">
     <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
-      <el-form :model="formData" label-width="80px" size="mini">
+      <el-form :model="formData" label-width="90px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="银行卡id:">
+          <el-form-item label="持卡人姓名:">
             <el-input
               clearable
               @keyup.enter.native="$emit('onSearch', formData)"
               v-model="formData.roleName"
               placeholder="请输入银行卡id搜素..."
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="银行编码:">
+            <el-input
+              clearable
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.roleName"
+              placeholder="请输入银行编码搜素..."
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="银行名称:">
+            <el-input
+              clearable
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.roleName"
+              placeholder="请输入银行名称搜素..."
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="卡号:">
+            <el-input
+              clearable
+              @keyup.enter.native="$emit('onSearch', formData)"
+              v-model="formData.roleName"
+              placeholder="请输入卡号搜素..."
             ></el-input>
           </el-form-item>
         </el-col>

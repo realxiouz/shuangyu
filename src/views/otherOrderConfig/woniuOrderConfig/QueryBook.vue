@@ -114,7 +114,7 @@
               </el-row>
               <el-row type="flex" justify="space-between" :gutter="20">
                 <el-col style="color:#E6A23C;font-size:24px;font-weight:400"><span style="font-size:14px">￥</span>1526</el-col>
-                <el-col><el-button type="warning" v-if="this.activeNames.indexOf('1')!=-1" icon="el-icon-caret-top">收起</el-button>
+                <el-col><el-button type="warning" plain v-if="this.activeNames.indexOf('1')!=-1" icon="el-icon-caret-top">收起</el-button>
                 <el-button type="warning" v-else icon="el-icon-caret-bottom">预订</el-button></el-col>
               </el-row>
             </el-row>
