@@ -6,7 +6,7 @@
     <card title="单据操作">
       <template v-if="formData.orderType=='SELL'">
         <template v-if="formData.orderStatus=='CONFIRMED'">
-          <el-button @click="onGoBuy" type="primary">采购</el-button>
+          <!-- <el-button @click="onGoBuy" type="primary">采购</el-button> -->
           <el-button @click="onGoSellOut" type="primary">出库单</el-button>
         </template>
         <template v-if="formData.orderStatus=='COMPLETED'">
@@ -17,7 +17,7 @@
       </template>
       <template v-if="formData.orderType=='SELL_OUT'">
         <template v-if="formData.orderStatus=='CONFIRMED'">
-          <el-button type="primary" @click="onSellOut">出库</el-button>
+          <!-- <el-button type="primary" @click="onSellOut">出库</el-button> -->
         </template>
       </template>
       <template v-if="formData.orderType=='SELL_REFUND_IN'">
@@ -590,6 +590,19 @@ export default {
           console.log(error);
         });
     },
+    loadProductByParent(no) {
+      this.$store
+        .dispatch("productOrder/getOne", { orderNo: no })
+        .then(data => {
+          if (data) {
+            this.passengers = data.passengers;
+            this.orderDetails = data.orderDetails;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     selectedCustomer(item) {
       this.customerSelected = false;
       this.loadAccounts(item);
@@ -666,7 +679,7 @@ export default {
     confirmOrder() {
       this.$refs["orderForm"].validate(valid => {
         if (valid) {
-          this.formData.parentNo = this.formData.orderNo;
+          this.formData.parentNo = this.formData.orderNo || this.formData.parentNo;
           this.formData.orderNo = null;
           this.formData.orderDetails = this.orderDetails;
           this.formData.passengers = this.passengers;
@@ -856,39 +869,12 @@ export default {
 
       if (this.$route.query.parentNo) {
         this.formData.parentNo = this.$route.query.parentNo
+        this.loadProductByParent(this.$route.query.parentNo)
       }
       console.log(this.formData);
     }
   },
   created() {
-    // this.initFormData(this.$route.query.orderNo);
-
-    // this.loadCustomers();
-    // this.loadWarehouses();
-    // this.loadFundAccount();
-    // this.loadExpress();
-
-    // this.update = false;
-    // if (this.$route.query.orderNo) {
-    //   this.loadProduct(this.$route.query.orderNo);
-    //   this.update = true;
-    // } else {
-    //   this.canNotEdit = false;
-    // }
-
-    // this.formData = this.defaultFormData();
-    
-    // this.formData.orderType = this.$route.query.orderType;
-    // if (!this.$route.query.orderNo) {
-    //   if(this.formData.orderType.startsWith("SELL")) {
-    //     this.formData.orderCategory = 0
-    //     this.formData.warehouseStatus = 'OUT'
-    //   } else {
-    //     this.formData.orderCategory = 1
-    //     this.formData.warehouseStatus = 'IN'
-    //   }
-    // }
-    // console.log(this.formData);
     this.getData()
   },
   components: {
