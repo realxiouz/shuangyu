@@ -29,27 +29,51 @@
         </el-row>
       </el-form>
     </div>
-    <el-row class="page-tools" type="flex" justify="space-between">
-      <el-col :span="20">
-        <el-menu  class="el-menu-demo" mode="horizontal">
-          <el-submenu index="1">
-            <template slot="title">起飞时间</template>
-            <el-menu-item index="1-1">选项1</el-menu-item>
-          </el-submenu>
-          <el-submenu index="2">
-            <template slot="title">起飞机场</template>
-            <el-menu-item index="2-1">选项1</el-menu-item>
-          </el-submenu>
-          <el-submenu index="3">
-            <template slot="title">航空公司</template>
-            <el-menu-item index="3-1">选项1</el-menu-item>
-          </el-submenu>
-          <el-submenu index="4">
-            <template slot="title">机型</template>
-            <el-menu-item index="4-1">选项1</el-menu-item>
-          </el-submenu>
-          <el-menu-item index="1"><el-checkbox style="padding-right:10px;margin-top:-5px" />起飞时间</el-menu-item>
-        </el-menu>
+    <el-row class="page-tools" type="flex" justify="space-between" style="width:100%;">
+      <el-col :span="8" style="margin-top:10px">
+      <el-row type="flex" justify="start" :gutter="20" >
+        <el-col >
+          <el-dropdown @command="handleCommand">
+            <span class="el-dropdown-link">
+              起飞时间<i class="el-icon-caret-bottom el-icon--right"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="a">黄金糕</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </el-col>
+        <el-col>
+          <el-dropdown @command="handleCommand">
+            <span class="el-dropdown-link">
+              起飞机场<i class="el-icon-caret-bottom el-icon--right"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="a">黄金糕</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </el-col>
+        <el-col>
+          <el-dropdown @command="handleCommand">
+            <span class="el-dropdown-link">
+              航空公司<i class="el-icon-caret-bottom el-icon--right"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="a">黄金糕</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </el-col>
+        <el-col>
+          <el-dropdown @command="handleCommand">
+            <span class="el-dropdown-link">
+              机型<i class="el-icon-caret-bottom el-icon--right"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="a">黄金糕</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </el-col>
+        <el-col><el-checkbox style="padding-right:10px;margin-top:-5px" />直飞</el-col>
+      </el-row>
       </el-col>
       <el-col :span="4"  style="margin-top:20px">
         <el-row type="flex" justify="space-between">
@@ -59,8 +83,8 @@
       </el-col>
     </el-row>
     <el-row class="page-tools">
-      <el-collapse class="page-tools">
-        <el-collapse-item >
+      <el-collapse class="page-tools" v-model="activeNames">
+        <el-collapse-item name="1">
           <span class="collapse-title" slot="title" style="width:100%">
             <el-row type="flex" justify="space-between">
               <el-row type="flex" justify="start" style="width:80%">
@@ -90,8 +114,8 @@
               </el-row>
               <el-row type="flex" justify="space-between" :gutter="20">
                 <el-col style="color:#E6A23C;font-size:24px;font-weight:400"><span style="font-size:14px">￥</span>1526</el-col>
-                <el-col><el-button type="warning" v-if="this.activeNames.indexOf('1')!=-1" icon="el-icon-caret-bottom">预订</el-button>
-                <el-button type="warning" v-else icon="el-icon-caret-top">收起</el-button></el-col>
+                <el-col><el-button type="warning" v-if="this.activeNames.indexOf('1')!=-1" icon="el-icon-caret-top">收起</el-button>
+                <el-button type="warning" v-else icon="el-icon-caret-bottom">预订</el-button></el-col>
               </el-row>
             </el-row>
           </span>
@@ -142,9 +166,14 @@ export default {
   name:"queryBook",
   data(){
     return{
-      activeNames: ["1"]
+      activeNames: ["0"]
     }
     
+  },
+  methods:{
+     handleCommand(command) {
+        this.$message('click on item ' + command);
+      }
   }
 }
 </script>

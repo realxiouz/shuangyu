@@ -1,5 +1,6 @@
 <template>
   <div class="page">
+    <search class="page-search" ref="search" @onSearch="onSearch"/>
     <el-row class="page-tools" type="flex" justify="space-between">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
     </el-row>
@@ -18,14 +19,26 @@
         </template>
       </el-table-column>
     </el-table>
+    <edit :visible.sync="dialogVisible" :key-id="keyId" :key-name="keyName" @refresh="onRefresh"/>
   </div>
 </template>
 
 <script>
   import {MIXIN_LIST} from "@/utils/mixin";
+  import edit from "./Edit";
+  import search from "./Search";
   export default {
     mixins: [MIXIN_LIST],
-    name: "account"
-  
+    name: "account",
+    data(){
+      return{
+        keyId: '',
+        keyName: 'userId',
+      }
+    },
+    components: {
+      edit,
+      search
+    },
   };
 </script>
