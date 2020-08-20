@@ -200,6 +200,7 @@
           voucherDate: null,
           templateName: null,
           templateType: null,
+          enable: true,
           voucherRecords: [
             {
               summary: null,

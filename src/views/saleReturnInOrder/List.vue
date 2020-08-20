@@ -51,7 +51,7 @@
           </el-table>
 
           <el-table :data="scope.row.passengers" border style="margin-top:10px;">
-            <el-table-column label="乘客类型" width="70">
+            <el-table-column label="乘客类型" width="80">
               <template v-slot="{ row }">
                 <el-tag type="primary">{{ ageMap[row.ageType] }}</el-tag>
               </template>

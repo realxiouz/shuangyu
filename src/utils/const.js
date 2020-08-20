@@ -31,18 +31,20 @@ export const VOUCHCHER_TEMPLATE_TABLE = [
   { value: 0, label: '日常支出' },
   { value: 1, label: '采购' },
   { value: 2, label: '销售' },
-  { value: 3, label: '工资' },
-  { value: 4, label: '税金' },
-  { value: 5, label: '折旧和摊销' }
+  { value: 3, label: '付款' },
+  { value: 4, label: '工资' },
+  { value: 5, label: '税金' },
+  { value: 6, label: '折旧和摊销' }
 ];
 
 export const VOUCHCHER_TEMPLATE_MAP = {
   '0': '日常支出',
   '1': '采购',
   '2': '销售',
-  '3': '工资',
-  '4': '税金',
-  '5': '折旧和摊销'
+  '3': '付款',
+  '4': '工资',
+  '5': '税金',
+  '6': '折旧和摊销'
 };
 
 export const PAGE_SIZES = [10, 20, 50, 100];
@@ -111,7 +113,7 @@ export const ORDER_STATUS_MAP = {
 }
 
 export const WAREHOUSE_STATUS_MAP = {
-  'IN ': '未入库',
+  'IN': '未入库',
   'IN_OK': '已入库',
   'OUT': '未出库',
   'OUT_OK': '已出库',

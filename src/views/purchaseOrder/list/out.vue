@@ -17,7 +17,7 @@
         <template slot-scope="scope">{{ scope.row.orderDate | time("YYYY-MM-DD") }}</template>
       </el-table-column>
       <el-table-column label="单据类型">
-        <template slot-scope="scope">{{ formatOrderType(scope.row) }}</template>
+        <template v-slot="{row}">{{ row.orderType|orderType }}</template>
       </el-table-column>
       <el-table-column label="明细" width="800">
         <template slot-scope="scope">
@@ -56,7 +56,7 @@
           </el-table>
 
           <el-table :data="scope.row.passengers" border style="margin-top:10px;">
-            <el-table-column label="乘客类型" width="70">
+            <el-table-column label="乘客类型" width="80">
               <template v-slot="{ row }">
                 <el-tag type="primary">{{ ageMap[row.ageType] }}</el-tag>
               </template>
@@ -74,13 +74,19 @@
       </el-table-column>
       <el-table-column prop="totalAmount" label="成交金额" />
       <el-table-column prop="receiptAmount" label="实收金额" />
-      <el-table-column prop="orderStatus" :formatter="formatOrderStatus" label="确认状态" width="80" />
+      <el-table-column label="确认状态" width="80" >
+        <template v-slot="{row}">
+          {{row.orderStatus|orderStatus}}
+        </template>
+      </el-table-column>
       <el-table-column
-        prop="warehouseStatus"
-        :formatter="formatWarehouseStatus"
         label="发货状态"
         width="80"
-      />
+      >
+        <template v-slot="{row}">
+          {{row.warehouseStatus|warehouseStatus}}
+        </template>
+      </el-table-column>
       <el-table-column fixed="right" label="操作" align="center" width="200">
         <template v-slot="{ row, $index}">
           <el-button @click="onEdit(row)" type="text" size="mini" class="btn-primary">查看</el-button>

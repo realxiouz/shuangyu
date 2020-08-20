@@ -1,5 +1,6 @@
 <template>
   <div class="page">
+    <search class="page-search" ref="search" @onSearch="onSearch" :category="category"/>
     <el-row class="page-tools" type="flex" justify="space-between">
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
     </el-row>
@@ -56,6 +57,7 @@
 <script>
   import edit from "./Edit";
   import {subjectCategory} from "@/utils/status.js";
+  import search from "./Search";
   import {MIXIN_LIST} from "@/utils/mixin";
 
   export default {
@@ -126,10 +128,15 @@
       }
     },
     components: {
-      edit,
+      search,
+      edit
     }
   };
 </script>
 
 <style>
+  .page .page-tools{
+    margin-top: 0;
+    padding-top: 0;
+  }
 </style>
