@@ -232,6 +232,9 @@
       <card title="商品信息">
         <goods v-model="orderDetails" @total="handleTotal" />
       </card>
+      <card title="改签商品信息" v-if="orderDetailsForChange.length">
+        <goods :value="orderDetailsForChange" />
+      </card>
       <card title="乘客信息">
         <passengers v-model="passengers" />
       </card>
@@ -428,6 +431,7 @@ export default {
       warehouseList: [],
       expressList: [],
       orderDetails: [],
+      orderDetailsForChange: [],
       funAccountList: [],
       customerSelected: true,
       update: false,
@@ -588,7 +592,9 @@ export default {
             }
             this.formData = data;
             this.passengers = this.formData.passengers;
-            this.orderDetails = this.formData.orderDetails;
+            this.orderDetails = data.orderDetails.filter(i => !i.changeFlag);
+
+            this.orderDetailsForChange = data.orderDetails.filter(i => i.changeFlag)
             if (data.merchantId) {
               this.loadAccounts(data.merchantId);
             }
@@ -604,7 +610,9 @@ export default {
         .then(data => {
           if (data) {
             this.passengers = data.passengers;
-            this.orderDetails = data.orderDetails;
+            this.orderDetails = data.orderDetails.filter(i => !i.changeFlag);
+
+            this.orderDetailsForChange = data.orderDetails.filter(i => i.changeFlag)
           }
         })
         .catch(error => {
@@ -869,7 +877,7 @@ export default {
         name: "orderBaseList",
         query: {
           orderType: "SELL_CHANGE_OUT",
-          parentNo: this.formData.orderNo
+          parentNo: this.formData.parentNo
         }
       });
     },
