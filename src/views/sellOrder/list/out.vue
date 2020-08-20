@@ -83,7 +83,7 @@
         label="发货状态"
         width="80"
       >
-      <template v-slot="{row}">
+        <template v-slot="{row}">
           {{row.warehouseStatus|warehouseStatus}}
         </template>
       </el-table-column>

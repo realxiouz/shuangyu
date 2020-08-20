@@ -264,7 +264,8 @@ export default {
         removeOne: "productOrder/removeOne"
       },
       params: {
-        orderType: -1
+        orderType: '',
+        parentNo: ''
       },
 
       refundTicketShow: false,
@@ -274,7 +275,7 @@ export default {
   },
   created() {
     this.params.orderType = this.$route.query.orderType;
-    this.parmas.parentNo = this.$route.query.parentNo
+    this.params.parentNo = this.$route.query.parentNo
   },
   methods: {
     formatOrderStatus,
@@ -425,22 +426,36 @@ export default {
     },
   },
   watch: {
-    "$route.query.orderType": {
-      handler(val) {
-        this.params.orderType = val;
-        this.loadData();
-      }
-    },
-    "$route.query.parentNo": {
-      handler(val) {
-        this.params.parentNo = val;
-        this.loadData();
-      }
-    },
+    // "$route.query.orderType": {
+    //   handler(val) {
+    //     this.params.orderType = val;
+    //     this.loadData();
+    //   }
+    // },
+    // "$route.query.parentNo": {
+    //   handler(val) {
+    //     this.params.parentNo = val;
+    //     this.loadData();
+    //   }
+    // },
+    query(val) {
+      this.parmas = val
+      this.loadData()
+    }
   },
   components: {
     search,
     ChangeTicket,
+    query() {
+      let q = {}
+      if (this.$route.query.orderType) {
+        q.orderType = this.$route.query.orderType
+      }
+      if (this.$route.query.parentNo) {
+        q.parentNo = this.$route.query.parentNo
+      }
+      return q
+    }
   }
 };
 </script>

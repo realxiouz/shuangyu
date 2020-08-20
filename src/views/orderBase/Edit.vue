@@ -1,384 +1,410 @@
 <template>
   <div class="page">
-    <div class="contentBox">
-      <div id="goBack" @click="goBack">
-        <el-page-header></el-page-header>
-      </div>
-      <card title="单据操作">
-        <template v-if="formData.orderType=='SELL'">
-          <template v-if="formData.orderStatus=='CONFIRMED'">
-            <el-button @click="onGoSellOut" type="primary">出库单</el-button>
-          </template>
-          <template v-if="formData.orderStatus=='COMPLETED'">
-            <el-button @click="onSellRefund" type="primary">退</el-button>
-            <el-button @click="onSellChange" type="primary">改</el-button>
-          </template>
+    <div id="goBack" @click="goBack">
+      <el-page-header></el-page-header>
+    </div>
+    <card title="单据操作">
+      <template v-if="formData.orderType=='SELL'">
+        <template v-if="formData.orderStatus=='CONFIRMED'">
+          <el-button @click="onGoSellOut" type="primary">出库单</el-button>
         </template>
-        <template v-if="formData.orderType=='SELL_OUT'">
-          <template v-if="formData.orderStatus=='CONFIRMED'">
-            <el-button type="primary" @click="onSellOut">出库</el-button>
-          </template>
+        <template v-if="formData.orderStatus=='COMPLETED'">
+          <el-button @click="onShowSellRefund" type="primary">退</el-button>
+          <el-button @click="onSellChange" type="primary">改</el-button>
+          <el-button @click="onGoSellOut" type="primary">出库单</el-button>
         </template>
-        <template v-if="formData.orderType=='BUY'">
-          <template v-if="formData.orderStatus=='CONFIRMED'">
-            <el-button @click="onGoBuyIn" type="primary">入库单</el-button>
-          </template>
-          
+      </template>
+      <template v-if="formData.orderType=='SELL_OUT'">
+        <template v-if="formData.orderStatus=='CONFIRMED'">
+          <el-button type="primary" @click="onSellOut">出库</el-button>
         </template>
-        <template v-if="formData.orderType=='BUY_IN'">
-          <template v-if="formData.orderStatus=='CONFIRMED'">
-            <el-button type="primary" @click="onBuyIn">入库</el-button>
-          </template>
+      </template>
+      <template v-if="formData.orderType=='SELL_REFUND_IN'">
+        <template v-if="formData.orderStatus=='CONFIRMED'">
+          <el-button type="primary" @click="onBuyIn">入库</el-button>
         </template>
-      </card>
-      <el-form
-        ref="orderForm"
-        :disabled="canNotEdit"
-        :rules="rules"
-        :model="formData"
-        label-position="top"
-        label-width="97px"
-        size="mini"
-        style="width: 100%"
-      >
-        <card title="订单信息">
-          <el-row :gutter="30">
-            <el-col :span="8">
-              <el-form-item label="订单类型:">
-                <el-tag>{{this.formData.orderType|orderType}}</el-tag>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="订单状态:">
-                <el-tag>{{this.formData.orderStatus|orderStatus}}</el-tag>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="客户:" prop="merchantId">
-                <el-select
-                  v-model="formData.merchantId"
-                  filterable
-                  @change="selectedCustomer"
-                  placeholder="请选择"
-                  style="width: 100%"
-                >
-                  <el-option
-                    v-for="item in customerList"
-                    :key="item.merchantId"
-                    :label="item.firm.firmName"
-                    :value="item.merchantId"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="账号:" prop="accountId">
-                <el-select
-                  v-model="formData.accountId"
-                  filterable
-                  :disabled="customerSelected && !update"
-                  placeholder="请选择"
-                  style="width: 100%"
-                >
-                  <el-option
-                    v-for="item in accountList"
-                    :key="item.accountId"
-                    :label="item.username"
-                    :value="item.accountId"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="联系人姓名:" prop="contactName">
-                <el-input type="text" v-model="formData.contactName" placeholder="请输入联系人姓名"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="发货期限:" prop="expireDate">
-                <el-date-picker
-                  v-model="formData.expireDate"
-                  type="date"
-                  placeholder="选择日期"
-                  style="width: 100%"
-                  value-format="timestamp"
-                ></el-date-picker>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="仓库:" prop="warehouseId">
-                <el-select
-                  v-model="formData.warehouseId"
-                  filterable
-                  placeholder="请选择"
-                  @change="selectedWarehouse"
-                  style="width: 100%"
-                >
-                  <el-option
-                    v-for="item in warehouseList"
-                    :key="item.warehouseCode"
-                    :label="item.warehouseName"
-                    :value="item.warehouseCode"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="出入库状态:">
-                <el-tag>{{formData.warehouseStatus|warehouseStatus}}</el-tag>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="出库时间:" prop="warehouseDate">
-                <el-date-picker
-                  v-model="formData.warehouseDate"
-                  type="date"
-                  placeholder="选择日期"
-                  style="width: 100%"
-                  value-format="timestamp"
-                ></el-date-picker>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="快递公司:" prop="expressId">
-                <el-select
-                  v-model="formData.expressId"
-                  @change="selectedExpress"
-                  filterable
-                  placeholder="请选择"
-                  style="width: 100%"
-                >
-                  <el-option
-                    v-for="item in expressList"
-                    :key="item.merchantId"
-                    :label="item.firm.firmName"
-                    :value="item.merchantId"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="付款方式" prop="paymentMode">
-                <el-input
-                  v-model="formData.paymentMode"
-                  :fetch-suggestions="querySearchAsync"
-                  placeholder="付款方式"
-                  @select="selectedPaymode"
-                  style="width: 100%"
-                />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="成交金额:">{{ formData.totalAmount }}</el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="实收金额:">{{ formData.receiptAmount }}</el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="结算账户:" prop="fundAccountId">
-                <el-select
-                  v-model="formData.fundAccountId"
-                  filterable
-                  placeholder="请选择"
-                  @change="selectedFundAccount"
-                  style="width: 100%"
-                >
-                  <el-option
-                    v-for="item in funAccountList"
-                    :key="item.accountId"
-                    :label="item.accountName"
-                    :value="item.accountId"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="制单人:">{{ this.$store.getters.fullName }}</el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="制单时间:">{{ new Date() | time("YYYY-MM-DD") }}</el-form-item>
-            </el-col>
-          </el-row>
-        </card>
+      </template>
+      <template v-if="formData.orderType=='BUY'">
+        <template v-if="formData.orderStatus=='CONFIRMED'">
+          <el-button @click="onGoBuyIn" type="primary">入库单</el-button>
+        </template>
+        <template v-if="formData.orderStatus=='COMPLETED'">
+          <el-button @click="onShowSellRefund" type="primary">退</el-button>
+          <el-button @click="onSellChange" type="primary">改</el-button>
+          <el-button @click="onGoBuyIn" type="primary">入库单</el-button>
+        </template>
+        
+      </template>
+      <template v-if="formData.orderType=='BUY_IN'">
+        <template v-if="formData.orderStatus=='CONFIRMED'">
+          <el-button type="primary" @click="onBuyIn">入库</el-button>
+        </template>
+        <!-- <template v-if="formData.orderStatus=='COMPLETED'">
+          <el-button @click="onShowSellRefund" type="primary">退</el-button>
+          <el-button @click="onSellChange" type="primary">改</el-button>
+          <el-button @click="onGoSellOut" type="primary">出库单</el-button>
+        </template> -->
+      </template>
 
-        <card title="商品信息">
-          <goods v-model="orderDetails" @total="handleTotal" />
-        </card>
-        <card title="乘客信息">
-          <passengers v-model="passengers" />
-        </card>
-        <card title="订单操作">
-          <el-button-group>
-            <el-button type="primary" @click="onSave" v-if="formData.orderStatus=='DRAFT'">保 存</el-button>
-            <el-button type="primary" @click="confirmOrder">确 认</el-button>
-          </el-button-group>
-        </card>
-        <!-- <el-row>
-          <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
-            <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
-              <el-form-item label="客户:" prop="merchantId">
-                <el-select
-                  v-model="formData.merchantId"
-                  filterable
-                  @change="selectedCustomer"
-                  placeholder="请选择"
-                  style="width: 100%"
-                >
-                  <el-option
-                    v-for="item in customerList"
-                    :key="item.merchantId"
-                    :label="item.firm.firmName"
-                    :value="item.merchantId"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="账号:" prop="accountId">
-                <el-select
-                  v-model="formData.accountId"
-                  filterable
-                  :disabled="customerSelected && !update"
-                  placeholder="请选择"
-                  style="width: 100%"
-                >
-                  <el-option
-                    v-for="item in accountList"
-                    :key="item.accountId"
-                    :label="item.username"
-                    :value="item.accountId"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="联系人姓名:" prop="contactName">
-                <el-input type="text" v-model="formData.contactName" placeholder="请输入联系人姓名"></el-input>
-              </el-form-item>
-            </el-col>
+      <template v-if="formData.orderType=='BUY_REFUND_OUT'">
+        <template v-if="formData.orderStatus=='CONFIRMED'">
+          <el-button type="primary" @click="onSellOut">出库</el-button>
+        </template>
+      </template>
+      
+    </card>
+    <el-form
+      ref="orderForm"
+      :disabled="canNotEdit"
+      :rules="rules"
+      :model="formData"
+      label-position="top"
+      label-width="97px"
+      size="mini"
+      style="width: 100%"
+    >
+      <card title="订单信息">
+        <el-row :gutter="30">
+          <el-col :span="8">
+            <el-form-item label="订单类型:">
+              <el-tag>{{this.formData.orderType|orderType}}</el-tag>
+            </el-form-item>
           </el-col>
-          <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
-            <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
-              <el-form-item label="发货期限:" prop="expireDate">
-                <el-date-picker
-                  v-model="formData.expireDate"
-                  type="date"
-                  placeholder="选择日期"
-                  style="width: 100%"
-                  value-format="timestamp"
-                ></el-date-picker>
-              </el-form-item>
-              <el-form-item label="仓库:" prop="warehouseId">
-                <el-select
-                  v-model="formData.warehouseId"
-                  filterable
-                  placeholder="请选择"
-                  @change="selectedWarehouse"
-                  style="width: 100%"
-                >
-                  <el-option
-                    v-for="item in warehouseList"
-                    :key="item.warehouseCode"
-                    :label="item.warehouseName"
-                    :value="item.warehouseCode"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="出入库状态:">
-                <span>
-                  {{
-                  formData.warehouseStatus == 2 ? "未出库" : "已出库"
-                  }}
-                </span>
-              </el-form-item>
-              <el-form-item label="出库时间:" prop="warehouseDate">
-                <el-date-picker
-                  v-model="formData.warehouseDate"
-                  type="date"
-                  placeholder="选择日期"
-                  style="width: 100%"
-                  value-format="timestamp"
-                ></el-date-picker>
-              </el-form-item>
-              <el-form-item label="快递公司:" prop="expressId">
-                <el-select
-                  v-model="formData.expressId"
-                  @change="selectedExpress"
-                  filterable
-                  placeholder="请选择"
-                  style="width: 100%"
-                >
-                  <el-option
-                    v-for="item in expressList"
-                    :key="item.merchantId"
-                    :label="item.firm.firmName"
-                    :value="item.merchantId"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="付款方式" prop="paymentMode">
-                <el-autocomplete
-                  v-model="formData.paymentMode"
-                  :fetch-suggestions="querySearchAsync"
-                  placeholder="付款方式"
-                  @select="selectedPaymode"
-                  style="width: 100%"
-                ></el-autocomplete>
-              </el-form-item>
-            </el-col>
+          <el-col :span="8">
+            <el-form-item label="订单状态:">
+              <el-tag>{{this.formData.orderStatus|orderStatus}}</el-tag>
+            </el-form-item>
           </el-col>
-        </el-row>-->
-        <!-- <goods v-model="orderDetails" @total="handleTotal"/>
-        <passengers v-model="passengers" />-->
-        <!-- <el-row style="width: 80%; margin-top: 10px">
-          <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
-            <el-input type="textarea" v-model="formData.remark" placeholder="暂无备注信息"></el-input>
+          <el-col :span="8">
+            <el-form-item :label="$route.query.orderType.startsWith('SELL') ? '客户' : '供应商'" prop="merchantId">
+              <el-select
+                v-model="formData.merchantId"
+                filterable
+                @change="selectedCustomer"
+                placeholder="请选择"
+                style="width: 100%"
+              >
+                <el-option
+                  v-for="item in customerList"
+                  :key="item.merchantId"
+                  :label="item.firm.firmName"
+                  :value="item.merchantId"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="账号:" prop="accountId">
+              <el-select
+                v-model="formData.accountId"
+                filterable
+                :disabled="customerSelected && !update"
+                placeholder="请选择"
+                style="width: 100%"
+              >
+                <el-option
+                  v-for="item in accountList"
+                  :key="item.accountId"
+                  :label="item.username"
+                  :value="item.accountId"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="联系人姓名:" prop="contactName">
+              <el-input type="text" v-model="formData.contactName" placeholder="请输入联系人姓名"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="发货期限:" prop="expireDate">
+              <el-date-picker
+                v-model="formData.expireDate"
+                type="date"
+                placeholder="选择日期"
+                style="width: 100%"
+                value-format="timestamp"
+              ></el-date-picker>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="仓库:" prop="warehouseId">
+              <el-select
+                v-model="formData.warehouseId"
+                filterable
+                placeholder="请选择"
+                @change="selectedWarehouse"
+                style="width: 100%"
+              >
+                <el-option
+                  v-for="item in warehouseList"
+                  :key="item.warehouseCode"
+                  :label="item.warehouseName"
+                  :value="item.warehouseCode"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="出入库状态:">
+              <el-tag>{{formData.warehouseStatus|warehouseStatus}}</el-tag>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="出库时间:" prop="warehouseDate">
+              <el-date-picker
+                v-model="formData.warehouseDate"
+                type="date"
+                placeholder="选择日期"
+                style="width: 100%"
+                value-format="timestamp"
+              ></el-date-picker>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="快递公司:" prop="expressId">
+              <el-select
+                v-model="formData.expressId"
+                @change="selectedExpress"
+                filterable
+                placeholder="请选择"
+                style="width: 100%"
+              >
+                <el-option
+                  v-for="item in expressList"
+                  :key="item.merchantId"
+                  :label="item.firm.firmName"
+                  :value="item.merchantId"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="付款方式" prop="paymentMode">
+              <el-input
+                v-model="formData.paymentMode"
+                :fetch-suggestions="querySearchAsync"
+                placeholder="付款方式"
+                @select="selectedPaymode"
+                style="width: 100%"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="成交金额:">{{ formData.totalAmount }}</el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="实收金额:">{{ formData.receiptAmount }}</el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="结算账户:" prop="fundAccountId">
+              <el-select
+                v-model="formData.fundAccountId"
+                filterable
+                placeholder="请选择"
+                @change="selectedFundAccount"
+                style="width: 100%"
+              >
+                <el-option
+                  v-for="item in funAccountList"
+                  :key="item.accountId"
+                  :label="item.accountName"
+                  :value="item.accountId"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="制单人:">{{ this.$store.getters.fullName }}</el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="制单时间:">{{ new Date() | time("YYYY-MM-DD") }}</el-form-item>
           </el-col>
         </el-row>
-        <el-row>
-          <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
-            <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
-              <el-form-item label="成交金额:">
-                {{ formData.totalAmount }}
-              </el-form-item>
-              <el-form-item label="实收金额:">{{ formData.receiptAmount }}</el-form-item>
-            </el-col>
+      </card>
+
+      <card title="商品信息">
+        <goods v-model="orderDetails" @total="handleTotal" />
+      </card>
+      <card title="乘客信息">
+        <passengers v-model="passengers" />
+      </card>
+      <card title="订单操作">
+        <el-button-group>
+          <el-button type="primary" @click="onSave" v-if="formData.orderStatus=='DRAFT'">保 存</el-button>
+          <el-button type="primary" @click="confirmOrder">确 认</el-button>
+        </el-button-group>
+      </card>
+      <!-- <el-row>
+        <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
+          <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
+            <el-form-item label="客户:" prop="merchantId">
+              <el-select
+                v-model="formData.merchantId"
+                filterable
+                @change="selectedCustomer"
+                placeholder="请选择"
+                style="width: 100%"
+              >
+                <el-option
+                  v-for="item in customerList"
+                  :key="item.merchantId"
+                  :label="item.firm.firmName"
+                  :value="item.merchantId"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="账号:" prop="accountId">
+              <el-select
+                v-model="formData.accountId"
+                filterable
+                :disabled="customerSelected && !update"
+                placeholder="请选择"
+                style="width: 100%"
+              >
+                <el-option
+                  v-for="item in accountList"
+                  :key="item.accountId"
+                  :label="item.username"
+                  :value="item.accountId"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="联系人姓名:" prop="contactName">
+              <el-input type="text" v-model="formData.contactName" placeholder="请输入联系人姓名"></el-input>
+            </el-form-item>
           </el-col>
-          <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
-            <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
-              <el-form-item label="结算账户:" prop="fundAccountId">
-                <el-select
-                  v-model="formData.fundAccountId"
-                  filterable
-                  placeholder="请选择"
-                  @change="selectedFundAccount"
-                  style="width: 100%"
-                >
-                  <el-option
-                    v-for="item in funAccountList"
-                    :key="item.accountId"
-                    :label="item.accountName"
-                    :value="item.accountId"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="制单人:">{{ this.$store.getters.fullName }}</el-form-item>
-              <el-form-item label="制单时间:">{{ new Date() | time("YYYY-MM-DD") }}</el-form-item>
-            </el-col>
+        </el-col>
+        <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
+          <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
+            <el-form-item label="发货期限:" prop="expireDate">
+              <el-date-picker
+                v-model="formData.expireDate"
+                type="date"
+                placeholder="选择日期"
+                style="width: 100%"
+                value-format="timestamp"
+              ></el-date-picker>
+            </el-form-item>
+            <el-form-item label="仓库:" prop="warehouseId">
+              <el-select
+                v-model="formData.warehouseId"
+                filterable
+                placeholder="请选择"
+                @change="selectedWarehouse"
+                style="width: 100%"
+              >
+                <el-option
+                  v-for="item in warehouseList"
+                  :key="item.warehouseCode"
+                  :label="item.warehouseName"
+                  :value="item.warehouseCode"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="出入库状态:">
+              <span>
+                {{
+                formData.warehouseStatus == 2 ? "未出库" : "已出库"
+                }}
+              </span>
+            </el-form-item>
+            <el-form-item label="出库时间:" prop="warehouseDate">
+              <el-date-picker
+                v-model="formData.warehouseDate"
+                type="date"
+                placeholder="选择日期"
+                style="width: 100%"
+                value-format="timestamp"
+              ></el-date-picker>
+            </el-form-item>
+            <el-form-item label="快递公司:" prop="expressId">
+              <el-select
+                v-model="formData.expressId"
+                @change="selectedExpress"
+                filterable
+                placeholder="请选择"
+                style="width: 100%"
+              >
+                <el-option
+                  v-for="item in expressList"
+                  :key="item.merchantId"
+                  :label="item.firm.firmName"
+                  :value="item.merchantId"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="付款方式" prop="paymentMode">
+              <el-autocomplete
+                v-model="formData.paymentMode"
+                :fetch-suggestions="querySearchAsync"
+                placeholder="付款方式"
+                @select="selectedPaymode"
+                style="width: 100%"
+              ></el-autocomplete>
+            </el-form-item>
           </el-col>
-        </el-row>-->
-        <!-- <el-row>
-          <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="16">
-            <div id="footer">
-              <el-button type="primary" @click="onSave">保 存</el-button>
-              <el-button type="primary" @click="confirmOrder">确 认</el-button>
-            </div>
+        </el-col>
+      </el-row>-->
+      <!-- <goods v-model="orderDetails" @total="handleTotal"/>
+      <passengers v-model="passengers" />-->
+      <!-- <el-row style="width: 80%; margin-top: 10px">
+        <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
+          <el-input type="textarea" v-model="formData.remark" placeholder="暂无备注信息"></el-input>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
+          <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
+            <el-form-item label="成交金额:">
+              {{ formData.totalAmount }}
+            </el-form-item>
+            <el-form-item label="实收金额:">{{ formData.receiptAmount }}</el-form-item>
           </el-col>
-        </el-row>-->
-      </el-form>
-    </div>
+        </el-col>
+        <el-col :xs="24" :sm="18" :md="12" :lg="12" :xl="12">
+          <el-col :xs="20" :sm="20" :md="18" :lg="16" :xl="16">
+            <el-form-item label="结算账户:" prop="fundAccountId">
+              <el-select
+                v-model="formData.fundAccountId"
+                filterable
+                placeholder="请选择"
+                @change="selectedFundAccount"
+                style="width: 100%"
+              >
+                <el-option
+                  v-for="item in funAccountList"
+                  :key="item.accountId"
+                  :label="item.accountName"
+                  :value="item.accountId"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="制单人:">{{ this.$store.getters.fullName }}</el-form-item>
+            <el-form-item label="制单时间:">{{ new Date() | time("YYYY-MM-DD") }}</el-form-item>
+          </el-col>
+        </el-col>
+      </el-row>-->
+      <!-- <el-row>
+        <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="16">
+          <div id="footer">
+            <el-button type="primary" @click="onSave">保 存</el-button>
+            <el-button type="primary" @click="confirmOrder">确 认</el-button>
+          </div>
+        </el-col>
+      </el-row>-->
+    </el-form>
+
+    <el-dialog :visible.sync="showRefund">
+      <refund ref="refund" :ps="psRefund" @refund="comfirmRefund"/>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import Goods from "@/components/Goods";
 import Passengers from "@/components/Passengers";
+import Refund from './refund'
 
 export default {
   data() {
@@ -409,7 +435,10 @@ export default {
         // ]
       },
 
-      passengers: []
+      passengers: [],
+
+      showRefund: false,
+      psRefund: [], //可供选择退款人员列表
     };
   },
   methods: {
@@ -485,8 +514,9 @@ export default {
       };
     },
     loadCustomers() {
+      let actionName = this.$route.query.orderType.startsWith("SELL") ? 'firmMerchant/getCustomerList' : 'firmMerchant/getSupplierList'
       this.$store
-        .dispatch("firmMerchant/getCustomerList", {})
+        .dispatch(actionName, {})
         .then(data => {
           this.customerList = data;
         })
@@ -612,10 +642,6 @@ export default {
           this.formData.orderDetails = this.orderDetails;
           this.formData.passengers = this.passengers;
 
-          // 生成orderCategory
-          if (!this.formData.orderNo) {
-            this.formData.orderCategory = this.formData.orderType.startsWith("SELL") ? 0 : 1
-          }
           this.$store
             .dispatch("productOrder/saveOrder", this.formData)
             .then(() => {
@@ -639,10 +665,6 @@ export default {
           this.formData.orderDetails = this.orderDetails;
           this.formData.passengers = this.passengers;
 
-          // 生成orderCategory
-          if (!this.formData.orderNo) {
-            this.formData.orderCategory = this.formData.orderType.startsWith("SELL") ? 0 : 1
-          }
           this.$store
             .dispatch("productOrder/confirmOrder", this.formData)
             .then(() => {
@@ -714,8 +736,25 @@ export default {
         }
       });
     },
-    onSellRefund() {
-      // productOrder/refundOrder
+    onShowSellRefund() {
+      this.psRefund = JSON.parse(JSON.stringify(this.formData.passengers))
+      this.showRefund = true
+      this.$nextTick(_ => {
+        this.$refs.refund.allSelect()
+      })
+    },
+    comfirmRefund(val) {
+      let data = {
+        ...this.formData,
+        passengers: val
+      }
+      data.parentNo = data.orderNo;
+      data.orderNo = null;
+      this.$store.dispatch('productOrder/orderRefund', data)
+        .then(data => {
+          this.$message.success('退票成功')
+          this.goBack()
+        })
     },
     onSellChange() {},
     onSellOut() {
@@ -780,26 +819,32 @@ export default {
     this.loadFundAccount();
     this.loadExpress();
 
-    this.$store
-      .dispatch("firmMerchant/getList", { filter: {} })
-      .then(data => {});
-
-    this.orderNo = this.$route.query.orderNo;
     this.update = false;
-    if (this.orderNo) {
-      this.loadProduct(this.orderNo);
+    if (this.$route.query.orderNo) {
+      this.loadProduct(this.$route.query.orderNo);
       this.update = true;
     } else {
       this.canNotEdit = false;
     }
 
     this.formData = this.defaultFormData();
+    
     this.formData.orderType = this.$route.query.orderType;
+    if (!this.$route.query.orderNo) {
+      if(this.formData.orderType.startsWith("SELL")) {
+        this.formData.orderCategory = 0
+        this.formData.warehouseStatus = 'OUT'
+      } else {
+        this.formData.orderCategory = 1
+        this.formData.warehouseStatus = 'in'
+      }
+    }
     console.log(this.formData);
   },
   components: {
     Goods,
-    Passengers
+    Passengers,
+    Refund,
   }
 };
 </script>

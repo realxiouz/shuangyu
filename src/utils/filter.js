@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import moment from 'moment'
-import { ORDER_STATUS_MAP, ORDER_TYPES_MAP, WAREHOUSE_STATUS_MAP } from '@/utils/const'
+import { ORDER_STATUS_MAP, ORDER_TYPES_MAP, WAREHOUSE_STATUS_MAP, AGE_TYPES_MAP, CARD_TYPES_MAP } from '@/utils/const'
 
 Vue.filter('time', (val, fmtStr = 'YYYY-MM-DD hh:mm') => {
   return val ? moment(val).format(fmtStr) : ''
@@ -46,4 +46,12 @@ Vue.filter('orderType', i => {
 
 Vue.filter('warehouseStatus', i => {
   return WAREHOUSE_STATUS_MAP[i] || '类型错误'
+})
+
+Vue.filter('ageType', i => {
+  return AGE_TYPES_MAP[i] || '类型错误'
+})
+
+Vue.filter('cardType', i => {
+  return CARD_TYPES_MAP[i] || '类型错误'
 })

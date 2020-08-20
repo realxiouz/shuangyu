@@ -143,7 +143,7 @@
                   removeOne: "productOrder/removeOne"
                 },
                 params: {
-                  orderType: 200
+                  orderType: 'SELL'
                 }
             };
         },
