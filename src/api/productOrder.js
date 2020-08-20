@@ -98,3 +98,11 @@ export function orderRefund(data) {
   })
 }
 
+export function orderChange(data) {
+  return request({
+    url: `/policy/order/change/one`,
+    method: 'post',
+    data
+  })
+}
+

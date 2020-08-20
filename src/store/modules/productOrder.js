@@ -11,7 +11,8 @@ import {
   updateOne,
   getPurchaseList,
   getSellList,
-  orderRefund
+  orderRefund,
+  orderChange
 } from '@/api/productOrder';
 import { resolve, reject } from 'core-js/fn/promise';
 
@@ -159,6 +160,15 @@ const actions = {
   orderRefund(_, args) {
     return new Promise((resolve, reject) => {
       orderRefund(args).then(data => [
+        resolve(data)
+      ]).catch(error => {
+        reject(error)
+      })
+    })
+  },
+  orderChange(_, args) {
+    return new Promise((resolve, reject) => {
+      orderChange(args).then(data => [
         resolve(data)
       ]).catch(error => {
         reject(error)

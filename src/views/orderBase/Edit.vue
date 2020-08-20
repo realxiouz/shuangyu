@@ -6,6 +6,7 @@
     <card title="单据操作">
       <template v-if="formData.orderType=='SELL'">
         <template v-if="formData.orderStatus=='CONFIRMED'">
+          <el-button @click="onGoBuy" type="primary">采购</el-button>
           <el-button @click="onGoSellOut" type="primary">出库单</el-button>
         </template>
         <template v-if="formData.orderStatus=='COMPLETED'">
@@ -20,9 +21,9 @@
         </template>
       </template>
       <template v-if="formData.orderType=='SELL_REFUND_IN'">
-        <template v-if="formData.orderStatus=='CONFIRMED'">
+        <!-- <template v-if="formData.orderStatus=='CONFIRMED'">
           <el-button type="primary" @click="onBuyIn">入库</el-button>
-        </template>
+        </template> -->
       </template>
       <template v-if="formData.orderType=='BUY'">
         <template v-if="formData.orderStatus=='CONFIRMED'">
@@ -395,7 +396,11 @@
       </el-row>-->
     </el-form>
 
-    <el-dialog :visible.sync="showRefund">
+    <el-dialog :visible.sync="showRefund" title="退票">
+      <refund ref="refund" :ps="psRefund" @refund="comfirmRefund"/>
+    </el-dialog>
+
+    <el-dialog :visible.sync="showChange" title="改签">
       <refund ref="refund" :ps="psRefund" @refund="comfirmRefund"/>
     </el-dialog>
   </div>
@@ -439,6 +444,7 @@ export default {
 
       showRefund: false,
       psRefund: [], //可供选择退款人员列表
+      showChange: false, //
     };
   },
   methods: {
@@ -670,7 +676,8 @@ export default {
             .then(() => {
               this.goBack();
               this.$message({
-                type: "success"
+                type: "success",
+                message: "订单已确认！"
               });
             })
             .catch(error => {
@@ -809,42 +816,93 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+    onGoBuy() {
+      this.$router.push({
+        name: "orderBaseEdit",
+        query: {
+          orderType: 'BUY',
+          parentNo: this.formData.orderNo
+        }
+      })
+    },
+
+    getData() {
+      this.loadCustomers();
+      this.loadWarehouses();
+      this.loadFundAccount();
+      this.loadExpress();
+
+      this.update = false;
+      if (this.$route.query.orderNo) {
+        this.loadProduct(this.$route.query.orderNo);
+        this.update = true;
+      } else {
+        this.canNotEdit = false;
+      }
+
+      this.formData = this.defaultFormData();
+      
+      this.formData.orderType = this.$route.query.orderType;
+      if (!this.$route.query.orderNo) {
+        if(this.formData.orderType.startsWith("SELL")) {
+          this.formData.orderCategory = 0
+          this.formData.warehouseStatus = 'OUT'
+        } else {
+          this.formData.orderCategory = 1
+          this.formData.warehouseStatus = 'IN'
+        }
+      }
+
+      if (this.$route.query.parentNo) {
+        this.formData.parentNo = this.$route.query.parentNo
+      }
+      console.log(this.formData);
     }
   },
   created() {
     // this.initFormData(this.$route.query.orderNo);
 
-    this.loadCustomers();
-    this.loadWarehouses();
-    this.loadFundAccount();
-    this.loadExpress();
+    // this.loadCustomers();
+    // this.loadWarehouses();
+    // this.loadFundAccount();
+    // this.loadExpress();
 
-    this.update = false;
-    if (this.$route.query.orderNo) {
-      this.loadProduct(this.$route.query.orderNo);
-      this.update = true;
-    } else {
-      this.canNotEdit = false;
-    }
+    // this.update = false;
+    // if (this.$route.query.orderNo) {
+    //   this.loadProduct(this.$route.query.orderNo);
+    //   this.update = true;
+    // } else {
+    //   this.canNotEdit = false;
+    // }
 
-    this.formData = this.defaultFormData();
+    // this.formData = this.defaultFormData();
     
-    this.formData.orderType = this.$route.query.orderType;
-    if (!this.$route.query.orderNo) {
-      if(this.formData.orderType.startsWith("SELL")) {
-        this.formData.orderCategory = 0
-        this.formData.warehouseStatus = 'OUT'
-      } else {
-        this.formData.orderCategory = 1
-        this.formData.warehouseStatus = 'IN'
-      }
-    }
-    console.log(this.formData);
+    // this.formData.orderType = this.$route.query.orderType;
+    // if (!this.$route.query.orderNo) {
+    //   if(this.formData.orderType.startsWith("SELL")) {
+    //     this.formData.orderCategory = 0
+    //     this.formData.warehouseStatus = 'OUT'
+    //   } else {
+    //     this.formData.orderCategory = 1
+    //     this.formData.warehouseStatus = 'IN'
+    //   }
+    // }
+    // console.log(this.formData);
+    this.getData()
   },
   components: {
     Goods,
     Passengers,
     Refund,
+  },
+  watch: {
+    '$route.query': {
+      handler(val) {
+        console.warn('reload')
+        this.getData()
+      }
+    }
   }
 };
 </script>
