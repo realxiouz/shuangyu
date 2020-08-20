@@ -87,12 +87,20 @@
         <template v-slot="{ row, $index}">
           <el-button @click="onEdit(row)" type="text" size="mini" class="btn-primary">查看</el-button>
           <template v-if="params.orderType==100"></template>
-          <template v-if="params.orderType==101">
-            <el-button @click="onWarehouse(row)" type="text" size="mini" class="btn-primary">出库</el-button>
-            <el-button @click="onGoBuy(row)" type="text" size="mini" class="btn-primary">采购</el-button>
+          <template v-if="row.orderType=='SELL'">
+            <template v-if="row.orderStatus=='CONFIRMED'">
+              <el-button @click="onGoBuy(row)" type="text">采购</el-button>
+            </template>
           </template>
-          <template v-if="params.orderType==102">
-            <el-button @click="intercept(row)" type="text" size="mini" class="btn-primary">拦截</el-button>
+          <template v-if="row.orderType=='SELL_OUT'">
+            <template v-if="row.orderStatus=='CONFIRMED'">
+              <el-button type="text" @click="onSellOut(row)">出库</el-button>
+            </template>
+          </template>
+          <template v-if="row.orderType=='SELL_REFUND_IN'">
+            <template v-if="row.orderStatus=='CONFIRMED'">
+              <el-button type="text" @click="onBuyIn(row)">入库</el-button>
+            </template>
           </template>
           <template v-if="params.orderType==103">
             <el-button @click="refundTicket(row)" type="text" size="mini" class="btn-primary">退款</el-button>
@@ -299,44 +307,57 @@ export default {
         }
       });
     },
-    // loadData() {
-    //   this.loading = true;
-    //   setTimeout(_ => {
-    //     this.tableData = [1];
-    //     this.total = 1;
-    //     this.loading = false;
-    //   }, 1000);
-    // },
-    onWarehouse(i) {
-      // this.$store
-      //   .dispatch("productOrder/outWarehouseOrder", {
-      //     orderNo: i.orderNo,
-      //     data: i
-      //   })
+    onSellOut(i) {
+      this.$store
+        .dispatch("productOrder/outWarehouseOrder", {
+          orderNo: i.orderNo,
+          data: i
+        })
+        .then(data => {
+          if (data) {
+            this.$message.success('出库成功');
+            this.loadData()
+          } else {
+            this.$message({
+              type: "error",
+              message: "出库失败!"
+            });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
     onGoBuy(i) {
-      let {passengers, orderDetails, parentNo} = i
-      
-      let info = this.genTicketInfo(orderDetails[0].propertyItems, ['dpt', 'arr', 'dptTime', 'flightDate', 'flightCode', 'cabin'])
-
-      let passengersTemp = passengers.map(i => {
-        delete i.orderNo
-        delete i.passengerId
-        return i
-      })
-
-      let orderDetailsTemp = orderDetails.map( i => {
-        delete i.orderNo
-        delete i.detailId
-        return i
-      })
-      this.$store.commit('ticket/setInfo', info)
-      this.$store.commit('ticket/setPassengers', passengersTemp)
-      this.$store.commit('ticket/setOrderDetails', orderDetails)
-      this.$store.commit('ticket/setParentNo', parentNo)
       this.$router.push({
-        path: `/buyTicket/flightInfo?orderNo=${i.orderNo}`
-      });
+        name: "orderBaseEdit",
+        query: {
+          orderType: 'BUY',
+          parentNo: i.orderNo
+        }
+      })
+    },
+    onBuyIn(i) {
+      
+      this.$store
+        .dispatch("productOrder/inWarehouseOrder", {
+          orderNo: i.orderNo,
+          data: i
+        })
+        .then(data => {
+          if (data) {
+            this.$message.success('入库成功');
+            this.loadData()
+          } else {
+            this.$message({
+              type: "error",
+              message: "入库失败!"
+            });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
     intercept(row) {
       this.$message.success("调用拦截接口");
@@ -426,18 +447,6 @@ export default {
     },
   },
   watch: {
-    // "$route.query.orderType": {
-    //   handler(val) {
-    //     this.params.orderType = val;
-    //     this.loadData();
-    //   }
-    // },
-    // "$route.query.parentNo": {
-    //   handler(val) {
-    //     this.params.parentNo = val;
-    //     this.loadData();
-    //   }
-    // },
     query(val) {
       this.parmas = val
       this.loadData()
