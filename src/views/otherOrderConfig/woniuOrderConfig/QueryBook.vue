@@ -177,7 +177,7 @@ export default {
   }
 }
 </script>
-<style >
+<style scoped>
 .el-form-item{
   height: 10px;
 }
