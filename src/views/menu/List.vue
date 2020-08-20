@@ -28,7 +28,7 @@
               <el-col :span="5">
                 <el-switch :value="node.data.enable" @change="enableSwitch(node)"></el-switch>
               </el-col>
-              <el-col :span="11">
+              <el-col :span="10">
                 <el-col style="width:30%;" v-for="tag in node.data.tags" :key="tag" >
                   <el-tag  v-if="tag=='NAV'">导航</el-tag>
                   <el-tag v-else-if="tag=='VIEW'">视图</el-tag>
