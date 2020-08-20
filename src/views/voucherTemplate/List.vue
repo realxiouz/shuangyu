@@ -29,8 +29,8 @@
           </el-table>
         </template>
       </el-table-column>
-      <el-table-column prop="templateName" label="模板名称"/>
-      <el-table-column label="模板类型">
+      <el-table-column prop="templateName" label="模板名称" align="center"/>
+      <el-table-column label="模板类型" align="center">
         <template v-slot="{ row }">
           {{ tempMap[row.templateType] }}
         </template>

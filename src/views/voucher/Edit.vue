@@ -169,6 +169,7 @@
           voucherGroupId: null,
           voucherNum: null,
           voucherDate: null,
+          enable: true,
           voucherRecords: [
             {
               summary: null,
