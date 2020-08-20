@@ -5,20 +5,20 @@
         <el-row type="flex" justify="space-between" :gutter="20">
           <el-col :span="22">
             <el-col :span="3">
-              <el-form-item label="出发城市:" class="el-form-item"></el-form-item>
+              <el-form-item label="出发城市:" class="el-form-item-list"></el-form-item>
               <el-input style="width: 100%;" placeholder="请输入起飞机场三字码"></el-input>
             </el-col>
             <el-col style="margin-top:30px;text-align:center;color:#999999" :span="1"><span>—></span></el-col>
             <el-col :span="3">
-              <el-form-item label="到达城市:" class="el-form-item"> </el-form-item>
+              <el-form-item label="到达城市:" class="el-form-item-list"> </el-form-item>
               <el-input style="width: 100%" placeholder="请输入到达机场三字码"></el-input>
             </el-col>
             <el-col :span="3">
-              <el-form-item label="起飞日期:"class="el-form-item"> </el-form-item>
+              <el-form-item label="起飞日期:"class="el-form-item-list"> </el-form-item>
               <el-input style="width: 100%" placeholder="请输入起飞日期"></el-input>
             </el-col>
             <el-col :span="3">
-              <el-form-item label="报价类型:"class="el-form-item"> </el-form-item>
+              <el-form-item label="报价类型:"class="el-form-item-list"> </el-form-item>
               <el-input style="width: 100%" placeholder="请输入报价类型"></el-input>
             </el-col>
           </el-col>
@@ -140,7 +140,12 @@
                 <el-col :span="3" class="info-text">经济舱</el-col>
                 <el-col :span="2" class="info-text">Q舱</el-col>
                 <el-col :span="2" style="color:#409EFF">退改签规则</el-col>
-                <el-col :span="2" style="color:#409EFF">行李额</el-col>
+                <el-col :span="2" >
+                  <el-tooltip placement="bottom" effect="light">
+                    <div slot="content">手提行李：1件,5kg,20*40*55CM;托运行李：20KG,40*60*100CM;<br/>婴儿票行李:可以免费托运10KG,可免费托运一辆折叠式婴儿车或摇篮</div>
+                    <el-col style="color:#409EFF">行李额</el-col>
+                  </el-tooltip>
+                </el-col>
                 <el-col :span="7">
                   <el-tag type="info">行李单+差额发票</el-tag>
                   <el-tag type="info">甄选低价</el-tag>
@@ -177,8 +182,8 @@ export default {
   }
 }
 </script>
-<style scoped>
-.el-form-item{
+<style >
+.el-form-item-list{
   height: 10px;
 }
 .el-menu.el-menu--horizontal{
@@ -221,8 +226,8 @@ export default {
   border-bottom: 1px dashed #cccccc;
 }
 .collapse-item-info{
-  height: 100px;
-  line-height: 100px;
+  padding-bottom: 30px;
+  padding-top: 30px;
   border-bottom: 1px dashed #cccccc;
 }
 .info-text{
