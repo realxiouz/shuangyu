@@ -5,24 +5,24 @@
         <el-row type="flex" justify="space-between" :gutter="20">
           <el-col :span="22">
             <el-col :span="3">
-              <el-form-item label="出发城市:"></el-form-item>
+              <el-form-item label="出发城市:" class="el-form-item"></el-form-item>
               <el-input style="width: 100%;" placeholder="请输入起飞机场三字码"></el-input>
             </el-col>
-            <el-col style="margin-top:50px" :span="1"><span>—></span></el-col>
+            <el-col style="margin-top:30px;text-align:center;color:#999999" :span="1"><span>—></span></el-col>
             <el-col :span="3">
-              <el-form-item label="到达城市:"> </el-form-item>
+              <el-form-item label="到达城市:" class="el-form-item"> </el-form-item>
               <el-input style="width: 100%" placeholder="请输入到达机场三字码"></el-input>
             </el-col>
             <el-col :span="3">
-              <el-form-item label="起飞日期:"> </el-form-item>
+              <el-form-item label="起飞日期:"class="el-form-item"> </el-form-item>
               <el-input style="width: 100%" placeholder="请输入起飞日期"></el-input>
             </el-col>
             <el-col :span="3">
-              <el-form-item label="报价类型:"> </el-form-item>
+              <el-form-item label="报价类型:"class="el-form-item"> </el-form-item>
               <el-input style="width: 100%" placeholder="请输入报价类型"></el-input>
             </el-col>
           </el-col>
-          <el-col :span="2">
+          <el-col :span="2" style="margin-top:10px">
             <el-button icon="el-icon-search" class="filter-item" type="primary" size="mini"  >查询</el-button>
           </el-col>
 
@@ -32,7 +32,10 @@
     <el-row class="page-tools" type="flex" justify="space-between">
       <el-col :span="20">
         <el-menu  class="el-menu-demo" mode="horizontal">
-          <el-menu-item index="1">起飞时间</el-menu-item>
+          <el-submenu index="1">
+            <template slot="title">起飞时间</template>
+            <el-menu-item index="1-1">选项1</el-menu-item>
+          </el-submenu>
           <el-submenu index="2">
             <template slot="title">起飞机场</template>
             <el-menu-item index="2-1">选项1</el-menu-item>
@@ -146,7 +149,16 @@ export default {
 }
 </script>
 <style >
+.el-form-item{
+  height: 10px;
+}
 .el-menu.el-menu--horizontal{
+  border-bottom: none;
+}
+.el-menu--horizontal>.el-menu-item.is-active{
+  border-bottom: none;
+}
+.el-menu--horizontal>.el-submenu.is-active .el-submenu__title{
   border-bottom: none;
 }
 .el-collapse{
