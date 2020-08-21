@@ -22,6 +22,42 @@
             ></el-input>
           </el-form-item>
         </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="会员类型:" prop="memberType">
+            <el-select
+              style="width: 100%;"
+              v-model="formData.memberType"
+              placeholder="请选择会员类型..."
+              filterable
+              clearable
+            >
+              <el-option
+                v-for="item in memberTypeList"
+                :key="item.code"
+                :label="item.value"
+                :value="item.code"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+          <el-form-item label="会员状态:" prop="status">
+            <el-select
+              style="width: 100%;"
+              v-model="formData.status"
+              placeholder="请选择会员状态..."
+              filterable
+              clearable
+            >
+              <el-option
+                v-for="item in memberStatusList"
+                :key="item.code"
+                :label="item.value"
+                :value="item.code"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
       </el-form>
     </el-col>
     <el-col :xs="8" :sm="6" :md="6" :lg="4" :xl="4" class="search-tools">
@@ -48,40 +84,47 @@
 </template>
 
 <script>
-export default {
-  name: "roleSearch",
-  data() {
-    return {
-      more: false,
-      formData: {
-        memberNo: null,
-        memberName: null
-      }
-    };
-  },
-  computed: {
-    switchIcon() {
-      if (!this.more) {
-        return "el-icon-arrow-down el-icon--right";
-      } else {
-        return "el-icon-arrow-up el-icon--right";
-      }
-    }
-  },
-  methods: {
-    initSearchForm() {
+  import { MEMBER_TYPES, MEMBER_STATUS } from '@/utils/const'
+  export default {
+    name: "roleSearch",
+    data() {
       return {
-        memberNo: null,
-        memberName: null
+        more: false,
+        formData: {
+          memberNo: null,
+          memberName: null,
+          memberType: null,
+          status: null
+        },
+        memberTypeList: MEMBER_TYPES,
+        memberStatusList: MEMBER_STATUS
       };
     },
-    handleClear() {
-      this.formData = this.initSearchForm();
-      this.$emit("onSearch", this.formData);
+    computed: {
+      switchIcon() {
+        if (!this.more) {
+          return "el-icon-arrow-down el-icon--right";
+        } else {
+          return "el-icon-arrow-up el-icon--right";
+        }
+      }
     },
-    handleMore() {
-      this.more = !this.more;
+    methods: {
+      initSearchForm() {
+        return {
+          memberNo: null,
+          memberName: null,
+          memberType: null,
+          status: null
+        };
+      },
+      handleClear() {
+        this.formData = this.initSearchForm();
+        this.$emit("onSearch", this.formData);
+      },
+      handleMore() {
+        this.more = !this.more;
+      }
     }
-  }
-};
+  };
 </script>
