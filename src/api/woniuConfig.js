@@ -55,3 +55,5 @@ export function getSignList(bankCode, signedAccount) {
     method: 'get'
   });
 }
+
+

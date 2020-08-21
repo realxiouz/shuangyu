@@ -1,34 +1,6 @@
 <template>
   <div class="page">
-    <div class="page-tools">
-      <el-form ref="form">
-        <el-row type="flex" justify="space-between" :gutter="20">
-          <el-col :span="22">
-            <el-col :span="3">
-              <el-form-item label="出发城市:" class="el-form-item-list"></el-form-item>
-              <el-input style="width: 100%;" placeholder="请输入起飞机场三字码"></el-input>
-            </el-col>
-            <el-col style="margin-top:30px;text-align:center;color:#999999" :span="1"><span>—></span></el-col>
-            <el-col :span="3">
-              <el-form-item label="到达城市:" class="el-form-item-list"> </el-form-item>
-              <el-input style="width: 100%" placeholder="请输入到达机场三字码"></el-input>
-            </el-col>
-            <el-col :span="3">
-              <el-form-item label="起飞日期:"class="el-form-item-list"> </el-form-item>
-              <el-input style="width: 100%" placeholder="请输入起飞日期"></el-input>
-            </el-col>
-            <el-col :span="3">
-              <el-form-item label="报价类型:"class="el-form-item-list"> </el-form-item>
-              <el-input style="width: 100%" placeholder="请输入报价类型"></el-input>
-            </el-col>
-          </el-col>
-          <el-col :span="2" style="margin-top:10px">
-            <el-button icon="el-icon-search" class="filter-item" type="primary" size="mini"  >查询</el-button>
-          </el-col>
-
-        </el-row>
-      </el-form>
-    </div>
+    <search class="page-search" ref="search" @onSearch="searchFlight"/>
     <el-row class="page-tools" type="flex" justify="space-between" style="width:100%;">
       <el-col :span="8" style="margin-top:10px">
       <el-row type="flex" justify="start" :gutter="20" >
@@ -82,122 +54,104 @@
         </el-row>
       </el-col>
     </el-row>
-    <el-row class="page-tools">
-      <el-collapse class="page-tools" v-model="activeNames">
+    <el-row v-for="(item,index) in flightData" :key="index" class="page-tools">
+      <el-collapse  class="page-tools" >
         <el-collapse-item name="1">
           <span class="collapse-title" slot="title" style="width:100%">
             <el-row type="flex" justify="space-between">
               <el-row type="flex" justify="start" style="width:80%">
                 <el-col :span="4">
-                  <el-col style="font-size:20px">深圳航空</el-col>
+                  <el-col style="font-size:20px">{{item.carrier}}</el-col>
                   <el-row style="width:100%;margin-top:20px" type="flex" justify="start" :gutter="10">
-                    <el-col :span="8" class="text-black-9">ZH4102</el-col>
-                    <el-col :span="11" class="text-black-9">空客330(宽)</el-col>
-                    <el-col :span="5" style="color:#409EFF">共享</el-col>
+                    <el-col :span="8" class="text-black-9">{{item.flightNum}}</el-col>
+                    <el-col :span="11" class="text-black-9">{{item.flightTypeFullName}}</el-col>
+                    <el-col v-if="item.codeShare==true" :span="5" style="color:#409EFF">共享</el-col>
                   </el-row>
                 </el-col>
                 <el-row type="flex" style="margin-left:100px" >
                   <el-col style="text-align:center">
-                    <el-col style="font-size:24px;font-weight:400">11:30</el-col>
-                    <el-col>首都机场T3</el-col>
+                    <el-col style="font-size:24px;font-weight:400">{{item.dptTime}}</el-col>
+                    <el-col>{{item.dptAirport}}</el-col>
                   </el-col>
                   <el-col style="margin-top:10px">
-                    <el-col class="text-black">3小时30分钟</el-col>
+                    <el-col class="text-black">{{item.flightTimes}}</el-col>
                     <el-col class="text-black" style="color:#cccccc;">-------------------------------</el-col>
-                    <el-col class="text-black" >直飞</el-col>
+                    <el-col v-if="item.stop==false" class="text-black" >直飞</el-col>
                   </el-col>
                   <el-col style="text-align:center">
-                    <el-col style="font-size:24px;font-weight:400">15:00</el-col>
-                    <el-col>双流机场T2</el-col>
+                    <el-col style="font-size:24px;font-weight:400">{{item.arrTime}}</el-col>
+                    <el-col>{{item.arrAirport}}</el-col>
                   </el-col>
                 </el-row>
               </el-row>
               <el-row type="flex" justify="space-between" :gutter="20">
-                <el-col style="color:#E6A23C;font-size:24px;font-weight:400"><span style="font-size:14px">￥</span>1526</el-col>
-                <el-col><el-button type="warning" plain v-if="this.activeNames.indexOf('1')!=-1" icon="el-icon-caret-top">收起</el-button>
-                <el-button type="warning" v-else icon="el-icon-caret-bottom">预订</el-button></el-col>
+                <el-col style="color:#E6A23C;font-size:24px;font-weight:400"><span style="font-size:14px">￥</span>{{item.barePrice}}</el-col>
+                <el-col>
+                  <!-- <el-button type="warning" plain v-if="this.activeNames.indexOf('1')!=-1" icon="el-icon-caret-top">收起</el-button> -->
+                <el-button type="warning" icon="el-icon-caret-bottom" @click="bookFlight(item)">预订</el-button>
+                </el-col>
               </el-row>
             </el-row>
           </span>
-          <div class="collapse-item-wrap" style="padding: 20px">
+          <div class="collapse-item-wrap"  style="padding: 20px">
             <el-row class="collapse-item-header" type="flex" justify="space-between" style="width:100%">
               <el-row type="flex" justify="start" style="width:15%" :gutter="20" >
-                <el-col :span="7">有餐食</el-col>
-                <el-col :span="9">机建￥50</el-col>
-                <el-col :span="8">燃油￥0</el-col>
+                <el-col v-if="item.meal==true" :span="7">有餐食</el-col>
+                <el-col :span="9">机建￥{{item.arf}}</el-col>
+                <el-col :span="8">燃油￥{{item.tof}}</el-col>
               </el-row>
               <el-row type="flex" justify="start" style="width:30%" :gutter="20">
                 <el-col :span="7">余票数</el-col>
                 <el-col :span="9">票面价格</el-col>
                 <el-col :span="8">销售价格</el-col>
-                <el-col :span="8">优惠金额</el-col>
+                <el-col :span="8"></el-col>
                 <el-col :span="8"></el-col>
               </el-row>
             </el-row>
-            <el-row class="collapse-item-info" type="flex" justify="space-between" style="width:100%">
+            <el-row v-for="(item,index) in priceData" :key="index" class="collapse-item-info" type="flex" justify="space-between" style="width:100%">
               <el-row type="flex" justify="start" style="width:50%;"  >
                 <el-col :span="3" class="info-text">精品特惠</el-col>
-                <el-col :span="3" class="info-text">经济舱</el-col>
-                <el-col :span="2" class="info-text">Q舱</el-col>
+                <el-col :span="3" v-if="cabinType==0" class="info-text">经济舱</el-col>
+                <el-col :span="3" v-else-if="item.cabinType==1" class="info-text">头等舱</el-col>
+                <el-col :span="3" v-else-if="item.cabinType==2" class="info-text">商务舱</el-col>
+                <el-col :span="3" v-else-if="item.cabinType==3" class="info-text">经济舱精选</el-col>
+                <el-col :span="3" v-else-if="item.cabinType==4" class="info-text">经济舱Y舱</el-col>
+                <el-col :span="3" v-else-if="item.cabinType==5" class="info-text">超值头等舱</el-col>
+                <el-col :span="3" v-else class="info-text">未配置</el-col>
+                <el-col :span="2" class="info-text">{{item.cabin}}舱</el-col>
                 <el-col :span="3" style="color:#409EFF">
                   <el-tooltip placement="bottom" effect="light" >
                     <div slot="content" style="width：600px">
                       <el-row>退改签规则<span>(以下为成人退改签规则说明)</span></el-row>
-                        <el-row type="flex" justify="start" style="width:500px;margin-top:10px;border-bottom:1px solid #cccccc;padding-bottom:5px">
-                          <el-col :span="9">退改签时间点</el-col>
-                          <el-col :span="5">退票扣费</el-col>
-                          <el-col :span="5">改期加收手续费</el-col>
-                          <el-col :span="6">签转</el-col>
-                        </el-row>
-                        <el-row style="width:500px;margin-top:10px;border-bottom:1px solid #cccccc;padding-bottom:5px">
-                        <el-row type="flex" justify="start" style="width:500px;margin-top:10px;">
-                          <el-col :span="9">2020年08月14日 11:30前</el-col>
-                          <el-col :span="5">￥168/人</el-col>
-                          <el-col :span="5">￥83/人</el-col>
-                          <el-col :span="6"></el-col>
-                        </el-row>
-                        <el-row type="flex" justify="start" style="width:500px;margin-top:10px;">
-                          <el-col :span="9">2020年08月18日 11:30前</el-col>
-                          <el-col :span="5">￥333/人</el-col>
-                          <el-col :span="5">￥165/人</el-col>
-                          <el-col :span="6">不可签转</el-col>
-                        </el-row>
-                        <el-row type="flex" justify="start" style="width:500px;margin-top:10px;">
-                          <el-col :span="9">2020年08月21日 7:30前</el-col>
-                          <el-col :span="5">￥498/人</el-col>
-                          <el-col :span="5">￥330/人</el-col>
-                          <el-col :span="6"></el-col>
-                        </el-row>
-                        <el-row type="flex" justify="start" style="width:500px;margin-top:10px;">
-                          <el-col :span="9">2020年08月21日 7:30后</el-col>
-                          <el-col :span="5">￥663/人</el-col>
-                          <el-col :span="5">￥495/人</el-col>
-                          <el-col :span="6"></el-col>
-                        </el-row>
+                      <el-row>
+                        <el-col>退票规则：</el-col>
+                        <el-col>{{item.returnText}}</el-col>
                       </el-row>
                       <el-row>
-                        <el-col>附加说明</el-col>
-                        <el-col>舱位(Q):票面￥1650</el-col>
+                        <el-col>改签规则：</el-col>
+                        <el-col>{{item.changeText}}</el-col>
                       </el-row>
                     </div>
                     <el-col style="color:#409EFF">退改签规则</el-col>
                   </el-tooltip></el-col>
                 <el-col :span="2" >
                   <el-tooltip placement="bottom" effect="light">
-                    <div slot="content">手提行李：1件,5kg,20*40*55CM;托运行李：20KG,40*60*100CM;<br/>婴儿票行李:可以免费托运10KG,可免费托运一辆折叠式婴儿车或摇篮</div>
+                    <div slot="content">{{item.luggage}}</div>
                     <el-col style="color:#409EFF">行李额</el-col>
                   </el-tooltip>
                 </el-col>
                 <el-col :span="7">
-                  <el-tag type="info">行李单+差额发票</el-tag>
-                  <el-tag type="info">甄选低价</el-tag>
+                  
+                  <el-tag type="info" v-if="item.exTrack=='djjj'">甄选低价</el-tag>
+                  <el-tag v-else type="info">优选</el-tag>
                 </el-col>
               </el-row>
               <el-row type="flex" justify="end" style="width:50%;"  >
-                <el-col :span="3" >余票充足</el-col>
-                <el-col :span="3" style="color:#E6A23C;font-size:22px;font-weight:400"><span style="font-size:14px">￥</span>1650</el-col>
-                <el-col :span="3" style="color:#E6A23C;font-size:22px;font-weight:400"><span style="font-size:14px">￥</span>1642</el-col>
-                <el-col :span="3" style="color:#E6A23C;font-size:22px;font-weight:400"><span style="font-size:14px">￥</span>8</el-col>
+                <el-col :span="3" v-if="item.cabinCount=='A'" >余票充足</el-col>
+                <el-col :span="3" v-else >{{item.cabinCount}}</el-col>
+                <el-col :span="3" style="color:#E6A23C;font-size:22px;font-weight:400"><span style="font-size:14px">￥</span>{{item.vppr}}</el-col>
+                <el-col :span="3" style="color:#E6A23C;font-size:22px;font-weight:400"><span style="font-size:14px">￥</span>{{item.barePrice}}</el-col>
+                <el-col :span="3" style="color:#E6A23C;font-size:22px;font-weight:400"><span style="font-size:14px"></span></el-col>
                 <el-col :span="2"><el-button type="warning">购买</el-button></el-col>
               </el-row>
             </el-row>
@@ -209,25 +163,76 @@
   </div>
 </template>
 <script>
+import search from "./BookSearch";
+ import {MIXIN_LIST} from "@/utils/mixin";
 export default {
+  mixins: [MIXIN_LIST],
   name:"queryBook",
   data(){
     return{
-      activeNames: ["0"]
+      activeNames: [],
+      flightData:{},
+      priceData:[],
+      searchParams:null
     }
-    
+  },
+  components: {
+    search
   },
   methods:{
-     handleCommand(command) {
+      handleCommand(command) {
         this.$message('click on item ' + command);
+      },
+      searchFlight(params){
+      if(params.dptDay!=""){
+        params.dptDay=this.$moment(params.dptDay).format("YYYY-MM-DD");
       }
-  }
+      this.searchParams=params;
+      this.$store
+       .dispatch("woniuOrderConfig/getFlight", {
+         filter: params
+       })
+       .then(data => {
+         if (data) {
+            if (data) {
+              this.flightData = data;
+              this.activeNames = Number(this.flightData.length)
+              console.log(this.flightData)
+            }
+            this.loading = false;
+         }
+       })
+       .catch(error => {
+         console.log(error);
+       });
+      },
+      bookFlight(flight){
+        const params = this.searchParams;
+        if(flight.flightNum){
+          params.flightCode = flight.flightNum;
+        }
+        console.log(params)
+        this.$store
+       .dispatch("woniuOrderConfig/getPrice", {
+         filter: params
+       })
+       .then(data => {
+         if (data) {
+            if (data) {
+              this.priceData = data;
+              console.log(this.priceData)
+            }
+            this.loading = false;
+         }
+       })
+       .catch(error => {
+         console.log(error);
+       });
+      }
+  },
 }
 </script>
 <style >
-.el-form-item-list{
-  height: 10px;
-}
 .el-collapse{
   border-top: none;
   border-bottom: none;

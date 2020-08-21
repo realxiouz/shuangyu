@@ -19,3 +19,19 @@ export function getTotal(params) {
     params
   });
 }
+
+export function getFlight(data) {
+  return request({
+    url: `/qunar/open/product/source/get/flight`,
+    method: 'post',
+    data
+  });
+}
+
+export function getPrice(data) {
+  return request({
+    url: `/qunar/open/product/source/get/price`,
+    method: 'post',
+    data
+  });
+}

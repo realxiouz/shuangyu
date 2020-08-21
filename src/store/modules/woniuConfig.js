@@ -80,7 +80,8 @@ const actions = {
           reject(error);
         });
     });
-  }
+  },
+  
 }
 
 
