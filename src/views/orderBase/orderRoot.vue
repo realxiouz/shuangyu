@@ -1,7 +1,14 @@
 <template>
   <div class="page">
     <card title="采购">
-      <el-table :data="leftData" border v-loading="leftLoading">
+      <el-table
+        :data="leftData"
+        border
+        v-loading="leftLoading"
+        row-key="orderNo"
+        default-expand-all
+        :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+      >
         <el-table-column prop="orderNo" label="单号" />
         <el-table-column label="单据日期">
           <template slot-scope="scope">{{ scope.row.orderDate | time("YYYY-MM-DD") }}</template>
@@ -70,9 +77,15 @@
       </el-table>
     </card>
     <card title="销售">
-      <el-table :data="rightData" border v-loading="rightLoading">
+      <el-table
+        :data="rightData"
+        border
+        v-loading="rightLoading"
+        row-key="orderNo"
+        :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+      >
         <el-table-column prop="orderNo" label="单号" />
-        <el-table-column label="单据日期">
+        <!-- <el-table-column label="单据日期">
           <template slot-scope="scope">{{ scope.row.orderDate | time("YYYY-MM-DD") }}</template>
         </el-table-column>
         <el-table-column label="单据类型">
@@ -109,6 +122,18 @@
                   <el-link type="primary">{{row.inventoryQuantity}}</el-link>
                 </template>
               </el-table-column>
+              <template v-if="
+                scope.row.orderType=='SELL_CHANGE_OUT'||
+                scope.row.orderType=='SELL_CHANGE_IN'||
+                scope.row.orderType=='BUY_CHANGE_IN'||
+                scope.row.orderType=='BUY_CHANGE_OUT'
+              ">
+                <el-table-column label="类型">
+                  <template v-slot="{row}">
+                    <el-tag>{{row.changeFlag?'改签单':'原单'}}</el-tag>
+                  </template>
+                </el-table-column>
+              </template>
             </el-table>
 
             <el-table :data="scope.row.passengers" border style="margin-top:10px;">
@@ -135,7 +160,7 @@
         </el-table-column>
         <el-table-column label="发货状态" width="80">
           <template v-slot="{row}">{{row.warehouseStatus|warehouseStatus}}</template>
-        </el-table-column>
+        </el-table-column> -->
       </el-table>
     </card>
   </div>
@@ -150,6 +175,47 @@ export default {
       rightData: [],
       leftLoading: false,
       rightLoading: false,
+
+      tableData: [
+        {
+          id: 1,
+          date: "2016-05-02",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1518 弄"
+        },
+        {
+          id: 2,
+          date: "2016-05-04",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1517 弄"
+        },
+        {
+          id: 3,
+          date: "2016-05-01",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1519 弄",
+          children: [
+            {
+              id: 31,
+              date: "2016-05-01",
+              name: "王小虎",
+              address: "上海市普陀区金沙江路 1519 弄"
+            },
+            {
+              id: 32,
+              date: "2016-05-01",
+              name: "王小虎",
+              address: "上海市普陀区金沙江路 1519 弄"
+            }
+          ]
+        },
+        {
+          id: 4,
+          date: "2016-05-03",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1516 弄"
+        }
+      ]
     };
   },
   methods: {
@@ -158,7 +224,7 @@ export default {
       this.getRightData();
     },
     getLeftData() {
-      this.leftLoading = true
+      this.leftLoading = true;
       this.$store
         .dispatch("productOrder/getPurchaseList", {
           rootOrderNo: this.$route.query.rootNo
@@ -167,21 +233,35 @@ export default {
           this.leftData = data;
         })
         .finally(_ => {
-          this.leftLoading = false
-        })
+          this.leftLoading = false;
+        });
     },
     getRightData() {
-      this.rightLoading = true
+      this.rightLoading = true;
       this.$store
         .dispatch("productOrder/getSellList", {
           rootOrderNo: this.$route.query.rootNo
         })
         .then(data => {
-          this.rightData = data;
+          this.rightData = data.map(i => {
+            let o = {
+              orderNo: i.orderNo,
+              children: i.children
+            }
+
+            return o
+          });
+          // this.rightData = data
+          console.log(data)
+          // this.rightData = [
+          //   {recordId: 1, orderNo: 1, children: [{
+          //     recordId: 2, orderNo: 2
+          //   },{recordId: 3, orderNo: 3}]}
+          // ]
         })
         .finally(_ => {
-          this.rightLoading = false
-        })
+          this.rightLoading = false;
+        });
     },
     onShowPassenger() {
       console.log("show passengers");
@@ -202,9 +282,12 @@ export default {
     "$route.query.rootNo": {
       handler(val) {
         val && this.getData();
-      },
-      immediate: true
+      }
+      // immediate: true
     }
+  },
+  created() {
+    this.getData();
   }
 };
 </script>

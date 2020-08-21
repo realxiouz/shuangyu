@@ -5,44 +5,42 @@
     </div>
     <card title="单据操作">
       <template v-if="formData.orderType=='SELL'">
-        <template v-if="formData.orderStatus=='CONFIRMED'">
+        <template v-if="formData.orderStatus!='DRAFT'">
           <!-- <el-button @click="onGoBuy" type="primary">采购</el-button> -->
           <el-button @click="onGoSellOut" type="primary">出库单</el-button>
         </template>
         <template v-if="formData.orderStatus=='COMPLETED'">
           <el-button @click="onShowSellRefund" type="primary">退</el-button>
           <el-button @click="onShowSellChange" type="primary">改</el-button>
-          <el-button @click="onGoSellOut" type="primary">出库单</el-button>
         </template>
       </template>
       <template v-if="formData.orderType=='SELL_OUT'">
-        <template v-if="formData.orderStatus=='CONFIRMED'">
+        <template v-if="formData.orderStatus!='DRAFT'">
           <!-- <el-button type="primary" @click="onSellOut">出库</el-button> -->
         </template>
       </template>
       <template v-if="formData.orderType=='SELL_REFUND_IN'">
-        <!-- <template v-if="formData.orderStatus=='CONFIRMED'">
+        <!-- <template v-if="formData.orderStatus!='DRAFT'">
           <el-button type="primary" @click="onBuyIn">入库</el-button>
         </template> -->
       </template>
       <template v-if="formData.orderType=='SELL_CHANGE_IN'">
-        <template v-if="formData.orderStatus=='CONFIRMED'">
+        <template v-if="formData.orderStatus!='DRAFT'">
           <el-button @click="onGoSellChangeOut" type="primary">改签出库单</el-button>
         </template>
       </template>
       <template v-if="formData.orderType=='BUY'">
-        <template v-if="formData.orderStatus=='CONFIRMED'">
+        <template v-if="formData.orderStatus!='DRAFT'">
           <el-button @click="onGoBuyIn" type="primary">入库单</el-button>
         </template>
         <template v-if="formData.orderStatus=='COMPLETED'">
           <el-button @click="onShowSellRefund" type="primary">退</el-button>
           <el-button @click="onShowSellChange" type="primary">改</el-button>
-          <el-button @click="onGoBuyIn" type="primary">入库单</el-button>
         </template>
         
       </template>
       <template v-if="formData.orderType=='BUY_IN'">
-        <template v-if="formData.orderStatus=='CONFIRMED'">
+        <template v-if="formData.orderStatus!='DRAFT'">
           <el-button type="primary" @click="onBuyIn">入库</el-button>
         </template>
         <!-- <template v-if="formData.orderStatus=='COMPLETED'">
@@ -53,12 +51,12 @@
       </template>
 
       <template v-if="formData.orderType=='BUY_REFUND_OUT'">
-        <template v-if="formData.orderStatus=='CONFIRMED'">
+        <template v-if="formData.orderStatus!='DRAFT'">
           <el-button type="primary" @click="onSellOut">出库</el-button>
         </template>
       </template>
       <template v-if="formData.orderType=='BUY_CHANGE_OUT'">
-        <template v-if="formData.orderStatus=='CONFIRMED'">
+        <template v-if="formData.orderStatus!='DRAFT'">
           <el-button type="primary" @click="onGoBuyChangeIn">改签入库单</el-button>
         </template>
       </template>
@@ -235,7 +233,7 @@
       </card>
 
       <card title="商品信息">
-        <goods v-model="orderDetails" @total="handleTotal" />
+        <goods v-model="orderDetails" @total="handleTotal" ref="goods" />
       </card>
       <card title="改签商品信息" v-if="orderDetailsForChange.length">
         <goods :value="orderDetailsForChange" />
@@ -618,6 +616,10 @@ export default {
             this.orderDetails = data.orderDetails.filter(i => !i.changeFlag);
 
             this.orderDetailsForChange = data.orderDetails.filter(i => i.changeFlag)
+
+            this.$nextTick(_ => {
+              this.$refs.goods.calcTotal()
+            })
           }
         })
         .catch(error => {
@@ -882,7 +884,7 @@ export default {
         name: "orderBaseList",
         query: {
           orderType: "SELL_CHANGE_OUT",
-          parentNo: this.formData.parentNo
+          parentNo: this.formData.orderNo
         }
       });
     },
@@ -891,7 +893,7 @@ export default {
         name: "orderBaseList",
         query: {
           orderType: "BUY_CHANGE_IN",
-          parentNo: this.formData.parentNo
+          parentNo: this.formData.orderNo
         }
       });
     },
