@@ -49,7 +49,7 @@ export const MIXIN_LIST = {
           .then(data => {
             if (data) {
               let _data = this.beforeLoadData(data);
-              this.tableData = _data.rows; console.log(this.tableData);
+              this.tableData = _data.rows;
               this.total = _data.total;
             }
           })

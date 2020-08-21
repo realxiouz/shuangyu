@@ -7,7 +7,7 @@
             <el-input
               clearable
               @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.roleName"
+              v-model="formData.memberNo"
               placeholder="请输入会员编号搜素..."
             ></el-input>
           </el-form-item>
@@ -17,7 +17,7 @@
             <el-input
               clearable
               @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.roleName"
+              v-model="formData.memberName"
               placeholder="请输入会员名称搜素..."
             ></el-input>
           </el-form-item>
@@ -32,6 +32,13 @@
         size="mini"
         @click="$emit('onSearch', formData)"
       >查询</el-button>
+      <el-button
+        icon="el-icon-refresh"
+        class="filter-item"
+        type="primary"
+        size="mini"
+        @click="handleClear"
+      >清空</el-button>
       <el-button type="text" size="mini" @click="handleMore">
         更多
         <i :class="switchIcon"></i>
@@ -47,7 +54,8 @@ export default {
     return {
       more: false,
       formData: {
-        roleName: ""
+        memberNo: null,
+        memberName: null
       }
     };
   },
@@ -61,6 +69,16 @@ export default {
     }
   },
   methods: {
+    initSearchForm() {
+      return {
+        memberNo: null,
+        memberName: null
+      };
+    },
+    handleClear() {
+      this.formData = this.initSearchForm();
+      this.$emit("onSearch", this.formData);
+    },
     handleMore() {
       this.more = !this.more;
     }
