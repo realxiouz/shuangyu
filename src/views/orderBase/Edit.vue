@@ -882,7 +882,7 @@ export default {
         name: "orderBaseList",
         query: {
           orderType: "SELL_CHANGE_OUT",
-          parentNo: this.formData.parentNo
+          parentNo: this.formData.orderNo
         }
       });
     },
@@ -891,7 +891,7 @@ export default {
         name: "orderBaseList",
         query: {
           orderType: "BUY_CHANGE_IN",
-          parentNo: this.formData.parentNo
+          parentNo: this.formData.orderNo
         }
       });
     },
