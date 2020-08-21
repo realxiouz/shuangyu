@@ -83,6 +83,7 @@
       onSelectionChange(data) {
         if (data && data.length > 0) {
           let that = this;
+          that.selectIds = [];
           for (const key in data) {
             let object = data[key];
             for (const field in object) {
@@ -105,7 +106,7 @@
         exportExcel(
           this,
           'get',
-          this.actions.exportUrl,
+          this.exportUrl,
           {ids: this.selectIds},
           '凭证文件'
         );
