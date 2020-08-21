@@ -23,31 +23,27 @@
       <el-table-column
         prop="warehouseCode"
         label="仓库编码"
-        align="left"
-        width="180"
+        align="center"
       ></el-table-column>
       <el-table-column
         prop="warehouseName"
         label="仓库名称"
         align="center"
-        width="180"
       ></el-table-column>
       <el-table-column
         prop="contact"
         label="联系人"
         align="center"
-        width="100"
       ></el-table-column>
       <el-table-column
         prop="phone"
         label="联系电话"
         align="center"
-        width="180"
       ></el-table-column>
       <el-table-column
         prop="address"
         label="地址"
-        align="left"
+        align="center"
       ></el-table-column>
       <el-table-column label="操作" align="center" fixed="right" width="250">
         <template slot-scope="scope">

@@ -83,6 +83,7 @@
       onSelectionChange(data) {
         if (data && data.length > 0) {
           let that = this;
+          that.selectIds = [];
           for (const key in data) {
             let object = data[key];
             for (const field in object) {
