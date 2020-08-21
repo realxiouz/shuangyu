@@ -7,7 +7,7 @@
             <el-input
               clearable
               @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.roleName"
+              v-model="formData.memberNo"
               placeholder="请输入会员编号搜素..."
             ></el-input>
           </el-form-item>
@@ -17,7 +17,7 @@
             <el-input
               clearable
               @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.roleName"
+              v-model="formData.memberName"
               placeholder="请输入会员名称搜素..."
             ></el-input>
           </el-form-item>
@@ -47,7 +47,8 @@ export default {
     return {
       more: false,
       formData: {
-        roleName: ""
+        memberNo: null,
+        memberName: null
       }
     };
   },

@@ -10,7 +10,7 @@ function genArrByMap(obj) {
 }
 
 function changeTypeToNumber(val) {
-  let res = val * 1
+  let res = val * 1;
   return isNaN(res) ? val : res;
 }
 
@@ -87,34 +87,56 @@ export const CATEGORY_MAP = [
 export const CATEGORY_TYPES = genArrByMap(CATEGORY_MAP);
 
 export const ORDER_TYPES_MAP = {
-  'OTHER_IN': '其他入库',
-  'OTHER_OUT': '其他出库',
-  'SELL': '销售单',
-  'SELL_OUT': '销售出库单',
-  'SELL_REFUND': '销售退款单',
-  'SELL_REFUND_IN': '销售退票入库单',
-  'SELL_CHANGE_IN': '销售改签入库单',
-  'SELL_CHANGE_OUT': '销售改签出库单',
-  'BUY': '采购单',
-  'BUY_IN': '采购入库单',
-  'BUY_REFUND': '采购退款单',
-  'BUY_REFUND_OUT': '采购退票出库单',
-  'BUY_CHANGE_OUT': '采购改签出库单',
-  'BUY_CHANGE_IN': '采购改签入库单'
-}
+  OTHER_IN: '其他入库',
+  OTHER_OUT: '其他出库',
+  SELL: '销售单',
+  SELL_OUT: '销售出库单',
+  SELL_REFUND: '销售退款单',
+  SELL_REFUND_IN: '销售退票入库单',
+  SELL_CHANGE_IN: '销售改签入库单',
+  SELL_CHANGE_OUT: '销售改签出库单',
+  BUY: '采购单',
+  BUY_IN: '采购入库单',
+  BUY_REFUND: '采购退款单',
+  BUY_REFUND_OUT: '采购退票出库单',
+  BUY_CHANGE_OUT: '采购改签出库单',
+  BUY_CHANGE_IN: '采购改签入库单'
+};
 
 export const ORDER_STATUS_MAP = {
-  'DRAFT': '草稿',
-  'COMPLETED': '已完成',
-  'CONFIRMED': '已确认',
-  'INVALID': '已作废',
-  'DISALLOW': '驳回',
-  'CLOSED': '已关闭',
-}
+  DRAFT: '草稿',
+  COMPLETED: '已完成',
+  CONFIRMED: '已确认',
+  INVALID: '已作废',
+  DISALLOW: '驳回',
+  CLOSED: '已关闭'
+};
 
 export const WAREHOUSE_STATUS_MAP = {
-  'IN': '未入库',
-  'IN_OK': '已入库',
-  'OUT': '未出库',
-  'OUT_OK': '已出库',
-}
+  IN: '未入库',
+  IN_OK: '已入库',
+  OUT: '未出库',
+  OUT_OK: '已出库'
+};
+
+// 会员类型
+export const MEMBER_TYPES = [
+  { code: 'FIRM', value: '企业' },
+  { code: 'USER', value: '个人' }
+];
+
+export const MEMBER_TYPE_OBJ = {
+  FIRM: '企业',
+  USER: '个人'
+};
+
+// 会员状态
+export const MEMBER_STATUS = [
+  { code: 'ENABLE', value: '可用' },
+  { code: 'DISABLE', value: '禁用' }
+];
+
+export const MEMBER_STATUS_OBJ = {
+  ENABLE: '可用',
+  DISABLE: '禁用'
+};
