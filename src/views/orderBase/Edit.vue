@@ -235,7 +235,7 @@
       </card>
 
       <card title="商品信息">
-        <goods v-model="orderDetails" @total="handleTotal" />
+        <goods v-model="orderDetails" @total="handleTotal" ref="goods" />
       </card>
       <card title="改签商品信息" v-if="orderDetailsForChange.length">
         <goods :value="orderDetailsForChange" />
@@ -618,6 +618,10 @@ export default {
             this.orderDetails = data.orderDetails.filter(i => !i.changeFlag);
 
             this.orderDetailsForChange = data.orderDetails.filter(i => i.changeFlag)
+
+            this.$nextTick(_ => {
+              this.$refs.goods.calcTotal()
+            })
           }
         })
         .catch(error => {
