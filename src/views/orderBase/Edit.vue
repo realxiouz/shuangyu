@@ -15,7 +15,8 @@
     <card title="单据操作">
       <template v-if="formData.orderType=='SELL'">
         <template v-if="formData.orderStatus=='COMPLETED'">
-          <el-button @click="onShowSellRefund" type="primary">退</el-button>
+          <!-- <el-button @click="onShowSellRefund" type="primary">退</el-button> -->
+          <el-button @click="onGoSellRefundIn" type="primary">退</el-button>
           <el-button @click="onShowSellChange" type="primary">改</el-button>
         </template>
       </template>
@@ -209,6 +210,9 @@ export default {
       productIdList: [],
       defaultDate: new Date().getTime(),
       rules: {
+        merchantId: [
+          {required: true, message: "必须选择", trigger: "blur"}
+        ],
         paymentMode: [
           { required: true, message: "请输入付款方式", trigger: "blur" }
         ]
@@ -572,6 +576,15 @@ export default {
         }
       });
     },
+    onGoSellRefundIn() {
+      this.$router.push({
+        name: 'orderBaseEdit',
+        query: {
+          orderType: "SELL_REFUND_IN",
+          parentNo: this.formData.orderNo
+        }
+      })
+    },
     getData() {
       this.loadCustomers();
       this.loadFundAccount();
@@ -618,6 +631,14 @@ export default {
         this.getData()
       }
     }
+  },
+  computed: {
+    disableForm() {
+      if (this.formData.orderType != 'DRAFT') {
+        return true
+      }
+      return false
+    },
   }
 };
 </script>

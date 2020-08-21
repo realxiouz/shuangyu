@@ -98,7 +98,6 @@
       <el-table-column fixed="right" label="操作" align="center" width="200">
         <template v-slot="{ row, $index}">
           <el-button @click="onEdit(row)" type="text" size="mini" class="btn-primary">查看</el-button>
-          <template v-if="params.orderType==100"></template>
           <template v-if="row.orderType=='SELL'">
             <template v-if="row.orderStatus=='CONFIRMED'">
               <el-button @click="onGoBuy(row)" type="text">采购</el-button>
