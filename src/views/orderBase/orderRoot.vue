@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <!-- <card title="采购">
+    <card title="采购">
       <el-table
         :data="leftData"
         border
@@ -75,7 +75,7 @@
           <template v-slot="{row}">{{row.warehouseStatus|warehouseStatus}}</template>
         </el-table-column>
       </el-table>
-    </card> -->
+    </card>
     <card title="销售">
       <el-table
         :data="rightData"
@@ -161,20 +161,6 @@
         <el-table-column label="发货状态" width="80">
           <template v-slot="{row}">{{row.warehouseStatus|warehouseStatus}}</template>
         </el-table-column> -->
-      </el-table>
-      
-    </card>
-    <card title="测试">
-      <el-table
-        :data="tableData"
-        border
-        v-loading="rightLoading"
-        row-key="id"
-        :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
-      >
-        <el-table-column prop="date" label="日期" sortable width="180"></el-table-column>
-        <el-table-column prop="name" label="姓名" sortable width="180"></el-table-column>
-        <el-table-column prop="address" label="地址"></el-table-column>
       </el-table>
     </card>
   </div>

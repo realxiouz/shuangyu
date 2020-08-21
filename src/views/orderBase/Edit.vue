@@ -12,7 +12,6 @@
         <template v-if="formData.orderStatus=='COMPLETED'">
           <el-button @click="onShowSellRefund" type="primary">退</el-button>
           <el-button @click="onShowSellChange" type="primary">改</el-button>
-          <el-button @click="onGoSellOut" type="primary">出库单</el-button>
         </template>
       </template>
       <template v-if="formData.orderType=='SELL_OUT'">
@@ -37,7 +36,6 @@
         <template v-if="formData.orderStatus=='COMPLETED'">
           <el-button @click="onShowSellRefund" type="primary">退</el-button>
           <el-button @click="onShowSellChange" type="primary">改</el-button>
-          <el-button @click="onGoBuyIn" type="primary">入库单</el-button>
         </template>
         
       </template>
