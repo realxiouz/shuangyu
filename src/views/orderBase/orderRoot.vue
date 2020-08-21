@@ -163,6 +163,32 @@
         </el-table-column> -->
       </el-table>
     </card>
+
+    <card title="treeData">
+      <el-tree
+      :data="rightData"
+      node-key="orderNo"
+      default-expand-all
+      :expand-on-click-node="false">
+      <div class="custom-tree-node" slot-scope="{ node, data }">
+        <span>{{ data.orderNo }}</span>
+        <span>
+          <el-button
+            type="text"
+            size="mini"
+            @click="() => append(data)">
+            {{data.orderType|orderType}}
+          </el-button>
+          <el-button
+            type="text"
+            size="mini"
+            @click="() => remove(node, data)">
+            Delete
+          </el-button>
+        </span>
+      </div>
+    </el-tree>
+    </card>
   </div>
 </template>
 
@@ -175,47 +201,6 @@ export default {
       rightData: [],
       leftLoading: false,
       rightLoading: false,
-
-      tableData: [
-        {
-          id: 1,
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          id: 2,
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄"
-        },
-        {
-          id: 3,
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄",
-          children: [
-            {
-              id: 31,
-              date: "2016-05-01",
-              name: "王小虎",
-              address: "上海市普陀区金沙江路 1519 弄"
-            },
-            {
-              id: 32,
-              date: "2016-05-01",
-              name: "王小虎",
-              address: "上海市普陀区金沙江路 1519 弄"
-            }
-          ]
-        },
-        {
-          id: 4,
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄"
-        }
-      ]
     };
   },
   methods: {
@@ -248,11 +233,9 @@ export default {
               orderNo: i.orderNo,
               children: i.children
             }
-
-            return o
+            
+            return i
           });
-          // this.rightData = data
-          console.log(data)
           // this.rightData = [
           //   {recordId: 1, orderNo: 1, children: [{
           //     recordId: 2, orderNo: 2
@@ -276,7 +259,17 @@ export default {
       });
     },
     onReturn(i) {},
-    onChange(i) {}
+    onChange(i) {},
+    genTableTreeData(arr) {
+      for(let i = 0; i < arr.length; i++) {
+        delete i.orderDetails
+        delete i.passengers
+        if(arr.children) {
+          arr.children = this.genTableTreeData(arr.children)
+        }
+      }
+      return arr
+    }
   },
   watch: {
     "$route.query.rootNo": {
@@ -296,5 +289,11 @@ export default {
 .detail {
   display: flex;
   flex-wrap: wrap;
+}
+.custom-tree-node{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 }
 </style>

@@ -41,6 +41,7 @@
             <el-input v-model="row.idCardNo" />
           </template>
         </el-table-column>
+        <el-table-column label="票号" prop="ticketNo" />
         <el-table-column>
           <template v-slot:header="{}">
             <el-button type="primary" @click="onAddPassanger">添加</el-button>
@@ -73,6 +74,10 @@ export default {
   },
   methods: {
     onDelByInx(inx) {
+      if (this.value.length==1) {
+        this.$message.error('至少有一个乘客')
+        return
+      }
       this.value.splice(inx, 1);
       this.$emit("input", this.value);
     },
@@ -82,7 +87,8 @@ export default {
         ageType: 0,
         idCardType: "NI",
         idCardNo: "",
-        phone: ""
+        phone: "",
+        ticketNo: "",
       });
       this.$emit("input", this.value);
     },

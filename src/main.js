@@ -25,7 +25,9 @@ Vue.use(ElementUI, { locale, size: 'mini' });
 Vue.config.productionTip = false;
 
 import Card from '@/components/Card'
+import Sticky from '@/components/Sticky'
 Vue.component('Card', Card)
+Vue.component('Sticky', Sticky)
 
 new Vue({
   router,
