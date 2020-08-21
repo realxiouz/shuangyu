@@ -4,7 +4,7 @@ import axIos from 'axios';
 export function exportExcel(that, method, url, params, fileName) {
   axIos({
     method: method,
-    url: `${url}`,
+    url: process.env.VUE_APP_BASE_API + `${url}`,
     params: params,
     responseType: 'blob'
   })
