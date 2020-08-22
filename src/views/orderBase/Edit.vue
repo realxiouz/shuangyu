@@ -414,8 +414,8 @@ export default {
             ...this.formData,
           }
           data.parentNo = data.parentNo || this.$route.query.parentNo
-          data.orderRootNo = data.orderRootNo || this.$route.query.parentNo
-          
+          data.rootOrderNo = data.rootOrderNo || this.$route.query.parentNo
+
           switch(this.formData.orderType) {
             case 'SELL':
             case 'SELL_OUT':
@@ -684,13 +684,13 @@ export default {
       data.orderDetails = this.orderDetails;
       data.passengers = this.passengers;
       data.parentNo = data.parentNo || this.$route.query.parentNo
-      data.orderRootNo = data.orderRootNo || this.$route.query.parentNo
+      data.rootOrderNo = data.rootOrderNo || this.$route.query.parentNo
       if (!data.parentNo) {
         this.$message.error('退票parentNo为空')
         return
       }
-      if (!data.orderRootNo) {
-        this.$message.error('orderRootNo')
+      if (!data.rootOrderNo) {
+        this.$message.error('rootOrderNo')
         return
       }
       this.$store.dispatch('productOrder/orderRefund', data)
@@ -704,7 +704,7 @@ export default {
         ...this.formData,
       }
       data.parentNo = data.parentNo || this.$route.query.parentNo
-      data.orderRootNo = data.orderRootNo || this.$route.query.parentNo
+      data.rootOrderNo = data.rootOrderNo || this.$route.query.parentNo
       this.$store.dispatch('productOrder/orderChange', data)
         .then(data => {
           this.$message.success('改签入库成功')
