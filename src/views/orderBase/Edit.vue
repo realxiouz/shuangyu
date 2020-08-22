@@ -12,31 +12,6 @@
         </template>
       </div>
     </sticky>
-    <!-- <card title="单据操作">
-      <template v-if="formData.orderType=='SELL'">
-        <template v-if="formData.orderStatus=='COMPLETED'">
-          <el-button @click="onGoSellRefundIn" type="primary">退</el-button>
-          <el-button @click="onShowSellChange" type="primary">改</el-button>
-        </template>
-      </template>
-      <template v-if="formData.orderType=='BUY'">
-        <template v-if="formData.orderStatus=='COMPLETED'">
-          <el-button @click="onShowSellRefund" type="primary">退</el-button>
-          <el-button @click="onShowSellChange" type="primary">改</el-button>
-        </template>
-      </template>
-      <template v-if="formData.orderType=='BUY_IN'">
-        <template v-if="formData.orderStatus!='DRAFT'">
-          <el-button type="primary" @click="onBuyIn">入库</el-button>
-        </template>
-      </template>
-
-      <template v-if="formData.orderType=='BUY_REFUND_OUT'">
-        <template v-if="formData.orderStatus!='DRAFT'">
-          <el-button type="primary" @click="onSellOut">出库</el-button>
-        </template>
-      </template>
-    </card> -->
     <el-form
       ref="orderForm"
       :disabled="canNotEdit"
@@ -152,26 +127,16 @@
       <card title="商品信息">
         <goods v-model="orderDetails" @total="handleTotal" ref="goods" />
       </card>
-      <card title="改签商品信息" v-if="orderDetailsForChange.length">
-        <goods :value="orderDetailsForChange" />
+      <card title="改签商品信息" v-if="orderDetailsForChange.length||formData.orderType=='SELL_CHANGE_IN'">
+        <goods v-model="orderDetailsForChange" />
       </card>
       <card title="乘客信息">
         <passengers v-model="passengers" />
       </card>
-      <!-- <card title="订单操作">
-        <el-button-group>
-          <el-button type="primary" @click="onSave" v-if="formData.orderStatus=='DRAFT'">保 存</el-button>
-          <el-button type="primary" @click="confirmOrder">确 认</el-button>
-        </el-button-group>
-      </card> -->
     </el-form>
 
     <sticky :bottom="15">
       <div class="order-header">
-        <!-- <el-button-group v-if="formData.orderStatus=='DRAFT'">
-          <el-button type="primary" @click="onSave">保 存</el-button>
-          <el-button type="primary" @click="confirmOrder">确 认</el-button>
-        </el-button-group> -->
         <el-button-group v-if="formData.orderType=='SELL'">
           <el-button type="primary" v-if="formData.orderStatus=='DRAFT'" @click="onSave">保 存</el-button>
           <el-button type="primary"  @click="confirmOrder">确 认</el-button>
@@ -202,7 +167,7 @@
           </template>
           <template v-if="formData.orderType=='BUY'">
             <template v-if="formData.orderStatus=='COMPLETED'">
-              <el-button @click="onShowSellRefund" type="primary">退</el-button>
+              <el-button @click="onGoBuyRefundOut" type="primary">退</el-button>
               <el-button @click="onShowSellChange" type="primary">改</el-button>
             </template>
           </template>
@@ -210,11 +175,6 @@
             <template v-if="formData.orderStatus!='DRAFT'">
               <el-button type="primary" @click="onBuyIn">入库</el-button>
             </template>
-            <!-- <template v-if="formData.orderStatus=='COMPLETED'">
-              <el-button @click="onShowSellRefund" type="primary">退</el-button>
-              <el-button @click="onShowSellChange" type="primary">改</el-button>
-              <el-button @click="onGoSellOut" type="primary">出库单</el-button>
-            </template> -->
           </template>
 
           <template v-if="formData.orderType=='BUY_REFUND_OUT'">
@@ -355,6 +315,19 @@ export default {
         .dispatch("productOrder/getOne", { orderNo: no })
         .then(data => {
           if (data) {
+            this.formData = data
+
+            this.formData.orderNo = null
+            this.formData.orderType = this.$route.query.orderType
+            this.formData.orderStatus = 'DRAFT'
+            if(this.formData.orderType.startsWith("SELL")) {
+              this.formData.orderCategory = 0
+              this.formData.warehouseStatus = 'OUT'
+            } else {
+              this.formData.orderCategory = 1
+              this.formData.warehouseStatus = 'IN'
+            }
+
             this.passengers = data.passengers;
             this.orderDetails = data.orderDetails.filter(i => !i.changeFlag);
 
@@ -629,6 +602,15 @@ export default {
         }
       });
     },
+    onGoBuyRefundOut() {
+      this.$router.push({
+        name: 'orderBaseEdit',
+        query: {
+          orderType: "BUY_REFUND_OUT",
+          parentNo: this.formData.orderNo
+        }
+      })
+    },
     onGoSellChangeIn() {
       this.$router.push({
         name: 'orderBaseEdit',
@@ -703,6 +685,12 @@ export default {
       let data = {
         ...this.formData,
       }
+      data.orderDetails = [...this.orderDetails, ...this.orderDetailsForChange.map(i => {
+        i.changeFlag = true
+        i.changeProductId = i.productId
+        return i
+      })];
+      data.passengers = this.passengers;
       data.parentNo = data.parentNo || this.$route.query.parentNo
       data.rootOrderNo = data.rootOrderNo || this.$route.query.parentNo
       this.$store.dispatch('productOrder/orderChange', data)
