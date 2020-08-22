@@ -66,7 +66,18 @@ let constantRoutes = [
 
 
 const createRouter = () => new Router({
-  routes: constantRoutes
+  routes: constantRoutes,
+  scrollBehavior(to, from, savedPosition) {
+    console.log(savedPosition)
+    if(savedPosition) {
+      return savedPosition
+    } else {
+      return {
+        x: 0,
+        y: 0
+      }
+    }
+  }
 });
 
 

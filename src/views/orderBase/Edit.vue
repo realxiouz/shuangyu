@@ -12,10 +12,9 @@
         </template>
       </div>
     </sticky>
-    <card title="单据操作">
+    <!-- <card title="单据操作">
       <template v-if="formData.orderType=='SELL'">
         <template v-if="formData.orderStatus=='COMPLETED'">
-          <!-- <el-button @click="onShowSellRefund" type="primary">退</el-button> -->
           <el-button @click="onGoSellRefundIn" type="primary">退</el-button>
           <el-button @click="onShowSellChange" type="primary">改</el-button>
         </template>
@@ -30,11 +29,6 @@
         <template v-if="formData.orderStatus!='DRAFT'">
           <el-button type="primary" @click="onBuyIn">入库</el-button>
         </template>
-        <!-- <template v-if="formData.orderStatus=='COMPLETED'">
-          <el-button @click="onShowSellRefund" type="primary">退</el-button>
-          <el-button @click="onShowSellChange" type="primary">改</el-button>
-          <el-button @click="onGoSellOut" type="primary">出库单</el-button>
-        </template> -->
       </template>
 
       <template v-if="formData.orderType=='BUY_REFUND_OUT'">
@@ -42,7 +36,7 @@
           <el-button type="primary" @click="onSellOut">出库</el-button>
         </template>
       </template>
-      </card>
+    </card> -->
     <el-form
       ref="orderForm"
       :disabled="canNotEdit"
@@ -122,12 +116,6 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="成交金额:">{{ formData.totalAmount }}</el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="实收金额:">{{ formData.receiptAmount }}</el-form-item>
-          </el-col>
-          <el-col :span="8">
             <el-form-item label="结算账户:" prop="fundAccountId">
               <el-select
                 v-model="formData.fundAccountId"
@@ -145,6 +133,13 @@
               </el-select>
             </el-form-item>
           </el-col>
+          <el-col :span="8">
+            <el-form-item label="成交金额:">{{ formData.totalAmount }}</el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="实收金额:">{{ formData.receiptAmount }}</el-form-item>
+          </el-col>
+          
           <el-col :span="8">
             <el-form-item label="制单人:">{{ this.$store.getters.fullName }}</el-form-item>
           </el-col>
@@ -172,12 +167,67 @@
     </el-form>
 
     <sticky :bottom="15">
-      <card title="订单操作">
-        <el-button-group>
-          <el-button type="primary" @click="onSave" v-if="formData.orderStatus=='DRAFT'">保 存</el-button>
+      <div class="order-header">
+        <!-- <el-button-group v-if="formData.orderStatus=='DRAFT'">
+          <el-button type="primary" @click="onSave">保 存</el-button>
           <el-button type="primary" @click="confirmOrder">确 认</el-button>
+        </el-button-group> -->
+        <el-button-group v-if="formData.orderType=='SELL'">
+          <el-button type="primary" v-if="formData.orderStatus=='DRAFT'" @click="onSave">保 存</el-button>
+          <el-button type="primary"  @click="confirmOrder">确 认</el-button>
         </el-button-group>
-      </card>
+        <el-button-group v-if="formData.orderType=='SELL_OUT'">
+          <el-button type="primary" v-if="formData.orderStatus=='DRAFT'" @click="onSave">保 存</el-button>
+          <el-button type="primary"  @click="confirmOrder">确 认</el-button>
+        </el-button-group>
+        <el-button-group v-if="formData.orderType=='SELL_REFUND_IN'">
+          <el-button type="primary" v-if="formData.orderStatus=='DRAFT'" @click="onSave">保 存</el-button>
+          <el-button type="primary" @click="onBuyFefundIn">入 库</el-button>
+        </el-button-group>
+        <el-button-group v-if="formData.orderType=='SELL_CHANGE_IN'">
+          <el-button type="primary" v-if="formData.orderStatus=='DRAFT'" @click="onSave">保 存</el-button>
+          <el-button type="primary" @click="onBuyChangeIn">入 库</el-button>
+        </el-button-group>
+        <el-button-group v-if="formData.orderType=='SELL_CHANGE_OUT'">
+          <el-button type="primary" v-if="formData.orderStatus=='DRAFT'" @click="onSave">保 存</el-button>
+          <el-button type="primary"  @click="confirmOrder">确 认</el-button>
+        </el-button-group>
+        <div style="flex:1;"></div>
+        <template v-if="formData.orderStatus!='DRAFT'">
+          <template v-if="formData.orderType=='SELL'">
+            <template v-if="formData.orderStatus=='COMPLETED'">
+              <el-button @click="onGoSellRefundIn" type="primary">退</el-button>
+              <el-button @click="onGoSellChangeIn" type="primary">改</el-button>
+            </template>
+          </template>
+          <template v-if="formData.orderType=='BUY'">
+            <template v-if="formData.orderStatus=='COMPLETED'">
+              <el-button @click="onShowSellRefund" type="primary">退</el-button>
+              <el-button @click="onShowSellChange" type="primary">改</el-button>
+            </template>
+          </template>
+          <template v-if="formData.orderType=='BUY_IN'">
+            <template v-if="formData.orderStatus!='DRAFT'">
+              <el-button type="primary" @click="onBuyIn">入库</el-button>
+            </template>
+            <!-- <template v-if="formData.orderStatus=='COMPLETED'">
+              <el-button @click="onShowSellRefund" type="primary">退</el-button>
+              <el-button @click="onShowSellChange" type="primary">改</el-button>
+              <el-button @click="onGoSellOut" type="primary">出库单</el-button>
+            </template> -->
+          </template>
+
+          <template v-if="formData.orderType=='BUY_REFUND_OUT'">
+            <template v-if="formData.orderStatus!='DRAFT'">
+              <el-button type="primary" @click="onSellOut">出库</el-button>
+            </template>
+          </template>
+
+          <template >
+
+          </template>
+        </template>
+      </div>
     </sticky>  
 
     <el-dialog :visible.sync="showRefund" title="退票">
@@ -320,7 +370,7 @@ export default {
         });
     },
     selectedCustomer(item) {
-      this.loadAccounts(item);
+      // this.loadAccounts(item);
       this.customerList.forEach(customer => {
         if (item === customer.merchantId) {
           this.formData.merchantType = customer.merchantType;
@@ -576,6 +626,15 @@ export default {
         }
       });
     },
+    onGoSellChangeIn() {
+      this.$router.push({
+        name: 'orderBaseEdit',
+        query: {
+          orderType: "SELL_CHANGE_IN",
+          parentNo: this.formData.orderNo
+        }
+      })
+    },
     onGoSellRefundIn() {
       this.$router.push({
         name: 'orderBaseEdit',
@@ -613,6 +672,34 @@ export default {
         this.loadProductByParent(this.$route.query.parentNo)
       }
       console.log(this.formData);
+    },
+
+    onBuyFefundIn() {
+      let data = {
+        ...this.formData,
+      }
+      data.parentNo = data.parentNo || this.$route.query.parentNo
+      if (!data.parentNo) {
+        this.$message.error('退票parentNo为空')
+        return
+      }
+      this.$store.dispatch('productOrder/orderRefund', data)
+        .then(data => {
+          this.$message.success('退票入库成功')
+          this.goBack()
+        })
+    },
+    onBuyChangeIn() {
+      let data = {
+        ...this.formData,
+      }
+      data.parentNo = data.orderNo;
+      data.orderNo = null;
+      this.$store.dispatch('productOrder/orderChange', data)
+        .then(data => {
+          this.$message.success('改签入库成功')
+          this.goBack()
+        })
     }
   },
   created() {
@@ -651,5 +738,6 @@ export default {
   padding: 15px;
   background: #fff;
   margin-bottom: 10px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)
 }
 </style>
