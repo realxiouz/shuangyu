@@ -106,3 +106,11 @@ export function orderChange(data) {
   })
 }
 
+export function orderChangeInOut(data) {
+  return request({
+    url: `/policy/order/change/in/out`,
+    method: 'post',
+    data
+  })
+}
+

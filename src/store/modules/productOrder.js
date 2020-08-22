@@ -12,7 +12,8 @@ import {
   getPurchaseList,
   getSellList,
   orderRefund,
-  orderChange
+  orderChange,
+  orderChangeInOut
 } from '@/api/productOrder';
 import { resolve, reject } from 'core-js/fn/promise';
 
@@ -169,6 +170,15 @@ const actions = {
   orderChange(_, args) {
     return new Promise((resolve, reject) => {
       orderChange(args).then(data => [
+        resolve(data)
+      ]).catch(error => {
+        reject(error)
+      })
+    })
+  },
+  orderChangeInOut(_, args) {
+    return new Promise((resolve, reject) => {
+      orderChangeInOut(args).then(data => [
         resolve(data)
       ]).catch(error => {
         reject(error)

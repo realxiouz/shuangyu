@@ -155,7 +155,7 @@
         </el-button-group>
         <el-button-group v-if="formData.orderType=='SELL_CHANGE_OUT'">
           <el-button type="primary" v-if="formData.orderStatus=='DRAFT'" @click="onSave">保 存</el-button>
-          <el-button type="primary"  @click="confirmOrder">确 认</el-button>
+          <el-button type="primary" @click="onSellChangeOut">出 库</el-button>
         </el-button-group>
         <div style="flex:1;"></div>
         <template v-if="formData.orderStatus!='DRAFT'">
@@ -696,6 +696,24 @@ export default {
       this.$store.dispatch('productOrder/orderChange', data)
         .then(data => {
           this.$message.success('改签入库成功')
+          this.goBack()
+        })
+    },
+    onSellChangeOut() {
+      let data = {
+        ...this.formData,
+      }
+      data.orderDetails = [...this.orderDetails, ...this.orderDetailsForChange.map(i => {
+        i.changeFlag = true
+        i.changeProductId = i.productId
+        return i
+      })];
+      data.passengers = this.passengers;
+      data.parentNo = data.parentNo || this.$route.query.parentNo
+      data.rootOrderNo = data.rootOrderNo || this.$route.query.parentNo
+      this.$store.dispatch('productOrder/orderChangeInOut', data)
+        .then(data => {
+          this.$message.success('改签出库成功')
           this.goBack()
         })
     }
