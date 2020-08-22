@@ -413,6 +413,9 @@ export default {
           let data = {
             ...this.formData,
           }
+          data.parentNo = data.parentNo || this.$route.query.parentNo
+          data.orderRootNo = data.orderRootNo || this.$route.query.parentNo
+          
           switch(this.formData.orderType) {
             case 'SELL':
             case 'SELL_OUT':
@@ -678,10 +681,16 @@ export default {
       let data = {
         ...this.formData,
       }
+      data.orderDetails = this.orderDetails;
+      data.passengers = this.passengers;
       data.parentNo = data.parentNo || this.$route.query.parentNo
       data.orderRootNo = data.orderRootNo || this.$route.query.parentNo
       if (!data.parentNo) {
         this.$message.error('退票parentNo为空')
+        return
+      }
+      if (!data.orderRootNo) {
+        this.$message.error('orderRootNo')
         return
       }
       this.$store.dispatch('productOrder/orderRefund', data)
