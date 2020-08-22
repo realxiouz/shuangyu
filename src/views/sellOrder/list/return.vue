@@ -95,7 +95,7 @@
               <el-button type="text" @click="onBuyIn(row)">入库</el-button>
             </template>
           </template>
-
+          <el-button type="text" @click="onDel(row.orderNo)" v-if="row.orderStatus='DRAFT'" >删除</el-button>
         </template>
       </el-table-column>
     </el-table>

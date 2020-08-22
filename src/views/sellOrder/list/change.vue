@@ -102,12 +102,7 @@
       <el-table-column fixed="right" label="操作" align="center" width="200">
         <template v-slot="{ row, $index}">
           <el-button @click="onEdit(row)" type="text" size="mini" class="btn-primary">查看</el-button>
-          <!-- <template v-if="row.orderType=='SELL_CHANGE_IN'">
-            <template v-if="row.orderStatus=='CONFIRMED'">
-              <el-button type="text" @click="onBuyIn(row)">入库</el-button>
-            </template>
-          </template> -->
-
+          <el-button type="text" @click="onDel(row.orderNo)" v-if="row.orderStatus='DRAFT'" >删除</el-button>
         </template>
       </el-table-column>
     </el-table>

@@ -117,7 +117,7 @@
             <el-button @click="changeTicket(row)" type="text" size="mini" class="btn-primary">出库</el-button>
             <el-button @click="onGoBuy(row)" type="text" size="mini" class="btn-primary">采购</el-button>
           </template>
-
+          <el-button type="text" @click="onDel(row.orderNo)" v-if="row.orderStatus='DRAFT'" >删除</el-button>
         </template>
       </el-table-column>
     </el-table>

@@ -139,6 +139,8 @@
               <el-button type="text" @click="onSellOut(row)">出库</el-button>
             </template>
           </template>
+
+          <el-button type="text" @click="onDel(row.orderNo)" v-if="row.orderStatus='DRAFT'" >删除</el-button>
         </template>
       </el-table-column>
     </el-table>
