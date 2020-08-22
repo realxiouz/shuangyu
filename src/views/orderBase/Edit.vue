@@ -3,9 +3,12 @@
     <sticky :top="15">
       <div class="order-header">
         <el-page-header @click.native="goBack" />
+        <el-tag>{{this.formData.orderType|orderType}}</el-tag>
+        <el-tag>{{this.formData.orderStatus|orderStatus}}</el-tag>
+        <el-tag>{{formData.warehouseStatus|warehouseStatus}}</el-tag>
         <div style="flex:1;"></div>
         <template v-if="formData.orderStatus!='DRAFT'">
-          <el-button v-if="formData.orderType=='SELL'" type="primary" @click="onGoSellOut">出库单</el-button>
+          <el-button v-if="formData.orderType=='SELL'" type="primary" @click="onGoSellOut">出库单-{{formData.outInIdCount}}</el-button>
           <el-button v-else-if="formData.orderType=='BUY'" type="primary" @click="onGoBuyInList">入库单</el-button>
           <el-button v-else-if="formData.orderType=='SELL_CHANGE_IN'" type="primary" @click="onGoSellChangeOut">改签出库单</el-button>
           <el-button v-else-if="formData.orderType=='BUY_CHANGE_OUT'" type="primary" @click="onGoBuyChangeIn">改签入库单</el-button>
@@ -137,7 +140,7 @@
 
     <sticky :bottom="15">
       <div class="order-header">
-        <template >
+        <!-- <template >
           <el-button-group v-if="formData.orderType=='SELL'">
             <el-button type="primary" v-if="formData.orderStatus=='DRAFT'" @click="onSave">保 存</el-button>
             <el-button type="primary" v-if="formData.orderStatus=='DRAFT'" @click="confirmOrder">确 认</el-button>
@@ -176,8 +179,17 @@
           <el-button-group v-if="formData.orderType=='BUY_CHANGE_IN'">
             <el-button type="primary" v-if="formData.orderStatus=='DRAFT'" @click="onSave">保 存</el-button>
           </el-button-group>
-        </template>
+        </template> -->
         <div style="flex:1;"></div>
+        <el-button-group>
+          <template v-if="formData.orderType=='SELL'">
+            <el-button v-if="formData.orderStatus=='DRAFT'" type="primary" @click="onSave">保 存</el-button>
+            <el-button v-if="formData.orderStatus=='DRAFT'" type="primary" @click="confirmOrder">确 认</el-button>
+          <template v-if="formData.orderType=='SELL_OUT'">
+            <el-button v-if="formData.orderStatus=='DRAFT'" type="primary" @click="onSave">保 存</el-button>
+            <el-button @click="onSellOut" type="primary">出 库</el-button>
+          </template>
+        </template>
         <template v-if="formData.orderStatus!='DRAFT'">
           <el-button-group v-if="formData.orderType=='SELL'">
             <template v-if="formData.orderStatus=='COMPLETED'">
@@ -185,9 +197,6 @@
               <el-button @click="onGoSellChangeIn" type="primary">改</el-button>
             </template>
             <el-button @click="onGoBuyIn" type="primary">采购</el-button>
-          </el-button-group>
-          <el-button-group v-if="formData.orderType=='SELL_OUT'">
-            <el-button @click="onSellOut" type="primary">出 库</el-button>
           </el-button-group>
           <template v-if="formData.orderType=='SELL_REFUND_IN'">
             
@@ -219,6 +228,7 @@
             </template>
           </template>
         </template>
+        </el-button-group>
       </div>
     </sticky>  
 
@@ -556,25 +566,37 @@ export default {
     },
     onSellOut() {
 
-      this.$store
-        .dispatch("productOrder/outWarehouseOrder", {
-          orderNo: this.formData.orderNo,
-          data: this.formData
-        })
+      // this.$store
+      //   .dispatch("productOrder/outWarehouseOrder", {
+      //     orderNo: this.formData.orderNo,
+      //     data: this.formData
+      //   })
+      //   .then(data => {
+      //     if (data) {
+      //       this.$message.success('出库成功');
+      //       this.goBack();
+      //     } else {
+      //       this.$message({
+      //         type: "error",
+      //         message: "出库失败!"
+      //       });
+      //     }
+      //   })
+      //   .catch(error => {
+      //     console.log(error);
+      //   });
+      let data = {
+        ...this.formData,
+      }
+      data.orderDetails = this.orderDetails
+      data.passengers = this.passengers;
+      data.parentNo = data.parentNo || this.$route.query.parentNo
+      data.rootOrderNo = data.rootOrderNo || this.$route.query.parentNo
+      this.$store.dispatch('productOrder/orderChangeInOut', data)
         .then(data => {
-          if (data) {
-            this.$message.success('出库成功');
-            this.goBack();
-          } else {
-            this.$message({
-              type: "error",
-              message: "出库失败!"
-            });
-          }
+          this.$message.success('改签出库成功')
+          this.goBack()
         })
-        .catch(error => {
-          console.log(error);
-        });
     },
     onGoBuyInList() {
       this.$router.push({

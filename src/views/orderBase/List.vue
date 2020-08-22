@@ -87,7 +87,7 @@
       <el-table-column prop="totalAmount" label="成交金额" />
       <el-table-column prop="receiptAmount" label="实收金额" />
       <el-table-column label="确认状态" width="80" >
-      <template v-slot="{row}">{{ row.orderStatus|orderStatus }}</template>
+        <template v-slot="{row}">{{ row.orderStatus|orderStatus }}</template>
       </el-table-column>
       <el-table-column
         label="发货状态"
@@ -99,14 +99,11 @@
         <template v-slot="{ row, $index}">
           <el-button @click="onEdit(row)" type="text" size="mini" class="btn-primary">查看</el-button>
           <template v-if="row.orderType=='SELL'">
-            <template v-if="row.orderStatus=='CONFIRMED'">
-              <el-button @click="onGoBuy(row)" type="text">采购</el-button>
-            </template>
+            <el-button @click="onGoBuy(row.orderNo)" type="text">采购</el-button>
           </template>
           <template v-if="row.orderType=='SELL_OUT'">
-            <template v-if="row.orderStatus=='CONFIRMED'">
-              <el-button type="text" @click="onSellOut(row)">出库</el-button>
-            </template>
+            <el-button @click="onGoBuy(row.parentNo)" type="text">采购</el-button>
+            <el-button type="text" @click="onSellOut(row)">出库</el-button>
           </template>
           <template v-if="row.orderType=='SELL_REFUND_IN'">
             <template v-if="row.orderStatus=='CONFIRMED'">
@@ -119,9 +116,7 @@
             </template>
           </template>
           <template v-if="row.orderType=='SELL_CHANGE_IN'">
-            <template v-if="row.orderStatus=='CONFIRMED'">
-              <el-button type="text" @click="onBuyIn(row)">入库</el-button>
-            </template>
+            <el-button type="text" @click="onBuyIn(row)">入库</el-button>
           </template>
           
           <template v-if="row.orderType=='BUY_IN'">
@@ -343,12 +338,16 @@ export default {
           console.log(error);
         });
     },
-    onGoBuy(i) {
+    onGoBuy(parentNo) {
+      if(!parentNo) {
+        this.$message.error('parentNo不能为空')
+        return
+      }
       this.$router.push({
         name: "orderBaseEdit",
         query: {
           orderType: 'BUY',
-          parentNo: i.orderNo
+          parentNo
         }
       })
     },

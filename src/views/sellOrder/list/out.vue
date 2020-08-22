@@ -87,35 +87,21 @@
           {{row.warehouseStatus|warehouseStatus}}
         </template>
       </el-table-column>
+      <el-table-column label="所有">
+        <template v-slot="{row}">
+          <el-tag @click="onAllGo(row.linkNos)">{{row.linkNos.length}}</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column fixed="right" label="操作" align="center" width="200">
         <template v-slot="{ row, $index}">
           <el-button @click="onEdit(row)" type="text" size="mini" class="btn-primary">查看</el-button>
           <template v-if="row.orderType=='SELL'">
-            <template v-if="row.orderStatus=='CONFIRMED'">
-              <el-button @click="onGoBuy(row)" type="text">采购</el-button>
-            </template>
+            <el-button @click="onGoBuy(row.orderNo)" type="text">采购</el-button>
           </template>
           <template v-if="row.orderType=='SELL_OUT'">
             <template v-if="row.orderStatus=='CONFIRMED'">
               <el-button type="text" @click="onSellOut(row)">出库</el-button>
             </template>
-          </template>
-          <template v-if="params.orderType==102">
-            <el-button @click="intercept(row)" type="text" size="mini" class="btn-primary">拦截</el-button>
-          </template>
-          <template v-if="params.orderType==103">
-            <el-button @click="refundTicket(row)" type="text" size="mini" class="btn-primary">退款</el-button>
-          </template>
-          <template v-if="params.orderType==104">
-            <el-button @click="changeTicket(row)" type="text" size="mini" class="btn-primary">改签</el-button>
-            <el-button @click="changeTicket(row)" type="text" size="mini" class="btn-primary">退改</el-button>
-          </template>
-          <template v-if="params.orderType==105">
-            <el-button @click="refundTicket(row)" type="text" size="mini" class="btn-primary">入库</el-button>
-          </template>
-          <template v-if="params.orderType==106">
-            <el-button @click="changeTicket(row)" type="text" size="mini" class="btn-primary">出库</el-button>
-            <el-button @click="onGoBuy(row)" type="text" size="mini" class="btn-primary">采购</el-button>
           </template>
           <el-button type="text" @click="onDel(row.orderNo)" v-if="row.orderStatus='DRAFT'" >删除</el-button>
         </template>
@@ -186,32 +172,6 @@
         </el-row>
         <el-form-item v-model="formData.refundData" label-width="auto">
           <label class="el-form-item__label" style="color:#606266; width:110px;">乘车人:</label>
-          <!-- <el-table
-            ref="multipleTable"
-            size="mini"
-            :data="passagersRefund"
-            highlight-current-row
-            @selection-change="handleSelectionChange"
-            fit
-            style="width: 100%;"
-          >
-            <el-table-column type="selection" :selectable="selectable" width="55"></el-table-column>
-            <el-table-column prop="name" label="姓名" align="center"></el-table-column>
-            <el-table-column
-              prop="cardType"
-              :formatter="formatCardType"
-              label="证件类型"
-              align="center"
-            ></el-table-column>
-            <el-table-column prop="cardNo" label="证件号" align="center"></el-table-column>
-            <el-table-column prop="ageType" :formatter="formatAgeType" label="乘机人类型" align="center"></el-table-column>
-            <el-table-column label="价格" prop="amount" align="center">
-              <template slot-scope="scope">
-                <span>{{formatAmount(scope.row.amount)}}</span>
-              </template>
-            </el-table-column>
-            <el-table-column prop="ticketNo" label="票号" align="center"></el-table-column>
-          </el-table> -->
         </el-form-item>
 
         <el-form-item label="销售退改说明:">
@@ -327,32 +287,16 @@ export default {
           console.log(error);
         });
     },
-    onGoBuy(i) {
-      // let {passengers, orderDetails, parentNo} = i
-      // let info = this.genTicketInfo(orderDetails[0].propertyItems, ['dpt', 'arr', 'dptTime', 'flightDate', 'flightCode', 'cabin'])
-      // let passengersTemp = passengers.map(i => {
-      //   delete i.orderNo
-      //   delete i.passengerId
-      //   return i
-      // })
-      // let orderDetailsTemp = orderDetails.map( i => {
-      //   delete i.orderNo
-      //   delete i.detailId
-      //   return i
-      // })
-      // this.$store.commit('ticket/setInfo', info)
-      // this.$store.commit('ticket/setPassengers', passengersTemp)
-      // this.$store.commit('ticket/setOrderDetails', orderDetails)
-      // this.$store.commit('ticket/setParentNo', parentNo)
-      // this.$router.push({
-      //   path: `/buyTicket/flightInfo?orderNo=${i.orderNo}`
-      // });
-
+    onGoBuy(parentNo) {
+      if(!parentNo) {
+        this.$message.error('parentNo不能为空')
+        return
+      }
       this.$router.push({
         name: "orderBaseEdit",
         query: {
           orderType: 'BUY',
-          parentNo: i.orderNo
+          parentNo
         }
       })
     },
@@ -441,6 +385,9 @@ export default {
           rootNo: i.rootOrderNo
         }
       })
+    },
+    onAllGo(ids) {
+      console.log(ids)
     }
   },
 //   watch: {
