@@ -13,26 +13,26 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="会员名称:">
+          <el-form-item label="账户编号:">
             <el-input
               clearable
               @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.memberName"
-              placeholder="请输入会员名称搜素..."
+              v-model="formData.accountNo"
+              placeholder="请输入账户编号搜素..."
             ></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="会员类型:" prop="memberType">
+          <el-form-item label="账户类型:">
             <el-select
               style="width: 100%;"
-              v-model="formData.memberType"
-              placeholder="请选择会员类型..."
+              v-model="formData.accountType"
+              placeholder="请选择账户类型..."
               filterable
               clearable
             >
               <el-option
-                v-for="item in memberTypeList"
+                v-for="item in accountTypeList"
                 :key="item.code"
                 :label="item.value"
                 :value="item.code"
@@ -41,16 +41,16 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="会员状态:" prop="status">
+          <el-form-item label="账户状态:" prop="status">
             <el-select
               style="width: 100%;"
               v-model="formData.status"
-              placeholder="请选择会员状态..."
+              placeholder="请选择账户状态..."
               filterable
               clearable
             >
               <el-option
-                v-for="item in memberStatusList"
+                v-for="item in accountStatusList"
                 :key="item.code"
                 :label="item.value"
                 :value="item.code"
@@ -92,12 +92,12 @@
         more: false,
         formData: {
           memberNo: null,
-          memberName: null,
-          memberType: null,
+          accountNo: null,
+          accountType: null,
           status: null
         },
-        memberTypeList: MEMBER_TYPES,
-        memberStatusList: MEMBER_STATUS
+        accountTypeList: MEMBER_TYPES,
+        accountStatusList: MEMBER_STATUS
       };
     },
     computed: {
@@ -113,8 +113,8 @@
       initSearchForm() {
         return {
           memberNo: null,
-          memberName: null,
-          memberType: null,
+          accountNo: null,
+          accountType: null,
           status: null
         };
       },

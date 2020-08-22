@@ -1,44 +1,61 @@
 <template>
   <div class="page-form">
-    <el-dialog :title="keyId ? '修改会员管理' : '添加会员管理'"  width="24%" align="center"  :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
+    <el-dialog :title="keyId ? '修改账户管理' : '添加账户管理'"  width="24%" align="center"  :visible.sync="dialogVisible" @open="onOpen" @close="onClose">
       <el-form ref="form" label-width="110px" size="mini" :model="formData" :rules="rules">
-        <el-form-item label="会员编号：" prop="memberNo">
-          <el-input v-model="formData.memberNo" placeholder="请输入会员编号..." :disabled="codeEnable"></el-input>
-        </el-form-item>
-        <el-form-item label="会员名称：" prop="memberName">
-          <el-input v-model="formData.memberName" placeholder="请输入会员名称..."></el-input>
-        </el-form-item>
-        <el-form-item label="会员类型：" prop="memberType">
+        <el-form-item label="会员名称：" prop="memberId">
           <el-select
             style="width: 100%;"
-            v-model="formData.memberType"
-            placeholder="请选择会员类型..."
+            v-model="formData.memberId"
+            placeholder="请选择会员名称..."
+            filterable
+            clearable
+            @change="handleMember"
+          >
+            <el-option
+              v-for="item in memberList"
+              :key="item.memberId"
+              :label="item.memberName"
+              :value="item.memberId"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="账户编号：" prop="accountNo">
+          <el-input v-model="formData.accountNo" placeholder="请输入账户编号..."></el-input>
+        </el-form-item>
+        <el-form-item label="账户类型：" prop="accountType">
+          <el-select
+            style="width: 100%;"
+            v-model="formData.accountType"
+            placeholder="请选择账户类型..."
             filterable
             clearable
           >
             <el-option
-              v-for="item in memberTypeList"
+              v-for="item in accountTypeList"
               :key="item.code"
               :label="item.value"
               :value="item.code"
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="会员状态：" prop="status">
+        <el-form-item label="账户状态：" prop="status">
           <el-select
             style="width: 100%;"
             v-model="formData.status"
-            placeholder="请选择会员状态..."
+            placeholder="请选择账户状态..."
             filterable
             clearable
           >
             <el-option
-              v-for="item in memberStatusList"
+              v-for="item in accountStatusList"
               :key="item.code"
               :label="item.value"
               :value="item.code"
             ></el-option>
           </el-select>
+        </el-form-item>
+        <el-form-item label="账户余额：" prop="balance">
+          <el-input-number v-model="formData.balance" placeholder="请输入账户余额" :min="0" :step="1" :precision="2" style="width: 100%;" />
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
@@ -64,16 +81,20 @@
       };
       return {
         dialogVisible: false,
-        memberTypeList: MEMBER_TYPES,
-        memberStatusList: MEMBER_STATUS,
+        accountTypeList: MEMBER_TYPES,
+        accountStatusList: MEMBER_STATUS,
+        memberList: [],
         codeEnable: false,
         actions: {
-          getOne: 'member/getOne',
-          saveOne: 'member/saveOne'
+          getOne: 'memberAccount/getOne',
+          saveOne: 'memberAccount/saveOne'
         },
         rules: {
-          memberNo: [
-            {required: true, message: "请输入会员编号"},
+          memberId: [
+            {required: true, message: "请选择会员名称"}
+          ],
+          accountNo: [
+            {required: true, message: "请输入账户编号"},
             {
               min: 1,
               max: 20,
@@ -81,19 +102,11 @@
             },
             {validator: codeValidator, trigger: 'blur'}
           ],
-          memberName: [
-            {required: true, message: "请输入会员名称"},
-            {
-              min: 1,
-              max: 20,
-              message: "长度在 1到 20 个字符"
-            }
-          ],
-          memberType: [
-            {required: true, message: "请选择会员类型"}
+          accountType: [
+            {required: true, message: "请选择账户类型"}
           ],
           status: [
-            {required: true, message: "请选择会员状态"}
+            {required: true, message: "请选择账户状态"}
           ]
         }
       };
@@ -105,17 +118,40 @@
           if(this.keyId){
             this.codeEnable = true;
           }
+          this.getMemberList();
         }
       }
     },
     methods: {
+      getMemberList(){
+        this.$store
+          .dispatch("member/getList", {})
+          .then(data => {
+            if(data && data.length > 0){
+              this.memberList = data;
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      handleMember(val){
+        let that = this;
+        that.memberList.forEach(function(obj){
+          if(val === obj.memberId){
+            that.formData.memberNo = obj.memberNo;
+          }
+        });
+      },
       defaultFormData() {
         return {
+          accountId: null,
           memberId: null,
           memberNo: null,
-          memberName: null,
-          memberType: null,
+          accountNo: null,
+          accountType: null,
           status: null,
+          balance: null
         };
       }
     }

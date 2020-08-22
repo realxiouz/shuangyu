@@ -5,23 +5,23 @@
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
     </el-row>
     <el-table class="page-table" highlight-current-row v-loading="loading" size="mini" :data="tableData">
+      <el-table-column label="会员名称" align="center" prop="memberId" :formatter="formatMember"></el-table-column>
       <el-table-column label="账户编号" align="center" prop="accountNo"></el-table-column>
       <el-table-column label="账户类型" align="center" prop="accountType">
         <template slot-scope="scope">
-          {{ memberTypeObj[scope.row.memberType] }}
+          {{ accountTypeObj[scope.row.accountType] }}
         </template>
       </el-table-column>
       <el-table-column label="账户状态" align="center" prop="status">
         <template slot-scope="scope">
-          {{ memberStatusObj[scope.row.status] }}
+          {{ accountStatusObj[scope.row.status] }}
         </template>
       </el-table-column>
-      <el-table-column label="账户余额" align="center" prop="balance"></el-table-column>
-      <el-table-column label="会员名称" align="center" prop="memberId"></el-table-column>
+      <el-table-column label="账户余额" align="center" prop="balance" :formatter="formatMoney"></el-table-column>
       <el-table-column label="操作" align="center" width="280">
         <template slot-scope="scope">
-          <el-button @click="onEdit(scope.row.memberId)" type="text" size="mini" class="btn-primary">编辑</el-button>
-          <el-button @click="onDel(scope.row.memberId)" type="text" size="mini" class="btn-danger">删除</el-button>
+          <el-button @click="onEdit(scope.row.accountId)" type="text" size="mini" class="btn-primary">编辑</el-button>
+          <el-button @click="onDel(scope.row.accountId)" type="text" size="mini" class="btn-danger">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -60,13 +60,50 @@
           getPageList: 'memberAccount/getPageList',
           removeOne: 'memberAccount/removeOne'
         },
-        memberTypeObj: MEMBER_TYPE_OBJ,
-        memberStatusObj: MEMBER_STATUS_OBJ
+        accountTypeObj: MEMBER_TYPE_OBJ,
+        accountStatusObj: MEMBER_STATUS_OBJ,
+        memberList: []
+      }
+    },
+    methods: {
+      getMemberList(){
+        this.$store
+          .dispatch("member/getList", {})
+          .then(data => {
+            if(data && data.length > 0){
+              this.memberList = data;
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      formatMember(row){
+        let that = this;
+        let memberName = '';
+        if(row.memberId){
+          that.memberList.forEach(function(obj){
+            if(row.memberId === obj.memberId){
+              memberName = obj.memberName;
+            }
+          });
+        }
+        return memberName;
+      },
+      formatMoney(row){
+        let balance = '0.00';
+        if(row.balance){
+          balance = parseFloat(row.balance).toFixed(2);
+        }
+        return balance;
       }
     },
     components: {
       edit,
       search
+    },
+    created() {
+      this.getMemberList();
     }
   };
 </script>
