@@ -3,13 +3,21 @@
     <el-col :xs="16" :sm="18" :md="18" :lg="20" :xl="20">
       <el-form :model="formData" label-width="80px" size="mini">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-          <el-form-item label="会员编号:">
-            <el-input
+          <el-form-item label="会员名称:">
+            <el-select
+              style="width: 100%;"
+              v-model="formData.memberId"
+              placeholder="请选择会员名称..."
+              filterable
               clearable
-              @keyup.enter.native="$emit('onSearch', formData)"
-              v-model="formData.memberNo"
-              placeholder="请输入会员编号搜素..."
-            ></el-input>
+            >
+              <el-option
+                v-for="item in memberList"
+                :key="item.memberId"
+                :label="item.memberName"
+                :value="item.memberId"
+              ></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
@@ -91,13 +99,14 @@
       return {
         more: false,
         formData: {
-          memberNo: null,
+          memberId: null,
           accountNo: null,
           accountType: null,
           status: null
         },
         accountTypeList: MEMBER_TYPES,
-        accountStatusList: MEMBER_STATUS
+        accountStatusList: MEMBER_STATUS,
+        memberList: []
       };
     },
     computed: {
@@ -110,9 +119,21 @@
       }
     },
     methods: {
+      getMemberList(){
+        this.$store
+          .dispatch("member/getList", {})
+          .then(data => {
+            if(data && data.length > 0){
+              this.memberList = data;
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
       initSearchForm() {
         return {
-          memberNo: null,
+          memberId: null,
           accountNo: null,
           accountType: null,
           status: null
@@ -125,6 +146,9 @@
       handleMore() {
         this.more = !this.more;
       }
+    },
+    created() {
+      this.getMemberList();
     }
   };
 </script>
