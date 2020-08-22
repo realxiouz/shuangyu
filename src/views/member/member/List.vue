@@ -7,12 +7,12 @@
     <el-table class="page-table" highlight-current-row v-loading="loading" size="mini" :data="tableData">
       <el-table-column label="会员编号" align="center" prop="memberNo"></el-table-column>
       <el-table-column label="会员名称" align="center" prop="memberName"></el-table-column>
-      <el-table-column label="类型" align="center" prop="memberType">
+      <el-table-column label="会员类型" align="center" prop="memberType">
         <template slot-scope="scope">
           {{ memberTypeObj[scope.row.memberType] }}
         </template>
       </el-table-column>
-      <el-table-column label="状态" align="center" prop="status">
+      <el-table-column label="会员状态" align="center" prop="status">
         <template slot-scope="scope">
           {{ memberStatusObj[scope.row.status] }}
         </template>

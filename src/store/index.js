@@ -84,6 +84,7 @@ import dispatchRule from './modules/dispatchRule';
 import policyProduct from './modules/policyProduct';
 import qunarFinanceEoConfig from './modules/qunarFinanceEoConfig';
 import member from './modules/member';
+import memberAccount from './modules/memberAccount';
 
 Vue.use(Vuex);
 export default new Vuex.Store({
@@ -170,7 +171,8 @@ export default new Vuex.Store({
     dispatchRule,
     policyProduct,
     qunarFinanceEoConfig,
-    member
+    member,
+    memberAccount
   },
   getters
 });

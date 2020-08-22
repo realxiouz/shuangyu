@@ -14,6 +14,7 @@
             v-model="formData.memberType"
             placeholder="请选择会员类型..."
             filterable
+            clearable
           >
             <el-option
               v-for="item in memberTypeList"
@@ -27,8 +28,9 @@
           <el-select
             style="width: 100%;"
             v-model="formData.status"
-            placeholder="请选择会员类型..."
+            placeholder="请选择会员状态..."
             filterable
+            clearable
           >
             <el-option
               v-for="item in memberStatusList"
