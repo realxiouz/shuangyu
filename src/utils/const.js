@@ -160,3 +160,14 @@ export const MEMBER_STATUS_OBJ = {
   ENABLE: '可用',
   DISABLE: '禁用'
 };
+
+// 银行卡类型
+export const BANK_CARD_TYPES = [
+  { code: 'DEBIT_CARD', value: '借记卡' },
+  { code: 'CREDIT_CARD', value: '信用卡' }
+];
+
+export const BANK_CARD_TYPES_OBJ = {
+  DEBIT_CARD: '借记卡',
+  CREDIT_CARD: '信用卡'
+};
