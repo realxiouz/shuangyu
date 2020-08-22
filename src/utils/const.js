@@ -72,9 +72,11 @@ export const AGE_TYPES = genArrByMap(AGE_TYPES_MAP);
 
 export const CATEGORY_MAP = [
   { code: 'CASH', value: '现金' },
-  { code: 'BANK', value: '银行存款' },
+  { code: 'BANK_TRANSFER', value: '银行转账' },
   { code: 'ALIPAY', value: '支付宝' },
-  { code: 'WECHAT', value: '微信支付' },
+  { code: 'WXPAY', value: '微信支付' },
+  { code: 'ONLINE_BANKING', value: '网银' },
+  { code: 'PLFPAY', value: '余额' },
   { code: 'PNRPAY', value: '汇付' },
   { code: 'BHEASY', value: '易生' },
   { code: 'YEEPAY', value: '易宝' },
@@ -85,6 +87,24 @@ export const CATEGORY_MAP = [
 ];
 
 export const CATEGORY_TYPES = genArrByMap(CATEGORY_MAP);
+
+export const PAYMENT_MAP = [
+  { code: 'CASH', value: '现金' },
+  { code: 'BANK_TRANSFER', value: '银行转账' },
+  { code: 'ALIPAY', value: '支付宝' },
+  { code: 'WXPAY', value: '微信支付' },
+  { code: 'ONLINE_BANKING', value: '网银' },
+  { code: 'PLFPAY', value: '余额' },
+  { code: 'PNRPAY', value: '汇付' },
+  { code: 'BHEASY', value: '易生' },
+  { code: 'YEEPAY', value: '易宝' },
+  { code: 'INTEGRAL', value: '积分' },
+  { code: 'COUPON', value: '优惠券' },
+  { code: 'TENPAY', value: '财付通' },
+  { code: 'QUNARPAY', value: '商户余额代扣' }
+];
+
+export const PAYMENT_TYPES = genArrByMap(PAYMENT_MAP);
 
 export const ORDER_TYPES_MAP = {
   OTHER_IN: '其他入库',
@@ -139,4 +159,15 @@ export const MEMBER_STATUS = [
 export const MEMBER_STATUS_OBJ = {
   ENABLE: '可用',
   DISABLE: '禁用'
+};
+
+// 银行卡类型
+export const BANK_CARD_TYPES = [
+  { code: 'DEBIT_CARD', value: '借记卡' },
+  { code: 'CREDIT_CARD', value: '信用卡' }
+];
+
+export const BANK_CARD_TYPES_OBJ = {
+  DEBIT_CARD: '借记卡',
+  CREDIT_CARD: '信用卡'
 };
