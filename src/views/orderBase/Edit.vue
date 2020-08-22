@@ -182,11 +182,11 @@
         </el-button-group>
         <el-button-group v-if="formData.orderType=='SELL_REFUND_IN'">
           <el-button type="primary" v-if="formData.orderStatus=='DRAFT'" @click="onSave">保 存</el-button>
-          <el-button type="primary" @click="onBuyFefundIn">入 库</el-button>
+          <el-button type="primary" @click="onSellRefundIn">入 库</el-button>
         </el-button-group>
         <el-button-group v-if="formData.orderType=='SELL_CHANGE_IN'">
           <el-button type="primary" v-if="formData.orderStatus=='DRAFT'" @click="onSave">保 存</el-button>
-          <el-button type="primary" @click="onBuyChangeIn">入 库</el-button>
+          <el-button type="primary" @click="onSellChangeIn">入 库</el-button>
         </el-button-group>
         <el-button-group v-if="formData.orderType=='SELL_CHANGE_OUT'">
           <el-button type="primary" v-if="formData.orderStatus=='DRAFT'" @click="onSave">保 存</el-button>
@@ -674,11 +674,12 @@ export default {
       console.log(this.formData);
     },
 
-    onBuyFefundIn() {
+    onSellRefundIn() {
       let data = {
         ...this.formData,
       }
       data.parentNo = data.parentNo || this.$route.query.parentNo
+      data.orderRootNo = data.orderRootNo || this.$route.query.parentNo
       if (!data.parentNo) {
         this.$message.error('退票parentNo为空')
         return
@@ -689,12 +690,12 @@ export default {
           this.goBack()
         })
     },
-    onBuyChangeIn() {
+    onSellChangeIn() {
       let data = {
         ...this.formData,
       }
-      data.parentNo = data.orderNo;
-      data.orderNo = null;
+      data.parentNo = data.parentNo || this.$route.query.parentNo
+      data.orderRootNo = data.orderRootNo || this.$route.query.parentNo
       this.$store.dispatch('productOrder/orderChange', data)
         .then(data => {
           this.$message.success('改签入库成功')
