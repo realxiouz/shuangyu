@@ -160,8 +160,21 @@
           </el-button-group>
 
           <el-button-group v-if="formData.orderType=='BUY'">
-            <el-button type="primary" @click="onSave">保 存</el-button>
+            <el-button type="primary" v-if="formData.orderStatus=='DRAFT'" @click="onSave">保 存</el-button>
             <el-button type="primary" @click="confirmOrder">确 认</el-button>
+          </el-button-group>
+
+          <el-button-group v-if="formData.orderType=='BUY_REFUND_OUT'">
+            <el-button type="primary" v-if="formData.orderStatus=='DRAFT'" @click="onSave">保 存</el-button>
+            <el-button type="primary" @click="onBuyRefundOut">出 库</el-button>
+          </el-button-group>
+
+          <el-button-group v-if="formData.orderType=='BUY_CHANGE_OUT'">
+            <el-button type="primary" v-if="formData.orderStatus=='DRAFT'" @click="onSave">保 存</el-button>
+            <el-button type="primary" @click="onBuyChangeOut">出 库</el-button>
+          </el-button-group>
+          <el-button-group v-if="formData.orderType=='BUY_CHANGE_IN'">
+            <el-button type="primary" v-if="formData.orderStatus=='DRAFT'" @click="onSave">保 存</el-button>
           </el-button-group>
         </template>
         <div style="flex:1;"></div>
@@ -192,7 +205,7 @@
           <template v-if="formData.orderType=='BUY'">
             <template v-if="formData.orderStatus=='COMPLETED'">
               <el-button @click="onGoBuyRefundOut" type="primary">退</el-button>
-              <el-button @click="onShowSellChange" type="primary">改</el-button>
+              <el-button @click="onGoBuyChangeOut" type="primary">改</el-button>
             </template>
           </template>
           <template v-if="formData.orderType=='BUY_IN'">
@@ -200,15 +213,10 @@
               <el-button type="primary" @click="onBuyIn">入库</el-button>
             </template>
           </template>
-
-          <template v-if="formData.orderType=='BUY_REFUND_OUT'">
-            <template v-if="formData.orderStatus!='DRAFT'">
-              <el-button type="primary" @click="onSellOut">出库</el-button>
+          <template v-if="formData.orderType=='BUY_CHANGE_IN'">
+            <template v-if="formData.orderStatus=='COMPLETED'">
+              <el-button type="primary" @click="onBuyChangeIn">入 库</el-button>
             </template>
-          </template>
-
-          <template >
-
           </template>
         </template>
       </div>
@@ -705,6 +713,28 @@ export default {
           this.goBack()
         })
     },
+    onBuyRefundOut() {
+      let data = {
+        ...this.formData,
+      }
+      data.orderDetails = this.orderDetails;
+      data.passengers = this.passengers;
+      data.parentNo = data.parentNo || this.$route.query.parentNo
+      data.rootOrderNo = data.rootOrderNo || this.$route.query.parentNo
+      if (!data.parentNo) {
+        this.$message.error('退票parentNo为空')
+        return
+      }
+      if (!data.rootOrderNo) {
+        this.$message.error('rootOrderNo')
+        return
+      }
+      this.$store.dispatch('productOrder/orderRefund', data)
+        .then(data => {
+          this.$message.success('退票出库成功')
+          this.goBack()
+        })
+    },
     onSellChangeIn() {
       let data = {
         ...this.formData,
@@ -723,7 +753,43 @@ export default {
           this.goBack()
         })
     },
+    onBuyChangeOut() {
+      let data = {
+        ...this.formData,
+      }
+      data.orderDetails = [...this.orderDetails, ...this.orderDetailsForChange.map(i => {
+        i.changeFlag = true
+        i.changeProductId = i.productId
+        return i
+      })];
+      data.passengers = this.passengers;
+      data.parentNo = data.parentNo || this.$route.query.parentNo
+      data.rootOrderNo = data.rootOrderNo || this.$route.query.parentNo
+      this.$store.dispatch('productOrder/orderChange', data)
+        .then(data => {
+          this.$message.success('改签出库成功')
+          this.goBack()
+        })
+    },
     onSellChangeOut() {
+      let data = {
+        ...this.formData,
+      }
+      data.orderDetails = [...this.orderDetails, ...this.orderDetailsForChange.map(i => {
+        i.changeFlag = true
+        i.changeProductId = i.productId
+        return i
+      })];
+      data.passengers = this.passengers;
+      data.parentNo = data.parentNo || this.$route.query.parentNo
+      data.rootOrderNo = data.rootOrderNo || this.$route.query.parentNo
+      this.$store.dispatch('productOrder/orderChangeInOut', data)
+        .then(data => {
+          this.$message.success('改签出库成功')
+          this.goBack()
+        })
+    },
+    onBuyChangeIn() {
       let data = {
         ...this.formData,
       }
@@ -746,6 +812,15 @@ export default {
         name: 'orderBaseEdit',
         query: {
           orderType: "BUY",
+          parentNo: this.formData.orderNo
+        }
+      })
+    },
+    onGoBuyChangeOut() {
+      this.$router.push({
+        name: 'orderBaseEdit',
+        query: {
+          orderType: "BUY_CHANGE_OUT",
           parentNo: this.formData.orderNo
         }
       })
