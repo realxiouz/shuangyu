@@ -127,7 +127,7 @@
       <card title="商品信息">
         <goods v-model="orderDetails" @total="handleTotal" ref="goods" />
       </card>
-      <card title="改签商品信息" v-if="orderDetailsForChange.length||formData.orderType=='SELL_CHANGE_IN'">
+      <card title="改签商品信息" v-if="orderDetailsForChange.length||formData.orderType=='SELL_CHANGE_IN'||formData.orderType=='BUY_CHANGE_OUT'">
         <goods v-model="orderDetailsForChange" />
       </card>
       <card title="乘客信息">
