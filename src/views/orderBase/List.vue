@@ -106,33 +106,29 @@
             <el-button type="text" @click="onSellOut(row)">出库</el-button>
           </template>
           <template v-if="row.orderType=='SELL_REFUND_IN'">
-            <template v-if="row.orderStatus=='CONFIRMED'">
               <el-button type="text" @click="onBuyIn(row)">入库</el-button>
-            </template>
           </template>
           <template v-if="row.orderType=='SELL_CHANGE_OUT'">
-            <template v-if="row.orderStatus=='CONFIRMED'">
               <el-button type="text" @click="onSellOut(row)">出库</el-button>
-            </template>
           </template>
           <template v-if="row.orderType=='SELL_CHANGE_IN'">
             <el-button type="text" @click="onBuyIn(row)">入库</el-button>
           </template>
           
+          <template v-if="row.orderType=='BUY'">
+            <el-button type="text" @click="onGoBuyRefundIn(row.orderNo)">退</el-button>
+            <el-button type="text" @click="onGoBuyChangeIn(row.orderNo)">改</el-button>
+          </template>
           <template v-if="row.orderType=='BUY_IN'">
-            <template v-if="row.orderStatus=='CONFIRMED'">
               <el-button type="text" @click="onBuyIn(row)">入库</el-button>
-            </template>
+              <el-button type="text" @click="onGoBuyRefundIn(row.parentNo)">退</el-button>
+              <el-button type="text" @click="onGoBuyChangeIn(row.parentNo)">改</el-button>
           </template>
           <template v-if="row.orderType=='BUY_CHANGE_IN'">
-            <template v-if="row.orderStatus=='CONFIRMED'">
               <el-button type="text" @click="onBuyIn(row)">入库</el-button>
-            </template>
           </template>
           <template v-if="row.orderType=='BUY_CHANGE_OUT'">
-            <template v-if="row.orderStatus=='CONFIRMED'">
               <el-button type="text" @click="onSellOut(row)">出库</el-button>
-            </template>
           </template>
 
           <el-button type="text" @click="onDel(row.orderNo)" v-if="row.orderStatus='DRAFT'" >删除</el-button>
@@ -456,6 +452,24 @@ export default {
         name: 'orderRoot',
         query: {
           rootNo: i.rootOrderNo
+        }
+      })
+    },
+    onGoBuyRefundIn(parentNo) {
+      this.$router.push({
+        name: 'orderBaseEdit',
+        query: {
+          orderType: 'BUY_REFUND_IN',
+          parentNo
+        }
+      })
+    },
+    onGoBuyChangeIn(parentNo) {
+      this.$router.push({
+        name: 'orderBaseEdit',
+        query: {
+          orderType: 'BUY_CHANGE_IN',
+          parentNo
         }
       })
     },

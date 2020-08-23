@@ -1,9 +1,9 @@
 <template>
   <div class="page">
     <!-- <search class="page-search" ref="search" @onSearch="onSearch" /> -->
-    <el-row class="page-tools" >
+    <!-- <el-row class="page-tools" >
       <el-button icon="el-icon-plus" type="primary" size="mini" @click="onAdd">添加</el-button>
-    </el-row>
+    </el-row> -->
     <el-table
       class="page-table"
       v-loading="loading"

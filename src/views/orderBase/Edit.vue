@@ -3,15 +3,23 @@
     <sticky :top="15">
       <div class="order-header">
         <el-page-header @click.native="goBack" />
-        <el-tag>{{this.formData.orderType|orderType}}</el-tag>
-        <el-tag>{{this.formData.orderStatus|orderStatus}}</el-tag>
-        <el-tag>{{formData.warehouseStatus|warehouseStatus}}</el-tag>
+        <el-tag style="margin-left:10px;">{{this.formData.orderType|orderType}}</el-tag>
+        <el-tag style="margin-left:10px;">{{this.formData.orderStatus|orderStatus}}</el-tag>
+        <el-tag style="margin-left:10px;">{{formData.warehouseStatus|warehouseStatus}}</el-tag>
         <div style="flex:1;"></div>
         <template v-if="formData.orderStatus!='DRAFT'">
-          <el-button v-if="formData.orderType=='SELL'" type="primary" @click="onGoSellOut">出库单-{{formData.outInIdCount}}</el-button>
-          <el-button v-else-if="formData.orderType=='BUY'" type="primary" @click="onGoBuyInList">入库单</el-button>
-          <el-button v-else-if="formData.orderType=='SELL_CHANGE_IN'" type="primary" @click="onGoSellChangeOut">改签出库单</el-button>
-          <el-button v-else-if="formData.orderType=='BUY_CHANGE_OUT'" type="primary" @click="onGoBuyChangeIn">改签入库单</el-button>
+          <el-button v-if="formData.orderType=='SELL'" type="primary" @click="onGoSellOut">
+            销售出库单({{formData.outInIdCount}})
+          </el-button>
+          <el-button v-else-if="formData.orderType=='BUY'" type="primary" @click="onGoBuyInList">
+            采购入库单({{formData.outInIdCount}})
+          </el-button>
+          <el-button v-else-if="formData.orderType=='SELL_CHANGE_IN'" type="primary" @click="onGoSellChangeOut">
+            销售改签出库单({{formData.outInIdCount}})
+          </el-button>
+          <el-button v-else-if="formData.orderType=='BUY_CHANGE_OUT'" type="primary" @click="onGoBuyChangeIn">
+            采购改签入库单({{formData.outInIdCount}})
+          </el-button>
         </template>
       </div>
     </sticky>
@@ -140,83 +148,45 @@
 
     <sticky :bottom="15">
       <div class="order-header">
-        <!-- <template >
-          <el-button-group v-if="formData.orderType=='SELL'">
-            <el-button type="primary" v-if="formData.orderStatus=='DRAFT'" @click="onSave">保 存</el-button>
-            <el-button type="primary" v-if="formData.orderStatus=='DRAFT'" @click="confirmOrder">确 认</el-button>
-          </el-button-group>
-          <el-button-group v-if="formData.orderType=='SELL_OUT'">
-            <el-button type="primary" v-if="formData.orderStatus=='DRAFT'" @click="onSave">保 存</el-button>
-            <el-button type="primary" v-if="formData.orderStatus=='DRAFT'" @click="confirmOrder">确 认</el-button>
-          </el-button-group>
-          <el-button-group v-if="formData.orderType=='SELL_REFUND_IN'">
-            <el-button type="primary" v-if="formData.orderStatus=='DRAFT'" @click="onSave">保 存</el-button>
-            <el-button type="primary" @click="onSellRefundIn">入 库</el-button>
-          </el-button-group>
-          <el-button-group v-if="formData.orderType=='SELL_CHANGE_IN'">
-            <el-button type="primary" v-if="formData.orderStatus=='DRAFT'" @click="onSave">保 存</el-button>
-            <el-button type="primary" @click="onSellChangeIn">入 库</el-button>
-          </el-button-group>
-          <el-button-group v-if="formData.orderType=='SELL_CHANGE_OUT'">
-            <el-button type="primary" v-if="formData.orderStatus=='DRAFT'" @click="onSave">保 存</el-button>
-            
-          </el-button-group>
-
-          <el-button-group v-if="formData.orderType=='BUY'">
-            <el-button type="primary" v-if="formData.orderStatus=='DRAFT'" @click="onSave">保 存</el-button>
-            <el-button type="primary" @click="confirmOrder">确 认</el-button>
-          </el-button-group>
-
-          <el-button-group v-if="formData.orderType=='BUY_REFUND_OUT'">
-            <el-button type="primary" v-if="formData.orderStatus=='DRAFT'" @click="onSave">保 存</el-button>
-            <el-button type="primary" @click="onBuyRefundOut">出 库</el-button>
-          </el-button-group>
-
-          <el-button-group v-if="formData.orderType=='BUY_CHANGE_OUT'">
-            <el-button type="primary" v-if="formData.orderStatus=='DRAFT'" @click="onSave">保 存</el-button>
-            <el-button type="primary" @click="onBuyChangeOut">出 库</el-button>
-          </el-button-group>
-          <el-button-group v-if="formData.orderType=='BUY_CHANGE_IN'">
-            <el-button type="primary" v-if="formData.orderStatus=='DRAFT'" @click="onSave">保 存</el-button>
-          </el-button-group>
-        </template> -->
         <div style="flex:1;"></div>
         <el-button-group>
           <template v-if="formData.orderType=='SELL'">
-            <el-button v-if="formData.orderStatus=='DRAFT'" type="primary" @click="onSave">保 存</el-button>
-            <el-button v-if="formData.orderStatus=='DRAFT'" type="primary" @click="confirmOrder">确 认</el-button>
+            <el-button v-if="formData.orderStatus=='DRAFT'" type="primary" @click="onSaveSell">保 存</el-button>
+            <el-button v-if="formData.orderStatus=='DRAFT'" type="primary" @click="onConfirmSell">确 认</el-button>
+            <el-button v-if="formData.orderStatus=='COMPLETED'" @click="onGoSellRefundIn" type="primary">退</el-button>
+            <el-button v-if="formData.orderStatus=='COMPLETED'" @click="onGoSellChangeIn" type="primary">改</el-button>
+            <el-button @click="onGoBuyIn" type="primary">采 购</el-button>
+          </template>
           <template v-if="formData.orderType=='SELL_OUT'">
-            <el-button v-if="formData.orderStatus=='DRAFT'" type="primary" @click="onSave">保 存</el-button>
+            <el-button v-if="formData.orderStatus=='DRAFT'" type="primary" @click="onSaveSellOut">保 存</el-button>
             <el-button @click="onSellOut" type="primary">出 库</el-button>
           </template>
-        </template>
-        <template v-if="formData.orderStatus!='DRAFT'">
-          <el-button-group v-if="formData.orderType=='SELL'">
-            <template v-if="formData.orderStatus=='COMPLETED'">
-              <el-button @click="onGoSellRefundIn" type="primary">退</el-button>
-              <el-button @click="onGoSellChangeIn" type="primary">改</el-button>
-            </template>
-            <el-button @click="onGoBuyIn" type="primary">采购</el-button>
-          </el-button-group>
           <template v-if="formData.orderType=='SELL_REFUND_IN'">
-            
+            <el-button v-if="formData.orderStatus=='DRAFT'" type="primary" @click="onSaveSellRefundIn">保 存</el-button>
+            <el-button @click="onSellRefundIn" type="primary">入 库</el-button>
           </template>
           <template v-if="formData.orderType=='SELL_CHANGE_IN'">
-            <template v-if="formData.orderStatus=='COMPLETED'">
-              
-            </template>
+            <el-button v-if="formData.orderStatus=='DRAFT'" type="primary" @click="onSaveSellChangeIn">保 存</el-button>
+            <el-button @click="onSellChangeIn" type="primary">入 库</el-button>
           </template>
           <template v-if="formData.orderType=='SELL_CHANGE_OUT'">
-            <template v-if="formData.orderStatus=='COMPLETED'">
-              <el-button type="primary" @click="onSellChangeOut">出 库</el-button>
-            </template>
+            <el-button v-if="formData.orderStatus=='DRAFT'" type="primary" @click="onSaveSellChangeOut">保 存</el-button>
+            <el-button type="primary" @click="onSellChangeOut">出 库</el-button>
           </template>
+
           <template v-if="formData.orderType=='BUY'">
+            <el-button v-if="formData.orderStatus=='DRAFT'" type="primary" @click="onSaveBuy">保 存</el-button>
+            <el-button v-if="formData.orderStatus=='DRAFT'" type="primary" @click="onConfirmBuy">确 认</el-button>
+            <el-button @click="onGoSellRefundIn" type="primary">退</el-button>
+            <el-button @click="onGoSellChangeIn" type="primary">改</el-button>
+          </template>
+        <template v-if="formData.orderStatus!='DRAFT'">
+          <!-- <template v-if="formData.orderType=='BUY'">
             <template v-if="formData.orderStatus=='COMPLETED'">
               <el-button @click="onGoBuyRefundOut" type="primary">退</el-button>
               <el-button @click="onGoBuyChangeOut" type="primary">改</el-button>
             </template>
-          </template>
+          </template> -->
           <template v-if="formData.orderType=='BUY_IN'">
             <template v-if="formData.orderStatus!='DRAFT'">
               <el-button type="primary" @click="onBuyIn">入库</el-button>
@@ -231,14 +201,6 @@
         </el-button-group>
       </div>
     </sticky>  
-
-    <el-dialog :visible.sync="showRefund" title="退票">
-      <refund ref="refund" :ps="psRefund" @refund="comfirmRefund"/>
-    </el-dialog>
-
-    <el-dialog :visible.sync="showChange" title="改签">
-      <change ref="change" :ps="psChange" :goods="goodsChange" @changeOrder="comfirmChange"/>
-    </el-dialog>
   </div>
 </template>
 
@@ -450,17 +412,76 @@ export default {
           this.$store
             .dispatch("productOrder/saveOrder", data)
             .then(() => {
-              this.$message({
-                type: "success",
-                message: "保存草稿成功！"
-              });
-              this.goBack();
+              this.$message.success('草稿保存成功');
+              this.$router.push({
+                name: 'orderBaseEdit',
+                query: {
+                  orderNo: d.orderNo,
+                  orderType: this.formData.orderType,
+                }
+              })
             })
             .catch(error => {
               console.log(error);
             });
         }
       });
+    },
+    // SELLORDER
+    onSaveSell() {
+      this.$refs["orderForm"].validate(valid => {
+        if (valid) {
+          this.formData.orderDetails = this.orderDetails;
+          this.formData.passengers = this.passengers;
+
+          let data = {
+            ...this.formData,
+          }
+          data.parentNo = data.parentNo || this.$route.query.parentNo
+          data.rootOrderNo = data.rootOrderNo || this.$route.query.parentNo
+          data.warehouseStatus = 'OUT'
+          this.$store
+            .dispatch("productOrder/saveOrder", data)
+            .then(d => {
+              this.$message.success('销售单草稿保存成功.')
+              this.$router.replace({
+                name: 'orderBaseEdit',
+                query: {
+                  orderNo: d.orderNo,
+                  orderType: "SELL",
+                  t: new Date().value()
+                }
+              })
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        }
+      })
+    },
+    onConfirmSell() {
+      this.$refs["orderForm"].validate(valid => {
+        if (valid) {
+          this.formData.orderDetails = this.orderDetails;
+          this.formData.passengers = this.passengers;
+          this.$store
+            .dispatch("productOrder/confirmOrder", this.formData)
+            .then(d => {
+              this.$message('销售订单确认成功');
+              this.$router.replace({
+                name: 'orderBaseEdit',
+                query: {
+                  orderNo: d.orderNo,
+                  orderType: "SELL",
+                  t: new Date().value()
+                }
+              })
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        }
+      })
     },
     confirmOrder() {
       this.$refs["orderForm"].validate(valid => {
@@ -485,6 +506,289 @@ export default {
         }
       });
     },
+
+    // SELLOUTORDER
+    onSaveSellOut() {
+      this.$refs["orderForm"].validate(valid => {
+        if (valid) {
+          this.formData.orderDetails = this.orderDetails;
+          this.formData.passengers = this.passengers;
+
+          let data = {
+            ...this.formData,
+          }
+          data.parentNo = data.parentNo || this.$route.query.parentNo
+          data.rootOrderNo = data.rootOrderNo || this.$route.query.parentNo
+          data.warehouseStatus = 'OUT'
+          this.$store
+            .dispatch("productOrder/saveOrder", data)
+            .then(d => {
+              this.$message.success('销售出库单草稿保存成功.')
+              this.$router.replace({
+                name: 'orderBaseEdit',
+                query: {
+                  orderNo: d.orderNo,
+                  orderType: "SELL_OUT",
+                  t: new Date().value()
+                }
+              })
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        }
+      })
+    },
+    onSellOut() {
+
+      // this.$store
+      //   .dispatch("productOrder/outWarehouseOrder", {
+      //     orderNo: this.formData.orderNo,
+      //     data: this.formData
+      //   })
+      //   .then(data => {
+      //     if (data) {
+      //       this.$message.success('出库成功');
+      //       this.goBack();
+      //     } else {
+      //       this.$message({
+      //         type: "error",
+      //         message: "出库失败!"
+      //       });
+      //     }
+      //   })
+      //   .catch(error => {
+      //     console.log(error);
+      //   });
+      let data = {
+        ...this.formData,
+      }
+      data.orderDetails = this.orderDetails
+      data.passengers = this.passengers;
+      data.parentNo = data.parentNo || this.$route.query.parentNo
+      data.rootOrderNo = data.rootOrderNo || this.$route.query.parentNo
+      this.$store.dispatch('productOrder/orderChangeInOut', data)
+        .then(data => {
+          this.$message.success('销售改签出库成功')
+          this.goBack()
+        })
+    },
+
+    // SELLREFUNDINORDER
+    onSaveSellRefundIn() {
+      this.$refs["orderForm"].validate(valid => {
+        if (valid) {
+          this.formData.orderDetails = this.orderDetails;
+          this.formData.passengers = this.passengers;
+
+          let data = {
+            ...this.formData,
+          }
+          data.parentNo = data.parentNo || this.$route.query.parentNo
+          data.rootOrderNo = data.rootOrderNo || this.$route.query.parentNo
+          data.warehouseStatus = 'IN'
+          this.$store
+            .dispatch("productOrder/saveOrder", data)
+            .then(d => {
+              this.$message.success('销售退款出库单草稿保存成功.')
+              this.$router.replace({
+                name: 'orderBaseEdit',
+                query: {
+                  orderNo: d.orderNo,
+                  orderType: "SELL_REFUND_IN",
+                  t: new Date().value()
+                }
+              })
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        }
+      })
+    },
+    onSellRefundIn() {
+      let data = {
+        ...this.formData,
+      }
+      data.orderDetails = this.orderDetails;
+      data.passengers = this.passengers;
+      data.parentNo = data.parentNo || this.$route.query.parentNo
+      data.rootOrderNo = data.rootOrderNo || this.$route.query.parentNo
+      if (!data.parentNo) {
+        this.$message.error('退票parentNo为空')
+        return
+      }
+      if (!data.rootOrderNo) {
+        this.$message.error('rootOrderNo')
+        return
+      }
+      this.$store.dispatch('productOrder/orderRefund', data)
+        .then(data => {
+          this.$message.success('退票入库成功')
+          this.goBack()
+        })
+    },
+
+    // SELLCHANGEINORDER
+    onSaveSellChangeIn() {
+      this.$refs["orderForm"].validate(valid => {
+        if (valid) {
+          this.formData.orderDetails = this.orderDetails;
+          this.formData.passengers = this.passengers;
+
+          let data = {
+            ...this.formData,
+          }
+          data.parentNo = data.parentNo || this.$route.query.parentNo
+          data.rootOrderNo = data.rootOrderNo || this.$route.query.parentNo
+          data.warehouseStatus = 'IN'
+          this.$store
+            .dispatch("productOrder/saveOrder", data)
+            .then(d => {
+              this.$message.success('销售单草稿保存成功.')
+              this.$router.replace({
+                name: 'orderBaseEdit',
+                query: {
+                  orderNo: d.orderNo,
+                  orderType: "SELL_CHANGE_IN",
+                  t: new Date().value()
+                }
+              })
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        }
+      })
+    },
+    onSellChangeIn() {
+      let data = {
+        ...this.formData,
+      }
+      data.orderDetails = [...this.orderDetails, ...this.orderDetailsForChange.map(i => {
+        i.changeFlag = true
+        i.changeProductId = i.productId
+        return i
+      })];
+      data.passengers = this.passengers;
+      data.parentNo = data.parentNo || this.$route.query.parentNo
+      data.rootOrderNo = data.rootOrderNo || this.$route.query.parentNo
+      this.$store.dispatch('productOrder/orderChange', data)
+        .then(data => {
+          this.$message.success('改签入库成功')
+          this.goBack()
+        })
+    },
+
+    // SELLCHANGEOUTORDER
+    onSaveSellChangeOut() {
+      this.$refs["orderForm"].validate(valid => {
+        if (valid) {
+          this.formData.orderDetails = this.orderDetails;
+          this.formData.passengers = this.passengers;
+
+          let data = {
+            ...this.formData,
+          }
+          data.parentNo = data.parentNo || this.$route.query.parentNo
+          data.rootOrderNo = data.rootOrderNo || this.$route.query.parentNo
+          data.warehouseStatus = 'OUT'
+          this.$store
+            .dispatch("productOrder/saveOrder", data)
+            .then(d => {
+              this.$message.success('销售单草稿保存成功.')
+              this.$router.replace({
+                name: 'orderBaseEdit',
+                query: {
+                  orderNo: d.orderNo,
+                  orderType: "SELL_CHANGE_OUT",
+                  t: new Date().value()
+                }
+              })
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        }
+      })
+    },
+    onSellChangeOut() {
+      let data = {
+        ...this.formData,
+      }
+      data.orderDetails = [...this.orderDetails, ...this.orderDetailsForChange.map(i => {
+        i.changeFlag = true
+        i.changeProductId = i.productId
+        return i
+      })];
+      data.passengers = this.passengers;
+      data.parentNo = data.parentNo || this.$route.query.parentNo
+      data.rootOrderNo = data.rootOrderNo || this.$route.query.parentNo
+      this.$store.dispatch('productOrder/orderChangeInOut', data)
+        .then(data => {
+          this.$message.success('改签出库成功')
+          this.goBack()
+        })
+    },
+
+    // BUYORDER
+    onSaveBuy() {
+      this.$refs["orderForm"].validate(valid => {
+        if (valid) {
+          this.formData.orderDetails = this.orderDetails;
+          this.formData.passengers = this.passengers;
+
+          let data = {
+            ...this.formData,
+          }
+          data.parentNo = data.parentNo || this.$route.query.parentNo
+          data.rootOrderNo = data.rootOrderNo || this.$route.query.parentNo
+          data.warehouseStatus = 'IN'
+          this.$store
+            .dispatch("productOrder/saveOrder", data)
+            .then(d => {
+              this.$message.success('采购单草稿保存成功.')
+              this.$router.replace({
+                name: 'orderBaseEdit',
+                query: {
+                  orderNo: d.orderNo,
+                  orderType: "BUY",
+                  t: new Date().value()
+                }
+              })
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        }
+      })
+    },
+    onConfirmBuy() {
+      this.$refs["orderForm"].validate(valid => {
+        if (valid) {
+          this.formData.orderDetails = this.orderDetails;
+          this.formData.passengers = this.passengers;
+          this.$store
+            .dispatch("productOrder/confirmOrder", this.formData)
+            .then(d => {
+              this.$message('采购订单确认成功');
+              this.$router.replace({
+                name: 'orderBaseEdit',
+                query: {
+                  orderNo: d.orderNo,
+                  orderType: "BUY",
+                  t: new Date().value()
+                }
+              })
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        }
+      })
+    },
+
+
     querySearchAsync(keyword, callBack) {
       if (keyword) {
         this.$store
@@ -518,86 +822,26 @@ export default {
       this.formData.totalAmount = val;
     },
     onGoSellOut() {
-      this.$router.push({
-        name: "orderBaseList",
-        query: {
-          orderType: "SELL_OUT",
-          parentNo: this.formData.orderNo
-        }
-      });
-    },
-    onShowSellRefund() {
-      this.psRefund = JSON.parse(JSON.stringify(this.formData.passengers))
-      this.showRefund = true
-      this.$nextTick(_ => {
-        this.$refs.refund.allSelect()
-      })
-    },
-    comfirmRefund(val) {
-      let data = {
-        ...this.formData,
-        passengers: val
-      }
-      data.parentNo = data.orderNo;
-      data.orderNo = null;
-      this.$store.dispatch('productOrder/orderRefund', data)
-        .then(data => {
-          this.$message.success('退票成功')
-          this.goBack()
+      if (this.formData.outInIds.length>1) {
+        this.$router.push({
+          name: "orderBaseList",
+          query: {
+            orderType: "SELL_OUT",
+            parentNo: this.formData.orderNo
+          }
         })
-    },
-    onShowSellChange() {
-      this.psChange = JSON.parse(JSON.stringify(this.formData.passengers))
-      this.goodsChange = JSON.parse(JSON.stringify(this.formData.orderDetails))
-      this.showChange = true
-    },
-    comfirmChange(val) {
-      let data = {
-        ...this.formData,
-        ...val
+      } else {
+        this.$router.push({
+          name: "orderBaseEdit",
+          query: {
+            orderType: "SELL_OUT",
+            orderNo: this.formData.outInIds[0]
+          }
+        });
       }
-      data.parentNo = data.orderNo;
-      data.orderNo = null;
-      this.$store.dispatch('productOrder/orderChange', data)
-        .then(data => {
-          this.$message.success('改签成功')
-          this.goBack()
-        })
+      
     },
-    onSellOut() {
-
-      // this.$store
-      //   .dispatch("productOrder/outWarehouseOrder", {
-      //     orderNo: this.formData.orderNo,
-      //     data: this.formData
-      //   })
-      //   .then(data => {
-      //     if (data) {
-      //       this.$message.success('出库成功');
-      //       this.goBack();
-      //     } else {
-      //       this.$message({
-      //         type: "error",
-      //         message: "出库失败!"
-      //       });
-      //     }
-      //   })
-      //   .catch(error => {
-      //     console.log(error);
-      //   });
-      let data = {
-        ...this.formData,
-      }
-      data.orderDetails = this.orderDetails
-      data.passengers = this.passengers;
-      data.parentNo = data.parentNo || this.$route.query.parentNo
-      data.rootOrderNo = data.rootOrderNo || this.$route.query.parentNo
-      this.$store.dispatch('productOrder/orderChangeInOut', data)
-        .then(data => {
-          this.$message.success('改签出库成功')
-          this.goBack()
-        })
-    },
+    
     onGoBuyInList() {
       this.$router.push({
         name: "orderBaseList",
@@ -713,28 +957,7 @@ export default {
       console.log(this.formData);
     },
 
-    onSellRefundIn() {
-      let data = {
-        ...this.formData,
-      }
-      data.orderDetails = this.orderDetails;
-      data.passengers = this.passengers;
-      data.parentNo = data.parentNo || this.$route.query.parentNo
-      data.rootOrderNo = data.rootOrderNo || this.$route.query.parentNo
-      if (!data.parentNo) {
-        this.$message.error('退票parentNo为空')
-        return
-      }
-      if (!data.rootOrderNo) {
-        this.$message.error('rootOrderNo')
-        return
-      }
-      this.$store.dispatch('productOrder/orderRefund', data)
-        .then(data => {
-          this.$message.success('退票入库成功')
-          this.goBack()
-        })
-    },
+    
     onBuyRefundOut() {
       let data = {
         ...this.formData,
@@ -757,24 +980,7 @@ export default {
           this.goBack()
         })
     },
-    onSellChangeIn() {
-      let data = {
-        ...this.formData,
-      }
-      data.orderDetails = [...this.orderDetails, ...this.orderDetailsForChange.map(i => {
-        i.changeFlag = true
-        i.changeProductId = i.productId
-        return i
-      })];
-      data.passengers = this.passengers;
-      data.parentNo = data.parentNo || this.$route.query.parentNo
-      data.rootOrderNo = data.rootOrderNo || this.$route.query.parentNo
-      this.$store.dispatch('productOrder/orderChange', data)
-        .then(data => {
-          this.$message.success('改签入库成功')
-          this.goBack()
-        })
-    },
+    
     onBuyChangeOut() {
       let data = {
         ...this.formData,
@@ -793,24 +999,7 @@ export default {
           this.goBack()
         })
     },
-    onSellChangeOut() {
-      let data = {
-        ...this.formData,
-      }
-      data.orderDetails = [...this.orderDetails, ...this.orderDetailsForChange.map(i => {
-        i.changeFlag = true
-        i.changeProductId = i.productId
-        return i
-      })];
-      data.passengers = this.passengers;
-      data.parentNo = data.parentNo || this.$route.query.parentNo
-      data.rootOrderNo = data.rootOrderNo || this.$route.query.parentNo
-      this.$store.dispatch('productOrder/orderChangeInOut', data)
-        .then(data => {
-          this.$message.success('改签出库成功')
-          this.goBack()
-        })
-    },
+    
     onBuyChangeIn() {
       let data = {
         ...this.formData,
